@@ -87,6 +87,7 @@ interface ListFormatInternal {
   style: IntlListFormatOptions['style']
   type: IntlListFormatOptions['type']
   locale: string
+  contextLanguage: string
   templatePair: string
   templateStart: string
   templateEnd: string
@@ -124,6 +125,29 @@ function stringListFromIterable(iterable: Iterable<unknown>): string[] {
   return elements
 }
 
+// Keep ICU's contextual joins scoped to exact pair/end patterns.
+// https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/i18n/listformatter.cpp#L124-L211
+function contextualPattern(
+  pattern: string,
+  next: string,
+  language: string
+): string {
+  if (!next.length) return pattern
+  if (language === 'es') {
+    if (pattern === '{0} y {1}' && /^(?:i|hi(?:[^ae]|$))/i.test(next))
+      return '{0} e {1}'
+    if (pattern === '{0} o {1}' && /^(?:o|ho|8|11(?: |$))/i.test(next))
+      return '{0} u {1}'
+  } else if (
+    (language === 'he' || language === 'iw') &&
+    pattern === '{0} ו{1}' &&
+    !/^\p{Script=Hebrew}/u.test(next)
+  ) {
+    return '{0} ו-{1}'
+  }
+  return pattern
+}
+
 function createPartsFromList(
   internalSlotMap: WeakMap<ListFormat, ListFormatInternal>,
   lf: ListFormat,
@@ -134,7 +158,11 @@ function createPartsFromList(
     return []
   }
   if (size === 2) {
-    const pattern = getInternalSlot(internalSlotMap, lf, 'templatePair')
+    const pattern = contextualPattern(
+      getInternalSlot(internalSlotMap, lf, 'templatePair'),
+      list[1],
+      getInternalSlot(internalSlotMap, lf, 'contextLanguage')
+    )
     const first = {type: 'element', value: list[0]}
     const second = {type: 'element', value: list[1]}
     return deconstructPattern(pattern, {'0': first, '1': second})
@@ -152,7 +180,11 @@ function createPartsFromList(
     } else if (i < size - 2) {
       pattern = getInternalSlot(internalSlotMap, lf, 'templateMiddle')
     } else {
-      pattern = getInternalSlot(internalSlotMap, lf, 'templateEnd')
+      pattern = contextualPattern(
+        getInternalSlot(internalSlotMap, lf, 'templateEnd'),
+        list[size - 1],
+        getInternalSlot(internalSlotMap, lf, 'contextLanguage')
+      )
     }
     const head = {type: 'element', value: list[i]}
     parts = deconstructPattern(pattern, {'0': head, '1': parts})
@@ -240,6 +272,12 @@ export default class ListFormat {
     )
     setInternalSlot(ListFormat.__INTERNAL_SLOT_MAP__, this, 'style', style)
     const {dataLocale} = r
+    setInternalSlot(
+      ListFormat.__INTERNAL_SLOT_MAP__,
+      this,
+      'contextLanguage',
+      dataLocale.split('-')[0]
+    )
     const dataLocaleData = localeData[dataLocale]
     invariant(!!dataLocaleData, `Missing locale data for ${dataLocale}`)
     const dataLocaleTypes = dataLocaleData[type]

@@ -1,0 +1,3654 @@
+{
+  "collectedAt": "2026-10-29T20:40:18.940830+00:00",
+  "baselineCommit": "004ea36eb1208e5176b350df8797ef1ce0643170",
+  "implementationCratesTree": "8ed995b6b9285c75a8da65519077d09dd6011474",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "sourceSha256": {
+    "crates/intl_numberformat/format.rs": "66b3e83b13adeae825a24ee466191c70067f3ab9e10b87d2faa8ef7880e8363d",
+    "crates/intl_numberformat/format.test.rs": "90dbe44b536e7b61e0bba52b03ef438403de0cc104db6901517074a079f4f4ab",
+    "crates/intl_relativetimeformat/lib.rs": "64e5ebccfb278505d6a17df4cec0d5b052d11f94599cc175ed3a28a74a2ef354",
+    "benchmarks/hermes-intl-extension/relative-format-probe.rs": "24cc0d4d606c58116fcf5bb5578828256f83656e81d4edc6874d80da1ee7b7b3",
+    "benchmarks/hermes-intl-extension/relative-parts-profile.js": "e232cbad4faff305dd6c0764cac3363e596e2daf2404230c27f291c75efe5c9f",
+    "benchmarks/hermes-intl-extension/native-clock.patch": "2139fb35b745e1feab2b2d61814525ff85a5b210e944d0629d95dfcf07d0bab7",
+    "benchmarks/hermes-intl-extension/overlap.js": "d704b2a22e06e479929211fb5fe3c5a98c1eb84d6b690f9e3c9e6e42673aa119",
+    "benchmarks/hermes-intl-extension/canonical-tag-control.js": "088828072b8f0a1c69a8e1e5423f133919919a6bcfa6d2fe974a96e2632ee21e",
+    "benchmarks/hermes-intl-extension/locale-control.js": "d66c90f9a40d20a2be961177579d919cbb4b3b5ff552a08850f80ad8f2a90a3c",
+    "benchmarks/hermes-intl-extension/relative-format-profile.js": "3d84b07ab9637305a1ab2bcbe33e49088c040a1aab49ea728ef1d07e2304bf73"
+  },
+  "hostSha256": {
+    "before": "bff89ecdf0c9fbb8fb7318f1ea7644622f149c3f6ef45bffdfe2bf2de4cfde87",
+    "after": "8d7bd694b9416509d7109f706838a579991b1354ee6ed54f3efbd958f92d7367",
+    "magrinj": "7f5a07824225b3db9787ed21ea48cd8eb67c7a3d7d6798ba21aa0da0c887136f"
+  },
+  "workloadSha256": {
+    "overlap": "7728b8d334219dee0782509536f5d3800c5ee143b768cbda2193ffe908ef7656",
+    "tagControl": "aa2ace3206d990e017dd2ae8e8df5346c8dff9d574438b481fda4cec45ea14ca",
+    "localeControl": "fd346e6e8bda47978c2a56bae7f18e9ddaf3f584d5a0cd06eb446825d8bce30d"
+  },
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "build": {
+    "hermesCpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "magrinjRust": "upstream release: opt-level=z, lto=true, codegen-units=1",
+    "magrinjBootstrap": "Precompiled Hermes -O bytecode",
+    "overlap": "Same precompiled Hermes -O bytecode on all hosts",
+    "formatjsFactories": "Embedded Hermes -O bytecode"
+  },
+  "clock": "All hosts use __now(). Native before/after rebuilt with identical console-only steady_clock patch. Sub-millisecond monotonic clock checks pass. Historical native timings used Date.now fallback; low-percent differences should be assessed within this paired run.",
+  "clockChecks": {
+    "before": {
+      "minimumDeltaMs": 7.390975952148438e-5
+    },
+    "after": {
+      "minimumDeltaMs": 7.390975952148438e-5
+    },
+    "magrinj": {
+      "minimumDeltaMs": 0.00010156631469726562
+    }
+  },
+  "order": "Three complete 33-case overlap invocations plus canonical and isolated Locale controls per host. Rounds 1 and 3 before/after/magrinj; round 2 reverses. No builds or profiling during timings.",
+  "outputChecks": "342 values checked (297 overlap, 27 canonical tag controls, 18 isolated Locale controls). All FormatJS before/after values match; all controls match all hosts. Only overlap comparator differences: omitted/unsupported ListFormat default locale en-US versus en.",
+  "change": "Retain the standard-decimal numeric part buffer, borrow long-style relative field keys, and move owned number parts into the last relative-pattern slot. Repeated earlier slots borrow.",
+  "mediansUs": {
+    "before": {
+      "getCanonicalLocales": 0.07005190673226025,
+      "Locale.maximize": 0.26481081113161054,
+      "PluralRules.select": 0.5095256128697656,
+      "PluralRules.select(decimal)": 0.5791994990431704,
+      "PluralRules.select(string)": 0.6844296476629097,
+      "PluralRules.select(ordinal)": 0.5378954956540838,
+      "PluralRules.select(ru)": 0.5560015197261237,
+      "PluralRules.selectRange": 2.1474046661751345,
+      "ListFormat.format": 1.0942485241685063,
+      "ListFormat.formatToParts": 3.289660409791395,
+      "RelativeTimeFormat.format": 1.0228084865957499,
+      "RelativeTimeFormat.formatToParts": 3.086925222305581,
+      "RelativeTimeFormat.format(decimal)": 1.343133182672318,
+      "RelativeTimeFormat.format(auto)": 0.48522145152674057,
+      "Locale.new": 0.3533415074343793,
+      "Locale.new(options)": 1.767534515238367,
+      "Locale.new(zh-HK)": 0.35664057577378117,
+      "Locale.new.language": 0.43153938167961314,
+      "Locale.new.toString": 0.4058689664816484,
+      "Locale.language": 0.07640371813977254,
+      "Locale.new(Locale)": 0.3284469075879315,
+      "Locale.new(diverse)": 4.636638623196632,
+      "Locale.new(long)": 5.774305667728186,
+      "PluralRules.new": 2.1677398472093046,
+      "PluralRules.new(options)": 5.490791198099032,
+      "ListFormat.new": 1.4781365462113172,
+      "ListFormat.new(default)": 1.1862274186569266,
+      "ListFormat.new(array)": 1.7137383401859552,
+      "ListFormat.new(options)": 2.729610161622986,
+      "ListFormat.new(fallback)": 2.1964330226182938,
+      "ListFormat.new(unsupported)": 2.313924371264875,
+      "RelativeTimeFormat.new": 4.35922434553504,
+      "RelativeTimeFormat.new(fallback)": 5.302161269355565
+    },
+    "after": {
+      "getCanonicalLocales": 0.07085821516739088,
+      "Locale.maximize": 0.2669743425940396,
+      "PluralRules.select": 0.5149178541614674,
+      "PluralRules.select(decimal)": 0.5836150994582567,
+      "PluralRules.select(string)": 0.6828611076343805,
+      "PluralRules.select(ordinal)": 0.5369871068978682,
+      "PluralRules.select(ru)": 0.5546650136238895,
+      "PluralRules.selectRange": 2.131353787262924,
+      "ListFormat.format": 1.0771367669804022,
+      "ListFormat.formatToParts": 3.2676672271918505,
+      "RelativeTimeFormat.format": 0.9852919756667688,
+      "RelativeTimeFormat.formatToParts": 3.0290144932223484,
+      "RelativeTimeFormat.format(decimal)": 1.3033224167884327,
+      "RelativeTimeFormat.format(auto)": 0.47660562631790526,
+      "Locale.new": 0.35372200727579184,
+      "Locale.new(options)": 1.7613315430935472,
+      "Locale.new(zh-HK)": 0.3576745748432586,
+      "Locale.new.language": 0.43444219409138896,
+      "Locale.new.toString": 0.406564271543175,
+      "Locale.language": 0.07613565230712993,
+      "Locale.new(Locale)": 0.32933441252680495,
+      "Locale.new(diverse)": 3.9095974498195574,
+      "Locale.new(long)": 5.641482304781675,
+      "PluralRules.new": 2.1039473795099184,
+      "PluralRules.new(options)": 5.449944757856429,
+      "ListFormat.new": 1.4571001374861225,
+      "ListFormat.new(default)": 1.1719524845830165,
+      "ListFormat.new(array)": 1.6944663948379457,
+      "ListFormat.new(options)": 2.7774684131145477,
+      "ListFormat.new(fallback)": 2.2519205522257835,
+      "ListFormat.new(unsupported)": 2.319201536010951,
+      "RelativeTimeFormat.new": 4.4813507120125,
+      "RelativeTimeFormat.new(fallback)": 5.204983754083514
+    },
+    "magrinj": {
+      "getCanonicalLocales": 1.0951584335998632,
+      "Locale.maximize": 2.1154908172320575,
+      "PluralRules.select": 0.4504133903537877,
+      "PluralRules.select(decimal)": 0.4540993249975145,
+      "PluralRules.select(string)": 0.9131882470683195,
+      "PluralRules.select(ordinal)": 0.45261927152751014,
+      "PluralRules.select(ru)": 0.49901830425369553,
+      "PluralRules.selectRange": 0.8945002264226787,
+      "ListFormat.format": 0.5412408754636999,
+      "ListFormat.formatToParts": 3.2187397882808,
+      "RelativeTimeFormat.format": 0.7093296881066635,
+      "RelativeTimeFormat.formatToParts": 2.167724640457891,
+      "RelativeTimeFormat.format(decimal)": 0.7867518288549036,
+      "RelativeTimeFormat.format(auto)": 0.5931089981459081,
+      "Locale.new": 0.9168465549009852,
+      "Locale.new(options)": 4.873784549999982,
+      "Locale.new(zh-HK)": 1.334120737737976,
+      "Locale.new.language": 1.2395925296004862,
+      "Locale.new.toString": 0.9760686298250221,
+      "Locale.language": 0.08396815610467456,
+      "Locale.new(Locale)": 0.941832477110438,
+      "Locale.new(diverse)": 1.4047110016690567,
+      "Locale.new(long)": 3.7649855366908014,
+      "PluralRules.new": 4.269272089004517,
+      "PluralRules.new(options)": 4.720787663245574,
+      "ListFormat.new": 2.6743742637336254,
+      "ListFormat.new(default)": 2.5121670187218115,
+      "ListFormat.new(array)": 2.763279029750265,
+      "ListFormat.new(options)": 2.6139819528907537,
+      "ListFormat.new(fallback)": 3.465343586867675,
+      "ListFormat.new(unsupported)": 3.6659321340266615,
+      "RelativeTimeFormat.new": 4.667746543418616,
+      "RelativeTimeFormat.new(fallback)": 5.346559133613482
+    }
+  },
+  "runs": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07028206027825945,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2674785609997343,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5139686581969727,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5790659233753104,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6844296476629097,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5378954956540838,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5610095431620721,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.159160838345997,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.1021611499018036,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.3230067347176373,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0476380921318196,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.086925222305581,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.343133182672318,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.48522145152674057,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.359387870048522,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.767534515238367,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.36072750481253024,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43153938167961314,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.41503470129100606,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08188946048903745,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3284469075879315,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.8676658916519955,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.760564818046987,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1477704431163147,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.490791198099032,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4781365462113172,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1862274186569266,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7137383401859552,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7699820493580773,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.1964330226182938,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.336786230443977,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.35922434553504,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.162472429219633,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07005190673226025,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26136204542126507,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5095256128697656,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5791994990431704,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6790276638639625,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5274762479530182,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5513958822120912,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.1474046661751345,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0776140188681893,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.289660409791395,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0160957899643108,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0545424669981003,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3304317617439665,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.48950748532661237,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.348885321727721,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7464666452724487,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35020537143282127,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42258956455043517,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.3976049192715436,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07561573784187203,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32210895187745336,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.636638623196632,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.774305667728186,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.175513334805146,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.4015427303966135,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4300775437732227,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.141398803156335,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.668825134402141,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.678954871953465,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.18316943210084,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.272230791277252,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.292004508897662,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.302161269355565,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.06997158425292582,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26481081113161054,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5090071572340094,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.6115671458246652,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.7035577837086748,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5577549418376293,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5560015197261237,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.143470715964213,
+          "iterations": 16384,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0942485241685063,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.271849302109331,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0228084865957499,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.1202057434711605,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3845163921359926,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.48489820983377285,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3533415074343793,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7700822500046343,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35664057577378117,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43216652557021007,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.4058689664816484,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07640371813977254,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3286007613496622,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.4348153276368976,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 6.204955134307966,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1677398472093046,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.8790760522242635,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.5078014985192567,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2346045987214893,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7409653664799407,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.729610161622986,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.2112823062343523,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.313924371264875,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.450360720511526,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.3979647636879236,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07222100157378009,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2669743425940396,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.51675838403753,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.6527438563352916,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6942380823602434,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5380553229770157,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5601727752946317,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.1131218236405402,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0771367669804022,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2676672271918505,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9825659799389541,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0238466861192137,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.2958207371411845,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4728283020085655,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.34963235884788446,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.752026699250564,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35215637217334006,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43444219409138896,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.3988416829088237,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.076477495895233,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32933441252680495,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.594617679482326,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.461480042664334,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.142316647223197,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.527721921680495,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4666339120594785,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1719524845830165,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.6944663948379457,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7774684131145477,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.289914569701068,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.319201536010951,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.697366326581687,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.347962025552988,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07085821516739088,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2718039377214154,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5149178541614674,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5836150994582567,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6828611076343805,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5369871068978682,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5496996818692423,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.160615229513496,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.090656893211417,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.326551028294489,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9852919756667688,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0331058660522103,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3239915861049667,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.47926136176101863,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.35809027031064034,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7699270247248933,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35830604065267835,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42988559653167613,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.406564271543175,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07613565230712993,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3287450635980349,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.430008673807606,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 6.109240930527449,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.0592421642504632,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.449944757856429,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4339874687721021,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2244556055520661,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7012691241689026,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7888866025023162,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.2519205522257835,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.3225204495247453,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.4813507120125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.204983754083514,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07056817048578523,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2651307404448744,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.509064040670637,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5829848159919493,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6807414174545556,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5360054383345414,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5546650136238895,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.131353787262924,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0737125339801423,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2601990969851613,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0208121238974854,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0290144932223484,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3033224167884327,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.47660562631790526,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.35372200727579184,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7613315430935472,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3576745748432586,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4351605130068492,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40865141272661276,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07612028957737493,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3306510770926252,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.9095974498195574,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.641482304781675,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1039473795099184,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.391359736677259,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4571001374861225,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1563046209630556,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.6837571311043575,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7244072261964902,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.1938686404610053,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.2432135592680424,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.3048538791481405,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.13796997256577,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "magrinj": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.09385336691048,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1154908172320575,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4504133903537877,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.45784464964526705,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9265003827749752,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4688118315243628,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5072025924164336,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8869161174516194,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5371964361984283,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2759656896814704,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7115639818948694,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.167724640457891,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7867518288549036,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.596972862695111,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9189459378831089,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.873784549999982,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.334120737737976,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2395925296004862,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9865286701824516,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08941940086515388,
+          "iterations": 524288,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9510357049293816,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4047110016690567,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.75103740952909,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.269272089004517,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.720787663245574,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.6733417325885966,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.4547601060476154,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.763279029750265,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.5426255160709843,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.465343586867675,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.6737412738148123,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.667746543418616,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.5022652668412775,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.0951584335998632,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.098430850310251,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4502986994339153,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4540993249975145,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9030566798173822,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45261927152751014,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.49901830425369553,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.9390417035319842,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5466672737384215,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2187397882808,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7075243229337502,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.162283897632733,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.782770810474176,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5922908931097481,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9113269770750776,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.853954946156591,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3529467760236003,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2359568354440853,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9760686298250221,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08396072780669783,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9316572395619005,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4023917392478324,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.7649855366908014,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.26083680940792,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.699298646301031,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.675300624105148,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.5121670187218115,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.8428198857000098,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.673922950634733,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.59545586979948,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.6659321340266615,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.741053708130494,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.346559133613482,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1720439142663963,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.125175131368451,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.45646526268683374,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.45328211854211986,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9131882470683195,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4505199503910262,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.4970534428139217,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8945002264226787,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5412408754636999,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2090501044876873,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7093296881066635,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1679000928997993,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7896699680713937,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5931089981459081,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9168465549009852,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.889729083515704,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3285925888339989,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.245567407750059,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9753742706379853,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08396815610467456,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.941832477110438,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4063674316275865,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.7793972878716886,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.31344541721046,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.75862983148545,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.6743742637336254,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.5131188886007294,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.7490856300573796,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.6139819528907537,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.4541647182777524,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.6013632779940963,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.45843322086148,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.223876913078129,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ]
+  },
+  "profiles": {
+    "format-before": {
+      "totalSamples": 229,
+      "selfSamples": {
+        "[Host Function] relativeFormat": 186,
+        "format": 16,
+        "[Native] stringPrototypeConcat": 13,
+        "global": 9,
+        "[Native] weakMapPrototypeGet": 4,
+        "RelativeTimeFormat": 1
+      },
+      "raw": {
+        "samples": [
+          3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 8, 7, 7, 7, 8, 7, 7, 7,
+          7, 7, 10, 7, 7, 7, 7, 7, 7, 12, 7, 7, 7, 10, 7, 7, 7, 7, 7, 13, 7, 7,
+          12, 7, 8, 7, 7, 13, 7, 7, 7, 7, 7, 7, 14, 7, 7, 7, 7, 7, 16, 7, 7, 7,
+          7, 7, 7, 7, 7, 7, 7, 7, 10, 13, 7, 7, 7, 12, 8, 7, 7, 14, 7, 7, 7, 7,
+          7, 7, 16, 13, 7, 7, 13, 7, 7, 7, 7, 7, 7, 7, 10, 7, 7, 7, 7, 7, 7, 7,
+          7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 14, 7, 8, 10, 7, 7, 7, 7, 7, 7, 8, 7, 7,
+          7, 7, 7, 7, 7, 12, 7, 7, 7, 7, 7, 7, 7, 16, 7, 8, 7, 7, 7, 7, 7, 7, 7,
+          7, 7, 13, 7, 16, 7, 8, 7, 7, 7, 7, 7, 7, 7, 16, 7, 7, 7, 7, 7, 7, 7,
+          7, 13, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 13, 7, 7, 7, 7, 7, 16,
+          7, 7, 13, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 8, 7, 7, 7, 7, 7, 16, 7, 7,
+          7, 7, 16, 7, 7
+        ],
+        "timeDeltas": [
+          0, 1855, 956, 294, 1273, 967, 1517, 1642, 1211, 921, 1076, 2008, 1412,
+          663, 1557, 462, 1118, 1464, 2119, 500, 585, 415, 1220, 1052, 666, 880,
+          614, 1001, 898, 806, 1288, 1070, 1067, 842, 614, 1815, 1913, 1259,
+          297, 1255, 1483, 1315, 2009, 1380, 1372, 924, 951, 841, 466, 256, 559,
+          503, 252, 1251, 1456, 577, 432, 1560, 731, 651, 1369, 1407, 1491, 698,
+          2943, 1596, 740, 486, 922, 1370, 238, 533, 1774, 1415, 1319, 862, 885,
+          1286, 1145, 1118, 1199, 1068, 1133, 968, 997, 780, 1156, 236, 1635,
+          1013, 1134, 1233, 576, 382, 851, 1631, 763, 976, 1501, 1750, 875,
+          1427, 1305, 1414, 982, 1226, 733, 1012, 1410, 862, 69, 1757, 2202,
+          126, 454, 1727, 2322, 1656, 771, 816, 367, 977, 605, 1031, 1554, 1846,
+          2119, 1383, 1003, 1506, 1272, 842, 1692, 1341, 1881, 396, 739, 1341,
+          873, 816, 1596, 1719, 1473, 162, 1159, 893, 1351, 2026, 888, 512, 385,
+          1279, 1904, 428, 506, 923, 637, 753, 986, 1994, 1617, 1032, 1142,
+          1227, 1034, 1382, 1012, 1731, 1831, 1800, 938, 1044, 2744, 2141, 906,
+          1535, 1244, 1088, 1238, 88, 1853, 894, 592, 1656, 154, 470, 188, 1089,
+          1409, 1428, 796, 1848, 1167, 567, 1215, 1683, 2103, 663, 1237, 594,
+          1354, 1370, 239, 1358, 549, 1088, 1077, 526, 950, 599, 2173, 988, 663,
+          1176, 1204, 1061, 937, 838, 1258, 1115, 1007, 1324, 1371, 1700, 941,
+          1709, 1991, 891, 1230
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 4, 13]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 65
+            },
+            "children": [5, 14]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [6, 8, 9, 11, 15]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "[Host Function] relativeFormat",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 186
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 13
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [12]
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16]
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 9
+          }
+        ],
+        "startTime": 2255444560747,
+        "endTime": 2255444816348
+      }
+    },
+    "format-after": {
+      "totalSamples": 244,
+      "selfSamples": {
+        "[Host Function] relativeFormat": 189,
+        "[Native] stringPrototypeConcat": 23,
+        "format": 23,
+        "global": 5,
+        "[Native] weakMapPrototypeGet": 2,
+        "[Host Function] relativeResolve": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          4, 8, 8, 8, 10, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8, 13, 8, 14, 8, 8, 8,
+          8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 15,
+          15, 8, 8, 8, 8, 8, 8, 8, 8, 15, 8, 8, 10, 15, 8, 8, 15, 10, 8, 8, 8,
+          15, 8, 8, 8, 8, 8, 8, 8, 12, 8, 13, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8,
+          8, 8, 8, 8, 8, 13, 8, 8, 8, 8, 8, 8, 8, 8, 17, 8, 8, 8, 12, 8, 8, 8,
+          15, 8, 8, 8, 15, 10, 8, 8, 17, 8, 10, 8, 8, 10, 8, 8, 8, 8, 8, 8, 8,
+          8, 8, 8, 15, 15, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8, 8, 10, 15, 8,
+          8, 8, 8, 15, 15, 8, 10, 8, 10, 12, 10, 8, 8, 14, 8, 8, 15, 14, 8, 15,
+          8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 15, 8, 8, 8, 8, 8, 8, 8,
+          13, 8, 8, 15, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 15, 10, 8, 8, 8,
+          8, 8, 8, 8, 8, 12, 8, 15, 8, 8, 8, 8, 14, 13, 10, 8, 8, 8, 8, 8, 12,
+          8, 10, 8, 8, 12, 1
+        ],
+        "timeDeltas": [
+          0, 1338, 1045, 1060, 547, 1128, 693, 908, 1357, 1451, 561, 1492, 716,
+          985, 1261, 1363, 918, 1626, 1259, 380, 857, 899, 988, 1070, 787, 795,
+          1597, 879, 807, 870, 1851, 1019, 1616, 478, 1833, 671, 1086, 957,
+          2035, 1254, 1070, 1407, 1037, 1323, 643, 748, 1473, 1106, 205, 1586,
+          134, 1117, 508, 478, 1305, 2361, 1610, 582, 454, 1073, 1956, 1120,
+          949, 502, 823, 173, 691, 923, 2240, 1302, 1009, 76, 605, 1631, 1091,
+          1570, 64, 1287, 809, 642, 1148, 1124, 1070, 1001, 790, 1573, 267,
+          1481, 1397, 203, 1806, 1241, 552, 1236, 1565, 932, 1264, 1077, 1229,
+          290, 1403, 1924, 893, 541, 1761, 1419, 998, 1841, 1297, 1559, 962,
+          1705, 891, 1686, 1681, 182, 1039, 566, 1515, 919, 1364, 1509, 267,
+          1218, 1198, 694, 1411, 131, 1023, 1064, 1051, 1894, 1490, 1656, 860,
+          1153, 211, 875, 570, 1115, 1364, 1181, 1508, 995, 851, 153, 2043, 619,
+          473, 1303, 1660, 1973, 1909, 943, 762, 1314, 1364, 801, 553, 593,
+          1088, 370, 982, 1043, 1450, 898, 1120, 1328, 581, 1341, 631, 929, 567,
+          784, 1683, 379, 1452, 1570, 1210, 1913, 1192, 971, 667, 780, 1242,
+          462, 808, 1065, 407, 354, 235, 1009, 528, 1189, 1261, 179, 797, 1105,
+          1251, 1153, 1702, 1294, 1229, 1017, 666, 1201, 1378, 1329, 1224, 887,
+          1272, 671, 854, 790, 1547, 601, 967, 426, 1363, 1182, 635, 1105, 1350,
+          647, 1141, 929, 1265, 689, 765, 800, 1450, 790, 775, 1845, 1138, 1035,
+          1390, 1664, 1532, 986, 642, 1125, 532, 1423
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 5, 13],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 65
+            },
+            "children": [6, 14]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 9, 11, 15, 16]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Host Function] relativeFormat",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 189
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 14
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [12]
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 19
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 5
+          }
+        ],
+        "startTime": 2255444842232,
+        "endTime": 2255445098842
+      }
+    },
+    "parts-before": {
+      "totalSamples": 443,
+      "selfSamples": {
+        "[Host Function] relativeQuery": 199,
+        "format": 87,
+        "[Native] jsonParse": 74,
+        "[Native] jsonStringify": 25,
+        "[Native] stringPrototypeConcat": 19,
+        "[Native] reflectApply": 13,
+        "global": 11,
+        "formatToParts": 7,
+        "[Native] stringPrototypeCharCodeAt": 3,
+        "[Native] weakMapPrototypeGet": 2,
+        "[Host Function] relativeResolve": 1,
+        "[GC Young Gen]": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          4, 8, 9, 11, 9, 13, 13, 15, 9, 8, 13, 8, 9, 18, 8, 19, 9, 8, 21, 13,
+          8, 8, 9, 8, 8, 21, 9, 8, 9, 9, 9, 9, 13, 13, 22, 8, 8, 9, 13, 9, 13,
+          8, 8, 13, 21, 9, 8, 8, 8, 8, 19, 8, 8, 8, 8, 8, 15, 13, 8, 8, 13, 8,
+          9, 9, 9, 9, 8, 8, 13, 13, 8, 9, 13, 8, 8, 8, 17, 8, 8, 13, 9, 13, 8,
+          24, 8, 9, 11, 8, 8, 8, 8, 8, 13, 17, 17, 21, 9, 8, 21, 9, 13, 15, 9,
+          19, 11, 8, 8, 11, 13, 22, 8, 9, 8, 8, 9, 13, 8, 13, 24, 17, 13, 8, 9,
+          8, 8, 19, 13, 8, 8, 8, 13, 8, 8, 17, 8, 9, 9, 8, 8, 24, 8, 9, 8, 26,
+          8, 8, 8, 13, 8, 8, 8, 8, 13, 9, 8, 8, 9, 8, 8, 9, 8, 8, 8, 8, 13, 22,
+          8, 9, 27, 21, 8, 9, 17, 9, 8, 11, 8, 13, 15, 9, 8, 8, 13, 9, 13, 9, 8,
+          8, 22, 8, 9, 9, 8, 8, 8, 9, 9, 8, 8, 9, 11, 19, 9, 8, 8, 13, 8, 9, 13,
+          8, 8, 13, 9, 24, 13, 8, 13, 8, 8, 8, 8, 11, 13, 13, 8, 26, 8, 19, 8,
+          9, 8, 9, 13, 8, 8, 9, 13, 17, 8, 8, 8, 8, 8, 8, 21, 17, 9, 9, 8, 8,
+          22, 17, 13, 21, 8, 17, 13, 13, 18, 8, 21, 8, 13, 9, 9, 21, 19, 13, 15,
+          24, 13, 8, 8, 8, 15, 8, 8, 13, 13, 9, 8, 8, 13, 9, 8, 29, 17, 24, 8,
+          13, 9, 9, 8, 8, 8, 8, 8, 8, 9, 8, 8, 8, 13, 8, 8, 8, 9, 13, 9, 9, 8,
+          13, 9, 8, 8, 8, 9, 19, 9, 11, 22, 8, 19, 9, 8, 8, 8, 13, 13, 15, 9, 9,
+          8, 13, 8, 8, 13, 17, 8, 8, 8, 9, 13, 8, 8, 8, 17, 8, 8, 8, 9, 8, 21,
+          13, 8, 13, 8, 9, 8, 8, 19, 9, 8, 13, 21, 8, 8, 8, 15, 13, 11, 8, 8, 8,
+          9, 8, 8, 9, 9, 9, 8, 15, 8, 13, 8, 8, 8, 8, 9, 9, 9, 29, 13, 8, 13,
+          11, 8, 13, 13, 13, 13, 13, 8, 9, 19, 8, 8, 21, 8, 8, 8, 24, 11, 8, 8,
+          21, 9, 13, 8, 18, 13, 8, 9, 8, 9, 8, 8, 8, 9, 22, 13, 13, 9, 13, 24,
+          8, 8, 8, 8, 9, 8, 9, 1
+        ],
+        "timeDeltas": [
+          0, 1542, 1230, 245, 405, 1245, 817, 1252, 466, 1238, 1540, 1438, 1204,
+          841, 392, 341, 1679, 236, 1024, 1244, 537, 607, 280, 917, 2040, 819,
+          1579, 1028, 1231, 969, 1274, 585, 1271, 1530, 75, 1138, 755, 508, 603,
+          756, 1750, 1401, 905, 608, 1307, 589, 1924, 1021, 113, 1709, 1761,
+          1742, 1089, 1246, 595, 921, 1755, 215, 681, 1185, 426, 1333, 1658,
+          1387, 1056, 461, 2206, 1004, 1208, 1930, 2029, 1199, 869, 1739, 586,
+          1380, 1178, 412, 1458, 1112, 482, 1276, 834, 1257, 126, 169, 1471,
+          2159, 621, 1270, 986, 610, 1128, 2385, 1077, 637, 745, 1411, 1533,
+          1068, 624, 405, 872, 993, 1039, 1124, 324, 632, 1971, 1120, 1106, 365,
+          801, 613, 1586, 1060, 1244, 936, 1823, 1825, 1053, 1007, 255, 1244,
+          1060, 893, 995, 1158, 1494, 1496, 2078, 500, 1663, 860, 769, 928, 382,
+          1806, 977, 688, 959, 1768, 790, 1320, 1107, 1290, 1970, 882, 1416,
+          822, 1446, 1825, 1393, 640, 1407, 2026, 898, 137, 815, 720, 1392,
+          1270, 813, 1306, 1549, 871, 535, 867, 988, 365, 1585, 1072, 1171, 851,
+          467, 648, 1338, 1710, 1252, 1273, 1122, 1500, 1137, 1092, 1619, 744,
+          444, 786, 1589, 1504, 1543, 1795, 1385, 147, 1144, 1361, 1818, 1766,
+          820, 1184, 1442, 914, 1250, 544, 1461, 66, 1007, 1506, 1230, 1289,
+          389, 1065, 431, 160, 638, 1414, 1604, 1108, 1534, 1671, 1719, 2102,
+          573, 1110, 905, 668, 1225, 1216, 2133, 1612, 278, 576, 1238, 920,
+          1130, 638, 307, 1663, 679, 1569, 758, 1006, 174, 1156, 710, 1111,
+          1235, 1015, 984, 759, 1276, 1513, 1879, 496, 561, 823, 680, 684, 992,
+          414, 1271, 1088, 393, 2022, 848, 752, 1358, 951, 1540, 721, 819, 1548,
+          275, 928, 1240, 1535, 875, 1847, 1378, 958, 464, 1598, 1804, 1036,
+          534, 1184, 1341, 1455, 827, 1473, 1887, 433, 751, 1013, 609, 968, 902,
+          749, 1181, 2178, 65, 1132, 725, 1304, 1136, 1010, 553, 349, 976, 1380,
+          631, 1878, 887, 1231, 324, 155, 776, 963, 1206, 334, 343, 1233, 1651,
+          649, 873, 555, 1421, 1219, 1928, 1562, 1061, 479, 961, 343, 1110,
+          1597, 1060, 484, 912, 1201, 1310, 1213, 1470, 1834, 1254, 525, 711,
+          285, 1410, 737, 990, 1206, 1145, 471, 1296, 1488, 949, 657, 799, 1227,
+          644, 1228, 1977, 925, 1990, 280, 1923, 1286, 1673, 928, 1313, 1236,
+          1705, 1495, 352, 1244, 1016, 1605, 1621, 1543, 348, 1107, 1669, 1028,
+          1390, 1455, 1206, 1465, 766, 64, 637, 800, 1048, 1521, 875, 189, 476,
+          1138, 1030, 1991, 580, 1196, 455, 1220, 1185, 1303, 438, 661, 1494,
+          1757, 1278, 1146, 1511, 1958, 932, 481, 972, 620, 2204, 1045, 1514,
+          516, 611, 441, 614, 1568, 265, 998, 639, 572, 1584, 868, 1092, 1299,
+          554, 1076, 825, 1122, 1035, 335, 1172, 1172, 335
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 5, 19],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 29
+            },
+            "children": [6, 22]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 9, 10, 12, 14, 16, 20, 23, 25, 28]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Host Function] relativeQuery",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 199
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 87
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] jsonParse",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27],
+            "hitCount": 74
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15]
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [18],
+            "hitCount": 13
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeCharCodeAt",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [21]
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 14
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [24]
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [26]
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29]
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 7
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 11
+          }
+        ],
+        "startTime": 2255445124847,
+        "endTime": 2255445594973
+      }
+    },
+    "parts-after": {
+      "totalSamples": 408,
+      "selfSamples": {
+        "[Host Function] relativeQuery": 191,
+        "[Native] jsonParse": 80,
+        "format": 64,
+        "[Native] stringPrototypeConcat": 27,
+        "[Native] jsonStringify": 16,
+        "global": 9,
+        "[Native] reflectApply": 9,
+        "[Native] stringPrototypeCharCodeAt": 5,
+        "[Native] weakMapPrototypeGet": 3,
+        "[Host Function] relativeResolve": 2,
+        "formatToParts": 1,
+        "[GC Young Gen]": 1
+      },
+      "raw": {
+        "samples": [
+          4, 4, 8, 10, 11, 11, 11, 8, 10, 13, 14, 11, 16, 10, 11, 8, 8, 8, 8,
+          10, 10, 8, 10, 8, 13, 11, 10, 10, 18, 10, 16, 11, 10, 10, 10, 20, 10,
+          10, 8, 8, 18, 10, 11, 23, 8, 11, 8, 11, 11, 11, 8, 11, 14, 11, 10, 25,
+          8, 10, 8, 10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 11, 10, 10, 10, 8,
+          10, 11, 11, 10, 10, 22, 11, 10, 10, 10, 23, 10, 10, 10, 10, 10, 22, 8,
+          20, 10, 8, 8, 10, 10, 10, 10, 11, 8, 20, 10, 10, 11, 10, 10, 11, 10,
+          10, 23, 20, 8, 10, 10, 10, 8, 10, 20, 11, 10, 10, 10, 10, 10, 25, 10,
+          11, 8, 11, 8, 13, 8, 11, 10, 18, 10, 10, 10, 16, 10, 8, 10, 11, 25,
+          11, 10, 10, 10, 8, 11, 10, 8, 10, 8, 11, 10, 10, 10, 10, 10, 22, 10,
+          16, 11, 8, 20, 8, 8, 10, 13, 10, 8, 10, 10, 11, 10, 11, 10, 11, 8, 18,
+          10, 10, 8, 10, 10, 13, 10, 20, 8, 10, 20, 8, 10, 8, 14, 10, 10, 11,
+          10, 13, 8, 10, 8, 10, 10, 10, 10, 8, 10, 8, 10, 20, 10, 11, 8, 8, 10,
+          10, 10, 10, 11, 8, 8, 10, 8, 10, 10, 11, 10, 10, 14, 10, 11, 8, 14,
+          10, 10, 13, 10, 10, 10, 11, 10, 10, 27, 8, 8, 8, 8, 11, 10, 16, 20,
+          22, 11, 8, 8, 10, 10, 10, 11, 8, 11, 10, 10, 11, 10, 28, 10, 10, 11,
+          8, 11, 10, 10, 23, 10, 10, 11, 14, 10, 10, 27, 14, 11, 8, 10, 10, 22,
+          10, 10, 8, 8, 10, 10, 8, 10, 11, 10, 10, 22, 10, 8, 10, 11, 10, 27, 8,
+          8, 8, 10, 10, 16, 14, 8, 11, 8, 10, 10, 16, 11, 10, 14, 10, 10, 10,
+          11, 8, 10, 10, 8, 11, 10, 10, 8, 13, 13, 10, 10, 10, 22, 10, 11, 10,
+          8, 25, 8, 10, 8, 8, 11, 8, 10, 8, 10, 11, 10, 10, 20, 8, 10, 10, 10,
+          25, 11, 11, 8, 10, 10, 10, 8, 10, 10, 10, 10, 22, 11, 8, 16, 10, 10,
+          10, 16, 10, 10, 11, 20, 10, 10, 11, 11, 10, 13, 10, 8, 18, 22, 13, 23,
+          10, 10, 10, 16, 10, 29
+        ],
+        "timeDeltas": [
+          0, 540, 461, 784, 840, 1560, 1214, 1022, 566, 529, 1132, 1397, 1755,
+          1771, 481, 1565, 1078, 66, 1351, 1921, 1636, 630, 616, 317, 869, 876,
+          1399, 675, 1370, 1091, 1603, 944, 1441, 1474, 1385, 1169, 754, 1333,
+          2325, 1444, 2120, 125, 1243, 1036, 1097, 227, 1031, 802, 1653, 1273,
+          1110, 1087, 815, 1128, 1376, 2151, 2082, 912, 905, 1254, 849, 1502,
+          202, 1645, 711, 1126, 1676, 1656, 788, 1787, 659, 1200, 1472, 1432,
+          546, 698, 571, 1213, 940, 864, 1130, 1004, 1563, 942, 856, 1485, 1224,
+          1434, 626, 966, 1133, 1516, 1755, 1098, 313, 421, 669, 870, 1563,
+          1462, 119, 1679, 1000, 1306, 528, 1124, 654, 880, 1475, 1248, 808,
+          1196, 618, 898, 803, 1381, 1071, 1072, 1438, 1245, 1510, 743, 1186,
+          847, 914, 768, 690, 1053, 625, 1200, 1483, 1695, 1716, 1436, 548, 887,
+          911, 1229, 1666, 298, 1270, 1116, 1083, 1143, 1341, 657, 932, 1173,
+          1486, 186, 1526, 687, 152, 639, 1657, 928, 880, 173, 1190, 1216, 694,
+          1436, 1314, 1908, 1015, 1775, 2113, 1026, 443, 1670, 2311, 1880, 649,
+          1561, 622, 334, 759, 1820, 1736, 1264, 762, 353, 292, 61, 693, 855,
+          354, 789, 1202, 1618, 1448, 1581, 283, 1514, 673, 1062, 803, 551,
+          2217, 888, 636, 424, 824, 357, 1165, 632, 1536, 1377, 385, 538, 1335,
+          497, 1013, 1199, 512, 1072, 1546, 1027, 1995, 1090, 1220, 888, 490,
+          938, 1143, 1410, 1659, 837, 519, 1877, 683, 746, 1190, 1522, 1233,
+          904, 1233, 627, 1608, 935, 851, 1199, 1234, 559, 982, 1609, 951, 1529,
+          2285, 787, 1021, 1210, 843, 964, 975, 612, 1297, 1584, 1550, 1307,
+          675, 1968, 1201, 2103, 965, 1610, 334, 1166, 1110, 1076, 1859, 936,
+          811, 1260, 663, 1463, 1847, 742, 548, 1342, 3013, 495, 863, 2393,
+          1229, 502, 2270, 1373, 1195, 764, 1233, 769, 670, 1070, 1173, 2004,
+          1458, 962, 756, 753, 1311, 1131, 1621, 574, 157, 537, 1249, 1121, 240,
+          901, 1727, 1016, 765, 470, 692, 886, 1139, 1111, 1133, 1632, 1355,
+          1032, 1801, 982, 697, 219, 1668, 1579, 1538, 1656, 1034, 1029, 1243,
+          1446, 1884, 613, 1008, 1382, 1630, 1704, 437, 1275, 189, 1480, 145,
+          1088, 755, 445, 1189, 1193, 1045, 303, 1211, 403, 495, 1223, 95, 786,
+          1103, 691, 1273, 827, 1152, 1036, 1242, 461, 1331, 644, 1064, 995,
+          2049, 1479, 1403, 260, 1371, 1063, 309, 1329, 1821, 1089, 1250, 381,
+          1580, 423, 897, 767, 591, 1047, 1323, 1006, 1400, 1349, 1174, 412,
+          1218, 1599, 139, 1838, 762, 1262, 249, 1374, 550, 688, 858, 1573,
+          1030, 1107
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 5, 14]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 29
+            },
+            "children": [6, 28]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 9, 11, 12, 15, 17, 19, 21, 24, 26]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Native] jsonParse",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 80
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "[Host Function] relativeQuery",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 191
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29],
+            "hitCount": 64
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16]
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 10
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [18]
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [20]
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 12
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [22]
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [23],
+            "hitCount": 9
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeCharCodeAt",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [25]
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27]
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 9
+          }
+        ],
+        "startTime": 2255445621053,
+        "endTime": 2255446060647
+      }
+    }
+  },
+  "controlMediansUs": {
+    "tag": {
+      "before": {
+        "repeated": 0.07011285879343632,
+        "diverse": 0.8969440750661306,
+        "long": 2.5744924641912803
+      },
+      "after": {
+        "repeated": 0.07029834023342119,
+        "diverse": 0.8899064487195574,
+        "long": 2.57619412150234
+      },
+      "magrinj": {
+        "repeated": 1.0924168964265846,
+        "diverse": 0.9871249640127644,
+        "long": 3.0119159491732717
+      }
+    },
+    "locale": {
+      "before": {
+        "Locale.new(diverse)": 3.543313083355315,
+        "Locale.new(long)": 6.365889072185382
+      },
+      "after": {
+        "Locale.new(diverse)": 3.342597745358944,
+        "Locale.new(long)": 6.122353079263121
+      },
+      "magrinj": {
+        "Locale.new(diverse)": 1.4197745840647258,
+        "Locale.new(long)": 3.75483458628878
+      }
+    }
+  },
+  "controls": {
+    "tag": {
+      "before": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07011285879343632,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9049404907273129,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5832953833742067,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.0706391010680818,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8969440750661306,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5744924641912803,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.06967084027564852,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8918782186810859,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.558016072725877,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07059488279992365,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8899064487195574,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.574953090515919,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07029834023342119,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8985858003143221,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5889187527354807,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.06950779425096698,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8872365433489904,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.57619412150234,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "repeated",
+            "us": 1.096055711968802,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9871249640127644,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0418249807553366,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.0924168964265846,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9810528426896781,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0119159491732717,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.0904311056947336,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9921176606439985,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0035239178687334,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "locale": {
+      "before": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.5226050968049094,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.218942638952285,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.543313083355315,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.461369339376688,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 4.0659258083906025,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.365889072185382,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.694070896017365,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.136070296633989,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.342597745358944,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.092510622693226,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.1801081640878692,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.122353079263121,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4232280300348066,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.75483458628878,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4186946136760525,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.749760624486953,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4197745840647258,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.7786776083521545,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    }
+  },
+  "rustProbes": {
+    "before": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured).\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 0.925s, Critical Path: 0.00s\n\u001b[32mINFO: \u001b[0m1 process: 1 internal.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 1 total action\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 10.0 allocation calls\nNumberFormat.parts: 9.0 allocation calls\nRelativeTimeFormat.format: 11.0 allocation calls\nRelativeTimeFormat.parts: 13.0 allocation calls\nvalue: -1234.5\nNumberFormat.format: 16.0 allocation calls\nNumberFormat.parts: 15.0 allocation calls\nRelativeTimeFormat.format: 17.0 allocation calls\nRelativeTimeFormat.parts: 24.0 allocation calls\nvalue: -0\nNumberFormat.format: 12.0 allocation calls\nNumberFormat.parts: 11.0 allocation calls\nRelativeTimeFormat.format: 13.0 allocation calls\nRelativeTimeFormat.parts: 15.0 allocation calls\nvalue: 1.9996\nNumberFormat.format: 10.0 allocation calls\nNumberFormat.parts: 9.0 allocation calls\nRelativeTimeFormat.format: 11.0 allocation calls\nRelativeTimeFormat.parts: 14.0 allocation calls\nvalue: 1e+21\nNumberFormat.format: 32.0 allocation calls\nNumberFormat.parts: 29.0 allocation calls\nRelativeTimeFormat.format: 32.0 allocation calls\nRelativeTimeFormat.parts: 50.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured).\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_format_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 0.851s, Critical Path: 0.00s\n\u001b[32mINFO: \u001b[0m1 process: 1 internal.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 1 total action\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 426 ns/call\nNumberFormat.parts: 393 ns/call\nRelativeTimeFormat.format: 545 ns/call\nRelativeTimeFormat.parts: 588 ns/call\nvalue: -1234.5\nNumberFormat.format: 785 ns/call\nNumberFormat.parts: 713 ns/call\nRelativeTimeFormat.format: 934 ns/call\nRelativeTimeFormat.parts: 1342 ns/call\nvalue: -0\nNumberFormat.format: 517 ns/call\nNumberFormat.parts: 393 ns/call\nRelativeTimeFormat.format: 541 ns/call\nRelativeTimeFormat.parts: 571 ns/call\nvalue: 1.9996\nNumberFormat.format: 462 ns/call\nNumberFormat.parts: 444 ns/call\nRelativeTimeFormat.format: 589 ns/call\nRelativeTimeFormat.parts: 644 ns/call\nvalue: 1e+21\nNumberFormat.format: 1260 ns/call\nNumberFormat.parts: 1143 ns/call\nRelativeTimeFormat.format: 1390 ns/call\nRelativeTimeFormat.parts: 2044 ns/call\n"
+    },
+    "stage1": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured).\n\u001b[32m[3 / 15]\u001b[0m Compiling Rust rlib //crates/intl_numberformat:intl_numberformat (9 files) [for tool]; 1s linux-sandbox\n\u001b[32m[4 / 15]\u001b[0m [Prepa] Compiling Rust bin //crates/intl_numberformat:compile_locales (1 file) [for tool]\n\u001b[32m[4 / 15]\u001b[0m Compiling Rust bin //crates/intl_numberformat:compile_locales (1 file) [for tool]; 1s linux-sandbox ... (2 actions running)\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //crates/intl_numberformat:compile_locales (1 file) [for tool]:\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32m[7 / 15]\u001b[0m Compile Rust locale data //crates/intl_numberformat:compiled_locale_data; 0s linux-sandbox ... (2 actions running)\n\u001b[32m[8 / 15]\u001b[0m Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]; 2s linux-sandbox ... (2 actions running)\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]:\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32m[12 / 15]\u001b[0m [Prepa] Compiling Rust rlib //crates/intl_relativetimeformat:with_compiled_data (4 files)\n\u001b[32m[12 / 15]\u001b[0m Compiling Rust rlib //crates/intl_relativetimeformat:with_compiled_data (4 files); 1s linux-sandbox\n\u001b[32m[13 / 15]\u001b[0m [Prepa] Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file)\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 14.057s, Critical Path: 13.19s\n\u001b[32mINFO: \u001b[0m14 processes: 1 action cache hit, 5 internal, 9 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 14 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 10.0 allocation calls\nRelativeTimeFormat.parts: 12.0 allocation calls\nvalue: -1234.5\nNumberFormat.format: 15.0 allocation calls\nNumberFormat.parts: 14.0 allocation calls\nRelativeTimeFormat.format: 16.0 allocation calls\nRelativeTimeFormat.parts: 23.0 allocation calls\nvalue: -0\nNumberFormat.format: 11.0 allocation calls\nNumberFormat.parts: 10.0 allocation calls\nRelativeTimeFormat.format: 12.0 allocation calls\nRelativeTimeFormat.parts: 14.0 allocation calls\nvalue: 1.9996\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 10.0 allocation calls\nRelativeTimeFormat.parts: 13.0 allocation calls\nvalue: 1e+21\nNumberFormat.format: 31.0 allocation calls\nNumberFormat.parts: 28.0 allocation calls\nRelativeTimeFormat.format: 31.0 allocation calls\nRelativeTimeFormat.parts: 49.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_format_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_format_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.387s, Critical Path: 0.56s\n\u001b[32mINFO: \u001b[0m3 processes: 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 398 ns/call\nNumberFormat.parts: 385 ns/call\nRelativeTimeFormat.format: 525 ns/call\nRelativeTimeFormat.parts: 558 ns/call\nvalue: -1234.5\nNumberFormat.format: 690 ns/call\nNumberFormat.parts: 689 ns/call\nRelativeTimeFormat.format: 843 ns/call\nRelativeTimeFormat.parts: 1054 ns/call\nvalue: -0\nNumberFormat.format: 392 ns/call\nNumberFormat.parts: 371 ns/call\nRelativeTimeFormat.format: 516 ns/call\nRelativeTimeFormat.parts: 548 ns/call\nvalue: 1.9996\nNumberFormat.format: 436 ns/call\nNumberFormat.parts: 421 ns/call\nRelativeTimeFormat.format: 576 ns/call\nRelativeTimeFormat.parts: 617 ns/call\nvalue: 1e+21\nNumberFormat.format: 1348 ns/call\nNumberFormat.parts: 1274 ns/call\nRelativeTimeFormat.format: 1499 ns/call\nRelativeTimeFormat.parts: 2011 ns/call\n"
+    },
+    "stage2": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (1 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (1 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_allocation_probe (1 packages loaded, 1587 targets configured).\n\u001b[32m[136 / 143]\u001b[0m Compiling Rust rlib //crates/intl_relativetimeformat:intl_relativetimeformat (4 files) [for tool]; 1s linux-sandbox\n\u001b[32m[137 / 143]\u001b[0m [Prepa] Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]\n\u001b[32m[137 / 143]\u001b[0m Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]; 1s linux-sandbox\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]:\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32m[139 / 143]\u001b[0m Compile Rust locale data //crates/intl_relativetimeformat:compiled_locale_data; 1s linux-sandbox\n\u001b[32m[140 / 143]\u001b[0m Compiling Rust rlib //crates/intl_relativetimeformat:with_compiled_data (4 files); 1s linux-sandbox\n\u001b[32m[141 / 143]\u001b[0m [Prepa] Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file)\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 11.702s, Critical Path: 10.48s\n\u001b[32mINFO: \u001b[0m9 processes: 134 action cache hit, 4 internal, 5 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 9 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 10.0 allocation calls\nRelativeTimeFormat.parts: 10.0 allocation calls\nvalue: -1234.5\nNumberFormat.format: 15.0 allocation calls\nNumberFormat.parts: 14.0 allocation calls\nRelativeTimeFormat.format: 16.0 allocation calls\nRelativeTimeFormat.parts: 16.0 allocation calls\nvalue: -0\nNumberFormat.format: 11.0 allocation calls\nNumberFormat.parts: 10.0 allocation calls\nRelativeTimeFormat.format: 12.0 allocation calls\nRelativeTimeFormat.parts: 12.0 allocation calls\nvalue: 1.9996\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 10.0 allocation calls\nRelativeTimeFormat.parts: 12.0 allocation calls\nvalue: 1e+21\nNumberFormat.format: 31.0 allocation calls\nNumberFormat.parts: 28.0 allocation calls\nRelativeTimeFormat.format: 31.0 allocation calls\nRelativeTimeFormat.parts: 34.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 1 target configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_format_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_format_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.414s, Critical Path: 0.57s\n\u001b[32mINFO: \u001b[0m3 processes: 3 action cache hit, 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 403 ns/call\nNumberFormat.parts: 366 ns/call\nRelativeTimeFormat.format: 524 ns/call\nRelativeTimeFormat.parts: 527 ns/call\nvalue: -1234.5\nNumberFormat.format: 687 ns/call\nNumberFormat.parts: 687 ns/call\nRelativeTimeFormat.format: 836 ns/call\nRelativeTimeFormat.parts: 850 ns/call\nvalue: -0\nNumberFormat.format: 393 ns/call\nNumberFormat.parts: 368 ns/call\nRelativeTimeFormat.format: 525 ns/call\nRelativeTimeFormat.parts: 524 ns/call\nvalue: 1.9996\nNumberFormat.format: 429 ns/call\nNumberFormat.parts: 407 ns/call\nRelativeTimeFormat.format: 580 ns/call\nRelativeTimeFormat.parts: 602 ns/call\nvalue: 1e+21\nNumberFormat.format: 1328 ns/call\nNumberFormat.parts: 1226 ns/call\nRelativeTimeFormat.format: 1497 ns/call\nRelativeTimeFormat.parts: 1551 ns/call\n"
+    },
+    "final": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_allocation_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_allocation_probe (1 packages loaded, 2428 targets configured).\n\u001b[32m[2,355 / 2,362]\u001b[0m Compiling Rust rlib //crates/intl_relativetimeformat:intl_relativetimeformat (4 files) [for tool]; 1s linux-sandbox\n\u001b[32m[2,356 / 2,362]\u001b[0m [Prepa] Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]\n\u001b[32m[2,356 / 2,362]\u001b[0m Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]; 1s linux-sandbox\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //crates/intl_relativetimeformat:compile_locales (1 file) [for tool]:\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32m[2,359 / 2,362]\u001b[0m [Prepa] Compiling Rust rlib //crates/intl_relativetimeformat:with_compiled_data (4 files)\n\u001b[32m[2,359 / 2,362]\u001b[0m Compiling Rust rlib //crates/intl_relativetimeformat:with_compiled_data (4 files); 1s linux-sandbox\n\u001b[32m[2,360 / 2,362]\u001b[0m [Prepa] Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file)\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 11.302s, Critical Path: 10.19s\n\u001b[32mINFO: \u001b[0m9 processes: 957 action cache hit, 4 internal, 5 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 9 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_allocation_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 9.0 allocation calls\nRelativeTimeFormat.parts: 9.0 allocation calls\nvalue: -1234.5\nNumberFormat.format: 15.0 allocation calls\nNumberFormat.parts: 14.0 allocation calls\nRelativeTimeFormat.format: 15.0 allocation calls\nRelativeTimeFormat.parts: 15.0 allocation calls\nvalue: -0\nNumberFormat.format: 11.0 allocation calls\nNumberFormat.parts: 10.0 allocation calls\nRelativeTimeFormat.format: 11.0 allocation calls\nRelativeTimeFormat.parts: 11.0 allocation calls\nvalue: 1.9996\nNumberFormat.format: 9.0 allocation calls\nNumberFormat.parts: 8.0 allocation calls\nRelativeTimeFormat.format: 9.0 allocation calls\nRelativeTimeFormat.parts: 11.0 allocation calls\nvalue: 1e+21\nNumberFormat.format: 31.0 allocation calls\nNumberFormat.parts: 28.0 allocation calls\nRelativeTimeFormat.format: 30.0 allocation calls\nRelativeTimeFormat.parts: 33.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:relative_format_probe (0 packages loaded, 1 target configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:relative_format_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:relative_format_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.361s, Critical Path: 0.53s\n\u001b[32mINFO: \u001b[0m3 processes: 3 action cache hit, 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/relative_format_probe\n\u001b[0mvalue: -3\nNumberFormat.format: 392 ns/call\nNumberFormat.parts: 362 ns/call\nRelativeTimeFormat.format: 513 ns/call\nRelativeTimeFormat.parts: 520 ns/call\nvalue: -1234.5\nNumberFormat.format: 680 ns/call\nNumberFormat.parts: 663 ns/call\nRelativeTimeFormat.format: 785 ns/call\nRelativeTimeFormat.parts: 771 ns/call\nvalue: -0\nNumberFormat.format: 378 ns/call\nNumberFormat.parts: 356 ns/call\nRelativeTimeFormat.format: 505 ns/call\nRelativeTimeFormat.parts: 505 ns/call\nvalue: 1.9996\nNumberFormat.format: 419 ns/call\nNumberFormat.parts: 401 ns/call\nRelativeTimeFormat.format: 562 ns/call\nRelativeTimeFormat.parts: 705 ns/call\nvalue: 1e+21\nNumberFormat.format: 1459 ns/call\nNumberFormat.parts: 1312 ns/call\nRelativeTimeFormat.format: 1379 ns/call\nRelativeTimeFormat.parts: 1570 ns/call\n"
+    }
+  },
+  "probeSourceSnapshots": {
+    "baselineProbe": "use formatjs_intl_numberformat::{Options as NumberOptions, registry::Registry as NumberRegistry};\nuse formatjs_intl_relativetimeformat::{Options, registry::Registry};\nuse std::hint::black_box;\n#[cfg(not(feature = \"count_allocations\"))]\nuse std::time::Instant;\n\n#[cfg(feature = \"count_allocations\")]\nmod allocations {\n    use std::alloc::{GlobalAlloc, Layout, System};\n    use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};\n\n    pub static ACTIVE: AtomicBool = AtomicBool::new(false);\n    pub static CALLS: AtomicUsize = AtomicUsize::new(0);\n    struct Counter;\n    fn record() {\n        if ACTIVE.load(Ordering::Relaxed) {\n            CALLS.fetch_add(1, Ordering::Relaxed);\n        }\n    }\n    unsafe impl GlobalAlloc for Counter {\n        unsafe fn alloc(&self, layout: Layout) -> *mut u8 {\n            record();\n            unsafe { System.alloc(layout) }\n        }\n        unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {\n            record();\n            unsafe { System.alloc_zeroed(layout) }\n        }\n        unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, size: usize) -> *mut u8 {\n            record();\n            unsafe { System.realloc(ptr, layout, size) }\n        }\n        unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout) {\n            unsafe { System.dealloc(ptr, layout) }\n        }\n    }\n    #[global_allocator]\n    static ALLOCATOR: Counter = Counter;\n}\n\nfn measure<T>(name: &str, mut call: impl FnMut() -> T) {\n    black_box(call());\n    #[cfg(feature = \"count_allocations\")]\n    {\n        use allocations::{ACTIVE, CALLS};\n        use std::sync::atomic::Ordering;\n        CALLS.store(0, Ordering::Relaxed);\n        ACTIVE.store(true, Ordering::Relaxed);\n        for _ in 0..10_000 {\n            black_box(call());\n        }\n        ACTIVE.store(false, Ordering::Relaxed);\n        println!(\"{name}: {:.1} allocation calls\", CALLS.load(Ordering::Relaxed) as f64 / 10_000.0);\n    }\n    #[cfg(not(feature = \"count_allocations\"))]\n    {\n        let start = Instant::now();\n        for _ in 0..100_000 {\n            black_box(call());\n        }\n        println!(\"{name}: {:.0} ns/call\", start.elapsed().as_nanos() as f64 / 100_000.0);\n    }\n}\n\nfn main() {\n    let registry = Registry::with_compiled_data();\n    let relative = registry.create(&[\"en\".into()], &Options::default()).unwrap();\n    let registry = NumberRegistry::with_compiled_data();\n    let number = registry.create(&[\"en\".into()], &NumberOptions {\n        numbering_system: Some(\"latn\".into()),\n        ..Default::default()\n    }).unwrap();\n    for (value, expected, sentence) in [\n        (\"-3\", \"3\", \"3 days ago\"),\n        (\"-1234.5\", \"1,234.5\", \"1,234.5 days ago\"),\n        (\"-0\", \"0\", \"0 days ago\"),\n        (\"1.9996\", \"2\", \"in 2 days\"),\n        (\"1e+21\", \"1,000,000,000,000,000,000,000\", \"in 1,000,000,000,000,000,000,000 days\"),\n    ] {\n        let magnitude = value.strip_prefix('-').unwrap_or(value);\n        assert_eq!(number.format(magnitude).unwrap(), expected);\n        assert_eq!(relative.format(value, \"day\").unwrap(), sentence);\n        println!(\"value: {value}\");\n        measure(\"NumberFormat.format\", || number.format(black_box(magnitude)).unwrap());\n        measure(\"NumberFormat.parts\", || number.format_to_parts(black_box(magnitude)).unwrap());\n        measure(\"RelativeTimeFormat.format\", || relative.format(black_box(value), \"day\").unwrap());\n        measure(\"RelativeTimeFormat.parts\", || relative.format_to_parts(black_box(value), \"day\").unwrap());\n    }\n}\n",
+    "numberBufferStage": "use crate::{\n    Error, Grouping, NumberFormat, Part,\n    data::{Compact, Plurals, Unit},\n    metadata,\n    numeric::Numeric,\n    options::digit_error,\n};\nuse icu_properties::{\n    CodePointMapData,\n    props::{GeneralCategory, GeneralCategoryGroup},\n};\nuse regex::Regex;\nuse std::sync::LazyLock;\n\nstatic NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"[#0](?:[.,][#0]+)*\").unwrap());\nstatic QUOTED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"'(.)'\").unwrap());\nstatic TOKENS: LazyLock<Regex> =\n    LazyLock::new(|| Regex::new(r\"\\{c:[^}]+\\}|\\{approximatelySign\\}|\\{0\\}|[\u00a4%+\\-]\").unwrap());\nstatic COMPACT_LITERAL: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"[^\\s;+\\-0-9\u00a4]+\").unwrap());\nstatic ZEROS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"0+\").unwrap());\nstatic UNIT_SLOT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"\\s*\\{0\\}\\s*\").unwrap());\nstatic CURRENCY_SLOT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r\"\\{[01]\\}\").unwrap());\n\nstruct Rendered {\n    rounded: Numeric,\n    text: String,\n    exponent: i64,\n    magnitude: i64,\n    sign: i8,\n}\nfn missing(name: &str) -> Error {\n    Error::InvalidData(format!(\"Missing number data: {name}\"))\n}\nfn approximate(pattern: &str, sign: i8) -> String {\n    let position = if sign == 0 {\n        None\n    } else {\n        pattern.find(if sign > 0 { '+' } else { '-' })\n    };\n    match position {\n        Some(position) => format!(\n            \"{}{{approximatelySign}}{}\",\n            &pattern[..position],\n            &pattern[position..]\n        ),\n        None => format!(\"{{approximatelySign}}{pattern}\"),\n    }\n}\nfn signed(pattern: &str, sign: i8, approximately: bool) -> String {\n    let (positive, negative) = pattern\n        .split_once(';')\n        .map(|(a, b)| (a.to_owned(), b.split(';').next().unwrap().to_owned()))\n        .unwrap_or_else(|| (pattern.to_owned(), format!(\"-{pattern}\")));\n    if sign == 0 && approximately && negative.contains('-') {\n        return negative.replacen('-', \"{approximatelySign}\", 1);\n    }\n    let result = match sign {\n        -1 => negative,\n        1 => {\n            if negative.contains('-') {\n                negative.replace('-', \"+\")\n            } else {\n                format!(\"+{positive}\")\n            }\n        }\n        _ => positive,\n    };\n    if approximately {\n        approximate(&result, sign)\n    } else {\n        result\n    }\n}\nfn unit_forms<'a>(unit: &'a Unit, style: &str) -> &'a Plurals {\n    match style {\n        \"long\" => &unit.long,\n        \"narrow\" => &unit.narrow,\n        _ => &unit.short,\n    }\n}\n\nimpl NumberFormat {\n    fn compact_map(&self) -> Result<&Compact, Error> {\n        let options = &self.resolved;\n        if options.style == \"currency\" && options.currency_display.as_deref() != Some(\"name\") {\n            Ok(&self\n                .data\n                .numbers\n                .currency\n                .get(&self.system)\n                .ok_or_else(|| missing(\"currency\"))?\n                .short)\n        } else {\n            let decimal = self\n                .data\n                .numbers\n                .decimal\n                .get(&self.system)\n                .ok_or_else(|| missing(\"decimal\"))?;\n            Ok(if options.compact_display.as_deref() == Some(\"long\") {\n                &decimal.long\n            } else {\n                &decimal.short\n            })\n        }\n    }\n    fn compact_rules(&self, magnitude: i64) -> Result<Option<&Plurals>, Error> {\n        if magnitude < 0 {\n            return Ok(None);\n        }\n        let map = self.compact_map()?;\n        let Some((largest, rules)) = map.last_key_value() else {\n            return Ok(None);\n        };\n        if magnitude > largest.len() as i64 - 1 {\n            return Ok(Some(rules));\n        }\n        Ok(map\n            .iter()\n            .find(|(key, _)| key.len() as i64 - 1 == magnitude)\n            .map(|(_, rules)| rules))\n    }\n    fn exponent(&self, magnitude: i64) -> Result<i64, Error> {\n        Ok(match self.resolved.notation.as_str() {\n            \"scientific\" => magnitude,\n            \"engineering\" => magnitude.div_euclid(3) * 3,\n            \"compact\" => {\n                let map = self.compact_map()?;\n                let Some(rules) = self.compact_rules(magnitude)? else {\n                    return Ok(0);\n                };\n                let pattern = rules.get(\"other\").ok_or_else(|| missing(\"compact other\"))?;\n                if pattern == \"0\" {\n                    return Ok(0);\n                }\n                let zeros = ZEROS\n                    .find(pattern)\n                    .ok_or_else(|| missing(\"compact zero\"))?\n                    .len();\n                let maximum = map\n                    .last_key_value()\n                    .map(|(key, _)| key.len() as i64 - 1)\n                    .unwrap_or(magnitude);\n                magnitude.min(maximum) - zeros as i64 + 1\n            }\n            _ => 0,\n        })\n    }\n    fn category(&self, value: &Numeric) -> Result<&'static str, Error> {\n        if value.special.is_some() {\n            return Ok(\"other\");\n        }\n        // TS's internal PluralRules takes Number, even for a BigInt formatting\n        // input. Keep that conversion here; decimal rounding itself stays exact.\n        let number = value\n            .text()?\n            .parse::<f64>()\n            .map_err(|_| Error::Range(\"value\"))?;\n        if !number.is_finite() {\n            return Ok(\"other\");\n        }\n        let rounded = self\n            .plural_digits\n            .format_string(&number.to_string())\n            .map_err(digit_error)?;\n        self.data\n            .plurals\n            .select_rounded(&rounded, 0, false)\n            .map_err(|error| Error::InvalidData(error.to_string()))\n    }\n    fn select<'a>(&self, value: &Numeric, rules: &'a Plurals) -> Result<&'a str, Error> {\n        rules\n            .get(self.category(value)?)\n            .or_else(|| rules.get(\"other\"))\n            .map(String::as_str)\n            .ok_or_else(|| missing(\"plural other\"))\n    }\n    fn render(&self, input: &Numeric) -> Result<Rendered, Error> {\n        let symbols = self\n            .data\n            .numbers\n            .symbols\n            .get(&self.system)\n            .ok_or_else(|| missing(\"symbols\"))?;\n        let (rounded, text, exponent, magnitude) = if let Some(special) = input.special {\n            (\n                input.clone(),\n                if special == \"NaN\" {\n                    symbols.nan.clone()\n                } else {\n                    symbols.infinity.clone()\n                },\n                0,\n                0,\n            )\n        } else {\n            let mut number = input.clone();\n            if self.resolved.style == \"percent\" {\n                number.shift(2)?;\n            }\n            let mut magnitude = number.magnitude();\n            let mut exponent = if number.zero() {\n                0\n            } else {\n                self.exponent(magnitude)?\n            };\n            // Standard notation keeps exponent zero, so rounding cannot change it.\n            if !number.zero() && self.resolved.notation != \"standard\" {\n                let mut preview = number.clone();\n                preview.negative = false;\n                preview.shift(-exponent)?;\n                let preview = Numeric::parse(\n                    &self\n                        .resolved\n                        .digits\n                        .format_string(&preview.text()?)\n                        .map_err(digit_error)?,\n                )?;\n                if !preview.zero() && preview.magnitude() != magnitude - exponent {\n                    magnitude += 1;\n                    exponent = self.exponent(magnitude)?;\n                }\n            }\n            number.shift(-exponent)?;\n            let text = self\n                .resolved\n                .digits\n                .format_string(&number.text()?)\n                .map_err(digit_error)?;\n            let mut rounded = Numeric::parse(&text)?;\n            rounded.negative = input.negative;\n            (rounded, text, exponent, magnitude)\n        };\n        let nan = rounded.special == Some(\"NaN\");\n        let sign = match self.resolved.sign_display.as_str() {\n            \"never\" => 0,\n            \"always\" => {\n                if rounded.negative && !nan {\n                    -1\n                } else {\n                    1\n                }\n            }\n            \"exceptZero\" => {\n                if nan || rounded.zero() {\n                    0\n                } else if rounded.negative {\n                    -1\n                } else {\n                    1\n                }\n            }\n            \"negative\" => {\n                if rounded.negative && !rounded.zero() && !nan {\n                    -1\n                } else {\n                    0\n                }\n            }\n            _ => {\n                if rounded.negative && !nan {\n                    -1\n                } else {\n                    0\n                }\n            }\n        };\n        Ok(Rendered {\n            rounded,\n            text,\n            exponent,\n            magnitude,\n            sign,\n        })\n    }\n    fn mapped(&self, input: &str) -> Result<String, Error> {\n        let metadata = metadata::load()?;\n        let Some(digits) = metadata.digits.get(&self.resolved.numbering_system) else {\n            return Ok(input.to_owned());\n        };\n        let mut output = String::new();\n        for value in input.chars() {\n            if let Some(digit) = value\n                .to_digit(10)\n                .and_then(|index| digits.get(index as usize))\n            {\n                output.push_str(digit);\n            } else {\n                output.push(value);\n            }\n        }\n        Ok(output)\n    }\n    fn number_parts(\n        &self,\n        number: &Rendered,\n        pattern: &str,\n        compact: bool,\n    ) -> Result<Vec<Part>, Error> {\n        if let Some(special) = number.rounded.special {\n            return Ok(vec![Part::new(\n                if special == \"NaN\" { \"nan\" } else { \"infinity\" },\n                number.text.clone(),\n            )]);\n        }\n        let symbols = &self.data.numbers.symbols[&self.system];\n        let (integer, fraction) = number\n            .text\n            .split_once('.')\n            .map(|(integer, fraction)| (integer, Some(fraction)))\n            .unwrap_or((&number.text, None));\n        let groups: Vec<_> = pattern.split('.').next().unwrap().split(',').collect();\n        let primary = if groups.len() > 1 {\n            groups.last().unwrap().len()\n        } else {\n            3\n        };\n        let secondary = if groups.len() > 2 {\n            groups[groups.len() - 2].len()\n        } else {\n            primary\n        };\n        let grouping = self.resolved.use_grouping;\n        let minimum = if grouping == Grouping::Min2 {\n            2\n        } else {\n            self.data.numbers.minimum_grouping_digits\n        };\n        let grouped = !compact\n            && grouping != Grouping::Disabled\n            && (grouping == Grouping::Always || integer.len() >= primary + minimum);\n        let mut parts = Vec::new();\n        if grouped {\n            let mut chunks = Vec::new();\n            let mut end = integer.len();\n            let mut size = primary;\n            while end > 0 {\n                let start = end.saturating_sub(size);\n                chunks.push(&integer[start..end]);\n                end = start;\n                size = secondary;\n            }\n            let separator = if self.resolved.style == \"currency\" {\n                symbols.currency_group.as_ref().unwrap_or(&symbols.group)\n            } else {\n                &symbols.group\n            };\n            for (index, chunk) in chunks.iter().rev().enumerate() {\n                if index > 0 {\n                    parts.push(Part::new(\"group\", separator.clone()));\n                }\n                parts.push(Part::new(\"integer\", self.mapped(chunk)?));\n            }\n        } else {\n            parts.push(Part::new(\"integer\", self.mapped(integer)?));\n        }\n        if let Some(fraction) = fraction {\n            let separator = if self.resolved.style == \"currency\" {\n                symbols\n                    .currency_decimal\n                    .as_ref()\n                    .unwrap_or(&symbols.decimal)\n            } else {\n                &symbols.decimal\n            };\n            parts.push(Part::new(\"decimal\", separator.clone()));\n            parts.push(Part::new(\"fraction\", self.mapped(fraction)?));\n        }\n        if matches!(\n            self.resolved.notation.as_str(),\n            \"scientific\" | \"engineering\"\n        ) {\n            parts.push(Part::new(\"exponentSeparator\", symbols.exponential.clone()));\n            if number.exponent < 0 {\n                parts.push(Part::new(\"exponentMinusSign\", symbols.minus_sign.clone()));\n            }\n            parts.push(Part::new(\n                \"exponentInteger\",\n                self.mapped(&number.exponent.unsigned_abs().to_string())?,\n            ));\n        }\n        Ok(parts)\n    }\n    pub(crate) fn partition(\n        &self,\n        input: &Numeric,\n        approximately: bool,\n    ) -> Result<Vec<Part>, Error> {\n        let number = self.render(input)?;\n        self.partition_rendered(&number, approximately)\n    }\n\n    /// Format standard decimal parts and select cardinal rules from the same\n    /// rounded value. RelativeTimeFormat uses identical default digit options\n    /// for its number and plural formatters.\n    pub fn format_decimal_with_plural(\n        &self,\n        value: &str,\n        rules: &formatjs_intl_pluralrules::LocaleRules,\n    ) -> Result<(Vec<Part>, &'static str), Error> {\n        if self.resolved.style != \"decimal\" || self.resolved.notation != \"standard\" {\n            return Err(Error::Range(\"Expected standard decimal formatting\"));\n        }\n        let number = self.render(&Numeric::parse(value)?)?;\n        let category = rules\n            .select_rounded(number.rounded.special.unwrap_or(&number.text), 0, false)\n            .map_err(|error| Error::InvalidData(error.to_string()))?;\n        Ok((self.partition_rendered(&number, false)?, category))\n    }\n\n    fn partition_rendered(\n        &self,\n        number: &Rendered,\n        approximately: bool,\n    ) -> Result<Vec<Part>, Error> {\n        let options = &self.resolved;\n        let symbols = &self.data.numbers.symbols[&self.system];\n        let approximately = approximately && !symbols.approximately_sign.is_empty();\n        // This CLDR pattern has only a number slot. Skip pattern tokenization;\n        // rounding, grouping, digit mapping and sign choice still use common code.\n        if !approximately\n            && options.style == \"decimal\"\n            && options.notation == \"standard\"\n            && self.data.numbers.decimal[&self.system].standard == \"#,##0.###\"\n        {\n            let mut parts = self.number_parts(number, \"#,##0.###\", false)?;\n            if number.sign < 0 {\n                parts.insert(0, Part::new(\"minusSign\", symbols.minus_sign.clone()));\n            } else if number.sign > 0 {\n                parts.insert(0, Part::new(\"plusSign\", symbols.plus_sign.clone()));\n            }\n            return Ok(parts);\n        }\n        let compact = if options.notation == \"compact\" && number.magnitude != 0 {\n            self.compact_rules(number.magnitude)?\n                .map(|rules| self.select(&number.rounded, rules))\n                .transpose()?\n                .filter(|pattern| *pattern != \"0\")\n        } else {\n            None\n        };\n        let mut pattern = if let Some(compact) = compact {\n            let pattern = signed(compact, number.sign, false);\n            let pattern = COMPACT_LITERAL.replace_all(&pattern, \"{c:$0}\");\n            let pattern = ZEROS.replacen(&pattern, 1, \"0\").into_owned();\n            if approximately {\n                approximate(&pattern, number.sign)\n            } else {\n                pattern\n            }\n        } else {\n            let pattern = match options.style.as_str() {\n                \"currency\" if options.currency_display.as_deref() != Some(\"name\") => {\n                    let data = &self.data.numbers.currency[&self.system];\n                    if options.currency_sign.as_deref() == Some(\"accounting\") {\n                        &data.accounting\n                    } else {\n                        &data.standard\n                    }\n                }\n                \"percent\" => &self.data.numbers.percent[&self.system],\n                _ => &self.data.numbers.decimal[&self.system].standard,\n            };\n            signed(pattern, number.sign, approximately)\n        };\n        let decimal_pattern = NUMBER\n            .find(&pattern)\n            .ok_or_else(|| missing(\"number pattern\"))?\n            .as_str()\n            .to_owned();\n        pattern = NUMBER.replace_all(&pattern, \"{0}\").into_owned();\n        pattern = QUOTED.replace_all(&pattern, \"$1\").into_owned();\n        let currency_code = options.currency.as_deref().unwrap_or(\"\");\n        let currency = self.data.currencies.get(currency_code);\n        let currency_label = match options.currency_display.as_deref() {\n            Some(\"code\") => currency_code,\n            Some(\"symbol\") => currency\n                .map(|value| value.symbol.as_str())\n                .unwrap_or(currency_code),\n            _ => currency\n                .map(|value| value.narrow.as_str())\n                .unwrap_or(currency_code),\n        };\n        if options.style == \"currency\" && options.currency_display.as_deref() != Some(\"name\") {\n            let spacing = &self.data.numbers.currency[&self.system].currency_spacing;\n            let symbol = |value: Option<char>| {\n                value.is_some_and(|value| {\n                    GeneralCategoryGroup::Symbol\n                        .contains(CodePointMapData::<GeneralCategory>::new().get(value))\n                })\n            };\n            if !spacing.after_insert_between.is_empty() && !symbol(currency_label.chars().last()) {\n                pattern = pattern.replacen(\n                    \"\u00a4{0}\",\n                    &format!(\"\u00a4{}{{0}}\", spacing.after_insert_between),\n                    1,\n                );\n            }\n            if !spacing.before_insert_between.is_empty() && !symbol(currency_label.chars().next()) {\n                pattern = pattern.replacen(\n                    \"{0}\u00a4\",\n                    &format!(\"{{0}}{}\u00a4\", spacing.before_insert_between),\n                    1,\n                );\n            }\n        }\n        let mut parts = Vec::new();\n        let mut end = 0;\n        for token in TOKENS.find_iter(&pattern) {\n            if token.start() > end {\n                parts.push(Part::new(\"literal\", &pattern[end..token.start()]));\n            }\n            let part = match token.as_str() {\n                \"{0}\" => {\n                    parts.extend(self.number_parts(number, &decimal_pattern, compact.is_some())?);\n                    end = token.end();\n                    continue;\n                }\n                \"{approximatelySign}\" => {\n                    Part::new(\"approximatelySign\", symbols.approximately_sign.clone())\n                }\n                \"-\" => Part::new(\"minusSign\", symbols.minus_sign.clone()),\n                \"+\" => Part::new(\"plusSign\", symbols.plus_sign.clone()),\n                \"%\" => Part::new(\"percentSign\", symbols.percent_sign.clone()),\n                \"\u00a4\" => Part::new(\"currency\", currency_label),\n                token => Part::new(\"compact\", &token[3..token.len() - 1]),\n            };\n            parts.push(part);\n            end = token.end();\n        }\n        if end < pattern.len() {\n            parts.push(Part::new(\"literal\", &pattern[end..]));\n        }\n        let mut expanded = number.rounded.clone();\n        expanded.shift(number.exponent)?;\n        if options.style == \"currency\" && options.currency_display.as_deref() == Some(\"name\") {\n            let label = match currency {\n                Some(currency) => currency\n                    .display_name\n                    .get(self.category(&expanded)?)\n                    .or_else(|| currency.display_name.get(\"other\"))\n                    .filter(|name| !name.is_empty())\n                    .map(String::as_str)\n                    .unwrap_or(currency_code),\n                None => currency_code,\n            };\n            let pattern = &self.data.numbers.currency[&self.system].unit_pattern;\n            let mut output = Vec::new();\n            let mut end = 0;\n            for token in CURRENCY_SLOT.find_iter(pattern) {\n                if token.start() > end {\n                    output.push(Part::new(\"literal\", &pattern[end..token.start()]));\n                }\n                if token.as_str() == \"{0}\" {\n                    output.extend(parts.iter().cloned());\n                } else {\n                    output.push(Part::new(\"currency\", label));\n                }\n                end = token.end();\n            }\n            if end < pattern.len() {\n                output.push(Part::new(\"literal\", &pattern[end..]));\n            }\n            return Ok(output);\n        }\n        if options.style == \"unit\" {\n            let units = self.data.units.read().map_err(|_| missing(\"unit lock\"))?;\n            let unit = options.unit.as_deref().unwrap();\n            let style = options.unit_display.as_deref().unwrap();\n            let pattern = if let Some(unit) = units.simple.get(unit) {\n                self.select(&expanded, unit_forms(unit, style))?.to_owned()\n            } else {\n                let (numerator, denominator) = unit\n                    .split_once(\"-per-\")\n                    .ok_or_else(|| missing(\"compound unit\"))?;\n                let numerator = self.select(\n                    &expanded,\n                    unit_forms(\n                        units\n                            .simple\n                            .get(numerator)\n                            .ok_or_else(|| missing(numerator))?,\n                        style,\n                    ),\n                )?;\n                let denominator = units\n                    .simple\n                    .get(denominator)\n                    .ok_or_else(|| missing(denominator))?;\n                if let Some(per) = denominator.per_unit.get(style) {\n                    per.replacen(\"{0}\", numerator, 1)\n                } else {\n                    let per = units\n                        .compound\n                        .get(\"per\")\n                        .and_then(|per| per.get(style))\n                        .ok_or_else(|| missing(\"per\"))?;\n                    let denominator = self\n                        .select(&Numeric::parse(\"1\")?, unit_forms(denominator, style))?\n                        .replacen(\"{0}\", \"\", 1);\n                    per.replacen(\"{0}\", numerator, 1)\n                        .replacen(\"{1}\", &denominator, 1)\n                }\n            };\n            let mut output = Vec::new();\n            let mut end = 0;\n            for token in UNIT_SLOT.find_iter(&pattern) {\n                if token.start() > end {\n                    output.push(Part::new(\"unit\", &pattern[end..token.start()]));\n                }\n                let slot = token.as_str();\n                let index = slot.find(\"{0}\").unwrap();\n                if index > 0 {\n                    output.push(Part::new(\"literal\", &slot[..index]));\n                }\n                output.extend(parts.iter().cloned());\n                if index + 3 < slot.len() {\n                    output.push(Part::new(\"literal\", &slot[index + 3..]));\n                }\n                end = token.end();\n            }\n            if end < pattern.len() {\n                output.push(Part::new(\"unit\", &pattern[end..]));\n            }\n            return Ok(output);\n        }\n        Ok(parts)\n    }\n}\n",
+    "relativeOwnedStage": "//! Relative patterns and their internal number/plural data load as one owned pack.\nmod data;\npub mod ffi;\npub mod registry;\npub use data::LocaleData;\nuse formatjs_intl_numberformat::NumberFormat;\nuse serde::{Deserialize, Serialize};\nuse std::{borrow::Cow, sync::Arc};\n\n#[derive(Clone, Debug, Default, Deserialize)]\n#[serde(default, rename_all = \"camelCase\")]\npub struct Options {\n    pub locale_matcher: Option<String>,\n    pub numbering_system: Option<String>,\n    pub style: Option<String>,\n    pub numeric: Option<String>,\n}\npub(crate) fn choice<'a>(\n    value: Option<&'a str>,\n    default: &'a str,\n    allowed: &[&str],\n    key: &'static str,\n) -> Result<&'a str, Error> {\n    let value = value.unwrap_or(default);\n    if allowed.contains(&value) {\n        Ok(value)\n    } else {\n        Err(Error::InvalidOption(key))\n    }\n}\n#[derive(Clone, Serialize, Deserialize)]\n#[serde(rename_all = \"camelCase\")]\npub struct Resolution {\n    locale: String,\n    data_locale: String,\n    numbering_system: String,\n}\n#[derive(Serialize)]\n#[serde(rename_all = \"camelCase\")]\npub struct ResolvedOptions {\n    pub locale: String,\n    pub style: String,\n    pub numeric: String,\n    pub numbering_system: String,\n}\n#[derive(Clone, Debug, PartialEq, Eq, Serialize)]\npub struct Part {\n    #[serde(rename = \"type\")]\n    pub kind: &'static str,\n    pub value: String,\n    #[serde(skip_serializing_if = \"Option::is_none\")]\n    pub unit: Option<&'static str>,\n}\nenum Piece<'a> {\n    Literal(&'a str),\n    Number(Cow<'a, [formatjs_intl_numberformat::Part]>, &'static str),\n}\npub struct RelativeTimeFormat {\n    data: Arc<LocaleData>,\n    resolved: ResolvedOptions,\n    number: Arc<NumberFormat>,\n}\nimpl RelativeTimeFormat {\n    pub(crate) fn new(\n        data: Arc<LocaleData>,\n        resolution: &Resolution,\n        options: &Options,\n    ) -> Result<Self, Error> {\n        let style = choice(\n            options.style.as_deref(),\n            \"long\",\n            &[\"long\", \"short\", \"narrow\"],\n            \"style\",\n        )?;\n        let numeric = choice(\n            options.numeric.as_deref(),\n            \"always\",\n            &[\"always\", \"auto\"],\n            \"numeric\",\n        )?;\n        let number = data.number_format(resolution)?;\n        let resolved = ResolvedOptions {\n            locale: resolution.locale.clone(),\n            style: style.into(),\n            numeric: numeric.into(),\n            numbering_system: resolution.numbering_system.clone(),\n        };\n        Ok(Self {\n            data,\n            resolved,\n            number,\n        })\n    }\n    pub fn resolved_options(&self) -> &ResolvedOptions {\n        &self.resolved\n    }\n    pub fn format(&self, value: &str, unit: &str) -> Result<String, Error> {\n        let mut result = String::with_capacity(32);\n        self.visit_pattern(value, unit, |piece| match piece {\n            Piece::Literal(value) => result.push_str(value),\n            Piece::Number(parts, _) => {\n                for part in parts.iter() {\n                    result.push_str(&part.value);\n                }\n            }\n        })?;\n        Ok(result)\n    }\n    pub fn format_to_parts(&self, value: &str, unit: &str) -> Result<Vec<Part>, Error> {\n        let mut result = Vec::new();\n        self.visit_pattern(value, unit, |piece| match piece {\n            Piece::Literal(value) => result.push(Part {\n                kind: \"literal\",\n                value: value.into(),\n                unit: None,\n            }),\n            Piece::Number(parts, unit) => {\n                let append = |part: formatjs_intl_numberformat::Part| Part {\n                    kind: part.kind,\n                    value: part.value,\n                    unit: Some(unit),\n                };\n                match parts {\n                    Cow::Borrowed(parts) => result.extend(parts.iter().cloned().map(append)),\n                    Cow::Owned(parts) if result.is_empty() => {\n                        result = parts.into_iter().map(append).collect();\n                    }\n                    Cow::Owned(parts) => result.extend(parts.into_iter().map(append)),\n                }\n            }\n        })?;\n        Ok(result)\n    }\n    fn visit_pattern(\n        &self,\n        value: &str,\n        unit: &str,\n        mut visit: impl FnMut(Piece<'_>),\n    ) -> Result<(), Error> {\n        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;\n        if !numeric.is_finite() {\n            return Err(Error::InvalidNumber);\n        }\n        let unit = data::UNITS\n            .iter()\n            .copied()\n            .find(|known| unit == *known || unit.strip_suffix('s') == Some(*known))\n            .ok_or(Error::InvalidUnit)?;\n        let key = if self.resolved.style == \"long\" {\n            unit.into()\n        } else {\n            format!(\"{unit}-{}\", self.resolved.style)\n        };\n        let field = self\n            .data\n            .fields\n            .get(&key)\n            .or_else(|| self.data.fields.get(unit))\n            .ok_or_else(|| Error::InvalidData(\"Missing relative field\".into()))?;\n        // Numeric auto uses ToString(-0) = \"0\" before choosing past/future.\n        // https://tc39.es/ecma402/#sec-partitionrelativetimepattern\n        if self.resolved.numeric == \"auto\" {\n            let key = if numeric == 0.0 {\n                \"0\".to_owned()\n            } else {\n                numeric.to_string()\n            };\n            if let Some(literal) = field.relative.get(&key) {\n                visit(Piece::Literal(literal));\n                return Ok(());\n            }\n        }\n        let patterns = if numeric.is_sign_negative() {\n            &field.past\n        } else {\n            &field.future\n        };\n        let (mut number, category) = self\n            .number\n            .format_decimal_with_plural(\n                value.strip_prefix('-').unwrap_or(value),\n                &self.data.plurals,\n            )\n            .map_err(|error| Error::InvalidData(error.to_string()))?;\n        let pattern = patterns\n            .get(category)\n            .or_else(|| patterns.get(\"other\"))\n            .ok_or_else(|| Error::InvalidData(\"Missing relative plural pattern\".into()))?;\n        let mut chunks = pattern.split(\"{0}\").enumerate().peekable();\n        while let Some((index, literal)) = chunks.next() {\n            if index > 0 {\n                // Repeated slots borrow; the final slot can transfer its buffer.\n                let parts = if chunks.peek().is_none() {\n                    Cow::Owned(std::mem::take(&mut number))\n                } else {\n                    Cow::Borrowed(number.as_slice())\n                };\n                visit(Piece::Number(parts, unit));\n            }\n            if !literal.is_empty() {\n                visit(Piece::Literal(literal));\n            }\n        }\n        Ok(())\n    }\n}\n#[derive(Debug)]\npub enum Error {\n    InvalidData(String),\n    InvalidLocale,\n    MissingLocale,\n    InvalidOption(&'static str),\n    InvalidNumber,\n    InvalidUnit,\n}\nimpl std::fmt::Display for Error {\n    fn fmt(&self, out: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        write!(out, \"{self:?}\")\n    }\n}\nimpl std::error::Error for Error {}\n\n#[cfg(feature = \"compiled_data\")]\nmod compiled_data {\n    include!(env!(\"FORMATJS_COMPILED_LOCALES\"));\n}\n"
+  },
+  "probeStages": {
+    "before": "Baseline product with same probe source",
+    "stage1": "NumberFormat buffer reuse only",
+    "stage2": "Also transfer owned relative number parts",
+    "final": "Also borrow long-style field key"
+  },
+  "probeLimits": "Allocation/reallocation calls counted with a separate instrumented allocator, 10000 calls per case. Timing uses the uninstrumented optimized binary, 100000 calls per case. Single diagnostic runs; full Hermes runs are authoritative.",
+  "conformance": {
+    "gates": "13 focused gates pass: Rust NumberFormat/RTF core and differential tests; Hermes NumberFormat/RTF/DateTimeFormat/DurationFormat source and bytecode; NumberFormat/RTF Test262; pinned ICU4C/J/X RTF checks.",
+    "observableBehavior": "Sign order and nonfinite values explicitly checked; existing repeated numeric slots and empty named forms retained.",
+    "consumer": "Nine SDK API smoke scripts pass."
+  },
+  "limits": "Several constructor and steady-state gaps remain. No whole-goal completion claim.",
+  "commands": {
+    "benchmark": "Build SDK and all three optimized workloads with Bazel; apply native-clock.patch to pinned standalone console host and rebuild both native variants with CMake; run each cquery workload on each optimized host.",
+    "partsProfile": "hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/relative-parts-profile.js",
+    "allocationProbe": "bazel run -c opt //benchmarks/hermes-intl-extension:relative_allocation_probe",
+    "timingProbe": "bazel run -c opt //benchmarks/hermes-intl-extension:relative_format_probe",
+    "formatProfile": "hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/relative-format-profile.js"
+  },
+  "measuredCratesTree": "ebb45dd74dca079d0473d6f9aa41cf3d5cdeb4f1",
+  "treeNote": "Shipping crates tree differs from measured tree only in the two crate READMEs. All measured product source hashes match."
+}

@@ -3,6 +3,98 @@ load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load(":dist.bzl", "smoke_macos_arm64")
 
 genrule(
+    name = "pluralrules_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/pluralrules-smoke.js"],
+    outs = ["pluralrules_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "listformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/listformat-smoke.js"],
+    outs = ["listformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "displaynames_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/displaynames-smoke.js"],
+    outs = ["displaynames_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "segmenter_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/segmenter-smoke.js"],
+    outs = ["segmenter_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "collator_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/collator-smoke.js"],
+    outs = ["collator_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "numberformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/numberformat-smoke.js"],
+    outs = ["numberformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "relativetimeformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/relativetimeformat-smoke.js"],
+    outs = ["relativetimeformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "durationformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/durationformat-smoke.js"],
+    outs = ["durationformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "datetimeformat_smoke_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/datetimeformat-smoke.js"],
+    outs = ["datetimeformat_smoke.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "datetimeformat_hebrew_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:calendar-data/datetimeformat/hebrew.json"],
+    outs = ["datetimeformat_hebrew.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+genrule(
+    name = "datetimeformat_tz_source",
+    srcs = ["@formatjs_intl_getcanonicallocales_hermes//:timezone-data/datetimeformat/tz-golden.json"],
+    outs = ["datetimeformat_tz.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+)
+
+SMOKE_SOURCES = [
+    ":durationformat_smoke_source",
+    ":datetimeformat_smoke_source",
+    ":datetimeformat_hebrew_source",
+    ":datetimeformat_tz_source",
+    "main.cpp",
+    ":displaynames_smoke_source",
+    ":segmenter_smoke_source",
+    ":collator_smoke_source",
+    ":numberformat_smoke_source",
+    ":relativetimeformat_smoke_source",
+    ":listformat_smoke_source",
+    ":pluralrules_smoke_source",
+]
+
+genrule(
     name = "extension_bytecode",
     srcs = ["@formatjs_intl_getcanonicallocales_hermes//:js/extensions.js"],
     outs = ["extensions.hbc"],
@@ -12,7 +104,7 @@ genrule(
 
 cc_binary(
     name = "smoke",
-    srcs = ["main.cpp"],
+    srcs = SMOKE_SOURCES,
     copts = [
         "-std=c++17",
         "-fexceptions",
@@ -21,7 +113,17 @@ cc_binary(
     tags = ["manual"],
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:collator",
+        "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
+        "@formatjs_intl_getcanonicallocales_hermes//:durationformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:intl",
+        "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
+        "@formatjs_intl_getcanonicallocales_hermes//:numberformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
+        "@formatjs_intl_getcanonicallocales_hermes//:relativetimeformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],
@@ -30,7 +132,7 @@ cc_binary(
 cc_test(
     name = "smoke_test",
     size = "small",
-    srcs = ["main.cpp"],
+    srcs = SMOKE_SOURCES,
     args = ["$(rootpath :extension_bytecode)"],
     copts = [
         "-std=c++17",
@@ -40,7 +142,17 @@ cc_test(
     linkstatic = True,
     deps = [
         "@formatjs_intl_getcanonicallocales_hermes//:canonical_locales",
+        "@formatjs_intl_getcanonicallocales_hermes//:collator",
+        "@formatjs_intl_getcanonicallocales_hermes//:datetimeformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:displaynames",
+        "@formatjs_intl_getcanonicallocales_hermes//:durationformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:intl",
+        "@formatjs_intl_getcanonicallocales_hermes//:listformat",
         "@formatjs_intl_getcanonicallocales_hermes//:locale",
+        "@formatjs_intl_getcanonicallocales_hermes//:numberformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:pluralrules",
+        "@formatjs_intl_getcanonicallocales_hermes//:relativetimeformat",
+        "@formatjs_intl_getcanonicallocales_hermes//:segmenter",
         "@formatjs_intl_getcanonicallocales_hermes//:supported_values",
         "@hermes//:hermes_vm",
     ],

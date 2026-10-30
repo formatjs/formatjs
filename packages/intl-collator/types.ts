@@ -53,7 +53,7 @@ export interface CollatorConstructor {
 }
 
 export interface CollatorLocaleData {
-  co: string[]
+  co: (string | null)[]
   kn: string[]
   kf: string[]
   defaultCollation?: string

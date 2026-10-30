@@ -1,0 +1,7 @@
+{
+  "total": 114,
+  "failures": {
+    "intl402/DisplayNames/proto-from-ctor-realm.js (default)": "Expected no error, got stack: undefined",
+    "intl402/DisplayNames/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined"
+  }
+}

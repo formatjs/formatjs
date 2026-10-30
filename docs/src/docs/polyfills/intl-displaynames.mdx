@@ -223,3 +223,10 @@ Calendar display-name data uses BCP 47 identifiers, including `gregory` and
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust on Hermes
+
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust DisplayNames and
+source/bytecode installers. Locale data is compiled into the archive; use the
+build-time locale flag to choose a custom set. Individual consumers can link
+`:displaynames` and call `formatjs::installDisplayNames(runtime)` after canonicalization.

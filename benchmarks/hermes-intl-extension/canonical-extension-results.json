@@ -1,0 +1,4411 @@
+{
+  "collectedAt": "2026-10-29T23:20:14.289025+00:00",
+  "baselineCommit": "3d7389793afdd3dae4cd0f38e6eaaf28e79df472",
+  "baselineMeasurementHead": "5e8464a8890099239c2bef9cc11c94d3513b3453",
+  "baselinePullRequest": "https://github.com/formatjs/formatjs/pull/7782",
+  "implementationCratesTree": "25accfdc5df581b488b45744548d0842866c7f06",
+  "baselineImplementationCratesTree": "fb04a9315b63ec0ebce0dad945f852b86a0730fd",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "sourceSha256": {
+    "crates/intl_getcanonicallocales/lib.rs": "e77de23ee688eaf9101170731c8911fe431868f696a6f338b86140b77718491f",
+    "benchmarks/hermes-intl-extension/canonical-extension-probe.rs": "75ba8806f9600dbf534764c882e69ee1fac1a453456c59ed651313d0527e844f",
+    "benchmarks/hermes-intl-extension/locale-cold-profile.js": "8ff4a433114ef5badbf935d1fcf842bf5d96c1c8fbfcc6071f032bb3c8cfcc10",
+    "benchmarks/hermes-intl-extension/locale-long-profile.js": "8dbd6e61badb77ca16f84f24925bae5daf23e27c821cb88062b02a1b6f1bb2c3",
+    "benchmarks/hermes-intl-extension/BUILD.bazel": "b572ee99f97aa3d763fe32447c86be21e4da6b39b3cd7883c087c34dca50c5ec",
+    "benchmarks/hermes-intl-extension/overlap.js": "d704b2a22e06e479929211fb5fe3c5a98c1eb84d6b690f9e3c9e6e42673aa119",
+    "benchmarks/hermes-intl-extension/canonical-tag-control.js": "088828072b8f0a1c69a8e1e5423f133919919a6bcfa6d2fe974a96e2632ee21e",
+    "benchmarks/hermes-intl-extension/locale-control.js": "d66c90f9a40d20a2be961177579d919cbb4b3b5ff552a08850f80ad8f2a90a3c",
+    "benchmarks/hermes-intl-extension/list-constructor-control.js": "c80f7f3b889853387611046261193c21fa5d1a658473206a6ec55eafdfc648e4",
+    "conformance-tests/icu4j/canonical-private-fixtures.tsv": "4a993e87adc2390a72adcc2da047148cc0f3667860677849b98764e7a823a4c4",
+    "conformance-tests/icu4j/IntlCanonicalPrivateConformanceTest.java": "5e00e291f9e2f720e23bdd87de6d3c709856f4c2abcf6517ab2f21a232e4a7d9",
+    "conformance-tests/icu4c/canonical_private.cc": "c04a208d08678e29406bca2e7a4c02e25d75773207ecc69bb05485a473dfb887",
+    "conformance-tests/icu4x/canonical-private.test.rs": "66b7c4c0d8476f0249d27f2bb93b37817b68150f9a88cef5f83e83d9861f7dbe"
+  },
+  "hostSha256": {
+    "before": "49d17bb3827a47402e08997b3cf542ad14b14a1235dcdfa51ba7e4a6ebd00b38",
+    "after": "efcfe4f0fdf8ea369a41ee984fe3848bfd26cab5236c6dfb89973afe715f1576",
+    "magrinj": "7f5a07824225b3db9787ed21ea48cd8eb67c7a3d7d6798ba21aa0da0c887136f"
+  },
+  "workloadSha256": {
+    "overlap": "7728b8d334219dee0782509536f5d3800c5ee143b768cbda2193ffe908ef7656",
+    "tagControl": "aa2ace3206d990e017dd2ae8e8df5346c8dff9d574438b481fda4cec45ea14ca",
+    "localeControl": "fd346e6e8bda47978c2a56bae7f18e9ddaf3f584d5a0cd06eb446825d8bce30d",
+    "listSizeControl": "202e3d0d7214b5a235eeec10323fc89e75b69eeb205b5df80186843ad96af28d",
+    "listConstructorControl": "41e5285d42df55632242e1c3407c6d77ee780841314ebf921a9a9e0390a17957"
+  },
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "build": {
+    "hermesCpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "magrinjRust": "upstream release: opt-level=z, lto=true, codegen-units=1",
+    "magrinjBootstrap": "Precompiled Hermes -O bytecode",
+    "overlap": "Same precompiled Hermes -O bytecode on all hosts",
+    "formatjsFactories": "Embedded Hermes -O bytecode"
+  },
+  "clock": "All hosts use __now(). Native before/after rebuilt with identical console-only steady_clock patch. Sub-millisecond monotonic clock checks pass. Historical native timings used Date.now fallback; low-percent differences should be assessed within this paired run.",
+  "benchmarkScript": "#!/bin/bash\nset -euo pipefail\ncd /tmp/hermes-intl-extension\nbootstrap=\"$PWD/$(rg '\\.hbc$' /tmp/hermes-plural-magrinj-bytecode-path)\"\nrun_variant() {\n  case \"$1\" in\n    before) taskset -c 0 /tmp/hermes-list-bound-hires \"$2\" ;;\n    after) taskset -c 0 /tmp/hermes-canonical-extension-hires \"$2\" ;;\n    magrinj) FORMATJS_BENCH_BOOTSTRAP=\"$bootstrap\" taskset -c 0 /tmp/hi-host-optimized \"$2\" ;;\n  esac\n}\nfor round in 1 2 3; do\n  if [ \"$round\" = 2 ]; then variants='magrinj after before'; else variants='before after magrinj'; fi\n  for variant in $variants; do\n    run_variant \"$variant\" /tmp/hermes-list-default-overlap.hbc > \"/tmp/hermes-canonical-extension-$variant-$round.jsonl\"\n  done\n  for variant in $variants; do\n    run_variant \"$variant\" /tmp/hermes-canonical-control.hbc > \"/tmp/hermes-canonical-extension-tag-$variant-$round.jsonl\"\n  done\n  for variant in $variants; do\n    run_variant \"$variant\" /tmp/hermes-list-size-control.hbc > \"/tmp/hermes-canonical-extension-size-$variant-$round.jsonl\"\n  done\n  for variant in $variants; do\n    run_variant \"$variant\" /tmp/hermes-canonical-locale-control.hbc > \"/tmp/hermes-canonical-extension-locale-$variant-$round.jsonl\"\n  done\ndone\n",
+  "constructorControlScript": "#!/bin/bash\nset -euo pipefail\ncd /tmp/hermes-intl-extension\nbootstrap=\"$PWD/$(rg '\\.hbc$' /tmp/hermes-plural-magrinj-bytecode-path)\"\nrun_variant() {\n  case \"$1\" in\n    before) taskset -c 0 /tmp/hermes-list-bound-hires \"$2\" ;;\n    after) taskset -c 0 /tmp/hermes-canonical-extension-hires \"$2\" ;;\n    magrinj) FORMATJS_BENCH_BOOTSTRAP=\"$bootstrap\" taskset -c 0 /tmp/hi-host-optimized \"$2\" ;;\n  esac\n}\nfor round in 1 2 3; do\n  if [ \"$round\" = 2 ]; then variants='magrinj after before'; else variants='before after magrinj'; fi\n  for variant in $variants; do\n    run_variant \"$variant\" /tmp/hermes-list-constructor-control.hbc > \"/tmp/hermes-canonical-extension-constructor-$variant-$round.jsonl\"\n  done\ndone\n",
+  "clockChecks": {
+    "before": {
+      "minimumDeltaMs": 7.486343383789062e-5
+    },
+    "after": {
+      "minimumDeltaMs": 7.390975952148438e-5
+    },
+    "magrinj": {
+      "minimumDeltaMs": 0.00010156631469726562
+    }
+  },
+  "order": "Three complete 33-case overlap invocations plus canonical and isolated Locale controls per host. Rounds 1 and 3 before/after/magrinj; round 2 reverses. No builds or profiling during timings. Constructor controls run separately afterward in the same alternating host order.",
+  "outputChecks": "423 values checked (297 overlap, 27 canonical tag controls, 18 isolated Locale controls, 45 list-size controls, 36 constructor controls). All FormatJS before/after values match. Only comparator differences, in overlap and constructor controls: omitted/unsupported ListFormat default locale en-US versus en.",
+  "change": "Borrow the original language identifier up to the first extension boundary. Lowercase and canonicalize extensions separately. For a first private-use extension, append and lowercase its structurally validated ASCII suffix directly. All structural validation and ICU4X base alias canonicalization remain.",
+  "mediansUs": {
+    "before": {
+      "getCanonicalLocales": 0.07025000195426401,
+      "Locale.maximize": 0.2600967291073175,
+      "PluralRules.select": 0.3572536279534688,
+      "PluralRules.select(decimal)": 0.4075954348081723,
+      "PluralRules.select(string)": 0.5052930901001673,
+      "PluralRules.select(ordinal)": 0.38677879638271406,
+      "PluralRules.select(ru)": 0.38942556784604676,
+      "PluralRules.selectRange": 0.7840442340238951,
+      "ListFormat.format": 0.7136896201700438,
+      "ListFormat.formatToParts": 3.0333613249240443,
+      "RelativeTimeFormat.format": 0.9596816234989092,
+      "RelativeTimeFormat.formatToParts": 1.7376137111568823,
+      "RelativeTimeFormat.format(decimal)": 1.291559005039744,
+      "RelativeTimeFormat.format(auto)": 0.46370298878173344,
+      "Locale.new": 0.3496688386803726,
+      "Locale.new(options)": 1.8351779144722968,
+      "Locale.new(zh-HK)": 0.35551877226680517,
+      "Locale.new.language": 0.43360832933103666,
+      "Locale.new.toString": 0.4076023033121601,
+      "Locale.language": 0.07625000216648914,
+      "Locale.new(Locale)": 0.3195178142050281,
+      "Locale.new(diverse)": 3.011673950823024,
+      "Locale.new(long)": 4.30277141276747,
+      "PluralRules.new": 2.0728710369439796,
+      "PluralRules.new(options)": 5.192496959352866,
+      "ListFormat.new": 1.3210769684519619,
+      "ListFormat.new(default)": 1.0740787038230337,
+      "ListFormat.new(array)": 1.7486038559582084,
+      "ListFormat.new(options)": 2.4593766138423234,
+      "ListFormat.new(fallback)": 2.031901298323646,
+      "ListFormat.new(unsupported)": 2.187648875406012,
+      "RelativeTimeFormat.new": 4.29135633748956,
+      "RelativeTimeFormat.new(fallback)": 5.234690994257107
+    },
+    "after": {
+      "getCanonicalLocales": 0.07031720360828331,
+      "Locale.maximize": 0.2644404594320804,
+      "PluralRules.select": 0.3538216224114876,
+      "PluralRules.select(decimal)": 0.4053807679156307,
+      "PluralRules.select(string)": 0.5048656166763976,
+      "PluralRules.select(ordinal)": 0.3732885506906314,
+      "PluralRules.select(ru)": 0.38795923683210276,
+      "PluralRules.selectRange": 0.7866409578127787,
+      "ListFormat.format": 0.7115557018551044,
+      "ListFormat.formatToParts": 3.023278870387003,
+      "RelativeTimeFormat.format": 0.9802088025026023,
+      "RelativeTimeFormat.formatToParts": 1.7524425056762993,
+      "RelativeTimeFormat.format(decimal)": 1.3269047121866606,
+      "RelativeTimeFormat.format(auto)": 0.4592247096297797,
+      "Locale.new": 0.35043943717028014,
+      "Locale.new(options)": 1.7866544221760705,
+      "Locale.new(zh-HK)": 0.3516107171890326,
+      "Locale.new.language": 0.4273487866157666,
+      "Locale.new.toString": 0.40000270018936135,
+      "Locale.language": 0.0761260712351941,
+      "Locale.new(Locale)": 0.32376795570598915,
+      "Locale.new(diverse)": 2.4905104364734143,
+      "Locale.new(long)": 3.4759803529595956,
+      "PluralRules.new": 2.1137532021384686,
+      "PluralRules.new(options)": 5.1730913983192295,
+      "ListFormat.new": 1.294624038564507,
+      "ListFormat.new(default)": 1.0635535436449572,
+      "ListFormat.new(array)": 1.600714327651076,
+      "ListFormat.new(options)": 2.4675086460774764,
+      "ListFormat.new(fallback)": 2.0023422548547387,
+      "ListFormat.new(unsupported)": 2.1487792109837756,
+      "RelativeTimeFormat.new": 4.19266166863963,
+      "RelativeTimeFormat.new(fallback)": 5.195444944547489
+    },
+    "magrinj": {
+      "getCanonicalLocales": 1.1053290872951038,
+      "Locale.maximize": 2.1139840100659057,
+      "PluralRules.select": 0.4554200750135351,
+      "PluralRules.select(decimal)": 0.45607180072693154,
+      "PluralRules.select(string)": 0.9095325513044372,
+      "PluralRules.select(ordinal)": 0.45471935300156474,
+      "PluralRules.select(ru)": 0.5006662067899015,
+      "PluralRules.selectRange": 0.8859279623720795,
+      "ListFormat.format": 0.5315464695740957,
+      "ListFormat.formatToParts": 3.2561441184952855,
+      "RelativeTimeFormat.format": 0.717776329111075,
+      "RelativeTimeFormat.formatToParts": 2.151922642951831,
+      "RelativeTimeFormat.format(decimal)": 0.7877865937189199,
+      "RelativeTimeFormat.format(auto)": 0.5968779587419704,
+      "Locale.new": 0.9362826240248978,
+      "Locale.new(options)": 4.906378831947222,
+      "Locale.new(zh-HK)": 1.3564560213126242,
+      "Locale.new.language": 1.2841412390116602,
+      "Locale.new.toString": 0.998888244794216,
+      "Locale.language": 0.0867298335833766,
+      "Locale.new(Locale)": 0.9604803271940909,
+      "Locale.new(diverse)": 1.4285247671068646,
+      "Locale.new(long)": 3.8148179301060736,
+      "PluralRules.new": 4.696052259532735,
+      "PluralRules.new(options)": 5.0910027348436415,
+      "ListFormat.new": 2.831279081874527,
+      "ListFormat.new(default)": 2.569162141298875,
+      "ListFormat.new(array)": 2.833063335856423,
+      "ListFormat.new(options)": 2.619934530230239,
+      "ListFormat.new(fallback)": 3.6005781148560345,
+      "ListFormat.new(unsupported)": 3.7994467129465193,
+      "RelativeTimeFormat.new": 4.683380073402077,
+      "RelativeTimeFormat.new(fallback)": 5.5520469904877245
+    }
+  },
+  "runs": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07025000195426401,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.25906538758135866,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.35347407538210973,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4075954348081723,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5086402597953565,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.38677879638271406,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.3907370555680245,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.7997614447958767,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7136896201700438,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.046264755539596,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0645784714142792,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.902025265735574,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3101606746204197,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.46370298878173344,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3562459096428938,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8549930973676965,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.36085719693801366,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4415147632244043,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.45230322575662285,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07625000216648914,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.31614922772860155,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 2.2360084112733603,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.30277141276747,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.0728710369439796,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.1482006965670735,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.2821238124161027,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.0740787038230337,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7725718644214794,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.5419656158192083,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.031901298323646,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.187648875406012,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.29135633748956,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.236393568338826,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.06963677560634096,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2600967291073175,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.35765259963227436,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4134480514039751,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5052930901001673,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.3898643954016734,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.38942556784604676,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.7766658527543768,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7126383607101161,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.0009496840648353,
+          "iterations": 32768,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9508129296591505,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.6990824951790273,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.276036215131171,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4531405647867359,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3496688386803726,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8351779144722968,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35551877226680517,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43360832933103666,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.4076023033121601,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07755819433441502,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3195178142050281,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.011673950823024,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.939338454278186,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.103980048559606,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.282682570395991,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.340008107945323,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.158012390078511,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7486038559582084,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.4593766138423234,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.1971528622088954,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.288496310939081,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.307104944018647,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.2245877450332046,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07115138350854977,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26254308795614634,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.3572536279534688,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4064698332513217,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5035834037698805,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.3715629572980106,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.3893122775480151,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.7840442340238951,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7156014326028526,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.0333613249240443,
+          "iterations": 32768,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9596816234989092,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7376137111568823,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.291559005039744,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.46916834980947897,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.34923252496810164,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8053394742310047,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3523746672726702,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4270678255124949,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40254343912238255,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07624820773344254,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32333386116079055,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.1186048727249727,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.061766405357048,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 1.965577932423912,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.192496959352866,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.3210769684519619,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 0.9796876256586984,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.5478307905141264,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.3649308714084327,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 1.9219742389395833,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.1756075439043343,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.273750295396894,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.234690994257107,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07031720360828331,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2644404594320804,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.3538216224114876,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4053807679156307,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5048656166763976,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.3703432175825583,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.38393748400267214,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.7738352069281973,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7115557018551044,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.023278870387003,
+          "iterations": 32768,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9736165520735085,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7461441602790728,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3109013525536284,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4554571751214098,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.34989048072020523,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7832887533586472,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3521711259963922,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42500541894696653,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40000270018936135,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0763158004701836,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3254184794059256,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 2.749134349869564,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.487417212454602,
+          "iterations": 32768,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.11401071283035,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.081109062302858,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.294624038564507,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 0.996436232526321,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.5625792584614828,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.4675086460774764,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.0419010252226144,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.158819421310909,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.19266166863963,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.181243584956974,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07020101293164771,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2680471043277066,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.3621111845859559,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4147692416154314,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5259504323475994,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.38311844764393754,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.39917027970659547,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8092597709037364,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7169199161580764,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.0320189252961427,
+          "iterations": 32768,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9802088025026023,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.776686025550589,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3269047121866606,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4592247096297797,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.355376289007836,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7967232124647126,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.351002227034769,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4273487866157666,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.3960480426030699,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07594809358124621,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3228084297006717,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 2.320536528714001,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.4759803529595956,
+          "iterations": 32768,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1137532021384686,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.874784314073622,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.3046068561379798,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.067202196281869,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.6677930689183995,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.4437172833131626,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.0023422548547387,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.1487792109837756,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.255971551174298,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.195444944547489,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07082463707774878,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26015400726464577,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.3504131054796744,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4048952250741422,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.5040458381699864,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.3732885506906314,
+          "iterations": 262144,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.38795923683210276,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.7866409578127787,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.7114817526598927,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.0213910940801725,
+          "iterations": 32768,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9858616613200866,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7524425056762993,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3338810895220377,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4594732126861345,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.35043943717028014,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7866544221760705,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3516107171890326,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43011891102651134,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40260237074107863,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0761260712351941,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32376795570598915,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 2.4905104364734143,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.4348180488450453,
+          "iterations": 32768,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.093930175760761,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.1730913983192295,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.2889048011857085,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.0635535436449572,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.600714327651076,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.503954980056733,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 1.9546335824998096,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.065253574983217,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.1335746354889125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.294053669786081,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "magrinj": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.102691465348471,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1139840100659057,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4506608020165004,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.45607180072693154,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9095325513044372,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45456730367732234,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5006662067899015,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8859279623720795,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5271620393614285,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.235008247429505,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7179301501309965,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.156233153073117,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7875439478084445,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5959364461887162,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9230827781721018,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.858218686422333,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3393965637078509,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2798090538126417,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9958335576811805,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0867788457981078,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9608816326363012,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4399270366993733,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.8615571102127433,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.679362173192203,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.0910027348436415,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.835185907315463,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.553949103457853,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.963469974929467,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.816664185957052,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.609453735407442,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.8154813228175044,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.677097225794569,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.5520469904877245,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.109975295548793,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.126391264027916,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4554200750135351,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4677640536101535,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9087897487916052,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.46834144450258464,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.49787030002335086,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8822422241792083,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5465420144901145,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2601473212707788,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7096841800375842,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1473545784829184,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7877865937189199,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6205985409906134,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9514264529570937,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.946040280628949,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3642464036820456,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.3055561212240718,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 1.0303357848897576,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0867298335833766,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9596471427357756,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4285247671068646,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.801968996413052,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.696052259532735,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.202327272854745,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.831279081874527,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.569162141298875,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.7833708736579865,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.5482100172666833,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.597108938265592,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.745353518752381,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.683380073402077,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.503811873495579,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1053290872951038,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.100404119119048,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4594508427544497,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4552272948785685,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9162930437014438,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45471935300156474,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5014855887566227,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.889792587258853,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5315464695740957,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2561441184952855,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.717776329111075,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.151922642951831,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7893840302131139,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5968779587419704,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9362826240248978,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.906378831947222,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3564560213126242,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2841412390116602,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.998888244794216,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08644632589493995,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9604803271940909,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4233825349947438,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.8148179301060736,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.7262198640964925,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.034306523157284,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.829455683240667,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.586735528893769,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.833063335856423,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.619934530230239,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.6005781148560345,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.7994467129465193,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 5.182996479561552,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.6093518796842545,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ]
+  },
+  "profiles": {
+    "cold-before": {
+      "totalSamples": 641,
+      "selfSamples": {
+        "[Host Function] localeCreate": 395,
+        "[GC Young Gen]": 51,
+        "[Native] weakMapPrototypeSet": 48,
+        "initialize": 39,
+        "Locale": 27,
+        "[Native] mapPrototypeSet": 21,
+        "[Native] mapPrototypeGet": 19,
+        "global": 17,
+        "[Native] stringPrototypeConcat": 10,
+        "set": 8,
+        "[Native] objectCreate": 6
+      },
+      "raw": {
+        "samples": [
+          5, 5, 5, 5, 5, 5, 8, 9, 5, 10, 11, 5, 9, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5,
+          10, 9, 13, 16, 16, 5, 5, 5, 17, 5, 5, 5, 5, 5, 5, 5, 19, 5, 10, 15,
+          10, 5, 5, 9, 5, 9, 5, 9, 5, 16, 16, 21, 5, 10, 5, 5, 5, 17, 5, 5, 5,
+          5, 5, 5, 5, 10, 9, 5, 19, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 17,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 5, 10, 5, 21, 22, 22, 10, 5, 5, 24,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 13, 16, 10, 10, 19, 5, 5, 5, 25, 9,
+          5, 5, 9, 5, 5, 9, 5, 5, 5, 5, 26, 5, 5, 10, 5, 5, 5, 5, 5, 10, 10, 5,
+          5, 5, 10, 5, 5, 26, 8, 5, 17, 24, 5, 5, 5, 5, 5, 5, 21, 17, 5, 5, 5,
+          19, 5, 27, 5, 5, 10, 5, 15, 24, 5, 5, 5, 24, 5, 5, 5, 5, 5, 5, 5, 26,
+          26, 5, 13, 5, 19, 5, 5, 5, 5, 5, 24, 5, 5, 5, 9, 5, 24, 5, 17, 5, 19,
+          27, 27, 27, 5, 5, 5, 5, 5, 5, 5, 10, 5, 10, 5, 17, 5, 10, 5, 5, 5, 5,
+          16, 10, 24, 10, 9, 5, 9, 5, 5, 5, 17, 5, 5, 5, 5, 5, 5, 5, 5, 5, 26,
+          5, 5, 5, 24, 5, 5, 5, 5, 5, 5, 25, 5, 10, 5, 5, 17, 5, 16, 5, 5, 24,
+          5, 5, 5, 5, 9, 5, 5, 5, 5, 15, 9, 8, 5, 5, 5, 5, 24, 5, 26, 26, 26, 5,
+          8, 8, 8, 8, 8, 5, 5, 5, 5, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+          24, 24, 24, 24, 5, 5, 24, 5, 5, 5, 5, 19, 5, 5, 5, 5, 24, 5, 5, 5, 10,
+          5, 22, 22, 5, 5, 5, 5, 5, 8, 24, 24, 24, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          24, 5, 16, 5, 5, 5, 17, 5, 5, 5, 5, 5, 5, 5, 5, 9, 25, 5, 24, 24, 9,
+          8, 28, 21, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 5, 10, 5, 5, 5, 5,
+          5, 5, 16, 16, 15, 8, 8, 8, 19, 5, 5, 5, 5, 5, 5, 5, 5, 24, 8, 17, 5,
+          5, 9, 10, 13, 5, 24, 27, 27, 27, 27, 27, 27, 5, 5, 5, 5, 5, 5, 9, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 17, 5, 5, 5, 5, 10, 26, 26, 5, 25, 5, 5,
+          5, 5, 5, 5, 5, 5, 17, 19, 5, 5, 5, 5, 5, 19, 10, 24, 11, 8, 5, 10, 9,
+          5, 13, 5, 5, 5, 15, 5, 10, 17, 5, 24, 9, 5, 25, 5, 24, 5, 16, 16, 16,
+          16, 16, 16, 16, 5, 5, 5, 5, 5, 25, 24, 5, 5, 5, 5, 10, 5, 5, 5, 5, 5,
+          5, 5, 5, 5, 5, 5, 26, 5, 5, 8, 24, 5, 5, 5, 5, 5, 5, 10, 5, 21, 5, 16,
+          16, 25, 5, 13, 5, 10, 5, 5, 24, 17, 5, 5, 5, 24, 25, 9, 5, 24, 5, 5,
+          21, 19, 19, 5, 9, 26, 5, 5, 24, 24, 17, 24, 10, 24, 5, 5, 5, 10, 5, 5,
+          5, 5, 5, 8, 5, 5, 5, 26, 5, 9, 15, 5, 21, 5, 10, 5, 5, 5, 5, 8, 22, 9,
+          8, 8, 9, 5, 5, 21, 10, 19, 10, 5, 5, 5, 5, 5, 5, 5, 5, 21, 17, 27, 9,
+          10, 5, 5, 21, 5, 24, 5
+        ],
+        "timeDeltas": [
+          0, 873, 1672, 9579, 1002, 1675, 758, 1802, 2184, 1553, 838, 1649, 75,
+          1351, 154, 938, 570, 1974, 941, 142, 1196, 265, 81, 706, 204, 1483,
+          967, 0, 1399, 1037, 1872, 1137, 939, 725, 682, 914, 1299, 1156, 966,
+          1807, 1020, 540, 854, 853, 822, 853, 1246, 973, 990, 1708, 1794, 898,
+          1139, 0, 932, 390, 1377, 1416, 1314, 1385, 786, 615, 936, 615, 549,
+          2107, 1032, 1093, 589, 1549, 2065, 551, 963, 1168, 1571, 882, 1602,
+          1063, 321, 921, 1962, 575, 1331, 958, 1551, 1662, 815, 1098, 272, 962,
+          513, 939, 1674, 777, 1477, 758, 1067, 1514, 1424, 1654, 1485, 212, 0,
+          2780, 2468, 1642, 1120, 800, 932, 1837, 1015, 2016, 895, 494, 1522,
+          1005, 538, 747, 1513, 27, 1882, 1694, 724, 1173, 1073, 1122, 1271,
+          821, 1242, 1144, 1085, 1841, 1750, 472, 1102, 982, 434, 1088, 701,
+          1928, 1028, 1773, 922, 299, 763, 639, 800, 1382, 2152, 1297, 1719,
+          1105, 1916, 1083, 1148, 1703, 1261, 1830, 820, 480, 828, 1059, 1151,
+          1771, 2117, 1499, 1590, 602, 1332, 1375, 1865, 627, 1410, 267, 2166,
+          944, 959, 1413, 1021, 1280, 820, 898, 233, 2788, 1058, 2192, 1274,
+          839, 1219, 1475, 673, 520, 0, 2271, 1092, 1301, 1423, 668, 1218, 1265,
+          1674, 828, 1049, 982, 1639, 774, 447, 649, 661, 302, 1357, 221, 511,
+          1129, 0, 0, 2216, 951, 1300, 238, 994, 721, 804, 1224, 2148, 1276,
+          855, 1717, 258, 1341, 1123, 1098, 2032, 504, 883, 1599, 1761, 1008,
+          999, 924, 1593, 1621, 534, 2100, 759, 1263, 88, 1021, 1026, 441, 1288,
+          1006, 1337, 808, 609, 2223, 1312, 1701, 1667, 693, 582, 1036, 584,
+          1757, 1700, 1128, 1608, 1575, 760, 1051, 1008, 1603, 221, 1929, 1509,
+          442, 1490, 1124, 431, 1210, 987, 1154, 211, 576, 1672, 1429, 923,
+          1363, 1122, 425, 858, 1880, 528, 1112, 49, 0, 0, 8636, 10019, 1424,
+          1616, 729, 326, 856, 5029, 579, 63, 829, 1042, 1086, 1082, 1517, 1738,
+          1521, 1220, 1234, 1139, 902, 813, 1587, 1097, 617, 1365, 5894, 632,
+          1333, 572, 1675, 1062, 595, 1237, 1346, 1893, 922, 1515, 643, 1299,
+          1081, 763, 985, 627, 0, 1708, 783, 1035, 1049, 1223, 1344, 908, 1038,
+          551, 1592, 1211, 722, 1036, 929, 1422, 1749, 631, 1629, 928, 1319,
+          914, 469, 1936, 1035, 1275, 1278, 695, 1047, 876, 1650, 1544, 1578,
+          1831, 1118, 1205, 864, 1827, 847, 1391, 1368, 1207, 1029, 1492, 1749,
+          789, 2066, 828, 1304, 1822, 824, 575, 711, 1055, 500, 377, 389, 567,
+          1607, 1040, 676, 649, 1181, 996, 1529, 101, 0, 1970, 1089, 308, 1447,
+          2957, 801, 970, 1738, 1223, 1834, 507, 878, 521, 1413, 1701, 628, 576,
+          1230, 1769, 1760, 719, 976, 1644, 1301, 0, 0, 0, 0, 0, 13852, 419,
+          1064, 1247, 1150, 597, 1130, 391, 1408, 773, 1269, 1397, 1005, 1245,
+          787, 1933, 889, 1423, 813, 741, 473, 873, 1199, 687, 695, 0, 1412,
+          1333, 1569, 1328, 1258, 1506, 1140, 1195, 1964, 237, 314, 1823, 192,
+          920, 986, 1976, 1042, 1620, 1729, 1048, 412, 2781, 389, 1135, 1031,
+          1386, 550, 662, 933, 1565, 1474, 922, 1770, 1475, 1016, 1278, 720,
+          1425, 509, 103, 207, 703, 1253, 0, 0, 0, 0, 0, 0, 9192, 1534, 1447,
+          1976, 3918, 1176, 738, 1972, 1360, 802, 799, 702, 1440, 1076, 716,
+          1461, 914, 1946, 1447, 1242, 1409, 208, 1811, 573, 8737, 12383, 1259,
+          1206, 398, 1634, 448, 1196, 1213, 1339, 1322, 850, 973, 1283, 583, 0,
+          1914, 112, 773, 569, 1227, 1532, 1696, 1455, 523, 464, 725, 2008, 653,
+          1198, 1955, 608, 1474, 260, 413, 730, 878, 1604, 956, 636, 292, 5859,
+          12855, 1517, 508, 1638, 675, 1511, 1758, 678, 1790, 1019, 1174, 1945,
+          969, 594, 888, 762, 1343, 1774, 960, 902, 982, 2577, 2803, 11266,
+          10625, 452, 940, 1086, 1179, 112, 279, 851, 1881, 1566, 1890, 1114,
+          636, 1461, 777, 920, 315, 1208, 3340, 1387, 932, 1463, 970, 981, 1471,
+          656, 1197, 1224, 1881, 1937, 1491, 2128, 2300, 1549, 706, 244, 837,
+          1395, 727
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 17]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+              "lineNumber": 5,
+              "columnNumber": 25
+            },
+            "children": [3, 9, 14, 20]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4, 6, 10, 18, 23]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [5]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "[Host Function] localeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [26],
+            "hitCount": 395
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 13
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 12, 25]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11],
+            "hitCount": 21
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 6
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [28],
+            "hitCount": 39
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [19]
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 13
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [24]
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 48
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27],
+            "hitCount": 27
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15]
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16],
+            "hitCount": 6
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 19
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [21]
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [22],
+            "hitCount": 10
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 17
+          }
+        ],
+        "startTime": 2265115388679,
+        "endTime": 2265116196204
+      }
+    },
+    "cold-after": {
+      "totalSamples": 541,
+      "selfSamples": {
+        "[Host Function] localeCreate": 306,
+        "[GC Young Gen]": 57,
+        "[Native] weakMapPrototypeSet": 47,
+        "Locale": 37,
+        "initialize": 25,
+        "[Native] mapPrototypeGet": 24,
+        "set": 12,
+        "[Native] stringPrototypeConcat": 9,
+        "global": 9,
+        "[Native] mapPrototypeSet": 8,
+        "[Native] objectCreate": 3,
+        "[Native] weakMapPrototypeGet": 2,
+        "[Native] mapPrototypeClear": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          5, 7, 8, 5, 5, 5, 5, 10, 5, 5, 13, 5, 5, 8, 5, 5, 5, 5, 12, 16, 16, 5,
+          18, 20, 5, 5, 5, 5, 5, 5, 5, 5, 5, 10, 8, 12, 5, 8, 5, 22, 5, 20, 16,
+          5, 5, 8, 22, 20, 5, 5, 12, 5, 18, 5, 5, 23, 7, 23, 5, 5, 22, 5, 5, 7,
+          5, 20, 24, 25, 5, 5, 10, 25, 5, 5, 5, 20, 5, 8, 5, 5, 26, 28, 18, 25,
+          25, 22, 23, 20, 5, 5, 22, 5, 5, 5, 5, 5, 5, 5, 16, 5, 5, 7, 25, 5, 5,
+          5, 10, 5, 5, 20, 5, 5, 24, 5, 5, 5, 7, 5, 20, 5, 5, 5, 5, 18, 5, 5, 5,
+          22, 5, 7, 24, 8, 5, 5, 5, 5, 5, 5, 5, 5, 10, 5, 5, 5, 23, 5, 22, 12,
+          10, 5, 29, 8, 5, 12, 5, 7, 5, 22, 18, 8, 10, 23, 5, 25, 5, 23, 23, 24,
+          5, 5, 10, 5, 5, 10, 5, 5, 5, 5, 8, 5, 5, 29, 23, 5, 5, 12, 20, 8, 5,
+          5, 5, 8, 5, 5, 5, 5, 8, 16, 16, 16, 5, 5, 5, 23, 18, 5, 5, 22, 18, 5,
+          5, 5, 8, 22, 22, 5, 5, 24, 24, 10, 5, 5, 20, 8, 5, 5, 5, 23, 12, 5, 5,
+          5, 20, 5, 5, 16, 5, 15, 5, 20, 23, 5, 5, 5, 23, 5, 20, 5, 5, 5, 8, 5,
+          5, 24, 24, 5, 5, 5, 5, 5, 26, 5, 5, 5, 31, 5, 5, 5, 5, 15, 5, 5, 5, 5,
+          5, 5, 5, 5, 8, 16, 16, 8, 8, 5, 20, 23, 5, 23, 8, 5, 5, 5, 22, 5, 5,
+          5, 5, 5, 5, 5, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20,
+          20, 20, 20, 20, 20, 5, 5, 5, 20, 32, 32, 5, 5, 8, 8, 8, 5, 5, 5, 5, 5,
+          20, 23, 23, 5, 5, 5, 5, 20, 25, 5, 16, 16, 5, 5, 5, 5, 23, 5, 5, 23,
+          29, 29, 29, 29, 29, 29, 29, 5, 5, 5, 5, 5, 5, 5, 5, 20, 20, 22, 5, 8,
+          5, 5, 5, 5, 7, 5, 5, 5, 8, 24, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          8, 5, 13, 5, 8, 5, 5, 8, 5, 5, 5, 20, 5, 5, 5, 5, 5, 5, 5, 25, 16, 16,
+          16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 5, 5, 5, 28, 5,
+          20, 5, 5, 10, 23, 5, 8, 20, 22, 5, 5, 15, 5, 5, 5, 23, 5, 5, 5, 5, 5,
+          5, 16, 5, 5, 8, 8, 5, 5, 5, 20, 5, 5, 5, 23, 5, 24, 5, 20, 20, 20, 5,
+          5, 5, 5, 5, 25, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 24, 29, 8, 23, 22,
+          5, 10, 12, 5, 20, 23, 5, 22, 5, 5, 22, 5, 8, 5, 32, 29, 8, 23, 5, 5,
+          5, 5, 23, 5, 5, 5, 5, 5, 5, 20, 5, 5, 7, 5, 5, 8, 8, 5, 1
+        ],
+        "timeDeltas": [
+          0, 449, 874, 1232, 1021, 1281, 271, 1479, 1524, 1254, 889, 2311, 1852,
+          510, 1163, 1537, 1147, 1051, 578, 743, 0, 1549, 352, 1657, 494, 1170,
+          1734, 1351, 638, 1323, 285, 1465, 682, 2092, 905, 1203, 930, 891,
+          1912, 979, 720, 642, 387, 2126, 229, 986, 165, 930, 1561, 670, 573,
+          1466, 1622, 2377, 2123, 1281, 771, 1148, 783, 1530, 732, 750, 1172,
+          1278, 1824, 896, 1264, 1114, 1600, 968, 1238, 1503, 1109, 1198, 689,
+          711, 1589, 1274, 987, 710, 1600, 1472, 967, 1094, 239, 455, 1157,
+          1498, 683, 643, 2134, 996, 1340, 1360, 1021, 806, 653, 1113, 585,
+          2185, 2419, 570, 533, 992, 997, 1255, 1584, 1274, 1955, 1332, 1462,
+          896, 916, 1234, 637, 479, 1611, 63, 852, 1336, 1957, 869, 609, 1051,
+          891, 1792, 1468, 1504, 875, 714, 422, 1699, 1004, 1034, 1064, 700, 83,
+          549, 1905, 139, 845, 116, 1438, 1087, 746, 1379, 1194, 1569, 1336,
+          946, 346, 1958, 736, 1424, 924, 1182, 783, 1680, 550, 731, 736, 1294,
+          1291, 1183, 669, 1455, 1616, 339, 2731, 2034, 1753, 754, 734, 607,
+          1600, 1789, 1132, 820, 1039, 709, 1183, 1415, 1179, 999, 642, 583,
+          1966, 1742, 1260, 472, 1470, 1021, 1654, 1360, 702, 1163, 1215, 977,
+          0, 0, 2806, 987, 1092, 966, 1416, 87, 1014, 360, 410, 1322, 1154,
+          1598, 1139, 1399, 694, 1261, 720, 249, 0, 1612, 762, 1027, 570, 1624,
+          861, 1117, 1723, 1024, 633, 723, 733, 657, 2018, 1376, 1586, 923,
+          1981, 466, 351, 289, 759, 1416, 1630, 1155, 1128, 1204, 951, 780,
+          1623, 900, 1350, 489, 803, 1752, 0, 24711, 15490, 6172, 1584, 965,
+          1142, 2057, 1232, 255, 878, 1396, 761, 1460, 252, 1843, 216, 1333,
+          438, 2137, 1086, 1607, 1498, 1093, 1101, 1540, 0, 1626, 323, 1572,
+          1221, 924, 1724, 1546, 420, 1233, 1508, 649, 1614, 508, 577, 643, 681,
+          1336, 645, 1204, 1212, 1212, 2028, 1446, 2273, 918, 1437, 310, 759,
+          613, 547, 1264, 1711, 206, 237, 1200, 432, 632, 1489, 1410, 1348, 837,
+          1013, 454, 0, 2272, 1818, 1010, 859, 976, 398, 1199, 771, 121, 1781,
+          187, 1154, 1561, 1416, 1628, 1058, 547, 272, 1282, 481, 81, 0, 10694,
+          8127, 1591, 1951, 772, 1235, 1558, 1057, 1227, 0, 0, 0, 0, 0, 0, 7198,
+          996, 1346, 1495, 522, 618, 3062, 1879, 1044, 444, 897, 1653, 318,
+          1297, 702, 1442, 875, 2381, 469, 1280, 1340, 1305, 417, 1758, 1577,
+          791, 829, 1328, 1035, 446, 1218, 1537, 1001, 965, 1243, 2123, 1390,
+          562, 725, 2039, 1608, 941, 1074, 877, 550, 973, 1520, 908, 1068, 1485,
+          1807, 1204, 637, 1087, 1178, 981, 1125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 16064, 952, 777, 3625, 1685, 756, 305, 1564, 1415, 1446,
+          1314, 1993, 1154, 1068, 1825, 1060, 2102, 3948, 365, 626, 10746,
+          11694, 266, 1066, 771, 1310, 759, 389, 2256, 1095, 863, 849, 1903,
+          1588, 2175, 1427, 1382, 1131, 1423, 1153, 919, 1544, 3663, 1053, 1496,
+          8794, 715, 1149, 998, 1025, 890, 1317, 2111, 400, 963, 1011, 1006,
+          1778, 896, 605, 1203, 844, 1506, 701, 262, 2286, 2714, 5607, 2025,
+          666, 5586, 1349, 688, 924, 1033, 1066, 1447, 1726, 1219, 258, 1646,
+          890, 627, 325, 2132, 1809, 3306, 2114, 800, 1478, 1394, 651, 1635,
+          639, 558, 1453, 684, 696, 2412, 203, 151, 1486, 3758, 1832, 860, 554,
+          744, 1364
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 25],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+              "lineNumber": 5,
+              "columnNumber": 25
+            },
+            "children": [3, 6, 8, 14, 27]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4, 9, 19, 21, 23]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [5]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "[Host Function] localeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [24],
+            "hitCount": 306
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10, 11, 17, 30]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 12
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [12]
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13],
+            "hitCount": 8
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [18]
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 7
+          },
+          {
+            "id": 30,
+            "callFrame": {
+              "functionName": "set",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [31]
+          },
+          {
+            "id": 31,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeClear",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [20]
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 47
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [22]
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "[Native] mapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 17
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [32],
+            "hitCount": 25
+          },
+          {
+            "id": 32,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [26],
+            "hitCount": 9
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29],
+            "hitCount": 37
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15]
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16],
+            "hitCount": 3
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 28
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [28]
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-cold-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 9
+          }
+        ],
+        "startTime": 2265116680068,
+        "endTime": 2265117384229
+      }
+    },
+    "long-before": {
+      "totalSamples": 340,
+      "selfSamples": {
+        "[Host Function] localeCreate": 285,
+        "[Native] weakMapPrototypeSet": 14,
+        "[GC Young Gen]": 11,
+        "initialize": 10,
+        "Locale": 9,
+        "global": 4,
+        "[Native] objectCreate": 3,
+        "[Native] stringPrototypeConcat": 3,
+        "[Native] weakMapPrototypeGet": 1
+      },
+      "raw": {
+        "samples": [
+          5, 6, 5, 5, 5, 5, 5, 8, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5,
+          5, 9, 9, 5, 5, 5, 11, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 8, 5, 5, 9, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 12, 5, 5, 6, 13, 5, 5, 5, 6, 5, 5, 5,
+          5, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 9, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 9, 5, 8, 5, 5, 6, 5, 13, 8, 5, 6, 12, 5, 5, 5,
+          11, 5, 5, 12, 5, 9, 11, 5, 5, 12, 5, 5, 5, 5, 5, 12, 5, 5, 5, 5, 5, 5,
+          5, 5, 15, 5, 5, 5, 5, 12, 12, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          5, 5, 13, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 15, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          5, 12, 16, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+          12, 5, 5, 5, 6, 5, 5, 16, 5, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 16, 16, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 5, 5,
+          5, 5, 5, 5, 13, 5, 5, 5, 5, 5, 18, 15, 5, 6, 5, 5, 5, 5, 5, 5, 5
+        ],
+        "timeDeltas": [
+          0, 1519, 672, 1304, 1238, 1815, 922, 1126, 1062, 1335, 1351, 1518,
+          1205, 1096, 1226, 854, 235, 719, 618, 895, 725, 1082, 834, 388, 1369,
+          0, 2402, 1384, 1319, 764, 780, 818, 474, 566, 1211, 729, 523, 637,
+          870, 519, 998, 1387, 928, 862, 2000, 842, 887, 397, 484, 773, 869,
+          900, 1041, 983, 2200, 1125, 1946, 1157, 127, 938, 976, 2165, 597, 338,
+          1474, 664, 647, 928, 329, 1743, 1173, 976, 471, 1179, 274, 916, 1405,
+          1375, 1116, 706, 1680, 1632, 949, 1260, 1699, 1591, 953, 1314, 1421,
+          1413, 64, 755, 1841, 317, 2078, 1447, 951, 133, 1128, 824, 1277, 1244,
+          1515, 1506, 746, 1763, 807, 886, 1952, 1990, 1082, 543, 1453, 729,
+          434, 217, 2481, 911, 806, 1411, 1537, 825, 404, 328, 69, 1547, 1219,
+          1744, 1336, 1528, 1373, 1011, 640, 132, 1938, 525, 1365, 941, 1362,
+          1136, 1304, 427, 763, 1588, 634, 792, 1652, 1690, 1011, 1365, 1498,
+          1140, 460, 1163, 1218, 1692, 1300, 180, 539, 930, 1190, 776, 1579,
+          531, 557, 872, 1087, 1288, 1236, 1224, 1181, 1579, 1819, 1254, 981,
+          720, 225, 339, 483, 324, 781, 872, 633, 1760, 1243, 1773, 1640, 952,
+          1709, 1470, 141, 1528, 1427, 1465, 1249, 942, 102, 1559, 945, 592,
+          1094, 1413, 1851, 1530, 1397, 853, 1202, 976, 371, 639, 1185, 1071,
+          1021, 1418, 1043, 686, 1185, 357, 193, 101, 1574, 782, 1873, 979,
+          2101, 1153, 1077, 1329, 893, 1401, 2251, 1160, 1021, 1566, 203, 835,
+          941, 792, 1659, 2190, 1676, 1772, 1549, 988, 1376, 205, 1111, 1480,
+          1568, 1870, 925, 1251, 780, 1698, 1189, 1935, 621, 711, 866, 1017,
+          989, 986, 1982, 843, 1328, 274, 762, 425, 1341, 557, 315, 977, 1760,
+          1513, 1538, 419, 966, 705, 1518, 821, 1796, 1220, 709, 762, 1103, 669,
+          1322, 2638, 1748, 1490, 843, 1344, 1093, 1631, 1518, 712, 1222, 1292,
+          742, 764, 1132, 1258, 1639, 1856, 1048, 394, 0, 2221, 686, 1308, 1031,
+          1024, 1236, 596, 718, 549, 1543, 611, 1032, 1068, 1684, 684, 1000,
+          937, 1397, 1283, 2236, 190, 1749, 1056, 1529, 1505, 1804, 925, 1521,
+          904, 1882, 1495, 938, 719
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 13]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-long-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 68
+            },
+            "children": [3, 10, 12, 14, 17]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4, 6, 7]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [5]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "[Host Function] localeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 285
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [9],
+            "hitCount": 10
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 6
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 14
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15]
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16],
+            "hitCount": 3
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [18]
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-long-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 4
+          }
+        ],
+        "startTime": 2265116230068,
+        "endTime": 2265116601156
+      }
+    },
+    "long-after": {
+      "totalSamples": 244,
+      "selfSamples": {
+        "[Host Function] localeCreate": 186,
+        "[GC Young Gen]": 17,
+        "initialize": 9,
+        "Locale": 9,
+        "[Native] weakMapPrototypeSet": 8,
+        "global": 7,
+        "[Native] stringPrototypeConcat": 4,
+        "[Native] objectCreate": 4
+      },
+      "raw": {
+        "samples": [
+          4, 7, 7, 7, 4, 7, 7, 9, 7, 9, 7, 7, 7, 7, 9, 11, 11, 7, 7, 7, 7, 7, 7,
+          7, 10, 11, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 10, 7, 7, 7, 7, 7, 7, 12,
+          13, 7, 7, 7, 7, 10, 11, 4, 7, 13, 7, 7, 7, 7, 7, 7, 7, 12, 7, 7, 7,
+          11, 7, 13, 7, 7, 7, 12, 7, 7, 7, 7, 13, 7, 10, 13, 7, 7, 11, 11, 7, 7,
+          7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 14, 14, 7, 7, 7, 7, 7, 16, 7,
+          7, 7, 12, 7, 7, 7, 7, 7, 7, 13, 7, 7, 7, 7, 7, 7, 7, 7, 16, 7, 7, 16,
+          7, 7, 7, 7, 7, 7, 14, 14, 7, 10, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+          7, 7, 7, 14, 14, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 4, 10, 7, 7, 7, 13,
+          7, 14, 7, 7, 7, 7, 7, 7, 7, 7, 16, 7, 9, 7, 7, 7, 12, 7, 14, 7, 7, 7,
+          7, 7, 7, 7, 7, 7, 7, 16, 7, 7, 13, 10, 7, 10, 7, 14, 12, 7, 12, 7, 7,
+          7, 7, 7, 7, 7, 7, 7, 13, 10, 7, 7, 16, 16, 16, 7, 7, 7, 14, 7, 7, 7,
+          7, 7, 7, 7, 7
+        ],
+        "timeDeltas": [
+          0, 771, 640, 1798, 1000, 1470, 1434, 121, 207, 882, 409, 833, 1157,
+          852, 513, 1017, 0, 1770, 830, 1173, 1579, 1444, 1634, 937, 1540, 961,
+          765, 533, 1294, 1060, 932, 1580, 1192, 485, 1668, 699, 350, 601, 1903,
+          1241, 1563, 1136, 752, 593, 180, 470, 1093, 324, 1597, 1385, 783,
+          1966, 1566, 336, 1112, 1802, 208, 149, 842, 396, 1485, 2171, 262,
+          1545, 1406, 1050, 743, 1486, 1045, 1726, 1673, 535, 1083, 1036, 1232,
+          328, 1402, 634, 393, 1212, 2087, 152, 433, 142, 0, 1313, 1558, 2155,
+          1133, 139, 1387, 1304, 823, 778, 977, 1668, 1022, 1029, 1394, 572,
+          1405, 0, 2049, 1632, 1132, 1479, 1283, 1867, 502, 1637, 1194, 1952,
+          1025, 929, 944, 657, 1173, 393, 1077, 530, 325, 1263, 1158, 1475,
+          1586, 1168, 1675, 854, 727, 1915, 406, 957, 654, 707, 1130, 765, 1067,
+          1792, 0, 2700, 1030, 917, 633, 472, 1147, 1156, 922, 1276, 1313, 1755,
+          770, 1026, 1349, 1834, 1255, 249, 814, 0, 2560, 1669, 1728, 681, 1135,
+          994, 837, 645, 1442, 1078, 1151, 1066, 1591, 969, 992, 417, 497, 795,
+          822, 1272, 1384, 1418, 577, 2002, 1970, 1130, 435, 298, 631, 951,
+          1279, 1317, 1869, 1275, 1619, 990, 2087, 1491, 1000, 949, 486, 725,
+          1703, 66, 1317, 970, 1190, 920, 707, 348, 1651, 1644, 1006, 1740, 775,
+          1776, 1516, 762, 525, 1517, 563, 475, 553, 458, 584, 785, 1304, 179,
+          1495, 1012, 1069, 771, 1009, 1900, 824, 981, 517, 177, 2655, 633, 377,
+          1187, 598, 267, 237, 862
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 12]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-long-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 68
+            },
+            "children": [3, 5, 8, 13]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [14],
+            "hitCount": 4
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 10
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [6, 10, 15]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "[Host Function] localeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 186
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11],
+            "hitCount": 9
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 7
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "initialize",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16]
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [9]
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "Locale",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/locale-long-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 7
+          }
+        ],
+        "startTime": 2265117420058,
+        "endTime": 2265117673148
+      }
+    }
+  },
+  "controlMediansUs": {
+    "tag": {
+      "before": {
+        "repeated": 0.07019471922831144,
+        "diverse": 0.8902959598344751,
+        "long": 2.5860117602860555
+      },
+      "after": {
+        "repeated": 0.06995271496634814,
+        "diverse": 0.6272434620768763,
+        "long": 1.2990366230951622
+      },
+      "magrinj": {
+        "repeated": 1.1158217894262634,
+        "diverse": 0.9847651526797563,
+        "long": 3.0421646661125124
+      }
+    },
+    "locale": {
+      "before": {
+        "Locale.new(diverse)": 2.416731498669833,
+        "Locale.new(long)": 4.6212148445192724
+      },
+      "after": {
+        "Locale.new(diverse)": 1.8182378553319722,
+        "Locale.new(long)": 3.621046504122205
+      },
+      "magrinj": {
+        "Locale.new(diverse)": 1.4418742939596996,
+        "Locale.new(long)": 3.820570418611169
+      }
+    },
+    "size": {
+      "before": {
+        "ListFormat.format(size=0)": 0.23181246069725603,
+        "ListFormat.format(size=1)": 0.40112564602168277,
+        "ListFormat.format(size=3)": 0.7035532435111236,
+        "ListFormat.format(size=32)": 3.542254155036062,
+        "ListFormat.format(size=256)": 23.836516309529543
+      },
+      "after": {
+        "ListFormat.format(size=0)": 0.23039249754219782,
+        "ListFormat.format(size=1)": 0.40148425978259183,
+        "ListFormat.format(size=3)": 0.703161316778278,
+        "ListFormat.format(size=32)": 3.5289098450448364,
+        "ListFormat.format(size=256)": 23.737281328067183
+      },
+      "magrinj": {
+        "ListFormat.format(size=0)": 0.2522527938708663,
+        "ListFormat.format(size=1)": 0.3937671681342181,
+        "ListFormat.format(size=3)": 0.5352839507395402,
+        "ListFormat.format(size=32)": 2.429410698823631,
+        "ListFormat.format(size=256)": 16.29612990655005
+      }
+    },
+    "constructor": {
+      "before": {
+        "ListFormat.new": 1.1125175151391886,
+        "ListFormat.new(default)": 0.9451935984543525,
+        "ListFormat.new(options)": 2.5352126685902476,
+        "ListFormat.new(unsupported)": 2.112920963554643
+      },
+      "after": {
+        "ListFormat.new": 1.2269380458747037,
+        "ListFormat.new(default)": 1.0338200881960802,
+        "ListFormat.new(options)": 2.3844497045502067,
+        "ListFormat.new(unsupported)": 2.060062819509767
+      },
+      "magrinj": {
+        "ListFormat.new": 2.849608092219569,
+        "ListFormat.new(default)": 2.6386287208879367,
+        "ListFormat.new(options)": 2.784590658848174,
+        "ListFormat.new(unsupported)": 4.791210754774511
+      }
+    }
+  },
+  "controls": {
+    "tag": {
+      "before": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07061206588332425,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9486451526754536,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5994265743065625,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07019471922831144,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8902959598344751,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5860117602860555,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07016308791207848,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8805140678305179,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.575827849796042,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07030011283859494,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.6495915367850102,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 1.315570654696785,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.06983652883718605,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.6272434620768763,
+            "iterations": 131072,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 1.2990366230951622,
+            "iterations": 65536,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.06995271496634814,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.625737571681384,
+            "iterations": 131072,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 1.2949128722539172,
+            "iterations": 65536,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "repeated",
+            "us": 1.1158217894262634,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 1.0016774758696556,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0738142086192966,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.1163764065713622,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9847651526797563,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0421646661125124,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.1033063201466575,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9845730019151233,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0107259517535567,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "locale": {
+      "before": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.416731498669833,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.130460438318551,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.1537361753871664,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.6212148445192724,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.4487006448907778,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.8378256324213,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.779896454536356,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.7522110069403425,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.8848909385269508,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.600986994570121,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.8182378553319722,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.621046504122205,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4742623025085777,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.8257355336099863,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4418742939596996,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.7855872651562095,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4403275854419917,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.820570418611169,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "size": {
+      "before": [
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.2427936105959816,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.4185341495031025,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.7035532435111236,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.542254155036062,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 23.836516309529543,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.23147727915784344,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.4008639371022582,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.7045576676318888,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.5479837097227573,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 23.845977382734418,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.23181246069725603,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.40112564602168277,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.7003724422247615,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.518017561873421,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 23.717137170024216,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.2292640165251214,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.39671649210504256,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.6969174210098572,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.5123081761412323,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 23.575761006213725,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.23039249754219782,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.4037822800455615,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.703161316778278,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.5289098450448364,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 23.737281328067183,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.23269184748642147,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.40148425978259183,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.713401022949256,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 3.6537812557071447,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 24.263207451440394,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.2522527938708663,
+            "iterations": 131072,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.3964773095503915,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.5352839507395402,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 2.429410698823631,
+            "iterations": 16384,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 16.29612990655005,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.25012761216203216,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.3852830959658604,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.5332696528057568,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 2.4278099444927648,
+            "iterations": 32768,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 16.200140467844903,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.format(size=0)",
+            "us": 0.2566877537901746,
+            "iterations": 262144,
+            "value": ""
+          },
+          {
+            "name": "ListFormat.format(size=1)",
+            "us": 0.3937671681342181,
+            "iterations": 131072,
+            "value": "item0"
+          },
+          {
+            "name": "ListFormat.format(size=3)",
+            "us": 0.5663397387252189,
+            "iterations": 131072,
+            "value": "item0, item1, and item2"
+          },
+          {
+            "name": "ListFormat.format(size=32)",
+            "us": 2.462933844071813,
+            "iterations": 32768,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, and item31"
+          },
+          {
+            "name": "ListFormat.format(size=256)",
+            "us": 16.457501682452857,
+            "iterations": 4096,
+            "value": "item0, item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21, item22, item23, item24, item25, item26, item27, item28, item29, item30, item31, item32, item33, item34, item35, item36, item37, item38, item39, item40, item41, item42, item43, item44, item45, item46, item47, item48, item49, item50, item51, item52, item53, item54, item55, item56, item57, item58, item59, item60, item61, item62, item63, item64, item65, item66, item67, item68, item69, item70, item71, item72, item73, item74, item75, item76, item77, item78, item79, item80, item81, item82, item83, item84, item85, item86, item87, item88, item89, item90, item91, item92, item93, item94, item95, item96, item97, item98, item99, item100, item101, item102, item103, item104, item105, item106, item107, item108, item109, item110, item111, item112, item113, item114, item115, item116, item117, item118, item119, item120, item121, item122, item123, item124, item125, item126, item127, item128, item129, item130, item131, item132, item133, item134, item135, item136, item137, item138, item139, item140, item141, item142, item143, item144, item145, item146, item147, item148, item149, item150, item151, item152, item153, item154, item155, item156, item157, item158, item159, item160, item161, item162, item163, item164, item165, item166, item167, item168, item169, item170, item171, item172, item173, item174, item175, item176, item177, item178, item179, item180, item181, item182, item183, item184, item185, item186, item187, item188, item189, item190, item191, item192, item193, item194, item195, item196, item197, item198, item199, item200, item201, item202, item203, item204, item205, item206, item207, item208, item209, item210, item211, item212, item213, item214, item215, item216, item217, item218, item219, item220, item221, item222, item223, item224, item225, item226, item227, item228, item229, item230, item231, item232, item233, item234, item235, item236, item237, item238, item239, item240, item241, item242, item243, item244, item245, item246, item247, item248, item249, item250, item251, item252, item253, item254, and item255"
+          }
+        ]
+      ]
+    },
+    "constructor": {
+      "before": [
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.0940860083792359,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 0.9719061526993755,
+            "iterations": 131072,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.3939145758049563,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 2.1850971679668874,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.1125175151391886,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 0.9451935984543525,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.5352126685902476,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 2.112920963554643,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.2480556179070845,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 0.8747126194066368,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.6198118284810334,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 2.0864939579041675,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.2269380458747037,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 1.0602057373034768,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.348102381802164,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 2.2973657469265163,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.1417838104534894,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 0.9547608933644369,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.409991357126273,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 1.989013486308977,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 1.2284076074138284,
+            "iterations": 65536,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 1.0338200881960802,
+            "iterations": 131072,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.3844497045502067,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 2.060062819509767,
+            "iterations": 32768,
+            "value": "en"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 2.7883779839612544,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 2.5446761719649658,
+            "iterations": 32768,
+            "value": "en-US"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.8727578173857182,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 4.938255500746891,
+            "iterations": 16384,
+            "value": "en-US"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 2.8878571174573153,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 2.64771212823689,
+            "iterations": 32768,
+            "value": "en-US"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.784590658848174,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 4.784897406352684,
+            "iterations": 16384,
+            "value": "en-US"
+          }
+        ],
+        [
+          {
+            "name": "ListFormat.new",
+            "us": 2.849608092219569,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(default)",
+            "us": 2.6386287208879367,
+            "iterations": 32768,
+            "value": "en-US"
+          },
+          {
+            "name": "ListFormat.new(options)",
+            "us": 2.564196605817415,
+            "iterations": 32768,
+            "value": "en"
+          },
+          {
+            "name": "ListFormat.new(unsupported)",
+            "us": 4.791210754774511,
+            "iterations": 16384,
+            "value": "en-US"
+          }
+        ]
+      ]
+    }
+  },
+  "conformance": {
+    "privateUseOracles": "21 valid private-use cases independently match pinned ICU4C 78.1, ICU4J 78.1, ICU4X and FormatJS canonicalization/Locale. Covers aliases, mixed casing, one-character private subtags, long suffixes and existing Unicode extensions.",
+    "gates": "All 70 broad gates pass: canonicalizer/default-provider and Locale Rust tests, native Hermes API/conformance/package/locale matrix tests, Hermes Test262 suite (existing baselines; strict getCanonicalLocales/DurationFormat/supportedValuesOf) and all pinned ICU4C/J/X conformance targets.",
+    "consumer": "All nine SDK API smoke scripts pass."
+  },
+  "validationTargets": [
+    "//conformance-tests/icu4c:intl_canonical_private_conformance_test",
+    "//conformance-tests/icu4c:intl_collator_conformance_test",
+    "//conformance-tests/icu4c:intl_locale_formatting_conformance_test",
+    "//conformance-tests/icu4c:intl_relativetimeformat_conformance_test",
+    "//conformance-tests/icu4j:icu_conformance_test",
+    "//conformance-tests/icu4j:intl_canonical_private_conformance_test",
+    "//conformance-tests/icu4j:intl_collator_conformance_test",
+    "//conformance-tests/icu4j:intl_locale_formatting_conformance_test",
+    "//conformance-tests/icu4j:intl_relativetimeformat_conformance_test",
+    "//conformance-tests/icu4x:intl_canonical_private_conformance_test",
+    "//conformance-tests/icu4x:intl_collator_conformance_test",
+    "//conformance-tests/icu4x:intl_listformat_conformance_test",
+    "//conformance-tests/icu4x:intl_pluralrules_conformance_test",
+    "//crates/intl_getcanonicallocales:intl_getcanonicallocales_test",
+    "//crates/intl_getcanonicallocales:provider_test",
+    "//crates/intl_locale:intl_locale_test",
+    "//native/hermes/tests:collator_typecheck_typecheck_test",
+    "//native/hermes/tests:compiled_locales_typecheck_typecheck_test",
+    "//native/hermes/tests:datetimeformat_typecheck_typecheck_test",
+    "//native/hermes/tests:displaynames_typecheck_typecheck_test",
+    "//native/hermes/tests:durationformat_typecheck_typecheck_test",
+    "//native/hermes/tests:listformat_typecheck_typecheck_test",
+    "//native/hermes/tests:locale_conformance_test",
+    "//native/hermes/tests:locale_typecheck_typecheck_test",
+    "//native/hermes/tests:numberformat_typecheck_typecheck_test",
+    "//native/hermes/tests:package_harness_test",
+    "//native/hermes/tests:package_harness_test_typecheck_typecheck_test",
+    "//native/hermes/tests:package_runner_typecheck_typecheck_test",
+    "//native/hermes/tests:pluralrules_typecheck_typecheck_test",
+    "//native/hermes/tests:relativetimeformat_typecheck_typecheck_test",
+    "//native/hermes/tests:segmenter_typecheck_typecheck_test",
+    "//tools/test262:hermes-locale",
+    "//conformance-tests/icu4j:locale_matcher_conformance_test",
+    "//conformance-tests/icu4j:messageformat_escaping_conformance_test",
+    "//conformance-tests/icu4x:intl_relativetimeformat_conformance_test",
+    "//native/hermes/tests:chromium_locales_test",
+    "//native/hermes/tests:collator_conformance_test",
+    "//native/hermes/tests:collator_package_conformance_test",
+    "//native/hermes/tests:compiled_locales_test",
+    "//native/hermes/tests:datetimeformat_conformance_test",
+    "//native/hermes/tests:datetimeformat_package_conformance_test",
+    "//native/hermes/tests:displaynames_conformance_test",
+    "//native/hermes/tests:displaynames_package_conformance_test",
+    "//native/hermes/tests:durationformat_conformance_test",
+    "//native/hermes/tests:durationformat_package_conformance_test",
+    "//native/hermes/tests:getcanonicallocales_package_conformance_test",
+    "//native/hermes/tests:listformat_conformance_test",
+    "//native/hermes/tests:listformat_package_conformance_test",
+    "//native/hermes/tests:locale_package_conformance_test",
+    "//native/hermes/tests:numberformat_conformance_test",
+    "//native/hermes/tests:numberformat_package_conformance_test",
+    "//native/hermes/tests:pluralrules_conformance_test",
+    "//native/hermes/tests:pluralrules_package_conformance_test",
+    "//native/hermes/tests:relativetimeformat_conformance_test",
+    "//native/hermes/tests:relativetimeformat_package_conformance_test",
+    "//native/hermes/tests:segmenter_conformance_test",
+    "//native/hermes/tests:segmenter_package_conformance_test",
+    "//native/hermes/tests:supported_values_conformance_test",
+    "//native/hermes/tests:supportedvaluesof_package_conformance_test",
+    "//tools/test262:hermes-collator",
+    "//tools/test262:hermes-datetimeformat",
+    "//tools/test262:hermes-displaynames",
+    "//tools/test262:hermes-durationformat-strict",
+    "//tools/test262:hermes-getcanonicallocales-strict",
+    "//tools/test262:hermes-listformat",
+    "//tools/test262:hermes-numberformat",
+    "//tools/test262:hermes-pluralrules",
+    "//tools/test262:hermes-relativetimeformat",
+    "//tools/test262:hermes-segmenter",
+    "//tools/test262:hermes-supportedvaluesof-strict"
+  ],
+  "sdkSmokeScripts": [
+    "numberformat-smoke.js",
+    "pluralrules-smoke.js",
+    "displaynames-smoke.js",
+    "listformat-smoke.js",
+    "collator-smoke.js",
+    "durationformat-smoke.js",
+    "datetimeformat-smoke.js",
+    "relativetimeformat-smoke.js",
+    "segmenter-smoke.js"
+  ],
+  "cpuAffinity": [0],
+  "timingChange": "Every host pinned to CPU 0 for this complete comparison. Historical tables used unpinned processes; assess code effects within this paired run.",
+  "profileNote": "Fresh before/after profiles from the exact optimized SDK hosts, pinned to CPU 0. No profiling or builds during timings.",
+  "rustProbes": {
+    "before": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (2 packages loaded, 299 targets configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.514s, Critical Path: 0.51s\n\u001b[32mINFO: \u001b[0m6 processes: 101 action cache hit, 5 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 6 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[0mtag: en\ncanonicalize: 2.0 allocation calls\nlocale: 4.0 allocation calls\ntag: en-x-bench-191\ncanonicalize: 16.0 allocation calls\nlocale: 21.0 allocation calls\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 40.0 allocation calls\nlocale: 48.0 allocation calls\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 25.0 allocation calls\nlocale: 38.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 1 target configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.065s, Critical Path: 0.20s\n\u001b[32mINFO: \u001b[0m6 processes: 5 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 6 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[0mtag: en\ncanonicalize: 262 ns/call\nlocale: 343 ns/call\ntag: en-x-bench-191\ncanonicalize: 565 ns/call\nlocale: 729 ns/call\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 1933 ns/call\nlocale: 2504 ns/call\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 1259 ns/call\nlocale: 1647 ns/call\n"
+    },
+    "after": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (0 packages loaded, 0 targets configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.464s, Critical Path: 0.41s\n\u001b[32mINFO: \u001b[0m3 processes: 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[0mtag: en\ncanonicalize: 2.0 allocation calls\nlocale: 4.0 allocation calls\ntag: en-x-bench-191\ncanonicalize: 3.0 allocation calls\nlocale: 8.0 allocation calls\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 6.0 allocation calls\nlocale: 14.0 allocation calls\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 23.0 allocation calls\nlocale: 36.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.232s, Critical Path: 0.20s\n\u001b[32mINFO: \u001b[0m3 processes: 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[0mtag: en\ncanonicalize: 259 ns/call\nlocale: 325 ns/call\ntag: en-x-bench-191\ncanonicalize: 315 ns/call\nlocale: 463 ns/call\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 804 ns/call\nlocale: 1344 ns/call\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 1218 ns/call\nlocale: 1619 ns/call\n"
+    },
+    "final": {
+      "alloc": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 packages loaded, 2 targets configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_allocation_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 5.369s, Critical Path: 0.31s\n\u001b[32mINFO: \u001b[0m3 processes: 3 action cache hit, 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_allocation_probe\n\u001b[0mtag: en\ncanonicalize: 2.0 allocation calls\nlocale: 4.0 allocation calls\ntag: en-x-bench-191\ncanonicalize: 3.0 allocation calls\nlocale: 8.0 allocation calls\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 6.0 allocation calls\nlocale: 14.0 allocation calls\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 23.0 allocation calls\nlocale: 36.0 allocation calls\n",
+      "time": "\u001b[32mComputing main repo mapping:\u001b[0m \n\u001b[32mLoading:\u001b[0m \n\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\u001b[32mAnalyzing:\u001b[0m target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 0 targets configured)\n\n\u001b[32mINFO: \u001b[0mAnalyzed target //benchmarks/hermes-intl-extension:canonical_extension_probe (0 packages loaded, 1 target configured).\n\u001b[32mINFO: \u001b[0mFrom Compiling Rust bin //benchmarks/hermes-intl-extension:canonical_extension_probe (1 file):\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: linker stderr: clang++: argument unused during compilation: '--unwindlib=none' [-Wunused-command-line-argument]\u001b[0m\n  \u001b[1m\u001b[94m|\u001b[0m\n  \u001b[1m\u001b[94m= \u001b[0m\u001b[1mnote\u001b[0m: `#[warn(linker_messages)]` on by default\n\n\u001b[1m\u001b[33mwarning\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n\u001b[32mINFO: \u001b[0mFound 1 target...\nTarget //benchmarks/hermes-intl-extension:canonical_extension_probe up-to-date:\n  bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[32mINFO: \u001b[0mElapsed time: 1.641s, Critical Path: 0.21s\n\u001b[32mINFO: \u001b[0m3 processes: 3 action cache hit, 2 internal, 1 linux-sandbox.\n\u001b[32mINFO: \u001b[0mBuild completed successfully, 3 total actions\n\u001b[32mINFO: \u001b[0mRunning command line: bazel-bin/benchmarks/hermes-intl-extension/canonical_extension_probe\n\u001b[0mtag: en\ncanonicalize: 269 ns/call\nlocale: 332 ns/call\ntag: en-x-bench-191\ncanonicalize: 327 ns/call\nlocale: 467 ns/call\ntag: en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh\ncanonicalize: 931 ns/call\nlocale: 1363 ns/call\ntag: iw-Latn-BU-u-ca-gregory-x-AbCd\ncanonicalize: 1233 ns/call\nlocale: 1609 ns/call\n"
+    }
+  },
+  "rustProbeLimits": "Independent allocation and timing binaries; single unpinned Rust diagnostic runs are not SDK benchmark results.",
+  "limits": "Several constructor and steady-state gaps remain. No whole-goal completion claim.",
+  "commands": {
+    "benchmark": "Build SDK and five optimized workloads with Bazel. Rebuild pinned standalone host with native-clock.patch and run before/after/magrinj on identical frozen workloads pinned to CPU0; no builds/profiling during timings.",
+    "coldProfile": "taskset -c 0 hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/locale-cold-profile.js",
+    "longProfile": "taskset -c 0 hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/locale-long-profile.js"
+  }
+}

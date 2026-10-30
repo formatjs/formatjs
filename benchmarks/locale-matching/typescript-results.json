@@ -1,0 +1,197 @@
+{
+  "timestamp": "2026-10-29T00:35:56.464853+00:00",
+  "baseline_commit": "3ce3f6195ec8dc6a37e987762324e5246d202aa2",
+  "runtime": "Bazel Node.js 24.14.0, macOS arm64",
+  "methodology": "Seven fresh-process matches per case and version, alternating order. Same CLDR supported list. Timer includes matching and supported-list preparation; excludes process startup and module loading. Baseline uses matcher sources from HEAD; after uses current port.",
+  "cold": [
+    {
+      "desired": "en",
+      "version": "before",
+      "median_ms": 1.8681249999999991,
+      "samples_ms": [
+        3.6171250000000015, 1.9020420000000016, 1.8667080000000027,
+        1.9819170000000028, 1.8681249999999991, 1.8145409999999984,
+        1.8290000000000006
+      ],
+      "matched": "en"
+    },
+    {
+      "desired": "en",
+      "version": "after",
+      "median_ms": 0.7265000000000015,
+      "samples_ms": [
+        0.7525419999999983, 0.7265000000000015, 0.6976670000000027,
+        0.7163329999999988, 0.7772080000000017, 0.688915999999999,
+        0.7316670000000016
+      ],
+      "matched": "en"
+    },
+    {
+      "desired": "en-US",
+      "version": "before",
+      "median_ms": 2.986916000000001,
+      "samples_ms": [
+        3.831040999999999, 3.625583000000006, 2.879375000000003,
+        3.0329580000000007, 2.986916000000001, 2.8190000000000026,
+        2.906667000000006
+      ],
+      "matched": "en"
+    },
+    {
+      "desired": "en-US",
+      "version": "after",
+      "median_ms": 2.395208000000004,
+      "samples_ms": [
+        2.4407089999999982, 2.395208000000004, 2.3590000000000018,
+        2.558040999999996, 2.4021669999999986, 2.344791999999998,
+        2.3532920000000033
+      ],
+      "matched": "en"
+    },
+    {
+      "desired": "zh-TW",
+      "version": "before",
+      "median_ms": 3.042250000000003,
+      "samples_ms": [
+        3.7872079999999926, 3.1759579999999943, 3.042250000000003,
+        2.837666999999996, 2.944583999999999, 2.8046250000000015,
+        3.2520409999999984
+      ],
+      "matched": "zh-Hant"
+    },
+    {
+      "desired": "zh-TW",
+      "version": "after",
+      "median_ms": 2.3638329999999996,
+      "samples_ms": [
+        2.6600420000000042, 2.4840420000000023, 2.233249999999998,
+        2.3808329999999955, 2.3638329999999996, 2.34825, 2.3629999999999995
+      ],
+      "matched": "zh-Hant"
+    },
+    {
+      "desired": "en-XZ",
+      "version": "before",
+      "median_ms": 71.30924999999999,
+      "samples_ms": [
+        73.83574999999999, 73.86237499999999, 72.89095800000001,
+        70.43466699999999, 69.60570799999999, 70.31412499999999,
+        71.30924999999999
+      ],
+      "matched": "en-GB"
+    },
+    {
+      "desired": "en-XZ",
+      "version": "after",
+      "median_ms": 7.267292000000005,
+      "samples_ms": [
+        7.267292000000005, 7.323625, 7.255791000000002, 7.268208000000001,
+        7.007542000000001, 6.968083, 7.303666999999997
+      ],
+      "matched": "en"
+    }
+  ],
+  "warm_public_means_ns": [
+    {
+      "task": "Tier 1: BestFit([\"en\"], CLDR locales) - exact match",
+      "before": 1262499.0,
+      "after": 3850.8
+    },
+    {
+      "task": "Tier 1: BestFit([\"fr\"], CLDR locales) - exact match",
+      "before": 1264817.0,
+      "after": 3941.3
+    },
+    {
+      "task": "Tier 1: BestFit([\"ja\"], CLDR locales) - exact match",
+      "before": 1286013.0,
+      "after": 3887.7
+    },
+    {
+      "task": "Tier 1: BestFit([\"ar\"], CLDR locales) - exact match",
+      "before": 1256434.0,
+      "after": 3916.4
+    },
+    {
+      "task": "Tier 2: BestFit([\"en-US\"], CLDR locales) - 1-level fallback",
+      "before": 1259959.0,
+      "after": 5030.5
+    },
+    {
+      "task": "Tier 2: BestFit([\"fr-FR\"], CLDR locales) - 1-level fallback",
+      "before": 1258662.0,
+      "after": 5034.8
+    },
+    {
+      "task": "Tier 2: BestFit([\"zh-Hans-CN\"], CLDR locales) - 2-level fallback",
+      "before": 1341914.0,
+      "after": 5340.9
+    },
+    {
+      "task": "Tier 2: BestFit([\"zh-TW\"], CLDR locales) - maximized match",
+      "before": 1274962.0,
+      "after": 5057.8
+    },
+    {
+      "task": "Tier 2: BestFit([\"zh-HK\"], CLDR locales) - maximized match",
+      "before": 1279675.0,
+      "after": 5003.0
+    },
+    {
+      "task": "Tier 2: BestFit([\"zh-MO\"], CLDR locales) - maximized match",
+      "before": 1273301.0,
+      "after": 5072.3
+    },
+    {
+      "task": "Tier 3: BestFit([\"sr-Latn\"], CLDR locales) - CLDR distance",
+      "before": 1269959.0,
+      "after": 5048.1
+    },
+    {
+      "task": "Tier 3: BestFit([\"sr-Latn-BA\"], CLDR locales) - CLDR bs/sh",
+      "before": 1268905.0,
+      "after": 5291.5
+    },
+    {
+      "task": "Tier 3: BestFit([\"sh\"], CLDR locales) - CLDR sr distance",
+      "before": 1280754.0,
+      "after": 4990.2
+    },
+    {
+      "task": "Tier 3: BestFit([\"en-XZ\"], CLDR locales) - fuzzy match",
+      "before": 1372064.0,
+      "after": 5212.5
+    },
+    {
+      "task": "Tier 3: BestFit([\"fr-XX\"], CLDR locales) - fuzzy match",
+      "before": 1341038.0,
+      "after": 5079.9
+    },
+    {
+      "task": "Tier 3: BestFit([\"de-XY\"], CLDR locales) - fuzzy match",
+      "before": 1344876.0,
+      "after": 5068.2
+    },
+    {
+      "task": "Multi: BestFit([\"fr\", \"en\"], CLDR locales) - multiple requested",
+      "before": 1262670.0,
+      "after": 4165.5
+    },
+    {
+      "task": "Multi: BestFit([\"de-DE\", \"fr-FR\", \"en-US\"], CLDR locales)",
+      "before": 1288324.0,
+      "after": 7084.0
+    },
+    {
+      "task": "Real-world: BestFit([\"zh-Hans-CN\"], CLDR locales) - typical mobile",
+      "before": 1343428.0,
+      "after": 5351.9
+    },
+    {
+      "task": "Real-world: BestFit([\"en-US\"], CLDR locales) - typical desktop",
+      "before": 1272081.0,
+      "after": 4931.5
+    }
+  ],
+  "warm_methodology": "One tinybench run per version; one-second warm workloads. Values are latency means; cold samples are independent fresh processes."
+}

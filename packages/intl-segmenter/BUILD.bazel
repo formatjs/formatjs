@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_run_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -65,7 +66,7 @@ formatjs_library(
     repository = "git@github.com:formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "12.2.15",  # x-release-please-version
+    version = "12.3.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -165,4 +166,10 @@ rolldown_bundle(
         "//:node_modules/@formatjs_generated/cldr.supported-locales",
         "//packages/ecma402-abstract",
     ],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

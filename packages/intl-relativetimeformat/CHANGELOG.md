@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.16...@formatjs/intl-relativetimeformat@12.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_relativetimeformat:** port RelativeTimeFormat to Rust and Hermes ([#7697](https://github.com/formatjs/formatjs/issues/7697)) ([e777afa](https://github.com/formatjs/formatjs/commit/e777afa74ebfb7062b953dee8a05698314a51b31))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [12.3.16](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@12.3.15...@formatjs/intl-relativetimeformat@12.3.16) (2026-10-19)
 
 

@@ -15,13 +15,6 @@ export default class RelativeTimeFormat {
     locales?: string | string[],
     options?: Intl.RelativeTimeFormatOptions
   ) {
-    // test262/test/intl402/RelativeTimeFormat/constructor/constructor/newtarget-undefined.js
-    // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-    const newTarget =
-      this && this instanceof RelativeTimeFormat ? this.constructor : void 0
-    if (!newTarget) {
-      throw new TypeError("Intl.RelativeTimeFormat must be called with 'new'")
-    }
     return InitializeRelativeTimeFormat(this, locales, options, {
       getInternalSlots,
       availableLocales: RelativeTimeFormat.availableLocales,

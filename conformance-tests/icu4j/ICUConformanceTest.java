@@ -377,61 +377,15 @@ public class ICUConformanceTest {
      * the same results as our @formatjs/intl-localematcher.
      */
     private static void testLocaleMatching() {
-        System.out.println("TEST 7: Locale Matching Conformance");
-        System.out.println("----------------------------------------------------------");
-
-        String fixturesPath = System.getenv("LOCALE_MATCH_FIXTURES");
-        if (fixturesPath == null || fixturesPath.isEmpty()) {
-            System.out.println("  SKIP: LOCALE_MATCH_FIXTURES not set");
-            return;
-        }
-
-        String json;
         try {
-            json = new String(Files.readAllBytes(Paths.get(fixturesPath)));
-        } catch (IOException e) {
-            System.out.println("  FAIL: Cannot read fixtures: " + e.getMessage());
-            System.exit(1);
-            return;
+            LocaleMatcherConformanceTest.run(false);
+        } catch (Exception error) {
+            throw new RuntimeException(error);
         }
-
-        // Minimal JSON array-of-objects parser (no external dependency)
-        // Each object has: description, requested[], supported[], expected
-        List<Map<String, Object>> fixtures = parseFixtures(json);
-
-        for (Map<String, Object> fixture : fixtures) {
-            String description = (String) fixture.get("description");
-            @SuppressWarnings("unchecked")
-            List<String> requested = (List<String>) fixture.get("requested");
-            @SuppressWarnings("unchecked")
-            List<String> supported = (List<String>) fixture.get("supported");
-            String expected = (String) fixture.get("expected");
-
-            LocaleMatcher.Builder builder = LocaleMatcher.builder()
-                .setDefaultULocale(ULocale.forLanguageTag(supported.get(0)));
-            for (String s : supported) {
-                builder.addSupportedULocale(ULocale.forLanguageTag(s));
-            }
-            LocaleMatcher matcher = builder.build();
-
-            // Match first requested locale (single-locale test cases)
-            ULocale result = matcher.getBestMatch(ULocale.forLanguageTag(requested.get(0)));
-            String actual = result.toLanguageTag();
-
-            boolean pass = actual.equals(expected);
-            System.out.printf("  %-60s [%s]%n",
-                description, pass ? "PASS" : "FAIL - got: " + actual + ", expected: " + expected);
-
-            if (!pass) {
-                System.exit(1);
-            }
-        }
-
-        System.out.println("  ✓ All locale matching conformance tests passed\n");
     }
 
     /** Minimal JSON array parser for fixture files. */
-    private static List<Map<String, Object>> parseFixtures(String json) {
+    static List<Map<String, Object>> parseFixtures(String json) {
         List<Map<String, Object>> result = new ArrayList<>();
         // Strip outer []
         json = json.trim();

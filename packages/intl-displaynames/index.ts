@@ -257,15 +257,15 @@ function isValidCodeForDisplayNames(
       // unicode_language_subtag allows 2–3 or 5–8 ASCII letters.
       // https://tc39.es/ecma402/#sec-canonicalcodefordisplaynames
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L235-L238
-      return /^(?:[a-z]{2,3}|[a-z]{5,8})(-[a-z]{4})?(-([a-z]{2}|\d{3}))?(-([a-z\d]{5,8}|\d[a-z\d]{3}))*$/i.test(
+      return /^(?:[a-z]{2,3}|[a-z]{5,8})(-[a-z]{4})?(-([a-z]{2}|\d{3}))?(-([a-z\d]{5,8}|\d[a-z\d]{3}))*(?![\s\S])/i.test(
         code
       )
     case 'region':
       // unicode_region_subtag
-      return /^([a-z]{2}|\d{3})$/i.test(code)
+      return /^([a-z]{2}|\d{3})(?![\s\S])/i.test(code)
     case 'script':
       // unicode_script_subtag
-      return /^[a-z]{4}$/i.test(code)
+      return /^[a-z]{4}(?![\s\S])/i.test(code)
     case 'currency':
       return IsWellFormedCurrencyCode(code)
     case 'calendar':

@@ -1,3 +1,6 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+
+# gazelle:exclude tests/rust-timezones.test.ts
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
@@ -87,8 +90,8 @@ formatjs_library(
         "register-calendar-data.ts",
         "should-polyfill.ts",
         "to_locale_string.ts",
-        "types.ts",
-        "unpack.ts",
+        "types.ts",  # keep
+        "unpack.ts",  # keep
     ],
     author = "Long Ho <holevietlong@gmail.com>",
     bugs = "https://github.com/formatjs/formatjs/issues",
@@ -115,7 +118,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "7.8.2",  # x-release-please-version
+    version = "7.9.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -359,6 +362,36 @@ formatjs_generated_package(
     ],
 )
 
+# Raw packs use the same pinned IANA and golden-zone selection as JS.
+[
+    ts_run_binary(
+        name = "tz_%s_json" % selection,
+        srcs = [
+            "types.ts",
+            ":zdumps",
+            "//:node_modules/fs-extra",
+            "//:node_modules/json-stable-stringify",
+            "//:node_modules/minimist",
+            "//:root_package_json",
+        ],
+        outs = ["tz-%s.json" % selection],
+        args = ["--json"] + (["--golden"] if selection == "golden" else []) + [
+            "$(rootpaths :zdumps)",
+            "--out",
+            "$(rootpath tz-%s.json)" % selection,
+        ],
+        tool = "//packages/intl-datetimeformat/scripts:process-zdump",
+        visibility = [
+            "//crates:__pkg__",
+            "//crates/intl_datetimeformat:__subpackages__",
+        ],
+    )
+    for selection in [
+        "all",
+        "golden",
+    ]
+]
+
 # "ts-node scripts/process-zdump --polyfill --output dist/add-all-tz.js --input data.zdump"
 # add-all-tz
 ts_run_binary(
@@ -540,4 +573,70 @@ formatjs_test(
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/intl-datetimeformat/calendars",
     ],
+)
+
+formatjs_test(
+    name = "rust_timezone_test",
+    size = "large",
+    srcs = [
+        "tests/rust-timezones.test.ts",
+        "types.ts",
+        "unpack.ts",
+    ],
+    data = [
+        ":add-all-tz",
+        ":add-golden-tz",
+        ":tz_all_json",
+        ":tz_golden_json",
+        "//crates/intl_datetimeformat:timezone_conformance",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+formatjs_test(
+    name = "timezone_data_test",
+    srcs = [
+        "types.ts",
+        "//packages/intl-datetimeformat/scripts:timezone_test_sources",
+    ],
+    deps = [
+        "//:node_modules/@types/fs-extra",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/fs-extra",
+        "//:node_modules/json-stable-stringify",
+        "//:node_modules/minimist",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+filegroup(
+    name = "rust_pattern_cldr_data",
+    testonly = True,
+    srcs = ["cldr-raw/%s.json" % locale for locale in [
+        "en",
+        "fr",
+        "ar",
+        "ja",
+        "zh-Hans",
+        "ru",
+        "hi",
+        "he",
+    ]],
+    visibility = ["//:__pkg__"],
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES] + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

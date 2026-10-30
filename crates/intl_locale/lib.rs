@@ -4,12 +4,14 @@
 
 mod data_generated;
 pub mod ffi;
+pub mod matcher;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use serde::{Deserialize, Serialize};
+use tinystr::TinyAsciiStr;
 
 use data_generated::*;
 
@@ -113,43 +115,38 @@ pub fn validate_option(name: &str, value: &str) -> Result<(), LocaleError> {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct LanguageId {
-    language: String,
-    script: Option<String>,
-    region: Option<String>,
+    language: TinyAsciiStr<8>,
+    script: Option<TinyAsciiStr<4>>,
+    region: Option<TinyAsciiStr<3>>,
     variants: Vec<String>,
+}
+
+// Canonical grammar and validated overrides bound every ASCII subtag.
+fn subtag<const N: usize>(value: &str) -> TinyAsciiStr<N> {
+    TinyAsciiStr::try_from_str(value).expect("validated locale subtag")
 }
 
 impl LanguageId {
     // The shared canonicalizer has already validated the entire tag. Splitting
     // canonical subtags also preserves valid 5–8-letter languages, which ICU's
     // compact LanguageIdentifier cannot represent directly.
-    fn parse(parts: &[&str]) -> Self {
-        let mut index = 1;
+    fn parse(tag: &str) -> Self {
+        let mut parts = tag.split('-').peekable();
+        let language = subtag(parts.next().expect("validated language subtag"));
         let script = parts
-            .get(index)
-            .filter(|part| part.len() == 4 && ascii_letters(part))
-            .map(|part| {
-                index += 1;
-                (*part).to_owned()
-            });
+            .next_if(|part| part.len() == 4 && ascii_letters(part))
+            .map(subtag);
         let region = parts
-            .get(index)
-            .filter(|part| {
+            .next_if(|part| {
                 part.len() == 2
                     || (part.len() == 3 && part.as_bytes().iter().all(u8::is_ascii_digit))
             })
-            .map(|part| {
-                index += 1;
-                (*part).to_owned()
-            });
+            .map(subtag);
         Self {
-            language: parts[0].to_owned(),
+            language,
             script,
             region,
-            variants: parts[index..]
-                .iter()
-                .map(|part| (*part).to_owned())
-                .collect(),
+            variants: parts.map(str::to_owned).collect(),
         }
     }
 
@@ -164,8 +161,8 @@ impl LanguageId {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Extension {
-    singleton: String,
-    parts: Vec<String>,
+    singleton: u8,
+    value: String,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -188,12 +185,17 @@ fn lookup<'a, T>(table: &'a [(&str, T)], key: &str) -> Option<&'a T> {
 }
 
 impl Locale {
+    pub(crate) fn from_tag(tag: &str) -> Result<Self, LocaleError> {
+        canonicalize_locale(tag)
+            .map(Self::parse)
+            .map_err(|_| LocaleError::InvalidTag)
+    }
+
     pub fn new(tag: &str, options: &LocaleOptions) -> Result<Self, LocaleError> {
         // Intl.Locale 11–14: validate and canonicalize the original tag before
         // overrides, so alias resolution keeps its original language context.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L33-L36
-        let mut locale =
-            Self::parse(canonicalize_locale(tag).map_err(|_| LocaleError::InvalidTag)?);
+        let mut locale = Self::from_tag(tag)?;
         for (name, value) in [
             ("language", &options.language),
             ("script", &options.script),
@@ -211,24 +213,49 @@ impl Locale {
             }
         }
         if let Some(language) = &options.language {
-            locale.id.language = language.clone();
+            locale.id.language = subtag(language);
         }
         if let Some(script) = &options.script {
-            locale.id.script = Some(script.clone());
+            locale.id.script = Some(subtag(script));
         }
         if let Some(region) = &options.region {
-            locale.id.region = Some(region.clone());
+            locale.id.region = Some(subtag(region));
         }
         if let Some(variants) = &options.variants {
             locale.id.variants = variants.split('-').map(str::to_owned).collect();
         }
-        // UpdateLanguageId 10–14 canonicalizes the updated language ID before
-        // MakeLocaleRecord applies Unicode options.
+        // UpdateLanguageId 10–14 canonicalizes overrides before Unicode options;
+        // an unchanged language ID is already canonical.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L109-L113
-        locale = Self::parse(
-            canonicalize_locale(&locale.emit_with_id(&locale.id))
-                .map_err(|_| LocaleError::InvalidTag)?,
-        );
+        if [
+            &options.language,
+            &options.script,
+            &options.region,
+            &options.variants,
+        ]
+        .iter()
+        .any(|value| value.is_some())
+        {
+            locale = Self::parse(
+                canonicalize_locale(&locale.emit_with_id(&locale.id))
+                    .map_err(|_| LocaleError::InvalidTag)?,
+            );
+        }
+        // Without Unicode overrides, the parsed extensions are already canonical.
+        if options.numeric.is_none()
+            && [
+                &options.calendar,
+                &options.collation,
+                &options.first_day_of_week,
+                &options.hour_cycle,
+                &options.case_first,
+                &options.numbering_system,
+            ]
+            .iter()
+            .all(|value| value.is_none())
+        {
+            return Ok(locale);
+        }
         let numeric = options.numeric.map(|value| value.to_string());
         let first_day = options
             .first_day_of_week
@@ -261,46 +288,47 @@ impl Locale {
     }
 
     fn parse(tag: String) -> Self {
-        let parts: Vec<_> = tag.split('-').collect();
-        let end = parts
-            .iter()
-            .position(|part| part.len() == 1)
-            .unwrap_or(parts.len());
-        let id = LanguageId::parse(&parts[..end]);
+        let extension_start = |value: &str| {
+            value
+                .as_bytes()
+                .windows(3)
+                .position(|bytes| bytes[0] == b'-' && bytes[2] == b'-')
+        };
+        let end = extension_start(&tag).unwrap_or(tag.len());
+        let id = LanguageId::parse(&tag[..end]);
         let mut extensions = Vec::new();
         let mut keywords = BTreeMap::new();
-        let mut index = end;
-        while index < parts.len() {
-            let singleton = parts[index];
-            index += 1;
-            let end = if singleton == "x" {
-                parts.len()
+        let mut rest = &tag[end..];
+        while !rest.is_empty() {
+            let singleton = rest.as_bytes()[1];
+            let values = &rest[3..];
+            let end = if singleton == b'x' {
+                values.len()
             } else {
-                (index..parts.len())
-                    .find(|&i| parts[i].len() == 1)
-                    .unwrap_or(parts.len())
+                extension_start(values).unwrap_or(values.len())
             };
-            let values = &parts[index..end];
-            if singleton == "u" {
-                let mut start = 0;
-                while start < values.len() && values[start].len() >= 3 {
-                    start += 1;
-                }
-                while start < values.len() {
-                    let key = values[start];
-                    start += 1;
-                    let from = start;
-                    while start < values.len() && values[start].len() >= 3 {
-                        start += 1;
+            rest = &values[end..];
+            let values = &values[..end];
+            if singleton == b'u' {
+                let mut subtags = values.split('-').peekable();
+                let mut offset = 0;
+                while let Some(key) = subtags.next() {
+                    offset += key.len() + 1;
+                    if key.len() != 2 {
+                        continue;
                     }
-                    keywords.insert(key.to_owned(), values[from..start].join("-"));
+                    let start = offset;
+                    while let Some(value) = subtags.next_if(|value| value.len() >= 3) {
+                        offset += value.len() + 1;
+                    }
+                    let end = offset - 1;
+                    keywords.insert(key.to_owned(), values[start.min(end)..end].to_owned());
                 }
             }
             extensions.push(Extension {
-                singleton: singleton.to_owned(),
-                parts: values.iter().map(|part| (*part).to_owned()).collect(),
+                singleton,
+                value: values.to_owned(),
             });
-            index = end;
         }
         Self {
             tag,
@@ -314,22 +342,22 @@ impl Locale {
         let existing = self
             .extensions
             .iter()
-            .position(|extension| extension.singleton == "u");
+            .position(|extension| extension.singleton == b'u');
         if existing.is_none() && self.keywords.is_empty() {
             return;
         }
         let index = existing.unwrap_or_else(|| {
             self.extensions.push(Extension {
-                singleton: "u".to_owned(),
-                parts: Vec::new(),
+                singleton: b'u',
+                value: String::new(),
             });
             self.extensions.len() - 1
         });
         let mut attributes: Vec<_> = self.extensions[index]
-            .parts
-            .iter()
+            .value
+            .split('-')
             .take_while(|part| part.len() >= 3)
-            .cloned()
+            .map(str::to_owned)
             .collect();
         for (key, value) in &self.keywords {
             attributes.push(key.clone());
@@ -337,22 +365,34 @@ impl Locale {
                 attributes.extend(value.split('-').map(str::to_owned));
             }
         }
-        self.extensions[index].parts = attributes;
+        self.extensions[index].value = attributes.join("-");
+        // Private use consumes the remaining subtags, so it must stay last.
         self.extensions
-            .sort_by(|left, right| left.singleton.cmp(&right.singleton));
+            .sort_by_key(|extension| (extension.singleton == b'x', extension.singleton));
     }
 
     fn emit_with_id(&self, id: &LanguageId) -> String {
         let mut tag = id.emit();
         for extension in &self.extensions {
             tag.push('-');
-            tag.push_str(&extension.singleton);
-            for part in &extension.parts {
+            tag.push(extension.singleton as char);
+            if !extension.value.is_empty() {
                 tag.push('-');
-                tag.push_str(part);
+                tag.push_str(&extension.value);
             }
         }
         tag
+    }
+
+    fn with_id(&self, id: LanguageId) -> Self {
+        // Existing extensions are canonical; only language ID changes.
+        let tag = self.emit_with_id(&id);
+        Self {
+            tag,
+            id,
+            extensions: self.extensions.clone(),
+            keywords: self.keywords.clone(),
+        }
     }
 
     pub fn as_str(&self) -> &str {
@@ -396,21 +436,21 @@ impl Locale {
             (None, None),
         ] {
             let trial = LanguageId {
-                language: id.language.clone(),
-                script: script_candidate.map(str::to_owned),
-                region: region_candidate.map(str::to_owned),
+                language: id.language,
+                script: script_candidate.map(subtag),
+                region: region_candidate.map(subtag),
                 variants: Vec::new(),
             };
             if let Some(found) = lookup(LIKELY_SUBTAGS, &trial.emit()) {
-                let replacement = LanguageId::parse(&found.split('-').collect::<Vec<_>>());
+                let replacement = LanguageId::parse(found);
                 return LanguageId {
                     language: if id.language == "und" {
                         replacement.language
                     } else {
-                        id.language.clone()
+                        id.language
                     },
-                    script: script.map(str::to_owned).or(replacement.script),
-                    region: region.map(str::to_owned).or(replacement.region),
+                    script: script.map(subtag).or(replacement.script),
+                    region: region.map(subtag).or(replacement.region),
                     variants: id.variants.clone(),
                 };
             }
@@ -421,11 +461,7 @@ impl Locale {
     pub fn maximize(&self) -> Self {
         // Intl.Locale.prototype.maximize 3–4 preserves variants/extensions.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L284-L285
-        Self::new(
-            &self.emit_with_id(&Self::maximized_id(&self.id)),
-            &LocaleOptions::default(),
-        )
-        .unwrap_or_else(|_| self.clone())
+        self.with_id(Self::maximized_id(&self.id))
     }
 
     pub fn minimize(&self) -> Self {
@@ -434,29 +470,23 @@ impl Locale {
         // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2595-L2601
         let mut maximal = Self::maximized_id(&self.id);
         let variants = std::mem::take(&mut maximal.variants);
-        for (script, region) in [
-            (None, None),
-            (None, maximal.region.clone()),
-            (maximal.script.clone(), None),
-        ] {
+        for (script, region) in [(None, None), (None, maximal.region), (maximal.script, None)] {
             let mut trial = LanguageId {
-                language: maximal.language.clone(),
+                language: maximal.language,
                 script,
                 region,
                 variants: Vec::new(),
             };
             if Self::maximized_id(&trial) == maximal {
                 trial.variants = variants;
-                return Self::new(&self.emit_with_id(&trial), &LocaleOptions::default())
-                    .unwrap_or_else(|_| self.clone());
+                return self.with_id(trial);
             }
         }
         maximal.variants = variants;
-        Self::new(&self.emit_with_id(&maximal), &LocaleOptions::default())
-            .unwrap_or_else(|_| self.clone())
+        self.with_id(maximal)
     }
 
-    fn subdivision_region(&self, key: &str) -> Option<String> {
+    fn subdivision_region(&self, key: &str) -> Option<TinyAsciiStr<3>> {
         let value = self.keyword(key)?;
         let size = if value.len() >= 3 && value.as_bytes()[..2].iter().all(u8::is_ascii_alphabetic)
         {
@@ -488,11 +518,13 @@ impl Locale {
         let region = self
             .id
             .region
-            .clone()
             .or_else(|| self.subdivision_region("sd"))
             .or_else(|| Self::maximized_id(&self.id).region)
-            .unwrap_or_else(|| "001".to_owned());
-        (region, self.subdivision_region("rg"))
+            .unwrap_or_else(|| subtag("001"));
+        (
+            region.to_string(),
+            self.subdivision_region("rg").map(|value| value.to_string()),
+        )
     }
 
     pub fn calendars(&self) -> Vec<String> {
@@ -655,9 +687,9 @@ impl Locale {
         LocaleSnapshot {
             locale: self.tag.clone(),
             base_name: self.base_name(),
-            language: self.id.language.clone(),
-            script: self.id.script.clone(),
-            region: self.id.region.clone(),
+            language: self.id.language.to_string(),
+            script: self.id.script.map(|value| value.to_string()),
+            region: self.id.region.map(|value| value.to_string()),
             variants: self.variants(),
             calendar: self.keyword("ca").map(str::to_owned),
             collation: self.keyword("co").map(str::to_owned),

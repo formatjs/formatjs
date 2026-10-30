@@ -1,10 +1,14 @@
 import {Bench} from 'tinybench'
-import {match} from '@formatjs/intl-localematcher'
+// Measure the shipped bundle rather than workspace package resolution.
+// @ts-ignore Bazel supplies this generated package.
+// Benchmark the assembled public bundle.
+// ast-grep-ignore: no-relative-import
+import {match} from '../pkg/index.js'
 
-// Benchmark BestFit matcher with all 725 CLDR locales
+// Benchmark BestFit matcher with all all CLDR locales
 // This simulates the real-world scenario from issue #4936
 
-// Get all 725 CLDR locales
+// Get all all CLDR locales
 const cldr = await import('cldr-core/availableLocales.json', {
   with: {type: 'json'},
 })
@@ -22,103 +26,111 @@ function matchLocale(
 }
 
 async function run() {
+  const coldStart = performance.now()
+  matchLocale(['en'], allLocales)
+  console.log(
+    `First exact match: ${(performance.now() - coldStart).toFixed(3)}ms`
+  )
   const bench = new Bench({time: 1000})
 
   bench
+    .add('Fresh supported array: exact en', () => {
+      matchLocale(['en'], [...allLocales])
+    })
     // === TIER 1: Exact Match (Fast Path) ===
-    .add('Tier 1: BestFit(["en"], 725 locales) - exact match', () => {
+    .add('Tier 1: BestFit(["en"], CLDR locales) - exact match', () => {
       matchLocale(['en'], allLocales)
     })
 
-    .add('Tier 1: BestFit(["fr"], 725 locales) - exact match', () => {
+    .add('Tier 1: BestFit(["fr"], CLDR locales) - exact match', () => {
       matchLocale(['fr'], allLocales)
     })
 
-    .add('Tier 1: BestFit(["ja"], 725 locales) - exact match', () => {
+    .add('Tier 1: BestFit(["ja"], CLDR locales) - exact match', () => {
       matchLocale(['ja'], allLocales)
     })
 
-    .add('Tier 1: BestFit(["ar"], 725 locales) - exact match', () => {
+    .add('Tier 1: BestFit(["ar"], CLDR locales) - exact match', () => {
       matchLocale(['ar'], allLocales)
     })
 
     // === TIER 2: Maximized Fallback ===
-    .add('Tier 2: BestFit(["en-US"], 725 locales) - 1-level fallback', () => {
+    .add('Tier 2: BestFit(["en-US"], CLDR locales) - 1-level fallback', () => {
       matchLocale(['en-US'], allLocales)
     })
 
-    .add('Tier 2: BestFit(["fr-FR"], 725 locales) - 1-level fallback', () => {
+    .add('Tier 2: BestFit(["fr-FR"], CLDR locales) - 1-level fallback', () => {
       matchLocale(['fr-FR'], allLocales)
     })
 
     .add(
-      'Tier 2: BestFit(["zh-Hans-CN"], 725 locales) - 2-level fallback',
+      'Tier 2: BestFit(["zh-Hans-CN"], CLDR locales) - 2-level fallback',
       () => {
         matchLocale(['zh-Hans-CN'], allLocales)
       }
     )
 
     // === Complex scenario: zh-TW → zh-Hant ===
-    .add('Tier 2: BestFit(["zh-TW"], 725 locales) - maximized match', () => {
+    .add('Tier 2: BestFit(["zh-TW"], CLDR locales) - maximized match', () => {
       matchLocale(['zh-TW'], allLocales)
     })
 
-    .add('Tier 2: BestFit(["zh-HK"], 725 locales) - maximized match', () => {
+    .add('Tier 2: BestFit(["zh-HK"], CLDR locales) - maximized match', () => {
       matchLocale(['zh-HK'], allLocales)
     })
 
-    .add('Tier 2: BestFit(["zh-MO"], 725 locales) - maximized match', () => {
+    .add('Tier 2: BestFit(["zh-MO"], CLDR locales) - maximized match', () => {
       matchLocale(['zh-MO'], allLocales)
     })
 
     // === Complex scenario: sr/sh/bs Serbo-Croatian ===
-    .add('Tier 3: BestFit(["sr-Latn"], 725 locales) - CLDR distance', () => {
+    .add('Tier 3: BestFit(["sr-Latn"], CLDR locales) - CLDR distance', () => {
       matchLocale(['sr-Latn'], allLocales)
     })
 
-    .add('Tier 3: BestFit(["sr-Latn-BA"], 725 locales) - CLDR bs/sh', () => {
+    .add('Tier 3: BestFit(["sr-Latn-BA"], CLDR locales) - CLDR bs/sh', () => {
       matchLocale(['sr-Latn-BA'], allLocales)
     })
 
-    .add('Tier 3: BestFit(["sh"], 725 locales) - CLDR sr distance', () => {
+    .add('Tier 3: BestFit(["sh"], CLDR locales) - CLDR sr distance', () => {
       matchLocale(['sh'], allLocales)
     })
 
     // === TIER 3: Fuzzy matching with non-existent locales ===
-    .add('Tier 3: BestFit(["en-XZ"], 725 locales) - fuzzy match', () => {
+    .add('Tier 3: BestFit(["en-XZ"], CLDR locales) - fuzzy match', () => {
       matchLocale(['en-XZ'], allLocales)
     })
 
-    .add('Tier 3: BestFit(["fr-XX"], 725 locales) - fuzzy match', () => {
+    .add('Tier 3: BestFit(["fr-XX"], CLDR locales) - fuzzy match', () => {
       matchLocale(['fr-XX'], allLocales)
     })
 
-    .add('Tier 3: BestFit(["de-XY"], 725 locales) - fuzzy match', () => {
+    .add('Tier 3: BestFit(["de-XY"], CLDR locales) - fuzzy match', () => {
       matchLocale(['de-XY'], allLocales)
     })
 
     // === Multiple requested locales ===
     .add(
-      'Multi: BestFit(["fr", "en"], 725 locales) - multiple requested',
+      'Multi: BestFit(["fr", "en"], CLDR locales) - multiple requested',
       () => {
         matchLocale(['fr', 'en'], allLocales)
       }
     )
 
-    .add('Multi: BestFit(["de-DE", "fr-FR", "en-US"], 725 locales)', () => {
+    .add('Multi: BestFit(["de-DE", "fr-FR", "en-US"], CLDR locales)', () => {
       matchLocale(['de-DE', 'fr-FR', 'en-US'], allLocales)
     })
 
     // === Real-world DurationFormat scenario ===
     .add(
-      'Real-world: BestFit(["zh-Hans-CN"], 725 locales) - typical mobile',
+      'Real-world: BestFit(["zh-Hans-CN"], CLDR locales) - typical mobile',
       () => {
         matchLocale(['zh-Hans-CN'], allLocales)
       }
     )
 
     .add(
-      'Real-world: BestFit(["en-US"], 725 locales) - typical desktop',
+      'Real-world: BestFit(["en-US"], CLDR locales) - typical desktop',
       () => {
         matchLocale(['en-US'], allLocales)
       }
@@ -136,35 +148,37 @@ async function run() {
 
   // Tier 1 examples
   const tier1En = table.find(
-    r => r['Task name'] === 'Tier 1: BestFit(["en"], 725 locales) - exact match'
+    r =>
+      r['Task name'] === 'Tier 1: BestFit(["en"], CLDR locales) - exact match'
   )
 
   // Tier 2 examples
   const tier2EnUS = table.find(
     r =>
       r['Task name'] ===
-      'Tier 2: BestFit(["en-US"], 725 locales) - 1-level fallback'
+      'Tier 2: BestFit(["en-US"], CLDR locales) - 1-level fallback'
   )
   const tier2ZhHansCN = table.find(
     r =>
       r['Task name'] ===
-      'Tier 2: BestFit(["zh-Hans-CN"], 725 locales) - 2-level fallback'
+      'Tier 2: BestFit(["zh-Hans-CN"], CLDR locales) - 2-level fallback'
   )
   const tier2ZhTW = table.find(
     r =>
       r['Task name'] ===
-      'Tier 2: BestFit(["zh-TW"], 725 locales) - maximized match'
+      'Tier 2: BestFit(["zh-TW"], CLDR locales) - maximized match'
   )
 
   // Tier 3 examples
   const tier3SrLatnBA = table.find(
     r =>
       r['Task name'] ===
-      'Tier 3: BestFit(["sr-Latn-BA"], 725 locales) - CLDR bs/sh'
+      'Tier 3: BestFit(["sr-Latn-BA"], CLDR locales) - CLDR bs/sh'
   )
   const tier3EnXZ = table.find(
     r =>
-      r['Task name'] === 'Tier 3: BestFit(["en-XZ"], 725 locales) - fuzzy match'
+      r['Task name'] ===
+      'Tier 3: BestFit(["en-XZ"], CLDR locales) - fuzzy match'
   )
 
   // Parse latency avg from string like "11967 ± 0.73%"
@@ -189,7 +203,7 @@ async function run() {
     const tier3SrLatnBATimeNs = parseLatency(tier3SrLatnBA['Latency avg (ns)'])
     const tier3EnXZTimeNs = parseLatency(tier3EnXZ['Latency avg (ns)'])
 
-    console.log('Performance with 725 CLDR locales:')
+    console.log('Performance with all CLDR locales:')
     console.log('===================================')
     console.log(
       `TIER 1 (Exact "en"):                    ${(tier1TimeNs / 1000).toFixed(2)}μs per match`
@@ -255,9 +269,7 @@ async function run() {
       `  - Serbo-Croatian:      ${(tier3SrLatnBATimeNs / 1_000_000).toFixed(3)}ms per instantiation`
     )
     console.log(``)
-    console.log(
-      `Performance improvement: ${(610 / (tier2EnUSTimeNs / 1_000_000)).toFixed(0)}x faster 🚀`
-    )
+    console.log('Node timings do not establish Hermes device speedups.')
   }
 
   // Find zh-TW and sr-Latn-BA results to show what they matched to

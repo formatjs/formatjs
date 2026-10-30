@@ -1,0 +1,141 @@
+name: Hermes Intl SDK Release
+
+on:
+  pull_request:
+    paths:
+      - 'native/hermes/**'
+      - 'crates/intl_*/**'
+      - 'MODULE.bazel*'
+      - '.bazelrc'
+      - '.github/workflows/hermes-intl-release.yml'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build SDK archives without publishing
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hermes-intl-sdk-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: bazel-contrib/setup-bazel@0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: hermes-intl-sdk
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Install Android NDK
+        run: |
+          sdkmanager --install 'ndk;27.1.12297006'
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.1.12297006" >> "$GITHUB_ENV"
+      - name: Build SDK archives
+        run: |
+          args=(-c opt --extra_toolchains=@androidndk//:all --spawn_strategy=local)
+          targets=(//native/hermes/package:sdk //native/hermes/package:android_sdk)
+          bazel build "${args[@]}" "${targets[@]}"
+          mkdir artifacts
+          for target in "${targets[@]}"; do
+            archive=$(bazel cquery "${args[@]}" --output=files "$target")
+            cp "$archive" artifacts/
+          done
+          cp native/hermes/version.txt artifacts/version.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: formatjs-hermes-intl-sdk
+          path: artifacts/
+
+  apple:
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')
+    runs-on: macos-15
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v7
+      - uses: bazel-contrib/setup-bazel@0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: hermes-intl-apple-sdk
+      - name: Build Apple SDK
+        run: |
+          bazel build -c opt --config=hermes-apple //native/hermes/package:apple_sdk
+          archive=$(bazel cquery -c opt --config=hermes-apple --output=files //native/hermes/package:apple_sdk)
+          mkdir artifacts
+          cp "$archive" artifacts/
+      - name: Verify Apple libraries
+        run: |
+          mkdir sdk
+          tar -xmzf artifacts/formatjs-hermes-intl-apple.tar.gz -C sdk
+          for triple in aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin x86_64-apple-ios x86_64-apple-darwin; do
+            archive="sdk/lib/$triple/libformatjs_intl_hermes.a"
+            test -s "$archive"
+            xcrun lipo -info "$archive"
+          done
+      - name: Link Apple smoke executables
+        run: |
+          for platform in ios_arm64 ios_sim_arm64 ios_sim_x86_64 macos_arm64 macos_x86_64; do
+            target="//native/hermes/package:${platform}_link_smoke"
+            bazel build -c opt --config=hermes-apple "$target"
+            executable=$(bazel cquery -c opt --config=hermes-apple --output=files "$target")
+            xcrun vtool -show-build "$executable"
+            if [[ "$platform" == "macos_$(uname -m)" ]]; then
+              "$executable"
+            fi
+          done
+      - uses: actions/upload-artifact@v7
+        with:
+          name: formatjs-hermes-intl-apple-sdk
+          path: artifacts/
+
+  publish:
+    needs: [build, apple]
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: formatjs-hermes-intl-apple-sdk
+          path: artifacts/
+      - uses: actions/download-artifact@v8
+        with:
+          name: formatjs-hermes-intl-sdk
+          path: artifacts/
+      - name: Generate checksums
+        run: |
+          cd artifacts
+          sha256sum *.tar.gz version.txt > checksums.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: formatjs-hermes-intl-release
+          path: artifacts/
+      - name: Publish SDK archives
+        if: github.event_name == 'release' || !inputs.dry_run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || github.ref_name }}
+        run: |
+          version=$(cat native/hermes/version.txt)
+          test "$RELEASE_TAG" = "formatjs-hermes-intl_v$version"
+          gh release view "$RELEASE_TAG" > /dev/null
+          gh release upload "$RELEASE_TAG" artifacts/* --clobber

@@ -20,9 +20,9 @@ ts_binary(
 ts_binary(
     name = "bestfit_benchmark",
     data = [
-        "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/cldr-core",
         "//:node_modules/tinybench",
+        "//packages/intl-localematcher:pkg",
     ],
     entry_point = "bestfit-benchmark.ts",
 )

@@ -1,0 +1,2840 @@
+{
+  "collectedAt": "2026-10-29T19:14:50.413717+00:00",
+  "baselineCommit": "1a778f120c0bf2cfa2573ef7784d04cb9c84e11d",
+  "baselinePullRequest": "https://github.com/formatjs/formatjs/pull/7771",
+  "implementationCratesTree": "20d3434eeed385a551cd857f0116939ca023bfa0",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "sourceSha256": {
+    "native/hermes/relativetimeformat.ts": "9ef17f6a8b713990d46f21000b549d454297fac35a6de923ee47f86dbf49be3f",
+    "native/hermes/tests/relativetimeformat.ts": "3b7575f5de2cc01fc31c5e48ad093937f48691c99006d3e407967682c2678bc3",
+    "benchmarks/hermes-intl-extension/overlap.js": "d704b2a22e06e479929211fb5fe3c5a98c1eb84d6b690f9e3c9e6e42673aa119",
+    "benchmarks/hermes-intl-extension/relative-constructor-profile.js": "0313db1373c9df8fa289d6e31cec1e55739e46fad07dba543acd127feb0598f9"
+  },
+  "hostSha256": {
+    "before": "8402ede6e8ccf4be4925a9db9c97f0df0f96e80dd3f792f8aa3b4c7decc955a2",
+    "after": "3819fb9a69b7a1a04ca10703fb6d8d53eada05f7949a3d9cb4b27263fb8c68f6",
+    "magrinj": "7f5a07824225b3db9787ed21ea48cd8eb67c7a3d7d6798ba21aa0da0c887136f"
+  },
+  "workloadSha256": "7728b8d334219dee0782509536f5d3800c5ee143b768cbda2193ffe908ef7656",
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "build": {
+    "hermesCpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "magrinjRust": "upstream release: opt-level=z, lto=true, codegen-units=1",
+    "magrinjBootstrap": "Precompiled Hermes -O bytecode",
+    "overlap": "Same precompiled Hermes -O bytecode on all hosts",
+    "formatjsFactories": "Embedded Hermes -O bytecode"
+  },
+  "clock": "__now when available; otherwise Date.now. Calibration >=50ms, median of seven samples.",
+  "order": "Three complete 33-case invocations per host. Rounds 1 and 3 before/after/magrinj; round 2 reverses. No builds or profiling during timings.",
+  "outputChecks": "297 values checked. All FormatJS before/after values match. Only comparator differences: omitted/unsupported ListFormat default locale en-US versus en.",
+  "change": "Serialize validated enum and Unicode-type option strings directly. Removes generic record serializer, key arrays and temporary option-value record. Preserves locale resolution before style/numeric getters. Locale and query string quoting retained.",
+  "mediansUs": {
+    "before": {
+      "getCanonicalLocales": 0.79345703125,
+      "Locale.maximize": 0.26702880859375,
+      "PluralRules.select": 0.52642822265625,
+      "PluralRules.select(decimal)": 0.60272216796875,
+      "PluralRules.select(string)": 0.6866455078125,
+      "PluralRules.select(ordinal)": 0.54168701171875,
+      "PluralRules.select(ru)": 0.5645751953125,
+      "PluralRules.selectRange": 2.197265625,
+      "ListFormat.format": 1.1138916015625,
+      "ListFormat.formatToParts": 3.35693359375,
+      "RelativeTimeFormat.format": 1.0986328125,
+      "RelativeTimeFormat.formatToParts": 3.23486328125,
+      "RelativeTimeFormat.format(decimal)": 1.495361328125,
+      "RelativeTimeFormat.format(auto)": 0.54931640625,
+      "Locale.new": 0.3509521484375,
+      "Locale.new(options)": 1.861572265625,
+      "Locale.new(zh-HK)": 0.354766845703125,
+      "Locale.new.language": 0.43487548828125,
+      "Locale.new.toString": 0.40435791015625,
+      "Locale.language": 0.07724761962890625,
+      "Locale.new(Locale)": 0.32806396484375,
+      "Locale.new(diverse)": 4.39453125,
+      "Locale.new(long)": 5.9814453125,
+      "PluralRules.new": 2.9296875,
+      "PluralRules.new(options)": 6.34765625,
+      "ListFormat.new": 2.227783203125,
+      "ListFormat.new(default)": 1.2054443359375,
+      "ListFormat.new(array)": 2.25830078125,
+      "ListFormat.new(options)": 3.5400390625,
+      "ListFormat.new(fallback)": 3.143310546875,
+      "ListFormat.new(unsupported)": 3.2958984375,
+      "RelativeTimeFormat.new": 6.2255859375,
+      "RelativeTimeFormat.new(fallback)": 7.2021484375
+    },
+    "after": {
+      "getCanonicalLocales": 0.7781982421875,
+      "Locale.maximize": 0.26702880859375,
+      "PluralRules.select": 0.518798828125,
+      "PluralRules.select(decimal)": 0.5950927734375,
+      "PluralRules.select(string)": 0.69427490234375,
+      "PluralRules.select(ordinal)": 0.54931640625,
+      "PluralRules.select(ru)": 0.58746337890625,
+      "PluralRules.selectRange": 2.197265625,
+      "ListFormat.format": 1.1138916015625,
+      "ListFormat.formatToParts": 3.41796875,
+      "RelativeTimeFormat.format": 1.1138916015625,
+      "RelativeTimeFormat.formatToParts": 3.173828125,
+      "RelativeTimeFormat.format(decimal)": 1.46484375,
+      "RelativeTimeFormat.format(auto)": 0.55694580078125,
+      "Locale.new": 0.3509521484375,
+      "Locale.new(options)": 1.8310546875,
+      "Locale.new(zh-HK)": 0.354766845703125,
+      "Locale.new.language": 0.43487548828125,
+      "Locale.new.toString": 0.40435791015625,
+      "Locale.language": 0.0762939453125,
+      "Locale.new(Locale)": 0.3204345703125,
+      "Locale.new(diverse)": 4.364013671875,
+      "Locale.new(long)": 4.150390625,
+      "PluralRules.new": 2.9296875,
+      "PluralRules.new(options)": 6.34765625,
+      "ListFormat.new": 2.227783203125,
+      "ListFormat.new(default)": 1.190185546875,
+      "ListFormat.new(array)": 2.227783203125,
+      "ListFormat.new(options)": 3.60107421875,
+      "ListFormat.new(fallback)": 3.173828125,
+      "ListFormat.new(unsupported)": 3.35693359375,
+      "RelativeTimeFormat.new": 5.18798828125,
+      "RelativeTimeFormat.new(fallback)": 6.2255859375
+    },
+    "magrinj": {
+      "getCanonicalLocales": 1.1137480178149417,
+      "Locale.maximize": 2.120857228874229,
+      "PluralRules.select": 0.4566531424643472,
+      "PluralRules.select(decimal)": 0.4615855614247266,
+      "PluralRules.select(string)": 0.9281575185013935,
+      "PluralRules.select(ordinal)": 0.45843110638088547,
+      "PluralRules.select(ru)": 0.5059461109340191,
+      "PluralRules.selectRange": 0.8963798027252778,
+      "ListFormat.format": 0.534109327418264,
+      "ListFormat.formatToParts": 3.2742097100708634,
+      "RelativeTimeFormat.format": 0.7174686215876136,
+      "RelativeTimeFormat.formatToParts": 2.1786944271298125,
+      "RelativeTimeFormat.format(decimal)": 0.7944532917463221,
+      "RelativeTimeFormat.format(auto)": 0.601044092036318,
+      "Locale.new": 0.9238863640348427,
+      "Locale.new(options)": 4.873167927144095,
+      "Locale.new(zh-HK)": 1.337915164185688,
+      "Locale.new.language": 1.2520475356723182,
+      "Locale.new.toString": 0.9886803236440755,
+      "Locale.language": 0.08593247821409022,
+      "Locale.new(Locale)": 0.9485916889389046,
+      "Locale.new(diverse)": 1.4310472906799987,
+      "Locale.new(long)": 3.860435594106093,
+      "PluralRules.new": 4.424069862579927,
+      "PluralRules.new(options)": 4.863443959038705,
+      "ListFormat.new": 2.7504640456754714,
+      "ListFormat.new(default)": 2.538853936130181,
+      "ListFormat.new(array)": 2.8479006432462484,
+      "ListFormat.new(options)": 2.6893684989772737,
+      "ListFormat.new(fallback)": 3.490724600851536,
+      "ListFormat.new(unsupported)": 3.7052572297398,
+      "RelativeTimeFormat.new": 4.602657718351111,
+      "RelativeTimeFormat.new(fallback)": 5.393570172600448
+    }
+  },
+  "runs": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.79345703125,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.270843505859375,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.52642822265625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.58746337890625,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6866455078125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.54168701171875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5645751953125,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.166748046875,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.1138916015625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.35693359375,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0986328125,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.52587890625,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.54931640625,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.800537109375,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43487548828125,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.396728515625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0762939453125,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32806396484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.39453125,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.9814453125,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.86865234375,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.34765625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2054443359375,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.25830078125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.5400390625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.143310546875,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 7.2021484375,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26702880859375,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5340576171875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.6103515625,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.762939453125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.54931640625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.61798095703125,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.129150390625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.41796875,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.129150390625,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.46484375,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.54931640625,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.861572265625,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43487548828125,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40435791015625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07724761962890625,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32806396484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 2.25830078125,
+          "iterations": 16384,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.126953125,
+          "iterations": 4096,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.34765625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.349853515625,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2969970703125,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.410888671875,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.60107421875,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.47900390625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 7.080078125,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.8087158203125,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.263214111328125,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.518798828125,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.60272216796875,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6866455078125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.54168701171875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5645751953125,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.197265625,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0986328125,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.35693359375,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0833740234375,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.495361328125,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5645751953125,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.861572265625,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43487548828125,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40435791015625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07724761962890625,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.324249267578125,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.608154296875,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 6.103515625,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.9296875,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.34765625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.197265625,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.190185546875,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.25830078125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.5400390625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.143310546875,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.2958984375,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 7.32421875,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26702880859375,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.518798828125,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5950927734375,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.69427490234375,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.54168701171875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.58746337890625,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.197265625,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.1138916015625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.41796875,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.1138916015625,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.4801025390625,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5645751953125,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8310546875,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43487548828125,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40435791015625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0762939453125,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3204345703125,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.425048828125,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.615234375,
+          "iterations": 4096,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.9296875,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.4697265625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.190185546875,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.5400390625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.143310546875,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.2958984375,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 5.18798828125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.263214111328125,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.518798828125,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5950927734375,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6866455078125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.54931640625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.57220458984375,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.197265625,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.1138916015625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.41796875,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0986328125,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.11279296875,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.4495849609375,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.54168701171875,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8310546875,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3509521484375,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42724609375,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.396728515625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0762939453125,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3204345703125,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.364013671875,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.90625,
+          "iterations": 4096,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.99072265625,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.34765625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2359619140625,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.349853515625,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.60107421875,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.35693359375,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 5.31005859375,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.79345703125,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.286102294921875,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5340576171875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5950927734375,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.701904296875,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.55694580078125,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.61798095703125,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.288818359375,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.15966796875,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.47900390625,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.1138916015625,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.46484375,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.55694580078125,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.8310546875,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.354766845703125,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.43487548828125,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40435791015625,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07724761962890625,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.324249267578125,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.302978515625,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.150390625,
+          "iterations": 4096,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.86865234375,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 6.2255859375,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1749267578125,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.227783203125,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 3.60107421875,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.35693359375,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 5.18798828125,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 6.103515625,
+          "iterations": 8192,
+          "value": "en"
+        }
+      ]
+    ],
+    "magrinj": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1137480178149417,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1427313185995445,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4557252432277892,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4643252723326441,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9397533431183547,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4612017837644089,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5133082413522061,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8963798027252778,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5324744779500179,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2742097100708634,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7184725182014517,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.185247343732044,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7945438555907458,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6009594653733075,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9117759109358303,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.83251319383271,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3361235178308561,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2503950201789849,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9771467885002494,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08430123807556811,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9294182309531607,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4140536804916337,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.789558046264574,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.310590593377128,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.781655996339396,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.7031421195715666,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.49343054019846,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.8189135482534766,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.6453175669303164,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.490724600851536,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.710901190061122,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.607366106938571,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.435443366877735,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1165301184519194,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.120857228874229,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.46167319669621065,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4615855614247266,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9223152665072121,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4557913816825021,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5031599503126927,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.9026117113535292,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5387779092416167,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.266073705162853,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7151129211706575,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1786944271298125,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7896846582298167,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.601044092036318,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9238863640348427,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.873167927144095,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.337915164185688,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2520475356723182,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9886803236440755,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08593247821409022,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9485916889389046,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4310472906799987,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.860435594106093,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.424069862579927,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.863443959038705,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.793167484924197,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.538853936130181,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.9505308775696903,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7453797520138323,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.564790153177455,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.7052572297398,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.587021976476535,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.32837281934917,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1087533566751517,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1145951614016667,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.4566531424643472,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4611109834513627,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9281575185013935,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45843110638088547,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5059461109340191,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8951889321906492,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.534109327418264,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.275233379099518,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7174686215876136,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1637602476403117,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7944532917463221,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6020224864187185,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9253863536287099,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.879188840277493,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.452196593163535,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2673321543843485,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9944042976712808,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0859860201671836,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9652471053414047,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.5381026460090652,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.946666867705062,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.734683723654598,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.920891602523625,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.7504640456754714,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.6506157591938972,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.8479006432462484,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.6893684989772737,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.489531925879419,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.563236794434488,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.602657718351111,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.393570172600448,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ]
+  },
+  "profiles": {
+    "before": {
+      "totalSamples": 233,
+      "selfSamples": {
+        "[Host Function] relativeResolve": 73,
+        "RelativeTimeFormat": 45,
+        "[Host Function] canonicalizeLocale": 29,
+        "[Host Function] relativeCreate": 29,
+        "[Native] jsonStringify": 29,
+        "[Native] stringPrototypeConcat": 10,
+        "getCanonicalLocales": 6,
+        "[Native] objectDefineProperty": 4,
+        "[GC Young Gen]": 3,
+        "global": 2,
+        "[Native] objectCreate": 2,
+        "[Native] weakMapPrototypeSet": 1
+      },
+      "raw": {
+        "samples": [
+          6, 7, 6, 6, 9, 11, 13, 14, 7, 9, 9, 7, 15, 6, 9, 6, 9, 17, 6, 11, 9,
+          9, 19, 9, 7, 11, 9, 9, 21, 9, 9, 11, 23, 9, 19, 7, 11, 11, 9, 9, 7, 7,
+          9, 7, 9, 9, 6, 9, 25, 6, 6, 11, 7, 11, 9, 7, 13, 9, 27, 7, 11, 6, 17,
+          7, 29, 6, 11, 11, 7, 11, 9, 7, 9, 7, 9, 15, 7, 11, 19, 7, 7, 9, 11, 7,
+          11, 6, 9, 9, 6, 7, 7, 11, 11, 30, 9, 7, 6, 9, 30, 9, 9, 11, 7, 7, 9,
+          9, 19, 23, 9, 7, 23, 32, 34, 9, 25, 7, 7, 9, 35, 17, 6, 9, 7, 19, 27,
+          9, 9, 9, 11, 30, 9, 30, 19, 7, 6, 11, 9, 11, 9, 6, 23, 6, 7, 19, 21,
+          9, 9, 11, 21, 7, 9, 27, 11, 25, 11, 13, 6, 9, 11, 7, 29, 13, 9, 6, 9,
+          7, 27, 6, 9, 13, 7, 21, 9, 6, 9, 19, 7, 30, 9, 37, 9, 7, 23, 9, 40, 9,
+          6, 9, 6, 25, 9, 6, 9, 9, 11, 9, 29, 9, 30, 9, 13, 6, 17, 11, 9, 34, 6,
+          7, 7, 7, 9, 6, 9, 9, 7, 9, 9, 13, 35, 9, 9, 25, 7, 7, 7, 6, 17, 9, 7,
+          11, 7, 9, 11
+        ],
+        "timeDeltas": [
+          0, 1948, 1217, 1322, 411, 800, 1098, 1438, 1033, 999, 982, 1816, 1307,
+          1713, 752, 774, 1448, 1370, 1361, 517, 709, 1044, 561, 244, 1317, 965,
+          960, 1071, 795, 714, 1286, 1425, 970, 1546, 1346, 1967, 1306, 1135,
+          1690, 1222, 700, 1063, 549, 1373, 259, 1403, 1371, 427, 62, 1403, 790,
+          1101, 328, 634, 1503, 2221, 1181, 1271, 1327, 2311, 1317, 870, 628,
+          1094, 1064, 511, 1303, 982, 974, 1268, 535, 1080, 176, 1867, 2016,
+          1032, 857, 954, 2399, 1019, 576, 1100, 1651, 1314, 339, 1370, 286,
+          1255, 1164, 1173, 1589, 1697, 1355, 1549, 595, 204, 1450, 1102, 481,
+          1197, 1273, 658, 1685, 2612, 1778, 460, 1129, 1351, 1767, 2141, 1020,
+          1476, 1782, 1887, 487, 1131, 1065, 1849, 2105, 1131, 807, 790, 1823,
+          589, 384, 1016, 1360, 1579, 553, 918, 740, 1261, 1425, 1003, 1424,
+          812, 916, 1208, 865, 1335, 308, 1047, 965, 1173, 546, 849, 1026, 1093,
+          1891, 1622, 1090, 1303, 1274, 1874, 1329, 1026, 1055, 1325, 743, 1418,
+          1164, 986, 68, 2019, 1370, 1374, 863, 1157, 337, 880, 966, 839, 1660,
+          1213, 1340, 1919, 1997, 694, 384, 758, 1390, 1617, 851, 528, 1262,
+          1273, 1230, 1204, 927, 1276, 1253, 1364, 1538, 525, 1072, 1938, 1499,
+          1266, 155, 1492, 1791, 1248, 1664, 1003, 642, 158, 1196, 1586, 1476,
+          1656, 549, 1509, 1931, 1143, 1315, 703, 1052, 1275, 688, 741, 808,
+          501, 1174, 1218, 116, 1321, 799, 877, 846, 1145, 1395, 1796, 1091
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 15]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-constructor-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 37
+            },
+            "children": [
+              3, 7, 8, 10, 12, 16, 18, 20, 22, 24, 28, 31, 33, 36, 38
+            ]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [5, 26, 30]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [6]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "[Host Function] canonicalizeLocale",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 29
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27]
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[Native] objectDefineProperty",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 30,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 6
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [35],
+            "hitCount": 45
+          },
+          {
+            "id": 35,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [9]
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 73
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Host Function] relativeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 29
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [14],
+            "hitCount": 7
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [19]
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [21]
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [23]
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [25]
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29]
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 31,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [32]
+          },
+          {
+            "id": 32,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 33,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [34]
+          },
+          {
+            "id": 34,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 36,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [37]
+          },
+          {
+            "id": 37,
+            "callFrame": {
+              "functionName": "[Native] objectCreate",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 38,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [39]
+          },
+          {
+            "id": 39,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [40]
+          },
+          {
+            "id": 40,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-constructor-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 2
+          }
+        ],
+        "startTime": 2250479915255,
+        "endTime": 2250480179231
+      }
+    },
+    "after": {
+      "totalSamples": 196,
+      "selfSamples": {
+        "[Host Function] relativeResolve": 56,
+        "[Host Function] relativeCreate": 39,
+        "[Host Function] canonicalizeLocale": 32,
+        "RelativeTimeFormat": 22,
+        "[Native] objectDefineProperty": 10,
+        "[Native] jsonStringify": 9,
+        "getCanonicalLocales": 8,
+        "[Native] stringPrototypeConcat": 7,
+        "[Native] weakMapPrototypeSet": 6,
+        "[Native] reflectApply": 3,
+        "[GC Young Gen]": 2,
+        "localeString": 1,
+        "global": 1
+      },
+      "raw": {
+        "samples": [
+          3, 5, 9, 11, 13, 15, 5, 5, 17, 7, 17, 17, 17, 17, 17, 3, 9, 19, 17,
+          11, 5, 11, 17, 20, 22, 5, 23, 5, 3, 5, 9, 17, 24, 3, 9, 17, 17, 17,
+          11, 17, 11, 17, 25, 17, 27, 5, 5, 11, 5, 17, 5, 24, 5, 17, 11, 11, 17,
+          17, 11, 27, 15, 17, 11, 11, 11, 9, 25, 5, 9, 17, 17, 11, 5, 17, 5, 17,
+          3, 17, 27, 17, 3, 9, 25, 11, 5, 17, 5, 27, 3, 5, 11, 11, 17, 17, 5,
+          17, 5, 17, 25, 5, 5, 17, 17, 5, 17, 11, 17, 24, 5, 17, 3, 3, 25, 5, 9,
+          17, 17, 11, 3, 17, 22, 29, 17, 29, 17, 11, 11, 5, 9, 24, 3, 17, 25,
+          11, 13, 17, 11, 5, 3, 11, 5, 3, 3, 11, 11, 27, 5, 5, 17, 17, 3, 27, 5,
+          24, 3, 23, 17, 25, 3, 11, 17, 5, 5, 17, 27, 5, 17, 3, 11, 25, 3, 11,
+          17, 27, 27, 17, 24, 11, 17, 9, 17, 5, 11, 17, 5, 5, 15, 5, 11, 17, 5,
+          17, 3, 3, 11, 3
+        ],
+        "timeDeltas": [
+          0, 1827, 1342, 1134, 783, 1534, 1338, 1870, 1599, 827, 788, 249, 1480,
+          941, 503, 564, 1158, 1151, 1032, 1550, 1867, 835, 821, 1568, 549,
+          2311, 149, 376, 787, 602, 1472, 575, 2345, 405, 1354, 860, 1388, 630,
+          1484, 190, 774, 1129, 1442, 956, 1580, 957, 819, 1687, 1743, 1494,
+          779, 1304, 1269, 1520, 1149, 1143, 1726, 1535, 1168, 1380, 1209, 435,
+          1690, 561, 1185, 1262, 699, 1282, 548, 1013, 1813, 1013, 118, 1176,
+          1931, 1816, 841, 1486, 1033, 601, 1022, 850, 1142, 1150, 1671, 1237,
+          816, 193, 1450, 1612, 1669, 514, 1525, 479, 292, 980, 832, 438, 2174,
+          1108, 857, 1197, 1934, 978, 1007, 657, 1846, 657, 828, 921, 1895,
+          1028, 775, 288, 386, 870, 1211, 1245, 973, 1634, 253, 250, 1142, 993,
+          899, 1796, 1055, 1188, 1694, 2361, 906, 1786, 1438, 1175, 1674, 1507,
+          124, 1012, 1068, 1066, 567, 1415, 1723, 1164, 81, 2149, 99, 665, 986,
+          201, 470, 1290, 563, 768, 1215, 1115, 1467, 535, 1246, 1433, 1381,
+          891, 1130, 959, 717, 1076, 869, 2266, 911, 1327, 1080, 196, 942, 935,
+          894, 1878, 946, 2257, 1149, 528, 1155, 1320, 101, 2080, 864, 1145,
+          899, 753, 1036, 1664, 1505, 752, 1077, 1662, 1063, 1289
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 20]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-constructor-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 37
+            },
+            "children": [3, 4, 6, 12, 14, 16, 21, 26, 28]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [23],
+            "hitCount": 22
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [5]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "[Host Function] relativeCreate",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 39
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8, 10, 18, 25],
+            "hitCount": 1
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [9]
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "[Native] objectDefineProperty",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 10
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Host Function] canonicalizeLocale",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 32
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [19]
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "localeString",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "getCanonicalLocales",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 8
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15]
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 56
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [22]
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [24],
+            "hitCount": 2
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeSet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 6
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27]
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29]
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-constructor-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 1
+          }
+        ],
+        "startTime": 2250480228782,
+        "endTime": 2250480443955
+      }
+    }
+  },
+  "conformance": {
+    "gates": "Seven targeted Hermes source/bytecode, Test262, types and pinned ICU4C/J/X checks pass.",
+    "independentMatrix": "Inherited pinned 19,008-case ICU4X relative-time matrix, including 1,440 individually pinned separator differences verified by ICU4C/J 78.1.",
+    "observableBehavior": "Malformed numbering-system strings with quotes, backslashes, newlines, NUL and lone surrogates reject before style getter. Getter-time registration, coercion and prototype cases retain existing coverage.",
+    "consumer": "Nine SDK API smoke scripts pass."
+  },
+  "limits": "Other constructor and steady-state gaps remain. No whole-goal completion claim.",
+  "commands": {
+    "benchmark": "bazel build -c opt //benchmarks/hermes-intl-extension:overlap_bytecode; run cquery artifact on each pinned optimized host",
+    "profile": "hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/relative-constructor-profile.js"
+  }
+}

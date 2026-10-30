@@ -237,3 +237,15 @@ objects keep the ECMA-402 property-read order.
 
 Without Temporal, duration-like objects remain supported; duration strings throw
 `RangeError`. This integration follows the Temporal proposal's Intl changes.
+
+## Rust Hermes extension
+
+The native port implements duration validation, locale/options resolution and
+formatting in Rust. The Hermes facade preserves ordered getters, primitive
+coercion, receiver brands and captured Temporal intrinsics. Source and bytecode
+installers use the same factory; both are compared with this TypeScript package.
+
+Duration locale and time-separator metadata stays static. Native NumberFormat and
+ListFormat dependencies use compiled SDK locale data; no public JS
+formatter callbacks are needed. See the [Hermes SDK guide](/docs/guides/hermes-intl)
+for installation, data hooks, Temporal timing and the independent consumer.

@@ -241,3 +241,26 @@ options have no prototype, so unrelated inherited options cannot affect them.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust and Hermes
+
+The experimental `formatjs_intl_relativetimeformat` crate supports every relative
+time unit, long/short/narrow styles, numeric always/auto, and formatted parts.
+The [Hermes Intl SDK](/docs/guides/hermes-intl) compiles selected locale records.
+Custom Rust providers can use the uncompiled registry and
+`//crates/intl_relativetimeformat:locale_data` to register JSON packs. Each pack includes relative patterns plus owned
+number and plural data. No host ICU or global JS formatter is required.
+
+Rust callers create an instance with requested locale tags and typed options,
+then format normalized Number text and a unit. Existing instances retain their
+data across later registrations. An owned C ABI separates locale resolution from
+final creation and preserves UTF-16 unit validation.
+
+Hermes applications link `//native/hermes:relativetimeformat`, install
+canonicalization, then call `formatjs::installRelativeTimeFormat(runtime)`.
+The SDK needs no application locale loading. Explicit overrides remain available
+through `Intl.RelativeTimeFormat.__addLocaleData`.
+The standalone SDK includes `:relativetimeformat`, headers, adapter sources,
+`js/39-IntlRelativeTimeFormat.js` for precompiled installation, compiled locales and
+`examples/relativetimeformat-smoke.ts`. See the
+[SDK guide](https://github.com/formatjs/formatjs/blob/main/native/hermes/package/README.md).

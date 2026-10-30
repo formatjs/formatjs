@@ -1,0 +1,21 @@
+--- a/host/main.cpp
++++ b/host/main.cpp
+@@ -7,6 +7,7 @@
+ #include <hermes/hermes.h>
+ 
+ #include <chrono>
++#include <cstdlib>
+ #include <cstdio>
+ #include <fstream>
+ #include <iostream>
+@@ -48,7 +49,9 @@
+ 
+   try {
+     // What src/index.js does in an app: js/bootstrap.js (a CommonJS module) called on the host functions.
+-    std::string bootstrap = "(function (module) {\n" + readFile(HERMES_INTL_BOOTSTRAP) + "\nreturn module.exports;\n})({})";
++    const char *compiled = std::getenv("FORMATJS_BENCH_BOOTSTRAP");
++    std::string bootstrap = compiled ? readFile(compiled)
++        : "(function (module) {\n" + readFile(HERMES_INTL_BOOTSTRAP) + "\nreturn module.exports;\n})({})";
+     rt->evaluateJavaScript(std::make_shared<StringBuffer>(std::move(bootstrap)), "js/bootstrap.js")
+         .getObject(*rt)
+         .getFunction(*rt)

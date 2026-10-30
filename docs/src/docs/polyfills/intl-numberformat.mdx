@@ -426,3 +426,32 @@ for example `~$3` in English. Its position follows the locale's sign pattern.
 
 Matching signs can share a currency or unit affix across a range; mixed signs
 remain separate.
+
+## Rust Hermes extension
+
+The experimental `formatjs_intl_numberformat` crate implements formatting,
+parts, ranges and resolved options with the same generated CLDR data as the
+TypeScript polyfill. It supports decimal, percent, currency and unit styles,
+including compact, scientific and engineering notation.
+
+The [Hermes Intl SDK](/docs/guides/hermes-intl) compiles selected locale data
+into Rust. For custom Rust providers, build `//crates/intl_numberformat:locale_data`
+and use `Registry::add_locale_data`; the uncompiled registry starts empty. Existing
+formatters retain their locale records when a replacement pack is registered.
+`add_unit_data` explicitly updates shared unit patterns.
+
+`Registry::create` accepts locale tags and typed options. Formatting methods
+accept the host's normalized ToIntlMathematicalValue strings, preserving exact
+BigInt integers. The Hermes facade handles observable JavaScript coercion and option getter order.
+The owned C ABI captures locale resolution separately from later formatting
+options, preserving existing instances across registry replacement or destruction.
+Link SDK target `:numberformat` and call `formatjs::installNumberFormat` after
+canonicalization. For precompiled setup use `js/38-IntlNumberFormat.js` and the
+installer overload taking the setup object. For explicit runtime overrides, use
+`Intl.NumberFormat.__addLocaleData(jsonText)`; their owned plural rules require no
+JS PluralRules installation. The SDK includes Linux/macOS archives, public
+headers, adapter source, and a typed independent consumer smoke.
+See the [Hermes SDK guide](/docs/guides/hermes-intl).
+
+Scientific exponents use localized digits, independently of mantissa rounding
+increments. Missing currency-name translations fall back to the currency code.

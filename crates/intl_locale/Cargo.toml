@@ -1,20 +1,22 @@
 [package]
 name = "formatjs_intl_locale"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 Locale using ICU4X canonicalization and CLDR preferences"
 license = "BSD-3-Clause"
 repository = "https://github.com/formatjs/formatjs"
-publish = false
+publish = true
 
 [lib]
 path = "lib.rs"
 
 [dependencies]
-formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales" }
+formatjs_intl_localematcher = { path = "../intl_localematcher", version = "0.1.1" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.2.0" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+tinystr = "0.8.4"
 
 [[example]]
 name = "conformance"

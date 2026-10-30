@@ -1,5 +1,10 @@
 # formatjs_intl_locale
 
+`matcher` supplies canonical-tag prefix lookup and best fit for native polyfills.
+Best fit follows the TS matcher's CLDR distances, region variables, paradigms and
+request-order penalties. Metadata comes from the same TS table and generated
+region data; no JS matcher ships in the Hermes extension.
+
 Rust core for `Intl.Locale`. Shares ICU4X-backed canonicalization with
 `formatjs_intl_getcanonicallocales` and generates static tables from the TS
 package's CLDR inputs. Includes constructor overrides, Unicode keywords,

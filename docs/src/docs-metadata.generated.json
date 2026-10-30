@@ -51,6 +51,10 @@
     "title": "Distribute Libraries",
     "description": "In larger scale applications/monorepos, not all components/libraries live within the same repo/project and they might get distributed differently. While..."
   },
+  "guides/hermes-intl": {
+    "title": "Hermes Intl",
+    "description": "FormatJS provides twelve Rust-backed Intl APIs for Hermes. Download a prebuilt"
+  },
   "guides/migrate-from-i18next": {
     "title": "Migrate From I18next",
     "description": "This guide helps you migrate from i18next / react-i18next to FormatJS / react-intl. Both libraries solve the same problem but use different syntax, APIs..."
@@ -69,7 +73,7 @@
   },
   "guides/react-native-hermes": {
     "title": "React Native Hermes",
-    "description": "This guide covers setting up FormatJS polyfills for React Native with the Hermes JavaScript engine. Hermes ships with partial Intl support, so you need ..."
+    "description": "This guide covers TypeScript polyfills in React Native with Hermes."
   },
   "guides/runtime-requirements": {
     "title": "Runtime Requirements",

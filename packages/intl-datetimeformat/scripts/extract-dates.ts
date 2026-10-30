@@ -130,7 +130,8 @@ export function getAllLocales(): string[] {
 }
 
 function resolveDateTimeSymbolTable(token: string): string {
-  switch (token) {
+  // CLDR hB/hb variants keep the same hour cycle and change only day periods.
+  switch (token[0]) {
     case 'h':
       return 'h12'
     case 'H':
@@ -140,7 +141,7 @@ function resolveDateTimeSymbolTable(token: string): string {
     case 'k':
       return 'h24'
   }
-  return ''
+  throw new Error(`Unsupported hour cycle token: ${token}`)
 }
 
 function filterKeys<T>(
@@ -308,7 +309,7 @@ async function loadDatesFields(
             ]
           if (metazoneInfo) {
             all[tz] = {}
-            if (metazoneInfo.long) {
+            if (metazoneInfo.long?.standard) {
               all[tz].long = [
                 metazoneInfo.long.standard,
                 'daylight' in metazoneInfo.long
@@ -316,7 +317,7 @@ async function loadDatesFields(
                   : metazoneInfo.long.standard,
               ]
             }
-            if ('short' in metazoneInfo) {
+            if ('short' in metazoneInfo && metazoneInfo.short.standard) {
               all[tz].short = [
                 metazoneInfo.short.standard,
                 'daylight' in metazoneInfo.short
@@ -330,10 +331,10 @@ async function loadDatesFields(
         }, {})
     const {long: utcLong, short: utcShort} = timeZoneNames.zone.Etc.UTC
     timeZoneName.UTC = {}
-    if (utcLong) {
+    if (utcLong?.standard) {
       timeZoneName.UTC.long = [utcLong.standard, utcLong.standard]
     }
-    if (utcShort) {
+    if (utcShort?.standard) {
       timeZoneName.UTC.short = [utcShort.standard, utcShort.standard]
     }
   } catch (e) {
@@ -723,7 +724,8 @@ export async function extractDatesFields(
         data.calendarData[calendar] = {
           era,
           month,
-          monthStandalone,
+          // Explicit defaults prevent inheriting Gregorian standalone names.
+          monthStandalone: monthStandalone ?? month,
           yearNames,
           leapMonthPatterns,
           dateFormat,

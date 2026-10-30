@@ -1,0 +1,24 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance_test",
+    size = "large",
+    srcs = ["conformance.test.ts"],
+    data = [
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_pluralrules:locale_data",
+        "//crates/intl_relativetimeformat:conformance",
+        "//crates/intl_relativetimeformat:locale_data",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
