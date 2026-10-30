@@ -285,7 +285,10 @@
       const increment = number(opts.roundingIncrement, 1, 5000, 1)!
       let valid = false
       for (let index = 0; index < increments.length; index++)
-        if (increment === increments[index]) valid = true
+        if (increment === increments[index]) {
+          valid = true
+          break
+        }
       if (!valid) throw new BadOption('Invalid roundingIncrement')
       const roundingMode = option(
         opts,
