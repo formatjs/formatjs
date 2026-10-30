@@ -203,7 +203,7 @@
               __proto__: null,
               value: false,
               writable: true,
-            })
+            } as PropertyDescriptor)
             return large(handle, values!)
           }
           if (plan === undefined || plan === false) {
@@ -214,7 +214,7 @@
               __proto__: null,
               value: plan,
               writable: true,
-            })
+            } as PropertyDescriptor)
           }
           if (plan !== null) {
             const last = values![length - 1]
