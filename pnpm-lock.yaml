@@ -445,8 +445,8 @@ importers:
         specifier: 48.2.0
         version: 48.2.0
       cldr-cal-buddhist-full:
-        specifier: 48.2.0
-        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+        specifier: 49.0.0
+        version: 49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-cal-chinese-full:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
@@ -4551,10 +4551,10 @@ packages:
   cldr-bcp47@48.2.0:
     resolution: {integrity: sha512-ks3zN+Wbg1zMqvJNeDai1zA0JBGHbAnxv2Ko4rjVohvXscDGmTa7VNy1T+QRlQw3QVPzQcCm2EOiEtAfOU4d+g==}
 
-  cldr-cal-buddhist-full@48.2.0:
-    resolution: {integrity: sha512-bdc08W3e/uGGypQYUCNIrM2TldixnIQpW0Ybr2ynxQkojmqgkPk9f6FpOR370eblCMTO57SEgSx59ZXYaBE/og==}
+  cldr-cal-buddhist-full@49.0.0:
+    resolution: {integrity: sha512-LXHaqEFA9gYvwn6r7iCe29W/raYqeOkAcl96se77JGlUq6V8E80hqgd0yv30DtpkekPJSXSYvLFjGyn21rJiNQ==}
     peerDependencies:
-      cldr-dates-full: 48.2.0
+      cldr-dates-full: 49.0.0
 
   cldr-cal-chinese-full@48.2.0:
     resolution: {integrity: sha512-sGKamCWxdYLx8o215sSfYkX/Nwq56nU5osVI2eLafpZlNGA0rferEGmlTg6Y2Dn+G5BSTsP6SXEIB84ktVhYhQ==}
@@ -10948,7 +10948,7 @@ snapshots:
 
   cldr-bcp47@48.2.0: {}
 
-  cldr-cal-buddhist-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+  cldr-cal-buddhist-full@49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
     dependencies:
       cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
 
