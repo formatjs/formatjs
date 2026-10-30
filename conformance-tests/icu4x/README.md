@@ -34,8 +34,8 @@ ICU4C/J use `other`. Changed outputs, unknown differences and unused rows fail.
 CLDR leaves negative and non-increasing ranges undefined; those cases pin each
 implementation's choice rather than establish a universal required category.
 
-ListFormat compares 2,772 scalar-string cases against `icu_list` 2.3.0.
-[66 exact differences](list-format-icu-differences.tsv) pin ICU4X and preferred
+ListFormat compares 3,069 scalar-string cases against `icu_list` 2.3.0.
+[69 exact differences](list-format-icu-differences.tsv) pin ICU4X and preferred
 ICU4C/J outputs separately; unknown, changed and unused differences fail.
 Another 99 lone-surrogate cases remain covered by ICU4C/J and Hermes because
 ICU4X strings cannot represent them. All styles and types, empty elements and

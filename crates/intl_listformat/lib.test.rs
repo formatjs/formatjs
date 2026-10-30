@@ -329,3 +329,62 @@ fn decorated_reversed_chain_retains_each_literal_boundary() {
         .map(|(kind, value)| (kind, value.to_owned()))
     );
 }
+
+#[test]
+fn join_plan_matches_selected_templates_and_rejects_nonconstant_shapes() {
+    for locale in ["en", "es", "he"] {
+        for (start, middle, end, admitted) in [
+            ("{0}, {1}", "{0}, {1}", "{0}, and {1}", true),
+            ("{0}{1}", "{0}{1}", "{0}😀{1}", true),
+            ("{0}; {1}", "{0}, {1}", "{0} & {1}", false),
+            ("prefix{0}{1}", "{0}, {1}", "{0} & {1}", false),
+            ("{0}, {1}", "{0}, {1}", "{1} & {0}", false),
+            ("{0}, {1}", "{0}, {1}", "{0}{1}suffix", false),
+            ("{0}, {1}", "{0}, {1}", "{0} y {1}", locale != "es"),
+            ("{0}, {1}", "{0}, {1}", "{0} o {1}", locale != "es"),
+            ("{0}, {1}", "{0}, {1}", "{0} ו{1}", locale != "he"),
+        ] {
+            let mut data = pack(locale, "{1} pair {0}");
+            for kind in ["conjunction", "disjunction", "unit"] {
+                for style in ["long", "short", "narrow"] {
+                    data["data"][kind][style]["start"] = json!(start);
+                    data["data"][kind][style]["middle"] = json!(middle);
+                    data["data"][kind][style]["end"] = json!(end);
+                }
+            }
+            let model = ListFormat::new(
+                Arc::new(LocalePatterns::from_json(&data.to_string()).unwrap()),
+                Options::default(),
+            );
+            let plan = model.join_plan();
+            assert_eq!(plan.is_some(), admitted, "{locale}/{start}/{middle}/{end}");
+            if let Some(plan) = plan {
+                for length in [3, 5, 8, 9, 16, 32, 256, 1025] {
+                    let list: Vec<Vec<u16>> = (0..length)
+                        .map(|i| match i % 4 {
+                            0 => vec![],
+                            1 => vec![0xd800],
+                            2 => vec![0xdc00, 0],
+                            _ => vec![0x61],
+                        })
+                        .collect();
+                    let mut joined = Vec::new();
+                    for (index, value) in list.iter().enumerate() {
+                        if index > 0 {
+                            joined.extend(
+                                if index == length - 1 {
+                                    &plan.last_separator
+                                } else {
+                                    &plan.separator
+                                }
+                                .encode_utf16(),
+                            );
+                        }
+                        joined.extend(value);
+                    }
+                    assert_eq!(model.format(&list), joined);
+                }
+            }
+        }
+    }
+}

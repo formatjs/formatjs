@@ -73,7 +73,7 @@ static bool checkLists(const char *path) {
     ++checks;
   }
   std::cout << checks << " ICU4C list checks passed (ICU4J differences pinned)\n";
-  return checks == 2871 && matches;
+  return checks == 3168 && matches;
 }
 
 static bool checkPlurals(const char *path) {

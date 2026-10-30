@@ -90,7 +90,7 @@ fn list_output_matches_independent_icu_oracles() {
         }
         checked += 1;
     }
-    assert_eq!((checked, utf16_only), (2772, 99));
+    assert_eq!((checked, utf16_only), (3069, 99));
     assert_eq!(used, expected_differences.len(), "Unused ICU4X differences");
     assert!(
         differences.is_empty(),

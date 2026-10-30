@@ -107,15 +107,15 @@ Rust and TS select Spanish `e`/`u` and Hebrew hyphenated joins from the next
 item, only for matching pair/end patterns. Hebrew uses Unicode Script rather
 than block membership; empty strings and lone surrogates remain intact.
 
-ICU4J 78.1 generates 2,871 cases spanning 11 locales and all types/styles.
+ICU4J 78.1 generates 3,168 cases spanning 11 locales and all types/styles.
 ICU4C 78.1 checks every result, and the Chromium-locale Hermes test consumes
 the same cases in source and bytecode modes. Eighteen exact C/J differences
 are pinned in `conformance-tests/icu4j/list-format-icu-differences.tsv`; these
 use ICU4C's script-aware behavior and Spanish `11 ` handling. Both oracle
 outputs remain checked. See `conformance-tests/icu4c/README.md`.
 
-An independent ICU4X ListFormatter also checks 2,772 scalar-string cases.
-Its 66 exact differences are pinned separately; it cannot represent the 99
+An independent ICU4X ListFormatter also checks 3,069 scalar-string cases.
+Its 69 exact differences are pinned separately; it cannot represent the 99
 lone-surrogate cases, which remain covered by ICU4C/J and Hermes.
 
 Hermes constructs parts as ordinary data-record literals. Private append
@@ -152,3 +152,10 @@ Empty lists return empty encoded output before input-buffer setup. These are
 private buffers: actual iteration, single element reads and IteratorClose remain
 in JavaScript. ABI output remains independently owned and preserves lone
 surrogates. Boundary tests check malformed final-slice cleanup on both paths.
+
+For string lists of at least five elements, Rust can authorize a fixed join plan
+when start/middle separators agree and all templates are forward, without
+prefixes, suffixes or contextual alternatives. Hermes then joins its validated
+private string array using the captured intrinsic. The immutable handle owns
+the plan; contextual/custom patterns and all parts still use Rust formatting.
+Iteration and IteratorClose finish before plan lookup or concatenation.

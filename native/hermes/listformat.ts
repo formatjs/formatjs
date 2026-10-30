@@ -25,6 +25,7 @@
     nativePartsSmall,
   } = native
   const apply = Reflect.apply
+  const join = Array.prototype.join
   const create = Object.create
   const define = Object.defineProperty
   const setPrototypeOf = Object.setPrototypeOf
@@ -41,6 +42,12 @@
     receiver: unknown
   ) => object | undefined
   const setSlot = WeakMap.prototype.set.bind(slots)
+  type JoinPlan = {separator: string; lastSeparator: string}
+  const plans = new WeakMap<object, JoinPlan | null>()
+  const getPlan = WeakMap.prototype.get.bind(plans) as (
+    handle: object
+  ) => JoinPlan | null | undefined
+  const setPlan = WeakMap.prototype.set.bind(plans)
   const matchers = ['lookup', 'best fit'] as const
   const types = ['conjunction', 'disjunction', 'unit'] as const
   const styles = ['long', 'short', 'narrow'] as const
@@ -188,6 +195,23 @@
       case 4:
         return small(handle, first, second, third, fourth)
       default:
+        // Rust authorizes only context-free separators; keep all other shapes native.
+        if (large === nativeFormat) {
+          let plan = getPlan(handle)
+          if (plan === undefined) {
+            plan = decoded(
+              nativeQuery(handle, '{"method":"joinPlan"}')
+            ) as JoinPlan | null
+            setPlan(handle, plan)
+          }
+          if (plan !== null) {
+            const last = values![length - 1]
+            values!.length = length - 1
+            return (
+              apply(join, values!, [plan.separator]) + plan.lastSeparator + last
+            )
+          }
+        }
         return large(handle, values!)
     }
   }
@@ -251,7 +275,7 @@
   setPrototypeOf(prototype, objectPrototype)
   const members = {
     format(this: unknown, list: unknown): string {
-      // Brand check precedes iteration; Rust implements FormatList.
+      // Brand check precedes iteration; Rust selects the formatting patterns.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L162-L166
       const handle = slot(this)
       return callList(list, handle, nativeFormatSmall, nativeFormat)

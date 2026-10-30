@@ -9,7 +9,7 @@ pins its SHA256; the archive was verified against the release's SHA512 manifest.
 Other platforms retain the portable ICU4J checks.
 
 The test checks the same 42 regional formatting outputs as ICU4J and generates
-2,871 ListFormat comparisons through the pinned ICU4J 78.1 oracle. Cases cover
+3,168 ListFormat comparisons through the pinned ICU4J 78.1 oracle. Cases cover
 11 locales, every type/style, empty elements, lone surrogates, and Spanish/Hebrew
 context rules. Hermes consumes the same cases in source and bytecode modes,
 checking formatted output, reconstructed parts, and original element boundaries.
@@ -37,10 +37,10 @@ bazel test -c opt //conformance-tests/icu4x:intl_listformat_conformance_test
 ```
 
 The independent ICU4X ListFormatter (2.3.0, pinned through Cargo.lock) checks
-2,772 scalar-string cases. Its API cannot represent lone surrogates; the other
+3,069 scalar-string cases. Its API cannot represent lone surrogates; the other
 99 cases remain strict UTF-16 checks in ICU4C, ICU4J and Hermes.
 
-ICU4X differs from ICU4C on 66 inputs: Hebrew nonbreaking hyphens and Spanish
+ICU4X differs from ICU4C on 69 inputs: Hebrew nonbreaking hyphens and Spanish
 `11` followed by a newline. [Exact outputs](../icu4x/list-format-icu-differences.tsv)
 preserve those differences. The test checks each ICU4X result and the preferred
 ICU4C result without normalization; unused or duplicate entries fail.

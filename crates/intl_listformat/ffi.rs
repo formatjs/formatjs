@@ -215,6 +215,7 @@ pub unsafe extern "C" fn formatjs_list_create_default(
 #[serde(tag = "method", rename_all = "camelCase")]
 enum Query {
     ResolvedOptions,
+    JoinPlan,
     Format { list: Vec<Vec<u16>> },
     FormatToParts { list: Vec<Vec<u16>> },
 }
@@ -294,6 +295,7 @@ pub unsafe extern "C" fn formatjs_list_query(
             Query::ResolvedOptions => {
                 serde_json::to_value(rules.resolved_options()).map_err(|_| 2)?
             }
+            Query::JoinPlan => serde_json::to_value(rules.join_plan()).map_err(|_| 2)?,
             Query::Format { list } => json!(rules.format(&list)),
             Query::FormatToParts { list } => json!(rules.format_to_parts(&list)),
         };

@@ -95,7 +95,7 @@ function unhex(value: string): string {
 }
 if (api.ListFormat?.polyfilled) {
   const rows = (globalThis as any).__LIST_FORMAT_FIXTURES as string[][]
-  equal(rows.length, 2871)
+  equal(rows.length, 3168)
   for (const [locale, type, style, encoded, , expected] of rows) {
     const items = encoded === '-' ? [] : encoded.split(',').map(unhex)
     formatter = `ListFormat ${locale}/${type}/${style}/${encoded}`
