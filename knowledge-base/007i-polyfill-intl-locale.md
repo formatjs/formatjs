@@ -175,3 +175,7 @@ Unicode option updates preserve unrelated extensions and private use. The TS
 path inserts a new Unicode extension before private use; Rust sorts private use
 last when rebuilding. Pinned ICU4C/J/X fixtures cover numeric/calendar updates
 with digit and v/y/z extensions, existing Unicode attributes and private payloads.
+
+Canonical Rust Locale parsing borrows subtag slices from the validated tag.
+Language and extension boundaries stream without temporary subtag vectors;
+private-use suffixes remain opaque and Unicode boolean keys retain empty types.

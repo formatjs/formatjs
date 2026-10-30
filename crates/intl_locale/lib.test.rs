@@ -249,3 +249,35 @@ fn subtag_widths_preserve_owned_records_and_overrides() {
     drop(options);
     assert_eq!(model.as_str(), "abcdefgh-Latn-419-x-private");
 }
+
+#[test]
+fn unicode_keywords_preserve_empty_types_and_private_subtags() {
+    for (tag, calendar, case_first) in [
+        ("en-u-kn", None, None),
+        ("en-u-kf-kn", None, Some("")),
+        (
+            "en-t-es-419-u-attr-ca-islamic-civil-kf-upper-kn-x-a-u-b",
+            Some("islamic-civil"),
+            Some("upper"),
+        ),
+    ] {
+        let model = locale(tag);
+        assert_eq!(model.keyword("ca"), calendar, "{tag}");
+        assert_eq!(model.keyword("kf"), case_first, "{tag}");
+        assert_eq!(model.keyword("kn"), Some(""), "{tag}");
+        assert!(model.numeric(), "{tag}");
+    }
+    let model = Locale::new(
+        "en-t-es-419-u-attr-ca-islamic-civil-kf-upper-kn-x-a-u-b",
+        &LocaleOptions {
+            numeric: Some(false),
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        model.as_str(),
+        "en-t-es-419-u-attr-ca-islamic-civil-kf-upper-kn-false-x-a-u-b"
+    );
+    assert!(!model.numeric());
+}
