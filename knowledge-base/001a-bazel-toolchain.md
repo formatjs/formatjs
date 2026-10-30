@@ -569,3 +569,9 @@ Test262 keeps a 30-second per-case deadline by default. Combined NumberFormat
 uses 120 seconds because `prototype/format/units.js` formats every sanctioned
 unit pair while the complete polyfill stack is installed. This is separate from
 Bazel's overall test timeout; expected-failure baselines stay unchanged.
+
+Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
+for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
+ordinary repository build defaults remain separate. Benchmark SDK changes using
+frozen standalone consumers and identical optimized workloads. The full-API
+`:suite_bytecode` target uses a monotonic clock when the host provides `__now`.

@@ -15,26 +15,28 @@ rounds calibrated to roughly 50 ms each. The `formatToParts` cases include
 run with their own Intl dependencies in the same Hermes process. Results are
 median time per call.
 
-Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Table uses
-the median of three complete benchmark invocations. This is the historical
-full-API baseline, before the later optimizations below:
+Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
+full-API results use three CPU-0-pinned invocations on 2026-10-30,
+including SDK ThinLTO and earlier improvements. Both native and TS code use
+optimized Hermes bytecode and high-resolution `__now()` timing.
+[Paired SDK results, controls and profiles](thin-lto-results.json).
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.82 |    4.44 |      5.43 |
-| `supportedValuesOf`                |      1.81 |   58.59 |     32.43 |
-| `Locale.maximize`                  |      3.32 |   33.20 |     10.00 |
-| `PluralRules.select`               |      0.54 |  121.88 |    226.91 |
-| `ListFormat.format`                |      1.14 |    4.30 |      3.78 |
-| `ListFormat.formatToParts`         |      4.64 |    5.86 |      1.28 |
-| `DisplayNames.of`                  |      1.54 |    7.71 |      5.02 |
-| `Segmenter.segment`                |      6.05 |    8.89 |      1.47 |
-| `Collator.compare`                 |      1.61 |    3.17 |      1.97 |
-| `NumberFormat.format`              |      2.39 |  343.75 |    143.67 |
-| `RelativeTimeFormat.format`        |      1.10 |  400.00 |    364.09 |
-| `RelativeTimeFormat.formatToParts` |      3.96 |  400.00 |    101.14 |
-| `DateTimeFormat.format`            |      4.10 | 1000.00 |    243.81 |
-| `DurationFormat.format`            |      3.86 |  875.00 |    226.84 |
+| `getCanonicalLocales`              |      0.10 |    4.49 |     46.85 |
+| `supportedValuesOf`                |      1.87 |   59.68 |     31.97 |
+| `Locale.maximize`                  |      0.29 |   35.30 |    122.08 |
+| `PluralRules.select`               |      0.39 |  127.29 |    329.10 |
+| `ListFormat.format`                |      0.75 |    4.60 |      6.11 |
+| `ListFormat.formatToParts`         |      4.45 |    6.29 |      1.41 |
+| `DisplayNames.of`                  |      1.58 |    8.08 |      5.13 |
+| `Segmenter.segment`                |      6.41 |    9.13 |      1.42 |
+| `Collator.compare`                 |      1.66 |    3.25 |      1.96 |
+| `NumberFormat.format`              |      2.11 |  351.49 |    166.59 |
+| `RelativeTimeFormat.format`        |      0.85 |  410.12 |    485.16 |
+| `RelativeTimeFormat.formatToParts` |      2.35 |  411.94 |    175.01 |
+| `DateTimeFormat.format`            |      3.94 | 1032.56 |    261.77 |
+| `DurationFormat.format`            |      3.66 |  901.55 |    246.20 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -69,45 +71,46 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-30, pinned to CPU 0 on every host,
-including stack-backed ListFormat inputs and earlier improvements. All hosts use
-high-resolution `__now()`.
-[Raw results, controls and profiles](list-inline-results.json).
+including SDK ThinLTO and earlier improvements. All hosts use high-resolution
+`__now()`. FormatJS Rust uses `opt-level=3` plus ThinLTO; magrinj retains its
+upstream size-optimized release profile with full LTO and one codegen unit.
+[Raw results, controls and profiles](thin-lto-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
 | `getCanonicalLocales`                |        0.07 |       1.11 |
 | `Locale.maximize`                    |        0.26 |       2.12 |
 | `PluralRules.select`                 |        0.36 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.40 |       0.45 |
-| `PluralRules.select(string)`         |        0.50 |       0.90 |
-| `PluralRules.select(ordinal)`        |        0.37 |       0.45 |
-| `PluralRules.select(ru)`             |        0.39 |       0.50 |
-| `PluralRules.selectRange`            |        0.78 |       0.88 |
-| `ListFormat.format`                  |        0.67 |       0.53 |
+| `PluralRules.select(decimal)`        |        0.40 |       0.46 |
+| `PluralRules.select(string)`         |        0.49 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.37 |       0.46 |
+| `PluralRules.select(ru)`             |        0.38 |       0.50 |
+| `PluralRules.selectRange`            |        0.75 |       0.89 |
+| `ListFormat.format`                  |        0.66 |       0.53 |
 | `ListFormat.formatToParts`           |        2.99 |       3.24 |
-| `RelativeTimeFormat.format`          |        0.83 |       0.71 |
-| `RelativeTimeFormat.formatToParts`   |        1.60 |       2.14 |
-| `RelativeTimeFormat.format(decimal)` |        0.91 |       0.78 |
-| `RelativeTimeFormat.format(auto)`    |        0.35 |       0.60 |
-| `Locale.new`                         |        0.35 |       0.93 |
-| `Locale.new(options)`                |        1.80 |       4.91 |
-| `Locale.new(zh-HK)`                  |        0.36 |       1.35 |
+| `RelativeTimeFormat.format`          |        0.80 |       0.72 |
+| `RelativeTimeFormat.formatToParts`   |        1.59 |       2.18 |
+| `RelativeTimeFormat.format(decimal)` |        0.90 |       0.79 |
+| `RelativeTimeFormat.format(auto)`    |        0.34 |       0.60 |
+| `Locale.new`                         |        0.35 |       0.94 |
+| `Locale.new(options)`                |        1.77 |       4.91 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.37 |
 | `Locale.new.language`                |        0.43 |       1.28 |
-| `Locale.new.toString`                |        0.42 |       1.02 |
-| `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.32 |       0.95 |
-| `Locale.new(diverse)`                |        2.30 |       1.41 |
-| `Locale.new(long)`                   |        3.04 |       3.78 |
-| `PluralRules.new`                    |        2.04 |       4.59 |
-| `PluralRules.new(options)`           |        5.16 |       5.08 |
-| `ListFormat.new`                     |        1.27 |       2.65 |
-| `ListFormat.new(default)`            |        0.93 |       2.42 |
-| `ListFormat.new(array)`              |        1.53 |       2.91 |
-| `ListFormat.new(options)`            |        2.39 |       2.76 |
-| `ListFormat.new(fallback)`           |        1.94 |       3.61 |
-| `ListFormat.new(unsupported)`        |        2.00 |       3.75 |
-| `RelativeTimeFormat.new`             |        4.19 |       4.45 |
-| `RelativeTimeFormat.new(fallback)`   |        5.19 |       5.10 |
+| `Locale.new.toString`                |        0.40 |       1.00 |
+| `Locale.language`                    |        0.08 |       0.08 |
+| `Locale.new(Locale)`                 |        0.33 |       0.96 |
+| `Locale.new(diverse)`                |        2.45 |       1.45 |
+| `Locale.new(long)`                   |        3.24 |       3.82 |
+| `PluralRules.new`                    |        1.89 |       4.66 |
+| `PluralRules.new(options)`           |        5.00 |       5.07 |
+| `ListFormat.new`                     |        1.23 |       2.61 |
+| `ListFormat.new(default)`            |        0.87 |       2.53 |
+| `ListFormat.new(array)`              |        1.56 |       2.93 |
+| `ListFormat.new(options)`            |        2.39 |       2.66 |
+| `ListFormat.new(fallback)`           |        1.95 |       3.57 |
+| `ListFormat.new(unsupported)`        |        2.04 |       3.83 |
+| `RelativeTimeFormat.new`             |        4.06 |       4.71 |
+| `RelativeTimeFormat.new(fallback)`   |        5.20 |       5.47 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -757,3 +760,45 @@ Parts total profile samples: 888 before, 842 after.
 Other full-workload regressions: `Locale.new(diverse)` 1.915 to 2.304 µs (20.3%). Causes remain unproven; raw controls remain recorded.
 
 String ListFormat, numeric RTF strings and cold diverse Locale gaps remain open.
+
+Release SDK archive transitions now enable cross-crate ThinLTO for Linux and
+macOS. Compiler-action records confirm the earlier `opt-level=3` build disabled
+embedded bitcode; the new archives use `-Clto=thin`. Formatter implementations
+and public ABI stay the same. Other repository build defaults retain their
+existing settings.
+
+The full API harness now compiles the TS reference and workload with Hermes
+`-O`, uses the same monotonic clock, and allows enough calibration calls for
+fast operations. Use these paired measurements for code effects; the historical
+full-API table used `Date.now()`.
+
+`RelativeTimeFormat.format` moves 0.826 to 0.795 µs (-3.8%); magrinj 0.717 µs.
+`RelativeTimeFormat.format(decimal)` moves 0.918 to 0.898 µs (-2.2%); magrinj 0.789 µs.
+`RelativeTimeFormat.formatToParts` moves 1.637 to 1.588 µs (-3.0%); magrinj 2.181 µs.
+`Locale.new(diverse)` moves 2.191 to 2.451 µs (+11.9%); magrinj 1.449 µs.
+`PluralRules.new(options)` moves 5.345 to 4.997 µs (-6.5%); magrinj 5.074 µs.
+
+Isolated `Locale.new(diverse)`: 1.864 to 2.015 µs; magrinj 1.465 µs.
+Isolated `Locale.new(long)`: 3.585 to 3.557 µs; magrinj 3.823 µs.
+
+Full shared-workload regressions: `Locale.new(diverse)` 2.191 to 2.451 µs (11.9%). Raw controls retain those results; causes remain unproven.
+
+The linked benchmark executable shrinks from 571.0 to 564.5 MiB
+(1.1%). This includes the full embedded locale data and Hermes;
+it is not a standalone formatter code-size measurement.
+
+All 459 shared output checks and 84 full-API native/TS assertions pass. Seventy
+broad gates pass under ThinLTO, including Hermes Test262, native and Rust suites,
+Chromium locales and pinned ICU4C/J/X comparisons. Both release archives build;
+the actual default SDK passes all nine standalone API smokes. Earlier pilot
+measurements remain separate from the final three-round comparison.
+
+Format total profile samples: 766 before, 823 after.
+Decimal total profile samples: 426 before, 457 after.
+List total profile samples: 610 before, 643 after.
+Locale total profile samples: 543 before, 570 after.
+
+Sampling profiles remain diagnostics rather than independent low-percent timing
+claims. No clean-build-time comparison is made. String ListFormat, numeric RTF
+strings and cold diverse Locale still need work; narrow constructor wins need
+more headroom.
