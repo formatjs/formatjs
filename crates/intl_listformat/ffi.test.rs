@@ -319,3 +319,80 @@ fn default_constructor_clears_failed_outputs() {
         formatjs_list_registry_destroy(registry);
     }
 }
+
+#[test]
+fn direct_buffers_preserve_empty_and_surrogate_elements_across_capacity_boundary() {
+    unsafe {
+        let mut registry = ptr::null_mut();
+        assert_eq!(formatjs_list_registry_create(&mut registry), 0);
+        let data = pack("{0} and {1}");
+        assert_eq!(
+            formatjs_list_registry_load(registry, data.as_ptr(), data.len()),
+            0
+        );
+        let mut handle = ptr::null_mut();
+        assert_eq!(
+            formatjs_list_create(registry, b"en".as_ptr(), 2, b"{}".as_ptr(), 2, &mut handle),
+            0
+        );
+        formatjs_list_registry_destroy(registry);
+        for size in [0, 1, 7, 8, 9, 32] {
+            let values: Vec<Vec<u16>> = (0..size)
+                .map(|i| match i % 3 {
+                    0 => vec![],
+                    1 => vec![0xd800, 0],
+                    _ => vec![0xdc00],
+                })
+                .collect();
+            let mut expected = Vec::new();
+            let mut expected_parts = Vec::new();
+            for (index, value) in values.iter().enumerate() {
+                if index != 0 {
+                    let separator: Vec<u16> = if index == size - 1 { ", and " } else { ", " }
+                        .encode_utf16()
+                        .collect();
+                    expected.extend_from_slice(&separator);
+                    expected_parts.extend([1, 0, separator.len() as u16]);
+                    expected_parts.extend(separator);
+                }
+                expected.extend(value);
+                expected_parts.extend([0, 0, value.len() as u16]);
+                expected_parts.extend(value);
+            }
+            let mut slices: Vec<ListSlice> = values
+                .iter()
+                .map(|v| ListSlice {
+                    data: v.as_ptr(),
+                    len: v.len(),
+                })
+                .collect();
+            let calls = [formatjs_list_format, formatjs_list_parts];
+            for (call, expected) in calls.into_iter().zip([expected, expected_parts]) {
+                let mut out = ListUnits {
+                    data: ptr::null_mut(),
+                    len: 0,
+                };
+                assert_eq!(call(handle, slices.as_ptr(), slices.len(), &mut out), 0);
+                assert_eq!(
+                    slice::from_raw_parts(out.data, out.len),
+                    expected,
+                    "size={size}"
+                );
+                formatjs_list_units_free(out);
+            }
+            if let Some(last) = slices.last_mut() {
+                last.data = ptr::null();
+                last.len = 1;
+                for call in [formatjs_list_format, formatjs_list_parts] {
+                    let mut out = ListUnits {
+                        data: ptr::dangling_mut(),
+                        len: 99,
+                    };
+                    assert_eq!(call(handle, slices.as_ptr(), slices.len(), &mut out), 2);
+                    assert!(out.data.is_null() && out.len == 0);
+                }
+            }
+        }
+        formatjs_list_destroy(handle);
+    }
+}

@@ -1,4 +1,4 @@
-use formatjs_intl_listformat::{Options, registry::Registry};
+use formatjs_intl_listformat::{Options, ffi::*, registry::Registry};
 use std::hint::black_box;
 #[cfg(not(feature = "count_allocations"))]
 use std::time::Instant;
@@ -71,7 +71,26 @@ fn measure<T>(name: &str, mut call: impl FnMut() -> T) {
 fn main() {
     let registry = Registry::with_compiled_data();
     let formatter = registry.create("en", &Options::default()).unwrap();
-    for size in [0, 1, 3, 32, 256] {
+    let mut native_registry = std::ptr::null_mut();
+    assert_eq!(
+        unsafe { formatjs_list_registry_create(&mut native_registry) },
+        0
+    );
+    let mut handle = std::ptr::null_mut();
+    assert_eq!(
+        unsafe {
+            formatjs_list_create(
+                native_registry,
+                b"en".as_ptr(),
+                2,
+                b"{}".as_ptr(),
+                2,
+                &mut handle,
+            )
+        },
+        0
+    );
+    for size in [0, 1, 3, 4, 5, 8, 9, 32, 256] {
         let input: Vec<Vec<u16>> = (0..size)
             .map(|index| format!("item{index}").encode_utf16().collect())
             .collect();
@@ -85,8 +104,41 @@ fn main() {
             parts.iter().filter(|part| part.kind == "element").count(),
             size
         );
+        let slices: Vec<ListSlice> = input
+            .iter()
+            .map(|v| ListSlice {
+                data: v.as_ptr(),
+                len: v.len(),
+            })
+            .collect();
+        let abi_call = |parts| {
+            let mut result = ListUnits {
+                data: std::ptr::null_mut(),
+                len: 0,
+            };
+            let call = if parts {
+                formatjs_list_parts
+            } else {
+                formatjs_list_format
+            };
+            assert_eq!(
+                unsafe { call(handle, slices.as_ptr(), slices.len(), &mut result) },
+                0
+            );
+            if !parts {
+                let actual = unsafe { std::slice::from_raw_parts(result.data, result.len) };
+                assert_eq!(actual, joined);
+            }
+            unsafe { formatjs_list_units_free(result) };
+        };
         println!("size: {size}");
         measure("format", || formatter.format(black_box(&input)));
         measure("parts", || formatter.format_to_parts(black_box(&input)));
+        measure("ABI format", || abi_call(false));
+        measure("ABI parts", || abi_call(true));
+    }
+    unsafe {
+        formatjs_list_destroy(handle);
+        formatjs_list_registry_destroy(native_registry);
     }
 }
