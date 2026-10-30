@@ -119,3 +119,8 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+String formatting requests decimal text and its plural category without owned
+number parts. Part formatting keeps the same shared traversal, cloning repeated
+slots and transferring the final number buffer. Empty named forms and custom
+relative plural rules retain their existing behavior.

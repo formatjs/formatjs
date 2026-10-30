@@ -53,6 +53,12 @@ fn shared_plural_selection_keeps_visible_fraction_digits() {
     let (parts, category) = number.format_decimal_with_plural("1", &rules).unwrap();
     assert_eq!(category, "other");
     assert_eq!(
+        number
+            .format_decimal_string_with_plural("1", &rules)
+            .unwrap(),
+        ("1.00".into(), "other")
+    );
+    assert_eq!(
         serde_json::to_value(parts).unwrap(),
         json!([
             {"type":"integer","value":"1"},
@@ -65,6 +71,11 @@ fn shared_plural_selection_keeps_visible_fraction_digits() {
             .create(&["en".into()], &serde_json::from_value(options).unwrap())
             .unwrap();
         assert!(number.format_decimal_with_plural("1", &rules).is_err());
+        assert!(
+            number
+                .format_decimal_string_with_plural("1", &rules)
+                .is_err()
+        );
     }
 }
 
@@ -257,4 +268,39 @@ fn grouping_keeps_primary_secondary_and_minimum_boundaries() {
             );
         }
     }
+}
+
+#[test]
+fn decimal_text_keeps_signs_digit_mapping_rounding_and_pattern_fallback() {
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let registry = registry();
+    for (settings, input, expected, category) in [
+        (json!({}), "1.9996", "2", "other"),
+        (json!({"signDisplay":"always"}), "1", "+1", "one"),
+        (json!({"numberingSystem":"arab"}), "1", "١", "one"),
+    ] {
+        let number = registry.create(&["en".into()], &options(settings)).unwrap();
+        assert_eq!(
+            number
+                .format_decimal_string_with_plural(input, &rules)
+                .unwrap(),
+            (expected.into(), category)
+        );
+    }
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    pack["data"]["numbers"]["decimal"]["latn"]["standard"] = json!("#,##,##0.###");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&pack.to_string()).unwrap();
+    let number = registry
+        .create(&["en".into()], &Options::default())
+        .unwrap();
+    assert_eq!(
+        number
+            .format_decimal_string_with_plural("-1234567.5", &rules)
+            .unwrap(),
+        ("-12,34,567.5".into(), "other")
+    );
 }
