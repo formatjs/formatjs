@@ -8,6 +8,7 @@ import '@formatjs/intl-relativetimeformat/locale-data/en.js'
 import timezone from '@formatjs_generated/tz/all-tz.js'
 
 declare function print(message: string): void
+declare function __now(): number
 declare global {
   var __FORMATJS_NATIVE_INTL: Record<string, unknown>
   var __FORMATJS_REFERENCE_INTL: Record<string, unknown>
@@ -118,12 +119,12 @@ const scenarios = [
   ),
 ]
 
-const now = Date.now
+const now = typeof __now === 'function' ? __now : Date.now
 let checksum = 0
 function measure(mode: () => unknown, invoke: () => string) {
   mode()
   let calls = 10
-  while (calls < 131072) {
+  while (calls < 16777216) {
     const start = now()
     for (let i = 0; i < calls; i++) checksum += invoke().length
     if (now() - start >= 50) break
