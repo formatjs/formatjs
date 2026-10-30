@@ -16,6 +16,9 @@ def _archive(platform, llvm_target):
         "compilation_mode",
         "opt",
     ).set(
+        Label("@rules_rust//rust/settings:lto"),
+        "thin",
+    ).set(
         "platforms",
         [Label(platform)],
     ).extend(
