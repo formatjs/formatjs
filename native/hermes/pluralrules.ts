@@ -41,6 +41,13 @@
     receiver: unknown
   ) => object | undefined
   const setSlot = WeakMap.prototype.set.bind(slots)
+  const constructors = new Map<string, object>()
+  const getConstructor = Map.prototype.get.bind(constructors) as (
+    key: string
+  ) => object | undefined
+  const setConstructor = Map.prototype.set.bind(constructors)
+  const clearConstructors = Map.prototype.clear.bind(constructors)
+  let constructorCount = 0
   const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
   const matchers = ['lookup', 'best fit'] as const
   const types = ['cardinal', 'ordinal'] as const
@@ -125,8 +132,23 @@
     locale: string,
     options: string
   ): object {
-    const handle = nativeCreate(locale, options)
-    if (typeof handle === 'number') decoded(handle)
+    // All option getters/coercions have completed; immutable records can be shared.
+    const key =
+      locale.length + options.length > 512 ? undefined : locale + ':' + options
+    let handle = key === undefined ? undefined : getConstructor(key)
+    if (handle === undefined) {
+      const created = nativeCreate(locale, options)
+      if (typeof created === 'number') return decoded(created)
+      handle = created
+      if (key !== undefined) {
+        if (constructorCount === 64) {
+          clearConstructors()
+          constructorCount = 0
+        }
+        setConstructor(key, handle)
+        constructorCount++
+      }
+    }
     setSlot(receiver, handle)
     return receiver
   }
@@ -263,7 +285,10 @@
       const increment = number(opts.roundingIncrement, 1, 5000, 1)!
       let valid = false
       for (let index = 0; index < increments.length; index++)
-        if (increment === increments[index]) valid = true
+        if (increment === increments[index]) {
+          valid = true
+          break
+        }
       if (!valid) throw new BadOption('Invalid roundingIncrement')
       const roundingMode = option(
         opts,
@@ -356,6 +381,8 @@
           throw new BadReceiver('Expected plural locale JSON string')
         const status = nativeLoad(pack)
         if (status !== 0) decoded(status)
+        clearConstructors()
+        constructorCount = 0
       }
     }
     static getDefaultLocale(): string {
