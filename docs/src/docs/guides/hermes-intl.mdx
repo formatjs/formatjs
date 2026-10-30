@@ -18,11 +18,11 @@ iOS and Windows SDKs are not included.
 
 ## Install
 
-Extract your archive and set `FORMATJS_HERMES_SDK` to its absolute directory.
+Extract your archive and export `FORMATJS_HERMES_SDK` as its absolute directory.
 For an existing CMake target that already uses your runtime's JSI headers:
 
 ```cmake
-include("${FORMATJS_HERMES_SDK}/cmake/FormatJSIntl.cmake")
+include("$ENV{FORMATJS_HERMES_SDK}/cmake/FormatJSIntl.cmake")
 formatjs_intl(appmodules)
 ```
 

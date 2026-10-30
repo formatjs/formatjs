@@ -38,7 +38,7 @@ file timestamps so replacing an SDK triggers native rebuilds.
 For an existing CMake target with access to your runtime's JSI headers:
 
 ```cmake
-include("${FORMATJS_HERMES_SDK}/cmake/FormatJSIntl.cmake")
+include("$ENV{FORMATJS_HERMES_SDK}/cmake/FormatJSIntl.cmake")
 formatjs_intl(appmodules)
 ```
 
