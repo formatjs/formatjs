@@ -61,6 +61,48 @@ fn scriptless_alias_prefers_likely_script_in_either_registration_order() {
 }
 
 #[test]
+fn both_constructors_retain_selected_type_and_style_without_registry() {
+    let mut data = pack("en", "{0} and {1}");
+    let kinds = [
+        (Type::Conjunction, "conjunction"),
+        (Type::Disjunction, "disjunction"),
+        (Type::Unit, "unit"),
+    ];
+    let styles = [
+        (Style::Long, "long"),
+        (Style::Short, "short"),
+        (Style::Narrow, "narrow"),
+    ];
+    for (_, kind) in kinds {
+        for (_, style) in styles {
+            data["data"][kind][style]["pair"] = json!(format!("{kind}/{style}:{{0}}|{{1}}"));
+        }
+    }
+    let rules = Arc::new(LocalePatterns::from_json(&data.to_string()).unwrap());
+    let mut registry = Registry::default();
+    registry.add_locale_data(&data.to_string()).unwrap();
+    let mut models = Vec::new();
+    for (kind, kind_name) in kinds {
+        for (style, style_name) in styles {
+            let options = Options { kind, style };
+            let expected = format!("{kind_name}/{style_name}:A|B");
+            models.push((
+                ListFormat::new(rules.clone(), options.clone()),
+                expected.clone(),
+            ));
+            models.push((registry.create("en", &options).unwrap(), expected));
+        }
+    }
+    drop(rules);
+    drop(registry);
+    for (model, expected) in models {
+        assert_eq!(
+            String::from_utf16(&model.format(&units(&["A", "B"]))).unwrap(),
+            expected
+        );
+    }
+}
+#[test]
 fn ported_english_lengths_and_parts() {
     let formatter = formatter();
     for (list, expected) in [

@@ -102,9 +102,13 @@ impl Context {
         }
     }
 }
-struct Pattern {
+struct PatternBody {
     tokens: Vec<Token>,
-    alternate: Option<(Context, Vec<Token>)>,
+    literal_len: usize,
+}
+struct Pattern {
+    body: PatternBody,
+    alternate: Option<(Context, PatternBody)>,
 }
 impl Pattern {
     fn contextual(text: &str, language: &str) -> Result<Self, Error> {
@@ -118,22 +122,25 @@ impl Pattern {
             _ => None,
         };
         if let Some((context, text)) = alternate {
-            pattern.alternate = Some((context, Self::parse(text)?.tokens));
+            pattern.alternate = Some((context, Self::parse(text)?.body));
         }
         Ok(pattern)
     }
-    fn for_next(&self, text: &[u16]) -> &[Token] {
+    fn for_next(&self, text: &[u16]) -> &PatternBody {
         match &self.alternate {
-            Some((context, tokens)) if context.matches(text) => tokens,
-            _ => &self.tokens,
+            Some((context, body)) if context.matches(text) => body,
+            _ => &self.body,
         }
     }
     fn separator(&self, next: &[u16]) -> Option<&[u16]> {
-        match self.for_next(next) {
+        match self.for_next(next).tokens.as_slice() {
             [Token::First, Token::Second] => Some(&[]),
             [Token::First, Token::Literal(value), Token::Second] => Some(value),
             _ => None,
         }
+    }
+    fn literal_len(&self, next: &[u16]) -> usize {
+        self.for_next(next).literal_len
     }
     fn parse(text: &str) -> Result<Self, Error> {
         // LocaleData requires each placeholder exactly once. Compile its
@@ -166,8 +173,18 @@ impl Pattern {
         if !rest.is_empty() {
             tokens.push(Token::Literal(rest.encode_utf16().collect()));
         }
+        let literal_len = tokens
+            .iter()
+            .map(|token| match token {
+                Token::Literal(value) => value.len(),
+                _ => 0,
+            })
+            .sum();
         Ok(Self {
-            tokens,
+            body: PatternBody {
+                tokens,
+                literal_len,
+            },
             alternate: None,
         })
     }
@@ -199,7 +216,7 @@ impl RawTemplates {
 pub struct LocalePatterns {
     locale: String,
     aliases: Vec<String>,
-    templates: BTreeMap<String, BTreeMap<String, Templates>>,
+    templates: BTreeMap<String, BTreeMap<String, Arc<Templates>>>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -229,7 +246,7 @@ impl LocalePatterns {
         for (kind, styles) in pack.data {
             let mut compiled = BTreeMap::new();
             for (style, raw) in styles {
-                compiled.insert(style, raw.compile(language)?);
+                compiled.insert(style, Arc::new(raw.compile(language)?));
             }
             for style in ["long", "short", "narrow"] {
                 if !compiled.contains_key(style) {
@@ -276,7 +293,7 @@ pub struct ResolvedOptions {
     pub style: Style,
 }
 pub struct ListFormat {
-    data: Arc<LocalePatterns>,
+    templates: Arc<Templates>,
     locale: String,
     options: Options,
 }
@@ -284,7 +301,7 @@ impl ListFormat {
     pub fn new(data: Arc<LocalePatterns>, options: Options) -> Self {
         Self {
             locale: data.locale.clone(),
-            data,
+            templates: Arc::clone(&data.templates[options.kind.key()][options.style.key()]),
             options,
         }
     }
@@ -308,7 +325,7 @@ impl ListFormat {
             visit(true, list[0].as_ref());
             return;
         }
-        let templates = &self.data.templates[self.options.kind.key()][self.options.style.key()];
+        let templates = &self.templates;
         let last = list[list.len() - 1].as_ref();
         // Forward joins can stream borrowed slices without traversal storage.
         if list.len() == 2 {
@@ -380,7 +397,12 @@ impl ListFormat {
                 Task::Node(index) => match &nodes[index] {
                     Node::Element(value) => visit(true, value),
                     Node::Join(pattern, first, second) => {
-                        for token in pattern.for_next(list[list.len() - 1].as_ref()).iter().rev() {
+                        for token in pattern
+                            .for_next(list[list.len() - 1].as_ref())
+                            .tokens
+                            .iter()
+                            .rev()
+                        {
                             pending.push(match token {
                                 Token::Literal(value) => Task::Literal(value),
                                 Token::First => Task::Node(*first),
@@ -411,8 +433,26 @@ impl ListFormat {
     fn format_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<u16> {
         // FormatList 1–5: concatenate all part values, including empty elements.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L317-L321
-        // Every input appears once; literals only add to this lower bound.
-        let capacity = list.iter().map(|value| value.as_ref().len()).sum();
+        let input_len: usize = list.iter().map(|value| value.as_ref().len()).sum();
+        // Each template substitutes both slots once, so order doesn't affect size.
+        let literal_len = match list.len() {
+            0 | 1 => 0,
+            2 => self.templates.pair.literal_len(list[1].as_ref()),
+            len => {
+                let last = list[len - 1].as_ref();
+                self.templates
+                    .start
+                    .literal_len(last)
+                    .saturating_add(self.templates.end.literal_len(last))
+                    .saturating_add(
+                        self.templates
+                            .middle
+                            .literal_len(last)
+                            .saturating_mul(len - 3),
+                    )
+            }
+        };
+        let capacity = input_len.saturating_add(literal_len);
         let mut result = Vec::with_capacity(capacity);
         self.visit_parts(list, |_, value| result.extend_from_slice(value));
         result

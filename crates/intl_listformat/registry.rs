@@ -141,7 +141,7 @@ impl Registry {
             .get()
             .map_err(Error::InvalidData)?;
         Ok(ListFormat {
-            data: rules,
+            templates: Arc::clone(&rules.templates[options.kind.key()][options.style.key()]),
             locale: locale.to_owned(),
             options: options.clone(),
         })
