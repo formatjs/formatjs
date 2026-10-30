@@ -4,19 +4,20 @@ Twelve Rust-backed Intl APIs, installed before your app runs. Rust libraries and
 locale data are prebuilt; your build compiles the C++ adapter against its own JSI
 headers. No Rust toolchain needed to consume an SDK.
 
-| Archive                               | Rust libraries                |
-| ------------------------------------- | ----------------------------- |
-| `formatjs-hermes-intl-desktop.tar.gz` | Linux x86_64 GNU, macOS arm64 |
-| `formatjs-hermes-intl-android.tar.gz` | Android arm64-v8a, x86_64     |
+| Archive                               | Rust libraries                                        |
+| ------------------------------------- | ----------------------------------------------------- |
+| `formatjs-hermes-intl-desktop.tar.gz` | Linux x86_64 GNU, macOS arm64/x86_64                  |
+| `formatjs-hermes-intl-android.tar.gz` | Android arm64-v8a, x86_64                             |
+| `formatjs-hermes-intl-apple.tar.gz`   | iOS arm64, simulator arm64/x86_64, macOS arm64/x86_64 |
 
-iOS and Windows SDKs are not included. The Android SDK supports native React
+Windows SDKs are not included. The Android SDK supports native React
 Native integration; it does not install through npm alone.
 
 ## Get the SDK
 
 SDK releases use `formatjs-hermes-intl_v<version>` in
 [FormatJS releases](https://github.com/formatjs/formatjs/releases?q=formatjs-hermes-intl).
-Each release includes both archives, `version.txt`, and `checksums.txt`.
+Each release includes all three archives, `version.txt`, and `checksums.txt`.
 Until the first SDK release is published, build from source below.
 
 Download your archive and `checksums.txt` from the same release, then:
@@ -62,6 +63,18 @@ and Date prototypes where the individual polyfills provide them.
 React Native's synchronous TurboModule calls this installer. See the
 [Android example](https://github.com/formatjs/hermes-intl) for the complete app,
 rendered-screen assertions, and screenshot comparison.
+
+### iOS and macOS
+
+Extract the Apple archive. Use the same CMake helper and installer with your
+runtime's JSI headers. For iOS, configure CMake with `-DCMAKE_SYSTEM_NAME=iOS`,
+`-DCMAKE_OSX_SYSROOT=iphoneos` or `iphonesimulator`, and one architecture in
+`CMAKE_OSX_ARCHITECTURES` (`arm64` or simulator `x86_64`). For macOS, use `arm64`
+or `x86_64`. Build each architecture separately; these are thin static libraries.
+The SDK does not register a CocoaPod or provide a second Hermes runtime.
+
+iOS requires 15.1+; macOS arm64 requires 11.0+. Keep deployment targets at least
+as high as those used by your runtime.
 
 ### Hermes contrib extensions
 
@@ -151,7 +164,19 @@ mkdir -p "$sdk_dir"
 tar -xmzf "$archive" -C "$sdk_dir"
 ```
 
-Both builds use optimized Rust with ThinLTO. Build custom locales with the flag
+For iOS and macOS, build on macOS with full Xcode selected:
+
+```sh
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+bazel build -c opt --config=hermes-apple //native/hermes/package:apple_sdk
+archive=$(bazel cquery -c opt --config=hermes-apple --output=files \
+  //native/hermes/package:apple_sdk)
+```
+
+The Apple archive includes iOS device arm64, simulator arm64/x86_64, and macOS
+arm64/x86_64. The same locale filter applies to `:apple_sdk`.
+
+All builds use optimized Rust with ThinLTO. Build custom locales with the flag
 above. SDK releases are versioned separately from crates.io packages; Release
 Please updates `native/hermes/version.txt`, and the SDK release workflow builds
 these same Bazel targets and uploads checksums.
