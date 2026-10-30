@@ -170,3 +170,8 @@ Native Rust records store language/script/region in bounded ASCII fields
 shared canonicalization and the same option checks; 5–8-letter languages remain
 supported. Public snapshots keep owned strings. Temporary subtag lists and
 variable-length variants/extensions retain their existing containers.
+
+Unicode option updates preserve unrelated extensions and private use. The TS
+path inserts a new Unicode extension before private use; Rust sorts private use
+last when rebuilding. Pinned ICU4C/J/X fixtures cover numeric/calendar updates
+with digit and v/y/z extensions, existing Unicode attributes and private payloads.

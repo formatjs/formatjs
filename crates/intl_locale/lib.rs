@@ -375,8 +375,9 @@ impl Locale {
             }
         }
         self.extensions[index].value = attributes.join("-");
+        // Private use consumes the remaining subtags, so it must stay last.
         self.extensions
-            .sort_by(|left, right| left.singleton.cmp(&right.singleton));
+            .sort_by_key(|extension| (extension.singleton == b'x', extension.singleton));
     }
 
     fn emit_with_id(&self, id: &LanguageId) -> String {

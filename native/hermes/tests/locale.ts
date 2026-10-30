@@ -134,6 +134,9 @@ for (const options of [
   for (const tag of [
     'en',
     'ar-EG-u-ca-buddhist-kn-false-x-private',
+    'en-z-foo-x-private',
+    'en-0-foo-z-bar-x-private',
+    'en-v-foo-y-bar-z-baz-x-private',
     'hye-Latn-SU',
   ])
     compare(tag, options)
