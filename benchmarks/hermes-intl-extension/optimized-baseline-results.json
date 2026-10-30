@@ -1,0 +1,1063 @@
+{
+  "baselineCommit": "4ee3a2ef77e075a4b4734ada7a3d6e7f1c00c191",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "build": {
+    "hermesCpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "fixedDecimal": "0.7.3",
+    "magrinjRust": "release: opt-level=z, lto=true, codegen-units=1",
+    "locales": "FormatJS default Chromium subset; magrinj shipping compiled data",
+    "magrinjBootstrap": "Precompiled Hermes -O bytecode, from pinned source",
+    "overlap": "Identical precompiled Hermes -O bytecode on all hosts",
+    "formatjsFactories": "Embedded Hermes -O bytecode"
+  },
+  "command": "HERMES $(bazel cquery -c opt //benchmarks/hermes-intl-extension:overlap_bytecode --output=files)",
+  "clock": "__now when available, otherwise Date.now; 50 ms calibration, seven timing rounds per case",
+  "collectedAt": "2026-10-29T13:27:54.226440+00:00",
+  "order": "Three rounds across three processes; baseline/comparator order reverses on alternating rounds.",
+  "runs": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 3.96728515625,
+          "iterations": 16384,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.60272216796875,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.67901611328125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.701904296875,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.63323974609375,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.64849853515625,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.105712890625,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.03759765625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.173828125,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.03759765625,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0517578125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.4495849609375,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.51116943359375,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 4.5166015625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 6.04248046875,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 5.18798828125,
+          "iterations": 16384,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 7.6904296875,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 8.1787109375,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 3.41796875,
+          "iterations": 16384,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 16.6015625,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 12.451171875,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 11.3525390625,
+          "iterations": 8192,
+          "value": {}
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 4.08935546875,
+          "iterations": 16384,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.6103515625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.67901611328125,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.70953369140625,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.64849853515625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.67138671875,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.410888671875,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.068115234375,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0833740234375,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0517578125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.40380859375,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.52642822265625,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 4.5166015625,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 6.04248046875,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 5.0048828125,
+          "iterations": 16384,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 7.4462890625,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 7.9345703125,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 3.41796875,
+          "iterations": 16384,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 16.6015625,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 12.451171875,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 11.5966796875,
+          "iterations": 8192,
+          "value": {}
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.7781982421875,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 4.21142578125,
+          "iterations": 16384,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.6103515625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.67138671875,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.701904296875,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.640869140625,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.6561279296875,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.0751953125,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.03759765625,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.23486328125,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 1.0528564453125,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0517578125,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3580322265625,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.518798828125,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 4.638671875,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 6.04248046875,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 5.126953125,
+          "iterations": 16384,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 7.568359375,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 8.1787109375,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 3.47900390625,
+          "iterations": 16384,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 17.822265625,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 12.6953125,
+          "iterations": 4096,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 11.962890625,
+          "iterations": 8192,
+          "value": {}
+        }
+      ]
+    ],
+    "magrinj": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.0990109149133787,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1046822803327814,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.45153819883125834,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4609182651620358,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9097137735807337,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45514143494074233,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5018140400352422,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8874769264366478,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5286258783598896,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.204403561539948,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7120596455933992,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1513172978302464,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7873540380387567,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5988641205476597,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9118029774981551,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.820037487661466,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.328160120465327,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.393887560581788,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.7434438893105835,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.698876225622371,
+          "iterations": 32768,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.580440621590242,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.7792910006828606,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.859954351559281,
+          "iterations": 16384,
+          "value": {}
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.0913516089203767,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.09365546470508,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.45469335236703046,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.45603327816934325,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9151694757747464,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45544108797912486,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5016798204451334,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.885776462382637,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5268655404506717,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.222873347112909,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7117918867152184,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1621368650812656,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7858010721975006,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5970330530544743,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9071110107470304,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.8284125223290175,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3314095485839061,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.393605049699545,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.837321204831824,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.8581610386027023,
+          "iterations": 32768,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.690785262733698,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.8938452780712396,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 5.046879756264389,
+          "iterations": 8192,
+          "value": {}
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.0922199580818415,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.0902464602841064,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.45951658466947265,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.46054018457653,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9130890466622077,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4608486415236257,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5092552710266318,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8958679245552048,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5492264426720794,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.233740251744166,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7179228086897638,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1557811269303784,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7867369131417945,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.5997835687594488,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9175690793199465,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.838745720917359,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3284862507134676,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.339777282439172,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.7660616401117295,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.74389328842517,
+          "iterations": 32768,
+          "value": {}
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.526293585309759,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.6251629644539207,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.749978688778356,
+          "iterations": 16384,
+          "value": {}
+        }
+      ]
+    ]
+  },
+  "mediansUs": {
+    "before": {
+      "getCanonicalLocales": 0.7781982421875,
+      "Locale.maximize": 4.08935546875,
+      "PluralRules.select": 0.6103515625,
+      "PluralRules.select(decimal)": 0.67901611328125,
+      "PluralRules.select(string)": 0.701904296875,
+      "PluralRules.select(ordinal)": 0.640869140625,
+      "PluralRules.select(ru)": 0.6561279296875,
+      "PluralRules.selectRange": 2.105712890625,
+      "ListFormat.format": 1.03759765625,
+      "ListFormat.formatToParts": 3.23486328125,
+      "RelativeTimeFormat.format": 1.0528564453125,
+      "RelativeTimeFormat.formatToParts": 3.0517578125,
+      "RelativeTimeFormat.format(decimal)": 1.40380859375,
+      "RelativeTimeFormat.format(auto)": 0.518798828125,
+      "Locale.new": 4.5166015625,
+      "Locale.new(options)": 6.04248046875,
+      "Locale.new(zh-HK)": 5.126953125,
+      "PluralRules.new": 7.568359375,
+      "PluralRules.new(options)": 8.1787109375,
+      "ListFormat.new": 3.41796875,
+      "ListFormat.new(fallback)": 16.6015625,
+      "ListFormat.new(unsupported)": 12.451171875,
+      "RelativeTimeFormat.new": 11.5966796875
+    },
+    "magrinj": {
+      "getCanonicalLocales": 1.0922199580818415,
+      "Locale.maximize": 2.09365546470508,
+      "PluralRules.select": 0.45469335236703046,
+      "PluralRules.select(decimal)": 0.46054018457653,
+      "PluralRules.select(string)": 0.9130890466622077,
+      "PluralRules.select(ordinal)": 0.45544108797912486,
+      "PluralRules.select(ru)": 0.5018140400352422,
+      "PluralRules.selectRange": 0.8874769264366478,
+      "ListFormat.format": 0.5286258783598896,
+      "ListFormat.formatToParts": 3.222873347112909,
+      "RelativeTimeFormat.format": 0.7120596455933992,
+      "RelativeTimeFormat.formatToParts": 2.1557811269303784,
+      "RelativeTimeFormat.format(decimal)": 0.7867369131417945,
+      "RelativeTimeFormat.format(auto)": 0.5988641205476597,
+      "Locale.new": 0.9118029774981551,
+      "Locale.new(options)": 4.8284125223290175,
+      "Locale.new(zh-HK)": 1.3284862507134676,
+      "PluralRules.new": 4.393605049699545,
+      "PluralRules.new(options)": 4.7660616401117295,
+      "ListFormat.new": 2.74389328842517,
+      "ListFormat.new(fallback)": 3.580440621590242,
+      "ListFormat.new(unsupported)": 3.7792910006828606,
+      "RelativeTimeFormat.new": 4.859954351559281
+    }
+  },
+  "runtimeSourceBootstrapControl": [
+    {
+      "name": "getCanonicalLocales",
+      "us": 1.4720866965944879,
+      "iterations": 65536,
+      "value": "en-US"
+    },
+    {
+      "name": "Locale.maximize",
+      "us": 2.779474700218998,
+      "iterations": 32768,
+      "value": "en-Latn-US"
+    },
+    {
+      "name": "PluralRules.select",
+      "us": 0.6056584243196994,
+      "iterations": 131072,
+      "value": "one"
+    },
+    {
+      "name": "PluralRules.select(decimal)",
+      "us": 0.6181599892443046,
+      "iterations": 131072,
+      "value": "other"
+    },
+    {
+      "name": "PluralRules.select(string)",
+      "us": 1.1130555212730542,
+      "iterations": 65536,
+      "value": "other"
+    },
+    {
+      "name": "PluralRules.select(ordinal)",
+      "us": 0.5642851720040198,
+      "iterations": 131072,
+      "value": "one"
+    },
+    {
+      "name": "PluralRules.select(ru)",
+      "us": 0.6125252075435128,
+      "iterations": 131072,
+      "value": "few"
+    },
+    {
+      "name": "PluralRules.selectRange",
+      "us": 1.0591641694190912,
+      "iterations": 65536,
+      "value": "other"
+    },
+    {
+      "name": "ListFormat.format",
+      "us": 0.7043611913104542,
+      "iterations": 131072,
+      "value": "one, two, and three"
+    },
+    {
+      "name": "ListFormat.formatToParts",
+      "us": 4.447357729077339,
+      "iterations": 16384,
+      "value": 5
+    },
+    {
+      "name": "RelativeTimeFormat.format",
+      "us": 1.0003475181292742,
+      "iterations": 65536,
+      "value": "3 days ago"
+    },
+    {
+      "name": "RelativeTimeFormat.formatToParts",
+      "us": 2.956204436486587,
+      "iterations": 32768,
+      "value": 2
+    },
+    {
+      "name": "RelativeTimeFormat.format(decimal)",
+      "us": 1.0738301207311451,
+      "iterations": 65536,
+      "value": "1,234.5 days ago"
+    },
+    {
+      "name": "RelativeTimeFormat.format(auto)",
+      "us": 0.8760894488659687,
+      "iterations": 65536,
+      "value": "yesterday"
+    },
+    {
+      "name": "Locale.new",
+      "us": 1.1921267068828456,
+      "iterations": 65536,
+      "value": "en"
+    },
+    {
+      "name": "Locale.new(options)",
+      "us": 6.54900586232543,
+      "iterations": 8192,
+      "value": "en-GB"
+    },
+    {
+      "name": "Locale.new(zh-HK)",
+      "us": 1.6089273267425597,
+      "iterations": 32768,
+      "value": "zh-HK"
+    },
+    {
+      "name": "PluralRules.new",
+      "us": 5.734503298299387,
+      "iterations": 16384,
+      "value": "one"
+    },
+    {
+      "name": "PluralRules.new(options)",
+      "us": 6.497035035863519,
+      "iterations": 8192,
+      "value": "one"
+    },
+    {
+      "name": "ListFormat.new",
+      "us": 3.339008108014241,
+      "iterations": 16384,
+      "value": {}
+    },
+    {
+      "name": "ListFormat.new(fallback)",
+      "us": 4.246608179528266,
+      "iterations": 16384,
+      "value": "en"
+    },
+    {
+      "name": "ListFormat.new(unsupported)",
+      "us": 4.340569023042917,
+      "iterations": 16384,
+      "value": "en-US"
+    },
+    {
+      "name": "RelativeTimeFormat.new",
+      "us": 5.179248604690656,
+      "iterations": 16384,
+      "value": {}
+    }
+  ],
+  "listConformance": {
+    "icu4cCases": 2871,
+    "formatjsFailures": 0,
+    "magrinjFailures": 222,
+    "note": "Optimizing the comparator preserves its previously observed output differences."
+  }
+}

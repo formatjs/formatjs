@@ -169,6 +169,21 @@ COMBINED_PRELUDES = [
     "//packages/intl-supportedvaluesof:test262-polyfill.js",
 ]
 
+INTL_SUITES = [
+    ("getcanonicallocales", "Intl/getCanonicalLocales"),
+    ("locale", "Locale"),
+    ("pluralrules", "PluralRules"),
+    ("numberformat", "NumberFormat"),
+    ("datetimeformat", "DateTimeFormat"),
+    ("listformat", "ListFormat"),
+    ("relativetimeformat", "RelativeTimeFormat"),
+    ("displaynames", "DisplayNames"),
+    ("segmenter", "Segmenter"),
+    ("collator", "Collator"),
+    ("durationformat", "DurationFormat"),
+    ("supportedvaluesof", "Intl/supportedValuesOf"),
+]
+
 [
     test262_test(
         name = "combined-" + name,
@@ -184,21 +199,112 @@ COMBINED_PRELUDES = [
         suite = "intl402/" + suite,
         threads = 4,
     )
-    for name, suite in [
-        ("getcanonicallocales", "Intl/getCanonicalLocales"),
-        ("locale", "Locale"),
-        ("pluralrules", "PluralRules"),
-        ("numberformat", "NumberFormat"),
-        ("datetimeformat", "DateTimeFormat"),
-        ("listformat", "ListFormat"),
-        ("relativetimeformat", "RelativeTimeFormat"),
-        ("displaynames", "DisplayNames"),
-        ("segmenter", "Segmenter"),
-        ("collator", "Collator"),
-        ("durationformat", "DurationFormat"),
-        ("supportedvaluesof", "Intl/supportedValuesOf"),
+    for name, suite in INTL_SUITES
+]
+
+[
+    test262_harness_bin.test262_harness_binary(
+        name = "hermes-" + name + "-harness",
+        testonly = True,
+        data = [
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+        ],
+        node_toolchain = ":node-runtime",
+        tags = ["manual"],
+    )
+    for name, _ in INTL_SUITES
+]
+
+[
+    sh_test(
+        name = "hermes-" + name + "-strict",
+        size = "large",
+        timeout = "eternal",
+        srcs = ["hermes_run.sh"],
+        args = [
+            "$(rootpath :hermes-%s-harness)" % name,
+            "$(rootpath :hermes_host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            suite,
+            "120000" if name == "numberformat" else "30000",
+            "$(rootpath //native/hermes/tests:datetimeformat_prelude.js)",
+            "$(rootpath :hermes_temporal_shim.js)",
+        ],
+        data = [
+            ":hermes-" + name + "-harness",
+            "hermes_host.sh",
+            "hermes_temporal_shim.js",
+            "//native/hermes/tests:datetimeformat_prelude.js",
+            "//native/hermes/tests:test262_runtime",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+        ],
+        env = {"TZ": "UTC"},
+        tags = [] if name in [
+            "getcanonicallocales",
+            "durationformat",
+            "supportedvaluesof",
+        ] else ["manual"],
+    )
+    for name, suite in INTL_SUITES
+]
+
+test_suite(
+    name = "hermes-strict",
+    tags = ["manual"],
+    tests = [":hermes-" + name + "-strict" for name, _ in INTL_SUITES],
+)
+
+[
+    sh_test(
+        name = "hermes-" + name,
+        size = "large",
+        timeout = "eternal",
+        srcs = ["hermes_run.sh"],
+        args = [
+            "$(rootpath :hermes-%s-harness)" % name,
+            "$(rootpath :hermes_host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            suite,
+            "120000" if name == "numberformat" else "30000",
+            "$(rootpath //native/hermes/tests:datetimeformat_prelude.js)",
+            "$(rootpath :hermes_temporal_shim.js)",
+            "$(rootpath baselines/hermes-%s.json)" % name,
+            "$(rootpath :validator)",
+        ],
+        data = [
+            ":hermes-" + name + "-harness",
+            ":validator",
+            "baselines/hermes-" + name + ".json",
+            "hermes_host.sh",
+            "hermes_temporal_shim.js",
+            "//native/hermes/tests:datetimeformat_prelude.js",
+            "//native/hermes/tests:test262_runtime",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-" + name + "-copy",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for name, suite in INTL_SUITES
+    if name not in [
+        "getcanonicallocales",
+        "durationformat",
+        "supportedvaluesof",
     ]
 ]
+
+test_suite(
+    name = "hermes",
+    tests = [
+        ":hermes-" + name + ("-strict" if name in [
+            "getcanonicallocales",
+            "durationformat",
+            "supportedvaluesof",
+        ] else "")
+        for name, _ in INTL_SUITES
+    ],
+)
 
 test_suite(
     name = "combined",

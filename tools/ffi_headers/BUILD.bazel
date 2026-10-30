@@ -1,0 +1,14 @@
+# gazelle:resolve rs cbindgen @cbindgen_source//:cbindgen
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+
+exports_files(["cbindgen.BUILD.bazel"])
+
+rust_binary(
+    name = "generate",
+    srcs = ["main.rs"],
+    crate_name = "formatjs_ffi_headers",
+    crate_root = "main.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = ["@cbindgen_source//:cbindgen"],
+)

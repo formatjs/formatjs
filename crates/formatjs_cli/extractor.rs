@@ -280,7 +280,7 @@ impl<'a> MessageExtractor<'a> {
         let expr = self.unwrap_transparent_ts_expression(expr);
         match expr {
             Expression::StringLiteral(lit) => {
-                let value = lit.value.to_string();
+                let value = lit.value.as_str()?.to_owned();
                 if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
                     Some(value)
                 } else {
@@ -312,7 +312,7 @@ impl<'a> MessageExtractor<'a> {
         if tpl.quasis.len() != 1 || !tpl.expressions.is_empty() {
             return None;
         }
-        let value = tpl.quasis[0].value.cooked.as_ref()?.to_string();
+        let value = tpl.quasis[0].value.cooked.as_ref()?.as_str()?.to_owned();
         if preserve_whitespace.unwrap_or(self.preserve_whitespace) {
             Some(value)
         } else {
@@ -443,7 +443,10 @@ impl<'a> MessageExtractor<'a> {
                     if let Some(value) = &jsx_attr.value {
                         match value {
                             JSXAttributeValue::StringLiteral(lit) => {
-                                let val = lit.value.to_string();
+                                let Some(val) = lit.value.as_str() else {
+                                    return;
+                                };
+                                let val = val.to_owned();
                                 match attr_name {
                                     "id" => descriptor.id = Some(val),
                                     "defaultMessage" => {
@@ -594,7 +597,10 @@ impl<'a> MessageExtractor<'a> {
             if let ObjectPropertyKind::ObjectProperty(p) = prop {
                 let name = match &p.key {
                     PropertyKey::StaticIdentifier(key) => key.name.as_str(),
-                    PropertyKey::StringLiteral(key) => key.value.as_str(),
+                    PropertyKey::StringLiteral(key) => match key.value.as_str() {
+                        Some(name) => name,
+                        None => continue,
+                    },
                     _ => continue,
                 };
                 match name {

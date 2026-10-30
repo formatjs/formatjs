@@ -1,0 +1,25 @@
+# gazelle:ignore
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance_test",
+    size = "medium",
+    srcs = ["conformance.test.ts"],
+    data = [
+        "//crates/intl_collator:conformance",
+        "//packages/intl-collator:tests/collator-conformance.tsv",
+    ],
+    no_copy_to_bin = [
+        "//:package.json",
+        "//packages/intl-collator:tests/collator-conformance.tsv",
+    ],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)

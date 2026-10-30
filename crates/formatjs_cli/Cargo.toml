@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli"
-version = "1.8.2"
+version = "1.8.3"
 publish = false
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
@@ -33,8 +33,8 @@ oxc_ast = "0.155"
 oxc_data_structures = { version = "0.155", features = ["rope"] }
 oxc_parser = "0.155"
 oxc_span = "0.155"
-oxc_ecmascript = { version = "0.154", features = ["constant_evaluation"] }
-oxc_syntax = "0.154"
+oxc_ecmascript = { version = "0.155", features = ["constant_evaluation"] }
+oxc_syntax = "0.155"
 sha2 = "0.11"
 sha1 = "0.11"
 md-5 = "0.11"

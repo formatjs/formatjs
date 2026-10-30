@@ -1,0 +1,29 @@
+language = "C"
+cpp_compat = true
+pragma_once = true
+include_version = false
+usize_is_size_t = true
+documentation = true
+style = "both"
+trailer = """
+#define FORMATJS_CALENDAR FORMATJS_VALUE_KEY_CALENDAR
+#define FORMATJS_COLLATION FORMATJS_VALUE_KEY_COLLATION
+#define FORMATJS_CURRENCY FORMATJS_VALUE_KEY_CURRENCY
+#define FORMATJS_NUMBERING_SYSTEM FORMATJS_VALUE_KEY_NUMBERING_SYSTEM
+#define FORMATJS_TIME_ZONE FORMATJS_VALUE_KEY_TIME_ZONE
+#define FORMATJS_UNIT FORMATJS_VALUE_KEY_UNIT
+"""
+
+[enum]
+rename_variants = "QualifiedScreamingSnakeCase"
+
+[export]
+item_types = ["enums", "structs", "unions", "typedefs", "opaque", "functions"]
+include = ["Key", "Probe"]
+
+[export.rename]
+"BorrowedString" = "FormatjsBorrowedString"
+"ProbeResult" = "FormatjsValueProbeResult"
+"ValuesResult" = "FormatjsValuesResult"
+"Probe" = "FormatjsValueProbe"
+"Key" = "FormatjsValueKey"

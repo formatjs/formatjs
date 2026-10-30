@@ -150,6 +150,7 @@ export function getNavigationTree(): NavSection[] {
           title: 'React Native + Hermes',
           path: 'guides/react-native-hermes',
         },
+        {title: 'Hermes Intl SDK', path: 'guides/hermes-intl'},
         {title: 'Migrate from i18next', path: 'guides/migrate-from-i18next'},
         {title: 'Migrate from Lingui', path: 'guides/migrate-from-lingui'},
         {title: 'Performance Tuning', path: 'guides/performance'},

@@ -2,17 +2,17 @@ import minimist from 'minimist'
 import {readFileSync} from 'fs'
 import {outputFileSync} from 'fs-extra/esm'
 import stringify from 'json-stable-stringify'
+export function parseLinks(source: string): Record<string, string> {
+  const links: Record<string, string> = Object.create(null)
+  for (const line of source.split('\n')) {
+    const [kind, target, alias] = line.trim().split(/\s+/)
+    if (kind === 'Link' && target && alias) links[alias] = target
+  }
+  return links
+}
 function main(args: minimist.ParsedArgs) {
   const {input, out} = args
-  const linkMap = readFileSync(input, 'utf8')
-    .split('\n')
-    // Ignore comments
-    .filter(line => line && !line.startsWith('#'))
-    .reduce((all: Record<string, string>, line) => {
-      const [, target, link] = line.split(/[\s\t]+/)
-      all[link] = target
-      return all
-    }, {})
+  const linkMap = parseLinks(readFileSync(input, 'utf8'))
   outputFileSync(
     out,
     `// @generated

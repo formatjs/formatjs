@@ -1,0 +1,41 @@
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "metadata",
+    data = ["//:root_package_json"],  # keep
+    entry_point = "metadata.ts",
+    tsconfig_types = ["node"],
+    visibility = ["//crates/intl_numberformat:__pkg__"],
+    deps = [":scripts"],
+)
+
+ts_binary(
+    name = "data",
+    entry_point = "data.ts",
+    tsconfig_types = ["node"],
+    visibility = ["//crates/intl_numberformat:__pkg__"],
+    deps = [":scripts"],
+)
+
+formatjs_library(
+    name = "scripts",
+    srcs = [
+        "data.ts",
+        "metadata.ts",
+    ],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//:node_modules/@formatjs_generated/unicode",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//packages/ecma402-abstract",
+        "//packages/ecma402-abstract/types",
+    ],
+)

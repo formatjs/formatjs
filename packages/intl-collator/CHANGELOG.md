@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.2.9...@formatjs/intl-collator@0.3.0) (2026-10-30)
+
+
+### Features
+
+* **intl_collator:** add Rust Hermes Collator extension ([#7695](https://github.com/formatjs/formatjs/issues/7695)) ([d51402b](https://github.com/formatjs/formatjs/commit/d51402bcd5108550a3b6533a7d89bfdcd322b62a))
+* **intl_locale:** port Locale to Rust with Hermes extension ([#7689](https://github.com/formatjs/formatjs/issues/7689)) ([bb2c829](https://github.com/formatjs/formatjs/commit/bb2c8297af744191d7842497d23c15389135c550))
+
+
+### Bug Fixes
+
+* **intl_collator:** inherit root collation types and ordering rules ([#7766](https://github.com/formatjs/formatjs/issues/7766)) ([86cbca8](https://github.com/formatjs/formatjs/commit/86cbca8c58492f3018d442dca50f3ab302eb4c52))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [0.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/intl-collator@0.2.8...@formatjs/intl-collator@0.2.9) (2026-09-12)
 
 

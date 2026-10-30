@@ -1,0 +1,43 @@
+locale	granularity	input	icu	typescript	reason
+en	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+en	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+en	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+en	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+en	sentence	004d0072002e00200053006d0069007400680020006c006500660074002e0020004e0065007800740021	0:4:-,4:16:-,16:21:-	0:16:-,16:21:-	TS CLDR locale abbreviation suppression; ICU default sentence model
+en-GB	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+en-GB	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+en-GB	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+en-GB	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+en-GB	sentence	004d0072002e00200053006d0069007400680020006c006500660074002e0020004e0065007800740021	0:4:-,4:16:-,16:21:-	0:16:-,16:21:-	TS CLDR locale abbreviation suppression; ICU default sentence model
+fr	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+fr	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+fr	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+fr	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+de	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+de	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+de	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+de	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+de	sentence	00440072002e00200053006d0069007400680020006c006500660074002e0020004e0065007800740021	0:4:-,4:16:-,16:21:-	0:16:-,16:21:-	TS CLDR locale abbreviation suppression; ICU default sentence model
+de	sentence	004d0072002e00200053006d0069007400680020006c006500660074002e0020004e0065007800740021	0:4:-,4:16:-,16:21:-	0:16:-,16:21:-	TS CLDR locale abbreviation suppression; ICU default sentence model
+ja	word	4f60597d4e16754c	0:2:1,2:4:1	0:4:1	TS CLDR word rules; ICU automatic dictionary models
+ja	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+zh-TW	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+zh-TW	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+zh-TW	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+zh-TW	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+zh-HK	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+zh-HK	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+zh-HK	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+zh-HK	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+th	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+th	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+th	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+th	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+hi	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+hi	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+hi	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+hi	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models
+ar	word	4f60597d4e16754c	0:2:1,2:4:1	0:1:1,1:2:1,2:3:1,3:4:1	TS CLDR word rules; ICU automatic dictionary models
+ar	word	30533093306b3061306f4e16754c	0:5:1,5:7:1	0:1:1,1:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:7:1	TS CLDR word rules; ICU automatic dictionary models
+ar	word	0e170e380e010e2a0e2d0e070e2a0e310e1b0e140e320e2b0e4c	0:3:1,3:6:1,6:13:1	0:2:1,2:3:1,3:4:1,4:5:1,5:6:1,6:8:1,8:9:1,9:10:1,10:11:1,11:13:1	TS CLDR word rules; ICU automatic dictionary models
+ar	word	6f225b57304b306a30ab30ca	0:2:1,2:4:1,4:6:1	0:1:1,1:2:1,2:3:1,3:4:1,4:6:1	TS CLDR word rules; ICU automatic dictionary models

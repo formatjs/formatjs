@@ -13,11 +13,11 @@
     "@rescripts/cli": "0.0.16",
     "@rescripts/rescript-use-babel-config": "0.0.12",
     "@rescripts/rescript-use-eslint-config": "0.0.11",
-    "babel-plugin-formatjs": "13.0.7",
-    "eslint-plugin-formatjs": "8.1.1",
+    "babel-plugin-formatjs": "13.0.8",
+    "eslint-plugin-formatjs": "8.1.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "react-intl": "12.1.4",
+    "react-intl": "12.1.5",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
@@ -33,5 +33,5 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "packageManager": "pnpm@12.14.0"
+  "packageManager": "pnpm@12.15.0"
 }

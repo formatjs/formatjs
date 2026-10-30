@@ -1,0 +1,41 @@
+{
+  "baselineCommit": "f3dad91012f4eb96fae0cce57ac6cb8ab0cd4740",
+  "hermesCommit": "393a539e6",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "build": "C++ Release -O3, FormatJS Rust Bazel -c opt",
+  "matrix": {
+    "total": 2871,
+    "selectedOracle": "ICU4C 78.1",
+    "icu4jVersion": "78.1",
+    "icu4jDifferences": 18,
+    "icu4xListVersion": "2.3.0",
+    "icu4xRepresentable": 2772,
+    "icu4xDifferences": 66,
+    "utf16Only": 99,
+    "formatjsBeforeDifferences": 108,
+    "formatjsAfterDifferences": 0,
+    "magrinjDifferences": 222
+  },
+  "englishTimings": {
+    "ListFormat.format": {
+      "before": {
+        "samplesUs": [1.0986328125, 1.0986328125, 1.0986328125],
+        "medianUs": 1.0986328125
+      },
+      "after": {
+        "samplesUs": [1.0986328125, 1.0986328125, 1.129150390625],
+        "medianUs": 1.0986328125
+      }
+    },
+    "ListFormat.formatToParts": {
+      "before": {
+        "samplesUs": [4.5166015625, 4.638671875, 4.5166015625],
+        "medianUs": 4.5166015625
+      },
+      "after": {
+        "samplesUs": [4.5166015625, 4.638671875, 4.5166015625],
+        "medianUs": 4.5166015625
+      }
+    }
+  }
+}

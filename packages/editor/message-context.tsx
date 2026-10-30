@@ -4,25 +4,32 @@ import {
   CopyTextButton,
   type CopyTextButtonProps,
 } from '#packages/editor/copy-text-button.js'
-import type {EditorMessage, SourceLocation} from '#packages/editor/workflow.js'
+import type {EditorMessage} from '#packages/editor/workflow.js'
+import {
+  formatSourceLocation,
+  type SourceLocation,
+} from '#packages/editor/source-location.js'
 
 export interface MessageContextLabels {
   title: string
   id: string
   description: string
   catalogs: string
+  sources: string
   locations: string
   catalogCopy: (catalog: string) => string
+  sourceCopy: (source: string) => string
   locationCopy: (location: string) => string
 }
 export interface MessageContextProps {
   message?: Pick<
     EditorMessage,
-    'id' | 'description' | 'catalogs' | 'locations'
+    'id' | 'description' | 'catalogs' | 'sources' | 'locations'
   > | null
   labels?: Partial<MessageContextLabels>
   copyId?: boolean
   copyCatalogs?: boolean
+  copySources?: boolean
   copyLocations?: boolean
   copyOptions?: Pick<
     CopyTextButtonProps,
@@ -36,17 +43,11 @@ const defaults: MessageContextLabels = {
   id: 'Message ID',
   description: 'Description',
   catalogs: 'Source catalogs',
+  sources: 'Sources',
   locations: 'Source locations',
   catalogCopy: catalog => `source catalog ${catalog}`,
+  sourceCopy: source => `source ${source}`,
   locationCopy: location => `source location ${location}`,
-}
-function locationText(location: SourceLocation): string {
-  const start = location.start === undefined ? '' : `:${location.start}`
-  const end =
-    location.end === undefined
-      ? ''
-      : `${location.start === undefined ? ':' : '–'}${location.end}`
-  return `${location.file}${start}${end}`
 }
 
 export function MessageContext({
@@ -54,9 +55,10 @@ export function MessageContext({
   labels,
   copyId = true,
   copyCatalogs = false,
+  copySources = false,
   copyLocations = false,
   copyOptions,
-  renderLocation = locationText,
+  renderLocation = formatSourceLocation,
 }: MessageContextProps): ReactNode {
   const {Metadata} = useEditorDesignSystem()
   const text = {...defaults, ...labels}
@@ -104,13 +106,34 @@ export function MessageContext({
               </dd>
             </div>
           )}
+          {!!message.sources?.length && (
+            <div>
+              <dt>{text.sources}</dt>
+              <dd>
+                <ul>
+                  {message.sources.map((source, index) => (
+                    <li key={`${source}:${index}`}>
+                      <span>{source}</span>
+                      {copySources && (
+                        <CopyTextButton
+                          {...copyOptions}
+                          value={source}
+                          label={text.sourceCopy(source)}
+                        />
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )}
           {!!message.locations?.length && (
             <div>
               <dt>{text.locations}</dt>
               <dd>
                 <ul>
                   {message.locations.map((location, index) => {
-                    const value = locationText(location)
+                    const value = formatSourceLocation(location)
                     return (
                       <li key={`${value}:${index}`}>
                         <span>{renderLocation(location, value)}</span>

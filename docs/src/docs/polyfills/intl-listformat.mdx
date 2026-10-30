@@ -178,3 +178,10 @@ separate from language-specific patterns, regardless of registration order.
 Loading a locale also registers its CLDR default-content variants. For example,
 English data supports `en-US`. Explicitly loaded regional data remains distinct
 from its language's data, regardless of load order.
+
+## Rust on Hermes
+
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust ListFormat and
+source/bytecode installers. Locale data is compiled into the archive; use the
+build-time locale flag to choose a custom set. Individual consumers can link
+`:listformat` and call `formatjs::installListFormat(runtime)` after canonicalization.

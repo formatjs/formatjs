@@ -18,6 +18,39 @@ describe('intl-locale', () => {
   })
 
   describe('new locale info proposal properties', () => {
+    it('ar collations', () => {
+      const locale = new Locale('ar')
+      // Runtime-dependent: 'compat' collation may not be supported on all platforms
+      const collations = locale.getCollations()
+      expect(collations).toContain('emoji')
+      expect(collations).toContain('eor')
+    })
+    it('ar-EG collations', () => {
+      const locale = new Locale('ar-EG')
+      // Runtime-dependent: 'compat' collation may not be supported on all platforms
+      const collations = locale.getCollations()
+      expect(collations).toContain('emoji')
+      expect(collations).toContain('eor')
+    })
+    it('ar-SA collations', () => {
+      const locale = new Locale('ar-SA')
+      // Runtime-dependent: 'compat' collation may not be supported on all platforms
+      const collations = locale.getCollations()
+      expect(collations).toContain('emoji')
+      expect(collations).toContain('eor')
+    })
+    it('ja collations', () => {
+      const locale = new Locale('ja')
+      // Runtime-dependent: 'unihan' collation may not be supported on all platforms
+      const collations = locale.getCollations()
+      expect(collations).toContain('emoji')
+      expect(collations).toContain('eor')
+    })
+    it('pt-BR collations', () => {
+      const locale = new Locale('pt-BR')
+      expect(locale.getCollations()).toEqual(['emoji', 'eor'])
+    })
+
     it('ar', () => {
       const locale = new Locale('ar')
       expect(locale.getCalendars()).toEqual([
@@ -27,12 +60,11 @@ describe('intl-locale', () => {
         'islamic-civil',
         'islamic-tbla',
       ])
-      // Runtime-dependent: 'compat' collation may not be supported on all platforms
-      const collations = locale.getCollations()
-      expect(collations).toContain('emoji')
-      expect(collations).toContain('eor')
+
       expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
-      expect(locale.getNumberingSystems()).toEqual(['latn', 'arab'])
+      expect(locale.getNumberingSystems()).toEqual([
+        new Intl.NumberFormat('ar').resolvedOptions().numberingSystem,
+      ])
       expect(locale.getTimeZones()).toBe(undefined)
     })
 
@@ -45,10 +77,7 @@ describe('intl-locale', () => {
         'islamic-civil',
         'islamic-tbla',
       ])
-      // Runtime-dependent: 'compat' collation may not be supported on all platforms
-      const collations = locale.getCollations()
-      expect(collations).toContain('emoji')
-      expect(collations).toContain('eor')
+
       expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
       expect(locale.getNumberingSystems()).toEqual(['arab'])
       expect(JSON.stringify(locale.getTimeZones())).toMatch(
@@ -64,10 +93,7 @@ describe('intl-locale', () => {
         'islamic',
         'islamic-rgsa',
       ])
-      // Runtime-dependent: 'compat' collation may not be supported on all platforms
-      const collations = locale.getCollations()
-      expect(collations).toContain('emoji')
-      expect(collations).toContain('eor')
+
       expect(locale.getHourCycles()).toEqual(['h12', 'h23'])
       expect(locale.getNumberingSystems()).toEqual(['arab'])
       expect(JSON.stringify(locale.getTimeZones())).toMatch(
@@ -78,19 +104,16 @@ describe('intl-locale', () => {
     it('ja', () => {
       const locale = new Locale('ja')
       expect(locale.getCalendars()).toEqual(['gregory', 'japanese'])
-      // Runtime-dependent: 'unihan' collation may not be supported on all platforms
-      const collations = locale.getCollations()
-      expect(collations).toContain('emoji')
-      expect(collations).toContain('eor')
+
       expect(locale.getHourCycles()).toEqual(['h23', 'h11', 'h12'])
-      expect(locale.getNumberingSystems()).toEqual(['latn', 'jpan', 'jpanfin'])
+      expect(locale.getNumberingSystems()).toEqual(['latn'])
       expect(locale.getTimeZones()).toBe(undefined)
     })
 
     it('pt-BR', () => {
       const locale = new Locale('pt-BR')
       expect(locale.getCalendars()).toEqual(['gregory'])
-      expect(locale.getCollations()).toEqual(['emoji', 'eor'])
+
       expect(locale.getHourCycles()).toEqual(['h23'])
       expect(locale.getNumberingSystems()).toEqual(['latn'])
       expect(JSON.stringify(locale.getTimeZones())).toMatch(
@@ -419,4 +442,32 @@ it('filters global collation candidates for the requested locale', () => {
   expect(new Locale('pt-BR').getCollations()).not.toContain('phonebk')
   expect(new Locale('und').getCollations()).toEqual(['emoji', 'eor'])
   expect(new Locale('pt-BR-u-co-phonebk').getCollations()).toEqual(['phonebk'])
+})
+
+test('Unicode options preserve other extensions and private use', () => {
+  for (const suffix of [
+    '-x-private',
+    '-z-foo-x-private',
+    '-0-foo-z-bar-x-private',
+    '-v-foo-y-bar-z-baz-x-u-ca-buddhist',
+  ]) {
+    const numeric = new Locale('en' + suffix, {numeric: true})
+    const canonicalSuffix = suffix.startsWith('-0-')
+      ? '-0-foo-u-kn-z-bar-x-private'
+      : '-u-kn' + suffix
+    expect(numeric.toString()).toBe('en' + canonicalSuffix)
+    expect(numeric.numeric).toBe(true)
+    const calendar = new Locale('en' + suffix, {calendar: 'islamicc'})
+    const calendarSuffix = suffix.startsWith('-0-')
+      ? '-0-foo-u-ca-islamic-civil-z-bar-x-private'
+      : '-u-ca-islamic-civil' + suffix
+    expect(calendar.toString()).toBe('en' + calendarSuffix)
+    expect(calendar.calendar).toBe('islamic-civil')
+  }
+  expect(
+    new Locale('en-u-attr-ca-buddhist-z-foo-x-private', {
+      calendar: 'gregory',
+      numeric: false,
+    }).toString()
+  ).toBe('en-u-attr-ca-gregory-kn-false-z-foo-x-private')
 })

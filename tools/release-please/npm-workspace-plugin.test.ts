@@ -150,7 +150,7 @@ assert.match(
   /@formatjs\/intl bumped/
 )
 
-const expectedNative = [
+const expectedNpmDependents = [
   'packages/cli',
   'packages/cli-lib',
   'packages/cli-native-darwin-arm64',
@@ -159,9 +159,13 @@ const expectedNative = [
   'packages/cli-native-linux-x64',
   'packages/cli-native-linux-x64-musl',
   'packages/cli-native-win32-x64',
+  'packages/unplugin',
 ].sort()
 const rustOnly = await run(['crates/formatjs_cli'])
-assert.deepEqual(paths(rustOnly), ['crates/formatjs_cli', ...expectedNative])
+assert.deepEqual(paths(rustOnly), [
+  'crates/formatjs_cli',
+  ...expectedNpmDependents,
+])
 for (const candidate of rustOnly.filter(candidate =>
   candidate.path.startsWith('packages/')
 )) {
@@ -180,7 +184,7 @@ for (const candidate of rustOnly) {
   }
 }
 const manifestVersions = JSON.parse(manifest)
-assert.deepEqual(Object.keys(manifestVersions).sort(), expectedNative)
+assert.deepEqual(Object.keys(manifestVersions).sort(), expectedNpmDependents)
 for (const candidate of rustOnly.filter(candidate =>
   candidate.path.startsWith('packages/')
 )) {
@@ -191,7 +195,7 @@ for (const candidate of rustOnly.filter(candidate =>
 }
 const cli = rustOnly.find(candidate => candidate.path === 'packages/cli')
 assert.match(cli.pullRequest.body.releaseData[0].notes, /optionalDependencies/)
-for (const path of expectedNative.filter(path =>
+for (const path of expectedNpmDependents.filter(path =>
   path.includes('/cli-native-')
 )) {
   const pkg = packages.find(pkg => pkg.path === path)
@@ -201,9 +205,17 @@ for (const path of expectedNative.filter(path =>
     )
   )
 }
+const unplugin = rustOnly.find(
+  candidate => candidate.path === 'packages/unplugin'
+)
+assert(
+  unplugin.pullRequest.body.releaseData[0].notes.includes(
+    `@formatjs/cli-lib bumped to ${manifestVersions['packages/cli-lib']}`
+  )
+)
 assert.deepEqual(
   paths(await run(['crates/formatjs_cli', 'packages/editor'])),
-  ['crates/formatjs_cli', ...expectedNative, 'packages/editor'].sort()
+  ['crates/formatjs_cli', ...expectedNpmDependents, 'packages/editor'].sort()
 )
 assert.deepEqual(paths(await run(['crates/formatjs_intl'])), [
   'crates/formatjs_intl',

@@ -1,0 +1,36 @@
+[package]
+name = "formatjs_intl_pluralrules"
+version = "0.2.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "ECMA-402 PluralRules with caller-loaded CLDR data and ICU4X"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+publish = true
+
+[lib]
+path = "lib.rs"
+
+[features]
+compiled_data = []
+
+[dependencies]
+formatjs_intl_data = { path = "../intl_data", version = "0.2.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.2.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.2.0" }
+fixed_decimal = "0.7"
+icu_plurals = { version = "2.1", default-features = false, features = [
+  "serde",
+  "unstable",
+] }
+icu_provider = { version = "2.1", features = ["sync"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[[example]]
+name = "conformance"
+path = "conformance.rs"
+
+[[example]]
+name = "registration"
+path = "registration.rs"

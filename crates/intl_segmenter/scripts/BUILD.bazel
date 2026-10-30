@@ -1,0 +1,13 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "data",
+    entry_point = "data.ts",
+    visibility = ["//crates/intl_segmenter:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+)

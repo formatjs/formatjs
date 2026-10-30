@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.3.15...@formatjs/intl-displaynames@7.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_displaynames:** port Intl.DisplayNames to Rust with Hermes integration ([#7693](https://github.com/formatjs/formatjs/issues/7693)) ([517f0c2](https://github.com/formatjs/formatjs/commit/517f0c247c9ef4973c4d41f7ae46ae6f3e49bf31))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [7.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@7.3.14...@formatjs/intl-displaynames@7.3.15) (2026-09-12)
 
 

@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
+    "common/properties/scriptMetadata.txt",
     "common/uca/FractionalUCA_SHORT.txt",
     "common/uca/CollationTest_CLDR_NON_IGNORABLE_SHORT.txt",
     "common/uca/CollationTest_CLDR_SHIFTED_SHORT.txt",

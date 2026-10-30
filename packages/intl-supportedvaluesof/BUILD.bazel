@@ -1,4 +1,5 @@
 load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//packages/intl-datetimeformat:defs.bzl", "ZONES")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -53,7 +54,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "2.3.11",  # x-release-please-version
+    version = "2.5.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -81,6 +82,20 @@ formatjs_test(
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     deps = [
         ":intl-supportedvaluesof",
+        "//:node_modules/vitest",
+    ],
+)
+
+formatjs_test(
+    name = "rust_conformance_test",
+    srcs = ["tests/rust-conformance.test.ts"],
+    data = ["//crates/intl_supportedvaluesof:conformance"],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":intl-supportedvaluesof",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
@@ -195,4 +210,10 @@ test262_test(
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/Intl/supportedValuesOf",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

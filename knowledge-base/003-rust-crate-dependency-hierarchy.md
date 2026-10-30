@@ -2,10 +2,26 @@
 
 ## Workspace Members
 
-The Rust workspace (`Cargo.toml`) contains 12 members:
+The Rust workspace members are listed in `Cargo.toml`:
 
 ```
 crates/
+  intl_data/                 # Binary records and per-registry lazy caches
+  intl_data_build/           # Rust validation, plural-rule compilation, locale selection
+  intl_getcanonicallocales/    # ICU4X locale canonicalization leaf crate
+  intl_supportedvaluesof/     # Runtime-aware supported value enumeration
+  intl_locale/                # Locale records, preferences and owned C ABI
+  intl_segmenter/             # ICU4X segmentation, UTF-16 indices and cursors
+  intl_displaynames/          # CLDR names, code validation, caller-loaded locale packs
+  intl_listformat/            # CLDR list patterns, UTF-16 parts, caller-loaded locale packs
+  intl_pluralrules/           # ICU4X plural rules, exact rounding, caller-loaded locale packs
+  intl_durationformat/       # Duration locale/options resolution and native number/list rendering
+  intl_datetimeformat/       # Core formatter, caller-loaded locales/timezones
+  intl_datetimeformat_calendars/ # Optional arithmetic, caller-loaded calendar tables
+  intl_collator/             # Native collation and owned locale records
+  intl_numberformat/         # Native number formatting, caller-loaded locale packs
+  intl_relativetimeformat/   # Relative patterns with owned number/plural data
+  intl_hermes/                # One static C ABI archive for the Hermes SDK
   icu_skeleton_parser/         # Number/date skeleton parser
   icu_messageformat_parser/    # ICU MessageFormat parser (+ WASM target)
   icu_messageformat/           # ICU MessageFormat runtime formatter
@@ -91,6 +107,13 @@ formatjs_intl (v0.1.0)
 
 `formatjs_icu_messageformat`, `formatjs_intl_macros`, and `formatjs_intl`
 support Rust 1.92 and newer.
+
+The Intl polyfill crates stay independent of the high-level `formatjs_intl`
+runtime. `intl_hermes` assembles their C ABI exports into one static archive;
+JSI adapters and consumer applications remain under `native/hermes` and
+`examples/hermes-intl`. Canonicalization uses ICU4X. Supported-value enumeration
+uses shared CLDR/IANA candidates and observations from the embedding's actual
+formatters; it does not advertise unsupported candidate values.
 
 ## Crate Details
 
@@ -417,3 +440,82 @@ fallback through the same provider. Both suites also format from checked-in
 `include_bytes!`. The shared Bazel external dependency graph still enables ICU
 compiled data for other consumers; these suites alone do not prove binary size
 or a standalone Cargo consumer's feature graph.
+
+`intl_segmenter` uses ICU4X segmenter/properties, canonical locale matching, and
+an owned UTF-16 ABI. `intl_hermes` assembles its symbols into the shared SDK archive.
+Word/sentence profile differences from TS have explicit conformance expectations.
+
+`intl_collator` consumes the existing static CLDR collation pipeline through a
+Bazel-generated compiled JSON dataset. ICU4X supplies normalization/casing; Rust
+keeps the TS UCA/LDML sort and search comparison profile. Its locale matcher
+retains the winning requested tag for co/kn/kf extension negotiation.
+
+`intl_hermes` also assembles Collator's owned ABI into the shared archive; the
+SDK preserves its static collation data model and exact UTF-16 comparison input.
+
+`intl_datetimeformat_calendars` depends on the base DateTimeFormat crate for its
+provider contract. The base crate must not depend on optional providers or their
+tables. Calendar JSON data and locale patch targets remain separate from both
+libraries so registration can load only the selected calendar and locale.
+
+`intl_durationformat` depends on native NumberFormat and ListFormat for rendering.
+It owns selected dependency registries and memoized instances; their locale packs
+remain caller-loaded. Duration compiles the existing CLDR time-separator exports
+for static locale/numbering metadata; canonical locale resolution uses shared
+getcanonicallocales and Locale matcher records.
+
+`intl_hermes` assembles DurationFormat's owned ABI as well. Its dependency context
+contains only native Rust data, so synchronized retained handles can outlive their
+registry and be destroyed on another thread without a JS runtime guard.
+
+### Hermes bridge and C ABI
+
+`native/hermes/bridge.h` owns common JSI transport and buffer/handle cleanup.
+Polyfill state stays in Rust; only runtime references and foreign exception
+identity belong in C++ adapters.
+
+`tools/ffi_headers` builds pinned cbindgen from source with its upstream lockfile.
+Each Intl crate's `cbindgen.toml` keeps public C names while `rust_ffi_header`
+generates its header from Rust declarations. SDK packaging consumes those outputs,
+so changing an exported Rust signature updates the shipped ABI declaration.
+
+DateTimeFormat's `handles.rs` owns its record table and release queue. GC threads
+may drop tickets; formatter records drain on the runtime thread. The C++ adapter
+retains runtime references and preserves foreign exception identity.
+
+## Hermes compiled locale provider
+
+The SDK links `//crates/intl_hermes:with_compiled_data`. Formatter variants
+embed records generated by execution-platform Rust tools; DurationFormat reuses
+compiled NumberFormat/ListFormat variants. Generator tools depend on uncompiled
+formatter targets, avoiding a build cycle. `//crates/intl_data:locales` selects
+locales (Chromium desktop defaults); aliases and parent fallback resolve at build time.
+
+Records use CBOR, including ICU4X's binary plural-rule representation. DateTimeFormat
+calendar locale patches merge before validation and encoding. `intl_data` caches
+decoded objects per registry, sharing aliases within one registry without leaking
+mutable unit updates across Hermes runtimes. SDK consumers inject no locale JSON.
+The explicit-registration targets remain the custom-provider and TS-fixture path.
+
+## Intl crate publication
+
+`//crates:intl_release` assembles the polyfill crates as Cargo package
+sources. Rust sources, metadata, compiled locale records, and notices are
+declared Bazel inputs. The sandboxed packaging action uses the
+repository's pinned Python toolchain, without invoking Bazel or Cargo itself.
+DateTimeFormat records use xz to fit crates.io's compressed size limit; its Cargo
+build script extracts records with pure Rust dependencies when `compiled_data`
+is enabled.
+
+The same Release Please Rust strategy and `crates-release.yml` trusted publishing
+workflow manage these crates and the existing parser/message crates. The workflow
+exports release sources with `git archive`, overlays Bazel package sources,
+then runs Cargo from the full workspace with
+`--locked --all-features`. Cargo handles selected Intl crates in dependency order.
+
+## Standalone locale matching
+
+`crates/intl_localematcher` provides `formatjs_intl_localematcher::LocaleMatcher`.
+It shares generated CLDR distance/partition tables and ICU4J oracle tests with
+`@formatjs/intl-localematcher`, using ICU4X for locale normalization. The native `intl_locale` matcher reuses this implementation through a bounded
+per-thread cache; `formatjs_intl` catalog fallback remains independent.

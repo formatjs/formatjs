@@ -1,3 +1,5 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -44,7 +46,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "5.3.12",  # x-release-please-version
+    version = "5.4.1",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -65,6 +67,7 @@ formatjs_test(
     name = "intl-locale_test",
     srcs = [
         "tests/index.test.ts",
+        "tests/info-spec.test.ts",
         "tests/likely-subtags.test.ts",
         "tests/minimize.test.ts",
     ],
@@ -75,6 +78,22 @@ formatjs_test(
         ":intl-locale",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/vitest",
+    ],
+)
+
+formatjs_test(
+    name = "rust_conformance_test",
+    srcs = ["tests/rust-conformance.test.ts"],
+    data = ["//crates/intl_locale:conformance"],
+    no_copy_to_bin = ["//:package.json"],
+    deps = [
+        ":intl-locale",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/intl-getcanonicallocales:lib",
+        "//packages/intl-supportedvaluesof:lib",
     ],
 )
 
@@ -201,7 +220,32 @@ formatjs_generated_package(
         ":cldr_locale_character_orders",
         ":cldr_locale_hour_cycles",
         ":cldr_locale_numbering_systems",
+        ":cldr_locale_script_directions",
         ":cldr_locale_timezones",
         ":cldr_locale_week_data",
     ],
+)
+
+generate_package_file(
+    name = "cldr_locale_script_directions",
+    src = "script-directions.ts",
+    args = [
+        "--input",
+        "$(rootpath :script_metadata)",
+    ],
+    data = [":script_metadata"],
+    tags = ["cldr"],
+    tool = "//packages/intl-locale/scripts:script-directions",
+)
+
+copy_file(
+    name = "script_metadata",
+    src = "@cldr_common//:common/properties/scriptMetadata.txt",
+    out = "script-metadata.txt",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

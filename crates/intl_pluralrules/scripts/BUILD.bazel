@@ -1,0 +1,19 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "data",
+    data = [
+        "//:root_package_json",
+    ],
+    entry_point = "data.ts",
+    visibility = ["//crates/intl_pluralrules:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs_generated/cldr.supported-locales",
+        "//:node_modules/cldr-core",
+        "//:node_modules/cldr-numbers-full",
+        "//:node_modules/minimist",
+        "//packages/intl-pluralrules/scripts:compact_exponents",
+    ],
+)

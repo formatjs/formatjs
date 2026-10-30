@@ -1,4 +1,5 @@
 load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # gazelle:ignore
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
@@ -94,4 +95,17 @@ js_test(
     args = ["$(rootpath :emit-locale-data)"],
     data = [":emit-locale-data"],
     entry_point = "emit-locale-data.test.ts",
+)
+
+copy_to_bin(
+    name = "timezone_test_sources",
+    testonly = True,
+    srcs = [
+        "link.test.ts",
+        "link.ts",
+        "packer.ts",
+        "process-zdump.test.ts",
+        "process-zdump.ts",
+    ],
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )

@@ -165,3 +165,12 @@ rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
 
 Locale data registers CLDR default-content variants, such as `en-US` for English.
 Loading regional data preserves explicitly loaded language data.
+
+## Rust on Hermes
+
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust PluralRules.
+Default locale data is compiled into the archive; application scripts do not
+load JSON packs. Build a custom SDK with `--//crates/intl_data:locales=en,fr`.
+Rust handles locale matching, exact numeric rounding, and ICU4X rule selection.
+Individual consumers can still link `:pluralrules` and call
+`formatjs::installPluralRules(runtime)` after canonicalization.

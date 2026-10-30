@@ -1,5 +1,12 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:test.bzl", "formatjs_test")
+
+copy_to_bin(
+    name = "language_matching_source",
+    srcs = ["abstract/languageMatching.ts"],
+    visibility = ["//crates/intl_locale:__pkg__"],
+)
 
 formatjs_library(
     name = "intl-localematcher",
@@ -38,7 +45,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     side_effects = False,
     type = "module",
-    version = "0.9.0",  # x-release-please-version
+    version = "0.10.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -62,7 +69,8 @@ formatjs_test(
         "tests/utils.test.ts",
     ],
     data = [
-        "tests/locale-match-fixtures.json",  # keep: JSON fixture loaded at runtime
+        "tests/icu-match-fixtures.json",  # keep: JSON fixture loaded at runtime
+        "//conformance-tests/icu4j:locale_matcher_grid",  # keep: independent ICU oracle
     ],
     tsconfig_types = ["node"],
     deps = [
@@ -73,6 +81,9 @@ formatjs_test(
 )
 
 exports_files(
-    ["tests/locale-match-fixtures.json"],
+    [
+        "tests/icu-match-fixtures.json",
+        "tests/locale-match-fixtures.json",
+    ],
     visibility = ["//visibility:public"],
 )

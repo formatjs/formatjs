@@ -81,3 +81,31 @@ identifiers and omits aliases such as `Etc/UTC`.
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.
 Only collations accepted by the installed Collator are returned.
+
+## Rust port
+
+`crates/intl_supportedvaluesof` shares the generated candidate data with the
+TypeScript package. Its enumeration core takes formatter observations from
+the embedding, then filters, sorts and deduplicates results. Collations retain
+their CLDR candidate locales; support is not inferred from English alone.
+
+`//packages/intl-supportedvaluesof:rust_conformance_test` compares all six
+complete output lists with TypeScript using real host formatter observations.
+Rust unit tests cover the ported value-selection cases and C ABI ownership.
+The C callback interface connects to `native/hermes:supported_values`. Its JSI
+adapter probes installed formatters; `supported_values_of.ts` performs key
+coercion and installs the non-constructible built-in with native descriptors.
+Each polyfill keeps its own Rust crate. `crates/intl_hermes` assembles one static
+archive for SDK consumers, avoiding multiple copies of Rust runtime symbols.
+
+`//native/hermes/tests:supported_values_conformance_test` compares complete
+lists inside Hermes with real TS formatters, then checks observable coercion,
+exception identity, receivers, fresh arrays and descriptors. The shared SDK
+packages both installer overloads and `31-IntlSupportedValuesOf.js`; its
+standalone consumer tests the precompiled startup path. All native builds and
+cross-compilation run on Linux; macOS only executes downloaded smoke artifacts.
+
+Contrib setup uses `prepareSupportedValuesOf` before Locale captures its
+enumerator. Its private callback observes formatter loaders after the remaining
+constructors are installed, before application code can retain those methods.
+Regular installer overloads continue observing already-installed formatters.

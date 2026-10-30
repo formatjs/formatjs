@@ -124,9 +124,13 @@ function readSystem(
   if (!range.startsWith('{0}') || !range.endsWith('{1}'))
     throw new Error(`Unsupported number range pattern: ${range}`)
   symbols.rangeSign = range.slice(3, -3)
-  const compact = (kind: 'decimal' | 'currency', length: 'long' | 'short') => {
+  const compact = (
+    kind: 'decimal' | 'currency',
+    length: 'long' | 'short',
+    numberSystem = system
+  ) => {
     const base = [
-      section(`${kind}Formats`),
+      part(`${kind}Formats`, {numberSystem}),
       part(`${kind}FormatLength`, {type: length}),
       part(
         `${kind}Format`,
@@ -186,15 +190,20 @@ function readSystem(
         part('unitPattern', {count: 'other'})
       ),
   }
-  if (
-    get(
-      section('currencyFormats'),
-      part('currencyFormatLength', {type: 'short'}),
-      part('currencyFormat', {type: 'standard'}),
-      part('pattern', {type: '1000', count: 'other'})
-    ) !== undefined
-  ) {
-    currency.short = compact('currency', 'short')
+  // Some numbering systems have no compact currency patterns of their own (e.g.
+  // arab in ar). Like ICU, fall back to the latn ones.
+  // https://github.com/unicode-org/icu/blob/e017edc97df2dd542b959fc013aa8c2ea1d37448/icu4c/source/i18n/number_compact.cpp#L70-L79
+  const shortCurrencySystem = [system, 'latn'].find(
+    numberSystem =>
+      get(
+        part('currencyFormats', {numberSystem}),
+        part('currencyFormatLength', {type: 'short'}),
+        part('currencyFormat', {type: 'standard'}),
+        part('pattern', {type: '1000', count: 'other'})
+      ) !== undefined
+  )
+  if (shortCurrencySystem) {
+    currency.short = compact('currency', 'short', shortCurrencySystem)
   }
   return {
     symbols,

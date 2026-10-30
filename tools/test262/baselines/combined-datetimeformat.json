@@ -3,8 +3,8 @@
   "failures": {
     "intl402/DateTimeFormat/canonicalize-timezone.js (default)": "Time zone name Europe/Bratislava should be preserved and not canonicalized to Europe/Bratislava Expected SameValue(\u00ab\"Europe/Prague\"\u00bb, \u00ab\"Europe/Bratislava\"\u00bb) to be true",
     "intl402/DateTimeFormat/canonicalize-timezone.js (strict mode)": "Time zone name Europe/Bratislava should be preserved and not canonicalized to Europe/Bratislava Expected SameValue(\u00ab\"Europe/Prague\"\u00bb, \u00ab\"Europe/Bratislava\"\u00bb) to be true",
-    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (default)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00abundefined\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
-    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (strict mode)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00abundefined\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
+    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (default)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00ab\"UTC\"\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
+    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (strict mode)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00ab\"UTC\"\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Cannot create proxy with a non-object as target or handler",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Cannot create proxy with a non-object as target or handler",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js (default)": "return value of Intl.DateTimeFormat constructor Expected SameValue(\u00ab[object Intl.DateTimeFormat]\u00bb, \u00abundefined\u00bb) to be true",

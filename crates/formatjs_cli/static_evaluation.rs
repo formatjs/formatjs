@@ -136,10 +136,7 @@ impl<'a> EvaluationContext<'a, '_> {
             Expression::TemplateLiteral(template) => {
                 let mut value = String::new();
                 for (index, quasi) in template.quasis.iter().enumerate() {
-                    if quasi.lone_surrogates {
-                        return None;
-                    }
-                    value.push_str(quasi.value.cooked.as_ref()?);
+                    value.push_str(quasi.value.cooked.as_ref()?.as_str()?);
                     if let Some(expression) = template.expressions.get(index) {
                         value.push_str(&self.evaluate(expression)?.to_js_string(self)?);
                     }

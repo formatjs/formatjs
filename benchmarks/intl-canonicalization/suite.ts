@@ -196,7 +196,6 @@ check(polyfill as Canonicalizer, 'js-polyfill')
 throws(() => rust('root'), 'RangeError', 'rust-jsi root')
 equal(polyfill('root'), ['root'], 'js-polyfill known root acceptance')
 let generatedTags = 0
-let territoryBaselineDifferences = 0
 for (const language of ['en', 'sh', 'hye', 'und', 'posix', 'abcde']) {
   for (const script of ['', '-Latn', '-Armn']) {
     for (const region of ['', '-BU', '-SU', '-GB']) {
@@ -211,32 +210,7 @@ for (const language of ['en', 'sh', 'hye', 'und', 'posix', 'abcde']) {
           const nativeResult = outcome(rust, tag)
           const polyfillResult = outcome(polyfill as Canonicalizer, tag)
           generatedTags++
-          if (language === 'hye' && script !== '' && region === '-SU') {
-            const canonicalLanguage = variant === '-arevmda' ? 'hyw' : 'hy'
-            const canonicalVariant =
-              variant === '-hepburn-heploc' ? '-alalc97' : ''
-            const canonicalExtension =
-              extension === '-u-ca-islamicc-kn-yes'
-                ? '-u-ca-islamic-civil-kn'
-                : extension === '-t-en-m0-names'
-                  ? '-t-en-m0-prprname'
-                  : extension
-            const prefix = canonicalLanguage + script
-            const suffix = canonicalVariant + canonicalExtension
-            equal(
-              nativeResult,
-              [prefix + '-AM' + suffix],
-              `rust-jsi known territory ${tag}`
-            )
-            equal(
-              polyfillResult,
-              [prefix + '-RU' + suffix],
-              `js-polyfill known territory ${tag}`
-            )
-            territoryBaselineDifferences++
-          } else {
-            equal(nativeResult, polyfillResult, `generated ${tag}`)
-          }
+          equal(nativeResult, polyfillResult, `generated ${tag}`)
           if (!Array.isArray(nativeResult) || !Array.isArray(polyfillResult)) {
             failures[failures.length] = `valid generated tag rejected: ${tag}`
           }
@@ -275,12 +249,6 @@ print(
     casingVariants,
     knownBaselineDifferences: [
       {input: 'root', rust: 'RangeError', polyfill: ['root']},
-      {
-        input: 'hye-{Latn,Armn}-SU with variants/extensions',
-        cases: territoryBaselineDifferences,
-        rustTerritory: 'AM',
-        polyfillTerritory: 'RU',
-      },
     ],
   })
 )

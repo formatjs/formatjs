@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-getcanonicallocales@3.2.12...@formatjs/intl-getcanonicallocales@3.3.0) (2026-10-30)
+
+
+### Features
+
+* **intl_locale:** port Locale to Rust with Hermes extension ([#7689](https://github.com/formatjs/formatjs/issues/7689)) ([bb2c829](https://github.com/formatjs/formatjs/commit/bb2c8297af744191d7842497d23c15389135c550))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-localematcher:** align best fit with ICU defaults ([#7745](https://github.com/formatjs/formatjs/issues/7745)) ([9898211](https://github.com/formatjs/formatjs/commit/98982117414e6e658a141e71f837a0142894673f))
+
 ## 3.2.12 (2026-09-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

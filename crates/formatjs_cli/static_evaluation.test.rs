@@ -73,3 +73,10 @@ fn caches_repeated_constant_initializers() {
         Some(format!("H{}", "i".repeat(29)))
     );
 }
+
+#[test]
+fn handles_template_surrogates() {
+    assert_eq!(evaluate("", r"`\uD83D\uDE00`"), Some("😀".to_owned()));
+    assert_eq!(evaluate("", r"`\uD800`"), None);
+    assert_eq!(evaluate("", r"`\uDC00`"), None);
+}

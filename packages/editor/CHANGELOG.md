@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.7.3...@formatjs/editor@1.8.0) (2026-10-27)
+
+
+### Features
+
+* **@formatjs/editor:** project and source models for multi-workspace editors ([#7706](https://github.com/formatjs/formatjs/issues/7706)) ([2cd0705](https://github.com/formatjs/formatjs/commit/2cd0705b5a0647050cf6e901dde1886b9412c305))
+
 ## [1.7.3](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.7.2...@formatjs/editor@1.7.3) (2026-10-19)
 
 

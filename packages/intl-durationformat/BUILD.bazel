@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -48,7 +49,7 @@ formatjs_library(
     repository = "formatjs/formatjs.git",
     type = "module",
     types = True,
-    version = "0.11.1",  # x-release-please-version
+    version = "0.12.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -104,4 +105,10 @@ test262_test(
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/DurationFormat",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

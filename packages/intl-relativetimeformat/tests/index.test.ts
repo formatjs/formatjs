@@ -110,3 +110,18 @@ it('resolves numeric systems from options and locale extensions', () => {
     numberingSystem: 'latn',
   })
 })
+
+it('constructs subclasses without reading their constructor property', () => {
+  class Derived extends RelativeTimeFormat {}
+  Object.defineProperty(Derived.prototype, 'constructor', {
+    get() {
+      throw new Error('constructor getter must not run')
+    },
+  })
+  const formatter = new Derived('en')
+  expect(formatter).toBeInstanceOf(Derived)
+  expect(formatter.format(1, 'day')).toBe('in 1 day')
+  expect(() => Reflect.apply(RelativeTimeFormat, undefined, ['en'])).toThrow(
+    TypeError
+  )
+})

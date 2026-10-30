@@ -1,0 +1,718 @@
+# gazelle:ignore
+load("@aspect_rules_js//js:defs.bzl", "js_test")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("//tools:index.bzl", "ts_binary")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load(":compiled-runtime.bzl", "chromium_runtime", "compiled_runtime", "test262_runtime")
+load(":package-tests.bzl", "package_formatter_conformance")
+load(":runtime.bzl", "optimized_runtime")
+
+optimized_runtime(
+    name = "optimized_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+)
+
+ts_project(
+    name = "pluralrules_typecheck",
+    srcs = [
+        "pluralrules.ts",
+        "run-pluralrules.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "pluralrules_suite",
+    srcs = ["pluralrules.ts"],
+    entry_point = "pluralrules.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-pluralrules"],
+)
+
+js_test(
+    name = "pluralrules_conformance_test",
+    size = "medium",
+    data = [
+        ":pluralrules_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_pluralrules:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-pluralrules.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "locale_typecheck",
+    srcs = [
+        "locale.ts",
+        "locale-late-data.ts",
+        "run-locale.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs_generated/cldr.core",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "formatter_prelude",
+    srcs = ["formatter-prelude.ts"],
+    entry_point = "formatter-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+rolldown_bundle(
+    name = "supported_values_suite",
+    srcs = ["supported-values.ts"],
+    entry_point = "supported-values.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs_generated/cldr.collation",
+        "//:node_modules/@formatjs_generated/cldr.number",
+        "//:node_modules/@formatjs_generated/cldr.supported-values",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract",
+        "//packages/intl-supportedvaluesof:lib",
+    ],
+)
+
+js_test(
+    name = "supported_values_conformance_test",
+    size = "medium",
+    data = [
+        ":formatter_prelude.js",
+        ":supported_values_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+rolldown_bundle(
+    name = "locale_suite",
+    srcs = ["locale.ts"],
+    entry_point = "locale.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs_generated/cldr.core",
+    ],
+)
+
+rolldown_bundle(
+    name = "locale_late_data",
+    srcs = ["locale-late-data.ts"],
+    entry_point = "locale-late-data.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-numberformat"],
+)
+
+js_test(
+    name = "locale_conformance_test",
+    size = "medium",
+    data = [
+        ":formatter_prelude.js",
+        ":locale_late_data.js",
+        ":locale_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-locale.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "listformat_typecheck",
+    srcs = [
+        "listformat.ts",
+        "run-listformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "listformat_suite",
+    srcs = ["listformat.ts"],
+    entry_point = "listformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-listformat"],
+)
+
+js_test(
+    name = "listformat_conformance_test",
+    size = "medium",
+    data = [
+        ":listformat_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_listformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-listformat:cldr-raw",
+    ],
+    entry_point = "run-listformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "displaynames_typecheck",
+    srcs = [
+        "displaynames.ts",
+        "run-displaynames.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "displaynames_suite",
+    srcs = ["displaynames.ts"],
+    entry_point = "displaynames.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-displaynames"],
+)
+
+js_test(
+    name = "displaynames_conformance_test",
+    size = "medium",
+    data = [
+        ":displaynames_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_displaynames:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+        "//packages/intl-displaynames:cldr-raw",
+    ],
+    entry_point = "run-displaynames.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "segmenter_typecheck",
+    srcs = [
+        "run-segmenter.ts",
+        "run-segmenter-oracle.ts",
+        "segmenter.ts",
+        "segmenter-oracle.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "segmenter_suite",
+    srcs = ["segmenter.ts"],
+    entry_point = "segmenter.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-segmenter"],
+)
+
+js_test(
+    name = "segmenter_conformance_test",
+    size = "medium",
+    data = [
+        ":segmenter_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-segmenter.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "collator_typecheck",
+    srcs = [
+        "collator.ts",
+        "run-collator.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "collator_suite",
+    srcs = ["collator.ts"],
+    entry_point = "collator.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-collator"],
+)
+
+js_test(
+    name = "collator_conformance_test",
+    size = "medium",
+    timeout = "long",
+    data = [
+        ":collator_suite.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-collator.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "numberformat_typecheck",
+    srcs = [
+        "numberformat.ts",
+        "run-numberformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "numberformat_suite",
+    srcs = ["numberformat.ts"],
+    entry_point = "numberformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+js_test(
+    name = "numberformat_conformance_test",
+    size = "medium",
+    data = [
+        ":numberformat_suite.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_numberformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-numberformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "relativetimeformat_typecheck",
+    srcs = [
+        "relativetimeformat.ts",
+        "run-relativetimeformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "relativetimeformat_suite",
+    srcs = ["relativetimeformat.ts"],
+    entry_point = "relativetimeformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+    ],
+)
+
+js_test(
+    name = "relativetimeformat_conformance_test",
+    size = "medium",
+    data = [
+        ":optimized_runtime",
+        ":relativetimeformat_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_relativetimeformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-relativetimeformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "datetimeformat_typecheck",
+    srcs = [
+        "datetimeformat.ts",
+        "datetimeformat-prelude.ts",
+        "run-datetimeformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+rolldown_bundle(
+    name = "datetimeformat_prelude",
+    srcs = ["datetimeformat-prelude.ts"],
+    entry_point = "datetimeformat-prelude.ts",
+    format = "iife",
+    target = "es2020",
+    visibility = ["//tools/test262:__pkg__"],
+    deps = ["//:node_modules/temporal-polyfill"],
+)
+
+rolldown_bundle(
+    name = "datetimeformat_suite",
+    srcs = ["datetimeformat.ts"],
+    entry_point = "datetimeformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+js_test(
+    name = "datetimeformat_conformance_test",
+    size = "large",
+    data = [
+        ":datetimeformat_prelude.js",
+        ":datetimeformat_suite.js",
+        ":formatter_prelude.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_datetimeformat:calendar_locale_data",
+        "//crates/intl_datetimeformat:locale_data",
+        "//crates/intl_datetimeformat:timezone_data",
+        "//crates/intl_datetimeformat_calendars:calendar_data",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-datetimeformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "durationformat_typecheck",
+    srcs = [
+        "durationformat.ts",
+        "run-durationformat.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+    ],
+)
+
+rolldown_bundle(
+    name = "durationformat_suite",
+    srcs = ["durationformat.ts"],
+    entry_point = "durationformat.ts",
+    format = "iife",
+    target = "es2020",
+    deps = [
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+    ],
+)
+
+js_test(
+    name = "durationformat_conformance_test",
+    size = "large",
+    data = [
+        "durationformat-smoke.js",
+        ":datetimeformat_prelude.js",
+        ":durationformat_suite.js",
+        ":optimized_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//crates/intl_listformat:locale_data",
+        "//crates/intl_numberformat:locale_data",
+        "//native/hermes:extension_bundle_bytecode",
+        "//packages/intl-listformat:cldr-raw",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "run-durationformat.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_binary(
+    name = "bundle_package_tests",
+    data = [
+        "//:node_modules/minimist",
+        "//:node_modules/rolldown",
+    ],
+    entry_point = "bundle-package-tests.ts",
+)
+
+formatjs_test(
+    name = "package_harness_test",
+    srcs = [
+        "package-harness.test.ts",
+        "package-harness.ts",
+    ],
+    deps = ["//:node_modules/vitest"],
+)
+
+ts_project(
+    name = "package_runner_typecheck",
+    srcs = [
+        "bundle-package-tests.ts",
+        "run-package-tests.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//:node_modules/rolldown",
+    ],
+)
+
+copy_to_bin(
+    name = "package_harness_sources",
+    srcs = ["package-harness.ts"],
+)
+
+package_formatter_conformance("supportedvaluesof")
+
+package_formatter_conformance("locale")
+
+package_formatter_conformance("pluralrules")
+
+package_formatter_conformance("listformat")
+
+package_formatter_conformance("displaynames")
+
+package_formatter_conformance("segmenter")
+
+package_formatter_conformance("collator")
+
+package_formatter_conformance("numberformat")
+
+package_formatter_conformance("relativetimeformat")
+
+package_formatter_conformance("datetimeformat")
+
+package_formatter_conformance("durationformat")
+
+package_formatter_conformance("getcanonicallocales")
+
+compiled_runtime(
+    name = "compiled_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+)
+
+rolldown_bundle(
+    name = "compiled_locales_suite",
+    srcs = ["compiled-locales.ts"],
+    entry_point = "compiled-locales.ts",
+    format = "iife",
+    target = "es2020",
+)
+
+js_test(
+    name = "compiled_locales_test",
+    size = "medium",
+    args = [
+        "pluralrules",
+        "listformat",
+        "displaynames",
+        "numberformat",
+        "relativetimeformat",
+        "datetimeformat",
+        "durationformat",
+    ],
+    data = [
+        ":compiled_locales_suite.js",
+        ":compiled_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-compiled-locales.ts",
+    node_options = ["--experimental-transform-types"],
+)
+
+ts_project(
+    name = "compiled_locales_typecheck",
+    srcs = [
+        "chromium-locales.ts",
+        "compiled-locales.ts",
+        "run-compiled-locales.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = ESNEXT_TSCONFIG,
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+    ],
+)
+
+chromium_runtime(
+    name = "chromium_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+)
+
+test262_runtime(
+    name = "test262_runtime",
+    srcs = ["//native/hermes:hermes_runner"],
+    visibility = ["//tools/test262:__pkg__"],
+)
+
+rolldown_bundle(
+    name = "chromium_locales_suite",
+    srcs = ["chromium-locales.ts"],
+    entry_point = "chromium-locales.ts",
+    format = "iife",
+    target = "es2020",
+)
+
+js_test(
+    name = "chromium_locales_test",
+    size = "medium",
+    args = [
+        "--suite=chromium_locales_suite.js",
+        "pluralrules",
+        "listformat",
+        "displaynames",
+        "numberformat",
+        "relativetimeformat",
+        "datetimeformat",
+        "durationformat",
+    ],
+    data = [
+        ":chromium_locales_suite.js",
+        ":chromium_runtime",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:list_format_fixtures",
+        "//conformance-tests/icu4j:locale_format_fixtures",
+        "//conformance-tests/icu4j:plural_range_fixtures",
+        "//conformance-tests/icu4j:plural_rules_fixtures",
+        "//conformance-tests/icu4x:plural_range_differences",
+        "//native/hermes:extension_bundle_bytecode",
+    ],
+    entry_point = "run-compiled-locales.ts",
+    env = {
+        "PLURAL_RANGE_DIFFERENCES": "$(rootpath //conformance-tests/icu4x:plural_range_differences)",
+        "PLURAL_RANGE_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_range_fixtures)",
+        "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
+        "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale_format_fixtures)",
+        "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
+    },
+    node_options = ["--experimental-transform-types"],
+)
+
+rolldown_bundle(
+    name = "segmenter_oracle_suite",
+    srcs = ["segmenter-oracle.ts"],
+    entry_point = "segmenter-oracle.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-segmenter"],
+)
+
+js_test(
+    name = "segmenter_icu_conformance_test",
+    size = "medium",
+    data = [
+        ":segmenter_oracle_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:segmenter_fixtures",
+        "//crates/intl_segmenter/tests:icu_ts_differences",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-segmenter-oracle.ts",
+    env = {
+        "SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)",
+        "SEGMENTER_TS_DIFFERENCES": "$(rootpath //crates/intl_segmenter/tests:icu_ts_differences)",
+    },
+    node_options = ["--experimental-transform-types"],
+)
