@@ -49,15 +49,14 @@ void installRelativeTimeFormat(jsi::Runtime &runtime, jsi::Object &extensions) {
     hermes_bridge::bind(runtime, bridge, parts ? "nativeParts" : "nativeFormat",
         parts ? "relativeParts" : "relativeFormat", 3,
       [format](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args, size_t count) -> jsi::Value {
-        if (count != 3 || !args[0].isObject() || !args[1].isNumber() || !args[2].isNumber())
+        if (count != 3 || !args[0].isObject() || !args[1].isNumber() || !args[2].isString())
           throw jsi::JSError(rt, "Expected RelativeTimeFormat record, value and unit");
         auto model = record(rt, args[0]);
         auto value = args[1].asNumber();
-        auto unitCode = args[2].asNumber();
-        auto unit = unitCode >= 0 && unitCode < 8 && static_cast<uint8_t>(unitCode) == unitCode
-            ? static_cast<uint8_t>(unitCode) : uint8_t{255};
+        auto unit = args[2].asString(rt).utf16(rt);
         Bytes bytes;
-        auto code = format(model->handle.get(), value, unit, &bytes.value);
+        auto code = format(model->handle.get(), value,
+            reinterpret_cast<const uint16_t *>(unit.data()), unit.size(), &bytes.value);
         return result(rt, code, bytes);
       });
   }

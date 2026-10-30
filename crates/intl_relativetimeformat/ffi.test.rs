@@ -419,7 +419,8 @@ fn numeric_entry_points_match_js_number_text_and_error_statuses() {
                         &mut legacy,
                     )
                 };
-                let actual = unsafe { new(model.0, value, 3, &mut numeric) };
+                let actual =
+                    unsafe { new(model.0, value, unit.as_ptr(), unit.len(), &mut numeric) };
                 assert_eq!(actual, expected, "{text}: parts={parts}");
                 if actual == 0 {
                     assert_eq!(
@@ -437,17 +438,38 @@ fn numeric_entry_points_match_js_number_text_and_error_statuses() {
             formatjs_relative_format_number,
             formatjs_relative_format_to_parts_number,
         ] {
+            let invalid = [0xd800];
             let mut out = RelativeBytes {
                 data: ptr::dangling_mut(),
                 len: 99,
             };
-            assert_eq!(unsafe { call(model.0, 1.0, 255, &mut out) }, 1);
+            assert_eq!(
+                unsafe { call(model.0, 1.0, invalid.as_ptr(), invalid.len(), &mut out) },
+                1
+            );
             assert!(out.data.is_null() && out.len == 0);
-            assert_eq!(unsafe { call(model.0, f64::NAN, 255, &mut out) }, 1);
+            assert_eq!(
+                unsafe {
+                    call(
+                        model.0,
+                        f64::NAN,
+                        invalid.as_ptr(),
+                        isize::MAX as usize,
+                        &mut out,
+                    )
+                },
+                2
+            );
             assert!(out.data.is_null() && out.len == 0);
-            assert_eq!(unsafe { call(ptr::null(), 1.0, 3, &mut out) }, 2);
+            assert_eq!(
+                unsafe { call(ptr::null(), 1.0, unit.as_ptr(), unit.len(), &mut out) },
+                2
+            );
             assert!(out.data.is_null() && out.len == 0);
-            assert_eq!(unsafe { call(model.0, 1.0, 3, ptr::null_mut()) }, 2);
+            assert_eq!(
+                unsafe { call(model.0, 1.0, unit.as_ptr(), unit.len(), ptr::null_mut()) },
+                2
+            );
         }
     }
 }
