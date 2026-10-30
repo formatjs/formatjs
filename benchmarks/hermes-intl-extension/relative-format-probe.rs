@@ -95,9 +95,11 @@ fn main() {
             "in 1,000,000,000,000,000,000,000 days",
         ),
     ] {
+        let numeric = value.parse::<f64>().unwrap();
         let magnitude = value.strip_prefix('-').unwrap_or(value);
         assert_eq!(number.format(magnitude).unwrap(), expected);
         assert_eq!(relative.format(value, "day").unwrap(), sentence);
+        assert_eq!(relative.format_number(numeric, "day").unwrap(), sentence);
         println!("value: {value}");
         measure("NumberFormat.format", || {
             number.format(black_box(magnitude)).unwrap()
@@ -110,6 +112,14 @@ fn main() {
         });
         measure("RelativeTimeFormat.parts", || {
             relative.format_to_parts(black_box(value), "day").unwrap()
+        });
+        measure("RelativeTimeFormat.number", || {
+            relative.format_number(black_box(numeric), "day").unwrap()
+        });
+        measure("RelativeTimeFormat.number parts", || {
+            relative
+                .format_to_parts_number(black_box(numeric), "day")
+                .unwrap()
         });
     }
 }
