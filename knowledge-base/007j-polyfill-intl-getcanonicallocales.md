@@ -9,6 +9,8 @@ implementation using pinned specification source lines.
 It validates ECMA-402 language tags before canonicalization. CLDR BCP 47
 extension and subdivision aliases supplement ICU4X; regenerate the checked-in
 Rust table with `bazel run //crates/intl_getcanonicallocales:aliases`.
+Language-independent rules use a shared constant slice, avoiding generated
+language dispatch on every canonicalization. Rule order and matching stay the same.
 
 The default `compiled_data` feature preserves the convenience functions and
 native C ABI. Rust callers can disable defaults and construct a reusable

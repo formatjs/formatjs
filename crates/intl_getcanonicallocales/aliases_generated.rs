@@ -2,8 +2,23 @@
 use super::LanguageAliasRule;
 
 #[rustfmt::skip]
+pub(super) const INDEPENDENT_LANGUAGE_ALIASES: &[LanguageAliasRule] = &[
+    LanguageAliasRule { script: "", region: "", variants: &["hepburn", "heploc"], replacement: "und-alalc97", specificity: 2 },
+    LanguageAliasRule { script: "", region: "", variants: &["aaland"], replacement: "und-AX", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["arevela"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["arevmda"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["bokmal"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["hakka"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["lojban"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["nynorsk"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["saaho"], replacement: "und", specificity: 1 },
+    LanguageAliasRule { script: "", region: "", variants: &["xiang"], replacement: "und", specificity: 1 },
+];
+
+#[rustfmt::skip]
 pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
     match language {
+        "und" => INDEPENDENT_LANGUAGE_ALIASES,
         "aa" => &[
             LanguageAliasRule { script: "", region: "", variants: &["saaho"], replacement: "ssy", specificity: 2 },
         ],
@@ -1222,18 +1237,6 @@ pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
         ],
         "umu" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "del", specificity: 1 },
-        ],
-        "und" => &[
-            LanguageAliasRule { script: "", region: "", variants: &["hepburn", "heploc"], replacement: "und-alalc97", specificity: 2 },
-            LanguageAliasRule { script: "", region: "", variants: &["aaland"], replacement: "und-AX", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["arevela"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["arevmda"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["bokmal"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["hakka"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["lojban"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["nynorsk"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["saaho"], replacement: "und", specificity: 1 },
-            LanguageAliasRule { script: "", region: "", variants: &["xiang"], replacement: "und", specificity: 1 },
         ],
         "unp" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "wro", specificity: 1 },

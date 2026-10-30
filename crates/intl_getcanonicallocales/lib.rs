@@ -118,7 +118,7 @@ fn canonicalize_language_aliases(locale: &mut Locale) -> Result<(), InvalidLocal
         let independent = if language == "und" {
             None
         } else {
-            aliases_generated::language_aliases("und")
+            aliases_generated::INDEPENDENT_LANGUAGE_ALIASES
                 .iter()
                 .find(|rule| matches_language_rule(locale, rule))
         };
