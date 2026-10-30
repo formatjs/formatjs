@@ -23,7 +23,8 @@ jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call
   auto model = hermes_bridge::record<Model>(rt, args[0], "Expected list record", "Invalid list record");
   auto list = args[1].asObject(rt).getArray(rt);
   const auto length = list.size(rt);
-  std::array<std::u16string, 8> inlineValues;
+  if (length == 0) return jsi::String::createFromUtf8(rt, "");
+  std::array<std::u16string, 4> inlineValues;
   std::vector<std::u16string> heapValues;
   auto *values = inlineValues.data();
   if (length > inlineValues.size()) {
@@ -35,7 +36,7 @@ jsi::Value callList(jsi::Runtime &rt, const jsi::Value *args, size_t count, Call
     if (!value.isString()) throw jsi::JSError(rt, "Expected string list element");
     values[i] = value.asString(rt).utf16(rt);
   }
-  std::array<FormatjsListSlice, 8> inlineSlices;
+  std::array<FormatjsListSlice, 4> inlineSlices;
   std::vector<FormatjsListSlice> heapSlices;
   auto *slices = inlineSlices.data();
   if (length > inlineSlices.size()) {
