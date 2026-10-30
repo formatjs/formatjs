@@ -36,7 +36,9 @@ fn handles_own_payloads_and_outputs_preserve_utf16_after_registry_destruction() 
             formatjs_list_create(registry, b"en".as_ptr(), 2, b"{}".as_ptr(), 2, &mut handle),
             0
         );
-        let replacement = pack("{0} & {1}");
+        let mut replacement: Value = serde_json::from_str(&pack("{0} & {1}")).unwrap();
+        replacement["data"]["conjunction"]["long"]["end"] = json!("[{0}|{1}]");
+        let replacement = replacement.to_string();
         assert_eq!(
             formatjs_list_registry_load(registry, replacement.as_ptr(), replacement.len()),
             0
@@ -55,6 +57,16 @@ fn handles_own_payloads_and_outputs_preserve_utf16_after_registry_destruction() 
                 {"type":"literal","value":[32,97,110,100,32]},
                 {"type":"element","value":[56320,0]}
             ])
+        );
+        let query = br#"{"method":"joinPlan"}"#;
+        let mut out = empty();
+        assert_eq!(
+            formatjs_list_query(handle, query.as_ptr(), query.len(), &mut out),
+            0
+        );
+        assert_eq!(
+            decoded(out),
+            json!({"separator":", ","lastSeparator":", and "})
         );
         let query = br#"{"method":"resolvedOptions"}"#;
         let mut out = empty();

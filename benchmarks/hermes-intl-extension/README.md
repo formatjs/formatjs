@@ -21,26 +21,26 @@ median time per call.
 
 Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
 full-API results use three CPU-0-pinned invocations on 2026-10-30,
-including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse and earlier improvements. Both native and TS code use
+including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse, Rust-authorized list joins and earlier improvements. Both native and TS code use
 optimized Hermes bytecode and high-resolution `__now()` timing.
-[Paired SDK results, controls and profiles](plural-record-results.json).
+[Paired SDK results, controls and profiles](list-join-results.json).
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.09 |    4.83 |     51.91 |
-| `supportedValuesOf`                |      1.89 |   59.94 |     31.71 |
-| `Locale.maximize`                  |      0.29 |   34.62 |    118.11 |
-| `PluralRules.select`               |      0.33 |  125.51 |    381.63 |
-| `ListFormat.format`                |      0.50 |    4.48 |      8.90 |
-| `ListFormat.formatToParts`         |      4.09 |    6.09 |      1.49 |
-| `DisplayNames.of`                  |      1.63 |    7.97 |      4.88 |
-| `Segmenter.segment`                |      6.44 |    9.28 |      1.44 |
-| `Collator.compare`                 |      1.70 |    3.26 |      1.92 |
-| `NumberFormat.format`              |      2.02 |  353.48 |    175.14 |
-| `RelativeTimeFormat.format`        |      0.71 |  413.34 |    579.81 |
-| `RelativeTimeFormat.formatToParts` |      2.39 |  419.89 |    175.96 |
-| `DateTimeFormat.format`            |      3.79 | 1039.28 |    274.38 |
-| `DurationFormat.format`            |      3.66 |  915.70 |    250.16 |
+| `getCanonicalLocales`              |      0.09 |    4.41 |     48.72 |
+| `supportedValuesOf`                |      1.85 |   58.52 |     31.71 |
+| `Locale.maximize`                  |      0.29 |   34.66 |    121.12 |
+| `PluralRules.select`               |      0.31 |  123.76 |    393.39 |
+| `ListFormat.format`                |      0.48 |    4.50 |      9.41 |
+| `ListFormat.formatToParts`         |      4.13 |    6.16 |      1.49 |
+| `DisplayNames.of`                  |      1.54 |    7.97 |      5.17 |
+| `Segmenter.segment`                |      6.24 |    9.11 |      1.46 |
+| `Collator.compare`                 |      1.69 |    3.30 |      1.95 |
+| `NumberFormat.format`              |      2.00 |  343.55 |    171.76 |
+| `RelativeTimeFormat.format`        |      0.69 |  400.91 |    577.74 |
+| `RelativeTimeFormat.formatToParts` |      2.33 |  413.73 |    177.76 |
+| `DateTimeFormat.format`            |      3.64 | 1020.13 |    279.89 |
+| `DurationFormat.format`            |      3.58 |  899.95 |    251.35 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -75,46 +75,46 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-30, pinned to CPU 0 on every host,
-including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse and earlier improvements. All hosts use high-resolution
+including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse, Rust-authorized list joins and earlier improvements. All hosts use high-resolution
 `__now()`. FormatJS Rust uses `opt-level=3` plus ThinLTO; magrinj retains its
 upstream size-optimized release profile with full LTO and one codegen unit.
-[Raw results, controls and profiles](plural-record-results.json).
+[Raw results, controls and profiles](list-join-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.13 |
-| `Locale.maximize`                    |        0.27 |       2.15 |
+| `getCanonicalLocales`                |        0.07 |       1.10 |
+| `Locale.maximize`                    |        0.26 |       2.11 |
 | `PluralRules.select`                 |        0.29 |       0.46 |
 | `PluralRules.select(decimal)`        |        0.33 |       0.46 |
 | `PluralRules.select(string)`         |        0.43 |       0.92 |
-| `PluralRules.select(ordinal)`        |        0.31 |       0.46 |
-| `PluralRules.select(ru)`             |        0.33 |       0.51 |
-| `PluralRules.selectRange`            |        0.65 |       0.91 |
+| `PluralRules.select(ordinal)`        |        0.30 |       0.45 |
+| `PluralRules.select(ru)`             |        0.32 |       0.50 |
+| `PluralRules.selectRange`            |        0.64 |       0.89 |
 | `ListFormat.format`                  |        0.42 |       0.54 |
-| `ListFormat.formatToParts`           |        2.80 |       3.30 |
-| `RelativeTimeFormat.format`          |        0.68 |       0.73 |
-| `RelativeTimeFormat.formatToParts`   |        1.56 |       2.22 |
-| `RelativeTimeFormat.format(decimal)` |        0.78 |       0.81 |
+| `ListFormat.formatToParts`           |        2.82 |       3.26 |
+| `RelativeTimeFormat.format`          |        0.67 |       0.73 |
+| `RelativeTimeFormat.formatToParts`   |        1.54 |       2.20 |
+| `RelativeTimeFormat.format(decimal)` |        0.76 |       0.79 |
 | `RelativeTimeFormat.format(auto)`    |        0.35 |       0.61 |
-| `Locale.new`                         |        0.36 |       0.97 |
-| `Locale.new(options)`                |        1.78 |       4.97 |
-| `Locale.new(zh-HK)`                  |        0.36 |       1.38 |
-| `Locale.new.language`                |        0.44 |       1.32 |
-| `Locale.new.toString`                |        0.41 |       1.04 |
+| `Locale.new`                         |        0.35 |       0.95 |
+| `Locale.new(options)`                |        1.75 |       4.95 |
+| `Locale.new(zh-HK)`                  |        0.35 |       1.36 |
+| `Locale.new.language`                |        0.43 |       1.28 |
+| `Locale.new.toString`                |        0.41 |       0.99 |
 | `Locale.language`                    |        0.08 |       0.09 |
-| `Locale.new(Locale)`                 |        0.33 |       0.99 |
-| `Locale.new(diverse)`                |        2.24 |       1.48 |
-| `Locale.new(long)`                   |        3.20 |       3.95 |
-| `PluralRules.new`                    |        1.22 |       4.75 |
-| `PluralRules.new(options)`           |        2.46 |       5.29 |
-| `ListFormat.new`                     |        1.29 |       2.93 |
-| `ListFormat.new(default)`            |        0.99 |       2.54 |
-| `ListFormat.new(array)`              |        1.65 |       2.94 |
-| `ListFormat.new(options)`            |        2.48 |       2.85 |
-| `ListFormat.new(fallback)`           |        2.02 |       3.72 |
-| `ListFormat.new(unsupported)`        |        2.21 |       3.95 |
-| `RelativeTimeFormat.new`             |        4.20 |       4.90 |
-| `RelativeTimeFormat.new(fallback)`   |        5.18 |       5.92 |
+| `Locale.new(Locale)`                 |        0.33 |       0.95 |
+| `Locale.new(diverse)`                |        2.39 |       1.45 |
+| `Locale.new(long)`                   |        3.13 |       3.86 |
+| `PluralRules.new`                    |        1.23 |       4.72 |
+| `PluralRules.new(options)`           |        2.41 |       5.28 |
+| `ListFormat.new`                     |        1.42 |       2.80 |
+| `ListFormat.new(default)`            |        1.00 |       2.58 |
+| `ListFormat.new(array)`              |        1.64 |       2.86 |
+| `ListFormat.new(options)`            |        2.49 |       2.65 |
+| `ListFormat.new(fallback)`           |        2.08 |       3.62 |
+| `ListFormat.new(unsupported)`        |        2.12 |       3.86 |
+| `RelativeTimeFormat.new`             |        4.18 |       4.86 |
+| `RelativeTimeFormat.new(fallback)`   |        5.29 |       5.71 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -1043,3 +1043,62 @@ Causes remain unproven. Cold Locale still trails magrinj: shared 2.242 versus
 1.485 µs, isolated 1.947 versus 1.484 µs. Long lists also trail: 32 items take
 3.417 versus 2.478 µs, and 256 take 23.957 versus 16.616 µs. These remain open
 performance gaps.
+
+Rust-authorized list joins keep observable iteration in Hermes while avoiding
+JSI string copies when templates have fixed forward separators. Contextual,
+reversed and custom patterns retain Rust formatting, as do all parts calls.
+Private symbol metadata on the opaque handle avoids a second WeakMap. Lists
+of 5–127 strings wait for reuse before querying a plan; larger lists can repay
+setup immediately. Existing instances retain selected data after locale loading.
+[Final paired SDK results and rejected prototypes](list-join-results.json).
+
+Three alternating optimized-bytecode runs:
+
+| List length | Before µs | After µs | Magrinj µs |
+| ----------: | --------: | -------: | ---------: |
+|           0 |     0.199 |    0.198 |      0.251 |
+|           1 |     0.284 |    0.281 |      0.391 |
+|           3 |     0.418 |    0.420 |      0.531 |
+|          32 |     3.320 |    2.363 |      2.424 |
+|         256 |    23.641 |   16.483 |     16.222 |
+
+First-use source controls include construction plus one format call. These are
+separate diagnostics, not mixed into optimized steady-state medians:
+
+| List length | Before µs | After µs | Magrinj µs |
+| ----------: | --------: | -------: | ---------: |
+|           5 |     1.808 |    1.922 |      3.562 |
+|          32 |     4.361 |    4.619 |      5.747 |
+|         127 |    13.417 |   13.690 |     12.802 |
+|         128 |    13.307 |   12.543 |     12.145 |
+|         129 |    13.666 |   13.003 |     12.562 |
+|         256 |    25.457 |   21.944 |     20.904 |
+
+Setup still costs a plan query once, and small first-use calls also record a
+private sentinel. The original first-query WeakMap prototype regressed cold
+calls 22–96%; delaying the query alone retained excess weak-key collection work.
+Both rejected stages, paired profiles and raw outputs remain in the results.
+
+All 612 benchmark/control outputs and 84 full-API native/TS assertions pass.
+Twelve focused gates include test262, dependent DurationFormat and all-CLDR
+Rust/TS comparisons. The latter batches subprocess output rather than growing
+its buffer. Shared ICU4C/J/Hermes coverage expands to 3,168 cases, including
+long lists; ICU4X independently checks 3,069 scalar cases. Its 69 exact
+allowlisted differences include three new Hebrew hyphen cases where C/J agree.
+Another 99 lone-surrogate cases remain strict C/J/Hermes checks. First and reused
+calls, contextual/custom fallback, iterator closing, tampering, locale-data
+replacement and threshold boundaries all retain coverage.
+
+The warm profile removes native `listFormat` self samples: 1,135 of 2,228
+become zero of 1,576. Validation remains the largest frame. Cold 32-item
+profiles retain seven young-generation collection samples on each host;
+private metadata removes the extra weak-key work from the rejected prototype.
+The descriptor typing fix passes the extension type checker and emits the
+same factory bytes as the measured SDK.
+
+No shared or full-API native case regresses by 5% or more. Separate cold
+controls retain small first-call costs: five strings add 0.114 µs (+6.3%),
+32 add 0.258 µs (+5.9%). Cold 256-item formatting improves 13.8%, but remains
+21.944 versus magrinj's 20.904 µs. Warm 256-item formatting is 1.6% behind.
+Cold Locale construction remains the main shared gap: 2.393 versus 1.447 µs;
+the isolated control is 1.975 versus 1.463 µs. No overall parity claim.

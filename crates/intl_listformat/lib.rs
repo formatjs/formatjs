@@ -139,6 +139,12 @@ impl Pattern {
             _ => None,
         }
     }
+    fn fixed_separator(&self) -> Option<&[u16]> {
+        if self.alternate.is_some() {
+            return None;
+        }
+        self.separator(&[])
+    }
     fn literal_len(&self, next: &[u16]) -> usize {
         self.for_next(next).literal_len
     }
@@ -292,6 +298,13 @@ pub struct ResolvedOptions {
     pub kind: Type,
     pub style: Style,
 }
+#[derive(Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct JoinPlan {
+    pub separator: String,
+    pub last_separator: String,
+}
+
 pub struct ListFormat {
     templates: Arc<Templates>,
     locale: String,
@@ -313,6 +326,19 @@ impl ListFormat {
             kind: self.options.kind,
             style: self.options.style,
         }
+    }
+    /// Fixed forward templates for lists with at least three elements.
+    pub fn join_plan(&self) -> Option<JoinPlan> {
+        let start = self.templates.start.fixed_separator()?;
+        let middle = self.templates.middle.fixed_separator()?;
+        let end = self.templates.end.fixed_separator()?;
+        if start != middle {
+            return None;
+        }
+        Some(JoinPlan {
+            separator: String::from_utf16(middle).ok()?,
+            last_separator: String::from_utf16(end).ok()?,
+        })
     }
     fn visit_parts<T: AsRef<[u16]>>(&self, list: &[T], mut visit: impl FnMut(bool, &[u16])) {
         // CreatePartsFromList 1–2: empty list has no parts. One empty string

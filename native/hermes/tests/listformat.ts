@@ -54,6 +54,40 @@ equal(
   'replacement affects new instance'
 )
 equal(existing.format(['A', 'B']), 'A and B', 'old instance keeps data')
+const retainedInput = Array.from({length: 32}, () => 'A')
+const retainedExpected = new TypeScriptListFormat('en').format(retainedInput)
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'first native large-list call'
+)
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'prime immutable join plan'
+)
+replacement.data.conjunction.long.end = '[{0}|{1}]'
+Native.__addLocaleData(stringify(replacement))
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'old join plan survives replacement'
+)
+for (const size of [32, 128]) {
+  const customInput = Array.from({length: size}, () => 'A')
+  const customExpected = customInput.slice(0, -2).join(', ') + ', [A|A]'
+  const customFormatter = new Native('en')
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'first custom template fallback'
+  )
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'reused custom template fallback'
+  )
+}
 Native.__addLocaleData(fixtures.packs[0])
 
 const lists: string[][] = [
@@ -118,7 +152,9 @@ equal(reads, 1, 'format reads each element once')
 reads = 0
 formatter.formatToParts(observed)
 equal(reads, 1, 'formatToParts reads each element once')
-for (const length of [0, 1, 3, 4, 5, 8, 9]) {
+for (const length of [
+  0, 1, 3, 4, 5, 8, 9, 32, 127, 128, 129, 256, 1024, 1025,
+]) {
   const values = Array.from(
     {length},
     (_, index) => ['', '\ud800', '東京', '😀', '\udc00'][index % 5]
@@ -148,7 +184,7 @@ for (const length of [0, 1, 3, 4, 5, 8, 9]) {
   }
 }
 for (const method of ['format', 'formatToParts'] as const) {
-  for (const invalidIndex of [3, 4, 8]) {
+  for (const invalidIndex of [3, 4, 8, 1023, 1024]) {
     let nextCalls = 0,
       closeCalls = 0,
       coercions = 0
@@ -354,6 +390,11 @@ const originalParse = JSON.parse,
 const originalCharCodeAt = String.prototype.charCodeAt,
   originalFromCharCode = String.fromCharCode,
   originalSlice = String.prototype.slice
+const originalJoin = Array.prototype.join
+const joinInput = Array.from({length: 32}, (_, i) =>
+  i % 3 === 0 ? '\ud800' : i % 3 === 1 ? '' : 'item'
+)
+const joinExpected = new TypeScriptListFormat('en').format(joinInput)
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
   originalSet = WeakMap.prototype.set,
@@ -451,6 +492,7 @@ function poisoned(): never {
   throw new Error('tampered intrinsic called')
 }
 try {
+  Array.prototype.join = poisoned
   JSON.parse = poisoned
   JSON.stringify = poisoned
   String.prototype.charCodeAt = poisoned
@@ -461,6 +503,7 @@ try {
   WeakMap.prototype.set = poisoned
   Object.setPrototypeOf = poisoned
   Function.prototype.bind = poisoned
+  equal(formatter.format(joinInput), joinExpected, 'captured join intrinsic')
   equal(
     new Native('en').format(['\ud800', 'B']),
     '\ud800 and B',
@@ -472,6 +515,16 @@ try {
     'captured explicit constructor intrinsics'
   )
   equal(
+    formatter.format(['A', 'B', 'C', 'D', 'E']),
+    'A, B, C, D, and E',
+    'captured large-list intrinsics'
+  )
+  equal(
+    formatter.formatToParts(['A', 'B', 'C', 'D', 'E']),
+    safeLargeParts,
+    'captured large-parts intrinsics'
+  )
+  equal(
     formatter.formatToParts(['A', 'B']),
     [
       {type: 'element', value: 'A'},
@@ -481,6 +534,7 @@ try {
     'captured parts intrinsics'
   )
 } finally {
+  Array.prototype.join = originalJoin
   JSON.parse = originalParse
   JSON.stringify = originalStringify
   String.prototype.charCodeAt = originalCharCodeAt

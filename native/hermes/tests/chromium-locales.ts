@@ -95,11 +95,12 @@ function unhex(value: string): string {
 }
 if (api.ListFormat?.polyfilled) {
   const rows = (globalThis as any).__LIST_FORMAT_FIXTURES as string[][]
-  equal(rows.length, 2871)
+  equal(rows.length, 3168)
   for (const [locale, type, style, encoded, , expected] of rows) {
     const items = encoded === '-' ? [] : encoded.split(',').map(unhex)
     formatter = `ListFormat ${locale}/${type}/${style}/${encoded}`
     const list = new api.ListFormat(locale, {type, style})
+    equal(list.format(items), unhex(expected))
     equal(list.format(items), unhex(expected))
     const parts = list.formatToParts(items)
     equal(parts.map((part: any) => part.value).join(''), unhex(expected))
