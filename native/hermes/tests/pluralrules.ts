@@ -68,13 +68,72 @@ equal(
   'Locale intrinsic brand'
 )
 equal(existing.select(1), 'one', 'existing instance survives late load')
+const ordinalOptions = {type: 'ordinal', minimumFractionDigits: 2}
+const existingOrdinal = new Native('en', ordinalOptions)
+equal(existingOrdinal.select(1), 'one', 'initial explicit ordinal instance')
 const replacement = JSON.parse(fixtures.packs[0])
 replacement.cardinal = {}
 replacement.ordinal = {}
 Native.__addLocaleData(JSON.stringify(replacement))
 equal(new Native('en').select(1), 'other', 'replacement affects new instance')
 equal(existing.select(1), 'one', 'replacement preserves existing instance')
+equal(
+  new Native('en', ordinalOptions).select(1),
+  'other',
+  'replacement affects explicit options'
+)
+equal(
+  existingOrdinal.select(1),
+  'one',
+  'replacement preserves explicit instance'
+)
 Native.__addLocaleData(fixtures.packs[0])
+
+let optionReads = 0,
+  optionCoercions = 0
+const observedOptions = {
+  type: 'ordinal',
+  get minimumFractionDigits() {
+    optionReads++
+    return {
+      valueOf() {
+        optionCoercions++
+        return 2
+      },
+    }
+  },
+}
+const observedFirst = new Native('en', observedOptions)
+const observedSecond = new Native('en', observedOptions)
+check(observedFirst !== observedSecond, 'fresh constructor receivers')
+equal(
+  [optionReads, optionCoercions],
+  [2, 2],
+  'equivalent options still read and coerce'
+)
+equal(observedFirst.select(1), observedSecond.select(1), 'equivalent selection')
+const observedResolved = observedFirst.resolvedOptions()
+observedResolved.pluralCategories.length = 0
+check(
+  observedSecond.resolvedOptions().pluralCategories.length > 0,
+  'fresh options across instances'
+)
+const getterFailure = new Error('option getter failed')
+Object.defineProperty(observedOptions, 'minimumFractionDigits', {
+  get() {
+    throw getterFailure
+  },
+})
+let observedFailure: unknown
+try {
+  new Native('en', observedOptions)
+} catch (error) {
+  observedFailure = error
+}
+check(
+  observedFailure === getterFailure,
+  'equivalent constructor propagates getter error'
+)
 
 const configurations: any[] = [
   {},
@@ -492,6 +551,9 @@ const saved = {
   canonical: Intl.getCanonicalLocales,
   floor: Math.floor,
   bind: Function.prototype.bind,
+  mapGet: Map.prototype.get,
+  mapSet: Map.prototype.set,
+  mapClear: Map.prototype.clear,
 }
 let captured: any
 const poison = () => {
@@ -508,13 +570,22 @@ try {
   Intl.getCanonicalLocales = poison
   Math.floor = poison
   Function.prototype.bind = poison
+  Map.prototype.get = poison
+  Map.prototype.set = poison
+  Map.prototype.clear = poison
   saved.define(Object.prototype, 'toJSON', {value: poison, configurable: true})
   saved.define(Object.prototype, 'get', {get: poison, configurable: true})
   const value = new Native('EN-us', {
     minimumIntegerDigits: 1.9,
     type: 'ordinal',
   })
+  let maximumSum = 0
+  for (let maximum = 0; maximum < 80; maximum++)
+    maximumSum += new Native('en', {
+      maximumFractionDigits: maximum,
+    }).resolvedOptions().maximumFractionDigits
   captured = {
+    maximumSum,
     category: value.select('0x20000000000001'),
     resolved: value.resolvedOptions(),
   }
@@ -531,7 +602,15 @@ try {
   Intl.getCanonicalLocales = saved.canonical
   Math.floor = saved.floor
   Function.prototype.bind = saved.bind
+  Map.prototype.get = saved.mapGet
+  Map.prototype.set = saved.mapSet
+  Map.prototype.clear = saved.mapClear
 }
+equal(
+  captured.maximumSum,
+  3160,
+  'distinct digit options with captured intrinsics'
+)
 equal(captured.category, 'few', 'captured intrinsics')
 equal(captured.resolved.minimumIntegerDigits, 1, 'captured floor')
 root.print(

@@ -273,3 +273,10 @@ Captured canonicalization and bound WeakMap setters avoid per-call argument arra
 Validated ASCII enums and bounded integer options serialize directly, omitting
 undefined digits so Rust retains default and rounding-priority resolution. Locale
 matching and every observable getter/coercion keep their original phase order.
+
+Hermes reuses up to 64 immutable constructor records after locale matching and
+all observable option access/coercion. Keys include the resolved locale and full
+validated options JSON; keys over 512 characters bypass reuse. Each construction
+still creates its own receiver, and resolved results stay fresh. Successful
+locale-data loading clears reuse so new instances see replacements while old
+instances retain their selected data. Map methods are captured during installation.
