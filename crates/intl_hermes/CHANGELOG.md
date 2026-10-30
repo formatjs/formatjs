@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.2.0...formatjs_intl_hermes_v0.3.0) (2026-10-30)
+
+
+### Features
+
+* distribute Hermes Intl SDK with one-call installation ([f5ed01b](https://github.com/formatjs/formatjs/commit/f5ed01b13718c5ad03419d1c2ee2ecadb9200d32))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_collator bumped from 0.2.0 to 0.2.1
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.1.0...formatjs_intl_hermes_v0.2.0) (2026-10-30)
 
 

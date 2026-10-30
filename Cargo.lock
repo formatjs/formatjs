@@ -733,7 +733,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_collator"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -821,7 +821,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",
