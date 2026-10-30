@@ -16,6 +16,12 @@ on:
         description: Build SDK archives without publishing
         type: boolean
         default: true
+      release_tag:
+        description: Existing SDK tag to build instead of the selected workflow ref
+        type: string
+      apple_run_id:
+        description: Reuse Apple archive from an SDK workflow run at the same commit
+        type: string
 
 permissions:
   contents: read
@@ -30,6 +36,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
       - uses: bazel-contrib/setup-bazel@0.19.1
         with:
           bazelisk-cache: true
@@ -47,8 +55,16 @@ jobs:
           sdkmanager --install 'ndk;27.1.12297006'
           echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.1.12297006" >> "$GITHUB_ENV"
       - name: Build SDK archives
+        env:
+          BUILDBUDDY_ORG_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}
         run: |
-          args=(-c opt --extra_toolchains=@androidndk//:all --spawn_strategy=local)
+          : "${BUILDBUDDY_ORG_API_KEY:?BuildBuddy credentials are required for SDK releases}"
+          args=(
+            --config=ci -c opt
+            --remote_download_toplevel
+            --remote_header="x-buildbuddy-api-key=$BUILDBUDDY_ORG_API_KEY"
+            --extra_toolchains=@androidndk//:all
+          )
           targets=(//native/hermes/package:sdk //native/hermes/package:android_sdk)
           bazel build "${args[@]}" "${targets[@]}"
           mkdir artifacts
@@ -63,12 +79,14 @@ jobs:
           path: artifacts/
 
   apple:
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')
+    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')) && !inputs.apple_run_id
     runs-on: macos-15
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
       - uses: bazel-contrib/setup-bazel@0.19.1
         with:
           bazelisk-cache: true
@@ -107,16 +125,31 @@ jobs:
 
   publish:
     needs: [build, apple]
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: always() && needs.build.result == 'success' && (needs.apple.result == 'success' || inputs.apple_run_id != '') && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
     permissions:
+      actions: read
       contents: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
+      - name: Verify reused Apple archive source
+        if: inputs.apple_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPLE_RUN_ID: ${{ inputs.apple_run_id }}
+        run: |
+          [[ "$APPLE_RUN_ID" =~ ^[0-9]+$ ]]
+          source_sha=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$APPLE_RUN_ID" \
+            --jq 'select(.path == ".github/workflows/hermes-intl-release.yml") | .head_sha')
+          test "$source_sha" = "$(git rev-parse HEAD)"
       - uses: actions/download-artifact@v8
         with:
           name: formatjs-hermes-intl-apple-sdk
           path: artifacts/
+          run-id: ${{ inputs.apple_run_id || github.run_id }}
+          github-token: ${{ github.token }}
       - uses: actions/download-artifact@v8
         with:
           name: formatjs-hermes-intl-sdk
@@ -133,7 +166,7 @@ jobs:
         if: github.event_name == 'release' || !inputs.dry_run
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.event.release.tag_name || github.ref_name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.release_tag || github.ref_name }}
         run: |
           version=$(cat native/hermes/version.txt)
           test "$RELEASE_TAG" = "formatjs-hermes-intl_v$version"

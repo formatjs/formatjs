@@ -575,3 +575,17 @@ for both Linux and macOS. Keep this optimization scoped to the SDK archive graph
 ordinary repository build defaults remain separate. Benchmark SDK changes using
 frozen standalone consumers and identical optimized workloads. The full-API
 `:suite_bytecode` target uses a monotonic clock when the host provides `__now`.
+
+### Hermes SDK release execution
+
+`.github/workflows/hermes-intl-release.yml` uses `--config=ci` and the protected
+BuildBuddy key for desktop/Android RBE builds. Missing credentials fail the job;
+there is no local-build fallback. `--remote_download_toplevel` downloads only SDK
+archives, avoiding intermediate Rust outputs on the GitHub runner. Apple builds
+and link checks stay on macOS/Xcode. PRs do not run the credentialed Linux job.
+
+Manual dispatch can set `release_tag` to rebuild an existing SDK tag with the
+current workflow. Every checkout uses that tag, including publication's version
+check. Optional `apple_run_id` reuses an SDK workflow artifact only after its
+source commit matches the checkout; the publish job needs Actions read access
+for this download. Use `dry_run` before publishing a repaired release.

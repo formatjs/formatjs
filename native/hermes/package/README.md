@@ -185,3 +185,18 @@ For the standalone Hermes engine, use the pinned
 [Hermes overlay](https://github.com/formatjs/hermes/tree/338ff13ff1e996934ae615952d174f8c621844d9),
 including its Proxy constructor patch. React Native uses its bundled Hermes;
 run the example against your React Native version when upgrading.
+
+## Release builds
+
+Desktop and Android release archives build through BuildBuddy RBE. The workflow
+requires `BUILDBUDDY_ORG_API_KEY`; it downloads only the finished archives to
+GitHub Actions. Apple archives and link checks run on macOS with Xcode.
+
+To retry an existing release using the current workflow, dispatch it from `main`
+with `release_tag` set to `formatjs-hermes-intl_v<version>`. All jobs check out
+that tag. Leave `dry_run` enabled to validate without uploading release assets.
+
+`apple_run_id` can reuse a successful Apple archive from an earlier SDK workflow
+run. Its source commit must match the selected tag. Leave it empty to build
+Apple archives again. Publishing waits for the desktop/Android build and either
+the Apple build or the verified reused archive.
