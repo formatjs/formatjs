@@ -36,7 +36,7 @@
     "@bazel/runfiles": "6",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
-    "@types/node": "22 || 24",
+    "@types/node": "22 || 24 || 26",
     "commander": "15",
     "fast-glob": "3",
     "fs-extra": "11",
