@@ -164,3 +164,14 @@ The contrib installer prepares supported-value enumeration before Locale and
 finishes observing formatter loaders after installing the remaining APIs. Locale
 retains that enumerator; loader observation must finish before application code
 can retain methods that mutate locale data.
+
+Native Rust records store language/script/region in bounded ASCII fields
+(8/4/3 bytes) and extension singletons as one ASCII byte. Validation still uses
+shared canonicalization and the same option checks; 5–8-letter languages remain
+supported. Public snapshots keep owned strings. Temporary subtag lists and
+variable-length variants/extensions retain their existing containers.
+
+Unicode option updates preserve unrelated extensions and private use. The TS
+path inserts a new Unicode extension before private use; Rust sorts private use
+last when rebuilding. Pinned ICU4C/J/X fixtures cover numeric/calendar updates
+with digit and v/y/z extensions, existing Unicode attributes and private payloads.

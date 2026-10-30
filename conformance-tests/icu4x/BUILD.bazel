@@ -85,9 +85,15 @@ formatjs_rust_test(
     name = "intl_canonical_private_conformance_test",
     srcs = ["canonical-private.test.rs"],
     crate_name = "icu4x_canonical_private_conformance_test",
-    data = ["//conformance-tests/icu4j:canonical-private-fixtures.tsv"],
+    data = [
+        "//conformance-tests/icu4j:canonical-private-fixtures.tsv",
+        "//conformance-tests/icu4j:locale-extension-options-fixtures.tsv",
+    ],
     edition = "2024",
-    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)"},
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-extension-options-fixtures.tsv)",
+    },
     deps = [
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",

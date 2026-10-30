@@ -219,3 +219,33 @@ fn runtime_preferences_are_uncached_and_owned() {
     calendars.clear();
     assert!(!value.calendars().is_empty());
 }
+
+#[test]
+fn subtag_widths_preserve_owned_records_and_overrides() {
+    for language in ["zz", "qaa", "abcde", "abcdef", "abcdefg", "abcdefgh"] {
+        let tag = format!("{language}-Latn-419-fonipa-a-first-u-attr-ca-gregory-kn-x-private");
+        let model = locale(&tag);
+        drop(tag);
+        assert_eq!(model.language(), language);
+        assert_eq!(model.script(), Some("Latn"));
+        assert_eq!(model.region(), Some("419"));
+        assert_eq!(model.variants().as_deref(), Some("fonipa"));
+        assert!(model.numeric());
+        assert_eq!(model.keyword("ca"), Some("gregory"));
+        assert_eq!(model.maximize().as_str(), model.as_str());
+        assert_eq!(model.minimize().maximize().as_str(), model.as_str());
+        let snapshot = model.snapshot(None);
+        assert_eq!(snapshot.language, language);
+        assert_eq!(snapshot.script.as_deref(), Some("Latn"));
+        assert_eq!(snapshot.region.as_deref(), Some("419"));
+    }
+    let options = LocaleOptions {
+        language: Some("ABCDEFGH".to_owned()),
+        script: Some("latn".to_owned()),
+        region: Some("419".to_owned()),
+        ..Default::default()
+    };
+    let model = Locale::new("en-x-private", &options).unwrap();
+    drop(options);
+    assert_eq!(model.as_str(), "abcdefgh-Latn-419-x-private");
+}

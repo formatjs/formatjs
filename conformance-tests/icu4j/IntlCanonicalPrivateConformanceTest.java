@@ -15,5 +15,17 @@ public class IntlCanonicalPrivateConformanceTest {
             checked++;
         }
         if (checked != 21) throw new AssertionError("Unexpected fixture count: " + checked);
+        rows = Files.readAllLines(Paths.get(System.getenv("LOCALE_EXTENSION_OPTIONS_FIXTURES")), StandardCharsets.UTF_8);
+        checked = 0;
+        for (String row : rows.subList(1, rows.size())) {
+            String[] fields = row.split("\t", -1);
+            if (fields.length != 4) throw new IllegalArgumentException(row);
+            ULocale locale = new ULocale.Builder().setLanguageTag(fields[0])
+                .setUnicodeLocaleKeyword(fields[1], fields[2]).build();
+            String actual = ULocale.createCanonical(locale.getName()).toLanguageTag();
+            if (!actual.equals(fields[3])) throw new AssertionError(row + " actual=" + actual);
+            checked++;
+        }
+        if (checked != 12) throw new AssertionError("Unexpected option fixture count: " + checked);
     }
 }

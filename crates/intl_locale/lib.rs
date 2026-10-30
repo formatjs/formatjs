@@ -11,6 +11,7 @@ use std::fmt;
 
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use serde::{Deserialize, Serialize};
+use tinystr::TinyAsciiStr;
 
 use data_generated::*;
 
@@ -114,10 +115,15 @@ pub fn validate_option(name: &str, value: &str) -> Result<(), LocaleError> {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct LanguageId {
-    language: String,
-    script: Option<String>,
-    region: Option<String>,
+    language: TinyAsciiStr<8>,
+    script: Option<TinyAsciiStr<4>>,
+    region: Option<TinyAsciiStr<3>>,
     variants: Vec<String>,
+}
+
+// Canonical grammar and validated overrides bound every ASCII subtag.
+fn subtag<const N: usize>(value: &str) -> TinyAsciiStr<N> {
+    TinyAsciiStr::try_from_str(value).expect("validated locale subtag")
 }
 
 impl LanguageId {
@@ -131,7 +137,7 @@ impl LanguageId {
             .filter(|part| part.len() == 4 && ascii_letters(part))
             .map(|part| {
                 index += 1;
-                (*part).to_owned()
+                subtag(part)
             });
         let region = parts
             .get(index)
@@ -141,10 +147,10 @@ impl LanguageId {
             })
             .map(|part| {
                 index += 1;
-                (*part).to_owned()
+                subtag(part)
             });
         Self {
-            language: parts[0].to_owned(),
+            language: subtag(parts[0]),
             script,
             region,
             variants: parts[index..]
@@ -165,7 +171,7 @@ impl LanguageId {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 struct Extension {
-    singleton: String,
+    singleton: u8,
     value: String,
 }
 
@@ -217,13 +223,13 @@ impl Locale {
             }
         }
         if let Some(language) = &options.language {
-            locale.id.language = language.clone();
+            locale.id.language = subtag(language);
         }
         if let Some(script) = &options.script {
-            locale.id.script = Some(script.clone());
+            locale.id.script = Some(subtag(script));
         }
         if let Some(region) = &options.region {
-            locale.id.region = Some(region.clone());
+            locale.id.region = Some(subtag(region));
         }
         if let Some(variants) = &options.variants {
             locale.id.variants = variants.split('-').map(str::to_owned).collect();
@@ -302,9 +308,9 @@ impl Locale {
         let mut keywords = BTreeMap::new();
         let mut index = end;
         while index < parts.len() {
-            let singleton = parts[index];
+            let singleton = parts[index].as_bytes()[0];
             index += 1;
-            let end = if singleton == "x" {
+            let end = if singleton == b'x' {
                 parts.len()
             } else {
                 (index..parts.len())
@@ -312,7 +318,7 @@ impl Locale {
                     .unwrap_or(parts.len())
             };
             let values = &parts[index..end];
-            if singleton == "u" {
+            if singleton == b'u' {
                 let mut start = 0;
                 while start < values.len() && values[start].len() >= 3 {
                     start += 1;
@@ -328,7 +334,7 @@ impl Locale {
                 }
             }
             extensions.push(Extension {
-                singleton: singleton.to_owned(),
+                singleton,
                 value: values.join("-"),
             });
             index = end;
@@ -345,13 +351,13 @@ impl Locale {
         let existing = self
             .extensions
             .iter()
-            .position(|extension| extension.singleton == "u");
+            .position(|extension| extension.singleton == b'u');
         if existing.is_none() && self.keywords.is_empty() {
             return;
         }
         let index = existing.unwrap_or_else(|| {
             self.extensions.push(Extension {
-                singleton: "u".to_owned(),
+                singleton: b'u',
                 value: String::new(),
             });
             self.extensions.len() - 1
@@ -369,15 +375,16 @@ impl Locale {
             }
         }
         self.extensions[index].value = attributes.join("-");
+        // Private use consumes the remaining subtags, so it must stay last.
         self.extensions
-            .sort_by(|left, right| left.singleton.cmp(&right.singleton));
+            .sort_by_key(|extension| (extension.singleton == b'x', extension.singleton));
     }
 
     fn emit_with_id(&self, id: &LanguageId) -> String {
         let mut tag = id.emit();
         for extension in &self.extensions {
             tag.push('-');
-            tag.push_str(&extension.singleton);
+            tag.push(extension.singleton as char);
             if !extension.value.is_empty() {
                 tag.push('-');
                 tag.push_str(&extension.value);
@@ -438,9 +445,9 @@ impl Locale {
             (None, None),
         ] {
             let trial = LanguageId {
-                language: id.language.clone(),
-                script: script_candidate.map(str::to_owned),
-                region: region_candidate.map(str::to_owned),
+                language: id.language,
+                script: script_candidate.map(subtag),
+                region: region_candidate.map(subtag),
                 variants: Vec::new(),
             };
             if let Some(found) = lookup(LIKELY_SUBTAGS, &trial.emit()) {
@@ -449,10 +456,10 @@ impl Locale {
                     language: if id.language == "und" {
                         replacement.language
                     } else {
-                        id.language.clone()
+                        id.language
                     },
-                    script: script.map(str::to_owned).or(replacement.script),
-                    region: region.map(str::to_owned).or(replacement.region),
+                    script: script.map(subtag).or(replacement.script),
+                    region: region.map(subtag).or(replacement.region),
                     variants: id.variants.clone(),
                 };
             }
@@ -472,13 +479,9 @@ impl Locale {
         // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35.md#L2595-L2601
         let mut maximal = Self::maximized_id(&self.id);
         let variants = std::mem::take(&mut maximal.variants);
-        for (script, region) in [
-            (None, None),
-            (None, maximal.region.clone()),
-            (maximal.script.clone(), None),
-        ] {
+        for (script, region) in [(None, None), (None, maximal.region), (maximal.script, None)] {
             let mut trial = LanguageId {
-                language: maximal.language.clone(),
+                language: maximal.language,
                 script,
                 region,
                 variants: Vec::new(),
@@ -492,7 +495,7 @@ impl Locale {
         self.with_id(maximal)
     }
 
-    fn subdivision_region(&self, key: &str) -> Option<String> {
+    fn subdivision_region(&self, key: &str) -> Option<TinyAsciiStr<3>> {
         let value = self.keyword(key)?;
         let size = if value.len() >= 3 && value.as_bytes()[..2].iter().all(u8::is_ascii_alphabetic)
         {
@@ -524,11 +527,13 @@ impl Locale {
         let region = self
             .id
             .region
-            .clone()
             .or_else(|| self.subdivision_region("sd"))
             .or_else(|| Self::maximized_id(&self.id).region)
-            .unwrap_or_else(|| "001".to_owned());
-        (region, self.subdivision_region("rg"))
+            .unwrap_or_else(|| subtag("001"));
+        (
+            region.to_string(),
+            self.subdivision_region("rg").map(|value| value.to_string()),
+        )
     }
 
     pub fn calendars(&self) -> Vec<String> {
@@ -691,9 +696,9 @@ impl Locale {
         LocaleSnapshot {
             locale: self.tag.clone(),
             base_name: self.base_name(),
-            language: self.id.language.clone(),
-            script: self.id.script.clone(),
-            region: self.id.region.clone(),
+            language: self.id.language.to_string(),
+            script: self.id.script.map(|value| value.to_string()),
+            region: self.id.region.map(|value| value.to_string()),
             variants: self.variants(),
             calendar: self.keyword("ca").map(str::to_owned),
             collation: self.keyword("co").map(str::to_owned),

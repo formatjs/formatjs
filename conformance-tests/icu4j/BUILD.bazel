@@ -153,14 +153,23 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
-exports_files(["canonical-private-fixtures.tsv"])
+exports_files([
+    "canonical-private-fixtures.tsv",
+    "locale-extension-options-fixtures.tsv",
+])
 
 java_test(
     name = "intl_canonical_private_conformance_test",
     size = "small",
     srcs = ["IntlCanonicalPrivateConformanceTest.java"],
-    data = ["canonical-private-fixtures.tsv"],
-    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath canonical-private-fixtures.tsv)"},
+    data = [
+        "canonical-private-fixtures.tsv",
+        "locale-extension-options-fixtures.tsv",
+    ],
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath locale-extension-options-fixtures.tsv)",
+    },
     main_class = "IntlCanonicalPrivateConformanceTest",
     test_class = "IntlCanonicalPrivateConformanceTest",
     deps = [":icu4j"],

@@ -56,8 +56,14 @@ cc_test(
     name = "intl_canonical_private_conformance_test",
     size = "small",
     srcs = ["canonical_private.cc"],
-    data = ["//conformance-tests/icu4j:canonical-private-fixtures.tsv"],
-    env = {"CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)"},
+    data = [
+        "//conformance-tests/icu4j:canonical-private-fixtures.tsv",
+        "//conformance-tests/icu4j:locale-extension-options-fixtures.tsv",
+    ],
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-extension-options-fixtures.tsv)",
+    },
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",

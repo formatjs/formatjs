@@ -858,6 +858,7 @@ dependencies = [
  "formatjs_intl_localematcher",
  "serde",
  "serde_json",
+ "tinystr",
 ]
 
 [[package]]
