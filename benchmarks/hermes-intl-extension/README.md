@@ -1,5 +1,9 @@
 # Hermes Intl extension benchmark
 
+Performance changes must preserve ECMA-402/Test262 behavior and cross-check
+pinned ICU4C, ICU4J and ICU4X where their APIs overlap. Record exact data-version
+differences; never normalize outputs to hide disagreements.
+
 Build Hermes with the [FormatJS contrib package](../../native/hermes/package/contrib/README.md),
 then build and run the benchmark bundle:
 
@@ -802,3 +806,33 @@ Sampling profiles remain diagnostics rather than independent low-percent timing
 claims. No clean-build-time comparison is made. String ListFormat, numeric RTF
 strings and cold diverse Locale still need work; narrow constructor wins need
 more headroom.
+
+Locale construction now skips JSON parsing and unused option processing for the
+bridge's exact empty object, using the same Rust tag canonicalization and record
+parser. Explicit options retain their existing validation order.
+[Paired SDK results and profiles](locale-empty-options-results.json).
+
+Three alternating optimized control runs: cold diverse tags 1.823 to 1.671 µs
+(-8.4%), magrinj 1.432 µs; long uncached tags 3.074 to 2.742 µs (-10.8%),
+magrinj 3.791 µs. Warm constructors stay within 1% of baseline.
+A separate fixed-work source diagnostic uses nine 300,000-call batches per
+invocation, five invocations per host: 2.252 to 2.117 µs (-6.0%), magrinj 1.437 µs.
+This diagnostic uses source rather than the optimized-bytecode control.
+
+The earlier four-host pilot showed a cold-tag regression; its raw values remain
+in the dataset. Final controls and fixed-work runs improve, but GC and run-to-run
+variance limit low-percent claims. Cold diverse tags still trail magrinj.
+
+A C++ consumer of the shipped Rust archive compares exact `{}` with whitespace
+empty JSON in the same executable: private-tag construction is roughly 467
+versus 556 ns. Allocation counts stay unchanged. Separate Hermes profiles total
+1,673 versus 1,543 samples, including 971 versus 883 in `localeCreate`; profiles
+are diagnostics rather than independent timing claims.
+
+All 120 pilot/final control values, 84 full-API native/TS assertions, 12 focused
+Locale gates and nine SDK smokes pass. Gates include strict canonicalization and
+Locale Test262, Chromium locales and pinned ICU4C/J/X comparisons. Direct ABI
+tests compare empty-object encodings for aliases, Chinese regions, extensions,
+properties and transforms, plus invalid-tag status and null output handling.
+The full-API native timing changes range from -4.1% to +4.5%; raw runs remain
+recorded.
