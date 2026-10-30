@@ -120,10 +120,15 @@ pub unsafe extern "C" fn formatjs_locale_create(
         }) else {
             return 2;
         };
-        let Ok(options) = serde_json::from_str::<LocaleOptions>(options) else {
-            return 2;
+        let locale = if options == "{}" {
+            Locale::from_tag(tag)
+        } else {
+            let Ok(options) = serde_json::from_str::<LocaleOptions>(options) else {
+                return 2;
+            };
+            Locale::new(tag, &options)
         };
-        let Ok(locale) = Locale::new(tag, &options) else {
+        let Ok(locale) = locale else {
             return 1;
         };
         unsafe {

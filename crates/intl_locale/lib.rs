@@ -189,12 +189,17 @@ fn lookup<'a, T>(table: &'a [(&str, T)], key: &str) -> Option<&'a T> {
 }
 
 impl Locale {
+    pub(crate) fn from_tag(tag: &str) -> Result<Self, LocaleError> {
+        canonicalize_locale(tag)
+            .map(Self::parse)
+            .map_err(|_| LocaleError::InvalidTag)
+    }
+
     pub fn new(tag: &str, options: &LocaleOptions) -> Result<Self, LocaleError> {
         // Intl.Locale 11–14: validate and canonicalize the original tag before
         // overrides, so alias resolution keeps its original language context.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/locale.html#L33-L36
-        let mut locale =
-            Self::parse(canonicalize_locale(tag).map_err(|_| LocaleError::InvalidTag)?);
+        let mut locale = Self::from_tag(tag)?;
         for (name, value) in [
             ("language", &options.language),
             ("script", &options.script),

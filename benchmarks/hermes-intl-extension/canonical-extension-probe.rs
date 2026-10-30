@@ -1,5 +1,8 @@
 use formatjs_intl_getcanonicallocales::canonicalize_locale;
-use formatjs_intl_locale::{Locale, LocaleOptions};
+use formatjs_intl_locale::{
+    Locale, LocaleOptions,
+    ffi::{formatjs_locale_create, formatjs_locale_destroy},
+};
 use std::hint::black_box;
 #[cfg(not(feature = "count_allocations"))]
 use std::time::Instant;
@@ -85,5 +88,18 @@ fn main() {
             canonicalize_locale(black_box(tag)).unwrap()
         });
         measure("locale", || Locale::new(black_box(tag), &options).unwrap());
+        measure("locale ABI", || {
+            let tag = black_box(tag);
+            let mut handle = std::ptr::null_mut();
+            assert_eq!(
+                unsafe {
+                    formatjs_locale_create(tag.as_ptr(), tag.len(), b"{}".as_ptr(), 2, &mut handle)
+                },
+                0
+            );
+            let handle = black_box(handle);
+            assert!(!handle.is_null());
+            unsafe { formatjs_locale_destroy(handle) };
+        });
     }
 }

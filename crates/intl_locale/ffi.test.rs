@@ -6,7 +6,9 @@ use serde_json::{Value, json};
 struct Handle(*mut LocaleHandle);
 impl Handle {
     fn new(tag: &str, options: Value) -> Self {
-        let options = options.to_string();
+        Self::from_json(tag, &options.to_string())
+    }
+    fn from_json(tag: &str, options: &str) -> Self {
         let mut handle = ptr::null_mut();
         assert_eq!(
             unsafe {
@@ -265,5 +267,49 @@ fn query_results_have_independent_ownership() {
             1
         );
         formatjs_locale_bytes_free(second);
+    }
+}
+
+#[test]
+fn empty_option_encodings_preserve_locale_state_and_invalid_tag_status() {
+    for tag in [
+        "en",
+        "iw",
+        "sh",
+        "zh-TW",
+        "zh-HK",
+        "zh-Hant-HK",
+        "abcde",
+        "en-a-first-u-attr-ca-buddhist-kn-x-one-two",
+    ] {
+        let fast = Handle::from_json(tag, "{}");
+        for text in [" { } ", "{\n\t}"] {
+            let other = Handle::from_json(tag, text);
+            for method in ["properties", "maximize", "minimize"] {
+                assert_eq!(
+                    fast.query(json!({"method": method})),
+                    other.query(json!({"method": method})),
+                    "{tag}: {method}"
+                );
+            }
+        }
+    }
+    for tag in ["", "en_US", "1:en:{}"] {
+        for options in ["{}", " { } "] {
+            let mut out = ptr::dangling_mut();
+            assert_eq!(
+                unsafe {
+                    formatjs_locale_create(
+                        tag.as_ptr(),
+                        tag.len(),
+                        options.as_ptr(),
+                        options.len(),
+                        &mut out,
+                    )
+                },
+                1
+            );
+            assert!(out.is_null());
+        }
     }
 }
