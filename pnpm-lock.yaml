@@ -442,8 +442,8 @@ importers:
         specifier: ^0.7.1
         version: 0.7.1
       cldr-bcp47:
-        specifier: 48.2.0
-        version: 48.2.0
+        specifier: 49.0.0
+        version: 49.0.0
       cldr-cal-buddhist-full:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
@@ -4548,8 +4548,8 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
-  cldr-bcp47@48.2.0:
-    resolution: {integrity: sha512-ks3zN+Wbg1zMqvJNeDai1zA0JBGHbAnxv2Ko4rjVohvXscDGmTa7VNy1T+QRlQw3QVPzQcCm2EOiEtAfOU4d+g==}
+  cldr-bcp47@49.0.0:
+    resolution: {integrity: sha512-EHxRNhjo9dbvg3sflSaqxyjEieMkQiN92Vp/Vlmwi/91jTWFzM12/u2aApHxKq367PH6m7/vNtcnyxOTzlKSNw==}
 
   cldr-cal-buddhist-full@48.2.0:
     resolution: {integrity: sha512-bdc08W3e/uGGypQYUCNIrM2TldixnIQpW0Ybr2ynxQkojmqgkPk9f6FpOR370eblCMTO57SEgSx59ZXYaBE/og==}
@@ -10946,7 +10946,7 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
-  cldr-bcp47@48.2.0: {}
+  cldr-bcp47@49.0.0: {}
 
   cldr-cal-buddhist-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
     dependencies:
