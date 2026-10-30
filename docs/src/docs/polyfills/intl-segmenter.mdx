@@ -7,6 +7,12 @@ A polyfill for [`Intl.Segmenter`](https://tc39.es/proposal-intl-segmenter).
 
 This package implements `Intl.Segmenter`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+Rust and TypeScript implementations share an independent ICU4C/ICU4J test
+matrix for UTF-16 boundaries and word classification. Hermes runs both
+implementations in source and bytecode modes, including `containing()` and
+record property checks. Dictionary segmentation and sentence abbreviation
+suppression can differ between the implementations.
+
 ### Specification Details
 
 - **TC39 Proposal**: [Intl.Segmenter](https://github.com/tc39/proposal-intl-segmenter)
@@ -40,7 +46,7 @@ All 3 segmentation granularities are supported:
 The `Segments` object returned by `segment()` is:
 
 - **Iterable** - Can be used with `for...of` loops
-- **Array-like** - Supports indexed access and `containing(index)` method
+- **`containing(index)`** - Finds the segment containing a UTF-16 code-unit index
 
 #### Segment Object Properties
 

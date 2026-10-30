@@ -1,3 +1,5 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
+
 # gazelle:ignore
 load("//tools:test.bzl", "formatjs_test")
 
@@ -6,9 +8,12 @@ formatjs_test(
     size = "medium",
     srcs = [
         "conformance.test.ts",
+        "icu-audit.test.ts",
         "profiles.ts",
     ],
     data = [
+        "icu-ts-differences.tsv",
+        "//conformance-tests/icu4j:segmenter_fixtures",
         "//crates/intl_segmenter:conformance",
         "@GraphemeBreakTest//file",
     ],
@@ -24,4 +29,10 @@ formatjs_test(
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
+)
+
+js_library(
+    name = "icu_ts_differences",
+    srcs = ["icu-ts-differences.tsv"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

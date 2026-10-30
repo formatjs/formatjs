@@ -48,3 +48,14 @@ suffixes and preceding Unicode extensions. Both FormatJS canonicalization and
 Rust Locale constructors must match every pinned output; no differences are
 normalized or skipped. Structural rejection remains covered by the existing
 canonicalizer tests and strict Hermes getCanonicalLocales Test262 suite.
+
+Segmenter checks 1770 UTF-16 cases generated independently by ICU4J 78.1 and
+verified by ICU4C 78.1. The same corpus checks FormatJS and direct ICU4X
+`icu_segmenter` 2.3.0 across grapheme, word and sentence granularities, ten
+locales including zh-TW/zh-HK, dictionary scripts, emoji, combining marks and
+lone surrogates. No cases are skipped. FormatJS matches every ICU4C/J record.
+One hundred exact ICU4X word-status differences (Indic, underscore and Format
+context) are pinned in
+`segmenter-icu-differences.tsv`; unknown, changed, redundant and unused
+entries fail. FormatJS classifies word status from pinned Word_Break/Alphabetic properties,
+matching ICU4C/J without inheriting ICU4X status.

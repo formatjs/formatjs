@@ -70,3 +70,16 @@ cc_test(
     ],
     deps = ["@icu4c_linux_x86_64//:icu"],
 )
+
+cc_test(
+    name = "intl_segmenter_conformance_test",
+    size = "small",
+    srcs = ["segmenter.cc"],
+    data = ["//conformance-tests/icu4j:segmenter_fixtures"],
+    env = {"SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)

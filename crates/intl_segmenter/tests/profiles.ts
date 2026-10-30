@@ -3,14 +3,6 @@
 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L372
 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L406
 export const profiles = [
-  // ICU excludes mark-only/emoji segments; TS counts Unicode marks as words.
-  {
-    locales: ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh'],
-    granularity: 'word',
-    input: '\ud83c\udde6\u0308\ud83c\udde6',
-    rust: [[[55356, 56806, 776, 55356, 56806], false]],
-    typescript: [[[55356, 56806, 776, 55356, 56806], true]],
-  },
   // ICU dictionary/LSTM words; TS uses CLDR break-rule boundaries.
   {
     locales: ['en', 'en-GB', 'fr', 'de', 'th', 'zh'],
@@ -70,37 +62,6 @@ export const profiles = [
       [[3627, 3660], true],
     ],
   },
-  // UAX #29 WB4 ignores Format inside words; TS has a known rule gap.
-  {
-    locales: ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh'],
-    granularity: 'word',
-    input: '\u2060c\u2060.\u2060D\u2060\u2060',
-    rust: [
-      [[8288], false],
-      [[99, 8288, 46, 8288, 68, 8288, 8288], true],
-    ],
-    typescript: [
-      [[8288], false],
-      [[99, 8288, 46, 8288], true],
-      [[68, 8288, 8288], true],
-    ],
-  },
-  // ICU excludes mark-only/emoji segments; TS counts Unicode marks as words.
-  {
-    locales: ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh'],
-    granularity: 'word',
-    input: '\u0308',
-    rust: [[[776], false]],
-    typescript: [[[776], true]],
-  },
-  // ICU excludes mark-only/emoji segments; TS counts Unicode marks as words.
-  {
-    locales: ['en', 'en-GB', 'fr', 'ja', 'th', 'zh'],
-    granularity: 'word',
-    input: '\u2764\ufe0f',
-    rust: [[[10084, 65039], false]],
-    typescript: [[[10084, 65039], true]],
-  },
   // TS applies CLDR abbreviation suppressions; ICU uses sentence break rules.
   {
     locales: ['en', 'en-GB', 'de'],
@@ -125,41 +86,6 @@ export const profiles = [
       ],
       [[78, 101, 120, 116, 32, 100, 97, 121, 46]],
     ],
-  },
-  // UAX #29 Format/Close/Sp handling differs from the TS rule engine.
-  {
-    locales: ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh'],
-    granularity: 'sentence',
-    input: 'etc.)\u2019\u00a0\u2018(the',
-    rust: [[[101, 116, 99, 46, 41, 8217, 160, 8216, 40, 116, 104, 101]]],
-    typescript: [
-      [[101, 116, 99, 46, 41, 8217, 160]],
-      [[8216, 40, 116, 104, 101]],
-    ],
-  },
-  // UAX #29 SB3/SB4 break after CRLF; TS suppression joins this sequence.
-  {
-    locales: ['en', 'en-GB', 'de'],
-    granularity: 'sentence',
-    input: 'A.\r\nA',
-    rust: [[[65, 46, 13, 10]], [[65]]],
-    typescript: [[[65, 46, 13, 10, 65]]],
-  },
-  // UAX #29 Format/Close/Sp handling differs from the TS rule engine.
-  {
-    locales: ['en', 'en-GB', 'fr', 'de', 'ja', 'th', 'zh'],
-    granularity: 'sentence',
-    input: '\u2060c\u2060.\u2060D\u2060\u2060',
-    rust: [[[8288, 99, 8288, 46, 8288, 68, 8288, 8288]]],
-    typescript: [[[8288, 99, 8288, 46, 8288]], [[68, 8288, 8288]]],
-  },
-  // ICU excludes mark-only/emoji segments; TS counts Unicode marks as words.
-  {
-    locales: ['de'],
-    granularity: 'word',
-    input: '\u2764\ufe0f',
-    rust: [[[10084, 65039], false]],
-    typescript: [[[10084, 65039], true]],
   },
   // TS applies CLDR abbreviation suppressions; ICU uses sentence break rules.
   {

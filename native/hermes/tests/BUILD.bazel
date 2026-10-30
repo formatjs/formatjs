@@ -238,7 +238,9 @@ ts_project(
     name = "segmenter_typecheck",
     srcs = [
         "run-segmenter.ts",
+        "run-segmenter-oracle.ts",
         "segmenter.ts",
+        "segmenter-oracle.ts",
     ],
     declaration = True,
     no_emit = True,
@@ -683,6 +685,34 @@ js_test(
         "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
         "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale_format_fixtures)",
         "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
+    },
+    node_options = ["--experimental-transform-types"],
+)
+
+rolldown_bundle(
+    name = "segmenter_oracle_suite",
+    srcs = ["segmenter-oracle.ts"],
+    entry_point = "segmenter-oracle.ts",
+    format = "iife",
+    target = "es2020",
+    deps = ["//:node_modules/@formatjs/intl-segmenter"],
+)
+
+js_test(
+    name = "segmenter_icu_conformance_test",
+    size = "medium",
+    data = [
+        ":segmenter_oracle_suite.js",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:segmenter_fixtures",
+        "//crates/intl_segmenter/tests:icu_ts_differences",
+        "//native/hermes:extension_bundle_bytecode",
+        "//native/hermes:hermes_runner",
+    ],
+    entry_point = "run-segmenter-oracle.ts",
+    env = {
+        "SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)",
+        "SEGMENTER_TS_DIFFERENCES": "$(rootpath //crates/intl_segmenter/tests:icu_ts_differences)",
     },
     node_options = ["--experimental-transform-types"],
 )
