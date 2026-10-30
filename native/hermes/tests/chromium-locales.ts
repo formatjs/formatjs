@@ -101,6 +101,7 @@ if (api.ListFormat?.polyfilled) {
     formatter = `ListFormat ${locale}/${type}/${style}/${encoded}`
     const list = new api.ListFormat(locale, {type, style})
     equal(list.format(items), unhex(expected))
+    equal(list.format(items), unhex(expected))
     const parts = list.formatToParts(items)
     equal(parts.map((part: any) => part.value).join(''), unhex(expected))
     equal(

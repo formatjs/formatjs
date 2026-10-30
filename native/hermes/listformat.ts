@@ -43,10 +43,10 @@
   ) => object | undefined
   const setSlot = WeakMap.prototype.set.bind(slots)
   type JoinPlan = {separator: string; lastSeparator: string}
-  const plans = new WeakMap<object, JoinPlan | null>()
+  const plans = new WeakMap<object, JoinPlan | null | false>()
   const getPlan = WeakMap.prototype.get.bind(plans) as (
     handle: object
-  ) => JoinPlan | null | undefined
+  ) => JoinPlan | null | false | undefined
   const setPlan = WeakMap.prototype.set.bind(plans)
   const matchers = ['lookup', 'best fit'] as const
   const types = ['conjunction', 'disjunction', 'unit'] as const
@@ -199,6 +199,10 @@
         if (large === nativeFormat) {
           let plan = getPlan(handle)
           if (plan === undefined) {
+            setPlan(handle, false)
+            return large(handle, values!)
+          }
+          if (plan === false) {
             plan = decoded(
               nativeQuery(handle, '{"method":"joinPlan"}')
             ) as JoinPlan | null

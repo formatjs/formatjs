@@ -156,6 +156,6 @@ surrogates. Boundary tests check malformed final-slice cleanup on both paths.
 For string lists of at least five elements, Rust can authorize a fixed join plan
 when start/middle separators agree and all templates are forward, without
 prefixes, suffixes or contextual alternatives. Hermes then joins its validated
-private string array using the captured intrinsic. The immutable handle owns
-the plan; contextual/custom patterns and all parts still use Rust formatting.
+private string array using the captured intrinsic. The first eligible call keeps native formatting; plan lookup waits for reuse.
+The immutable handle owns the plan; contextual/custom patterns and all parts still use Rust formatting.
 Iteration and IteratorClose finish before plan lookup or concatenation.

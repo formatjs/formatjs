@@ -59,6 +59,11 @@ const retainedExpected = new TypeScriptListFormat('en').format(retainedInput)
 equal(
   existing.format(retainedInput),
   retainedExpected,
+  'first native large-list call'
+)
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
   'prime immutable join plan'
 )
 replacement.data.conjunction.long.end = '[{0}|{1}]'
