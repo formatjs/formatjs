@@ -174,3 +174,20 @@ java_test(
     test_class = "IntlCanonicalPrivateConformanceTest",
     deps = [":icu4j"],
 )
+
+java_binary(
+    name = "intl_segmenter_oracle",
+    testonly = True,
+    srcs = ["IntlSegmenterOracle.java"],
+    main_class = "IntlSegmenterOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "segmenter_fixtures",
+    testonly = True,
+    outs = ["segmenter-fixtures.tsv"],
+    cmd = "$(execpath :intl_segmenter_oracle) $@",
+    tools = [":intl_segmenter_oracle"],
+    visibility = ["//visibility:public"],
+)

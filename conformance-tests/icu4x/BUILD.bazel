@@ -100,3 +100,23 @@ formatjs_rust_test(
         "@crates//:icu_locale",
     ],
 )
+
+formatjs_rust_test(
+    name = "intl_segmenter_conformance_test",
+    srcs = ["segmenter.test.rs"],
+    crate_name = "icu4x_segmenter_conformance_test",
+    data = [
+        "segmenter-icu-differences.tsv",
+        "//conformance-tests/icu4j:segmenter_fixtures",
+    ],
+    edition = "2024",
+    env = {
+        "SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)",
+        "SEGMENTER_DIFFERENCES": "$(rootpath segmenter-icu-differences.tsv)",
+    },
+    deps = [
+        "//crates/intl_segmenter",
+        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_segmenter-2.3.0",
+    ],
+)

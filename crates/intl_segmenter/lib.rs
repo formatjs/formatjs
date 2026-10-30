@@ -3,8 +3,8 @@
 
 use icu_locale_core::LanguageIdentifier;
 use icu_properties::{
-    CodePointMapData,
-    props::{GeneralCategory, GeneralCategoryGroup},
+    CodePointMapData, CodePointSetData,
+    props::{Alphabetic, WordBreak},
 };
 use icu_segmenter::{
     GraphemeClusterSegmenter, SentenceSegmenter, WordSegmenter,
@@ -171,21 +171,7 @@ impl Segmenter {
                     boundaries.push(Boundary {
                         start,
                         end,
-                        // ICU rule status can classify Indic ALetter sequences as None.
-                        // Preserve ICU statuses, then recognize Unicode letters/numbers;
-                        // isolated marks and variation selectors remain non-word-like.
-                        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L372
-                        word_like: Some(
-                            iterator.is_word_like()
-                                || char::decode_utf16(input[start..end].iter().copied())
-                                    .filter_map(Result::ok)
-                                    .any(|ch| {
-                                        let category =
-                                            CodePointMapData::<GeneralCategory>::new().get(ch);
-                                        GeneralCategoryGroup::Letter.contains(category)
-                                            || GeneralCategoryGroup::Number.contains(category)
-                                    }),
-                        ),
+                        word_like: Some(word_like(&input[start..end])),
                     });
                     start = end;
                 }
@@ -194,6 +180,28 @@ impl Segmenter {
         Segments(Arc::new(SegmentsData { input, boundaries }))
     }
 }
+fn word_like(input: &[u16]) -> bool {
+    // ICU4C/J statuses use Word_Break classes, not General_Category numbers.
+    // Do not inherit ICU4X status: Format characters can retain a prior word status.
+    // https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/data/brkitr/rules/word.txt
+    let properties = CodePointMapData::<WordBreak>::new();
+    let mut extenders = 0;
+    let alphabetic = CodePointSetData::new::<Alphabetic>();
+    for ch in char::decode_utf16(input.iter().copied()).filter_map(Result::ok) {
+        match properties.get(ch) {
+            WordBreak::ALetter
+            | WordBreak::HebrewLetter
+            | WordBreak::Numeric
+            | WordBreak::Katakana => return true,
+            WordBreak::ExtendNumLet => extenders += 1,
+            WordBreak::Extend | WordBreak::Format | WordBreak::ZWJ => {}
+            _ if alphabetic.contains(ch) => return true,
+            _ => {}
+        }
+    }
+    extenders >= 2
+}
+
 struct Boundary {
     start: usize,
     end: usize,

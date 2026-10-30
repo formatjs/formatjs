@@ -98,3 +98,9 @@ ICU4C/J use `other`. Changed outputs, unknown differences and unused rows fail.
 
 CLDR leaves negative and non-increasing ranges undefined; those cases pin each
 implementation's choice rather than establish a universal required category.
+
+Segmenter uses ICU4J 78.1 BreakIterator fixtures and independently verifies all
+1770 cases with ICU4C 78.1 BreakIterator. UTF-16 offsets and word rule statuses
+are exact, including isolated surrogates. No oracle differences or skips are
+needed between C and J in this corpus. Run
+`bazel test //conformance-tests/icu4c:intl_segmenter_conformance_test`.

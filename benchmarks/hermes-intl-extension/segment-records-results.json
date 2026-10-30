@@ -1,0 +1,1332 @@
+{
+  "collectedAt": "2026-10-30T11:57:24.600973+00:00",
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "baselineCommit": "b707198c1c21c61e91668f072e300c6ce9dc7d03",
+  "build": "Rust SDK opt/ThinLTO; C++ Release -O3; same updated Hermes -O bytecode and high-resolution clock on both hosts; taskset CPU 0; three paired rounds, order reversed in round 2.",
+  "hostSha256": {
+    "before": "3e0348e7dd396dca004881c3e0e93755f599e7842c21228ebada7ac63bf305d3",
+    "after": "090d3d5a27609cc04104dee6e16f85f09467995c85d7e7b5210cb01fbfb49e4a"
+  },
+  "workloadSha256": "8f617697e084dc1d8921d533da8ad3850aacf7c4b21fa1f8a3e742baf3e46706",
+  "raw": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 98.88093991321512
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4440.732253715396
+          },
+          "speedup": 44.90989120464364
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 1868.2276830077171
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58225.97332298756
+          },
+          "speedup": 31.166422515080054
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 283.2426180248149
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34750.501066446304
+          },
+          "speedup": 122.68810855081779
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 315.61759824398905
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 122610.342502594
+          },
+          "speedup": 388.4775221177931
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 495.7804339937866
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4699.748451821506
+          },
+          "speedup": 9.479495618579426
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4238.90776000917
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6296.71229980886
+          },
+          "speedup": 1.4854563147642634
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1325.3636891022325
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 9518.050774931908
+          },
+          "speedup": 7.181463362240739
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6497.777160257101
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8699.981356039643
+          },
+          "speedup": 1.3389165466079798
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1695.2067846432328
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3477.311716414988
+          },
+          "speedup": 2.051261089747709
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2020.8026515319943
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 346387.10618019104
+          },
+          "speedup": 171.41065502739264
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 706.8326172884554
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 406002.0059347153
+          },
+          "speedup": 574.3962516786737
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2385.820006020367
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 418563.23182582855
+          },
+          "speedup": 175.4378916974575
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3867.587400600314
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1049011.2900733948
+          },
+          "speedup": 271.23143743579544
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3672.696789726615
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 909312.3495578766
+          },
+          "speedup": 247.58710060177964
+        },
+        {
+          "checksum": 177855440
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 92.5690786971245
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4356.56039044261
+          },
+          "speedup": 47.06280381915413
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1810.436591040343
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58115.11166393757
+          },
+          "speedup": 32.10005362880039
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 285.5246973922476
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34769.65744048357
+          },
+          "speedup": 121.77460569275298
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 318.2627260684967
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 122837.56732940674
+          },
+          "speedup": 385.96278253134034
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 485.14993977732956
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4551.181546412408
+          },
+          "speedup": 9.3809793081728
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4135.460895486176
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6251.359498128295
+          },
+          "speedup": 1.5116475904660605
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1307.8933930955827
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7897.106045857072
+          },
+          "speedup": 6.038034971004659
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6333.684688434005
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8418.737491592765
+          },
+          "speedup": 1.3292006005550439
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1632.224686909467
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3197.2370110452175
+          },
+          "speedup": 1.9588216234488038
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2012.1821551583707
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 359382.5727701187
+          },
+          "speedup": 178.60339922447685
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 733.8457624427974
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 401683.4706068039
+          },
+          "speedup": 547.3677047199884
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2282.3594976216555
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 403081.0236930847
+          },
+          "speedup": 176.60715768620912
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3691.914025694132
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1016352.2124290466
+          },
+          "speedup": 275.2914085635995
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3664.3501138314605
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 890367.1503067017
+          },
+          "speedup": 242.98091684687026
+        },
+        {
+          "checksum": 194536400
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.48213498014957
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4360.779514536262
+          },
+          "speedup": 46.64826616831387
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1814.7036549635231
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 58277.18377113342
+          },
+          "speedup": 32.113884606853254
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 285.584844823461
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 34121.42861634493
+          },
+          "speedup": 119.47912935449236
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 315.1300654280931
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 123244.1283762455
+          },
+          "speedup": 391.0897178560944
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 485.93010287731886
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4614.679771475494
+          },
+          "speedup": 9.496591678825352
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4189.657466486096
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7351.447734981775
+          },
+          "speedup": 1.754665576789384
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1356.0507562942803
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8107.530465349555
+          },
+          "speedup": 5.978780976831016
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6433.487124741077
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8624.990144744515
+          },
+          "speedup": 1.3406399946889824
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1644.173462409526
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3442.4361772835255
+          },
+          "speedup": 2.0937183673057564
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2145.4399917274714
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 364027.13656425476
+          },
+          "speedup": 169.67481633972264
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 766.1366078536958
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 423291.91267490387
+          },
+          "speedup": 552.5018754302068
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2374.8860810883343
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 419994.42279338837
+          },
+          "speedup": 176.84823964310672
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3759.7882794216275
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1068394.5775032043
+          },
+          "speedup": 284.1634948836951
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3784.9539425224066
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 923377.8357505798
+          },
+          "speedup": 243.96012468654064
+        },
+        {
+          "checksum": 194075600
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 94.62456364417449
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4418.588778935373
+          },
+          "speedup": 46.696001638126454
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1867.7391344681382
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 60489.73388969898
+          },
+          "speedup": 32.38660730151921
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 287.26247837767005
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 34969.91954743862
+          },
+          "speedup": 121.7350756873403
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 320.33535244408995
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 147747.7140724659
+          },
+          "speedup": 461.2282501609097
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 486.804882530123
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4894.816013984382
+          },
+          "speedup": 10.054985456481111
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4289.6619299426675
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6250.555068254471
+          },
+          "speedup": 1.4571206706580748
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1353.1285338103771
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8057.283284142613
+          },
+          "speedup": 5.954558700682705
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4010.517429560423
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8522.405056282878
+          },
+          "speedup": 2.1250138432179773
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1671.3480232283473
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3260.080353356898
+          },
+          "speedup": 1.9505694254268973
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1963.7687946669757
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 342130.34212589264
+          },
+          "speedup": 174.221294815876
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 694.1911007743329
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 405116.35541915894
+          },
+          "speedup": 583.5804506385539
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2219.224441796541
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 404076.51364803314
+          },
+          "speedup": 182.08005735594676
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3666.5384424850345
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1026830.792427063
+          },
+          "speedup": 280.0545551436024
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3543.1803204119205
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 893933.1889152527
+          },
+          "speedup": 252.29683732588762
+        },
+        {
+          "checksum": 194974160
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 93.81941999890842
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4414.47258926928
+          },
+          "speedup": 47.05286591326873
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1851.1219881474972
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 64614.466950297356
+          },
+          "speedup": 34.90556935956448
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 281.39013738837093
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 37680.342607200146
+          },
+          "speedup": 133.9078297374518
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 317.8311075316742
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 123116.33080244064
+          },
+          "speedup": 387.36400523718777
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 494.1165039781481
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4663.959611207247
+          },
+          "speedup": 9.438987715766537
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4185.180179774761
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6304.653314873576
+          },
+          "speedup": 1.5064233901664137
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1317.6668668165803
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 7815.73043204844
+          },
+          "speedup": 5.931491964225274
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3823.73733446002
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 8258.34721326828
+          },
+          "speedup": 2.15975797784094
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1631.2295920215547
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3258.772613480687
+          },
+          "speedup": 1.9977400050977168
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2009.1047626920044
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 347199.5621919632
+          },
+          "speedup": 172.8130700993161
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 704.9873180221766
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 405528.3546447754
+          },
+          "speedup": 575.2278718750212
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2386.886137537658
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 418918.04337501526
+          },
+          "speedup": 175.5081806320164
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3755.586431361735
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1005375.3733634949
+          },
+          "speedup": 267.7013009121339
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3501.8540918827057
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 877965.5575752258
+          },
+          "speedup": 250.7144885363297
+        },
+        {
+          "checksum": 162994640
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 98.44491869444028
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4590.179002843797
+          },
+          "speedup": 46.62687585827657
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1893.0089543573558
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 61167.06021130085
+          },
+          "speedup": 32.312081815833785
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 295.22131371777505
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 38292.85930842161
+          },
+          "speedup": 129.70899297951343
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 336.1940325703472
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 127339.12393450737
+          },
+          "speedup": 378.76675847261566
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 494.99302404001355
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4704.122408293188
+          },
+          "speedup": 9.503411522649907
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4315.585200674832
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6532.214069738984
+          },
+          "speedup": 1.5136334392650934
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1371.4878936298192
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8103.034598752856
+          },
+          "speedup": 5.908207164196785
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4037.0959555730224
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8739.931974560022
+          },
+          "speedup": 2.1649056823866064
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1687.1664091013372
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3298.1796888634562
+          },
+          "speedup": 1.9548632968695834
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1966.8774213641882
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 361126.1248588562
+          },
+          "speedup": 183.60377771197662
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 717.0957163907588
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 421881.76810741425
+          },
+          "speedup": 588.320022647469
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2367.487642914057
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 426921.28121852875
+          },
+          "speedup": 180.32671997098427
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3865.544591099024
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1069814.4495487213
+          },
+          "speedup": 276.7564632450817
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3712.958889082074
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1016735.44049263
+          },
+          "speedup": 273.8342844253763
+        },
+        {
+          "checksum": 179606480
+        }
+      ]
+    ]
+  },
+  "summary": {
+    "getCanonicalLocales": {
+      "before": {
+        "nativeNs": 93.48213498014957,
+        "typescriptNs": 4360.779514536262
+      },
+      "after": {
+        "nativeNs": 94.62456364417449,
+        "typescriptNs": 4418.588778935373
+      },
+      "nativeChangePercent": 1.2220823414735849,
+      "nativeSpeedupOverTS": 46.696001638126454
+    },
+    "supportedValuesOf": {
+      "before": {
+        "nativeNs": 1814.7036549635231,
+        "typescriptNs": 58225.97332298756
+      },
+      "after": {
+        "nativeNs": 1867.7391344681382,
+        "typescriptNs": 61167.06021130085
+      },
+      "nativeChangePercent": 2.9225421660199924,
+      "nativeSpeedupOverTS": 32.749252335347634
+    },
+    "Locale.maximize": {
+      "before": {
+        "nativeNs": 285.5246973922476,
+        "typescriptNs": 34750.501066446304
+      },
+      "after": {
+        "nativeNs": 287.26247837767005,
+        "typescriptNs": 37680.342607200146
+      },
+      "nativeChangePercent": 0.6086272050347841,
+      "nativeSpeedupOverTS": 131.17042928823096
+    },
+    "PluralRules.select": {
+      "before": {
+        "nativeNs": 315.61759824398905,
+        "typescriptNs": 122837.56732940674
+      },
+      "after": {
+        "nativeNs": 320.33535244408995,
+        "typescriptNs": 127339.12393450737
+      },
+      "nativeChangePercent": 1.494769057983203,
+      "nativeSpeedupOverTS": 397.5181726366984
+    },
+    "ListFormat.format": {
+      "before": {
+        "nativeNs": 485.93010287731886,
+        "typescriptNs": 4614.679771475494
+      },
+      "after": {
+        "nativeNs": 494.1165039781481,
+        "typescriptNs": 4704.122408293188
+      },
+      "nativeChangePercent": 1.6846869647209495,
+      "nativeSpeedupOverTS": 9.520269755047938
+    },
+    "ListFormat.formatToParts": {
+      "before": {
+        "nativeNs": 4189.657466486096,
+        "typescriptNs": 6296.71229980886
+      },
+      "after": {
+        "nativeNs": 4289.6619299426675,
+        "typescriptNs": 6304.653314873576
+      },
+      "nativeChangePercent": 2.3869365039153267,
+      "nativeSpeedupOverTS": 1.4697319783794336
+    },
+    "DisplayNames.of": {
+      "before": {
+        "nativeNs": 1325.3636891022325,
+        "typescriptNs": 8107.530465349555
+      },
+      "after": {
+        "nativeNs": 1353.1285338103771,
+        "typescriptNs": 8057.283284142613
+      },
+      "nativeChangePercent": 2.09488496904211,
+      "nativeSpeedupOverTS": 5.954558700682705
+    },
+    "Segmenter.segment": {
+      "before": {
+        "nativeNs": 6433.487124741077,
+        "typescriptNs": 8624.990144744515
+      },
+      "after": {
+        "nativeNs": 4010.517429560423,
+        "typescriptNs": 8522.405056282878
+      },
+      "nativeChangePercent": -37.661841054483645,
+      "nativeSpeedupOverTS": 2.1250138432179773
+    },
+    "Collator.compare": {
+      "before": {
+        "nativeNs": 1644.173462409526,
+        "typescriptNs": 3442.4361772835255
+      },
+      "after": {
+        "nativeNs": 1671.3480232283473,
+        "typescriptNs": 3260.080353356898
+      },
+      "nativeChangePercent": 1.6527794323475398,
+      "nativeSpeedupOverTS": 1.9505694254268973
+    },
+    "NumberFormat.format": {
+      "before": {
+        "nativeNs": 2020.8026515319943,
+        "typescriptNs": 359382.5727701187
+      },
+      "after": {
+        "nativeNs": 1966.8774213641882,
+        "typescriptNs": 347199.5621919632
+      },
+      "nativeChangePercent": -2.6685055132387503,
+      "nativeSpeedupOverTS": 176.52323343625162
+    },
+    "RelativeTimeFormat.format": {
+      "before": {
+        "nativeNs": 733.8457624427974,
+        "typescriptNs": 406002.0059347153
+      },
+      "after": {
+        "nativeNs": 704.9873180221766,
+        "typescriptNs": 405528.3546447754
+      },
+      "nativeChangePercent": -3.9324945237208864,
+      "nativeSpeedupOverTS": 575.2278718750212
+    },
+    "RelativeTimeFormat.formatToParts": {
+      "before": {
+        "nativeNs": 2374.8860810883343,
+        "typescriptNs": 418563.23182582855
+      },
+      "after": {
+        "nativeNs": 2367.487642914057,
+        "typescriptNs": 418918.04337501526
+      },
+      "nativeChangePercent": -0.31152812899922777,
+      "nativeSpeedupOverTS": 176.94624283630213
+    },
+    "DateTimeFormat.format": {
+      "before": {
+        "nativeNs": 3759.7882794216275,
+        "typescriptNs": 1049011.2900733948
+      },
+      "after": {
+        "nativeNs": 3755.586431361735,
+        "typescriptNs": 1026830.792427063
+      },
+      "nativeChangePercent": -0.11175757110820639,
+      "nativeSpeedupOverTS": 273.41423535145356
+    },
+    "DurationFormat.format": {
+      "before": {
+        "nativeNs": 3672.696789726615,
+        "typescriptNs": 909312.3495578766
+      },
+      "after": {
+        "nativeNs": 3543.1803204119205,
+        "typescriptNs": 893933.1889152527
+      },
+      "nativeChangePercent": -3.5264677900169183,
+      "nativeSpeedupOverTS": 252.29683732588762
+    }
+  },
+  "buildInputCommit": "a004baef9ce083f90688e2aa9a693d9069eec687",
+  "sourceSha256": {
+    "crates/intl_segmenter/lib.rs": "b0955b0bb76bc1d3974a450a93e1db2f05953c95ae48a40f5f7706b4a581ae87",
+    "native/hermes/segmenter.ts": "ac8626be6f7f745d03ce269215ff204107c3b921cc0ba191267190d3df2fbc3d",
+    "packages/intl-segmenter/segmenter.ts": "0b84b6c2d0461d3e709dfaeaa9c5af404eb2a953f9d642bb41c2f22ece73348f",
+    "packages/intl-segmenter/scripts/generate-cldr-segmentation-rules.ts": "d35d59e65c005b681f1746929243771002d699aad9c1f8b5589f2ade93b5d27a",
+    "native/hermes/package/dist.bzl": "3dec507c28d75ad75420ac4452691fa4e625f967a14747511ab0d27747c24a32",
+    "benchmarks/hermes-intl-extension/suite.ts": "d2d174e67128bc38a8ecd04aea466112b641e54f8c81f97084000e4dc519eea3"
+  },
+  "profile": {
+    "before": {
+      "samples": 1800,
+      "topFunctions": {
+        "[Native] objectDefineProperty": 412,
+        "[Host Function] segmenterNext": 249,
+        "record": 175,
+        "next": 164,
+        "[Host Function] segmenterSegment": 115,
+        "[Native] arrayFrom": 102,
+        "[Native] objectCreate": 100,
+        "[Native] reflectApply": 97,
+        "[GC Young Gen]": 84,
+        "[Host Function] segmenterCursor": 75,
+        "[Native] weakMapPrototypeSet": 65,
+        "segment": 31,
+        "": 27,
+        "[Native] weakMapPrototypeGet": 22,
+        "invoke": 18,
+        "[Native] stringPrototypeSlice": 17
+      },
+      "definePropertySamples": 412
+    },
+    "after": {
+      "samples": 1111,
+      "topFunctions": {
+        "[Host Function] segmenterNext": 220,
+        "[Host Function] segmenterSegment": 130,
+        "[Native] arrayFrom": 124,
+        "next": 112,
+        "[Native] reflectApply": 96,
+        "[GC Young Gen]": 88,
+        "[Host Function] segmenterCursor": 77,
+        "[Native] weakMapPrototypeSet": 76,
+        "": 32,
+        "[Native] objectCreate": 26,
+        "segment": 23,
+        "invoke": 22,
+        "[Native] weakMapPrototypeGet": 21,
+        "[Native] stringPrototypeSlice": 20,
+        "[Native] arrayPrototypeJoin": 17,
+        "global": 11
+      },
+      "definePropertySamples": 0
+    },
+    "workload": "var formatter = new Intl.Segmenter('en',{granularity:'grapheme'});\nfunction invoke(){return Array.from(formatter.segment('A\ud83d\ude42B'),function(part){return part.segment}).join('|')}\nvar expected=\"A|\\ud83d\\ude42|B\";\nif(invoke()!==expected)throw new Error(\"initial output\");\nvar sum=0;var start=__now();\nfor(var i=0;i<300000;i++)sum+=invoke().length;\nvar elapsed=__now()-start;\nif(invoke()!==expected)throw new Error(\"final output\");\nprint(JSON.stringify({name:\"segment\",calls:300000,us:elapsed*1000/300000,checksum:sum}));\n",
+    "command": "taskset -c 0 HOST -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=PROFILE WORKLOAD"
+  },
+  "conformance": {
+    "independentCases": 1770,
+    "hermesComparisonsPerMode": 3540,
+    "hermesAssertionsPerMode": 219613,
+    "sdkOracle": {
+      "type": "Segmenter-ICU-conformance",
+      "cases": 3540,
+      "assertions": 219613
+    },
+    "sdkSmokes": [
+      "numberformat-smoke.js",
+      "pluralrules-smoke.js",
+      "displaynames-smoke.js",
+      "listformat-smoke.js",
+      "collator-smoke.js",
+      "durationformat-smoke.js",
+      "datetimeformat-smoke.js",
+      "relativetimeformat-smoke.js",
+      "segmenter-smoke.js"
+    ],
+    "unicodeUnitTests": 3254,
+    "test262CasesPerRuntime": 158,
+    "test262KnownRealmFailuresPerRuntime": 4,
+    "icu4cIcu4jVersion": "78.1",
+    "icu4xSegmenterVersion": "2.3.0",
+    "directIcu4xStatusDifferences": 100,
+    "typescriptDictionaryAndSuppressionChoices": 42
+  },
+  "sdkLibraries": {
+    "before": {
+      "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a": {
+        "sha256": "91ece759dad861dd26be67d3b19c9348fb19176a856af1d4f8395610f04dd0a9",
+        "bytes": 610105200
+      },
+      "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a": {
+        "sha256": "969565e31af1096a6d09c99bfccb49412d2aaed980b103f9000688d0257c3b57",
+        "bytes": 595924624
+      }
+    },
+    "after": {
+      "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a": {
+        "sha256": "00558b44c29ade0f39acc7309daefca200fd22d8c1d2314294f20f2665df5a94",
+        "bytes": 595923440
+      },
+      "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a": {
+        "sha256": "5ed96143597075beabe7e34436233776c8914b6a986b530fdadc621a6b08b2a1",
+        "bytes": 610102450
+      }
+    }
+  }
+}
