@@ -40,7 +40,7 @@ rust_library(
     deps = [
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
-        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_locale_core-2.4.0",
         "@crates//:icu_properties-2.3.0",
         "@crates//:icu_segmenter-2.3.0",
         "@crates//:serde",

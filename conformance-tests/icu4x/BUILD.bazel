@@ -116,7 +116,7 @@ formatjs_rust_test(
     },
     deps = [
         "//crates/intl_segmenter",
-        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_locale_core-2.4.0",
         "@crates//:icu_segmenter-2.3.0",
     ],
 )
