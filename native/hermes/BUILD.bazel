@@ -1,9 +1,11 @@
 # gazelle:ignore
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "ts_run_binary")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 
 cc_library(
     name = "bridge",
@@ -24,11 +26,56 @@ cc_test(
     ],
 )
 
+ts_project(
+    name = "extension_typecheck",
+    srcs = [
+        "collator.ts",
+        "datetimeformat.ts",
+        "displaynames.ts",
+        "durationformat.ts",
+        "listformat.ts",
+        "locale.ts",
+        "numberformat.ts",
+        "pluralrules.ts",
+        "pluralrules_bridge.test.ts",
+        "relativetimeformat.ts",
+        "segmenter.ts",
+        "supported_values_of.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    resolve_json_module = True,
+    tsconfig = ESNEXT_TSCONFIG,
+)
+
 exports_files(
     [
+        "version.txt",
+        "intl.cpp",
+        "intl.h",
         "bridge.h",
         "canonical_locales.cpp",
         "canonical_locales.h",
+        "locale.cpp",
+        "intl_locale.h",
+        "intl_listformat.h",
+        "intl_displaynames.h",
+        "displaynames.cpp",
+        "segmenter.cpp",
+        "collator.cpp",
+        "intl_collator.h",
+        "numberformat.cpp",
+        "intl_numberformat.h",
+        "datetimeformat.cpp",
+        "intl_datetimeformat.h",
+        "durationformat.cpp",
+        "intl_durationformat.h",
+        "relativetimeformat.cpp",
+        "intl_relativetimeformat.h",
+        "intl_segmenter.h",
+        "listformat.cpp",
+        "intl_pluralrules.h",
+        "pluralrules.cpp",
         "supported_values.cpp",
         "supported_values.h",
     ],
@@ -70,7 +117,17 @@ ts_run_binary(
 ts_run_binary(
     name = "extension_bundle_js",
     srcs = [
+        "collator.ts",
+        "datetimeformat.ts",
+        "displaynames.ts",
+        "durationformat.ts",
         "get_canonical_locales.js",
+        "listformat.ts",
+        "locale.ts",
+        "numberformat.ts",
+        "pluralrules.ts",
+        "relativetimeformat.ts",
+        "segmenter.ts",
         "supported_values_of.ts",
     ],
     outs = ["extensions.js"],
@@ -79,6 +136,26 @@ ts_run_binary(
         "--name=IntlGetCanonicalLocales",
         "--input=$(rootpath :supported_values_of.ts)",
         "--name=IntlSupportedValuesOf",
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
+        "--input=$(rootpath :displaynames.ts)",
+        "--name=IntlDisplayNames",
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
+        "--input=$(rootpath :numberformat.ts)",
+        "--name=IntlNumberFormat",
+        "--input=$(rootpath :relativetimeformat.ts)",
+        "--name=IntlRelativeTimeFormat",
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
         "--out=$(rootpath :extensions.js)",
         "--bundle",
     ],
@@ -97,6 +174,15 @@ ts_run_binary(
     ],
     tool = "//native/hermes/scripts:extension",
     visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "extension_bundle_bytecode",
+    srcs = [":extension_bundle_js"],
+    outs = ["extensions.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
+    tools = ["@hermes//:hermesc"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )
 
 ts_run_binary(
@@ -175,7 +261,17 @@ cc_binary(
     visibility = ["//visibility:public"],
     deps = [
         ":canonical_locales",
+        ":collator",
+        ":datetimeformat",
+        ":displaynames",
+        ":durationformat",
         ":hermes_vm",
+        ":listformat",
+        ":locale",
+        ":numberformat",
+        ":pluralrules",
+        ":relativetimeformat",
+        ":segmenter",
         ":supported_values",
     ],
 )
@@ -197,11 +293,628 @@ sh_test(
     target_compatible_with = HOST_COMPATIBILITY,
 )
 
+ts_run_binary(
+    name = "locale_extension_js",
+    srcs = ["locale.ts"],
+    outs = ["32-IntlLocale.js"],
+    args = [
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
+        "--out=$(rootpath :32-IntlLocale.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//visibility:public"],
+)
+
+ts_run_binary(
+    name = "locale_factory",
+    srcs = ["locale.ts"],
+    outs = ["locale_factory.js"],
+    args = [
+        "--input=$(rootpath :locale.ts)",
+        "--name=IntlLocale",
+        "--out=$(rootpath :locale_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
 genrule(
-    name = "extension_bundle_bytecode",
+    name = "locale_wrapper_source",
+    srcs = [":locale_factory"],
+    outs = ["locale.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "pluralrules",
+    srcs = [
+        "pluralrules.cpp",
+        ":pluralrules_wrapper_source",
+    ],
+    hdrs = ["intl_pluralrules.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_pluralrules:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "pluralrules_factory",
+    srcs = ["pluralrules.ts"],
+    outs = ["pluralrules_factory.js"],
+    args = [
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :pluralrules_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "pluralrules_wrapper_source",
+    srcs = [":pluralrules_factory"],
+    outs = ["pluralrules.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "pluralrules_extension_js",
+    srcs = ["pluralrules.ts"],
+    outs = ["33-IntlPluralRules.js"],
+    args = [
+        "--input=$(rootpath :pluralrules.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :33-IntlPluralRules.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "pluralrules_bridge_fixture",
+    srcs = ["pluralrules_bridge.test.ts"],
+    outs = ["pluralrules_bridge_fixture.js"],
+    args = [
+        "--input=$(rootpath :pluralrules_bridge.test.ts)",
+        "--name=IntlPluralRules",
+        "--out=$(rootpath :pluralrules_bridge_fixture.js)",
+        "--bundle",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+sh_test(
+    name = "pluralrules_bridge_test",
+    srcs = ["pluralrules_bridge_test.sh"],
+    args = [
+        "$(rootpath :hermes_runner)",
+        "$(rootpath :pluralrules_bridge_fixture)",
+        "$(rootpath :canonical_locales_test.js)",
+    ],
+    data = [
+        "canonical_locales_test.js",
+        ":hermes_runner",
+        ":pluralrules_bridge_fixture",
+    ],
+    target_compatible_with = HOST_COMPATIBILITY,
+)
+
+cc_library(
+    name = "locale",
+    srcs = [
+        "locale.cpp",
+        ":locale_wrapper_source",
+    ],
+    hdrs = ["intl_locale.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_getcanonicallocales:headers",
+        "//crates/intl_hermes",
+        "//crates/intl_locale:headers",
+        "@hermes//:headers",
+    ],
+)
+
+cc_library(
+    name = "listformat",
+    srcs = [
+        "listformat.cpp",
+        ":listformat_wrapper_source",
+    ],
+    hdrs = ["intl_listformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_listformat:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "listformat_factory",
+    srcs = ["listformat.ts"],
+    outs = ["listformat_factory.js"],
+    args = [
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
+        "--out=$(rootpath :listformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "listformat_wrapper_source",
+    srcs = [":listformat_factory"],
+    outs = ["listformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "listformat_extension_js",
+    srcs = ["listformat.ts"],
+    outs = ["34-IntlListFormat.js"],
+    args = [
+        "--input=$(rootpath :listformat.ts)",
+        "--name=IntlListFormat",
+        "--out=$(rootpath :34-IntlListFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "displaynames",
+    srcs = [
+        "displaynames.cpp",
+        ":displaynames_wrapper_source",
+    ],
+    hdrs = ["intl_displaynames.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_displaynames:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "displaynames_factory",
+    srcs = ["displaynames.ts"],
+    outs = ["displaynames_factory.js"],
+    args = [
+        "--input=$(rootpath :displaynames.ts)",
+        "--name=IntlDisplayNames",
+        "--out=$(rootpath :displaynames_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "displaynames_wrapper_source",
+    srcs = [":displaynames_factory"],
+    outs = ["displaynames.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "displaynames_extension_js",
+    srcs = ["displaynames.ts"],
+    outs = ["35-IntlDisplayNames.js"],
+    args = [
+        "--input=$(rootpath :displaynames.ts)",
+        "--name=IntlDisplayNames",
+        "--out=$(rootpath :35-IntlDisplayNames.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "segmenter",
+    srcs = [
+        "segmenter.cpp",
+        ":segmenter_wrapper_source",
+    ],
+    hdrs = ["intl_segmenter.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_segmenter:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "segmenter_factory",
+    srcs = ["segmenter.ts"],
+    outs = ["segmenter_factory.js"],
+    args = [
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
+        "--out=$(rootpath :segmenter_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "segmenter_wrapper_source",
+    srcs = [":segmenter_factory"],
+    outs = ["segmenter.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "segmenter_extension_js",
+    srcs = ["segmenter.ts"],
+    outs = ["36-IntlSegmenter.js"],
+    args = [
+        "--input=$(rootpath :segmenter.ts)",
+        "--name=IntlSegmenter",
+        "--out=$(rootpath :36-IntlSegmenter.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "collator",
+    srcs = [
+        "collator.cpp",
+        ":collator_wrapper_source",
+    ],
+    hdrs = ["intl_collator.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_collator:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "collator_factory",
+    srcs = ["collator.ts"],
+    outs = ["collator_factory.js"],
+    args = [
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
+        "--out=$(rootpath :collator_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "collator_wrapper_source",
+    srcs = [":collator_factory"],
+    outs = ["collator.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "collator_extension_js",
+    srcs = ["collator.ts"],
+    outs = ["37-IntlCollator.js"],
+    args = [
+        "--input=$(rootpath :collator.ts)",
+        "--name=IntlCollator",
+        "--out=$(rootpath :37-IntlCollator.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "numberformat",
+    srcs = [
+        "numberformat.cpp",
+        ":numberformat_wrapper_source",
+    ],
+    hdrs = ["intl_numberformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_numberformat:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "numberformat_factory",
+    srcs = ["numberformat.ts"],
+    outs = ["numberformat_factory.js"],
+    args = [
+        "--input=$(rootpath :numberformat.ts)",
+        "--name=IntlNumberFormat",
+        "--out=$(rootpath :numberformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "numberformat_wrapper_source",
+    srcs = [":numberformat_factory"],
+    outs = ["numberformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "numberformat_extension_js",
+    srcs = ["numberformat.ts"],
+    outs = ["38-IntlNumberFormat.js"],
+    args = [
+        "--input=$(rootpath :numberformat.ts)",
+        "--name=IntlNumberFormat",
+        "--out=$(rootpath :38-IntlNumberFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "relativetimeformat",
+    srcs = [
+        "relativetimeformat.cpp",
+        ":relativetimeformat_wrapper_source",
+    ],
+    hdrs = ["intl_relativetimeformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/intl_relativetimeformat:headers",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "relativetimeformat_factory",
+    srcs = ["relativetimeformat.ts"],
+    outs = ["relativetimeformat_factory.js"],
+    args = [
+        "--input=$(rootpath :relativetimeformat.ts)",
+        "--name=IntlRelativeTimeFormat",
+        "--out=$(rootpath :relativetimeformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "relativetimeformat_wrapper_source",
+    srcs = [":relativetimeformat_factory"],
+    outs = ["relativetimeformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "relativetimeformat_extension_js",
+    srcs = ["relativetimeformat.ts"],
+    outs = ["39-IntlRelativeTimeFormat.js"],
+    args = [
+        "--input=$(rootpath :relativetimeformat.ts)",
+        "--name=IntlRelativeTimeFormat",
+        "--out=$(rootpath :39-IntlRelativeTimeFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "datetimeformat",
+    srcs = [
+        "datetimeformat.cpp",
+        ":datetimeformat_wrapper_source",
+    ],
+    hdrs = ["intl_datetimeformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_datetimeformat:headers",
+        "//crates/intl_datetimeformat_calendars:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+cc_test(
+    name = "datetimeformat_bridge_test",
+    srcs = ["datetimeformat_bridge.test.cpp"],
+    args = ["$(rootpath //crates/intl_datetimeformat:locale-data/en.json)"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    data = ["//crates/intl_datetimeformat:locale-data/en.json"],
+    target_compatible_with = HOST_COMPATIBILITY,
+    deps = [
+        ":canonical_locales",
+        ":datetimeformat",
+        ":hermes_vm",
+    ],
+)
+
+ts_run_binary(
+    name = "datetimeformat_factory",
+    srcs = ["datetimeformat.ts"],
+    outs = ["datetimeformat_factory.js"],
+    args = [
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
+        "--out=$(rootpath :datetimeformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "datetimeformat_wrapper_source",
+    srcs = [":datetimeformat_factory"],
+    outs = ["datetimeformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "datetimeformat_extension_js",
+    srcs = ["datetimeformat.ts"],
+    outs = ["40-IntlDateTimeFormat.js"],
+    args = [
+        "--input=$(rootpath :datetimeformat.ts)",
+        "--name=IntlDateTimeFormat",
+        "--out=$(rootpath :40-IntlDateTimeFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "durationformat",
+    srcs = [
+        "durationformat.cpp",
+        ":durationformat_wrapper_source",
+    ],
+    hdrs = ["intl_durationformat.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_durationformat:headers",
+        "//crates/intl_hermes",
+        "@hermes//:headers",
+    ],
+)
+
+ts_run_binary(
+    name = "durationformat_factory",
+    srcs = ["durationformat.ts"],
+    outs = ["durationformat_factory.js"],
+    args = [
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
+        "--out=$(rootpath :durationformat_factory.js)",
+        "--factory",
+    ],
+    tool = "//native/hermes/scripts:extension",
+)
+
+genrule(
+    name = "durationformat_wrapper_source",
+    srcs = [":durationformat_factory"],
+    outs = ["durationformat.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+ts_run_binary(
+    name = "durationformat_extension_js",
+    srcs = ["durationformat.ts"],
+    outs = ["41-IntlDurationFormat.js"],
+    args = [
+        "--input=$(rootpath :durationformat.ts)",
+        "--name=IntlDurationFormat",
+        "--out=$(rootpath :41-IntlDurationFormat.js)",
+    ],
+    tool = "//native/hermes/scripts:extension",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+genrule(
+    name = "intl_wrapper_source",
     srcs = [":extension_bundle_js"],
-    outs = ["extensions.hbc"],
-    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :extension_bundle_js)",
-    tools = ["@hermes//:hermesc"],
-    visibility = ["//native/hermes/tests:__pkg__"],
+    outs = ["intl.inc"],
+    cmd = "printf 'R\"FORMATJS(' > $@; cat $< >> $@; printf ')FORMATJS\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
 )

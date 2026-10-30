@@ -70,3 +70,68 @@ Stage 3: supported-locales.generated.ts
 
 Internal number and plural formatters use the resolved locale. Internal number
 options have no prototype, so unrelated inherited options cannot affect them.
+
+## Rust and Hermes port
+
+`crates/intl_relativetimeformat` loads versioned, self-contained JSON packs with
+relative fields plus selected Rust number/plural packs. The generator canonicalizes
+locale indexes before matching, preserving aliases such as `sh` / `sr-Latn`.
+Registry matching sees only loaded relative locales; internal formatters retain
+their owned data independently of global JS formatter registrations.
+
+Locale/nu resolution precedes style/numeric reads. Fields are fetched afterward,
+matching the TS initialization order when a getter replaces locale data. Existing
+instances keep their prior records. Each immutable pack also keeps a bounded
+cache of internal NumberFormat records, keyed by resolved locale and numbering
+system. Style/numeric validation still runs before reuse; new data gets a fresh
+cache. Formatting reads its shared number record without locking. Numeric input is already a JS Number: the host
+owns observable ToNumber/ToString ordering, BigInt/Symbol rejection and brands.
+Rust preserves negative zero, named auto forms, style fallback, sparse plural
+fallback and unit annotations on number parts. The owned ABI uses separate resolution/final creation calls and serializes
+parts directly to preserve type/value/unit order. Unit UTF-16 keeps invalid
+surrogates on the RangeError path. The SDK archive exports this ABI, C++ JSI adapters, source/precompiled factories,
+selected locale packs and a typed independent-consumer smoke test.
+
+Hermes links `//native/hermes:relativetimeformat`; SDK consumers link
+`:relativetimeformat`. Install after canonicalization and register JSON strings
+with `__addLocaleData`. No global JS number/plural constructor is required.
+`39-IntlRelativeTimeFormat.js` supplies the precompiled installer factory.
+Source/bytecode conformance covers all units/styles/numeric modes, all digit
+systems, coercion order, brands, property order and registration during getters.
+The TS class constructor relies on class semantics to require `new`; it must not
+read an instance's `constructor` property during subclass construction.
+
+Relative pattern traversal borrows numeric parts for repeated slots and transfers
+the buffer at the final slot. Parts move their strings into the result; string
+formatting reads them without cloning. Long-style field lookup borrows the unit
+key. Custom repeated-slot patterns retain their output.
+
+Hermes passes pre-coerced doubles and UTF-16 unit strings directly for both
+format methods. Rust retains the double for finite checks, direction and named
+forms; numeric templates lazily convert its absolute magnitude using a stack
+`ryu` buffer. The original numeric-text Rust methods and C ABI remain available. The Rust ABI validates units; parts output remains JSON. This
+avoids JS code-unit traversal and input JSON parsing or JS numeric-string allocation without changing coercion
+order or lone-surrogate errors. The JSON query ABI remains available.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+String formatting requests decimal text and its plural category without owned
+number parts. Part formatting keeps the same shared traversal, cloning repeated
+slots and transferring the final number buffer. Empty named forms and custom
+relative plural rules retain their existing behavior.
+
+Short unsigned Latin decimals reuse their rounded text with at most one group
+insertion; grouping thresholds share the parts path's policy. String patterns
+starting with their final number slot take that buffer before appending literals.
+
+The pinned 19,008-case ICU4X matrix exercises both numeric and text paths,
+including exact parts equality. ICU4C/J verify the 1,440 pinned data differences;
+unexpected differences fail. Native source and bytecode also compare numeric
+rounding edges, signed zero, exponent thresholds and subnormals with TypeScript.

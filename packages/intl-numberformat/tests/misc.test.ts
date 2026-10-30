@@ -72,6 +72,33 @@ it('formats percentage with compact notation', () => {
   ).toBe('1M')
 })
 
+it('formats compact currency in a numbering system without compact patterns', () => {
+  const nf = NumberFormat('ar-SS', {
+    style: 'currency',
+    currency: 'USD',
+    notation: 'compact',
+  })
+  expect(nf.format(1234)).toBe('\u200f١٫٢\u00a0ألف\u00a0US$')
+  expect(nf.format(-5_600_000)).toBe('\u061c-\u200f٥٫٦\u00a0مليون\u00a0US$')
+})
+
+it.each([
+  ['latn', '\u200f1.2\u00a0ألف\u00a0US$'],
+  ['arabext', '\u200f۱٫۲\u00a0ألف\u00a0US$'],
+])(
+  'formats compact currency with numbering system %s',
+  (numberingSystem, expected) => {
+    expect(
+      NumberFormat('ar-SS', {
+        style: 'currency',
+        currency: 'USD',
+        notation: 'compact',
+        numberingSystem,
+      }).format(1234)
+    ).toBe(expected)
+  }
+)
+
 it('should lookup locale correctly', function () {
   expect(
     new NumberFormat('en-BS', {
@@ -962,4 +989,68 @@ it('hydrates numbering-system aliases without mutating supplied data', () => {
   expect(new NumberFormat('en', {numberingSystem: 'adlm'}).format(123)).toBe(
     '𞥑𞥒𞥓'
   )
+})
+
+it('does not attach compact suffixes to tiny fractions', () => {
+  for (const options of [
+    {notation: 'compact'},
+    {notation: 'compact', style: 'currency', currency: 'USD'},
+  ] as const) {
+    const model = new NumberFormat('en', options)
+    const native = new Intl.NumberFormat('en', options)
+    for (const value of [1e-7, -1e-7, 1e-20]) {
+      expect(model.format(value)).toBe(native.format(value))
+      expect(model.formatToParts(value)).toEqual(native.formatToParts(value))
+    }
+  }
+})
+
+it('falls back to the currency code when a locale has no translated currency name', () => {
+  const data = NumberFormat.localeData.en!
+  NumberFormat.__addLocaleData({
+    locale: 'en-XX',
+    data: {
+      ...data,
+      currencies: {
+        ...data.currencies,
+        USD: {...data.currencies.USD, displayName: {other: ''}},
+      },
+    },
+  })
+  const model = new NumberFormat('en-XX', {
+    style: 'currency',
+    currency: 'USD',
+    currencyDisplay: 'name',
+  })
+  expect(model.format(1)).toBe('1.00 USD')
+  expect(
+    model.formatToParts(1).filter(part => part.type === 'currency')
+  ).toEqual([{type: 'currency', value: 'USD'}])
+})
+
+it('localizes exponent digits without applying mantissa rounding increments', () => {
+  for (const options of [
+    {notation: 'scientific', numberingSystem: 'arab'},
+    {notation: 'engineering', numberingSystem: 'adlm'},
+    {
+      notation: 'scientific',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+      roundingIncrement: 5,
+    },
+  ] as const) {
+    const model = new NumberFormat('en', options)
+    const native = new Intl.NumberFormat('en', options)
+    for (const value of [1234, 0.0001234, -1234]) {
+      expect(
+        model
+          .formatToParts(value)
+          .filter(part => part.type === 'exponentInteger')
+      ).toEqual(
+        native
+          .formatToParts(value)
+          .filter(part => part.type === 'exponentInteger')
+      )
+    }
+  }
 })

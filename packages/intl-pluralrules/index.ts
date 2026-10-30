@@ -2,7 +2,10 @@ import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
 import {ToIntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
-import {type NumberFormatDigitInternalSlots} from '#packages/ecma402-abstract/types/number.js'
+import {
+  type NumberFormatDigitInternalSlots,
+  type NumberFormatDigitOptions,
+} from '#packages/ecma402-abstract/types/number.js'
 import {
   type CompactExponentData,
   type LDMLPluralRule,
@@ -29,7 +32,9 @@ declare global {
       // ECMA-402 Spec: selectRange method
       selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
     }
-    interface PluralRulesOptions {
+    // Constructor delegates all digit options to SetNumberFormatDigitOptions.
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L34
+    interface PluralRulesOptions extends NumberFormatDigitOptions {
       // ECMA-402 §17.1.1 Intl.PluralRules, steps 9–13.
       // https://tc39.es/ecma402/#sec-intl.pluralrules
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L29-L34
@@ -273,7 +278,11 @@ export class PluralRules {
     )
   }
   public static __addLocaleData(...data: PluralRulesLocaleData[]): void {
-    for (const {data: d, locale} of data) {
+    for (const {data: d, locale: tag} of data) {
+      // AvailableLocales and its data keys must use the same canonical ID.
+      // Otherwise sh resolves to sr-Latn, where no registered payload exists.
+      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L18-L26
+      const [locale] = CanonicalizeLocaleList(tag)
       registerLocaleData(
         locale,
         d,

@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -47,7 +48,7 @@ formatjs_library(
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
     type = "module",
-    version = "3.2.12",  # x-release-please-version
+    version = "3.3.0",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -149,6 +150,14 @@ generate_package_file(
     entry_point = "//packages/utils/tools:extract-minor-currency-units_ts",
 )
 
+generate_package_file(
+    name = "cldr_core_matching",
+    src = "matching.ts",
+    data = ["//:node_modules/cldr-core"],
+    tags = ["cldr"],
+    tool = "//packages/intl-localematcher/scripts:distance-gen",
+)
+
 formatjs_generated_package(
     name = "cldr_core_pkg",
     package_name = "cldr.core",
@@ -158,6 +167,7 @@ formatjs_generated_package(
         ":cldr_core_default_currency",
         ":cldr_core_default_locale",
         ":cldr_core_likely_subtags",
+        ":cldr_core_matching",
         ":cldr_core_regions",
         ":cldr_core_time_data",
     ],
@@ -197,4 +207,10 @@ test262_test(
     ],
     prelude = "test262-polyfill.js",
     suite = "intl402/Intl/getCanonicalLocales",
+)
+
+copy_to_bin(
+    name = "hermes_package_tests",
+    srcs = glob(["tests/**/*.ts"]) + [":srcs"],
+    visibility = ["//native/hermes/tests:__pkg__"],
 )

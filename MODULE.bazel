@@ -6,15 +6,16 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "apple_support", version = "2.9.1")
 bazel_dep(name = "rules_cc", version = "0.2.27")
 bazel_dep(name = "hermes")
 
 # Commit-pinned until the committed overlay is available in BCR.
 archive_override(
     module_name = "hermes",
-    integrity = "sha256-saR1nxBKZqgRFaNSW+PNWXEVAPTAJGFfApsIAUZZyS0=",
-    strip_prefix = "hermes-466ecfefae5ba3c0eca5bfd64d178f86275acc86",
-    urls = ["https://github.com/formatjs/hermes/archive/466ecfefae5ba3c0eca5bfd64d178f86275acc86.tar.gz"],
+    integrity = "sha256-f9nE4zvtzN9PmlF2VDqS+N7VtEg8Uxs5z2HgIY7lJQQ=",
+    strip_prefix = "hermes-338ff13ff1e996934ae615952d174f8c621844d9",
+    urls = ["https://github.com/formatjs/hermes/archive/338ff13ff1e996934ae615952d174f8c621844d9.tar.gz"],
 )
 
 bazel_dep(name = "rules_shell", version = "0.8.0")
@@ -61,12 +62,20 @@ node.toolchain(
 )
 use_repo(
     node,
+    "nodejs_darwin_amd64",
+    "nodejs_darwin_arm64",
     "nodejs_linux_amd64",
     "test262_nodejs_darwin_amd64",
     "test262_nodejs_darwin_arm64",
     "test262_nodejs_linux_amd64",
     "test262_nodejs_linux_arm64",
     "test262_nodejs_windows_amd64",
+)
+
+register_toolchains(
+    "//native/hermes/package:android_node_runtime_linux_x86_64",
+    "//native/hermes/package:ios_node_runtime_macos_arm64",
+    "//native/hermes/package:ios_node_runtime_macos_x86_64",
 )
 
 #################################
@@ -150,6 +159,10 @@ bazel_dep(name = "rules_proto", version = "7.1.0")
 
 # Force protobuf's transitive Android rules past Bazel 9 CcInfo compatibility fixes.
 bazel_dep(name = "rules_android", version = "0.7.2")
+bazel_dep(name = "rules_android_ndk", version = "0.1.5")
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
 
 ######### Go + Gazelle #########
 
@@ -215,9 +228,14 @@ crate.from_cargo(
     cargo_toml = "//:Cargo.toml",
     platform_triples = [
         "aarch64-apple-darwin",
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "aarch64-linux-android",
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
         "x86_64-apple-darwin",
+        "x86_64-apple-ios",
+        "x86_64-linux-android",
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "x86_64-unknown-linux-musl",
@@ -250,6 +268,13 @@ crate.annotation(
     version = "0.1.25",
 )
 use_repo(crate, "crates")
+
+# Pinned relative-time oracle; production formatters do not depend on this crate.
+crate.annotation(
+    crate = "icu_experimental",
+    crate_features = ["compiled_data"],
+    repositories = ["crates"],
+)
 
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")
@@ -291,7 +316,7 @@ js_binary(
     urls = ["https://registry.npmjs.org/pyright/-/pyright-1.1.414.tgz"],
 )
 
-IANA_TZ_VERSION = "2026e"
+IANA_TZ_VERSION = "2026f"
 
 CLDR_COMMON_VERSION = "48.2"
 
@@ -307,14 +332,14 @@ tzcode_repository = use_repo_rule("//packages/intl-datetimeformat:tzcode_reposit
 tzcode_repository(
     name = "iana_tzcode",
     build_file = "@//packages/intl-datetimeformat:tzcode.BUILD.bazel",
-    sha256 = "cc3d27ca2a0d8399504551b920970d80af83bfb9c216e8082a15491921935d54",
+    sha256 = "5a18da01393679ef2559214dc687563f7f3d05691f6f58b7fbc0166f3e796cd6",
     urls = ["https://data.iana.org/time-zones/releases/tzcode%s.tar.gz" % IANA_TZ_VERSION],
 )
 
 http_archive(
     name = "iana_tzdata",
     build_file = "@//packages/intl-datetimeformat:tzdata.BUILD.bazel",
-    sha256 = "b26882805f26aac59d5b222978e6580484b834ccdc98be89df2f05a6dc53a652",
+    sha256 = "01b4a91cec5167ed48c11e8ab78f2048cead78ce94b0cafcad0ae8c5a3044d3d",
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
@@ -365,6 +390,13 @@ http_archive(
 )
 
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_file(
+    name = "magrinj_hermes_intl_bootstrap",
+    downloaded_file_path = "bootstrap.js",
+    sha256 = "9f36950747a9261c9f2365e1b7455050b64177cd3b02c645bbc9952176d956cf",
+    url = "https://raw.githubusercontent.com/magrinj/hermes-intl/7cd12b68fb6f707192426065cec1dba4ced68d5a/js/bootstrap.js",
+)
 
 http_file(
     name = "DerivedCombiningClass",
@@ -451,6 +483,14 @@ http_archive(
 )
 
 ######### ICU4J for conformance testing #########
+
+http_archive(
+    name = "icu4c_linux_x86_64",
+    build_file = "//conformance-tests/icu4c:icu.BUILD.bazel",
+    sha256 = "eeb150b28f824f645433ebacbbda8e8bac855bd3d98d0eea2b2e781b07ae1a37",
+    strip_prefix = "icu/usr/local",
+    urls = ["https://github.com/unicode-org/icu/releases/download/release-78.1/icu4c-78.1-Ubuntu22.04-x64.tgz"],
+)
 
 http_file(
     name = "icu4j_jar",

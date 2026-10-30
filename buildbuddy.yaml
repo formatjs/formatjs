@@ -9,6 +9,7 @@ actions:
       pull_request:
         branches:
           - 'main'
+          - 'codex/*'
     resource_requests:
       memory: 16GB
       disk: 32GB
@@ -25,6 +26,7 @@ actions:
       pull_request:
         branches:
           - 'main'
+          - 'codex/*'
     resource_requests:
       memory: 10GB
       disk: 64GB

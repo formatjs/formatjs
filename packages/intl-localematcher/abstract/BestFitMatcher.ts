@@ -17,18 +17,21 @@ export function BestFitMatcher(
 ): LookupMatcherResult {
   let foundLocale: string | undefined
   let extension: string | undefined
-  const noExtensionLocales: string[] = []
-  const noExtensionLocaleMap = requestedLocales.reduce<Record<string, string>>(
-    (all, l) => {
-      const {locale: noExtensionLocale} = splitUnicodeExtension(l)
-      noExtensionLocales.push(noExtensionLocale)
-      all[noExtensionLocale] = l
-      return all
-    },
-    {}
-  )
+  const noExtensionLocaleMap: Record<string, string> = Object.create(null)
+  const noExtensionLocales = requestedLocales.map(l => {
+    const {locale: noExtensionLocale} = splitUnicodeExtension(l)
+    noExtensionLocaleMap[noExtensionLocale] ??= l
+    return noExtensionLocale
+  })
 
-  const result = findBestMatch(noExtensionLocales, availableLocales)
+  const defaultLocale = getDefaultLocale()
+  const result = findBestMatch(
+    noExtensionLocales,
+    availableLocales,
+    undefined,
+    defaultLocale,
+    false
+  )
   if (result.matchedSupportedLocale && result.matchedDesiredLocale) {
     foundLocale = result.matchedSupportedLocale
     extension = splitUnicodeExtension(
@@ -37,7 +40,7 @@ export function BestFitMatcher(
   }
 
   if (!foundLocale) {
-    return {locale: getDefaultLocale()}
+    return {locale: defaultLocale}
   }
 
   return {

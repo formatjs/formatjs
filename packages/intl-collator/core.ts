@@ -75,14 +75,6 @@ export const Collator = function (
     ['lookup', 'best fit'],
     'best fit'
   )
-  const numeric = GetOption(opts, 'numeric', 'boolean', undefined, undefined)
-  const caseFirst = GetOption(
-    opts,
-    'caseFirst',
-    'string',
-    ['upper', 'lower', 'false'],
-    undefined
-  )
   const opt = Object.create(null)
   opt.localeMatcher = matcher
   const collation = GetOption(opts, 'collation', 'string', undefined, undefined)
@@ -96,6 +88,16 @@ export const Collator = function (
   if (typeof collation === 'string') {
     opt.co = collation
   }
+  // ResolutionOptionDescriptors order: co, kn, kf.
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L91
+  const numeric = GetOption(opts, 'numeric', 'boolean', undefined, undefined)
+  const caseFirst = GetOption(
+    opts,
+    'caseFirst',
+    'string',
+    ['upper', 'lower', 'false'],
+    undefined
+  )
   if (numeric !== undefined) {
     opt.kn = String(numeric)
   }
@@ -140,7 +142,7 @@ export const Collator = function (
   internalSlots.initializedCollator = true
   internalSlots.locale = r.locale
   internalSlots.usage = usage
-  internalSlots.collation = r.co === undefined ? 'default' : r.co
+  internalSlots.collation = r.co == null ? 'default' : r.co
   internalSlots.numeric = r.kn === 'true'
   internalSlots.caseFirst = r.kf || 'false'
   internalSlots.sensitivity = sensitivity
@@ -220,17 +222,27 @@ Collator.availableLocales = new Set(availableCollationLocales)
 // https://tc39.es/ecma402/#sec-intl.collator-internal-slots
 Collator.relevantExtensionKeys = ['co', 'kn', 'kf']
 Collator.getDefaultLocale = () => 'en'
-Collator.localeData = collationLocaleData as unknown as Record<
-  string,
-  CollatorLocaleData | undefined
->
+// ECMA default collation is null; "default" is the generated comparison sentinel.
+// Keeping that sentinel out of keyword support prevents retaining co-default.
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L95-L98
+Collator.localeData = Object.create(null)
+for (const locale of Collator.availableLocales) {
+  const metadata =
+    collationLocaleData[locale as keyof typeof collationLocaleData]
+  Collator.localeData[locale] = {
+    ...metadata,
+    co: [null, ...metadata.co.filter(value => value !== 'default')],
+    kn: [...metadata.kn],
+    kf: [...metadata.kf],
+  }
+}
 // ECMA-402 §10.1.1, steps 9–11: search uses distinct locale data.
 // Its collation is selected by usage, not a sort-specific co keyword.
 // https://tc39.es/ecma402/#sec-intl.collator
 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/collator.html#L29-L33
 const searchLocaleData: Record<string, CollatorLocaleData> = Object.create(null)
 for (const locale of Collator.availableLocales) {
-  searchLocaleData[locale] = {...Collator.localeData[locale]!, co: ['default']}
+  searchLocaleData[locale] = {...Collator.localeData[locale]!, co: [null]}
 }
 Collator.polyfilled = true
 

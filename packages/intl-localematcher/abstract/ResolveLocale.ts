@@ -15,6 +15,30 @@ export interface ResolveLocaleResult {
   [k: string]: any
 }
 
+const availableLocaleArrays = new WeakMap<Set<string>, string[]>()
+
+function localeArray(
+  locales: Set<string> | readonly string[]
+): readonly string[] {
+  if (Array.isArray(locales)) return locales
+  const available = locales as Set<string>
+  const cached = availableLocaleArrays.get(available)
+  if (cached?.length === available.size) {
+    let index = 0
+    for (const locale of available) {
+      if (cached[index++] !== locale) {
+        const result = Array.from(available)
+        availableLocaleArrays.set(available, result)
+        return result
+      }
+    }
+    return cached
+  }
+  const result = Array.from(available)
+  availableLocaleArrays.set(available, result)
+  return result
+}
+
 /**
  * https://tc39.es/ecma402/#sec-resolvelocale
  */
@@ -33,13 +57,13 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   let r: LookupMatcherResult
   if (matcher === 'lookup') {
     r = LookupMatcher(
-      Array.from(availableLocales),
+      localeArray(availableLocales),
       requestedLocales,
       getDefaultLocale
     )
   } else {
     r = BestFitMatcher(
-      Array.from(availableLocales),
+      localeArray(availableLocales),
       requestedLocales,
       getDefaultLocale
     )

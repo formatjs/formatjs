@@ -230,79 +230,86 @@ function extractLanguageStyleData(
   }
 }
 
-async function loadDisplayNames(
-  locale: string
-): Promise<DisplayNamesData | undefined> {
+// CLDR omits files when a locale has no translated names for that category.
+// Keep empty maps so DisplayNames.of applies its code/undefined fallback.
+// https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L185-L189
+async function optionalNames<T>(specifier: string): Promise<T | undefined> {
   try {
-    const [
-      languagesImport,
-      territoriesImport,
-      scriptsImport,
-      localeDisplayNamesImport,
-      currenciesImport,
-      dateFieldsImport,
-    ] = await Promise.all([
-      import(`cldr-localenames-full/main/${locale}/languages.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof LanguagesJSON}>,
-      import(`cldr-localenames-full/main/${locale}/territories.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof TerritoriesJSON}>,
-      import(`cldr-localenames-full/main/${locale}/scripts.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof ScriptsJSON}>,
-      import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof LocaleDisplayNamesJSON}>,
-      import(`cldr-numbers-full/main/${locale}/currencies.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof CurrenciesJSON}>,
-      import(`cldr-dates-full/main/${locale}/dateFields.json`, {
-        with: {type: 'json'},
-      }) as Promise<{default: typeof DateFieldsJSON}>,
-    ])
-    const languages = languagesImport.default
-    const territories = territoriesImport.default
-    const scripts = scriptsImport.default
-    const localeDisplayNames = localeDisplayNamesImport.default
-    const currencies = currenciesImport.default
-    const dateFields = dateFieldsImport.default
-    const langData: LanguageRawData =
-      languages.main[locale].localeDisplayNames.languages
-    const regionData: RegionRawData =
-      territories.main[locale].localeDisplayNames.territories
-    const scriptData: ScriptRawData =
-      scripts.main[locale].localeDisplayNames.scripts
-    const localePatternData: LocalePatternRawData =
-      localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
-        .localePattern
-    const currencyData: CurrencyRawData =
-      currencies.main[locale].numbers.currencies
-    const calendarData: CalendarRawData =
-      localeDisplayNames.main[locale].localeDisplayNames.types.calendar
-    const dateTimeFieldData: DateTimeFieldRawData =
-      dateFields.main[locale].dates.fields
+    return (await import(specifier, {with: {type: 'json'}})).default as T
+  } catch (error) {
+    if ((error as {code?: string}).code === 'ERR_MODULE_NOT_FOUND')
+      return undefined
+    throw error
+  }
+}
 
-    return {
-      types: {
-        language: extractLanguageStyleData(
-          langData,
-          regionData,
-          localePatternData
-        ),
-        region: extractStyleData(regionData),
-        script: extractStyleData(scriptData),
-        currency: extractCurrencyStyleData(locale, currencyData),
-        calendar: extractCalendarStyleData(calendarData),
-        dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
-      },
-      patterns: {
-        // No support for alt variants
-        locale: localePatternData,
-      },
-    }
-  } catch {
-    console.error(`Failed to load ${locale}`)
+async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
+  const [
+    languagesImport,
+    territoriesImport,
+    scriptsImport,
+    localeDisplayNamesImport,
+    currenciesImport,
+    dateFieldsImport,
+  ] = await Promise.all([
+    optionalNames<typeof LanguagesJSON>(
+      `cldr-localenames-full/main/${locale}/languages.json`
+    ),
+    optionalNames<typeof TerritoriesJSON>(
+      `cldr-localenames-full/main/${locale}/territories.json`
+    ),
+    optionalNames<typeof ScriptsJSON>(
+      `cldr-localenames-full/main/${locale}/scripts.json`
+    ),
+    import(`cldr-localenames-full/main/${locale}/localeDisplayNames.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof LocaleDisplayNamesJSON}>,
+    import(`cldr-numbers-full/main/${locale}/currencies.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof CurrenciesJSON}>,
+    import(`cldr-dates-full/main/${locale}/dateFields.json`, {
+      with: {type: 'json'},
+    }) as Promise<{default: typeof DateFieldsJSON}>,
+  ])
+  const languages = languagesImport
+  const territories = territoriesImport
+  const scripts = scriptsImport
+  const localeDisplayNames = localeDisplayNamesImport.default
+  const currencies = currenciesImport.default
+  const dateFields = dateFieldsImport.default
+  const langData: LanguageRawData =
+    languages?.main[locale].localeDisplayNames.languages || {}
+  const regionData: RegionRawData =
+    territories?.main[locale].localeDisplayNames.territories || {}
+  const scriptData: ScriptRawData =
+    scripts?.main[locale].localeDisplayNames.scripts || {}
+  const localePatternData: LocalePatternRawData =
+    localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
+      .localePattern
+  const currencyData: CurrencyRawData =
+    currencies.main[locale].numbers.currencies
+  const calendarData: CalendarRawData =
+    localeDisplayNames.main[locale].localeDisplayNames.types?.calendar || {}
+  const dateTimeFieldData: DateTimeFieldRawData =
+    dateFields.main[locale].dates.fields
+
+  return {
+    types: {
+      language: extractLanguageStyleData(
+        langData,
+        regionData,
+        localePatternData
+      ),
+      region: extractStyleData(regionData),
+      script: extractStyleData(scriptData),
+      currency: extractCurrencyStyleData(locale, currencyData),
+      calendar: extractCalendarStyleData(calendarData),
+      dateTimeField: extractDateTimeFieldStyleData(dateTimeFieldData),
+    },
+    patterns: {
+      // No support for alt variants
+      locale: localePatternData,
+    },
   }
 }
 

@@ -89,7 +89,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6

@@ -26,3 +26,45 @@ Swedish sorts ä before ö	sv	variant	-	-	-	ä	ö	-1
 Danish sorts z before æ	da	variant	-	-	-	z	æ	-1
 Danish sorts æ before ø	da	variant	-	-	-	æ	ø	-1
 Danish sorts ø before å	da	variant	-	-	-	ø	å	-1
+en inherits root eor base b ɓ	en-u-co-eor	base	-	-	-	b	ɓ	0
+en inherits root eor variant b ɓ	en-u-co-eor	variant	-	-	-	b	ɓ	-1
+en inherits root eor base z ʒ	en-u-co-eor	base	-	-	-	z	ʒ	0
+en inherits root emoji variant 🤣 😂	en-u-co-emoji	variant	-	-	-	🤣	😂	-1
+en inherits root emoji variant 🤩 😘	en-u-co-emoji	variant	-	-	-	🤩	😘	-1
+en inherits root emoji variant 🧑 👨	en-u-co-emoji	variant	-	-	-	🧑	👨	-1
+en inherits root emoji variant 😀 😃	en-u-co-emoji	variant	-	-	-	😀	😃	-1
+tr inherits root eor base b ɓ	tr-u-co-eor	base	-	-	-	b	ɓ	0
+tr inherits root eor variant b ɓ	tr-u-co-eor	variant	-	-	-	b	ɓ	-1
+tr inherits root eor base z ʒ	tr-u-co-eor	base	-	-	-	z	ʒ	0
+tr inherits root emoji variant 🤣 😂	tr-u-co-emoji	variant	-	-	-	🤣	😂	-1
+tr inherits root emoji variant 🤩 😘	tr-u-co-emoji	variant	-	-	-	🤩	😘	-1
+tr inherits root emoji variant 🧑 👨	tr-u-co-emoji	variant	-	-	-	🧑	👨	-1
+tr inherits root emoji variant 😀 😃	tr-u-co-emoji	variant	-	-	-	😀	😃	-1
+de inherits root eor base b ɓ	de-u-co-eor	base	-	-	-	b	ɓ	0
+de inherits root eor variant b ɓ	de-u-co-eor	variant	-	-	-	b	ɓ	-1
+de inherits root eor base z ʒ	de-u-co-eor	base	-	-	-	z	ʒ	0
+de inherits root emoji variant 🤣 😂	de-u-co-emoji	variant	-	-	-	🤣	😂	-1
+de inherits root emoji variant 🤩 😘	de-u-co-emoji	variant	-	-	-	🤩	😘	-1
+de inherits root emoji variant 🧑 👨	de-u-co-emoji	variant	-	-	-	🧑	👨	-1
+de inherits root emoji variant 😀 😃	de-u-co-emoji	variant	-	-	-	😀	😃	-1
+ar inherits root eor base b ɓ	ar-u-co-eor	base	-	-	-	b	ɓ	0
+ar inherits root eor variant b ɓ	ar-u-co-eor	variant	-	-	-	b	ɓ	-1
+ar inherits root eor base z ʒ	ar-u-co-eor	base	-	-	-	z	ʒ	0
+ar inherits root emoji variant 🤣 😂	ar-u-co-emoji	variant	-	-	-	🤣	😂	-1
+ar inherits root emoji variant 🤩 😘	ar-u-co-emoji	variant	-	-	-	🤩	😘	-1
+ar inherits root emoji variant 🧑 👨	ar-u-co-emoji	variant	-	-	-	🧑	👨	-1
+ar inherits root emoji variant 😀 😃	ar-u-co-emoji	variant	-	-	-	😀	😃	-1
+ja inherits root eor base b ɓ	ja-u-co-eor	base	-	-	-	b	ɓ	0
+ja inherits root eor variant b ɓ	ja-u-co-eor	variant	-	-	-	b	ɓ	-1
+ja inherits root eor base z ʒ	ja-u-co-eor	base	-	-	-	z	ʒ	0
+ja inherits root emoji variant 🤣 😂	ja-u-co-emoji	variant	-	-	-	🤣	😂	-1
+ja inherits root emoji variant 🤩 😘	ja-u-co-emoji	variant	-	-	-	🤩	😘	-1
+ja inherits root emoji variant 🧑 👨	ja-u-co-emoji	variant	-	-	-	🧑	👨	-1
+ja inherits root emoji variant 😀 😃	ja-u-co-emoji	variant	-	-	-	😀	😃	-1
+zh-HK inherits root eor base b ɓ	zh-HK-u-co-eor	base	-	-	-	b	ɓ	0
+zh-HK inherits root eor variant b ɓ	zh-HK-u-co-eor	variant	-	-	-	b	ɓ	-1
+zh-HK inherits root eor base z ʒ	zh-HK-u-co-eor	base	-	-	-	z	ʒ	0
+zh-HK inherits root emoji variant 🤣 😂	zh-HK-u-co-emoji	variant	-	-	-	🤣	😂	-1
+zh-HK inherits root emoji variant 🤩 😘	zh-HK-u-co-emoji	variant	-	-	-	🤩	😘	-1
+zh-HK inherits root emoji variant 🧑 👨	zh-HK-u-co-emoji	variant	-	-	-	🧑	👨	-1
+zh-HK inherits root emoji variant 😀 😃	zh-HK-u-co-emoji	variant	-	-	-	😀	😃	-1

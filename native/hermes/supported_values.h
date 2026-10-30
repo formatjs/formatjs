@@ -10,6 +10,10 @@ void installSupportedValuesOf(facebook::jsi::Runtime &runtime);
 void installSupportedValuesOf(facebook::jsi::Runtime &runtime,
                               facebook::jsi::Object &extensions);
 
+// Install before Locale; invoke the callback after installing the formatters.
+facebook::jsi::Function prepareSupportedValuesOf(
+    facebook::jsi::Runtime &runtime, facebook::jsi::Object &extensions);
+
 } // namespace formatjs
 
 #endif

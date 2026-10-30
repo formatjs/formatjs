@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-indian@1.1.2...@formatjs/intl-datetimeformat-calendar-indian@1.1.3) (2026-10-30)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 7.9.0
+
 ## [1.1.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-indian@1.1.1...@formatjs/intl-datetimeformat-calendar-indian@1.1.2) (2026-10-19)
 
 

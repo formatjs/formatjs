@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.2.15...@formatjs/intl-segmenter@12.3.0) (2026-10-30)
+
+
+### Features
+
+* **intl_segmenter:** port Intl.Segmenter to Rust with Hermes integration ([#7694](https://github.com/formatjs/formatjs/issues/7694)) ([d5d8512](https://github.com/formatjs/formatjs/commit/d5d8512ca7205354ec2caf1a6eac10396012d01a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [12.2.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.2.14...@formatjs/intl-segmenter@12.2.15) (2026-09-12)
 
 

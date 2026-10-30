@@ -1,4 +1,14 @@
 #include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/intl_locale.h>
+#include <formatjs/hermes/intl_pluralrules.h>
+#include <formatjs/hermes/intl_listformat.h>
+#include <formatjs/hermes/intl_displaynames.h>
+#include <formatjs/hermes/intl_segmenter.h>
+#include <formatjs/hermes/intl_collator.h>
+#include <formatjs/hermes/intl_numberformat.h>
+#include <formatjs/hermes/intl_relativetimeformat.h>
+#include <formatjs/hermes/intl_datetimeformat.h>
+#include <formatjs/hermes/intl_durationformat.h>
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
@@ -18,7 +28,11 @@ int main(int argc, char **argv) {
   std::unique_ptr<facebook::hermes::HermesRuntime> runtime;
   int status = 0;
   try {
-    runtime = facebook::hermes::makeHermesRuntime();
+    int firstScript = 1;
+    const bool blockScoping = argc > 1 && std::string(argv[1]) == "--es6-block-scoping";
+    if (blockScoping) ++firstScript;
+    runtime = facebook::hermes::makeHermesRuntime(
+        ::hermes::vm::RuntimeConfig::Builder().withES6BlockScoping(blockScoping).build());
     auto &rt = *runtime;
     auto print = jsi::Function::createFromHostFunction(
         rt, jsi::PropNameID::forAscii(rt, "print"), 0,
@@ -55,7 +69,7 @@ int main(int argc, char **argv) {
       return rt.evaluateJavaScript(std::make_shared<jsi::StringBuffer>(std::move(source)),
                             path);
     };
-    int firstScript = 1;
+    std::unique_ptr<formatjs::DateTimeFormatInstallation> datetimeInstallation;
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc && std::string(argv[firstScript]).rfind("--prelude=", 0) == 0) {
       evaluateFile(std::string(argv[firstScript]).substr(10));
@@ -63,10 +77,69 @@ int main(int argc, char **argv) {
     }
     if (firstScript != 1) formatjs::installCanonicalLocales(rt);
     formatjs::installSupportedValuesOf(rt);
-    if (firstScript < argc && std::string(argv[firstScript]).rfind("--extensions=", 0) == 0) {
-      auto extensions = evaluateFile(std::string(argv[firstScript]).substr(13)).asObject(rt);
+    formatjs::installLocale(rt);
+    formatjs::installCanonicalLocales(rt);
+    while (firstScript < argc) {
+      const std::string flag(argv[firstScript]);
+      if (flag == "--native-durationformat") {
+        formatjs::installDurationFormat(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-datetimeformat") {
+        datetimeInstallation = formatjs::installDateTimeFormat(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-relativetimeformat") {
+        formatjs::installRelativeTimeFormat(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-numberformat") {
+        formatjs::installNumberFormat(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-collator") {
+        formatjs::installCollator(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-segmenter") {
+        formatjs::installSegmenter(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag == "--native-displaynames") {
+        formatjs::installDisplayNames(rt);
+        ++firstScript;
+        continue;
+      }
+      if (std::string(argv[firstScript]) == "--native-listformat") {
+        formatjs::installListFormat(rt);
+        ++firstScript;
+        continue;
+      }
+      if (std::string(argv[firstScript]) == "--native-pluralrules") {
+        formatjs::installPluralRules(rt);
+        ++firstScript;
+        continue;
+      }
+      if (flag.rfind("--extensions=", 0) != 0) break;
+      auto extensions = evaluateFile(flag.substr(13)).asObject(rt);
       if (extensions.hasProperty(rt, "IntlSupportedValuesOf")) formatjs::installSupportedValuesOf(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlLocale")) formatjs::installLocale(rt, extensions);
       if (extensions.hasProperty(rt, "IntlGetCanonicalLocales")) formatjs::installCanonicalLocales(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlPluralRules")) formatjs::installPluralRules(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlListFormat")) formatjs::installListFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlDisplayNames")) formatjs::installDisplayNames(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlSegmenter")) formatjs::installSegmenter(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlCollator")) formatjs::installCollator(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlNumberFormat")) formatjs::installNumberFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlRelativeTimeFormat")) formatjs::installRelativeTimeFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlDateTimeFormat")) datetimeInstallation = formatjs::installDateTimeFormat(rt, extensions);
+      if (extensions.hasProperty(rt, "IntlDurationFormat")) formatjs::installDurationFormat(rt, extensions);
       ++firstScript;
     }
     for (int i = firstScript; i < argc; ++i) {

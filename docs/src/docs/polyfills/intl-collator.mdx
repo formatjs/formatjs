@@ -131,3 +131,30 @@ bazel run //packages/intl-collator/benchmark:run
 The benchmark compares Latin, accent, numeric, normalization, Swedish tailoring,
 and CJK cases with native `Intl.Collator`. Each timed task performs 32 comparisons;
 formatter construction and module initialization are excluded.
+
+## Comparison consistency
+
+`numeric: true` keeps unmatched digit runs significant (`x < x1 < x2`).
+`caseFirst` affects case-sensitive comparisons; `base` and `accent` still ignore
+case. `ignorePunctuation` preserves letters and digits. Canonically equivalent
+strings share case-order keys, including precomposed
+and decomposed accented letters. Sensitivity selects UCA levels after locale
+tailoring, preserving primary letters such as Swedish ä.
+
+## Rust Hermes extension
+
+`crates/intl_collator` ports the CLDR sort/search comparison profile to Rust.
+ICU4X supplies normalization and locale-sensitive casing. Generated data stays
+static, matching this package. The comparison profile retains compact implicit
+weights and CLDR variable-element filtering; it does not claim full ICU Collator
+ordering parity.
+
+Follow the [native SDK guide](/docs/guides/hermes-intl): link
+`:collator`, install after canonicalization, or register `js/37-IntlCollator.js`
+and call the precompiled installer. The SDK ships public headers, C++ adapter
+source, Linux/macOS Rust archives and a typed independent consumer smoke example.
+The SDK guide also covers Android archives and the React Native example.
+
+Tests cover all advertised locales/collations, the existing native/TS corpus,
+option combinations, comparator consistency, UTF-16 inputs and Hermes source/
+optimized-bytecode integration.

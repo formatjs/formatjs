@@ -1,0 +1,14 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "civil_test",
+    srcs = ["civil.test.ts"],
+    data = ["//crates/intl_datetimeformat:civil_conformance"],
+    no_copy_to_bin = ["//:package.json"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma262-abstract",
+    ],
+)

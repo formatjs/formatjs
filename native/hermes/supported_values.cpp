@@ -121,7 +121,7 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
 
 } // namespace
 
-void installSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
+jsi::Function prepareSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
   auto enumerate = jsi::Function::createFromHostFunction(
       runtime, jsi::PropNameID::forAscii(runtime, "supportedValuesRust"), 1,
       [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args,
@@ -155,8 +155,12 @@ void installSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
         }
         return array;
       });
-  extensions.getPropertyAsFunction(runtime, "IntlSupportedValuesOf")
-      .call(runtime, enumerate);
+  return extensions.getPropertyAsFunction(runtime, "IntlSupportedValuesOf")
+      .call(runtime, enumerate).asObject(runtime).asFunction(runtime);
+}
+
+void installSupportedValuesOf(jsi::Runtime &runtime, jsi::Object &extensions) {
+  prepareSupportedValuesOf(runtime, extensions);
 }
 
 void installSupportedValuesOf(jsi::Runtime &runtime) {

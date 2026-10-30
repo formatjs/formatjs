@@ -65,3 +65,103 @@ Stage 3: supported-locales.generated.ts
 `format` and `formatToParts` accept iterables of strings, including a string's
 individual code points. `undefined` produces an empty list. Non-iterables and
 non-string elements throw `TypeError`; an invalid element also closes the iterator.
+
+## Rust port
+
+`crates/intl_listformat` compiles caller-loaded CLDR patterns and implements
+CreatePartsFromList, DeconstructPattern and FormatList. UTF-16 units preserve
+lone surrogates. Iterative pattern expansion avoids recursive stack growth and
+quadratic copying. The shared Rust Locale matcher negotiates registered packs;
+late registration leaves existing instances unchanged.
+
+Instances retain their selected compiled templates directly. Pattern bodies cache
+literal UTF-16 lengths, allowing exact output reservation for pair and chain
+patterns, including contextual alternatives and reversed placeholders.
+
+The facade keeps up to four validated strings in local slots and passes them as
+positional host arguments. A fifth element creates the private null-prototype
+array used by the larger-input path. Both paths keep real iterator traversal and
+share C++ UTF-16 conversion plus the same Rust ABI.
+
+`//crates/intl_listformat:locale_data` wraps the existing TS extraction in
+versioned per-locale JSON packs, including default-content aliases. The
+differential suite compares every locale/type/style against the public TS
+formatter. The Hermes facade handles observable option access and iteration;
+owned C ABI handles retain data independently of the registry. Source and
+optimized-bytecode conformance also checks brands, subclassing, IteratorClose,
+captured intrinsics and fresh results. SDK consumers select independent JSON
+packs and link the `:listformat` adapter against the shared Rust archive.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+### Contextual joins and ICU conformance
+
+Rust and TS select Spanish `e`/`u` and Hebrew hyphenated joins from the next
+item, only for matching pair/end patterns. Hebrew uses Unicode Script rather
+than block membership; empty strings and lone surrogates remain intact.
+
+ICU4J 78.1 generates 3,168 cases spanning 11 locales and all types/styles.
+ICU4C 78.1 checks every result, and the Chromium-locale Hermes test consumes
+the same cases in source and bytecode modes. Eighteen exact C/J differences
+are pinned in `conformance-tests/icu4j/list-format-icu-differences.tsv`; these
+use ICU4C's script-aware behavior and Spanish `11 ` handling. Both oracle
+outputs remain checked. See `conformance-tests/icu4c/README.md`.
+
+An independent ICU4X ListFormatter also checks 3,069 scalar-string cases.
+Its 69 exact differences are pinned separately; it cannot represent the 99
+lone-surrogate cases, which remain covered by ICU4C/J and Hermes.
+
+Hermes constructs parts as ordinary data-record literals. Private append
+descriptors have null prototypes and are reused within each call, bypassing
+inherited array setters and descriptor `get`/`set` properties without sharing
+returned records.
+
+When constructor options are omitted, Hermes still canonicalizes the full locale
+list before a single Rust negotiation/construction call. No JS option getters
+exist in that path. Explicit options retain the separate resolution step before
+reading type/style, including inherited getters. The additive C ABI accepts
+canonical locale-list JSON and returns an independently owned handle.
+
+The private copy of iterable input drops its array prototype on the first valid
+element. Direct index writes then bypass inherited setters without per-element
+descriptors. Real iteration and validation still control IteratorClose. Empty
+inputs avoid prototype mutation; public parts arrays and records stay ordinary.
+
+Singleton lists emit their element directly. Forward patterns with an optional
+separator stream borrowed UTF-16 slices without arena/task allocations, including
+contextual Spanish/Hebrew joins. Reversed, prefixed or suffixed patterns retain
+the general traversal. Empty separators add no literal record; empty input strings
+still produce element records. String output reserves its input-length lower bound.
+
+The Hermes facade binds its private WeakMap methods and retains option enum
+arrays at installation. Validated type/style values serialize directly; locale
+tags still use captured JSON quoting. Keep option getter order and real iterable
+validation when changing this path.
+
+The ABI validates up to eight borrowed UTF-16 input slices into stack storage;
+larger inputs keep an exactly reserved vector. The JSI bridge stores up to four
+UTF-16 strings and ABI slices on its stack, with heap fallback beyond that.
+Empty lists return empty encoded output before input-buffer setup. These are
+private buffers: actual iteration, single element reads and IteratorClose remain
+in JavaScript. ABI output remains independently owned and preserves lone
+surrogates. Boundary tests check malformed final-slice cleanup on both paths.
+
+For string lists of at least five elements, Rust can authorize a fixed join plan
+when start/middle separators agree and all templates are forward, without
+prefixes, suffixes or contextual alternatives. Hermes joins its validated private
+string array using the captured intrinsic. Lists shorter than 128 elements keep
+native formatting on first use; plan lookup waits for reuse. Longer lists can
+repay setup immediately. Private symbol metadata on the opaque handle avoids
+another WeakMap's collection cost. The immutable handle owns the plan;
+contextual/custom patterns and all parts still use Rust formatting. Iteration
+and IteratorClose finish before plan lookup or concatenation.
+
+Packed parts decode with captured bound String intrinsics. Direct argument passing
+avoids per-part temporary arrays while preserving late prototype-poisoning checks.

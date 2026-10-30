@@ -1,0 +1,1559 @@
+{
+  "collectedAt": "2026-10-30T12:43:59.616234+00:00",
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "baselineCommit": "84d17110e122d2019f41e50a19bf3c24d6152f29",
+  "build": "Rust SDK opt/ThinLTO; C++ Release -O3; same updated Hermes -O bytecode and high-resolution clock on both hosts; taskset CPU 0; three paired rounds, order reversed in round 2.",
+  "hostSha256": {
+    "before": "f0345330241dcea122de2bdbefd8a80deeca0890a743ad5259a4ee349f61dcff",
+    "after": "3bbb4a5bd76794853b15e315983463a5243e545a03ba8a88c8cbb6aab103dc6e"
+  },
+  "workloadSha256": "8f617697e084dc1d8921d533da8ad3850aacf7c4b21fa1f8a3e742baf3e46706",
+  "raw": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 97.64452479430474
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4573.632404208183
+          },
+          "speedup": 46.83961966984704
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1883.773144800216
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 61118.70929598808
+          },
+          "speedup": 32.444835231192364
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 294.5419168099761
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 36138.042993843555
+          },
+          "speedup": 122.6923603446162
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 342.5502130994573
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 130003.62515449524
+          },
+          "speedup": 379.5169881174457
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 505.4124223534018
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4729.92726135999
+          },
+          "speedup": 9.358549675798553
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4355.9485813602805
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6577.328452840447
+          },
+          "speedup": 1.5099646678534648
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1365.0024659000337
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8324.889140203595
+          },
+          "speedup": 6.098808865311801
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4302.388033829629
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8960.892958566546
+          },
+          "speedup": 2.08277191366914
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1694.5012495853007
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3386.618266813457
+          },
+          "speedup": 1.9985929592216425
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2069.0664066933095
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 366264.0303373337
+          },
+          "speedup": 177.0189826447768
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 743.8954839017242
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 430584.54394340515
+          },
+          "speedup": 578.8239789882762
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2623.477391898632
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 430474.6985435486
+          },
+          "speedup": 164.08553771908456
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3864.364931359887
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1058791.959285736
+          },
+          "speedup": 273.98860565509335
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3771.172557026148
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 937953.3648490906
+          },
+          "speedup": 248.71663936500883
+        },
+        {
+          "checksum": 164860880
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 98.72346199699678
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4630.341054871678
+          },
+          "speedup": 46.90213411491319
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1911.5169649012387
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 61720.918118953705
+          },
+          "speedup": 32.288972189238514
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 296.7481719679199
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 36728.49293798208
+          },
+          "speedup": 123.76990461108092
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 339.72719102166593
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 131282.20811486244
+          },
+          "speedup": 386.434208342452
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 514.5971605088562
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4851.48539301008
+          },
+          "speedup": 9.427734479165643
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4372.770176269114
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6639.648741111159
+          },
+          "speedup": 1.5184078909850611
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1395.5511269159615
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8757.701748982072
+          },
+          "speedup": 6.275443142191272
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4124.8893132433295
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 9070.102218538523
+          },
+          "speedup": 2.198871661699658
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1677.179231774062
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3347.977390512824
+          },
+          "speedup": 1.9961953541312636
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2036.171336658299
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 368369.11141872406
+          },
+          "speedup": 180.91262988864187
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 740.4937874525785
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 432221.82393074036
+          },
+          "speedup": 583.6940582819136
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2406.891551800072
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 422138.8101577759
+          },
+          "speedup": 175.38754907426787
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3827.686724252999
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1047620.8627223969
+          },
+          "speedup": 273.69556031962037
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3676.747507415712
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 930419.0397262573
+          },
+          "speedup": 253.05491819867285
+        },
+        {
+          "checksum": 181081040
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 99.85478245653212
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4582.632449455559
+          },
+          "speedup": 45.89296913696076
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1900.8556380867958
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 60899.08182621002
+          },
+          "speedup": 32.037720595923176
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 293.9544778200798
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 36518.9578384161
+          },
+          "speedup": 124.23337827419726
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 331.33645192719996
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 129605.55776953697
+          },
+          "speedup": 391.1599735425833
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 495.38375169504434
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4729.635990224779
+          },
+          "speedup": 9.547418489285288
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4354.659537784755
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6487.769540399313
+          },
+          "speedup": 1.489845413655389
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1370.6763042137027
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8146.429480984807
+          },
+          "speedup": 5.9433649330197325
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3892.5257744267583
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8772.693946957588
+          },
+          "speedup": 2.253727901968618
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1666.119648143649
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3308.809199370444
+          },
+          "speedup": 1.9859373263240971
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1973.2631393708289
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 355949.8071670532
+          },
+          "speedup": 180.3863864200834
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 714.2197398934513
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 419282.1502685547
+          },
+          "speedup": 587.0492326788727
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2373.8981457427144
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 419175.98843574524
+          },
+          "speedup": 176.5770739521762
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3784.44641828537
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1038829.4994831085
+          },
+          "speedup": 274.4997245736601
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3750.104154460132
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 967399.3349075317
+          },
+          "speedup": 257.96599109306584
+        },
+        {
+          "checksum": 195089360
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 98.99429205688648
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4687.285493128002
+          },
+          "speedup": 47.349048068695524
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1938.3500213734806
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 62105.96039891243
+          },
+          "speedup": 32.04063234921072
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 300.7296327268705
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 36334.24770087004
+          },
+          "speedup": 120.82031082673396
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 358.1472235964611
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 142672.21093177795
+          },
+          "speedup": 398.3619068691496
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 519.8106402531266
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4730.946803465486
+          },
+          "speedup": 9.101288886971815
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 10240,
+            "nsPerCall": 4301.204718649387
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6379.277957603335
+          },
+          "speedup": 1.4831374870263045
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1384.9036302417517
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8250.889834016562
+          },
+          "speedup": 5.957735725319941
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4105.255217291415
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8925.121929496527
+          },
+          "speedup": 2.1740723675117053
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 868.1235951371491
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3412.954160012305
+          },
+          "speedup": 3.9314150417408187
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2004.8100035637617
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 364746.5705871582
+          },
+          "speedup": 181.93572953984798
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 731.0734712518752
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 425840.7413959503
+          },
+          "speedup": 582.4869293461701
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2431.163378059864
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 426859.9808216095
+          },
+          "speedup": 175.57848422439451
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3940.2268594130874
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1064056.271314621
+          },
+          "speedup": 270.0494944276169
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3783.119679428637
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 942163.2885932922
+          },
+          "speedup": 249.04400823385708
+        },
+        {
+          "checksum": 148179920
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 102.69865670125
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4768.153163604438
+          },
+          "speedup": 46.428583554651325
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1933.2292256876826
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 61450.57827234268
+          },
+          "speedup": 31.78649352897283
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 327680,
+            "nsPerCall": 303.81235701497644
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 36623.83835762739
+          },
+          "speedup": 120.54756007117254
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 340.9195749554783
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 131462.86755800247
+          },
+          "speedup": 385.61255268246356
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 527.1149595500901
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4801.298049278557
+          },
+          "speedup": 9.108635530618638
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4358.23907610029
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6471.5169835835695
+          },
+          "speedup": 1.484892606987091
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1369.6335488930345
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8536.859788000584
+          },
+          "speedup": 6.232951722670817
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4415.614786557853
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 9826.196776703
+          },
+          "speedup": 2.2253292580268105
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 855.3824329283088
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3409.1263310983777
+          },
+          "speedup": 3.9854995845865155
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1985.1774326525629
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 361164.4238233566
+          },
+          "speedup": 181.93055083281618
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 732.345663709566
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 427692.4192905426
+          },
+          "speedup": 584.0034842619851
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2429.4213857501745
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 432327.58045196533
+          },
+          "speedup": 177.9549579121154
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3892.9421454668045
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1054255.1636695862
+          },
+          "speedup": 270.8119268860005
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3813.87397646904
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 925541.2638187408
+          },
+          "speedup": 242.67746378857154
+        },
+        {
+          "checksum": 195826640
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "native": {
+            "callsPerRound": 655360,
+            "nsPerCall": 95.55970027577132
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4575.011529959738
+          },
+          "speedup": 47.87595102074331
+        },
+        {
+          "name": "supportedValuesOf",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1875.9875791147351
+          },
+          "typescript": {
+            "callsPerRound": 1280,
+            "nsPerCall": 59473.55702519417
+          },
+          "speedup": 31.702532408695003
+        },
+        {
+          "name": "Locale.maximize",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 292.00622520875186
+          },
+          "typescript": {
+            "callsPerRound": 2560,
+            "nsPerCall": 35296.83444648981
+          },
+          "speedup": 120.8769930204622
+        },
+        {
+          "name": "PluralRules.select",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 328.5620710812509
+          },
+          "typescript": {
+            "callsPerRound": 640,
+            "nsPerCall": 129855.20958900452
+          },
+          "speedup": 395.22276311952123
+        },
+        {
+          "name": "ListFormat.format",
+          "native": {
+            "callsPerRound": 163840,
+            "nsPerCall": 499.58799208980054
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4532.5279934331775
+          },
+          "speedup": 9.072531896680294
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 4177.272645756602
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 6172.176962718368
+          },
+          "speedup": 1.4775614344896182
+        },
+        {
+          "name": "DisplayNames.of",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 1338.2614240981638
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8057.087101042271
+          },
+          "speedup": 6.020562915404837
+        },
+        {
+          "name": "Segmenter.segment",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3977.9241662472486
+          },
+          "typescript": {
+            "callsPerRound": 10240,
+            "nsPerCall": 8702.321024611592
+          },
+          "speedup": 2.1876538266995955
+        },
+        {
+          "name": "Collator.compare",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 850.9653038345277
+          },
+          "typescript": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3458.442632108927
+          },
+          "speedup": 4.0641405901331895
+        },
+        {
+          "name": "NumberFormat.format",
+          "native": {
+            "callsPerRound": 40960,
+            "nsPerCall": 2041.3758349604905
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 371537.64367103577
+          },
+          "speedup": 182.0035474644612
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "native": {
+            "callsPerRound": 81920,
+            "nsPerCall": 727.7273572981358
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 415021.213889122
+          },
+          "speedup": 570.297666738803
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 2378.776390105486
+          },
+          "typescript": {
+            "callsPerRound": 160,
+            "nsPerCall": 414060.85193157196
+          },
+          "speedup": 174.0646382963346
+        },
+        {
+          "name": "DateTimeFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3748.527984134853
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 1045271.7542648315
+          },
+          "speedup": 278.8485930180608
+        },
+        {
+          "name": "DurationFormat.format",
+          "native": {
+            "callsPerRound": 20480,
+            "nsPerCall": 3719.3335127085447
+          },
+          "typescript": {
+            "callsPerRound": 80,
+            "nsPerCall": 946410.2745056152
+          },
+          "speedup": 254.4569534492773
+        },
+        {
+          "checksum": 165598160
+        }
+      ]
+    ]
+  },
+  "summary": {
+    "getCanonicalLocales": {
+      "before": {
+        "nativeNs": 98.72346199699678,
+        "typescriptNs": 4582.632449455559
+      },
+      "after": {
+        "nativeNs": 98.99429205688648,
+        "typescriptNs": 4687.285493128002
+      },
+      "nativeChangePercent": 0.27433201228086457,
+      "nativeSpeedupOverTS": 47.349048068695524
+    },
+    "supportedValuesOf": {
+      "before": {
+        "nativeNs": 1900.8556380867958,
+        "typescriptNs": 61118.70929598808
+      },
+      "after": {
+        "nativeNs": 1933.2292256876826,
+        "typescriptNs": 61450.57827234268
+      },
+      "nativeChangePercent": 1.703106061934867,
+      "nativeSpeedupOverTS": 31.78649352897283
+    },
+    "Locale.maximize": {
+      "before": {
+        "nativeNs": 294.5419168099761,
+        "typescriptNs": 36518.9578384161
+      },
+      "after": {
+        "nativeNs": 300.7296327268705,
+        "typescriptNs": 36334.24770087004
+      },
+      "nativeChangePercent": 2.100792981830968,
+      "nativeSpeedupOverTS": 120.82031082673396
+    },
+    "PluralRules.select": {
+      "before": {
+        "nativeNs": 339.72719102166593,
+        "typescriptNs": 130003.62515449524
+      },
+      "after": {
+        "nativeNs": 340.9195749554783,
+        "typescriptNs": 131462.86755800247
+      },
+      "nativeChangePercent": 0.35098277833649494,
+      "nativeSpeedupOverTS": 385.61255268246356
+    },
+    "ListFormat.format": {
+      "before": {
+        "nativeNs": 505.4124223534018,
+        "typescriptNs": 4729.92726135999
+      },
+      "after": {
+        "nativeNs": 519.8106402531266,
+        "typescriptNs": 4730.946803465486
+      },
+      "nativeChangePercent": 2.848805700635726,
+      "nativeSpeedupOverTS": 9.101288886971815
+    },
+    "ListFormat.formatToParts": {
+      "before": {
+        "nativeNs": 4355.9485813602805,
+        "typescriptNs": 6577.328452840447
+      },
+      "after": {
+        "nativeNs": 4301.204718649387,
+        "typescriptNs": 6379.277957603335
+      },
+      "nativeChangePercent": -1.2567609944972746,
+      "nativeSpeedupOverTS": 1.4831374870263045
+    },
+    "DisplayNames.of": {
+      "before": {
+        "nativeNs": 1370.6763042137027,
+        "typescriptNs": 8324.889140203595
+      },
+      "after": {
+        "nativeNs": 1369.6335488930345,
+        "typescriptNs": 8250.889834016562
+      },
+      "nativeChangePercent": -0.07607597194629889,
+      "nativeSpeedupOverTS": 6.024158681484619
+    },
+    "Segmenter.segment": {
+      "before": {
+        "nativeNs": 4124.8893132433295,
+        "typescriptNs": 8960.892958566546
+      },
+      "after": {
+        "nativeNs": 4105.255217291415,
+        "typescriptNs": 8925.121929496527
+      },
+      "nativeChangePercent": -0.4759908560183157,
+      "nativeSpeedupOverTS": 2.1740723675117053
+    },
+    "Collator.compare": {
+      "before": {
+        "nativeNs": 1677.179231774062,
+        "typescriptNs": 3347.977390512824
+      },
+      "after": {
+        "nativeNs": 855.3824329283088,
+        "typescriptNs": 3412.954160012305
+      },
+      "nativeChangePercent": -48.99874642357006,
+      "nativeSpeedupOverTS": 3.989974575849573
+    },
+    "NumberFormat.format": {
+      "before": {
+        "nativeNs": 2036.171336658299,
+        "typescriptNs": 366264.0303373337
+      },
+      "after": {
+        "nativeNs": 2004.8100035637617,
+        "typescriptNs": 364746.5705871582
+      },
+      "nativeChangePercent": -1.5402109110329798,
+      "nativeSpeedupOverTS": 181.93572953984798
+    },
+    "RelativeTimeFormat.format": {
+      "before": {
+        "nativeNs": 740.4937874525785,
+        "typescriptNs": 430584.54394340515
+      },
+      "after": {
+        "nativeNs": 731.0734712518752,
+        "typescriptNs": 425840.7413959503
+      },
+      "nativeChangePercent": -1.2721668108939599,
+      "nativeSpeedupOverTS": 582.4869293461701
+    },
+    "RelativeTimeFormat.formatToParts": {
+      "before": {
+        "nativeNs": 2406.891551800072,
+        "typescriptNs": 422138.8101577759
+      },
+      "after": {
+        "nativeNs": 2429.4213857501745,
+        "typescriptNs": 426859.9808216095
+      },
+      "nativeChangePercent": 0.9360552174963122,
+      "nativeSpeedupOverTS": 175.70438102066865
+    },
+    "DateTimeFormat.format": {
+      "before": {
+        "nativeNs": 3827.686724252999,
+        "typescriptNs": 1047620.8627223969
+      },
+      "after": {
+        "nativeNs": 3892.9421454668045,
+        "typescriptNs": 1054255.1636695862
+      },
+      "nativeChangePercent": 1.7048265940975194,
+      "nativeSpeedupOverTS": 270.8119268860005
+    },
+    "DurationFormat.format": {
+      "before": {
+        "nativeNs": 3750.104154460132,
+        "typescriptNs": 937953.3648490906
+      },
+      "after": {
+        "nativeNs": 3783.119679428637,
+        "typescriptNs": 942163.2885932922
+      },
+      "nativeChangePercent": 0.8803895467606848,
+      "nativeSpeedupOverTS": 249.04400823385708
+    }
+  },
+  "buildInputCommit": "6148dbf52a2ee3a1fb33d5aadfc79d2c294af03e",
+  "buildInputTree": "2b89711c2c152ebc30c903d3e183be818cc4cc19",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "hermesOverlayCommit": "338ff13ff1e996934ae615952d174f8c621844d9",
+  "hermesBcrVersion": "260318099.0.0-393a539e6.bcr.1",
+  "runtimePatchSha256": {
+    "proxy_construct_receiver.patch": "2411fed1df8c98e283fb5992f9cbf4a53c46c472945858c7dd739dfaae0407a2",
+    "missing_standard_headers.patch": "a57ec72d0c3ac2fbad244fa8553e33e38177ebdccc6979919f414600293084d1"
+  },
+  "runtimeSourcesMatchBazel": true,
+  "releaseRebaseSdkComparison": {
+    "files": 93,
+    "changed": []
+  },
+  "sourceSha256": {
+    "crates/intl_collator/ffi.rs": "b3b417c7bce2241370d7b4a36a03d3b2850eb8aa92cab8f92ec2bcb1dab0af64",
+    "crates/intl_collator/ffi.test.rs": "a555a60f86a333f57b7acd59e547f1e60b0a08e39b14f5cdc17cebd669b5fab5",
+    "native/hermes/collator.cpp": "dff78a01dc93f47e8bc10f9226855acdb65f4e220f4f4223489cf18a6a8c9410",
+    "native/hermes/collator.ts": "caf7202c66691a125a7aaea4672e4d36739f8d3aad95d57608481b3052ffe23d",
+    "native/hermes/README.md": "bb0b063ba5cd41e6bddc2ba5b4080df59e5ab40d177af302a1ddc44979b5b048",
+    "native/hermes/package/dist.bzl": "3dec507c28d75ad75420ac4452691fa4e625f967a14747511ab0d27747c24a32",
+    "benchmarks/hermes-intl-extension/suite.ts": "d2d174e67128bc38a8ecd04aea466112b641e54f8c81f97084000e4dc519eea3"
+  },
+  "profile": {
+    "before": {
+      "exclusiveUserCyclesSeconds": 5.338,
+      "queryDeserializerCpuSeconds": 0.27699999999999997,
+      "topFunctions": [
+        {
+          "cpuSeconds": 0.804,
+          "percent": 15.05,
+          "function": "hermes::vm::CallResult<hermes::vm::HermesValue, (hermes::vm::detail::CallResultSpecialize)2> hermes::vm::Interpreter::interpretFunction<false, false>(hermes::vm::Runtime&, hermes::vm::InterpreterState&)"
+        },
+        {
+          "cpuSeconds": 0.229,
+          "percent": 4.28,
+          "function": "free"
+        },
+        {
+          "cpuSeconds": 0.194,
+          "percent": 3.64,
+          "function": "malloc"
+        },
+        {
+          "cpuSeconds": 0.176,
+          "percent": 3.3,
+          "function": "hermes::vm::stringPrototypeConcat(void*, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.16,
+          "percent": 3.0,
+          "function": "std::shared_ptr<formatjs::hermes_bridge::Record<FormatjsCollatorHandle, &formatjs_collator_destroy> > formatjs::hermes_bridge::record<formatjs::hermes_bridge::Record<FormatjsCollatorHandle, &formatjs_collator_destroy> >(facebook::jsi::Runtime&, facebook::jsi::Value const&, char const*, char const*)"
+        },
+        {
+          "cpuSeconds": 0.144,
+          "percent": 2.7,
+          "function": "hermes::vm::StringBuilder::appendStringPrim(hermes::vm::Handle<hermes::vm::StringPrimitive>, unsigned int)"
+        },
+        {
+          "cpuSeconds": 0.142,
+          "percent": 2.66,
+          "function": "<static>@0x162ae7 (<libc.so.6>)"
+        },
+        {
+          "cpuSeconds": 0.14,
+          "percent": 2.63,
+          "function": "hermes::vm::Callable::executeCall(hermes::vm::Handle<hermes::vm::Callable>, hermes::vm::Runtime&, hermes::vm::Handle<hermes::vm::HermesValue>, hermes::vm::Handle<hermes::vm::HermesValue>, hermes::vm::Handle<hermes::vm::JSObject>)"
+        },
+        {
+          "cpuSeconds": 0.137,
+          "percent": 2.56,
+          "function": "formatjs_intl_collator::compare::elements"
+        },
+        {
+          "cpuSeconds": 0.124,
+          "percent": 2.33,
+          "function": "<serde::private::de::content::TaggedContentVisitor<<formatjs_intl_collator::ffi::Query as serde_core::de::Deserialize>::deserialize::__Field> as serde_core::de::Visitor>::visit_map::<serde_json::de::MapAccess<serde_json::read::StrRead>>"
+        },
+        {
+          "cpuSeconds": 0.115,
+          "percent": 2.16,
+          "function": "<serde::private::de::content::ContentVisitor as serde_core::de::Visitor>::visit_seq::<serde_json::de::SeqAccess<serde_json::read::StrRead>>"
+        },
+        {
+          "cpuSeconds": 0.104,
+          "percent": 1.96,
+          "function": "hermes::vm::JSObject::getNamedDescriptorUnsafe(hermes::vm::Handle<hermes::vm::JSObject>, hermes::vm::Runtime&, hermes::vm::SymbolID, hermes::vm::NamedPropertyDescriptor&)"
+        },
+        {
+          "cpuSeconds": 0.103,
+          "percent": 1.92,
+          "function": "<icu_normalizer::DecomposingNormalizerBorrowed>::normalize"
+        },
+        {
+          "cpuSeconds": 0.09,
+          "percent": 1.69,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::ManagedValue<hermes::vm::PinnedHermesValue>::invalidate()"
+        },
+        {
+          "cpuSeconds": 0.088,
+          "percent": 1.65,
+          "function": "<serde::private::de::content::ContentDeserializer<serde_json::error::Error> as serde_core::de::Deserializer>::deserialize_any::<<formatjs_intl_collator::ffi::Query as serde_core::de::Deserialize>::deserialize::__Visitor>"
+        },
+        {
+          "cpuSeconds": 0.085,
+          "percent": 1.58,
+          "function": "<&mut serde_json::de::Deserializer<serde_json::read::StrRead> as serde_core::de::Deserializer>::__deserialize_content_v1::<serde::private::de::content::ContentVisitor>"
+        },
+        {
+          "cpuSeconds": 0.077,
+          "percent": 1.45,
+          "function": "hermes::vm::NativeFunction::_callImpl(hermes::vm::Handle<hermes::vm::Callable>, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.074,
+          "percent": 1.38,
+          "function": "hermes::vm::toLength(hermes::vm::Runtime&, hermes::vm::Handle<hermes::vm::HermesValue>)"
+        },
+        {
+          "cpuSeconds": 0.07,
+          "percent": 1.31,
+          "function": "<alloc::vec::Vec<u32> as alloc::vec::spec_from_iter_nested::SpecFromIterNested<u32, core::iter::adapters::map::Map<core::char::decode::DecodeUtf16<core::iter::adapters::copied::Copied<core::slice::iter::Iter<u16>>>, formatjs_intl_collator::compare::points::{closure#0}>>>::from_iter"
+        },
+        {
+          "cpuSeconds": 0.067,
+          "percent": 1.25,
+          "function": "hermes::vm::doGetByIdSlowPath_RJS(hermes::vm::Runtime&, hermes::vm::PinnedHermesValue*, hermes::inst::Inst const*, hermes::vm::CodeBlock*, unsigned int, bool)"
+        },
+        {
+          "cpuSeconds": 0.067,
+          "percent": 1.25,
+          "function": "hermes::vm::IdentifierTable::getStringPrim(hermes::vm::Runtime&, hermes::vm::SymbolID)"
+        },
+        {
+          "cpuSeconds": 0.065,
+          "percent": 1.21,
+          "function": "<alloc::vec::Vec<i64> as alloc::vec::spec_from_iter_nested::SpecFromIterNested<i64, core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<core::iter::adapters::filter::Filter<core::iter::adapters::filter::Filter<core::slice::iter::Iter<[i64; 5]>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#0}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#1}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#2}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#3}>>>::from_iter"
+        },
+        {
+          "cpuSeconds": 0.065,
+          "percent": 1.21,
+          "function": "hermes::vm::stringPrototypeCharCodeAt(void*, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.058,
+          "percent": 1.08,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::getHostObject(facebook::jsi::Object const&)"
+        }
+      ]
+    },
+    "after": {
+      "exclusiveUserCyclesSeconds": 2.518,
+      "queryDeserializerCpuSeconds": 0,
+      "topFunctions": [
+        {
+          "cpuSeconds": 0.383,
+          "percent": 15.2,
+          "function": "hermes::vm::CallResult<hermes::vm::HermesValue, (hermes::vm::detail::CallResultSpecialize)2> hermes::vm::Interpreter::interpretFunction<false, false>(hermes::vm::Runtime&, hermes::vm::InterpreterState&)"
+        },
+        {
+          "cpuSeconds": 0.184,
+          "percent": 7.32,
+          "function": "free"
+        },
+        {
+          "cpuSeconds": 0.149,
+          "percent": 5.9,
+          "function": "std::shared_ptr<formatjs::hermes_bridge::Record<FormatjsCollatorHandle, &formatjs_collator_destroy> > formatjs::hermes_bridge::record<formatjs::hermes_bridge::Record<FormatjsCollatorHandle, &formatjs_collator_destroy> >(facebook::jsi::Runtime&, facebook::jsi::Value const&, char const*, char const*)"
+        },
+        {
+          "cpuSeconds": 0.116,
+          "percent": 4.62,
+          "function": "malloc"
+        },
+        {
+          "cpuSeconds": 0.109,
+          "percent": 4.33,
+          "function": "<static>@0x162ae7 (<libc.so.6>)"
+        },
+        {
+          "cpuSeconds": 0.107,
+          "percent": 4.26,
+          "function": "formatjs_intl_collator::compare::elements"
+        },
+        {
+          "cpuSeconds": 0.1,
+          "percent": 3.98,
+          "function": "<icu_normalizer::DecomposingNormalizerBorrowed>::normalize"
+        },
+        {
+          "cpuSeconds": 0.095,
+          "percent": 3.77,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::ManagedValue<hermes::vm::PinnedHermesValue>::invalidate()"
+        },
+        {
+          "cpuSeconds": 0.088,
+          "percent": 3.48,
+          "function": "hermes::vm::stringPrototypeConcat(void*, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.077,
+          "percent": 3.06,
+          "function": "hermes::vm::Callable::executeCall(hermes::vm::Handle<hermes::vm::Callable>, hermes::vm::Runtime&, hermes::vm::Handle<hermes::vm::HermesValue>, hermes::vm::Handle<hermes::vm::HermesValue>, hermes::vm::Handle<hermes::vm::JSObject>)"
+        },
+        {
+          "cpuSeconds": 0.07,
+          "percent": 2.77,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::cloneBigInt(facebook::jsi::IRuntime::PointerValue const*)"
+        },
+        {
+          "cpuSeconds": 0.047,
+          "percent": 1.85,
+          "function": "<alloc::vec::Vec<u32> as alloc::vec::spec_from_iter_nested::SpecFromIterNested<u32, core::iter::adapters::map::Map<core::char::decode::DecodeUtf16<core::iter::adapters::copied::Copied<core::slice::iter::Iter<u16>>>, formatjs_intl_collator::compare::points::{closure#0}>>>::from_iter"
+        },
+        {
+          "cpuSeconds": 0.047,
+          "percent": 1.85,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::getHostObject(facebook::jsi::Object const&)"
+        },
+        {
+          "cpuSeconds": 0.045,
+          "percent": 1.78,
+          "function": "hermes::vm::JSObject::getNamedDescriptorUnsafe(hermes::vm::Handle<hermes::vm::JSObject>, hermes::vm::Runtime&, hermes::vm::SymbolID, hermes::vm::NamedPropertyDescriptor&)"
+        },
+        {
+          "cpuSeconds": 0.045,
+          "percent": 1.78,
+          "function": "std::_Function_handler<facebook::jsi::Value (facebook::jsi::Runtime&, facebook::jsi::Value const&, facebook::jsi::Value const*, unsigned long), formatjs::installCollator(facebook::jsi::Runtime&, facebook::jsi::Object&)::{lambda(facebook::jsi::Runtime&, facebook::jsi::Value const&, facebook::jsi::Value const*, unsigned long)#2}>::_M_invoke(std::_Any_data const&, facebook::jsi::Runtime&, facebook::jsi::Value const&, facebook::jsi::Value const*&&, unsigned long&&)"
+        },
+        {
+          "cpuSeconds": 0.045,
+          "percent": 1.78,
+          "function": "hermes::vm::Interpreter::handleCallSlowPath(hermes::vm::Runtime&, hermes::vm::PinnedHermesValue*)"
+        },
+        {
+          "cpuSeconds": 0.045,
+          "percent": 1.78,
+          "function": "<alloc::vec::Vec<i64> as alloc::vec::spec_from_iter_nested::SpecFromIterNested<i64, core::iter::adapters::filter::Filter<core::iter::adapters::map::Map<core::iter::adapters::filter::Filter<core::iter::adapters::filter::Filter<core::slice::iter::Iter<[i64; 5]>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#0}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#1}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#2}>, formatjs_intl_collator::compare::prepared::{closure#0}::{closure#3}>>>::from_iter"
+        },
+        {
+          "cpuSeconds": 0.038,
+          "percent": 1.49,
+          "function": "<alloc::raw_vec::RawVecInner<_>>::reserve::do_reserve_and_handle::<alloc::alloc::Global>"
+        },
+        {
+          "cpuSeconds": 0.038,
+          "percent": 1.49,
+          "function": "hermes::vm::NativeFunction::_callImpl(hermes::vm::Handle<hermes::vm::Callable>, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.036,
+          "percent": 1.42,
+          "function": "hermes::vm::toLength(hermes::vm::Runtime&, hermes::vm::Handle<hermes::vm::HermesValue>)"
+        },
+        {
+          "cpuSeconds": 0.034,
+          "percent": 1.35,
+          "function": "formatjs_intl_collator::compare::prepare"
+        },
+        {
+          "cpuSeconds": 0.034,
+          "percent": 1.35,
+          "function": "facebook::hermes::(anonymous namespace)::HermesRuntimeImpl::HFContext::func(void*, hermes::vm::Runtime&)"
+        },
+        {
+          "cpuSeconds": 0.034,
+          "percent": 1.35,
+          "function": "hermes::fastDoubleToDecimal(double)"
+        },
+        {
+          "cpuSeconds": 0.03,
+          "percent": 1.21,
+          "function": "hermes::vm::StringBuilder::appendStringPrim(hermes::vm::Handle<hermes::vm::StringPrimitive>, unsigned int)"
+        }
+      ]
+    },
+    "workload": "var formatter = new Intl.Collator('en');\nfunction invoke(){return String(Math.sign(formatter.compare('a','b')))}\nvar expected=\"-1\";\nif(invoke()!==expected)throw new Error(\"initial output\");\nvar sum=0;var start=__now();\nfor(var i=0;i<3000000;i++)sum+=invoke().length;\nvar elapsed=__now()-start;\nif(invoke()!==expected)throw new Error(\"final output\");\nprint(JSON.stringify({name:\"collator\",calls:3000000,us:elapsed*1000/3000000,checksum:sum}));\n",
+    "command": "taskset -c 0 gprofng collect app -p off -h 'cycles~user=1~system=0,hi' -o EXPERIMENT HOST WORKLOAD"
+  },
+  "baselineBuildInputCommit": "a004baef9ce083f90688e2aa9a693d9069eec687",
+  "sdkLibraries": {
+    "before": {
+      "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a": {
+        "sha256": "00558b44c29ade0f39acc7309daefca200fd22d8c1d2314294f20f2665df5a94",
+        "bytes": 595923440
+      },
+      "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a": {
+        "sha256": "5ed96143597075beabe7e34436233776c8914b6a986b530fdadc621a6b08b2a1",
+        "bytes": 610102450
+      }
+    },
+    "after": {
+      "lib/x86_64-unknown-linux-gnu/libformatjs_intl_hermes.a": {
+        "sha256": "3aa4794c060bafde76f90d861d0bf4000db603a734ee1b29e5106d002d11768a",
+        "bytes": 610103524
+      },
+      "lib/aarch64-apple-darwin/libformatjs_intl_hermes.a": {
+        "sha256": "b0faf61309427eddf32d2f2fc6f4bb7bfcb30c3be95d5c730a21194824aa68f4",
+        "bytes": 595924008
+      }
+    }
+  },
+  "conformance": {
+    "sdkBefore": {
+      "type": "Collator-conformance",
+      "candidate": "Rust JSI installed API",
+      "reference": "TypeScript implementation",
+      "cases": 8680,
+      "assertions": 17934
+    },
+    "sdkAfter": {
+      "type": "Collator-conformance",
+      "candidate": "Rust JSI installed API",
+      "reference": "TypeScript implementation",
+      "cases": 8680,
+      "assertions": 17934
+    },
+    "icuOrderingFixtures": 69,
+    "icu4cIcu4jVersion": "78.1",
+    "icu4xCollatorVersion": "2.3.1",
+    "hermesTest262Cases": 130,
+    "hermesTest262KnownFailures": 2,
+    "sdkSmokes": [
+      "numberformat-smoke.js",
+      "pluralrules-smoke.js",
+      "displaynames-smoke.js",
+      "listformat-smoke.js",
+      "collator-smoke.js",
+      "durationformat-smoke.js",
+      "datetimeformat-smoke.js",
+      "relativetimeformat-smoke.js",
+      "segmenter-smoke.js"
+    ]
+  }
+}

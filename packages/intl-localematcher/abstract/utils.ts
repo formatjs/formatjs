@@ -1,6 +1,5 @@
 import {memoize} from '@formatjs/fast-memoize'
-import {data as jsonData} from '#packages/intl-localematcher/abstract/languageMatching.js'
-import {regions} from '@formatjs_generated/cldr.core/regions.js'
+import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
 // https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
@@ -48,468 +47,499 @@ export function invariant(
   }
 }
 
-// This is effectively 2 languages in 2 different regions in the same cluster
-const DEFAULT_MATCHING_THRESHOLD = 838
+// ICU 78 defaults: language first, one-way matches enabled, region demotion.
+const DEFAULT_MATCHING_THRESHOLD = matchingData.defaults[1]
+const DISTANCE_SCALE = 8
+const MIN_LSR_DISTANCE = matchingData.minLsrDistance
+const languageAliases = new Set(matchingData.canonicalAliases.language)
+const scriptAliases = new Set(matchingData.canonicalAliases.script)
+const regionAliases = new Set(matchingData.canonicalAliases.region)
 
 interface LSR {
   language: string
   script: string
   region: string
+  flags: number
+  key: string
+  pseudo?: string
 }
 
-interface LanguageMatchInfo {
-  supported: string
-  desired: string
-  distance: number
-  oneway: boolean
-}
-
-interface LanguageInfo {
-  matches: LanguageMatchInfo[]
-  matchVariables: Record<string, string[]>
-  paradigmLocales: string[]
-}
-
-let PROCESSED_DATA: LanguageInfo | undefined
-
-function processData(): LanguageInfo {
-  if (!PROCESSED_DATA) {
-    const paradigmLocales = jsonData.supplemental.languageMatching[
-      'written-new'
-    ][0]?.paradigmLocales?._locales.split(' ') as any
-    const matchVariables = jsonData.supplemental.languageMatching[
-      'written-new'
-    ].slice(1, 5) as any[]
-    const data = jsonData.supplemental.languageMatching['written-new'].slice(5)
-    const matches = data.map(d => {
-      const key = Object.keys(d)[0] as string
-      const value = (
-        d as Record<
-          string,
-          {
-            _desired: string
-            _distance: string
-            oneway?: string
-          }
-        >
-      )[key]
-      return {
-        supported: key,
-        desired: value._desired,
-        distance: +value._distance,
-        oneway: value.oneway === 'true' ? true : false,
-      }
-    }, {})
-    PROCESSED_DATA = {
-      matches,
-      matchVariables: matchVariables.reduce<Record<string, string[]>>(
-        (all, d) => {
-          const key = Object.keys(d)[0] as string
-          const value = d[key]
-          all[key.slice(1)] = value._value.split('+')
-          return all
-        },
-        {}
-      ),
-      paradigmLocales: [
-        ...paradigmLocales,
-        ...paradigmLocales.map((l: string) =>
-          new Intl.Locale(l.replace(/_/g, '-')).maximize().toString()
-        ),
-      ],
-    }
-  }
-
-  return PROCESSED_DATA
-}
-
-function isMatched(
-  locale: LSR,
-  languageMatchInfoLocale: string,
-  matchVariables: Record<string, string[]>
+function ascii(
+  value: string,
+  start: number,
+  end: number,
+  min: number,
+  max: number
 ): boolean {
-  const [language, script, region] = languageMatchInfoLocale.split('-')
-  let matches = true
-  if (region && region[0] === '$') {
-    const shouldInclude = region[1] !== '!'
-    const matchRegions = shouldInclude
-      ? matchVariables[region.slice(1)]
-      : matchVariables[region.slice(2)]
-    const expandedMatchedRegions = matchRegions
-      .map(r => regions[r] || [r])
-      .reduce((all, list) => [...all, ...list], [])
-    matches &&= !(
-      expandedMatchedRegions.indexOf(locale.region || '') > -1 !=
-      shouldInclude
-    )
-  } else {
-    matches &&= locale.region
-      ? region === '*' || region === locale.region
-      : true
+  for (let i = start; i < end; i++) {
+    const code = value.charCodeAt(i)
+    if (code < min || code > max) return false
   }
-  matches &&= locale.script ? script === '*' || script === locale.script : true
-  matches &&= locale.language
-    ? language === '*' || language === locale.language
-    : true
-  return matches
+  return true
 }
 
-function serializeLSR(lsr: LSR): string {
-  return [lsr.language, lsr.script, lsr.region].filter(Boolean).join('-')
+function languageSubtag(value: string): boolean {
+  return (
+    value.length >= 2 &&
+    value.length <= 8 &&
+    value.length !== 4 &&
+    ascii(value, 0, value.length, 97, 122)
+  )
 }
 
-function findMatchingDistanceForLSR(
-  desired: LSR,
-  supported: LSR,
-  data: LanguageInfo
-): number {
-  for (const d of data.matches) {
-    let matches =
-      isMatched(desired, d.desired, data.matchVariables) &&
-      isMatched(supported, d.supported, data.matchVariables)
-    if (!d.oneway && !matches) {
-      matches =
-        isMatched(desired, d.supported, data.matchVariables) &&
-        isMatched(supported, d.desired, data.matchVariables)
+function scriptSubtag(value: string): boolean {
+  return (
+    value.length === 4 &&
+    ascii(value, 0, 1, 65, 90) &&
+    ascii(value, 1, 4, 97, 122)
+  )
+}
+
+function regionSubtag(value: string): boolean {
+  return (
+    (value.length === 2 && ascii(value, 0, 2, 65, 90)) ||
+    (value.length === 3 && ascii(value, 0, 3, 48, 57))
+  )
+}
+
+function pseudoRegion(value: string): boolean {
+  return value === 'XA' || value === 'XB' || value === 'XC'
+}
+
+// ASCII parsing preserves legacy RegExp statics during Intl construction.
+function prefix(tag: string): {
+  language: string
+  script: string
+  region: string
+  end: number
+} {
+  let end = tag.indexOf('-')
+  if (end < 0) end = tag.length
+  const language = tag.slice(0, end)
+  let script = ''
+  let region = ''
+  if (end < tag.length) {
+    let next = tag.indexOf('-', end + 1)
+    if (next < 0) next = tag.length
+    let part = tag.slice(end + 1, next)
+    if (scriptSubtag(part)) {
+      script = part
+      end = next
+      next = tag.indexOf('-', end + 1)
+      if (next < 0) next = tag.length
+      part = tag.slice(end + 1, next)
     }
-    if (matches) {
-      const distance = d.distance * 10
-      if (
-        data.paradigmLocales.indexOf(serializeLSR(desired)) > -1 !=
-        data.paradigmLocales.indexOf(serializeLSR(supported)) > -1
-      ) {
-        return distance - 1
+    if (regionSubtag(part)) {
+      region = part
+      end = next
+    }
+  }
+  return {language, script, region, end}
+}
+
+function fields(tag: string): LSR {
+  const parsed = prefix(tag)
+  const language = parsed.language
+  let {script, region} = parsed
+  const parts =
+    parsed.end < tag.length ? tag.slice(parsed.end + 1).split('-') : []
+  const extension = parts.findIndex(part => part.length === 1)
+  const variants = extension < 0 ? parts : parts.slice(0, extension)
+  const pseudo = variants.find(
+    p => p === 'psaccent' || p === 'psbidi' || p === 'pscrack'
+  )
+  if (!pseudo && !pseudoRegion(region)) {
+    if (script === 'Zzzz') script = ''
+    if (region === 'ZZ') region = ''
+  }
+  const flags =
+    (language !== 'und' ? 4 : 0) |
+    (script && script !== 'Zzzz' ? 2 : 0) |
+    (region && region !== 'ZZ' ? 1 : 0)
+  return {
+    language,
+    script,
+    region,
+    flags,
+    pseudo,
+    key:
+      tag === 'und' || tag.startsWith('und-x-')
+        ? tag
+        : `${language}|${script}|${region}|${flags}|${pseudo || ''}`,
+  }
+}
+
+const stringKey = (value: any): string => value
+const canonicalize = memoize(
+  (tag: string): string => {
+    const basic = prefix(tag)
+    if (
+      basic.end === tag.length &&
+      languageSubtag(basic.language) &&
+      !languageAliases.has(basic.language) &&
+      !scriptAliases.has(basic.script) &&
+      !regionAliases.has(basic.region)
+    )
+      return tag
+    return Intl.getCanonicalLocales(tag)[0]
+  },
+  {serializer: stringKey}
+)
+const maximal = memoize(
+  (tag: string): LSR => {
+    const input = fields(tag)
+    // ICU keeps bare und, private-use locales and pseudolocales isolated.
+    if (tag === 'und' || tag.startsWith('und-x-')) {
+      return {
+        ...input,
+        language: tag,
+        script: '',
+        region: '',
+        flags: 7,
+        key: tag,
       }
-      return distance
     }
+    const pseudo = pseudoRegion(input.region)
+      ? input.region
+      : input.pseudo === 'psaccent'
+        ? 'XA'
+        : input.pseudo === 'psbidi'
+          ? 'XB'
+          : input.pseudo === 'pscrack'
+            ? 'XC'
+            : undefined
+    if (pseudo) {
+      const language = `${pseudo}:${input.language}`
+      const script = `${pseudo}:${input.script}`
+      const region = input.region || pseudo
+      const flags = input.region ? 7 : 6
+      return {
+        ...input,
+        language,
+        script,
+        region,
+        flags,
+        key: `${language}|${script}|${region}|${flags}`,
+      }
+    }
+    const locale = new Intl.Locale(tag).maximize()
+    let flags = input.flags
+    if (matchingData.macroRegions.includes(input.region)) {
+      const regionLocale = new Intl.Locale(`und-${input.region}`).maximize()
+      if (
+        (input.language === 'und' &&
+          (!input.script || input.script === regionLocale.script)) ||
+        (!input.script && !new Intl.Locale(input.language).maximize().script)
+      )
+        flags &= ~1
+    }
+    let language = locale.language
+    let script = locale.script || ''
+    let region = locale.region || ''
+    // Locale maximization can leave unknown tags incomplete; ICU matching fills them through und.
+    if (language === 'und' || !script || !region) {
+      const fallback = new Intl.Locale(
+        ['und', script, region].filter(Boolean).join('-')
+      ).maximize()
+      if (language === 'und')
+        language = fallback.language === 'und' ? 'en' : fallback.language
+      script ||= fallback.script || 'Latn'
+      region ||= fallback.region || 'US'
+    }
+    return {
+      language,
+      script,
+      region,
+      flags,
+      key: `${language}|${script}|${region}|${flags}`,
+    }
+  },
+  {serializer: stringKey}
+)
+
+function rawKey(tag: string): string {
+  if (tag === 'und') return '@und'
+  if (tag.startsWith('und-x-')) return tag
+  const parsed = prefix(tag)
+  const base = tag.slice(0, parsed.end)
+  if (pseudoRegion(parsed.region)) return base
+  if (tag.includes('-ps')) {
+    const input = fields(tag)
+    if (input.pseudo) return input.key
   }
-  throw new Error('No matching distance found')
+  if (parsed.script !== 'Zzzz' && parsed.region !== 'ZZ') return base
+  return [
+    parsed.language,
+    parsed.script === 'Zzzz' ? '' : parsed.script,
+    parsed.region === 'ZZ' ? '' : parsed.region,
+  ]
+    .filter(Boolean)
+    .join('-')
 }
 
-function findMatchingDistanceImpl(desired: string, supported: string): number {
-  const desiredLocale = new Intl.Locale(desired).maximize()
-  const supportedLocale = new Intl.Locale(supported).maximize()
-  const desiredLSR: LSR = {
-    language: desiredLocale.language,
-    script: desiredLocale.script || '',
-    region: desiredLocale.region || '',
+function distance(desired: LSR, supported: LSR): number {
+  const languages = `${desired.language}|${supported.language}`
+  let result =
+    desired.language === supported.language
+      ? 0
+      : (matchingData.language[languages] ?? matchingData.defaults[0])
+  if (desired.script !== supported.script) {
+    result +=
+      matchingData.script[
+        `${languages}|${desired.script}|${supported.script}`
+      ] ?? matchingData.defaults[1]
   }
-  const supportedLSR: LSR = {
-    language: supportedLocale.language,
-    script: supportedLocale.script || '',
-    region: supportedLocale.region || '',
+  if (desired.region !== supported.region) {
+    const matrix =
+      matchingData.region[
+        `${languages}|${desired.script}|${supported.script}`
+      ] ?? matchingData.region[`${languages}|*|*`]
+    const desiredPartitions = matchingData.regions[desired.region]
+    const supportedPartitions = matchingData.regions[supported.region]
+    let regionDistance = matchingData.defaults[2]
+    if (matrix && desiredPartitions && supportedPartitions) {
+      regionDistance = 0
+      // Macroregions cover several partitions: ICU takes the worst pair.
+      for (const d of desiredPartitions) {
+        for (const s of supportedPartitions) {
+          regionDistance = Math.max(
+            regionDistance,
+            matrix[d * matchingData.partitionCount + s]
+          )
+        }
+      }
+    }
+    result += regionDistance
   }
-  let matchingDistance = 0
-
-  const data = processData()
-
-  if (desiredLSR.language !== supportedLSR.language) {
-    matchingDistance += findMatchingDistanceForLSR(
-      {
-        language: desiredLocale.language,
-        script: '',
-        region: '',
-      },
-      {
-        language: supportedLocale.language,
-        script: '',
-        region: '',
-      },
-      data
-    )
-  }
-
-  if (desiredLSR.script !== supportedLSR.script) {
-    matchingDistance += findMatchingDistanceForLSR(
-      {
-        language: desiredLocale.language,
-        script: desiredLSR.script,
-        region: '',
-      },
-      {
-        language: supportedLocale.language,
-        script: supportedLSR.script,
-        region: '',
-      },
-      data
-    )
-  }
-
-  if (desiredLSR.region !== supportedLSR.region) {
-    matchingDistance += findMatchingDistanceForLSR(
-      desiredLSR,
-      supportedLSR,
-      data
-    )
-  }
-
-  return matchingDistance
+  return result === 0
+    ? (desired.flags ^ supported.flags) / DISTANCE_SCALE
+    : result
 }
 
-/**
- * Calculates the matching distance between two locales using the CLDR Enhanced Language Matching algorithm.
- * This function is memoized for performance, as distance calculations are expensive.
- *
- * The distance represents how "far apart" two locales are, with 0 being identical (after maximization).
- * Distances are calculated based on Language-Script-Region (LSR) differences using CLDR data.
- *
- * @param desired - The desired locale (e.g., "en-US")
- * @param supported - The supported locale to compare against (e.g., "en-GB")
- * @returns The calculated distance between the locales
- *
- * @example
- * ```ts
- * findMatchingDistance('en-US', 'en-US') // 0 - identical
- * findMatchingDistance('en-US', 'en-GB') // 40 - same language/script, different region
- * findMatchingDistance('es-CO', 'es-419') // 39 - regional variant
- * findMatchingDistance('en', 'fr') // 840 - completely different languages
- * ```
- *
- * @see https://unicode.org/reports/tr35/#EnhancedLanguageMatching
- */
+/** ICU language/script/region distance, including fractional explicit-subtag ties. */
 export const findMatchingDistance: (
   desired: string,
   supported: string
-) => number = memoize(findMatchingDistanceImpl, {
-  serializer: (args: any[]) => `${args[0]}|${args[1]}`,
-})
+) => number = memoize(
+  (desired: string, supported: string): number =>
+    distance(maximal(canonicalize(desired)), maximal(canonicalize(supported))),
+  {serializer: (args: string[]) => `${args[0]}|${args[1]}`}
+)
 
 interface LocaleMatchingResult {
   distances: Record<string, Record<string, number>>
   matchedSupportedLocale?: string
   matchedDesiredLocale?: string
 }
+interface Supported {
+  original: string[]
+  tags: string[]
+  raw: Map<string, number>
+  maximal?: LSR[]
+  exact?: Map<string, number>
+  orders: Map<string, number[]>
+  best: Map<string, {index: number; distance: number}>
+}
+const supportedCache = new WeakMap<readonly string[], Supported>()
+let paradigms: Set<string> | undefined
 
-/**
- * Generates fallback candidates by progressively removing subtags
- * e.g., "en-US" -> ["en-US", "en"]
- *      "zh-Hans-CN" -> ["zh-Hans-CN", "zh-Hans", "zh"]
- */
-function getFallbackCandidates(locale: string): string[] {
-  const candidates: string[] = []
-  let current = locale
-
-  while (current) {
-    candidates.push(current)
-    const lastDash = current.lastIndexOf('-')
-    if (lastDash === -1) break
-    current = current.substring(0, lastDash)
-  }
-
-  return candidates
+function equivalentKey(lsr: LSR): string {
+  return `${lsr.language}|${lsr.script}|${lsr.region}`
 }
 
-/**
- * Finds the best locale match using a three-tier optimization hierarchy.
- *
- * ## Three-Tier Matching Algorithm:
- *
- * **Tier 1 - Fast Path** (O(n)): Exact string matching via Set lookup
- * - Example: 'en' matches 'en' exactly → distance 0
- * - Solves #4936: 48x faster than baseline (12ms vs 610ms with 700+ locales)
- *
- * **Tier 2 - Fallback Path** (O(k×n)): Maximization + progressive subtag removal
- * - Maximizes requested locale, then removes subtags right-to-left
- * - Example: "zh-TW" → "zh-Hant-TW" → ["zh-Hant-TW", "zh-Hant", "zh"]
- * - Distance: 0 for maximized match, 10 per removed subtag + position penalty
- * - 40-50x faster than full UTS #35, handles 99% of real-world cases correctly
- *
- * **Tier 3 - Slow Path** (O(n×m), memoized): Full UTS #35 CLDR matching
- * - Calculates Language-Script-Region distances using CLDR data
- * - Handles complex cases like cross-script matching (sr-Cyrl ↔ sr-Latn)
- * - Only used when Tiers 1 & 2 find no match
- * - Still 6x faster than baseline due to memoization
- *
- * ## Performance Impact of Maximization:
- *
- * While Tier 2 now calls `Intl.Locale().maximize()` once per requested locale,
- * this is still much faster than Tier 3's full distance calculation:
- * - Tier 1: ~12ms (exact match, no maximization)
- * - Tier 2: ~13-15ms (maximization + fallback)
- * - Tier 3: ~100ms+ (full UTS #35 with all supported locales)
- *
- * @param requestedLocales - Locale identifiers in preference order
- * @param supportedLocales - Available locale identifiers
- * @param threshold - Maximum distance (default: 838, from CLDR)
- * @returns Matching result with distances
- *
- * @example
- * ```ts
- * // Tier 1: Exact match
- * findBestMatch(['en'], ['en', 'fr'])
- * // → { matchedSupportedLocale: 'en', distances: { en: { en: 0 } } }
- *
- * // Tier 2: Fallback with maximization
- * findBestMatch(['zh-TW'], ['zh-Hant'])
- * // → zh-TW maximizes to zh-Hant-TW, falls back to zh-Hant (distance 0)
- *
- * findBestMatch(['en-US'], ['en'])
- * // → en-US maximizes to en-Latn-US, falls back to en (distance 10)
- *
- * // Tier 3: Full calculation
- * findBestMatch(['en-XZ'], ['ja', 'ko'])
- * // → No fallback match, uses UTS #35 to find closest match
- * ```
- *
- * @see https://unicode.org/reports/tr35/#EnhancedLanguageMatching
- * @see https://github.com/formatjs/formatjs/issues/4936
- */
-// WeakMap to cache canonicalized supported locales arrays
-const canonicalizedSupportedCache = new WeakMap<readonly string[], string[]>()
+function prepare(locales: readonly string[]): Supported {
+  let result = supportedCache.get(locales)
+  if (
+    result &&
+    (result.original.length !== locales.length ||
+      result.original.some((tag, index) => tag !== locales[index]))
+  )
+    result = undefined
+  if (!result) {
+    result = {
+      original: Array.from(locales),
+      tags: [],
+      raw: new Map(),
+      orders: new Map(),
+      best: new Map(),
+    }
+    supportedCache.set(locales, result)
+  }
+  return result
+}
 
+function rawMatch(data: Supported, key: string): number | undefined {
+  const cached = data.raw.get(key)
+  if (cached !== undefined) return cached
+  // A zero-distance match cannot be improved by later supported locales.
+  for (let index = data.tags.length; index < data.original.length; index++) {
+    const tag = canonicalize(data.original[index])
+    // CreateDataProperty avoids inherited numeric setters on internal arrays.
+    Object.defineProperty(data.tags, index, {
+      value: tag,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
+    const candidate = rawKey(tag)
+    if (!data.raw.has(candidate)) data.raw.set(candidate, index)
+    if (candidate === key) return data.raw.get(candidate)
+  }
+  return undefined
+}
+
+function order(data: Supported, defaultLocale: string): number[] {
+  let result = data.orders.get(defaultLocale)
+  if (!result) {
+    if (!data.maximal) {
+      data.maximal = data.tags.map(maximal)
+      data.exact = new Map()
+      data.maximal.forEach((lsr, index) => {
+        if (!data.exact!.has(lsr.key)) data.exact!.set(lsr.key, index)
+      })
+    }
+    paradigms ??= new Set(
+      matchingData.paradigms.map(tag =>
+        equivalentKey(maximal(canonicalize(tag)))
+      )
+    )
+    const defaultKey = defaultLocale
+      ? equivalentKey(maximal(canonicalize(defaultLocale)))
+      : ''
+    const rank = (index: number) => {
+      const key = equivalentKey(data.maximal![index])
+      return key === defaultKey ? 0 : paradigms!.has(key) ? 1 : 2
+    }
+    result = data.tags.map((_, i) => i).sort((a, b) => rank(a) - rank(b))
+    data.orders.set(defaultLocale, result)
+  }
+  return result
+}
+
+function moreLikely(candidate: LSR, previous: LSR): boolean {
+  if (candidate.language !== previous.language) return false
+  if (!languageSubtag(candidate.language)) return false
+  const likely = maximal(candidate.language)
+  return candidate.script !== previous.script
+    ? candidate.script === likely.script
+    : candidate.region !== previous.region && candidate.region === likely.region
+}
+
+function equivalentMatch(
+  desired: LSR,
+  data: Supported
+): {index: number; distance: number} | undefined {
+  let best: {index: number; distance: number} | undefined
+  // Every ordinary equivalent LSR is one of these eight explicit-subtag subsets.
+  for (let flags = 0; flags < 8; flags++) {
+    const key = [
+      flags & 4 ? desired.language : 'und',
+      flags & 2 ? desired.script : '',
+      flags & 1 ? desired.region : '',
+    ]
+      .filter(Boolean)
+      .join('-')
+    const index = data.raw.get(key)
+    if (index === undefined) continue
+    const supported = maximal(data.tags[index])
+    if (equivalentKey(desired) !== equivalentKey(supported)) continue
+    const d = distance(desired, supported)
+    if (
+      d < Math.min(1, MIN_LSR_DISTANCE) &&
+      (!best ||
+        d < best.distance ||
+        (d === best.distance && index < best.index))
+    )
+      best = {index, distance: d}
+  }
+  return best
+}
+
+/** Cached exact LSR lookup, then ICU distance matching. Threshold is exclusive. */
 export function findBestMatch(
   requestedLocales: readonly string[],
   supportedLocales: readonly string[],
-  threshold: number = DEFAULT_MATCHING_THRESHOLD
+  threshold: number = DEFAULT_MATCHING_THRESHOLD,
+  defaultLocale: string = supportedLocales[0] || '',
+  collectDistances = true
 ): LocaleMatchingResult {
-  let lowestDistance = Infinity
-  let result: LocaleMatchingResult = {
-    matchedDesiredLocale: '',
-    distances: {},
-  }
-
-  // Get or compute canonicalized supported locales (one by one to preserve indices)
-  let canonicalizedSupportedLocales =
-    canonicalizedSupportedCache.get(supportedLocales)
-  if (!canonicalizedSupportedLocales) {
-    canonicalizedSupportedLocales = supportedLocales.map(locale => {
-      try {
-        const canonical = Intl.getCanonicalLocales([locale])
-        return canonical[0] || locale
-      } catch {
-        return locale
-      }
-    })
-    canonicalizedSupportedCache.set(
-      supportedLocales,
-      canonicalizedSupportedLocales
-    )
-  }
-
-  const supportedSet = new Set(canonicalizedSupportedLocales)
-
-  // === TIER 1: FAST PATH - Exact Match ===
-  // Check for exact matches in ALL requested locales
-  // This is the fastest path and handles the majority of real-world cases
-  for (let i = 0; i < requestedLocales.length; i++) {
-    const desired = requestedLocales[i]
-    if (supportedSet.has(desired)) {
-      const distance = 0 + i * 40
-      result.distances[desired] = {[desired]: distance}
-
-      if (distance < lowestDistance) {
-        lowestDistance = distance
-        result.matchedDesiredLocale = desired
-        result.matchedSupportedLocale = desired
-      }
-
-      // Only return immediately if this is the first requested locale (distance=0)
-      // Otherwise, continue checking for potentially better matches
-      if (i === 0) {
-        return result
+  const result: LocaleMatchingResult = {distances: {}}
+  if (!supportedLocales.length || !requestedLocales.length || threshold <= 0)
+    return result
+  const data = prepare(supportedLocales)
+  // Derive demotion from the same data as ICU, rather than hardcoding a penalty.
+  const demotion = matchingData.demotion
+  let bestDistance = threshold
+  for (let i = 0; i < requestedLocales.length && bestDistance > 0; i++) {
+    const desiredTag = requestedLocales[i]
+    const canonical = canonicalize(desiredTag)
+    const exactRaw = rawMatch(data, rawKey(canonical))
+    if (exactRaw !== undefined) {
+      result.matchedDesiredLocale = desiredTag
+      result.matchedSupportedLocale = supportedLocales[exactRaw]
+      if (collectDistances)
+        result.distances[desiredTag] = {
+          [supportedLocales[exactRaw]]: i * demotion,
+        }
+      return result
+    }
+    const desired = maximal(canonical)
+    const cacheKey = `${canonical}|${defaultLocale}`
+    if (!collectDistances) {
+      const equivalent =
+        data.best.get(cacheKey) || equivalentMatch(desired, data)
+      if (equivalent && equivalent.distance < Math.min(1, MIN_LSR_DISTANCE)) {
+        data.best.set(cacheKey, equivalent)
+        if (equivalent.distance < bestDistance) {
+          bestDistance = equivalent.distance
+          result.matchedDesiredLocale = desiredTag
+          result.matchedSupportedLocale = supportedLocales[equivalent.index]
+        }
+        bestDistance -= demotion
+        continue
       }
     }
-  }
-
-  // If we found an exact match in Tier 1 (but not for first locale), check Tier 2
-  // to see if there's a better fallback match with lower distance
-  // If no exact match found, Tier 2 will find fallback matches
-
-  // === TIER 2: FALLBACK PATH - Maximization + Progressive Subtag Removal ===
-  // Try maximization-based matching before resorting to expensive Tier 3
-  // This handles cases like zh-TW → zh-Hant efficiently
-  for (let i = 0; i < requestedLocales.length; i++) {
-    const desired = requestedLocales[i]
-
-    // Maximize then fallback (for linguistic accuracy like zh-TW → zh-Hant)
-    try {
-      const maximized = new Intl.Locale(desired).maximize().toString()
-      if (maximized !== desired) {
-        const maximizedCandidates = getFallbackCandidates(maximized)
-        for (let j = 0; j < maximizedCandidates.length; j++) {
-          const candidate = maximizedCandidates[j]
-          if (candidate === desired) continue // Already checked in Tier 1
-
-          if (supportedSet.has(candidate)) {
-            // Check if candidate also maximizes to the same form
-            // e.g., zh-TW → zh-Hant-TW and zh-Hant → zh-Hant-TW (distance 0)
-            // but es-co → es-Latn-CO and es → es-Latn-ES (distance 10)
-            let distance: number
-            try {
-              const candidateMaximized = new Intl.Locale(candidate)
-                .maximize()
-                .toString()
-              distance =
-                candidateMaximized === maximized ? 0 + i * 40 : j * 10 + i * 40
-            } catch {
-              distance = j * 10 + i * 40
-            }
-
-            if (!result.distances[desired]) {
-              result.distances[desired] = {}
-            }
-            result.distances[desired][candidate] = distance
-
-            if (distance < lowestDistance) {
-              lowestDistance = distance
-              result.matchedDesiredLocale = desired
-              result.matchedSupportedLocale = candidate
-            }
-            break // Stop after finding first maximized match
-          }
+    const indexes = order(data, defaultLocale)
+    const exact = data.exact!.get(desired.key)
+    if (exact !== undefined) {
+      result.matchedDesiredLocale = desiredTag
+      result.matchedSupportedLocale = supportedLocales[exact]
+      if (collectDistances)
+        result.distances[desiredTag] = {[supportedLocales[exact]]: i * demotion}
+      return result
+    }
+    let best = collectDistances ? undefined : data.best.get(cacheKey)
+    if (!best) {
+      best = {index: -1, distance: Infinity}
+      const distances: Record<string, number> = {}
+      for (const index of indexes) {
+        const d = collectDistances
+          ? findMatchingDistance(desiredTag, supportedLocales[index])
+          : distance(desired, data.maximal![index])
+        if (collectDistances)
+          distances[supportedLocales[index]] = d + i * demotion
+        if (
+          d < best.distance ||
+          (d === best.distance &&
+            d >= 1 &&
+            best.index >= 0 &&
+            moreLikely(data.maximal![index], data.maximal![best.index]))
+        ) {
+          best = {index, distance: d}
         }
       }
-    } catch {
-      // Locale maximization failed, continue to Tier 3
-    }
-  }
-
-  // If Tier 2 found a perfect maximized match (distance 0), return immediately (fast path)
-  if (result.matchedSupportedLocale && lowestDistance === 0) {
-    return result
-  }
-
-  // === TIER 3: SLOW PATH - Full UTS #35 Distance Calculation ===
-  // Always run Tier 3 for full CLDR accuracy
-  // Tier 3 may find better matches than Tier 2's fallback approach
-  // findMatchingDistance is memoized, so repeated calculations are cached
-  // Reset lowestDistance so Tier 3 operates independently from Tier 2's
-  // heuristic distances — Tier 2 uses subtag-removal position as a proxy
-  // for distance, which is not comparable to CLDR distances (e.g. Tier 2
-  // assigns distance 20 to es→es-MX, but CLDR says es-419 at distance 39
-  // is closer than es at distance 49).
-  lowestDistance = Infinity
-  requestedLocales.forEach((desired, i) => {
-    if (!result.distances[desired]) {
-      result.distances[desired] = {}
-    }
-    canonicalizedSupportedLocales.forEach((canonicalLocale, supportedIndex) => {
-      const originalSupported = supportedLocales[supportedIndex]
-
-      // findMatchingDistance is memoized via fast-memoize
-      // Use the canonical locale for distance calculation
-      const distance = findMatchingDistance(desired, canonicalLocale)
-
-      // Add some weight to the distance based on the order of the supported locales
-      // Add penalty for the order of the requested locales, which currently is 0 since ECMA-402
-      // doesn't really have room for weighted locales like `en; q=0.1`
-      const finalDistance = distance + 0 + i * 40
-
-      // Store and return the original locale, not the canonical one
-      // Tier 3 overwrites Tier 2 distances (Tier 3 is more accurate)
-      result.distances[desired][originalSupported] = finalDistance
-      if (finalDistance < lowestDistance) {
-        lowestDistance = finalDistance
-        result.matchedDesiredLocale = desired
-        result.matchedSupportedLocale = originalSupported
+      if (collectDistances) result.distances[desiredTag] = distances
+      else {
+        if (data.best.size >= 256) data.best.clear()
+        data.best.set(cacheKey, best)
       }
-    })
-  })
-
-  if (lowestDistance >= threshold) {
-    result.matchedDesiredLocale = undefined
-    result.matchedSupportedLocale = undefined
+    }
+    if (best.distance < bestDistance) {
+      bestDistance = best.distance
+      result.matchedDesiredLocale = desiredTag
+      result.matchedSupportedLocale = supportedLocales[best.index]
+    }
+    bestDistance -= demotion
   }
-
   return result
 }

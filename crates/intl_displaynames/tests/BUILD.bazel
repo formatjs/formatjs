@@ -1,0 +1,21 @@
+load("//tools:test.bzl", "formatjs_test")
+
+formatjs_test(
+    name = "conformance_test",
+    size = "medium",
+    srcs = ["conformance.test.ts"],
+    data = [
+        "//crates/intl_displaynames:conformance",
+        "//crates/intl_displaynames:locale_data",
+        "//packages/intl-displaynames:cldr-raw",
+    ],
+    no_copy_to_bin = ["//:package.json"],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)

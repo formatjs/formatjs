@@ -1,15 +1,96 @@
 # gazelle:alias_kind rust_static_library rust_library
 load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
 
-rust_static_library(
+config_setting(
+    name = "compiled",
+    flag_values = {"//crates/intl_data:compiled": "true"},
+)
+
+config_setting(
+    name = "android_arm64",
+    constraint_values = [
+        "@platforms//os:android",
+        "@platforms//cpu:arm64",
+    ],
+)
+
+config_setting(
+    name = "android_x86_64",
+    constraint_values = [
+        "@platforms//os:android",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
+alias(
     name = "intl_hermes",
+    actual = select({
+        ":compiled": ":with_compiled_data",
+        "//conditions:default": ":without_compiled_data",
+    }),
+    visibility = ["//visibility:public"],
+)
+
+rust_static_library(
+    name = "without_compiled_data",
     srcs = ["lib.rs"],
-    crate_name = "formatjs_intl_hermes",
+    crate_name = "formatjs_intl_hermes_uncompiled",
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
+        "//crates/intl_collator",
+        "//crates/intl_datetimeformat",
+        "//crates/intl_datetimeformat_calendars",
+        "//crates/intl_displaynames",
+        "//crates/intl_durationformat",
         "//crates/intl_getcanonicallocales",
+        "//crates/intl_listformat",
+        "//crates/intl_locale",
+        "//crates/intl_numberformat",
+        "//crates/intl_pluralrules",
+        "//crates/intl_relativetimeformat",
+        "//crates/intl_segmenter",
         "//crates/intl_supportedvaluesof",
     ],
+)
+
+COMPILED_DEPS = [
+    "//crates/intl_collator",
+    "//crates/intl_datetimeformat:with_compiled_data",
+    "//crates/intl_datetimeformat_calendars:with_compiled_data",
+    "//crates/intl_displaynames:with_compiled_data",
+    "//crates/intl_durationformat:with_compiled_data",
+    "//crates/intl_getcanonicallocales",
+    "//crates/intl_listformat:with_compiled_data",
+    "//crates/intl_locale",
+    "//crates/intl_numberformat:with_compiled_data",
+    "//crates/intl_pluralrules:with_compiled_data",
+    "//crates/intl_relativetimeformat:with_compiled_data",
+    "//crates/intl_segmenter",
+    "//crates/intl_supportedvaluesof",
+]
+
+rust_static_library(
+    name = "with_compiled_data",
+    srcs = ["lib.rs"],
+    compile_data = select({
+        ":android_arm64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_aarch64-linux-android"],
+        ":android_x86_64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_x86_64-linux-android"],
+        "//conditions:default": [],
+    }),
+    crate_name = "formatjs_intl_hermes",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = COMPILED_DEPS,
+)
+
+filegroup(
+    name = "cargo_sources",
+    srcs = glob([
+        "*.rs",
+        "*.toml",
+    ]),
+    visibility = ["//crates:__pkg__"],
 )

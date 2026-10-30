@@ -1,9 +1,10 @@
 module(
     name = "formatjs_intl_getcanonicallocales_hermes",
-    version = "0.1.0",
+    version = "0.2.0",  # x-release-please-version
     bazel_compatibility = [">=8.0.0"],
 )
 
 bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "apple_support", version = "2.9.1")
 bazel_dep(name = "rules_cc", version = "0.2.27")
 bazel_dep(name = "hermes", version = "260318099.0.0-393a539e6")

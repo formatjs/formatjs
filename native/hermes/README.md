@@ -1,112 +1,75 @@
-# Rust Intl.getCanonicalLocales on Hermes
+# Rust Intl extensions on Hermes
 
-The C++ adapter requires C++17 and exceptions enabled. Compile against the
-embedding runtime's JSI headers with matching ABI and toolchain settings.
-
-`canonical_locales` installs `Intl.getCanonicalLocales` through public JSI.
-The JS wrapper preserves locale-list coercion and property access order; Rust
-validates and canonicalizes each tag using ICU4X and CLDR aliases. No WASM runtime
-or asynchronous bridge is involved.
-
-Install before application code:
+[SDK guide](package/README.md): downloads, CMake/Bazel integration, custom locales.
+[React Native example](https://github.com/formatjs/hermes-intl): all twelve APIs on
+one Android screen, rendered-text tests, screenshot comparison.
 
 ```cpp
-#include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/intl.h>
 
-formatjs::installCanonicalLocales(*runtime);
+formatjs::installIntl(runtime);
 ```
 
-Inside FormatJS, link `//native/hermes:canonical_locales`. External consumers
-use the [standalone SDK](package/README.md) and link
-`@formatjs_intl_getcanonicallocales_hermes//:canonical_locales` with their Hermes
-runtime. The SDK ships Rust static libraries for Linux x86_64 GNU and macOS
-arm64; consumers compile its C++ adapter against their matching JSI headers.
-Version `0.1.0` is built from this repository and is not published to BCR, npm,
-or crates.io. Android/iOS artifacts and React Native packaging are separate work.
+Call on the JavaScript thread before application code. The installer handles
+load order, native state ownership, and repeated calls. Its setup-object overload
+uses Hermes extension bytecode without evaluating source.
 
-Rust owns returned UTF-8 buffers; the adapter releases each buffer after copying
-it into a JSI string. No per-runtime Rust cache is retained.
+## Design
 
-## Standalone installation
+- TypeScript facades preserve observable ECMA-402 coercions, getters, brands,
+  descriptors, and iteration. They call private native bridges.
+- C++ adapts JSI values, buffers, callbacks, and foreign exceptions.
+- Rust owns locale matching, validation, records, and formatting. ICU4X and shared
+  CLDR/Unicode inputs supply data and algorithms; Collator retains the FormatJS
+  CLDR sort/search profile with ICU4X normalization and casing.
 
-Build and extract the SDK on Linux:
+`bridge.h` shares transport and ownership helpers. C ABI headers generate from
+Rust exports using `//tools/ffi_headers` and pinned cbindgen. Consumers need
+neither Rust nor cbindgen to compile the packaged adapter.
+
+The SDK uses compiled locale providers. Source targets retain explicit registries
+for custom providers and conformance fixtures. See
+[compiled data](../../knowledge-base/007m-hermes-distribution.md) for package flow.
+
+## Hermes version
+
+The standalone consumer pins engine `393a539e6` and the
+[FormatJS overlay](https://github.com/formatjs/hermes/tree/338ff13ff1e996934ae615952d174f8c621844d9).
+Its Proxy constructor patch prevents an extra observable `newTarget.prototype`
+read. Bazel applies it automatically; raw engine builds must apply it too.
+Compile setup bytecode with the exact `hermesc` version used by the runtime.
+React Native uses its bundled engine; the Android example tests that integration.
+
+## Individual installers
+
+Each formatter retains its public header and source/setup-object overloads.
+Use those when installing a subset. `installIntl` is the default for all APIs;
+its implementation records the dependency order in one place.
+
+DateTimeFormat's individual installer returns a guard. Keep it on the JavaScript
+thread until formatting stops, then destroy it before the runtime. `installIntl`
+retains this guard in runtime data automatically. Rust queues GC releases and
+drains them on the runtime thread.
+
+Install Temporal before DurationFormat to accept duration strings and branded
+Temporal durations. Duration-like records work without Temporal.
+
+## Tests and benchmarks
+
+Source and optimized-bytecode integration tests run on real Hermes. Fixtures
+cross-check Rust/TS with ICU4C/J/X; Segmenter also runs complete Unicode 17
+boundary corpora. Test262 baselines record remaining engine limitations.
 
 ```sh
-bazel build -c opt //native/hermes/package:sdk
-sdk_archive="$(bazel cquery -c opt --output=files //native/hermes/package:sdk)"
-sdk_dir="$(mktemp -d)"
-tar -xzf "$sdk_archive" -C "$sdk_dir"
-cd examples/hermes-intl
-bazel test --config=linux \
-  --override_module=formatjs_intl_getcanonicallocales_hermes="$sdk_dir" \
-  //:smoke_test
+bazel test -c opt //native/hermes/tests:segmenter_conformance_test \
+  //native/hermes/tests:listformat_conformance_test
+bazel test -c opt //tools/test262:hermes-collator
 ```
 
-The [independent example](../../examples/hermes-intl/README.md) consumes only the
-extracted SDK's public layout. It compiles `js/extensions.js` using the execution
-platform's `hermesc`, evaluates the resulting bytecode into a setup object, then
-installs it before application code:
+The [independent SDK consumer](../../examples/hermes-intl/README.md) validates
+extracted archives, all-API installation, source/bytecode startup, and repeat
+installation. CI cross-builds on Linux and runs downloaded macOS binaries.
 
-```cpp
-auto extensions = runtime->evaluateJavaScript(bytecode, "extensions.hbc")
-                      .asObject(*runtime);
-formatjs::installCanonicalLocales(*runtime, extensions);
-```
-
-## Hermes extension registration
-
-For Hermes core/contrib integration, include the SDK's
-`js/30-IntlGetCanonicalLocales.js` in Hermes' concatenated extension sources,
-compile/link the adapter and target Rust archive, then call
-`formatjs::installCanonicalLocales(runtime, extensions)` from the C++ extension
-dispatcher. Keep the JavaScript fragment and adapter at the same SDK version.
-The complete `js/extensions.js` bundle is for standalone startup, not the
-concatenated source list. Linking the SDK does not register a startup hook.
-
-Install trusted `Intl.Locale` before the final installer call. If Locale itself
-needs `Intl.getCanonicalLocales`, install the adapter, load Locale, then reinstall
-the adapter before application code so it captures Locale's intrinsic brand method.
-
-## Development runner
-
-The standalone host runner uses the native Bazel module from
-[formatjs/hermes](https://github.com/formatjs/hermes), with Intl disabled. It
-installs the Rust implementation, then evaluates each script in the same runtime.
-`print()` and monotonic `performance.now()` are available. `--prelude=path.js`
-evaluates a startup script between initial installation and final installation.
-This permits loading a trusted `Intl.Locale` polyfill, whose intrinsic brand
-method is captured during final installation. Install any Locale implementation
-before the final adapter installation; ordinary arguments run afterward.
-
-```sh
-bazel test -c opt //native/hermes:canonical_locales_test
-bazel run -c opt //native/hermes:hermes_runner -- /absolute/path/script.js
-```
-
-The host runner is an explicit development target. CI cross-builds the SDK and
-standalone macOS executable on Linux; macOS only runs the downloaded artifacts.
-
-## Native bridge
-
-Rust owns Intl records, locale data, and formatting. C++ adapts JSI values,
-callbacks, and foreign exceptions. Adapters share `bridge.h` for transport,
-branded handles, owned buffers, and factory installation.
-
-C ABI headers generate from Rust exports through `//tools/ffi_headers`, using
-pinned cbindgen source and its upstream Cargo lock. Type renames preserve public
-C names. The SDK ships generated headers and the shared bridge; SDK consumers
-need neither Rust nor cbindgen to build the JSI adapters.
-
-## Existing package conformance
-
-Each `//native/hermes/tests:<polyfill>_package_conformance_test` reuses package API
-test bodies against Rust JSI, in source and optimized-bytecode installer modes.
-Each file gets a fresh Hermes runtime. Supporting formatters remain real TS
-implementations; native data envelopes preserve the original test payloads.
-
-Current targets: `supportedvaluesof`.
-
-Explicit exclusion reports identify TS-private state, implementation-defined
-diagnostics, and host-specific behavior. Original TS unit suites retain those
-checks. Unsupported assertions, stale exclusions, and unmet assertion counts fail.
-The host timezone stays UTC.
+[Hermes benchmarks](../../benchmarks/hermes-intl-extension/README.md) compare
+optimized SDKs with TS in the same engine. Keep setup, workload, compiler flags,
+and output checks consistent; retain raw timings and profiles with changes.

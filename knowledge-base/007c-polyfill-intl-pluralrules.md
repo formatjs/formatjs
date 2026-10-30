@@ -140,3 +140,143 @@ plural categories in the order `zero`, `one`, `two`, `few`, `many`, `other`.
 
 Compact plural selection uses generated CLDR exponent tables for locales whose
 rules use `c`/`e`. It does not require NumberFormat locale data to be installed.
+
+## Rust port
+
+`crates/intl_pluralrules` loads individual CLDR JSON packs into ICU4X rules.
+`//crates/intl_pluralrules:locale_data` emits one `locale-data/<locale>.json`
+per locale in the existing `ALL_LOCALES` list. Cardinal/ordinal rules retain the
+original CLDR conditions; sample annotations are removed. Range matrices and
+compact exponent tables accompany the rules. The TS and Rust data pipelines
+share `scripts/compact-exponents.ts`.
+
+The rule engine owns loaded payloads and has no global locale registration or
+baked plural data. `tests:rule_conformance_test` compares all packs with the TS
+compiler over 100,000+ samples. `digits::Digits` now implements typed digit-option resolution and exact decimal
+rounding; `tests:digit_conformance_test` compares selection, ranges and metadata
+with the public TS API. The Hermes adapter implements constructor behavior
+and ships in the standalone SDK.
+
+Conformance also covers canonical aliases during TS data registration (`sh`
+registers as `sr-Latn`), exact digit-string modulo beyond Number precision,
+integer-only CLDR `n` membership, and fractions longer than ICU4X's default
+18-digit operand window. Both engines retain visible fraction width and compute
+modulo before converting digits to bounded integers.
+
+`instance::PluralRules` owns validated type/notation/digit options and shares an
+immutable rule payload. The conformance runner exercises this production API for
+selection, ranges and complete resolved metadata. Host adapters handle observable
+JS coercion before constructing an instance; the registry negotiates locale tags
+with the shared Rust Locale matcher.
+
+The Rust registry loads packs atomically, registers canonical default-content
+aliases and required fallbacks, and protects explicitly loaded payloads from
+alias replacement. Existing instances keep their selected data after late loads.
+Generated packs carry alias metadata; no other locale pack loads implicitly.
+
+The shared Hermes archive exports PluralRules registry/load/create/query/free
+functions from `ffi.rs`. Handles own their data; input buffers never escape a
+call. ABI tests cover registry replacement/destruction, owned output, invalid
+UTF-8, atomic failed loads, lazy non-finite options and RangeError/TypeError codes.
+
+Locale matching shares the TS matcher's CLDR distance rules, region variables
+and paradigm locales through generated Rust metadata in `intl_locale`. Prefix
+lookup strips only Unicode extensions; supported locale results retain requested
+tags. Best fit preserves exact/maximized fast paths and request-order penalties.
+
+`native/hermes:pluralrules_bridge_test` runs a TypeScript factory fixture through
+the real Hermes runner and C++ adapter. It tests owned host objects, native
+matching, ranges, error codes and late locale replacement. The runner accepts
+`--extensions=<bundle>` for source or optimized-bytecode factory bundles.
+The public constructor/coercion facade uses `pluralrules.ts`. The standalone
+SDK ships that installer, the C++ adapter and selected per-locale JSON packs;
+its independent consumer verifies lazy loading with downloaded native artifacts.
+
+Mathematical-input normalization handles StringNumericLiteral syntax, radix
+integers, IEEE Number-range clamping and BigInt's early return. Canonical unsigned
+text returns directly when fraction precision needs no rounding or padding, with
+increment one and no significant-digit rounding. General finite values use
+fixed_decimal; huge BigInt integers use prefix/suffix string rounding
+to avoid its i16 magnitude limit. Plural operands read decimal text directly.
+TS regression coverage rejects malformed numeric text and preserves exact radix
+values before the shared TS/Rust mathematical conformance comparisons.
+
+The Hermes facade owns only observable JS behavior: receiver allocation, option
+getter/coercion order, ToPrimitive, brands, descriptors and fresh result objects.
+Rust owns matching, validated options, numeric parsing/rounding and selection.
+Public native conformance runs source/optimized-bytecode installers against TS over 10,000+
+selections/ranges, with separate checks for tampered intrinsics and edge ordering.
+
+The SDK ships the PluralRules C++ adapter, source/precompiled factories and
+individual JSON packs. The independent consumer links `:pluralrules`, embeds
+only English/French packs and a compiled TypeScript smoke script, then registers
+French after creating an English instance. BuildBuddy builds and cross-builds;
+macOS executes the downloaded consumer without building.
+
+### Native compiled provider
+
+The Hermes SDK now embeds build-selected locale records in Rust rather than
+shipping locale JSON for application registration. Rust validates the existing
+CLDR data and compiles plural rules at build time; calendar locale patches merge
+into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
+The explicit-registration targets retain custom-provider and TS conformance use.
+See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+### Independent ICU checks
+
+The pinned ICU4J oracle generates 720 default-precision selections across 12
+locales, cardinal/ordinal rules, integers and fractions. ICU4C and ICU4X check
+those same results independently; Hermes checks source and bytecode modes.
+C/J use formatted-number operands with 0–3 fraction digits and half-up rounding,
+avoiding binary-double operand differences. ICU4X receives exact decimals.
+These cases do not replace digit-option, range or JS semantics coverage.
+
+When best fit finds no match, the plural registry tries prefix lookup before
+using its default locale. This keeps `zh-TW` on the available `zh` rules instead
+of English when only a Chinese language payload is shipped.
+
+### Hermes hot paths
+
+Omitted constructor options use Rust's validated defaults directly; explicit
+options still undergo JS getter access, coercion and validation in spec order.
+The private options record has a null prototype and primitive values, so one
+captured `JSON.stringify` call cannot invoke inherited `toJSON` hooks.
+
+Selection binds the captured WeakMap getter once. Primitive Numbers bypass the
+temporary mathematical-value record, retaining negative zero and non-finite
+values. Other inputs keep the observable ToPrimitive path. Default metadata and
+selection are compared with TS across the existing 13-locale fixture set;
+source/bytecode, intrinsic-poisoning and test262 guards remain in place.
+
+## Native range bridge
+
+Hermes passes already-coerced endpoint text and BigInt flags directly to Rust;
+category indexes return without JSON. Both endpoint conversions still finish
+before Rust rejects NaN; undefined endpoints fail before either conversion.
+Rust retains parsing, clamping, rounding and range resolution.
+
+The pinned ICU4J oracle emits 224 cardinal ranges over 14 locales, independently
+checked by ICU4C and ICU4X and consumed by both Hermes installer modes. Equal
+formatted endpoints use ECMA-402's single category; the fixture keeps the raw
+ICU range category separately. Ordinal/rounding/BigInt cases remain covered by
+TS differential tests rather than this default-digit cardinal matrix.
+
+Native mathematical normalization returns canonical plain decimals up to 308
+bytes directly. Such text cannot overflow or underflow Number; a single output
+allocation replaces temporary digit strings and floating-point parsing. Validation
+still rejects non-digits, leading integer zeros and trailing fraction zeros from
+this path. General normalization handles exponents, radix literals and other
+forms; BigInt retains its separate arbitrary-length handling.
+
+Hermes constructor enum/increment tables are private installation-time constants.
+Captured canonicalization and bound WeakMap setters avoid per-call argument arrays.
+Validated ASCII enums and bounded integer options serialize directly, omitting
+undefined digits so Rust retains default and rounding-priority resolution. Locale
+matching and every observable getter/coercion keep their original phase order.
+
+Hermes reuses up to 64 immutable constructor records after locale matching and
+all observable option access/coercion. Keys include the resolved locale and full
+validated options JSON; keys over 512 characters bypass reuse. Each construction
+still creates its own receiver, and resolved results stay fresh. Successful
+locale-data loading clears reuse so new instances see replacements while old
+instances retain their selected data. Map methods are captured during installation.

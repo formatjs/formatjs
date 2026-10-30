@@ -22,6 +22,24 @@ export function ToIntlMathematicalValue(input: unknown): Decimal {
     throw new TypeError('Cannot convert a Symbol value to a number')
   }
 
+  if (typeof primValue === 'string') {
+    // Steps 5–10: validate StringNumericLiteral and clamp rounded zero/infinity,
+    // while retaining the original finite decimal's exact mathematical value.
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1660-L1670
+    const rounded = +primValue
+    if (
+      rounded !== rounded ||
+      rounded === Infinity ||
+      rounded === -Infinity ||
+      rounded === 0
+    )
+      return new Decimal(rounded)
+    const text = primValue.trim()
+    // BigInt parses radix integers exactly, including beyond Number precision.
+    if (/^0[xob]/i.test(text)) return new Decimal(BigInt(text))
+    primValue = text
+  }
+
   // Handle other primitive types
   if (primValue === undefined) {
     return new Decimal(NaN)

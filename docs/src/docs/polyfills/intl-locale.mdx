@@ -209,3 +209,46 @@ It only searches likely-subtag candidates for the requested language.
 `getCollations()` filters global candidates through the requested locale. An
 explicit `co` extension returns that value; an unmatched locale returns
 `emoji` and `eor`.
+
+## Locale information changes
+
+`getTextInfo()` follows script metadata. Unicode extensions do not change
+direction; unknown or unoriented scripts return `{direction: undefined}`.
+Consumers must handle this possibility.
+
+`getNumberingSystems()` returns one default system for the matched
+`Intl.NumberFormat` locale, unless an explicit `nu` extension restricts it.
+Without a matching formatter locale it returns `['latn']`.
+
+## Rust Hermes extension
+
+The Hermes SDK includes a Rust `Intl.Locale` implementation. Build the archive
+on Linux, extract it, and link its Bazel `:locale` target alongside the Hermes
+runtime. See [SDK installation](https://github.com/formatjs/formatjs/blob/main/native/hermes/package/README.md)
+and the [standalone example](https://github.com/formatjs/formatjs/tree/main/examples/hermes-intl).
+
+```cpp
+#include <formatjs/hermes/canonical_locales.h>
+#include <formatjs/hermes/supported_values.h>
+#include <formatjs/hermes/intl_locale.h>
+
+formatjs::installCanonicalLocales(*runtime);
+// Install any trusted formatter backends here.
+formatjs::installSupportedValuesOf(*runtime);
+formatjs::installLocale(*runtime);
+formatjs::installCanonicalLocales(*runtime); // Capture the new Locale brand.
+```
+
+For bytecode-only startup, compile the SDK's `js/extensions.js` and pass its
+evaluated setup object as the second argument to each installer. Core/contrib
+integration uses `js/32-IntlLocale.js` and explicit C++ registration.
+
+Rust owns Locale records until their JS instances are collected. Preference
+metadata is static; numbering-system and collation capabilities are queried at
+method-call time. Existing instances see formatter locale data loaded later.
+Without formatter support, numbering systems fall back to `latn` and collations
+to `emoji`/`eor`; explicit `nu`/`co` restrictions still apply.
+
+`getTimeZones()` returns unique canonical timezone identifiers. Deprecated
+territory aliases use likely-language fallback: `hye-Latn-SU` canonicalizes to
+`hy-Latn-AM` even without a `hy-Latn` likely-subtag entry.

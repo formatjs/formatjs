@@ -36,7 +36,7 @@
     "@bazel/runfiles": "6",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@types/fs-extra": "11",
-    "@types/node": "22 || 24",
+    "@types/node": "22 || 24 || 26",
     "commander": "15",
     "fast-glob": "3",
     "fs-extra": "11",
@@ -44,7 +44,7 @@
     "loud-rejection": "2"
   },
   "peerDependencies": {
-    "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.96.0",
+    "@glimmer/syntax": "^0.84.3 || ^0.95.0 || ^0.97.0",
     "@vue/compiler-core": "3",
     "content-tag": "4",
     "svelte": "5",
