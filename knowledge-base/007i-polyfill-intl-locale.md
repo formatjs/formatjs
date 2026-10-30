@@ -164,3 +164,9 @@ The contrib installer prepares supported-value enumeration before Locale and
 finishes observing formatter loaders after installing the remaining APIs. Locale
 retains that enumerator; loader observation must finish before application code
 can retain methods that mutate locale data.
+
+Native Rust records store language/script/region in bounded ASCII fields
+(8/4/3 bytes) and extension singletons as one ASCII byte. Validation still uses
+shared canonicalization and the same option checks; 5–8-letter languages remain
+supported. Public snapshots keep owned strings. Temporary subtag lists and
+variable-length variants/extensions retain their existing containers.
