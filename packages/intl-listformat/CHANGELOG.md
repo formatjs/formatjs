@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.3.15...@formatjs/intl-listformat@8.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_durationformat:** add Rust Hermes duration formatting ([#7707](https://github.com/formatjs/formatjs/issues/7707)) ([c7e5f35](https://github.com/formatjs/formatjs/commit/c7e5f35922fd5018f3ad73f32df29b1d43d01076))
+* **intl_listformat:** port Intl.ListFormat to Rust with Hermes integration ([#7692](https://github.com/formatjs/formatjs/issues/7692)) ([864b212](https://github.com/formatjs/formatjs/commit/864b2129998daf005f1d98e0c8a139fa9696c6b5))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-listformat:** match ICU contextual joins ([#7751](https://github.com/formatjs/formatjs/issues/7751)) ([e0eec27](https://github.com/formatjs/formatjs/commit/e0eec27559d1a0d59316cf241fdd419867d7dd33))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.0
+
 ## [8.3.15](https://github.com/formatjs/formatjs/compare/@formatjs/intl-listformat@8.3.14...@formatjs/intl-listformat@8.3.15) (2026-09-12)
 
 

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.3.12...@formatjs/intl-locale@5.4.0) (2026-10-30)
+
+
+### Features
+
+* **intl_locale:** port Locale to Rust with Hermes extension ([#7689](https://github.com/formatjs/formatjs/issues/7689)) ([bb2c829](https://github.com/formatjs/formatjs/commit/bb2c8297af744191d7842497d23c15389135c550))
+
+
+### Performance Improvements
+
+* **intl_locale:** compact records and fix private-use updates ([#7794](https://github.com/formatjs/formatjs/issues/7794)) ([0ceaf91](https://github.com/formatjs/formatjs/commit/0ceaf91aa8c21158ec78355434cf02c2386ea5fa))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.3.0
+    * @formatjs/intl-supportedvaluesof bumped to 2.4.0
+
 ## [5.3.12](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.3.11...@formatjs/intl-locale@5.3.12) (2026-09-24)
 
 
