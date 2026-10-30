@@ -36,6 +36,14 @@ rolldown_bundle(
 )
 
 genrule(
+    name = "suite_bytecode",
+    srcs = [":suite_bundle.js"],
+    outs = ["suite.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :suite_bundle.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
     name = "overlap_bytecode",
     srcs = ["overlap.js"],
     outs = ["overlap.hbc"],
