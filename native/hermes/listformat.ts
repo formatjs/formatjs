@@ -43,11 +43,9 @@
   ) => object | undefined
   const setSlot = WeakMap.prototype.set.bind(slots)
   type JoinPlan = {separator: string; lastSeparator: string}
-  const plans = new WeakMap<object, JoinPlan | null | false>()
-  const getPlan = WeakMap.prototype.get.bind(plans) as (
-    handle: object
-  ) => JoinPlan | null | false | undefined
-  const setPlan = WeakMap.prototype.set.bind(plans)
+  // Private handle metadata avoids another set of weak keys during collection.
+  const planKey = Symbol()
+  type Handle = {[planKey]?: JoinPlan | null | false}
   const matchers = ['lookup', 'best fit'] as const
   const types = ['conjunction', 'disjunction', 'unit'] as const
   const styles = ['long', 'short', 'narrow'] as const
@@ -197,16 +195,26 @@
       default:
         // Rust authorizes only context-free separators; keep all other shapes native.
         if (large === nativeFormat) {
-          let plan = getPlan(handle)
-          if (plan === undefined) {
-            setPlan(handle, false)
+          const record = handle as Handle
+          let plan = record[planKey]
+          // Long lists repay setup immediately; shorter lists wait for reuse.
+          if (plan === undefined && length < 128) {
+            define(record, planKey, {
+              __proto__: null,
+              value: false,
+              writable: true,
+            })
             return large(handle, values!)
           }
-          if (plan === false) {
+          if (plan === undefined || plan === false) {
             plan = decoded(
               nativeQuery(handle, '{"method":"joinPlan"}')
             ) as JoinPlan | null
-            setPlan(handle, plan)
+            define(record, planKey, {
+              __proto__: null,
+              value: plan,
+              writable: true,
+            })
           }
           if (plan !== null) {
             const last = values![length - 1]

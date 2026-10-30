@@ -73,11 +73,21 @@ equal(
   retainedExpected,
   'old join plan survives replacement'
 )
-equal(
-  new Native('en').format(retainedInput),
-  retainedInput.slice(0, -2).join(', ') + ', [A|A]',
-  'new custom template bypasses join plan'
-)
+for (const size of [32, 128]) {
+  const customInput = Array.from({length: size}, () => 'A')
+  const customExpected = customInput.slice(0, -2).join(', ') + ', [A|A]'
+  const customFormatter = new Native('en')
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'first custom template fallback'
+  )
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'reused custom template fallback'
+  )
+}
 Native.__addLocaleData(fixtures.packs[0])
 
 const lists: string[][] = [
@@ -142,7 +152,9 @@ equal(reads, 1, 'format reads each element once')
 reads = 0
 formatter.formatToParts(observed)
 equal(reads, 1, 'formatToParts reads each element once')
-for (const length of [0, 1, 3, 4, 5, 8, 9, 32, 256, 1024, 1025]) {
+for (const length of [
+  0, 1, 3, 4, 5, 8, 9, 32, 127, 128, 129, 256, 1024, 1025,
+]) {
   const values = Array.from(
     {length},
     (_, index) => ['', '\ud800', '東京', '😀', '\udc00'][index % 5]

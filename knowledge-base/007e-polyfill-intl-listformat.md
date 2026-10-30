@@ -155,7 +155,10 @@ surrogates. Boundary tests check malformed final-slice cleanup on both paths.
 
 For string lists of at least five elements, Rust can authorize a fixed join plan
 when start/middle separators agree and all templates are forward, without
-prefixes, suffixes or contextual alternatives. Hermes then joins its validated
-private string array using the captured intrinsic. The first eligible call keeps native formatting; plan lookup waits for reuse.
-The immutable handle owns the plan; contextual/custom patterns and all parts still use Rust formatting.
-Iteration and IteratorClose finish before plan lookup or concatenation.
+prefixes, suffixes or contextual alternatives. Hermes joins its validated private
+string array using the captured intrinsic. Lists shorter than 128 elements keep
+native formatting on first use; plan lookup waits for reuse. Longer lists can
+repay setup immediately. Private symbol metadata on the opaque handle avoids
+another WeakMap's collection cost. The immutable handle owns the plan;
+contextual/custom patterns and all parts still use Rust formatting. Iteration
+and IteratorClose finish before plan lookup or concatenation.
