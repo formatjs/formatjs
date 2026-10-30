@@ -323,45 +323,44 @@ pub unsafe extern "C" fn formatjs_relative_format_to_parts(
     unsafe { formatted(handle, value, value_len, unit, unit_len, out, true) }
 }
 
-/// Format a pre-coerced number without JS numeric-text allocation.
+/// Format a pre-coerced number. Unit codes 0–7 are second, minute, hour, day,
+/// week, month, quarter, year; other codes return invalid-unit status.
 /// # Safety
-/// Handle live; unit readable for its length; out writable. Free successful output once.
+/// Handle live; out writable. Free successful output once.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn formatjs_relative_format_number(
     handle: *const RelativeHandle,
     value: f64,
-    unit: *const u16,
-    unit_len: usize,
+    unit: u8,
     out: *mut RelativeBytes,
 ) -> i32 {
-    unsafe { formatted_number(handle, value, unit, unit_len, out, false) }
+    unsafe { formatted_number(handle, value, unit, out, false) }
 }
 
-/// Format number parts without JS numeric-text allocation; output remains JSON.
+/// Format number parts with the same unit codes; output remains JSON.
 /// # Safety
-/// Same handle, unit and output ownership contract as formatjs_relative_format_number.
+/// Same handle and output ownership contract as formatjs_relative_format_number.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn formatjs_relative_format_to_parts_number(
     handle: *const RelativeHandle,
     value: f64,
-    unit: *const u16,
-    unit_len: usize,
+    unit: u8,
     out: *mut RelativeBytes,
 ) -> i32 {
-    unsafe { formatted_number(handle, value, unit, unit_len, out, true) }
+    unsafe { formatted_number(handle, value, unit, out, true) }
 }
 
 unsafe fn formatted_number(
     handle: *const RelativeHandle,
     value: f64,
-    unit: *const u16,
-    unit_len: usize,
+    unit: u8,
     out: *mut RelativeBytes,
     parts: bool,
 ) -> i32 {
     unsafe {
-        formatted_value(handle, unit, unit_len, out, parts, || {
-            Ok(RelativeValue::Number(value))
+        with_model(handle, out, |model| {
+            let unit = crate::data::UNITS.get(unit as usize).ok_or(1)?;
+            render(model, RelativeValue::Number(value), unit, parts)
         })
     }
 }
@@ -381,61 +380,68 @@ unsafe fn formatted(
     parts: bool,
 ) -> i32 {
     unsafe {
-        formatted_value(handle, unit, unit_len, out, parts, || {
-            input(value, value_len).map(RelativeValue::Text)
+        with_model(handle, out, |model| {
+            if unit_len > isize::MAX as usize / std::mem::size_of::<u16>()
+                || (unit_len != 0 && unit.is_null())
+            {
+                return Err(2);
+            }
+            let value = input(value, value_len)?;
+            let unit = if unit_len == 0 {
+                &[][..]
+            } else {
+                slice::from_raw_parts(unit, unit_len)
+            };
+            let mut ascii = [0u8; 8];
+            if unit.len() > ascii.len() {
+                return Err(1);
+            }
+            for (out, value) in ascii.iter_mut().zip(unit) {
+                *out = u8::try_from(*value).map_err(|_| 1)?;
+            }
+            let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
+            render(model, RelativeValue::Text(value), unit, parts)
         })
     }
 }
 
-unsafe fn formatted_value<'a>(
-    handle: *const RelativeHandle,
-    unit: *const u16,
-    unit_len: usize,
-    out: *mut RelativeBytes,
+fn render(
+    model: &RelativeTimeFormat,
+    value: RelativeValue<'_>,
+    unit: &str,
     parts: bool,
-    value: impl FnOnce() -> Result<RelativeValue<'a>, i32>,
+) -> Result<Vec<u8>, i32> {
+    match (parts, value) {
+        (false, RelativeValue::Text(value)) => {
+            Ok(model.format(value, unit).map_err(|_| 1)?.into_bytes())
+        }
+        (true, RelativeValue::Text(value)) => {
+            encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)
+        }
+        (false, RelativeValue::Number(value)) => Ok(model
+            .format_number(value, unit)
+            .map_err(|_| 1)?
+            .into_bytes()),
+        (true, RelativeValue::Number(value)) => {
+            encode(&model.format_to_parts_number(value, unit).map_err(|_| 1)?)
+        }
+    }
+}
+
+unsafe fn with_model(
+    handle: *const RelativeHandle,
+    out: *mut RelativeBytes,
+    render: impl FnOnce(&RelativeTimeFormat) -> Result<Vec<u8>, i32>,
 ) -> i32 {
     if out.is_null() {
         return 2;
     }
     unsafe { out.write(RelativeBytes::EMPTY) };
-    if handle.is_null()
-        || unit_len > isize::MAX as usize / std::mem::size_of::<u16>()
-        || (unit_len != 0 && unit.is_null())
-    {
+    if handle.is_null() {
         return 2;
     }
     guarded(|| {
-        let value = value()?;
-        let unit = if unit_len == 0 {
-            &[][..]
-        } else {
-            unsafe { slice::from_raw_parts(unit, unit_len) }
-        };
-        let mut ascii = [0u8; 8];
-        if unit.len() > ascii.len() {
-            return Err(1);
-        }
-        for (out, value) in ascii.iter_mut().zip(unit) {
-            *out = u8::try_from(*value).map_err(|_| 1)?;
-        }
-        let unit = str::from_utf8(&ascii[..unit.len()]).map_err(|_| 1)?;
-        let model = unsafe { &(*handle).0 };
-        let bytes = match (parts, value) {
-            (false, RelativeValue::Text(value)) => {
-                model.format(value, unit).map_err(|_| 1)?.into_bytes()
-            }
-            (true, RelativeValue::Text(value)) => {
-                encode(&model.format_to_parts(value, unit).map_err(|_| 1)?)?
-            }
-            (false, RelativeValue::Number(value)) => model
-                .format_number(value, unit)
-                .map_err(|_| 1)?
-                .into_bytes(),
-            (true, RelativeValue::Number(value)) => {
-                encode(&model.format_to_parts_number(value, unit).map_err(|_| 1)?)?
-            }
-        };
+        let bytes = render(unsafe { &(*handle).0 })?;
         unsafe { output(bytes, out) };
         Ok(())
     })

@@ -153,7 +153,17 @@ const model = new Native('en')
 for (const method of ['format', 'formatToParts']) {
   for (const value of [NaN, Infinity, -Infinity])
     throws(() => model[method](value, 'day'), RangeError, 'nonfinite ' + method)
-  for (const unit of ['', 'Day', 'dayss', '\ud800', '\udc00', 'day\0'])
+  for (const unit of [
+    '',
+    'Day',
+    'dayss',
+    '__proto__',
+    'constructor',
+    'toString',
+    '\ud800',
+    '\udc00',
+    'day\0',
+  ])
     throws(() => model[method](1, unit), RangeError, 'invalid unit ' + method)
   throws(() => model[method](1n, 'day'), TypeError, 'BigInt ToNumber')
   throws(() => model[method](Symbol(), 'day'), TypeError, 'Symbol ToNumber')

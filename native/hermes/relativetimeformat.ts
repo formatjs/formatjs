@@ -6,8 +6,8 @@
   nativeCreate: (request: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
-  nativeFormat: (handle: object, value: number, unit: string) => string | number
-  nativeParts: (handle: object, value: number, unit: string) => string | number
+  nativeFormat: (handle: object, value: number, unit: number) => string | number
+  nativeParts: (handle: object, value: number, unit: number) => string | number
 }) {
   'use strict'
   const {
@@ -38,6 +38,21 @@
     receiver: unknown
   ) => object | undefined
   const setSlot = WeakMap.prototype.set.bind(slots)
+  const unitCodes = create(null) as Record<string, number>
+  const unitNames = [
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'week',
+    'month',
+    'quarter',
+    'year',
+  ]
+  for (let index = 0; index < unitNames.length; index++) {
+    unitCodes[unitNames[index]] = index
+    unitCodes[unitNames[index] + 's'] = index
+  }
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -132,13 +147,14 @@
     // https://tc39.es/ecma402/#sec-intl-relativetimeformat.prototype.format
     const numeric = +(value as any)
     const text = `${unit}`
+    const code = unitCodes[text] ?? 255
     if (method === 'format') {
-      const formatted = nativeFormat(handle, numeric, text)
+      const formatted = nativeFormat(handle, numeric, code)
       if (typeof formatted === 'number')
         throw new BadOption('Invalid Intl.RelativeTimeFormat value or unit')
       return formatted
     }
-    return decoded(nativeParts(handle, numeric, text))
+    return decoded(nativeParts(handle, numeric, code))
   }
 
   class RelativeTimeFormat extends null {
