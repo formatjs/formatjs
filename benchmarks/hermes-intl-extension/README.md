@@ -23,25 +23,25 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
 full-API results use three CPU-0-pinned invocations on 2026-10-30,
 including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse, Rust-authorized list joins and earlier improvements. Both native and TS code use
 optimized Hermes bytecode and high-resolution `__now()` timing.
-[Paired SDK results and profiles](collator-direct-results.json).
+[Paired SDK results and profiles](list-parts-bound-results.json).
 Both hosts use identical updated TS bytecode, including Segmenter conformance fixes.
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.10 |    4.69 |     47.35 |
-| `supportedValuesOf`                |      1.93 |   61.45 |     31.79 |
-| `Locale.maximize`                  |      0.30 |   36.33 |    120.82 |
-| `PluralRules.select`               |      0.34 |  131.46 |    385.61 |
-| `ListFormat.format`                |      0.52 |    4.73 |      9.10 |
-| `ListFormat.formatToParts`         |      4.30 |    6.38 |      1.48 |
-| `DisplayNames.of`                  |      1.37 |    8.25 |      6.02 |
-| `Segmenter.segment`                |      4.11 |    8.93 |      2.17 |
-| `Collator.compare`                 |      0.86 |    3.41 |      3.99 |
-| `NumberFormat.format`              |      2.00 |  364.75 |    181.94 |
-| `RelativeTimeFormat.format`        |      0.73 |  425.84 |    582.49 |
-| `RelativeTimeFormat.formatToParts` |      2.43 |  426.86 |    175.70 |
-| `DateTimeFormat.format`            |      3.89 | 1054.26 |    270.81 |
-| `DurationFormat.format`            |      3.78 |  942.16 |    249.04 |
+| `getCanonicalLocales`              |      0.10 |    4.68 |     47.39 |
+| `supportedValuesOf`                |      1.99 |   64.29 |     32.28 |
+| `Locale.maximize`                  |      0.30 |   36.04 |    120.37 |
+| `PluralRules.select`               |      0.33 |  130.60 |    396.64 |
+| `ListFormat.format`                |      0.51 |    4.70 |      9.26 |
+| `ListFormat.formatToParts`         |      3.74 |    6.36 |      1.70 |
+| `DisplayNames.of`                  |      1.35 |    8.21 |      6.07 |
+| `Segmenter.segment`                |      4.04 |    8.82 |      2.18 |
+| `Collator.compare`                 |      0.85 |    3.39 |      4.02 |
+| `NumberFormat.format`              |      2.04 |  365.20 |    179.42 |
+| `RelativeTimeFormat.format`        |      0.73 |  424.24 |    582.28 |
+| `RelativeTimeFormat.formatToParts` |      2.36 |  428.34 |    181.40 |
+| `DateTimeFormat.format`            |      3.86 | 1067.69 |    276.51 |
+| `DurationFormat.format`            |      3.76 |  928.50 |    247.10 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -1171,3 +1171,9 @@ Both hosts use Hermes `393a539e6` with the pinned BCR patches, including the Pro
 constructor fix. Both SDKs pass 8,680 native/TS comparisons and 17,934 assertions.
 The release-only rebase preserves all implementation blobs and 93 runtime SDK
 components byte for byte. The TS workload was rebuilt on the updated release base.
+
+ListFormat parts decode with captured bound string methods, avoiding four argument
+arrays per part. Paired SDK medians improve 4.29 to 3.74 µs (-12.8%), or 1.70× TS.
+No full-suite row regresses 5%. The packaged SDK passes all 3,168 ICU4C/J list
+fixtures and 287,029 assertions, including UTF-16 elements, record attributes and
+late intrinsic poisoning. Rust/TS differential, ICU4X and Hermes Test262 gates pass.

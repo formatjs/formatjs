@@ -33,8 +33,8 @@
   const objectPrototype = Object.prototype
   const parse = JSON.parse
   const stringify = JSON.stringify
-  const charCodeAt = String.prototype.charCodeAt
-  const slice = String.prototype.slice
+  const charCodeAt = Function.prototype.call.bind(String.prototype.charCodeAt)
+  const slice = Function.prototype.call.bind(String.prototype.slice)
   const BadReceiver = TypeError
   const BadOption = RangeError
   const slots = new WeakMap<object, object>()
@@ -306,11 +306,10 @@
         configurable: true,
       }
       for (let offset = 0; offset < packed.length;) {
-        const kind = apply(charCodeAt, packed, [offset++])
+        const kind = charCodeAt(packed, offset++)
         const length =
-          apply(charCodeAt, packed, [offset++]) * 65536 +
-          apply(charCodeAt, packed, [offset++])
-        const value = apply(slice, packed, [offset, offset + length])
+          charCodeAt(packed, offset++) * 65536 + charCodeAt(packed, offset++)
+        const value = slice(packed, offset, offset + length)
         offset += length
         const part = {type: kind === 0 ? 'element' : 'literal', value}
         descriptor.value = part
