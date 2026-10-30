@@ -294,6 +294,17 @@ impl NumberFormat {
         }
         Ok(Cow::Owned(output))
     }
+    fn grouped(&self, integer_len: usize, primary: usize, compact: bool) -> bool {
+        let grouping = self.resolved.use_grouping;
+        let minimum = if grouping == Grouping::Min2 {
+            2
+        } else {
+            self.data.numbers.minimum_grouping_digits
+        };
+        !compact
+            && grouping != Grouping::Disabled
+            && (grouping == Grouping::Always || integer_len >= primary + minimum)
+    }
     fn visit_number_parts(
         &self,
         number: &Rendered,
@@ -328,16 +339,7 @@ impl NumberFormat {
                 (primary, secondary)
             }
         };
-        let grouping = self.resolved.use_grouping;
-        let minimum = if grouping == Grouping::Min2 {
-            2
-        } else {
-            self.data.numbers.minimum_grouping_digits
-        };
-        let grouped = !compact
-            && grouping != Grouping::Disabled
-            && (grouping == Grouping::Always || integer.len() >= primary + minimum);
-        if grouped {
+        if self.grouped(integer.len(), primary, compact) {
             if primary == 0 || secondary == 0 {
                 return Err(Error::InvalidData("Empty number grouping interval".into()));
             }
@@ -436,9 +438,33 @@ impl NumberFormat {
         value: &str,
         rules: &formatjs_intl_pluralrules::LocaleRules,
     ) -> Result<(String, &'static str), Error> {
-        let (number, category) = self.decimal_with_plural(value, rules)?;
+        let (mut number, category) = self.decimal_with_plural(value, rules)?;
+        let standard = self.data.numbers.decimal[&self.system].standard == "#,##0.###";
+        if standard
+            && self.resolved.numbering_system == "latn"
+            && number.sign == 0
+            && number.rounded.special.is_none()
+        {
+            let integer_len = number.text.find('.').unwrap_or(number.text.len());
+            // One possible group insertion; larger numbers retain linear traversal.
+            if integer_len <= 6 {
+                let symbols = &self.data.numbers.symbols[&self.system];
+                if integer_len < number.text.len() && symbols.decimal != "." {
+                    number
+                        .text
+                        .replace_range(integer_len..integer_len + 1, &symbols.decimal);
+                }
+                if integer_len > 3 && self.grouped(integer_len, 3, false) {
+                    number
+                        .text
+                        .reserve(32usize.saturating_sub(number.text.len()));
+                    number.text.insert_str(integer_len - 3, &symbols.group);
+                }
+                return Ok((number.text, category));
+            }
+        }
         let mut text = String::with_capacity(32);
-        if self.data.numbers.decimal[&self.system].standard == "#,##0.###" {
+        if standard {
             let symbols = &self.data.numbers.symbols[&self.system];
             if number.sign < 0 {
                 text.push_str(&symbols.minus_sign);

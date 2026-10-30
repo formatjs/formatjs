@@ -21,26 +21,26 @@ median time per call.
 
 Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
 full-API results use three CPU-0-pinned invocations on 2026-10-30,
-including SDK ThinLTO and earlier improvements. Both native and TS code use
+including SDK ThinLTO, RTF text buffer reuse and earlier improvements. Both native and TS code use
 optimized Hermes bytecode and high-resolution `__now()` timing.
-[Paired SDK results, controls and profiles](thin-lto-results.json).
+[Paired SDK results, controls and profiles](rtf-text-buffer-results.json).
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.10 |    4.49 |     46.85 |
-| `supportedValuesOf`                |      1.87 |   59.68 |     31.97 |
-| `Locale.maximize`                  |      0.29 |   35.30 |    122.08 |
-| `PluralRules.select`               |      0.39 |  127.29 |    329.10 |
-| `ListFormat.format`                |      0.75 |    4.60 |      6.11 |
-| `ListFormat.formatToParts`         |      4.45 |    6.29 |      1.41 |
-| `DisplayNames.of`                  |      1.58 |    8.08 |      5.13 |
-| `Segmenter.segment`                |      6.41 |    9.13 |      1.42 |
-| `Collator.compare`                 |      1.66 |    3.25 |      1.96 |
-| `NumberFormat.format`              |      2.11 |  351.49 |    166.59 |
-| `RelativeTimeFormat.format`        |      0.85 |  410.12 |    485.16 |
-| `RelativeTimeFormat.formatToParts` |      2.35 |  411.94 |    175.01 |
-| `DateTimeFormat.format`            |      3.94 | 1032.56 |    261.77 |
-| `DurationFormat.format`            |      3.66 |  901.55 |    246.20 |
+| `getCanonicalLocales`              |      0.10 |    4.52 |     46.37 |
+| `supportedValuesOf`                |      1.87 |   60.07 |     32.08 |
+| `Locale.maximize`                  |      0.29 |   34.34 |    119.26 |
+| `PluralRules.select`               |      0.37 |  125.61 |    339.55 |
+| `ListFormat.format`                |      0.75 |    4.45 |      5.90 |
+| `ListFormat.formatToParts`         |      4.34 |    6.09 |      1.40 |
+| `DisplayNames.of`                  |      1.54 |    7.89 |      5.12 |
+| `Segmenter.segment`                |      6.32 |    9.09 |      1.44 |
+| `Collator.compare`                 |      1.62 |    3.22 |      1.99 |
+| `NumberFormat.format`              |      2.06 |  349.57 |    169.65 |
+| `RelativeTimeFormat.format`        |      0.76 |  408.56 |    536.88 |
+| `RelativeTimeFormat.formatToParts` |      2.35 |  408.74 |    173.60 |
+| `DateTimeFormat.format`            |      3.92 | 1044.22 |    266.50 |
+| `DurationFormat.format`            |      3.68 |  903.88 |    245.82 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -75,46 +75,46 @@ Optimizing magrinj preserves its 222 differences in the 2,871-case ICU
 list matrix; FormatJS has zero differences against the selected ICU4C outputs.
 
 Three alternating optimized runs on 2026-10-30, pinned to CPU 0 on every host,
-including SDK ThinLTO and earlier improvements. All hosts use high-resolution
+including SDK ThinLTO, RTF text buffer reuse and earlier improvements. All hosts use high-resolution
 `__now()`. FormatJS Rust uses `opt-level=3` plus ThinLTO; magrinj retains its
 upstream size-optimized release profile with full LTO and one codegen unit.
-[Raw results, controls and profiles](thin-lto-results.json).
+[Raw results, controls and profiles](rtf-text-buffer-results.json).
 
 | Operation                            | FormatJS µs | Magrinj µs |
 | ------------------------------------ | ----------: | ---------: |
-| `getCanonicalLocales`                |        0.07 |       1.11 |
-| `Locale.maximize`                    |        0.26 |       2.12 |
-| `PluralRules.select`                 |        0.36 |       0.45 |
-| `PluralRules.select(decimal)`        |        0.40 |       0.46 |
-| `PluralRules.select(string)`         |        0.49 |       0.91 |
-| `PluralRules.select(ordinal)`        |        0.37 |       0.46 |
-| `PluralRules.select(ru)`             |        0.38 |       0.50 |
-| `PluralRules.selectRange`            |        0.75 |       0.89 |
-| `ListFormat.format`                  |        0.66 |       0.53 |
-| `ListFormat.formatToParts`           |        2.99 |       3.24 |
-| `RelativeTimeFormat.format`          |        0.80 |       0.72 |
-| `RelativeTimeFormat.formatToParts`   |        1.59 |       2.18 |
-| `RelativeTimeFormat.format(decimal)` |        0.90 |       0.79 |
-| `RelativeTimeFormat.format(auto)`    |        0.34 |       0.60 |
-| `Locale.new`                         |        0.35 |       0.94 |
-| `Locale.new(options)`                |        1.77 |       4.91 |
-| `Locale.new(zh-HK)`                  |        0.35 |       1.37 |
-| `Locale.new.language`                |        0.43 |       1.28 |
-| `Locale.new.toString`                |        0.40 |       1.00 |
-| `Locale.language`                    |        0.08 |       0.08 |
-| `Locale.new(Locale)`                 |        0.33 |       0.96 |
-| `Locale.new(diverse)`                |        2.45 |       1.45 |
-| `Locale.new(long)`                   |        3.24 |       3.82 |
-| `PluralRules.new`                    |        1.89 |       4.66 |
-| `PluralRules.new(options)`           |        5.00 |       5.07 |
-| `ListFormat.new`                     |        1.23 |       2.61 |
-| `ListFormat.new(default)`            |        0.87 |       2.53 |
-| `ListFormat.new(array)`              |        1.56 |       2.93 |
-| `ListFormat.new(options)`            |        2.39 |       2.66 |
-| `ListFormat.new(fallback)`           |        1.95 |       3.57 |
-| `ListFormat.new(unsupported)`        |        2.04 |       3.83 |
-| `RelativeTimeFormat.new`             |        4.06 |       4.71 |
-| `RelativeTimeFormat.new(fallback)`   |        5.20 |       5.47 |
+| `getCanonicalLocales`                |        0.07 |       1.13 |
+| `Locale.maximize`                    |        0.27 |       2.16 |
+| `PluralRules.select`                 |        0.35 |       0.46 |
+| `PluralRules.select(decimal)`        |        0.41 |       0.47 |
+| `PluralRules.select(string)`         |        0.50 |       0.93 |
+| `PluralRules.select(ordinal)`        |        0.36 |       0.48 |
+| `PluralRules.select(ru)`             |        0.38 |       0.51 |
+| `PluralRules.selectRange`            |        0.75 |       0.91 |
+| `ListFormat.format`                  |        0.68 |       0.54 |
+| `ListFormat.formatToParts`           |        3.01 |       3.31 |
+| `RelativeTimeFormat.format`          |        0.74 |       0.74 |
+| `RelativeTimeFormat.formatToParts`   |        1.64 |       2.25 |
+| `RelativeTimeFormat.format(decimal)` |        0.86 |       0.81 |
+| `RelativeTimeFormat.format(auto)`    |        0.35 |       0.62 |
+| `Locale.new`                         |        0.36 |       0.96 |
+| `Locale.new(options)`                |        1.80 |       5.03 |
+| `Locale.new(zh-HK)`                  |        0.36 |       1.39 |
+| `Locale.new.language`                |        0.44 |       1.31 |
+| `Locale.new.toString`                |        0.41 |       1.02 |
+| `Locale.language`                    |        0.08 |       0.09 |
+| `Locale.new(Locale)`                 |        0.33 |       0.98 |
+| `Locale.new(diverse)`                |        2.41 |       1.47 |
+| `Locale.new(long)`                   |        3.31 |       3.92 |
+| `PluralRules.new`                    |        2.01 |       4.89 |
+| `PluralRules.new(options)`           |        5.14 |       5.10 |
+| `ListFormat.new`                     |        1.22 |       2.87 |
+| `ListFormat.new(default)`            |        0.97 |       2.72 |
+| `ListFormat.new(array)`              |        1.58 |       2.91 |
+| `ListFormat.new(options)`            |        2.37 |       2.69 |
+| `ListFormat.new(fallback)`           |        1.95 |       3.67 |
+| `ListFormat.new(unsupported)`        |        2.02 |       3.78 |
+| `RelativeTimeFormat.new`             |        4.07 |       4.77 |
+| `RelativeTimeFormat.new(fallback)`   |        5.16 |       5.77 |
 
 The decimal case formats -1234.5 days; auto formats -1 day as "yesterday".
 These parts timings read array length, whereas the full suite serializes parts.
@@ -836,3 +836,33 @@ tests compare empty-object encodings for aliases, Chinese regions, extensions,
 properties and transforms, plus invalid-tag status and null output handling.
 The full-API native timing changes range from -4.1% to +4.5%; raw runs remain
 recorded.
+
+RelativeTimeFormat now reuses rounded Latin text for standard decimals with at
+most six integer digits, sharing the parts path's grouping thresholds. Other
+cases keep their existing traversal. A pattern starting with its final number
+slot takes that string buffer before appending literals; repeated slots still
+retain their number text.
+[Paired SDK results, controls and profiles](rtf-text-buffer-results.json).
+
+Three alternating optimized shared-workload runs: integer RTF 0.818 to 0.735 µs
+(-10.2%), magrinj 0.741 µs; decimal RTF 0.904 to 0.860 µs (-4.9%),
+magrinj 0.812 µs. Isolated RTF controls confirm 0.798 to 0.731 µs for integers
+and 0.887 to 0.850 µs for decimals. Integer results approach parity rather than
+establish a robust win. Parts move 1.612 to 1.638 µs (+1.6%); magrinj 2.250 µs.
+
+Common Rust numeric string cases remove one allocation; large values retain
+their previous allocation counts. Rust timing probes remain unpinned diagnostics.
+Separate profile totals are mixed: integer 753 to 730 samples; decimal 420 to 451. Paired benchmark timings, rather than profile counts, support speed claims.
+
+All 459 shared output checks, 84 full-API native/TS assertions, 17 focused gates
+and nine standalone SDK smokes pass. Gates include pinned ICU4C/J/X RTF
+comparisons, NumberFormat/RTF/DurationFormat Test262 and dependent DateTimeFormat
+conformance. Direct tests cover multibyte separators, min2/always/disabled
+grouping, rounding into seven digits, signs, special values and repeated slots.
+No full-API native scenario regresses by 5% or more in this comparison.
+
+Cold Locale remains variable: shared workload 2.178 to 2.405 µs (+10.4%); isolated
+1.886 to 1.885 µs (flat). Isolated long tags move 3.096 to 3.246 µs (+4.9%).
+Causes remain unproven; raw values stay recorded. String ListFormat, decimal RTF
+and cold Locale remain slower than magrinj; explicit PluralRules constructors
+remain close to parity and need more headroom.

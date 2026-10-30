@@ -120,10 +120,22 @@ impl RelativeTimeFormat {
         format_number: impl FnOnce()
             -> Result<(String, &'static str), formatjs_intl_numberformat::Error>,
     ) -> Result<String, Error> {
-        let mut result = String::with_capacity(32);
-        self.visit_pattern(numeric, unit, format_number, |piece| match piece {
-            Piece::Literal(value) => result.push_str(value),
-            Piece::Number(text, _, _) => result.push_str(text),
+        let mut result = String::new();
+        self.visit_pattern(numeric, unit, format_number, |piece| {
+            let text = match piece {
+                Piece::Literal(value) => value,
+                Piece::Number(text, _, last) => {
+                    if last && result.is_empty() {
+                        result = std::mem::take(text);
+                        return;
+                    }
+                    text.as_str()
+                }
+            };
+            if result.capacity() == 0 {
+                result.reserve(32);
+            }
+            result.push_str(text);
         })?;
         Ok(result)
     }

@@ -63,6 +63,26 @@ fn plural_selection_shares_rounding_but_uses_relative_locale_rules() {
     );
 }
 #[test]
+fn numeric_text_survives_single_repeated_and_prefixed_slots() {
+    for (pattern, expected) in [
+        ("{0} days ago", "1,234.5 days ago"),
+        ("{0}🗓️", "1,234.5🗓️"),
+        ("{0}|{0}|{0}", "1,234.5|1,234.5|1,234.5"),
+        ("in {0} days", "in 1,234.5 days"),
+        ("{0}", "1,234.5"),
+    ] {
+        let mut data: Value = serde_json::from_str(EN).unwrap();
+        data["data"]["day"]["future"]["other"] = json!(pattern);
+        let mut registry = Registry::default();
+        registry.add_locale_data(&data.to_string()).unwrap();
+        let model = registry
+            .create(&["en".into()], &Options::default())
+            .unwrap();
+        assert_eq!(model.format("1234.5", "day").unwrap(), expected);
+        assert_eq!(model.format_number(1234.5, "day").unwrap(), expected);
+    }
+}
+#[test]
 fn repeated_slots_and_empty_named_forms_keep_part_boundaries() {
     let mut data: Value = serde_json::from_str(EN).unwrap();
     data["data"]["day"]["future"]["other"] = json!("{0}|{0}");

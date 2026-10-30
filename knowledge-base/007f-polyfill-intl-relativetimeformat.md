@@ -127,6 +127,10 @@ number parts. Part formatting keeps the same shared traversal, cloning repeated
 slots and transferring the final number buffer. Empty named forms and custom
 relative plural rules retain their existing behavior.
 
+Short unsigned Latin decimals reuse their rounded text with at most one group
+insertion; grouping thresholds share the parts path's policy. String patterns
+starting with their final number slot take that buffer before appending literals.
+
 The pinned 19,008-case ICU4X matrix exercises both numeric and text paths,
 including exact parts equality. ICU4C/J verify the 1,440 pinned data differences;
 unexpected differences fail. Native source and bytecode also compare numeric
