@@ -130,33 +130,23 @@ impl LanguageId {
     // The shared canonicalizer has already validated the entire tag. Splitting
     // canonical subtags also preserves valid 5–8-letter languages, which ICU's
     // compact LanguageIdentifier cannot represent directly.
-    fn parse(parts: &[&str]) -> Self {
-        let mut index = 1;
+    fn parse(tag: &str) -> Self {
+        let mut parts = tag.split('-').peekable();
+        let language = subtag(parts.next().expect("validated language subtag"));
         let script = parts
-            .get(index)
-            .filter(|part| part.len() == 4 && ascii_letters(part))
-            .map(|part| {
-                index += 1;
-                subtag(part)
-            });
+            .next_if(|part| part.len() == 4 && ascii_letters(part))
+            .map(subtag);
         let region = parts
-            .get(index)
-            .filter(|part| {
+            .next_if(|part| {
                 part.len() == 2
                     || (part.len() == 3 && part.as_bytes().iter().all(u8::is_ascii_digit))
             })
-            .map(|part| {
-                index += 1;
-                subtag(part)
-            });
+            .map(subtag);
         Self {
-            language: subtag(parts[0]),
+            language,
             script,
             region,
-            variants: parts[index..]
-                .iter()
-                .map(|part| (*part).to_owned())
-                .collect(),
+            variants: parts.map(str::to_owned).collect(),
         }
     }
 
@@ -298,46 +288,47 @@ impl Locale {
     }
 
     fn parse(tag: String) -> Self {
-        let parts: Vec<_> = tag.split('-').collect();
-        let end = parts
-            .iter()
-            .position(|part| part.len() == 1)
-            .unwrap_or(parts.len());
-        let id = LanguageId::parse(&parts[..end]);
+        let extension_start = |value: &str| {
+            value
+                .as_bytes()
+                .windows(3)
+                .position(|bytes| bytes[0] == b'-' && bytes[2] == b'-')
+        };
+        let end = extension_start(&tag).unwrap_or(tag.len());
+        let id = LanguageId::parse(&tag[..end]);
         let mut extensions = Vec::new();
         let mut keywords = BTreeMap::new();
-        let mut index = end;
-        while index < parts.len() {
-            let singleton = parts[index].as_bytes()[0];
-            index += 1;
+        let mut rest = &tag[end..];
+        while !rest.is_empty() {
+            let singleton = rest.as_bytes()[1];
+            let values = &rest[3..];
             let end = if singleton == b'x' {
-                parts.len()
+                values.len()
             } else {
-                (index..parts.len())
-                    .find(|&i| parts[i].len() == 1)
-                    .unwrap_or(parts.len())
+                extension_start(values).unwrap_or(values.len())
             };
-            let values = &parts[index..end];
+            rest = &values[end..];
+            let values = &values[..end];
             if singleton == b'u' {
-                let mut start = 0;
-                while start < values.len() && values[start].len() >= 3 {
-                    start += 1;
-                }
-                while start < values.len() {
-                    let key = values[start];
-                    start += 1;
-                    let from = start;
-                    while start < values.len() && values[start].len() >= 3 {
-                        start += 1;
+                let mut subtags = values.split('-').peekable();
+                let mut offset = 0;
+                while let Some(key) = subtags.next() {
+                    offset += key.len() + 1;
+                    if key.len() != 2 {
+                        continue;
                     }
-                    keywords.insert(key.to_owned(), values[from..start].join("-"));
+                    let start = offset;
+                    while let Some(value) = subtags.next_if(|value| value.len() >= 3) {
+                        offset += value.len() + 1;
+                    }
+                    let end = offset - 1;
+                    keywords.insert(key.to_owned(), values[start.min(end)..end].to_owned());
                 }
             }
             extensions.push(Extension {
                 singleton,
-                value: values.join("-"),
+                value: values.to_owned(),
             });
-            index = end;
         }
         Self {
             tag,
@@ -451,7 +442,7 @@ impl Locale {
                 variants: Vec::new(),
             };
             if let Some(found) = lookup(LIKELY_SUBTAGS, &trial.emit()) {
-                let replacement = LanguageId::parse(&found.split('-').collect::<Vec<_>>());
+                let replacement = LanguageId::parse(found);
                 return LanguageId {
                     language: if id.language == "und" {
                         replacement.language

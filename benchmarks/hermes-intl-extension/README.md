@@ -23,24 +23,24 @@ Pinned Hermes `393a539e6`, Linux x86_64, Intel Xeon Platinum 8488C. Current
 full-API results use three CPU-0-pinned invocations on 2026-10-30,
 including SDK ThinLTO, exact-decimal bypass, ListFormat output sizing, short positional arguments, inline Locale subtags, PluralRules record reuse, Rust-authorized list joins and earlier improvements. Both native and TS code use
 optimized Hermes bytecode and high-resolution `__now()` timing.
-[Paired SDK results, controls and profiles](alias-independent-results.json).
+[Paired SDK results, controls and profiles](locale-stream-results.json).
 
 | Operation                          | Native µs |   TS µs | TS/native |
 | ---------------------------------- | --------: | ------: | --------: |
-| `getCanonicalLocales`              |      0.09 |    4.36 |     47.23 |
-| `supportedValuesOf`                |      1.82 |   58.74 |     32.20 |
-| `Locale.maximize`                  |      0.29 |   33.92 |    118.26 |
-| `PluralRules.select`               |      0.32 |  123.19 |    387.43 |
-| `ListFormat.format`                |      0.48 |    4.47 |      9.31 |
-| `ListFormat.formatToParts`         |      4.10 |    6.09 |      1.49 |
-| `DisplayNames.of`                  |      1.29 |    7.90 |      6.10 |
-| `Segmenter.segment`                |      6.13 |    8.99 |      1.47 |
-| `Collator.compare`                 |      1.65 |    3.20 |      1.95 |
-| `NumberFormat.format`              |      2.00 |  346.33 |    172.78 |
-| `RelativeTimeFormat.format`        |      0.71 |  404.89 |    573.45 |
-| `RelativeTimeFormat.formatToParts` |      2.29 |  405.58 |    177.05 |
-| `DateTimeFormat.format`            |      3.70 | 1011.77 |    273.12 |
-| `DurationFormat.format`            |      3.59 |  882.47 |    245.62 |
+| `getCanonicalLocales`              |      0.09 |    4.54 |     48.79 |
+| `supportedValuesOf`                |      1.90 |   60.24 |     31.78 |
+| `Locale.maximize`                  |      0.30 |   35.76 |    119.91 |
+| `PluralRules.select`               |      0.32 |  125.79 |    387.79 |
+| `ListFormat.format`                |      0.50 |    4.64 |      9.33 |
+| `ListFormat.formatToParts`         |      4.33 |    6.35 |      1.47 |
+| `DisplayNames.of`                  |      1.36 |    8.28 |      6.10 |
+| `Segmenter.segment`                |      6.50 |    9.30 |      1.43 |
+| `Collator.compare`                 |      1.67 |    3.31 |      1.98 |
+| `NumberFormat.format`              |      2.03 |  354.25 |    174.32 |
+| `RelativeTimeFormat.format`        |      0.72 |  411.92 |    575.72 |
+| `RelativeTimeFormat.formatToParts` |      2.29 |  412.29 |    179.77 |
+| `DateTimeFormat.format`            |      3.86 | 1043.62 |    270.66 |
+| `DurationFormat.format`            |      3.64 |  895.74 |    245.76 |
 
 Ratios below 1 mean native is slower. These are one host's steady-state timings,
 not startup or package-size results.
@@ -1127,3 +1127,22 @@ SDK smokes, 24 Locale extension assertions and 84 native/TS assertions pass.
 No full native/TS case regresses 5%. Shared Russian plural selection moves
 0.316 to 0.333 µs (+5.2%); cause unproven, retained in raw evidence. This is
 one host; cold diverse Locale remains an open comparator gap.
+
+### Streaming canonical Locale parsing
+
+[Paired SDK evidence](locale-stream-results.json) replaces temporary subtag
+vectors with borrowed slices and iterators. Canonical validation, public APIs,
+private-use ordering and Unicode keyword behavior stay unchanged. Rust probes
+remove one allocation on short tags and four on long private-use tags.
+
+Long-tag construction improves 26.4% in the shared workload and 22.7% isolated.
+Short cold construction measures +7.2% shared, -3.9% isolated and -4.5% in the
+source control; cause of disagreement remains unproven. Three million cold
+constructors move 5.957 to 5.768 seconds (-3.2%).
+No native/TS full-suite case regresses 5%. All 74 conformance gates pass,
+including pinned ICU4C/J/X comparisons; 702 paired outputs, 84 native/TS
+assertions, SDK smokes and 24 Locale extension assertions pass.
+
+New performance work targets the smallest gains over our TS polyfills:
+ListFormat.formatToParts, Segmenter.segment and Collator.compare. Historical
+magrinj results remain recorded, but no longer set the optimization target.

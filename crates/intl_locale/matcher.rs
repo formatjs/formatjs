@@ -77,7 +77,7 @@ pub fn supported(available: &[String], requested: &[String]) -> Vec<String> {
 
 /// Prefer the likely script when canonical packs share a scriptless alias.
 pub fn is_likely_script(locale: &str, script: &str) -> bool {
-    let id = crate::LanguageId::parse(&locale.split('-').collect::<Vec<_>>());
+    let id = crate::LanguageId::parse(locale);
     crate::Locale::maximized_id(&id).script.as_deref() == Some(script)
 }
 
