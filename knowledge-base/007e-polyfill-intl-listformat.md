@@ -162,3 +162,6 @@ repay setup immediately. Private symbol metadata on the opaque handle avoids
 another WeakMap's collection cost. The immutable handle owns the plan;
 contextual/custom patterns and all parts still use Rust formatting. Iteration
 and IteratorClose finish before plan lookup or concatenation.
+
+Packed parts decode with captured bound String intrinsics. Direct argument passing
+avoids per-part temporary arrays while preserving late prototype-poisoning checks.
