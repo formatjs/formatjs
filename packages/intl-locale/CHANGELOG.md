@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.0...@formatjs/intl-locale@5.4.1) (2026-10-30)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-supportedvaluesof bumped to 2.5.0
+
 ## [5.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.3.12...@formatjs/intl-locale@5.4.0) (2026-10-30)
 
 

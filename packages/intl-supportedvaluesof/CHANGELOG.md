@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.4.0...@formatjs/intl-supportedvaluesof@2.5.0) (2026-10-30)
+
+
+### Features
+
+* distribute Hermes Intl SDK with one-call installation ([f5ed01b](https://github.com/formatjs/formatjs/commit/f5ed01b13718c5ad03419d1c2ee2ecadb9200d32))
+
 ## [2.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.3.11...@formatjs/intl-supportedvaluesof@2.4.0) (2026-10-30)
 
 

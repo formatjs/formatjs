@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_collator_v0.2.0...formatjs_intl_collator_v0.2.1) (2026-10-30)
+
+
+### Performance Improvements
+
+* **intl_collator:** compare borrowed UTF-16 without JSON ([c41b617](https://github.com/formatjs/formatjs/commit/c41b6171e12e91904a32536c941c43e22f6dfe14))
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_collator_v0.1.0...formatjs_intl_collator_v0.2.0) (2026-10-30)
 
 

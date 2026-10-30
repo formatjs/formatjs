@@ -19,10 +19,10 @@
   "packages/intl-datetimeformat": "7.9.0",
   "packages/intl-displaynames": "7.4.0",
   "packages/intl-durationformat": "0.12.0",
-  "packages/intl-supportedvaluesof": "2.4.0",
+  "packages/intl-supportedvaluesof": "2.5.0",
   "packages/intl-getcanonicallocales": "3.3.0",
   "packages/intl-listformat": "8.4.0",
-  "packages/intl-locale": "5.4.0",
+  "packages/intl-locale": "5.4.1",
   "packages/intl-localematcher": "0.10.0",
   "packages/intl-messageformat": "12.1.4",
   "packages/intl-numberformat": "9.5.0",
@@ -61,7 +61,7 @@
   "packages/intl-datetimeformat-calendar-islamic-umalqura": "1.1.3",
   "packages/intl-datetimeformat-calendar-chinese": "1.1.3",
   "packages/intl-datetimeformat-calendar-dangi": "1.1.3",
-  "crates/intl_collator": "0.2.0",
+  "crates/intl_collator": "0.2.1",
   "crates/intl_data": "0.2.0",
   "crates/intl_data_build": "0.2.0",
   "crates/intl_datetimeformat": "0.2.0",
@@ -69,7 +69,7 @@
   "crates/intl_displaynames": "0.2.0",
   "crates/intl_durationformat": "0.2.0",
   "crates/intl_getcanonicallocales": "0.2.0",
-  "crates/intl_hermes": "0.2.0",
+  "crates/intl_hermes": "0.3.0",
   "crates/intl_listformat": "0.2.0",
   "crates/intl_locale": "0.2.0",
   "crates/intl_localematcher": "0.1.1",
@@ -78,5 +78,5 @@
   "crates/intl_relativetimeformat": "0.2.0",
   "crates/intl_segmenter": "0.2.0",
   "crates/intl_supportedvaluesof": "0.2.0",
-  "native/hermes": "0.1.0"
+  "native/hermes": "0.2.0"
 }
