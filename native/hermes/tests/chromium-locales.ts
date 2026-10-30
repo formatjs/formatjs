@@ -95,11 +95,12 @@ function unhex(value: string): string {
 }
 if (api.ListFormat?.polyfilled) {
   const rows = (globalThis as any).__LIST_FORMAT_FIXTURES as string[][]
-  equal(rows.length, 2871)
+  equal(rows.length, 3168)
   for (const [locale, type, style, encoded, , expected] of rows) {
     const items = encoded === '-' ? [] : encoded.split(',').map(unhex)
     formatter = `ListFormat ${locale}/${type}/${style}/${encoded}`
     const list = new api.ListFormat(locale, {type, style})
+    equal(list.format(items), unhex(expected))
     equal(list.format(items), unhex(expected))
     const parts = list.formatToParts(items)
     equal(parts.map((part: any) => part.value).join(''), unhex(expected))
@@ -119,4 +120,31 @@ if (api.PluralRules?.polyfilled) {
     equal(new api.PluralRules(locale, {type}).select(Number(value)), expected)
   }
 }
+if (api.PluralRules?.polyfilled) {
+  const rows = (globalThis as any).__PLURAL_RANGE_FIXTURES as string[][]
+  const differences = new Map<string, string[]>(
+    ((globalThis as any).__PLURAL_RANGE_DIFFERENCES as string[][]).map(row => [
+      row.slice(0, 3).join('\t'),
+      row,
+    ])
+  )
+  equal(rows.length, 224)
+  equal(differences.size, 18)
+  for (const row of rows) {
+    const [locale, start, end, , expected] = row
+    const key = row.slice(0, 3).join('\t')
+    const difference = differences.get(key)
+    if (difference) {
+      equal(difference.slice(0, 5), row)
+      differences.delete(key)
+    }
+    formatter = `PluralRules range ${locale}/${start}/${end}`
+    equal(
+      new api.PluralRules(locale).selectRange(Number(start), Number(end)),
+      difference ? difference[6] : expected
+    )
+  }
+  equal(differences.size, 0)
+}
+
 print(JSON.stringify({type: 'compiled-locales', kinds, assertions}))

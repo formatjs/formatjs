@@ -1,0 +1,31 @@
+diff --git a/lib/ConsoleHost/ConsoleHost.cpp b/lib/ConsoleHost/ConsoleHost.cpp
+index 41a5fb1..4101d43 100644
+--- a/lib/ConsoleHost/ConsoleHost.cpp
++++ b/lib/ConsoleHost/ConsoleHost.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "jsi/jsi.h"
+ 
++#include <chrono>
+ #include <queue>
+ 
+ namespace hermes {
+@@ -943,6 +944,18 @@ bool executeHBCBytecodeImpl(
+   // operations.
+   auto hermesRuntime =
+       facebook::hermes::makeHermesRuntime(options.runtimeConfig);
++  auto benchmarkClock = facebook::jsi::Function::createFromHostFunction(
++      *hermesRuntime,
++      facebook::jsi::PropNameID::forAscii(*hermesRuntime, "__now"),
++      0,
++      [](facebook::jsi::Runtime &, const facebook::jsi::Value &,
++         const facebook::jsi::Value *, size_t) {
++        return facebook::jsi::Value(
++            std::chrono::duration<double, std::milli>(
++                std::chrono::steady_clock::now().time_since_epoch()).count());
++      });
++  hermesRuntime->global().setProperty(
++      *hermesRuntime, "__now", std::move(benchmarkClock));
+   auto *runtime = static_cast<vm::Runtime *>(
+       facebook::jsi::castInterface<facebook::hermes::IHermes>(
+           hermesRuntime.get())

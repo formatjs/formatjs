@@ -4,19 +4,79 @@ load("@rules_cc//cc:cc_test.bzl", "cc_test")
 exports_files(["icu.BUILD.bazel"])
 
 cc_test(
+    name = "intl_relativetimeformat_conformance_test",
+    size = "small",
+    srcs = ["relativetime.cc"],
+    data = ["//conformance-tests/icu4x:relative-icu4x-differences.tsv"],
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath //conformance-tests/icu4x:relative-icu4x-differences.tsv)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
+    name = "intl_collator_conformance_test",
+    size = "small",
+    srcs = ["collator.cc"],
+    data = ["//packages/intl-collator:tests/collator-conformance.tsv"],
+    env = {"COLLATOR_CONFORMANCE_FIXTURES": "$(rootpath //packages/intl-collator:tests/collator-conformance.tsv)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "intl_locale_formatting_conformance_test",
     size = "small",
     srcs = ["locale_formatting.cc"],
     data = [
         "//conformance-tests/icu4j:list_format_fixtures",
         "//conformance-tests/icu4j:locale-format-fixtures.tsv",
+        "//conformance-tests/icu4j:plural_range_fixtures",
         "//conformance-tests/icu4j:plural_rules_fixtures",
     ],
     env = {
+        "PLURAL_RANGE_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_range_fixtures)",
         "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
         "LIST_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:list_format_fixtures)",
         "LOCALE_FORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-format-fixtures.tsv)",
     },
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
+    name = "intl_canonical_private_conformance_test",
+    size = "small",
+    srcs = ["canonical_private.cc"],
+    data = [
+        "//conformance-tests/icu4j:canonical-private-fixtures.tsv",
+        "//conformance-tests/icu4j:locale-extension-options-fixtures.tsv",
+    ],
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-extension-options-fixtures.tsv)",
+    },
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
+    name = "intl_segmenter_conformance_test",
+    size = "small",
+    srcs = ["segmenter.cc"],
+    data = ["//conformance-tests/icu4j:segmenter_fixtures"],
+    env = {"SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)"},
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",

@@ -3,9 +3,9 @@ mod data;
 pub mod ffi;
 pub mod registry;
 pub use data::LocaleData;
-use formatjs_intl_numberformat::{NumberFormat, Options as NumberOptions};
+use formatjs_intl_numberformat::NumberFormat;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 #[derive(Clone, Debug, Default, Deserialize)]
 #[serde(default, rename_all = "camelCase")]
@@ -51,14 +51,14 @@ pub struct Part {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit: Option<&'static str>,
 }
-enum Piece<'a> {
+enum Piece<'a, N> {
     Literal(&'a str),
-    Number(&'a [formatjs_intl_numberformat::Part], &'static str),
+    Number(&'a mut N, &'static str, bool),
 }
 pub struct RelativeTimeFormat {
     data: Arc<LocaleData>,
     resolved: ResolvedOptions,
-    number: NumberFormat,
+    number: Arc<NumberFormat>,
 }
 impl RelativeTimeFormat {
     pub(crate) fn new(
@@ -78,16 +78,7 @@ impl RelativeTimeFormat {
             &["always", "auto"],
             "numeric",
         )?;
-        let number = data
-            .numbers
-            .create(
-                std::slice::from_ref(&resolution.locale),
-                &NumberOptions {
-                    numbering_system: Some(resolution.numbering_system.clone()),
-                    ..Default::default()
-                },
-            )
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        let number = data.number_format(resolution)?;
         let resolved = ResolvedOptions {
             locale: resolution.locale.clone(),
             style: style.into(),
@@ -104,40 +95,112 @@ impl RelativeTimeFormat {
         &self.resolved
     }
     pub fn format(&self, value: &str, unit: &str) -> Result<String, Error> {
-        let mut result = String::with_capacity(32);
-        self.visit_pattern(value, unit, |piece| match piece {
-            Piece::Literal(value) => result.push_str(value),
-            Piece::Number(parts, _) => {
-                for part in parts {
-                    result.push_str(&part.value);
+        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
+        self.format_with(numeric, unit, || {
+            self.number.format_decimal_string_with_plural(
+                value.strip_prefix('-').unwrap_or(value),
+                &self.data.plurals,
+            )
+        })
+    }
+    /// Format a Number after host coercion, without reparsing its binary value.
+    pub fn format_number(&self, value: f64, unit: &str) -> Result<String, Error> {
+        self.format_with(value, unit, || {
+            let mut buffer = ryu::Buffer::new();
+            let text = buffer.format_finite(value.abs());
+            let text = text.strip_suffix(".0").unwrap_or(text);
+            self.number
+                .format_decimal_string_with_plural(text, &self.data.plurals)
+        })
+    }
+    fn format_with(
+        &self,
+        numeric: f64,
+        unit: &str,
+        format_number: impl FnOnce()
+            -> Result<(String, &'static str), formatjs_intl_numberformat::Error>,
+    ) -> Result<String, Error> {
+        let mut result = String::new();
+        self.visit_pattern(numeric, unit, format_number, |piece| {
+            let text = match piece {
+                Piece::Literal(value) => value,
+                Piece::Number(text, _, last) => {
+                    if last && result.is_empty() {
+                        result = std::mem::take(text);
+                        return;
+                    }
+                    text.as_str()
                 }
+            };
+            if result.capacity() == 0 {
+                result.reserve(32);
             }
+            result.push_str(text);
         })?;
         Ok(result)
     }
     pub fn format_to_parts(&self, value: &str, unit: &str) -> Result<Vec<Part>, Error> {
+        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
+        self.parts_with(numeric, unit, || {
+            self.number.format_decimal_with_plural(
+                value.strip_prefix('-').unwrap_or(value),
+                &self.data.plurals,
+            )
+        })
+    }
+    /// Retain the Number for validation and named forms; format decimal text lazily.
+    pub fn format_to_parts_number(&self, value: f64, unit: &str) -> Result<Vec<Part>, Error> {
+        self.parts_with(value, unit, || {
+            let mut buffer = ryu::Buffer::new();
+            let text = buffer.format_finite(value.abs());
+            let text = text.strip_suffix(".0").unwrap_or(text);
+            self.number
+                .format_decimal_with_plural(text, &self.data.plurals)
+        })
+    }
+    fn parts_with(
+        &self,
+        numeric: f64,
+        unit: &str,
+        format_number: impl FnOnce() -> Result<
+            (Vec<formatjs_intl_numberformat::Part>, &'static str),
+            formatjs_intl_numberformat::Error,
+        >,
+    ) -> Result<Vec<Part>, Error> {
         let mut result = Vec::new();
-        self.visit_pattern(value, unit, |piece| match piece {
+        self.visit_pattern(numeric, unit, format_number, |piece| match piece {
             Piece::Literal(value) => result.push(Part {
                 kind: "literal",
                 value: value.into(),
                 unit: None,
             }),
-            Piece::Number(parts, unit) => result.extend(parts.iter().map(|part| Part {
-                kind: part.kind,
-                value: part.value.clone(),
-                unit: Some(unit),
-            })),
+            Piece::Number(parts, unit, last) => {
+                let append = |part: formatjs_intl_numberformat::Part| Part {
+                    kind: part.kind,
+                    value: part.value,
+                    unit: Some(unit),
+                };
+                if last {
+                    let parts = std::mem::take(parts);
+                    if result.is_empty() {
+                        result = parts.into_iter().map(append).collect();
+                    } else {
+                        result.extend(parts.into_iter().map(append));
+                    }
+                } else {
+                    result.extend(parts.iter().cloned().map(append));
+                }
+            }
         })?;
         Ok(result)
     }
-    fn visit_pattern(
+    fn visit_pattern<N>(
         &self,
-        value: &str,
+        numeric: f64,
         unit: &str,
-        mut visit: impl FnMut(Piece<'_>),
+        format_number: impl FnOnce() -> Result<(N, &'static str), formatjs_intl_numberformat::Error>,
+        mut visit: impl FnMut(Piece<'_, N>),
     ) -> Result<(), Error> {
-        let numeric = value.parse::<f64>().map_err(|_| Error::InvalidNumber)?;
         if !numeric.is_finite() {
             return Err(Error::InvalidNumber);
         }
@@ -147,14 +210,14 @@ impl RelativeTimeFormat {
             .find(|known| unit == *known || unit.strip_suffix('s') == Some(*known))
             .ok_or(Error::InvalidUnit)?;
         let key = if self.resolved.style == "long" {
-            unit.into()
+            Cow::Borrowed(unit)
         } else {
-            format!("{unit}-{}", self.resolved.style)
+            Cow::Owned(format!("{unit}-{}", self.resolved.style))
         };
         let field = self
             .data
             .fields
-            .get(&key)
+            .get(key.as_ref())
             .or_else(|| self.data.fields.get(unit))
             .ok_or_else(|| Error::InvalidData("Missing relative field".into()))?;
         // Numeric auto uses ToString(-0) = "0" before choosing past/future.
@@ -175,20 +238,17 @@ impl RelativeTimeFormat {
         } else {
             &field.future
         };
-        let (number, category) = self
-            .number
-            .format_decimal_with_plural(
-                value.strip_prefix('-').unwrap_or(value),
-                &self.data.plurals,
-            )
-            .map_err(|error| Error::InvalidData(error.to_string()))?;
+        let (mut number, category) =
+            format_number().map_err(|error| Error::InvalidData(error.to_string()))?;
         let pattern = patterns
             .get(category)
             .or_else(|| patterns.get("other"))
             .ok_or_else(|| Error::InvalidData("Missing relative plural pattern".into()))?;
-        for (index, literal) in pattern.split("{0}").enumerate() {
+        let mut chunks = pattern.split("{0}").enumerate().peekable();
+        while let Some((index, literal)) = chunks.next() {
             if index > 0 {
-                visit(Piece::Number(&number, unit));
+                // Repeated slots borrow; the final slot can transfer its buffer.
+                visit(Piece::Number(&mut number, unit, chunks.peek().is_none()));
             }
             if !literal.is_empty() {
                 visit(Piece::Literal(literal));

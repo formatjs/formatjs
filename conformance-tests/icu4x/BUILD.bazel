@@ -1,5 +1,36 @@
 # gazelle:ignore
+load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+exports_files(["relative-icu4x-differences.tsv"])
+
+formatjs_rust_test(
+    name = "intl_relativetimeformat_conformance_test",
+    srcs = ["relativetimeformat.test.rs"],
+    crate_name = "icu4x_relativetimeformat_conformance_test",
+    data = ["relative-icu4x-differences.tsv"],
+    edition = "2024",
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath relative-icu4x-differences.tsv)"},
+    deps = [
+        "//crates/intl_relativetimeformat:with_compiled_data",
+        "@crates//:fixed_decimal",
+        "@crates//:icu_experimental-0.6.0",
+        "@crates//:icu_locale",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_collator_conformance_test",
+    srcs = ["collator.test.rs"],
+    crate_name = "icu4x_collator_conformance_test",
+    data = ["//packages/intl-collator:tests/collator-conformance.tsv"],
+    edition = "2024",
+    env = {"COLLATOR_CONFORMANCE_FIXTURES": "$(rootpath //packages/intl-collator:tests/collator-conformance.tsv)"},
+    deps = [
+        "@crates//:icu_collator-2.3.1",
+        "@crates//:icu_locale",
+    ],
+)
 
 formatjs_rust_test(
     name = "intl_listformat_conformance_test",
@@ -24,12 +55,68 @@ formatjs_rust_test(
     name = "intl_pluralrules_conformance_test",
     srcs = ["pluralrules.test.rs"],
     crate_name = "icu4x_pluralrules_conformance_test",
-    data = ["//conformance-tests/icu4j:plural_rules_fixtures"],
+    data = [
+        "plural-range-icu-differences.tsv",
+        "//conformance-tests/icu4j:plural_range_fixtures",
+        "//conformance-tests/icu4j:plural_rules_fixtures",
+    ],
     edition = "2024",
-    env = {"PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)"},
+    env = {
+        "PLURAL_RANGE_DIFFERENCES": "$(rootpath plural-range-icu-differences.tsv)",
+        "PLURAL_RULES_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_rules_fixtures)",
+        "PLURAL_RANGE_FIXTURES": "$(rootpath //conformance-tests/icu4j:plural_range_fixtures)",
+    },
     deps = [
         "@crates//:fixed_decimal",
         "@crates//:icu_locale",
         "@crates//:icu_plurals",
+    ],
+)
+
+exports_files(["plural-range-icu-differences.tsv"])
+
+copy_to_bin(
+    name = "plural_range_differences",
+    srcs = ["plural-range-icu-differences.tsv"],
+    visibility = ["//native/hermes/tests:__pkg__"],
+)
+
+formatjs_rust_test(
+    name = "intl_canonical_private_conformance_test",
+    srcs = ["canonical-private.test.rs"],
+    crate_name = "icu4x_canonical_private_conformance_test",
+    data = [
+        "//conformance-tests/icu4j:canonical-private-fixtures.tsv",
+        "//conformance-tests/icu4j:locale-extension-options-fixtures.tsv",
+    ],
+    edition = "2024",
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath //conformance-tests/icu4j:canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath //conformance-tests/icu4j:locale-extension-options-fixtures.tsv)",
+    },
+    deps = [
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_locale",
+        "@crates//:icu_locale",
+    ],
+)
+
+formatjs_rust_test(
+    name = "intl_segmenter_conformance_test",
+    srcs = ["segmenter.test.rs"],
+    crate_name = "icu4x_segmenter_conformance_test",
+    data = [
+        "segmenter-icu-differences.tsv",
+        "//conformance-tests/icu4j:segmenter_fixtures",
+    ],
+    edition = "2024",
+    env = {
+        "SEGMENTER_FIXTURES": "$(rootpath //conformance-tests/icu4j:segmenter_fixtures)",
+        "SEGMENTER_DIFFERENCES": "$(rootpath segmenter-icu-differences.tsv)",
+    },
+    deps = [
+        "//crates/intl_segmenter",
+        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_segmenter-2.3.0",
     ],
 )

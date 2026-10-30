@@ -1,11 +1,22 @@
 // RUN: %hermes %s | %FileCheck %s --match-full-lines
 
+var loadUnits = Intl.NumberFormat.__addUnitData
 print(Intl.getCanonicalLocales('en-us')[0])
 // CHECK: en-US
 print(Intl.supportedValuesOf('calendar').includes('gregory'))
 // CHECK: true
 print(new Intl.Locale('en-US').language)
 // CHECK: en
+if (!new Intl.Locale('de').getCollations().includes('phonebk'))
+  throw new Error('Locale must enumerate installed Collator types')
+print('phonebk')
+// CHECK: phonebk
+print(new Intl.Locale('en').getCollations().join(','))
+// CHECK: emoji,eor
+if (
+  Intl.supportedValuesOf('collation').some(type => type.startsWith('private-'))
+)
+  throw new Error('Private collation types must stay internal')
 print(new Intl.PluralRules('en').select(1))
 // CHECK: one
 print(new Intl.ListFormat('en').format(['A', 'B']))
@@ -39,3 +50,28 @@ print(
   })
 )
 // CHECK: 1:02:03
+
+var resolved = Object.getOwnPropertyDescriptor(
+  Intl.NumberFormat.prototype,
+  'resolvedOptions'
+)
+var probes = 0
+Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', {
+  configurable: true,
+  value: function () {
+    probes++
+    return resolved.value.call(this)
+  },
+})
+Intl.supportedValuesOf('unit')
+var first = probes
+Intl.supportedValuesOf('unit')
+if (probes !== first)
+  throw new Error('Supported values must reuse observations')
+loadUnits('en', '{"simple":{},"compound":{}}')
+Intl.supportedValuesOf('unit')
+if (probes <= first)
+  throw new Error('Retained loader must invalidate supported values')
+Object.defineProperty(Intl.NumberFormat.prototype, 'resolvedOptions', resolved)
+print('cache refreshed')
+// CHECK: cache refreshed

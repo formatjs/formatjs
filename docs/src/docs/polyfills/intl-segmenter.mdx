@@ -7,6 +7,12 @@ A polyfill for [`Intl.Segmenter`](https://tc39.es/proposal-intl-segmenter).
 
 This package implements `Intl.Segmenter`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+Rust and TypeScript implementations share an independent ICU4C/ICU4J test
+matrix for UTF-16 boundaries and word classification. Hermes runs both
+implementations in source and bytecode modes, including `containing()` and
+record property checks. Dictionary segmentation and sentence abbreviation
+suppression can differ between the implementations.
+
 ### Specification Details
 
 - **TC39 Proposal**: [Intl.Segmenter](https://github.com/tc39/proposal-intl-segmenter)
@@ -40,7 +46,7 @@ All 3 segmentation granularities are supported:
 The `Segments` object returned by `segment()` is:
 
 - **Iterable** - Can be used with `for...of` loops
-- **Array-like** - Supports indexed access and `containing(index)` method
+- **`containing(index)`** - Finds the segment containing a UTF-16 code-unit index
 
 #### Segment Object Properties
 
@@ -216,10 +222,10 @@ Regional locales retain their language's tailoring, including sentence suppressi
 
 The experimental Rust port uses ICU4X grapheme, word and sentence models. Install
 SDK target `:segmenter` after canonicalization, following the
-[native SDK guide](/docs/guides/react-native-hermes#rust-segmenter). Register
+[native SDK guide](/docs/guides/hermes-intl). Register
 `js/36-IntlSegmenter.js` for precompiled Hermes extension setup. The SDK includes
 public headers, adapter source, compiled ICU data, and a typed consumer example.
-Android/iOS artifacts and React Native package installation are not included.
+Desktop and Android archives are covered in the [SDK guide](/docs/guides/hermes-intl).
 
 ICU dictionary/LSTM models recognize complex-script words. Original UTF-16 input
 and indices remain exact; cursors advance independently. `containing` truncates
@@ -227,6 +233,6 @@ before bounds checks, so `-0.5` selects index zero; BigInt throws `TypeError`.
 
 Word/sentence boundaries and word-like status are implementation-dependent.
 Compared with TS, ICU groups dictionary words, applies different abbreviation
-profiles, and excludes isolated marks/emoji from word-like segments. Tests assert
-both implementations explicitly, plus the complete Unicode 17 grapheme corpus.
+profiles, and excludes isolated marks/emoji from word-like segments. Tests cross-check ICU4C/J/X, both implementations, and the complete Unicode 17
+grapheme, word, and sentence corpora.
 Segmenter keeps static data, matching the existing package's loading model.

@@ -443,3 +443,31 @@ it('filters global collation candidates for the requested locale', () => {
   expect(new Locale('und').getCollations()).toEqual(['emoji', 'eor'])
   expect(new Locale('pt-BR-u-co-phonebk').getCollations()).toEqual(['phonebk'])
 })
+
+test('Unicode options preserve other extensions and private use', () => {
+  for (const suffix of [
+    '-x-private',
+    '-z-foo-x-private',
+    '-0-foo-z-bar-x-private',
+    '-v-foo-y-bar-z-baz-x-u-ca-buddhist',
+  ]) {
+    const numeric = new Locale('en' + suffix, {numeric: true})
+    const canonicalSuffix = suffix.startsWith('-0-')
+      ? '-0-foo-u-kn-z-bar-x-private'
+      : '-u-kn' + suffix
+    expect(numeric.toString()).toBe('en' + canonicalSuffix)
+    expect(numeric.numeric).toBe(true)
+    const calendar = new Locale('en' + suffix, {calendar: 'islamicc'})
+    const calendarSuffix = suffix.startsWith('-0-')
+      ? '-0-foo-u-ca-islamic-civil-z-bar-x-private'
+      : '-u-ca-islamic-civil' + suffix
+    expect(calendar.toString()).toBe('en' + calendarSuffix)
+    expect(calendar.calendar).toBe('islamic-civil')
+  }
+  expect(
+    new Locale('en-u-attr-ca-buddhist-z-foo-x-private', {
+      calendar: 'gregory',
+      numeric: false,
+    }).toString()
+  ).toBe('en-u-attr-ca-gregory-kn-false-z-foo-x-private')
+})

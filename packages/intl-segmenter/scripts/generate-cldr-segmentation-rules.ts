@@ -22,33 +22,7 @@ const SEGMENTATION_LOCALES = [
   'zh',
 ] as const
 
-/**
- * HARDCODED_RULE_REPLACEMENTS - Workarounds for JavaScript regex limitations
- *
- * Context: JavaScript has limitations with negated character classes containing
- * surrogate pairs (characters outside the Basic Multilingual Plane). When CLDR
- * rules use [^$RI] (not a Regional Indicator), the transpilation expands $RI
- * into a massive negated character class that's problematic.
- *
- * Issue: Regional Indicator (RI) rules with Format/Extend characters
- * - CLDR Rule 16: [^$RI] ($RI $RI)* $RI × $RI
- * - Should match: "A🇦🇧" (non-RI followed by RI pairs)
- * - Problem: [^$RI] expands to [^<huge class of RI surrogate pairs>]
- * - Additionally: ($RI$RI)* doesn't allow Extend/Format between RIs
- *
- * Current Status (as of 2025-01):
- * - 35 test cases fail due to RI + Extend combinations (e.g., "🇦̈🇦")
- * - These tests are skipped in word.test.ts (see SKIPPED_REGIONAL_INDICATOR_TESTS)
- * - The hardcoded replacement below is a partial workaround
- * - Full fix would require either:
- *   1. Runtime handling of transparency within ($RI$RI)* patterns
- *   2. Different approach to negated character class transpilation
- *   3. Using a more capable regex engine
- *
- * Related: Lines 608-643 implement transparency injection for most rules,
- * but Regional Indicator rules require special handling due to the repetition
- * pattern ($RI$RI)* where transparency needs to be injected WITHIN the repetition.
- */
+// Negated RI classes must preserve surrogate-pair matching in non-Unicode regexes.
 const HARDCODED_RULE_REPLACEMENTS: Record<string, string> = {
   // GraphemeClusterBreak rule 13: [^$RI] ($RI $RI)* $RI × $RI
   // Could potentially be implemented at runtime instead of hardcoded
@@ -111,6 +85,7 @@ type SegmentationsBreakTypeValue = {
   variables?: {[variableName: string]: string}
   segmentRules?: {[ruleNumber: string]: ParsedBreakRule}
   suppressions?: string[]
+  wordCharacters?: string
 }
 
 const getGranularity = (
@@ -492,10 +467,10 @@ const remapSegmentationJson = (
         segmentationTypeValue.segmentRules
       )) {
         //replace negated character class to negative lookahead inside noncapturing group (it doesn't handle surrogate pairs yet so for [^$RI] there is a hardcoded rule replacment `HARDCODED_RULE_REPLACEMENTS`)
-        let fixedRuleString = ruleString.replace(
-          /(\[\^)(.+)(\])/gm,
-          '(?:(?!$2))'
-        )
+        let fixedRuleString =
+          segmentationTypeName === 'SentenceBreak'
+            ? ruleString
+            : ruleString.replace(/(\[\^)(.+)(\])/gm, '(?:(?!$2))')
 
         // First, handle negated character classes specifically for [^$RI]
         // This must be done before other replacements
@@ -511,11 +486,16 @@ const remapSegmentationJson = (
           /(\[)(\^?)(.+?)(\])/gm,
           (_, _p1, negation, p2, _p3) => {
             //find variables and add | between - it will not work if the rule has hardcoded codepoints, but they don't and shouldn't
-            const addedOrSigns = p2.replace(/(.)(\s?)(\$)/g, '$1|$3')
+            const addedOrSigns =
+              segmentationTypeName === 'SentenceBreak'
+                ? (p2.match(/\$[A-Za-z_][A-Za-z_0-9]*/g) || []).join('|')
+                : p2.replace(/(.)(\s?)(\$)/g, '$1|$3')
             if (negation === '^') {
               // Negated character class: [^$Var] becomes (?:(?!$Var).)
               // This matches any character that is not matched by the variable
-              return `(?:(?!${addedOrSigns}).)`
+              return segmentationTypeName === 'SentenceBreak'
+                ? `(?:(?!(?:${addedOrSigns}))[\\s\\S])`
+                : `(?:(?!${addedOrSigns}).)`
             } else {
               // Normal character class: [$Var1 $Var2] becomes (?:$Var1|$Var2)
               return `(?:${addedOrSigns})`
@@ -638,119 +618,29 @@ const remapSegmentationJson = (
           }
         }
 
-        // ============================================================================
-        // TRANSPARENCY INJECTION - Critical for Unicode 17.0+ Format/Extend handling
-        // ============================================================================
-        //
-        // Context: Unicode text segmentation must handle Format/Extend/ZWJ characters
-        // "transparently" - other rules should look through them. For example:
-        //   - "A̅" (A + COMBINING OVERLINE) should match $ALetter × $ALetter
-        //   - "a'̈a" (apostrophe + COMBINING DIAERESIS) should match MidLetter rules
-        //   - "🇦̈" (Regional Indicator + COMBINING DIAERESIS) should stay together
-        //
-        // Implementation: We inject (?:$Extend|$Format|$ZWJ)* patterns into rules
-        // to allow zero or more transparent characters between character classes.
-        //
-        // What we inject:
-        //   1. "before" patterns: Append $ExFm* to the end
-        //      Example: $ALetter becomes $ALetter(?:$Extend|$Format|$ZWJ)*
-        //   2. "after" patterns: Insert $ExFm* between variables
-        //      Example: ($MidLetter|$MidNumLetQ)$AHLetter becomes
-        //               ($MidLetter|$MidNumLetQ)(?:$ExFm)*$AHLetter
-        //
-        // Fixed in this commit (2025-01):
-        //   - Added "after" pattern transparency for WB6, WB7, WB11, WB12
-        //   - Fixed 76 out of 111 word segmentation test failures (68% improvement)
-        //
-        // Known limitations:
-        //   - Regional Indicator rules (WB15, WB16) still have 35 failing tests
-        //   - See HARDCODED_RULE_REPLACEMENTS above for details
-        //
-        // Rules to inject transparency into (based on ICU word.txt):
-        // - All non-break rules (breaks: false)
-        // - Skip rules that explicitly handle Format/Extend (like WB4/SB5, WB3c)
-        // - Skip rules that already have $Extend/$Format/$ZWJ variables
-        //
-        // For WordBreak: Full transparency injection (before AND after patterns)
-        // For SentenceBreak: Only inject transparency in "before" patterns
-        //   - SentenceBreak has more complex rules and full transparency breaks them
-        //   - "before" transparency allows rules to match through Format/Extend
-        //   - "after" transparency would incorrectly merge sentence boundaries
-        //
+        // Ignore Format/Extend inside repetitions and between context classes,
+        // while preserving mandatory line/paragraph rules and attachment rules.
         for (const [ruleNr, rule] of Object.entries(segmentRules)) {
-          // For WordBreak: Skip break rules (we only want transparency in non-break rules)
-          // For SentenceBreak: Process all rules (break rules need transparency to match through Extend/Format)
-          if (segmentationTypeName === 'WordBreak' && rule.breaks) {
+          if (segmentationTypeName === 'SentenceBreak') {
+            if (ruleNr === '3' || ruleNr === '4' || ruleNr === '5') continue
+          } else if (
+            rule.breaks ||
+            ruleNr === '4' ||
+            ruleNr === '3' ||
+            ruleNr.startsWith('3.')
+          ) {
             continue
           }
-
-          // Skip the transparency attachment rule itself (already handles Format/Extend)
-          // WordBreak: rule 4, SentenceBreak: rule 5
-          if (ruleNr === ruleNumber) {
-            continue
+          for (const side of ['before', 'after'] as const) {
+            rule[side] = rule[side]?.replace(
+              /\$[A-Za-z_][A-Za-z_0-9]*/g,
+              variable =>
+                ['$Extend', '$Format', '$ZWJ', '$ParaSep'].includes(variable)
+                  ? variable
+                  : `(?:${variable}${exfmStarPattern})`
+            )
           }
-
-          // Skip rules that start with line break characters (WB3, WB3a, WB3b, WB3c)
-          if (ruleNr === '3' || ruleNr.startsWith('3.')) {
-            continue
-          }
-
-          // Only inject if the rule has a "before" pattern
-          if (rule.before) {
-            // Check if the pattern already has $ExFm* or similar transparency
-            // Use word boundaries to match complete variable names, not substrings
-            // (e.g., don't match "$Extend" in "$ExtendNumLet")
-            const hasExtendVar = /\$Extend(?![a-zA-Z])/.test(rule.before)
-            const hasFormatVar = /\$Format(?![a-zA-Z])/.test(rule.before)
-            const hasZWJVar = /\$ZWJ(?![a-zA-Z])/.test(rule.before)
-
-            if (hasExtendVar || hasFormatVar || hasZWJVar) {
-              // Already has transparency, skip
-              continue
-            }
-
-            // Inject $ExFm* at the end of the before pattern
-            // The anchor ($) is added later by generateRuleRegex, so we just append here
-            // Pattern: $AHLetter becomes $AHLetter(?:$Extend|$Format|$ZWJ)*
-            rule.before = rule.before + exfmStarPattern
-          }
-
-          // AFTER PATTERN TRANSPARENCY - Only for WordBreak (added in 2025-01)
-          //
-          // Problem: CLDR rules like WB6 have "after" patterns with multiple variables:
-          //   WB6: $AHLetter × ($MidLetter | $MidNumLetQ) $AHLetter
-          // This becomes: after = "($MidLetter|$MidNumLetQ)$AHLetter"
-          //
-          // Without transparency injection, this fails for:
-          //   - "a'̈a" (apostrophe + COMBINING DIAERESIS + a)
-          //   The apostrophe matches $MidLetter, but the diaeresis blocks $AHLetter
-          //
-          // Solution: Inject $ExFm* between the alternation group and the next variable
-          //   Pattern: )$Var becomes )(?:$ExFm)*$Var
-          //   Result: "($MidLetter|$MidNumLetQ)(?:$ExFm)*$AHLetter"
-          //
-          // This fixed 16 test failures related to MidLetter/MidNumLet with Extend chars.
-          //
-          // NOTE: Only apply to WordBreak. SentenceBreak has more complex rules and
-          // "after" transparency would incorrectly merge sentence boundaries.
-          //
-          if (segmentationTypeName === 'WordBreak' && rule.after) {
-            // Check if the pattern already has transparency
-            const hasExtendVar = /\$Extend(?![a-zA-Z])/.test(rule.after)
-            const hasFormatVar = /\$Format(?![a-zA-Z])/.test(rule.after)
-            const hasZWJVar = /\$ZWJ(?![a-zA-Z])/.test(rule.after)
-
-            if (!hasExtendVar && !hasFormatVar && !hasZWJVar) {
-              // Inject $ExFm* between variable references
-              // Regex matches: ) followed by $Variable
-              // Replaces with: )(?:$Extend|$Format|$ZWJ)*$Variable
-              rule.after = rule.after.replace(
-                /(\))(\$[A-Z][a-zA-Z_]*)/g,
-                `$1${exfmStarPattern}$2`
-              )
-            }
-          }
-        } // end for loop over segmentRules
+        }
       } // end if (hasExtend || hasFormat || hasZWJ)
 
       // Note: CLDR already provides rules 13, 13.1, 13.2, 15, 16 for ExtendNumLet and Regional Indicator
@@ -797,6 +687,24 @@ async function main({out, unicodeFiles}: Args) {
     currentContexVariables: rootContextVariables,
     segmentations: remappedRootSegmentation,
   } = remapSegmentationJson(rootSegmentation, regexReplacements)
+
+  const wordProperties = parseUCDTextFile(
+    unicodeFiles.find(file => file.includes('WordBreakProperty'))!
+  )
+  const coreProperties = parseUCDTextFile(
+    unicodeFiles.find(file => file.includes('DerivedCoreProperties'))!
+  )
+  const ignored = `[${wordProperties.Extend}${wordProperties.Format}${wordProperties.ZWJ}]`
+  const bases = `[${coreProperties.Alphabetic}${wordProperties.ALetter}${wordProperties.Hebrew_Letter}${wordProperties.Numeric}${wordProperties.Katakana}]`
+  const extenders = `[${wordProperties.ExtendNumLet}]`
+  if (!remappedRootSegmentation.word) throw new Error('Missing root word rules')
+  // Pin classification to Unicode data, including letterlike symbols; marks
+  // alone are not words. ICU word rule 13a recognizes repeated extenders.
+  remappedRootSegmentation.word.wordCharacters = rewritePattern(
+    `(?:(?!${ignored})${bases}|${extenders}${ignored}*${extenders})`,
+    'u',
+    {unicodeFlag: 'transform'}
+  )
 
   // CLDR 48+ removed $FE, but some locale overrides still reference it
   // $FE was Format+Extend, so we add it to context for backward compatibility

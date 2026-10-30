@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_hermes"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Rust C ABI assembly for FormatJS Hermes extensions"
@@ -13,17 +13,17 @@ path = "lib.rs"
 crate-type = ["staticlib"]
 
 [dependencies]
-formatjs_intl_displaynames = { path = "../intl_displaynames", version = "0.1.0" }
-formatjs_intl_listformat = { path = "../intl_listformat", version = "0.1.0" }
-formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
-formatjs_intl_pluralrules = { path = "../intl_pluralrules", version = "0.1.0" }
-formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
-formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof", version = "0.1.0" }
-formatjs_intl_segmenter = { path = "../intl_segmenter", version = "0.1.0" }
-formatjs_intl_collator = { path = "../intl_collator", version = "0.1.0" }
-formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.1.0" }
-formatjs_intl_relativetimeformat = { path = "../intl_relativetimeformat", version = "0.1.0" }
-formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "0.1.0" }
-formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars", version = "0.1.0" }
+formatjs_intl_displaynames = { path = "../intl_displaynames", version = "0.2.0" }
+formatjs_intl_listformat = { path = "../intl_listformat", version = "0.2.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.2.0" }
+formatjs_intl_pluralrules = { path = "../intl_pluralrules", version = "0.2.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.2.0" }
+formatjs_intl_supportedvaluesof = { path = "../intl_supportedvaluesof", version = "0.2.0" }
+formatjs_intl_segmenter = { path = "../intl_segmenter", version = "0.2.0" }
+formatjs_intl_collator = { path = "../intl_collator", version = "0.2.1" }
+formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.2.0" }
+formatjs_intl_relativetimeformat = { path = "../intl_relativetimeformat", version = "0.2.0" }
+formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "0.2.0" }
+formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars", version = "0.2.0" }
 
-formatjs_intl_durationformat = { path = "../intl_durationformat", version = "0.1.0" }
+formatjs_intl_durationformat = { path = "../intl_durationformat", version = "0.2.0" }

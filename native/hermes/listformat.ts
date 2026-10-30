@@ -4,9 +4,12 @@
   nativeInfo: () => string | number
   nativeMatch: (request: string) => string | number
   nativeCreate: (locale: string, options: string) => object | number
+  nativeCreateDefault: (requested: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeFormat: (handle: object, values: string[]) => string
   nativeParts: (handle: object, values: string[]) => string
+  nativeFormatSmall: (handle: object, ...values: string[]) => string
+  nativePartsSmall: (handle: object, ...values: string[]) => string
 }) {
   'use strict'
   const {
@@ -14,11 +17,15 @@
     nativeInfo,
     nativeMatch,
     nativeCreate,
+    nativeCreateDefault,
     nativeQuery,
     nativeFormat,
     nativeParts,
+    nativeFormatSmall,
+    nativePartsSmall,
   } = native
   const apply = Reflect.apply
+  const join = Array.prototype.join
   const create = Object.create
   const define = Object.defineProperty
   const setPrototypeOf = Object.setPrototypeOf
@@ -26,13 +33,22 @@
   const objectPrototype = Object.prototype
   const parse = JSON.parse
   const stringify = JSON.stringify
-  const charCodeAt = String.prototype.charCodeAt
-  const slice = String.prototype.slice
+  const charCodeAt = Function.prototype.call.bind(String.prototype.charCodeAt)
+  const slice = Function.prototype.call.bind(String.prototype.slice)
   const BadReceiver = TypeError
   const BadOption = RangeError
   const slots = new WeakMap<object, object>()
-  const getSlot = WeakMap.prototype.get
-  const setSlot = WeakMap.prototype.set
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
+  type JoinPlan = {separator: string; lastSeparator: string}
+  // Private handle metadata avoids another set of weak keys during collection.
+  const planKey = Symbol()
+  type Handle = {[planKey]?: JoinPlan | null | false}
+  const matchers = ['lookup', 'best fit'] as const
+  const types = ['conjunction', 'disjunction', 'unit'] as const
+  const styles = ['long', 'short', 'narrow'] as const
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -60,7 +76,7 @@
   function option(
     options: any,
     name: string,
-    choices: string[],
+    choices: readonly string[],
     fallback: string
   ): string {
     const value = options[name]
@@ -77,7 +93,7 @@
     )
   }
   function slot(receiver: unknown): object {
-    const handle = apply(getSlot, slots, [receiver])
+    const handle = getSlot(receiver)
     if (!handle) throw new BadReceiver('Incompatible Intl.ListFormat receiver')
     return handle
   }
@@ -86,20 +102,28 @@
     lookup: boolean,
     supported: boolean
   ): any {
-    let tags = '['
-    for (let index = 0; index < requested.length; index++)
-      tags += (index ? ',' : '') + quote(requested[index])
     return decoded(
       nativeMatch(
         '{"requested":' +
-          tags +
-          '],"lookup":' +
+          strings(requested) +
+          ',"lookup":' +
           lookup +
           ',"supported":' +
           supported +
           '}'
       )
     )
+  }
+  function strings(requested: string[]): string {
+    let tags = '['
+    for (let index = 0; index < requested.length; index++)
+      tags += (index ? ',' : '') + quote(requested[index])
+    return tags + ']'
+  }
+  function initialize(receiver: object, handle: object | number): ListFormat {
+    if (typeof handle === 'number') decoded(handle)
+    setSlot(receiver, handle as object)
+    return receiver
   }
   function property(
     target: object,
@@ -115,24 +139,93 @@
     descriptor.configurable = true
     define(target, name, descriptor)
   }
-  function listValues(input: unknown): string[] {
+  function callList(
+    input: unknown,
+    handle: object,
+    small: (handle: object, ...values: string[]) => string,
+    large: (handle: object, values: string[]) => string
+  ): string {
     // Validate during iteration so non-string values close the iterator.
-    if (input === undefined) return []
-    const result: string[] = []
-    const descriptor = {
-      __proto__: null,
-      value: undefined as unknown,
-      writable: true,
-      enumerable: true,
-      configurable: true,
-    }
+    if (input === undefined) return small(handle)
+    let first = '',
+      second = '',
+      third = '',
+      fourth = ''
+    let length = 0
+    let values: string[] | undefined
     for (const value of input as Iterable<unknown>) {
       if (typeof value !== 'string')
         throw new BadReceiver('Iterable yielded a non-string value')
-      descriptor.value = value
-      define(result, result.length, descriptor)
+      if (values !== undefined) {
+        values[length++] = value
+        continue
+      }
+      switch (length) {
+        case 0:
+          first = value
+          break
+        case 1:
+          second = value
+          break
+        case 2:
+          third = value
+          break
+        case 3:
+          fourth = value
+          break
+        default:
+          values = [first, second, third, fourth]
+          // Larger copies stay private; inherited index setters cannot observe them.
+          setPrototypeOf(values, null)
+          values[length] = value
+      }
+      length++
     }
-    return result
+    switch (length) {
+      case 0:
+        return small(handle)
+      case 1:
+        return small(handle, first)
+      case 2:
+        return small(handle, first, second)
+      case 3:
+        return small(handle, first, second, third)
+      case 4:
+        return small(handle, first, second, third, fourth)
+      default:
+        // Rust authorizes only context-free separators; keep all other shapes native.
+        if (large === nativeFormat) {
+          const record = handle as Handle
+          let plan = record[planKey]
+          // Long lists repay setup immediately; shorter lists wait for reuse.
+          if (plan === undefined && length < 128) {
+            define(record, planKey, {
+              __proto__: null,
+              value: false,
+              writable: true,
+            } as PropertyDescriptor)
+            return large(handle, values!)
+          }
+          if (plan === undefined || plan === false) {
+            plan = decoded(
+              nativeQuery(handle, '{"method":"joinPlan"}')
+            ) as JoinPlan | null
+            define(record, planKey, {
+              __proto__: null,
+              value: plan,
+              writable: true,
+            } as PropertyDescriptor)
+          }
+          if (plan !== null) {
+            const last = values![length - 1]
+            values!.length = length - 1
+            return (
+              apply(join, values!, [plan.separator]) + plan.lastSeparator + last
+            )
+          }
+        }
+        return large(handle, values!)
+    }
   }
   // Constructor 1–6: allocate once before ResolveOptions. A derived constructor
   // avoids Hermes allocating from newTarget.prototype before our explicit Get.
@@ -146,31 +239,22 @@
       const receiver = create(
         isObject(requestedPrototype) ? requestedPrototype : prototype
       )
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
+      // Missing options have no getters; Rust can negotiate and create together.
+      if (optionsInput === undefined)
+        return initialize(receiver, nativeCreateDefault(strings(requested)))
       const opts = constructorOptions(optionsInput)
-      const matcher = option(
-        opts,
-        'localeMatcher',
-        ['lookup', 'best fit'],
-        'best fit'
-      )
+      const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
       // Steps 7–14: get/validate type before reading style; Rust selects templates.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L27-L34
-      const type = option(
-        opts,
-        'type',
-        ['conjunction', 'disjunction', 'unit'],
-        'conjunction'
-      )
-      const style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
+      const type = option(opts, 'type', types, 'conjunction')
+      const style = option(opts, 'style', styles, 'long')
       const handle = nativeCreate(
         locale,
-        '{"type":' + quote(type) + ',"style":' + quote(style) + '}'
+        '{"type":"' + type + '","style":"' + style + '"}'
       )
-      if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
-      return receiver
+      return initialize(receiver, handle)
     }
     static supportedLocalesOf(
       locales: unknown,
@@ -178,11 +262,11 @@
     ): string[] {
       // CanonicalizeLocaleList precedes FilterLocales and its option accesses.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L61-L63
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
         'localeMatcher',
-        ['lookup', 'best fit'],
+        matchers,
         'best fit'
       )
       return match(requested, matcher === 'lookup', true)
@@ -203,16 +287,16 @@
   setPrototypeOf(prototype, objectPrototype)
   const members = {
     format(this: unknown, list: unknown): string {
-      // Brand check precedes iteration; Rust implements FormatList.
+      // Brand check precedes iteration; Rust selects the formatting patterns.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L162-L166
       const handle = slot(this)
-      return nativeFormat(handle, listValues(list))
+      return callList(list, handle, nativeFormatSmall, nativeFormat)
     },
     formatToParts(this: unknown, list: unknown): object[] {
       // Fresh ordinary array/records; Rust preserves element/literal boundaries.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L335-L344
       const handle = slot(this)
-      const packed = nativeParts(handle, listValues(list))
+      const packed = callList(list, handle, nativePartsSmall, nativeParts)
       const parts: object[] = []
       const descriptor = {
         __proto__: null,
@@ -222,11 +306,10 @@
         configurable: true,
       }
       for (let offset = 0; offset < packed.length;) {
-        const kind = apply(charCodeAt, packed, [offset++])
+        const kind = charCodeAt(packed, offset++)
         const length =
-          apply(charCodeAt, packed, [offset++]) * 65536 +
-          apply(charCodeAt, packed, [offset++])
-        const value = apply(slice, packed, [offset, offset + length])
+          charCodeAt(packed, offset++) * 65536 + charCodeAt(packed, offset++)
+        const value = slice(packed, offset, offset + length)
         offset += length
         const part = {type: kind === 0 ? 'element' : 'literal', value}
         descriptor.value = part

@@ -46,7 +46,13 @@ public class IntlListFormatOracle {
             for (int t = 0; t < types.length; t++) {
                 for (int w = 0; w < styles.length; w++) {
                     ListFormatter formatter = ListFormatter.getInstance(locale, nativeTypes[t], widths[w]);
-                    for (String[] input : inputs) {
+                    List<String[]> cases = new ArrayList<>(java.util.Arrays.asList(inputs));
+                    for (int size : new int[]{16, 32, 256}) {
+                        String[] large = new String[size];
+                        for (int index = 0; index < size; index++) large[index] = index % 3 == 0 ? "" : "item" + index;
+                        cases.add(large);
+                    }
+                    for (String[] input : cases) {
                         List<String> items = new ArrayList<>();
                         for (String item : input) items.add(hex(item));
                         String key = tag + "\t" + types[t] + "\t" + styles[w] + "\t"
@@ -65,7 +71,7 @@ public class IntlListFormatOracle {
             }
         }
         if (used != differences.size()) throw new AssertionError("Unused oracle differences");
-        if (rows.size() != 2872) throw new AssertionError("Incomplete list matrix");
+        if (rows.size() != 3169) throw new AssertionError("Incomplete list matrix");
         Files.write(Paths.get(args[0]), rows, StandardCharsets.UTF_8);
     }
 }

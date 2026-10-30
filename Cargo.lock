@@ -733,7 +733,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_collator"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -746,7 +746,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_data"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ciborium",
  "serde",
@@ -754,7 +754,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_data_build"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "ciborium",
  "formatjs_intl_data",
@@ -767,7 +767,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -781,7 +781,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_datetimeformat",
  "serde",
@@ -790,7 +790,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_displaynames"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -801,7 +801,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_durationformat"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
@@ -813,7 +813,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_getcanonicallocales"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "icu_locale",
  "icu_provider",
@@ -821,7 +821,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.1.0"
+version = "0.3.0"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",
@@ -840,7 +840,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_listformat"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -852,17 +852,18 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_locale"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_localematcher",
  "serde",
  "serde_json",
+ "tinystr",
 ]
 
 [[package]]
 name = "formatjs_intl_localematcher"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "icu_locale",
  "serde_json",
@@ -881,7 +882,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_numberformat"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -895,7 +896,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_pluralrules"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "fixed_decimal",
  "formatjs_intl_data",
@@ -909,20 +910,21 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_relativetimeformat"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
  "formatjs_intl_numberformat",
  "formatjs_intl_pluralrules",
+ "ryu",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "formatjs_intl_segmenter"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -935,7 +937,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_supportedvaluesof"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "serde",
  "serde_json",

@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_segmenter"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 Segmenter using ICU4X and UTF-16 boundaries"
@@ -12,8 +12,8 @@ publish = true
 path = "lib.rs"
 
 [dependencies]
-formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.1.0" }
-formatjs_intl_locale = { path = "../intl_locale", version = "0.1.0" }
+formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "0.2.0" }
+formatjs_intl_locale = { path = "../intl_locale", version = "0.2.0" }
 icu_locale_core = "2.3"
 icu_segmenter = "2.3"
 icu_properties = "2.3"

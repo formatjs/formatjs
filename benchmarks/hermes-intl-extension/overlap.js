@@ -114,6 +114,57 @@
     },
   ])
   cases.push([
+    'Locale.new.language',
+    function () {
+      return new Intl.Locale('en').language
+    },
+  ])
+  cases.push([
+    'Locale.new.toString',
+    function () {
+      return new Intl.Locale('en').toString()
+    },
+  ])
+  cases.push([
+    'Locale.language',
+    (function () {
+      var locale = new Intl.Locale('en')
+      return function () {
+        return locale.language
+      }
+    })(),
+  ])
+  cases.push([
+    'Locale.new(Locale)',
+    (function () {
+      var locale = new Intl.Locale('en')
+      return function () {
+        return new Intl.Locale(locale)
+      }
+    })(),
+  ])
+  cases.push([
+    'Locale.new(diverse)',
+    (function () {
+      var tags = [],
+        index = 0
+      for (var i = 0; i < 192; i++) tags.push('en-x-bench-' + i)
+      return function () {
+        return new Intl.Locale(tags[index++ % tags.length])
+      }
+    })(),
+  ])
+  cases.push([
+    'Locale.new(long)',
+    (function () {
+      var tag = 'en-x-abcdefgh'
+      for (var i = 0; i < 19; i++) tag += '-abcdefgh'
+      return function () {
+        return new Intl.Locale(tag)
+      }
+    })(),
+  ])
+  cases.push([
     'PluralRules.new',
     function () {
       return new Intl.PluralRules('en')
@@ -135,6 +186,27 @@
     },
   ])
   cases.push([
+    'ListFormat.new(default)',
+    function () {
+      return new Intl.ListFormat()
+    },
+  ])
+  cases.push([
+    'ListFormat.new(array)',
+    (function () {
+      var locales = ['en']
+      return function () {
+        return new Intl.ListFormat(locales)
+      }
+    })(),
+  ])
+  cases.push([
+    'ListFormat.new(options)',
+    function () {
+      return new Intl.ListFormat('en', {})
+    },
+  ])
+  cases.push([
     'ListFormat.new(fallback)',
     function () {
       return new Intl.ListFormat('en-XX')
@@ -150,6 +222,12 @@
     'RelativeTimeFormat.new',
     function () {
       return new Intl.RelativeTimeFormat('en', {numeric: 'always'})
+    },
+  ])
+  cases.push([
+    'RelativeTimeFormat.new(fallback)',
+    function () {
+      return new Intl.RelativeTimeFormat('en-XX', {numeric: 'always'})
     },
   ])
   var now = typeof __now === 'function' ? __now : Date.now
@@ -171,7 +249,10 @@
     var value = f()
     if (name.indexOf('PluralRules.new') === 0) value = value.select(1)
     if (name.indexOf('Locale.new') === 0) value = value.toString()
-    if (name.indexOf('ListFormat.new(') === 0)
+    if (
+      name.indexOf('ListFormat.new') === 0 ||
+      name.indexOf('RelativeTimeFormat.new') === 0
+    )
       value = value.resolvedOptions().locale
     var n = 1
     while (n < 10000000 && run(f, n) < 50) n *= 2

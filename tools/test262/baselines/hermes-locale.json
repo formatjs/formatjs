@@ -2,8 +2,6 @@
   "total": 336,
   "failures": {
     "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got stack: undefined",
-    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined",
-    "intl402/Locale/prototype/getCollations/output-array-values.js (default)": "Expected no error, got false: undefined",
-    "intl402/Locale/prototype/getCollations/output-array-values.js (strict mode)": "Expected no error, got false: undefined"
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got stack: undefined"
   }
 }

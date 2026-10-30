@@ -47,6 +47,21 @@ fn owned_model_retains_options_and_exact_utf16_after_inputs_drop() {
                 0
             );
             assert_eq!(decoded(&mut out), expected);
+            let left: Vec<u16> = serde_json::from_value(query["left"].clone()).unwrap();
+            let right: Vec<u16> = serde_json::from_value(query["right"].clone()).unwrap();
+            let mut order = 42;
+            assert_eq!(
+                formatjs_collator_compare(
+                    handle,
+                    left.as_ptr(),
+                    left.len(),
+                    right.as_ptr(),
+                    right.len(),
+                    &mut order
+                ),
+                0
+            );
+            assert_eq!(json!(order), expected);
         }
         let query = br#"{"method":"resolvedOptions"}"#;
         let mut out = empty();
@@ -101,5 +116,49 @@ fn defaults_supported_tags_and_malformed_inputs_have_distinct_statuses() {
         );
         formatjs_collator_destroy(ptr::null_mut());
         formatjs_collator_bytes_free(empty());
+    }
+}
+
+#[test]
+fn borrowed_compare_validates_slices_and_preserves_zero_on_errors() {
+    unsafe {
+        let source = br#"{"locales":["en"],"options":{}}"#;
+        let mut handle = ptr::null_mut();
+        assert_eq!(
+            formatjs_collator_create(source.as_ptr(), source.len(), &mut handle),
+            0
+        );
+        let mut order = 42;
+        assert_eq!(
+            formatjs_collator_compare(handle, ptr::null(), 0, ptr::null(), 0, &mut order),
+            0
+        );
+        assert_eq!(order, 0);
+        let units = [97u16, 98];
+        let misaligned = units.as_ptr().cast::<u8>().add(1).cast::<u16>();
+        for (left, left_len, right, right_len) in [
+            (ptr::null(), 1, units.as_ptr(), 1),
+            (units.as_ptr(), 1, ptr::null(), 1),
+            (units.as_ptr(), usize::MAX, units.as_ptr(), 1),
+            (units.as_ptr(), 1, units.as_ptr(), usize::MAX),
+            (misaligned, 1, units.as_ptr(), 1),
+            (units.as_ptr(), 1, misaligned, 1),
+        ] {
+            order = 42;
+            assert_eq!(
+                formatjs_collator_compare(handle, left, left_len, right, right_len, &mut order),
+                2
+            );
+            assert_eq!(order, 0);
+        }
+        assert_eq!(
+            formatjs_collator_compare(ptr::null(), ptr::null(), 0, ptr::null(), 0, &mut order),
+            2
+        );
+        assert_eq!(
+            formatjs_collator_compare(handle, ptr::null(), 0, ptr::null(), 0, ptr::null_mut()),
+            2
+        );
+        formatjs_collator_destroy(handle);
     }
 }

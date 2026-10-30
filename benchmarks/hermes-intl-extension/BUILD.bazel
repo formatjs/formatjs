@@ -1,5 +1,6 @@
 # gazelle:ignore
 
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 
 rolldown_bundle(
@@ -35,10 +36,34 @@ rolldown_bundle(
 )
 
 genrule(
+    name = "suite_bytecode",
+    srcs = [":suite_bundle.js"],
+    outs = ["suite.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath :suite_bundle.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
     name = "overlap_bytecode",
     srcs = ["overlap.js"],
     outs = ["overlap.hbc"],
     cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath overlap.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
+    name = "canonical_tag_control_bytecode",
+    srcs = ["canonical-tag-control.js"],
+    outs = ["canonical-tag-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath canonical-tag-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
+    name = "locale_control_bytecode",
+    srcs = ["locale-control.js"],
+    outs = ["locale-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath locale-control.js)",
     tools = ["@hermes//:hermesc"],
 )
 
@@ -62,5 +87,135 @@ genrule(
 $(execpath @hermes//:hermesc) -O -emit-binary -out $(@D)/magrinj-bootstrap.hbc $(@D)/magrinj-bootstrap-wrapper.js
 cp $(execpath magrinj.LICENSE) $(@D)/magrinj-bootstrap.LICENSE
 """,
+    tools = ["@hermes//:hermesc"],
+)
+
+rust_binary(
+    name = "matcher_probe",
+    srcs = ["matcher-probe.rs"],
+    crate_name = "hermes_matcher_probe",
+    edition = "2024",
+    deps = [
+        "//crates/intl_listformat:with_compiled_data",
+        "//crates/intl_locale",
+        "//crates/intl_localematcher",
+    ],
+)
+
+rust_binary(
+    name = "relative_constructor_probe",
+    srcs = ["relative-constructor-probe.rs"],
+    crate_name = "hermes_relative_constructor_probe",
+    edition = "2024",
+    deps = ["//crates/intl_relativetimeformat:with_compiled_data"],
+)
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["relative-format-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_relative_format_probe",
+        edition = "2024",
+        deps = [
+            "//crates/intl_numberformat:with_compiled_data",
+            "//crates/intl_relativetimeformat:with_compiled_data",
+        ],
+    )
+    for name, features in [
+        ("relative_format_probe", []),
+        (
+            "relative_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["mathematical-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_mathematical_probe",
+        edition = "2024",
+        deps = ["//crates/intl_pluralrules:with_compiled_data"],
+    )
+    for name, features in [
+        ("mathematical_probe", []),
+        (
+            "mathematical_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]
+
+genrule(
+    name = "list_size_control_bytecode",
+    srcs = ["list-size-control.js"],
+    outs = ["list-size-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-size-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["list-traversal-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_list_traversal_probe",
+        edition = "2024",
+        deps = ["//crates/intl_listformat:with_compiled_data"],
+    )
+    for name, features in [
+        ("list_traversal_probe", []),
+        (
+            "list_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]
+
+genrule(
+    name = "list_constructor_control_bytecode",
+    srcs = ["list-constructor-control.js"],
+    outs = ["list-constructor-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath list-constructor-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+[
+    rust_binary(
+        name = name,
+        srcs = ["canonical-extension-probe.rs"],
+        crate_features = features,
+        crate_name = "hermes_canonical_extension_probe",
+        edition = "2024",
+        deps = [
+            "//crates/intl_getcanonicallocales",
+            "//crates/intl_locale",
+        ],
+    )
+    for name, features in [
+        ("canonical_extension_probe", []),
+        (
+            "canonical_extension_allocation_probe",
+            ["count_allocations"],
+        ),
+    ]
+]
+
+genrule(
+    name = "relative_control_bytecode",
+    srcs = ["relative-control.js"],
+    outs = ["relative-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath relative-control.js)",
+    tools = ["@hermes//:hermesc"],
+)
+
+genrule(
+    name = "locale_constructor_control_bytecode",
+    srcs = ["locale-constructor-control.js"],
+    outs = ["locale-constructor-control.hbc"],
+    cmd = "$(execpath @hermes//:hermesc) -O -emit-binary -out $@ $(execpath locale-constructor-control.js)",
     tools = ["@hermes//:hermesc"],
 )

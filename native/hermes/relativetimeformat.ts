@@ -6,7 +6,8 @@
   nativeCreate: (request: string) => object | number
   nativeSupported: (request: string) => string | number
   nativeQuery: (handle: object, request: string) => string | number
-  nativeFormat: (handle: object, value: string, unit: string) => string | number
+  nativeFormat: (handle: object, value: number, unit: string) => string | number
+  nativeParts: (handle: object, value: number, unit: string) => string | number
 }) {
   'use strict'
   const {
@@ -17,6 +18,7 @@
     nativeSupported,
     nativeQuery,
     nativeFormat,
+    nativeParts,
   } = native
   const apply = Reflect.apply,
     create = Object.create,
@@ -27,13 +29,15 @@
   const parse = JSON.parse,
     stringify = JSON.stringify,
     charCodeAt = String.prototype.charCodeAt
-  const getSlot = WeakMap.prototype.get,
-    setSlot = WeakMap.prototype.set
   const SetConstructor = Set,
     setAdd = Set.prototype.add
   const BadReceiver = TypeError,
     BadOption = RangeError
   const slots = new WeakMap<object, object>()
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -70,21 +74,6 @@
     for (let index = 0; index < values.length; index++)
       result += (index ? ',' : '') + quote(values[index])
     return result + ']'
-  }
-  function record(
-    values: Record<string, string | undefined>,
-    names: string[]
-  ): string {
-    let result = '{',
-      separator = ''
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index],
-        value = values[name]
-      if (value === undefined) continue
-      result += separator + quote(name) + ':' + quote(value)
-      separator = ','
-    }
-    return result + '}'
   }
   function options(value: unknown): any {
     if (value === undefined) return create(null)
@@ -127,16 +116,10 @@
     return length >= 3 && length <= 8
   }
   function slot(receiver: unknown): object {
-    const handle = apply(getSlot, slots, [receiver])
+    const handle = getSlot(receiver)
     if (!handle)
       throw new BadReceiver('Incompatible Intl.RelativeTimeFormat receiver')
     return handle
-  }
-  function utf16(text: string): string {
-    let result = '['
-    for (let index = 0; index < text.length; index++)
-      result += (index ? ',' : '') + apply(charCodeAt, text, [index])
-    return result + ']'
   }
   function format(
     receiver: unknown,
@@ -149,27 +132,15 @@
     // https://tc39.es/ecma402/#sec-intl-relativetimeformat.prototype.format
     const numeric = +(value as any)
     const text = `${unit}`
-    const number =
-      numeric === 0 && 1 / numeric === -Infinity ? '-0' : `${numeric}`
     if (method === 'format') {
-      const formatted = nativeFormat(handle, number, text)
+      const formatted = nativeFormat(handle, numeric, text)
       if (typeof formatted === 'number')
         throw new BadOption('Invalid Intl.RelativeTimeFormat value or unit')
       return formatted
     }
-    return decoded(
-      nativeQuery(
-        handle,
-        '{"method":' +
-          quote(method) +
-          ',"value":' +
-          quote(number) +
-          ',"unit":' +
-          utf16(text) +
-          '}'
-      )
-    )
+    return decoded(nativeParts(handle, numeric, text))
   }
+
   class RelativeTimeFormat extends null {
     constructor(
       locales: unknown = undefined,
@@ -183,54 +154,57 @@
           ? requestedPrototype
           : prototype
       )
-      const requested = tags(apply(canonicalize, intl, [locales]) as string[])
-      const opts = options(optionsInput),
-        values = create(null)
-      values.localeMatcher = option(
+      const requested = tags(canonicalize(locales) as string[])
+      const opts = options(optionsInput)
+      const localeMatcher = option(
         opts,
         'localeMatcher',
         ['lookup', 'best fit'],
         'best fit'
       )
-      values.numberingSystem = option(
+      const numberingSystem = option(
         opts,
         'numberingSystem',
         undefined,
         undefined
       )
-      if (
-        values.numberingSystem !== undefined &&
-        !unicodeType(values.numberingSystem)
-      )
+      if (numberingSystem !== undefined && !unicodeType(numberingSystem))
         throw new BadOption('Invalid numberingSystem')
       const resolution = nativeResolve(
         '{"locales":' +
           requested +
-          ',"options":' +
-          record(values, ['localeMatcher', 'numberingSystem']) +
-          '}'
+          ',"options":{"localeMatcher":"' +
+          localeMatcher +
+          '"' +
+          (numberingSystem === undefined
+            ? ''
+            : ',"numberingSystem":"' + numberingSystem + '"') +
+          '}}'
       )
       if (typeof resolution === 'number') decoded(resolution)
       // Fields are fetched after these getters, using the earlier locale/nu.
       // https://tc39.es/ecma402/#sec-intl-relativetimeformat-constructor
-      values.style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
-      values.numeric = option(opts, 'numeric', ['always', 'auto'], 'always')
+      const style = option(opts, 'style', ['long', 'short', 'narrow'], 'long')
+      const numeric = option(opts, 'numeric', ['always', 'auto'], 'always')
+      // Enum choices and Unicode type validation exclude JSON escapes.
       const handle = nativeCreate(
         '{"resolution":' +
           resolution +
-          ',"options":' +
-          record(values, ['style', 'numeric']) +
-          '}'
+          ',"options":{"style":"' +
+          style +
+          '","numeric":"' +
+          numeric +
+          '"}}'
       )
       if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
+      setSlot(receiver, handle)
       return receiver
     }
     static supportedLocalesOf(
       locales: unknown,
       optionsInput: unknown = undefined
     ): string[] {
-      const requested = tags(apply(canonicalize, intl, [locales]) as string[])
+      const requested = tags(canonicalize(locales) as string[])
       option(
         options(optionsInput),
         'localeMatcher',

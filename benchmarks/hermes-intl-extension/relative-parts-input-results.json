@@ -1,0 +1,3646 @@
+{
+  "collectedAt": "2026-10-29T20:51:03.263350+00:00",
+  "baselineCommit": "254ef505cd30647fb97104a92e018f21b33d0d5e",
+  "baselinePullRequest": "https://github.com/formatjs/formatjs/pull/7775",
+  "implementationCratesTree": "58919ce5974cac287cec7db103d8e0971e36ac44",
+  "hermesCommit": "393a539e645944a6ce879afc18ea8ddaa9232a08",
+  "magrinjCommit": "7cd12b68fb6f707192426065cec1dba4ced68d5a",
+  "sourceSha256": {
+    "crates/intl_relativetimeformat/ffi.rs": "0385a3eff932c4976d18b39ba812cefce3bef4b9acb84b4857eeb199a56dff4c",
+    "crates/intl_relativetimeformat/ffi.test.rs": "6b372c105ec9f9a2163638be0fcb4ddac618ac8150a136379baeda4331bbde57",
+    "native/hermes/relativetimeformat.cpp": "d1ad630e46d5f1829bfacfe9514074b46d69eca9836673cac9fb79c21a0e902b",
+    "native/hermes/relativetimeformat.ts": "60de1ad7cde669b8024c6ca0d11eb3437ad561faa13d26eb7e5998a4bb673cd5",
+    "benchmarks/hermes-intl-extension/relative-parts-profile.js": "e232cbad4faff305dd6c0764cac3363e596e2daf2404230c27f291c75efe5c9f",
+    "benchmarks/hermes-intl-extension/native-clock.patch": "2139fb35b745e1feab2b2d61814525ff85a5b210e944d0629d95dfcf07d0bab7",
+    "benchmarks/hermes-intl-extension/overlap.js": "d704b2a22e06e479929211fb5fe3c5a98c1eb84d6b690f9e3c9e6e42673aa119",
+    "benchmarks/hermes-intl-extension/canonical-tag-control.js": "088828072b8f0a1c69a8e1e5423f133919919a6bcfa6d2fe974a96e2632ee21e",
+    "benchmarks/hermes-intl-extension/locale-control.js": "d66c90f9a40d20a2be961177579d919cbb4b3b5ff552a08850f80ad8f2a90a3c",
+    "benchmarks/hermes-intl-extension/relative-format-profile.js": "3d84b07ab9637305a1ab2bcbe33e49088c040a1aab49ea728ef1d07e2304bf73"
+  },
+  "hostSha256": {
+    "before": "8d7bd694b9416509d7109f706838a579991b1354ee6ed54f3efbd958f92d7367",
+    "after": "98992352b02ba936c399ec7b4d657e91cb2b4e70f6d23b43a88a894076df4eb1",
+    "magrinj": "7f5a07824225b3db9787ed21ea48cd8eb67c7a3d7d6798ba21aa0da0c887136f"
+  },
+  "workloadSha256": {
+    "overlap": "7728b8d334219dee0782509536f5d3800c5ee143b768cbda2193ffe908ef7656",
+    "tagControl": "aa2ace3206d990e017dd2ae8e8df5346c8dff9d574438b481fda4cec45ea14ca",
+    "localeControl": "fd346e6e8bda47978c2a56bae7f18e9ddaf3f584d5a0cd06eb446825d8bce30d"
+  },
+  "platform": "Linux-6.12.94-123.192.amzn2023.x86_64-x86_64-with-glibc2.41",
+  "build": {
+    "hermesCpp": "Release -O3 -DNDEBUG",
+    "formatjsRust": "Bazel -c opt",
+    "magrinjRust": "upstream release: opt-level=z, lto=true, codegen-units=1",
+    "magrinjBootstrap": "Precompiled Hermes -O bytecode",
+    "overlap": "Same precompiled Hermes -O bytecode on all hosts",
+    "formatjsFactories": "Embedded Hermes -O bytecode"
+  },
+  "clock": "All hosts use __now(). Native before/after rebuilt with identical console-only steady_clock patch. Sub-millisecond monotonic clock checks pass. Historical native timings used Date.now fallback; low-percent differences should be assessed within this paired run.",
+  "clockChecks": {
+    "before": {
+      "minimumDeltaMs": 7.390975952148438e-5
+    },
+    "after": {
+      "minimumDeltaMs": 7.581710815429688e-5
+    },
+    "magrinj": {
+      "minimumDeltaMs": 0.00010156631469726562
+    }
+  },
+  "order": "Three complete 33-case overlap invocations plus canonical and isolated Locale controls per host. Rounds 1 and 3 before/after/magrinj; round 2 reverses. No builds or profiling during timings.",
+  "outputChecks": "342 values checked (297 overlap, 27 canonical tag controls, 18 isolated Locale controls). All FormatJS before/after values match; all controls match all hosts. Only overlap comparator differences: omitted/unsupported ListFormat default locale en-US versus en.",
+  "change": "Pass numeric text and UTF-16 unit directly for formatToParts, sharing existing Rust direct-format validation. Remove input JSON serialization/parsing and JS per-code-unit traversal; preserve JSON output parts and coercion order.",
+  "mediansUs": {
+    "before": {
+      "getCanonicalLocales": 0.07009748196651344,
+      "Locale.maximize": 0.266387276496971,
+      "PluralRules.select": 0.514751754963072,
+      "PluralRules.select(decimal)": 0.5869697197340429,
+      "PluralRules.select(string)": 0.6876535626361147,
+      "PluralRules.select(ordinal)": 0.5375693581299856,
+      "PluralRules.select(ru)": 0.5535565360332839,
+      "PluralRules.selectRange": 2.1320461382856593,
+      "ListFormat.format": 1.0740662255557254,
+      "ListFormat.formatToParts": 3.275705093983561,
+      "RelativeTimeFormat.format": 0.9857840996119194,
+      "RelativeTimeFormat.formatToParts": 3.0943737947382033,
+      "RelativeTimeFormat.format(decimal)": 1.3188638185965829,
+      "RelativeTimeFormat.format(auto)": 0.4794978849531617,
+      "Locale.new": 0.35261831544630695,
+      "Locale.new(options)": 1.761082181474194,
+      "Locale.new(zh-HK)": 0.35582917735155206,
+      "Locale.new.language": 0.42993952229153365,
+      "Locale.new.toString": 0.4018806248495821,
+      "Locale.language": 0.07585686853417428,
+      "Locale.new(Locale)": 0.32913264840317424,
+      "Locale.new(diverse)": 4.57201516837813,
+      "Locale.new(long)": 5.877452902495861,
+      "PluralRules.new": 2.1613521385006607,
+      "PluralRules.new(options)": 5.481529864482582,
+      "ListFormat.new": 1.4728260503034107,
+      "ListFormat.new(default)": 1.1565321474336088,
+      "ListFormat.new(array)": 1.6778901044744998,
+      "ListFormat.new(options)": 2.8320227283984423,
+      "ListFormat.new(fallback)": 2.2279952972894534,
+      "ListFormat.new(unsupported)": 2.3084748536348343,
+      "RelativeTimeFormat.new": 4.288962896680459,
+      "RelativeTimeFormat.new(fallback)": 5.14089030912146
+    },
+    "after": {
+      "getCanonicalLocales": 0.07002746087891865,
+      "Locale.maximize": 0.2646999400894856,
+      "PluralRules.select": 0.5037233204348013,
+      "PluralRules.select(decimal)": 0.5819255602546036,
+      "PluralRules.select(string)": 0.6823613912274595,
+      "PluralRules.select(ordinal)": 0.5356659567041788,
+      "PluralRules.select(ru)": 0.5517653044080362,
+      "PluralRules.selectRange": 2.171021420508623,
+      "ListFormat.format": 1.0850744729395956,
+      "ListFormat.formatToParts": 3.3028898760676384,
+      "RelativeTimeFormat.format": 0.9693247338873334,
+      "RelativeTimeFormat.formatToParts": 1.7378070479026064,
+      "RelativeTimeFormat.format(decimal)": 1.2988220987608656,
+      "RelativeTimeFormat.format(auto)": 0.4621414700523019,
+      "Locale.new": 0.3519882357068127,
+      "Locale.new(options)": 1.756341545842588,
+      "Locale.new(zh-HK)": 0.3556417032086756,
+      "Locale.new.language": 0.428486291639274,
+      "Locale.new.toString": 0.4017201536044013,
+      "Locale.language": 0.07625082116646809,
+      "Locale.new(Locale)": 0.32368019128625747,
+      "Locale.new(diverse)": 4.144330421695486,
+      "Locale.new(long)": 5.905836296733469,
+      "PluralRules.new": 2.1386939915828407,
+      "PluralRules.new(options)": 5.468788091093302,
+      "ListFormat.new": 1.5007934562163427,
+      "ListFormat.new(default)": 1.1794809906859882,
+      "ListFormat.new(array)": 1.7435609479434788,
+      "ListFormat.new(options)": 2.717648312682286,
+      "ListFormat.new(fallback)": 2.244487463030964,
+      "ListFormat.new(unsupported)": 2.334770018933341,
+      "RelativeTimeFormat.new": 4.405792307807133,
+      "RelativeTimeFormat.new(fallback)": 5.243706051260233
+    },
+    "magrinj": {
+      "getCanonicalLocales": 1.1079484902438708,
+      "Locale.maximize": 2.1207115205470473,
+      "PluralRules.select": 0.45934899026178755,
+      "PluralRules.select(decimal)": 0.4584389644151088,
+      "PluralRules.select(string)": 0.9194410595227964,
+      "PluralRules.select(ordinal)": 0.4731100161734503,
+      "PluralRules.select(ru)": 0.5026225662732031,
+      "PluralRules.selectRange": 0.8933783319662325,
+      "ListFormat.format": 0.5311015083862003,
+      "ListFormat.formatToParts": 3.2489881850779057,
+      "RelativeTimeFormat.format": 0.7150220335461199,
+      "RelativeTimeFormat.formatToParts": 2.181267787818797,
+      "RelativeTimeFormat.format(decimal)": 0.7967446144903079,
+      "RelativeTimeFormat.format(auto)": 0.6010481265548151,
+      "Locale.new": 0.9277037970605306,
+      "Locale.new(options)": 4.8795167822390795,
+      "Locale.new(zh-HK)": 1.3319939753273502,
+      "Locale.new.language": 1.2531264364952222,
+      "Locale.new.toString": 0.985178499831818,
+      "Locale.language": 0.08526396959496196,
+      "Locale.new(Locale)": 0.952073976804968,
+      "Locale.new(diverse)": 1.4267005462897941,
+      "Locale.new(long)": 3.769030881812796,
+      "PluralRules.new": 4.354866512585431,
+      "PluralRules.new(options)": 4.751565837068483,
+      "ListFormat.new": 2.6786606467794627,
+      "ListFormat.new(default)": 2.470773280947469,
+      "ListFormat.new(array)": 2.8109995764680207,
+      "ListFormat.new(options)": 2.5924598303390667,
+      "ListFormat.new(fallback)": 3.4411226806696504,
+      "ListFormat.new(unsupported)": 3.5785051877610385,
+      "RelativeTimeFormat.new": 4.597078135702759,
+      "RelativeTimeFormat.new(fallback)": 5.338861752534285
+    }
+  },
+  "runs": {
+    "before": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07009748196651344,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.266387276496971,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.514751754963072,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5869697197340429,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.680198547343025,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5375693581299856,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5525623710127547,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.1320461382856593,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0698484184104018,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.272883186582476,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9873884118860587,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0970340594649315,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3188638185965829,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4794978849531617,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3532189475663472,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7557195096742362,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35582917735155206,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42993952229153365,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.39944483069120906,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07560274980278336,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32978527815430425,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.57201516837813,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.7746125385165215,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1825688454555348,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.439760279841721,
+          "iterations": 8192,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4086807059356943,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.0347551142331213,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.6662475536577404,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.946333435829729,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.211676779552363,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.289806172484532,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.200272873276845,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.060280818725005,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07035530506982468,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2664911808096804,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5300371958583128,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.6251363774936181,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6922178727108985,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5425040144473314,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5593684181803837,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.142310666386038,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0878895409405231,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.275705093983561,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9788567767827772,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0943737947382033,
+          "iterations": 16384,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.311903033638373,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4777512513101101,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.35261831544630695,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7790389683796093,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.35415025377005804,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4284552596800495,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.4018806248495821,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07585686853417428,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32436384935863316,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.866192321060225,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.877452902495861,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1340209641493857,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.481529864482582,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4728260503034107,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1565321474336088,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.6778901044744998,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.745716308709234,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.2279952972894534,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.3084748536348343,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.288962896680459,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.14089030912146,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07008932743701735,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.26323840029363055,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.510914993355982,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5858937911398243,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6876535626361147,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.536970910616219,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5535565360332839,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.1320093946997076,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0740662255557254,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2879878126550466,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9857840996119194,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 3.0849111353745684,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3306138716870919,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4807440818694886,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.352251750882715,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.761082181474194,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3558725475159008,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4329329531174153,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.40913865086622536,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07622283010277897,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32913264840317424,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.488032165681943,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 6.172626744955778,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1613521385006607,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.51408960018307,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.553612106363289,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2468861532397568,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7731323314365,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.8320227283984423,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.3638930142624304,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.387418571743183,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.436602117493749,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.300776130752638,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "after": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07010700301179895,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2646999400894856,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5036061447754037,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5749361334892455,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6802532734582201,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5317373361322097,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5489655013661832,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.1541300375247374,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0621347173582762,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.3028898760676384,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9545401917421259,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7378070479026064,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.2774159404216334,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4621414700523019,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3519882357068127,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.756341545842588,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3556417032086756,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.428486291639274,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.4044769775646273,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07622247858307674,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32368019128625747,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 3.2173487852560356,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 4.52616935945116,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.207139550591819,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.472676450153813,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.5007934562163427,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1794809906859882,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.706993833067827,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.7365856658434495,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.244487463030964,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.334770018933341,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.405792307807133,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.243706051260233,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.0697636546647118,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.2640644979692297,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5037233204348013,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5819255602546036,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6823613912274595,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5356659567041788,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5517653044080362,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.171021420508623,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.0850744729395956,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2598817779216915,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.9693247338873334,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7364148225169629,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.2988220987608656,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4612691373040434,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.35067274984612595,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.7513385973870754,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.3515369680826552,
+          "iterations": 262144,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.42627563379937783,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.4017201536044013,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.0763758985158347,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.32621789614495356,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.5880748657509685,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 5.905836296733469,
+          "iterations": 8192,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.1386939915828407,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.468788091093302,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.5021483341115527,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.1686687503242865,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7435609479434788,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.701471370528452,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.23179001477547,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.304313689819537,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.293726320611313,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.184191657463089,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 0.07002746087891865,
+          "iterations": 1048576,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 0.268160889390856,
+          "iterations": 262144,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.5119777742947917,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.5896274087717757,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.6832548606325872,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.5423523471108638,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5560684294323437,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 2.173513115849346,
+          "iterations": 32768,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 1.1045214050682262,
+          "iterations": 65536,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.3158266451209784,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.997597657260485,
+          "iterations": 65536,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 1.7762464995030314,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 1.3207297015469521,
+          "iterations": 32768,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.4668017500080168,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.3556028241291642,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 1.788913898053579,
+          "iterations": 32768,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 0.365088926628232,
+          "iterations": 131072,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 0.4447683022590354,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.3985875810030848,
+          "iterations": 131072,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.07625082116646809,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.3206914370821323,
+          "iterations": 262144,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 4.144330421695486,
+          "iterations": 32768,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 6.56607624841854,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 2.113623108016327,
+          "iterations": 32768,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 5.392681923694909,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 1.4967486131354235,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 1.2261019874131307,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 1.7484043346485123,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.717648312682286,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 2.358240293688141,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 2.354100826778449,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.44847485050559,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.3296641854103655,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ],
+    "magrinj": [
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.097180342185311,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.1207115205470473,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.45934899026178755,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.461285042547388,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9373710199724883,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4856293890043162,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5157637096999679,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.9098346563405357,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.547991949133575,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.2489881850779057,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7181153960118536,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.159944240702316,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7870386398280971,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6010481265548151,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9345661164843477,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.83107689069584,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.32867581123719,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2579080503201112,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9819359256653115,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08583430189901264,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9470958102610894,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.423272187821567,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.7857280985917896,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.354866512585431,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.751565837068483,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.6669708313420415,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.470773280947469,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.845620023435913,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.6086138241225854,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.443783731199801,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.6175732384435833,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.640785336960107,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.397193162934855,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.117667241487652,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.366018350585364,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.47203267604345456,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4584389644151088,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9194410595227964,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.45403324111248367,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5026225662732031,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8933783319662325,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.5311015083862003,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.315633482998237,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7150220335461199,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.1888693881919608,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.7967446144903079,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6003660564601887,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9277037970605306,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.892548720818013,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3377828727243468,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2531264364952222,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.985178499831818,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08526396959496196,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.9576256052241661,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4303488424047828,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.769030881812796,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.39043206279166,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.901748907286674,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.6786606467794627,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.4606922961538658,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.750440122326836,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.5924598303390667,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.4411226806696504,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.5458162892609835,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.463881108677015,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.242036684649065,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ],
+      [
+        {
+          "name": "getCanonicalLocales",
+          "us": 1.1079484902438708,
+          "iterations": 65536,
+          "value": "en-US"
+        },
+        {
+          "name": "Locale.maximize",
+          "us": 2.103571663610637,
+          "iterations": 32768,
+          "value": "en-Latn-US"
+        },
+        {
+          "name": "PluralRules.select",
+          "us": 0.451561325462535,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(decimal)",
+          "us": 0.4547958269540686,
+          "iterations": 131072,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(string)",
+          "us": 0.9124918360612355,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "PluralRules.select(ordinal)",
+          "us": 0.4731100161734503,
+          "iterations": 131072,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.select(ru)",
+          "us": 0.5017651747039054,
+          "iterations": 131072,
+          "value": "few"
+        },
+        {
+          "name": "PluralRules.selectRange",
+          "us": 0.8874368431861512,
+          "iterations": 65536,
+          "value": "other"
+        },
+        {
+          "name": "ListFormat.format",
+          "us": 0.529252145497594,
+          "iterations": 131072,
+          "value": "one, two, and three"
+        },
+        {
+          "name": "ListFormat.formatToParts",
+          "us": 3.231240843888372,
+          "iterations": 16384,
+          "value": 5
+        },
+        {
+          "name": "RelativeTimeFormat.format",
+          "us": 0.7142287868191488,
+          "iterations": 131072,
+          "value": "3 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.formatToParts",
+          "us": 2.181267787818797,
+          "iterations": 32768,
+          "value": 2
+        },
+        {
+          "name": "RelativeTimeFormat.format(decimal)",
+          "us": 0.806907301011961,
+          "iterations": 65536,
+          "value": "1,234.5 days ago"
+        },
+        {
+          "name": "RelativeTimeFormat.format(auto)",
+          "us": 0.6203235316206701,
+          "iterations": 131072,
+          "value": "yesterday"
+        },
+        {
+          "name": "Locale.new",
+          "us": 0.9155799853033386,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(options)",
+          "us": 4.8795167822390795,
+          "iterations": 16384,
+          "value": "en-GB"
+        },
+        {
+          "name": "Locale.new(zh-HK)",
+          "us": 1.3319939753273502,
+          "iterations": 65536,
+          "value": "zh-HK"
+        },
+        {
+          "name": "Locale.new.language",
+          "us": 1.2487712228903547,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new.toString",
+          "us": 0.9869252608041279,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.language",
+          "us": 0.08462585947199841,
+          "iterations": 1048576,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(Locale)",
+          "us": 0.952073976804968,
+          "iterations": 65536,
+          "value": "en"
+        },
+        {
+          "name": "Locale.new(diverse)",
+          "us": 1.4267005462897941,
+          "iterations": 65536,
+          "value": "en-x-bench-0"
+        },
+        {
+          "name": "Locale.new(long)",
+          "us": 3.768240538192913,
+          "iterations": 16384,
+          "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+        },
+        {
+          "name": "PluralRules.new",
+          "us": 4.301917797420174,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "PluralRules.new(options)",
+          "us": 4.750912659801543,
+          "iterations": 16384,
+          "value": "one"
+        },
+        {
+          "name": "ListFormat.new",
+          "us": 2.760821342235431,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(default)",
+          "us": 2.4921395524870604,
+          "iterations": 32768,
+          "value": "en-US"
+        },
+        {
+          "name": "ListFormat.new(array)",
+          "us": 2.8109995764680207,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(options)",
+          "us": 2.5751835346454754,
+          "iterations": 32768,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(fallback)",
+          "us": 3.4018870210275054,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "ListFormat.new(unsupported)",
+          "us": 3.5785051877610385,
+          "iterations": 16384,
+          "value": "en-US"
+        },
+        {
+          "name": "RelativeTimeFormat.new",
+          "us": 4.597078135702759,
+          "iterations": 16384,
+          "value": "en"
+        },
+        {
+          "name": "RelativeTimeFormat.new(fallback)",
+          "us": 5.338861752534285,
+          "iterations": 16384,
+          "value": "en"
+        }
+      ]
+    ]
+  },
+  "profiles": {
+    "format-before": {
+      "totalSamples": 244,
+      "selfSamples": {
+        "[Host Function] relativeFormat": 189,
+        "[Native] stringPrototypeConcat": 23,
+        "format": 23,
+        "global": 5,
+        "[Native] weakMapPrototypeGet": 2,
+        "[Host Function] relativeResolve": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          4, 8, 8, 8, 10, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8, 13, 8, 14, 8, 8, 8,
+          8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 15,
+          15, 8, 8, 8, 8, 8, 8, 8, 8, 15, 8, 8, 10, 15, 8, 8, 15, 10, 8, 8, 8,
+          15, 8, 8, 8, 8, 8, 8, 8, 12, 8, 13, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8,
+          8, 8, 8, 8, 8, 13, 8, 8, 8, 8, 8, 8, 8, 8, 17, 8, 8, 8, 12, 8, 8, 8,
+          15, 8, 8, 8, 15, 10, 8, 8, 17, 8, 10, 8, 8, 10, 8, 8, 8, 8, 8, 8, 8,
+          8, 8, 8, 15, 15, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 12, 8, 8, 8, 10, 15, 8,
+          8, 8, 8, 15, 15, 8, 10, 8, 10, 12, 10, 8, 8, 14, 8, 8, 15, 14, 8, 15,
+          8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 10, 15, 8, 8, 8, 8, 8, 8, 8,
+          13, 8, 8, 15, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 15, 10, 8, 8, 8,
+          8, 8, 8, 8, 8, 12, 8, 15, 8, 8, 8, 8, 14, 13, 10, 8, 8, 8, 8, 8, 12,
+          8, 10, 8, 8, 12, 1
+        ],
+        "timeDeltas": [
+          0, 1338, 1045, 1060, 547, 1128, 693, 908, 1357, 1451, 561, 1492, 716,
+          985, 1261, 1363, 918, 1626, 1259, 380, 857, 899, 988, 1070, 787, 795,
+          1597, 879, 807, 870, 1851, 1019, 1616, 478, 1833, 671, 1086, 957,
+          2035, 1254, 1070, 1407, 1037, 1323, 643, 748, 1473, 1106, 205, 1586,
+          134, 1117, 508, 478, 1305, 2361, 1610, 582, 454, 1073, 1956, 1120,
+          949, 502, 823, 173, 691, 923, 2240, 1302, 1009, 76, 605, 1631, 1091,
+          1570, 64, 1287, 809, 642, 1148, 1124, 1070, 1001, 790, 1573, 267,
+          1481, 1397, 203, 1806, 1241, 552, 1236, 1565, 932, 1264, 1077, 1229,
+          290, 1403, 1924, 893, 541, 1761, 1419, 998, 1841, 1297, 1559, 962,
+          1705, 891, 1686, 1681, 182, 1039, 566, 1515, 919, 1364, 1509, 267,
+          1218, 1198, 694, 1411, 131, 1023, 1064, 1051, 1894, 1490, 1656, 860,
+          1153, 211, 875, 570, 1115, 1364, 1181, 1508, 995, 851, 153, 2043, 619,
+          473, 1303, 1660, 1973, 1909, 943, 762, 1314, 1364, 801, 553, 593,
+          1088, 370, 982, 1043, 1450, 898, 1120, 1328, 581, 1341, 631, 929, 567,
+          784, 1683, 379, 1452, 1570, 1210, 1913, 1192, 971, 667, 780, 1242,
+          462, 808, 1065, 407, 354, 235, 1009, 528, 1189, 1261, 179, 797, 1105,
+          1251, 1153, 1702, 1294, 1229, 1017, 666, 1201, 1378, 1329, 1224, 887,
+          1272, 671, 854, 790, 1547, 601, 967, 426, 1363, 1182, 635, 1105, 1350,
+          647, 1141, 929, 1265, 689, 765, 800, 1450, 790, 775, 1845, 1138, 1035,
+          1390, 1664, 1532, 986, 642, 1125, 532, 1423
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 5, 13],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 65
+            },
+            "children": [6, 14]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 9, 11, 15, 16]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Host Function] relativeFormat",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 189
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 14
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [12]
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 9
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 19
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 5
+          }
+        ],
+        "startTime": 2255444842232,
+        "endTime": 2255445098842
+      }
+    },
+    "format-after": {
+      "totalSamples": 229,
+      "selfSamples": {
+        "[Host Function] relativeFormat": 190,
+        "[Native] stringPrototypeConcat": 15,
+        "format": 13,
+        "global": 5,
+        "[Native] weakMapPrototypeGet": 4,
+        "RelativeTimeFormat": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          3, 4, 4, 7, 7, 7, 7, 7, 9, 11, 7, 7, 11, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+          7, 7, 9, 7, 11, 7, 7, 7, 7, 7, 7, 11, 7, 7, 7, 12, 7, 7, 4, 7, 7, 7,
+          7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 11, 7,
+          7, 11, 7, 7, 7, 7, 7, 7, 11, 7, 7, 4, 7, 7, 7, 7, 7, 12, 7, 7, 12, 11,
+          7, 14, 12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 7, 7,
+          14, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 7, 7, 7, 7, 7, 12, 7, 7, 7, 7, 7,
+          7, 9, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 12, 7, 7,
+          12, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 9, 7, 7, 7, 7, 7, 7, 7, 7, 12, 7, 7,
+          7, 7, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 14, 7, 7, 7, 7, 7, 7, 7, 14, 7,
+          7, 7, 7, 7, 7, 7, 12, 7, 9, 7, 7, 7, 7, 7, 12, 7, 12, 7, 7, 11, 7, 7,
+          7, 7, 11, 1
+        ],
+        "timeDeltas": [
+          0, 721, 847, 572, 916, 2466, 900, 651, 207, 445, 1490, 1304, 1559,
+          650, 984, 1374, 1582, 1578, 1448, 365, 1539, 796, 1347, 249, 440, 324,
+          1007, 1280, 1036, 847, 943, 347, 1029, 966, 855, 1532, 702, 2330, 432,
+          1097, 797, 104, 1257, 2023, 1310, 837, 1108, 915, 499, 868, 133, 245,
+          1682, 2067, 1037, 1435, 577, 1092, 927, 619, 1362, 1088, 726, 1131,
+          2122, 1085, 1310, 1111, 1449, 1630, 1717, 950, 1269, 86, 1580, 720,
+          1292, 289, 664, 1334, 1261, 682, 1072, 1166, 407, 1145, 1869, 1680,
+          1414, 959, 752, 1637, 1252, 312, 1713, 1730, 1573, 638, 387, 1216,
+          1362, 1339, 1654, 770, 2192, 1609, 1603, 279, 916, 1218, 1159, 707,
+          195, 761, 759, 957, 807, 1121, 1224, 275, 1554, 176, 870, 1366, 1870,
+          1908, 1254, 641, 647, 402, 1602, 118, 1121, 1202, 1013, 156, 1329,
+          1069, 987, 1272, 1609, 2091, 1954, 972, 2016, 1275, 323, 411, 1718,
+          1025, 473, 183, 1356, 609, 1660, 1508, 268, 1411, 1053, 1543, 1294,
+          1273, 1070, 573, 666, 344, 388, 1031, 765, 1691, 172, 898, 1974, 316,
+          1087, 1211, 1785, 1319, 816, 1173, 1424, 924, 924, 929, 407, 1786,
+          1346, 945, 933, 881, 652, 1008, 1672, 770, 1144, 997, 1153, 1661, 999,
+          1169, 79, 799, 538, 995, 1008, 1192, 668, 1161, 66, 1271, 1105, 2044,
+          1232, 1099, 1066, 847, 1234, 1278, 1643, 1165, 671, 745, 383, 1588,
+          1709, 674, 1347, 670, 1346
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 4, 5],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-format-profile.js",
+              "lineNumber": 3,
+              "columnNumber": 65
+            },
+            "children": [6, 8, 10, 12, 13]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "[Host Function] relativeFormat",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 190
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [9]
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 10
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 13
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [14]
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          }
+        ],
+        "startTime": 2256179766077,
+        "endTime": 2256180006777
+      }
+    },
+    "parts-before": {
+      "totalSamples": 408,
+      "selfSamples": {
+        "[Host Function] relativeQuery": 191,
+        "[Native] jsonParse": 80,
+        "format": 64,
+        "[Native] stringPrototypeConcat": 27,
+        "[Native] jsonStringify": 16,
+        "global": 9,
+        "[Native] reflectApply": 9,
+        "[Native] stringPrototypeCharCodeAt": 5,
+        "[Native] weakMapPrototypeGet": 3,
+        "[Host Function] relativeResolve": 2,
+        "formatToParts": 1,
+        "[GC Young Gen]": 1
+      },
+      "raw": {
+        "samples": [
+          4, 4, 8, 10, 11, 11, 11, 8, 10, 13, 14, 11, 16, 10, 11, 8, 8, 8, 8,
+          10, 10, 8, 10, 8, 13, 11, 10, 10, 18, 10, 16, 11, 10, 10, 10, 20, 10,
+          10, 8, 8, 18, 10, 11, 23, 8, 11, 8, 11, 11, 11, 8, 11, 14, 11, 10, 25,
+          8, 10, 8, 10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 11, 10, 10, 10, 8,
+          10, 11, 11, 10, 10, 22, 11, 10, 10, 10, 23, 10, 10, 10, 10, 10, 22, 8,
+          20, 10, 8, 8, 10, 10, 10, 10, 11, 8, 20, 10, 10, 11, 10, 10, 11, 10,
+          10, 23, 20, 8, 10, 10, 10, 8, 10, 20, 11, 10, 10, 10, 10, 10, 25, 10,
+          11, 8, 11, 8, 13, 8, 11, 10, 18, 10, 10, 10, 16, 10, 8, 10, 11, 25,
+          11, 10, 10, 10, 8, 11, 10, 8, 10, 8, 11, 10, 10, 10, 10, 10, 22, 10,
+          16, 11, 8, 20, 8, 8, 10, 13, 10, 8, 10, 10, 11, 10, 11, 10, 11, 8, 18,
+          10, 10, 8, 10, 10, 13, 10, 20, 8, 10, 20, 8, 10, 8, 14, 10, 10, 11,
+          10, 13, 8, 10, 8, 10, 10, 10, 10, 8, 10, 8, 10, 20, 10, 11, 8, 8, 10,
+          10, 10, 10, 11, 8, 8, 10, 8, 10, 10, 11, 10, 10, 14, 10, 11, 8, 14,
+          10, 10, 13, 10, 10, 10, 11, 10, 10, 27, 8, 8, 8, 8, 11, 10, 16, 20,
+          22, 11, 8, 8, 10, 10, 10, 11, 8, 11, 10, 10, 11, 10, 28, 10, 10, 11,
+          8, 11, 10, 10, 23, 10, 10, 11, 14, 10, 10, 27, 14, 11, 8, 10, 10, 22,
+          10, 10, 8, 8, 10, 10, 8, 10, 11, 10, 10, 22, 10, 8, 10, 11, 10, 27, 8,
+          8, 8, 10, 10, 16, 14, 8, 11, 8, 10, 10, 16, 11, 10, 14, 10, 10, 10,
+          11, 8, 10, 10, 8, 11, 10, 10, 8, 13, 13, 10, 10, 10, 22, 10, 11, 10,
+          8, 25, 8, 10, 8, 8, 11, 8, 10, 8, 10, 11, 10, 10, 20, 8, 10, 10, 10,
+          25, 11, 11, 8, 10, 10, 10, 8, 10, 10, 10, 10, 22, 11, 8, 16, 10, 10,
+          10, 16, 10, 10, 11, 20, 10, 10, 11, 11, 10, 13, 10, 8, 18, 22, 13, 23,
+          10, 10, 10, 16, 10, 29
+        ],
+        "timeDeltas": [
+          0, 540, 461, 784, 840, 1560, 1214, 1022, 566, 529, 1132, 1397, 1755,
+          1771, 481, 1565, 1078, 66, 1351, 1921, 1636, 630, 616, 317, 869, 876,
+          1399, 675, 1370, 1091, 1603, 944, 1441, 1474, 1385, 1169, 754, 1333,
+          2325, 1444, 2120, 125, 1243, 1036, 1097, 227, 1031, 802, 1653, 1273,
+          1110, 1087, 815, 1128, 1376, 2151, 2082, 912, 905, 1254, 849, 1502,
+          202, 1645, 711, 1126, 1676, 1656, 788, 1787, 659, 1200, 1472, 1432,
+          546, 698, 571, 1213, 940, 864, 1130, 1004, 1563, 942, 856, 1485, 1224,
+          1434, 626, 966, 1133, 1516, 1755, 1098, 313, 421, 669, 870, 1563,
+          1462, 119, 1679, 1000, 1306, 528, 1124, 654, 880, 1475, 1248, 808,
+          1196, 618, 898, 803, 1381, 1071, 1072, 1438, 1245, 1510, 743, 1186,
+          847, 914, 768, 690, 1053, 625, 1200, 1483, 1695, 1716, 1436, 548, 887,
+          911, 1229, 1666, 298, 1270, 1116, 1083, 1143, 1341, 657, 932, 1173,
+          1486, 186, 1526, 687, 152, 639, 1657, 928, 880, 173, 1190, 1216, 694,
+          1436, 1314, 1908, 1015, 1775, 2113, 1026, 443, 1670, 2311, 1880, 649,
+          1561, 622, 334, 759, 1820, 1736, 1264, 762, 353, 292, 61, 693, 855,
+          354, 789, 1202, 1618, 1448, 1581, 283, 1514, 673, 1062, 803, 551,
+          2217, 888, 636, 424, 824, 357, 1165, 632, 1536, 1377, 385, 538, 1335,
+          497, 1013, 1199, 512, 1072, 1546, 1027, 1995, 1090, 1220, 888, 490,
+          938, 1143, 1410, 1659, 837, 519, 1877, 683, 746, 1190, 1522, 1233,
+          904, 1233, 627, 1608, 935, 851, 1199, 1234, 559, 982, 1609, 951, 1529,
+          2285, 787, 1021, 1210, 843, 964, 975, 612, 1297, 1584, 1550, 1307,
+          675, 1968, 1201, 2103, 965, 1610, 334, 1166, 1110, 1076, 1859, 936,
+          811, 1260, 663, 1463, 1847, 742, 548, 1342, 3013, 495, 863, 2393,
+          1229, 502, 2270, 1373, 1195, 764, 1233, 769, 670, 1070, 1173, 2004,
+          1458, 962, 756, 753, 1311, 1131, 1621, 574, 157, 537, 1249, 1121, 240,
+          901, 1727, 1016, 765, 470, 692, 886, 1139, 1111, 1133, 1632, 1355,
+          1032, 1801, 982, 697, 219, 1668, 1579, 1538, 1656, 1034, 1029, 1243,
+          1446, 1884, 613, 1008, 1382, 1630, 1704, 437, 1275, 189, 1480, 145,
+          1088, 755, 445, 1189, 1193, 1045, 303, 1211, 403, 495, 1223, 95, 786,
+          1103, 691, 1273, 827, 1152, 1036, 1242, 461, 1331, 644, 1064, 995,
+          2049, 1479, 1403, 260, 1371, 1063, 309, 1329, 1821, 1089, 1250, 381,
+          1580, 423, 897, 767, 591, 1047, 1323, 1006, 1400, 1349, 1174, 412,
+          1218, 1599, 139, 1838, 762, 1262, 249, 1374, 550, 688, 858, 1573,
+          1030, 1107
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 5, 14]
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [4]
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "[Host Function] relativeResolve",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 29
+            },
+            "children": [6, 28]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [7, 9, 11, 12, 15, 17, 19, 21, 24, 26]
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Native] jsonParse",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 80
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [10]
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "[Host Function] relativeQuery",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 191
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [29],
+            "hitCount": 64
+          },
+          {
+            "id": 29,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [13]
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [16]
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 10
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [18]
+          },
+          {
+            "id": 18,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 19,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [20]
+          },
+          {
+            "id": 20,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 12
+          },
+          {
+            "id": 21,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [22]
+          },
+          {
+            "id": 22,
+            "callFrame": {
+              "functionName": "[Native] reflectApply",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [23],
+            "hitCount": 9
+          },
+          {
+            "id": 23,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeCharCodeAt",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 24,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [25]
+          },
+          {
+            "id": 25,
+            "callFrame": {
+              "functionName": "[Native] jsonStringify",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 5
+          },
+          {
+            "id": 26,
+            "callFrame": {
+              "functionName": "format",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [27]
+          },
+          {
+            "id": 27,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 3
+          },
+          {
+            "id": 28,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 9
+          }
+        ],
+        "startTime": 2255445621053,
+        "endTime": 2255446060647
+      }
+    },
+    "parts-after": {
+      "totalSamples": 236,
+      "selfSamples": {
+        "[Host Function] relativeParts": 129,
+        "[Native] jsonParse": 75,
+        "formatToParts": 11,
+        "global": 8,
+        "[Native] stringPrototypeConcat": 6,
+        "[Native] weakMapPrototypeGet": 4,
+        "RelativeTimeFormat": 1,
+        "[GC Young Gen]": 1,
+        "[root]": 1
+      },
+      "raw": {
+        "samples": [
+          3, 6, 6, 8, 6, 9, 8, 6, 11, 6, 6, 8, 8, 6, 6, 8, 6, 8, 9, 12, 6, 9, 8,
+          8, 6, 8, 6, 6, 8, 6, 8, 6, 6, 6, 6, 6, 8, 6, 6, 6, 8, 8, 6, 12, 8, 9,
+          8, 8, 6, 8, 6, 6, 8, 6, 11, 6, 14, 6, 6, 8, 6, 8, 6, 8, 6, 6, 8, 6, 6,
+          8, 8, 8, 8, 6, 8, 6, 8, 8, 6, 6, 6, 6, 6, 6, 6, 6, 11, 6, 6, 6, 6, 8,
+          8, 12, 15, 8, 6, 9, 6, 8, 6, 6, 6, 6, 6, 6, 6, 8, 17, 8, 14, 6, 6, 8,
+          8, 14, 6, 6, 6, 6, 8, 6, 14, 8, 6, 6, 6, 8, 6, 8, 9, 6, 6, 6, 6, 6, 6,
+          6, 6, 6, 6, 6, 8, 6, 8, 6, 8, 6, 6, 6, 8, 8, 6, 8, 6, 6, 12, 8, 6, 8,
+          6, 6, 9, 6, 8, 6, 8, 6, 6, 6, 8, 8, 8, 12, 6, 6, 6, 6, 9, 9, 12, 6, 8,
+          8, 8, 8, 6, 6, 8, 6, 6, 6, 6, 6, 6, 8, 6, 6, 8, 8, 9, 6, 6, 6, 8, 8,
+          9, 8, 6, 8, 6, 8, 12, 17, 6, 8, 8, 8, 6, 8, 6, 8, 8, 6, 6, 11, 6, 12,
+          6, 6, 6, 8, 6, 6, 6, 1
+        ],
+        "timeDeltas": [
+          0, 1277, 2590, 803, 2031, 966, 693, 1729, 1771, 1393, 1179, 379, 1395,
+          629, 896, 2254, 1389, 995, 1298, 896, 322, 1149, 329, 1193, 1964, 771,
+          782, 1581, 1065, 1525, 560, 957, 1757, 749, 1368, 1894, 457, 565,
+          1086, 478, 1133, 1192, 733, 341, 497, 1229, 1572, 203, 1300, 1470,
+          1595, 1285, 1716, 740, 1523, 1974, 1354, 854, 371, 695, 1295, 179,
+          678, 89, 1110, 1887, 1723, 915, 824, 230, 1230, 1142, 798, 1883, 1100,
+          830, 391, 1511, 1265, 760, 1067, 805, 931, 1906, 887, 650, 476, 1375,
+          525, 1119, 1172, 1000, 1272, 553, 1186, 1365, 580, 1673, 534, 1851,
+          1566, 999, 661, 900, 1443, 1006, 923, 1554, 1818, 1258, 1263, 2103,
+          744, 1488, 915, 1749, 1778, 1504, 419, 730, 649, 1083, 940, 1203,
+          1312, 1488, 1198, 1952, 812, 792, 68, 1207, 1259, 1854, 1025, 1364,
+          728, 1006, 1394, 1303, 1591, 901, 576, 1855, 985, 611, 1189, 265,
+          1045, 718, 549, 915, 784, 1157, 659, 690, 829, 287, 1135, 1505, 887,
+          1470, 592, 1084, 1005, 1111, 2023, 1360, 1422, 956, 400, 280, 870,
+          1859, 1410, 1709, 953, 1847, 1346, 1310, 482, 171, 963, 1812, 1535,
+          1304, 685, 533, 783, 1546, 1106, 1273, 1959, 737, 973, 1043, 959, 126,
+          1243, 766, 1636, 177, 1581, 1050, 1430, 790, 659, 1120, 142, 633,
+          1244, 663, 988, 564, 1052, 863, 1317, 154, 698, 1297, 1255, 1154, 592,
+          1281, 137, 1097, 887, 657, 1305, 890, 289, 975, 820, 1623, 1535, 1475
+        ],
+        "nodes": [
+          {
+            "id": 1,
+            "callFrame": {
+              "functionName": "[root]",
+              "scriptId": "0",
+              "url": "[root]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [2, 4, 12],
+            "hitCount": 1
+          },
+          {
+            "id": 2,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 40
+            },
+            "children": [3]
+          },
+          {
+            "id": 3,
+            "callFrame": {
+              "functionName": "RelativeTimeFormat",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 4,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 4,
+              "columnNumber": 29
+            },
+            "children": [5, 7, 9, 10, 13, 16]
+          },
+          {
+            "id": 5,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [6]
+          },
+          {
+            "id": 6,
+            "callFrame": {
+              "functionName": "[Host Function] relativeParts",
+              "scriptId": "0",
+              "url": "[host]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [15],
+            "hitCount": 129
+          },
+          {
+            "id": 15,
+            "callFrame": {
+              "functionName": "[GC Young Gen]",
+              "scriptId": "0",
+              "url": "[suspended]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 1
+          },
+          {
+            "id": 7,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [8]
+          },
+          {
+            "id": 8,
+            "callFrame": {
+              "functionName": "[Native] jsonParse",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 75
+          },
+          {
+            "id": 9,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 11
+          },
+          {
+            "id": 10,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [11]
+          },
+          {
+            "id": 11,
+            "callFrame": {
+              "functionName": "[Native] weakMapPrototypeGet",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 13,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [14]
+          },
+          {
+            "id": 14,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 4
+          },
+          {
+            "id": 16,
+            "callFrame": {
+              "functionName": "formatToParts",
+              "scriptId": "0",
+              "url": "unknown",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "children": [17]
+          },
+          {
+            "id": 17,
+            "callFrame": {
+              "functionName": "[Native] stringPrototypeConcat",
+              "scriptId": "0",
+              "url": "[native]",
+              "lineNumber": 0,
+              "columnNumber": 0
+            },
+            "hitCount": 2
+          },
+          {
+            "id": 12,
+            "callFrame": {
+              "functionName": "global",
+              "scriptId": "0",
+              "url": "benchmarks/hermes-intl-extension/relative-parts-profile.js",
+              "lineNumber": 1,
+              "columnNumber": 1
+            },
+            "hitCount": 8
+          }
+        ],
+        "startTime": 2256180034069,
+        "endTime": 2256180285477
+      }
+    }
+  },
+  "controlMediansUs": {
+    "tag": {
+      "before": {
+        "repeated": 0.07042078004815266,
+        "diverse": 0.8965999295469373,
+        "long": 2.58070784911979
+      },
+      "after": {
+        "repeated": 0.07002535812716815,
+        "diverse": 0.9088673905353062,
+        "long": 2.5894525460898876
+      },
+      "magrinj": {
+        "repeated": 1.1113113214378245,
+        "diverse": 0.9866653563221917,
+        "long": 3.031383967027068
+      }
+    },
+    "locale": {
+      "before": {
+        "Locale.new(diverse)": 3.5892497544409707,
+        "Locale.new(long)": 6.474304711446166
+      },
+      "after": {
+        "Locale.new(diverse)": 4.074568205396645,
+        "Locale.new(long)": 6.478437804616988
+      },
+      "magrinj": {
+        "Locale.new(diverse)": 1.4298730893642642,
+        "Locale.new(long)": 3.805098560405895
+      }
+    }
+  },
+  "controls": {
+    "tag": {
+      "before": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07042078004815266,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.906391222088132,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.58070784911979,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07069235925882822,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8965999295469373,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.599485174869187,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07028445133983041,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.8947972892201506,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.578712868853472,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "repeated",
+            "us": 0.07021959663688904,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9088673905353062,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5808688660617918,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.069971441917005,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9084152843570337,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.593423909274861,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 0.07002535812716815,
+            "iterations": 1048576,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.909099260752555,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 2.5894525460898876,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "repeated",
+            "us": 1.1148124976898544,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9825379165704362,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.0089805950410664,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.1113113214378245,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9877435004455037,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.031383967027068,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "repeated",
+            "us": 1.1071733097196557,
+            "iterations": 65536,
+            "value": "en-US"
+          },
+          {
+            "name": "diverse",
+            "us": 0.9866653563221917,
+            "iterations": 65536,
+            "value": "en-x-n0"
+          },
+          {
+            "name": "long",
+            "us": 3.034208042663522,
+            "iterations": 32768,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "locale": {
+      "before": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.5444490931695327,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.474304711446166,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.5892497544409707,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.445575738325715,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.9726268005324528,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.657369434833527,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 4.092687013326213,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.568185373907909,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 4.074568205396645,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.478437804616988,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.223141931812279,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.2702470168005675,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "magrinj": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4298730893642642,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.817607619566843,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.430148331564851,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.805098560405895,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 1.4104909932939336,
+            "iterations": 65536,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 3.733528807060793,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    }
+  },
+  "conformance": {
+    "gates": "Seven focused gates pass: Rust RTF core and TS differential; Hermes source and optimized bytecode conformance; Test262; pinned ICU4C/J/X RTF checks.",
+    "observableBehavior": "New direct-parts ABI agrees with existing query for negative zero, grouping, large values, named auto forms, nonfinite input, empty/long/invalid-surrogate units; invalid pointers clear output. Existing Hermes coercion, brand and prototype checks pass.",
+    "consumer": "Nine SDK API smoke scripts pass."
+  },
+  "profileNote": "Before profiles reuse the exact baseline host captures from the preceding buffer-reuse run; after profiles use this new SDK. No profiling or builds during timings.",
+  "limits": "Several constructor and steady-state gaps remain. No whole-goal completion claim.",
+  "commands": {
+    "benchmark": "Build SDK and all three optimized workloads with Bazel; apply native-clock.patch to pinned standalone console host and rebuild both native variants with CMake; run each cquery workload on each optimized host.",
+    "partsProfile": "hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/relative-parts-profile.js",
+    "allocationProbe": "bazel run -c opt //benchmarks/hermes-intl-extension:relative_allocation_probe",
+    "timingProbe": "bazel run -c opt //benchmarks/hermes-intl-extension:relative_format_probe",
+    "formatProfile": "hermes -sample-profiling=chrome -sample-profiling-freq=1000 -profiling-out=profile.json benchmarks/hermes-intl-extension/relative-format-profile.js"
+  },
+  "baselineMeasurementHead": "830a4f8c9b3d077434f7fc1612a228701d7665a5",
+  "localeRecheck": {
+    "runs": {
+      "before": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.468195049208589,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.283449562033638,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.4319690166739747,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.403808336472139,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.6012074269820005,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.103709660237655,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 4.0998540935106575,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.508530350401998,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 4.0486733632860705,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.148932297946885,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.7872788088861853,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 6.1851902573835105,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "mediansUs": {
+      "before": {
+        "Locale.new(diverse)": 3.468195049208589,
+        "Locale.new(long)": 6.283449562033638
+      },
+      "after": {
+        "Locale.new(diverse)": 4.0486733632860705,
+        "Locale.new(long)": 6.1851902573835105
+      }
+    }
+  },
+  "localePinned": {
+    "runs": {
+      "before": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.728288876824081,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.692185495514423,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.9690076917177066,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.362443491118029,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 3.1174954201560467,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.472012631595135,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ],
+      "after": [
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.823399321641773,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.39670545165427,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.8467631491366774,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.3673702457454056,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ],
+        [
+          {
+            "name": "Locale.new(diverse)",
+            "us": 2.464776174747385,
+            "iterations": 32768,
+            "value": "en-x-bench-0"
+          },
+          {
+            "name": "Locale.new(long)",
+            "us": 4.546186770312488,
+            "iterations": 16384,
+            "value": "en-x-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh-abcdefgh"
+          }
+        ]
+      ]
+    },
+    "mediansUs": {
+      "before": {
+        "Locale.new(diverse)": 2.9690076917177066,
+        "Locale.new(long)": 4.472012631595135
+      },
+      "after": {
+        "Locale.new(diverse)": 2.823399321641773,
+        "Locale.new(long)": 4.39670545165427
+      }
+    },
+    "cpu": 0
+  },
+  "controlLimit": "Unpinned isolated diverse Locale median rises 3.59 to 4.07 us and repeats 3.47 to 4.05; same-workload CPU-0-pinned recheck reverses 2.97 to 2.82 us. Long pinned 4.47 to 4.40. Locale product sources unchanged. Cause of timing-context sensitivity remains unproven; retain all trials, no blanket absence-of-regression claim."
+}

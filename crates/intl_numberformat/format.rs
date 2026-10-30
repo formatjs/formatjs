@@ -10,7 +10,7 @@ use icu_properties::{
     props::{GeneralCategory, GeneralCategoryGroup},
 };
 use regex::Regex;
-use std::sync::LazyLock;
+use std::{borrow::Cow, sync::LazyLock};
 
 static NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[#0](?:[.,][#0]+)*").unwrap());
 static QUOTED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"'(.)'").unwrap());
@@ -273,10 +273,13 @@ impl NumberFormat {
             sign,
         })
     }
-    fn mapped(&self, input: &str) -> Result<String, Error> {
+    fn mapped<'a>(&self, input: &'a str) -> Result<Cow<'a, str>, Error> {
+        if self.resolved.numbering_system == "latn" {
+            return Ok(Cow::Borrowed(input));
+        }
         let metadata = metadata::load()?;
         let Some(digits) = metadata.digits.get(&self.resolved.numbering_system) else {
-            return Ok(input.to_owned());
+            return Ok(Cow::Borrowed(input));
         };
         let mut output = String::new();
         for value in input.chars() {
@@ -289,19 +292,32 @@ impl NumberFormat {
                 output.push(value);
             }
         }
-        Ok(output)
+        Ok(Cow::Owned(output))
     }
-    fn number_parts(
+    fn grouped(&self, integer_len: usize, primary: usize, compact: bool) -> bool {
+        let grouping = self.resolved.use_grouping;
+        let minimum = if grouping == Grouping::Min2 {
+            2
+        } else {
+            self.data.numbers.minimum_grouping_digits
+        };
+        !compact
+            && grouping != Grouping::Disabled
+            && (grouping == Grouping::Always || integer_len >= primary + minimum)
+    }
+    fn visit_number_parts(
         &self,
         number: &Rendered,
         pattern: &str,
         compact: bool,
-    ) -> Result<Vec<Part>, Error> {
+        mut visit: impl FnMut(&'static str, Cow<'_, str>),
+    ) -> Result<(), Error> {
         if let Some(special) = number.rounded.special {
-            return Ok(vec![Part::new(
+            visit(
                 if special == "NaN" { "nan" } else { "infinity" },
-                number.text.clone(),
-            )]);
+                Cow::Borrowed(&number.text),
+            );
+            return Ok(());
         }
         let symbols = &self.data.numbers.symbols[&self.system];
         let (integer, fraction) = number
@@ -309,50 +325,52 @@ impl NumberFormat {
             .split_once('.')
             .map(|(integer, fraction)| (integer, Some(fraction)))
             .unwrap_or((&number.text, None));
-        let groups: Vec<_> = pattern.split('.').next().unwrap().split(',').collect();
-        let primary = if groups.len() > 1 {
-            groups.last().unwrap().len()
-        } else {
-            3
-        };
-        let secondary = if groups.len() > 2 {
-            groups[groups.len() - 2].len()
-        } else {
-            primary
-        };
-        let grouping = self.resolved.use_grouping;
-        let minimum = if grouping == Grouping::Min2 {
-            2
-        } else {
-            self.data.numbers.minimum_grouping_digits
-        };
-        let grouped = !compact
-            && grouping != Grouping::Disabled
-            && (grouping == Grouping::Always || integer.len() >= primary + minimum);
-        let mut parts = Vec::new();
-        if grouped {
-            let mut chunks = Vec::new();
-            let mut end = integer.len();
-            let mut size = primary;
-            while end > 0 {
-                let start = end.saturating_sub(size);
-                chunks.push(&integer[start..end]);
-                end = start;
-                size = secondary;
+        let mut groups = pattern.split('.').next().unwrap().rsplit(',');
+        let last = groups.next().unwrap();
+        let (primary, secondary) = match groups.next() {
+            None => (3, 3),
+            Some(previous) => {
+                let primary = last.len();
+                let secondary = if groups.next().is_some() {
+                    previous.len()
+                } else {
+                    primary
+                };
+                (primary, secondary)
             }
+        };
+        if self.grouped(integer.len(), primary, compact) {
+            if primary == 0 || secondary == 0 {
+                return Err(Error::InvalidData("Empty number grouping interval".into()));
+            }
+            let leading = integer.len().saturating_sub(primary);
+            let first = if leading == 0 {
+                integer.len()
+            } else {
+                1 + (leading - 1) % secondary
+            };
             let separator = if self.resolved.style == "currency" {
                 symbols.currency_group.as_ref().unwrap_or(&symbols.group)
             } else {
                 &symbols.group
             };
-            for (index, chunk) in chunks.iter().rev().enumerate() {
-                if index > 0 {
-                    parts.push(Part::new("group", separator.clone()));
+            let mut start = 0;
+            let mut end = first;
+            while start < integer.len() {
+                if start != 0 {
+                    visit("group", Cow::Borrowed(separator));
                 }
-                parts.push(Part::new("integer", self.mapped(chunk)?));
+                visit("integer", self.mapped(&integer[start..end])?);
+                start = end;
+                let remaining = integer.len() - start;
+                end += if remaining > primary {
+                    secondary
+                } else {
+                    remaining
+                };
             }
         } else {
-            parts.push(Part::new("integer", self.mapped(integer)?));
+            visit("integer", self.mapped(integer)?);
         }
         if let Some(fraction) = fraction {
             let separator = if self.resolved.style == "currency" {
@@ -363,22 +381,34 @@ impl NumberFormat {
             } else {
                 &symbols.decimal
             };
-            parts.push(Part::new("decimal", separator.clone()));
-            parts.push(Part::new("fraction", self.mapped(fraction)?));
+            visit("decimal", Cow::Borrowed(separator));
+            visit("fraction", self.mapped(fraction)?);
         }
         if matches!(
             self.resolved.notation.as_str(),
             "scientific" | "engineering"
         ) {
-            parts.push(Part::new("exponentSeparator", symbols.exponential.clone()));
+            visit("exponentSeparator", Cow::Borrowed(&symbols.exponential));
             if number.exponent < 0 {
-                parts.push(Part::new("exponentMinusSign", symbols.minus_sign.clone()));
+                visit("exponentMinusSign", Cow::Borrowed(&symbols.minus_sign));
             }
-            parts.push(Part::new(
+            visit(
                 "exponentInteger",
                 self.mapped(&number.exponent.unsigned_abs().to_string())?,
-            ));
+            );
         }
+        Ok(())
+    }
+    fn number_parts(
+        &self,
+        number: &Rendered,
+        pattern: &str,
+        compact: bool,
+    ) -> Result<Vec<Part>, Error> {
+        let mut parts = Vec::new();
+        self.visit_number_parts(number, pattern, compact, |kind, value| {
+            parts.push(Part::new(kind, value));
+        })?;
         Ok(parts)
     }
     pub(crate) fn partition(
@@ -398,6 +428,65 @@ impl NumberFormat {
         value: &str,
         rules: &formatjs_intl_pluralrules::LocaleRules,
     ) -> Result<(Vec<Part>, &'static str), Error> {
+        let (number, category) = self.decimal_with_plural(value, rules)?;
+        Ok((self.partition_rendered(&number, false)?, category))
+    }
+
+    /// Avoid owned number parts when the consumer only needs text and its plural.
+    pub fn format_decimal_string_with_plural(
+        &self,
+        value: &str,
+        rules: &formatjs_intl_pluralrules::LocaleRules,
+    ) -> Result<(String, &'static str), Error> {
+        let (mut number, category) = self.decimal_with_plural(value, rules)?;
+        let standard = self.data.numbers.decimal[&self.system].standard == "#,##0.###";
+        if standard
+            && self.resolved.numbering_system == "latn"
+            && number.sign == 0
+            && number.rounded.special.is_none()
+        {
+            let integer_len = number.text.find('.').unwrap_or(number.text.len());
+            // One possible group insertion; larger numbers retain linear traversal.
+            if integer_len <= 6 {
+                let symbols = &self.data.numbers.symbols[&self.system];
+                if integer_len < number.text.len() && symbols.decimal != "." {
+                    number
+                        .text
+                        .replace_range(integer_len..integer_len + 1, &symbols.decimal);
+                }
+                if integer_len > 3 && self.grouped(integer_len, 3, false) {
+                    number
+                        .text
+                        .reserve(32usize.saturating_sub(number.text.len()));
+                    number.text.insert_str(integer_len - 3, &symbols.group);
+                }
+                return Ok((number.text, category));
+            }
+        }
+        let mut text = String::with_capacity(32);
+        if standard {
+            let symbols = &self.data.numbers.symbols[&self.system];
+            if number.sign < 0 {
+                text.push_str(&symbols.minus_sign);
+            } else if number.sign > 0 {
+                text.push_str(&symbols.plus_sign);
+            }
+            self.visit_number_parts(&number, "#,##0.###", false, |_, value| {
+                text.push_str(&value);
+            })?;
+        } else {
+            for part in self.partition_rendered(&number, false)? {
+                text.push_str(&part.value);
+            }
+        }
+        Ok((text, category))
+    }
+
+    fn decimal_with_plural(
+        &self,
+        value: &str,
+        rules: &formatjs_intl_pluralrules::LocaleRules,
+    ) -> Result<(Rendered, &'static str), Error> {
         if self.resolved.style != "decimal" || self.resolved.notation != "standard" {
             return Err(Error::Range("Expected standard decimal formatting"));
         }
@@ -405,7 +494,7 @@ impl NumberFormat {
         let category = rules
             .select_rounded(number.rounded.special.unwrap_or(&number.text), 0, false)
             .map_err(|error| Error::InvalidData(error.to_string()))?;
-        Ok((self.partition_rendered(&number, false)?, category))
+        Ok((number, category))
     }
 
     fn partition_rendered(
@@ -423,13 +512,12 @@ impl NumberFormat {
             && options.notation == "standard"
             && self.data.numbers.decimal[&self.system].standard == "#,##0.###"
         {
-            let mut parts = Vec::new();
+            let mut parts = self.number_parts(number, "#,##0.###", false)?;
             if number.sign < 0 {
-                parts.push(Part::new("minusSign", symbols.minus_sign.clone()));
+                parts.insert(0, Part::new("minusSign", symbols.minus_sign.clone()));
             } else if number.sign > 0 {
-                parts.push(Part::new("plusSign", symbols.plus_sign.clone()));
+                parts.insert(0, Part::new("plusSign", symbols.plus_sign.clone()));
             }
-            parts.extend(self.number_parts(number, "#,##0.###", false)?);
             return Ok(parts);
         }
         let compact = if options.notation == "compact" && number.magnitude != 0 {

@@ -54,6 +54,40 @@ equal(
   'replacement affects new instance'
 )
 equal(existing.format(['A', 'B']), 'A and B', 'old instance keeps data')
+const retainedInput = Array.from({length: 32}, () => 'A')
+const retainedExpected = new TypeScriptListFormat('en').format(retainedInput)
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'first native large-list call'
+)
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'prime immutable join plan'
+)
+replacement.data.conjunction.long.end = '[{0}|{1}]'
+Native.__addLocaleData(stringify(replacement))
+equal(
+  existing.format(retainedInput),
+  retainedExpected,
+  'old join plan survives replacement'
+)
+for (const size of [32, 128]) {
+  const customInput = Array.from({length: size}, () => 'A')
+  const customExpected = customInput.slice(0, -2).join(', ') + ', [A|A]'
+  const customFormatter = new Native('en')
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'first custom template fallback'
+  )
+  equal(
+    customFormatter.format(customInput),
+    customExpected,
+    'reused custom template fallback'
+  )
+}
 Native.__addLocaleData(fixtures.packs[0])
 
 const lists: string[][] = [
@@ -118,6 +152,78 @@ equal(reads, 1, 'format reads each element once')
 reads = 0
 formatter.formatToParts(observed)
 equal(reads, 1, 'formatToParts reads each element once')
+for (const length of [
+  0, 1, 3, 4, 5, 8, 9, 32, 127, 128, 129, 256, 1024, 1025,
+]) {
+  const values = Array.from(
+    {length},
+    (_, index) => ['', '\ud800', '東京', '😀', '\udc00'][index % 5]
+  )
+  const reference = new TypeScriptListFormat('en')
+  for (const method of ['format', 'formatToParts'] as const) {
+    const counts = values.map(() => 0)
+    const observed = values.slice()
+    // Hermes source mode shares loop bindings; capture each getter's index separately.
+    for (let index = 0; index < length; index++)
+      Object.defineProperty(observed, index, {
+        get: ((position: number, value: string) => () => {
+          counts[position]++
+          return value
+        })(index, values[index]),
+      })
+    equal(
+      formatter[method](observed),
+      reference[method](values),
+      method + '/buffer boundary'
+    )
+    equal(
+      counts,
+      values.map(() => 1),
+      method + '/single getter read'
+    )
+  }
+}
+for (const method of ['format', 'formatToParts'] as const) {
+  for (const invalidIndex of [3, 4, 8, 1023, 1024]) {
+    let nextCalls = 0,
+      closeCalls = 0,
+      coercions = 0
+    const input = {
+      [Symbol.iterator]() {
+        return {
+          next() {
+            return {
+              done: false,
+              value:
+                nextCalls++ === invalidIndex
+                  ? {
+                      toString() {
+                        coercions++
+                        return 'invalid'
+                      },
+                    }
+                  : 'valid',
+            }
+          },
+          return() {
+            closeCalls++
+            throw new Error('close error loses to original error')
+          },
+        }
+      },
+    }
+    throws(
+      () => formatter[method](input),
+      TypeError,
+      method + '/invalid buffer element'
+    )
+    equal(
+      [nextCalls, closeCalls, coercions],
+      [invalidIndex + 1, 1, 0],
+      method + '/close at buffer boundary'
+    )
+  }
+}
 for (const value of [null, 1, true, {}, {length: 1, 0: 'A'}])
   throws(() => formatter.format(value), TypeError, 'requires iterable')
 for (const value of [1, null, undefined, {}, new String('A'), Symbol(), 1n])
@@ -284,10 +390,17 @@ const originalParse = JSON.parse,
 const originalCharCodeAt = String.prototype.charCodeAt,
   originalFromCharCode = String.fromCharCode,
   originalSlice = String.prototype.slice
+const originalJoin = Array.prototype.join
+const joinInput = Array.from({length: 32}, (_, i) =>
+  i % 3 === 0 ? '\ud800' : i % 3 === 1 ? '' : 'item'
+)
+const joinExpected = new TypeScriptListFormat('en').format(joinInput)
 const originalApply = Reflect.apply,
   originalGet = WeakMap.prototype.get,
-  originalSet = WeakMap.prototype.set
-const prototypeFields = ['0', 'type', 'value', 'get', 'set']
+  originalSet = WeakMap.prototype.set,
+  originalSetPrototypeOf = Object.setPrototypeOf,
+  originalBind = Function.prototype.bind
+const prototypeFields = ['0', '4', 'type', 'value', 'get', 'set']
 const previousFields = prototypeFields.map(name =>
   Object.getOwnPropertyDescriptor(Object.prototype, name)
 )
@@ -297,10 +410,14 @@ inheritedTrap.get = inheritedTrap.set = () => {
   throw new Error('Inherited parts property accessed')
 }
 let safeParts: any[] = []
+let safeLargeParts: any[] = [],
+  safeLargeString = ''
 try {
   for (const name of prototypeFields)
     Object.defineProperty(Object.prototype, name, inheritedTrap)
   safeParts = formatter.formatToParts(['A', 'B'])
+  safeLargeParts = formatter.formatToParts(['A', 'B', 'C', 'D', 'E'])
+  safeLargeString = formatter.format(['A', 'B', 'C', 'D', 'E'])
 } finally {
   for (let index = 0; index < prototypeFields.length; index++) {
     const saved = previousFields[index]
@@ -309,6 +426,16 @@ try {
     else delete (Object.prototype as any)[prototypeFields[index]]
   }
 }
+equal(
+  safeLargeString,
+  'A, B, C, D, and E',
+  'large input bypasses inherited index setter'
+)
+equal(
+  safeLargeParts,
+  new TypeScriptListFormat('en').formatToParts(['A', 'B', 'C', 'D', 'E']),
+  'large parts bypass inherited index setter'
+)
 equal(
   safeParts,
   [
@@ -333,10 +460,39 @@ for (const part of safeParts) {
   }
 }
 
+const inheritedType = Object.getOwnPropertyDescriptor(Object.prototype, 'type')
+let inheritedTypeReads = 0
+try {
+  Object.defineProperty(Object.prototype, 'type', {
+    configurable: true,
+    get() {
+      inheritedTypeReads++
+      return 'unit'
+    },
+  })
+  equal(
+    new Native('en').resolvedOptions().type,
+    'conjunction',
+    'missing options ignore prototype'
+  )
+  equal(inheritedTypeReads, 0, 'missing options read no inherited type')
+  equal(
+    new Native('en', {}).resolvedOptions().type,
+    'unit',
+    'explicit options keep inherited type'
+  )
+  equal(inheritedTypeReads, 1, 'explicit options invoke inherited getter')
+} finally {
+  if (inheritedType)
+    Object.defineProperty(Object.prototype, 'type', inheritedType)
+  else Reflect.deleteProperty(Object.prototype, 'type')
+}
+
 function poisoned(): never {
   throw new Error('tampered intrinsic called')
 }
 try {
+  Array.prototype.join = poisoned
   JSON.parse = poisoned
   JSON.stringify = poisoned
   String.prototype.charCodeAt = poisoned
@@ -345,10 +501,28 @@ try {
   Reflect.apply = poisoned
   WeakMap.prototype.get = poisoned
   WeakMap.prototype.set = poisoned
+  Object.setPrototypeOf = poisoned
+  Function.prototype.bind = poisoned
+  equal(formatter.format(joinInput), joinExpected, 'captured join intrinsic')
   equal(
     new Native('en').format(['\ud800', 'B']),
     '\ud800 and B',
     'captured intrinsics'
+  )
+  equal(
+    new Native('en', {type: 'disjunction', style: 'long'}).format(['A', 'B']),
+    'A or B',
+    'captured explicit constructor intrinsics'
+  )
+  equal(
+    formatter.format(['A', 'B', 'C', 'D', 'E']),
+    'A, B, C, D, and E',
+    'captured large-list intrinsics'
+  )
+  equal(
+    formatter.formatToParts(['A', 'B', 'C', 'D', 'E']),
+    safeLargeParts,
+    'captured large-parts intrinsics'
   )
   equal(
     formatter.formatToParts(['A', 'B']),
@@ -360,6 +534,7 @@ try {
     'captured parts intrinsics'
   )
 } finally {
+  Array.prototype.join = originalJoin
   JSON.parse = originalParse
   JSON.stringify = originalStringify
   String.prototype.charCodeAt = originalCharCodeAt
@@ -368,6 +543,8 @@ try {
   Reflect.apply = originalApply
   WeakMap.prototype.get = originalGet
   WeakMap.prototype.set = originalSet
+  Object.setPrototypeOf = originalSetPrototypeOf
+  Function.prototype.bind = originalBind
 }
 root.print(
   stringify({

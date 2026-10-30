@@ -434,9 +434,9 @@ parts, ranges and resolved options with the same generated CLDR data as the
 TypeScript polyfill. It supports decimal, percent, currency and unit styles,
 including compact, scientific and engineering notation.
 
-Locale data loads on demand: build `//crates/intl_numberformat:locale_data` and
-register only the required JSON packs with `Registry::add_locale_data`.
-The registry starts empty; matching considers loaded locales. Existing
+The [Hermes Intl SDK](/docs/guides/hermes-intl) compiles selected locale data
+into Rust. For custom Rust providers, build `//crates/intl_numberformat:locale_data`
+and use `Registry::add_locale_data`; the uncompiled registry starts empty. Existing
 formatters retain their locale records when a replacement pack is registered.
 `add_unit_data` explicitly updates shared unit patterns.
 
@@ -447,11 +447,11 @@ The owned C ABI captures locale resolution separately from later formatting
 options, preserving existing instances across registry replacement or destruction.
 Link SDK target `:numberformat` and call `formatjs::installNumberFormat` after
 canonicalization. For precompiled setup use `js/38-IntlNumberFormat.js` and the
-installer overload taking the setup object. Register selected SDK packs with
+installer overload taking the setup object. For explicit runtime overrides, use
 `Intl.NumberFormat.__addLocaleData(jsonText)`; their owned plural rules require no
 JS PluralRules installation. The SDK includes Linux/macOS archives, public
 headers, adapter source, and a typed independent consumer smoke.
-See the [Hermes SDK guide](/docs/guides/react-native-hermes#rust-numberformat).
+See the [Hermes SDK guide](/docs/guides/hermes-intl).
 
 Scientific exponents use localized digits, independently of mantissa rounding
 increments. Missing currency-name translations fall back to the currency code.

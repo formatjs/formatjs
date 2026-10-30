@@ -168,25 +168,9 @@ Loading regional data preserves explicitly loaded language data.
 
 ## Rust on Hermes
 
-The [Hermes SDK guide](../guides/react-native-hermes) covers the Rust extension.
-Link the SDK's `:pluralrules` target and call
-`formatjs::installPluralRules(*runtime)` after installing canonicalization.
-The precompiled installer also accepts the SDK extension setup object.
-
-Locale packs stay independent. Ship selected
-`locale-data/pluralrules/<locale>.json` files from the SDK, then pass their UTF-8
-text to the installed constructor:
-
-```ts
-type NativePluralRules = typeof Intl.PluralRules & {
-  __addLocaleData(...packs: string[]): void
-}
-
-const PluralRules = Intl.PluralRules as NativePluralRules
-PluralRules.__addLocaleData(frenchJsonText)
-new PluralRules('fr').select(0) // 'one'
-```
-
-The extension starts without plural locale data. Load additional packs when
-needed; existing instances keep their selected data. Rust handles locale
-matching, exact numeric rounding and ICU4X rule selection.
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust PluralRules.
+Default locale data is compiled into the archive; application scripts do not
+load JSON packs. Build a custom SDK with `--//crates/intl_data:locales=en,fr`.
+Rust handles locale matching, exact numeric rounding, and ICU4X rule selection.
+Individual consumers can still link `:pluralrules` and call
+`formatjs::installPluralRules(runtime)` after canonicalization.

@@ -3,6 +3,17 @@ load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
 
 exports_files(["locale-format-fixtures.tsv"])
 
+java_test(
+    name = "intl_relativetimeformat_conformance_test",
+    size = "small",
+    srcs = ["RelativeTimeConformanceTest.java"],
+    data = ["//conformance-tests/icu4x:relative-icu4x-differences.tsv"],
+    env = {"RELATIVE_TIME_DIFFERENCES": "$(rootpath //conformance-tests/icu4x:relative-icu4x-differences.tsv)"},
+    main_class = "RelativeTimeConformanceTest",
+    test_class = "RelativeTimeConformanceTest",
+    deps = [":icu4j"],
+)
+
 copy_to_bin(
     name = "locale_format_fixtures",
     srcs = ["locale-format-fixtures.tsv"],
@@ -130,5 +141,53 @@ genrule(
     outs = ["plural-rules-fixtures.tsv"],
     cmd = "$(execpath :intl_pluralrules_oracle) $@",
     tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "plural_range_fixtures",
+    testonly = True,
+    outs = ["plural-range-fixtures.tsv"],
+    cmd = "$(execpath :intl_pluralrules_oracle) $@ --ranges",
+    tools = [":intl_pluralrules_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+exports_files([
+    "canonical-private-fixtures.tsv",
+    "locale-extension-options-fixtures.tsv",
+])
+
+java_test(
+    name = "intl_canonical_private_conformance_test",
+    size = "small",
+    srcs = ["IntlCanonicalPrivateConformanceTest.java"],
+    data = [
+        "canonical-private-fixtures.tsv",
+        "locale-extension-options-fixtures.tsv",
+    ],
+    env = {
+        "CANONICAL_PRIVATE_FIXTURES": "$(rootpath canonical-private-fixtures.tsv)",
+        "LOCALE_EXTENSION_OPTIONS_FIXTURES": "$(rootpath locale-extension-options-fixtures.tsv)",
+    },
+    main_class = "IntlCanonicalPrivateConformanceTest",
+    test_class = "IntlCanonicalPrivateConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_binary(
+    name = "intl_segmenter_oracle",
+    testonly = True,
+    srcs = ["IntlSegmenterOracle.java"],
+    main_class = "IntlSegmenterOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "segmenter_fixtures",
+    testonly = True,
+    outs = ["segmenter-fixtures.tsv"],
+    cmd = "$(execpath :intl_segmenter_oracle) $@",
+    tools = [":intl_segmenter_oracle"],
     visibility = ["//visibility:public"],
 )

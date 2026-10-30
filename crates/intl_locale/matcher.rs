@@ -6,10 +6,11 @@ use formatjs_intl_localematcher::LocaleMatcher;
 use std::{
     cell::RefCell,
     collections::{BTreeSet, HashMap},
+    sync::{Arc, OnceLock},
 };
 
 thread_local! {
-    static MATCHERS: RefCell<HashMap<Vec<String>, LocaleMatcher>> = RefCell::new(HashMap::new());
+    static MATCHERS: RefCell<HashMap<Vec<String>, Arc<PreparedMatcher>>> = RefCell::new(HashMap::new());
 }
 
 /// Remove only the Unicode extension; a private-use subtag named u stays intact.
@@ -76,7 +77,7 @@ pub fn supported(available: &[String], requested: &[String]) -> Vec<String> {
 
 /// Prefer the likely script when canonical packs share a scriptless alias.
 pub fn is_likely_script(locale: &str, script: &str) -> bool {
-    let id = crate::LanguageId::parse(&locale.split('-').collect::<Vec<_>>());
+    let id = crate::LanguageId::parse(locale);
     crate::Locale::maximized_id(&id).script.as_deref() == Some(script)
 }
 
@@ -127,13 +128,42 @@ pub fn best_fit_requested(
     available: &[String],
     requested: &[String],
 ) -> Result<Option<(usize, String)>, LocaleError> {
-    let Some(first) = available.first() else {
+    if available.is_empty() {
         return Ok(None);
-    };
+    }
     if requested.is_empty() {
         return Ok(None);
     }
-    let desired = without_unicode_extension(&requested[0]);
+    if let Some(result) = first_exact(available, requested) {
+        return Ok(Some(result));
+    }
+    let matcher = shared_matcher(available)?;
+    match_requested(&matcher.distance, requested)
+}
+
+fn shared_matcher(available: &[String]) -> Result<Arc<PreparedMatcher>, LocaleError> {
+    MATCHERS.with(|cache| {
+        let mut cache = cache.borrow_mut();
+        if !cache.contains_key(available) {
+            let matcher = LocaleMatcher::new(available, &available[0])
+                .map_err(|_| LocaleError::InvalidTag)?;
+            if cache.len() >= 16 {
+                cache.clear();
+            }
+            cache.insert(
+                available.to_vec(),
+                Arc::new(PreparedMatcher {
+                    distance: matcher,
+                    exact: OnceLock::new(),
+                }),
+            );
+        }
+        Ok(Arc::clone(cache.get(available).unwrap()))
+    })
+}
+
+fn first_exact(available: &[String], requested: &[String]) -> Option<(usize, String)> {
+    let desired = without_unicode_extension(requested.first()?);
     if let Some(key) = raw_key(&desired) {
         let language = key.split('-').next().unwrap();
         for locale in available {
@@ -148,31 +178,114 @@ pub fn best_fit_requested(
                 break;
             };
             if candidate == key {
-                return Ok(Some((0, locale.clone())));
+                return Some((0, locale.clone()));
             }
         }
     }
-    MATCHERS.with(|cache| {
-        let mut cache = cache.borrow_mut();
-        if !cache.contains_key(available) {
-            let matcher =
-                LocaleMatcher::new(available, first).map_err(|_| LocaleError::InvalidTag)?;
-            if cache.len() >= 16 {
-                cache.clear();
-            }
-            cache.insert(available.to_vec(), matcher);
+    None
+}
+
+fn match_requested(
+    matcher: &LocaleMatcher,
+    requested: &[String],
+) -> Result<Option<(usize, String)>, LocaleError> {
+    let requested: Vec<_> = requested
+        .iter()
+        .map(|tag| without_unicode_extension(tag))
+        .collect();
+    let result = matcher
+        .best_match(&requested)
+        .map_err(|_| LocaleError::InvalidTag)?;
+    Ok(result
+        .desired_index
+        .map(|index| (index, result.locale.to_owned())))
+}
+
+struct PreparedMatcher {
+    distance: LocaleMatcher,
+    exact: OnceLock<HashMap<String, usize>>,
+}
+
+fn exact_index(available: &[String]) -> HashMap<String, usize> {
+    let mut exact = HashMap::new();
+    let mut blocked = BTreeSet::new();
+    for (index, locale) in available.iter().enumerate() {
+        let language = locale.split('-').next().unwrap();
+        if blocked.contains(language) {
+            continue;
         }
-        let requested: Vec<_> = requested
-            .iter()
-            .map(|tag| without_unicode_extension(tag))
-            .collect();
-        let result = cache
-            .get(available)
-            .unwrap()
-            .best_match(&requested)
-            .map_err(|_| LocaleError::InvalidTag)?;
-        Ok(result
-            .desired_index
-            .map(|index| (index, result.locale.to_owned())))
-    })
+        if let Some(key) = raw_key(locale) {
+            exact.entry(key.to_owned()).or_insert(index);
+        } else {
+            // Preserve the scan's special-locale barriers and first-match ties.
+            blocked.insert(language.to_owned());
+        }
+    }
+    exact
+}
+
+// Owning the snapshot avoids hashing every available tag on each match.
+#[derive(Default)]
+pub struct AvailableLocales {
+    locales: Vec<String>,
+    matcher: OnceLock<Result<Arc<PreparedMatcher>, LocaleError>>,
+}
+
+impl AvailableLocales {
+    pub fn new(locales: Vec<String>) -> Self {
+        Self {
+            locales,
+            matcher: OnceLock::new(),
+        }
+    }
+
+    pub fn push(&mut self, locale: String) {
+        self.matcher.take();
+        self.locales.push(locale);
+    }
+
+    pub fn as_slice(&self) -> &[String] {
+        &self.locales
+    }
+
+    pub fn best_fit(&self, requested: &[String]) -> Result<Option<String>, LocaleError> {
+        Ok(self
+            .best_fit_requested(requested)?
+            .map(|(_, locale)| locale))
+    }
+
+    pub fn best_fit_requested(
+        &self,
+        requested: &[String],
+    ) -> Result<Option<(usize, String)>, LocaleError> {
+        if self.locales.is_empty() {
+            return Ok(None);
+        }
+        if requested.is_empty() {
+            return Ok(None);
+        }
+        let matcher = match self.matcher.get() {
+            Some(Ok(matcher)) => matcher,
+            _ => {
+                if let Some(result) = first_exact(&self.locales, requested) {
+                    return Ok(Some(result));
+                }
+                self.matcher
+                    .get_or_init(|| shared_matcher(&self.locales))
+                    .as_ref()
+                    .map_err(Clone::clone)?
+            }
+        };
+        let desired = without_unicode_extension(&requested[0]);
+        if let Some(key) = raw_key(&desired) {
+            if let Some(index) = matcher
+                .exact
+                .get_or_init(|| exact_index(&self.locales))
+                .get(key)
+            {
+                return Ok(Some((0, self.locales[*index].clone())));
+            }
+        }
+        match_requested(&matcher.distance, requested)
+    }
 }

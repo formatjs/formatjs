@@ -81,6 +81,23 @@ pub fn to_mathematical_value(input: &str, bigint: bool) -> String {
         return format!("{}{digits}", if input.starts_with('-') { "-" } else { "" });
     }
     let input = input.trim_matches(whitespace);
+    // Canonical plain decimals this short cannot overflow or underflow Number.
+    // Their text is already the normalized result, including negative zero.
+    if input.len() <= 308 {
+        let unsigned = input.strip_prefix('-').unwrap_or(input);
+        let decimal = unsigned.split_once('.');
+        let (integer, fraction) = decimal.unwrap_or((unsigned, ""));
+        if !integer.is_empty()
+            && (integer.len() == 1 || !integer.starts_with('0'))
+            && integer.bytes().all(|digit| digit.is_ascii_digit())
+            && (decimal.is_none()
+                || (!fraction.is_empty()
+                    && !fraction.ends_with('0')
+                    && fraction.bytes().all(|digit| digit.is_ascii_digit())))
+        {
+            return input.to_owned();
+        }
+    }
     if input.is_empty() {
         return "0".to_owned();
     }

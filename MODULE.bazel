@@ -6,6 +6,7 @@ module(
 ######### Bazel core rules #########
 
 bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "apple_support", version = "2.9.1")
 bazel_dep(name = "rules_cc", version = "0.2.27")
 bazel_dep(name = "hermes")
 
@@ -61,12 +62,20 @@ node.toolchain(
 )
 use_repo(
     node,
+    "nodejs_darwin_amd64",
+    "nodejs_darwin_arm64",
     "nodejs_linux_amd64",
     "test262_nodejs_darwin_amd64",
     "test262_nodejs_darwin_arm64",
     "test262_nodejs_linux_amd64",
     "test262_nodejs_linux_arm64",
     "test262_nodejs_windows_amd64",
+)
+
+register_toolchains(
+    "//native/hermes/package:android_node_runtime_linux_x86_64",
+    "//native/hermes/package:ios_node_runtime_macos_arm64",
+    "//native/hermes/package:ios_node_runtime_macos_x86_64",
 )
 
 #################################
@@ -150,6 +159,10 @@ bazel_dep(name = "rules_proto", version = "7.1.0")
 
 # Force protobuf's transitive Android rules past Bazel 9 CcInfo compatibility fixes.
 bazel_dep(name = "rules_android", version = "0.7.2")
+bazel_dep(name = "rules_android_ndk", version = "0.1.5")
+
+android_ndk_repository_extension = use_extension("@rules_android_ndk//:extension.bzl", "android_ndk_repository_extension")
+use_repo(android_ndk_repository_extension, "androidndk")
 
 ######### Go + Gazelle #########
 
@@ -215,9 +228,14 @@ crate.from_cargo(
     cargo_toml = "//:Cargo.toml",
     platform_triples = [
         "aarch64-apple-darwin",
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "aarch64-linux-android",
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
         "x86_64-apple-darwin",
+        "x86_64-apple-ios",
+        "x86_64-linux-android",
         "x86_64-pc-windows-msvc",
         "x86_64-unknown-linux-gnu",
         "x86_64-unknown-linux-musl",
@@ -250,6 +268,13 @@ crate.annotation(
     version = "0.1.25",
 )
 use_repo(crate, "crates")
+
+# Pinned relative-time oracle; production formatters do not depend on this crate.
+crate.annotation(
+    crate = "icu_experimental",
+    crate_features = ["compiled_data"],
+    repositories = ["crates"],
+)
 
 rules_rust_prost = use_extension("@rules_rs//rs:rules_rust_prost.bzl", "rules_rust_prost")
 use_repo(rules_rust_prost, "rules_rust_prost")

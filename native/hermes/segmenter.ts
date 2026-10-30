@@ -130,12 +130,11 @@
     if (value === undefined) return undefined
     // CreateSegmentDataObject: ordinary record, specified property order, original input.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L358-L370
-    const result = create(objectPrototype)
-    property(result, 'segment', apply(slice, input, [value[0], value[1]]), true)
-    property(result, 'index', value[0], true)
-    property(result, 'input', input, true)
-    if (value[2] !== -1) property(result, 'isWordLike', value[2] === 1, true)
-    return result
+    const segment = apply(slice, input, [value[0], value[1]])
+    const index = value[0]
+    return value[2] === -1
+      ? {segment, index, input}
+      : {segment, index, input, isWordLike: value[2] === 1}
   }
   // Constructor 1–11: one prototype Get, canonicalize, matcher, resolve, granularity.
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L21-L29
@@ -253,10 +252,7 @@
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/segmenter.html#L291-L298
       const state = slot(cursors, this)
       const value = record(nativeNext(state.handle), state.input)
-      const result = create(objectPrototype)
-      property(result, 'value', value, true)
-      property(result, 'done', value === undefined, true)
-      return result
+      return {value, done: value === undefined}
     },
   }
   property(prototype, 'segment', members.segment)

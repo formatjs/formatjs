@@ -102,9 +102,13 @@ impl Context {
         }
     }
 }
-struct Pattern {
+struct PatternBody {
     tokens: Vec<Token>,
-    alternate: Option<(Context, Vec<Token>)>,
+    literal_len: usize,
+}
+struct Pattern {
+    body: PatternBody,
+    alternate: Option<(Context, PatternBody)>,
 }
 impl Pattern {
     fn contextual(text: &str, language: &str) -> Result<Self, Error> {
@@ -118,15 +122,31 @@ impl Pattern {
             _ => None,
         };
         if let Some((context, text)) = alternate {
-            pattern.alternate = Some((context, Self::parse(text)?.tokens));
+            pattern.alternate = Some((context, Self::parse(text)?.body));
         }
         Ok(pattern)
     }
-    fn for_next(&self, text: &[u16]) -> &[Token] {
+    fn for_next(&self, text: &[u16]) -> &PatternBody {
         match &self.alternate {
-            Some((context, tokens)) if context.matches(text) => tokens,
-            _ => &self.tokens,
+            Some((context, body)) if context.matches(text) => body,
+            _ => &self.body,
         }
+    }
+    fn separator(&self, next: &[u16]) -> Option<&[u16]> {
+        match self.for_next(next).tokens.as_slice() {
+            [Token::First, Token::Second] => Some(&[]),
+            [Token::First, Token::Literal(value), Token::Second] => Some(value),
+            _ => None,
+        }
+    }
+    fn fixed_separator(&self) -> Option<&[u16]> {
+        if self.alternate.is_some() {
+            return None;
+        }
+        self.separator(&[])
+    }
+    fn literal_len(&self, next: &[u16]) -> usize {
+        self.for_next(next).literal_len
     }
     fn parse(text: &str) -> Result<Self, Error> {
         // LocaleData requires each placeholder exactly once. Compile its
@@ -159,8 +179,18 @@ impl Pattern {
         if !rest.is_empty() {
             tokens.push(Token::Literal(rest.encode_utf16().collect()));
         }
+        let literal_len = tokens
+            .iter()
+            .map(|token| match token {
+                Token::Literal(value) => value.len(),
+                _ => 0,
+            })
+            .sum();
         Ok(Self {
-            tokens,
+            body: PatternBody {
+                tokens,
+                literal_len,
+            },
             alternate: None,
         })
     }
@@ -192,7 +222,7 @@ impl RawTemplates {
 pub struct LocalePatterns {
     locale: String,
     aliases: Vec<String>,
-    templates: BTreeMap<String, BTreeMap<String, Templates>>,
+    templates: BTreeMap<String, BTreeMap<String, Arc<Templates>>>,
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -222,7 +252,7 @@ impl LocalePatterns {
         for (kind, styles) in pack.data {
             let mut compiled = BTreeMap::new();
             for (style, raw) in styles {
-                compiled.insert(style, raw.compile(language)?);
+                compiled.insert(style, Arc::new(raw.compile(language)?));
             }
             for style in ["long", "short", "narrow"] {
                 if !compiled.contains_key(style) {
@@ -268,8 +298,15 @@ pub struct ResolvedOptions {
     pub kind: Type,
     pub style: Style,
 }
+#[derive(Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct JoinPlan {
+    pub separator: String,
+    pub last_separator: String,
+}
+
 pub struct ListFormat {
-    data: Arc<LocalePatterns>,
+    templates: Arc<Templates>,
     locale: String,
     options: Options,
 }
@@ -277,7 +314,7 @@ impl ListFormat {
     pub fn new(data: Arc<LocalePatterns>, options: Options) -> Self {
         Self {
             locale: data.locale.clone(),
-            data,
+            templates: Arc::clone(&data.templates[options.kind.key()][options.style.key()]),
             options,
         }
     }
@@ -290,6 +327,19 @@ impl ListFormat {
             style: self.options.style,
         }
     }
+    /// Fixed forward templates for lists with at least three elements.
+    pub fn join_plan(&self) -> Option<JoinPlan> {
+        let start = self.templates.start.fixed_separator()?;
+        let middle = self.templates.middle.fixed_separator()?;
+        let end = self.templates.end.fixed_separator()?;
+        if start != middle {
+            return None;
+        }
+        Some(JoinPlan {
+            separator: String::from_utf16(middle).ok()?,
+            last_separator: String::from_utf16(end).ok()?,
+        })
+    }
     fn visit_parts<T: AsRef<[u16]>>(&self, list: &[T], mut visit: impl FnMut(bool, &[u16])) {
         // CreatePartsFromList 1–2: empty list has no parts. One empty string
         // still produces one element record (steps 4–8).
@@ -297,7 +347,44 @@ impl ListFormat {
         if list.is_empty() {
             return;
         }
-        let templates = &self.data.templates[self.options.kind.key()][self.options.style.key()];
+        if list.len() == 1 {
+            visit(true, list[0].as_ref());
+            return;
+        }
+        let templates = &self.templates;
+        let last = list[list.len() - 1].as_ref();
+        // Forward joins can stream borrowed slices without traversal storage.
+        if list.len() == 2 {
+            if let Some(separator) = templates.pair.separator(last) {
+                visit(true, list[0].as_ref());
+                if !separator.is_empty() {
+                    visit(false, separator);
+                }
+                visit(true, last);
+                return;
+            }
+        } else if let (Some(start), Some(middle), Some(end)) = (
+            templates.start.separator(last),
+            templates.middle.separator(last),
+            templates.end.separator(last),
+        ) {
+            visit(true, list[0].as_ref());
+            if !start.is_empty() {
+                visit(false, start);
+            }
+            for value in &list[1..list.len() - 2] {
+                visit(true, value.as_ref());
+                if !middle.is_empty() {
+                    visit(false, middle);
+                }
+            }
+            visit(true, list[list.len() - 2].as_ref());
+            if !end.is_empty() {
+                visit(false, end);
+            }
+            visit(true, last);
+            return;
+        }
         enum Node<'a> {
             Element(&'a [u16]),
             Join(&'a Pattern, usize, usize),
@@ -336,7 +423,12 @@ impl ListFormat {
                 Task::Node(index) => match &nodes[index] {
                     Node::Element(value) => visit(true, value),
                     Node::Join(pattern, first, second) => {
-                        for token in pattern.for_next(list[list.len() - 1].as_ref()).iter().rev() {
+                        for token in pattern
+                            .for_next(list[list.len() - 1].as_ref())
+                            .tokens
+                            .iter()
+                            .rev()
+                        {
                             pending.push(match token {
                                 Token::Literal(value) => Task::Literal(value),
                                 Token::First => Task::Node(*first),
@@ -367,7 +459,27 @@ impl ListFormat {
     fn format_with<T: AsRef<[u16]>>(&self, list: &[T]) -> Vec<u16> {
         // FormatList 1–5: concatenate all part values, including empty elements.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/listformat.html#L317-L321
-        let mut result = Vec::new();
+        let input_len: usize = list.iter().map(|value| value.as_ref().len()).sum();
+        // Each template substitutes both slots once, so order doesn't affect size.
+        let literal_len = match list.len() {
+            0 | 1 => 0,
+            2 => self.templates.pair.literal_len(list[1].as_ref()),
+            len => {
+                let last = list[len - 1].as_ref();
+                self.templates
+                    .start
+                    .literal_len(last)
+                    .saturating_add(self.templates.end.literal_len(last))
+                    .saturating_add(
+                        self.templates
+                            .middle
+                            .literal_len(last)
+                            .saturating_mul(len - 3),
+                    )
+            }
+        };
+        let capacity = input_len.saturating_add(literal_len);
+        let mut result = Vec::with_capacity(capacity);
         self.visit_parts(list, |_, value| result.extend_from_slice(value));
         result
     }

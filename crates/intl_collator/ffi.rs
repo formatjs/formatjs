@@ -32,6 +32,18 @@ unsafe fn input<'a>(data: *const u8, len: usize) -> Result<&'a str, i32> {
     }
     str::from_utf8(unsafe { slice::from_raw_parts(data, len) }).map_err(|_| 2)
 }
+unsafe fn utf16<'a>(data: *const u16, len: usize) -> Result<&'a [u16], i32> {
+    if len > isize::MAX as usize / size_of::<u16>() {
+        return Err(2);
+    }
+    if len == 0 {
+        return Ok(&[]);
+    }
+    if data.is_null() || !data.is_aligned() {
+        return Err(2);
+    }
+    Ok(unsafe { slice::from_raw_parts(data, len) })
+}
 unsafe fn output(value: Value, out: *mut CollatorBytes) {
     let data = value.to_string().into_bytes().into_boxed_slice();
     let len = data.len();
@@ -166,6 +178,35 @@ pub unsafe extern "C" fn formatjs_collator_query(
         unsafe {
             output(result, out);
         }
+        Ok(())
+    })
+}
+/// Compare borrowed UTF-16 without allocating JSON requests or results.
+/// Status: 0 success, 2 invalid ABI input, 3 panic. Errors leave out as zero.
+/// # Safety
+/// Handle null or live; out null or writable. Valid-size, aligned, non-null
+/// input buffers must be readable for their lengths for the duration of the call.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn formatjs_collator_compare(
+    handle: *const CollatorHandle,
+    left: *const u16,
+    left_len: usize,
+    right: *const u16,
+    right_len: usize,
+    out: *mut i8,
+) -> i32 {
+    if out.is_null() {
+        return 2;
+    }
+    unsafe { out.write(0) };
+    if handle.is_null() {
+        return 2;
+    }
+    guarded(|| {
+        let left = unsafe { utf16(left, left_len)? };
+        let right = unsafe { utf16(right, right_len)? };
+        let order = unsafe { (*handle).0.compare(left, right) };
+        unsafe { out.write(order) };
         Ok(())
     })
 }

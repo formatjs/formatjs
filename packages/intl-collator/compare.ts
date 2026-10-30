@@ -347,9 +347,14 @@ function tailoringEntries(
   }
   visited.add(key)
 
-  const collationData =
-    packedCollation(locale, collation) ||
-    (collation === 'search' ? packedCollation('root', 'search') : undefined)
+  const collationData = packedCollation(locale, collation)
+  if (!collationData && locale !== 'root') {
+    const separator = locale.lastIndexOf('-')
+    const parent = separator < 0 ? 'root' : locale.slice(0, separator)
+    const entries = tailoringEntries(parent, collation, visited)
+    tailoringCache.set(key, entries)
+    return entries
+  }
   const entries: TailoringEntry[] = []
   const rules = collationData?.rules || []
   let reset: PackedLDMLReset | undefined

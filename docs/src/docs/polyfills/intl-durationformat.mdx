@@ -246,6 +246,6 @@ coercion, receiver brands and captured Temporal intrinsics. Source and bytecode
 installers use the same factory; both are compared with this TypeScript package.
 
 Duration locale and time-separator metadata stays static. Native NumberFormat and
-ListFormat dependencies load selected SDK JSON packs independently; no public JS
-formatter callbacks are needed. See the [Hermes SDK guide](/docs/guides/react-native-hermes#native-durationformat-sdk)
+ListFormat dependencies use compiled SDK locale data; no public JS
+formatter callbacks are needed. See the [Hermes SDK guide](/docs/guides/hermes-intl)
 for installation, data hooks, Temporal timing and the independent consumer.

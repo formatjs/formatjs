@@ -15,12 +15,23 @@ when another pack replaces a locale.
 current fields afterward, matching TS when later style/numeric getters register
 replacement data. Hosts must preserve that phase boundary.
 
+Immutable packs reuse internal NumberFormat records by resolved locale and
+numbering system, with at most 64 short keys per pack. Each RelativeTimeFormat
+retains its own options and shares an owned number record. Formatting takes no
+cache lock; replacing a pack creates a separate cache and leaves old instances
+intact.
+
 `format` and `format_to_parts` accept normalized Number text after host ToNumber,
 including a distinct `-0`, plus singular/plural unit identifiers. Nonfinite values
 and invalid units reject. Numeric `auto` uses named forms before past/future
 selection; numeric `always` preserves negative-zero past tense. Missing narrow or
 short fields fall back to long, and missing plural categories fall back to other.
 Only number-derived parts carry a singular `unit` property.
+
+Relative pattern traversal borrows numeric parts for repeated slots and transfers
+the buffer at the final slot. Parts move their strings into the result; string
+formatting reads them without cloning. Long-style field lookup borrows the unit
+key. Custom repeated-slot patterns retain their output.
 
 ```sh
 bazel test -c opt //crates/intl_relativetimeformat/...
@@ -35,6 +46,9 @@ The ABI in `relativetimeformat.h` separates locale/nu resolution from final
 creation, preserving the field lookup phase after host getters. Handles survive
 registry destruction. Queries carry normalized Number text plus original UTF-16
 unit codes; lone surrogate units produce RangeError instead of an ABI error.
+Direct `formatjs_relative_format` and `formatjs_relative_format_to_parts` calls
+accept numeric UTF-8 text and UTF-16 unit codes without a JSON request. The
+former returns text, the latter JSON parts. Both share Rust unit validation.
 Byte serialization preserves type/value/unit part property order. Status 1 maps
 to RangeError; 2 reports invalid ABI input and 3 a caught panic. Hosts own
 ToNumber/ToString sequencing and BigInt/Symbol TypeErrors. Destroy each handle

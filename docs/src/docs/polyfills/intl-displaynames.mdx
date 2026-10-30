@@ -226,9 +226,7 @@ Loading regional data preserves explicitly loaded language data.
 
 ## Rust on Hermes
 
-The experimental [Hermes SDK](../guides/react-native-hermes) includes a Rust
-DisplayNames engine, C++ JSI adapter and source/precompiled installers. Link
-`:displaynames`, install after canonicalization, then register selected JSON text
-from `locale-data/displaynames/<locale>.json` with
-`Intl.DisplayNames.__addLocaleData(jsonText)`. The SDK is built from this
-repository; package publication and Android/iOS artifacts are separate work.
+The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust DisplayNames and
+source/bytecode installers. Locale data is compiled into the archive; use the
+build-time locale flag to choose a custom set. Individual consumers can link
+`:displaynames` and call `formatjs::installDisplayNames(runtime)` after canonicalization.

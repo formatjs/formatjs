@@ -21,6 +21,10 @@ matching, lazy loading and retained instances.
 
 The owned C ABI exposes per-runtime registries and immutable instances. JSON
 requests carry UTF-16 arrays, keeping lone surrogates outside scalar-text parsing.
+`formatjs_list_create_default` accepts a JSON array of canonical requested tags
+and negotiates/creates an owned default instance in one call. An empty array
+uses the registry default. The existing constructor still accepts a negotiated
+locale and explicit type/style options.
 The Hermes facade performs observable coercion, iteration and brand checks.
 `//native/hermes/tests:listformat_conformance_test` compares source and optimized
 bytecode installers with TS. The SDK includes adapters, selected JSON packs and
@@ -39,3 +43,9 @@ Rust validates packs and compiles plural rules during the build. Records decode
 lazily into per-registry caches; mutable data never crosses registry boundaries.
 The original target and `Registry::default()` retain explicit registration for
 custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).
+
+Singleton lists emit their element directly. Forward patterns with an optional
+separator stream borrowed UTF-16 slices without arena/task allocations, including
+contextual Spanish/Hebrew joins. Reversed, prefixed or suffixed patterns retain
+the general traversal. Empty separators add no literal record; empty input strings
+still produce element records. String output reserves its input-length lower bound.

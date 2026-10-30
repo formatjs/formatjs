@@ -9,6 +9,8 @@ implementation using pinned specification source lines.
 It validates ECMA-402 language tags before canonicalization. CLDR BCP 47
 extension and subdivision aliases supplement ICU4X; regenerate the checked-in
 Rust table with `bazel run //crates/intl_getcanonicallocales:aliases`.
+Language-independent rules use a shared constant slice, avoiding generated
+language dispatch on every canonicalization. Rule order and matching stay the same.
 
 The default `compiled_data` feature preserves the convenience functions and
 native C ABI. Rust callers can disable defaults and construct a reusable
@@ -27,7 +29,11 @@ consumers, so this target alone is not a binary-size measurement.
 `native/hermes` exposes the Rust library through a C ABI and a C++ JSI
 installer. The JS wrapper owns observable locale-list coercion, property
 access, exceptions, and ordered de-duplication. Rust owns tag validation and
-canonicalization. Install before application scripts. The adapter uses public
+canonicalization. The JS factory caches at most 64 successful short tag strings
+against immutable compiled canonicalization data. Input coercion and general list
+traversal remain per-call. Strings and branded Locale inputs return fresh singleton
+arrays directly. Long strings bypass admission.
+Install before application scripts. The adapter uses public
 JSI APIs, with no Hermes VM changes.
 
 ### Standalone SDK and extension installation
@@ -198,3 +204,10 @@ Canonicalization creates list elements directly without calling an overridden
 
 Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
 Extension singleton matching is case-insensitive, including duplicate detection.
+
+The Rust canonicalizer borrows the language identifier before its first
+extension. A first private-use extension can be copied and lowercased after
+full structural validation; it has no aliases or internal ordering. Other
+extensions retain the existing canonicalization path. Independent ICU4C/J/X
+private-use fixtures cover casing, aliases, long suffixes and preceding Unicode
+extensions. Keep validation before this shortcut.

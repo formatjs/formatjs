@@ -6,6 +6,13 @@
   nativeCreate: (locale: string, options: string) => object | number
   nativeQuery: (handle: object, request: string) => string | number
   nativeSelect: (handle: object, value: string, bigint: boolean) => number
+  nativeSelectRange: (
+    handle: object,
+    start: string,
+    end: string,
+    startBigint: boolean,
+    endBigint: boolean
+  ) => number
 }) {
   'use strict'
   const {
@@ -15,6 +22,7 @@
     nativeCreate,
     nativeQuery,
     nativeSelect,
+    nativeSelectRange,
   } = native
   const apply = Reflect.apply
   const create = Object.create
@@ -29,9 +37,43 @@
   const BadOption = RangeError
   const primitiveKey = Symbol.toPrimitive
   const slots = new WeakMap<object, object>()
-  const getSlot = WeakMap.prototype.get
-  const setSlot = WeakMap.prototype.set
+  const getSlot = WeakMap.prototype.get.bind(slots) as (
+    receiver: unknown
+  ) => object | undefined
+  const setSlot = WeakMap.prototype.set.bind(slots)
+  const constructors = new Map<string, object>()
+  const getConstructor = Map.prototype.get.bind(constructors) as (
+    key: string
+  ) => object | undefined
+  const setConstructor = Map.prototype.set.bind(constructors)
+  const clearConstructors = Map.prototype.clear.bind(constructors)
+  let constructorCount = 0
   const categories = ['zero', 'one', 'two', 'few', 'many', 'other']
+  const matchers = ['lookup', 'best fit'] as const
+  const types = ['cardinal', 'ordinal'] as const
+  const notations = [
+    'standard',
+    'scientific',
+    'engineering',
+    'compact',
+  ] as const
+  const compactDisplays = ['short', 'long'] as const
+  const priorities = ['auto', 'morePrecision', 'lessPrecision'] as const
+  const trailingZeros = ['auto', 'stripIfInteger'] as const
+  const roundingModes = [
+    'ceil',
+    'floor',
+    'expand',
+    'trunc',
+    'halfCeil',
+    'halfFloor',
+    'halfExpand',
+    'halfTrunc',
+    'halfEven',
+  ] as const
+  const increments = [
+    1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
+  ] as const
   const root = globalThis as any
   const intl = root.Intl || (root.Intl = {})
   const canonicalize = intl.getCanonicalLocales
@@ -63,7 +105,7 @@
   function option(
     options: any,
     name: string,
-    values: string[],
+    values: readonly string[],
     fallback: string
   ): string {
     const value = options[name]
@@ -85,27 +127,33 @@
       throw new BadOption('Invalid digit option')
     return floor(numeric)
   }
-  function record(
-    values: Record<string, string | number | undefined>,
-    names: string[]
-  ): string {
-    let result = '{',
-      separator = ''
-    for (let index = 0; index < names.length; index++) {
-      const name = names[index],
-        value = values[name]
-      if (value === undefined) continue
-      result +=
-        separator +
-        quote(name) +
-        ':' +
-        (typeof value === 'string' ? quote(value) : `${value}`)
-      separator = ','
+  function initialize(
+    receiver: object,
+    locale: string,
+    options: string
+  ): object {
+    // All option getters/coercions have completed; immutable records can be shared.
+    const key =
+      locale.length + options.length > 512 ? undefined : locale + ':' + options
+    let handle = key === undefined ? undefined : getConstructor(key)
+    if (handle === undefined) {
+      const created = nativeCreate(locale, options)
+      if (typeof created === 'number') return decoded(created)
+      handle = created
+      if (key !== undefined) {
+        if (constructorCount === 64) {
+          clearConstructors()
+          constructorCount = 0
+        }
+        setConstructor(key, handle)
+        constructorCount++
+      }
     }
-    return result + '}'
+    setSlot(receiver, handle)
+    return receiver
   }
   function slot(receiver: unknown): object {
-    const value = apply(getSlot, slots, [receiver])
+    const value = getSlot(receiver)
     if (!value) throw new BadReceiver('Incompatible Intl.PluralRules receiver')
     return value
   }
@@ -210,78 +258,49 @@
       // ResolveOptions 1–4: locale-list access precedes option coercion/getters.
       // PluralRules has no relevant Unicode extension keys or resolution options.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L303-L318
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const opts = options(optionsInput)
-      const matcher = option(
-        opts,
-        'localeMatcher',
-        ['lookup', 'best fit'],
-        'best fit'
-      )
+      const matcher = option(opts, 'localeMatcher', matchers, 'best fit')
       const locale = match(requested, matcher === 'lookup', false) as string
+      // Undefined options expose no getters; Rust resolves all defaults.
+      if (optionsInput === undefined) return initialize(receiver, locale, '{}')
       // Constructor 7–13: each enum's coercion/validation precedes the next Get.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L27-L34
-      const values: Record<string, string | number | undefined> = create(null)
-      values.type = option(opts, 'type', ['cardinal', 'ordinal'], 'cardinal')
-      const notation = (values.notation = option(
-        opts,
-        'notation',
-        ['standard', 'scientific', 'engineering', 'compact'],
-        'standard'
-      ))
-      values.compactDisplay = option(
+      const kind = option(opts, 'type', types, 'cardinal')
+      const notation = option(opts, 'notation', notations, 'standard')
+      const compactDisplay = option(
         opts,
         'compactDisplay',
-        ['short', 'long'],
+        compactDisplays,
         'short'
       )
       // SetNumberFormatDigitOptions 1–11: validate minimumInteger/increment as
       // read, but retain the four precision values without coercing them yet.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L97-L108
-      values.minimumIntegerDigits = number(opts.minimumIntegerDigits, 1, 21, 1)
+      const minimumInteger = number(opts.minimumIntegerDigits, 1, 21, 1)!
       const minFraction = opts.minimumFractionDigits,
         maxFraction = opts.maximumFractionDigits
       const minSignificant = opts.minimumSignificantDigits,
         maxSignificant = opts.maximumSignificantDigits
-      const increment = (values.roundingIncrement = number(
-        opts.roundingIncrement,
-        1,
-        5000,
-        1
-      )!)
-      const increments = [
-        1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000,
-      ]
+      const increment = number(opts.roundingIncrement, 1, 5000, 1)!
       let valid = false
       for (let index = 0; index < increments.length; index++)
-        if (increment === increments[index]) valid = true
+        if (increment === increments[index]) {
+          valid = true
+          break
+        }
       if (!valid) throw new BadOption('Invalid roundingIncrement')
-      values.roundingMode = option(
+      const roundingMode = option(
         opts,
         'roundingMode',
-        [
-          'ceil',
-          'floor',
-          'expand',
-          'trunc',
-          'halfCeil',
-          'halfFloor',
-          'halfExpand',
-          'halfTrunc',
-          'halfEven',
-        ],
+        roundingModes,
         'halfExpand'
       )
-      const priority = (values.roundingPriority = option(
-        opts,
-        'roundingPriority',
-        ['auto', 'morePrecision', 'lessPrecision'],
-        'auto'
-      ))
-      values.trailingZeroDisplay = option(
+      const priority = option(opts, 'roundingPriority', priorities, 'auto')
+      const trailingZeroDisplay = option(
         opts,
         'trailingZeroDisplay',
-        ['auto', 'stripIfInteger'],
+        trailingZeros,
         'auto'
       )
       // Active precision: inactive values never undergo ToNumber. Validate
@@ -295,47 +314,49 @@
       const needFraction =
         priority !== 'auto' ||
         !(hasSignificant || (!hasFraction && notation === 'compact'))
+      let digits = ''
       if (needSignificant) {
-        const minimum = (values.minimumSignificantDigits = number(
-          minSignificant,
-          1,
-          21,
-          1
-        )!)
-        values.maximumSignificantDigits = number(
-          maxSignificant,
-          minimum,
-          21,
-          21
-        )
+        const minimum = number(minSignificant, 1, 21, 1)!
+        const maximum = number(maxSignificant, minimum, 21, 21)!
+        digits +=
+          ',"minimumSignificantDigits":' +
+          minimum +
+          ',"maximumSignificantDigits":' +
+          maximum
       }
       if (needFraction) {
-        values.minimumFractionDigits = number(minFraction, 0, 100, undefined)
-        values.maximumFractionDigits = number(maxFraction, 0, 100, undefined)
+        const minimum = number(minFraction, 0, 100, undefined)
+        const maximum = number(maxFraction, 0, 100, undefined)
+        if (minimum !== undefined)
+          digits += ',"minimumFractionDigits":' + minimum
+        if (maximum !== undefined)
+          digits += ',"maximumFractionDigits":' + maximum
       }
-      // Resolve rounding type/priority and increment restrictions in
-      // Rust. Install the private brand only after successful initialization.
-      // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L140-L161
-      const handle = nativeCreate(
+      // Enums are validated ASCII and digit values are bounded integers.
+      // Omit undefined digits so Rust retains its default/priority resolution.
+      return initialize(
+        receiver,
         locale,
-        record(values, [
-          'type',
-          'notation',
-          'compactDisplay',
-          'minimumIntegerDigits',
-          'minimumFractionDigits',
-          'maximumFractionDigits',
-          'minimumSignificantDigits',
-          'maximumSignificantDigits',
-          'roundingIncrement',
-          'roundingMode',
-          'roundingPriority',
-          'trailingZeroDisplay',
-        ])
+        '{"type":"' +
+          kind +
+          '","notation":"' +
+          notation +
+          '","compactDisplay":"' +
+          compactDisplay +
+          '","minimumIntegerDigits":' +
+          minimumInteger +
+          ',"roundingIncrement":' +
+          increment +
+          ',"roundingMode":"' +
+          roundingMode +
+          '","roundingPriority":"' +
+          priority +
+          '","trailingZeroDisplay":"' +
+          trailingZeroDisplay +
+          '"' +
+          digits +
+          '}'
       )
-      if (typeof handle === 'number') decoded(handle)
-      apply(setSlot, slots, [receiver, handle])
-      return receiver
     }
     static supportedLocalesOf(
       locales: unknown,
@@ -344,11 +365,11 @@
       // supportedLocalesOf 1–3 and FilterLocales: canonicalize before options;
       // Rust returns requested tags, including their Unicode extensions.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L62-L64
-      const requested = apply(canonicalize, intl, [locales]) as string[]
+      const requested = canonicalize(locales) as string[]
       const matcher = option(
         options(optionsInput),
         'localeMatcher',
-        ['lookup', 'best fit'],
+        matchers,
         'best fit'
       )
       return match(requested, matcher === 'lookup', true)
@@ -360,6 +381,8 @@
           throw new BadReceiver('Expected plural locale JSON string')
         const status = nativeLoad(pack)
         if (status !== 0) decoded(status)
+        clearConstructors()
+        constructorCount = 0
       }
     }
     static getDefaultLocale(): string {
@@ -372,9 +395,18 @@
     select(this: unknown, value: unknown): string {
       // select 1–4: receiver brand precedes ToIntlMathematicalValue.
       // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L220-L223
-      const handle = slot(this),
-        number = mathematical(value)
-      const result = nativeSelect(handle, number.text, number.bigint)
+      const handle = slot(this)
+      let result: number
+      if (typeof value === 'number') {
+        result = nativeSelect(
+          handle,
+          value === 0 && 1 / value === -Infinity ? '-0' : `${value}`,
+          false
+        )
+      } else {
+        const number = mathematical(value)
+        result = nativeSelect(handle, number.text, number.bigint)
+      }
       if (result < 0) decoded(-result)
       return categories[result]
     },
@@ -387,20 +419,15 @@
         throw new BadReceiver('Range endpoints must be defined')
       const first = mathematical(start),
         last = mathematical(end)
-      return decoded(
-        nativeQuery(
-          handle,
-          '{"method":"selectRange","mathematical":true,"start":' +
-            quote(first.text) +
-            ',"end":' +
-            quote(last.text) +
-            ',"startBigint":' +
-            first.bigint +
-            ',"endBigint":' +
-            last.bigint +
-            '}'
-        )
+      const result = nativeSelectRange(
+        handle,
+        first.text,
+        last.text,
+        first.bigint,
+        last.bigint
       )
+      if (result < 0) decoded(-result)
+      return categories[result]
     },
     resolvedOptions(this: unknown): object {
       // resolvedOptions 1–6: fresh ordinary object, fresh category array, and

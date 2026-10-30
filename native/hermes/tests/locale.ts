@@ -134,6 +134,9 @@ for (const options of [
   for (const tag of [
     'en',
     'ar-EG-u-ca-buddhist-kn-false-x-private',
+    'en-z-foo-x-private',
+    'en-0-foo-z-bar-x-private',
+    'en-v-foo-y-bar-z-baz-x-private',
     'hye-Latn-SU',
   ])
     compare(tag, options)
@@ -364,11 +367,68 @@ const Collator = Intl.Collator
 equal(locale.getCollations(), ['emoji', 'eor'], 'missing collator fallback')
 ;(Intl as any).Collator = Collator
 
+// Scalar metadata must retain the constructor's options until its first read.
+const deferredOptions = {region: 'GB', calendar: 'gregory', numeric: true}
+const deferred = new NativeLocale('en', deferredOptions)
+deferredOptions.region = 'US'
+deferredOptions.calendar = 'buddhist'
+deferredOptions.numeric = false
+check(deferred.getWeekInfo().firstDay === 1, 'query before scalar access')
+equal(
+  [deferred.region, deferred.calendar, deferred.numeric],
+  ['GB', 'gregory', true],
+  'first scalar access retains constructor options'
+)
+equal(
+  new NativeLocale(deferred).toString(),
+  'en-GB-u-ca-gregory-kn',
+  'Locale tag retains original options'
+)
+equal(deferred.maximize().language, 'en', 'transformed first scalar access')
+
+const sharedFirst = new NativeLocale('en')
+equal(sharedFirst.toString(), 'en', 'First shared model is observable')
+const sharedSecond = new NativeLocale('en')
+sharedFirst.marker = 'first'
+check(
+  sharedFirst !== sharedSecond && sharedSecond.marker === undefined,
+  'Shared backend preserves distinct public instances'
+)
+const sharedMaxFirst = sharedFirst.maximize()
+const sharedMaxSecond = sharedSecond.maximize()
+check(sharedMaxFirst !== sharedMaxSecond, 'Transform returns a fresh instance')
+sharedMaxFirst.getWeekInfo().weekend.length = 0
+check(
+  sharedMaxSecond.getWeekInfo().weekend.length > 0,
+  'Shared transformed backend keeps query arrays fresh'
+)
+for (let index = 0; index < 128; index++)
+  new NativeLocale('en-x-cache-' + index).toString()
+equal(sharedFirst.toString(), 'en', 'Retained instance survives cache eviction')
+let repeatedGetterReads = 0
+const repeatedOptions = {
+  get region() {
+    repeatedGetterReads++
+    return 'GB'
+  },
+}
+new NativeLocale('en', repeatedOptions).toString()
+new NativeLocale('en', repeatedOptions).toString()
+equal(repeatedGetterReads, 2, 'Cached construction still reads option getters')
+throws(
+  () => new NativeLocale('en:{"region":"GB"}'),
+  RangeError,
+  'Invalid tags cannot collide with option cache keys'
+)
+
 // Constructor and query transport must not invoke application serialization hooks.
 const parse = JSON.parse,
   stringify = JSON.stringify
 const weakGet = WeakMap.prototype.get,
   weakSet = WeakMap.prototype.set
+const mapGet = Map.prototype.get,
+  mapSet = Map.prototype.set,
+  mapClear = Map.prototype.clear
 const oldToJSON = Object.getOwnPropertyDescriptor(Object.prototype, 'toJSON')
 try {
   JSON.parse = JSON.stringify = (() => {
@@ -377,6 +437,12 @@ try {
   WeakMap.prototype.get = WeakMap.prototype.set = (() => {
     throw new Error('changed WeakMap intrinsic')
   }) as any
+  Map.prototype.get =
+    Map.prototype.set =
+    Map.prototype.clear =
+      (() => {
+        throw new Error('changed Map intrinsic')
+      }) as any
   Object.defineProperty(Object.prototype, 'toJSON', {
     configurable: true,
     value() {
@@ -384,6 +450,8 @@ try {
     },
   })
   const value = new NativeLocale('ar', {calendar: 'gregory'})
+  for (let index = 0; index < 70; index++)
+    new NativeLocale('en-x-poison-' + index).toString()
   check(
     value.calendar === 'gregory' && value.getTextInfo().direction === 'rtl',
     'captured intrinsics'
@@ -394,6 +462,9 @@ try {
   JSON.stringify = stringify
   WeakMap.prototype.get = weakGet
   WeakMap.prototype.set = weakSet
+  Map.prototype.get = mapGet
+  Map.prototype.set = mapSet
+  Map.prototype.clear = mapClear
   if (oldToJSON) Object.defineProperty(Object.prototype, 'toJSON', oldToJSON)
   else delete (Object.prototype as any).toJSON
 }

@@ -134,6 +134,21 @@ Rust canonicalizes the input once, repeating only after language or Unicode
 options change it. ABI queries serialize typed values directly, avoiding an
 intermediate JSON tree when Hermes reads Locale properties.
 
+Hermes retains up to 64 constructor backend records for tag/options keys no
+longer than 128 code units, plus 64 transform sources with at most two results
+each. Every public constructor or transform result is still a fresh ordinary
+object. Only backend handles and their immutable scalar snapshots are shared;
+option getters still run before lookup. Eviction cannot invalidate live instances.
+
+Rust stores each extension payload as one canonical string, avoiding an allocation
+for every private-use subtag. Unicode edits split and rebuild only that payload.
+
+Hermes snapshots scalar properties on first access and retains them with the
+immutable Rust handle. Constructor validation stays eager. Omitted options use
+one Rust construction call; explicit options still canonicalize before reading
+their getters. Formatter capability queries remain per-call, so loading data
+after construction still affects numbering systems and collations.
+
 `//native/hermes/tests:locale_conformance_test` compares the installed Rust API
 against TS over full records and observable constructor/method behavior. It loads
 Bengali NumberFormat data after creating a Locale, verifying per-call capability
@@ -144,3 +159,23 @@ Linux and is cross-built there for macOS smoke-only execution.
 Install canonicalization, trusted formatter backends, supportedValuesOf, Locale,
 then reinstall canonicalization to capture the new Locale brand. No global
 formatter capability cache is retained.
+
+The contrib installer prepares supported-value enumeration before Locale and
+finishes observing formatter loaders after installing the remaining APIs. Locale
+retains that enumerator; loader observation must finish before application code
+can retain methods that mutate locale data.
+
+Native Rust records store language/script/region in bounded ASCII fields
+(8/4/3 bytes) and extension singletons as one ASCII byte. Validation still uses
+shared canonicalization and the same option checks; 5–8-letter languages remain
+supported. Public snapshots keep owned strings. Temporary subtag lists and
+variable-length variants/extensions retain their existing containers.
+
+Unicode option updates preserve unrelated extensions and private use. The TS
+path inserts a new Unicode extension before private use; Rust sorts private use
+last when rebuilding. Pinned ICU4C/J/X fixtures cover numeric/calendar updates
+with digit and v/y/z extensions, existing Unicode attributes and private payloads.
+
+Canonical Rust Locale parsing borrows subtag slices from the validated tag.
+Language and extension boundaries stream without temporary subtag vectors;
+private-use suffixes remain opaque and Unicode boolean keys retain empty types.

@@ -69,7 +69,8 @@ The [shared Hermes SDK](intl-getcanonicallocales#native-hermes-sdk) also provide
 `Intl.supportedValuesOf`. Build and extract it on Linux, then link
 `@formatjs_intl_getcanonicallocales_hermes//:supported_values` in the consumer.
 It contains a prebuilt Rust archive; consumers need Hermes and a C++ toolchain,
-not a Rust compiler. Linux x86_64 GNU and macOS arm64 are supported.
+not a Rust compiler. See the [SDK guide](/docs/guides/hermes-intl) for desktop
+and Android packages and installation of all twelve APIs.
 
 Install trusted `Intl.DateTimeFormat`, `Intl.NumberFormat` and `Intl.Collator`
 implementations first. Rust filters CLDR/IANA candidates against those

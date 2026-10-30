@@ -63,6 +63,26 @@ fn plural_selection_shares_rounding_but_uses_relative_locale_rules() {
     );
 }
 #[test]
+fn numeric_text_survives_single_repeated_and_prefixed_slots() {
+    for (pattern, expected) in [
+        ("{0} days ago", "1,234.5 days ago"),
+        ("{0}🗓️", "1,234.5🗓️"),
+        ("{0}|{0}|{0}", "1,234.5|1,234.5|1,234.5"),
+        ("in {0} days", "in 1,234.5 days"),
+        ("{0}", "1,234.5"),
+    ] {
+        let mut data: Value = serde_json::from_str(EN).unwrap();
+        data["data"]["day"]["future"]["other"] = json!(pattern);
+        let mut registry = Registry::default();
+        registry.add_locale_data(&data.to_string()).unwrap();
+        let model = registry
+            .create(&["en".into()], &Options::default())
+            .unwrap();
+        assert_eq!(model.format("1234.5", "day").unwrap(), expected);
+        assert_eq!(model.format_number(1234.5, "day").unwrap(), expected);
+    }
+}
+#[test]
 fn repeated_slots_and_empty_named_forms_keep_part_boundaries() {
     let mut data: Value = serde_json::from_str(EN).unwrap();
     data["data"]["day"]["future"]["other"] = json!("{0}|{0}");
@@ -111,6 +131,55 @@ fn resolution_stays_fixed_but_fields_follow_later_registration() {
     assert_eq!(old.format("2", "day").unwrap(), "in 2 days");
     assert_eq!(new.format("2", "day").unwrap(), "later ٢ days");
     assert_eq!(new.resolved_options().locale, "en-u-nu-arab");
+}
+#[test]
+fn repeated_construction_keeps_number_systems_and_options_independent() {
+    let registry = loaded();
+    for _ in 0..3 {
+        for (system, digit) in [("latn", "3"), ("arab", "٣")] {
+            let requested = ["en".into()];
+            let always = registry
+                .create(&requested, &options(json!({"numberingSystem":system})))
+                .unwrap();
+            let auto = registry
+                .create(
+                    &requested,
+                    &options(json!({"numeric":"auto", "numberingSystem":system})),
+                )
+                .unwrap();
+            assert_eq!(
+                always.format("-3", "day").unwrap(),
+                format!("{digit} days ago")
+            );
+            assert_eq!(auto.format("-1", "day").unwrap(), "yesterday");
+            assert_eq!(always.resolved_options().numbering_system, system);
+            assert_eq!(auto.resolved_options().numeric, "auto");
+            for invalid in [json!({"style":"invalid"}), json!({"numeric":"invalid"})] {
+                assert!(matches!(
+                    registry.create(&requested, &options(invalid)),
+                    Err(Error::InvalidOption(_))
+                ));
+            }
+        }
+    }
+}
+#[test]
+fn replacement_number_symbols_do_not_change_existing_instances() {
+    let mut registry = loaded();
+    let requested = ["en".into()];
+    let resolution = registry.resolve(&requested, &Options::default()).unwrap();
+    let old = registry
+        .create_resolved(&resolution, &Options::default())
+        .unwrap();
+    let mut replacement: Value = serde_json::from_str(EN).unwrap();
+    replacement["number"]["data"]["numbers"]["symbols"]["latn"]["group"] = json!("!");
+    registry.add_locale_data(&replacement.to_string()).unwrap();
+    let new = registry
+        .create_resolved(&resolution, &Options::default())
+        .unwrap();
+    drop(registry);
+    assert_eq!(old.format("1234", "day").unwrap(), "in 1,234 days");
+    assert_eq!(new.format("1234", "day").unwrap(), "in 1!234 days");
 }
 #[test]
 fn malformed_pack_is_atomic_and_short_style_and_plural_fallbacks_work() {

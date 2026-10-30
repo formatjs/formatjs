@@ -61,7 +61,7 @@ pub struct Registry {
     processed: BTreeMap<String, Arc<LocaleData>>,
     data: BTreeMap<String, Arc<LocaleData>>,
     explicit: BTreeSet<String>,
-    available: Vec<String>,
+    available: formatjs_intl_locale::matcher::AvailableLocales,
     default: Option<String>,
     providers: CalendarRegistry,
 }
@@ -368,7 +368,7 @@ impl Registry {
     }
 
     pub fn available_locales(&self) -> &[String] {
-        &self.available
+        self.available.as_slice()
     }
     pub fn default_locale(&self) -> Option<&str> {
         self.default.as_deref()
@@ -384,7 +384,7 @@ impl Registry {
     ) -> Result<Vec<String>, Error> {
         let requested = get_canonical_locales(requested).map_err(|_| Error::InvalidLocale)?;
         lookup_matcher(locale_matcher)?;
-        Ok(matcher::supported(&self.available, &requested))
+        Ok(matcher::supported(self.available.as_slice(), &requested))
     }
 
     pub fn resolve(
@@ -399,11 +399,12 @@ impl Registry {
         let hour_cycle = options.hour_cycle.as_deref().map(cycle).transpose()?;
         let matched = if lookup {
             requested.iter().enumerate().find_map(|(index, tag)| {
-                matcher::lookup(&self.available, std::slice::from_ref(tag))
+                matcher::lookup(self.available.as_slice(), std::slice::from_ref(tag))
                     .map(|locale| (index, locale))
             })
         } else {
-            matcher::best_fit_requested(&self.available, &requested)
+            self.available
+                .best_fit_requested(&requested)
                 .map_err(|_| Error::InvalidLocale)?
         };
         let (index, data_locale) = matched
