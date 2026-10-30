@@ -271,6 +271,45 @@ fn grouping_keeps_primary_secondary_and_minimum_boundaries() {
 }
 
 #[test]
+fn decimal_text_preserves_grouping_thresholds_and_multibyte_symbols() {
+    let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
+        r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
+    )
+    .unwrap();
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    pack["data"]["numbers"]["minimumGroupingDigits"] = json!(2);
+    pack["data"]["numbers"]["symbols"]["latn"]["decimal"] = json!("٫");
+    pack["data"]["numbers"]["symbols"]["latn"]["group"] = json!(" ");
+    let mut registry = Registry::default();
+    registry.add_locale_data(&pack.to_string()).unwrap();
+    for (settings, input, expected) in [
+        (json!({}), "1234.5", "1234٫5"),
+        (json!({}), "12345.5", "12 345٫5"),
+        (json!({}), "999999.9995", "1 000 000"),
+        (json!({"useGrouping":"min2"}), "1234.5", "1234٫5"),
+        (json!({"useGrouping":"always"}), "1234.5", "1 234٫5"),
+        (json!({"useGrouping":false}), "12345.5", "12345٫5"),
+        (json!({}), "-1234.5", "-1234٫5"),
+        (json!({}), "NaN", "NaN"),
+        (json!({}), "Infinity", "∞"),
+    ] {
+        let number = registry.create(&["en".into()], &options(settings)).unwrap();
+        let (text, category) = number
+            .format_decimal_string_with_plural(input, &rules)
+            .unwrap();
+        assert_eq!(text, expected, "{input}");
+        let (parts, parts_category) = number.format_decimal_with_plural(input, &rules).unwrap();
+        assert_eq!(
+            parts
+                .iter()
+                .map(|part| part.value.as_str())
+                .collect::<String>(),
+            text
+        );
+        assert_eq!(category, parts_category);
+    }
+}
+#[test]
 fn decimal_text_keeps_signs_digit_mapping_rounding_and_pattern_fallback() {
     let rules = formatjs_intl_pluralrules::LocaleRules::from_json(
         r#"{"locale":"en","cardinal":{"one":"i = 1 and v = 0"},"ordinal":{},"ranges":{}}"#,
