@@ -109,7 +109,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       - name: Download Darwin Artifact
         uses: actions/download-artifact@v8
@@ -141,7 +141,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version: '26'
 
       - name: Download Windows MSVC Artifacts
         uses: actions/download-artifact@v8

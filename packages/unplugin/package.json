@@ -38,7 +38,7 @@
     "@formatjs/cli-lib": "workspace:*",
     "@formatjs/icu-messageformat-parser": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
-    "@types/node": "22 || 24",
+    "@types/node": "22 || 24 || 26",
     "decode-named-character-reference": "1",
     "magic-string": "1",
     "oxc-parser": "0",

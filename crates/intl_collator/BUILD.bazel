@@ -49,7 +49,7 @@ rust_library(
         "//crates/intl_getcanonicallocales",
         "//crates/intl_locale",
         "@crates//:icu_casemap-2.3.0",
-        "@crates//:icu_locale_core-2.3.0",
+        "@crates//:icu_locale_core-2.4.0",
         "@crates//:icu_normalizer-2.3.0",
         "@crates//:serde",
         "@crates//:serde_json",
