@@ -259,7 +259,7 @@ jobs:
     name: Smoke-test cli-native-darwin-x64 Package
     needs: build_native_packages
     if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') }}
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
