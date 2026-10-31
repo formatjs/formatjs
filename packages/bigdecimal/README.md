@@ -10,6 +10,8 @@ Values are represented as `mantissa × 10^exponent` where:
 - `exponent` is a `number` (integer scaling factor)
 - Special flags handle NaN, ±Infinity, and -0
 
+Normalization removes long runs of decimal zeros in eight-digit chunks, then handles the remaining digits. Arithmetic values and division precision stay unchanged.
+
 ## API
 
 Implements the 27 methods used by `@formatjs/ecma402-abstract`:

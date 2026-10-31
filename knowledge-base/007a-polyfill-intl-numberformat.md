@@ -290,3 +290,11 @@ Existing formatVersion 1 native readers can ignore the additional metadata.
 ICU4J/ICU4C snapshots guard outputs independently for TS and Rust. Compatibility
 tests compare generated and legacy packs, including signs, accounting, approximate
 ranges, nonfinite values, custom grouping, and locale re-registration.
+
+## Decimal normalization profile
+
+The [normalization follow-up](audits/2026-10-31-numberformat-normalization.md)
+profiles the remaining arithmetic work after compiled plans. BigDecimal strips
+trailing zeros in eight-digit chunks, retaining the single-digit tail and unsafe
+exponent fallback. NumberFormat benchmarks now distinguish host and polyfilled
+PluralRules with `--polyfill-plurals`. ICU snapshots remain unchanged.

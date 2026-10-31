@@ -166,3 +166,12 @@ requested locale packs; compare it separately from warm format-call medians.
 
 Use `bazel run -c opt //crates/intl_numberformat:benchmark -- --legacy-patterns`
 to measure the cached raw-pack adapter without generated metadata.
+
+Add `--polyfill-plurals` to `:audit` to measure NumberFormat with JS PluralRules
+instead of the host's implementation. This lane loads English plural data for the
+English formatting workloads; `--all-locales` still controls the NumberFormat
+registry. JSON output records the plural provider.
+
+```bash
+bazel run -c opt //packages/intl-numberformat/benchmark:audit -- --all-locales --polyfill-plurals --iterations=24000
+```

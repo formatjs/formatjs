@@ -161,6 +161,7 @@ ts_run_binary(
         "//crates/intl_pluralrules/tests:__pkg__",
         "//crates/intl_relativetimeformat/tests:__pkg__",
         "//native/hermes/tests:__pkg__",
+        "//packages/intl-numberformat/benchmark:__pkg__",
     ],
 )
 
