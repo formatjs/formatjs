@@ -31,7 +31,13 @@ Lookup matching remains RFC 4647 prefix lookup.
 Canonical tags and maximized LSRs are memoized. Supported lists cache raw LSR
 indexes, maximized indexes, and default/paradigm ordering. The public resolver
 preserves array identity and reuses Set snapshots after checking their contents;
-array and Set mutations invalidate cached matching state.
+array and Set mutations invalidate cached best-fit matching state.
+Set-backed resolution keeps a private validation buffer and frozen matcher
+snapshot. Contents/order are checked once per call; the prepared matcher trusts
+only factory-created snapshots, avoiding a second scan. Public frozen arrays
+can contain changing getters and retain normal validation.
+Lookup stays on the validation buffer and creates no best-fit snapshot.
+See [constructor measurements](audits/2026-10-31-numberformat-constructor-snapshots.md).
 
 Exact matches build the raw index only as far as the first match. Alias-free,
 canonical LSR strings bypass native canonicalization using generated CLDR alias

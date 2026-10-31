@@ -332,7 +332,7 @@ interface LocaleMatchingResult {
   matchedDesiredLocale?: string
 }
 interface Supported {
-  original: string[]
+  original: readonly string[]
   tags: string[]
   raw: Map<string, number>
   maximal?: LSR[]
@@ -341,23 +341,35 @@ interface Supported {
   best: Map<string, {index: number; distance: number}>
 }
 const supportedCache = new WeakMap<readonly string[], Supported>()
+const immutableLocaleLists = new WeakSet<readonly string[]>()
 let paradigms: Set<string> | undefined
+
+export function createLocaleListSnapshot(
+  locales: Iterable<string>
+): readonly string[] {
+  const snapshot = Object.freeze(Array.from(locales))
+  immutableLocaleLists.add(snapshot)
+  return snapshot
+}
 
 function equivalentKey(lsr: LSR): string {
   return `${lsr.language}|${lsr.script}|${lsr.region}`
 }
 
 function prepare(locales: readonly string[]): Supported {
+  // Frozen caller arrays may have getters; only our own snapshots are stable.
+  const immutable = immutableLocaleLists.has(locales)
   let result = supportedCache.get(locales)
   if (
     result &&
+    !immutable &&
     (result.original.length !== locales.length ||
       result.original.some((tag, index) => tag !== locales[index]))
   )
     result = undefined
   if (!result) {
     result = {
-      original: Array.from(locales),
+      original: immutable ? locales : Array.from(locales),
       tags: [],
       raw: new Map(),
       orders: new Map(),

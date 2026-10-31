@@ -153,6 +153,14 @@ sets calls per formatting round. Constructor rounds cap at 1,000 calls. Seven wa
 rounds report median/min/max and output checksums; this is a microbenchmark, not
 Hermes/mobile end-to-end latency. The Rust target requires `-c opt`.
 
+Use `--constructors-only --constructor-iterations=10000` to isolate construction
+with longer rounds. JSON records both controls. Ordinary runs keep the existing
+1,000-call constructor cap unless explicitly overridden. The timed operation
+includes `resolvedOptions()` for its locale checksum.
+Add `--fresh-locale-sets` with a smaller count to isolate new supported-list
+preparation; Set allocation happens before timing, not inside constructor timing.
+See [locale snapshot measurements](../../../knowledge-base/audits/2026-10-31-numberformat-constructor-snapshots.md).
+
 The independent audit uses ICU4J 79.1 / CLDR 49. Supply `--icu4c=<file>` from the
 Linux/RBE `//conformance-tests/icu4c:number_format_fixtures` target to compare the
 second oracle. Resolve its artifact with `bazel cquery --output=files`.

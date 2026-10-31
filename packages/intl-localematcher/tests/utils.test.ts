@@ -783,3 +783,17 @@ test('GH #4267 - exact match with many locales', function () {
     matchedSupportedLocale: 'fr',
   })
 })
+
+test('frozen caller arrays still invalidate matching state when getters change', () => {
+  let first = 'en'
+  const locales = ['en', 'fr']
+  Object.defineProperty(locales, 0, {get: () => first, configurable: true})
+  Object.freeze(locales)
+  expect(
+    findBestMatch(['en'], locales, undefined, 'fr').matchedSupportedLocale
+  ).toBe('en')
+  first = 'de'
+  const result = findBestMatch(['de'], locales, undefined, 'fr')
+  expect(result.matchedSupportedLocale).toBe('de')
+  expect(result.distances.de?.de).toBe(0)
+})

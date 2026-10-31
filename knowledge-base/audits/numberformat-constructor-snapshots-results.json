@@ -1,0 +1,344 @@
+{
+  "baselineCommit": "b567ec806fe3cbe70a01746f53093b89ce06c577",
+  "platform": "macOS Apple Silicon",
+  "phases": {
+    "host-baseline-repeat": "original host, selected benchmark harness",
+    "selected-host": "lazy immutable snapshots, host",
+    "polyfill-baseline": "original JS plurals",
+    "selected-polyfill": "lazy immutable snapshots, JS plurals",
+    "cold-baseline": "original per-Set cold preparation, Set allocation untimed",
+    "selected-cold": "lazy immutable snapshots, per-Set cold preparation",
+    "baseline": "initial original host, before fresh-Set benchmark flag",
+    "after": "rejected frozen-validation-buffer prototype",
+    "cold-final": "rejected eager-best-fit snapshot in lookup cold control"
+  },
+  "baselineConstructorProfile": {
+    "productionSourceCommit": "63cc67fca3f2c272921f49d1b0a448ba1670df4a",
+    "matcherSourceMatchesBaseline": true,
+    "iterations": 60000,
+    "constructorIterations": 1000,
+    "pluralRules": "polyfill",
+    "allLocales": true,
+    "samplingIntervalMicroseconds": 250,
+    "initializationSampledMicroseconds": 162707,
+    "initializationSelfPercent": {
+      "localeArray": 24.71,
+      "prepare": 23.76
+    }
+  },
+  "samples": {
+    "host-baseline-repeat": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": false,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 195.944291,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 5.0991583999999985,
+          "minMicroseconds": 5.033000000000005,
+          "maxMicroseconds": 10.067637499999998,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 6.0145167000000015,
+          "minMicroseconds": 5.960666700000002,
+          "maxMicroseconds": 9.205150000000003,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 5.091949999999997,
+          "minMicroseconds": 5.042100000000005,
+          "maxMicroseconds": 5.172233399999982,
+          "checksum": 140200
+        }
+      ]
+    },
+    "selected-host": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": false,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 357.710333,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 4.143604200000005,
+          "minMicroseconds": 4.079587500000002,
+          "maxMicroseconds": 5.023033299999997,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 5.140220899999997,
+          "minMicroseconds": 5.1144915999999965,
+          "maxMicroseconds": 5.383112499999993,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 4.970150000000013,
+          "minMicroseconds": 4.922862499999996,
+          "maxMicroseconds": 5.044008400000007,
+          "checksum": 140200
+        }
+      ]
+    },
+    "polyfill-baseline": {
+      "node": "v24.14.0",
+      "pluralRules": "polyfill",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": false,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 181.529583,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 5.2169125,
+          "minMicroseconds": 4.986399999999992,
+          "maxMicroseconds": 9.8839167,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 6.12656659999999,
+          "minMicroseconds": 6.084912500000008,
+          "maxMicroseconds": 9.044949999999995,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 5.152629099999991,
+          "minMicroseconds": 5.043879200000014,
+          "maxMicroseconds": 5.4127040999999965,
+          "checksum": 140200
+        }
+      ]
+    },
+    "selected-polyfill": {
+      "node": "v24.14.0",
+      "pluralRules": "polyfill",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": false,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 172.113125,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 4.242874999999998,
+          "minMicroseconds": 4.1573166000000015,
+          "maxMicroseconds": 5.0932625,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 5.265550000000007,
+          "minMicroseconds": 5.175704099999996,
+          "maxMicroseconds": 5.483812499999999,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 5.0469917,
+          "minMicroseconds": 4.990308300000003,
+          "maxMicroseconds": 5.134645899999998,
+          "checksum": 140200
+        }
+      ]
+    },
+    "cold-baseline": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": true,
+      "constructorIterations": 100,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 166.922834,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 8.232910000000118,
+          "minMicroseconds": 5.576250000000016,
+          "maxMicroseconds": 9.742919999999913,
+          "checksum": 1600
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 713.6141699999996,
+          "minMicroseconds": 674.0141700000005,
+          "maxMicroseconds": 752.02708,
+          "checksum": 1600
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 17.070420000000013,
+          "minMicroseconds": 14.307919999999967,
+          "maxMicroseconds": 32.26541999999995,
+          "checksum": 1600
+        }
+      ]
+    },
+    "selected-cold": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": true,
+      "constructorIterations": 100,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 170.780042,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 6.953330000000051,
+          "minMicroseconds": 4.759999999999991,
+          "maxMicroseconds": 8.157500000000084,
+          "checksum": 1600
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 683.8412500000004,
+          "minMicroseconds": 673.0408300000004,
+          "maxMicroseconds": 743.81,
+          "checksum": 1600
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 16.903330000000096,
+          "minMicroseconds": 15.455839999999625,
+          "maxMicroseconds": 30.49084000000107,
+          "checksum": 1600
+        }
+      ]
+    },
+    "baseline": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 196.936791,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 5.074600000000004,
+          "minMicroseconds": 4.964383299999997,
+          "maxMicroseconds": 10.082237500000003,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 6.074720899999999,
+          "minMicroseconds": 6.046958399999994,
+          "maxMicroseconds": 8.955120899999997,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 4.925012500000003,
+          "minMicroseconds": 4.912908300000003,
+          "maxMicroseconds": 4.994374999999991,
+          "checksum": 140200
+        }
+      ]
+    },
+    "after": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "constructorIterations": 10000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 207.22449999999998,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 6.370400000000006,
+          "minMicroseconds": 6.216916600000002,
+          "maxMicroseconds": 7.3621333999999985,
+          "checksum": 140200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 7.355737499999998,
+          "minMicroseconds": 7.203683299999988,
+          "maxMicroseconds": 7.5836999999999986,
+          "checksum": 140200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 7.0114750000000186,
+          "minMicroseconds": 6.916770899999983,
+          "maxMicroseconds": 7.222362500000009,
+          "checksum": 140200
+        }
+      ]
+    },
+    "cold-final": {
+      "node": "v24.14.0",
+      "pluralRules": "host",
+      "icu": "78.2",
+      "iterations": 20000,
+      "constructorsOnly": true,
+      "freshLocaleSets": true,
+      "constructorIterations": 100,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 191.058916,
+      "results": [
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 7.888329999999826,
+          "minMicroseconds": 5.170830000000137,
+          "maxMicroseconds": 8.937500000000114,
+          "checksum": 1600
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 692.5833299999999,
+          "minMicroseconds": 672.1529199999998,
+          "maxMicroseconds": 768.1620900000001,
+          "checksum": 1600
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 26.280419999999367,
+          "minMicroseconds": 25.102090000000317,
+          "maxMicroseconds": 37.11999999999989,
+          "checksum": 1600
+        }
+      ]
+    }
+  }
+}

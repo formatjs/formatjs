@@ -7,7 +7,10 @@ import type {
   Keyword,
   LookupMatcherResult,
 } from '#packages/intl-localematcher/abstract/types.js'
-import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
+import {
+  createLocaleListSnapshot,
+  invariant,
+} from '#packages/intl-localematcher/abstract/utils.js'
 
 export interface ResolveLocaleResult {
   locale: string
@@ -15,28 +18,37 @@ export interface ResolveLocaleResult {
   [k: string]: any
 }
 
-const availableLocaleArrays = new WeakMap<Set<string>, string[]>()
+interface LocaleArraySnapshot {
+  original: readonly string[]
+  snapshot: readonly string[] | undefined
+}
+
+const availableLocaleArrays = new WeakMap<Set<string>, LocaleArraySnapshot>()
 
 function localeArray(
-  locales: Set<string> | readonly string[]
+  locales: Set<string> | readonly string[],
+  bestFit: boolean
 ): readonly string[] {
   if (Array.isArray(locales)) return locales
   const available = locales as Set<string>
-  const cached = availableLocaleArrays.get(available)
-  if (cached?.length === available.size) {
+  let cached = availableLocaleArrays.get(available)
+  if (cached?.original.length !== available.size) cached = undefined
+  if (cached) {
+    const original = cached.original
     let index = 0
     for (const locale of available) {
-      if (cached[index++] !== locale) {
-        const result = Array.from(available)
-        availableLocaleArrays.set(available, result)
-        return result
+      if (original[index++] !== locale) {
+        cached = undefined
+        break
       }
     }
-    return cached
   }
-  const result = Array.from(available)
-  availableLocaleArrays.set(available, result)
-  return result
+  if (!cached) {
+    cached = {original: Array.from(available), snapshot: undefined}
+    availableLocaleArrays.set(available, cached)
+  }
+  if (!bestFit) return cached.original
+  return (cached.snapshot ??= createLocaleListSnapshot(cached.original))
 }
 
 /**
@@ -57,13 +69,13 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   let r: LookupMatcherResult
   if (matcher === 'lookup') {
     r = LookupMatcher(
-      localeArray(availableLocales),
+      localeArray(availableLocales, false),
       requestedLocales,
       getDefaultLocale
     )
   } else {
     r = BestFitMatcher(
-      localeArray(availableLocales),
+      localeArray(availableLocales, true),
       requestedLocales,
       getDefaultLocale
     )

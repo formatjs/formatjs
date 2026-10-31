@@ -50,6 +50,13 @@ const iterations = Number(
     ?.split('=')[1] || 20000
 )
 const rounds = 7
+const constructorsOnly = process.argv.includes('--constructors-only')
+const freshLocaleSets = process.argv.includes('--fresh-locale-sets')
+const constructorIterations = Number(
+  process.argv
+    .find(value => value.startsWith('--constructor-iterations='))
+    ?.split('=')[1] || Math.min(iterations, 1000)
+)
 const profiles: [string, NumberFormatOptions][] = [
   ['decimal', {}],
   ['currency', {style: 'currency', currency: 'USD'}],
@@ -67,7 +74,7 @@ const profiles: [string, NumberFormatOptions][] = [
 ]
 const values = [0, -0, 1.025, -1.025, 1234.5, 999.5, 999999.5, 1e-7, 1e21]
 const results = []
-for (const [name, options] of profiles) {
+for (const [name, options] of constructorsOnly ? [] : profiles) {
   const formatter = new NumberFormat('en', options)
   let checksum = 0
   for (let i = 0; i < 2000; i++)
@@ -88,23 +95,30 @@ for (const [name, options] of profiles) {
     checksum,
   })
 }
+const availableLocales = NumberFormat.availableLocales
 for (const [name, locale, localeMatcher] of [
   ['construct exact', 'en', 'best fit'],
   ['construct fallback', 'de-XX', 'best fit'],
   ['construct lookup', 'de-XX', 'lookup'],
 ] as const) {
-  const count = Math.min(iterations, 1000)
+  const count = constructorIterations
   let checksum = 0
   for (let i = 0; i < 100; i++)
     checksum += new NumberFormat(locale, {localeMatcher}).resolvedOptions()
       .locale.length
   const timings = []
   for (let round = 0; round < rounds; round++) {
+    const localeSets = freshLocaleSets
+      ? Array.from({length: count}, () => new Set(availableLocales))
+      : undefined
     const start = performance.now()
-    for (let i = 0; i < count; i++)
+    for (let i = 0; i < count; i++) {
+      if (localeSets) NumberFormat.availableLocales = localeSets[i]
       checksum += new NumberFormat(locale, {localeMatcher}).resolvedOptions()
         .locale.length
+    }
     timings.push(((performance.now() - start) * 1000) / count)
+    NumberFormat.availableLocales = availableLocales
   }
   timings.sort((a, b) => a - b)
   results.push({
@@ -122,6 +136,9 @@ console.log(
       pluralRules: polyfilledPlurals ? 'polyfill' : 'host',
       icu: process.versions.icu,
       iterations,
+      constructorsOnly,
+      freshLocaleSets,
+      constructorIterations,
       rounds,
       registeredLocales: NumberFormat.availableLocales.size,
       registrationMilliseconds,

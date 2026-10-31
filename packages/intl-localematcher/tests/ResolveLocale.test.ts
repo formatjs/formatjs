@@ -193,3 +193,71 @@ test('supports Sets from another realm', () => {
     ).locale
   ).toBe('fr')
 })
+
+test('same-size locale reorder preserves first canonical match and its data', () => {
+  for (const locales of [['en', 'EN', 'fr'], new Set(['en', 'EN', 'fr'])]) {
+    const resolve = () =>
+      ResolveLocale(
+        locales,
+        ['en-u-nu-arab'],
+        {localeMatcher: 'best fit'},
+        ['nu'],
+        {en: {nu: ['latn']}, EN: {nu: ['arab']}, fr: {nu: ['latn']}},
+        () => 'fr'
+      )
+    expect(resolve()).toMatchObject({dataLocale: 'en', nu: 'latn'})
+    if (locales instanceof Set) {
+      Set.prototype.delete.call(locales, 'en')
+      Set.prototype.add.call(locales, 'en')
+    } else locales.push(locales.shift()!)
+    expect(resolve()).toMatchObject({dataLocale: 'EN', nu: 'arab'})
+  }
+})
+
+test('switches lookup and best fit after Set snapshots change', () => {
+  const locales = new Set(['en', 'fr'])
+  const resolve = (localeMatcher: string, requested: string) =>
+    ResolveLocale(locales, [requested], {localeMatcher}, [], {}, () => 'en')
+      .dataLocale
+  expect(resolve('lookup', 'fr')).toBe('fr')
+  expect(resolve('best fit', 'fr')).toBe('fr')
+  locales.delete('fr')
+  locales.add('de')
+  expect(resolve('lookup', 'de')).toBe('de')
+  expect(resolve('best fit', 'de')).toBe('de')
+  locales.delete('en')
+  locales.add('fr')
+  expect(resolve('best fit', 'fr')).toBe('fr')
+  expect(resolve('lookup', 'fr')).toBe('fr')
+})
+
+test('private snapshot records ignore inherited snapshot accessors', () => {
+  const previous = Object.getOwnPropertyDescriptor(Object.prototype, 'snapshot')
+  let calls = 0
+  let result
+  try {
+    Object.defineProperty(Object.prototype, 'snapshot', {
+      configurable: true,
+      get() {
+        calls++
+        return ['de']
+      },
+      set() {
+        calls++
+      },
+    })
+    result = ResolveLocale(
+      new Set(['en', 'fr']),
+      ['fr'],
+      {localeMatcher: 'best fit'},
+      [],
+      {},
+      () => 'en'
+    )
+  } finally {
+    if (previous) Object.defineProperty(Object.prototype, 'snapshot', previous)
+    else delete (Object.prototype as {snapshot?: unknown}).snapshot
+  }
+  expect(calls).toBe(0)
+  expect(result).toMatchObject({dataLocale: 'fr'})
+})
