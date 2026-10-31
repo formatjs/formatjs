@@ -816,3 +816,63 @@ it('preserves exponent arithmetic outside the safe integer range', () => {
     )
   ).toBe(true)
 })
+
+it('keeps alignment and integer rounding exact across the small-power boundary', () => {
+  for (const exponent of [65, 64, 63, 40, 39, 1, 128, 1024, 64, 65]) {
+    const power = 10n ** BigInt(exponent)
+    const large = new BigDecimal(`1e${exponent}`)
+    expect(large.plus(1).toString()).toBe((power + 1n).toString())
+    expect(large.minus(1).toString()).toBe((power - 1n).toString())
+    expect(large.greaterThan(new BigDecimal(power - 1n))).toBe(true)
+    expect(large.negated().lessThan(new BigDecimal(-power + 1n))).toBe(true)
+    expect(new BigDecimal(1).plus(`1e-${exponent}`).toString()).toBe(
+      '1.' + '0'.repeat(exponent - 1) + '1'
+    )
+    const small = new BigDecimal(`1e-${exponent}`)
+    expect(small.floor().toString()).toBe('0')
+    expect(small.ceil().toString()).toBe('1')
+    expect(small.negated().floor().toString()).toBe('-1')
+    expect(small.negated().ceil().isZero()).toBe(true)
+    expect(large.div(8).eq(new BigDecimal(`125e${exponent - 3}`))).toBe(true)
+  }
+})
+
+it('constructs safe integers exactly while retaining Number decimal-string semantics', () => {
+  const values = [
+    0,
+    -0,
+    1,
+    -1,
+    10,
+    -10,
+    1000000,
+    -1000000,
+    Number.MAX_SAFE_INTEGER,
+    Number.MIN_SAFE_INTEGER,
+    Number.MAX_SAFE_INTEGER - 1,
+    Number.MIN_SAFE_INTEGER + 1,
+    Number.MAX_SAFE_INTEGER + 1,
+    Number.MIN_SAFE_INTEGER - 1,
+    1000000000000000100,
+    -1000000000000000100,
+    1e21,
+    -1e21,
+    1e-7,
+    -1e-7,
+    1.025,
+    -1.025,
+    NaN,
+    Infinity,
+    -Infinity,
+  ]
+  for (let i = 1; i <= 1000; i++) {
+    values.push(i * 123456789, -i * 1000000)
+  }
+  for (const value of values) {
+    const text = Object.is(value, -0) ? '-0' : String(value)
+    expect(new BigDecimal(value), text).toEqual(new BigDecimal(text))
+  }
+  expect(new BigDecimal(1000000000000000100).toString()).toBe(
+    '1000000000000000100'
+  )
+})
