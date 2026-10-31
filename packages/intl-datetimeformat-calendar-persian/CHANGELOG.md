@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-persian@1.1.3...@formatjs/intl-datetimeformat-calendar-persian@1.1.4) (2026-10-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 8.0.0
+
 ## [1.1.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-persian@1.1.2...@formatjs/intl-datetimeformat-calendar-persian@1.1.3) (2026-10-30)
 
 
