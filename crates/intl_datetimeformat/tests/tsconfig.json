@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "#packages/*": ["../../../packages/*"]
+    },
+    "types": ["node"]
+  },
+  "extends": "../../../tsconfig.json",
+  "references": [
+    {
+      "path": "../../../packages/intl-datetimeformat/calendars/tsconfig.json"
+    }
+  ]
+}

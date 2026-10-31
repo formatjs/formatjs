@@ -70,7 +70,7 @@ const result = spawnSync(resolve('crates/intl_datetimeformat/audit'), [], {
 assert.equal(result.status, 0, result.stderr)
 const rust: Output[] = JSON.parse(result.stdout)
 assert.equal(rust.length, cases.length)
-const formatters = new Map<string, DateTimeFormat>()
+const formatters = new Map<string, InstanceType<typeof DateTimeFormat>>()
 const differences = []
 const summary: Record<string, number> = {}
 for (const [i, sample] of cases.entries()) {

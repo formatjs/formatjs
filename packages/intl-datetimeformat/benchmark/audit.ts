@@ -11,7 +11,11 @@ const resolve = (path: string) =>
 const polyfillNumbers = process.argv.includes('--polyfill-numbers')
 if (polyfillNumbers) {
   Intl.NumberFormat = NumberFormat as unknown as typeof Intl.NumberFormat
-  Intl.PluralRules = PluralRules as unknown as typeof Intl.PluralRules
+  Object.defineProperty(Intl, 'PluralRules', {
+    value: PluralRules,
+    writable: true,
+    configurable: true,
+  })
   ;(Intl.PluralRules as unknown as typeof PluralRules).__addLocaleData(
     runInNewContext(
       '(' +
