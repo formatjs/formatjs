@@ -132,6 +132,20 @@ jobs:
           chmod +x artifacts/hermes-intl-darwin-arm64
           artifacts/hermes-intl-darwin-arm64 artifacts/hermes-intl-extension.hbc
 
+      - uses: bazel-contrib/setup-bazel@0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: hermes-intl-apple-consumer
+
+      - name: Link Linux-built Apple SDK
+        env:
+          DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+        run: |
+          mkdir apple-sdk
+          tar -xmzf artifacts/formatjs-hermes-intl-apple.tar.gz -C apple-sdk
+          bash artifacts/apple-sdk-smoke/smoke.sh "$PWD/apple-sdk"
+
   windows_smoke:
     name: Windows Smoke Tests
     needs: download

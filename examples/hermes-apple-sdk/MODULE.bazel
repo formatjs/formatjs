@@ -1,0 +1,13 @@
+module(name = "formatjs_apple_sdk_smoke")
+
+bazel_dep(name = "formatjs_intl_getcanonicallocales_hermes", version = "0.2.0")
+bazel_dep(name = "apple_support", version = "2.9.1")
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "rules_cc", version = "0.2.27")
+
+archive_override(
+    module_name = "hermes",
+    integrity = "sha256-f9nE4zvtzN9PmlF2VDqS+N7VtEg8Uxs5z2HgIY7lJQQ=",
+    strip_prefix = "hermes-338ff13ff1e996934ae615952d174f8c621844d9",
+    urls = ["https://github.com/formatjs/hermes/archive/338ff13ff1e996934ae615952d174f8c621844d9.tar.gz"],
+)

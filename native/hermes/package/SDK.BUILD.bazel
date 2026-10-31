@@ -95,6 +95,40 @@ cc_import(
 )
 
 cc_library(
+    name = "c_api",
+    hdrs = glob(["include/formatjs/intl/*.h"]),
+    linkopts = select({
+        ":android_arm64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":android_x86_64": [
+            "-ldl",
+            "-lm",
+        ],
+        ":macos": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":ios": [
+            "-lSystem",
+            "-lresolv",
+        ],
+        ":linux_x86_64": [
+            "-lgcc_s",
+            "-lutil",
+            "-lrt",
+            "-lpthread",
+            "-lm",
+            "-ldl",
+        ],
+        "//conditions:default": [],
+    }),
+    strip_include_prefix = "include",
+    deps = [":rust_intl"],
+)
+
+cc_library(
     name = "bridge",
     hdrs = ["include/formatjs/hermes/bridge.h"],
     strip_include_prefix = "include",

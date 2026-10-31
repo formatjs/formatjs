@@ -1,13 +1,6 @@
 name: Hermes Intl SDK Release
 
 on:
-  pull_request:
-    paths:
-      - 'native/hermes/**'
-      - 'crates/intl_*/**'
-      - 'MODULE.bazel*'
-      - '.bazelrc'
-      - '.github/workflows/hermes-intl-release.yml'
   release:
     types: [published]
   workflow_dispatch:
@@ -65,7 +58,7 @@ jobs:
             --remote_header="x-buildbuddy-api-key=$BUILDBUDDY_ORG_API_KEY"
             --extra_toolchains=@androidndk//:all
           )
-          targets=(//native/hermes/package:sdk //native/hermes/package:android_sdk)
+          targets=(//native/hermes/package:sdk //native/hermes/package:android_sdk //native/hermes/package:apple_sdk)
           bazel build "${args[@]}" "${targets[@]}"
           mkdir artifacts
           for target in "${targets[@]}"; do
@@ -76,10 +69,18 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: formatjs-hermes-intl-sdk
-          path: artifacts/
+          path: |
+            artifacts/formatjs-hermes-intl-desktop.tar.gz
+            artifacts/formatjs-hermes-intl-android.tar.gz
+            artifacts/version.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: formatjs-hermes-intl-apple-sdk
+          path: artifacts/formatjs-hermes-intl-apple.tar.gz
 
   apple:
-    if: (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')) && !inputs.apple_run_id
+    needs: build
+    if: (github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')) && !inputs.apple_run_id
     runs-on: macos-15
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
@@ -87,41 +88,20 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
+      - uses: actions/download-artifact@v8
+        with:
+          name: formatjs-hermes-intl-apple-sdk
+          path: artifacts/
       - uses: bazel-contrib/setup-bazel@0.19.1
         with:
           bazelisk-cache: true
           repository-cache: true
-          disk-cache: hermes-intl-apple-sdk
-      - name: Build Apple SDK
-        run: |
-          bazel build -c opt --config=hermes-apple //native/hermes/package:apple_sdk
-          archive=$(bazel cquery -c opt --config=hermes-apple --output=files //native/hermes/package:apple_sdk)
-          mkdir artifacts
-          cp "$archive" artifacts/
-      - name: Verify Apple libraries
+          disk-cache: hermes-intl-apple-consumer
+      - name: Link Linux-built Apple SDK
         run: |
           mkdir sdk
           tar -xmzf artifacts/formatjs-hermes-intl-apple.tar.gz -C sdk
-          for triple in aarch64-apple-ios aarch64-apple-ios-sim aarch64-apple-darwin x86_64-apple-ios x86_64-apple-darwin; do
-            archive="sdk/lib/$triple/libformatjs_intl_hermes.a"
-            test -s "$archive"
-            xcrun lipo -info "$archive"
-          done
-      - name: Link Apple smoke executables
-        run: |
-          for platform in ios_arm64 ios_sim_arm64 ios_sim_x86_64 macos_arm64 macos_x86_64; do
-            target="//native/hermes/package:${platform}_link_smoke"
-            bazel build -c opt --config=hermes-apple "$target"
-            executable=$(bazel cquery -c opt --config=hermes-apple --output=files "$target")
-            xcrun vtool -show-build "$executable"
-            if [[ "$platform" == "macos_$(uname -m)" ]]; then
-              "$executable"
-            fi
-          done
-      - uses: actions/upload-artifact@v7
-        with:
-          name: formatjs-hermes-intl-apple-sdk
-          path: artifacts/
+          bash examples/hermes-apple-sdk/smoke.sh "$PWD/sdk"
 
   publish:
     needs: [build, apple]

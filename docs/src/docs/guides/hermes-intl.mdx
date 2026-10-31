@@ -95,6 +95,15 @@ bazel build -c opt --extra_toolchains=@androidndk//:all --spawn_strategy=local \
   --//crates/intl_data:locales=en,fr //native/hermes/package:android_sdk
 ```
 
+Apple Rust archives can also be cross-compiled on Linux through BuildBuddy:
+
+```sh
+bazel build --config=bb-cross-build --remote_download_toplevel //native/hermes/package:apple_sdk
+```
+
+Xcode is needed for final iOS/macOS consumer linking, not Rust archive production.
+CI links all five prebuilt slices on macOS and runs the host-macOS smoke executable.
+
 Use `--//crates/intl_data:locales=\*` for every CLDR locale. Adding locales requires
 rebuilding the SDK, then rebuilding your app. End users downloading the app do
 not compile anything. Segmenter models and Collator/Locale data remain static.

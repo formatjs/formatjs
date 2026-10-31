@@ -1,0 +1,25 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+
+[
+    platform(
+        name = name,
+        constraint_values = [
+            "@platforms//os:" + os,
+            "@platforms//cpu:" + cpu,
+        ] + (["@apple_support//constraints:" + variant] if variant else []),
+    )
+    for name, os, cpu, variant in [
+        ("ios_arm64", "ios", "aarch64", "device"),
+        ("ios_sim_arm64", "ios", "aarch64", "simulator"),
+        ("ios_sim_x86_64", "ios", "x86_64", "simulator"),
+        ("macos_arm64", "macos", "aarch64", ""),
+        ("macos_x86_64", "macos", "x86_64", ""),
+    ]
+]
+
+cc_binary(
+    name = "link_smoke",
+    srcs = ["main.cpp"],
+    copts = ["-std=c++17"],
+    deps = ["@formatjs_intl_getcanonicallocales_hermes//:c_api"],
+)

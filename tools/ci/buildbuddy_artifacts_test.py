@@ -75,13 +75,14 @@ class ArtifactTest(unittest.TestCase):
             with self.subTest(field=field), self.assertRaises(ValueError):
                 artifacts.artifact_uris(invalid, "a" * 40)
 
-    def test_requires_both_archives_once_and_known_storage(self):
+    def test_requires_all_archives_once_and_known_storage(self):
         declared = self.response()["invocation"][0]["artifacts"]
         unknown_storage = copy.deepcopy(declared)
         unknown_storage[1]["uri"] = "https://evil.example/archive"
         for values in (
             [],
             declared[:1],
+            declared[:2],
             declared[1:],
             declared * 2,
             unknown_storage,
@@ -127,14 +128,15 @@ class ArtifactTest(unittest.TestCase):
             "formatjs_cli-win32-x64.exe",
             "hermes-intl-darwin-arm64",
             "hermes-intl-extension.hbc",
+            "formatjs-hermes-intl-apple.tar.gz",
+            "apple-sdk-smoke/smoke.sh",
         ):
             with self.subTest(missing=missing), tempfile.TemporaryDirectory() as directory:
                 destination = Path(directory) / "artifacts"
                 with self.assertRaisesRegex(ValueError, "missing required artifacts"):
-                    archive_name = (
-                        artifacts.SDK_ARCHIVE_NAME
-                        if missing in artifacts.SDK_REQUIRED_FILES
-                        else artifacts.ARCHIVE_NAME
+                    archive_name = next(
+                        name for name, files in artifacts.ARCHIVE_REQUIRED_FILES.items()
+                        if missing in files
                     )
                     artifacts.extract_archives(
                         self.archives(omit=[missing], archive_name=archive_name), destination
@@ -154,10 +156,9 @@ class ArtifactTest(unittest.TestCase):
             self.assertFalse(destination.exists())
 
     def test_requires_split_archive_file_contracts(self):
-        contents = {
-            artifacts.ARCHIVE_NAME: self.archive(artifacts.REQUIRED_FILES),
-            artifacts.SDK_ARCHIVE_NAME: self.archive(set()),
-        }
+        contents = self.archives()
+        contents[artifacts.ARCHIVE_NAME] = self.archive(artifacts.REQUIRED_FILES)
+        contents[artifacts.SDK_ARCHIVE_NAME] = self.archive(set())
         with tempfile.TemporaryDirectory() as directory:
             destination = Path(directory) / "artifacts"
             with self.assertRaisesRegex(ValueError, "Unexpected artifact file"):

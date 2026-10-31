@@ -76,6 +76,19 @@ The SDK does not register a CocoaPod or provide a second Hermes runtime.
 iOS requires 15.1+; macOS arm64 requires 11.0+. Keep deployment targets at least
 as high as those used by your runtime.
 
+### Building Apple archives
+
+Linux BuildBuddy workers cross-compile all five Apple Rust libraries:
+
+```sh
+bazel build --config=bb-cross-build --remote_download_toplevel //native/hermes/package:apple_sdk
+```
+
+No iOS SDK is needed for archive production. CI then uses Xcode on macOS to link
+all five slices from the extracted SDK and run the host-macOS smoke executable.
+The standalone consumer is `examples/hermes-apple-sdk`; its `:link_smoke` target
+uses the SDK's `:c_api` headers/library without rebuilding Rust.
+
 ### Hermes contrib extensions
 
 Follow [contrib/README.md](contrib/README.md) to register the SDK with Hermes'

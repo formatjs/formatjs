@@ -1,0 +1,5 @@
+common --enable_bzlmod
+common --repo_env=BAZEL_NO_APPLE_CPP_TOOLCHAIN=0
+build --compilation_mode=opt
+build --ios_minimum_os=15.1
+build --macos_minimum_os=11.0
