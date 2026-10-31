@@ -74,6 +74,8 @@ use_repo(
 
 register_toolchains(
     "//native/hermes/package:android_node_runtime_linux_x86_64",
+    "//native/hermes/package:ios_node_runtime_linux_x86_64",
+    "//native/hermes/package:ios_node_runtime_linux_aarch64",
     "//native/hermes/package:ios_node_runtime_macos_arm64",
     "//native/hermes/package:ios_node_runtime_macos_x86_64",
 )
