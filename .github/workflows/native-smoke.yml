@@ -62,6 +62,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
           retention-days: 7
 
   linux_musl_smoke:
@@ -86,6 +87,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Smoke Test Static musl CLI On GNU
         run: |
@@ -116,6 +118,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Rust CLI Smoke Test
         run: |
@@ -162,6 +165,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Rust CLI Smoke Test
         run: |

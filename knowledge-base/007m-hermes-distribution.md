@@ -40,7 +40,7 @@ build-only. BuildBuddy produces the Apple archive alongside desktop artifacts
 for PRs. Native Smoke Tests download it, link all five slices through the standalone
 `examples/hermes-apple-sdk` Bazel consumer, verify executable platform metadata,
 and run the host-macOS executable. Mac validation compiles no Rust or locale data.
-The release workflow uses the same Linux producer/macOS consumer split. First release must land before docs' download path is usable.
+The release workflow uses the same Linux producer/macOS consumer split.
 
 ```mermaid
 flowchart LR
