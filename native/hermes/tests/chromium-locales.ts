@@ -96,14 +96,22 @@ function unhex(value: string): string {
 if (api.ListFormat?.polyfilled) {
   const rows = (globalThis as any).__LIST_FORMAT_FIXTURES as string[][]
   equal(rows.length, 3168)
+  let cldr49UnitCases = 0
   for (const [locale, type, style, encoded, , expected] of rows) {
     const items = encoded === '-' ? [] : encoded.split(',').map(unhex)
+    // CLDR 49 Hebrew unit joins changed after the pinned ICU 78.1 oracle.
+    // https://github.com/unicode-org/cldr-json/blob/49.0.0/cldr-json/cldr-misc-full/main/he/listPatterns.json
+    const cldr49Unit = locale === 'he' && type === 'unit'
+    if (cldr49Unit) cldr49UnitCases++
+    const expectedText = cldr49Unit
+      ? items.join(style === 'narrow' ? ' ' : ', ')
+      : unhex(expected)
     formatter = `ListFormat ${locale}/${type}/${style}/${encoded}`
     const list = new api.ListFormat(locale, {type, style})
-    equal(list.format(items), unhex(expected))
-    equal(list.format(items), unhex(expected))
+    equal(list.format(items), expectedText)
+    equal(list.format(items), expectedText)
     const parts = list.formatToParts(items)
-    equal(parts.map((part: any) => part.value).join(''), unhex(expected))
+    equal(parts.map((part: any) => part.value).join(''), expectedText)
     equal(
       parts
         .filter((part: any) => part.type === 'element')
@@ -111,7 +119,9 @@ if (api.ListFormat?.polyfilled) {
       items
     )
   }
+  equal(cldr49UnitCases, 96)
 }
+
 if (api.PluralRules?.polyfilled) {
   const rows = (globalThis as any).__PLURAL_RULES_FIXTURES as string[][]
   equal(rows.length, 720)

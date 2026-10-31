@@ -112,7 +112,10 @@ ICU4C 78.1 checks every result, and the Chromium-locale Hermes test consumes
 the same cases in source and bytecode modes. Eighteen exact C/J differences
 are pinned in `conformance-tests/icu4j/list-format-icu-differences.tsv`; these
 use ICU4C's script-aware behavior and Spanish `11 ` handling. Both oracle
-outputs remain checked. See `conformance-tests/icu4c/README.md`.
+outputs remain checked. CLDR 49 changes Hebrew unit lists to comma joins for
+long/short and space joins for narrow. The Chromium test checks all 96 Hebrew
+unit cases against those explicit CLDR 49 patterns; the other 3,072 retain the
+ICU oracle expectations. See `conformance-tests/icu4c/README.md`.
 
 An independent ICU4X ListFormatter also checks 3,069 scalar-string cases.
 Its 69 exact differences are pinned separately; it cannot represent the 99
