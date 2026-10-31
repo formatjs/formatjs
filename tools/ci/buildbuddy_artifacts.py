@@ -115,7 +115,6 @@ def extract_archives(contents, destination):
             files = set()
             required = ARCHIVE_REQUIRED_FILES[archive_name]
             for member in archive:
-                members.append(member)
                 entry_count += 1
                 if entry_count > 100:
                     raise ValueError("Too many artifact entries")
@@ -124,6 +123,9 @@ def extract_archives(contents, destination):
                     raise ValueError("Unsafe artifact path")
                 if not (member.isfile() or member.isdir()):
                     raise ValueError("Artifact links and special files are forbidden")
+                if member.isdir() and not path.parts:
+                    continue
+                members.append(member)
                 name = str(path)
                 if name in paths:
                     raise ValueError("Duplicate artifact path")
@@ -147,7 +149,7 @@ def extract_archives(contents, destination):
                 raise ValueError("Smoke archive is missing required artifacts")
             archives.append((archive, members))
 
-        # Validate both archives before either can write to the destination.
+        # Validate all archives before writing to the destination.
         destination.mkdir(parents=True, exist_ok=False)
         for archive, members in archives:
             archive.extractall(destination, members=members, filter="data")

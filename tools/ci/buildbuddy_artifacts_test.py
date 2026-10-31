@@ -165,6 +165,22 @@ class ArtifactTest(unittest.TestCase):
                 artifacts.extract_archives(contents, destination)
             self.assertFalse(destination.exists())
 
+    def test_archives_can_each_contain_root_directory(self):
+        root = tarfile.TarInfo("./")
+        root.type = tarfile.DIRTYPE
+        contents = {
+            name: self.archive(files, extra=root)
+            for name, files in artifacts.ARCHIVE_REQUIRED_FILES.items()
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "artifacts"
+            artifacts.extract_archives(contents, destination)
+            self.assertEqual(
+                {str(path.relative_to(destination)) for path in destination.rglob("*")
+                 if path.is_file()},
+                artifacts.REQUIRED_FILES,
+            )
+
     def test_combined_size_limits_apply_before_writing(self):
         contents = self.archives()
         for constant, limit in (
