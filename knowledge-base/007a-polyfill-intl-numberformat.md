@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 571 locales.
+Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 657 locales.
 
 ## Dependencies
 
@@ -52,18 +52,18 @@ pattern, following LDML lateral inheritance.
 ```
 Stage 1: cldr-raw (ts_run_binary)
   Input: extract-numbers.ts + extract-currencies.ts + extract-units.ts
-  Output: cldr-raw/{locale}.json (571 files)
+  Output: cldr-raw/{locale}.json (657 files)
   Merges numbers + currencies + units into single JSON per locale
 
 Stage 2: locale-data (ts_run_binary)
   Input: cldr-raw/*.json
-  Output: locale-data/{locale}.js + locale-data/{locale}.d.ts (1142 files)
+  Output: locale-data/{locale}.js + locale-data/{locale}.d.ts (1314 files)
   Wraps in __addLocaleData() registration pattern
 
 Stage 3: Metadata generation (generate_src_file)
   → src/currency-digits.generated.ts (170+ currency codes)
   → src/numbering-systems.generated.ts (99 systems)
-  → supported-locales.generated.ts (571 locales)
+  → supported-locales.generated.ts (657 locales)
 ```
 
 ### Locale Data Structure
@@ -100,7 +100,7 @@ Stage 3: Metadata generation (generate_src_file)
 
 - **BigDecimal for precision**: ECMA-402 requires correct rounding for all digit options; JavaScript's IEEE 754 doubles are insufficient
 - **Plural rule integration**: Compact notation and unit patterns use plural categories from CLDR; collapses single-value plural rules if same as "other"
-- **571 locales**: Full CLDR coverage with tree-shakeable per-locale imports
+- **657 locales**: Full CLDR coverage with tree-shakeable per-locale imports
 
 ## Numbering system validation
 
@@ -233,3 +233,24 @@ plural selection. Latin digits use immutable global identity mapping; locale
 symbols are borrowed and other digit systems keep owned mapping. The plain
 `#,##0.###` string path shares rendered rounding/category state with parts;
 other decimal patterns retain the general fallback.
+
+## Specification, ICU audit, and matching performance
+
+[2026-10-31 audit](audits/2026-10-31-numberformat.md) records independent ICU4C/J
+79.1 comparisons against CLDR 49, specification ambiguity probes, and benchmark
+tradeoffs. Rust/TS parity and tracked Test262 baselines remain separate evidence.
+`//crates/intl_numberformat/tests:icu4j_conformance_snapshot_test` checks both
+implementations' text and parts against ICU4J. The Linux-only
+`:icu4c_conformance_snapshot_test` checks both against independent ICU4C text.
+Checked-in snapshots record current differences, including open correctness bugs;
+added, removed, or changed differences fail. Fixture hashes guard the case matrix
+and pinned oracle output. See the audit report for explicit regeneration commands.
+The `icu_audit` executable also supports inventory output and strict comparisons.
+
+NumberFormat passes its available-locale Set directly to ResolveLocale, retaining
+stable matcher state while the matcher checks for registry mutations. Compact
+thresholds use lazily compiled numeric magnitude/exponent indexes, shared across
+numbering-system aliases. Re-register changed compact data through
+`__addLocaleData` to invalidate those indexes. Serialized locale data stays
+unchanged. Standard notation skips exponent-preview rounding because its exponent
+is always zero.

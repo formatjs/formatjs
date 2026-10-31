@@ -1,3 +1,4 @@
+import {invalidateCompactPatterns} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
 import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -290,6 +291,19 @@ NumberFormat.__addLocaleData = function __addLocaleData(
       d.numbers.percent[system] = d.numbers.percent[target]
       d.numbers.currency[system] = d.numbers.currency[target]
     }
+    // Re-registration refreshes metadata even when a caller reuses its payload.
+    const compactTables = new Set<
+      Parameters<typeof invalidateCompactPatterns>[0]
+    >()
+    for (const system of Object.keys(source.numbers.decimal)) {
+      compactTables.add(source.numbers.decimal[system].short)
+      compactTables.add(source.numbers.decimal[system].long)
+    }
+    for (const system of Object.keys(source.numbers.currency)) {
+      const short = source.numbers.currency[system].short
+      if (short) compactTables.add(short)
+    }
+    for (const table of compactTables) invalidateCompactPatterns(table)
     registerLocaleData(
       locale,
       d,

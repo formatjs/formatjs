@@ -292,6 +292,7 @@ ts_run_binary(
     visibility = [
         "//crates/intl_numberformat:__pkg__",
         "//packages/intl:__subpackages__",
+        "//packages/intl-numberformat/benchmark:__pkg__",
         "//packages/react-intl:__subpackages__",
     ],
 )
@@ -479,6 +480,7 @@ formatjs_test(
         "tests/decimal/decimalTest.ts",
         "tests/fast-path-optimizations.test.ts",
         "tests/format_to_parts.test.ts",
+        "tests/internal/compact-preprocessing.test.ts",
         "tests/legacy.test.ts",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",

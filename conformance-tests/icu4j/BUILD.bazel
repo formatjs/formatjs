@@ -1,5 +1,6 @@
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_test")
+load("//packages/intl-numberformat:locales.generated.bzl", "ALL_LOCALES")
 
 exports_files(["locale-format-fixtures.tsv"])
 
@@ -189,5 +190,27 @@ genrule(
     outs = ["segmenter-fixtures.tsv"],
     cmd = "$(execpath :intl_segmenter_oracle) $@",
     tools = [":intl_segmenter_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_import(
+    name = "icu4j79",
+    jars = ["@icu4j79_jar//file"],
+)
+
+java_binary(
+    name = "intl_numberformat_oracle",
+    testonly = True,
+    srcs = ["IntlNumberFormatOracle.java"],
+    main_class = "IntlNumberFormatOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "number_format_fixtures",
+    testonly = True,
+    outs = ["number-format-fixtures.tsv"],
+    cmd = "$(execpath :intl_numberformat_oracle) $@ " + " ".join(ALL_LOCALES),
+    tools = [":intl_numberformat_oracle"],
     visibility = ["//visibility:public"],
 )

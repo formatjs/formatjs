@@ -55,3 +55,15 @@ ts_binary(
     ],
     entry_point = "analyze-profile.ts",
 )
+
+ts_binary(
+    name = "audit",
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//crates/intl_numberformat:locale_data",
+        "//packages/intl-numberformat:cldr-raw/en.json",
+    ],
+    entry_point = "audit.ts",
+)
