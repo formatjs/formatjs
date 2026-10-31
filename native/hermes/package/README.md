@@ -177,12 +177,11 @@ mkdir -p "$sdk_dir"
 tar -xmzf "$archive" -C "$sdk_dir"
 ```
 
-For iOS and macOS, build on macOS with full Xcode selected:
+For iOS and macOS, cross-compile on Linux through BuildBuddy:
 
 ```sh
-export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
-bazel build -c opt --config=hermes-apple //native/hermes/package:apple_sdk
-archive=$(bazel cquery -c opt --config=hermes-apple --output=files \
+bazel build --config=bb-cross-build --remote_download_toplevel //native/hermes/package:apple_sdk
+archive=$(bazel cquery --config=bb-cross-build --output=files \
   //native/hermes/package:apple_sdk)
 ```
 
@@ -201,15 +200,16 @@ run the example against your React Native version when upgrading.
 
 ## Release builds
 
-Desktop and Android release archives build through BuildBuddy RBE. The workflow
-requires `BUILDBUDDY_ORG_API_KEY`; it downloads only the finished archives to
-GitHub Actions. Apple archives and link checks run on macOS with Xcode.
+Desktop, Android, and Apple release archives build on Linux through BuildBuddy
+RBE. The workflow requires `BUILDBUDDY_ORG_API_KEY`; it downloads only finished
+archives to GitHub Actions. Xcode links and validates prebuilt Apple slices on
+macOS.
 
 To retry an existing release using the current workflow, dispatch it from `main`
 with `release_tag` set to `formatjs-hermes-intl_v<version>`. All jobs check out
 that tag. Leave `dry_run` enabled to validate without uploading release assets.
 
 `apple_run_id` can reuse a successful Apple archive from an earlier SDK workflow
-run. Its source commit must match the selected tag. Leave it empty to build
-Apple archives again. Publishing waits for the desktop/Android build and either
-the Apple build or the verified reused archive.
+run. Its source commit must match the selected tag. Leave it empty to validate
+the newly built Apple archive. Publishing waits for the Linux build and either
+the Apple link checks or the verified reused archive.
