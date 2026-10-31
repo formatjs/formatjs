@@ -9,7 +9,7 @@ trap 'rm -f "$build_info"' EXIT
 while read -r platform triple architecture expected_platform; do
   library="$sdk_dir/lib/$triple/libformatjs_intl_hermes.a"
   test -s "$library"
-  xcrun lipo -verify_arch "$architecture" "$library"
+  xcrun lipo "$library" -verify_arch "$architecture"
   bazel build "${args[@]}" --platforms="//:$platform" //:link_smoke
   executable=$(bazel cquery "${args[@]}" --platforms="//:$platform" --output=files //:link_smoke)
   xcrun vtool -show-build "$executable" | tee "$build_info"

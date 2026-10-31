@@ -176,7 +176,7 @@ actions:
           apple_smoke_dir=$(mktemp -d)
           cp "$apple_archive" "$apple_smoke_dir/formatjs-hermes-intl-apple.tar.gz"
           mkdir "$apple_smoke_dir/apple-sdk-smoke"
-          cp examples/hermes-apple-sdk/{.bazelrc,.bazelversion,MODULE.bazel,BUILD.bazel,main.cpp,smoke.sh} "$apple_smoke_dir/apple-sdk-smoke/"
+          cp examples/hermes-apple-sdk/{.bazelrc,.bazelversion,MODULE.bazel,MODULE.bazel.lock,BUILD.bazel,main.cpp,smoke.sh} "$apple_smoke_dir/apple-sdk-smoke/"
           tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/apple-sdk-smoke.tar.gz" -C "$apple_smoke_dir" .
           rm -rf "$apple_smoke_dir"
 

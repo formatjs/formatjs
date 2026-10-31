@@ -37,7 +37,7 @@ SDK_REQUIRED_FILES = {"hermes-intl-darwin-arm64", "hermes-intl-extension.hbc"}
 APPLE_REQUIRED_FILES = {
     "formatjs-hermes-intl-apple.tar.gz",
     *(f"apple-sdk-smoke/{file}" for file in (
-        ".bazelrc", ".bazelversion", "MODULE.bazel", "BUILD.bazel", "main.cpp", "smoke.sh"
+        ".bazelrc", ".bazelversion", "MODULE.bazel", "MODULE.bazel.lock", "BUILD.bazel", "main.cpp", "smoke.sh"
     )),
 }
 REQUIRED_FILES = LEGACY_REQUIRED_FILES | SDK_REQUIRED_FILES | APPLE_REQUIRED_FILES
