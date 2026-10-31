@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.5.0...@formatjs/intl-numberformat@10.0.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Locale-data exports follow CLDR 49: five locales added, 114 removed upstream.
+
+### Features
+
+* upgrade CLDR data to v49 ([#7827](https://github.com/formatjs/formatjs/issues/7827)) ([1618c29](https://github.com/formatjs/formatjs/commit/1618c29b7984ab04e56799284014e058e530b4bb))
+
+
+### Performance Improvements
+
+* **@formatjs/bigdecimal:** normalize trailing zeros in chunks ([#7835](https://github.com/formatjs/formatjs/issues/7835)) ([31ea459](https://github.com/formatjs/formatjs/commit/31ea459d356d5b8806f94f21dd76676297fe8d13))
+* **@formatjs/bigdecimal:** reuse small powers and parse integers directly ([#7837](https://github.com/formatjs/formatjs/issues/7837)) ([3f4eaf2](https://github.com/formatjs/formatjs/commit/3f4eaf28ee4e8c6e822914bae72083b5f5323ec0))
+* **@formatjs/intl-numberformat:** precompile shared number pattern plans ([#7834](https://github.com/formatjs/formatjs/issues/7834)) ([39e4ba7](https://github.com/formatjs/formatjs/commit/39e4ba7b3f03fd1b90e1d5b61a0f9f35736276aa))
+* **@formatjs/intl-numberformat:** reuse exponent preview rounding ([#7836](https://github.com/formatjs/formatjs/issues/7836)) ([448a46b](https://github.com/formatjs/formatjs/commit/448a46b5c66d41455342e9c5ed211576d6642bc0))
+* **@formatjs/intl-numberformat:** reuse matching data and add ICU audit ([#7832](https://github.com/formatjs/formatjs/issues/7832)) ([6e26b50](https://github.com/formatjs/formatjs/commit/6e26b50cb70b5d07c8b2c4e54f2e8bec3bd23bc7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.8
+
 ## [9.5.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.4.3...@formatjs/intl-numberformat@9.5.0) (2026-10-30)
 
 

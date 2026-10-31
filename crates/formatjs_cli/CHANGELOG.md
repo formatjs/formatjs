@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.9.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.8.3...formatjs_cli_v1.9.0) (2026-10-31)
+
+
+### Features
+
+* **@formatjs/cli:** validate Java printf and Xcode catalogs ([#7833](https://github.com/formatjs/formatjs/issues/7833)) ([89096b1](https://github.com/formatjs/formatjs/commit/89096b101c8f995945d17d826669722e4b12b06a))
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.155 ([#7699](https://github.com/formatjs/formatjs/issues/7699)) ([4020f7b](https://github.com/formatjs/formatjs/commit/4020f7bb30329a10749a730d80e337d48f4180d3))
+* **deps:** update ruff to v0.17.2 ([#7809](https://github.com/formatjs/formatjs/issues/7809)) ([32ee585](https://github.com/formatjs/formatjs/commit/32ee585634358e1772c78efe54ac2e7bea7f99c8))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 1.1.1 to 2.0.0
+    * formatjs_apple_printf_parser bumped from 0.1.0 to 0.2.0
+    * formatjs_java_printf_parser bumped from 0.1.0 to 0.2.0
+
 ## [1.8.3](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.8.2...formatjs_cli_v1.8.3) (2026-10-27)
 
 

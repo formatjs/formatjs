@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_getcanonicallocales"
-version = "0.2.0"
+version = "1.0.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "ECMA-402 locale canonicalization with ICU4X"

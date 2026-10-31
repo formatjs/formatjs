@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.4.0...@formatjs/intl-pluralrules@7.0.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Locale-data exports follow CLDR 49: five locales added, 114 removed upstream.
+
+### Features
+
+* upgrade CLDR data to v49 ([#7827](https://github.com/formatjs/formatjs/issues/7827)) ([1618c29](https://github.com/formatjs/formatjs/commit/1618c29b7984ab04e56799284014e058e530b4bb))
+
+
+### Performance Improvements
+
+* **@formatjs/bigdecimal:** normalize trailing zeros in chunks ([#7835](https://github.com/formatjs/formatjs/issues/7835)) ([31ea459](https://github.com/formatjs/formatjs/commit/31ea459d356d5b8806f94f21dd76676297fe8d13))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.8
+
 ## [6.4.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@6.3.16...@formatjs/intl-pluralrules@6.4.0) (2026-10-30)
 
 

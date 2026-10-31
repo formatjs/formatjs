@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.9.0...@formatjs/intl-datetimeformat@8.0.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Locale-data exports follow CLDR 49: five locales added, 114 removed upstream.
+
+### Features
+
+* upgrade CLDR data to v49 ([#7827](https://github.com/formatjs/formatjs/issues/7827)) ([1618c29](https://github.com/formatjs/formatjs/commit/1618c29b7984ab04e56799284014e058e530b4bb))
+
+
+### Performance Improvements
+
+* load Test262 preludes from declared files ([#7826](https://github.com/formatjs/formatjs/issues/7826)) ([35bcbe9](https://github.com/formatjs/formatjs/commit/35bcbe95c77a4e0a2e5b950f216112836c002408))
+* trim combined Test262 prelude data ([#7818](https://github.com/formatjs/formatjs/issues/7818)) ([598c24a](https://github.com/formatjs/formatjs/commit/598c24ab2afe580a8ccb3676a1f786797ffd3a11))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.8
+
 ## [7.9.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.8.2...@formatjs/intl-datetimeformat@7.9.0) (2026-10-30)
 
 

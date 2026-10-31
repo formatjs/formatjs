@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.5.2](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.5.1...@formatjs/ts-transformer@4.5.2) (2026-10-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency node to v26 ([#7724](https://github.com/formatjs/formatjs/issues/7724)) ([5d09be2](https://github.com/formatjs/formatjs/commit/5d09be28a817d3967213c01ba3c090c52db6afcc))
+
 ## [4.5.1](https://github.com/formatjs/formatjs/compare/@formatjs/ts-transformer@4.5.0...@formatjs/ts-transformer@4.5.1) (2026-10-19)
 
 

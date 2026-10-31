@@ -620,7 +620,7 @@ checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.8.3"
+version = "1.9.0"
 dependencies = [
  "anyhow",
  "base64",
@@ -666,7 +666,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "fixed_decimal",
  "formatjs_icu_messageformat_parser",
@@ -679,7 +679,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_icu_messageformat_parser"
-version = "1.1.1"
+version = "2.0.0"
 dependencies = [
  "criterion",
  "formatjs_icu_skeleton_parser",
@@ -712,7 +712,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl"
-version = "2.2.1"
+version = "2.2.2"
 dependencies = [
  "formatjs_icu_messageformat",
  "formatjs_intl_macros",
@@ -726,7 +726,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_collator"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -747,7 +747,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_data_build"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "ciborium",
  "formatjs_intl_data",
@@ -760,7 +760,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -774,7 +774,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_datetimeformat",
  "serde",
@@ -783,7 +783,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_displaynames"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -794,7 +794,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_durationformat"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
@@ -806,7 +806,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_getcanonicallocales"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "icu_locale",
  "icu_provider",
@@ -814,7 +814,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.3.0"
+version = "0.3.1"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",
@@ -833,7 +833,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_listformat"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -845,7 +845,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_locale"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_localematcher",
@@ -856,7 +856,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_localematcher"
-version = "0.1.1"
+version = "1.0.0"
 dependencies = [
  "icu_locale",
  "serde_json",
@@ -864,7 +864,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_macros"
-version = "1.1.1"
+version = "1.1.2"
 dependencies = [
  "base64",
  "formatjs_icu_messageformat_parser",
@@ -875,7 +875,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_numberformat"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -889,7 +889,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_pluralrules"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "fixed_decimal",
  "formatjs_intl_data",
@@ -903,7 +903,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_relativetimeformat"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -917,7 +917,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_segmenter"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_locale",
@@ -930,7 +930,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_supportedvaluesof"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -938,11 +938,11 @@ dependencies = [
 
 [[package]]
 name = "formatjs_apple_printf_parser"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "formatjs_java_printf_parser"
-version = "0.1.0"
+version = "0.2.0"
 
 [[package]]
 name = "futures"

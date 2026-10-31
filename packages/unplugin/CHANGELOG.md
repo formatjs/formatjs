@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.16](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.15...@formatjs/unplugin@1.2.16) (2026-10-31)
+
+
+### Bug Fixes
+
+* **deps:** update dependency node to v26 ([#7724](https://github.com/formatjs/formatjs/issues/7724)) ([5d09be2](https://github.com/formatjs/formatjs/commit/5d09be28a817d3967213c01ba3c090c52db6afcc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/cli-lib bumped to 10.1.0
+    * @formatjs/ts-transformer bumped to 4.5.2
+
 ## [1.2.15](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.14...@formatjs/unplugin@1.2.15) (2026-10-27)
 
 

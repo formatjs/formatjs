@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v0.2.0...formatjs-hermes-intl_v1.0.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Locale-data exports follow CLDR 49: five locales added, 114 removed upstream.
+
+### Features
+
+* upgrade CLDR data to v49 ([#7827](https://github.com/formatjs/formatjs/issues/7827)) ([1618c29](https://github.com/formatjs/formatjs/commit/1618c29b7984ab04e56799284014e058e530b4bb))
+
+
+### Bug Fixes
+
+* build Hermes SDK releases with BuildBuddy RBE ([#7811](https://github.com/formatjs/formatjs/issues/7811)) ([f7f2540](https://github.com/formatjs/formatjs/commit/f7f25405e5805a1072f3cf7e4303266ba36112ad))
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v0.1.0...formatjs-hermes-intl_v0.2.0) (2026-10-30)
 
 
