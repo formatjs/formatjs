@@ -14,6 +14,22 @@ config_setting(
 )
 
 config_setting(
+    name = "native_test_darwin_x64",
+    constraint_values = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:macos",
+    ],
+)
+
+config_setting(
+    name = "native_test_windows_arm64",
+    constraint_values = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:windows",
+    ],
+)
+
+config_setting(
     name = "native_test_linux_arm64",
     constraint_values = [
         "@platforms//cpu:arm64",
@@ -41,6 +57,8 @@ copy_file(
     name = "native_test_binary",
     src = select({
         ":native_test_darwin_arm64": "//crates/formatjs_cli_napi:release_node_darwin_arm64",
+        ":native_test_darwin_x64": "//crates/formatjs_cli_napi:release_node_darwin_x64",
+        ":native_test_windows_arm64": "//crates/formatjs_cli_napi:release_node_win32_arm64",
         ":native_test_linux_arm64": "//crates/formatjs_cli_napi:release_node_linux_arm64",
         ":native_test_linux_x64": "//crates/formatjs_cli_napi:release_node_linux_x64",
         ":native_test_windows_x64": "//crates/formatjs_cli_napi:release_node_win32_x64",
@@ -116,10 +134,12 @@ formatjs_library(
     },
     package_optional_deps = [
         "//:node_modules/@formatjs/cli-native-darwin-arm64",
+        "//:node_modules/@formatjs/cli-native-darwin-x64",
         "//:node_modules/@formatjs/cli-native-linux-arm64",
         "//:node_modules/@formatjs/cli-native-linux-arm64-musl",
         "//:node_modules/@formatjs/cli-native-linux-x64",
         "//:node_modules/@formatjs/cli-native-linux-x64-musl",
+        "//:node_modules/@formatjs/cli-native-win32-arm64",
         "//:node_modules/@formatjs/cli-native-win32-x64",
     ],
     package_peer_deps = [

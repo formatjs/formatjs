@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build_native_packages:
     name: Cross-build Native Packages
-    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-arm64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-arm64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-arm64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -32,11 +32,19 @@ jobs:
 
       - name: Build Packages
         env:
+          DARWIN_X64_SELECTED: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') }}
+          WINDOWS_ARM64_SELECTED: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-arm64') }}
           DARWIN_SELECTED: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-arm64') }}
           WINDOWS_SELECTED: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}
           LINUX_SELECTED: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-x64-musl') || contains(fromJSON(inputs.npm_paths), 'packages/cli-native-linux-arm64-musl') }}
         run: |
           targets=()
+          if [[ "$DARWIN_X64_SELECTED" == "true" ]]; then
+            targets+=(//packages/cli-native-darwin-x64:pkg)
+          fi
+          if [[ "$WINDOWS_ARM64_SELECTED" == "true" ]]; then
+            targets+=(//packages/cli-native-win32-arm64:pkg)
+          fi
           if [[ "$DARWIN_SELECTED" == "true" ]]; then
             targets+=(//packages/cli-native-darwin-arm64:pkg)
           fi
@@ -88,6 +96,15 @@ jobs:
               echo "Windows native addon must be an x86-64 PE DLL"
               exit 1
             }
+          fi
+
+          if [[ "$DARWIN_X64_SELECTED" == "true" ]]; then
+            copy_package cli-native-darwin-x64
+            file artifacts/cli-native-darwin-x64/formatjs_cli_napi.node | grep -E 'Mach-O 64-bit.*x86_64.*shared library'
+          fi
+          if [[ "$WINDOWS_ARM64_SELECTED" == "true" ]]; then
+            copy_package cli-native-win32-arm64
+            file artifacts/cli-native-win32-arm64/formatjs_cli_napi.node | grep -Ei 'PE32[+].*[(]DLL[)].*(Aarch64|ARM64)'
           fi
 
           if [[ "$LINUX_SELECTED" == "true" ]]; then
@@ -145,6 +162,22 @@ jobs:
         with:
           name: cli-native-linux-arm64-musl
           path: artifacts/cli-native-linux-arm64-musl
+          retention-days: 7
+
+      - name: Upload cli-native-darwin-x64 Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cli-native-darwin-x64
+          path: artifacts/cli-native-darwin-x64
+          retention-days: 7
+
+      - name: Upload cli-native-win32-arm64 Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-arm64') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cli-native-win32-arm64
+          path: artifacts/cli-native-win32-arm64
           retention-days: 7
 
   smoke_darwin_arm64:
@@ -222,13 +255,53 @@ jobs:
             node:24-alpine \
             node -e 'const native = require("/native"); const formatters = native.supportedBuiltinFormatters(); if (!formatters.includes("default")) throw new Error("Missing default formatter"); const output = native.compileMessages([{id: "hello", message: "Hello {name}", sourceFile: "smoke.json"}], {}); if (!output.includes("\"hello\"")) throw new Error(output); console.log(output);'
 
+  smoke_darwin_x64:
+    name: Smoke-test cli-native-darwin-x64 Package
+    needs: build_native_packages
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') }}
+    runs-on: macos-15-intel
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          architecture: x64
+      - uses: actions/download-artifact@v8
+        with:
+          name: cli-native-darwin-x64
+          path: artifacts/cli-native-darwin-x64
+      - name: Evaluate, Extract and Compile Messages
+        shell: bash
+        run: node tools/ci/native_binding_smoke.cjs ./artifacts/cli-native-darwin-x64 darwin x64
+
+  smoke_win32_arm64:
+    name: Smoke-test cli-native-win32-arm64 Package
+    needs: build_native_packages
+    if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-arm64') }}
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          architecture: arm64
+      - uses: actions/download-artifact@v8
+        with:
+          name: cli-native-win32-arm64
+          path: artifacts/cli-native-win32-arm64
+      - name: Evaluate, Extract and Compile Messages
+        shell: bash
+        run: node tools/ci/native_binding_smoke.cjs ./artifacts/cli-native-win32-arm64 win32 arm64
+
   release:
     needs:
       - build_native_packages
       - smoke_darwin_arm64
+      - smoke_darwin_x64
+      - smoke_win32_arm64
       - smoke_linux_musl
       - smoke_windows_msvc
-    if: ${{ always() && inputs.npm_paths != '[]' && (needs.build_native_packages.result == 'success' || needs.build_native_packages.result == 'skipped') && (needs.smoke_darwin_arm64.result == 'success' || needs.smoke_darwin_arm64.result == 'skipped') && (needs.smoke_windows_msvc.result == 'success' || needs.smoke_windows_msvc.result == 'skipped') && (needs.smoke_linux_musl.result == 'success' || needs.smoke_linux_musl.result == 'skipped') }}
+    if: ${{ always() && inputs.npm_paths != '[]' && (needs.build_native_packages.result == 'success' || needs.build_native_packages.result == 'skipped') && (needs.smoke_darwin_arm64.result == 'success' || needs.smoke_darwin_arm64.result == 'skipped') && (needs.smoke_windows_msvc.result == 'success' || needs.smoke_windows_msvc.result == 'skipped') && (needs.smoke_linux_musl.result == 'success' || needs.smoke_linux_musl.result == 'skipped') && (needs.smoke_darwin_x64.result == 'success' || needs.smoke_darwin_x64.result == 'skipped') && (needs.smoke_win32_arm64.result == 'success' || needs.smoke_win32_arm64.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -280,6 +353,20 @@ jobs:
             cp -R "$package_dir"/. "release/$package_path/"
           done
           chmod -R +w release/
+
+      - name: Download cli-native-darwin-x64 Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-darwin-x64') }}
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-darwin-x64
+          path: release/packages/cli-native-darwin-x64
+
+      - name: Download cli-native-win32-arm64 Native Package
+        if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-arm64') }}
+        uses: actions/download-artifact@v8
+        with:
+          name: cli-native-win32-arm64
+          path: release/packages/cli-native-win32-arm64
 
       - name: Download Windows Native Package
         if: ${{ contains(fromJSON(inputs.npm_paths), 'packages/cli-native-win32-x64') }}

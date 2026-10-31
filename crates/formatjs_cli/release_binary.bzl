@@ -90,3 +90,12 @@ release_binary_linux_arm64_gnu, _release_binary_linux_arm64_gnu_internal = _rele
 release_binary_windows_x64, _release_binary_windows_x64_internal = _release_binary(
     "//crates/formatjs_cli/platforms:windows_x86_64_msvc",
 )
+
+release_binary_darwin_x64, _release_binary_darwin_x64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:darwin_x64",
+    "macos_x86_64",
+)
+
+release_binary_windows_arm64, _release_binary_windows_arm64_internal = _release_binary(
+    "//crates/formatjs_cli/platforms:windows_aarch64_msvc",
+)

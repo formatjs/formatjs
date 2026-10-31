@@ -95,6 +95,13 @@ verify that the addon's required Rust runtime library exists in each package.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 
+Native CLI bindings include Intel macOS (`cli-native-darwin-x64`) and Windows
+ARM64 (`cli-native-win32-arm64`). BuildBuddy cross-builds and checks both binary
+formats. Release publishing additionally requires evaluation, extraction and
+compilation smoke tests on `macos-15-intel` and `windows-11-arm` with matching
+Node architectures. The existing smoke archive stays unchanged so trusted
+downloaders on main can validate PR builds before the new workflow lands.
+
 BuildBuddy's `Verify hooks` action runs the existing all-files Lefthook checks
 and rejects any resulting tracked or untracked changes. An ignored, CI-only
 `.bazelrc.user` enables `--config=bb-workflow`, top-level downloads, and the
