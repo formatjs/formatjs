@@ -33,8 +33,13 @@ actions:
     steps:
       - run: |
           set -euo pipefail
-          # Nested hook commands inherit RBE through the ignored workspace config.
-          printf '%s\n' 'build --config=bb-workflow' 'build --remote_download_toplevel' > .bazelrc.user
+          # Hook subprocesses do not retain the runner's injected Bazel startup flags.
+          : "${BUILDBUDDY_API_KEY:?Trusted BuildBuddy credentials are required}"
+          umask 077
+          printf '%s\n' \
+            'build --config=bb-workflow' \
+            'build --remote_download_toplevel' \
+            "common --remote_header=x-buildbuddy-api-key=$BUILDBUDDY_API_KEY" > .bazelrc.user
           JS_BINARY__CHDIR="$PWD" bazel run -c opt //:lefthook -- run pre-commit --all-files
           if [ -n "$(git status --porcelain)" ]; then
             echo 'Pre-commit hooks changed files. Run hooks locally and commit the changes.' >&2

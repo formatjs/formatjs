@@ -97,8 +97,10 @@ between BuildBuddy steps.
 
 BuildBuddy's `Verify hooks` action runs the existing all-files Lefthook checks
 and rejects any resulting tracked or untracked changes. An ignored, CI-only
-`.bazelrc.user` enables `--config=bb-workflow` and top-level downloads, so nested
-hook commands also compile tools through authenticated RBE. Local hook commands
+`.bazelrc.user` enables `--config=bb-workflow`, top-level downloads, and the
+runner-provided API-key header, so nested hook commands also compile tools
+through authenticated RBE. The file is created under `umask 077`; no key is
+printed or passed to GitHub Actions. Local hook commands
 and their optimized mode stay unchanged. The runner requests 16GB memory and
 32GB disk, matching the test action's module-graph requirements.
 
