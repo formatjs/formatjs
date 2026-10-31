@@ -475,12 +475,12 @@ rolldown_bundle(
 formatjs_test(
     name = "intl-numberformat_test",
     srcs = [
-        "tests/compact-preprocessing.test.ts",
         "tests/currency-code.test.ts",
         "tests/currency/currencyTest.ts",
         "tests/decimal/decimalTest.ts",
         "tests/fast-path-optimizations.test.ts",
         "tests/format_to_parts.test.ts",
+        "tests/internal/compact-preprocessing.test.ts",
         "tests/legacy.test.ts",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",

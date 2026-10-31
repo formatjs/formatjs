@@ -531,7 +531,7 @@
     "packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.ts": "97f7d6a02493e903915a961e2ff348c92ece2a1d381a2844b01111d26e3d6d1d",
     "packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.ts": "c66d9461ab3477b35edd1d4284dd9178add618039a66b97bd75cd114e188d545",
     "packages/ecma402-abstract/NumberFormat/format_to_parts.ts": "c1b3855b6d2f9fc55c3e875d04dc5d1ae16ac83a64842aef7b6ff4f82da84cbc",
-    "packages/ecma402-abstract/NumberFormat/compact-patterns.ts": "6128feb088d85cf5b33659dd91155aa6a38c648a6e34989fc11fd56fc790e15a",
+    "packages/ecma402-abstract/NumberFormat/compact-patterns.ts": "a53e03bd57668785f8ed93b0b63b257307cc33c07b52fa4a5ac54c8a4872732a",
     "packages/intl-numberformat/core.ts": "f210572d5083020b73618713b357c600b49101e3a0a24b7748b50b38b93cfa3c"
   }
 }
