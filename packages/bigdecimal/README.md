@@ -25,3 +25,7 @@ Implements the 27 methods used by `@formatjs/ecma402-abstract`:
 Internal arithmetic lazily retains powers of ten through `10^64` (at most 65
 BigInts). Larger powers remain uncached. Safe integer Number inputs skip string
 parsing; fractional/unsafe values retain their decimal-string representation.
+
+`toNumber()` converts unscaled integer coefficients directly from BigInt, with
+binary64 rounding. Fractional/scaled values retain decimal-text conversion;
+NaN, infinities and signed zero keep their explicit handling.

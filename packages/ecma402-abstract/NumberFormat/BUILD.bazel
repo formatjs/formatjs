@@ -30,7 +30,6 @@ formatjs_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
-        "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/intl-localematcher",
         "//:node_modules/@formatjs_generated/unicode",
         "//packages/ecma262-abstract",

@@ -306,3 +306,8 @@ pass. No data payload changes. See [measurement and guard coverage](audits/2026-
 Shared TS BigDecimal arithmetic retains bounded small powers of ten and constructs
 safe integer Numbers without string parsing. Fractional/unsafe Numbers preserve
 the existing decimal-string path. See [benchmarks and boundaries](audits/2026-10-31-numberformat-decimal-powers.md).
+
+Decimal power lookup uses canonical Number exponent keys instead of serializing
+Decimal objects. At most 649 common integer scales remain cached; other scales
+compute without retention. Unscaled integer coefficients convert directly to
+Number. See [measurements and rounding guards](audits/2026-10-31-numberformat-exponent-cache.md).

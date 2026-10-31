@@ -184,3 +184,7 @@ rounding retains its own pass. Locale payload stays unchanged.
 [Decimal powers and integer construction](../../../knowledge-base/audits/2026-10-31-numberformat-decimal-powers.md)
 compares bounded BigInt power reuse and safe integer parsing with the previous
 TS runtime. Rust arithmetic and locale payloads stay unchanged.
+
+[Numeric exponent cache](../../../knowledge-base/audits/2026-10-31-numberformat-exponent-cache.md)
+compares direct exponent keys and integer-to-Number conversion, with intermediate
+and repeated runs. Generated locale data and Rust arithmetic stay unchanged.

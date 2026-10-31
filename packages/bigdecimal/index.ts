@@ -662,6 +662,7 @@ export class BigDecimal {
     if (this._special === SpecialValue.POSITIVE_INFINITY) return Infinity
     if (this._special === SpecialValue.NEGATIVE_INFINITY) return -Infinity
     if (this._mantissa === 0n) return this._negativeZero ? -0 : 0
+    if (this._exponent === 0) return Number(this._mantissa)
     return Number(this.toString())
   }
 

@@ -876,3 +876,36 @@ it('constructs safe integers exactly while retaining Number decimal-string seman
     '1000000000000000100'
   )
 })
+
+it('converts integer coefficients with the same rounding as decimal text', () => {
+  const boundaries = [53n, 63n, 127n, 1023n, 4096n].flatMap(bits => [
+    1n << bits,
+    (1n << bits) + (1n << (bits - 53n)),
+  ])
+  boundaries.push((1n << 1024n) - (1n << 970n))
+  for (const boundary of boundaries) {
+    for (let offset = -65n; offset <= 65n; offset++) {
+      const integer = boundary + offset
+      for (const signed of [integer, -integer]) {
+        expect(new BigDecimal(signed).toNumber()).toBe(
+          Number(signed.toString())
+        )
+      }
+    }
+  }
+  for (const text of [
+    '0',
+    '-0',
+    'NaN',
+    'Infinity',
+    '-Infinity',
+    '1.025',
+    '-1.025',
+    '1e-400',
+    '-1e-400',
+    '1e400',
+    '-1e400',
+  ]) {
+    expect(new BigDecimal(text).toNumber()).toBe(Number(text))
+  }
+})
