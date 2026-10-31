@@ -180,3 +180,7 @@ bazel run -c opt //packages/intl-numberformat/benchmark:audit -- --all-locales -
 records paired TS/Rust results after decimal normalization. Notation formatting
 can share its positive preview when final scaling stays unchanged; negative
 rounding retains its own pass. Locale payload stays unchanged.
+
+[Decimal powers and integer construction](../../../knowledge-base/audits/2026-10-31-numberformat-decimal-powers.md)
+compares bounded BigInt power reuse and safe integer parsing with the previous
+TS runtime. Rust arithmetic and locale payloads stay unchanged.

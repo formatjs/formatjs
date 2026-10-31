@@ -302,3 +302,7 @@ PluralRules with `--polyfill-plurals`. ICU snapshots remain unchanged.
 TS and Rust reuse positive exponent-preview rounding when final scaling stays
 unchanged. Negative directed rounding and exponent rollover retain their final
 pass. No data payload changes. See [measurement and guard coverage](audits/2026-10-31-numberformat-rounding-reuse.md).
+
+Shared TS BigDecimal arithmetic retains bounded small powers of ten and constructs
+safe integer Numbers without string parsing. Fractional/unsafe Numbers preserve
+the existing decimal-string path. See [benchmarks and boundaries](audits/2026-10-31-numberformat-decimal-powers.md).

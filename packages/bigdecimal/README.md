@@ -21,3 +21,7 @@ Implements the 27 methods used by `@formatjs/ecma402-abstract`:
 - **Queries**: `isZero`, `isNaN`, `isFinite`, `isNegative`, `isPositive`, `isInteger`
 - **Conversion**: `toNumber`, `toString`
 - **Static**: `BigDecimal.pow`, `BigDecimal.set`
+
+Internal arithmetic lazily retains powers of ten through `10^64` (at most 65
+BigInts). Larger powers remain uncached. Safe integer Number inputs skip string
+parsing; fractional/unsafe values retain their decimal-string representation.

@@ -54,9 +54,17 @@ function digitCount(n: bigint): number {
 }
 
 const TEN_BIGINT = 10n
+const SMALL_POWERS_OF_TEN: bigint[] = [1n]
 
 function bigintPow10(n: number): bigint {
   if (n <= 0) return 1n
+  // Bound retained powers; division repeatedly needs 10^40.
+  if (n <= 64 && Number.isInteger(n)) {
+    for (let i = SMALL_POWERS_OF_TEN.length; i <= n; i++) {
+      SMALL_POWERS_OF_TEN.push(SMALL_POWERS_OF_TEN[i - 1] * TEN_BIGINT)
+    }
+    return SMALL_POWERS_OF_TEN[n]
+  }
   // Build up via repeated squaring
   let result = 1n
   let base = TEN_BIGINT
@@ -203,6 +211,14 @@ export class BigDecimal {
         this._exponent = 0
         this._special = SpecialValue.NONE
         this._negativeZero = Object.is(value, -0)
+        return
+      }
+      if (Number.isSafeInteger(value)) {
+        const [m, e] = removeTrailingZeros(BigInt(value), 0)
+        this._mantissa = m
+        this._exponent = e
+        this._special = SpecialValue.NONE
+        this._negativeZero = false
         return
       }
       // Convert via string to preserve exact decimal representation
