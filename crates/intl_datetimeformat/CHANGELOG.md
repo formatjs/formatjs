@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v0.2.0...formatjs_intl_datetimeformat_v1.0.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Locale-data exports follow CLDR 49: five locales added, 114 removed upstream.
+
+### Features
+
+* upgrade CLDR data to v49 ([#7827](https://github.com/formatjs/formatjs/issues/7827)) ([1618c29](https://github.com/formatjs/formatjs/commit/1618c29b7984ab04e56799284014e058e530b4bb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_numberformat bumped from 0.2.0 to 0.2.1
+    * formatjs_intl_getcanonicallocales bumped from 0.2.0 to 1.0.0
+    * formatjs_intl_locale bumped from 0.2.0 to 1.0.0
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v0.1.0...formatjs_intl_datetimeformat_v0.2.0) (2026-10-30)
 
 

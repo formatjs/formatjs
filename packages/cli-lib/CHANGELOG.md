@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.0.12...@formatjs/cli-lib@10.1.0) (2026-10-31)
+
+
+### Features
+
+* **@formatjs/cli:** validate Java printf and Xcode catalogs ([#7833](https://github.com/formatjs/formatjs/issues/7833)) ([89096b1](https://github.com/formatjs/formatjs/commit/89096b101c8f995945d17d826669722e4b12b06a))
+
+
+### Bug Fixes
+
+* **deps:** update @glimmer/syntax to v0.97.0 ([#7721](https://github.com/formatjs/formatjs/issues/7721)) ([b79ceed](https://github.com/formatjs/formatjs/commit/b79ceedec637036384c84326d3a0896ae562d5ce))
+* **deps:** update dependency node to v26 ([#7724](https://github.com/formatjs/formatjs/issues/7724)) ([5d09be2](https://github.com/formatjs/formatjs/commit/5d09be28a817d3967213c01ba3c090c52db6afcc))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.31
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.31
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.29
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.31
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.29
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.32
+
 ## [10.0.12](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.0.11...@formatjs/cli-lib@10.0.12) (2026-10-27)
 
 

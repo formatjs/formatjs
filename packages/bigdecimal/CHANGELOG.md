@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.7...@formatjs/bigdecimal@0.2.8) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/bigdecimal:** normalize trailing zeros in chunks ([#7835](https://github.com/formatjs/formatjs/issues/7835)) ([31ea459](https://github.com/formatjs/formatjs/commit/31ea459d356d5b8806f94f21dd76676297fe8d13))
+* **@formatjs/bigdecimal:** reuse small powers and parse integers directly ([#7837](https://github.com/formatjs/formatjs/issues/7837)) ([3f4eaf2](https://github.com/formatjs/formatjs/commit/3f4eaf28ee4e8c6e822914bae72083b5f5323ec0))
+
 ## 0.2.7 (2026-07-11)
 
 ## What's Changed

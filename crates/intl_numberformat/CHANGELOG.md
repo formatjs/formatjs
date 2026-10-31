@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.2.0...formatjs_intl_numberformat_v0.2.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-numberformat:** precompile shared number pattern plans ([#7834](https://github.com/formatjs/formatjs/issues/7834)) ([39e4ba7](https://github.com/formatjs/formatjs/commit/39e4ba7b3f03fd1b90e1d5b61a0f9f35736276aa))
+* **@formatjs/intl-numberformat:** reuse exponent preview rounding ([#7836](https://github.com/formatjs/formatjs/issues/7836)) ([448a46b](https://github.com/formatjs/formatjs/commit/448a46b5c66d41455342e9c5ed211576d6642bc0))
+* **@formatjs/intl-numberformat:** reuse matching data and add ICU audit ([#7832](https://github.com/formatjs/formatjs/issues/7832)) ([6e26b50](https://github.com/formatjs/formatjs/commit/6e26b50cb70b5d07c8b2c4e54f2e8bec3bd23bc7))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_getcanonicallocales bumped from 0.2.0 to 1.0.0
+    * formatjs_intl_locale bumped from 0.2.0 to 1.0.0
+    * formatjs_intl_pluralrules bumped from 0.2.0 to 0.2.1
+
 ## [0.2.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_numberformat_v0.1.0...formatjs_intl_numberformat_v0.2.0) (2026-10-30)
 
 
