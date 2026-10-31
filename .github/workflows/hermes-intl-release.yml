@@ -33,7 +33,7 @@ concurrency:
 jobs:
   build:
     if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
         with:
@@ -126,7 +126,7 @@ jobs:
   publish:
     needs: [build, apple]
     if: always() && needs.build.result == 'success' && (needs.apple.result == 'success' || inputs.apple_run_id != '') && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       actions: read
       contents: write
