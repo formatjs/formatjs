@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.17](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.16...@formatjs/unplugin@1.2.17) (2026-10-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/cli-lib bumped to 10.2.0
+
 ## [1.2.16](https://github.com/formatjs/formatjs/compare/@formatjs/unplugin@1.2.15...@formatjs/unplugin@1.2.16) (2026-10-31)
 
 

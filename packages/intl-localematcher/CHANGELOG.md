@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.10.0...@formatjs/intl-localematcher@0.10.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-localematcher:** reuse immutable matcher snapshots ([#7841](https://github.com/formatjs/formatjs/issues/7841)) ([025a5ca](https://github.com/formatjs/formatjs/commit/025a5cabcfe871a17b2cad4ec1b76e28e27e928e))
+
 ## [0.10.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-localematcher@0.9.0...@formatjs/intl-localematcher@0.10.0) (2026-10-30)
 
 

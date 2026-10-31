@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-segmenter",
-  "version": "12.3.0",
+  "version": "12.3.1",
   "description": "Polyfill for Intl.Segmenter",
   "keywords": [
     "ecma402",

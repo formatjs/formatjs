@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.0...@formatjs/intl-numberformat@10.0.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-datetimeformat:** streamline numeric rendering ([cc09570](https://github.com/formatjs/formatjs/commit/cc09570af93673c056f2766cdf12d2951df5d949))
+* **@formatjs/intl-localematcher:** reuse immutable matcher snapshots ([#7841](https://github.com/formatjs/formatjs/issues/7841)) ([025a5ca](https://github.com/formatjs/formatjs/commit/025a5cabcfe871a17b2cad4ec1b76e28e27e928e))
+* **@formatjs/intl-numberformat:** key decimal powers by numeric exponent ([#7838](https://github.com/formatjs/formatjs/issues/7838)) ([b567ec8](https://github.com/formatjs/formatjs/commit/b567ec806fe3cbe70a01746f53093b89ce06c577))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.9
+    * @formatjs/intl-localematcher bumped to 0.10.1
+
 ## [10.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@9.5.0...@formatjs/intl-numberformat@10.0.0) (2026-10-31)
 
 
