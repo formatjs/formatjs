@@ -19,19 +19,12 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
-      statuses: read
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - name: Wait for BuildBuddy Hooks
-        env:
-          GH_TOKEN: ${{ github.token }}
-          HOOKS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-        run: python3 tools/ci/buildbuddy_status.py --repo "$GITHUB_REPOSITORY" --sha "$HOOKS_SHA" --context 'Verify hooks'
 
       - name: Setup Node.js
         uses: actions/setup-node@v7

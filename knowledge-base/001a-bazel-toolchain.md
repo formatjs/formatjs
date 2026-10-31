@@ -104,13 +104,11 @@ printed or passed to GitHub Actions. Local hook commands
 and their optimized mode stay unchanged. The runner requests 16GB memory and
 32GB disk, matching the test action's module-graph requirements.
 
-GitHub's required `verify-hooks` check remains owned by GitHub Actions. Its light
-job waits for the `buildbuddy-io[bot]` status named `Verify hooks` on the exact PR
-head, then validates commit messages. Main pushes and merge queues use their
-event commit SHA. Missing, pending, failed, errored, or differently owned statuses
-cannot pass; API failures fail the gate. A bounded wait avoids hanging if a
-BuildBuddy run needs approval. Existing Renovate manual dispatch and `base_ref`
-commit validation remain available. No BuildBuddy credentials enter this job.
+GitHub's required `verify-hooks` check validates commit messages. BuildBuddy's
+separate required `Verify hooks` status covers the all-files checks. No polling
+bridge is needed. Existing Renovate manual dispatch and `base_ref` commit
+validation remain available. The hook action uses Ubuntu 24.04 because the
+pinned GNU ast-grep binary needs glibc 2.34 or newer.
 
 GitHub Actions' `test` job only validates Cargo release metadata and provider-only
 ICU features. Other `test.yml` jobs cover independent example workspaces and pnpm
@@ -133,11 +131,8 @@ on main. `test.yml` can also call the smoke workflow through manual dispatch
 with `smoke_invocation_url` and `smoke_commit_sha`, allowing validation before
 the status-triggered workflow lands.
 
-After that rollout, main should require `test`, `verify-hooks`, `Test all targets`,
-`Cross-build Release Artifacts`, and `Native Smoke Tests`. The first two and the
-native smoke status come from GitHub Actions; the test and cross-build statuses
-come from BuildBuddy. GitHub's hook gate additionally requires BuildBuddy's
-`Verify hooks` result.
+Main requires GitHub Actions' `test` and `verify-hooks`, plus BuildBuddy's
+`Test all targets`, `Cross-build Release Artifacts`, and `Verify hooks`.
 BuildBuddy also covers main pushes and merge queue commits.
 
 BuildBuddy PR triggers include `codex/*` target branches so stacked polyfill

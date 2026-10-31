@@ -124,7 +124,7 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 | `crates-release.yml`   | Crate releases/manual | Publish Rust crates through crates.io OIDC                  |
 | `rust-cli-release.yml` | Tag `formatjs_cli_v*` | Cross-platform Rust binary artifacts                        |
 | `website.yml`          | Manual/push           | Deploy docs site                                            |
-| `verify-hooks.yml`     | PR                    | Wait for BuildBuddy hooks + validate commit messages        |
+| `verify-hooks.yml`     | PR                    | Validate commit messages; all-files hooks run in BuildBuddy |
 
 BuildBuddy's `buildbuddy.yaml` owns the full Bazel test suite and release
 cross-builds. Its artifacts feed `native-smoke.yml` for macOS, Windows, and Linux

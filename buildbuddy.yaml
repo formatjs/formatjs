@@ -17,7 +17,7 @@ actions:
       - 'test --config=bb-workflow --remote_download_minimal //...'
 
   - name: 'Verify hooks'
-    container_image: 'ubuntu-20.04'
+    container_image: 'ubuntu-24.04'
     triggers:
       push:
         branches:

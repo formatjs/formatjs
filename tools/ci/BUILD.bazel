@@ -11,15 +11,3 @@ py_test(
     srcs = ["buildbuddy_artifacts_test.py"],
     deps = [":buildbuddy_artifacts"],
 )
-
-py_library(
-    name = "buildbuddy_status",
-    srcs = ["buildbuddy_status.py"],
-)
-
-py_test(
-    name = "buildbuddy_status_test",
-    size = "small",
-    srcs = ["buildbuddy_status_test.py"],
-    deps = [":buildbuddy_status"],
-)
