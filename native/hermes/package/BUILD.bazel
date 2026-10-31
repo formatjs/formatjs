@@ -635,6 +635,28 @@ toolchain(
     toolchain_type = "@rules_nodejs//nodejs:runtime_toolchain_type",
 )
 
+toolchain(
+    name = "ios_node_runtime_linux_x86_64",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+    target_compatible_with = ["@platforms//os:ios"],
+    toolchain = "@nodejs_linux_amd64//:toolchain",
+    toolchain_type = "@rules_nodejs//nodejs:runtime_toolchain_type",
+)
+
+toolchain(
+    name = "ios_node_runtime_linux_aarch64",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+    target_compatible_with = ["@platforms//os:ios"],
+    toolchain = "@nodejs_linux_arm64//:toolchain",
+    toolchain_type = "@rules_nodejs//nodejs:runtime_toolchain_type",
+)
+
 pkg_tar(
     name = "apple_sdk",
     srcs = [

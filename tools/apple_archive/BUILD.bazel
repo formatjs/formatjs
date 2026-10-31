@@ -1,0 +1,5 @@
+load(":toolchains.bzl", "apple_archive_toolchains")
+
+package(default_visibility = ["//visibility:public"])
+
+apple_archive_toolchains()

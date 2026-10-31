@@ -13,8 +13,9 @@ import urllib.request
 API_URL = "https://formatjs.buildbuddy.io/api/v1/"
 ARCHIVE_NAME = "release-cross-build-smoke.tar.gz"
 SDK_ARCHIVE_NAME = "hermes-extension-smoke.tar.gz"
-ARCHIVE_NAMES = (ARCHIVE_NAME, SDK_ARCHIVE_NAME)
-MAX_ARCHIVE_BYTES = 512 * 1024 * 1024
+APPLE_ARCHIVE_NAME = "apple-sdk-smoke.tar.gz"
+ARCHIVE_NAMES = (ARCHIVE_NAME, SDK_ARCHIVE_NAME, APPLE_ARCHIVE_NAME)
+MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 MAX_EXTRACTED_BYTES = 2 * 1024 * 1024 * 1024
 PACKAGES = (
     "cli-native-darwin-arm64",
@@ -33,10 +34,22 @@ LEGACY_REQUIRED_FILES = {
     "cli-native-linux-arm64-musl/formatjs_cli",
 }
 SDK_REQUIRED_FILES = {"hermes-intl-darwin-arm64", "hermes-intl-extension.hbc"}
-REQUIRED_FILES = LEGACY_REQUIRED_FILES | SDK_REQUIRED_FILES
+APPLE_REQUIRED_FILES = {
+    "formatjs-hermes-intl-apple.tar.gz",
+    *(f"apple-sdk-smoke/{file}" for file in (
+        ".bazelrc", ".bazelversion", "MODULE.bazel", "MODULE.bazel.lock", "BUILD.bazel", "main.cpp", "smoke.sh"
+    )),
+}
+REQUIRED_FILES = LEGACY_REQUIRED_FILES | SDK_REQUIRED_FILES | APPLE_REQUIRED_FILES
 ARCHIVE_REQUIRED_FILES = {
     ARCHIVE_NAME: LEGACY_REQUIRED_FILES,
     SDK_ARCHIVE_NAME: SDK_REQUIRED_FILES,
+    APPLE_ARCHIVE_NAME: APPLE_REQUIRED_FILES,
+}
+ARCHIVE_DIRECTORIES = {
+    ARCHIVE_NAME: set(PACKAGES),
+    SDK_ARCHIVE_NAME: set(),
+    APPLE_ARCHIVE_NAME: {"apple-sdk-smoke"},
 }
 
 
@@ -86,7 +99,7 @@ def artifact_uris(response, expected_sha):
 
 def extract_archives(contents, destination):
     if set(contents) != set(ARCHIVE_NAMES):
-        raise ValueError("Expected both smoke artifact archives")
+        raise ValueError("Expected all smoke artifact archives")
     if sum(len(value) for value in contents.values()) > MAX_ARCHIVE_BYTES:
         raise ValueError("Smoke archives exceed size limit")
     with ExitStack() as stack:
@@ -102,7 +115,6 @@ def extract_archives(contents, destination):
             files = set()
             required = ARCHIVE_REQUIRED_FILES[archive_name]
             for member in archive:
-                members.append(member)
                 entry_count += 1
                 if entry_count > 100:
                     raise ValueError("Too many artifact entries")
@@ -111,14 +123,15 @@ def extract_archives(contents, destination):
                     raise ValueError("Unsafe artifact path")
                 if not (member.isfile() or member.isdir()):
                     raise ValueError("Artifact links and special files are forbidden")
+                if member.isdir() and not path.parts:
+                    continue
+                members.append(member)
                 name = str(path)
                 if name in paths:
                     raise ValueError("Duplicate artifact path")
                 paths.add(name)
                 if member.isdir():
-                    if name not in {"."} | (
-                        set(PACKAGES) if archive_name == ARCHIVE_NAME else set()
-                    ):
+                    if name not in {"."} | ARCHIVE_DIRECTORIES[archive_name]:
                         raise ValueError("Unexpected artifact directory")
                 else:
                     files.add(name)
@@ -136,7 +149,7 @@ def extract_archives(contents, destination):
                 raise ValueError("Smoke archive is missing required artifacts")
             archives.append((archive, members))
 
-        # Validate both archives before either can write to the destination.
+        # Validate all archives before writing to the destination.
         destination.mkdir(parents=True, exist_ok=False)
         for archive, members in archives:
             archive.extractall(destination, members=members, filter="data")

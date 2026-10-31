@@ -170,6 +170,16 @@ actions:
             exit 1
           fi
           cp "${sdk_archives[0]}" "$BUILDBUDDY_ARTIFACTS_DIRECTORY/formatjs-intl-getcanonicallocales-hermes.tar.gz"
+
+          bazel build --config=bb-cross-build --remote_download_toplevel //native/hermes/package:apple_sdk
+          apple_archive=$(bazel cquery --config=bb-cross-build --remote_download_toplevel --output=files //native/hermes/package:apple_sdk)
+          apple_smoke_dir=$(mktemp -d)
+          cp "$apple_archive" "$apple_smoke_dir/formatjs-hermes-intl-apple.tar.gz"
+          mkdir "$apple_smoke_dir/apple-sdk-smoke"
+          cp examples/hermes-apple-sdk/{.bazelrc,.bazelversion,MODULE.bazel,MODULE.bazel.lock,BUILD.bazel,main.cpp,smoke.sh} "$apple_smoke_dir/apple-sdk-smoke/"
+          tar -czf "$BUILDBUDDY_ARTIFACTS_DIRECTORY/apple-sdk-smoke.tar.gz" -C "$apple_smoke_dir" .
+          rm -rf "$apple_smoke_dir"
+
           sdk_dir=$(mktemp -d)
           sdk_smoke_dir=$(mktemp -d)
           trap 'rm -rf "$sdk_dir" "$sdk_smoke_dir"' EXIT

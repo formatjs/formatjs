@@ -7,7 +7,10 @@ Public installation docs live at `docs/src/docs/guides/hermes-intl.mdx`.
 - `:sdk`: Linux x86_64 GNU + macOS arm64/x86_64 Rust archives.
 - `:android_sdk`: arm64 + x86_64 Android archives, NDK 27.1.12297006.
 - `:apple_sdk`: iOS arm64, iOS simulator arm64/x86_64, macOS arm64/x86_64.
-  Build on macOS with full Xcode and `--config=hermes-apple`; iOS minimum 15.1.
+  Cross-build on Linux with `--config=bb-cross-build`; iOS minimum 15.1.
+  Linux LLVM tools compile the header-free Rust allocator shim; no iOS SDK is
+  needed to produce Rust archives. Full Xcode remains necessary for final
+  consumer linking, which runs against the prebuilt archive on macOS.
 - All include identical headers/adapters/setup JS, notices, optional calendar
   and timezone resources. Consumers compile adapters against their own JSI.
 - All archive transitions use optimized Rust and ThinLTO. Locale selection is
@@ -33,7 +36,11 @@ crate versions. `version.txt` is authoritative; its generic updater keeps the SD
 MODULE version aligned. `.github/workflows/hermes-intl-release.yml` builds all three
 Bazel packages on SDK release publication, uploads stable archive filenames and
 SHA-256 checksums, and preserves Release Please notes. Manual runs default to
-build-only. Apple archive builds also run on relevant pull requests. First release must land before docs' download path is usable.
+build-only. BuildBuddy produces the Apple archive alongside desktop artifacts
+for PRs. Native Smoke Tests download it, link all five slices through the standalone
+`examples/hermes-apple-sdk` Bazel consumer, verify executable platform metadata,
+and run the host-macOS executable. Mac validation compiles no Rust or locale data.
+The release workflow uses the same Linux producer/macOS consumer split.
 
 ```mermaid
 flowchart LR

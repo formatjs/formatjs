@@ -78,6 +78,9 @@ ios_arm64_archive, _ios_arm64_archive_internal = with_cfg(native.filegroup).set(
 ).set(
     "platforms",
     [Label("//native/hermes/package:ios_arm64")],
+).extend(
+    "extra_toolchains",
+    [Label("//tools/apple_archive:linux_" + host + "_to_ios_arm64") for host in ["x86_64", "aarch64"]],
 ).build()
 
 ios_sim_arm64_archive, _ios_sim_arm64_archive_internal = with_cfg(native.filegroup).set(
@@ -89,6 +92,9 @@ ios_sim_arm64_archive, _ios_sim_arm64_archive_internal = with_cfg(native.filegro
 ).set(
     "platforms",
     [Label("//native/hermes/package:ios_sim_arm64")],
+).extend(
+    "extra_toolchains",
+    [Label("//tools/apple_archive:linux_" + host + "_to_ios_sim_arm64") for host in ["x86_64", "aarch64"]],
 ).build()
 
 ios_sim_x86_64_archive, _ios_sim_x86_64_archive_internal = with_cfg(native.filegroup).set(
@@ -100,4 +106,7 @@ ios_sim_x86_64_archive, _ios_sim_x86_64_archive_internal = with_cfg(native.fileg
 ).set(
     "platforms",
     [Label("//native/hermes/package:ios_sim_x86_64")],
+).extend(
+    "extra_toolchains",
+    [Label("//tools/apple_archive:linux_" + host + "_to_ios_sim_x86_64") for host in ["x86_64", "aarch64"]],
 ).build()

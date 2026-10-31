@@ -61,7 +61,19 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: release-cross-build-smoke
-          path: artifacts
+          path: |
+            artifacts
+            !artifacts/formatjs-hermes-intl-apple.tar.gz
+            !artifacts/apple-sdk-smoke/**
+          retention-days: 7
+      - name: Upload Apple Smoke Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: apple-sdk-smoke
+          path: |
+            artifacts/formatjs-hermes-intl-apple.tar.gz
+            artifacts/apple-sdk-smoke
+          include-hidden-files: true
           retention-days: 7
 
   linux_musl_smoke:
@@ -86,6 +98,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Smoke Test Static musl CLI On GNU
         run: |
@@ -116,6 +129,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Rust CLI Smoke Test
         run: |
@@ -131,6 +145,26 @@ jobs:
         run: |
           chmod +x artifacts/hermes-intl-darwin-arm64
           artifacts/hermes-intl-darwin-arm64 artifacts/hermes-intl-extension.hbc
+
+      - uses: bazel-contrib/setup-bazel@0.19.1
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+          disk-cache: hermes-intl-apple-consumer
+
+      - name: Download Apple Smoke Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: apple-sdk-smoke
+          path: artifacts
+
+      - name: Link Linux-built Apple SDK
+        env:
+          DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+        run: |
+          mkdir apple-sdk
+          tar -xmzf artifacts/formatjs-hermes-intl-apple.tar.gz -C apple-sdk
+          bash artifacts/apple-sdk-smoke/smoke.sh "$PWD/apple-sdk"
 
   windows_smoke:
     name: Windows Smoke Tests
@@ -148,6 +182,7 @@ jobs:
         with:
           name: release-cross-build-smoke
           path: artifacts
+          include-hidden-files: true
 
       - name: Rust CLI Smoke Test
         run: |
