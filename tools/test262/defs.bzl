@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
-def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long", case_timeout_ms = 30000, tags = []):
+def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long", case_timeout_ms = 30000, tags = [], estimated_memory = "2GB"):
     """Keep direct strict/native tests and validate captured baseline reports."""
     if threads < 1:
         fail("Test262 threads must be positive")
@@ -12,19 +12,21 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
     # Match the generated harness worker count with local and RBE reservations.
     # https://github.com/tc39/test262-harness#command-line-options
     resource_tags = ["cpu:%d" % threads]
-    execution_resources = {"EstimatedCPU": str(threads), "EstimatedMemory": "2GB"} if threads > 1 else {}
+    execution_resources = {"EstimatedCPU": str(threads), "EstimatedMemory": estimated_memory} if threads > 1 else {}
     if case_timeout_ms < 1:
         fail("Test262 case timeout must be positive")
     preludes = prelude if type(prelude) == "list" else [prelude]
     root = "../+http_archive+com_github_tc39_test262"
     realm_prelude = name + "-realm-prelude.js"
+    prelude_source = name + "-prelude-source.js"
+    prelude_files = [realm_prelude, prelude_source]
     js_run_binary(
         name = name + "-realm-prelude",
         tool = "//tools/test262:prelude",
         srcs = preludes,
-        outs = [realm_prelude],
+        outs = prelude_files,
         tags = tags,
-        args = [arg for source in preludes for arg in ["--input", "$(rootpath %s)" % source]] + ["--out", "$(rootpath %s)" % realm_prelude],
+        args = [arg for source in preludes for arg in ["--input", "$(rootpath %s)" % source]] + ["--out", "$(rootpath %s)" % realm_prelude, "--sourceOut", "$(rootpath %s)" % prelude_source],
     )
     args = [
         "--threads",
@@ -44,7 +46,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
     test262_harness_bin.test262_harness_binary(
         node_toolchain = "//tools/test262:node-runtime",
         name = name + "-harness",
-        data = data + [realm_prelude],
+        data = data + prelude_files,
         tags = ["manual"] + [tag for tag in tags if tag != "manual"],
         testonly = True,
     )
@@ -54,7 +56,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
     sh_test(
         name = name,
         srcs = ["//tools/test262:run.sh"],
-        data = [":" + name + "-harness", realm_prelude, baseline, "//tools/test262:validator"],
+        data = [":" + name + "-harness", baseline, "//tools/test262:validator"] + prelude_files,
         args = ["$(rootpath :%s-harness)" % name, "$(rootpath //tools/test262:validator)", suite, "$(rootpath %s)" % baseline] + polyfill_args,
         env = {"TZ": "UTC"},
         exec_properties = execution_resources,
@@ -67,7 +69,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
             node_toolchain = "//tools/test262:node-runtime",
             name = name + "-" + mode,
             args = polyfill_args if mode == "strict" else args,
-            data = data + ([realm_prelude] if mode == "strict" else []),
+            data = data + (prelude_files if mode == "strict" else []),
             env = {"TZ": "UTC"},
             exec_properties = execution_resources,
             size = "large",

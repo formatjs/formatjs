@@ -119,7 +119,10 @@ js_run_binary(
         "fixtures/prelude.js",
         "fixtures/second-prelude.js",
     ],
-    outs = ["fixture-realm-prelude.js"],
+    outs = [
+        "fixture-prelude-source.js",
+        "fixture-realm-prelude.js",
+    ],
     args = [
         "--input",
         "$(rootpath fixtures/prelude.js)",
@@ -127,6 +130,8 @@ js_run_binary(
         "$(rootpath fixtures/second-prelude.js)",
         "--out",
         "$(rootpath fixture-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath fixture-prelude-source.js)",
     ],
     tool = ":prelude",
 )
@@ -142,7 +147,10 @@ js_run_binary(
             "tools/test262/fixtures",
             "tools/test262/fixtures/test/" + fixture + ".js",
         ],
-        data = glob(["fixtures/**"]) + ["fixture-realm-prelude.js"],
+        data = glob(["fixtures/**"]) + [
+            "fixture-prelude-source.js",
+            "fixture-realm-prelude.js",
+        ],
         expected_exit_code = 1 if fixture == "fail" else 0,
         node_toolchain = ":node-runtime",
     )
@@ -201,6 +209,7 @@ INTL_SUITES = [
             "@com_github_tc39_test262//:test262-" + name + "-copy",
             "@com_github_tc39_test262//:test262-harness-copy",
         ],
+        estimated_memory = "6GB" if name == "datetimeformat" else "2GB",
         prelude = COMBINED_PRELUDES if name == "datetimeformat" else COMBINED_DEFAULT_PRELUDES,
         suite = "intl402/" + suite,
         threads = 4,
@@ -217,6 +226,7 @@ test262_test(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-supportedvaluesof-copy",
     ],
+    estimated_memory = "6GB",
     prelude = COMBINED_PRELUDES,
     suite = "intl402/Intl/supportedValuesOf",
     tags = ["manual"],

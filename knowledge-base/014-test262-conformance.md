@@ -50,8 +50,13 @@ not need a directory-wide Gazelle ignore.
   and JSON, then invoke a separate validator. Reports are test outputs, not build
   artifacts. `--nocache_test_results` reruns the harness. Realm preludes remain
   deterministic generated build inputs.
-- IIFE preludes avoid collisions with test variables. Polyfills are installed
-  recursively into Test262 child realms.
+- IIFE preludes avoid collisions with test variables. A small Node loader reads
+  a generated payload file and evaluates it through `$262.evalScript`, repeating
+  installation independently in child and grandchild realms. Both loader and
+  payload are declared test inputs. Missing payloads and evaluation errors fail;
+  no preinstalled realm or module exports are reused. Keeping the large payload
+  outside eshost's generated per-test script avoids repeated wrapper compilation
+  and large compiled-source copies. Locale/calendar/timezone data is unchanged.
 - All harness modes use Node 26.8.1 with stable Temporal support. The separate
   toolchain is selected by target platform and checksum-pinned; normal build
   tools retain Node 24.14.0. Fixtures verify Temporal in nested realms.
@@ -154,13 +159,14 @@ can leave a reduced-data test green without exercising the intended patterns.
 
 `//tools/test262:combined-supportedvaluesof-full-data` is a manual full-data
 benchmark control for `:combined-supportedvaluesof`. Both use the same 50
-executions, baseline, four harness workers, and CPU/memory reservations. Run them
+executions, baseline, and four harness workers. The full-data control reserves
+6GB for RBE; the English-data control reserves 2GB. Run them
 separately with `--nocache_test_results --local_test_jobs=1`, alternate order,
 and compare test durations after building both. See the
 [benchmark commands](../tools/test262/README.md#comparing-startup-cost).
 
-On 2026-10-30, three alternating uncached pairs on an Apple M4 Max (36 GiB,
-Node 26.8.1) measured these test durations. Both targets were built first and ran
+Before file-backed loading, three alternating uncached pairs on 2026-10-30
+(Apple M4 Max, 36 GiB, Node 26.8.1) measured these test durations. Both targets were built first and ran
 separately with one test action and four workers. Each run executed all 50 cases
 with no failures.
 
@@ -172,6 +178,27 @@ with no failures.
 The median improved 5.22x (80.8% less time). The combined prelude shrank from
 72,971,420 to 25,422,442 bytes. This is a local single-suite comparison, not a
 full-suite or RBE measurement.
+
+### File-backed loader benchmark
+
+On the same host/runtime, three alternating uncached pairs compared the full-data
+control at commit `c9adfada4` with file-backed loading. Both targets were prebuilt
+and ran separately with `--nocache_test_results --local_test_jobs=1`, four workers,
+and the same 50 executions. All runs passed. The 58,988,723-byte payload was
+byte-identical; the loader replaced a 72,971,420-byte inline prelude with 637 bytes.
+
+| Loader      | Runs (seconds)         | Median (seconds) |
+| ----------- | ---------------------- | ---------------: |
+| Inline      | 91.436, 88.798, 93.793 |           91.436 |
+| File-backed | 9.999, 8.335, 8.974    |            8.974 |
+
+The median improved 10.19x (90.2% less time). This isolates loader behavior in one
+local suite; it is not an RBE or full-suite speedup claim. Local profiling
+reduced sampled harness-parent RSS from 4.08 GiB to 177 MiB. Full-data workers
+had median peak RSS of 645 MiB (maximum 880 MiB), so the four-worker DateTimeFormat targets and
+full-data control reserve 6GB for RBE scheduling. The complete combined
+DateTimeFormat baseline separately passed all 488 executions in 66.1 seconds,
+with the same 18 tracked failures and full data retained.
 
 Dynamic Test262 preludes share `tools/test262/locales.bzl`, covering upstream
 locale metadata and parent locales. This includes Indian English grouping and
