@@ -79,10 +79,25 @@ bazel test --nocache_test_results --local_test_jobs=1 //tools/test262:combined-s
 Alternate order across repeated pairs and compare test execution durations.
 This measures one cross-API suite; it does not establish a full-suite or RBE speedup.
 
+For a loader-only before/after comparison, run the full-data control in separate
+checkouts of `c9adfada4` (inline) and the current revision (file-backed). Prebuild
+both, retain the same payload/case selection, and alternate uncached runs from
+each checkout. Compare test durations, excluding build/setup time. Recorded
+samples are in the [conformance notes](../../knowledge-base/014-test262-conformance.md#file-backed-loader-benchmark).
+
 ## Bazel execution
 
-Realm preludes are deterministic generated inputs. Harness execution and report
-capture happen at test time through the rules_js generated binary; the validator
+Each Node realm prelude has two deterministic generated inputs: a small loader
+and a separate polyfill payload. Both are declared as runtime data for baseline
+and strict tests, so payload changes invalidate test results. The loader resolves
+the payload path before tests run, reads its source through the existing Node
+eshost `require`, and evaluates it through `$262.evalScript`. Child and grandchild
+realms read and evaluate the same payload independently; no installed Intl state
+or module exports are shared. Missing files and evaluation errors fail the test.
+
+This avoids embedding large payloads in eshost's escaped per-test scripts while
+retaining all selected locale, calendar, and timezone data. Harness execution and
+report capture happen at test time through the rules_js generated binary; the validator
 runs afterward. Both paths use `TZ=UTC`. Ordinary Bazel test caching still applies,
 but `--nocache_test_results` reruns the harness, including after a transient failure.
 

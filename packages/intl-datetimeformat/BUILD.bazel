@@ -542,6 +542,7 @@ test262_test(
         "@com_github_tc39_test262//:test262-datetimeformat-copy",
         "@com_github_tc39_test262//:test262-harness-copy",
     ],
+    estimated_memory = "6GB",
     prelude = "test262-polyfill.js",
     suite = "intl402/DateTimeFormat",
     threads = 4,

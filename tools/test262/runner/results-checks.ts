@@ -1,8 +1,50 @@
-import {readFileSync} from 'node:fs'
+import {mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs'
+import {createRequire} from 'node:module'
+import {tmpdir} from 'node:os'
+import {join} from 'node:path'
+import {createContext, runInContext} from 'node:vm'
+import {realmPrelude} from './prelude.ts'
 import {validateReport} from './validate.ts'
 import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {summarize, compare, failureDiagnostic} from './results.ts'
+
+const nodeRequire = createRequire(import.meta.url)
+
+test('file-backed preludes load paths with spaces, quotes and Unicode', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'test262-prelude-'))
+  try {
+    const source = join(dir, "prelude's ü.js")
+    writeFileSync(source, 'globalThis.loadedPayload = 42')
+    const context = createContext({require: nodeRequire})
+    context.$262 = {
+      createRealm() {
+        throw new Error('unexpected child realm')
+      },
+      evalScript(code: string) {
+        try {
+          runInContext(code, context)
+          return {type: 'normal'}
+        } catch (value) {
+          return {type: 'throw', value}
+        }
+      },
+    }
+    runInContext(realmPrelude(source), context)
+    assert.equal(context.loadedPayload, 42)
+    assert.throws(
+      () => runInContext(realmPrelude(join(dir, 'missing.js')), context),
+      /ENOENT/
+    )
+    writeFileSync(source, 'throw new Error("payload evaluation failed")')
+    assert.throws(
+      () => runInContext(realmPrelude(source), context),
+      /payload evaluation failed/
+    )
+  } finally {
+    rmSync(dir, {recursive: true, force: true})
+  }
+})
 
 const pass = {
   file: '/suite/test/intl402/Example/a.js',
