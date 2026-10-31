@@ -31,7 +31,8 @@ Optimized Bazel runs compare production main `b567ec806` with this change on mac
 Apple Silicon, Node 24.14. The same benchmark harness adds `--constructors-only`
 and `--constructor-iterations`; ordinary benchmark defaults stay unchanged.
 Seven warm rounds, 10,000 constructor + `resolvedOptions()` calls per round,
-all 657 NumberFormat locales registered. Host and JS PluralRules are separate
+657 generated NumberFormat locale packs loaded (976 available locale IDs,
+including aliases). Host and JS PluralRules are separate
 lanes. Lookup is a control because it does not use best-fit's prepared indexes.
 These isolated runs are not directly comparable with older mixed-format runs.
 Cold per-Set preparation uses `--fresh-locale-sets` and 100 calls per round. Sets
