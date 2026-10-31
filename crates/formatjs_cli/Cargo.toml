@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_cli"
-version = "1.9.0"
+version = "1.10.0"
 publish = false
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]

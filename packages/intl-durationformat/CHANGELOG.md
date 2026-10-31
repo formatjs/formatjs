@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.12.1...@formatjs/intl-durationformat@0.12.2) (2026-10-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.9
+    * @formatjs/intl-localematcher bumped to 0.10.1
+
 ## [0.12.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-durationformat@0.12.0...@formatjs/intl-durationformat@0.12.1) (2026-10-31)
 
 

@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Optional calendar providers for native DateTimeFormat"
@@ -15,6 +15,6 @@ path = "lib.rs"
 compiled_data = []
 
 [dependencies]
-formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "1.0.0" }
+formatjs_intl_datetimeformat = { path = "../intl_datetimeformat", version = "1.0.1" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

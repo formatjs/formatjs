@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.3.0...@formatjs/intl-segmenter@12.3.1) (2026-10-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-localematcher bumped to 0.10.1
+
 ## [12.3.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.2.15...@formatjs/intl-segmenter@12.3.0) (2026-10-30)
 
 
