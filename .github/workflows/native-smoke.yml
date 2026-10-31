@@ -61,7 +61,18 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: release-cross-build-smoke
-          path: artifacts
+          path: |
+            artifacts
+            !artifacts/formatjs-hermes-intl-apple.tar.gz
+            !artifacts/apple-sdk-smoke/**
+          retention-days: 7
+      - name: Upload Apple Smoke Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: apple-sdk-smoke
+          path: |
+            artifacts/formatjs-hermes-intl-apple.tar.gz
+            artifacts/apple-sdk-smoke
           include-hidden-files: true
           retention-days: 7
 
@@ -140,6 +151,12 @@ jobs:
           bazelisk-cache: true
           repository-cache: true
           disk-cache: hermes-intl-apple-consumer
+
+      - name: Download Apple Smoke Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: apple-sdk-smoke
+          path: artifacts
 
       - name: Link Linux-built Apple SDK
         env:
