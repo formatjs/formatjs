@@ -9,6 +9,7 @@ import {readFileSync, readdirSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {runInNewContext} from 'node:vm'
 import assert from 'node:assert/strict'
+import {createHash} from 'node:crypto'
 
 const resolve = (path: string) =>
   runfiles.resolve(`${process.env.TEST_WORKSPACE || '_main'}/${path}`)
@@ -69,13 +70,11 @@ interface Sample {
 const cases: Case[] = []
 const groups = new Map<string, number>()
 const samples: Sample[] = []
-for (const row of readFileSync(
+const javaFixture = readFileSync(
   resolve('conformance-tests/icu4j/number-format-fixtures.tsv'),
   'utf8'
 )
-  .trimEnd()
-  .split('\n')
-  .slice(1)) {
+for (const row of javaFixture.trimEnd().split('\n').slice(1)) {
   const [locale, options, , start, end, text, parts] = row.split('\t')
   const key = locale + options
   let caseIndex = groups.get(key)
@@ -158,17 +157,30 @@ const native = cases.map(
       value.options
     )
 )
-const cFile = process.argv
-  .find(arg => arg.startsWith('--icu4c='))
-  ?.slice('--icu4c='.length)
-const cRows = cFile
-  ? readFileSync(cFile, 'utf8')
+const argument = (name: string) =>
+  process.argv.find(arg => arg.startsWith(`--${name}=`))?.slice(name.length + 3)
+const snapshotOracle = argument('snapshot-oracle')
+const snapshotFile = argument('snapshot')
+const updateSnapshot = argument('update-snapshot')
+if (snapshotOracle) {
+  assert.ok(snapshotOracle === 'icu4j' || snapshotOracle === 'icu4c')
+  assert.ok(snapshotFile || updateSnapshot, 'Snapshot path required')
+}
+const cFile =
+  argument('icu4c') ||
+  (snapshotOracle === 'icu4c'
+    ? resolve('conformance-tests/icu4c/number-format-c-fixtures.tsv')
+    : undefined)
+const cFixture = cFile ? readFileSync(cFile, 'utf8') : undefined
+const cRows = cFixture
+  ? cFixture
       .trimEnd()
       .split('\n')
       .slice(1)
       .map(row => row.split('\t'))
   : undefined
 if (cRows) assert.equal(cRows.length, samples.length)
+const snapshotDifferences = []
 const differences = []
 const oracleDifferences = []
 const icu4cSummary: Record<string, number> = {}
@@ -200,6 +212,25 @@ for (const [rowIndex, sample] of samples.entries()) {
     )
     if (c[5] !== sample.expected.text)
       oracleDifferences.push({...sample, icu4c: c[5]})
+  }
+  const expected = snapshotOracle === 'icu4c' ? {text: c![5]} : sample.expected
+  const actual =
+    snapshotOracle === 'icu4c'
+      ? {ts: {text: ts.text}, rust: {text: rust.text}}
+      : {ts, rust}
+  if (
+    Object.values(actual).some(
+      value => JSON.stringify(value) !== JSON.stringify(expected)
+    )
+  ) {
+    snapshotDifferences.push({
+      locale: sample.locale,
+      options: JSON.parse(sample.options),
+      start: sample.start,
+      ...(sample.range ? {end: sample.end} : {}),
+      expected,
+      actual,
+    })
   }
   for (const [engine, actual] of Object.entries({ts, rust})) {
     if (c && actual.text !== c[5]) {
@@ -258,11 +289,60 @@ const report = {
   oracleDifferences,
   specProbes,
 }
-const outputFile = process.argv
-  .find(arg => arg.startsWith('--output='))
-  ?.slice('--output='.length)
-assert.ok(outputFile, '--output=<report.json> required')
-writeFileSync(outputFile, JSON.stringify(report, null, 2))
+const outputFile = argument('output')
+assert.ok(outputFile || snapshotOracle, '--output=<report.json> required')
+if (snapshotOracle) {
+  const snapshot =
+    [
+      {
+        oracle: snapshotOracle,
+        version: '79.1',
+        cldr: '49',
+        cases: samples.length,
+        // Guard against silently dropping cases or changing the pinned oracle.
+        fixtureSHA256: createHash('sha256')
+          .update(javaFixture)
+          .update(snapshotOracle === 'icu4c' ? cFixture! : '')
+          .digest('hex'),
+        differences: snapshotDifferences.length,
+      },
+      ...snapshotDifferences,
+      {specProbes: specProbes.map(({native: _, ...probe}) => probe)},
+    ]
+      .map(value => JSON.stringify(value))
+      .join('\n') + '\n'
+  if (updateSnapshot) {
+    assert.ok(
+      !process.env.TEST_SRCDIR,
+      'Cannot update snapshots during bazel test'
+    )
+    writeFileSync(updateSnapshot, snapshot)
+  } else {
+    const expected = readFileSync(resolve(snapshotFile!), 'utf8')
+    const expectedLines = expected.trimEnd().split('\n')
+    const actualLines = snapshot.trimEnd().split('\n')
+    const firstDifference = actualLines.findIndex(
+      (line, index) => line !== expectedLines[index]
+    )
+    if (firstDifference !== -1 || actualLines.length !== expectedLines.length) {
+      const index =
+        firstDifference === -1 ? actualLines.length : firstDifference
+      const artifact = join(
+        process.env.TEST_UNDECLARED_OUTPUTS_DIR ||
+          process.env.TEST_TMPDIR ||
+          '/tmp',
+        `${snapshotOracle}-numberformat-actual.jsonl`
+      )
+      writeFileSync(artifact, snapshot)
+      assert.fail(
+        `NumberFormat ${snapshotOracle} snapshot changed at line ${index + 1}.\n` +
+          `Expected: ${expectedLines[index] || '<missing>'}\n` +
+          `Actual: ${actualLines[index] || '<missing>'}\nActual snapshot: ${artifact}`
+      )
+    }
+  }
+}
+if (outputFile) writeFileSync(outputFile, JSON.stringify(report, null, 2))
 console.log(
   JSON.stringify(
     {

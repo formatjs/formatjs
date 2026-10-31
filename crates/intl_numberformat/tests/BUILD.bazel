@@ -1,3 +1,4 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
@@ -67,5 +68,50 @@ formatjs_library(
         "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@types/node",
         "//packages/ecma402-abstract/types",
+    ],
+)
+
+# Both engines are checked independently against each oracle, not against each other.
+js_test(
+    name = "icu4j_conformance_snapshot_test",
+    size = "small",
+    args = [
+        "--snapshot-oracle=icu4j",
+        "--snapshot=crates/intl_numberformat/tests/snapshots/icu4j.jsonl",
+    ],
+    data = [
+        "snapshots/icu4j.jsonl",
+        ":tests",
+        "//conformance-tests/icu4j:number_format_fixtures",
+        "//crates/intl_numberformat:conformance",
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_pluralrules:locale_data",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "icu-audit.ts",
+)
+
+js_test(
+    name = "icu4c_conformance_snapshot_test",
+    size = "small",
+    args = [
+        "--snapshot-oracle=icu4c",
+        "--snapshot=crates/intl_numberformat/tests/snapshots/icu4c.jsonl",
+    ],
+    data = [
+        "snapshots/icu4c.jsonl",
+        ":tests",
+        "//conformance-tests/icu4c:number_format_fixtures",
+        "//conformance-tests/icu4j:number_format_fixtures",
+        "//crates/intl_numberformat:conformance",
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_pluralrules:locale_data",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],
+    entry_point = "icu-audit.ts",
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
     ],
 )

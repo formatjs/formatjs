@@ -239,7 +239,13 @@ other decimal patterns retain the general fallback.
 [2026-10-31 audit](audits/2026-10-31-numberformat.md) records independent ICU4C/J
 79.1 comparisons against CLDR 49, specification ambiguity probes, and benchmark
 tradeoffs. Rust/TS parity and tracked Test262 baselines remain separate evidence.
-The audit executable inventories differences; `--strict` exits nonzero for them.
+`//crates/intl_numberformat/tests:icu4j_conformance_snapshot_test` checks both
+implementations' text and parts against ICU4J. The Linux-only
+`:icu4c_conformance_snapshot_test` checks both against independent ICU4C text.
+Checked-in snapshots record current differences, including open correctness bugs;
+added, removed, or changed differences fail. Fixture hashes guard the case matrix
+and pinned oracle output. See the audit report for explicit regeneration commands.
+The `icu_audit` executable also supports inventory output and strict comparisons.
 
 NumberFormat passes its available-locale Set directly to ResolveLocale, retaining
 stable matcher state while the matcher checks for registry mutations. Compact

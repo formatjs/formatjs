@@ -187,6 +187,40 @@ Order: fix sign/accounting range correctness; preserve exact plural operands and
 compact overrides; then compile reusable token/modifier plans. Maintain independent
 ICU checks alongside Rust/TS parity, with explicit handling of oracle disagreement.
 
+## Conformance snapshots
+
+Two Bazel tests check TS and Rust independently against pinned ICU oracles:
+
+```sh
+bazel test -c opt //crates/intl_numberformat/tests:icu4j_conformance_snapshot_test
+# Linux x86_64 / RBE, Ubuntu 24.04 execution image:
+bazel test -c opt //crates/intl_numberformat/tests:icu4c_conformance_snapshot_test
+```
+
+ICU4J checks text and parts; ICU4C independently checks text. JSONL snapshots
+record only discrepancies, with exact inputs, oracle output, and both engines'
+output. Matching cases must continue matching. New, removed, or changed differences
+fail, as do changed fixture hashes/case counts. Sign/accounting probes are also
+snapshotted. These are regression baselines, not declarations that known bugs
+conform to the specification. Failure artifacts include the actual snapshot.
+
+Regenerate explicitly after reviewing spec/CLDR behavior and each changed row:
+
+```sh
+bazel run -c opt //crates/intl_numberformat/tests:icu_audit -- \
+  --snapshot-oracle=icu4j \
+  --update-snapshot="$PWD/crates/intl_numberformat/tests/snapshots/icu4j.jsonl"
+# On Linux/RBE:
+bazel build -c opt //conformance-tests/icu4c:number_format_fixtures
+fixture=$(bazel cquery -c opt --output=files //conformance-tests/icu4c:number_format_fixtures)
+bazel run -c opt //crates/intl_numberformat/tests:icu_audit -- \
+  --snapshot-oracle=icu4c --icu4c="$PWD/$fixture" \
+  --update-snapshot="$PWD/crates/intl_numberformat/tests/snapshots/icu4c.jsonl"
+```
+
+Snapshot updates are rejected inside `bazel test`. The exploratory inventory
+mode below remains available.
+
 ## Reproduction
 
 ```sh
