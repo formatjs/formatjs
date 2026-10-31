@@ -1,6 +1,6 @@
 # Test262 conformance baseline
 
-Measured 2026-09-11 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
+Refreshed 2026-10-30 with CLDR 49 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
 using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
@@ -13,27 +13,32 @@ excluded because it fails.
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
-| locale              |      336 |                 4 |              22 |                 4 |
+| locale              |      336 |                 4 |              22 |                 2 |
 | numberformat        |      498 |                 8 |               0 |                 8 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
-| supportedvaluesof   |       50 |                 2 |               6 |                 0 |
+| supportedvaluesof   |       50 |                 4 |               6 |                 0 |
 
-Total: 2,498 executions, 2,452 polyfill passes, 46 polyfill failures. The native
+Total: 2,498 executions, 2,450 polyfill passes, 48 polyfill failures. The native
 control column retains the 2026-09-09 measurement (86 failures); it was not rerun.
 Native failures do not establish polyfill correctness.
 
-Combined: 2,498 executions, 2,454 passes, 44 failures.
+Combined: 2,498 executions, 2,456 passes, 42 failures.
 
-Combined installation adds two Locale collation-data expectation failures while
-fixing two native Locale-branding failures. RelativeTimeFormat has the same two
+Combined installation fixes two native Locale-branding failures. RelativeTimeFormat has the same two
 foreign-realm failures in both modes. Removing its redundant class constructor
 guard changes those diagnostics from TypeError to prototype mismatch; failure
 identities and counts stay unchanged. Its numbering-system coverage no longer
 depends on suppressing unsupported systems. Compact PluralRules also passes
 independently of NumberFormat locale data. Raw reports and checked-in baselines
 preserve every remaining diagnostic.
+
+CLDR 49 removes the obsolete `CNX` currency from its English currency data.
+The isolated SupportedValuesOf suite uses the pinned host's native DisplayNames,
+which still names `CNX`, so its two cross-API executions are tracked as data-version
+mismatches. The combined suite installs both CLDR 49 polyfills and passes those
+checks. No tests are skipped and the supported currency list follows CLDR 49.
 
 ## Harness guarantees
 

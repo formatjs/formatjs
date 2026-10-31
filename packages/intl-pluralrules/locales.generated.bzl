@@ -193,6 +193,7 @@ ALL_LOCALES = [
     "ta",
     "te",
     "teo",
+    "tg",
     "th",
     "ti",
     "tig",

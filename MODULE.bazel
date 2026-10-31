@@ -318,12 +318,12 @@ js_binary(
 
 IANA_TZ_VERSION = "2026f"
 
-CLDR_COMMON_VERSION = "48.2"
+CLDR_COMMON_VERSION = "49"
 
 http_archive(
     name = "cldr_common",
     build_file = "@//packages/intl-collator:cldr-common.BUILD.bazel",
-    sha256 = "d2844f9dbf6124d11a7b047f5381a467902d82a673be3d658f4c0791ffa0b83b",
+    sha256 = "78403d8d6fb1fed6e208bf9001bf5be00bb5abfd9f8110dae062bf49309d6a89",
     urls = ["https://www.unicode.org/Public/cldr/%s/cldr-common-%s.zip" % (CLDR_COMMON_VERSION, CLDR_COMMON_VERSION)],
 )
 

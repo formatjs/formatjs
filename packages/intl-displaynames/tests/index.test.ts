@@ -5,7 +5,6 @@ import {DisplayNames} from '#packages/intl-displaynames/index.js'
 import {describe, expect, it} from 'vitest'
 
 import en from '#packages/intl-displaynames/tests/locale-data/en.json' with {type: 'json'}
-import aa from '#packages/intl-displaynames/tests/locale-data/aa.json' with {type: 'json'}
 import agq from '#packages/intl-displaynames/tests/locale-data/agq.json' with {type: 'json'}
 import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
 DisplayNames.__addLocaleData(en, zh)
@@ -338,13 +337,22 @@ it('rejects trailing line terminators in display-name codes', () => {
 })
 
 it('keeps sparse CLDR locales loadable with code/undefined fallback', () => {
-  DisplayNames.__addLocaleData(aa, agq)
-  expect(new DisplayNames('aa', {type: 'language'}).of('en')).toBe('en')
+  DisplayNames.__addLocaleData(agq)
+  expect(new DisplayNames('agq', {type: 'language'}).of('zz')).toBe('zz')
   expect(
-    new DisplayNames('aa', {type: 'language', fallback: 'none'}).of('en')
+    new DisplayNames('agq', {type: 'language', fallback: 'none'}).of('zz')
   ).toBeUndefined()
-  expect(new DisplayNames('aa', {type: 'calendar'}).of('gregory')).toBe(
+  expect(new DisplayNames('agq', {type: 'calendar'}).of('gregory')).toBe(
     'gregory'
   )
   expect(new DisplayNames('agq', {type: 'script'}).of('Latn')).toBe('Latn')
+})
+
+it('excludes scoped calendar groups from generated display names', () => {
+  for (const names of Object.values(en.data.types.calendar)) {
+    expect(names).not.toHaveProperty('_core')
+    expect(Object.values(names).every(value => typeof value === 'string')).toBe(
+      true
+    )
+  }
 })

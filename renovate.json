@@ -10,6 +10,12 @@
   ],
   "packageRules": [
     {
+      "description": "Keep CLDR data and calendar peer dependencies on one release",
+      "groupName": "CLDR",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["/^cldr-/"]
+    },
+    {
       "description": "Group NAPI-RS updates",
       "groupName": "NAPI-RS",
       "matchPackageNames": ["napi", "napi-derive"]

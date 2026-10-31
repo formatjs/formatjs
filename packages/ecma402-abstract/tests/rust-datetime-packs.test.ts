@@ -41,7 +41,7 @@ it('loads and parses every generated base locale pack without optional calendar 
     }>
   >({method: 'packs', files})
   expect(actual.length).toBe(files.length)
-  expect(files.length).toBe(766)
+  expect(files.length).toBe(657)
   for (let index = 0; index < files.length; index++) {
     const entry = JSON.parse(readFileSync(files[index], 'utf8')) as Packed
     expect(entry.data.calendarData, entry.locale).toBeUndefined()
@@ -132,7 +132,7 @@ it('uses valid hour cycles and GMT fallback for sparse timezone names', () => {
     resolve('packages/intl-datetimeformat/tz-all.json'),
     'utf8'
   )
-  for (const locale of ['aa', 'zh-Hant', 'ms', 'pt-CV']) {
+  for (const locale of ['agq', 'zh-Hant', 'ms', 'pt-CV']) {
     const entry = JSON.parse(
       readFileSync(
         resolve(`crates/intl_datetimeformat/locale-data/${locale}.json`),

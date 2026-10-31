@@ -88,6 +88,8 @@ function extractCalendarStyleData(cldrData: CalendarRawData) {
   }
   const data: Record<string, string> = {}
   for (const [key, value] of Object.entries(cldrData)) {
+    // CLDR 49 groups scoped names under _core; DisplayNames uses unscoped names.
+    if (typeof value !== 'string') continue
     const [code, style] = key.split('-alt-')
     data[(aliases[code] || code) + (style ? '-alt-' + style : '')] = value
   }

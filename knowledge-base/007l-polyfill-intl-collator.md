@@ -60,8 +60,8 @@ The collator data pipeline uses CLDR common data rather than CLDR JSON packages:
 - `common/collation/*.xml` for locale collation metadata and LDML tailorings
 - generated CLDR collation package `@formatjs_generated/cldr.collation`
 
-CLDR common 48.2 is provided to Bazel through the pinned `cldr_common` archive,
-aligned with the CLDR 48.2.0 JSON packages. Keep
+CLDR common 49 is provided to Bazel through the pinned `cldr_common` archive,
+aligned with the CLDR 49.0.0 JSON packages. Keep
 that archive aligned with the rest of the repo's CLDR version family when
 updating CLDR data.
 

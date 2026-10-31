@@ -57,7 +57,7 @@ configuration. The resolution snapshot survives dependency loading between those
 phases. Numbering-system support is probed through native NumberFormat; an empty
 probe retries after locale loading. Successful capability probes remain cached,
 matching the TS dependency constructor lifetime. Locale negotiation and option
-ordering are compared across all 766 CLDR locales with lookup and best-fit.
+ordering are compared across all 657 CLDR locales with lookup and best-fit.
 
 The C ABI in `durationformat.h` exposes retained dependency contexts, construction
 handles, formatter handles and owned JSON byte results. `begin` resolves locale;

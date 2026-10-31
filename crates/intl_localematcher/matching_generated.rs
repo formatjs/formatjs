@@ -257,8 +257,12 @@ pub const LANGUAGE: &[(&str, u8)] = &[
 ("qxw|qu",10),
 ("rag|luy",10),
 ("rm|de",20),
-("rn|en",30),
-("rw|fr",30),
+("rn|en",35),
+("rn|fr",30),
+("rn|rw",10),
+("rw|en",30),
+("rw|fr",35),
+("rw|rn",10),
 ("sa|hi",30),
 ("scn|it",20),
 ("sdc|sc",10),
@@ -683,7 +687,7 @@ pub const DEFAULTS: [u8; 3] = [80, 50, 4];
 pub const PARTITION_COUNT: usize = 7;
 #[rustfmt::skip]
 pub const PARADIGMS: &[&str] = &["en","en-GB","es","es-419","pt-BR","pt-PT"];
-pub const CLDR_VERSION: &str = "48";
+pub const CLDR_VERSION: &str = "49";
 #[rustfmt::skip]
 pub const LANGUAGE_KEYS: &[&str] = &["aa","aae","aao","aat","ab","abh","abv","ach","acm","acq","acw","acx","acy","adf","aeb","aec","af","afb","aii","ak","aln","am","apc","apd","arq","ars","ary","arz","auz","avl","ay","ayh","ayl","ayn","ayp","az","azb","bal","bbz","be","bem","bh","bhr","bjn","bjq","bmm","bn","bo","br","bs","btj","bve","bvu","bzc","ca","cdo","ceb","chr","cjy","ckb","cnp","co","coa","cpx","crs","cs","csp","cy","czh","czo","da","dty","dup","ee","enb","eo","eu","eyo","ffm","fo","fub","fue","fuf","fuh","fui","fuq","fuv","fy","ga","gaa","gan","gax","gd","gkp","gl","gn","gnw","gsw","gu","gui","gun","ha","hae","hak","haw","hji","hnm","hr","hsn","ht","hy","ia","id","ida","ig","ikt","is","jak","jax","jv","ka","kg","kk","km","kn","knn","kri","ku","kvb","kvr","kxd","ky","la","lb","lce","lcf","lg","liw","lkb","lko","lks","ln","lo","loz","lri","lrm","lsm","ltg","lto","lts","lua","luh","lwg","lzh","mai","max","meo","mfa","mfb","mfe","mg","mi","min","ml","mn","mnp","mqg","mr","ms","msh","msi","mt","mui","mvf","my","nan","nb","ne","nhd","niq","nle","nn","no","nso","ny","nyd","nyn","oc","oki","om","or","orc","orn","ors","pa","pbt","pcm","pel","pga","pko","ps","pse","pst","qu","qub","qud","quf","qug","quh","quk","qul","qup","qur","qus","quw","qux","quy","qva","qvc","qve","qvh","qvi","qvj","qvl","qvm","qvn","qvo","qvp","qvs","qvw","qvz","qwa","qwc","qwh","qws","qxa","qxc","qxh","qxl","qxn","qxo","qxp","qxr","qxt","qxu","qxw","rag","rm","rn","rw","sa","scn","sd","sdc","sdn","sgc","sh","shu","si","sjc","sk","skg","sn","so","spv","sq","sr","sro","ssh","ssy","st","su","sw","ta","tdx","te","tec","tg","ti","tk","tkg","tlh","tmw","tn","to","tt","tum","tuy","txy","ug","ur","urk","uz","uzs","vkk","vkt","vro","wo","wuu","xh","xmm","xmv","xmw","yi","yih","yo","yue","za","zlm","zmi","zu"];
 #[rustfmt::skip]

@@ -24,7 +24,7 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 
 ### Date/Time Extraction (`scripts/extract-dates.ts`)
 
-Processes ~680 locales in parallel:
+Processes 657 locales in parallel:
 
 1. **Format patterns**: Loads gregorian calendar patterns (full/long/medium/short) for dates and times
 2. **Skeleton parsing**: Converts CLDR skeletons to structured format options via `parseDateTimeSkeleton()`
@@ -90,10 +90,10 @@ export default {
 
 ```
 Stage 1: cldr-raw (extract-dates.ts)
-  Output: cldr-raw/{locale}.json (~680 files)
+  Output: cldr-raw/{locale}.json (657 files)
 
 Stage 2: locale-data (cldr.ts)
-  Output: locale-data/{locale}.js + d.ts (~1360 files)
+  Output: locale-data/{locale}.js + d.ts (1,314 files)
 
 Stage 3: Timezone processing (parallel)
   generate_tz_data → zdump files (427 primary zones)
@@ -400,7 +400,7 @@ timezone-name lookup retains the configured identifier. Tests compare 53,760
 numeric rendering cases plus exact Temporal instants and locale/timezone reloads.
 Hermes source/bytecode integration now covers host coercion and actual Temporal brands.
 
-The native `:locale_data` generator emits 766 separate Gregorian/ISO base packs
+The native `:locale_data` generator emits 657 separate Gregorian/ISO base packs
 with a `number` sidecar selected from native NumberFormat packs. Calendar patches
 and transitions remain separate, preserving on-demand loading. Numeric helpers
 cache formatters by locale/system/integer width and truncate two-digit fields by
@@ -415,7 +415,7 @@ availability before/after arithmetic registration.
 CLDR hour-cycle tokens can include flexible day-period suffixes (`hB`, `hb`);
 the extractor selects the cycle from their first symbol. Timezone name widths
 without a standard name are omitted, allowing GMT fallback instead of emitting
-null array entries. Pack/rendering regressions include `aa`, `ms`, `zh-Hant` and
+null array entries. Pack/rendering regressions include `agq`, `ms`, `zh-Hant` and
 `pt-CV`.
 
 Range partitioning uses `render::RangeSnapshot` captured before endpoint calendar
@@ -521,8 +521,8 @@ through the target execroot selected Darwin npm packages while executing on Linu
 and failed loading Rolldown bindings. Linux-to-Darwin archive validation covers
 both formatter crates after switching those generators to runfiles entrypoints.
 
-Native SDK packaging keeps 766 base packs, fourteen arithmetic/table packs,
-10,724 calendar locale patches and two timezone packs in separate directories.
+Native SDK packaging keeps 657 base packs, fourteen arithmetic/table packs,
+9,198 calendar locale patches and two timezone packs in separate directories.
 Each calendar has a distinct patch prefix so identical locale basenames cannot
 collide during tar assembly. Public filegroups and individual exported labels
 support selective application packaging. The standalone consumer retains the

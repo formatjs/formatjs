@@ -40,6 +40,12 @@ Each polyfill uses `rolldown_bundle` with `dts = True` to produce bundled output
 
 ## CLDR Data Generation Pipeline
 
+All 19 CLDR npm dependencies are pinned to 49.0.0 and grouped in Renovate.
+Calendar packages require matching dates, numbers, and core peer versions.
+After an upgrade, run each dynamic package's `:locales` Bazel target to refresh
+`locales.generated.bzl` before building locale data. CLDR 49 supplies 657 full
+locales (five added, 114 removed from 48.2); plural rules cover 225 locales.
+
 Each polyfill has scripts in `scripts/` that extract data from CLDR npm packages:
 
 1. **Extract**: Scripts read CLDR JSON (from `cldr-*-full` npm packages) and produce intermediate files

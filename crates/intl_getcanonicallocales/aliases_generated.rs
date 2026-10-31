@@ -358,9 +358,6 @@ pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
         "fas" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "fa", specificity: 1 },
         ],
-        "fat" => &[
-            LanguageAliasRule { script: "", region: "", variants: &[], replacement: "ak", specificity: 1 },
-        ],
         "fij" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "fj", specificity: 1 },
         ],
@@ -781,6 +778,9 @@ pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
         "mon" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "mn", specificity: 1 },
         ],
+        "mrd" => &[
+            LanguageAliasRule { script: "", region: "", variants: &[], replacement: "mgp", specificity: 1 },
+        ],
         "mri" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "mi", specificity: 1 },
         ],
@@ -1045,6 +1045,9 @@ pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
         ],
         "sh" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "sr-Latn", specificity: 1 },
+        ],
+        "shl" => &[
+            LanguageAliasRule { script: "", region: "", variants: &[], replacement: "mrh", specificity: 1 },
         ],
         "sin" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "si", specificity: 1 },
@@ -1328,6 +1331,9 @@ pub(super) fn language_aliases(language: &str) -> &'static [LanguageAliasRule] {
         "ymt" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "mtm", specificity: 1 },
         ],
+        "yol" => &[
+            LanguageAliasRule { script: "", region: "", variants: &[], replacement: "enm", specificity: 1 },
+        ],
         "yor" => &[
             LanguageAliasRule { script: "", region: "", variants: &[], replacement: "yo", specificity: 1 },
         ],
@@ -1400,13 +1406,11 @@ pub fn extension_alias(extension: &str, key: &str, value: &str) -> Option<&'stat
         ("u", "tz", "cnckg") => Some("cnsha"),
         ("u", "tz", "cnhrb") => Some("cnsha"),
         ("u", "tz", "cnkhg") => Some("cnurc"),
-        ("u", "tz", "cst6cdt") => Some("uschi"),
         ("u", "tz", "cuba") => Some("cuhav"),
         ("u", "tz", "eet") => Some("grath"),
         ("u", "tz", "egypt") => Some("egcai"),
         ("u", "tz", "eire") => Some("iedub"),
         ("u", "tz", "est") => Some("papty"),
-        ("u", "tz", "est5edt") => Some("usnyc"),
         ("u", "tz", "factory") => Some("unk"),
         ("u", "tz", "gaza") => Some("gazastrp"),
         ("u", "tz", "gmt0") => Some("gmt"),
@@ -1421,13 +1425,11 @@ pub fn extension_alias(extension: &str, key: &str, value: &str) -> Option<&'stat
         ("u", "tz", "met") => Some("bebru"),
         ("u", "tz", "mncoq") => Some("mnuln"),
         ("u", "tz", "mst") => Some("usphx"),
-        ("u", "tz", "mst7mdt") => Some("usden"),
         ("u", "tz", "mxstis") => Some("mxtij"),
         ("u", "tz", "navajo") => Some("usden"),
         ("u", "tz", "poland") => Some("plwaw"),
         ("u", "tz", "portugal") => Some("ptlis"),
         ("u", "tz", "prc") => Some("cnsha"),
-        ("u", "tz", "pst8pdt") => Some("uslax"),
         ("u", "tz", "roc") => Some("twtpe"),
         ("u", "tz", "rok") => Some("krsel"),
         ("u", "tz", "turkey") => Some("trist"),
