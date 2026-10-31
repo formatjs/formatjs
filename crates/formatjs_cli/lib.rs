@@ -1,4 +1,4 @@
-pub mod apple_printf;
+mod apple_printf;
 pub mod compile;
 pub mod compile_folder;
 pub mod extract;
@@ -11,3 +11,4 @@ pub mod python_extractor;
 pub mod rust_extractor;
 pub mod static_evaluation;
 pub mod verify;
+pub mod xcstrings;

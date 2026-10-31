@@ -1,13 +1,13 @@
 import {basename} from 'path'
-import {checkApplePrintfStructure} from '#packages/cli-lib/verify/checkApplePrintfStructure.js'
+import {verifyXcstringsWithNative} from '#packages/cli-lib/native.js'
+import {debug, writeStderr} from '#packages/cli-lib/console_utils.js'
 import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
-import {debug} from '#packages/cli-lib/console_utils.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
 import {checkExtraKeys} from '#packages/cli-lib/verify/checkExtraKeys.js'
 import {readJSON} from 'fs-extra/esm'
 import {checkStructuralEquality} from '#packages/cli-lib/verify/checkStructuralEquality.js'
 export interface VerifyOpts {
-  sourceLocale: string
+  sourceLocale?: string
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
@@ -24,14 +24,32 @@ export async function verify(
   files: string[],
   {
     sourceLocale,
-    missingKeys,
-    extraKeys,
-    structuralEquality,
+    missingKeys = false,
+    extraKeys = false,
+    structuralEquality = false,
     messageSyntax = 'icu',
   }: VerifyOpts
 ): Promise<void> {
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
+
+  if (messageSyntax === 'apple-printf') {
+    const catalogs = Object.fromEntries(
+      await Promise.all(files.map(async file => [file, await readJSON(file)]))
+    )
+    const issues = verifyXcstringsWithNative(
+      catalogs,
+      sourceLocale,
+      missingKeys,
+      structuralEquality
+    )
+    for (const issue of issues) {
+      writeStderr(`${issue.locale}: ${issue.messageId}: ${issue.error}\n`)
+    }
+    process.exit(issues.length ? 1 : 0)
+  }
+  if (!sourceLocale)
+    throw new Error('--source-locale is required for verify command')
 
   const translationFilesContents = (
     await Promise.all(
@@ -64,9 +82,7 @@ export async function verify(
     !(await (
       messageSyntax === 'java-printf'
         ? checkJavaPrintfStructure
-        : messageSyntax === 'apple-printf'
-          ? checkApplePrintfStructure
-          : checkStructuralEquality
+        : checkStructuralEquality
     )(translationFilesContents, sourceLocale))
   ) {
     exitCode = 1

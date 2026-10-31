@@ -57,10 +57,22 @@ pub fn verify_java_printf(catalogs_json: String, source_locale: String) -> napi:
 }
 
 #[napi]
-pub fn verify_apple_printf(catalogs_json: String, source_locale: String) -> napi::Result<String> {
+pub fn verify_xcstrings(
+    catalogs_json: String,
+    source_locale: Option<String>,
+    missing_keys: bool,
+    structural_equality: bool,
+) -> napi::Result<String> {
     let catalogs = serde_json::from_str(&catalogs_json).map_err(to_napi_error)?;
-    let issues = formatjs_cli::apple_printf::verify_catalogs(&catalogs, &source_locale)
-        .map_err(|error| Error::from_reason(format!("{error:#}")))?;
+    let issues = formatjs_cli::xcstrings::verify_catalogs(
+        &catalogs,
+        source_locale.as_deref(),
+        formatjs_cli::xcstrings::VerificationOptions {
+            missing_keys,
+            structural_equality,
+        },
+    )
+    .map_err(|error| Error::from_reason(format!("{error:#}")))?;
     serde_json::to_string(&issues).map_err(to_napi_error)
 }
 

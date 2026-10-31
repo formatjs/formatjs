@@ -548,9 +548,19 @@ Foundation dialect, plus strict indexing and unsupported-syntax checks.
 See [Apple spec research](014-apple-printf-format.md) for primary sources and
 intentional differences from libc and permissive Foundation runtime parsing.
 
-`formatjs_cli::apple_printf::verify_catalogs` compares declared argument types,
-integer lengths, and dynamic width/precision roles. It shares catalog traversal,
-comparison, and diagnostics with Java through `printf_validation`. Rust and npm
-CLIs select it using `--message-syntax apple-printf --structural-equality`; npm
-uses the same Rust implementation through N-API. No plist or stringsdict loading.
-Crate releases use Release Please and the crates release workflow.
+`formatjs_cli::xcstrings::verify_catalogs` accepts `.xcstrings` documents keyed
+by file path. It infers `sourceLanguage`, falls back to source keys, skips
+`shouldTranslate: false`, and validates plural/device branches and substitution
+`argNum`/`formatSpecifier` contracts. `%arg` resolves in its owning substitution.
+Apple CLI input is exclusively xcstrings; Java/ICU retain per-locale JSON.
+Rust and npm call the same validator through `formatjs_cli_napi::verify_xcstrings`.
+`apple_printf` keeps type classification internal; `printf_validation` shares
+comparison/diagnostics with Java. The parser's `parse_specifier` entry point lets
+catalog fragments use enclosing argument indices without inventing missing ones.
+
+Source argument syntax/substitution metadata determine whether a message is
+formatted; xcstrings has no formatting flag. Plain percentage text stays literal,
+with documented ambiguity around printf-looking literal text. Root plurals with
+multiple numeric arguments require substitution metadata; nested named
+substitutions and unknown variation axes fail explicitly. The verifier is
+read-only. Crate releases use Release Please and the existing release workflow.

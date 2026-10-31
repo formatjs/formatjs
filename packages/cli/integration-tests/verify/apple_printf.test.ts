@@ -9,56 +9,120 @@ import {resolveRustBinaryPath} from '#packages/cli/integration-tests/rust-binary
 const execFile = promisify(nodeExecFile)
 const nodeCli = require.resolve('@formatjs/cli/bin/formatjs')
 const rustCli = resolveRustBinaryPath(import.meta.dirname)
+const unit = (value: string) => ({stringUnit: {state: 'translated', value}})
+const catalog = (en: object, fr: object) => ({
+  sourceLanguage: 'en',
+  version: '1.0',
+  strings: {message: {localizations: {en, fr}}},
+})
 
 describe.each([
   {name: 'npm', binary: nodeCli},
   {name: 'Rust', binary: rustCli},
-])('$name Apple printf validation', ({binary}) => {
-  async function verify(source: object, target: object) {
+])('$name xcstrings validation', ({binary}) => {
+  async function verify(
+    value: object,
+    options: string[] = [],
+    extension = 'xcstrings'
+  ) {
     expect(binary, 'CLI binary must be available').toBeTruthy()
-    const directory = await mkdtemp(join(tmpdir(), 'formatjs-apple-printf-'))
+    const directory = await mkdtemp(join(tmpdir(), 'formatjs-xcstrings-'))
     try {
-      const sourcePath = join(directory, 'en.json')
-      const targetPath = join(directory, 'fr.json')
-      await writeFile(sourcePath, JSON.stringify(source))
-      await writeFile(targetPath, JSON.stringify(target))
+      const file = join(directory, `Localizable.${extension}`)
+      await writeFile(file, JSON.stringify(value))
       return await execFile(binary!, [
         'verify',
-        sourcePath,
-        targetPath,
-        '--source-locale',
-        'en',
+        file,
         '--message-syntax',
         'apple-printf',
         '--structural-equality',
+        ...options,
       ])
     } finally {
       await rm(directory, {recursive: true, force: true})
     }
   }
-  test('allows Foundation objects, lengths, reordering, reuse and dynamic arguments', async () => {
+  test('reads one multilingual catalog and infers sourceLanguage', async () => {
     await expect(
       verify(
-        {message: '%@ %ld %*.*f %S %C'},
-        {message: '%7$C %6$S %5$*3$.*4$e %2$li %1$@ %1$@ %%'}
+        catalog(
+          unit('%@ %ld %*.*f %S %C'),
+          unit('%7$C %6$S %5$*3$.*4$e %2$li %1$@ %1$@ %%')
+        )
       )
     ).resolves.toBeTruthy()
-  }, 20000)
-  test('rejects changed pointer types and integer lengths', async () => {
     await expect(
-      verify({message: '%@ %ld'}, {message: '%s %d'})
+      verify({
+        sourceLanguage: 'en',
+        version: '1.0',
+        strings: {'%@': {localizations: {fr: unit('%1$@')}}},
+      })
+    ).resolves.toBeTruthy()
+  }, 20000)
+  test('reports file, locale and key for pointer and integer length changes', async () => {
+    await expect(
+      verify(catalog(unit('%@ %ld'), unit('%s %d')))
     ).rejects.toThrow(
-      /fr: message: Incompatible argument 1.*Incompatible argument 2/
+      /fr: .*Localizable.xcstrings: message: .*Incompatible argument 1.*Incompatible argument 2/
     )
   }, 20000)
-  test('reports unsupported stringsdict references in source', async () => {
-    await expect(verify({plural: '%#@count@'}, {})).rejects.toThrow(
-      /en: plural: Invalid Apple printf syntax.*UnsupportedNamedReference/
+  test('supports locale-specific plurals and named substitution metadata', async () => {
+    const plural = (one: string, other: string) => ({
+      variations: {plural: {one: unit(one), other: unit(other)}},
+    })
+    await expect(
+      verify(
+        catalog(plural('One item', '%lld items'), {
+          variations: {
+            plural: {few: unit('%lld éléments'), other: unit('%lld éléments')},
+          },
+        })
+      )
+    ).resolves.toBeTruthy()
+    const source = {
+      stringUnit: {value: '%#@items@'},
+      substitutions: {
+        items: {
+          argNum: 1,
+          formatSpecifier: 'lld',
+          ...plural('One item', '%arg items'),
+        },
+      },
+    }
+    const target = {
+      stringUnit: {value: '%#@items@'},
+      substitutions: {
+        items: {
+          argNum: 1,
+          formatSpecifier: 'lld',
+          ...plural('Un élément', '%arg éléments'),
+        },
+      },
+    }
+    await expect(verify(catalog(source, target))).resolves.toBeTruthy()
+    target.substitutions.items.formatSpecifier = 'd'
+    await expect(verify(catalog(source, target))).rejects.toThrow(
+      /Incompatible argument 1/
     )
   }, 20000)
-  test('rejects missing value and dynamic width arguments', async () => {
-    await expect(verify({message: '%*f'}, {message: '%f'})).rejects.toThrow(
-      /Incompatible argument 1.*Missing argument 2/
-    )
+  test('rejects flat JSON and explicit source mismatch', async () => {
+    await expect(
+      verify({message: '%@'}, ['--source-locale', 'en'], 'json')
+    ).rejects.toThrow(/only .xcstrings/)
+    await expect(
+      verify(catalog(unit('%@'), unit('%@')), ['--source-locale', 'de'])
+    ).rejects.toThrow(/differs from sourceLanguage/)
+  }, 20000)
+  test('checks missing localizations without treating plural branches as keys', async () => {
+    await expect(
+      verify(
+        {
+          sourceLanguage: 'en',
+          version: '1.0',
+          strings: {first: {localizations: {fr: unit('premier')}}, second: {}},
+        },
+        ['--missing-keys', '--extra-keys']
+      )
+    ).rejects.toThrow(/fr: .*second: Missing translation key/)
   }, 20000)
 })

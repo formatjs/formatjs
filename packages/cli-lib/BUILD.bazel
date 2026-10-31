@@ -74,7 +74,6 @@ formatjs_library(
         "static-evaluation.ts",
         "svelte_extractor.ts",
         "types.ts",
-        "verify/checkApplePrintfStructure.ts",
         "verify/checkExtraKeys.ts",
         "verify/checkJavaPrintfStructure.ts",
         "verify/checkMissingKeys.ts",

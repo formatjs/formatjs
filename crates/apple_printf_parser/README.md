@@ -15,6 +15,10 @@ Width and precision are fixed numbers or separate argument references. Ordinary
 are supported; mixed indexing, gaps, zero indices, and overflows are errors.
 Explicit indices are limited to 127, matching CoreFoundation's parser.
 
+`parse_specifier(input, first_argument)` parses one leading specifier in a
+catalog fragment, leaving trailing text untouched. Its ordinary indices start
+at `first_argument`; the enclosing catalog owns positional-gap checks.
+
 Foundation meanings apply: `%@` objects, `%C` UTF-16 code units, `%S` UTF-16
 strings, `%s` byte strings, and `%D/%U/%O` 32-bit aliases. Integer lengths
 `hh h l ll q j z t` and floating `l L` are supported. Duplicate flags work;

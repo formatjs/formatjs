@@ -28,6 +28,9 @@ conversion character, and resolved one-based value argument. Dynamic `%*.*f`
 consumes width, precision, then value. Positional arguments support reordering and
 reuse; mixed indexing, gaps, zero indices and overflow produce structured errors.
 CoreFoundation limits explicit indices to 127.
+`parse_specifier(input, first_argument)` parses one leading token for catalog
+fragments, with ordinary indices starting at the supplied argument. It permits
+positional gaps for the enclosing catalog to resolve.
 
 Foundation meanings apply: `%@` objects, `%C` UTF-16 code units, `%S` UTF-16
 strings, `%s` byte strings, `%D/%U/%O` 32-bit integer aliases. Integer lengths
@@ -43,14 +46,26 @@ ABI differences, plist decoding and plural expansion remain caller concerns.
 ## Validate translation catalogs
 
 ```sh
-formatjs verify "lang/*.json" --source-locale en \
+formatjs verify "Resources/**/*.xcstrings" \
   --message-syntax apple-printf --structural-equality
 ```
 
-Rust and npm CLIs compare resolved argument types, integer lengths and dynamic
-width/precision roles. Reordering, reuse and presentation changes remain allowed.
-Input is JSON with string leaves. Named stringsdict substitutions require external
-metadata; expand variants before verification. See [CLI verification](/docs/tooling/cli#--message-syntax-syntax).
+Apple mode accepts only `.xcstrings` catalogs, including nested device/plural
+variants and named substitutions. Source language comes from `sourceLanguage`;
+source values fall back to string keys when no source localization exists.
+`%#@name@` and `%arg` resolve through `argNum` and `formatSpecifier` metadata.
+Plural categories may differ by locale; branches may omit their selector value.
+Each branch preserves the requirements of its matching source case, or source
+`other` fallback. Argument types/lengths and dynamic width/precision roles stay
+consistent. Source catalogs must identify types for all argument positions.
+
+Catalogs have no explicit formatting flag. Validation infers formatted messages
+from source argument specifiers or substitution metadata; plain percentage text
+stays literal. A percent followed by a space is ambiguous and alone does not
+mark a source as formatted. Runtime formatting intent cannot always be inferred.
+Ambiguous root plurals with multiple numeric arguments and nested named
+substitutions fail explicitly. Legacy `.strings`/`.stringsdict` and flat JSON
+catalogs are unsupported in Apple mode. See [CLI verification](/docs/tooling/cli#--message-syntax-syntax).
 
 References: [Apple format specifiers](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html),
 [Apple printf grammar](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/printf.3.html).

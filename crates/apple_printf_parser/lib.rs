@@ -168,6 +168,30 @@ pub fn parse(input: &str) -> Result<Vec<Element<'_>>, ParseError> {
     Ok(elements)
 }
 
+/// Parses one leading specifier in a catalog fragment. Argument gaps belong to
+/// the enclosing catalog; `first_argument` locates ordinary arguments in it.
+/// Returned spans are relative to `input`; trailing text is not parsed.
+pub fn parse_specifier(input: &str, first_argument: u32) -> Result<Specifier<'_>, ParseError> {
+    if !input.starts_with('%') || first_argument == 0 || first_argument > i32::MAX as u32 {
+        return Err(ParseError {
+            kind: if input.starts_with('%') {
+                ErrorKind::InvalidNumber
+            } else {
+                ErrorKind::MissingConversion
+            },
+            span: Span { start: 0, end: 0 },
+        });
+    }
+    Parser {
+        input,
+        position: 0,
+        next_index: first_argument - 1,
+        indexing: None,
+        indices: BTreeSet::new(),
+    }
+    .specifier()
+}
+
 struct Parser<'a> {
     input: &'a str,
     position: usize,

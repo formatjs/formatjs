@@ -158,3 +158,39 @@ fn repeated_flags_and_maximum_numeric_fields_do_not_allocate_widths() {
         127
     );
 }
+
+#[test]
+fn catalog_specifier_prefix_resolves_fragment_arguments_without_requiring_gaps() {
+    use formatjs_apple_printf_parser::parse_specifier;
+    let token = parse_specifier("%*.*f trailing", 5).unwrap();
+    assert_eq!(token.raw, "%*.*f");
+    assert_eq!(token.argument.unwrap().index, 7);
+    assert_eq!(
+        token.width,
+        Some(Amount::Argument(Argument {
+            index: 5,
+            reference: ArgumentReference::Implicit
+        }))
+    );
+    assert_eq!(
+        token.precision,
+        Some(Amount::Argument(Argument {
+            index: 6,
+            reference: ArgumentReference::Implicit
+        }))
+    );
+    assert_eq!(
+        parse_specifier("%4$@ tail", 1)
+            .unwrap()
+            .argument
+            .unwrap()
+            .index,
+        4
+    );
+    assert_eq!(
+        parse("%4$@").unwrap_err().kind,
+        ErrorKind::MissingArgument(1)
+    );
+    assert!(parse_specifier("literal", 1).is_err());
+    assert!(parse_specifier("%@", 0).is_err());
+}

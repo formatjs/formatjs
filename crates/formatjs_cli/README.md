@@ -337,7 +337,7 @@ formatjs verify "lang/*.json" \
 **Options:**
 
 - `[TRANSLATION_FILES]...` - Glob patterns for translation files
-- `--source-locale <LOCALE>` - **Required** for checks to work (e.g., `en`)
+- `--source-locale <LOCALE>` - Required for per-locale JSON (e.g., `en`); inferred from Apple catalogs
 - `--ignore <PATTERNS>` - Glob patterns to ignore
 - `--missing-keys` - Check for missing keys in target locales
 - `--extra-keys` - Check for extra keys not in source locale
@@ -437,19 +437,29 @@ Width/precision changes are allowed when Java syntax permits them. Runtime Java 
 Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
 Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.
 
-### Apple Foundation printf verification
+### Apple Xcode catalog verification
 
 ```sh
-formatjs verify 'lang/*.json' --source-locale en \
-  --message-syntax apple-printf --structural-equality
+formatjs verify 'Resources/**/*.xcstrings' \
+  --message-syntax apple-printf --structural-equality --missing-keys
 ```
 
-Rust and npm CLIs share the Rust Apple parser. Verification preserves object,
-byte-string, UTF-16, pointer, integer signedness/length, and floating-point types.
-It checks dynamic width/precision argument roles; positional reordering, reuse,
-and presentation changes remain allowed. ICU stays the default.
+Apple mode accepts only `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
+catalog loading and validation in Rust. Source language is inferred; an explicit
+`--source-locale` must match `sourceLanguage`. Source values fall back to keys.
 
-Input is JSON with string leaves. Decode `.strings`/plist files first; expand
-plural variants separately. Named `.stringsdict` substitutions require metadata
-and are rejected, as are `%n` and logging privacy annotations. This checks a
-strict Foundation subset, not runtime values or every format accepted by libc.
+Nested plural/device variants and named substitutions use their catalog context.
+`%#@name@` resolves via `argNum`/`formatSpecifier`; branch `%arg` uses its owning
+argument. Plural categories may differ; selectors may be omitted. Other argument
+types, lengths and dynamic width/precision roles must survive. Files namespace
+independent string tables. `shouldTranslate: false` entries are skipped.
+
+`--missing-keys` checks locales found across supplied catalogs. `--extra-keys`
+has no additional effect on a catalog's shared key set. Translation states remain
+metadata, not a completeness check. Validation never rewrites input.
+
+Formatting is inferred from source argument specifiers or substitution metadata;
+plain percentages remain literal. Whitespace after percent is ambiguous and alone
+does not identify a format. Root plurals with multiple numeric arguments need
+explicit substitution metadata; nested named substitutions and unknown axes fail
+explicitly. Legacy `.strings`/`.stringsdict` and flat JSON are unsupported.

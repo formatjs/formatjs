@@ -239,8 +239,8 @@ enum Commands {
         #[arg(value_name = "TRANSLATION_FILES")]
         translation_files: Vec<PathBuf>,
 
-        /// Source locale identifier. REQUIRED for checks to work.
-        /// There must be a file named <sourceLocale>.json in the translation files list.
+        /// Source locale; inferred from sourceLanguage for Apple .xcstrings catalogs.
+        /// Other modes require a matching <sourceLocale>.json file.
         #[arg(long, value_name = "LOCALE")]
         source_locale: Option<String>,
 

@@ -13,7 +13,7 @@ pub struct VerificationIssue {
 
 type Signature<R> = BTreeMap<u32, BTreeSet<R>>;
 
-fn compare<R: Ord + std::fmt::Debug>(
+pub(crate) fn compare<R: Ord + std::fmt::Debug>(
     source: &Signature<R>,
     target: &Signature<R>,
 ) -> Option<String> {

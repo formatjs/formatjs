@@ -100,7 +100,12 @@ export interface NativeBinding {
     filename?: string
   ): string
   verifyJavaPrintf(catalogsJson: string, sourceLocale: string): string
-  verifyApplePrintf(catalogsJson: string, sourceLocale: string): string
+  verifyXcstrings(
+    catalogsJson: string,
+    sourceLocale: string | undefined,
+    missingKeys: boolean,
+    structuralEquality: boolean
+  ): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -248,17 +253,24 @@ export function verifyJavaPrintfWithNative(
   )
 }
 
-export function verifyApplePrintfWithNative(
+export function verifyXcstringsWithNative(
   catalogs: Record<string, unknown>,
-  sourceLocale: string
+  sourceLocale: string | undefined,
+  missingKeys: boolean,
+  structuralEquality: boolean
 ): NativeVerificationIssue[] {
   const native = loadNative()
-  if (typeof native.verifyApplePrintf !== 'function') {
+  if (typeof native.verifyXcstrings !== 'function') {
     throw new Error(
-      'Installed FormatJS native package does not support Apple printf verification; update @formatjs/cli and its native package.'
+      'Installed FormatJS native package does not support xcstrings verification; update @formatjs/cli and its native package.'
     )
   }
   return JSON.parse(
-    native.verifyApplePrintf(JSON.stringify(catalogs), sourceLocale)
+    native.verifyXcstrings(
+      JSON.stringify(catalogs),
+      sourceLocale,
+      missingKeys,
+      structuralEquality
+    )
   )
 }
