@@ -411,3 +411,28 @@ MIT
 - [@formatjs/cli](../../packages/cli) - Node.js-based CLI
 - [formatjs_icu_messageformat_parser](../icu_messageformat_parser) - ICU MessageFormat parser
 - [formatjs_icu_skeleton_parser](../icu_skeleton_parser) - ICU skeleton parser
+
+### Java printf verification
+
+Use Java Formatter syntax explicitly for Android-style messages:
+
+```bash
+formatjs verify "lang/*.json" \
+  --source-locale en \
+  --message-syntax java-printf \
+  --missing-keys --extra-keys --structural-equality
+```
+
+`--message-syntax` defaults to `icu` and selects the grammar for `--structural-equality`.
+Both the Rust binary and npm CLI use the same Rust Java printf validator.
+Malformed source messages fail even when no target key matches; malformed target messages also fail.
+Diagnostics identify locale, message ID and syntax error or incompatible argument requirement.
+
+Resolved argument indices and their sets of conversion requirements must match.
+Explicit reordering, repeated uses of the same argument, uppercase variants and compatible numeric/date presentation changes are allowed.
+Missing or extra arguments and changed requirements fail.
+String, boolean, hash, character, integer, floating-point and date/time uses are distinct; `%#s`, signed octal/hexadecimal flags and hexadecimal floats retain their narrower requirements.
+Width/precision changes are allowed when Java syntax permits them. Runtime Java values/types and date fields are not inferred.
+
+Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
+Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.

@@ -628,6 +628,7 @@ dependencies = [
  "fast-glob",
  "formatjs_icu_messageformat_parser",
  "formatjs_icu_skeleton_parser",
+ "formatjs_java_printf_parser",
  "hex",
  "md-5",
  "oxc",

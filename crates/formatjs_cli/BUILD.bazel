@@ -50,6 +50,7 @@ rust_library(
         "formatters/smartling.rs",
         "formatters/transifex.rs",
         "id_generator.rs",
+        "java_printf.rs",
         "lib.rs",
         "python_extractor.rs",
         "rust_extractor.rs",
@@ -63,6 +64,7 @@ rust_library(
     visibility = ["//visibility:public"],
     deps = [
         "//crates/icu_messageformat_parser",
+        "//crates/java_printf_parser",
         "@crates//:anyhow",
         "@crates//:base64",
         "@crates//:fast-glob",
@@ -124,6 +126,7 @@ formatjs_rust_test(
         "formatters/smartling.test.rs",
         "formatters/transifex.test.rs",
         "id_generator.test.rs",
+        "java_printf.test.rs",
         "main.test.rs",
         "python_extractor.test.rs",
         "rust_extractor.test.rs",

@@ -99,6 +99,7 @@ export interface NativeBinding {
     descriptionJson?: string,
     filename?: string
   ): string
+  verifyJavaPrintf(catalogsJson: string, sourceLocale: string): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -222,5 +223,26 @@ export function generateIdWithNative(
     defaultMessage,
     description === undefined ? undefined : JSON.stringify(description),
     filename
+  )
+}
+
+export interface NativeVerificationIssue {
+  locale: string
+  messageId: string
+  error: string
+}
+
+export function verifyJavaPrintfWithNative(
+  catalogs: Record<string, unknown>,
+  sourceLocale: string
+): NativeVerificationIssue[] {
+  const native = loadNative()
+  if (typeof native.verifyJavaPrintf !== 'function') {
+    throw new Error(
+      'Installed FormatJS native package does not support Java printf verification; update @formatjs/cli and its native package.'
+    )
+  }
+  return JSON.parse(
+    native.verifyJavaPrintf(JSON.stringify(catalogs), sourceLocale)
   )
 }

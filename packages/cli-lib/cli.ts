@@ -1,4 +1,4 @@
-import {program} from 'commander'
+import {Option, program} from 'commander'
 import glob from 'fast-glob'
 const globSync = glob.sync
 import loudRejection from 'loud-rejection'
@@ -277,6 +277,14 @@ sentences are not translator-friendly.`
       '--structural-equality',
       `Whether to check for structural equality of messages between source and target locale.
       This makes sure translations are formattable and are not missing any tokens.`
+    )
+    .addOption(
+      new Option(
+        '--message-syntax <syntax>',
+        'Message grammar used by --structural-equality.'
+      )
+        .choices(['icu', 'java-printf'])
+        .default('icu')
     )
     .option(
       '--follow-links',

@@ -1,4 +1,5 @@
 import {basename} from 'path'
+import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
 import {debug} from '#packages/cli-lib/console_utils.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
 import {checkExtraKeys} from '#packages/cli-lib/verify/checkExtraKeys.js'
@@ -9,6 +10,7 @@ export interface VerifyOpts {
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
+  messageSyntax?: 'icu' | 'java-printf'
   ignore?: string[]
   /**
    * Whether to follow symbolic links when traversing directories.
@@ -19,7 +21,13 @@ export interface VerifyOpts {
 
 export async function verify(
   files: string[],
-  {sourceLocale, missingKeys, extraKeys, structuralEquality}: VerifyOpts
+  {
+    sourceLocale,
+    missingKeys,
+    extraKeys,
+    structuralEquality,
+    messageSyntax = 'icu',
+  }: VerifyOpts
 ): Promise<void> {
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
@@ -52,7 +60,11 @@ export async function verify(
 
   if (
     structuralEquality &&
-    !(await checkStructuralEquality(translationFilesContents, sourceLocale))
+    !(await (
+      messageSyntax === 'java-printf'
+        ? checkJavaPrintfStructure
+        : checkStructuralEquality
+    )(translationFilesContents, sourceLocale))
   ) {
     exitCode = 1
   }

@@ -36,6 +36,7 @@
   "packages/unplugin": "1.2.15",
   "packages/utils": "2.2.12",
   "packages/vue-intl": "8.1.4",
+  "crates/java_printf_parser": "0.1.0",
   "crates/icu_skeleton_parser": "0.1.2",
   "crates/icu_messageformat_parser": "1.1.1",
   "crates/icu_messageformat": "0.3.1",

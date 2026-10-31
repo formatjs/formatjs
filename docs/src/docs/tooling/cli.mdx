@@ -488,6 +488,33 @@ Whether to check for missing keys in target locale compared to source locale. Th
 
 Whether to check for structural equality of messages between source and target locale. This makes sure translations are formattable and are not missing any tokens.
 
+### `--message-syntax <syntax>`
+
+Select `icu` (default) or `java-printf` for `--structural-equality`. Both npm CLI
+and Rust binary use the same Rust validator for Java printf messages.
+
+```sh
+formatjs verify "lang/*.json" --source-locale en \
+  --message-syntax java-printf --structural-equality --missing-keys --extra-keys
+```
+
+Java printf verification rejects malformed syntax in source or target messages,
+missing/extra resolved argument indices, and changed argument requirements.
+For example, `%s %d` and `%2$d %1$s %<s` match; `%1$d` fails for both an
+incompatible first argument and a missing second argument. Diagnostics include
+locale and message ID.
+
+The set of conversion requirements for each argument must match. Reordering,
+repeated references, uppercase variants and compatible numeric/date presentation
+changes are allowed. String, boolean, hash, character, integer, floating-point
+and date/time uses remain distinct. `%#s`, signed octal/hexadecimal flags and
+hexadecimal floats carry narrower requirements. Runtime Java types/values and
+date fields are not inferred.
+
+Input stays JSON with string leaves, optionally nested. This mode does not read
+Android XML: decode resource XML, skip `formatted="false"`, and emit each plural
+or array item as an independently formatted message before verification.
+
 ### `--extra-keys`
 
 Whether to check for keys that exist in the target locale but not in the source locale. This ensures that translation files do not contain obsolete or unused keys.

@@ -26,6 +26,7 @@ serde_json = { version = "1.0", features = ["preserve_order"] }
 fast-glob = "1.0"
 walkdir = "2"
 formatjs_icu_messageformat_parser = { path = "../icu_messageformat_parser", version = "1.1.1" }
+formatjs_java_printf_parser = { path = "../java_printf_parser", version = "0.1.0" }
 formatjs_icu_skeleton_parser = { path = "../icu_skeleton_parser", version = "0.1.2" }
 oxc = { version = "0.155", features = ["ast_visit", "semantic"] }
 oxc_allocator = "0.155"

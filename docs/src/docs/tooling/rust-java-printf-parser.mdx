@@ -28,4 +28,19 @@ The parser checks Java grammar and argument-independent format constraints. Runt
 
 For Android, decode resource XML first and respect `formatted="false"`. Parse each plural or array item independently because argument indexing restarts for every formatted string. XML markup, backslash escapes and braces remain literal text. C printf length modifiers and iOS `%@` are separate dialects.
 
-Java Formatter oracle tests cover conversion/flag combinations and argument selection. Java is a test dependency only; consumers need no JVM. Release automation registration remains separate.
+Java Formatter oracle tests cover conversion/flag combinations and argument selection. Java is a test dependency only; consumers need no JVM. Release Please and the crates release workflow register this crate.
+
+## Validate translation catalogs
+
+The npm and Rust CLIs can compare Java printf argument requirements:
+
+```sh
+formatjs verify "lang/*.json" --source-locale en \
+  --message-syntax java-printf --structural-equality
+```
+
+The parser remains independent of this policy. CLI validation compares resolved
+argument indices and conversion requirement sets, allows reordered/repeated
+references, and reports syntax errors or missing/extra/incompatible arguments.
+See [CLI verification](/docs/tooling/cli#--message-syntax-syntax) for input and
+compatibility rules.

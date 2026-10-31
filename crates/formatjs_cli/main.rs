@@ -73,6 +73,21 @@ impl From<PseudoLocale> for compile::PseudoLocale {
     }
 }
 
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum MessageSyntaxType {
+    Icu,
+    JavaPrintf,
+}
+
+impl From<MessageSyntaxType> for verify::MessageSyntax {
+    fn from(syntax: MessageSyntaxType) -> Self {
+        match syntax {
+            MessageSyntaxType::Icu => Self::Icu,
+            MessageSyntaxType::JavaPrintf => Self::JavaPrintf,
+        }
+    }
+}
+
 #[derive(Subcommand)]
 enum Commands {
     /// Extract messages from JavaScript, TypeScript, Rust, and Python source files.
@@ -243,6 +258,10 @@ enum Commands {
         #[arg(long)]
         structural_equality: bool,
 
+        /// Message grammar used by --structural-equality.
+        #[arg(long, value_enum, default_value = "icu")]
+        message_syntax: MessageSyntaxType,
+
         /// Whether to follow symbolic links when traversing directories.
         /// Defaults to true for compatibility with fast-glob behavior (e.g., pnpm symlinked node_modules).
         /// Use --no-follow-links to disable.
@@ -335,9 +354,10 @@ fn main() -> Result<()> {
             missing_keys,
             extra_keys,
             structural_equality,
+            message_syntax,
             follow_links,
         } => {
-            verify::verify(
+            verify::verify_with_syntax(
                 translation_files,
                 source_locale.as_deref(),
                 ignore,
@@ -345,6 +365,7 @@ fn main() -> Result<()> {
                 *extra_keys,
                 *structural_equality,
                 *follow_links,
+                (*message_syntax).into(),
             )?;
         }
     }
