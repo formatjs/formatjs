@@ -272,30 +272,39 @@ impl NumberFormat {
             } else {
                 self.exponent(magnitude)?
             };
+            let mut reusable = None;
             // Standard notation keeps exponent zero, so rounding cannot change it.
             if !number.zero() && self.resolved.notation != "standard" {
                 let mut preview = number.clone();
                 preview.negative = false;
                 preview.shift(-exponent)?;
-                let preview = Numeric::parse(
-                    &self
-                        .resolved
-                        .digits
-                        .format_string(&preview.text()?)
-                        .map_err(digit_error)?,
-                )?;
+                let text = self
+                    .resolved
+                    .digits
+                    .format_string(&preview.text()?)
+                    .map_err(digit_error)?;
+                let preview = Numeric::parse(&text)?;
+                let preview_exponent = exponent;
                 if !preview.zero() && preview.magnitude() != magnitude - exponent {
                     magnitude += 1;
                     exponent = self.exponent(magnitude)?;
                 }
+                // Negative inputs can use different directed rounding in the final pass.
+                if !number.negative && exponent == preview_exponent {
+                    reusable = Some((preview, text));
+                }
             }
-            number.shift(-exponent)?;
-            let text = self
-                .resolved
-                .digits
-                .format_string(&number.text()?)
-                .map_err(digit_error)?;
-            let mut rounded = Numeric::parse(&text)?;
+            let (mut rounded, text) = if let Some(result) = reusable {
+                result
+            } else {
+                number.shift(-exponent)?;
+                let text = self
+                    .resolved
+                    .digits
+                    .format_string(&number.text()?)
+                    .map_err(digit_error)?;
+                (Numeric::parse(&text)?, text)
+            };
             rounded.negative = input.negative;
             (rounded, text, exponent, magnitude)
         };

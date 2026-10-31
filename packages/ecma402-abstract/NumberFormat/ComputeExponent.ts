@@ -9,16 +9,17 @@ import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cach
  * according to the number formatting settings. It handles cases such as 999 rounding up to 1000,
  * requiring a different exponent.
  *
- * NOT IN SPEC: it returns [exponent, magnitude].
+ * NOT IN SPEC: returns magnitude and reusable positive rounding when scaling is unchanged.
  */
 export function ComputeExponent(
   internalSlots: NumberFormatInternal,
   x: Decimal
-): [number, number] {
+): [number, number, ReturnType<typeof FormatNumericToString>?] {
   if (x.isZero()) {
     return [0, 0]
   }
-  if (x.isNegative()) {
+  const negative = x.isNegative()
+  if (negative) {
     x = x.negated()
   }
 
@@ -42,8 +43,10 @@ export function ComputeExponent(
   // Preserve more precision by doing multiplication when exponent is negative.
   x = x.times(getPowerOf10(-exponent))
   const formatNumberResult = FormatNumericToString(internalSlots, x)
+  // Negative inputs can use different directed rounding in the final pass.
+  const preview = negative ? undefined : formatNumberResult
   if (formatNumberResult.roundedNumber.isZero()) {
-    return [exponent, magnitude.toNumber()]
+    return [exponent, magnitude.toNumber(), preview]
   }
 
   // Fast path for simple rounded numbers
@@ -61,10 +64,13 @@ export function ComputeExponent(
     newMagnitude = formatNumberResult.roundedNumber.log(10).floor()
   }
   if (newMagnitude.eq(magnitude.minus(exponent))) {
-    return [exponent, magnitude.toNumber()]
+    return [exponent, magnitude.toNumber(), preview]
   }
+  const nextMagnitude = magnitude.plus(1)
+  const nextExponent = ComputeExponentForMagnitude(internalSlots, nextMagnitude)
   return [
-    ComputeExponentForMagnitude(internalSlots, magnitude.plus(1)),
-    magnitude.plus(1).toNumber(),
+    nextExponent,
+    nextMagnitude.toNumber(),
+    nextExponent === exponent ? preview : undefined,
   ]
 }

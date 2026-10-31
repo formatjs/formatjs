@@ -45,6 +45,7 @@ export function PartitionNumberPattern(
     n = symbols.infinity
   } else {
     // 8. Else,
+    let preview: ReturnType<typeof FormatNumericToString> | undefined
     if (!x.isZero()) {
       // 8.a. If x < 0, let x be -x.
       invariant(x.isFinite(), 'Input must be a mathematical value')
@@ -60,15 +61,19 @@ export function PartitionNumberPattern(
           exponent,
           // IMPL: We need to record the magnitude of the number
           magnitude,
+          preview,
         ] = ComputeExponent(internalSlots, x)
 
         // 8.d. Let x be x × 10^(-exponent).
-        x = x.times(getPowerOf10(-exponent))
+        if (!preview) {
+          x = x.times(getPowerOf10(-exponent))
+        }
       }
     }
 
     // 8.e. Let formatNumberResult be FormatNumericToString(internalSlots, x).
-    const formatNumberResult = FormatNumericToString(internalSlots, x)
+    const formatNumberResult =
+      preview ?? FormatNumericToString(internalSlots, x)
 
     // 8.f. Let n be formatNumberResult.[[formattedString]].
     n = formatNumberResult.formattedString

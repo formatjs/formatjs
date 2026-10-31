@@ -409,3 +409,54 @@ fn malformed_compiled_pattern_indices_are_rejected() {
         ));
     }
 }
+
+#[test]
+fn exponent_preview_keeps_directed_signs_and_rollover() {
+    let registry = registry();
+    for (notation, input, ceil, floor) in [
+        ("scientific", "1250", "2E3", "1E3"),
+        ("scientific", "-1250", "-1E3", "-2E3"),
+        ("engineering", "1250", "2E3", "1E3"),
+        ("engineering", "-1250", "-1E3", "-2E3"),
+        ("compact", "1250", "2K", "1K"),
+        ("compact", "-1250", "-1K", "-2K"),
+    ] {
+        for (mode, expected) in [("ceil", ceil), ("floor", floor)] {
+            let number = registry
+                .create(
+                    &["en".into()],
+                    &options(json!({
+                        "notation":notation,"roundingMode":mode,"maximumFractionDigits":0
+                    })),
+                )
+                .unwrap();
+            assert_eq!(
+                number.format(input).unwrap(),
+                expected,
+                "{notation} {mode} {input}"
+            );
+        }
+    }
+    for (notation, input, expected) in [
+        ("scientific", "999.5", "1E3"),
+        ("scientific", "-999.5", "-1E3"),
+        ("engineering", "999500", "1E6"),
+        ("engineering", "-999500", "-1E6"),
+        ("compact", "999500", "1M"),
+        ("compact", "-999500", "-1M"),
+    ] {
+        let number = registry
+            .create(
+                &["en".into()],
+                &options(json!({
+                    "notation":notation,"maximumSignificantDigits":3
+                })),
+            )
+            .unwrap();
+        assert_eq!(
+            number.format(input).unwrap(),
+            expected,
+            "{notation} {input}"
+        );
+    }
+}

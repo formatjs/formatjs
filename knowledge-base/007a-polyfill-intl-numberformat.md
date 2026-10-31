@@ -298,3 +298,7 @@ profiles the remaining arithmetic work after compiled plans. BigDecimal strips
 trailing zeros in eight-digit chunks, retaining the single-digit tail and unsafe
 exponent fallback. NumberFormat benchmarks now distinguish host and polyfilled
 PluralRules with `--polyfill-plurals`. ICU snapshots remain unchanged.
+
+TS and Rust reuse positive exponent-preview rounding when final scaling stays
+unchanged. Negative directed rounding and exponent rollover retain their final
+pass. No data payload changes. See [measurement and guard coverage](audits/2026-10-31-numberformat-rounding-reuse.md).

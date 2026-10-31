@@ -175,3 +175,8 @@ registry. JSON output records the plural provider.
 ```bash
 bazel run -c opt //packages/intl-numberformat/benchmark:audit -- --all-locales --polyfill-plurals --iterations=24000
 ```
+
+[Exponent-preview reuse](../../../knowledge-base/audits/2026-10-31-numberformat-rounding-reuse.md)
+records paired TS/Rust results after decimal normalization. Notation formatting
+can share its positive preview when final scaling stays unchanged; negative
+rounding retains its own pass. Locale payload stays unchanged.
