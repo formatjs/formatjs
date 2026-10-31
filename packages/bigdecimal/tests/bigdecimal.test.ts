@@ -793,14 +793,26 @@ it('keeps terminating and repeating division exact through normalization', () =>
 })
 
 it('preserves exponent arithmetic outside the safe integer range', () => {
+  const zeros = '0'.repeat(40)
+  for (const exponent of [
+    '9007199254740983',
+    '9007199254740991',
+    '9007199254740992',
+  ]) {
+    expect(
+      new BigDecimal(`123${zeros}e${exponent}`).eq(
+        new BigDecimal('123e9007199254740992')
+      )
+    ).toBe(true)
+  }
   expect(
-    new BigDecimal('123000e9007199254740991').eq(
-      new BigDecimal('123e9007199254740992')
+    new BigDecimal(`-123${zeros}e9007199254740992`).eq(
+      new BigDecimal('-123e9007199254740992')
     )
   ).toBe(true)
   expect(
-    new BigDecimal('-123000e9007199254740992').eq(
-      new BigDecimal('-123e9007199254740992')
+    new BigDecimal(`123${zeros}e-9007199254740992`).eq(
+      new BigDecimal('123e-9007199254740952')
     )
   ).toBe(true)
 })
