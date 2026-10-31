@@ -1,5 +1,6 @@
 [workspace]
 members = [
+  "crates/java_printf_parser",
   "crates/intl_localematcher",
   "crates/intl_data",
   "crates/intl_data_build",

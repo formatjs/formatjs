@@ -1,0 +1,54 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_doc_test")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+rust_library(
+    name = "java_printf_parser",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_java_printf_parser",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "java_printf_parser_test",
+    size = "small",
+    srcs = ["lib.test.rs"],
+    crate_name = "java_printf_parser_test",
+    edition = "2024",
+    deps = [":java_printf_parser"],
+)
+
+java_binary(
+    name = "formatter_oracle",
+    testonly = True,
+    srcs = ["tests/FormatterOracle.java"],
+    main_class = "FormatterOracle",
+)
+
+genrule(
+    name = "formatter_fixtures",
+    testonly = True,
+    outs = ["formatter-fixtures.tsv"],
+    cmd = "$(execpath :formatter_oracle) $@",
+    tools = [":formatter_oracle"],
+)
+
+formatjs_rust_test(
+    name = "java_conformance_test",
+    size = "small",
+    srcs = ["conformance.test.rs"],
+    compile_data = [":formatter_fixtures"],
+    crate_name = "java_conformance_test",
+    edition = "2024",
+    rustc_env = {"JAVA_FORMATTER_FIXTURES": "$(execpath :formatter_fixtures)"},
+    deps = [":java_printf_parser"],
+)
+
+rust_doc_test(
+    name = "doc_test",
+    size = "small",
+    crate = ":java_printf_parser",
+)
