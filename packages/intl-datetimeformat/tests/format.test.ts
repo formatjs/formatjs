@@ -348,7 +348,7 @@ describe('toLocaleString', function () {
 
 describe('toLocaleDateString', function () {
   it('ko', function () {
-    expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020. 6. 16.')
+    expect(toLocaleDateString(new Date(TS), 'ko')).toBe('2020/6/16')
   })
   it('en', function () {
     expect(toLocaleDateString(new Date(TS), 'en')).toBe('6/16/2020')

@@ -22,7 +22,7 @@ Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, uni
 | `cldr-units-full`   | Unit format patterns (long/short/narrow with plural variants)       |
 | `cldr-core`         | Available locales, numbering systems, currency digit metadata       |
 
-CLDR common XML 48.2 supplies locale-specific symbols and patterns for all 78
+CLDR common XML 49 supplies locale-specific symbols and patterns for all 78
 numeric numbering systems. The resolver applies parent locales, root aliases,
 and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through

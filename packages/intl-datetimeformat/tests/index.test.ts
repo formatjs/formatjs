@@ -1201,13 +1201,8 @@ describe('Intl.DateTimeFormat', function () {
       timeZoneName: 'short',
     }).format(winterDate)
 
-    // FIXED: Issue #5114 resolved by falling back to GMT offset format
-    // when CLDR doesn't provide a daylight name
-
-    // Summer should show GMT+1 (offset fallback since no localized DST name)
-    // Winter should show GMT
-    expect(summerFmt).toBe('15 Jul 2025, 13:00 GMT+1') // Correct: shows offset during DST
-    expect(winterFmt).toBe('15 Jan 2025, 12:00 GMT') // Correct: shows GMT for standard time
+    expect(summerFmt).toBe('15 Jul 2025, 13:00 BST')
+    expect(winterFmt).toBe('15 Jan 2025, 12:00 GMT')
 
     // Test with long timezone names
     const summerLong = new DateTimeFormat('en-GB', {
@@ -1219,9 +1214,7 @@ describe('Intl.DateTimeFormat', function () {
       timeZoneName: 'long',
     }).format(summerDate)
 
-    // With long format, should show GMT+01:00 (since no localized daylight name)
-    // This matches native browser behavior (Firefox, Safari, Chrome all use offset)
-    expect(summerLong).toBe('15 Jul 2025, 13:00 GMT+01:00') // Correct: shows offset format
+    expect(summerLong).toBe('15 Jul 2025, 13:00 British Summer Time')
   })
 
   it('should support America/Coyhaique timezone from IANA 2025c, GH #5111', function () {

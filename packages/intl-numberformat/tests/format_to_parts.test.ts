@@ -217,8 +217,7 @@ it('formats unit pattern with both prefix and suffix', () => {
   expect(format({...n, sign: 1}, data, pl, options)).toEqual('摂氏 +123 度')
 })
 
-// sw's currency unit pattern is "{1} {0}"
-// So -123 USD is formatted as "dola za Marekani -123.00".
+// Exercise currency-first placement independently of CLDR locale patterns.
 it('formats currency name pattern with currency before number', () => {
   const options = {
     ...defaultOptions,
@@ -227,7 +226,8 @@ it('formats currency name pattern with currency before number', () => {
     currencyDisplay: 'name',
     currencySign: 'standard',
   } as const
-  const data = require('./locale-data/sw.json').data
+  const data = structuredClone(require('./locale-data/sw.json').data)
+  data.numbers.currency.latn.unitPattern = '{1} {0}'
   const pl = new Intl.PluralRules('sw')
   const n = {
     ...baseNumberResult,

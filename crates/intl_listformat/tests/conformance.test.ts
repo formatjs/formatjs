@@ -21,7 +21,7 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
   const files = readdirSync(directory)
     .filter(file => file.endsWith('.json'))
     .sort()
-  expect(files.length).toBeGreaterThan(700)
+  expect(files.length).toBe(657)
   // Ported length/pattern cases plus empty elements, non-BMP text, NUL,
   // combining marks, placeholders and lone surrogates. No input normalization.
   const lists = [
@@ -124,5 +124,5 @@ it('matches every CLDR locale, type and style against the TS implementation', ()
       }
     }
   }
-  expect(comparisons).toBeGreaterThan(80_000)
+  expect(comparisons).toBe(files.length * 9 * lists.length)
 }, 120_000)

@@ -120,7 +120,7 @@ Date bounds, eras, standalone grammar, flexible day periods, DST names and GMT
 fallbacks follow TS behavior. Host coercion and Temporal brand checks remain
 unfinished.
 
-`//crates/intl_datetimeformat:locale_data` generates 766 separate base JSON packs.
+`//crates/intl_datetimeformat:locale_data` generates 657 separate base JSON packs.
 Each includes Gregorian/ISO patterns and its native NumberFormat payload under
 `number`; optional calendars and timezone transitions remain separate loads.
 Raw TS locale JSON still loads for metadata/pattern use; numeric rendering needs

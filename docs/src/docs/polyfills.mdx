@@ -18,6 +18,15 @@ Our current list of polyfills includes:
 
 ![Polyfill Hierarchy](/img/polyfills.svg)
 
+# Locale data
+
+Polyfill data uses [CLDR 49](https://cldr.unicode.org/downloads/cldr-49).
+DateTimeFormat, NumberFormat, DisplayNames, ListFormat, and RelativeTimeFormat
+provide 657 locale-data files. Compared with CLDR 48.2, five locales were added
+and 114 removed upstream; imports for removed locales such as `locale-data/aa`
+are no longer available. Check available locale-data files when upgrading.
+Localized names and formatting patterns may also change with CLDR releases.
+
 # Numeric inputs
 
 DateTimeFormat, RelativeTimeFormat, duration fields, and numeric options use

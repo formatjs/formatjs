@@ -118,7 +118,7 @@ independent of dependency packs. Lookup/best-fit and nu extension/option negotia
 run before style resolution. Native NumberFormat probes augment CLDR defaults;
 empty probes retry after loading and successful capability sets remain cached.
 Phased construction retains this resolution snapshot while the host reads options.
-Resolved options are compared with TS across all 766 locales; eight-locale
+Resolved options are compared with TS across all 657 locales; eight-locale
 rendering tests also exercise the complete native constructor and separator lookup.
 
 The owned C ABI retains synchronized native dependency contexts across registry,

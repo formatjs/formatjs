@@ -21,7 +21,7 @@ function main() {
     'es',
     'ja',
     'zh',
-    'aa',
+    'ady',
     'agq',
   ]
   const packs = locales.map(locale =>
