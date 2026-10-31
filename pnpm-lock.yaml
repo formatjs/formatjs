@@ -460,8 +460,8 @@ importers:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-cal-hebrew-full:
-        specifier: 48.2.0
-        version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
+        specifier: 49.0.0
+        version: 49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
       cldr-cal-indian-full:
         specifier: 48.2.0
         version: 48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0)))
@@ -4576,10 +4576,10 @@ packages:
     peerDependencies:
       cldr-dates-full: 48.2.0
 
-  cldr-cal-hebrew-full@48.2.0:
-    resolution: {integrity: sha512-9Aubz8V76RsZwNFKsFCN6wIubV9gLJ0EGKIvROdfPgt7ip50KuhVz3AYlDiZZKbac8pV3L/AcA3zFP6h4IrNPA==}
+  cldr-cal-hebrew-full@49.0.0:
+    resolution: {integrity: sha512-/gvmPqu5/HKe30412g2TzuNzOU3vbK1PPRXfzUCKR4w7x676pwoOG9cMxiFRn0yKWpQe9/1vBJJqbtK/ZzSCQg==}
     peerDependencies:
-      cldr-dates-full: 48.2.0
+      cldr-dates-full: 49.0.0
 
   cldr-cal-indian-full@48.2.0:
     resolution: {integrity: sha512-nNDa0YRmDQQLDpnNp2mKTUBhQkmovOWiZIb1i1DpOlZ0IovJ0ZR6gFrc7VkF9CYyWqgEEZlE4jkjiGyaai/2Dw==}
@@ -10968,7 +10968,7 @@ snapshots:
     dependencies:
       cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
 
-  cldr-cal-hebrew-full@48.2.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
+  cldr-cal-hebrew-full@49.0.0(cldr-dates-full@48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))):
     dependencies:
       cldr-dates-full: 48.2.0(cldr-numbers-full@48.2.0(cldr-core@48.2.0))
 
