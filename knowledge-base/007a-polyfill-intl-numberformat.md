@@ -254,3 +254,39 @@ numbering-system aliases. Re-register changed compact data through
 `__addLocaleData` to invalidate those indexes. Serialized locale data stays
 unchanged. Standard notation skips exponent-preview rounding because its exponent
 is always zero.
+
+## Compiled number patterns
+
+The CLDR generator adds optional `numbers.patternPlans` (schema version 1) to
+both JS locale data and Rust packs. It compiles standard, percent, currency,
+accounting, and compact number templates. Each raw template selects six plan
+IDs: unsigned, negative, positive, then their approximate variants. A plan is a flat array
+`[primaryGroupSize, secondaryGroupSize, ...tokenIDs]`. Tokens and complete plans are
+interned per locale, including identical numbering-system patterns.
+
+```mermaid
+flowchart LR
+  CLDR[Resolved CLDR patterns] --> Compiler[Pattern compiler]
+  Compiler --> Pool[Token pool + sign-plan IDs]
+  Pool --> JS[JS locale module]
+  Pool --> Pack[Rust locale pack]
+  JS --> Render[Select plan and render parts]
+  Pack --> Render
+```
+
+Runtime formatting selects an existing plan rather than splitting CLDR patterns,
+inferring grouping, or rewriting signs. Currency labels and spacing remain dynamic.
+Whole signed plans retain accounting affixes together; range collapse itself is
+unchanged. Unit-template composition, plural selection, and existing compact
+magnitude indexes also remain unchanged.
+
+The field is optional: TS lazily compiles missing raw templates into a WeakMap
+cache; Rust caches its raw-template fallback per immutable locale record. Neither adapter changes the input
+payload. Changed templates absent from generated metadata use the fallback, even
+when the same locale object is registered again. Rust validates plan/token indices,
+variant counts, token kinds, grouping intervals, and schema version on load.
+Existing formatVersion 1 native readers can ignore the additional metadata.
+
+ICU4J/ICU4C snapshots guard outputs independently for TS and Rust. Compatibility
+tests compare generated and legacy packs, including signs, accounting, approximate
+ranges, nonfinite values, custom grouping, and locale re-registration.

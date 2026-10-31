@@ -343,3 +343,69 @@ fn decimal_text_keeps_signs_digit_mapping_rounding_and_pattern_fallback() {
         ("-12,34,567.5".into(), "other")
     );
 }
+
+#[test]
+fn generated_and_legacy_pattern_packs_match() {
+    let compiled = registry();
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    assert!(
+        pack["data"]["numbers"]
+            .as_object_mut()
+            .unwrap()
+            .remove("patternPlans")
+            .is_some()
+    );
+    let mut legacy = Registry::default();
+    legacy.add_locale_data(&pack.to_string()).unwrap();
+    for profile in [
+        json!({}),
+        json!({"style":"percent"}),
+        json!({"style":"currency","currency":"CHF","currencyDisplay":"code"}),
+        json!({"style":"currency","currency":"USD","currencySign":"accounting"}),
+        json!({"notation":"scientific"}),
+        json!({"notation":"compact"}),
+        json!({"style":"currency","currency":"USD","notation":"compact"}),
+    ] {
+        for sign in ["auto", "always", "never"] {
+            let mut profile = profile.clone();
+            profile["signDisplay"] = json!(sign);
+            let options = options(profile);
+            let compiled = compiled.create(&["en".into()], &options).unwrap();
+            let legacy = legacy.create(&["en".into()], &options).unwrap();
+            for value in ["0", "-0", "-12345.5", "1.025", "Infinity", "NaN", "1e21"] {
+                assert_eq!(
+                    compiled.format_to_parts(value).unwrap(),
+                    legacy.format_to_parts(value).unwrap()
+                );
+            }
+            for (start, end) in [
+                ("1.00001", "1.00002"),
+                ("-1.00002", "-1.00001"),
+                ("-0", "0"),
+            ] {
+                assert_eq!(
+                    compiled.format_range_to_parts(start, end).unwrap(),
+                    legacy.format_range_to_parts(start, end).unwrap()
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn malformed_compiled_pattern_indices_are_rejected() {
+    for field in ["parts", "variants"] {
+        let mut pack: Value =
+            serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+        let patterns = &mut pack["data"]["numbers"]["patternPlans"];
+        if field == "parts" {
+            patterns["plans"][0] = json!([3, 3, usize::MAX]);
+        } else {
+            patterns["standard"]["#,##0.###"] = json!(vec![usize::MAX; 6]);
+        }
+        assert!(matches!(
+            Registry::default().add_locale_data(&pack.to_string()),
+            Err(Error::InvalidData(_))
+        ));
+    }
+}

@@ -158,3 +158,11 @@ Linux/RBE `//conformance-tests/icu4c:number_format_fixtures` target to compare t
 second oracle. Resolve its artifact with `bazel cquery --output=files`.
 `--strict` fails on recorded differences. Details and remaining correctness
 findings: [NumberFormat audit](../../../knowledge-base/audits/2026-10-31-numberformat.md).
+
+The Rust audit benchmark also reports median English pack registration time
+(including parsing, registry creation, and drop), over seven rounds of 25 loads.
+The TS `registrationMilliseconds` field includes filesystem reads and parsing all
+requested locale packs; compare it separately from warm format-call medians.
+
+Use `bazel run -c opt //crates/intl_numberformat:benchmark -- --legacy-patterns`
+to measure the cached raw-pack adapter without generated metadata.

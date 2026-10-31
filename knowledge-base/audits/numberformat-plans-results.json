@@ -1,0 +1,369 @@
+{
+  "baselineCommit": "6e26b50cb70b5d07c8b2c4e54f2e8bec3bd23bc7",
+  "host": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+  "method": "Paired optimized Bazel runs, baseline then flat generated plans, seven rounds of 24000 calls. Constructor rounds capped at 1000; native registration seven rounds of 25 loads including drop.",
+  "ts": {
+    "baseline": {
+      "node": "v24.14.0",
+      "icu": "78.2",
+      "iterations": 24000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 167.075959,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 2.9947968750000014,
+          "minMicroseconds": 2.961364583333335,
+          "maxMicroseconds": 3.3564739583333347,
+          "checksum": 1227645
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 3.228828125000007,
+          "minMicroseconds": 3.2233472083333368,
+          "maxMicroseconds": 3.372350666666667,
+          "checksum": 1643185
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 3.574451374999995,
+          "minMicroseconds": 3.5130816250000025,
+          "maxMicroseconds": 3.702357666666662,
+          "checksum": 2417645
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 6.0672916666666765,
+          "minMicroseconds": 6.047559041666659,
+          "maxMicroseconds": 6.171262166666679,
+          "checksum": 887807
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 14.298939208333346,
+          "minMicroseconds": 14.22109204166666,
+          "maxMicroseconds": 14.459989583333329,
+          "checksum": 642143
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 14.306305583333332,
+          "minMicroseconds": 14.259381916666674,
+          "maxMicroseconds": 14.615499999999997,
+          "checksum": 812143
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 9.70772045833337,
+          "minMicroseconds": 9.6329791666667,
+          "maxMicroseconds": 9.865529541666621,
+          "checksum": 774380
+        },
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 8.764584000000468,
+          "minMicroseconds": 8.673375000000306,
+          "maxMicroseconds": 9.691375000000335,
+          "checksum": 14200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 10.044332999999824,
+          "minMicroseconds": 9.895457999999053,
+          "maxMicroseconds": 10.525249999998778,
+          "checksum": 14200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 4.963207999999213,
+          "minMicroseconds": 4.890208000000712,
+          "maxMicroseconds": 5.088416000000507,
+          "checksum": 14200
+        }
+      ]
+    },
+    "compiled": {
+      "node": "v24.14.0",
+      "icu": "78.2",
+      "iterations": 24000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 184.311125,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 2.5833455000000023,
+          "minMicroseconds": 2.5606787916666653,
+          "maxMicroseconds": 2.9736805833333335,
+          "checksum": 1227645
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 2.7743750000000014,
+          "minMicroseconds": 2.744658000000006,
+          "maxMicroseconds": 2.9824166666666705,
+          "checksum": 1643185
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 3.1828159583333315,
+          "minMicroseconds": 3.0993559166666675,
+          "maxMicroseconds": 3.3194080000000006,
+          "checksum": 2417645
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 5.686574666666653,
+          "minMicroseconds": 5.636175375000012,
+          "maxMicroseconds": 5.796940958333333,
+          "checksum": 887807
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 13.733182291666688,
+          "minMicroseconds": 13.672126708333318,
+          "maxMicroseconds": 13.915508666666673,
+          "checksum": 642143
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 13.819529541666688,
+          "minMicroseconds": 13.742550333333345,
+          "maxMicroseconds": 13.905930541666674,
+          "checksum": 812143
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 9.210888874999984,
+          "minMicroseconds": 9.17911458333333,
+          "maxMicroseconds": 9.287677083333316,
+          "checksum": 774380
+        },
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 8.73895900000025,
+          "minMicroseconds": 8.689834000000701,
+          "maxMicroseconds": 9.767915999998877,
+          "checksum": 14200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 9.908457999999882,
+          "minMicroseconds": 8.99200000000019,
+          "maxMicroseconds": 12.637290999999095,
+          "checksum": 14200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 4.862542000000758,
+          "minMicroseconds": 4.805707999999868,
+          "maxMicroseconds": 6.224333000000115,
+          "checksum": 14200
+        }
+      ]
+    }
+  },
+  "rust": {
+    "baseline": {
+      "iterations": 24000,
+      "rounds": 7,
+      "registrationIterations": 25,
+      "registrationMicroseconds": 182.515,
+      "localeBytes": 49530,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 0.509515625,
+          "minMicroseconds": 0.5088663333333333,
+          "maxMicroseconds": 0.5144427083333334,
+          "checksum": 1227645
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 1.0477691249999999,
+          "minMicroseconds": 1.045300375,
+          "maxMicroseconds": 1.1116684166666668,
+          "checksum": 1643185
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 1.3691354166666667,
+          "minMicroseconds": 1.3580972083333334,
+          "maxMicroseconds": 1.3833975833333334,
+          "checksum": 2417645
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 0.9399322916666667,
+          "minMicroseconds": 0.923859375,
+          "maxMicroseconds": 0.950671875,
+          "checksum": 887807
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 1.3038385416666665,
+          "minMicroseconds": 1.2776197916666667,
+          "maxMicroseconds": 1.3084635416666666,
+          "checksum": 642143
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 1.3707882083333334,
+          "minMicroseconds": 1.3488315833333333,
+          "maxMicroseconds": 1.4013419999999999,
+          "checksum": 812143
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 1.2554565833333333,
+          "minMicroseconds": 1.2472534583333332,
+          "maxMicroseconds": 1.2640555416666668,
+          "checksum": 774380
+        }
+      ]
+    },
+    "compiled": {
+      "iterations": 24000,
+      "rounds": 7,
+      "registrationIterations": 25,
+      "registrationMicroseconds": 204.065,
+      "localeBytes": 52520,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 0.4318524166666667,
+          "minMicroseconds": 0.43008854166666666,
+          "maxMicroseconds": 0.4328055416666667,
+          "checksum": 1227645
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 0.679184,
+          "minMicroseconds": 0.6634895833333333,
+          "maxMicroseconds": 0.6913125,
+          "checksum": 1643185
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 0.9902881666666665,
+          "minMicroseconds": 0.9810121666666667,
+          "maxMicroseconds": 1.0157795,
+          "checksum": 2417645
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 0.61846525,
+          "minMicroseconds": 0.6082274166666667,
+          "maxMicroseconds": 0.6290989583333333,
+          "checksum": 887807
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 0.8133785000000001,
+          "minMicroseconds": 0.811033,
+          "maxMicroseconds": 0.8190242916666666,
+          "checksum": 642143
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 0.8681753333333333,
+          "minMicroseconds": 0.85590625,
+          "maxMicroseconds": 0.8707934166666668,
+          "checksum": 812143
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 0.7980277916666667,
+          "minMicroseconds": 0.7833298333333334,
+          "maxMicroseconds": 0.807140625,
+          "checksum": 774380
+        }
+      ]
+    }
+  },
+  "payload": {
+    "baseline": {
+      "ts": {
+        "locales": 657,
+        "bytes": 50691901,
+        "gzipBytes": 5577038
+      },
+      "rust": {
+        "locales": 657,
+        "bytes": 27528311,
+        "gzipBytes": 5082379
+      }
+    },
+    "compiled": {
+      "ts": {
+        "locales": 657,
+        "bytes": 62686381,
+        "gzipBytes": 6256793
+      },
+      "rust": {
+        "locales": 657,
+        "bytes": 29616628,
+        "gzipBytes": 5617080
+      }
+    }
+  },
+  "rustLegacyAdapter": {
+    "iterations": 24000,
+    "rounds": 7,
+    "registrationIterations": 25,
+    "registrationMicroseconds": 191.02331999999998,
+    "localeBytes": 49529,
+    "results": [
+      {
+        "name": "decimal",
+        "medianMicroseconds": 0.4483628333333334,
+        "minMicroseconds": 0.44246525,
+        "maxMicroseconds": 0.4497690833333334,
+        "checksum": 1227645
+      },
+      {
+        "name": "currency",
+        "medianMicroseconds": 0.7083837083333333,
+        "minMicroseconds": 0.6984409583333334,
+        "maxMicroseconds": 0.7263107499999999,
+        "checksum": 1643185
+      },
+      {
+        "name": "unit",
+        "medianMicroseconds": 1.005703125,
+        "minMicroseconds": 0.9967465416666668,
+        "maxMicroseconds": 1.0134791666666667,
+        "checksum": 2417645
+      },
+      {
+        "name": "scientific",
+        "medianMicroseconds": 0.6247447916666666,
+        "minMicroseconds": 0.6122552083333334,
+        "maxMicroseconds": 0.6259132083333333,
+        "checksum": 887807
+      },
+      {
+        "name": "compact",
+        "medianMicroseconds": 0.8202222083333333,
+        "minMicroseconds": 0.7987916666666667,
+        "maxMicroseconds": 0.8248715416666668,
+        "checksum": 642143
+      },
+      {
+        "name": "compact currency",
+        "medianMicroseconds": 0.8975607916666666,
+        "minMicroseconds": 0.8769566249999999,
+        "maxMicroseconds": 0.9054322916666667,
+        "checksum": 812143
+      },
+      {
+        "name": "compact significant digits",
+        "medianMicroseconds": 0.800699625,
+        "minMicroseconds": 0.782423625,
+        "maxMicroseconds": 0.811453125,
+        "checksum": 774380
+      }
+    ]
+  }
+}

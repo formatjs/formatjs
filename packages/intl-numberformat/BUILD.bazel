@@ -481,6 +481,7 @@ formatjs_test(
         "tests/fast-path-optimizations.test.ts",
         "tests/format_to_parts.test.ts",
         "tests/internal/compact-preprocessing.test.ts",
+        "tests/internal/number-patterns.test.ts",
         "tests/legacy.test.ts",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",

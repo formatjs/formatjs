@@ -427,6 +427,12 @@ for example `~$3` in English. Its position follows the locale's sign pattern.
 Matching signs can share a currency or unit affix across a range; mixed signs
 remain separate.
 
+## Locale pattern preprocessing
+
+Generated locale bundles include prepared number patterns shared with the Rust SDK.
+Existing locale payloads without prepared patterns remain supported by
+`NumberFormat.__addLocaleData()`. Per-locale imports remain tree-shakeable.
+
 ## Rust Hermes extension
 
 The experimental `formatjs_intl_numberformat` crate implements formatting,

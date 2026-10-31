@@ -3,7 +3,7 @@ use formatjs_intl_getcanonicallocales::canonicalize_locale;
 use formatjs_intl_pluralrules::LocaleRules;
 use serde::Deserialize;
 use std::collections::BTreeMap;
-use std::sync::RwLock;
+use std::sync::{Arc, RwLock};
 
 pub(crate) type Plurals = BTreeMap<String, String>;
 pub(crate) type Compact = BTreeMap<String, Plurals>;
@@ -39,6 +39,8 @@ pub(crate) struct Currency {
 #[serde(rename_all = "camelCase")]
 pub(crate) struct Numbers {
     #[serde(default)]
+    pub pattern_plans: Option<NumberPatterns>,
+    #[serde(default)]
     pub aliases: BTreeMap<String, String>,
     #[serde(default = "one")]
     pub minimum_grouping_digits: usize,
@@ -51,6 +53,17 @@ pub(crate) struct Numbers {
 fn one() -> usize {
     1
 }
+
+#[derive(Deserialize)]
+pub(crate) struct NumberPatterns {
+    pub version: u8,
+    pub standard: BTreeMap<String, Vec<usize>>,
+    pub compact: BTreeMap<String, Vec<usize>>,
+    pub plans: Vec<PatternPlan>,
+    pub tokens: Vec<(String, String)>,
+}
+
+pub(crate) type PatternPlan = Vec<usize>;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -111,7 +124,15 @@ pub(crate) struct Unit {
     pub per_unit: BTreeMap<String, String>,
 }
 
+pub(crate) struct PreparedPattern {
+    pub plan: PatternPlan,
+    pub tokens: Vec<(String, String)>,
+}
+
+type PatternCache = RwLock<BTreeMap<(String, i8, bool, bool), Arc<PreparedPattern>>>;
+
 pub struct LocaleData {
+    pub(crate) legacy_patterns: PatternCache,
     pub(crate) locale: String,
     pub(crate) aliases: Vec<String>,
     pub(crate) nu: Vec<String>,
@@ -166,8 +187,40 @@ impl LocaleData {
                 )));
             }
         }
+        if let Some(patterns) = &pack.data.numbers.pattern_plans {
+            if patterns.version != 1
+                || patterns
+                    .standard
+                    .values()
+                    .chain(patterns.compact.values())
+                    .any(|ids| ids.len() != 6 || ids.iter().any(|id| *id >= patterns.plans.len()))
+                || patterns.plans.iter().any(|plan| {
+                    plan.len() < 2
+                        || plan[..2].contains(&0)
+                        || plan[2..].iter().any(|id| *id >= patterns.tokens.len())
+                })
+                || patterns.tokens.iter().any(|(kind, _)| {
+                    !matches!(
+                        kind.as_str(),
+                        "number"
+                            | "literal"
+                            | "compact"
+                            | "currency"
+                            | "minusSign"
+                            | "plusSign"
+                            | "percentSign"
+                            | "approximatelySign"
+                    )
+                })
+            {
+                return Err(Error::InvalidData(
+                    "Invalid compiled number patterns".into(),
+                ));
+            }
+        }
         let plurals = pack.plurals;
         Ok(Self {
+            legacy_patterns: RwLock::default(),
             locale,
             aliases,
             nu: pack.data.nu,

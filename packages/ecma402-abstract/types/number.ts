@@ -158,7 +158,22 @@ export interface SymbolsData {
   currencyDecimal?: string
 }
 
+export interface NumberPatternPlan {
+  grouping: [number, number]
+  parts: [type: 'number' | NumberFormatPart['type'], value: string][]
+}
+
+export interface CompiledNumberPatterns {
+  version: 1
+  /** Unsigned, negative, positive, followed by their approximate variants. */
+  standard: Record<string, number[]>
+  compact: Record<string, number[]>
+  tokens: NumberPatternPlan['parts']
+  plans: [primary: number, secondary: number, ...tokens: number[]][]
+}
+
 export interface RawNumberData {
+  patternPlans?: CompiledNumberPatterns
   /** Numbering systems sharing the complete data of another system. */
   aliases?: Record<string, string>
   minimumGroupingDigits?: number
