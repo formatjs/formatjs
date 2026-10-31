@@ -1,18 +1,15 @@
 import {Decimal} from '@formatjs/bigdecimal'
-import {memoize} from '@formatjs/fast-memoize'
 
-/**
- * Cached function to compute powers of 10 for Decimal.js operations.
- * This cache significantly reduces overhead in ComputeExponent and ToRawFixed
- * by memoizing expensive Decimal.pow(10, n) calculations.
- *
- * Common exponents (e.g., -20 to 20) are used repeatedly in number formatting,
- * so caching provides substantial performance benefits.
- *
- * @param exponent - Can be a number or Decimal. If Decimal, it will be converted to string for cache key.
- */
-export const getPowerOf10: (exponent: number | Decimal) => Decimal = memoize(
-  (exponent: number | Decimal): Decimal => {
-    return Decimal.pow(10, exponent)
+const powersOfTen = new Map<number, Decimal>()
+
+export function getPowerOf10(exponent: number | Decimal): Decimal {
+  const n = typeof exponent === 'number' ? exponent : exponent.toNumber()
+  const cached = powersOfTen.get(n)
+  if (cached !== undefined) return cached
+  const power = Decimal.pow(10, n)
+  // Retain common Number scales; unusual exponents stay uncached.
+  if (Number.isInteger(n) && n >= -324 && n <= 324) {
+    powersOfTen.set(n, power)
   }
-)
+  return power
+}
