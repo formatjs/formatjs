@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.1.0...@formatjs/cli-lib@10.2.0) (2026-10-31)
+
+
+### Features
+
+* **@formatjs/cli-lib:** add Intel Mac and Windows ARM64 bindings ([#7843](https://github.com/formatjs/formatjs/issues/7843)) ([aafb8e0](https://github.com/formatjs/formatjs/commit/aafb8e0292223cf889e2cd75d4ae5a897c188da2))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.32
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.0
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.32
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.30
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.32
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.30
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.0
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.33
+
 ## [10.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.0.12...@formatjs/cli-lib@10.1.0) (2026-10-31)
 
 

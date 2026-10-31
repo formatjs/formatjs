@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.0...@formatjs/intl-datetimeformat@8.0.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-datetimeformat:** streamline numeric rendering ([cc09570](https://github.com/formatjs/formatjs/commit/cc09570af93673c056f2766cdf12d2951df5d949))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.9
+    * @formatjs/intl-localematcher bumped to 0.10.1
+
 ## [8.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@7.9.0...@formatjs/intl-datetimeformat@8.0.0) (2026-10-31)
 
 

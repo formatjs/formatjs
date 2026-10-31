@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/cli-native-win32-arm64",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Native FormatJS CLI binding for Windows arm64.",
   "homepage": "https://github.com/formatjs/formatjs",
   "bugs": "https://github.com/formatjs/formatjs/issues",

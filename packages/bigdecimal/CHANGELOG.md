@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.8...@formatjs/bigdecimal@0.2.9) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-numberformat:** key decimal powers by numeric exponent ([#7838](https://github.com/formatjs/formatjs/issues/7838)) ([b567ec8](https://github.com/formatjs/formatjs/commit/b567ec806fe3cbe70a01746f53093b89ce06c577))
+
 ## [0.2.8](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.7...@formatjs/bigdecimal@0.2.8) (2026-10-31)
 
 

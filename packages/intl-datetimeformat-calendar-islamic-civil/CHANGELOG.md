@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-islamic-civil@1.1.4...@formatjs/intl-datetimeformat-calendar-islamic-civil@1.1.5) (2026-10-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 8.0.1
+
 ## [1.1.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-islamic-civil@1.1.3...@formatjs/intl-datetimeformat-calendar-islamic-civil@1.1.4) (2026-10-31)
 
 

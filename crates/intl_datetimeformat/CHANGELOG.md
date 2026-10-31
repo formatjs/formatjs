@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.0...formatjs_intl_datetimeformat_v1.0.1) (2026-10-31)
+
+
+### Performance Improvements
+
+* **@formatjs/intl-datetimeformat:** streamline numeric rendering ([cc09570](https://github.com/formatjs/formatjs/commit/cc09570af93673c056f2766cdf12d2951df5d949))
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v0.2.0...formatjs_intl_datetimeformat_v1.0.0) (2026-10-31)
 
 
