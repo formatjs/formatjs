@@ -1,10 +1,7 @@
 import type {Decimal} from '@formatjs/bigdecimal'
-import {
-  type DecimalFormatNum,
-  type NumberFormatInternal,
-} from '#packages/ecma402-abstract/types/number.js'
+import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
-import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
+import {getCompactPattern} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
 /**
  * The abstract operation ComputeExponentForMagnitude computes an exponent by which to scale a
  * number of the given magnitude (power of ten of the most significant digit) according to the
@@ -41,44 +38,8 @@ export function ComputeExponentForMagnitude(
           dataLocaleData.numbers.decimal[dataLocaleData.numbers.nu[0]]
         thresholdMap = compactDisplay === 'long' ? decimal.long : decimal.short
       }
-      if (!thresholdMap) {
-        return 0
-      }
-      const num = getPowerOf10(magnitude).toString() as DecimalFormatNum
-      const thresholds = Object.keys(thresholdMap) as DecimalFormatNum[] // TODO: this can be pre-processed
-      if (num < thresholds[0]) {
-        return 0
-      }
-      if (num > thresholds[thresholds.length - 1]) {
-        // GH #4236: When number exceeds max threshold, use the exponent
-        // corresponding to the largest available threshold in locale data.
-        // Calculate exponent the same way as for normal thresholds (lines 70-73).
-        const magnitudeKey = thresholds[thresholds.length - 1]
-        const compactPattern = thresholdMap[magnitudeKey].other
-        if (compactPattern === '0') {
-          return 0
-        }
-        return (
-          magnitudeKey.length -
-          thresholdMap[magnitudeKey].other.match(/0+/)![0].length
-        )
-      }
-      const i = thresholds.indexOf(num)
-      if (i === -1) {
-        return 0
-      }
-      // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
-      // Special handling if the pattern is precisely `0`.
-      const magnitudeKey = thresholds[i]
-      // TODO: do we need to handle plural here?
-      const compactPattern = thresholdMap[magnitudeKey].other
-      if (compactPattern === '0') {
-        return 0
-      }
-      // Example: in zh-TW, `10000000` maps to `0000萬`. So we need to return 8 - 4 = 4 here.
       return (
-        magnitudeKey.length -
-        thresholdMap[magnitudeKey].other.match(/0+/)![0].length
+        getCompactPattern(thresholdMap, magnitude.toNumber())?.exponent ?? 0
       )
     }
   }

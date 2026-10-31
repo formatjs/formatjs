@@ -292,6 +292,7 @@ ts_run_binary(
     visibility = [
         "//crates/intl_numberformat:__pkg__",
         "//packages/intl:__subpackages__",
+        "//packages/intl-numberformat/benchmark:__pkg__",
         "//packages/react-intl:__subpackages__",
     ],
 )
@@ -474,6 +475,7 @@ rolldown_bundle(
 formatjs_test(
     name = "intl-numberformat_test",
     srcs = [
+        "tests/compact-preprocessing.test.ts",
         "tests/currency-code.test.ts",
         "tests/currency/currencyTest.ts",
         "tests/decimal/decimalTest.ts",

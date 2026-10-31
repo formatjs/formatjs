@@ -501,6 +501,22 @@ http_file(
     url = "https://github.com/unicode-org/icu/releases/download/release-78.1/icu4j-78.1.jar",
 )
 
+# NumberFormat oracles use the same CLDR 49 data as the implementation.
+http_file(
+    name = "icu4j79_jar",
+    downloaded_file_path = "icu4j-79.1.jar",
+    sha256 = "28b292e60d0d00c496bae88a15b2615f89f781be13670aeac9dc90f189570e07",
+    url = "https://github.com/unicode-org/icu/releases/download/release-79.1/icu4j-79.1.jar",
+)
+
+http_archive(
+    name = "icu4c79_linux_x86_64",
+    build_file = "//conformance-tests/icu4c:icu79.BUILD.bazel",
+    sha256 = "9ceb5bd2f8f876972ac2a48f6471ab10be45cf98d7d5db6d9fce055f4840e47f",
+    strip_prefix = "icu/usr/local",
+    urls = ["https://github.com/unicode-org/icu/releases/download/release-79.1/icu4c-79.1-Ubuntu24.04-x64.tgz"],
+)
+
 bazel_dep(name = "rules_web_e2e", version = "3.9.0", dev_dependency = True)
 
 browsers = use_extension("@rules_web_e2e//playwright:extensions.bzl", "browser_presets", dev_dependency = True)

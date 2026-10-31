@@ -1,3 +1,5 @@
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_test(
@@ -35,5 +37,35 @@ formatjs_test(
         "//:node_modules/@formatjs/intl-getcanonicallocales",
         "//:node_modules/@types/node",
         "//:node_modules/vitest",
+    ],
+)
+
+ts_binary(
+    name = "icu_audit",
+    testonly = True,
+    data = [
+        "//conformance-tests/icu4j:number_format_fixtures",
+        "//crates/intl_numberformat:conformance",
+        "//crates/intl_numberformat:locale_data",
+        "//crates/intl_pluralrules:locale_data",
+        "//packages/intl-pluralrules:cldr-raw",
+    ],  # keep: oracle binaries and runtime-loaded locale packs
+    entry_point = "icu-audit.ts",
+    tsconfig_types = ["node"],
+    deps = [":tests"],
+)
+
+formatjs_library(
+    name = "tests",
+    srcs = ["icu-audit.ts"],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//packages/ecma402-abstract/types",
     ],
 )

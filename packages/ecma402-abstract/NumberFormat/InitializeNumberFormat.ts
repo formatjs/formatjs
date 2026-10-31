@@ -68,7 +68,7 @@ export function InitializeNumberFormat(
   opt.nu = numberingSystem
 
   const r = ResolveLocale(
-    Array.from(availableLocales),
+    availableLocales,
     requestedLocales,
     opt,
     // [[RelevantExtensionKeys]] slot, which is a constant

@@ -1,0 +1,537 @@
+{
+  "baselineCommit": "270fc371b1b88ee26d4649b06272bd8536082b14",
+  "branch": "codex/numberformat-audit",
+  "recordedAt": "2026-10-31T13:59:46.200706+00:00",
+  "host": {
+    "os": "Darwin",
+    "architecture": "arm64"
+  },
+  "audit": {
+    "icu4j": "79.1",
+    "icu4c": "79.1",
+    "cldr": "49",
+    "localePacks": 657,
+    "numericNumberingSystems": 78,
+    "cases": 35629,
+    "summary": {
+      "ts/range/text": 1125,
+      "rust/range/text": 1125,
+      "ts/single/text": 637,
+      "rust/single/text": 637,
+      "ts/range/parts-only": 182,
+      "rust/range/parts-only": 182,
+      "ts/single/parts-only": 886,
+      "rust/single/parts-only": 886
+    },
+    "icu4cSummary": {
+      "ts/range/text": 1125,
+      "rust/range/text": 1125,
+      "ts/single/text": 638,
+      "rust/single/text": 638
+    },
+    "specProbes": [
+      {
+        "locale": "en",
+        "options": {
+          "style": "unit",
+          "unit": "meter",
+          "unitDisplay": "long"
+        },
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["-3–2 meters", "-3–2 meters", "-2 meters – -1 meter"],
+        "rust": ["-3–2 meters", "-3–2 meters", "-2 meters – -1 meter"],
+        "native": ["-3 – -2 meters", "-3 – 2 meters", "-2 – -1 meters"],
+        "uncollapsed": [
+          ["-3 meters", "-2 meters"],
+          ["-3 meters", "2 meters"]
+        ]
+      },
+      {
+        "locale": "en",
+        "options": {
+          "style": "percent"
+        },
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["-300% – -200%", "-300% – 200%", "-200% – -100%"],
+        "rust": ["-300% – -200%", "-300% – 200%", "-200% – -100%"],
+        "native": ["-300–200%", "-300% – 200%", "-200–100%"],
+        "uncollapsed": [
+          ["-300%", "-200%"],
+          ["-300%", "200%"]
+        ]
+      },
+      {
+        "locale": "en",
+        "options": {
+          "style": "currency",
+          "currency": "USD",
+          "currencyDisplay": "name"
+        },
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": [
+          "-3.00–2.00 US dollars",
+          "-3.00–2.00 US dollars",
+          "-2.00–1.00 US dollars"
+        ],
+        "rust": [
+          "-3.00–2.00 US dollars",
+          "-3.00–2.00 US dollars",
+          "-2.00–1.00 US dollars"
+        ],
+        "native": [
+          "-3.00 – -2.00 US dollars",
+          "-3.00 – 2.00 US dollars",
+          "-2.00 – -1.00 US dollars"
+        ],
+        "uncollapsed": [
+          ["-3.00 US dollars", "-2.00 US dollars"],
+          ["-3.00 US dollars", "2.00 US dollars"]
+        ]
+      },
+      {
+        "locale": "en",
+        "options": {
+          "style": "currency",
+          "currency": "USD",
+          "currencySign": "accounting"
+        },
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["($3.00) – 2.00)", "($3.00) – $2.00", "($2.00) – 1.00)"],
+        "rust": ["($3.00) – 2.00)", "($3.00) – $2.00", "($2.00) – 1.00)"],
+        "native": ["($3.00–2.00)", "($3.00) – $2.00", "($2.00–1.00)"],
+        "uncollapsed": [
+          ["($3.00)", "($2.00)"],
+          ["($3.00)", "$2.00"]
+        ]
+      },
+      {
+        "locale": "ar",
+        "options": {},
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["‎-3–2", "‎-3–2", "‎-2–1"],
+        "rust": ["‎-3–2", "‎-3–2", "‎-2–1"],
+        "native": ["‎-3–2", "‎-3 – 2", "‎-2–1"],
+        "uncollapsed": [
+          ["‎-3", "‎-2"],
+          ["‎-3", "2"]
+        ]
+      },
+      {
+        "locale": "he",
+        "options": {},
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["‎-3–2", "‎-3–2", "‎-2–1"],
+        "rust": ["‎-3–2", "‎-3–2", "‎-2–1"],
+        "native": ["‎-3–2", "‎-3 – 2", "‎-2–1"],
+        "uncollapsed": [
+          ["‎-3", "‎-2"],
+          ["‎-3", "2"]
+        ]
+      },
+      {
+        "locale": "fa",
+        "options": {},
+        "inputs": [
+          ["-3", "-2"],
+          ["-3", "2"],
+          ["-2", "-1"]
+        ],
+        "ts": ["‎−۳–۲", "‎−۳–۲", "‎−۲–۱"],
+        "rust": ["‎−۳–۲", "‎−۳–۲", "‎−۲–۱"],
+        "native": ["‎−۳–۲", "‎−۳ – ۲", "‎−۲–۱"],
+        "uncollapsed": [
+          ["‎−۳", "‎−۲"],
+          ["‎−۳", "۲"]
+        ]
+      }
+    ],
+    "oracleDisagreements": 121
+  },
+  "pairedTS": {
+    "before": {
+      "node": "v24.14.0",
+      "icu": "78.2",
+      "iterations": 12000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 157.11987499999998,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 5.821857666666669,
+          "minMicroseconds": 5.727510416666671,
+          "maxMicroseconds": 6.314333333333335,
+          "checksum": 621004
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 6.109708333333335,
+          "minMicroseconds": 6.068631999999999,
+          "maxMicroseconds": 6.249666666666665,
+          "checksum": 831234
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 6.432652833333331,
+          "minMicroseconds": 6.339045166666666,
+          "maxMicroseconds": 6.583388916666668,
+          "checksum": 1223004
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 6.165829833333343,
+          "minMicroseconds": 6.130149333333331,
+          "maxMicroseconds": 6.263291666666666,
+          "checksum": 449096
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 15.023822916666669,
+          "minMicroseconds": 14.888010416666663,
+          "maxMicroseconds": 15.639156250000005,
+          "checksum": 324833
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 15.209350750000036,
+          "minMicroseconds": 15.091215250000003,
+          "maxMicroseconds": 15.458555583333313,
+          "checksum": 410833
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 10.24219791666663,
+          "minMicroseconds": 10.167704833333346,
+          "maxMicroseconds": 10.834159666666665,
+          "checksum": 391725
+        },
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 4.872041999999965,
+          "minMicroseconds": 3.5574169999999867,
+          "maxMicroseconds": 5.652540999999474,
+          "checksum": 14200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 672.5124590000005,
+          "minMicroseconds": 666.7392499999987,
+          "maxMicroseconds": 681.4909590000007,
+          "checksum": 14200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 16.14270800000122,
+          "minMicroseconds": 15.424917000000278,
+          "maxMicroseconds": 17.08637500000077,
+          "checksum": 14200
+        }
+      ]
+    },
+    "after": {
+      "node": "v24.14.0",
+      "icu": "78.2",
+      "iterations": 12000,
+      "rounds": 7,
+      "registeredLocales": 976,
+      "registrationMilliseconds": 183.280833,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 3.0101735833333314,
+          "minMicroseconds": 2.9942742499999992,
+          "maxMicroseconds": 3.447114583333336,
+          "checksum": 621004
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 3.2165138333333325,
+          "minMicroseconds": 3.1955381666666653,
+          "maxMicroseconds": 3.395777749999998,
+          "checksum": 831234
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 3.691725666666675,
+          "minMicroseconds": 3.6693749999999925,
+          "maxMicroseconds": 3.7395833333333335,
+          "checksum": 1223004
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 6.186152833333324,
+          "minMicroseconds": 6.139149333333346,
+          "maxMicroseconds": 6.3424131666666685,
+          "checksum": 449096
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 14.344763916666691,
+          "minMicroseconds": 14.21026733333334,
+          "maxMicroseconds": 14.71111458333333,
+          "checksum": 324833
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 14.606649333333317,
+          "minMicroseconds": 14.408788250000004,
+          "maxMicroseconds": 14.749312500000013,
+          "checksum": 410833
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 9.866378499999957,
+          "minMicroseconds": 9.755256916666667,
+          "maxMicroseconds": 9.915166666666664,
+          "checksum": 391725
+        },
+        {
+          "name": "construct exact",
+          "medianMicroseconds": 8.775792000000365,
+          "minMicroseconds": 8.612541999999848,
+          "maxMicroseconds": 9.631916999999703,
+          "checksum": 14200
+        },
+        {
+          "name": "construct fallback",
+          "medianMicroseconds": 9.873625000000175,
+          "minMicroseconds": 8.885457999999744,
+          "maxMicroseconds": 12.300917000000481,
+          "checksum": 14200
+        },
+        {
+          "name": "construct lookup",
+          "medianMicroseconds": 4.768042000000605,
+          "minMicroseconds": 4.626291999999921,
+          "maxMicroseconds": 6.156917000000249,
+          "checksum": 14200
+        }
+      ]
+    }
+  },
+  "finalLazyTS": {
+    "node": "v24.14.0",
+    "icu": "78.2",
+    "iterations": 12000,
+    "rounds": 7,
+    "registeredLocales": 976,
+    "registrationMilliseconds": 159.74325,
+    "results": [
+      {
+        "name": "decimal",
+        "medianMicroseconds": 2.9953403333333313,
+        "minMicroseconds": 2.9676388333333343,
+        "maxMicroseconds": 3.558343749999999,
+        "checksum": 621004
+      },
+      {
+        "name": "currency",
+        "medianMicroseconds": 3.1902257500000055,
+        "minMicroseconds": 3.168569416666666,
+        "maxMicroseconds": 3.407756999999994,
+        "checksum": 831234
+      },
+      {
+        "name": "unit",
+        "medianMicroseconds": 3.54983333333333,
+        "minMicroseconds": 3.536007000000003,
+        "maxMicroseconds": 3.6448472499999975,
+        "checksum": 1223004
+      },
+      {
+        "name": "scientific",
+        "medianMicroseconds": 6.034600666666658,
+        "minMicroseconds": 5.983343749999999,
+        "maxMicroseconds": 6.183031249999999,
+        "checksum": 449096
+      },
+      {
+        "name": "compact",
+        "medianMicroseconds": 14.092663166666663,
+        "minMicroseconds": 14.072611166666663,
+        "maxMicroseconds": 14.304881916666657,
+        "checksum": 324833
+      },
+      {
+        "name": "compact currency",
+        "medianMicroseconds": 14.233281250000005,
+        "minMicroseconds": 14.078642333333354,
+        "maxMicroseconds": 14.558645833333342,
+        "checksum": 410833
+      },
+      {
+        "name": "compact significant digits",
+        "medianMicroseconds": 9.523829916666653,
+        "minMicroseconds": 9.44447224999999,
+        "maxMicroseconds": 9.611374999999953,
+        "checksum": 391725
+      },
+      {
+        "name": "construct exact",
+        "medianMicroseconds": 8.826000000000022,
+        "minMicroseconds": 8.636875000000146,
+        "maxMicroseconds": 9.826375000000553,
+        "checksum": 14200
+      },
+      {
+        "name": "construct fallback",
+        "medianMicroseconds": 9.982250000000022,
+        "minMicroseconds": 8.616582999999991,
+        "maxMicroseconds": 10.826874999999745,
+        "checksum": 14200
+      },
+      {
+        "name": "construct lookup",
+        "medianMicroseconds": 4.84362499999952,
+        "minMicroseconds": 4.82300000000032,
+        "maxMicroseconds": 5.042916999999761,
+        "checksum": 14200
+      }
+    ]
+  },
+  "discardedRustTrial": {
+    "status": "reverted; no repeatable improvement",
+    "before": {
+      "iterations": 12000,
+      "rounds": 7,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 0.45876383333333326,
+          "minMicroseconds": 0.4536735833333333,
+          "maxMicroseconds": 0.46021175000000003,
+          "checksum": 621004
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 1.0756111666666666,
+          "minMicroseconds": 1.0622604166666667,
+          "maxMicroseconds": 1.0774825833333332,
+          "checksum": 831234
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 1.3447187500000002,
+          "minMicroseconds": 1.32303475,
+          "maxMicroseconds": 1.35410075,
+          "checksum": 1223004
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 0.9536492499999999,
+          "minMicroseconds": 0.9050729166666667,
+          "maxMicroseconds": 0.9614305833333333,
+          "checksum": 449096
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 1.2591075833333334,
+          "minMicroseconds": 1.2543195,
+          "maxMicroseconds": 1.26171875,
+          "checksum": 324833
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 1.3605868333333333,
+          "minMicroseconds": 1.3301736666666668,
+          "maxMicroseconds": 1.3635902500000001,
+          "checksum": 410833
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 1.2229096666666666,
+          "minMicroseconds": 1.2195485833333333,
+          "maxMicroseconds": 1.24234725,
+          "checksum": 391725
+        }
+      ]
+    },
+    "after": {
+      "iterations": 12000,
+      "rounds": 7,
+      "results": [
+        {
+          "name": "decimal",
+          "medianMicroseconds": 0.5961354166666667,
+          "minMicroseconds": 0.51084725,
+          "maxMicroseconds": 0.8461110833333334,
+          "checksum": 621004
+        },
+        {
+          "name": "currency",
+          "medianMicroseconds": 1.0676875,
+          "minMicroseconds": 1.0611666666666666,
+          "maxMicroseconds": 1.1429270833333334,
+          "checksum": 831234
+        },
+        {
+          "name": "unit",
+          "medianMicroseconds": 1.3955833333333334,
+          "minMicroseconds": 1.38653125,
+          "maxMicroseconds": 1.4141284166666668,
+          "checksum": 1223004
+        },
+        {
+          "name": "scientific",
+          "medianMicroseconds": 0.9619096666666668,
+          "minMicroseconds": 0.9602118333333333,
+          "maxMicroseconds": 0.96625,
+          "checksum": 449096
+        },
+        {
+          "name": "compact",
+          "medianMicroseconds": 1.284,
+          "minMicroseconds": 1.2825520833333333,
+          "maxMicroseconds": 1.2920485833333333,
+          "checksum": 324833
+        },
+        {
+          "name": "compact currency",
+          "medianMicroseconds": 1.4181735833333333,
+          "minMicroseconds": 1.37025,
+          "maxMicroseconds": 1.4218159999999997,
+          "checksum": 410833
+        },
+        {
+          "name": "compact significant digits",
+          "medianMicroseconds": 1.24328825,
+          "minMicroseconds": 1.2297152500000001,
+          "maxMicroseconds": 1.24527425,
+          "checksum": 391725
+        }
+      ]
+    }
+  },
+  "retainedSourceSHA256": {
+    "packages/ecma402-abstract/NumberFormat/InitializeNumberFormat.ts": "566f9fbad3876e2d50a7b2e2a0cadb8fca2c06e09911c67f50c71d5685a4db0d",
+    "packages/ecma402-abstract/NumberFormat/PartitionNumberPattern.ts": "97f7d6a02493e903915a961e2ff348c92ece2a1d381a2844b01111d26e3d6d1d",
+    "packages/ecma402-abstract/NumberFormat/ComputeExponentForMagnitude.ts": "c66d9461ab3477b35edd1d4284dd9178add618039a66b97bd75cd114e188d545",
+    "packages/ecma402-abstract/NumberFormat/format_to_parts.ts": "c1b3855b6d2f9fc55c3e875d04dc5d1ae16ac83a64842aef7b6ff4f82da84cbc",
+    "packages/ecma402-abstract/NumberFormat/compact-patterns.ts": "6128feb088d85cf5b33659dd91155aa6a38c648a6e34989fc11fd56fc790e15a",
+    "packages/intl-numberformat/core.ts": "f210572d5083020b73618713b357c600b49101e3a0a24b7748b50b38b93cfa3c"
+  }
+}

@@ -1,7 +1,6 @@
 import type {Decimal} from '@formatjs/bigdecimal'
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
 import {
-  type DecimalFormatNum,
   type LDMLPluralRuleMap,
   type NumberFormatLocaleInternalData,
   type NumberFormatOptionsCompactDisplay,
@@ -18,6 +17,7 @@ import {
 } from '#packages/ecma402-abstract/types/number.js'
 import {getPowerOf10} from '#packages/ecma402-abstract/NumberFormat/decimal-cache.js'
 import {type LDMLPluralRule} from '#packages/ecma402-abstract/types/plural-rules.js'
+import {getCompactPattern} from '#packages/ecma402-abstract/NumberFormat/compact-patterns.js'
 import {digitMapping} from '@formatjs_generated/unicode/digit-mapping.js'
 
 // This is from: unicode-12.1.0/General_Category/Symbol/regex.js
@@ -587,60 +587,20 @@ function getCompactDisplayPattern(
   // String(10 ** magnitude) uses exponent notation for tiny values; comparing
   // "1e-7" lexically with CLDR thresholds would select the largest suffix.
   if (magnitude < 0) return null
-  let magnitudeKey = String(10 ** magnitude) as DecimalFormatNum
   const defaultNumberingSystem = data.numbers.nu[0]
-
-  let pattern: string
-  if (style === 'currency' && currencyDisplay !== 'name') {
-    const byNumberingSystem = data.numbers.currency
-    const currencyData =
-      byNumberingSystem[numberingSystem] ||
-      byNumberingSystem[defaultNumberingSystem]
-
-    // NOTE: compact notation ignores currencySign!
-    let compactPluralRules = currencyData.short?.[magnitudeKey]
-    // GH #4236: If magnitude exceeds available patterns, use the largest available
-    if (!compactPluralRules) {
-      const thresholds = Object.keys(
-        currencyData.short || {}
-      ) as DecimalFormatNum[]
-      if (
-        thresholds.length > 0 &&
-        magnitudeKey > thresholds[thresholds.length - 1]
-      ) {
-        magnitudeKey = thresholds[thresholds.length - 1]
-        compactPluralRules = currencyData.short?.[magnitudeKey]
-      }
-    }
-    if (!compactPluralRules) {
-      return null
-    }
-    pattern = selectPlural(pl, roundedNumber.toNumber(), compactPluralRules)
-  } else {
-    const byNumberingSystem = data.numbers.decimal
-    const byCompactDisplay =
-      byNumberingSystem[numberingSystem] ||
-      byNumberingSystem[defaultNumberingSystem]
-
-    let compactPlaralRule = byCompactDisplay[compactDisplay][magnitudeKey]
-    // GH #4236: If magnitude exceeds available patterns, use the largest available
-    if (!compactPlaralRule) {
-      const thresholds = Object.keys(
-        byCompactDisplay[compactDisplay]
-      ) as DecimalFormatNum[]
-      if (
-        thresholds.length > 0 &&
-        magnitudeKey > thresholds[thresholds.length - 1]
-      ) {
-        magnitudeKey = thresholds[thresholds.length - 1]
-        compactPlaralRule = byCompactDisplay[compactDisplay][magnitudeKey]
-      }
-    }
-    if (!compactPlaralRule) {
-      return null
-    }
-    pattern = selectPlural(pl, roundedNumber.toNumber(), compactPlaralRule)
-  }
+  const currency =
+    data.numbers.currency[numberingSystem] ||
+    data.numbers.currency[defaultNumberingSystem]
+  const decimal =
+    data.numbers.decimal[numberingSystem] ||
+    data.numbers.decimal[defaultNumberingSystem]
+  const patterns =
+    style === 'currency' && currencyDisplay !== 'name'
+      ? currency.short
+      : decimal[compactDisplay]
+  const entry = getCompactPattern(patterns, magnitude)
+  if (!entry) return null
+  let pattern = selectPlural(pl, roundedNumber.toNumber(), entry.rules)
   // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
   // > If the value is precisely “0”, either explicit or defaulted, then the normal number format
   // > pattern for that sort of object is supplied.

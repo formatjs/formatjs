@@ -22,6 +22,7 @@ formatjs_library(
         "SetNumberFormatUnitOptions.ts",
         "ToRawFixed.ts",
         "ToRawPrecision.ts",
+        "compact-patterns.ts",
         "decimal-cache.ts",
         "format_to_parts.ts",
     ],

@@ -1,7 +1,12 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+
 # gazelle:ignore
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 
-exports_files(["icu.BUILD.bazel"])
+exports_files([
+    "icu.BUILD.bazel",
+    "icu79.BUILD.bazel",
+])
 
 cc_test(
     name = "intl_relativetimeformat_conformance_test",
@@ -82,4 +87,30 @@ cc_test(
         "@platforms//os:linux",
     ],
     deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_binary(
+    name = "intl_numberformat_oracle",
+    testonly = True,
+    srcs = ["numberformat.cc"],
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+genrule(
+    name = "number_format_fixtures",
+    testonly = True,
+    srcs = ["//conformance-tests/icu4j:number_format_fixtures"],
+    outs = ["number-format-c-fixtures.tsv"],
+    cmd = "$(execpath :intl_numberformat_oracle) $(location //conformance-tests/icu4j:number_format_fixtures) $@",
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    tools = [":intl_numberformat_oracle"],
+    visibility = ["//visibility:public"],
 )

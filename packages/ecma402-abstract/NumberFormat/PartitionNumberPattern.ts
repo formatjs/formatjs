@@ -55,14 +55,16 @@ export function PartitionNumberPattern(
       }
 
       // 8.c. Let exponent be ComputeExponent(numberFormat, x).
-      ;[
-        exponent,
-        // IMPL: We need to record the magnitude of the number
-        magnitude,
-      ] = ComputeExponent(internalSlots, x)
+      if (internalSlots.notation !== 'standard') {
+        ;[
+          exponent,
+          // IMPL: We need to record the magnitude of the number
+          magnitude,
+        ] = ComputeExponent(internalSlots, x)
 
-      // 8.d. Let x be x × 10^(-exponent).
-      x = x.times(getPowerOf10(-exponent))
+        // 8.d. Let x be x × 10^(-exponent).
+        x = x.times(getPowerOf10(-exponent))
+      }
     }
 
     // 8.e. Let formatNumberResult be FormatNumericToString(internalSlots, x).

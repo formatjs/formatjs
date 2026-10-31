@@ -204,3 +204,17 @@ filegroup(
     ]),
     visibility = ["//crates:__pkg__"],
 )
+
+rust_binary(
+    name = "benchmark",
+    srcs = ["benchmark.rs"],
+    compile_data = [":locale-data/en.json"],
+    crate_name = "numberformat_benchmark",
+    crate_root = "benchmark.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_NUMBER_EN": "$(execpath :locale-data/en.json)"},
+    deps = [
+        ":intl_numberformat",
+        "@crates//:serde_json",
+    ],
+)

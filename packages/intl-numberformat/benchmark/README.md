@@ -138,3 +138,23 @@ This change provides massive performance improvements for the common path while 
 - [`ToRawPrecision.ts`](../../ecma402-abstract/NumberFormat/ToRawPrecision.ts) - Significant digits formatting (hotspot)
 - [`FormatNumericToString.ts`](../../ecma402-abstract/NumberFormat/FormatNumericToString.ts) - Core formatting logic
 - [`format_to_parts.ts`](../../ecma402-abstract/NumberFormat/format_to_parts.ts) - Part generation logic
+
+## Generated-data audit workloads
+
+```sh
+bazel run -c opt //packages/intl-numberformat/benchmark:audit -- --all-locales
+bazel run -c opt //crates/intl_numberformat:benchmark
+bazel run -c opt //crates/intl_numberformat/tests:icu_audit -- --output=/tmp/numberformat-audit.json
+```
+
+The TS benchmark reads current generated locale data, reports load/register time,
+and measures formatting and constructor matching separately. `--iterations=12000`
+sets calls per formatting round. Constructor rounds cap at 1,000 calls. Seven warm
+rounds report median/min/max and output checksums; this is a microbenchmark, not
+Hermes/mobile end-to-end latency. The Rust target requires `-c opt`.
+
+The independent audit uses ICU4J 79.1 / CLDR 49. Supply `--icu4c=<file>` from the
+Linux/RBE `//conformance-tests/icu4c:number_format_fixtures` target to compare the
+second oracle. Resolve its artifact with `bazel cquery --output=files`.
+`--strict` fails on recorded differences. Details and remaining correctness
+findings: [NumberFormat audit](../../../knowledge-base/audits/2026-10-31-numberformat.md).
