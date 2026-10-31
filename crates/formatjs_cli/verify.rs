@@ -10,6 +10,7 @@ pub enum MessageSyntax {
     #[default]
     Icu,
     JavaPrintf,
+    ApplePrintf,
 }
 
 /// Run a series of checks on translation files to validate correctness and consistency.
@@ -178,8 +179,16 @@ pub fn verify_with_syntax(
     if structural_equality {
         let passed = match message_syntax {
             MessageSyntax::Icu => check_structural_equality(&locales, source_locale),
-            MessageSyntax::JavaPrintf => {
-                let issues = crate::java_printf::verify_catalogs(&locales, source_locale)?;
+            MessageSyntax::JavaPrintf | MessageSyntax::ApplePrintf => {
+                let issues = match message_syntax {
+                    MessageSyntax::JavaPrintf => {
+                        crate::java_printf::verify_catalogs(&locales, source_locale)?
+                    }
+                    MessageSyntax::ApplePrintf => {
+                        crate::apple_printf::verify_catalogs(&locales, source_locale)?
+                    }
+                    MessageSyntax::Icu => unreachable!(),
+                };
                 for issue in &issues {
                     eprintln!("{}: {}: {}", issue.locale, issue.message_id, issue.error);
                 }

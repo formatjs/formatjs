@@ -18,6 +18,7 @@ on:
         default: all
         options:
           - all
+          - formatjs_apple_printf_parser
           - formatjs_java_printf_parser
           - formatjs_icu_skeleton_parser
           - formatjs_icu_messageformat_parser
@@ -99,6 +100,7 @@ jobs:
             formatjs_intl_supportedvaluesof
           )
           all_crates=(
+            formatjs_apple_printf_parser
             formatjs_java_printf_parser
             formatjs_icu_skeleton_parser
             formatjs_icu_messageformat_parser
@@ -122,6 +124,9 @@ jobs:
             release)
               dry_run=false
               case "$RELEASE_TAG" in
+                formatjs_apple_printf_parser_v*|crates/apple_printf_parser_v*)
+                  crates=(formatjs_apple_printf_parser)
+                  ;;
                 formatjs_java_printf_parser_v*|crates/java_printf_parser_v*)
                   crates=(formatjs_java_printf_parser)
                   ;;
@@ -203,6 +208,8 @@ jobs:
           set -euo pipefail
 
           targets=(
+            //crates/apple_printf_parser:apple_printf_parser_test
+            //crates/apple_printf_parser:doc_test
             //crates/java_printf_parser:java_printf_parser_test
             //crates/java_printf_parser:java_conformance_test
             //crates/java_printf_parser:doc_test

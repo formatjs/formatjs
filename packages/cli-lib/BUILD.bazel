@@ -74,6 +74,7 @@ formatjs_library(
         "static-evaluation.ts",
         "svelte_extractor.ts",
         "types.ts",
+        "verify/checkApplePrintfStructure.ts",
         "verify/checkExtraKeys.ts",
         "verify/checkJavaPrintfStructure.ts",
         "verify/checkMissingKeys.ts",
@@ -188,6 +189,7 @@ formatjs_test(
     name = "cli-lib_test",
     srcs = [
         "tests/unit/abort_signal.test.ts",
+        "tests/unit/apple_printf.test.ts",
         "tests/unit/compile.test.ts",
         "tests/unit/extract.test.ts",
         "tests/unit/extract-concurrency.test.ts",

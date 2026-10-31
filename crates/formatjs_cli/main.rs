@@ -77,6 +77,7 @@ impl From<PseudoLocale> for compile::PseudoLocale {
 enum MessageSyntaxType {
     Icu,
     JavaPrintf,
+    ApplePrintf,
 }
 
 impl From<MessageSyntaxType> for verify::MessageSyntax {
@@ -84,6 +85,7 @@ impl From<MessageSyntaxType> for verify::MessageSyntax {
         match syntax {
             MessageSyntaxType::Icu => Self::Icu,
             MessageSyntaxType::JavaPrintf => Self::JavaPrintf,
+            MessageSyntaxType::ApplePrintf => Self::ApplePrintf,
         }
     }
 }

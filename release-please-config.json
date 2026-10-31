@@ -879,6 +879,14 @@
           "path": "package/SDK.MODULE.bazel"
         }
       ]
+    },
+    "crates/apple_printf_parser": {
+      "release-type": "rust",
+      "component": "formatjs_apple_printf_parser",
+      "include-component-in-tag": true,
+      "include-v-in-tag": false,
+      "include-v-in-release-name": false,
+      "tag-separator": "_v"
     }
   },
   "plugins": [

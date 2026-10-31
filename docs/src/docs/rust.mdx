@@ -24,6 +24,9 @@ selection, locale negotiation, and catalog loading already happen elsewhere.
 For Android-style printf syntax, use
 [`formatjs_java_printf_parser`](/docs/tooling/rust-java-printf-parser). It parses
 Java Formatter syntax without depending on ICU or formatting runtime values.
+For iOS/macOS Foundation formats, use
+[`formatjs_apple_printf_parser`](/docs/tooling/rust-apple-printf-parser), including
+object placeholders, length modifiers, and dynamic width/precision arguments.
 
 ## Runtime layers
 

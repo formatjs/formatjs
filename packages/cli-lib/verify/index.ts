@@ -1,4 +1,5 @@
 import {basename} from 'path'
+import {checkApplePrintfStructure} from '#packages/cli-lib/verify/checkApplePrintfStructure.js'
 import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
 import {debug} from '#packages/cli-lib/console_utils.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
@@ -10,7 +11,7 @@ export interface VerifyOpts {
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
-  messageSyntax?: 'icu' | 'java-printf'
+  messageSyntax?: 'icu' | 'java-printf' | 'apple-printf'
   ignore?: string[]
   /**
    * Whether to follow symbolic links when traversing directories.
@@ -63,7 +64,9 @@ export async function verify(
     !(await (
       messageSyntax === 'java-printf'
         ? checkJavaPrintfStructure
-        : checkStructuralEquality
+        : messageSyntax === 'apple-printf'
+          ? checkApplePrintfStructure
+          : checkStructuralEquality
     )(translationFilesContents, sourceLocale))
   ) {
     exitCode = 1

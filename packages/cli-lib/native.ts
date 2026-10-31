@@ -100,6 +100,7 @@ export interface NativeBinding {
     filename?: string
   ): string
   verifyJavaPrintf(catalogsJson: string, sourceLocale: string): string
+  verifyApplePrintf(catalogsJson: string, sourceLocale: string): string
   supportedBuiltinFormatters(): string[]
 }
 
@@ -244,5 +245,20 @@ export function verifyJavaPrintfWithNative(
   }
   return JSON.parse(
     native.verifyJavaPrintf(JSON.stringify(catalogs), sourceLocale)
+  )
+}
+
+export function verifyApplePrintfWithNative(
+  catalogs: Record<string, unknown>,
+  sourceLocale: string
+): NativeVerificationIssue[] {
+  const native = loadNative()
+  if (typeof native.verifyApplePrintf !== 'function') {
+    throw new Error(
+      'Installed FormatJS native package does not support Apple printf verification; update @formatjs/cli and its native package.'
+    )
+  }
+  return JSON.parse(
+    native.verifyApplePrintf(JSON.stringify(catalogs), sourceLocale)
   )
 }

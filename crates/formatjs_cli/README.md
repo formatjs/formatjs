@@ -436,3 +436,20 @@ Width/precision changes are allowed when Java syntax permits them. Runtime Java 
 
 Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
 Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.
+
+### Apple Foundation printf verification
+
+```sh
+formatjs verify 'lang/*.json' --source-locale en \
+  --message-syntax apple-printf --structural-equality
+```
+
+Rust and npm CLIs share the Rust Apple parser. Verification preserves object,
+byte-string, UTF-16, pointer, integer signedness/length, and floating-point types.
+It checks dynamic width/precision argument roles; positional reordering, reuse,
+and presentation changes remain allowed. ICU stays the default.
+
+Input is JSON with string leaves. Decode `.strings`/plist files first; expand
+plural variants separately. Named `.stringsdict` substitutions require metadata
+and are rejected, as are `%n` and logging privacy annotations. This checks a
+strict Foundation subset, not runtime values or every format accepted by libc.

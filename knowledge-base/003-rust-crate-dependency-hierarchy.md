@@ -6,6 +6,7 @@ The Rust workspace members are listed in `Cargo.toml`:
 
 ```
 crates/
+  apple_printf_parser/      # Foundation printf grammar and resolved argument references
   java_printf_parser/       # Java Formatter grammar and resolved argument references
   intl_data/                 # Binary records and per-registry lazy caches
   intl_data_build/           # Rust validation, plural-rule compilation, locale selection
@@ -539,3 +540,17 @@ then runs Cargo from the full workspace with
 It shares generated CLDR distance/partition tables and ICU4J oracle tests with
 `@formatjs/intl-localematcher`, using ICU4X for locale normalization. The native `intl_locale` matcher reuses this implementation through a bounded
 per-thread cache; `formatjs_intl` catalog fallback remains independent.
+
+## Apple printf parser
+
+`formatjs_apple_printf_parser` is a dependency-free leaf crate for the documented
+Foundation dialect, plus strict indexing and unsupported-syntax checks.
+See [Apple spec research](014-apple-printf-format.md) for primary sources and
+intentional differences from libc and permissive Foundation runtime parsing.
+
+`formatjs_cli::apple_printf::verify_catalogs` compares declared argument types,
+integer lengths, and dynamic width/precision roles. It shares catalog traversal,
+comparison, and diagnostics with Java through `printf_validation`. Rust and npm
+CLIs select it using `--message-syntax apple-printf --structural-equality`; npm
+uses the same Rust implementation through N-API. No plist or stringsdict loading.
+Crate releases use Release Please and the crates release workflow.

@@ -283,7 +283,7 @@ sentences are not translator-friendly.`
         '--message-syntax <syntax>',
         'Message grammar used by --structural-equality.'
       )
-        .choices(['icu', 'java-printf'])
+        .choices(['icu', 'java-printf', 'apple-printf'])
         .default('icu')
     )
     .option(

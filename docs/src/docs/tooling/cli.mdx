@@ -490,8 +490,9 @@ Whether to check for structural equality of messages between source and target l
 
 ### `--message-syntax <syntax>`
 
-Select `icu` (default) or `java-printf` for `--structural-equality`. Both npm CLI
-and Rust binary use the same Rust validator for Java printf messages.
+Select `icu` (default), `java-printf`, or `apple-printf` for
+`--structural-equality`. Both npm CLI and Rust binary share the Rust printf
+validators.
 
 ```sh
 formatjs verify "lang/*.json" --source-locale en \
@@ -514,6 +515,27 @@ date fields are not inferred.
 Input stays JSON with string leaves, optionally nested. This mode does not read
 Android XML: decode resource XML, skip `formatted="false"`, and emit each plural
 or array item as an independently formatted message before verification.
+
+Apple Foundation formats use `--message-syntax apple-printf`:
+
+```sh
+formatjs verify "lang/*.json" --source-locale en \
+  --message-syntax apple-printf --structural-equality
+```
+
+Apple validation preserves object (`%@`), byte-string (`%s`), UTF-16 (`%C`,
+`%S`), pointer, integer signedness/length, and floating-point requirements.
+Dynamic width/precision arguments retain their roles. Reordering, repeated
+references, compatible aliases, and presentation changes work. `%ld` becoming
+`%d`, or `%@` becoming `%s`, fails. Integer lengths remain distinct even when
+particular target ABIs give them equal sizes.
+
+Decode `.strings`/plist input into JSON first. Named `.stringsdict` substitutions
+such as `%#@count@` need external type/plural metadata and are rejected; expand
+variants separately. `%n`, logging privacy syntax, and unsupported Foundation
+extensions also fail explicitly. This validates a documented subset, not runtime
+values or Foundation's permissive fallback for malformed formats.
+See [Apple printf parser](/docs/tooling/rust-apple-printf-parser).
 
 ### `--extra-keys`
 

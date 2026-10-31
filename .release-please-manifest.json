@@ -79,5 +79,6 @@
   "crates/intl_relativetimeformat": "0.2.0",
   "crates/intl_segmenter": "0.2.0",
   "crates/intl_supportedvaluesof": "0.2.0",
-  "native/hermes": "0.2.0"
+  "native/hermes": "0.2.0",
+  "crates/apple_printf_parser": "0.1.0"
 }
