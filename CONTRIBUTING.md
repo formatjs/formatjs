@@ -50,10 +50,12 @@ and module traversal disabled; only supplied files are formatted.
 
 ### CI
 
-BuildBuddy runs the full Bazel test suite and cross-builds release artifacts.
+BuildBuddy runs the full Bazel test suite, all-files pre-commit hooks, and release cross-builds.
 Its cross-build action also checks binary formats, Linux CLI compatibility, and
 native addon symbols. GitHub Actions validates Cargo metadata and provider-only
-features, builds examples, checks the pnpm lockfile, and verifies hooks.
+features, builds examples, checks the pnpm lockfile, and validates commit messages.
+GitHub's `verify-hooks` validates commit messages. BuildBuddy's separate
+`Verify hooks` check validates all files; both are required.
 
 After BuildBuddy's cross-build succeeds, `native-smoke.yml` downloads its archive
 using the existing read-only BuildBuddy secret. Native macOS, Windows, and Linux
@@ -78,10 +80,12 @@ flowchart TD
     BB -->|Outside contributor| UNTRUSTED[Untrusted run: no credentials]
     TRUSTED --> SUITE[Full Bazel test suite]
     TRUSTED --> CROSS[Cross-build macOS, Windows, Linux]
+    TRUSTED --> HOOKS[All-files hooks through RBE]
     CROSS --> CHECKS[Binary format, symbols, Linux CLI checks]
     CHECKS --> ARCHIVE[Upload smoke archive]
 
-    APPROVE_GHA --> GHA[Cargo checks, examples, pnpm, hooks]
+    APPROVE_GHA --> GHA[Cargo checks, examples, pnpm]
+    APPROVE_GHA --> MESSAGES[GitHub verify-hooks: commit messages]
 
     ARCHIVE --> STATUS[Successful BuildBuddy status]
     STATUS --> DOWNLOAD[Trusted GHA downloader: read-only BB key]
@@ -94,8 +98,8 @@ flowchart TD
     LINUX --> RESULT
 ```
 
-Once `native-smoke.yml` is on main, require `test`, `verify-hooks`,
-`Test all targets`, `Cross-build Release Artifacts`, and `Native Smoke Tests`.
+Required checks: `test`, `verify-hooks`, `Test all targets`,
+`Cross-build Release Artifacts`, and `Verify hooks`.
 
 The shared Vitest macro includes committed `__snapshots__/<source>.snap` files
 beside each source as Bazel runtime inputs. Keep custom snapshot paths in the

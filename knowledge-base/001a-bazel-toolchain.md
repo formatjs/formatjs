@@ -95,6 +95,21 @@ verify that the addon's required Rust runtime library exists in each package.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 
+BuildBuddy's `Verify hooks` action runs the existing all-files Lefthook checks
+and rejects any resulting tracked or untracked changes. An ignored, CI-only
+`.bazelrc.user` enables `--config=bb-workflow`, top-level downloads, and the
+runner-provided API-key header, so nested hook commands also compile tools
+through authenticated RBE. The file is created under `umask 077`; no key is
+printed or passed to GitHub Actions. Local hook commands
+and their optimized mode stay unchanged. The runner requests 16GB memory and
+32GB disk, matching the test action's module-graph requirements.
+
+GitHub's required `verify-hooks` check validates commit messages. BuildBuddy's
+separate required `Verify hooks` status covers the all-files checks. No polling
+bridge is needed. Existing Renovate manual dispatch and `base_ref` commit
+validation remain available. The hook action uses Ubuntu 24.04 because the
+pinned GNU ast-grep binary needs glibc 2.34 or newer.
+
 GitHub Actions' `test` job only validates Cargo release metadata and provider-only
 ICU features. Other `test.yml` jobs cover independent example workspaces and pnpm
 installation. The old `gha-test-rbe-v2-ubuntu24` disk cache is no longer restored
@@ -116,9 +131,8 @@ on main. `test.yml` can also call the smoke workflow through manual dispatch
 with `smoke_invocation_url` and `smoke_commit_sha`, allowing validation before
 the status-triggered workflow lands.
 
-After that rollout, main should require `test`, `verify-hooks`, `Test all targets`,
-`Cross-build Release Artifacts`, and `Native Smoke Tests`. The first two and the
-native smoke status come from GitHub Actions; the other two come from BuildBuddy.
+Main requires GitHub Actions' `test` and `verify-hooks`, plus BuildBuddy's
+`Test all targets`, `Cross-build Release Artifacts`, and `Verify hooks`.
 BuildBuddy also covers main pushes and merge queue commits.
 
 BuildBuddy PR triggers include `codex/*` target branches so stacked polyfill
