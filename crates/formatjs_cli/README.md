@@ -337,7 +337,7 @@ formatjs verify "lang/*.json" \
 **Options:**
 
 - `[TRANSLATION_FILES]...` - Glob patterns for translation files
-- `--source-locale <LOCALE>` - **Required** for checks to work (e.g., `en`)
+- `--source-locale <LOCALE>` - Required for per-locale JSON (e.g., `en`); inferred from Apple catalogs
 - `--ignore <PATTERNS>` - Glob patterns to ignore
 - `--missing-keys` - Check for missing keys in target locales
 - `--extra-keys` - Check for extra keys not in source locale
@@ -411,3 +411,55 @@ MIT
 - [@formatjs/cli](../../packages/cli) - Node.js-based CLI
 - [formatjs_icu_messageformat_parser](../icu_messageformat_parser) - ICU MessageFormat parser
 - [formatjs_icu_skeleton_parser](../icu_skeleton_parser) - ICU skeleton parser
+
+### Java printf verification
+
+Use Java Formatter syntax explicitly for Android-style messages:
+
+```bash
+formatjs verify "lang/*.json" \
+  --source-locale en \
+  --message-syntax java-printf \
+  --missing-keys --extra-keys --structural-equality
+```
+
+`--message-syntax` defaults to `icu` and selects the grammar for `--structural-equality`.
+Both the Rust binary and npm CLI use the same Rust Java printf validator.
+Malformed source messages fail even when no target key matches; malformed target messages also fail.
+Diagnostics identify locale, message ID and syntax error or incompatible argument requirement.
+
+Resolved argument indices and their sets of conversion requirements must match.
+Explicit reordering, repeated uses of the same argument, uppercase variants and compatible numeric/date presentation changes are allowed.
+Missing or extra arguments and changed requirements fail.
+String, boolean, hash, character, integer, floating-point and date/time uses are distinct; `%#s`, signed octal/hexadecimal flags and hexadecimal floats retain their narrower requirements.
+Width/precision changes are allowed when Java syntax permits them. Runtime Java values/types and date fields are not inferred.
+
+Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
+Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.
+
+### Apple Xcode catalog verification
+
+```sh
+formatjs verify 'Resources/**/*.xcstrings' \
+  --message-syntax apple-printf --structural-equality --missing-keys
+```
+
+Apple mode accepts only `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
+catalog loading and validation in Rust. Source language is inferred; an explicit
+`--source-locale` must match `sourceLanguage`. Source values fall back to keys.
+
+Nested plural/device variants and named substitutions use their catalog context.
+`%#@name@` resolves via `argNum`/`formatSpecifier`; branch `%arg` uses its owning
+argument. Plural categories may differ; selectors may be omitted. Other argument
+types, lengths and dynamic width/precision roles must survive. Files namespace
+independent string tables. `shouldTranslate: false` entries are skipped.
+
+`--missing-keys` checks locales found across supplied catalogs. `--extra-keys`
+has no additional effect on a catalog's shared key set. Translation states remain
+metadata, not a completeness check. Validation never rewrites input.
+
+Formatting is inferred from source argument specifiers or substitution metadata;
+plain percentages remain literal. Whitespace after percent is ambiguous and alone
+does not identify a format. Root plurals with multiple numeric arguments need
+explicit substitution metadata; nested named substitutions and unknown axes fail
+explicitly. Legacy `.strings`/`.stringsdict` and flat JSON are unsupported.

@@ -1,0 +1,46 @@
+---
+title: Java Printf Parser (Rust)
+---
+
+`formatjs_java_printf_parser` parses [Java SE 17 Formatter](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Formatter.html) syntax, including Android's printf-style placeholders. It has no runtime dependencies and requires Rust 1.90 or newer.
+
+```toml
+[dependencies]
+formatjs_java_printf_parser = "0.1"
+```
+
+```rust
+use formatjs_java_printf_parser::{parse, Element};
+
+let elements = parse("Hello %2$s, %s %<s %%").unwrap();
+let indices: Vec<_> = elements.iter().filter_map(|element| match element {
+    Element::Specifier(specifier) => specifier.argument.map(|argument| argument.index),
+    Element::Literal(_) => None,
+}).collect();
+assert_eq!(indices, [2, 1, 1]);
+```
+
+`parse(&str)` returns borrowed `Element::Literal` and `Element::Specifier` nodes. Each node carries UTF-8 byte offsets into the original input. A specifier retains its raw text, original flag order, explicit index, resolved one-based argument reference, width, precision, conversion kind and uppercase mode. `ParseError` carries a structured `ErrorKind` and byte span.
+
+Explicit indices (`%2$s`) do not advance the ordinary counter (`%s`). Relative indexing (`%<s`) reuses the previous consuming argument. Percent (`%%`) and newline (`%n`) conversions consume nothing and do not change either counter. Date/time conversions retain suffix case separately from the `t`/`T` prefix.
+
+The parser checks Java grammar and argument-independent format constraints. Runtime types and values remain caller concerns: `%#s` needs a Java `Formattable`, for example. Parsing does not compare source and translated argument requirements.
+
+For Android, decode resource XML first and respect `formatted="false"`. Parse each plural or array item independently because argument indexing restarts for every formatted string. XML markup, backslash escapes and braces remain literal text. C printf length modifiers and iOS `%@` are separate dialects.
+
+Java Formatter oracle tests cover conversion/flag combinations and argument selection. Java is a test dependency only; consumers need no JVM. Release Please and the crates release workflow register this crate.
+
+## Validate translation catalogs
+
+The npm and Rust CLIs can compare Java printf argument requirements:
+
+```sh
+formatjs verify "lang/*.json" --source-locale en \
+  --message-syntax java-printf --structural-equality
+```
+
+The parser remains independent of this policy. CLI validation compares resolved
+argument indices and conversion requirement sets, allows reordered/repeated
+references, and reports syntax errors or missing/extra/incompatible arguments.
+See [CLI verification](/docs/tooling/cli#--message-syntax-syntax) for input and
+compatibility rules.

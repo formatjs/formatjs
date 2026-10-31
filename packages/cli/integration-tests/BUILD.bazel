@@ -166,6 +166,7 @@ vitest(
     ),
     data = [
         "//crates/formatjs_cli",
+        "//packages/cli-lib:native_test_binary",  # keep: printf verification uses Rust through Node-API
     ],
     fixtures = glob(
         ["verify/**/*"],

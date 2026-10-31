@@ -255,12 +255,20 @@
     "title": "Linter",
     "description": "This eslint plugin allows you to enforce certain rules in your ICU message."
   },
+  "tooling/rust-apple-printf-parser": {
+    "title": "Rust Apple Printf Parser",
+    "description": "---"
+  },
   "tooling/rust-icu-messageformat-parser": {
     "title": "Rust Icu Messageformat Parser",
     "description": "---"
   },
   "tooling/rust-icu-skeleton-parser": {
     "title": "Rust Icu Skeleton Parser",
+    "description": "---"
+  },
+  "tooling/rust-java-printf-parser": {
+    "title": "Rust Java Printf Parser",
     "description": "---"
   },
   "tooling/swc-plugin": {

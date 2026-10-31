@@ -1,10 +1,14 @@
+mod apple_printf;
 pub mod compile;
 pub mod compile_folder;
 pub mod extract;
 pub mod extractor;
 pub mod formatters;
 pub mod id_generator;
+pub mod java_printf;
+mod printf_validation;
 pub mod python_extractor;
 pub mod rust_extractor;
 pub mod static_evaluation;
 pub mod verify;
+pub mod xcstrings;

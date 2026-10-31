@@ -1,0 +1,17 @@
+[package]
+name = "formatjs_apple_printf_parser"
+version = "0.1.0"
+edition = "2024"
+authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
+description = "Parser for Apple Foundation printf-style format strings"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+homepage = "https://formatjs.io/"
+documentation = "https://docs.rs/formatjs_apple_printf_parser"
+keywords = ["apple", "printf", "parser", "i18n", "ios"]
+categories = ["internationalization", "parser-implementations", "localization"]
+readme = "README.md"
+rust-version = "1.90"
+
+[lib]
+path = "lib.rs"

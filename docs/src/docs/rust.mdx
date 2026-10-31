@@ -3,7 +3,7 @@ title: Rust
 ---
 
 FormatJS provides Rust crates for message formatting, locale negotiation,
-message extraction, and the ICU parsers used by the runtime.
+message extraction, ICU parsers, and Java Formatter parsing.
 
 ## Choose a crate
 
@@ -20,6 +20,13 @@ Use [`formatjs_intl`](/docs/rust/intl) for a Rust backend with translation
 catalogs. Use
 [`formatjs_icu_messageformat`](/docs/rust/icu-messageformat) when message
 selection, locale negotiation, and catalog loading already happen elsewhere.
+
+For Android-style printf syntax, use
+[`formatjs_java_printf_parser`](/docs/tooling/rust-java-printf-parser). It parses
+Java Formatter syntax without depending on ICU or formatting runtime values.
+For iOS/macOS Foundation formats, use
+[`formatjs_apple_printf_parser`](/docs/tooling/rust-apple-printf-parser), including
+object placeholders, length modifiers, and dynamic width/precision arguments.
 
 ## Runtime layers
 

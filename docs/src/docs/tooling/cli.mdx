@@ -478,15 +478,86 @@ yarn formatjs verify [options] <translationFiles>
 
 ### `--source-locale <sourceLocale>`
 
-The source locale of the translation files. There must be a file named `<sourceLocale>.json` in the list of translation files. This is used as source to verify other translations against.
+The source locale used for comparison. Per-locale JSON requires a matching
+`<sourceLocale>.json` file. Apple mode infers it from each catalog's
+`sourceLanguage`; an explicit value must match.
 
 ### `--missing-keys`
 
-Whether to check for missing keys in target locale compared to source locale. This basically guarantees that no messages are untranslated.
+Check missing keys in known target locales. This does not inspect translation
+state or determine whether text was translated.
 
 ### `--structural-equality`
 
 Whether to check for structural equality of messages between source and target locale. This makes sure translations are formattable and are not missing any tokens.
+
+### `--message-syntax <syntax>`
+
+Select `icu` (default), `java-printf`, or `apple-printf` for
+`--structural-equality`. Both npm CLI and Rust binary share the Rust printf
+validators.
+
+```sh
+formatjs verify "lang/*.json" --source-locale en \
+  --message-syntax java-printf --structural-equality --missing-keys --extra-keys
+```
+
+Java printf verification rejects malformed syntax in source or target messages,
+missing/extra resolved argument indices, and changed argument requirements.
+For example, `%s %d` and `%2$d %1$s %<s` match; `%1$d` fails for both an
+incompatible first argument and a missing second argument. Diagnostics include
+locale and message ID.
+
+The set of conversion requirements for each argument must match. Reordering,
+repeated references, uppercase variants and compatible numeric/date presentation
+changes are allowed. String, boolean, hash, character, integer, floating-point
+and date/time uses remain distinct. `%#s`, signed octal/hexadecimal flags and
+hexadecimal floats carry narrower requirements. Runtime Java types/values and
+date fields are not inferred.
+
+Input stays JSON with string leaves, optionally nested. This mode does not read
+Android XML: decode resource XML, skip `formatted="false"`, and emit each plural
+or array item as an independently formatted message before verification.
+
+Apple mode accepts only Xcode `.xcstrings` catalogs:
+
+```sh
+formatjs verify "Resources/**/*.xcstrings" \
+  --message-syntax apple-printf --structural-equality --missing-keys
+```
+
+Each file contains its own locales. Source language comes from `sourceLanguage`;
+optional `--source-locale` must match it. Source values use an explicit source
+localization when available, otherwise the string key. Catalog paths keep keys
+in separate string tables independent.
+
+Validation covers nested device/plural variants and named substitutions.
+`%#@name@` resolves through its substitution's `argNum` and `formatSpecifier`;
+`%arg` inside a branch uses that argument. Locale plural categories may differ,
+and selector placeholders may be omitted. Other placeholders must survive in
+each applicable branch or its enclosing text.
+
+Object (`%@`), byte-string (`%s`), UTF-16 (`%C`, `%S`), pointer, integer
+signedness/length, floating-point and dynamic width/precision requirements stay
+distinct. Reordering and reuse work; `%ld` becoming `%d` or `%@` becoming `%s`
+fails. Equal ABI sizes do not make distinct declared types interchangeable.
+
+`--missing-keys` checks known target locales across all supplied catalogs,
+skipping `shouldTranslate: false`. Target locales are inferred from catalog
+localizations. `--extra-keys` adds no checks because a catalog already shares one
+key set across locales. Translation-state metadata is not a completeness check.
+
+Catalogs do not carry an explicit formatting flag. Source argument specifiers or
+substitution metadata identify formatted messages; plain percentages remain
+literal. A percent followed by a space alone does not establish formatting intent.
+This inference cannot distinguish every literal from a format string.
+
+Versions `1.0` and `1.1` are accepted. Ambiguous root plural selectors with multiple
+numeric arguments, nested named substitutions, unknown variation axes, `%n` and
+logging privacy syntax are rejected for formatted messages. Legacy `.strings`,
+`.stringsdict` and flat JSON are unsupported in Apple mode. Verification reads
+catalogs without changing metadata or translation state.
+See [Apple printf parser](/docs/tooling/rust-apple-printf-parser).
 
 ### `--extra-keys`
 

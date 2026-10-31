@@ -101,6 +101,11 @@ export function getNavigationTree(): NavSection[] {
         {title: 'Overview', path: 'rust'},
         {title: 'Intl Runtime', path: 'rust/intl'},
         {title: 'ICU MessageFormat', path: 'rust/icu-messageformat'},
+        {title: 'Java Printf Parser', path: 'tooling/rust-java-printf-parser'},
+        {
+          title: 'Apple Printf Parser',
+          path: 'tooling/rust-apple-printf-parser',
+        },
         {
           title: 'ICU MessageFormat Parser',
           path: 'tooling/rust-icu-messageformat-parser',

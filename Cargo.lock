@@ -628,6 +628,8 @@ dependencies = [
  "fast-glob",
  "formatjs_icu_messageformat_parser",
  "formatjs_icu_skeleton_parser",
+ "formatjs_apple_printf_parser",
+ "formatjs_java_printf_parser",
  "hex",
  "md-5",
  "oxc",
@@ -933,6 +935,14 @@ dependencies = [
  "serde",
  "serde_json",
 ]
+
+[[package]]
+name = "formatjs_apple_printf_parser"
+version = "0.1.0"
+
+[[package]]
+name = "formatjs_java_printf_parser"
+version = "0.1.0"
 
 [[package]]
 name = "futures"

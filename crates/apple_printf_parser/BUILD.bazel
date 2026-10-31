@@ -1,0 +1,27 @@
+load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_doc_test")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+
+rust_library(
+    name = "apple_printf_parser",
+    srcs = ["lib.rs"],
+    crate_name = "formatjs_apple_printf_parser",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "apple_printf_parser_test",
+    size = "small",
+    srcs = ["lib.test.rs"],
+    crate_name = "apple_printf_parser_test",
+    edition = "2024",
+    deps = [":apple_printf_parser"],
+)
+
+rust_doc_test(
+    name = "doc_test",
+    size = "small",
+    crate = ":apple_printf_parser",
+)

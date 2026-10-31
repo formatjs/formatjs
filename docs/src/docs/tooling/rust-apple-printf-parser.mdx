@@ -1,0 +1,73 @@
+---
+title: Apple Printf Parser (Rust)
+---
+
+`formatjs_apple_printf_parser` parses Apple Foundation format strings used by
+`NSString`, `CFString`, and Swift `String(format:)` on iOS/macOS. No runtime
+dependencies; Rust 1.90 or newer.
+
+```toml
+[dependencies]
+formatjs_apple_printf_parser = "0.1"
+```
+
+```rust
+use formatjs_apple_printf_parser::{parse, Element};
+
+let elements = parse("Hello %2$@, %1$ld %%").unwrap();
+let indices: Vec<_> = elements.iter().filter_map(|element| match element {
+    Element::Specifier(specifier) => specifier.argument.map(|argument| argument.index),
+    Element::Literal(_) => None,
+}).collect();
+assert_eq!(indices, [2, 1]);
+```
+
+Borrowed literals and specifiers retain UTF-8 byte spans. Specifiers expose raw
+text, flags, fixed/dynamic width and precision, length, conversion kind, original
+conversion character, and resolved one-based value argument. Dynamic `%*.*f`
+consumes width, precision, then value. Positional arguments support reordering and
+reuse; mixed indexing, gaps, zero indices and overflow produce structured errors.
+CoreFoundation limits explicit indices to 127.
+`parse_specifier(input, first_argument)` parses one leading token for catalog
+fragments, with ordinary indices starting at the supplied argument. It permits
+positional gaps for the enclosing catalog to resolve.
+
+Foundation meanings apply: `%@` objects, `%C` UTF-16 code units, `%S` UTF-16
+strings, `%s` byte strings, `%D/%U/%O` 32-bit integer aliases. Integer lengths
+`hh h l ll q j z t` and floating lengths `l L` are supported. These meanings differ
+from libc; `%lc/%ls` are not mapped to UTF-16.
+
+The parser implements a strict documented subset. It rejects `%n`, named
+`.stringsdict` references (`%#@name@`), logging privacy annotations, apostrophe
+grouping and lengths on object/pointer/string/character conversions. It does not
+emulate Foundation's literal fallback for malformed conversions. Runtime values,
+ABI differences, plist decoding and plural expansion remain caller concerns.
+
+## Validate translation catalogs
+
+```sh
+formatjs verify "Resources/**/*.xcstrings" \
+  --message-syntax apple-printf --structural-equality
+```
+
+Apple mode accepts only `.xcstrings` catalogs, including nested device/plural
+variants and named substitutions. Source language comes from `sourceLanguage`;
+source values fall back to string keys when no source localization exists.
+`%#@name@` and `%arg` resolve through `argNum` and `formatSpecifier` metadata.
+Plural categories may differ by locale; branches may omit their selector value.
+Each branch preserves the requirements of its matching source case, or source
+`other` fallback. Argument types/lengths and dynamic width/precision roles stay
+consistent. Source catalogs must identify types for all argument positions.
+
+Catalogs have no explicit formatting flag. Validation infers formatted messages
+from source argument specifiers or substitution metadata; plain percentage text
+stays literal. A percent followed by a space is ambiguous and alone does not
+mark a source as formatted. Runtime formatting intent cannot always be inferred.
+Ambiguous root plurals with multiple numeric arguments and nested named
+substitutions fail explicitly. Legacy `.strings`/`.stringsdict` and flat JSON
+catalogs are unsupported in Apple mode. See [CLI verification](/docs/tooling/cli#--message-syntax-syntax).
+
+References: [Apple format specifiers](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html),
+[Apple printf grammar](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man3/printf.3.html).
+Tests derive from these references and CoreFoundation's parser; Linux tests do
+not claim Darwin runtime conformance.

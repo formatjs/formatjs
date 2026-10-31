@@ -5,6 +5,14 @@ use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
 
+#[derive(Clone, Copy, Debug, Default)]
+pub enum MessageSyntax {
+    #[default]
+    Icu,
+    JavaPrintf,
+    ApplePrintf,
+}
+
 /// Run a series of checks on translation files to validate correctness and consistency.
 ///
 /// This command loads translation files and runs various validation checks comparing
@@ -64,8 +72,29 @@ pub fn verify(
     structural_equality: bool,
     follow_links: bool,
 ) -> Result<()> {
+    verify_with_syntax(
+        translation_files,
+        source_locale,
+        ignore,
+        missing_keys,
+        extra_keys,
+        structural_equality,
+        follow_links,
+        MessageSyntax::Icu,
+    )
+}
+
+pub fn verify_with_syntax(
+    translation_files: &[PathBuf],
+    source_locale: Option<&str>,
+    ignore: &[String],
+    missing_keys: bool,
+    extra_keys: bool,
+    structural_equality: bool,
+    follow_links: bool,
+    message_syntax: MessageSyntax,
+) -> Result<()> {
     // Ensure source locale is provided
-    let source_locale = source_locale.context("--source-locale is required for verify command")?;
 
     // Expand glob patterns to actual file paths
     let mut expanded_files = Vec::new();
@@ -90,6 +119,36 @@ pub fn verify(
             }
         }
     }
+
+    if matches!(message_syntax, MessageSyntax::ApplePrintf) {
+        let mut catalogs = std::collections::BTreeMap::new();
+        for file in expanded_files
+            .iter()
+            .filter(|file| !should_ignore(file, ignore))
+        {
+            let content = std::fs::read_to_string(file)
+                .with_context(|| format!("Failed to read file: {}", file.display()))?;
+            catalogs.insert(
+                file.display().to_string(),
+                serde_json::from_str(&content)
+                    .with_context(|| format!("Failed to parse JSON in {}", file.display()))?,
+            );
+        }
+        let issues = crate::xcstrings::verify_catalogs(
+            &catalogs,
+            source_locale,
+            crate::xcstrings::VerificationOptions {
+                missing_keys,
+                structural_equality,
+            },
+        )?;
+        for issue in &issues {
+            eprintln!("{}: {}: {}", issue.locale, issue.message_id, issue.error);
+        }
+        anyhow::ensure!(issues.is_empty(), "Xcode catalog verification failed");
+        return Ok(());
+    }
+    let source_locale = source_locale.context("--source-locale is required for verify command")?;
 
     // Load all translation files
     let mut locales: HashMap<String, Value> = HashMap::new();
@@ -147,7 +206,18 @@ pub fn verify(
     }
 
     if structural_equality {
-        if !check_structural_equality(&locales, source_locale) {
+        let passed = match message_syntax {
+            MessageSyntax::Icu => check_structural_equality(&locales, source_locale),
+            MessageSyntax::ApplePrintf => unreachable!(),
+            MessageSyntax::JavaPrintf => {
+                let issues = crate::java_printf::verify_catalogs(&locales, source_locale)?;
+                for issue in &issues {
+                    eprintln!("{}: {}: {}", issue.locale, issue.message_id, issue.error);
+                }
+                issues.is_empty()
+            }
+        };
+        if !passed {
             exit_code = 1;
         }
     }
