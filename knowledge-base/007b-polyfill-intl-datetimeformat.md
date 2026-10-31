@@ -544,3 +544,32 @@ CLDR data and compiles plural rules at build time; calendar locale patches merge
 into DateTimeFormat records. Per-registry lazy caches isolate mutable overrides.
 The explicit-registration targets retain custom-provider and TS conformance use.
 See [native data setup](../native/hermes/README.md#compiled-locale-data).
+
+### Formatting caches and independent ICU snapshots
+
+TS retains parsed single-date patterns and numeric formatters in WeakMaps keyed
+by internal profiles. Rust retains numeric formatters per instance and fractional
+precision, avoiding repeated locks/key allocations. Neither caches locale names,
+calendar callbacks, nor local-time conversions; replacement data stays live.
+
+`//crates/intl_datetimeformat/tests:icu4j_conformance_snapshot_test` independently
+compares TS and Rust strings and parts against pinned ICU4J 79.1. Its 12,399 cases
+cover 17 locales, 16 calendars, seven digit systems, five zones, DST transitions,
+styles, fractional seconds, and ranges. Existing differences are exact snapshots,
+not ignored cases. The fixture hash and case count prevent silently dropping
+coverage. ICU output is an oracle baseline, not proof of ECMA-402 compliance.
+
+Update explicitly, review every changed difference:
+
+```sh
+bazel run -c opt //crates/intl_datetimeformat/tests:icu_audit -- --update-snapshot="$PWD/crates/intl_datetimeformat/tests/snapshots/icu4j.jsonl"
+```
+
+Tests cannot update snapshots. Matched benchmarks use seven warmed rounds and
+report median microseconds per operation:
+
+```sh
+bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --iterations=12000
+bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --polyfill-numbers --iterations=12000
+bazel run -c opt //crates/intl_datetimeformat:audit -- --benchmark --iterations=12000
+```

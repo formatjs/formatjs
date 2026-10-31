@@ -214,3 +214,20 @@ genrule(
     tools = [":intl_numberformat_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "intl_datetimeformat_oracle",
+    testonly = True,
+    srcs = ["IntlDateTimeFormatOracle.java"],
+    main_class = "IntlDateTimeFormatOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "date_time_format_fixtures",
+    testonly = True,
+    outs = ["date-time-format-fixtures.tsv"],
+    cmd = "$(execpath :intl_datetimeformat_oracle) $@",
+    tools = [":intl_datetimeformat_oracle"],
+    visibility = ["//visibility:public"],
+)

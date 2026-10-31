@@ -94,12 +94,31 @@ export interface FormatDateTimePatternImplDetails {
   }
 }
 
-function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
+type NumberFormatters = {
   nf: Intl.NumberFormat
   nf2: Intl.NumberFormat
   nf3: Intl.NumberFormat | undefined
-} {
-  const locale = internalSlots.locale
+}
+const numberFormattersCache = new WeakMap<
+  IntlDateTimeFormatInternal,
+  Pick<
+    IntlDateTimeFormatInternal,
+    'locale' | 'numberingSystem' | 'fractionalSecondDigits'
+  > & {formatters: NumberFormatters}
+>()
+
+function createNumberFormatters(
+  internalSlots: IntlDateTimeFormatInternal
+): NumberFormatters {
+  const {locale, numberingSystem, fractionalSecondDigits} = internalSlots
+  const cached = numberFormattersCache.get(internalSlots)
+  if (
+    cached &&
+    cached.locale === locale &&
+    cached.numberingSystem === numberingSystem &&
+    cached.fractionalSecondDigits === fractionalSecondDigits
+  )
+    return cached.formatters
   const nfOptions = Object.create(null)
   nfOptions.numberingSystem = internalSlots.numberingSystem
   nfOptions.useGrouping = false
@@ -110,7 +129,6 @@ function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
   nf2Options.numberingSystem = internalSlots.numberingSystem
   nf2Options.useGrouping = false
   const nf2 = createMemoizedNumberFormat(locale, nf2Options)
-  const fractionalSecondDigits = internalSlots.fractionalSecondDigits
   let nf3: Intl.NumberFormat | undefined
   if (fractionalSecondDigits !== undefined) {
     const nf3Options = Object.create(null)
@@ -119,7 +137,14 @@ function createNumberFormatters(internalSlots: IntlDateTimeFormatInternal): {
     nf3Options.useGrouping = false
     nf3 = createMemoizedNumberFormat(locale, nf3Options)
   }
-  return {nf, nf2, nf3}
+  const formatters = {nf, nf2, nf3}
+  numberFormattersCache.set(internalSlots, {
+    locale,
+    numberingSystem,
+    fractionalSecondDigits,
+    formatters,
+  })
+  return formatters
 }
 
 /**
@@ -150,7 +175,7 @@ export function FormatDateTimePattern(
   /** IMPL END */
 
   // ECMA-402 11.5.5, steps 1-11 use identical NumberFormat options for
-  // every record in this range. Resolve the existing memoized formatters once.
+  // every call with this profile. Retain the existing memoized formatters.
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1356-L1372
   const numberFormatters =

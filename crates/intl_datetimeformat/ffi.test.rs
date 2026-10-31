@@ -496,3 +496,19 @@ fn host_records_validate_installation_and_kind_then_release_construction() {
         formatjs_datetime_records_destroy(other);
     }
 }
+
+#[test]
+fn abi_warm_formatter_reads_replacement_locale_names() {
+    let registry = Registry::new();
+    let handle = formatter(
+        &registry,
+        json!({}),
+        json!({"year":"numeric","month":"long","day":"numeric"}),
+    );
+    let query = json!({"op":"format","value":{"type":"number","value":"0"}});
+    assert!(handle.query(query.clone()).unwrap().contains("January"));
+    let mut data: Value = serde_json::from_str(EN).unwrap();
+    data["data"]["month"]["long"][0] = json!("Changed");
+    assert_eq!(registry.load(0, &data.to_string()), 0);
+    assert!(handle.query(query).unwrap().contains("Changed"));
+}

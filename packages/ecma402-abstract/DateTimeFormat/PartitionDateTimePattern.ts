@@ -3,6 +3,7 @@ import {
   type DateTimeFormat,
   type IntlDateTimeFormatPart,
   type IntlDateTimeFormatPartType,
+  type IntlDateTimeFormatInternal,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   HandleDateTimeValue,
@@ -13,6 +14,11 @@ import {
   type FormatDateTimePatternImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.js'
 import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
+
+const patterns = new WeakMap<
+  IntlDateTimeFormatInternal,
+  {pattern: string; parts: IntlDateTimeFormatPart[]}
+>()
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern
@@ -28,9 +34,17 @@ export function PartitionDateTimePattern(
   const internalSlots = record.format
 
   const {pattern} = internalSlots
+  let parsed = patterns.get(internalSlots)
+  if (!parsed || parsed.pattern !== pattern) {
+    parsed = {
+      pattern,
+      parts: PartitionPattern<IntlDateTimeFormatPartType>(pattern),
+    }
+    patterns.set(internalSlots, parsed)
+  }
   return FormatDateTimePattern(
     dtf,
-    PartitionPattern<IntlDateTimeFormatPartType>(pattern),
+    parsed.parts,
     record.epochNanoseconds,
     record.isPlain,
     {...implDetails, getInternalSlots: () => internalSlots}

@@ -11,7 +11,7 @@ use crate::{
     timezone::{TimeZone, TimeZoneOffset, TimeZoneSnapshot},
 };
 use serde::Serialize;
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -67,7 +67,7 @@ pub struct RenderData {
     locale: Arc<LocaleData>,
     calendar: Arc<CalendarLocale>,
     provider: Arc<dyn CalendarProvider>,
-    numbers: NumberFormatters,
+    numbers: Arc<NumberFormatters>,
 }
 impl RenderData {
     // Retain records, then release registry borrows before invoking user providers.
@@ -76,14 +76,29 @@ impl RenderData {
         config: &Configuration,
         profile: &Profile,
     ) -> Result<Self, Error> {
+        Self::capture_cached(registry, config, profile, &OnceLock::new())
+    }
+
+    pub(crate) fn capture_cached(
+        registry: &Registry,
+        config: &Configuration,
+        profile: &Profile,
+        cache: &OnceLock<Arc<NumberFormatters>>,
+    ) -> Result<Self, Error> {
         let locale = registry.get(&config.snapshot.resolution.data_locale)?;
         let calendar = locale.calendar(&config.snapshot.resolution.calendar)?;
         let provider = registry.calendar_provider(&config.snapshot.resolution.calendar)?;
-        let numbers = config.snapshot.locale.numbers()?.formatters(
-            &config.snapshot.resolution.locale,
-            &config.snapshot.resolution.numbering_system,
-            profile.components.fractional_second_digits,
-        )?;
+        let numbers = if let Some(numbers) = cache.get() {
+            numbers.clone()
+        } else {
+            let numbers = Arc::new(config.snapshot.locale.numbers()?.formatters(
+                &config.snapshot.resolution.locale,
+                &config.snapshot.resolution.numbering_system,
+                profile.components.fractional_second_digits,
+            )?);
+            let _ = cache.set(numbers.clone());
+            numbers
+        };
         Ok(Self {
             locale,
             calendar,
@@ -156,7 +171,10 @@ impl RenderData {
             in_dst,
         } = local.offset;
         let parts = partition(pattern)?;
-        let context = partition(context)?;
+        let context_parts = (pattern != context)
+            .then(|| partition(context))
+            .transpose()?;
+        let context = context_parts.as_ref().unwrap_or(&parts);
         let has = |name: &str| {
             context
                 .iter()

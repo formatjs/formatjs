@@ -121,3 +121,39 @@ test('a user-supplied calendar uses its registered conversion for dates and rang
   DateTimeFormat.__addLocaleData(base)
   expect(formatter('custom').resolvedOptions().calendar).toBe('custom')
 })
+
+test('warm formatters retain patterns but read replacement names and providers', () => {
+  const fields = (year: number) => ({era: 'AD', year, month: 0, day: 1})
+  const calendarPatch: RawCalendarLocaleData = {
+    locale: 'en',
+    calendar: 'cached',
+    data: raw.data,
+    formats: formats.gregory,
+  }
+  DateTimeFormat.__addCalendarLocaleData(calendarPatch)
+  DateTimeFormat.__addCalendarData({
+    calendar: 'cached',
+    dateFromTime: () => fields(2024),
+  })
+  const existing = formatter('cached')
+  expect(existing.format(0)).toBe('January 1, 2024')
+  const parts = existing.formatToParts(0)
+  parts[0].value = 'mutated'
+  expect(existing.format(0)).toBe('January 1, 2024')
+  DateTimeFormat.__addCalendarLocaleData({
+    ...calendarPatch,
+    data: {
+      ...raw.data,
+      month: {
+        ...raw.data.month,
+        long: ['Changed', ...raw.data.month.long.slice(1)],
+      },
+    },
+  })
+  DateTimeFormat.__addCalendarData({
+    calendar: 'cached',
+    dateFromTime: () => fields(3024),
+  })
+  expect(existing.format(0)).toBe('Changed 1, 3024')
+  expect(existing.formatRange(0, 86400000)).toBe('Changed 1, 3024')
+})

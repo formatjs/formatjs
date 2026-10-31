@@ -5,13 +5,18 @@ use crate::{
     data::HourCycle,
     fields::Components,
     matching::Style,
+    numbers::NumberFormatters,
     registry::{Registry, Resolution, ResolutionOptions},
     render::{Part, RangeSnapshot, RenderData},
     selection::{Configuration, Kind, Profile, Snapshot},
     timezone::{TimeZone, TimeZoneRegistry, TimeZoneSnapshot},
 };
 use serde::Serialize;
-use std::{cell::RefCell, rc::Rc, sync::Arc};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+    sync::{Arc, OnceLock},
+};
 
 #[derive(Clone, Default)]
 pub struct Runtime {
@@ -121,6 +126,7 @@ impl Construction {
             configuration,
             zone,
             main,
+            numbers: std::array::from_fn(|_| OnceLock::new()),
         }
     }
 }
@@ -165,8 +171,23 @@ pub struct DateTimeFormat {
     configuration: Configuration,
     zone: TimeZone,
     main: Arc<Profile>,
+    // Locale and digits stay fixed; Temporal profiles may change precision.
+    numbers: [OnceLock<Arc<NumberFormatters>>; 4],
 }
 impl DateTimeFormat {
+    fn render_data(&self, profile: &Profile) -> Result<RenderData, Error> {
+        let index = profile
+            .components
+            .fractional_second_digits
+            .map(u8::from)
+            .unwrap_or(0);
+        RenderData::capture_cached(
+            &self.runtime.registry.borrow(),
+            &self.configuration,
+            profile,
+            &self.numbers[usize::from(index)],
+        )
+    }
     pub fn resolved_options(&self) -> ResolvedOptions {
         let resolution = &self.configuration.snapshot.resolution;
         ResolvedOptions {
@@ -220,11 +241,7 @@ impl DateTimeFormat {
     }
     pub fn format_to_parts(&self, value: &DateTimeValue) -> Result<Vec<Part>, Error> {
         let value = self.prepare(value)?;
-        let render = RenderData::capture(
-            &self.runtime.registry.borrow(),
-            &self.configuration,
-            &value.profile,
-        )?;
+        let render = self.render_data(&value.profile)?;
         // No registry borrow crosses a user calendar callback.
         render.format(
             &self.configuration,
@@ -262,20 +279,12 @@ impl DateTimeFormat {
             RangeSnapshot::capture(&self.runtime.registry.borrow(), &self.configuration)?;
         let zones = self.runtime.zones.snapshot();
         let convert = |value: &PreparedValue| {
-            let render = RenderData::capture(
-                &self.runtime.registry.borrow(),
-                &self.configuration,
-                &first.profile,
-            )?;
+            let render = self.render_data(&first.profile)?;
             render.local_time(&zones, &self.zone, value.epoch_nanoseconds, value.plain)
         };
         let local_first = convert(&first)?;
         let local_second = convert(&second)?;
-        let render = RenderData::capture(
-            &self.runtime.registry.borrow(),
-            &self.configuration,
-            &first.profile,
-        )?;
+        let render = self.render_data(&first.profile)?;
         snapshot.format(
             &render,
             &self.configuration,

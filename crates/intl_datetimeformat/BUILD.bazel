@@ -297,3 +297,27 @@ filegroup(
     ]),
     visibility = ["//crates:__pkg__"],
 )
+
+rust_binary(
+    name = "audit",
+    testonly = True,
+    srcs = ["audit.rs"],
+    compile_data = [
+        ":locale-data/en.json",
+        "//packages/intl-datetimeformat:tz_all_json",
+    ],
+    crate_name = "datetimeformat_audit",
+    crate_root = "audit.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_DATETIME_EN": "$(execpath :locale-data/en.json)",
+        "FORMATJS_DATETIME_TZ": "$(execpath //packages/intl-datetimeformat:tz_all_json)",
+    },
+    visibility = ["//visibility:public"],
+    deps = [
+        ":intl_datetimeformat",
+        "//crates/intl_datetimeformat_calendars",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
+)

@@ -18,6 +18,11 @@ A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformanc
 
 This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+TypeScript and Rust also run independent ICU4J 79.1 snapshot comparisons in
+Bazel CI: 12,399 cases covering 17 locales, calendars, numbering systems, DST,
+styles, fractional seconds, and range parts. Snapshots pin existing differences;
+they do not imply full ICU parity. See [snapshot coverage](https://github.com/formatjs/formatjs/tree/main/crates/intl_datetimeformat/tests).
+
 ### Implemented Features
 
 #### ✅ Core Methods

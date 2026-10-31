@@ -393,6 +393,7 @@ formatjs_generated_package(
         visibility = [
             "//crates:__pkg__",
             "//crates/intl_datetimeformat:__subpackages__",
+            "//packages/intl-datetimeformat/benchmark:__pkg__",
         ],
     )
     for selection in [
