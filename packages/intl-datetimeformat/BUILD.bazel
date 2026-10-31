@@ -295,27 +295,36 @@ ts_run_binary(
     cmd = "cp $< $@",
 ) for locale in TEST_LOCALES]
 
-ts_run_binary(
-    name = "test262-main-gen",
-    srcs = [
-        ":cldr-raw",
-        "//:node_modules/fs-extra",
-        "//:node_modules/minimist",
-    ],
-    outs = ["test262-main.ts"],
-    args = [
-        "--cldrFile %s/cldr-raw/%s.json" % (
-            package_name(),
-            f,
-        )
-        for f in TEST262_LOCALES
-        if f in ALL_LOCALES
-    ] + [
-        "--out",
-        "$(rootpath test262-main.ts)",
-    ],
-    tool = "//packages/intl-datetimeformat/scripts:test262-main-gen",
-)
+[
+    ts_run_binary(
+        name = "test262%s-main-gen" % suffix,
+        srcs = [
+            ":cldr-raw",
+            "//:node_modules/fs-extra",
+            "//:node_modules/minimist",
+        ],
+        outs = ["test262%s-main.ts" % suffix],
+        args = [
+            "--cldrFile %s/cldr-raw/%s.json" % (
+                package_name(),
+                f,
+            )
+            for f in locales
+            if f in ALL_LOCALES
+        ] + [
+            "--out",
+            "$(rootpath test262%s-main.ts)" % suffix,
+        ],
+        tool = "//packages/intl-datetimeformat/scripts:test262-main-gen",
+    )
+    for suffix, locales in [
+        ("", TEST262_LOCALES),
+        (
+            "-en",
+            ["en"],
+        ),
+    ]
+]
 
 # @formatjs_generated/tz — IANA timezone data
 generate_package_file(
@@ -498,27 +507,33 @@ alias(
     tags = ["manual"],
 )
 
-rolldown_bundle(
-    name = "test262-polyfill",
-    srcs = [
-        ":srcs",
-        ":test262-main-gen",
-    ],
-    entry_point = "test262-main.ts",
-    format = "iife",
-    target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
-    deps = [
-        "//:node_modules/@formatjs/bigdecimal",
-        "//:node_modules/@formatjs/intl-localematcher",
-        "//:node_modules/@formatjs_generated/tz",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract",
-        "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/types",
-        "//packages/intl-datetimeformat/calendars",  # keep: generated prelude loads optional calendars
-    ],
-)
+[
+    rolldown_bundle(
+        name = "test262%s-polyfill" % suffix,
+        srcs = [
+            ":srcs",
+            ":test262%s-main-gen" % suffix,
+        ],
+        entry_point = "test262%s-main.ts" % suffix,
+        format = "iife",
+        target = "es2020",
+        visibility = ["//tools/test262:__pkg__"],
+        deps = [
+            "//:node_modules/@formatjs/bigdecimal",
+            "//:node_modules/@formatjs/intl-localematcher",
+            "//:node_modules/@formatjs_generated/tz",
+            "//packages/ecma262-abstract",
+            "//packages/ecma402-abstract",
+            "//packages/ecma402-abstract/DateTimeFormat",
+            "//packages/ecma402-abstract/types",
+            "//packages/intl-datetimeformat/calendars",  # keep: generated prelude loads optional calendars
+        ],
+    )
+    for suffix in [
+        "",
+        "-en",
+    ]
+]
 
 test262_test(
     name = "test262",

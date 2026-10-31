@@ -4,7 +4,7 @@ load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
-def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long", case_timeout_ms = 30000):
+def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json", threads = 1, timeout = "long", case_timeout_ms = 30000, tags = []):
     """Keep direct strict/native tests and validate captured baseline reports."""
     if threads < 1:
         fail("Test262 threads must be positive")
@@ -23,6 +23,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         tool = "//tools/test262:prelude",
         srcs = preludes,
         outs = [realm_prelude],
+        tags = tags,
         args = [arg for source in preludes for arg in ["--input", "$(rootpath %s)" % source]] + ["--out", "$(rootpath %s)" % realm_prelude],
     )
     args = [
@@ -44,7 +45,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         node_toolchain = "//tools/test262:node-runtime",
         name = name + "-harness",
         data = data + [realm_prelude],
-        tags = ["manual"],
+        tags = ["manual"] + [tag for tag in tags if tag != "manual"],
         testonly = True,
     )
 
@@ -57,7 +58,7 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
         args = ["$(rootpath :%s-harness)" % name, "$(rootpath //tools/test262:validator)", suite, "$(rootpath %s)" % baseline] + polyfill_args,
         env = {"TZ": "UTC"},
         exec_properties = execution_resources,
-        tags = resource_tags,
+        tags = tags + resource_tags,
         size = "large",
         timeout = timeout,
     )
@@ -71,5 +72,5 @@ def test262_test(name, suite, prelude, data, baseline = "test262-baseline.json",
             exec_properties = execution_resources,
             size = "large",
             timeout = timeout,
-            tags = ["manual"] + resource_tags,
+            tags = ["manual"] + [tag for tag in tags if tag != "manual"] + resource_tags,
         )
