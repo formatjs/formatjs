@@ -95,6 +95,21 @@ verify that the addon's required Rust runtime library exists in each package.
 Steps use an action-level staging path because shell variables do not persist
 between BuildBuddy steps.
 
+BuildBuddy's `Verify hooks` action runs the existing all-files Lefthook checks
+and rejects any resulting tracked or untracked changes. An ignored, CI-only
+`.bazelrc.user` enables `--config=bb-workflow` and top-level downloads, so nested
+hook commands also compile tools through authenticated RBE. Local hook commands
+and their optimized mode stay unchanged. The runner requests 16GB memory and
+32GB disk, matching the test action's module-graph requirements.
+
+GitHub's required `verify-hooks` check remains owned by GitHub Actions. Its light
+job waits for the `buildbuddy-io[bot]` status named `Verify hooks` on the exact PR
+head, then validates commit messages. Main pushes and merge queues use their
+event commit SHA. Missing, pending, failed, errored, or differently owned statuses
+cannot pass; API failures fail the gate. A bounded wait avoids hanging if a
+BuildBuddy run needs approval. Existing Renovate manual dispatch and `base_ref`
+commit validation remain available. No BuildBuddy credentials enter this job.
+
 GitHub Actions' `test` job only validates Cargo release metadata and provider-only
 ICU features. Other `test.yml` jobs cover independent example workspaces and pnpm
 installation. The old `gha-test-rbe-v2-ubuntu24` disk cache is no longer restored
@@ -118,7 +133,9 @@ the status-triggered workflow lands.
 
 After that rollout, main should require `test`, `verify-hooks`, `Test all targets`,
 `Cross-build Release Artifacts`, and `Native Smoke Tests`. The first two and the
-native smoke status come from GitHub Actions; the other two come from BuildBuddy.
+native smoke status come from GitHub Actions; the test and cross-build statuses
+come from BuildBuddy. GitHub's hook gate additionally requires BuildBuddy's
+`Verify hooks` result.
 BuildBuddy also covers main pushes and merge queue commits.
 
 BuildBuddy PR triggers include `codex/*` target branches so stacked polyfill

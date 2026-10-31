@@ -16,12 +16,22 @@ on:
 jobs:
   verify-hooks:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      statuses: read
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: Wait for BuildBuddy Hooks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HOOKS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: python3 tools/ci/buildbuddy_status.py --repo "$GITHUB_REPOSITORY" --sha "$HOOKS_SHA" --context 'Verify hooks'
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -34,15 +44,6 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
-
-      - name: Run Lefthook
-        run: |
-          JS_BINARY__CHDIR="$PWD" bazel run -c opt //:lefthook -- run pre-commit --all-files
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "Error: Pre-commit hooks would have made changes. Please run the hooks locally and commit the changes."
-            git diff
-            exit 1
-          fi
 
       - name: Validate Commit Messages
         if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'

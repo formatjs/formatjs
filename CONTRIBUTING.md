@@ -50,10 +50,12 @@ and module traversal disabled; only supplied files are formatted.
 
 ### CI
 
-BuildBuddy runs the full Bazel test suite and cross-builds release artifacts.
+BuildBuddy runs the full Bazel test suite, all-files pre-commit hooks, and release cross-builds.
 Its cross-build action also checks binary formats, Linux CLI compatibility, and
 native addon symbols. GitHub Actions validates Cargo metadata and provider-only
-features, builds examples, checks the pnpm lockfile, and verifies hooks.
+features, builds examples, checks the pnpm lockfile, and validates commit messages.
+The required GitHub `verify-hooks` job waits for BuildBuddy's `Verify hooks` status
+on the exact PR head before checking commit messages. It does not rebuild hook tools.
 
 After BuildBuddy's cross-build succeeds, `native-smoke.yml` downloads its archive
 using the existing read-only BuildBuddy secret. Native macOS, Windows, and Linux
@@ -78,10 +80,15 @@ flowchart TD
     BB -->|Outside contributor| UNTRUSTED[Untrusted run: no credentials]
     TRUSTED --> SUITE[Full Bazel test suite]
     TRUSTED --> CROSS[Cross-build macOS, Windows, Linux]
+    TRUSTED --> HOOKS[All-files hooks through RBE]
+    HOOKS --> HOOKSTATUS[Verify hooks status]
     CROSS --> CHECKS[Binary format, symbols, Linux CLI checks]
     CHECKS --> ARCHIVE[Upload smoke archive]
 
-    APPROVE_GHA --> GHA[Cargo checks, examples, pnpm, hooks]
+    APPROVE_GHA --> GHA[Cargo checks, examples, pnpm]
+    APPROVE_GHA --> HOOKGATE[GitHub verify-hooks gate]
+    HOOKSTATUS --> HOOKGATE
+    HOOKGATE --> MESSAGES[Commit-message validation]
 
     ARCHIVE --> STATUS[Successful BuildBuddy status]
     STATUS --> DOWNLOAD[Trusted GHA downloader: read-only BB key]
