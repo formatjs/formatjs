@@ -196,3 +196,10 @@ TS runtime. Rust arithmetic and locale payloads stay unchanged.
 [Numeric exponent cache](../../../knowledge-base/audits/2026-10-31-numberformat-exponent-cache.md)
 compares direct exponent keys and integer-to-Number conversion, with intermediate
 and repeated runs. Generated locale data and Rust arithmetic stay unchanged.
+
+## Integer fixed rounding
+
+Exact integers with rounding increment one skip fixed-rounding candidate
+arithmetic. DateTimeFormat's numeric fields use this path. Fractional padding,
+localized digits and non-unit rounding increments retain their existing behavior.
+See [matched DTF measurements](../../intl-datetimeformat/benchmark/README.md#integer-rendering).

@@ -6,7 +6,6 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 
-import Decimal from '@formatjs/bigdecimal'
 import {
   ToLocalTime,
   type ToLocalTimeImplDetails,
@@ -234,10 +233,9 @@ export function FormatDateTimePattern(
         value: patternPart.value!,
       })
     } else if (p === 'fractionalSecondDigits') {
-      const v = new Decimal(tm.millisecond)
-        .times(Decimal.pow(10, (fractionalSecondDigits || 0) - 3))
-        .floor()
-        .toNumber()
+      const v = Math.floor(
+        tm.millisecond / 10 ** (3 - (fractionalSecondDigits || 0))
+      )
       result.push({
         type: 'fractionalSecond',
         value: nf3!.format(v),

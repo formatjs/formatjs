@@ -35,3 +35,26 @@ To collect another profile:
 ```sh
 bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --node_options=--cpu-prof --node_options=--cpu-prof-dir=/tmp --iterations=12000
 ```
+
+## Integer rendering
+
+Follow-up against cache-only `9d76b97721e79cb6164a814de16a5c9b04a810ac`:
+same machine/Node, seven rounds of 12,000 calls per row. Full-polyfill repeat
+confirms gains. All 40 DTF row checksums match; NumberFormat audit checksums match too.
+
+| Operation                          | Before, µs | After, µs | Speedup |
+| ---------------------------------- | ---------: | --------: | ------: |
+| TS host numbers, date format       |      1.717 |     1.193 |   1.44× |
+| TS full numbers, date format       |      3.924 |     1.292 |   3.04× |
+| TS full numbers, date time format  |      4.990 |     1.603 |   3.11× |
+| TS full numbers, fractional format |      4.545 |     1.728 |   2.63× |
+| TS full numbers, date range        |      5.156 |     1.944 |   2.65× |
+| TS full numbers, zone name range   |     14.983 |     7.585 |   1.98× |
+
+Safe integer time arithmetic and exact-integer fixed rounding remove Decimal
+work from numeric date fields. Fractional offsets and non-unit rounding increments
+retain their general paths. Full-polyfill `removeTrailingZeros` self samples fall
+from 26.2% to 2.8%. Percentages describe separate profiles, not additive costs.
+
+See [full results](./integer-results.json) and [correctness guards](../../../knowledge-base/audits/2026-10-31-datetimeformat-integer-rendering.md).
+Rust rendering and locale payloads are unchanged.

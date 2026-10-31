@@ -311,3 +311,8 @@ Decimal power lookup uses canonical Number exponent keys instead of serializing
 Decimal objects. At most 649 common integer scales remain cached; other scales
 compute without retention. Unscaled integer coefficients convert directly to
 Number. See [measurements and rounding guards](audits/2026-10-31-numberformat-exponent-cache.md).
+
+Fixed rounding skips candidate arithmetic for integers with rounding increment
+one, retaining minimum fraction padding and the original rounding magnitude.
+Other increments still round normally. This especially helps DateTimeFormat's
+numeric fields; see [integer rendering](audits/2026-10-31-datetimeformat-integer-rendering.md).

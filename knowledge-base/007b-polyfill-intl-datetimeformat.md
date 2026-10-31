@@ -573,3 +573,9 @@ bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --iterations=
 bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --polyfill-numbers --iterations=12000
 bazel run -c opt //crates/intl_datetimeformat:audit -- --benchmark --iterations=12000
 ```
+
+Integer rendering avoids Decimal for safe epoch-millisecond/offset addition and
+fractional-second truncation. Negative nanoseconds floor before Number conversion;
+fractional offsets retain Decimal addition before flooring. Numeric date fields
+also benefit from NumberFormat's exact-integer fixed-rounding path. See
+[arithmetic guards and measurements](audits/2026-10-31-datetimeformat-integer-rendering.md).

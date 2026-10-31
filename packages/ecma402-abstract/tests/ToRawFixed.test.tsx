@@ -58,3 +58,43 @@ it('ToRawFixed(1,234,567,891,234,567.35, 2, 2)', () => {
     roundingMagnitude: -2,
   })
 })
+
+test.each([
+  ['0', 0, 100, '0', 1],
+  ['2024', 2, 3, '2024.00', 4],
+  ['900719925474099312345678900', 1, 100, '900719925474099312345678900.0', 27],
+] as const)(
+  'exact integer %s retains fraction padding and rounding magnitude',
+  (input, minimum, maximum, text, digits) => {
+    for (const mode of [
+      'zero',
+      'infinity',
+      'half-zero',
+      'half-infinity',
+      'half-even',
+    ] as const) {
+      expect(ToRawFixed(new Decimal(input), minimum, maximum, 1, mode)).toEqual(
+        {
+          formattedString: text,
+          roundedNumber: new Decimal(input),
+          integerDigitsCount: digits,
+          roundingMagnitude: -maximum,
+        }
+      )
+    }
+  }
+)
+
+test.each([
+  [12, 5, 'half-infinity', '10'],
+  [13, 5, 'half-infinity', '15'],
+  [15, 10, 'half-even', '20'],
+  [25, 10, 'half-even', '20'],
+] as const)(
+  'integer %i still rounds to increment %i',
+  (input, increment, mode, expected) => {
+    const result = ToRawFixed(new Decimal(input), 0, 0, increment, mode)
+    expect(result.formattedString).toBe(expected)
+    expect(result.roundedNumber.toString()).toBe(expected)
+  }
+)
