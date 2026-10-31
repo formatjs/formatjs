@@ -3,7 +3,23 @@ import {join} from 'node:path'
 import {performance} from 'node:perf_hooks'
 import {runfiles} from '@bazel/runfiles'
 import {NumberFormat} from '@formatjs/intl-numberformat'
+import {runInNewContext} from 'node:vm'
+import type {PluralRules} from '@formatjs/intl-pluralrules'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
+
+const polyfilledPlurals = process.argv.includes('--polyfill-plurals')
+if (polyfilledPlurals) {
+  await import('@formatjs/intl-pluralrules/polyfill-force.js')
+  const raw = readFileSync(
+    runfiles.resolve(
+      `${process.env.TEST_WORKSPACE || '_main'}/packages/intl-pluralrules/cldr-raw/en.js`
+    ),
+    'utf8'
+  )
+  ;(Intl.PluralRules as unknown as typeof PluralRules).__addLocaleData(
+    runInNewContext(`(${raw})`)
+  )
+}
 
 NumberFormat.__addLocaleData(
   JSON.parse(
@@ -103,6 +119,7 @@ console.log(
   JSON.stringify(
     {
       node: process.version,
+      pluralRules: polyfilledPlurals ? 'polyfill' : 'host',
       icu: process.versions.icu,
       iterations,
       rounds,

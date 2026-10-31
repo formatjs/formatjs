@@ -62,8 +62,10 @@ ts_binary(
         ":generated_package_json",
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
         "//crates/intl_numberformat:locale_data",
         "//packages/intl-numberformat:cldr-raw/en.json",
+        "//packages/intl-pluralrules:cldr-raw/en.js",
     ],
     entry_point = "audit.ts",
 )

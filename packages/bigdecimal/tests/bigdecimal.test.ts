@@ -755,3 +755,64 @@ describe('BigDecimal', () => {
     })
   })
 })
+
+it('normalizes long trailing-zero runs exactly at decimal boundaries', () => {
+  for (const coefficient of [
+    1n,
+    12345678901234567890123456789n,
+    -12345678901234567890123456789n,
+  ]) {
+    for (const zeros of [
+      0, 1, 3, 7, 8, 15, 16, 31, 32, 39, 40, 41, 127, 256, 1024,
+    ]) {
+      const integer = coefficient * 10n ** BigInt(zeros)
+      const expected = new BigDecimal(`${coefficient}e${zeros}`)
+      const actual = new BigDecimal(integer)
+      expect(actual.eq(expected)).toBe(true)
+      expect(
+        actual.div('1e20').eq(new BigDecimal(`${coefficient}e${zeros - 20}`))
+      ).toBe(true)
+      expect(actual.toString()).toBe(integer.toString())
+    }
+  }
+})
+
+it('keeps terminating and repeating division exact through normalization', () => {
+  for (const [numerator, denominator, expected] of [
+    ['1', '8', '0.125'],
+    ['1234500', '100', '12345'],
+    ['-1', '4000', '-0.00025'],
+    ['1e80', '8', '125e77'],
+  ]) {
+    expect(
+      new BigDecimal(numerator).div(denominator).eq(new BigDecimal(expected))
+    ).toBe(true)
+  }
+  expect(new BigDecimal(1).div(3).toString()).toBe('0.' + '3'.repeat(40))
+  expect(new BigDecimal(-0).div(1).isNegative()).toBe(true)
+})
+
+it('preserves exponent arithmetic outside the safe integer range', () => {
+  const zeros = '0'.repeat(40)
+  for (const exponent of [
+    '9007199254740983',
+    '9007199254740991',
+    '9007199254740992',
+  ]) {
+    expect(
+      new BigDecimal(`123${zeros}e${exponent}`).eq(
+        new BigDecimal('123e9007199254740992')
+      )
+    ).toBe(true)
+  }
+  expect(
+    new BigDecimal(`-123${zeros}e9007199254740992`).eq(
+      new BigDecimal('-123e9007199254740992')
+    )
+  ).toBe(true)
+  expect(
+    new BigDecimal(`123${zeros}e-9007199254740992`).eq(
+      new BigDecimal('123e-9007199254740952')
+    )
+  ).toBe(true)
+})

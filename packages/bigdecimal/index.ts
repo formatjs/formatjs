@@ -13,6 +13,16 @@ function removeTrailingZeros(
   exponent: number
 ): [bigint, number] {
   if (mantissa === 0n) return [0n, 0]
+  if (mantissa % 10n !== 0n) return [mantissa, exponent]
+  // Division commonly leaves 40 decimal zeros. Remove full chunks first.
+  while (
+    mantissa % 100000000n === 0n &&
+    Number.isSafeInteger(exponent) &&
+    Number.isSafeInteger(exponent + 8)
+  ) {
+    mantissa /= 100000000n
+    exponent += 8
+  }
   while (mantissa % 10n === 0n) {
     mantissa /= 10n
     exponent++
