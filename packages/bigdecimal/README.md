@@ -29,3 +29,7 @@ parsing; fractional/unsafe values retain their decimal-string representation.
 `toNumber()` converts unscaled integer coefficients directly from BigInt, with
 binary64 rounding. Fractional/scaled values retain decimal-text conversion;
 NaN, infinities and signed zero keep their explicit handling.
+
+Division by signed powers of ten shifts the exponent when scale arithmetic is
+safe. Other divisors and unsafe exponents retain the 40-digit scaled division
+path. Signed zero and nonfinite values keep their existing handling.
