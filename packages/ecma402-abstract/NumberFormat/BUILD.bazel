@@ -25,6 +25,7 @@ formatjs_library(
         "compact-patterns.ts",
         "decimal-cache.ts",
         "format_to_parts.ts",
+        "number-patterns.ts",
     ],
     visibility = ["//visibility:public"],
     deps = [

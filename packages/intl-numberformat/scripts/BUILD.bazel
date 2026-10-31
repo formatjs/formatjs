@@ -23,6 +23,7 @@ ts_binary(
         "//:node_modules/cldr-core",
         "//:node_modules/fast-xml-parser",
         "//:root_package_json",
+        "//packages/ecma402-abstract/NumberFormat",
         "//packages/intl-numberformat/scripts/number-data",
     ],
     entry_point = "cldr-raw.ts",

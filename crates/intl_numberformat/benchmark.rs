@@ -7,10 +7,30 @@ fn main() {
         .find_map(|arg| arg.strip_prefix("--iterations=").map(str::to_owned))
         .map(|value| value.parse().unwrap())
         .unwrap_or(12000);
+    let mut pack = include_str!(env!("FORMATJS_NUMBER_EN")).to_owned();
+    if std::env::args().any(|arg| arg == "--legacy-patterns") {
+        let mut value: serde_json::Value = serde_json::from_str(&pack).unwrap();
+        value["data"]["numbers"]
+            .as_object_mut()
+            .unwrap()
+            .remove("patternPlans");
+        pack = serde_json::to_string(&value).unwrap();
+    }
+    let registration_iterations = 25;
+    let mut registration = Vec::new();
+    for _ in 0..7 {
+        let start = Instant::now();
+        for _ in 0..registration_iterations {
+            let mut registry = Registry::default();
+            registry.add_locale_data(black_box(&pack)).unwrap();
+            black_box(registry);
+        }
+        registration
+            .push(start.elapsed().as_secs_f64() * 1_000_000.0 / registration_iterations as f64);
+    }
+    registration.sort_by(f64::total_cmp);
     let mut registry = Registry::default();
-    registry
-        .add_locale_data(include_str!(env!("FORMATJS_NUMBER_EN")))
-        .unwrap();
+    registry.add_locale_data(&pack).unwrap();
     let values = [
         "0", "-0", "1.025", "-1.025", "1234.5", "999.5", "999999.5", "1e-7", "1e21",
     ];
@@ -64,7 +84,7 @@ fn main() {
     println!(
         "{}",
         serde_json::to_string_pretty(
-            &json!({"iterations":iterations,"rounds":7,"results":results})
+            &json!({"iterations":iterations,"rounds":7,"registrationIterations":registration_iterations,"registrationMicroseconds":registration[3],"localeBytes":pack.len(),"results":results})
         )
         .unwrap()
     );

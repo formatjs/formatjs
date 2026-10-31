@@ -1,3 +1,4 @@
+import {compileNumberPatterns} from '#packages/ecma402-abstract/NumberFormat/number-patterns.js'
 import {
   loadNumberResolver,
   expandNumberingSystems,
@@ -57,6 +58,7 @@ async function main(args: Args) {
       numbersData[locale],
       resolver
     )
+    numbers.patternPlans = compileNumberPatterns(numbers)
     const d = {
       units: unitsData[locale],
       currencies: currenciesData[locale],

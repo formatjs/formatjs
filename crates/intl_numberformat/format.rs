@@ -1,6 +1,6 @@
 use crate::{
     Error, Grouping, NumberFormat, Part,
-    data::{Compact, Plurals, Unit},
+    data::{Compact, Plurals, PreparedPattern, Unit},
     metadata,
     numeric::Numeric,
     options::digit_error,
@@ -10,7 +10,10 @@ use icu_properties::{
     props::{GeneralCategory, GeneralCategoryGroup},
 };
 use regex::Regex;
-use std::{borrow::Cow, sync::LazyLock};
+use std::{
+    borrow::Cow,
+    sync::{Arc, LazyLock},
+};
 
 static NUMBER: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[#0](?:[.,][#0]+)*").unwrap());
 static QUOTED: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"'(.)'").unwrap());
@@ -71,6 +74,71 @@ fn signed(pattern: &str, sign: i8, approximately: bool) -> String {
         result
     }
 }
+fn legacy_plan(
+    pattern: &str,
+    sign: i8,
+    approximately: bool,
+    compact: bool,
+) -> Result<PreparedPattern, Error> {
+    let mut pattern = if compact {
+        let pattern = signed(pattern, sign, false);
+        let pattern = COMPACT_LITERAL.replace_all(&pattern, "{c:$0}");
+        let pattern = ZEROS.replacen(&pattern, 1, "0").into_owned();
+        if approximately {
+            approximate(&pattern, sign)
+        } else {
+            pattern
+        }
+    } else {
+        signed(pattern, sign, approximately)
+    };
+    let number = match NUMBER.find(&pattern) {
+        Some(number) => number.as_str(),
+        None if compact => "0",
+        None => return Err(missing("number pattern")),
+    };
+    let mut groups = number.split('.').next().unwrap().rsplit(',');
+    let last = groups.next().unwrap();
+    let grouping = match groups.next() {
+        None => [3, 3],
+        Some(previous) => [
+            last.len(),
+            if groups.next().is_some() {
+                previous.len()
+            } else {
+                last.len()
+            },
+        ],
+    };
+    pattern = NUMBER.replace_all(&pattern, "{0}").into_owned();
+    pattern = QUOTED.replace_all(&pattern, "$1").into_owned();
+    let mut parts = Vec::new();
+    let mut end = 0;
+    for token in TOKENS.find_iter(&pattern) {
+        if token.start() > end {
+            parts.push(("literal".into(), pattern[end..token.start()].into()));
+        }
+        let (kind, value) = match token.as_str() {
+            "{0}" => ("number", ""),
+            "{approximatelySign}" => ("approximatelySign", ""),
+            "-" => ("minusSign", ""),
+            "+" => ("plusSign", ""),
+            "%" => ("percentSign", ""),
+            "¤" => ("currency", ""),
+            token => ("compact", &token[3..token.len() - 1]),
+        };
+        parts.push((kind.into(), value.into()));
+        end = token.end();
+    }
+    if end < pattern.len() {
+        parts.push(("literal".into(), pattern[end..].into()));
+    }
+    Ok(PreparedPattern {
+        plan: grouping.into_iter().chain(0..parts.len()).collect(),
+        tokens: parts,
+    })
+}
+
 fn unit_forms<'a>(unit: &'a Unit, style: &str) -> &'a Plurals {
     match style {
         "long" => &unit.long,
@@ -303,12 +371,12 @@ impl NumberFormat {
         };
         !compact
             && grouping != Grouping::Disabled
-            && (grouping == Grouping::Always || integer_len >= primary + minimum)
+            && (grouping == Grouping::Always || integer_len >= primary.saturating_add(minimum))
     }
     fn visit_number_parts(
         &self,
         number: &Rendered,
-        pattern: &str,
+        grouping: [usize; 2],
         compact: bool,
         mut visit: impl FnMut(&'static str, Cow<'_, str>),
     ) -> Result<(), Error> {
@@ -325,20 +393,7 @@ impl NumberFormat {
             .split_once('.')
             .map(|(integer, fraction)| (integer, Some(fraction)))
             .unwrap_or((&number.text, None));
-        let mut groups = pattern.split('.').next().unwrap().rsplit(',');
-        let last = groups.next().unwrap();
-        let (primary, secondary) = match groups.next() {
-            None => (3, 3),
-            Some(previous) => {
-                let primary = last.len();
-                let secondary = if groups.next().is_some() {
-                    previous.len()
-                } else {
-                    primary
-                };
-                (primary, secondary)
-            }
-        };
+        let [primary, secondary] = grouping;
         if self.grouped(integer.len(), primary, compact) {
             if primary == 0 || secondary == 0 {
                 return Err(Error::InvalidData("Empty number grouping interval".into()));
@@ -402,11 +457,11 @@ impl NumberFormat {
     fn number_parts(
         &self,
         number: &Rendered,
-        pattern: &str,
+        grouping: [usize; 2],
         compact: bool,
     ) -> Result<Vec<Part>, Error> {
         let mut parts = Vec::new();
-        self.visit_number_parts(number, pattern, compact, |kind, value| {
+        self.visit_number_parts(number, grouping, compact, |kind, value| {
             parts.push(Part::new(kind, value));
         })?;
         Ok(parts)
@@ -471,7 +526,7 @@ impl NumberFormat {
             } else if number.sign > 0 {
                 text.push_str(&symbols.plus_sign);
             }
-            self.visit_number_parts(&number, "#,##0.###", false, |_, value| {
+            self.visit_number_parts(&number, [3, 3], false, |_, value| {
                 text.push_str(&value);
             })?;
         } else {
@@ -512,7 +567,7 @@ impl NumberFormat {
             && options.notation == "standard"
             && self.data.numbers.decimal[&self.system].standard == "#,##0.###"
         {
-            let mut parts = self.number_parts(number, "#,##0.###", false)?;
+            let mut parts = self.number_parts(number, [3, 3], false)?;
             if number.sign < 0 {
                 parts.insert(0, Part::new("minusSign", symbols.minus_sign.clone()));
             } else if number.sign > 0 {
@@ -528,37 +583,78 @@ impl NumberFormat {
         } else {
             None
         };
-        let mut pattern = if let Some(compact) = compact {
-            let pattern = signed(compact, number.sign, false);
-            let pattern = COMPACT_LITERAL.replace_all(&pattern, "{c:$0}");
-            let pattern = ZEROS.replacen(&pattern, 1, "0").into_owned();
-            if approximately {
-                approximate(&pattern, number.sign)
-            } else {
-                pattern
-            }
-        } else {
-            let pattern = match options.style.as_str() {
-                "currency" if options.currency_display.as_deref() != Some("name") => {
-                    let data = &self.data.numbers.currency[&self.system];
-                    if options.currency_sign.as_deref() == Some("accounting") {
-                        &data.accounting
-                    } else {
-                        &data.standard
-                    }
+        let pattern = compact.unwrap_or_else(|| match options.style.as_str() {
+            "currency" if options.currency_display.as_deref() != Some("name") => {
+                let data = &self.data.numbers.currency[&self.system];
+                if options.currency_sign.as_deref() == Some("accounting") {
+                    &data.accounting
+                } else {
+                    &data.standard
                 }
-                "percent" => &self.data.numbers.percent[&self.system],
-                _ => &self.data.numbers.decimal[&self.system].standard,
-            };
-            signed(pattern, number.sign, approximately)
+            }
+            "percent" => &self.data.numbers.percent[&self.system],
+            _ => &self.data.numbers.decimal[&self.system].standard,
+        });
+        let index = match number.sign {
+            -1 => 1,
+            1 => 2,
+            _ => 0,
+        } + if approximately { 3 } else { 0 };
+        let generated = self
+            .data
+            .numbers
+            .pattern_plans
+            .as_ref()
+            .and_then(|patterns| {
+                let table = if compact.is_some() {
+                    &patterns.compact
+                } else {
+                    &patterns.standard
+                };
+                table
+                    .get(pattern)
+                    .and_then(|ids| ids.get(index))
+                    .and_then(|id| patterns.plans.get(*id))
+                    .map(|plan| (plan, patterns.tokens.as_slice()))
+            });
+        let legacy;
+        let (plan, tokens) = match generated {
+            Some(plan) => plan,
+            None => {
+                let key = (
+                    pattern.to_owned(),
+                    number.sign,
+                    approximately,
+                    compact.is_some(),
+                );
+                let cached = self
+                    .data
+                    .legacy_patterns
+                    .read()
+                    .map_err(|_| missing("pattern lock"))?
+                    .get(&key)
+                    .cloned();
+                legacy = match cached {
+                    Some(plan) => plan,
+                    None => {
+                        let plan = Arc::new(legacy_plan(
+                            pattern,
+                            number.sign,
+                            approximately,
+                            compact.is_some(),
+                        )?);
+                        self.data
+                            .legacy_patterns
+                            .write()
+                            .map_err(|_| missing("pattern lock"))?
+                            .entry(key)
+                            .or_insert(plan)
+                            .clone()
+                    }
+                };
+                (&legacy.plan, legacy.tokens.as_slice())
+            }
         };
-        let decimal_pattern = NUMBER
-            .find(&pattern)
-            .ok_or_else(|| missing("number pattern"))?
-            .as_str()
-            .to_owned();
-        pattern = NUMBER.replace_all(&pattern, "{0}").into_owned();
-        pattern = QUOTED.replace_all(&pattern, "$1").into_owned();
         let currency_code = options.currency.as_deref().unwrap_or("");
         let currency = self.data.currencies.get(currency_code);
         let currency_label = match options.currency_display.as_deref() {
@@ -570,55 +666,67 @@ impl NumberFormat {
                 .map(|value| value.narrow.as_str())
                 .unwrap_or(currency_code),
         };
-        if options.style == "currency" && options.currency_display.as_deref() != Some("name") {
-            let spacing = &self.data.numbers.currency[&self.system].currency_spacing;
-            let symbol = |value: Option<char>| {
-                value.is_some_and(|value| {
-                    GeneralCategoryGroup::Symbol
-                        .contains(CodePointMapData::<GeneralCategory>::new().get(value))
-                })
+        let spacing =
+            if options.style == "currency" && options.currency_display.as_deref() != Some("name") {
+                Some(&self.data.numbers.currency[&self.system].currency_spacing)
+            } else {
+                None
             };
-            if !spacing.after_insert_between.is_empty() && !symbol(currency_label.chars().last()) {
-                pattern = pattern.replacen(
-                    "¤{0}",
-                    &format!("¤{}{{0}}", spacing.after_insert_between),
-                    1,
-                );
-            }
-            if !spacing.before_insert_between.is_empty() && !symbol(currency_label.chars().next()) {
-                pattern = pattern.replacen(
-                    "{0}¤",
-                    &format!("{{0}}{}¤", spacing.before_insert_between),
-                    1,
-                );
-            }
-        }
+        let symbol = |value: Option<char>| {
+            value.is_some_and(|value| {
+                GeneralCategoryGroup::Symbol
+                    .contains(CodePointMapData::<GeneralCategory>::new().get(value))
+            })
+        };
+        let before = spacing.filter(|spacing| {
+            !spacing.before_insert_between.is_empty() && !symbol(currency_label.chars().next())
+        });
+        let after = spacing.filter(|spacing| {
+            !spacing.after_insert_between.is_empty() && !symbol(currency_label.chars().last())
+        });
+        let mut inserted_before = false;
+        let mut inserted_after = false;
         let mut parts = Vec::new();
-        let mut end = 0;
-        for token in TOKENS.find_iter(&pattern) {
-            if token.start() > end {
-                parts.push(Part::new("literal", &pattern[end..token.start()]));
-            }
-            let part = match token.as_str() {
-                "{0}" => {
-                    parts.extend(self.number_parts(number, &decimal_pattern, compact.is_some())?);
-                    end = token.end();
+        let plan_parts = &plan[2..];
+        for (index, id) in plan_parts.iter().enumerate() {
+            let (kind, value) = &tokens[*id];
+            let part = match kind.as_str() {
+                "number" => {
+                    parts.extend(self.number_parts(
+                        number,
+                        [plan[0], plan[1]],
+                        compact.is_some(),
+                    )?);
                     continue;
                 }
-                "{approximatelySign}" => {
-                    Part::new("approximatelySign", symbols.approximately_sign.clone())
+                "approximatelySign" => Part::new("approximatelySign", &symbols.approximately_sign),
+                "minusSign" => Part::new("minusSign", &symbols.minus_sign),
+                "plusSign" => Part::new("plusSign", &symbols.plus_sign),
+                "percentSign" => Part::new("percentSign", &symbols.percent_sign),
+                "currency" => {
+                    if let Some(spacing) = before.filter(|_| {
+                        !inserted_before && index > 0 && tokens[plan_parts[index - 1]].0 == "number"
+                    }) {
+                        parts.push(Part::new("literal", &spacing.before_insert_between));
+                        inserted_before = true;
+                    }
+                    parts.push(Part::new("currency", currency_label));
+                    if let Some(spacing) = after.filter(|_| {
+                        !inserted_after
+                            && plan_parts
+                                .get(index + 1)
+                                .is_some_and(|id| tokens[*id].0 == "number")
+                    }) {
+                        parts.push(Part::new("literal", &spacing.after_insert_between));
+                        inserted_after = true;
+                    }
+                    continue;
                 }
-                "-" => Part::new("minusSign", symbols.minus_sign.clone()),
-                "+" => Part::new("plusSign", symbols.plus_sign.clone()),
-                "%" => Part::new("percentSign", symbols.percent_sign.clone()),
-                "¤" => Part::new("currency", currency_label),
-                token => Part::new("compact", &token[3..token.len() - 1]),
+                "compact" => Part::new("compact", value),
+                "literal" => Part::new("literal", value),
+                _ => return Err(missing("pattern token")),
             };
             parts.push(part);
-            end = token.end();
-        }
-        if end < pattern.len() {
-            parts.push(Part::new("literal", &pattern[end..]));
         }
         let mut expanded = number.rounded.clone();
         expanded.shift(number.exponent)?;

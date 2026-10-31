@@ -1,3 +1,4 @@
+import {getNumberPattern} from '#packages/ecma402-abstract/NumberFormat/number-patterns.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
 import {
@@ -26,8 +27,6 @@ import {digitMapping} from '@formatjs_generated/unicode/digit-mapping.js'
 const CARET_S_UNICODE_REGEX = new RegExp(`^${S_UNICODE_REGEX.source}`)
 // /\p{S}$/u
 const S_DOLLAR_UNICODE_REGEX = new RegExp(`${S_UNICODE_REGEX.source}$`)
-
-const CLDR_NUMBER_PATTERN = /[#0](?:[.,][#0]+)*/g
 
 interface NumberResult {
   formattedString: string
@@ -119,86 +118,51 @@ export default function formatToParts(
       const decimalData =
         data.numbers.decimal[numberingSystem] ||
         data.numbers.decimal[defaultNumberingSystem]
-      numberPattern = getPatternForSign(
-        decimalData.standard,
-        sign,
-        approximately
-      )
+      numberPattern = decimalData.standard
     } else if (style === 'currency') {
       const currencyData =
         data.numbers.currency[numberingSystem] ||
         data.numbers.currency[defaultNumberingSystem]
 
-      // We replace number pattern part with `0` for easier postprocessing.
-      numberPattern = getPatternForSign(
-        currencyData[options.currencySign!],
-        sign,
-        approximately
-      )
+      numberPattern = currencyData[options.currencySign!]
     } else {
       // percent
       const percentPattern =
         data.numbers.percent[numberingSystem] ||
         data.numbers.percent[defaultNumberingSystem]
-      numberPattern = getPatternForSign(percentPattern, sign, approximately)
+      numberPattern = percentPattern
     }
   } else {
-    numberPattern = approximately
-      ? insertApproximatelySign(compactNumberPattern, sign)
-      : compactNumberPattern
+    numberPattern = compactNumberPattern
   }
 
-  // Extract the decimal number pattern string. It looks like "#,##0,00", which will later be
-  // used to infer decimal group sizes.
-  const decimalNumberPattern = CLDR_NUMBER_PATTERN.exec(numberPattern)![0]
-
-  // Now we start to substitute patterns
-  // 1. replace strings like `0` and `#,##0.00` with `{0}`
-  // 2. unquote characters (invariant: the quoted characters does not contain the special tokens)
-  numberPattern = numberPattern
-    .replace(CLDR_NUMBER_PATTERN, '{0}')
-    .replace(/'(.)'/g, '$1')
-
-  // Handle currency spacing (both compact and non-compact).
-  if (style === 'currency' && options.currencyDisplay !== 'name') {
-    const currencyData =
-      data.numbers.currency[numberingSystem] ||
-      data.numbers.currency[defaultNumberingSystem]
-    // See `currencySpacing` substitution rule in TR-35.
-    // Here we always assume the currencyMatch is "[:^S:]" and surroundingMatch is "[:digit:]".
-    //
-    // Example 1: for pattern "#,##0.00¤" with symbol "US$", we replace "¤" with the symbol,
-    // but insert an extra non-break space before the symbol, because "[:^S:]" matches "U" in
-    // "US$" and "[:digit:]" matches the latn numbering system digits.
-    //
-    // Example 2: for pattern "¤#,##0.00" with symbol "US$", there is no spacing between symbol
-    // and number, because `$` does not match "[:^S:]".
-    //
-    // Implementation note: here we do the best effort to infer the insertion.
-    // We also assume that `beforeInsertBetween` and `afterInsertBetween` will never be `;`.
-    const afterCurrency = currencyData.currencySpacing.afterInsertBetween
-    if (afterCurrency && !S_DOLLAR_UNICODE_REGEX.test(nonNameCurrencyPart!)) {
-      numberPattern = numberPattern.replace('¤{0}', `¤${afterCurrency}{0}`)
-    }
-    const beforeCurrency = currencyData.currencySpacing.beforeInsertBetween
-    if (beforeCurrency && !CARET_S_UNICODE_REGEX.test(nonNameCurrencyPart!)) {
-      numberPattern = numberPattern.replace('{0}¤', `{0}${beforeCurrency}¤`)
-    }
-  }
-
-  // Separate number, approximately sign, affix, and compact placeholders.
-  const numberPatternParts = numberPattern.split(
-    /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
+  const plan = getNumberPattern(
+    data.numbers,
+    numberPattern,
+    !!compactNumberPattern,
+    sign,
+    approximately
   )
+  const spacing =
+    style === 'currency' && options.currencyDisplay !== 'name'
+      ? (
+          data.numbers.currency[numberingSystem] ||
+          data.numbers.currency[defaultNumberingSystem]
+        ).currencySpacing
+      : undefined
+  const beforeCurrency =
+    spacing?.beforeInsertBetween &&
+    !CARET_S_UNICODE_REGEX.test(nonNameCurrencyPart!)
+  const afterCurrency =
+    spacing?.afterInsertBetween &&
+    !S_DOLLAR_UNICODE_REGEX.test(nonNameCurrencyPart!)
+  let insertedBefore = false
+  let insertedAfter = false
   const numberParts: NumberFormatPart[] = []
 
-  for (const part of numberPatternParts) {
-    if (!part) {
-      continue
-    }
-    switch (part) {
-      case '{0}': {
-        // We only need to handle scientific and engineering notation here.
+  for (const [index, [type, value]] of plan.parts.entries()) {
+    switch (type) {
+      case 'number':
         numberParts.push(
           ...partitionNumberIntoParts(
             symbols,
@@ -206,45 +170,46 @@ export default function formatToParts(
             notation,
             exponent,
             numberingSystem,
-            // If compact number pattern exists, do not insert group separators.
             !compactNumberPattern && (options.useGrouping ?? true),
-            decimalNumberPattern,
+            plan.grouping,
             data.numbers.minimumGroupingDigits ?? 1,
             style
           )
         )
         break
-      }
-      case '{approximatelySign}':
-        numberParts.push({
-          type: 'approximatelySign',
-          value: symbols.approximatelySign,
-        })
-        break
-      case '-':
-        numberParts.push({type: 'minusSign', value: symbols.minusSign})
-        break
-      case '+':
-        numberParts.push({type: 'plusSign', value: symbols.plusSign})
-        break
-      case '%':
-        numberParts.push({type: 'percentSign', value: symbols.percentSign})
-        break
-      case '¤':
-        // Computed above when handling currency spacing.
-        numberParts.push({type: 'currency', value: nonNameCurrencyPart!})
-        break
-      default:
-        if (part.startsWith('{c:')) {
+      case 'currency':
+        if (
+          !insertedBefore &&
+          beforeCurrency &&
+          plan.parts[index - 1]?.[0] === 'number'
+        ) {
           numberParts.push({
-            type: 'compact',
-            value: part.substring(3, part.length - 1),
+            type: 'literal',
+            value: spacing!.beforeInsertBetween,
           })
-        } else {
-          // literal
-          numberParts.push({type: 'literal', value: part})
+          insertedBefore = true
+        }
+        numberParts.push({type: 'currency', value: nonNameCurrencyPart!})
+        if (
+          !insertedAfter &&
+          afterCurrency &&
+          plan.parts[index + 1]?.[0] === 'number'
+        ) {
+          numberParts.push({
+            type: 'literal',
+            value: spacing!.afterInsertBetween,
+          })
+          insertedAfter = true
         }
         break
+      case 'approximatelySign':
+      case 'minusSign':
+      case 'plusSign':
+      case 'percentSign':
+        numberParts.push({type, value: symbols[type]})
+        break
+      default:
+        numberParts.push({type, value})
     }
   }
 
@@ -391,14 +356,7 @@ function partitionNumberIntoParts(
   exponent: number,
   numberingSystem: string,
   useGrouping: UseGroupingType,
-  /**
-   * This is the decimal number pattern without signs or symbols.
-   * It is used to infer the group size when `useGrouping` is true.
-   *
-   * A typical value looks like "#,##0.00" (primary group size is 3).
-   * Some locales like Hindi has secondary group size of 2 (e.g. "#,##,##0.00").
-   */
-  decimalNumberPattern: string,
+  grouping: readonly [number, number],
   minimumGroupingDigits: number,
   style: NumberFormatOptionsStyle
 ): NumberFormatPart[] {
@@ -440,16 +398,7 @@ function partitionNumberIntoParts(
   // LDML Number Patterns adds minimumGroupingDigits to the primary group size.
   // https://unicode.org/reports/tr35/tr35-numbers.html#Number_Patterns
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L736-L737
-  const integerNumberPattern = decimalNumberPattern.split('.')[0]
-  const patternGroups = integerNumberPattern.split(',')
-  const primaryGroupingSize =
-    patternGroups.length > 1
-      ? patternGroups[patternGroups.length - 1].length
-      : 3
-  const secondaryGroupingSize =
-    patternGroups.length > 2
-      ? patternGroups[patternGroups.length - 2].length
-      : primaryGroupingSize
+  const [primaryGroupingSize, secondaryGroupingSize] = grouping
   const minimum = useGrouping === 'min2' ? 2 : minimumGroupingDigits
   const shouldUseGrouping =
     Boolean(useGrouping) &&
@@ -534,44 +483,9 @@ function partitionNumberIntoParts(
   return result
 }
 
-// LDML approximate formatting uses the minus-sign position for unsigned values,
-// and inserts the approximately sign before an existing plus/minus sign.
-// https://unicode.org/reports/tr35/tr35-numbers.html#Approximate_Number_Formatting
-// https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-numbers.md#L1854-L1858
-function getPatternForSign(
-  pattern: string,
-  sign: -1 | 0 | 1,
-  approximately = false
-): string {
-  if (pattern.indexOf(';') < 0) pattern = `${pattern};-${pattern}`
-  const [zeroPattern, negativePattern] = pattern.split(';')
-  if (sign === 0 && approximately && negativePattern.includes('-')) {
-    return negativePattern.replace('-', '{approximatelySign}')
-  }
-  let signedPattern = zeroPattern
-  if (sign === -1) signedPattern = negativePattern
-  else if (sign === 1)
-    signedPattern = negativePattern.includes('-')
-      ? negativePattern.replace(/-/g, '+')
-      : `+${zeroPattern}`
-  return approximately
-    ? insertApproximatelySign(signedPattern, sign)
-    : signedPattern
-}
-
-function insertApproximatelySign(pattern: string, sign: -1 | 0 | 1): string {
-  const symbol = sign === 1 ? '+' : '-'
-  const index = sign === 0 ? -1 : pattern.indexOf(symbol)
-  return index < 0
-    ? `{approximatelySign}${pattern}`
-    : `${pattern.slice(0, index)}{approximatelySign}${pattern.slice(index)}`
-}
-
 // Find the CLDR pattern for compact notation based on the magnitude of data and style.
 //
-// Example return value: "¤ {c:laki}000;¤{c:laki} -0" (`sw` locale):
-// - Notice the `{c:...}` token that wraps the compact literal.
-// - The consecutive zeros are normalized to single zero to match CLDR_NUMBER_PATTERN.
+// Returns the raw template; generated plans provide its signed tokens.
 //
 // Returning null means the compact display pattern cannot be found.
 function getCompactDisplayPattern(
@@ -583,7 +497,7 @@ function getCompactDisplayPattern(
   currencyDisplay: NumberFormatOptionsCurrencyDisplay | undefined,
   numberingSystem: string
 ): string | null {
-  const {roundedNumber, sign, magnitude} = numberResult
+  const {roundedNumber, magnitude} = numberResult
   // String(10 ** magnitude) uses exponent notation for tiny values; comparing
   // "1e-7" lexically with CLDR thresholds would select the largest suffix.
   if (magnitude < 0) return null
@@ -600,19 +514,13 @@ function getCompactDisplayPattern(
       : decimal[compactDisplay]
   const entry = getCompactPattern(patterns, magnitude)
   if (!entry) return null
-  let pattern = selectPlural(pl, roundedNumber.toNumber(), entry.rules)
+  const pattern = selectPlural(pl, roundedNumber.toNumber(), entry.rules)
   // See https://unicode.org/reports/tr35/tr35-numbers.html#Compact_Number_Formats
   // > If the value is precisely “0”, either explicit or defaulted, then the normal number format
   // > pattern for that sort of object is supplied.
   if (pattern === '0') {
     return null
   }
-
-  pattern = getPatternForSign(pattern, sign)
-    // Extract compact literal from the pattern
-    .replace(/([^\s;\-+\d¤]+)/g, '{c:$1}')
-    // We replace one or more zeros with a single zero so it matches `CLDR_NUMBER_PATTERN`.
-    .replace(/0+/, '0')
 
   return pattern
 }
