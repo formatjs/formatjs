@@ -8,7 +8,10 @@
   "changelog-type": "default",
   "bootstrap-sha": "482c8e224b2582b554e3f4b0718fe2332c4b5cff",
   "sequential-calls": true,
-  "exclude-paths": ["**/tests/**", "**/*.md"],
+  "exclude-paths": [
+    "**/tests/**",
+    "**/*.md"
+  ],
   "packages": {
     "packages/babel-plugin-formatjs": {
       "component": "babel-plugin-formatjs",
@@ -57,6 +60,19 @@
       ],
       "package-name": "@formatjs/cli-native-darwin-arm64",
       "version-file": "BUILD.bazel"
+    },
+    "packages/cli-native-darwin-x64": {
+      "component": "@formatjs/cli-native-darwin-x64",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-darwin-x64",
+      "version-file": "BUILD.bazel",
+      "initial-version": "1.0.0"
     },
     "packages/cli-native-linux-arm64": {
       "component": "@formatjs/cli-native-linux-arm64",
@@ -117,6 +133,19 @@
       ],
       "package-name": "@formatjs/cli-native-win32-x64",
       "version-file": "BUILD.bazel"
+    },
+    "packages/cli-native-win32-arm64": {
+      "component": "@formatjs/cli-native-win32-arm64",
+      "extra-files": [
+        "package.json",
+        {
+          "type": "generic",
+          "path": "BUILD.bazel"
+        }
+      ],
+      "package-name": "@formatjs/cli-native-win32-arm64",
+      "version-file": "BUILD.bazel",
+      "initial-version": "1.0.0"
     },
     "packages/cli": {
       "component": "@formatjs/cli",

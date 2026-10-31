@@ -7,6 +7,12 @@ platform(
     visibility = ["//visibility:public"],
 )
 
+platform(
+    name = "darwin_x64",
+    parents = ["@rules_rs//rs/platforms:x86_64-apple-darwin"],
+    visibility = ["//visibility:public"],
+)
+
 # Linux x86_64
 platform(
     name = "linux_x86_64",
@@ -42,5 +48,11 @@ platform(
 platform(
     name = "windows_x86_64_msvc",
     parents = ["@rules_rs//rs/platforms:x86_64-pc-windows-msvc"],
+    visibility = ["//visibility:public"],
+)
+
+platform(
+    name = "windows_aarch64_msvc",
+    parents = ["@rules_rs//rs/platforms:aarch64-pc-windows-msvc"],
     visibility = ["//visibility:public"],
 )

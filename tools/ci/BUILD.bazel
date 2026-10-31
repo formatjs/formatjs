@@ -1,4 +1,13 @@
+load("@aspect_rules_js//js:defs.bzl", "js_test")
 load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
+js_test(
+    name = "native_binding_smoke_test",
+    size = "small",
+    args = ["$(rootpath //packages/cli-lib:native_test_binary)"],
+    data = ["//packages/cli-lib:native_test_binary"],
+    entry_point = "native_binding_smoke.cjs",
+)
 
 py_library(
     name = "buildbuddy_artifacts",

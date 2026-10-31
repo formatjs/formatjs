@@ -24,10 +24,13 @@ describe('native package selection', () => {
     ])
   })
 
-  it('keeps single-package platform selection unchanged', () => {
-    expect(getNativePackageCandidates('darwin', 'arm64')).toEqual([
-      '@formatjs/cli-native-darwin-arm64',
-    ])
+  it.each([
+    ['darwin', 'arm64', '@formatjs/cli-native-darwin-arm64'],
+    ['darwin', 'x64', '@formatjs/cli-native-darwin-x64'],
+    ['win32', 'arm64', '@formatjs/cli-native-win32-arm64'],
+    ['win32', 'x64', '@formatjs/cli-native-win32-x64'],
+  ] as const)('selects %s %s binding', (platform, arch, name) => {
+    expect(getNativePackageCandidates(platform, arch)).toEqual([name])
   })
 
   it('uses the installed native package when package metadata narrowed it', () => {

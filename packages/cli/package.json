@@ -58,10 +58,12 @@
   },
   "optionalDependencies": {
     "@formatjs/cli-native-darwin-arm64": "workspace:*",
+    "@formatjs/cli-native-darwin-x64": "workspace:*",
     "@formatjs/cli-native-linux-arm64": "workspace:*",
     "@formatjs/cli-native-linux-arm64-musl": "workspace:*",
     "@formatjs/cli-native-linux-x64": "workspace:*",
     "@formatjs/cli-native-linux-x64-musl": "workspace:*",
+    "@formatjs/cli-native-win32-arm64": "workspace:*",
     "@formatjs/cli-native-win32-x64": "workspace:*"
   },
   "engines": {

@@ -79,6 +79,8 @@ actions:
             //crates/formatjs_cli:release_binary_linux_arm64 \
             //crates/formatjs_cli:release_binary_windows_x64 \
             //packages/cli-native-darwin-arm64:pkg \
+            //packages/cli-native-darwin-x64:pkg \
+            //packages/cli-native-win32-arm64:pkg \
             //packages/cli-native-win32-x64:pkg \
             //packages/cli-native-linux-x64-musl:pkg \
             //packages/cli-native-linux-arm64-musl:pkg \
@@ -109,6 +111,10 @@ actions:
           set -euo pipefail
           file "$SMOKE_ARTIFACTS_DIR/formatjs_cli-darwin-arm64" | grep -E 'Mach-O 64-bit.*arm64'
           file "$SMOKE_ARTIFACTS_DIR/cli-native-darwin-arm64/formatjs_cli_napi.node" | grep -E 'Mach-O 64-bit.*arm64.*shared library'
+          darwin_x64_package=$(bazel cquery --config=bb-cross-build --output=files //packages/cli-native-darwin-x64:pkg | tail -n 1)
+          file "$darwin_x64_package/formatjs_cli_napi.node" | grep -E 'Mach-O 64-bit.*x86_64.*shared library'
+          windows_arm64_package=$(bazel cquery --config=bb-cross-build --output=files //packages/cli-native-win32-arm64:pkg | tail -n 1)
+          file "$windows_arm64_package/formatjs_cli_napi.node" | grep -Ei 'PE32[+].*[(]DLL[)].*(Aarch64|ARM64)'
           file "$SMOKE_ARTIFACTS_DIR/formatjs_cli-win32-x64.exe" | grep -E 'PE32[+].*[(]console[)].*x86-64'
           file "$SMOKE_ARTIFACTS_DIR/cli-native-win32-x64/formatjs_cli_napi.node" | grep -E 'PE32[+].*[(]DLL[)].*x86-64'
 

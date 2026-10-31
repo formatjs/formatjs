@@ -154,10 +154,12 @@ const expectedNpmDependents = [
   'packages/cli',
   'packages/cli-lib',
   'packages/cli-native-darwin-arm64',
+  'packages/cli-native-darwin-x64',
   'packages/cli-native-linux-arm64',
   'packages/cli-native-linux-arm64-musl',
   'packages/cli-native-linux-x64',
   'packages/cli-native-linux-x64-musl',
+  'packages/cli-native-win32-arm64',
   'packages/cli-native-win32-x64',
   'packages/unplugin',
 ].sort()

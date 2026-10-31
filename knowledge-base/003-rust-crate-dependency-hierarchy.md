@@ -227,6 +227,10 @@ The CLI and its N-API bindings require Rust 1.97 for OXC 0.153.
 
 **Purpose:** Native Node.js boundary used by `@formatjs/cli-lib`.
 
+Published bindings cover macOS arm64/x64, Windows arm64/x64, and Linux arm64/x64
+with GNU or musl libc. Release targets select pinned Rust/LLVM platforms;
+`crate.from_cargo` includes `aarch64-pc-windows-msvc` for Windows ARM64.
+
 - File-based `extract` and compile APIs support the CLI fast path.
 - Structured `extractSources` accepts in-memory virtual sources and returns
   per-file messages, pragma metadata, and diagnostics.

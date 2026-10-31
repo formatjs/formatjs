@@ -55,16 +55,20 @@ your package manager omits optional dependencies, compilation fails with
 
 The npm packages currently ship native bindings for:
 
-| Platform            | Package                             |
-| ------------------- | ----------------------------------- |
-| macOS Apple Silicon | `@formatjs/cli-native-darwin-arm64` |
-| Linux arm64 (glibc) | `@formatjs/cli-native-linux-arm64`  |
-| Linux x64 (glibc)   | `@formatjs/cli-native-linux-x64`    |
-| Windows x64         | `@formatjs/cli-native-win32-x64`    |
+| Platform            | Package                                 |
+| ------------------- | --------------------------------------- |
+| macOS Apple Silicon | `@formatjs/cli-native-darwin-arm64`     |
+| macOS Intel         | `@formatjs/cli-native-darwin-x64`       |
+| Linux arm64 (glibc) | `@formatjs/cli-native-linux-arm64`      |
+| Linux arm64 (musl)  | `@formatjs/cli-native-linux-arm64-musl` |
+| Linux x64 (glibc)   | `@formatjs/cli-native-linux-x64`        |
+| Linux x64 (musl)    | `@formatjs/cli-native-linux-x64-musl`   |
+| Windows x64         | `@formatjs/cli-native-win32-x64`        |
+| Windows arm64       | `@formatjs/cli-native-win32-arm64`      |
 
-macOS x64/Intel and other platforms not listed above are not supported by the
-npm native binding. Run compilation on a supported platform; current releases do
-not support non-native compilation.
+The Vite plugin also uses these bindings to evaluate non-literal message
+fields. Keep optional dependencies enabled so the matching OS/CPU package is
+installed.
 
 ## Native CLI (Rust)
 

@@ -225,6 +225,9 @@ importers:
       '@formatjs/cli-native-darwin-arm64':
         specifier: workspace:*
         version: link:packages/cli-native-darwin-arm64
+      '@formatjs/cli-native-darwin-x64':
+        specifier: workspace:*
+        version: link:packages/cli-native-darwin-x64
       '@formatjs/cli-native-linux-arm64':
         specifier: workspace:*
         version: link:packages/cli-native-linux-arm64
@@ -237,6 +240,9 @@ importers:
       '@formatjs/cli-native-linux-x64-musl':
         specifier: workspace:*
         version: link:packages/cli-native-linux-x64-musl
+      '@formatjs/cli-native-win32-arm64':
+        specifier: workspace:*
+        version: link:packages/cli-native-win32-arm64
       '@formatjs/cli-native-win32-x64':
         specifier: workspace:*
         version: link:packages/cli-native-win32-x64
@@ -751,6 +757,9 @@ importers:
       '@formatjs/cli-native-darwin-arm64':
         specifier: workspace:*
         version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-darwin-x64':
+        specifier: workspace:*
+        version: link:../cli-native-darwin-x64
       '@formatjs/cli-native-linux-arm64':
         specifier: workspace:*
         version: link:../cli-native-linux-arm64
@@ -763,6 +772,9 @@ importers:
       '@formatjs/cli-native-linux-x64-musl':
         specifier: workspace:*
         version: link:../cli-native-linux-x64-musl
+      '@formatjs/cli-native-win32-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-win32-arm64
       '@formatjs/cli-native-win32-x64':
         specifier: workspace:*
         version: link:../cli-native-win32-x64
@@ -818,6 +830,9 @@ importers:
       '@formatjs/cli-native-darwin-arm64':
         specifier: workspace:*
         version: link:../cli-native-darwin-arm64
+      '@formatjs/cli-native-darwin-x64':
+        specifier: workspace:*
+        version: link:../cli-native-darwin-x64
       '@formatjs/cli-native-linux-arm64':
         specifier: workspace:*
         version: link:../cli-native-linux-arm64
@@ -830,11 +845,16 @@ importers:
       '@formatjs/cli-native-linux-x64-musl':
         specifier: workspace:*
         version: link:../cli-native-linux-x64-musl
+      '@formatjs/cli-native-win32-arm64':
+        specifier: workspace:*
+        version: link:../cli-native-win32-arm64
       '@formatjs/cli-native-win32-x64':
         specifier: workspace:*
         version: link:../cli-native-win32-x64
 
   packages/cli-native-darwin-arm64: {}
+
+  packages/cli-native-darwin-x64: {}
 
   packages/cli-native-linux-arm64: {}
 
@@ -843,6 +863,8 @@ importers:
   packages/cli-native-linux-x64: {}
 
   packages/cli-native-linux-x64-musl: {}
+
+  packages/cli-native-win32-arm64: {}
 
   packages/cli-native-win32-x64: {}
 

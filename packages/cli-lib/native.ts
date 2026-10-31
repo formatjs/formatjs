@@ -9,6 +9,7 @@ const require = createRequire(import.meta.url)
 
 const NATIVE_PACKAGES: Record<string, string[]> = {
   'darwin-arm64': ['@formatjs/cli-native-darwin-arm64'],
+  'darwin-x64': ['@formatjs/cli-native-darwin-x64'],
   'linux-arm64': [
     '@formatjs/cli-native-linux-arm64',
     '@formatjs/cli-native-linux-arm64-musl',
@@ -18,6 +19,7 @@ const NATIVE_PACKAGES: Record<string, string[]> = {
     '@formatjs/cli-native-linux-x64-musl',
   ],
   'win32-x64': ['@formatjs/cli-native-win32-x64'],
+  'win32-arm64': ['@formatjs/cli-native-win32-arm64'],
 }
 
 export interface NativeCompileOptions {
