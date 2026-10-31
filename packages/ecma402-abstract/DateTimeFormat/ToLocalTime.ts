@@ -12,6 +12,10 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/CalendarDateFromTime.js'
 import Decimal from '@formatjs/bigdecimal'
 
+const NANOSECONDS_PER_MILLISECOND = BigInt(1000000)
+const ZERO = BigInt(0)
+const ONE = BigInt(1)
+
 // Cached regex patterns for performance
 const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
 const OFFSET_TIMEZONE_FORMAT_REGEX =
@@ -156,14 +160,33 @@ export function ToLocalTime(
   inDST: boolean
   timeZoneOffset: number
 } {
-  const milliseconds = new Decimal(String(epochNanoseconds)).div(1000000)
+  // BigInt division truncates; negative submilliseconds must floor.
+  let epochMilliseconds = epochNanoseconds / NANOSECONDS_PER_MILLISECOND
+  if (
+    epochNanoseconds < ZERO &&
+    epochNanoseconds % NANOSECONDS_PER_MILLISECOND !== ZERO
+  ) {
+    epochMilliseconds -= ONE
+  }
+  const milliseconds = Number(epochMilliseconds)
   const [timeZoneOffset, inDST] = getApplicableZoneData(
-    milliseconds.floor().toNumber(),
+    milliseconds,
     timeZone,
     tzData
   )
 
-  const tz = milliseconds.plus(timeZoneOffset).floor().toNumber()
+  // Integer offsets commute with flooring; fractional offsets must be added first.
+  const localMilliseconds = milliseconds + timeZoneOffset
+  const tz =
+    Number.isSafeInteger(milliseconds) &&
+    Number.isSafeInteger(timeZoneOffset) &&
+    Number.isSafeInteger(localMilliseconds)
+      ? localMilliseconds
+      : new Decimal(String(epochNanoseconds))
+          .div(1000000)
+          .plus(timeZoneOffset)
+          .floor()
+          .toNumber()
   return {
     ...CalendarDateFromTime(tz, calendar, calendarData),
     weekday: WeekDay(tz),

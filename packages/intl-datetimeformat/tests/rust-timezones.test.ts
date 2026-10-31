@@ -189,3 +189,22 @@ it('matches aliases, ASCII case folding, fixed offsets and invalid names', () =>
     }
   }
 })
+
+it('adds fractional offsets before flooring negative submilliseconds', () => {
+  for (const [instant, zone] of [
+    [-1n, '+00:00:00.000000001'],
+    [1n, '-00:00:00.000000001'],
+    [-999999n, '+00:00:00.000999999'],
+    [999999n, '-00:00:00.000999999'],
+  ] as const) {
+    expect(ToLocalTime(instant, 'gregory', zone, {tzData: {}})).toMatchObject({
+      year: 1970,
+      month: 0,
+      day: 1,
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
+  }
+})

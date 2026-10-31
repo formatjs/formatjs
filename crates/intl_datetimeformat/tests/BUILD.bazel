@@ -1,3 +1,7 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 
 formatjs_test(
@@ -11,4 +15,66 @@ formatjs_test(
         "//:node_modules/vitest",
         "//packages/ecma262-abstract",
     ],
+)
+
+generate_package_json(
+    package_name = "datetimeformat-audit",
+    private = True,
+    type = "module",
+    version = "1.0.0",
+)
+
+formatjs_library(
+    name = "tests",
+    srcs = ["icu-audit.ts"],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@types/node",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+rolldown_bundle(
+    name = "icu-audit-bundle",
+    srcs = [
+        "icu-audit.ts",
+        ":tests",
+    ],
+    entry_point = "icu-audit.ts",
+    external = ["@bazel/runfiles"],
+    platform = "node",
+    target = "esnext",
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//packages/intl-datetimeformat/calendars",
+    ],
+)
+
+AUDIT_DATA = [
+    ":icu-audit-bundle",
+    ":generated_package_json",
+    "//:node_modules/@bazel/runfiles",
+    "//conformance-tests/icu4j:date_time_format_fixtures",
+    "//crates/intl_datetimeformat:audit",
+    "//crates/intl_datetimeformat:locale_data",
+    "//crates/intl_datetimeformat:calendar_locale_data",
+    "//crates/intl_datetimeformat_calendars:calendar_data",
+    "//packages/intl-datetimeformat:tz_all_json",
+]
+
+js_binary(
+    name = "icu_audit",
+    testonly = True,
+    data = AUDIT_DATA,
+    entry_point = "icu-audit-bundle.js",
+)
+
+js_test(
+    name = "icu4j_conformance_snapshot_test",
+    size = "small",
+    data = AUDIT_DATA + ["snapshots/icu4j.jsonl"],
+    entry_point = "icu-audit-bundle.js",
 )

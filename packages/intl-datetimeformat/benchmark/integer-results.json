@@ -1,0 +1,1014 @@
+{
+  "baselineCommit": "9d76b97721e79cb6164a814de16a5c9b04a810ac",
+  "platform": "darwin-arm64",
+  "runs": {
+    "host": {
+      "before": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "iterations": 12000,
+        "rounds": 7,
+        "numberFormat": "host",
+        "localePacks": 1,
+        "availableLocales": 2,
+        "registrationMilliseconds": 3.0789999999999935,
+        "results": [
+          {
+            "name": "date format",
+            "medianMicroseconds": 1.717194416666667,
+            "minMicroseconds": 1.6522048333333335,
+            "maxMicroseconds": 2.0226492500000006,
+            "checksum": 765000
+          },
+          {
+            "name": "date parts",
+            "medianMicroseconds": 1.8253506666666655,
+            "minMicroseconds": 1.8154096666666673,
+            "maxMicroseconds": 1.8812916666666695,
+            "checksum": 425000
+          },
+          {
+            "name": "date range",
+            "medianMicroseconds": 3.0764235833333373,
+            "minMicroseconds": 2.971368083333336,
+            "maxMicroseconds": 3.2688610833333342,
+            "checksum": 765000
+          },
+          {
+            "name": "date range parts",
+            "medianMicroseconds": 2.9368194166666703,
+            "minMicroseconds": 2.866295166666665,
+            "maxMicroseconds": 2.9944409166666617,
+            "checksum": 425000
+          },
+          {
+            "name": "date time format",
+            "medianMicroseconds": 1.9179583333333405,
+            "minMicroseconds": 1.9125069166666624,
+            "maxMicroseconds": 2.030451416666665,
+            "checksum": 1615000
+          },
+          {
+            "name": "date time parts",
+            "medianMicroseconds": 2.0334618333333387,
+            "minMicroseconds": 1.987916666666668,
+            "maxMicroseconds": 2.0777256666666517,
+            "checksum": 765000
+          },
+          {
+            "name": "date time range",
+            "medianMicroseconds": 4.704065999999993,
+            "minMicroseconds": 4.628277749999995,
+            "maxMicroseconds": 4.984645833333332,
+            "checksum": 2295000
+          },
+          {
+            "name": "date time range parts",
+            "medianMicroseconds": 4.948288249999999,
+            "minMicroseconds": 4.682958333333318,
+            "maxMicroseconds": 4.997503499999993,
+            "checksum": 1105000
+          },
+          {
+            "name": "fractional format",
+            "medianMicroseconds": 1.973732666666668,
+            "minMicroseconds": 1.9433889166666631,
+            "maxMicroseconds": 2.0863125000000005,
+            "checksum": 1020000
+          },
+          {
+            "name": "fractional parts",
+            "medianMicroseconds": 2.1216075833333057,
+            "minMicroseconds": 2.0482812500000214,
+            "maxMicroseconds": 2.2088958333333344,
+            "checksum": 595000
+          },
+          {
+            "name": "fractional range",
+            "medianMicroseconds": 5.123541666666672,
+            "minMicroseconds": 5.09822916666667,
+            "maxMicroseconds": 5.260531250000023,
+            "checksum": 2295000
+          },
+          {
+            "name": "fractional range parts",
+            "medianMicroseconds": 5.176250000000019,
+            "minMicroseconds": 5.142284749999969,
+            "maxMicroseconds": 5.205461750000002,
+            "checksum": 1275000
+          },
+          {
+            "name": "zone name format",
+            "medianMicroseconds": 2.8079201666666522,
+            "minMicroseconds": 2.6875729166666815,
+            "maxMicroseconds": 2.92301041666667,
+            "checksum": 3383000
+          },
+          {
+            "name": "zone name parts",
+            "medianMicroseconds": 2.9067570000000087,
+            "minMicroseconds": 2.8780520833333108,
+            "maxMicroseconds": 3.0966493333333274,
+            "checksum": 1445000
+          },
+          {
+            "name": "zone name range",
+            "medianMicroseconds": 7.86537850000002,
+            "minMicroseconds": 7.815972166666674,
+            "maxMicroseconds": 7.963777833333324,
+            "checksum": 7021000
+          },
+          {
+            "name": "zone name range parts",
+            "medianMicroseconds": 7.948107666666678,
+            "minMicroseconds": 7.885430583333346,
+            "maxMicroseconds": 8.16425341666665,
+            "checksum": 2975000
+          },
+          {
+            "name": "arab digits format",
+            "medianMicroseconds": 2.127579833333281,
+            "minMicroseconds": 2.0857014166667036,
+            "maxMicroseconds": 2.2156249999999695,
+            "checksum": 1581000
+          },
+          {
+            "name": "arab digits parts",
+            "medianMicroseconds": 2.183815999999979,
+            "minMicroseconds": 2.1784895833333544,
+            "maxMicroseconds": 2.1920139166666104,
+            "checksum": 935000
+          },
+          {
+            "name": "arab digits range",
+            "medianMicroseconds": 5.140840249999958,
+            "minMicroseconds": 5.094826416666668,
+            "maxMicroseconds": 5.235350666666666,
+            "checksum": 2312000
+          },
+          {
+            "name": "arab digits range parts",
+            "medianMicroseconds": 5.089020833333355,
+            "minMicroseconds": 5.032180583333381,
+            "maxMicroseconds": 5.189083333333353,
+            "checksum": 1343000
+          }
+        ]
+      },
+      "after": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "iterations": 12000,
+        "rounds": 7,
+        "numberFormat": "host",
+        "localePacks": 1,
+        "availableLocales": 2,
+        "registrationMilliseconds": 2.6417080000000013,
+        "results": [
+          {
+            "name": "date format",
+            "medianMicroseconds": 1.1933055833333341,
+            "minMicroseconds": 1.1739652499999995,
+            "maxMicroseconds": 1.492045166666667,
+            "checksum": 765000
+          },
+          {
+            "name": "date parts",
+            "medianMicroseconds": 1.3200208333333332,
+            "minMicroseconds": 1.2463679999999993,
+            "maxMicroseconds": 1.3399548333333346,
+            "checksum": 425000
+          },
+          {
+            "name": "date range",
+            "medianMicroseconds": 1.8709549166666666,
+            "minMicroseconds": 1.863364583333336,
+            "maxMicroseconds": 2.0515278333333336,
+            "checksum": 765000
+          },
+          {
+            "name": "date range parts",
+            "medianMicroseconds": 1.8441805833333262,
+            "minMicroseconds": 1.8402882499999957,
+            "maxMicroseconds": 1.8948367500000007,
+            "checksum": 425000
+          },
+          {
+            "name": "date time format",
+            "medianMicroseconds": 1.4517812499999916,
+            "minMicroseconds": 1.449107583333339,
+            "maxMicroseconds": 1.5706735833333312,
+            "checksum": 1615000
+          },
+          {
+            "name": "date time parts",
+            "medianMicroseconds": 1.509138916666662,
+            "minMicroseconds": 1.508319416666666,
+            "maxMicroseconds": 1.5205590833333342,
+            "checksum": 765000
+          },
+          {
+            "name": "date time range",
+            "medianMicroseconds": 3.6243160000000025,
+            "minMicroseconds": 3.6136562500000005,
+            "maxMicroseconds": 4.034975666666668,
+            "checksum": 2295000
+          },
+          {
+            "name": "date time range parts",
+            "medianMicroseconds": 3.736756916666669,
+            "minMicroseconds": 3.7156805833333237,
+            "maxMicroseconds": 3.7898125000000014,
+            "checksum": 1105000
+          },
+          {
+            "name": "fractional format",
+            "medianMicroseconds": 1.3987429999999865,
+            "minMicroseconds": 1.3950554999999931,
+            "maxMicroseconds": 1.5075659166666544,
+            "checksum": 1020000
+          },
+          {
+            "name": "fractional parts",
+            "medianMicroseconds": 1.4758159166666664,
+            "minMicroseconds": 1.4720660000000028,
+            "maxMicroseconds": 1.4932673333333357,
+            "checksum": 595000
+          },
+          {
+            "name": "fractional range",
+            "medianMicroseconds": 3.998382000000011,
+            "minMicroseconds": 3.951906250000017,
+            "maxMicroseconds": 4.127857666666671,
+            "checksum": 2295000
+          },
+          {
+            "name": "fractional range parts",
+            "medianMicroseconds": 3.985107666666636,
+            "minMicroseconds": 3.9675139166666518,
+            "maxMicroseconds": 4.217274333333346,
+            "checksum": 1275000
+          },
+          {
+            "name": "zone name format",
+            "medianMicroseconds": 2.1939409166666715,
+            "minMicroseconds": 2.188711750000001,
+            "maxMicroseconds": 2.33336458333334,
+            "checksum": 3383000
+          },
+          {
+            "name": "zone name parts",
+            "medianMicroseconds": 2.2393785000000057,
+            "minMicroseconds": 2.2280416666666647,
+            "maxMicroseconds": 2.28971875000002,
+            "checksum": 1445000
+          },
+          {
+            "name": "zone name range",
+            "medianMicroseconds": 6.762065916666681,
+            "minMicroseconds": 6.625267333333303,
+            "maxMicroseconds": 6.800045166666678,
+            "checksum": 7021000
+          },
+          {
+            "name": "zone name range parts",
+            "medianMicroseconds": 6.897746583333325,
+            "minMicroseconds": 6.858145833333348,
+            "maxMicroseconds": 7.063291666666676,
+            "checksum": 2975000
+          },
+          {
+            "name": "arab digits format",
+            "medianMicroseconds": 1.645645833333333,
+            "minMicroseconds": 1.6320243333333337,
+            "maxMicroseconds": 1.748621500000013,
+            "checksum": 1581000
+          },
+          {
+            "name": "arab digits parts",
+            "medianMicroseconds": 1.6952778333333451,
+            "minMicroseconds": 1.6620243333333444,
+            "maxMicroseconds": 1.72092708333336,
+            "checksum": 935000
+          },
+          {
+            "name": "arab digits range",
+            "medianMicroseconds": 4.211684000000029,
+            "minMicroseconds": 4.116326416666728,
+            "maxMicroseconds": 4.35080558333334,
+            "checksum": 2312000
+          },
+          {
+            "name": "arab digits range parts",
+            "medianMicroseconds": 4.2043785,
+            "minMicroseconds": 4.083392416666659,
+            "maxMicroseconds": 4.303736083333281,
+            "checksum": 1343000
+          }
+        ]
+      }
+    },
+    "full": {
+      "before": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "iterations": 12000,
+        "rounds": 7,
+        "numberFormat": "polyfill",
+        "localePacks": 1,
+        "availableLocales": 2,
+        "registrationMilliseconds": 2.4192080000000047,
+        "results": [
+          {
+            "name": "date format",
+            "medianMicroseconds": 3.923500000000002,
+            "minMicroseconds": 3.8607604166666647,
+            "maxMicroseconds": 4.453204833333332,
+            "checksum": 765000
+          },
+          {
+            "name": "date parts",
+            "medianMicroseconds": 4.010069499999996,
+            "minMicroseconds": 3.9439548333333314,
+            "maxMicroseconds": 4.047607583333331,
+            "checksum": 425000
+          },
+          {
+            "name": "date range",
+            "medianMicroseconds": 5.155892416666669,
+            "minMicroseconds": 5.108784749999994,
+            "maxMicroseconds": 5.366295083333332,
+            "checksum": 765000
+          },
+          {
+            "name": "date range parts",
+            "medianMicroseconds": 5.2001805833333306,
+            "minMicroseconds": 5.161111166666672,
+            "maxMicroseconds": 5.265288166666664,
+            "checksum": 425000
+          },
+          {
+            "name": "date time format",
+            "medianMicroseconds": 4.989808999999998,
+            "minMicroseconds": 4.954690916666664,
+            "maxMicroseconds": 5.145173666666665,
+            "checksum": 1615000
+          },
+          {
+            "name": "date time parts",
+            "medianMicroseconds": 5.082611083333329,
+            "minMicroseconds": 4.970815999999976,
+            "maxMicroseconds": 5.099993000000002,
+            "checksum": 765000
+          },
+          {
+            "name": "date time range",
+            "medianMicroseconds": 9.435437499999995,
+            "minMicroseconds": 9.212124999999977,
+            "maxMicroseconds": 9.682027749999975,
+            "checksum": 2295000
+          },
+          {
+            "name": "date time range parts",
+            "medianMicroseconds": 9.381309083333312,
+            "minMicroseconds": 9.285795166666691,
+            "maxMicroseconds": 9.709003416666672,
+            "checksum": 1105000
+          },
+          {
+            "name": "fractional format",
+            "medianMicroseconds": 4.544534749999987,
+            "minMicroseconds": 4.4507812500000155,
+            "maxMicroseconds": 4.669572916666691,
+            "checksum": 1020000
+          },
+          {
+            "name": "fractional parts",
+            "medianMicroseconds": 4.602079833333316,
+            "minMicroseconds": 4.548645833333315,
+            "maxMicroseconds": 4.711274333333374,
+            "checksum": 595000
+          },
+          {
+            "name": "fractional range",
+            "medianMicroseconds": 10.405875,
+            "minMicroseconds": 10.270972249999963,
+            "maxMicroseconds": 10.506385416666717,
+            "checksum": 2295000
+          },
+          {
+            "name": "fractional range parts",
+            "medianMicroseconds": 10.437541666666675,
+            "minMicroseconds": 10.315024333333364,
+            "maxMicroseconds": 10.498468750000029,
+            "checksum": 1275000
+          },
+          {
+            "name": "zone name format",
+            "medianMicroseconds": 6.325722249999974,
+            "minMicroseconds": 6.267118083333345,
+            "maxMicroseconds": 6.415142333333354,
+            "checksum": 3383000
+          },
+          {
+            "name": "zone name parts",
+            "medianMicroseconds": 6.4105277500000275,
+            "minMicroseconds": 6.352927083333346,
+            "maxMicroseconds": 6.458802083333391,
+            "checksum": 1445000
+          },
+          {
+            "name": "zone name range",
+            "medianMicroseconds": 14.982781250000016,
+            "minMicroseconds": 14.898541666666613,
+            "maxMicroseconds": 15.084413166666687,
+            "checksum": 7021000
+          },
+          {
+            "name": "zone name range parts",
+            "medianMicroseconds": 15.269524333333267,
+            "minMicroseconds": 15.120350666666583,
+            "maxMicroseconds": 15.87537850000005,
+            "checksum": 2975000
+          },
+          {
+            "name": "arab digits format",
+            "medianMicroseconds": 6.601229166666751,
+            "minMicroseconds": 6.5543367500000995,
+            "maxMicroseconds": 6.75463541666674,
+            "checksum": 1581000
+          },
+          {
+            "name": "arab digits parts",
+            "medianMicroseconds": 6.6102916666665505,
+            "minMicroseconds": 6.580183999999917,
+            "maxMicroseconds": 6.65435416666666,
+            "checksum": 935000
+          },
+          {
+            "name": "arab digits range",
+            "medianMicroseconds": 11.595343749999907,
+            "minMicroseconds": 11.457534749999924,
+            "maxMicroseconds": 11.743166666666637,
+            "checksum": 2312000
+          },
+          {
+            "name": "arab digits range parts",
+            "medianMicroseconds": 11.552763833333302,
+            "minMicroseconds": 11.444617999999993,
+            "maxMicroseconds": 11.857190916666696,
+            "checksum": 1343000
+          }
+        ]
+      },
+      "after": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "iterations": 12000,
+        "rounds": 7,
+        "numberFormat": "polyfill",
+        "localePacks": 1,
+        "availableLocales": 2,
+        "registrationMilliseconds": 3.341583,
+        "results": [
+          {
+            "name": "date format",
+            "medianMicroseconds": 1.2916597500000009,
+            "minMicroseconds": 1.2589721666666662,
+            "maxMicroseconds": 1.9697187499999997,
+            "checksum": 765000
+          },
+          {
+            "name": "date parts",
+            "medianMicroseconds": 1.3543333333333318,
+            "minMicroseconds": 1.3328854166666655,
+            "maxMicroseconds": 1.4095277499999999,
+            "checksum": 425000
+          },
+          {
+            "name": "date range",
+            "medianMicroseconds": 1.9439548333333363,
+            "minMicroseconds": 1.9405,
+            "maxMicroseconds": 2.1394652500000007,
+            "checksum": 765000
+          },
+          {
+            "name": "date range parts",
+            "medianMicroseconds": 1.9492604166666658,
+            "minMicroseconds": 1.9355173333333275,
+            "maxMicroseconds": 2.0254479166666686,
+            "checksum": 425000
+          },
+          {
+            "name": "date time format",
+            "medianMicroseconds": 1.602746583333328,
+            "minMicroseconds": 1.5812430833333337,
+            "maxMicroseconds": 1.7587187500000045,
+            "checksum": 1615000
+          },
+          {
+            "name": "date time parts",
+            "medianMicroseconds": 1.7301354166666651,
+            "minMicroseconds": 1.711909749999999,
+            "maxMicroseconds": 1.7522916666666695,
+            "checksum": 765000
+          },
+          {
+            "name": "date time range",
+            "medianMicroseconds": 3.991093750000005,
+            "minMicroseconds": 3.962784749999997,
+            "maxMicroseconds": 4.338617999999997,
+            "checksum": 2295000
+          },
+          {
+            "name": "date time range parts",
+            "medianMicroseconds": 4.043899333333343,
+            "minMicroseconds": 4.008628500000005,
+            "maxMicroseconds": 4.079277833333341,
+            "checksum": 1105000
+          },
+          {
+            "name": "fractional format",
+            "medianMicroseconds": 1.728045166666675,
+            "minMicroseconds": 1.6991110833333212,
+            "maxMicroseconds": 1.901836833333334,
+            "checksum": 1020000
+          },
+          {
+            "name": "fractional parts",
+            "medianMicroseconds": 1.777829916666671,
+            "minMicroseconds": 1.7548680833333492,
+            "maxMicroseconds": 1.7932951666666668,
+            "checksum": 595000
+          },
+          {
+            "name": "fractional range",
+            "medianMicroseconds": 4.609441000000023,
+            "minMicroseconds": 4.571715249999973,
+            "maxMicroseconds": 4.689694499999993,
+            "checksum": 2295000
+          },
+          {
+            "name": "fractional range parts",
+            "medianMicroseconds": 4.6274826666666895,
+            "minMicroseconds": 4.60823608333332,
+            "maxMicroseconds": 4.679812499999988,
+            "checksum": 1275000
+          },
+          {
+            "name": "zone name format",
+            "medianMicroseconds": 2.6266319166666485,
+            "minMicroseconds": 2.586500000000001,
+            "maxMicroseconds": 2.7869964999999866,
+            "checksum": 3383000
+          },
+          {
+            "name": "zone name parts",
+            "medianMicroseconds": 2.6778403333333167,
+            "minMicroseconds": 2.6717048333333273,
+            "maxMicroseconds": 2.712253500000012,
+            "checksum": 1445000
+          },
+          {
+            "name": "zone name range",
+            "medianMicroseconds": 7.584569500000005,
+            "minMicroseconds": 7.442621500000011,
+            "maxMicroseconds": 7.8142569166666735,
+            "checksum": 7021000
+          },
+          {
+            "name": "zone name range parts",
+            "medianMicroseconds": 7.744774333333301,
+            "minMicroseconds": 7.6616909166666565,
+            "maxMicroseconds": 7.859326416666666,
+            "checksum": 2975000
+          },
+          {
+            "name": "arab digits format",
+            "medianMicroseconds": 2.643600666666695,
+            "minMicroseconds": 2.639371583333362,
+            "maxMicroseconds": 2.765277833333357,
+            "checksum": 1581000
+          },
+          {
+            "name": "arab digits parts",
+            "medianMicroseconds": 2.6763992499999554,
+            "minMicroseconds": 2.6637499999999363,
+            "maxMicroseconds": 2.7100799166667002,
+            "checksum": 935000
+          },
+          {
+            "name": "arab digits range",
+            "medianMicroseconds": 5.597128499999977,
+            "minMicroseconds": 5.568371500000012,
+            "maxMicroseconds": 5.856562500000034,
+            "checksum": 2312000
+          },
+          {
+            "name": "arab digits range parts",
+            "medianMicroseconds": 5.508802083333346,
+            "minMicroseconds": 5.486184000000018,
+            "maxMicroseconds": 5.518513916666733,
+            "checksum": 1343000
+          }
+        ]
+      },
+      "repeat": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "iterations": 12000,
+        "rounds": 7,
+        "numberFormat": "polyfill",
+        "localePacks": 1,
+        "availableLocales": 2,
+        "registrationMilliseconds": 2.7262500000000003,
+        "results": [
+          {
+            "name": "date format",
+            "medianMicroseconds": 1.3010173333333341,
+            "minMicroseconds": 1.2785139166666681,
+            "maxMicroseconds": 1.9512777500000003,
+            "checksum": 765000
+          },
+          {
+            "name": "date parts",
+            "medianMicroseconds": 1.3835902499999975,
+            "minMicroseconds": 1.3629895833333332,
+            "maxMicroseconds": 1.4034964999999981,
+            "checksum": 425000
+          },
+          {
+            "name": "date range",
+            "medianMicroseconds": 2.057670166666668,
+            "minMicroseconds": 2.0364687499999974,
+            "maxMicroseconds": 2.1871285,
+            "checksum": 765000
+          },
+          {
+            "name": "date range parts",
+            "medianMicroseconds": 1.9927187499999945,
+            "minMicroseconds": 1.9877291666666679,
+            "maxMicroseconds": 2.0506527499999976,
+            "checksum": 425000
+          },
+          {
+            "name": "date time format",
+            "medianMicroseconds": 1.6677569166666615,
+            "minMicroseconds": 1.638795166666673,
+            "maxMicroseconds": 1.8283610833333341,
+            "checksum": 1615000
+          },
+          {
+            "name": "date time parts",
+            "medianMicroseconds": 1.7178055833333303,
+            "minMicroseconds": 1.7078194999999994,
+            "maxMicroseconds": 1.7346110833333341,
+            "checksum": 765000
+          },
+          {
+            "name": "date time range",
+            "medianMicroseconds": 3.932218750000004,
+            "minMicroseconds": 3.8946944166666713,
+            "maxMicroseconds": 4.552565999999994,
+            "checksum": 2295000
+          },
+          {
+            "name": "date time range parts",
+            "medianMicroseconds": 3.980493083333348,
+            "minMicroseconds": 3.932996499999983,
+            "maxMicroseconds": 4.010597166666666,
+            "checksum": 1105000
+          },
+          {
+            "name": "fractional format",
+            "medianMicroseconds": 1.7537464999999959,
+            "minMicroseconds": 1.6928749999999961,
+            "maxMicroseconds": 1.8518506666666592,
+            "checksum": 1020000
+          },
+          {
+            "name": "fractional parts",
+            "medianMicroseconds": 1.8012569999999832,
+            "minMicroseconds": 1.7469756666666665,
+            "maxMicroseconds": 1.8407847499999928,
+            "checksum": 595000
+          },
+          {
+            "name": "fractional range",
+            "medianMicroseconds": 4.779805583333333,
+            "minMicroseconds": 4.700093750000026,
+            "maxMicroseconds": 4.865739583333323,
+            "checksum": 2295000
+          },
+          {
+            "name": "fractional range parts",
+            "medianMicroseconds": 4.6602049166666575,
+            "minMicroseconds": 4.554746500000002,
+            "maxMicroseconds": 4.772708333333337,
+            "checksum": 1275000
+          },
+          {
+            "name": "zone name format",
+            "medianMicroseconds": 2.5848195000000183,
+            "minMicroseconds": 2.563680583333356,
+            "maxMicroseconds": 2.735482666666674,
+            "checksum": 3383000
+          },
+          {
+            "name": "zone name parts",
+            "medianMicroseconds": 2.7124999999999773,
+            "minMicroseconds": 2.6814096666666956,
+            "maxMicroseconds": 2.751663166666655,
+            "checksum": 1445000
+          },
+          {
+            "name": "zone name range",
+            "medianMicroseconds": 7.67567358333334,
+            "minMicroseconds": 7.531347249999992,
+            "maxMicroseconds": 7.722312500000006,
+            "checksum": 7021000
+          },
+          {
+            "name": "zone name range parts",
+            "medianMicroseconds": 7.858694499999994,
+            "minMicroseconds": 7.767777750000012,
+            "maxMicroseconds": 7.939548583333286,
+            "checksum": 2975000
+          },
+          {
+            "name": "arab digits format",
+            "medianMicroseconds": 2.694538166666689,
+            "minMicroseconds": 2.6642673333333278,
+            "maxMicroseconds": 2.8012395833333508,
+            "checksum": 1581000
+          },
+          {
+            "name": "arab digits parts",
+            "medianMicroseconds": 2.7306007500000455,
+            "minMicroseconds": 2.6950729166666556,
+            "maxMicroseconds": 2.78114933333336,
+            "checksum": 935000
+          },
+          {
+            "name": "arab digits range",
+            "medianMicroseconds": 5.856062500000007,
+            "minMicroseconds": 5.825427083333353,
+            "maxMicroseconds": 5.979482583333265,
+            "checksum": 2312000
+          },
+          {
+            "name": "arab digits range parts",
+            "medianMicroseconds": 5.741343750000017,
+            "minMicroseconds": 5.72377775000003,
+            "maxMicroseconds": 5.902302083333325,
+            "checksum": 1343000
+          }
+        ]
+      }
+    },
+    "numberformat": {
+      "before": {
+        "node": "v24.14.0",
+        "pluralRules": "host",
+        "icu": "78.2",
+        "iterations": 12000,
+        "constructorsOnly": false,
+        "freshLocaleSets": false,
+        "constructorIterations": 1000,
+        "rounds": 7,
+        "registeredLocales": 2,
+        "registrationMilliseconds": 0.0015829999999965594,
+        "results": [
+          {
+            "name": "decimal",
+            "medianMicroseconds": 1.1236527500000004,
+            "minMicroseconds": 1.107375,
+            "maxMicroseconds": 1.472211833333334,
+            "checksum": 621004
+          },
+          {
+            "name": "currency",
+            "medianMicroseconds": 1.2858263333333326,
+            "minMicroseconds": 1.2667291666666667,
+            "maxMicroseconds": 1.5534549166666667,
+            "checksum": 831234
+          },
+          {
+            "name": "unit",
+            "medianMicroseconds": 1.6336944166666665,
+            "minMicroseconds": 1.620423583333334,
+            "maxMicroseconds": 1.7989826666666697,
+            "checksum": 1223004
+          },
+          {
+            "name": "scientific",
+            "medianMicroseconds": 1.8196701666666684,
+            "minMicroseconds": 1.7773993333333256,
+            "maxMicroseconds": 2.0552916666666667,
+            "checksum": 449096
+          },
+          {
+            "name": "compact",
+            "medianMicroseconds": 4.350583333333333,
+            "minMicroseconds": 4.290316,
+            "maxMicroseconds": 4.523062499999999,
+            "checksum": 324833
+          },
+          {
+            "name": "compact currency",
+            "medianMicroseconds": 4.329243083333324,
+            "minMicroseconds": 4.278795166666669,
+            "maxMicroseconds": 4.443715250000006,
+            "checksum": 410833
+          },
+          {
+            "name": "compact significant digits",
+            "medianMicroseconds": 3.1259444166666603,
+            "minMicroseconds": 3.0954514166666627,
+            "maxMicroseconds": 3.16015274999999,
+            "checksum": 391725
+          },
+          {
+            "name": "construct exact",
+            "medianMicroseconds": 3.106832999999824,
+            "minMicroseconds": 2.689540999999963,
+            "maxMicroseconds": 3.706916999999976,
+            "checksum": 14200
+          },
+          {
+            "name": "construct fallback",
+            "medianMicroseconds": 3.8209170000000086,
+            "minMicroseconds": 3.6504170000000613,
+            "maxMicroseconds": 4.2107079999998405,
+            "checksum": 14200
+          },
+          {
+            "name": "construct lookup",
+            "medianMicroseconds": 3.3762919999999212,
+            "minMicroseconds": 3.1714999999999236,
+            "maxMicroseconds": 3.867958999999928,
+            "checksum": 14200
+          }
+        ]
+      },
+      "after": {
+        "node": "v24.14.0",
+        "pluralRules": "host",
+        "icu": "78.2",
+        "iterations": 12000,
+        "constructorsOnly": false,
+        "freshLocaleSets": false,
+        "constructorIterations": 1000,
+        "rounds": 7,
+        "registeredLocales": 2,
+        "registrationMilliseconds": 0.0015829999999965594,
+        "results": [
+          {
+            "name": "decimal",
+            "medianMicroseconds": 0.973447916666667,
+            "minMicroseconds": 0.9607916666666655,
+            "maxMicroseconds": 1.336572916666666,
+            "checksum": 621004
+          },
+          {
+            "name": "currency",
+            "medianMicroseconds": 1.097878416666667,
+            "minMicroseconds": 1.0717916666666674,
+            "maxMicroseconds": 1.3998333333333333,
+            "checksum": 831234
+          },
+          {
+            "name": "unit",
+            "medianMicroseconds": 1.452486083333336,
+            "minMicroseconds": 1.4427430833333355,
+            "maxMicroseconds": 1.57788541666667,
+            "checksum": 1223004
+          },
+          {
+            "name": "scientific",
+            "medianMicroseconds": 1.5829965000000026,
+            "minMicroseconds": 1.5506320000000027,
+            "maxMicroseconds": 1.7670416666666664,
+            "checksum": 449096
+          },
+          {
+            "name": "compact",
+            "medianMicroseconds": 4.028315916666666,
+            "minMicroseconds": 3.9993784166666635,
+            "maxMicroseconds": 4.30078125,
+            "checksum": 324833
+          },
+          {
+            "name": "compact currency",
+            "medianMicroseconds": 4.175614583333337,
+            "minMicroseconds": 4.155635416666655,
+            "maxMicroseconds": 4.298013916666671,
+            "checksum": 410833
+          },
+          {
+            "name": "compact significant digits",
+            "medianMicroseconds": 3.0909618333333433,
+            "minMicroseconds": 3.0771145833333358,
+            "maxMicroseconds": 3.2825625000000023,
+            "checksum": 391725
+          },
+          {
+            "name": "construct exact",
+            "medianMicroseconds": 3.034208000000035,
+            "minMicroseconds": 2.736458000000084,
+            "maxMicroseconds": 3.7253339999999753,
+            "checksum": 14200
+          },
+          {
+            "name": "construct fallback",
+            "medianMicroseconds": 3.682750000000169,
+            "minMicroseconds": 3.3110830000000533,
+            "maxMicroseconds": 4.3129579999999805,
+            "checksum": 14200
+          },
+          {
+            "name": "construct lookup",
+            "medianMicroseconds": 3.385334000000057,
+            "minMicroseconds": 3.14449999999988,
+            "maxMicroseconds": 3.826541000000134,
+            "checksum": 14200
+          }
+        ]
+      }
+    }
+  },
+  "fullPolyfillProfiles": {
+    "before": {
+      "samples": 9121,
+      "selfSamplesByFunction": {
+        "removeTrailingZeros": 2393,
+        "BigDecimal": 731,
+        "times": 413,
+        "div": 404,
+        "FormatDateTimePattern": 387,
+        "PartitionDateTimeRangePattern": 365,
+        "FormatNumericToString$1": 313,
+        "formatToParts$1": 285,
+        "toString": 259,
+        "PartitionNumberPattern": 255,
+        "PartitionPattern": 248,
+        "ToRawFixed$1": 224,
+        "getApplicableZoneData": 215,
+        "(program)": 200,
+        "FormatNumeric": 195,
+        "partitionNumberIntoParts": 180,
+        "_coerce": 163,
+        "parseDecimalString": 150,
+        "ToNumber": 138,
+        "ToLocalTime": 122,
+        "toNumber": 110,
+        "findN2R2$1": 88,
+        "FormatDateTimeRangeToParts": 85,
+        "FormatDateTimeRange": 79,
+        "PartitionDateTimePattern": 74,
+        "findN1R1$1": 69,
+        "": 58,
+        "MonthFromTime": 57,
+        "YearFromTime": 51,
+        "_create": 50
+      },
+      "normalizationSelfPercent": 26.236158315974127
+    },
+    "after": {
+      "samples": 4007,
+      "selfSamplesByFunction": {
+        "FormatDateTimePattern": 423,
+        "PartitionDateTimeRangePattern": 339,
+        "BigDecimal": 296,
+        "PartitionNumberPattern": 283,
+        "formatToParts$1": 252,
+        "ToLocalTime": 235,
+        "PartitionPattern": 226,
+        "FormatNumeric": 176,
+        "partitionNumberIntoParts": 166,
+        "toString": 156,
+        "ToNumber": 134,
+        "FormatNumericToString$1": 130,
+        "removeTrailingZeros": 113,
+        "(program)": 112,
+        "FormatDateTimeRangeToParts": 87,
+        "FormatDateTimeRange": 62,
+        "PartitionDateTimePattern": 59,
+        "": 58,
+        "MonthFromTime": 54,
+        "ToRawFixed$1": 44,
+        "HandleDateTimeValue": 38,
+        "TimeClip": 36,
+        "boundFormat": 35,
+        "toNumber": 32,
+        "ToIntlMathematicalValue$1": 32,
+        "get": 28,
+        "YearFromTime": 27,
+        "(garbage collector)": 24,
+        "call": 23,
+        "FormatDateTimeToParts": 23
+      },
+      "normalizationSelfPercent": 2.820064886448715
+    }
+  }
+}

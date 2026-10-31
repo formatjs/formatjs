@@ -205,3 +205,27 @@ test('nanosecond endpoints retain the preceding millisecond at Date limits', () 
   expect(dtf.format(-0.9)).toBe(dtf.format(0))
   expect(dtf.format(new Temporal.Instant(-1n))).not.toBe(dtf.format(-0.9))
 })
+
+test.each([1, 2, 3] as const)(
+  'fractional seconds truncate at width %i across the epoch',
+  digits => {
+    const dtf = formatter({second: '2-digit', fractionalSecondDigits: digits})
+    for (const [nanoseconds, expected] of [
+      [-1n, '999'],
+      [0n, '000'],
+      [1n, '000'],
+      [123999999n, '123'],
+      [999999999n, '999'],
+      [-1000001n, '998'],
+    ] as const) {
+      expect(
+        dtf
+          .formatToParts(new Temporal.Instant(nanoseconds))
+          .find(
+            (part: {type: string; value: string}) =>
+              part.type === 'fractionalSecond'
+          )?.value
+      ).toBe(expected.slice(0, digits))
+    }
+  }
+)

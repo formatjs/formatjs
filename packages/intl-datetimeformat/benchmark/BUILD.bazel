@@ -1,6 +1,7 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:rolldown.bzl", "rolldown_bundle")
 
 generate_package_json(
     package_name = "intl-datetimeformat-benchmark",
@@ -26,13 +27,55 @@ js_binary(
 
 formatjs_library(
     name = "benchmark",
-    srcs = ["benchmark.ts"],
+    srcs = [
+        "audit.ts",
+        "benchmark.ts",
+    ],
     tsconfig_types = ["node"],
     visibility = ["//visibility:public"],
     deps = [
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/@types/node",
         "//:node_modules/tinybench",
+    ],
+)
+
+js_binary(
+    name = "audit",
+    data = [
+        ":audit-bundle",
+        ":generated_package_json",  # keep: ESM execution manifest
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
+        "//crates/intl_datetimeformat:locale-data/en.json",  # keep: runtime-loaded locale pack
+        "//crates/intl_numberformat:locale-data/en.json",  # keep: optional numeric provider
+        "//packages/intl-datetimeformat:tz_all_json",  # keep: runtime-loaded transitions
+        "//packages/intl-pluralrules:cldr-raw/en.js",  # keep: optional plural provider
+    ],
+    entry_point = "audit-bundle.js",
+    visibility = ["//visibility:public"],
+)
+
+rolldown_bundle(
+    name = "audit-bundle",
+    srcs = [
+        "audit.ts",
+        ":benchmark",
+    ],
+    entry_point = "audit.ts",
+    external = ["@bazel/runfiles"],
+    platform = "node",
+    target = "esnext",
+    deps = [
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
     ],
 )

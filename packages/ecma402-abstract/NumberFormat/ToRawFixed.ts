@@ -37,8 +37,8 @@ function findN2R2(x: Decimal, f: number, roundingIncrement: number) {
 /**
  * https://tc39.es/ecma402/#sec-torawfixed
  * @param x a finite non-negative Number or BigInt
- * @param minFraction an integer between 0 and 20
- * @param maxFraction an integer between 0 and 20
+ * @param minFraction an integer between 0 and 100
+ * @param maxFraction an integer between 0 and 100
  */
 export function ToRawFixed(
   x: Decimal,
@@ -47,6 +47,19 @@ export function ToRawFixed(
   roundingIncrement: number,
   unsignedRoundingMode: UnsignedRoundingModeType
 ): RawNumberFormatResult {
+  // With unit increment, every integer is already an exact rounding boundary.
+  // https://tc39.es/ecma402/#sec-torawfixed
+  if (roundingIncrement === 1 && x.isInteger()) {
+    const integer = x.toString()
+    return {
+      formattedString:
+        integer + (minFraction === 0 ? '' : '.' + repeat('0', minFraction)),
+      roundedNumber: x,
+      integerDigitsCount: integer.length,
+      roundingMagnitude: -maxFraction,
+    }
+  }
+
   // 1. Let f be maxFraction.
   const f = maxFraction
 
