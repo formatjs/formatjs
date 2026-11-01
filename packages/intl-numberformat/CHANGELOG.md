@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.1...@formatjs/intl-numberformat@10.0.2) (2026-11-01)
+
+
+### Performance Improvements
+
+* **@formatjs/bigdecimal:** shift power-of-ten division without padding ([#7840](https://github.com/formatjs/formatjs/issues/7840)) ([2d20e2d](https://github.com/formatjs/formatjs/commit/2d20e2df2a6208b70f19694b8d9014689ccc9471))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.10
+
 ## [10.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.0...@formatjs/intl-numberformat@10.0.1) (2026-10-31)
 
 

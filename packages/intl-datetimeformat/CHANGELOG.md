@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.1...@formatjs/intl-datetimeformat@8.0.2) (2026-11-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.10
+
 ## [8.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.0...@formatjs/intl-datetimeformat@8.0.1) (2026-10-31)
 
 
