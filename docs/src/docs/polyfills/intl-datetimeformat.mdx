@@ -431,3 +431,23 @@ The benchmark uses fixed UTC inputs and native controls for `format`,
 `formatRange`, and `formatRangeToParts`, including same-date, cross-date, and
 collapsed ranges. Each timed task batches 16 calls; construction and locale-data
 registration are excluded.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------------------------- | -------------: | -----------------: | -----------: |
+| format date                 |        849,803 |            772,347 |    2,578,151 |
+| formatToParts               |        822,550 |            727,054 |      996,306 |
+| formatRange                 |        306,935 |            286,979 |       90,907 |
+| formatRangeToParts          |        296,790 |            286,306 |       81,258 |
+| format date time            |        600,028 |            507,938 |    1,761,259 |
+| format fractional seconds   |        673,757 |            586,938 |    1,965,520 |
+| format zone name            |        448,480 |            394,450 |      990,488 |
+| construct + resolvedOptions |          2,837 |              3,085 |       43,700 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

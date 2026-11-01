@@ -148,3 +148,20 @@ embeds the JavaScript fragments and calls one C++ installer linked to the same
 Rust archive. `native/hermes/package/contrib/README.md` lists the integration edits.
 
 Hermes SDK packaging and release flow: [007m](007m-hermes-distribution.md).
+
+## Benchmark refresh
+
+`bazel run -c opt //benchmarks/polyfills:benchmark` measures all 12 JS polyfills
+plus LocaleMatcher using shipped bundles. Repeat with `--polyfill-dependencies`
+to install all FormatJS Intl APIs before timing. Native built-ins are captured
+before installation and remain available as controls.
+
+See [methodology and current results](../benchmarks/polyfills/README.md). Keep
+host/full dependency modes, construction, batched operations, and cold startup
+separate. Construction rows include `resolvedOptions()`; other formatter rows
+reuse instances. English data and timezone registration happen before timing.
+The six dynamic packages expose narrow benchmark-only locale-data filegroups.
+
+When refreshing results, record source revision and runtime/CPU metadata, retain
+raw median/min/max results, and update each polyfill's Measured performance table.
+Historical before/after audit artifacts retain their original revision labels.

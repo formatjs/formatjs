@@ -249,3 +249,20 @@ Duration locale and time-separator metadata stays static. Native NumberFormat an
 ListFormat dependencies use compiled SDK locale data; no public JS
 formatter callbacks are needed. See the [Hermes SDK guide](/docs/guides/hermes-intl)
 for installation, data hooks, Temporal timing and the independent consumer.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------------------------- | -------------: | -----------------: | -----------: |
+| format long                 |         89,664 |             89,675 |       31,950 |
+| formatToParts long          |         91,340 |             89,470 |       29,683 |
+| format digital              |        132,696 |            176,617 |       77,434 |
+| formatToParts digital       |        134,372 |            172,715 |       65,289 |
+| construct + resolvedOptions |        184,968 |            175,152 |       33,707 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

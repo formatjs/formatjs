@@ -84,3 +84,21 @@ match(['en-GB', 'sv'], ['en', 'sv'], 'en') // 'en': earlier regional match wins
 Matching caches supported lists and repeated requests. Reuse supported arrays
 when possible; array and Set content changes invalidate the relevant caches.
 The host or polyfilled `Intl.Locale` supplies canonicalization and likely subtags.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation           | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| ------------------- | -------------: | -----------------: | -----------: |
+| best fit en         |       917,471† |            62,277† |            — |
+| best fit en-US      |        470,600 |             72,354 |            — |
+| best fit zh-TW      |        455,547 |             71,873 |            — |
+| best fit sr-Latn-BA |        391,251 |             71,347 |            — |
+| best fit en-XZ      |        456,567 |             72,177 |            — |
+| fresh array         |         38,101 |             25,985 |            — |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

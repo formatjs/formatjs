@@ -121,3 +121,18 @@ identifiers and omits aliases such as `Etc/UTC`.
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.
 Only collations accepted by the installed Collator are returned.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------- | -------------: | -----------------: | -----------: |
+| calendar  |         29,875 |             45,964 |     319,540† |
+| timeZone  |          1,193 |              1,702 |       16,757 |
+| unit      |         10,122 |             39,207 |      519,946 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

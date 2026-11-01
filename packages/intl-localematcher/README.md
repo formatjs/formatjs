@@ -16,3 +16,18 @@ first-match ordering and locale-data selection.
 [Constructor measurements](../../knowledge-base/audits/2026-10-31-numberformat-constructor-snapshots.md)
 compare warm construction with the same supported locales. Keep cold preparation,
 matching, construction and formatting measurements separate.
+
+## Current measurements
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation           | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| ------------------- | -------------: | -----------------: | -----------: |
+| best fit en         |       917,471† |            62,277† |            — |
+| best fit en-US      |        470,600 |             72,354 |            — |
+| best fit zh-TW      |        455,547 |             71,873 |            — |
+| best fit sr-Latn-BA |        391,251 |             71,347 |            — |
+| best fit en-XZ      |        456,567 |             72,177 |            — |
+| fresh array         |         38,101 |             25,985 |            — |
+
+[Methodology and raw results](../../benchmarks/polyfills/README.md).

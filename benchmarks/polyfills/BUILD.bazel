@@ -1,0 +1,66 @@
+# gazelle:ignore
+
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "polyfill-benchmarks",
+    private = True,
+    type = "module",
+    version = "1.0.0",
+)
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/cldr-core",
+        "//packages/intl-datetimeformat:polyfill_benchmark_locale_data",
+        "//packages/intl-displaynames:polyfill_benchmark_locale_data",
+        "//packages/intl-listformat:polyfill_benchmark_locale_data",
+        "//packages/intl-numberformat:polyfill_benchmark_locale_data",
+        "//packages/intl-pluralrules:polyfill_benchmark_locale_data",
+        "//packages/intl-relativetimeformat:polyfill_benchmark_locale_data",
+    ],
+    entry_point = "benchmark.ts",
+    tags = ["manual"],
+)
+
+formatjs_library(
+    name = "lib",
+    srcs = ["benchmark.ts"],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@types/node",
+        "//:node_modules/cldr-core",
+    ],
+)

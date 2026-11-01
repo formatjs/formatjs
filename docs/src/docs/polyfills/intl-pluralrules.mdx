@@ -174,3 +174,18 @@ load JSON packs. Build a custom SDK with `--//crates/intl_data:locales=en,fr`.
 Rust handles locale matching, exact numeric rounding, and ICU4X rule selection.
 Individual consumers can still link `:pluralrules` and call
 `formatjs::installPluralRules(runtime)` after canonicalization.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------------------------- | -------------: | -----------------: | -----------: |
+| select cardinal             |        932,544 |            919,918 |    4,552,086 |
+| select ordinal              |        861,028 |            875,162 |    2,645,170 |
+| construct + resolvedOptions |        685,222 |            621,338 |      316,752 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

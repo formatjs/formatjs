@@ -34,3 +34,5 @@ bazel run -c opt //crates/intl_localematcher:matcher_bench
 
 The algorithm follows Unicode ICU `LocaleMatcher`/`LocaleDistance`; generated
 CLDR data is covered by the [Unicode data license](https://www.unicode.org/license.txt).
+
+Current optimized measurements: [shared benchmark report](../../benchmarks/polyfills/README.md#existing-rust-suites).

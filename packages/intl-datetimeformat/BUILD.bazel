@@ -657,3 +657,12 @@ copy_to_bin(
     srcs = glob(["tests/**/*.ts"]) + ["tests/locale-data/%s.json" % locale for locale in TEST_LOCALES] + [":srcs"],
     visibility = ["//native/hermes/tests:__pkg__"],
 )
+
+filegroup(
+    name = "polyfill_benchmark_locale_data",
+    srcs = [
+        "cldr-raw/en.json",
+        ":tz_all_json",
+    ],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

@@ -185,3 +185,18 @@ The [Hermes Intl SDK](/docs/guides/hermes-intl) includes Rust ListFormat and
 source/bytecode installers. Locale data is compiled into the archive; use the
 build-time locale flag to choose a custom set. Individual consumers can link
 `:listformat` and call `formatjs::installListFormat(runtime)` after canonicalization.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------------------------- | -------------: | -----------------: | -----------: |
+| format                      |      3,400,324 |          3,216,479 |    2,220,136 |
+| formatToParts               |      3,097,416 |          3,041,058 |      972,724 |
+| construct + resolvedOptions |        917,700 |            826,297 |      823,913 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).

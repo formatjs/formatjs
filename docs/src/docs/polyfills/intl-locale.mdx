@@ -252,3 +252,17 @@ to `emoji`/`eor`; explicit `nu`/`co` restrictions still apply.
 `getTimeZones()` returns unique canonical timezone identifiers. Deprecated
 territory aliases use likely-language fallback: `hye-Latn-SU` canonicalizes to
 `hy-Latn-AM` even without a `hy-Latn` likely-subtag entry.
+
+## Measured performance
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
+| --------------------------- | -------------: | -----------------: | -----------: |
+| construct + resolvedOptions |        153,508 |            212,989 |      495,987 |
+| maximize                    |        129,910 |            167,115 |      926,798 |
+
+Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
