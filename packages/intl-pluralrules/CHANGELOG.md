@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [7.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@7.0.1...@formatjs/intl-pluralrules@7.0.2) (2026-11-01)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/bigdecimal bumped to 0.2.10
+
 ## [7.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-pluralrules@7.0.0...@formatjs/intl-pluralrules@7.0.1) (2026-10-31)
 
 

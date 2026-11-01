@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.10](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.9...@formatjs/bigdecimal@0.2.10) (2026-11-01)
+
+
+### Performance Improvements
+
+* **@formatjs/bigdecimal:** shift power-of-ten division without padding ([#7840](https://github.com/formatjs/formatjs/issues/7840)) ([2d20e2d](https://github.com/formatjs/formatjs/commit/2d20e2df2a6208b70f19694b8d9014689ccc9471))
+
 ## [0.2.9](https://github.com/formatjs/formatjs/compare/@formatjs/bigdecimal@0.2.8...@formatjs/bigdecimal@0.2.9) (2026-10-31)
 
 
