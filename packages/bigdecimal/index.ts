@@ -292,10 +292,24 @@ export class BigDecimal {
       const negZero = this._isSignNegative() !== other._isSignNegative()
       return BigDecimal._create(0n, 0, SpecialValue.NONE, negZero)
     }
+    const exponent = this._exponent - other._exponent
+    const newExponent = exponent - DIV_PRECISION
+    // Powers of ten only shift scale. Preserve legacy unsafe-exponent arithmetic.
+    if (
+      (other._mantissa === 1n || other._mantissa === -1n) &&
+      Number.isSafeInteger(exponent) &&
+      Number.isSafeInteger(newExponent)
+    ) {
+      return BigDecimal._create(
+        other._mantissa === 1n ? this._mantissa : -this._mantissa,
+        exponent === 0 ? 0 : exponent,
+        SpecialValue.NONE,
+        false
+      )
+    }
     // Scale numerator for precision
     const scaledNumerator = this._mantissa * bigintPow10(DIV_PRECISION)
     const quotient = scaledNumerator / other._mantissa
-    const newExponent = this._exponent - other._exponent - DIV_PRECISION
     const [nm, ne] = removeTrailingZeros(quotient, newExponent)
     return BigDecimal._create(nm, ne, SpecialValue.NONE, false)
   }

@@ -203,3 +203,7 @@ Exact integers with rounding increment one skip fixed-rounding candidate
 arithmetic. DateTimeFormat's numeric fields use this path. Fractional padding,
 localized digits and non-unit rounding increments retain their existing behavior.
 See [matched DTF measurements](../../intl-datetimeformat/benchmark/README.md#integer-rendering).
+
+[Power-of-ten division](../../../knowledge-base/audits/2026-10-31-numberformat-power-division.md)
+measures exact exponent shifts instead of adding/removing division padding.
+Includes safe/unsafe exponent guards and repeated host/JS plural lanes.

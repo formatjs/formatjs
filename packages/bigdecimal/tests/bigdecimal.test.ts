@@ -909,3 +909,65 @@ it('converts integer coefficients with the same rounding as decimal text', () =>
     expect(new BigDecimal(text).toNumber()).toBe(Number(text))
   }
 })
+
+it('matches scaled division across power-of-ten and unsafe exponent boundaries', () => {
+  const coefficients = [
+    '1',
+    '-1',
+    '12345',
+    '-12345',
+    '12345678901234567890123456789',
+  ]
+  const exponents = [
+    -1000,
+    -324,
+    -1,
+    0,
+    1,
+    324,
+    1000,
+    Number.MIN_SAFE_INTEGER,
+    Number.MIN_SAFE_INTEGER + 39,
+    Number.MIN_SAFE_INTEGER + 40,
+    Number.MIN_SAFE_INTEGER + 41,
+    Number.MAX_SAFE_INTEGER,
+    Number.MAX_SAFE_INTEGER + 1,
+  ]
+  for (const coefficient of coefficients) {
+    for (const exponent of exponents) {
+      const value = new BigDecimal(`${coefficient}e${exponent}`)
+      for (const divisorExponent of [
+        -40,
+        -1,
+        0,
+        1,
+        40,
+        Number.MIN_SAFE_INTEGER,
+        Number.MAX_SAFE_INTEGER + 1,
+      ]) {
+        for (const divisorCoefficient of [1n, -1n, 3n, -3n]) {
+          const divisor = new BigDecimal(
+            `${divisorCoefficient}e${divisorExponent}`
+          )
+          const quotient = (value._mantissa * 10n ** 40n) / divisor._mantissa
+          const scale = value._exponent - divisor._exponent - 40
+          const expected = new BigDecimal(`${quotient}e${scale}`)
+          expect(value.div(divisor)).toEqual(expected)
+        }
+      }
+    }
+  }
+})
+
+it('preserves zero and nonfinite division signs with power-of-ten divisors', () => {
+  for (const divisor of [1, -1]) {
+    expect(BigDecimal.pow(10, -0).div(divisor)).toEqual(new BigDecimal(divisor))
+  }
+  for (const input of ['0', '-0', 'Infinity', '-Infinity', 'NaN']) {
+    for (const divisor of ['1e100', '-1e100', '1e-100', '-1e-100']) {
+      expect(new BigDecimal(input).div(divisor).toNumber()).toBe(
+        Number(input) / Number(divisor)
+      )
+    }
+  }
+})
