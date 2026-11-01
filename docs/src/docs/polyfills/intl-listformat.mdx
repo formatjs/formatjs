@@ -188,15 +188,31 @@ build-time locale flag to choose a custom set. Individual consumers can link
 
 ## Measured performance
 
+### TypeScript and native JavaScript
+
 Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
 
-| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
-| --------------------------- | -------------: | -----------------: | -----------: |
-| format                      |      3,400,324 |          3,216,479 |    2,220,136 |
-| formatToParts               |      3,097,416 |          3,041,058 |      972,724 |
-| construct + resolvedOptions |        917,700 |            826,297 |      823,913 |
+| Operation                   |  TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | --------: | --------------------: | --------------: |
+| format                      | 3,400,324 |             3,216,479 |       2,220,136 |
+| formatToParts               | 3,097,416 |             3,041,058 |         972,724 |
+| construct + resolvedOptions |   917,700 |               826,297 |         823,913 |
 
-Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
 Module loading and data registration are excluded. Construction rows include
 `resolvedOptions()`. These are desktop microbenchmarks; native locale data may
 differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation         | µs/call | Rust core ops/s |
+| --------------------------- | ------: | --------------: |
+| format                      |   0.038 |      26,195,586 |
+| formatToParts               |   0.159 |       6,294,216 |
+| construct + resolvedOptions |   0.045 |      22,265,695 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

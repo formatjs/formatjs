@@ -87,18 +87,36 @@ The host or polyfilled `Intl.Locale` supplies canonicalization and likely subtag
 
 ## Measured performance
 
+### TypeScript and native JavaScript
+
 Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
 
-| Operation           | Polyfill ops/s | Full helpers ops/s | Native ops/s |
-| ------------------- | -------------: | -----------------: | -----------: |
-| best fit en         |       917,471† |            62,277† |            — |
-| best fit en-US      |        470,600 |             72,354 |            — |
-| best fit zh-TW      |        455,547 |             71,873 |            — |
-| best fit sr-Latn-BA |        391,251 |             71,347 |            — |
-| best fit en-XZ      |        456,567 |             72,177 |            — |
-| fresh array         |         38,101 |             25,985 |            — |
+| Operation           | TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| ------------------- | -------: | --------------------: | --------------: |
+| best fit en         | 917,471† |               62,277† |               — |
+| best fit en-US      |  470,600 |                72,354 |               — |
+| best fit zh-TW      |  455,547 |                71,873 |               — |
+| best fit sr-Latn-BA |  391,251 |                71,347 |               — |
+| best fit en-XZ      |  456,567 |                72,177 |               — |
+| fresh array         |   38,101 |                25,985 |               — |
 
-Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
 Module loading and data registration are excluded. Construction rows include
 `resolvedOptions()`. These are desktop microbenchmarks; native locale data may
 differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation | µs/call | Rust core ops/s |
+| ------------------- | ------: | --------------: |
+| best fit en         |   0.213 |       4,701,052 |
+| best fit en-US      |   0.307 |       3,252,047 |
+| best fit zh-TW      |   0.302 |       3,313,115 |
+| best fit sr-Latn-BA |   0.289 |       3,461,826 |
+| best fit en-XZ      |   0.294 |       3,396,469 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

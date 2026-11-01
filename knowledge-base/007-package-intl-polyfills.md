@@ -165,3 +165,17 @@ The six dynamic packages expose narrow benchmark-only locale-data filegroups.
 When refreshing results, record source revision and runtime/CPU metadata, retain
 raw median/min/max results, and update each polyfill's Measured performance table.
 Historical before/after audit artifacts retain their original revision labels.
+
+### Rust benchmark coverage
+
+`bazel run -c opt //benchmarks/polyfills:rust_benchmark` covers all 12 Rust
+polyfills plus LocaleMatcher. English packs register before timing; supported-value
+enumeration calls real Rust formatter probes. Results keep all seven samples.
+Public pages distinguish TS, TS with polyfilled helpers, native JS, and Rust core.
+Rust rows exclude Hermes/JSI and JS boundary work; compare workload definitions,
+not raw cross-language ratios. The Rust matcher prepares the same 657-locale set
+once; TS retains supported-array validation on each call.
+
+The benchmark package's generated IDE config must be checked in. Validate actual
+`:typecheck_typecheck_test`, `:polyfills-esm_typecheck_test`, and `:tsconfig_json_test`
+targets; building the no-emit `:typecheck` target alone does not run those checks.

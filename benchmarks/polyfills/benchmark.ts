@@ -18,6 +18,9 @@ import {Segmenter} from '@formatjs/intl-segmenter'
 import {supportedValuesOf} from '@formatjs/intl-supportedvaluesof'
 import cldr from 'cldr-core/availableLocales.json' with {type: 'json'}
 
+type NumberRangeFormatter = Intl.NumberFormat &
+  Pick<NumberFormat, 'formatRange' | 'formatRangeToParts'>
+
 function main() {
   const native = Object.fromEntries(
     Object.getOwnPropertyNames(Intl).map(key => [
@@ -104,7 +107,10 @@ function main() {
       ['compact', {notation: 'compact'}],
       ['significant digits', {maximumSignificantDigits: 3}],
     ] as const) {
-      const formatter = new apis.NumberFormat('en', options)
+      const formatter = new apis.NumberFormat(
+        'en',
+        options
+      ) as NumberRangeFormatter
       add(`NumberFormat format ${name}`, implementation, i =>
         formatter.format(values[i % values.length])
       )
@@ -307,7 +313,7 @@ function main() {
       iterationsPerRound: count,
       medianMicroseconds,
       minMicroseconds: samples[0],
-      maxMicroseconds: samples.at(-1),
+      maxMicroseconds: samples[samples.length - 1],
       operationsPerSecond: 1e6 / medianMicroseconds,
     }
     results.push(result)

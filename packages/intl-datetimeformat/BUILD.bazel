@@ -666,3 +666,9 @@ filegroup(
     ],
     visibility = ["//benchmarks/polyfills:__pkg__"],
 )
+
+filegroup(
+    name = "polyfill_benchmark_timezones",
+    srcs = [":tz_all_json"],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

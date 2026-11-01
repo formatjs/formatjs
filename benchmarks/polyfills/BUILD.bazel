@@ -1,5 +1,6 @@
 # gazelle:ignore
 
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:package_json.bzl", "generate_package_json")
@@ -62,5 +63,50 @@ formatjs_library(
         "//:node_modules/@formatjs/intl-supportedvaluesof",
         "//:node_modules/@types/node",
         "//:node_modules/cldr-core",
+    ],
+)
+
+rust_binary(
+    name = "rust_benchmark",
+    srcs = ["benchmark.rs"],
+    compile_data = [
+        "//crates/intl_datetimeformat:benchmark_en",
+        "//crates/intl_displaynames:benchmark_en",
+        "//crates/intl_listformat:benchmark_en",
+        "//crates/intl_numberformat:benchmark_en",
+        "//crates/intl_pluralrules:benchmark_en",
+        "//crates/intl_relativetimeformat:benchmark_en",
+        "//packages/intl-datetimeformat:polyfill_benchmark_timezones",
+        "//benchmarks/locale-matching:polyfill_benchmark_cases",
+    ],
+    crate_name = "polyfill_benchmark",
+    crate_root = "benchmark.rs",
+    edition = "2024",
+    rustc_env = {
+        "BENCH_DATETIMEFORMAT": "$(execpath //crates/intl_datetimeformat:benchmark_en)",
+        "BENCH_DISPLAYNAMES": "$(execpath //crates/intl_displaynames:benchmark_en)",
+        "BENCH_LISTFORMAT": "$(execpath //crates/intl_listformat:benchmark_en)",
+        "BENCH_NUMBERFORMAT": "$(execpath //crates/intl_numberformat:benchmark_en)",
+        "BENCH_PLURALRULES": "$(execpath //crates/intl_pluralrules:benchmark_en)",
+        "BENCH_RELATIVETIMEFORMAT": "$(execpath //crates/intl_relativetimeformat:benchmark_en)",
+        "BENCH_TIMEZONES": "$(execpath //packages/intl-datetimeformat:polyfill_benchmark_timezones)",
+        "BENCH_MATCHER": "$(execpath //benchmarks/locale-matching:polyfill_benchmark_cases)",
+    },
+    tags = ["manual"],
+    deps = [
+        "//crates/intl_collator",
+        "//crates/intl_datetimeformat",
+        "//crates/intl_displaynames",
+        "//crates/intl_durationformat",
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_listformat",
+        "//crates/intl_locale",
+        "//crates/intl_localematcher",
+        "//crates/intl_numberformat",
+        "//crates/intl_pluralrules",
+        "//crates/intl_relativetimeformat",
+        "//crates/intl_segmenter",
+        "//crates/intl_supportedvaluesof",
+        "@crates//:serde_json",
     ],
 )

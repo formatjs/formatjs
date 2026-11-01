@@ -161,19 +161,39 @@ optimized-bytecode integration.
 
 ## Measured performance
 
+### TypeScript and native JavaScript
+
 Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
 
-| Operation                   | Polyfill ops/s | Full helpers ops/s | Native ops/s |
-| --------------------------- | -------------: | -----------------: | -----------: |
-| compare Latin               |      1,737,941 |          1,730,040 |   24,294,971 |
-| compare accent              |      1,518,781 |          1,571,911 |   15,283,545 |
-| compare numeric             |      1,056,659 |          1,087,461 |   10,675,164 |
-| compare normalization       |      1,225,996 |          1,260,143 |   11,569,382 |
-| compare Swedish             |        844,532 |            833,611 |   17,516,847 |
-| compare CJK                 |          5,823 |              5,840 |   21,267,978 |
-| construct + resolvedOptions |        751,190 |            623,669 |      477,774 |
+| Operation                   |  TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | --------: | --------------------: | --------------: |
+| compare Latin               | 1,737,941 |             1,730,040 |      24,294,971 |
+| compare accent              | 1,518,781 |             1,571,911 |      15,283,545 |
+| compare numeric             | 1,056,659 |             1,087,461 |      10,675,164 |
+| compare normalization       | 1,225,996 |             1,260,143 |      11,569,382 |
+| compare Swedish             |   844,532 |               833,611 |      17,516,847 |
+| compare CJK                 |     5,823 |                 5,840 |      21,267,978 |
+| construct + resolvedOptions |   751,190 |               623,669 |         477,774 |
 
-Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
 Module loading and data registration are excluded. Construction rows include
 `resolvedOptions()`. These are desktop microbenchmarks; native locale data may
 differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation         | µs/call | Rust core ops/s |
+| --------------------------- | ------: | --------------: |
+| compare Latin               |   1.039 |         962,836 |
+| compare accent              |   0.923 |       1,083,543 |
+| compare numeric             |   1.358 |         736,517 |
+| compare normalization       |   1.213 |         824,714 |
+| compare Swedish             |   1.905 |         524,860 |
+| compare CJK                 | 124.791 |           8,013 |
+| construct + resolvedOptions |   0.910 |       1,098,627 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

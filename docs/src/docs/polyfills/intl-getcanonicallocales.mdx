@@ -105,13 +105,27 @@ Extension singleton matching is case-insensitive, including duplicate detection.
 
 ## Measured performance
 
+### TypeScript and native JavaScript
+
 Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
 
-| Operation               | Polyfill ops/s | Full helpers ops/s | Native ops/s |
-| ----------------------- | -------------: | -----------------: | -----------: |
-| aliases + deduplication |         49,249 |             49,423 |      200,113 |
+| Operation               | TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| ----------------------- | -------: | --------------------: | --------------: |
+| aliases + deduplication |   49,249 |                49,423 |         200,113 |
 
-Polyfill uses host Intl helpers; Full helpers installs all FormatJS Intl APIs.
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
 Module loading and data registration are excluded. Construction rows include
 `resolvedOptions()`. These are desktop microbenchmarks; native locale data may
 differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation | µs/call | Rust core ops/s |
+| ------------------- | ------: | --------------: |
+| aliases             |   0.758 |       1,319,086 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).
