@@ -81,7 +81,7 @@ jobs:
   apple:
     needs: build
     if: (github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'formatjs-hermes-intl_v')) && !inputs.apple_run_id
-    runs-on: macos-15
+    runs-on: macos-26
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
     steps:
