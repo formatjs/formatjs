@@ -1,5 +1,25 @@
 # DateTimeFormat benchmark
 
+Latest measurements: [shared suite](../../../benchmarks/polyfills/README.md).
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   | TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | -------: | --------------------: | --------------: |
+| format date                 |  849,803 |               772,347 |       2,578,151 |
+| formatToParts               |  822,550 |               727,054 |         996,306 |
+| formatRange                 |  306,935 |               286,979 |          90,907 |
+| formatRangeToParts          |  296,790 |               286,306 |          81,258 |
+| format date time            |  600,028 |               507,938 |       1,761,259 |
+| format fractional seconds   |  673,757 |               586,938 |       1,965,520 |
+| format zone name            |  448,480 |               394,450 |         990,488 |
+| construct + resolvedOptions |    2,837 |                 3,085 |          43,700 |
+
+Setup excluded; construction includes `resolvedOptions()`. See shared suite for
+helper modes and inputs; † marks round max/min > 1.5. Comparisons below are historical optimization evidence.
+
+## Historical optimization comparisons
+
 ```sh
 bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --iterations=6000
 bazel run -c opt //packages/intl-datetimeformat/benchmark:audit -- --polyfill-numbers --iterations=6000
@@ -58,3 +78,7 @@ from 26.2% to 2.8%. Percentages describe separate profiles, not additive costs.
 
 See [full results](./integer-results.json) and [correctness guards](../../../knowledge-base/audits/2026-10-31-datetimeformat-integer-rendering.md).
 Rust rendering and locale payloads are unchanged.
+
+Current optimized Rust measurements: [shared report](../../../benchmarks/polyfills/README.md#earlier-focused-rust-suites).
+
+Latest full Rust core coverage: [all-polyfill report](../../../benchmarks/polyfills/README.md#rust-core-suite).

@@ -264,3 +264,34 @@ The standalone SDK includes `:relativetimeformat`, headers, adapter sources,
 `js/39-IntlRelativeTimeFormat.js` for precompiled installation, compiled locales and
 `examples/relativetimeformat-smoke.ts`. See the
 [SDK guide](https://github.com/formatjs/formatjs/blob/main/native/hermes/package/README.md).
+
+## Measured performance
+
+### TypeScript and native JavaScript
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   |  TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | --------: | --------------------: | --------------: |
+| format                      | 1,837,679 |             1,279,280 |       5,014,887 |
+| formatToParts               | 1,957,444 |             1,314,708 |       2,128,231 |
+| construct + resolvedOptions |   655,920 |               584,223 |         221,976 |
+
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation         | µs/call | Rust core ops/s |
+| --------------------------- | ------: | --------------: |
+| format                      |   0.229 |       4,372,361 |
+| formatToParts               |   0.288 |       3,467,085 |
+| construct + resolvedOptions |   0.544 |       1,839,359 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

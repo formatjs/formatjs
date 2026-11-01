@@ -174,3 +174,9 @@ filegroup(
     ]),
     visibility = ["//crates:__pkg__"],
 )
+
+filegroup(
+    name = "benchmark_en",
+    srcs = ["locale-data/en.json"],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

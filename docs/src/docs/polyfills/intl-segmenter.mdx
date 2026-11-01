@@ -236,3 +236,42 @@ Compared with TS, ICU groups dictionary words, applies different abbreviation
 profiles, and excludes isolated marks/emoji from word-like segments. Tests cross-check ICU4C/J/X, both implementations, and the complete Unicode 17
 grapheme, word, and sentence corpora.
 Segmenter keeps static data, matching the existing package's loading model.
+
+## Measured performance
+
+### TypeScript and native JavaScript
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   |   TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | ---------: | --------------------: | --------------: |
+| iterate grapheme            |    124,953 |               125,293 |         408,686 |
+| containing grapheme         | 1,249,213† |            1,012,022† |      1,690,622† |
+| iterate word                |     83,901 |                80,581 |        415,554† |
+| containing word             |    462,305 |               451,576 |      1,123,222† |
+| iterate sentence            |     49,657 |                50,576 |      1,085,707† |
+| containing sentence         |     99,709 |               100,245 |      1,950,412† |
+| construct + resolvedOptions |     11,380 |                11,391 |         221,330 |
+
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation         | µs/call | Rust core ops/s |
+| --------------------------- | ------: | --------------: |
+| iterate grapheme            |   0.603 |       1,659,686 |
+| containing grapheme         |   0.547 |       1,828,818 |
+| iterate word                |   0.669 |       1,493,850 |
+| containing word             |   0.643 |       1,556,216 |
+| iterate sentence            |   0.222 |       4,503,509 |
+| containing sentence         |   0.216 |       4,622,556 |
+| construct + resolvedOptions |   0.749 |       1,335,186 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

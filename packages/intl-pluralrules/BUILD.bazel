@@ -272,3 +272,9 @@ copy_to_bin(
     srcs = glob(["tests/**/*.ts"]) + TEST_LOCALE_DATA + [":srcs"],
     visibility = ["//native/hermes/tests:__pkg__"],
 )
+
+filegroup(
+    name = "polyfill_benchmark_locale_data",
+    srcs = ["cldr-raw/en.js"],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

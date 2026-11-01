@@ -121,3 +121,34 @@ identifiers and omits aliases such as `Etc/UTC`.
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.
 Only collations accepted by the installed Collator are returned.
+
+## Measured performance
+
+### TypeScript and native JavaScript
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation | TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------- | -------: | --------------------: | --------------: |
+| calendar  |   29,875 |                45,964 |        319,540† |
+| timeZone  |    1,193 |                 1,702 |          16,757 |
+| unit      |   10,122 |                39,207 |         519,946 |
+
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation |   µs/call | Rust core ops/s |
+| ------------------- | --------: | --------------: |
+| calendar            |   878.891 |           1,138 |
+| timeZone            | 20653.490 |              48 |
+| unit                |    60.491 |          16,531 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

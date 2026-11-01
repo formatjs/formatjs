@@ -148,3 +148,34 @@ embeds the JavaScript fragments and calls one C++ installer linked to the same
 Rust archive. `native/hermes/package/contrib/README.md` lists the integration edits.
 
 Hermes SDK packaging and release flow: [007m](007m-hermes-distribution.md).
+
+## Benchmark refresh
+
+`bazel run -c opt //benchmarks/polyfills:benchmark` measures all 12 JS polyfills
+plus LocaleMatcher using shipped bundles. Repeat with `--polyfill-dependencies`
+to install all FormatJS Intl APIs before timing. Native built-ins are captured
+before installation and remain available as controls.
+
+See [methodology and current results](../benchmarks/polyfills/README.md). Keep
+host/full dependency modes, construction, batched operations, and cold startup
+separate. Construction rows include `resolvedOptions()`; other formatter rows
+reuse instances. English data and timezone registration happen before timing.
+The six dynamic packages expose narrow benchmark-only locale-data filegroups.
+
+When refreshing results, record source revision and runtime/CPU metadata, retain
+raw median/min/max results, and update each polyfill's Measured performance table.
+Historical before/after audit artifacts retain their original revision labels.
+
+### Rust benchmark coverage
+
+`bazel run -c opt //benchmarks/polyfills:rust_benchmark` covers all 12 Rust
+polyfills plus LocaleMatcher. English packs register before timing; supported-value
+enumeration calls real Rust formatter probes. Results keep all seven samples.
+Public pages distinguish TS, TS with polyfilled helpers, native JS, and Rust core.
+Rust rows exclude Hermes/JSI and JS boundary work; compare workload definitions,
+not raw cross-language ratios. The Rust matcher prepares the same 657-locale set
+once; TS retains supported-array validation on each call.
+
+The benchmark package's generated IDE config must be checked in. Validate actual
+`:typecheck_typecheck_test`, `:polyfills-esm_typecheck_test`, and `:tsconfig_json_test`
+targets; building the no-emit `:typecheck` target alone does not run those checks.

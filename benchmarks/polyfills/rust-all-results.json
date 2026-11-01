@@ -1,0 +1,927 @@
+{
+  "implementation": "rust",
+  "sourceRevision": "56d15e997077f8449909e2530d49c740a0ff1d2d",
+  "compilationMode": "opt",
+  "rounds": 7,
+  "availableLocales": 657,
+  "locale": "en",
+  "minimumCalibrationMilliseconds": 50,
+  "results": [
+    {
+      "name": "NumberFormat format decimal",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.42977205657958983,
+      "minMicroseconds": 0.4273509979248047,
+      "maxMicroseconds": 0.43834844970703124,
+      "roundMicroseconds": [
+        0.4273509979248047, 0.42925325775146483, 0.42958036804199223,
+        0.42977205657958983, 0.43021901702880855, 0.4329643249511719,
+        0.43834844970703124
+      ],
+      "operationsPerSecond": 2326814.8421715945,
+      "checksum": 8519312
+    },
+    {
+      "name": "NumberFormat formatToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.40949598693847655,
+      "minMicroseconds": 0.4008108749389649,
+      "maxMicroseconds": 0.421905517578125,
+      "roundMicroseconds": [
+        0.4008108749389649, 0.4009577407836914, 0.40467420959472655,
+        0.40949598693847655, 0.4133399353027344, 0.41712284088134766,
+        0.421905517578125
+      ],
+      "operationsPerSecond": 2442026.3736314513,
+      "checksum": 5111634
+    },
+    {
+      "name": "NumberFormat formatRange",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.0348084869384766,
+      "minMicroseconds": 1.018927261352539,
+      "maxMicroseconds": 1.070349380493164,
+      "roundMicroseconds": [
+        1.018927261352539, 1.0275580139160156, 1.0326430053710938,
+        1.0348084869384766, 1.0406125335693361, 1.0424264221191406,
+        1.070349380493164
+      ],
+      "operationsPerSecond": 966362.387458322,
+      "checksum": 10026991
+    },
+    {
+      "name": "NumberFormat formatRangeToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 0.9504375457763672,
+      "minMicroseconds": 0.9400838317871094,
+      "maxMicroseconds": 0.9830404815673829,
+      "roundMicroseconds": [
+        0.9400838317871094, 0.9438546447753907, 0.9502277374267578,
+        0.9504375457763672, 0.957508087158203, 0.9673620910644531,
+        0.9830404815673829
+      ],
+      "operationsPerSecond": 1052146.9868734486,
+      "checksum": 6488053
+    },
+    {
+      "name": "NumberFormat time values x60",
+      "implementation": "rust",
+      "iterationsPerRound": 4096,
+      "medianMicroseconds": 14.991129394531251,
+      "minMicroseconds": 14.843770507812499,
+      "maxMicroseconds": 15.075541259765625,
+      "roundMicroseconds": [
+        14.843770507812499, 14.85570263671875, 14.980316162109375,
+        14.991129394531251, 14.99151611328125, 15.061930175781251,
+        15.075541259765625
+      ],
+      "operationsPerSecond": 66706.11490851376,
+      "checksum": 4054930
+    },
+    {
+      "name": "NumberFormat format currency",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.6752227172851563,
+      "minMicroseconds": 0.6674916000366211,
+      "maxMicroseconds": 0.720355354309082,
+      "roundMicroseconds": [
+        0.6674916000366211, 0.6708253173828125, 0.6740643157958984,
+        0.6752227172851563, 0.6806329116821289, 0.6836264953613281,
+        0.720355354309082
+      ],
+      "operationsPerSecond": 1480992.8256274671,
+      "checksum": 11402866
+    },
+    {
+      "name": "NumberFormat format unit",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.0216827392578125,
+      "minMicroseconds": 1.0093841552734375,
+      "maxMicroseconds": 1.0317427215576171,
+      "roundMicroseconds": [
+        1.0093841552734375, 1.0189119873046875, 1.0202204284667968,
+        1.0216827392578125, 1.0221303253173828, 1.0274702758789063,
+        1.0317427215576171
+      ],
+      "operationsPerSecond": 978777.424317099,
+      "checksum": 8388245
+    },
+    {
+      "name": "NumberFormat format percent",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.5492436065673828,
+      "minMicroseconds": 0.5456829071044922,
+      "maxMicroseconds": 0.5540332794189453,
+      "roundMicroseconds": [
+        0.5456829071044922, 0.5476884841918945, 0.5481243133544922,
+        0.5492436065673828, 0.5497624130249024, 0.5521481857299805,
+        0.5540332794189453
+      ],
+      "operationsPerSecond": 1820685.7358790522,
+      "checksum": 9698895
+    },
+    {
+      "name": "NumberFormat format scientific",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.564770378112793,
+      "minMicroseconds": 0.5588509216308594,
+      "maxMicroseconds": 0.5679655075073242,
+      "roundMicroseconds": [
+        0.5588509216308594, 0.5592184066772461, 0.5633465423583984,
+        0.564770378112793, 0.5666036605834961, 0.5669460296630859,
+        0.5679655075073242
+      ],
+      "operationsPerSecond": 1770631.1073564934,
+      "checksum": 6160405
+    },
+    {
+      "name": "NumberFormat format compact",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.7173449249267578,
+      "minMicroseconds": 0.71114794921875,
+      "maxMicroseconds": 0.7322419509887695,
+      "roundMicroseconds": [
+        0.71114794921875, 0.7128693313598632, 0.7162345199584961,
+        0.7173449249267578, 0.7207206115722655, 0.7312469482421875,
+        0.7322419509887695
+      ],
+      "operationsPerSecond": 1394029.518090062,
+      "checksum": 4456247
+    },
+    {
+      "name": "NumberFormat format significant digits",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.4834817199707031,
+      "minMicroseconds": 0.4741408081054687,
+      "maxMicroseconds": 0.48875935363769535,
+      "roundMicroseconds": [
+        0.4741408081054687, 0.47681935119628904, 0.48240152740478515,
+        0.4834817199707031, 0.48369535064697267, 0.48428281402587897,
+        0.48875935363769535
+      ],
+      "operationsPerSecond": 2068330.5256310324,
+      "checksum": 9043502
+    },
+    {
+      "name": "NumberFormat construct",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.0574684143066406,
+      "minMicroseconds": 1.0450019836425781,
+      "maxMicroseconds": 1.0659414978027344,
+      "roundMicroseconds": [
+        1.0450019836425781, 1.0507806091308594, 1.0565401763916016,
+        1.0574684143066406, 1.0591824798583984, 1.0656509399414062,
+        1.0659414978027344
+      ],
+      "operationsPerSecond": 945654.7226100162,
+      "checksum": 1179646
+    },
+    {
+      "name": "DateTimeFormat format date",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.151375457763672,
+      "minMicroseconds": 1.1367073059082031,
+      "maxMicroseconds": 1.1648279876708985,
+      "roundMicroseconds": [
+        1.1367073059082031, 1.1376940307617187, 1.149441390991211,
+        1.151375457763672, 1.1565113067626953, 1.159377426147461,
+        1.1648279876708985
+      ],
+      "operationsPerSecond": 868526.416172106,
+      "checksum": 5308407
+    },
+    {
+      "name": "DateTimeFormat formatToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.153317123413086,
+      "minMicroseconds": 1.140878677368164,
+      "maxMicroseconds": 1.1622835845947266,
+      "roundMicroseconds": [
+        1.140878677368164, 1.1413695068359375, 1.1431331634521484,
+        1.153317123413086, 1.1553974151611328, 1.155792236328125,
+        1.1622835845947266
+      ],
+      "operationsPerSecond": 867064.2095737167,
+      "checksum": 2949115
+    },
+    {
+      "name": "DateTimeFormat formatRange",
+      "implementation": "rust",
+      "iterationsPerRound": 16384,
+      "medianMicroseconds": 3.348887145996094,
+      "minMicroseconds": 3.32916259765625,
+      "maxMicroseconds": 3.417986572265625,
+      "roundMicroseconds": [
+        3.32916259765625, 3.3372548828125, 3.3473790283203124,
+        3.348887145996094, 3.375239013671875, 3.393770812988281,
+        3.417986572265625
+      ],
+      "operationsPerSecond": 298606.65839265235,
+      "checksum": 3981285
+    },
+    {
+      "name": "DateTimeFormat formatRangeToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 16384,
+      "medianMicroseconds": 3.245371520996094,
+      "minMicroseconds": 3.2205072631835936,
+      "maxMicroseconds": 3.5854365234375,
+      "roundMicroseconds": [
+        3.2205072631835936, 3.2425308227539062, 3.24420166015625,
+        3.245371520996094, 3.247914611816406, 3.5490850219726564,
+        3.5854365234375
+      ],
+      "operationsPerSecond": 308131.131838204,
+      "checksum": 1622005
+    },
+    {
+      "name": "DateTimeFormat format date time",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 2.2826525268554687,
+      "minMicroseconds": 2.216167449951172,
+      "maxMicroseconds": 2.397870361328125,
+      "roundMicroseconds": [
+        2.216167449951172, 2.2629788818359375, 2.2664642333984375,
+        2.2826525268554687, 2.2842941284179688, 2.293121337890625,
+        2.397870361328125
+      ],
+      "operationsPerSecond": 438086.82584623503,
+      "checksum": 7667686
+    },
+    {
+      "name": "DateTimeFormat format fractional seconds",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 1.9780311584472656,
+      "minMicroseconds": 1.957421630859375,
+      "maxMicroseconds": 1.9868850708007815,
+      "roundMicroseconds": [
+        1.957421630859375, 1.9575424194335938, 1.9706891479492188,
+        1.9780311584472656, 1.98065185546875, 1.981165557861328,
+        1.9868850708007815
+      ],
+      "operationsPerSecond": 505553.2091744146,
+      "checksum": 5013487
+    },
+    {
+      "name": "DateTimeFormat format zone name",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 2.598986328125,
+      "minMicroseconds": 2.5798619689941407,
+      "maxMicroseconds": 2.6641578674316406,
+      "roundMicroseconds": [
+        2.5798619689941407, 2.5845311279296874, 2.584920227050781,
+        2.598986328125, 2.600969940185547, 2.6498667602539063,
+        2.6641578674316406
+      ],
+      "operationsPerSecond": 384765.3945611307,
+      "checksum": 11943897
+    },
+    {
+      "name": "DateTimeFormat construct",
+      "implementation": "rust",
+      "iterationsPerRound": 2048,
+      "medianMicroseconds": 44.81396484375,
+      "minMicroseconds": 44.2763876953125,
+      "maxMicroseconds": 45.281392578125,
+      "roundMicroseconds": [
+        44.2763876953125, 44.508056640625, 44.769673339843756, 44.81396484375,
+        44.96480322265625, 44.988912109375, 45.281392578125
+      ],
+      "operationsPerSecond": 22314.47280968413,
+      "checksum": 36862
+    },
+    {
+      "name": "Collator compare Latin",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.038598373413086,
+      "minMicroseconds": 1.0298595428466797,
+      "maxMicroseconds": 1.0526561737060547,
+      "roundMicroseconds": [
+        1.0298595428466797, 1.0330479888916015, 1.0342241973876953,
+        1.038598373413086, 1.0435937194824219, 1.0455373077392578,
+        1.0526561737060547
+      ],
+      "operationsPerSecond": 962836.0929487668,
+      "checksum": 589823
+    },
+    {
+      "name": "Collator compare accent",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 0.9228986206054688,
+      "minMicroseconds": 0.9059664459228516,
+      "maxMicroseconds": 0.9259885101318359,
+      "roundMicroseconds": [
+        0.9059664459228516, 0.9159800109863282, 0.9227161407470703,
+        0.9228986206054688, 0.9233462066650391, 0.9237461090087891,
+        0.9259885101318359
+      ],
+      "operationsPerSecond": 1083542.6315232206,
+      "checksum": 589823
+    },
+    {
+      "name": "Collator compare numeric",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.3577423095703125,
+      "minMicroseconds": 1.3426831512451172,
+      "maxMicroseconds": 1.371664047241211,
+      "roundMicroseconds": [
+        1.3426831512451172, 1.3437824249267578, 1.355404541015625,
+        1.3577423095703125, 1.3578077850341796, 1.3622760772705078,
+        1.371664047241211
+      ],
+      "operationsPerSecond": 736516.7844820805,
+      "checksum": 589823
+    },
+    {
+      "name": "Collator compare normalization",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 1.2125409393310547,
+      "minMicroseconds": 1.2070789337158203,
+      "maxMicroseconds": 1.2340221405029297,
+      "roundMicroseconds": [
+        1.2070789337158203, 1.2099469451904297, 1.2106768188476562,
+        1.2125409393310547, 1.2205390930175781, 1.2260456085205078,
+        1.2340221405029297
+      ],
+      "operationsPerSecond": 824714.4220562886,
+      "checksum": 0
+    },
+    {
+      "name": "Collator compare Swedish",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 1.905268371582031,
+      "minMicroseconds": 1.8921915893554688,
+      "maxMicroseconds": 1.947443634033203,
+      "roundMicroseconds": [
+        1.8921915893554688, 1.8948554992675781, 1.9018147888183594,
+        1.905268371582031, 1.9277674255371093, 1.9289029235839843,
+        1.947443634033203
+      ],
+      "operationsPerSecond": 524860.4421904377,
+      "checksum": 294911
+    },
+    {
+      "name": "Collator compare CJK",
+      "implementation": "rust",
+      "iterationsPerRound": 512,
+      "medianMicroseconds": 124.79142187500001,
+      "minMicroseconds": 123.37426757812501,
+      "maxMicroseconds": 141.33219531249998,
+      "roundMicroseconds": [
+        123.37426757812501, 123.90633203125, 124.7142734375, 124.79142187500001,
+        124.933267578125, 125.29711914062501, 141.33219531249998
+      ],
+      "operationsPerSecond": 8013.371311704993,
+      "checksum": 4607
+    },
+    {
+      "name": "Collator construct",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 0.9102268218994141,
+      "minMicroseconds": 0.9007898864746093,
+      "maxMicroseconds": 0.9183578491210938,
+      "roundMicroseconds": [
+        0.9007898864746093, 0.9026603698730469, 0.9092464447021484,
+        0.9102268218994141, 0.9148585052490235, 0.9176712036132812,
+        0.9183578491210938
+      ],
+      "operationsPerSecond": 1098627.2607450217,
+      "checksum": 1179646
+    },
+    {
+      "name": "Segmenter iterate grapheme",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.6025234832763672,
+      "minMicroseconds": 0.5883474349975586,
+      "maxMicroseconds": 0.6983423233032227,
+      "roundMicroseconds": [
+        0.5883474349975586, 0.5922056884765624, 0.6019020080566406,
+        0.6025234832763672, 0.6124550476074219, 0.6837139129638672,
+        0.6983423233032227
+      ],
+      "operationsPerSecond": 1659686.3487581564,
+      "checksum": 41877483
+    },
+    {
+      "name": "Segmenter containing grapheme",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.5468012466430664,
+      "minMicroseconds": 0.5395495147705078,
+      "maxMicroseconds": 0.561723388671875,
+      "roundMicroseconds": [
+        0.5395495147705078, 0.5451790542602538, 0.5458717346191406,
+        0.5468012466430664, 0.5468330383300781, 0.5493329391479492,
+        0.561723388671875
+      ],
+      "operationsPerSecond": 1828818.0689770202,
+      "checksum": 1179647
+    },
+    {
+      "name": "Segmenter iterate word",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.6694113388061523,
+      "minMicroseconds": 0.6543394699096681,
+      "maxMicroseconds": 0.674168586730957,
+      "roundMicroseconds": [
+        0.6543394699096681, 0.6580047607421875, 0.6635217666625977,
+        0.6694113388061523, 0.6694968490600586, 0.670985221862793,
+        0.674168586730957
+      ],
+      "operationsPerSecond": 1493849.8080767933,
+      "checksum": 41877483
+    },
+    {
+      "name": "Segmenter containing word",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.6425841674804688,
+      "minMicroseconds": 0.6387186050415039,
+      "maxMicroseconds": 0.6449012756347656,
+      "roundMicroseconds": [
+        0.6387186050415039, 0.6409489288330078, 0.6410573272705078,
+        0.6425841674804688, 0.6432018280029297, 0.644453369140625,
+        0.6449012756347656
+      ],
+      "operationsPerSecond": 1556216.3691659814,
+      "checksum": 4128766
+    },
+    {
+      "name": "Segmenter iterate sentence",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.22204907608032226,
+      "minMicroseconds": 0.2214090042114258,
+      "maxMicroseconds": 0.2283280715942383,
+      "roundMicroseconds": [
+        0.2214090042114258, 0.22155730056762696, 0.22194417190551757,
+        0.22204907608032226, 0.2223180160522461, 0.22238795089721677,
+        0.2283280715942383
+      ],
+      "operationsPerSecond": 4503508.943393523,
+      "checksum": 83754987
+    },
+    {
+      "name": "Segmenter containing sentence",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.21633052825927734,
+      "minMicroseconds": 0.21331818771362307,
+      "maxMicroseconds": 0.2251453399658203,
+      "roundMicroseconds": [
+        0.21331818771362307, 0.2140119857788086, 0.21517022705078126,
+        0.21633052825927734, 0.2171494140625, 0.21782748031616211,
+        0.2251453399658203
+      ],
+      "operationsPerSecond": 4622556.0860345885,
+      "checksum": 27131895
+    },
+    {
+      "name": "Segmenter construct",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.7489595413208008,
+      "minMicroseconds": 0.7331444396972656,
+      "maxMicroseconds": 0.755489028930664,
+      "roundMicroseconds": [
+        0.7331444396972656, 0.7368793487548828, 0.743995979309082,
+        0.7489595413208008, 0.7490800170898437, 0.7544116973876953,
+        0.755489028930664
+      ],
+      "operationsPerSecond": 1335185.6072712364,
+      "checksum": 2359294
+    },
+    {
+      "name": "DisplayNames of language",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.19402313232421875,
+      "minMicroseconds": 0.18889474868774414,
+      "maxMicroseconds": 0.3311246223449707,
+      "roundMicroseconds": [
+        0.18889474868774414, 0.19014596939086914, 0.19125731658935546,
+        0.19402313232421875, 0.19529501724243165, 0.19670486450195312,
+        0.3311246223449707
+      ],
+      "operationsPerSecond": 5154024.615626598,
+      "checksum": 15728610
+    },
+    {
+      "name": "DisplayNames construct",
+      "implementation": "rust",
+      "iterationsPerRound": 2097152,
+      "medianMicroseconds": 0.03895662212371826,
+      "minMicroseconds": 0.03837728500366211,
+      "maxMicroseconds": 0.03942851209640503,
+      "roundMicroseconds": [
+        0.03837728500366211, 0.03871802473068237, 0.038738210678100585,
+        0.03895662212371826, 0.03902081632614136, 0.03939839220046997,
+        0.03942851209640503
+      ],
+      "operationsPerSecond": 25669576.71084019,
+      "checksum": 37748734
+    },
+    {
+      "name": "ListFormat format",
+      "implementation": "rust",
+      "iterationsPerRound": 2097152,
+      "medianMicroseconds": 0.038174370765686035,
+      "minMicroseconds": 0.036099056243896484,
+      "maxMicroseconds": 0.039055665493011475,
+      "roundMicroseconds": [
+        0.036099056243896484, 0.0361110167503357, 0.036454657554626464,
+        0.038174370765686035, 0.038271506786346436, 0.03829069900512695,
+        0.039055665493011475
+      ],
+      "operationsPerSecond": 26195585.67547823,
+      "checksum": 471859175
+    },
+    {
+      "name": "ListFormat formatToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 524288,
+      "medianMicroseconds": 0.1588760223388672,
+      "minMicroseconds": 0.15140771865844727,
+      "maxMicroseconds": 0.16048312187194824,
+      "roundMicroseconds": [
+        0.15140771865844727, 0.15183512496948243, 0.15730325317382812,
+        0.1588760223388672, 0.15922975540161133, 0.159712553024292,
+        0.16048312187194824
+      ],
+      "operationsPerSecond": 6294215.988534108,
+      "checksum": 23592955
+    },
+    {
+      "name": "ListFormat construct",
+      "implementation": "rust",
+      "iterationsPerRound": 2097152,
+      "medianMicroseconds": 0.044912139415740966,
+      "minMicroseconds": 0.04386812448501587,
+      "maxMicroseconds": 0.04577521467208862,
+      "roundMicroseconds": [
+        0.04386812448501587, 0.04407771444320679, 0.04466887331008911,
+        0.044912139415740966, 0.04498777770996094, 0.04561279201507568,
+        0.04577521467208862
+      ],
+      "operationsPerSecond": 22265695.04389979,
+      "checksum": 37748734
+    },
+    {
+      "name": "RelativeTimeFormat format",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.22870937728881835,
+      "minMicroseconds": 0.21986929321289062,
+      "maxMicroseconds": 0.23250802230834963,
+      "roundMicroseconds": [
+        0.21986929321289062, 0.22334798049926757, 0.22656758880615235,
+        0.22870937728881835, 0.2289349250793457, 0.23188845443725584,
+        0.23250802230834963
+      ],
+      "operationsPerSecond": 4372361.167934019,
+      "checksum": 20222564
+    },
+    {
+      "name": "RelativeTimeFormat formatToParts",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.2884267158508301,
+      "minMicroseconds": 0.28607003021240235,
+      "maxMicroseconds": 0.29233392333984376,
+      "roundMicroseconds": [
+        0.28607003021240235, 0.2870316505432129, 0.28780031204223633,
+        0.2884267158508301, 0.28853607177734375, 0.2901094779968262,
+        0.29233392333984376
+      ],
+      "operationsPerSecond": 3467085.207589386,
+      "checksum": 4381543
+    },
+    {
+      "name": "RelativeTimeFormat construct",
+      "implementation": "rust",
+      "iterationsPerRound": 131072,
+      "medianMicroseconds": 0.5436677932739258,
+      "minMicroseconds": 0.5311355590820312,
+      "maxMicroseconds": 0.5607697143554687,
+      "roundMicroseconds": [
+        0.5311355590820312, 0.5355434417724609, 0.5396738052368164,
+        0.5436677932739258, 0.5540672912597656, 0.5571479797363281,
+        0.5607697143554687
+      ],
+      "operationsPerSecond": 1839358.542793342,
+      "checksum": 2359294
+    },
+    {
+      "name": "PluralRules select cardinal",
+      "implementation": "rust",
+      "iterationsPerRound": 1048576,
+      "medianMicroseconds": 0.05933105945587158,
+      "minMicroseconds": 0.05896886157989502,
+      "maxMicroseconds": 0.06528627872467041,
+      "roundMicroseconds": [
+        0.05896886157989502, 0.05905437469482422, 0.05922432708740234,
+        0.05933105945587158, 0.059700449943542476, 0.060005107879638676,
+        0.06528627872467041
+      ],
+      "operationsPerSecond": 16854578.51538562,
+      "checksum": 47185915
+    },
+    {
+      "name": "PluralRules select ordinal",
+      "implementation": "rust",
+      "iterationsPerRound": 1048576,
+      "medianMicroseconds": 0.06525778770446777,
+      "minMicroseconds": 0.06255908870697022,
+      "maxMicroseconds": 0.06562435626983643,
+      "roundMicroseconds": [
+        0.06255908870697022, 0.06368255615234375, 0.06442825031280518,
+        0.06525778770446777, 0.06534683704376221, 0.06541800498962402,
+        0.06562435626983643
+      ],
+      "operationsPerSecond": 15323841.570123233,
+      "checksum": 47185915
+    },
+    {
+      "name": "PluralRules construct",
+      "implementation": "rust",
+      "iterationsPerRound": 1048576,
+      "medianMicroseconds": 0.07255899906158447,
+      "minMicroseconds": 0.07137620449066162,
+      "maxMicroseconds": 0.07437046337127685,
+      "roundMicroseconds": [
+        0.07137620449066162, 0.07216521072387695, 0.07240219974517823,
+        0.07255899906158447, 0.07304449844360351, 0.07340145111083984,
+        0.07437046337127685
+      ],
+      "operationsPerSecond": 13781888.021239787,
+      "checksum": 18874366
+    },
+    {
+      "name": "DurationFormat format long",
+      "implementation": "rust",
+      "iterationsPerRound": 16384,
+      "medianMicroseconds": 4.08434552001953,
+      "minMicroseconds": 3.999888061523438,
+      "maxMicroseconds": 4.115979553222656,
+      "roundMicroseconds": [
+        3.999888061523438, 4.003626525878906, 4.028378784179687,
+        4.08434552001953, 4.09477490234375, 4.1090850830078125,
+        4.115979553222656
+      ],
+      "operationsPerSecond": 244837.26832082958,
+      "checksum": 7077840
+    },
+    {
+      "name": "DurationFormat formatToParts long",
+      "implementation": "rust",
+      "iterationsPerRound": 16384,
+      "medianMicroseconds": 3.9963658447265624,
+      "minMicroseconds": 3.9466730957031246,
+      "maxMicroseconds": 4.0352935791015625,
+      "roundMicroseconds": [
+        3.9466730957031246, 3.9468332519531253, 3.97148388671875,
+        3.9963658447265624, 4.00811260986328, 4.012306213378906,
+        4.0352935791015625
+      ],
+      "operationsPerSecond": 250227.34125294315,
+      "checksum": 2211825
+    },
+    {
+      "name": "DurationFormat format digital",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 1.7194201049804687,
+      "minMicroseconds": 1.6947771606445312,
+      "maxMicroseconds": 1.7450103759765625,
+      "roundMicroseconds": [
+        1.6947771606445312, 1.7045440673828125, 1.7187970275878908,
+        1.7194201049804687, 1.7197736206054688, 1.7333590087890627,
+        1.7450103759765625
+      ],
+      "operationsPerSecond": 581591.4313804997,
+      "checksum": 3244021
+    },
+    {
+      "name": "DurationFormat formatToParts digital",
+      "implementation": "rust",
+      "iterationsPerRound": 32768,
+      "medianMicroseconds": 1.6278877258300781,
+      "minMicroseconds": 1.6228383178710937,
+      "maxMicroseconds": 1.7058219909667969,
+      "roundMicroseconds": [
+        1.6228383178710937, 1.6234766540527343, 1.6252695617675783,
+        1.6278877258300781, 1.6704279785156249, 1.6850840454101563,
+        1.7058219909667969
+      ],
+      "operationsPerSecond": 614292.9786451267,
+      "checksum": 2064377
+    },
+    {
+      "name": "DurationFormat construct",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 0.8056322631835937,
+      "minMicroseconds": 0.7928759155273437,
+      "maxMicroseconds": 0.8228893280029297,
+      "roundMicroseconds": [
+        0.7928759155273437, 0.8036187438964844, 0.8041458129882812,
+        0.8056322631835937, 0.8078810424804688, 0.8111120910644531,
+        0.8228893280029297
+      ],
+      "operationsPerSecond": 1241261.1134121278,
+      "checksum": 1179646
+    },
+    {
+      "name": "getCanonicalLocales aliases",
+      "implementation": "rust",
+      "iterationsPerRound": 65536,
+      "medianMicroseconds": 0.7581005096435547,
+      "minMicroseconds": 0.75042724609375,
+      "maxMicroseconds": 0.767547607421875,
+      "roundMicroseconds": [
+        0.75042724609375, 0.7541656494140625, 0.7542476654052734,
+        0.7581005096435547, 0.7582403717041015, 0.7590325622558594,
+        0.767547607421875
+      ],
+      "operationsPerSecond": 1319086.304888757,
+      "checksum": 1769469
+    },
+    {
+      "name": "Locale construct",
+      "implementation": "rust",
+      "iterationsPerRound": 524288,
+      "medianMicroseconds": 0.16809900665283203,
+      "minMicroseconds": 0.16374635696411133,
+      "maxMicroseconds": 0.17056695556640625,
+      "roundMicroseconds": [
+        0.16374635696411133, 0.16532667541503906, 0.16787703895568848,
+        0.16809900665283203, 0.16945115661621094, 0.17054812049865722,
+        0.17056695556640625
+      ],
+      "operationsPerSecond": 5948875.129674376,
+      "checksum": 26738687
+    },
+    {
+      "name": "Locale maximize",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.21839014816284177,
+      "minMicroseconds": 0.21564801406860354,
+      "maxMicroseconds": 0.22318045425415037,
+      "roundMicroseconds": [
+        0.21564801406860354, 0.21699142456054688, 0.21749178314208983,
+        0.21839014816284177, 0.22017288208007812, 0.22150659561157227,
+        0.22318045425415037
+      ],
+      "operationsPerSecond": 4578961.13177392,
+      "checksum": 23592950
+    },
+    {
+      "name": "supportedValuesOf calendar",
+      "implementation": "rust",
+      "iterationsPerRound": 64,
+      "medianMicroseconds": 878.890625,
+      "minMicroseconds": 867.407546875,
+      "maxMicroseconds": 896.41796875,
+      "roundMicroseconds": [
+        867.407546875, 877.141921875, 877.53059375, 878.890625, 879.044921875,
+        884.203765625, 896.41796875
+      ],
+      "operationsPerSecond": 1137.798005297872,
+      "checksum": 1150
+    },
+    {
+      "name": "supportedValuesOf timeZone",
+      "implementation": "rust",
+      "iterationsPerRound": 4,
+      "medianMicroseconds": 20653.48975,
+      "minMicroseconds": 20378.78125,
+      "maxMicroseconds": 22108.729,
+      "roundMicroseconds": [
+        20378.78125, 20414.0415, 20588.73975, 20653.48975, 20821.677,
+        21612.70825, 22108.729
+      ],
+      "operationsPerSecond": 48.41796771899044,
+      "checksum": 12005
+    },
+    {
+      "name": "supportedValuesOf unit",
+      "implementation": "rust",
+      "iterationsPerRound": 1024,
+      "medianMicroseconds": 60.490803710937506,
+      "minMicroseconds": 59.980630859375,
+      "maxMicroseconds": 60.6535234375,
+      "roundMicroseconds": [
+        59.980630859375, 60.0274248046875, 60.404826171875, 60.490803710937506,
+        60.510946289062495, 60.6304521484375, 60.6535234375
+      ],
+      "operationsPerSecond": 16531.43847746872,
+      "checksum": 414675
+    },
+    {
+      "name": "LocaleMatcher best fit en",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.21271833038330076,
+      "minMicroseconds": 0.2096641845703125,
+      "maxMicroseconds": 0.2161367721557617,
+      "roundMicroseconds": [
+        0.2096641845703125, 0.2099018096923828, 0.21215280151367188,
+        0.21271833038330076, 0.21321265029907227, 0.21354468536376955,
+        0.2161367721557617
+      ],
+      "operationsPerSecond": 4701052.317391186,
+      "checksum": 4718590
+    },
+    {
+      "name": "LocaleMatcher best fit en-US",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.3074986152648926,
+      "minMicroseconds": 0.2944784164428711,
+      "maxMicroseconds": 0.3122267723083496,
+      "roundMicroseconds": [
+        0.2944784164428711, 0.2980376892089844, 0.29991467666625976,
+        0.3074986152648926, 0.30773401260375977, 0.31151088333129884,
+        0.3122267723083496
+      ],
+      "operationsPerSecond": 3252047.164955708,
+      "checksum": 4718590
+    },
+    {
+      "name": "LocaleMatcher best fit zh-TW",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.3018307685852051,
+      "minMicroseconds": 0.2986756935119629,
+      "maxMicroseconds": 0.3036370277404785,
+      "roundMicroseconds": [
+        0.2986756935119629, 0.30010477447509765, 0.3010106086730957,
+        0.3018307685852051, 0.3022322654724121, 0.3035604133605957,
+        0.3036370277404785
+      ],
+      "operationsPerSecond": 3313114.8447435563,
+      "checksum": 16515065
+    },
+    {
+      "name": "LocaleMatcher best fit sr-Latn-BA",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.28886492919921875,
+      "minMicroseconds": 0.2828470878601074,
+      "maxMicroseconds": 0.2937262840270996,
+      "roundMicroseconds": [
+        0.2828470878601074, 0.28688558197021485, 0.28759765625,
+        0.28886492919921875, 0.2902305908203125, 0.2916987724304199,
+        0.2937262840270996
+      ],
+      "operationsPerSecond": 3461825.576307117,
+      "checksum": 23592950
+    },
+    {
+      "name": "LocaleMatcher best fit en-XZ",
+      "implementation": "rust",
+      "iterationsPerRound": 262144,
+      "medianMicroseconds": 0.2944234199523926,
+      "minMicroseconds": 0.29030307006835937,
+      "maxMicroseconds": 0.3004150390625,
+      "roundMicroseconds": [
+        0.29030307006835937, 0.29253975296020507, 0.29415782165527343,
+        0.2944234199523926, 0.29566478729248047, 0.29802846908569336,
+        0.3004150390625
+      ],
+      "operationsPerSecond": 3396468.9363424187,
+      "checksum": 4718590
+    }
+  ],
+  "cpu": "Apple M4 Max",
+  "os": "25.6.0",
+  "arch": "arm64",
+  "platform": "darwin",
+  "measuredAt": "2026-11-01T03:02:32.323210+00:00",
+  "boundary": "Rust core; excludes Hermes/JSI, JS coercion, and result object materialization"
+}

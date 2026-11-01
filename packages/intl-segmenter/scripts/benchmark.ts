@@ -92,29 +92,3 @@ async function run() {
 }
 
 run()
-
-// Node 18 Intl.Segmenter:
-// Locale: en
-// Input string size: 8 KB
-// segment_cached_grapheme_collect_all x 22.42 ops/sec ±9.16% (40 runs sampled)
-// segment_cached_word_collect_all x 64.16 ops/sec ±7.71% (57 runs sampled)
-// segment_cached_sentence_collect_all x 2,899 ops/sec ±1.35% (90 runs sampled)
-// segment_cached_grapheme_containing x 186,612 ops/sec ±2.20% (88 runs sampled)
-// segment_cached_word_containing x 174,066 ops/sec ±1.18% (91 runs sampled)
-// segment_cached_sentence_containing x 128,220 ops/sec ±0.70% (94 runs sampled)
-// new_segmenter_grapheme x 207,883 ops/sec ±8.65% (79 runs sampled)
-// new_segmenter_word x 163,141 ops/sec ±17.94% (78 runs sampled)
-// new_segmenter_sentence x 213,711 ops/sec ±8.45% (80 runs sampled)
-
-// Polyfill on Node 18:
-// Locale: en
-// Input string size: 8 KB
-// segment_cached_grapheme_collect_all x 331 ops/sec ±0.41% (92 runs sampled)
-// segment_cached_word_collect_all x 256 ops/sec ±1.63% (89 runs sampled)
-// segment_cached_sentence_collect_all x 45.88 ops/sec ±1.36% (61 runs sampled)
-// segment_cached_grapheme_containing x 1,320,075 ops/sec ±0.65% (97 runs sampled)
-// segment_cached_word_containing x 5,082 ops/sec ±0.77% (83 runs sampled)
-// segment_cached_sentence_containing x 934 ops/sec ±2.47% (74 runs sampled)
-// new_segmenter_grapheme x 6,384 ops/sec ±1.07% (93 runs sampled)
-// new_segmenter_word x 1,404 ops/sec ±1.72% (93 runs sampled)
-// new_segmenter_sentence x 431 ops/sec ±18.60% (21 runs sampled)

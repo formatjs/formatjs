@@ -321,3 +321,9 @@ rust_binary(
         "@crates//:serde_json",
     ],
 )
+
+filegroup(
+    name = "benchmark_en",
+    srcs = ["locale-data/en.json"],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

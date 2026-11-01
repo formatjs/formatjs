@@ -58,3 +58,9 @@ cc_binary(
     tags = ["manual"],
     deps = ["@icu4c_benchmark_local//:icu"],
 )
+
+filegroup(
+    name = "polyfill_benchmark_cases",
+    srcs = [":cases"],
+    visibility = ["//benchmarks/polyfills:__pkg__"],
+)

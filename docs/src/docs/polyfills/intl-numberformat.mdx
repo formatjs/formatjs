@@ -461,3 +461,52 @@ See the [Hermes SDK guide](/docs/guides/hermes-intl).
 
 Scientific exponents use localized digits, independently of mantissa rounding
 increments. Missing currency-name translations fall back to the currency code.
+
+## Measured performance
+
+### TypeScript and native JavaScript
+
+Measured 2026-10-31 on Apple M4 Max, macOS arm64, Node 24.14.0 / ICU 78.2; source `56d15e997`. Median of seven warmed rounds.
+
+| Operation                   |  TS ops/s | TS full helpers ops/s | Native JS ops/s |
+| --------------------------- | --------: | --------------------: | --------------: |
+| format decimal              | 1,599,170 |             1,587,734 |       3,831,639 |
+| formatToParts               | 1,485,792 |             1,448,501 |         830,322 |
+| formatRange                 |   585,925 |               584,530 |          63,138 |
+| formatRangeToParts          |   621,251 |               627,891 |          55,439 |
+| time values x60             |    79,629 |                80,705 |          98,065 |
+| format currency             | 1,212,590 |             1,200,218 |       3,460,517 |
+| format unit                 |   847,284 |               510,565 |       3,103,808 |
+| format percent              | 1,484,939 |             1,473,882 |       3,439,826 |
+| format scientific           |   821,324 |               831,359 |       3,729,988 |
+| format compact              |   320,403 |               271,129 |       3,385,488 |
+| format significant digits   |   728,792 |               760,763 |       3,430,845 |
+| construct + resolvedOptions |   414,271 |               388,558 |         212,664 |
+
+TS uses host Intl helpers; TS full helpers installs all FormatJS Intl APIs.
+Module loading and data registration are excluded. Construction rows include
+`resolvedOptions()`. These are desktop microbenchmarks; native locale data may
+differ. † marks noisy rows (round max/min > 1.5). See [workloads, commands, and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills).
+
+### Rust core
+
+| Rust core operation         | µs/call | Rust core ops/s |
+| --------------------------- | ------: | --------------: |
+| format decimal              |   0.430 |       2,326,815 |
+| formatToParts               |   0.409 |       2,442,026 |
+| formatRange                 |   1.035 |         966,362 |
+| formatRangeToParts          |   0.950 |       1,052,147 |
+| time values x60             |  14.991 |          66,706 |
+| format currency             |   0.675 |       1,480,993 |
+| format unit                 |   1.022 |         978,777 |
+| format percent              |   0.549 |       1,820,686 |
+| format scientific           |   0.565 |       1,770,631 |
+| format compact              |   0.717 |       1,394,030 |
+| format significant digits   |   0.483 |       2,068,331 |
+| construct + resolvedOptions |   1.057 |         945,655 |
+
+Same machine and source revision, optimized Rust build, seven warmed rounds.
+Rust core timings exclude Hermes/JSI and JS boundary work; inputs are prepared
+Rust strings/UTF-16. Data and API-boundary differences prevent direct speedup
+claims against TS/native JS. † marks round max/min > 1.5.
+[Workload details and raw results](https://github.com/formatjs/formatjs/tree/main/benchmarks/polyfills#rust-core-suite).

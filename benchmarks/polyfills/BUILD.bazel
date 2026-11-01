@@ -1,0 +1,112 @@
+# gazelle:ignore
+
+load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+load("//tools:package_json.bzl", "generate_package_json")
+
+generate_package_json(
+    package_name = "polyfill-benchmarks",
+    private = True,
+    type = "module",
+    version = "1.0.0",
+)
+
+ts_binary(
+    name = "benchmark",
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/cldr-core",
+        "//packages/intl-datetimeformat:polyfill_benchmark_locale_data",
+        "//packages/intl-displaynames:polyfill_benchmark_locale_data",
+        "//packages/intl-listformat:polyfill_benchmark_locale_data",
+        "//packages/intl-numberformat:polyfill_benchmark_locale_data",
+        "//packages/intl-pluralrules:polyfill_benchmark_locale_data",
+        "//packages/intl-relativetimeformat:polyfill_benchmark_locale_data",
+    ],
+    entry_point = "benchmark.ts",
+    tags = ["manual"],
+)
+
+formatjs_library(
+    name = "lib",
+    srcs = ["benchmark.ts"],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/intl-collator",
+        "//:node_modules/@formatjs/intl-datetimeformat",
+        "//:node_modules/@formatjs/intl-displaynames",
+        "//:node_modules/@formatjs/intl-durationformat",
+        "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@formatjs/intl-listformat",
+        "//:node_modules/@formatjs/intl-locale",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//:node_modules/@formatjs/intl-numberformat",
+        "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@formatjs/intl-relativetimeformat",
+        "//:node_modules/@formatjs/intl-segmenter",
+        "//:node_modules/@formatjs/intl-supportedvaluesof",
+        "//:node_modules/@types/node",
+        "//:node_modules/cldr-core",
+    ],
+)
+
+rust_binary(
+    name = "rust_benchmark",
+    srcs = ["benchmark.rs"],
+    compile_data = [
+        "//crates/intl_datetimeformat:benchmark_en",
+        "//crates/intl_displaynames:benchmark_en",
+        "//crates/intl_listformat:benchmark_en",
+        "//crates/intl_numberformat:benchmark_en",
+        "//crates/intl_pluralrules:benchmark_en",
+        "//crates/intl_relativetimeformat:benchmark_en",
+        "//packages/intl-datetimeformat:polyfill_benchmark_timezones",
+        "//benchmarks/locale-matching:polyfill_benchmark_cases",
+    ],
+    crate_name = "polyfill_benchmark",
+    crate_root = "benchmark.rs",
+    edition = "2024",
+    rustc_env = {
+        "BENCH_DATETIMEFORMAT": "$(execpath //crates/intl_datetimeformat:benchmark_en)",
+        "BENCH_DISPLAYNAMES": "$(execpath //crates/intl_displaynames:benchmark_en)",
+        "BENCH_LISTFORMAT": "$(execpath //crates/intl_listformat:benchmark_en)",
+        "BENCH_NUMBERFORMAT": "$(execpath //crates/intl_numberformat:benchmark_en)",
+        "BENCH_PLURALRULES": "$(execpath //crates/intl_pluralrules:benchmark_en)",
+        "BENCH_RELATIVETIMEFORMAT": "$(execpath //crates/intl_relativetimeformat:benchmark_en)",
+        "BENCH_TIMEZONES": "$(execpath //packages/intl-datetimeformat:polyfill_benchmark_timezones)",
+        "BENCH_MATCHER": "$(execpath //benchmarks/locale-matching:polyfill_benchmark_cases)",
+    },
+    tags = ["manual"],
+    deps = [
+        "//crates/intl_collator",
+        "//crates/intl_datetimeformat",
+        "//crates/intl_displaynames",
+        "//crates/intl_durationformat",
+        "//crates/intl_getcanonicallocales",
+        "//crates/intl_listformat",
+        "//crates/intl_locale",
+        "//crates/intl_localematcher",
+        "//crates/intl_numberformat",
+        "//crates/intl_pluralrules",
+        "//crates/intl_relativetimeformat",
+        "//crates/intl_segmenter",
+        "//crates/intl_supportedvaluesof",
+        "@crates//:serde_json",
+    ],
+)
