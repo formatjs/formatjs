@@ -173,8 +173,8 @@ importers:
         specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       react-intl:
-        specifier: 12.1.5
-        version: 12.1.5(@types/react@19.3.0)(react@19.3.1)
+        specifier: 12.1.6
+        version: 12.1.6(@types/react@19.3.0)(react@19.3.1)
     devDependencies:
       '@types/react':
         specifier: 19.3.0
@@ -1094,6 +1094,11 @@ packages:
     resolution: {integrity: sha512-RQlrqs4ujYNJpTQi+dITqPKNhRWEqpjPd1YBcGp50Wy3FcJHpwu0/iRm7XWz2dKU/Bwp2qCcVYPIeEDYi2uOUw==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
+    peerDependencies:
+      '@parcel/core': '*'
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -1110,8 +1115,8 @@ packages:
     peerDependencies:
       react: ^19.3.1
 
-  react-intl@12.1.5:
-    resolution: {integrity: sha512-nlyc4qcORgNTUmSHM9ZBoYhuK57yzPlV1oqlo7mwhHDrUDNC+wUzGZufwMjayXo7xqmQyQywAlYllaEBbbfqew==}
+  react-intl@12.1.6:
+    resolution: {integrity: sha512-cxiqHlRK/JdDW/hMzusEv+LAqhfjUCL1YZAlazE39gT6jT3UrrNi3H50cgsveyUaASW14kNM2izIYMPYsYDCgA==}
     peerDependencies:
       '@types/react': '>=18.0.0'
       react: '>=18.0.0'
@@ -2221,7 +2226,7 @@ snapshots:
       react: 19.3.1
       scheduler: 0.28.0
 
-  react-intl@12.1.5(@types/react@19.3.0)(react@19.3.1):
+  react-intl@12.1.6(@types/react@19.3.0)(react@19.3.1):
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.22
       '@formatjs/intl': 6.1.4
