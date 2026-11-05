@@ -231,3 +231,12 @@ genrule(
     tools = [":intl_datetimeformat_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "date_time_range_boundary_fixtures",
+    testonly = True,
+    outs = ["date-time-range-boundary-fixtures.tsv"],
+    cmd = "$(execpath :intl_datetimeformat_oracle) $@ --range-boundaries",
+    tools = [":intl_datetimeformat_oracle"],
+    visibility = ["//visibility:public"],
+)

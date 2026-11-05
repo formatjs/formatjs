@@ -111,7 +111,7 @@ test('non-overlapping fields and calendars reject', () => {
     formatter({calendar: 'iso8601'}).format(
       new Temporal.PlainYearMonth(2020, 1)
     )
-  ).toBe('1/2020')
+  ).toBe('2020-01')
 })
 
 test('Temporal bypasses Date limits and floors negative fractional milliseconds', () => {
@@ -145,7 +145,7 @@ test('Temporal variants retain original options without rereading getters', () =
 
 test('MonthDay retains its reference date and ranges keep source attribution', () => {
   const dtf = formatter({calendar: 'iso8601'})
-  expect(dtf.format(new Temporal.PlainMonthDay(2, 29))).toBe('2/29')
+  expect(dtf.format(new Temporal.PlainMonthDay(2, 29))).toBe('02-29')
   const start = new Temporal.PlainDate(2020, 2, 3)
   const end = new Temporal.PlainDate(2020, 2, 5)
   const parts = dtf.formatRangeToParts(start, end)

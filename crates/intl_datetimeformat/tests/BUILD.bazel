@@ -58,6 +58,7 @@ AUDIT_DATA = [
     ":generated_package_json",
     "//:node_modules/@bazel/runfiles",
     "//conformance-tests/icu4j:date_time_format_fixtures",
+    "//conformance-tests/icu4c:date_time_format_range_fixtures",
     "//crates/intl_datetimeformat:audit",
     "//crates/intl_datetimeformat:locale_data",
     "//crates/intl_datetimeformat:calendar_locale_data",

@@ -3,7 +3,7 @@ use crate::{
     calendar::{CalendarFields, CalendarProvider},
     civil::CivilDateTime,
     data::{CalendarLocale, LocaleData, Metadata},
-    fields::{Field, TextWidth, Value, Width, ZoneWidth},
+    fields::{Components, Field, TextWidth, Value, Width, ZoneWidth},
     numbers::NumberFormatters,
     pattern::{self, Source},
     registry::Registry,
@@ -124,6 +124,7 @@ impl RenderData {
             &profile.pattern,
             &local,
             zone.data_identifier(),
+            profile.components,
         )
     }
 
@@ -157,12 +158,13 @@ impl RenderData {
 
     pub fn pattern(
         &self,
-        config: &Configuration,
+        _config: &Configuration,
         profile: &Profile,
         pattern: &str,
         context: &str,
         local: &LocalTime,
         zone: &str,
+        format: Components,
     ) -> Result<Vec<Part>, Error> {
         let civil = local.civil;
         let fields = &local.fields;
@@ -183,18 +185,21 @@ impl RenderData {
         let other_date = ["day", "year", "relatedYear", "yearName", "weekday", "era"]
             .into_iter()
             .any(has);
-        let standalone_month = has("month") && !other_date;
-        let standalone_weekday = has("weekday")
-            && context
-                .iter()
-                .all(|part| matches!(part, Token::Literal(_) | Token::Field("weekday")));
+        let standalone_month = format
+            .month_standalone
+            .unwrap_or(has("month") && !other_date);
+        let standalone_weekday = format.weekday_standalone.unwrap_or(
+            has("weekday")
+                && context
+                    .iter()
+                    .all(|part| matches!(part, Token::Literal(_) | Token::Field("weekday"))),
+        );
         let mut result = Vec::new();
         for part in parts {
             let (kind, value) = match part {
                 Token::Literal(value) => (PartKind::Literal, value.into()),
                 Token::Field("fractionalSecondDigits") => {
-                    let digits = profile
-                        .components
+                    let digits = format
                         .fractional_second_digits
                         .ok_or(Error::InvalidPattern)?;
                     let value =
@@ -206,7 +211,8 @@ impl RenderData {
                     day_period(
                         &self.locale.metadata,
                         civil,
-                        profile.components.day_period.unwrap_or(TextWidth::Short),
+                        format.day_period.unwrap_or(TextWidth::Short),
+                        format,
                     ),
                 ),
                 Token::Field("ampm") => (
@@ -218,10 +224,15 @@ impl RenderData {
                     },
                 ),
                 Token::Field("timeZoneName") => {
-                    let width = profile
-                        .components
-                        .time_zone_name
-                        .unwrap_or(ZoneWidth::Short);
+                    let width = format.time_zone_name.unwrap_or(ZoneWidth::Short);
+                    let generic =
+                        self.locale.metadata.time_zone_name.get(zone).and_then(
+                            |names| match width {
+                                ZoneWidth::ShortGeneric => names.short_generic.as_ref(),
+                                ZoneWidth::LongGeneric => names.long_generic.as_ref(),
+                                _ => None,
+                            },
+                        );
                     let names =
                         self.locale.metadata.time_zone_name.get(zone).and_then(
                             |names| match width {
@@ -230,11 +241,23 @@ impl RenderData {
                                 _ => None,
                             },
                         );
-                    let value = match names {
-                        Some(names) if !(in_dst && names[0] == names[1]) => {
-                            names[usize::from(in_dst)].clone()
+                    let value = if let Some(generic) = generic {
+                        generic.clone()
+                    } else {
+                        match names {
+                            Some(names) if !(in_dst && names[0] == names[1]) => {
+                                names[usize::from(in_dst)].clone()
+                            }
+                            _ => self.offset_name(
+                                offset_seconds,
+                                matches!(
+                                    width,
+                                    ZoneWidth::Long
+                                        | ZoneWidth::LongGeneric
+                                        | ZoneWidth::LongOffset
+                                ),
+                            )?,
                         }
-                        _ => self.offset_name(offset_seconds, width == ZoneWidth::Long)?,
                     };
                     (PartKind::TimeZoneName, value)
                 }
@@ -293,14 +316,7 @@ impl RenderData {
                         "second" => (Field::Second, PartKind::Second, i32::from(civil.second)),
                         _ => continue,
                     };
-                    let mut width = profile.components.get(field);
-                    if field == Field::Month
-                        && config.snapshot.resolution.calendar == "hebrew"
-                        && other_date
-                        && width.is_some_and(Value::numeric)
-                    {
-                        width = Some(Value::Width(Width::Short));
-                    }
+                    let width = format.get(field);
                     let mut text = match width {
                         Some(Value::Width(Width::Numeric)) => self.numbers.numeric(value)?,
                         Some(Value::Width(Width::TwoDigit)) => self.numbers.two_digit(value)?,
@@ -404,14 +420,13 @@ impl RenderData {
                 .replacen('H', &hours.to_string(), 1)
                 .replacen("mm", &format!("{minute:02}"), 1)
                 .replacen('m', &minute.to_string(), 1)
-        } else if hours != 0 || minute != 0 {
+        } else {
             if minute == 0 {
                 if let Some(start) = pattern.find('m') {
-                    let begin = if pattern[..start].ends_with(':') {
-                        start - 1
-                    } else {
-                        start
-                    };
+                    let begin = pattern[..start]
+                        .rfind('H')
+                        .map(|index| index + 1)
+                        .unwrap_or(start);
                     let end = start
                         + pattern[start..]
                             .chars()
@@ -423,12 +438,16 @@ impl RenderData {
             replace_run(
                 &replace_run(&pattern, 'H', &hours.to_string()),
                 'm',
-                &minute.to_string(),
+                &format!("{minute:02}"),
             )
-        } else {
-            String::new()
         };
-        Ok(self.locale.metadata.gmt_format.replacen("{0}", &value, 1))
+        Ok(self
+            .locale
+            .metadata
+            .gmt_format
+            .replacen("{0}", &value, 1)
+            .replace("\u{200e}\u{200e}", "\u{200e}")
+            .replace("\u{200f}\u{200f}", "\u{200f}"))
     }
 }
 fn replace_run(pattern: &str, character: char, value: &str) -> String {
@@ -443,7 +462,23 @@ fn replace_run(pattern: &str, character: char, value: &str) -> String {
     result
 }
 
-fn day_period(metadata: &Metadata, civil: CivilDateTime, width: TextWidth) -> String {
+fn day_period(
+    metadata: &Metadata,
+    mut civil: CivilDateTime,
+    width: TextWidth,
+    format: Components,
+) -> String {
+    if format.hour.is_some() {
+        if format.minute.is_none() {
+            civil.minute = 0;
+        }
+        if format.second.is_none() {
+            civil.second = 0;
+        }
+        if format.fractional_second_digits.is_none() {
+            civil.nanosecond = 0;
+        }
+    }
     let value = ((u32::from(civil.hour) * 60 + u32::from(civil.minute)) * 60
         + u32::from(civil.second))
         * 1000
@@ -520,7 +555,8 @@ impl RangeSnapshot {
             "second",
             "fractionalSecondDigits",
         ];
-        let last = partition(&profile.pattern)?
+        let parts = partition(&profile.pattern)?;
+        let last = parts
             .iter()
             .filter_map(|part| {
                 let Token::Field(name) = part else {
@@ -536,6 +572,15 @@ impl RangeSnapshot {
             .max();
         let different = last.and_then(|last| {
             (0..=last).find(|index| {
+                let field = FIELDS[*index];
+                // Hidden day periods must not override an hour or minute interval.
+                if matches!(field, "ampm" | "dayPeriod")
+                    && !parts
+                        .iter()
+                        .any(|part| matches!(part, Token::Field(name) if *name == field))
+                {
+                    return false;
+                }
                 let equal = match FIELDS[*index] {
                     "era" => first.fields.era == second.fields.era,
                     "year" => first.fields.year == second.fields.year,
@@ -544,8 +589,17 @@ impl RangeSnapshot {
                     "ampm" => (first.civil.hour < 12) == (second.civil.hour < 12),
                     "dayPeriod" => {
                         let width = profile.components.day_period.unwrap_or(TextWidth::Short);
-                        day_period(&self.locale.metadata, first.civil, width)
-                            == day_period(&self.locale.metadata, second.civil, width)
+                        day_period(
+                            &self.locale.metadata,
+                            first.civil,
+                            width,
+                            profile.components,
+                        ) == day_period(
+                            &self.locale.metadata,
+                            second.civil,
+                            width,
+                            profile.components,
+                        )
                     }
                     "hour" => first.civil.hour == second.civil.hour,
                     "minute" => first.civil.minute == second.civil.minute,
@@ -574,6 +628,7 @@ impl RangeSnapshot {
                 &profile.pattern,
                 first,
                 zone.data_identifier(),
+                profile.components,
             )?;
             for part in &mut parts {
                 part.source = Some(Source::Shared);
@@ -584,12 +639,25 @@ impl RangeSnapshot {
         let selected = profile
             .range_patterns
             .get(field)
-            .or_else(|| {
-                if field == "ampm" {
-                    profile.range_patterns.get("hour")
-                } else {
-                    None
-                }
+            .filter(|selected| {
+                // Some combined-style intervals contain only the time pattern.
+                ![
+                    "{era}",
+                    "{year}",
+                    "{relatedYear}",
+                    "{yearName}",
+                    "{month}",
+                    "{day}",
+                    "{weekday}",
+                ]
+                .iter()
+                .any(|field| {
+                    profile.pattern.contains(field)
+                        && !selected.pattern_parts.iter().any(|part| {
+                            matches!(part.pattern.as_str(), "{0}" | "{1}")
+                                || part.pattern.contains(field)
+                        })
+                })
             })
             .or_else(|| profile.range_patterns.get("default"));
         let fallback;
@@ -610,6 +678,42 @@ impl RangeSnapshot {
             .iter()
             .map(|part| expand(&part.pattern))
             .collect::<String>();
+        let expanded;
+        let patterns = if let Some(first) = patterns
+            .iter()
+            .find(|part| matches!(part.pattern.as_str(), "{0}" | "{1}"))
+        {
+            let mut parts = pattern::split_range(&context);
+            if first.source == Source::EndRange {
+                for part in &mut parts {
+                    part.source = match part.source {
+                        Source::StartRange => Source::EndRange,
+                        Source::EndRange => Source::StartRange,
+                        Source::Shared => Source::Shared,
+                    };
+                }
+            }
+            expanded = parts;
+            &expanded
+        } else {
+            patterns
+        };
+        let mut format = profile.components;
+        if let Some(selected) = selected {
+            format.month_standalone = selected
+                .components
+                .month_standalone
+                .or(format.month_standalone);
+            format.weekday_standalone = selected
+                .components
+                .weekday_standalone
+                .or(format.weekday_standalone);
+            for field in Field::ALL {
+                if selected.components.get(field).is_some() {
+                    format.set_from(field, selected.components);
+                }
+            }
+        }
         let mut result = Vec::new();
         for part in patterns {
             let pattern = expand(&part.pattern);
@@ -633,6 +737,7 @@ impl RangeSnapshot {
                 &context,
                 local,
                 zone.data_identifier(),
+                format,
             )?;
             for item in &mut parts {
                 item.source = Some(part.source);

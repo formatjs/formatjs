@@ -96,7 +96,13 @@ export function BestFitFormatMatcher(
   invariant(Array.isArray(formats), 'formats should be a list of things')
   for (const format of formats) {
     const score = bestFitFormatMatcherScore(options, format)
-    if (score > bestScore) {
+    if (
+      score > bestScore ||
+      (score === bestScore &&
+        options.month !== undefined &&
+        format.month === options.month &&
+        bestFormat.month !== options.month)
+    ) {
       bestScore = score
       bestFormat = format
     }

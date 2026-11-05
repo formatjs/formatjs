@@ -16,6 +16,7 @@ import {
   type DateTimeFormatLocaleInternalData,
   type DateTimeFormat as IDateTimeFormat,
   type IntlDateTimeFormatInternal,
+  type Formats,
   type TABLE_6,
   type TemporalDateTimeInput,
   type UnpackedZoneData,
@@ -31,7 +32,11 @@ import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/For
 import {FormatDateTimeRangeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.js'
 import {FormatDateTimeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeToParts.js'
 import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
-import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {
+  parseDateTimeSkeleton,
+  getRangePatternInfo,
+  expandIntervalFormatTemplates,
+} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
@@ -389,9 +394,30 @@ DateTimeFormat.getDefaultTimeZone = () => DateTimeFormat.__defaultTimeZone
  * by exact key. This function finds the matching canonical interval format by
  * normalizing the time portion of the skeleton.
  */
+type IntervalCandidate = {key: string; format: Formats}
+const intervalCandidates = new WeakMap<
+  object,
+  Map<number, IntervalCandidate[]>
+>()
+function intervalSignature(format: Formats): number {
+  const fields = DATE_TIME_PROPS.reduce(
+    (mask, field, index) =>
+      mask | (format[field] === undefined ? 0 : 1 << index),
+    0
+  )
+  return (
+    fields |
+    (format.hour12 ? 1 << DATE_TIME_PROPS.length : 0) |
+    (format.month === 'numeric' || format.month === '2-digit'
+      ? 1 << (DATE_TIME_PROPS.length + 1)
+      : 0)
+  )
+}
+
 function findIntervalFormat(
   skeleton: string,
-  intervalFormats: Record<string, any>
+  intervalFormats: Record<string, any>,
+  rawPattern = skeleton
 ): Record<string, string> | undefined {
   const commaIdx = skeleton.indexOf(', ')
   if (commaIdx !== -1) {
@@ -403,7 +429,6 @@ function findIntervalFormat(
         ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) &&
         c !== 'a' &&
         c !== 'b' &&
-        c !== 'B' &&
         canonical[canonical.length - 1] !== c
       )
         canonical += c
@@ -413,49 +438,111 @@ function findIntervalFormat(
   }
   // CLDR date styles can use a wider month name than the interval skeleton.
   // Match the same fields; formatting retains the requested field widths.
-  const target = parseDateTimeSkeleton(skeleton)
-  if (
-    target.hour ||
-    target.minute ||
-    target.second ||
-    target.dayPeriod ||
-    target.timeZoneName
-  )
-    return undefined
-  for (const key of Object.keys(intervalFormats)) {
-    if (typeof intervalFormats[key] !== 'object') continue
-    const candidate = parseDateTimeSkeleton(key)
+  const target = parseDateTimeSkeleton(rawPattern)
+  let best: Record<string, string> | undefined
+  let bestScore = Infinity
+  let candidates = intervalCandidates.get(intervalFormats)
+  if (!candidates) {
+    candidates = new Map()
+    for (const key of Object.keys(intervalFormats)) {
+      if (
+        typeof intervalFormats[key] !== 'object' ||
+        !Object.keys(intervalFormats[key]).length
+      )
+        continue
+      const ranges = intervalFormats[key] as Record<string, string>
+      const format = parseDateTimeSkeleton(
+        key,
+        getRangePatternInfo(ranges[Object.keys(ranges)[0]]).pattern
+      )
+      const signature = intervalSignature(format)
+      let group = candidates.get(signature)
+      if (!group) candidates.set(signature, (group = []))
+      Object.defineProperty(group, group.length, {
+        value: {key, format},
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+    }
+    intervalCandidates.set(intervalFormats, candidates)
+  }
+  for (const {key, format: candidate} of candidates.get(
+    intervalSignature(target)
+  ) || []) {
+    if (!!target.hour12 !== !!candidate.hour12) continue
     const numericMonth = (month: unknown) =>
       month === 'numeric' || month === '2-digit'
     if (numericMonth(target.month) !== numericMonth(candidate.month)) continue
+    if (
+      target.weekdayStandalone === true &&
+      candidate.weekdayStandalone === false
+    )
+      continue
     if (
       DATE_TIME_PROPS.every(
         field =>
           (target[field] !== undefined) === (candidate[field] !== undefined)
       )
     ) {
-      return intervalFormats[key]
+      const score = DATE_TIME_PROPS.reduce(
+        (score, field) =>
+          score +
+          (field === 'timeZoneName' || target[field] === candidate[field]
+            ? 0
+            : field === 'month'
+              ? 2
+              : 1),
+        0
+      )
+      if (score < bestScore) {
+        best = intervalFormats[key]
+        bestScore = score
+      }
     }
   }
-  return undefined
+  return best
 }
 
 function parseDateTimeStyles({
   dateFormat,
   timeFormat,
   dateTimeFormat,
+  dateTimeFormatAtTime,
   intervalFormats,
 }: Pick<
   RawDateTimeLocaleData['data'],
-  'dateFormat' | 'timeFormat' | 'dateTimeFormat' | 'intervalFormats'
+  | 'dateFormat'
+  | 'timeFormat'
+  | 'dateTimeFormat'
+  | 'dateTimeFormatAtTime'
+  | 'intervalFormats'
 >) {
-  const parseStyle = (pattern: string) =>
-    parseDateTimeSkeleton(
+  const parseStyle = (pattern: string) => {
+    const format = parseDateTimeSkeleton(
       pattern,
       pattern,
       findIntervalFormat(pattern, intervalFormats),
       intervalFormats.intervalFormatFallback
     )
+    for (const ranges of [format.rangePatterns, format.rangePatterns12]) {
+      for (const key of Object.keys(ranges)) {
+        if (key !== 'default') continue
+        const range = ranges[key as keyof typeof ranges]
+        for (const field of DATE_TIME_PROPS) {
+          if (format[field] !== undefined) {
+            Object.defineProperty(range, field, {
+              value: format[field],
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            })
+          }
+        }
+      }
+    }
+    return format
+  }
   return {
     dateFormat: {
       full: parseStyle(dateFormat.full),
@@ -475,6 +562,16 @@ function parseDateTimeStyles({
       medium: parseDateTimeSkeleton(dateTimeFormat.medium).pattern,
       short: parseDateTimeSkeleton(dateTimeFormat.short).pattern,
     },
+    ...(dateTimeFormatAtTime
+      ? {
+          dateTimeFormatAtTime: {
+            full: parseDateTimeSkeleton(dateTimeFormatAtTime.full).pattern,
+            long: parseDateTimeSkeleton(dateTimeFormatAtTime.long).pattern,
+            medium: parseDateTimeSkeleton(dateTimeFormatAtTime.medium).pattern,
+            short: parseDateTimeSkeleton(dateTimeFormatAtTime.short).pattern,
+          },
+        }
+      : {}),
   }
 }
 
@@ -511,6 +608,11 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
 ) {
   for (const entry of data) {
     const {locale} = entry
+    intervalCandidates.delete(entry.data.intervalFormats)
+    for (const calendar of Object.keys(entry.data.calendarData || {}))
+      intervalCandidates.delete(
+        entry.data.calendarData![calendar].intervalFormats
+      )
     rawLocaleData.set(locale, entry)
     const d = {
       ...entry.data,
@@ -523,10 +625,25 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       d.formats[patch.calendar] = patch.formats
       d.calendarData[patch.calendar] = patch.data
     }
+    d.intervalFormats = expandIntervalFormatTemplates(
+      d.intervalFormats,
+      d.intervalFormatTemplates
+    )
+    delete d.intervalFormatTemplates
+    for (const calendar of Object.keys(d.calendarData)) {
+      const fields = {...d.calendarData[calendar]}
+      fields.intervalFormats = expandIntervalFormatTemplates(
+        fields.intervalFormats,
+        fields.intervalFormatTemplates
+      )
+      delete fields.intervalFormatTemplates
+      d.calendarData[calendar] = fields
+    }
     const {
       dateFormat,
       timeFormat,
       dateTimeFormat,
+      dateTimeFormatAtTime,
       formats,
       intervalFormats,
       calendarData,
@@ -538,6 +655,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
         dateFormat,
         timeFormat,
         dateTimeFormat,
+        dateTimeFormatAtTime,
         intervalFormats,
       }),
       intervalFormatFallback: intervalFormats.intervalFormatFallback,
@@ -545,7 +663,6 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
     }
 
     for (const calendar in formats) {
-      if (calendar === 'iso8601') continue
       const calendarIntervals =
         calendarData?.[calendar]?.intervalFormats ?? intervalFormats
       let parsed:
@@ -558,22 +675,25 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
             parseDateTimeSkeleton(
               skeleton,
               formats[calendar][skeleton],
-              calendarIntervals[skeleton] ||
-                findIntervalFormat(skeleton, calendarIntervals),
-              calendarIntervals.intervalFormatFallback
+              findIntervalFormat(
+                skeleton,
+                calendarIntervals,
+                formats[calendar][skeleton]
+              ),
+              calendarIntervals.intervalFormatFallback,
+              true
             )
           ))
         },
       })
     }
 
-    // ISO 8601 uses Gregorian year/month/day fields; week-date fields are
-    // not exposed by DateTimeFormat. Reuse patterns without duplicating data.
-    // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/common/bcp47/calendar.xml#L27
-    Object.defineProperty(processedData.formats, 'iso8601', {
-      enumerable: true,
-      get: () => processedData.formats.gregory,
-    })
+    // Legacy locale packs may omit separate ISO 8601 patterns.
+    if (!formats.iso8601)
+      Object.defineProperty(processedData.formats, 'iso8601', {
+        enumerable: true,
+        get: () => processedData.formats.gregory,
+      })
 
     if (calendarData) {
       processedData.calendarData = {}

@@ -140,9 +140,21 @@ test.each(['chinese', 'dangi'])(
             actual.formatToParts(time),
             `${locale} ${month} ${new Date(time).toISOString()}`
           ).toEqual(expected.formatToParts(time))
+          // Range records can use different numeric widths from single dates.
+          const normalize = (part: {
+            type: string
+            value: string | undefined
+          }) => ({
+            type: part.type,
+            value: ['month', 'day'].includes(part.type)
+              ? part.value?.replace(/\d+/g, digits => String(Number(digits)))
+              : part.value,
+          })
           const actualRange = actual.formatRangeToParts(time, time + 86400000)
-          const expectedStart = expected.formatToParts(time)
-          const expectedEnd = expected.formatToParts(time + 86400000)
+          const expectedStart = expected.formatToParts(time).map(normalize)
+          const expectedEnd = expected
+            .formatToParts(time + 86400000)
+            .map(normalize)
           // Interval selection differs across engines; verify endpoint values
           // and source attribution against independently formatted native dates.
           for (const part of actualRange) {
@@ -155,7 +167,7 @@ test.each(['chinese', 'dangi'])(
               expect(
                 endpoint,
                 `${locale} ${month} ${part.source}`
-              ).toContainEqual({type: part.type, value: part.value})
+              ).toContainEqual(normalize(part))
             }
           }
           for (const [source, endpoint] of [
@@ -168,7 +180,7 @@ test.each(['chinese', 'dangi'])(
                 actualRange.some(
                   candidate =>
                     candidate.type === part.type &&
-                    candidate.value === part.value &&
+                    normalize(candidate).value === part.value &&
                     (candidate.source === source ||
                       candidate.source === 'shared')
                 ),

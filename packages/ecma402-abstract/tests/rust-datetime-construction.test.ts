@@ -72,6 +72,12 @@ function profile(slots: IntlDateTimeFormatInternal) {
         slots[key],
       ])
     ),
+    ...Object.fromEntries(
+      ['monthStandalone', 'weekdayStandalone'].flatMap(key => {
+        const value = slots.format[key as 'monthStandalone']
+        return value === undefined ? [] : [[key, value]]
+      })
+    ),
     ...(slots.hourCycle === undefined ? {} : {hourCycle: slots.hourCycle}),
     pattern: slots.pattern,
     rangePatterns: slots.rangePatterns,

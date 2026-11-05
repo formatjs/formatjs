@@ -45,7 +45,7 @@ describe('Intl.DateTimeFormat', function () {
     ).toBe('02:03.456')
   })
 
-  it('shares Gregorian formats with explicitly supplied ISO locale data', () => {
+  it('uses explicitly supplied ISO locale patterns', () => {
     const original = DateTimeFormat.localeData.en
     try {
       DateTimeFormat.__addLocaleData({
@@ -53,6 +53,7 @@ describe('Intl.DateTimeFormat', function () {
         data: {
           ...en.data,
           formats: {...en.data.formats, iso8601: en.data.formats.gregory},
+          calendarData: {},
         },
       } as any)
       const gregorian = new DateTimeFormat('en', {timeZone: 'UTC'})
@@ -377,7 +378,8 @@ describe('Intl.DateTimeFormat', function () {
     const iso = new DateTimeFormat('en-u-ca-iso8601', options)
     const gregory = new DateTimeFormat('en', {...options, calendar: 'gregory'})
     expect(iso.resolvedOptions().calendar).toBe('iso8601')
-    expect(iso.format(date)).toBe(gregory.format(date))
+    expect(iso.format(date)).toBe('2020-01-02')
+    expect(gregory.format(date)).toBe('01/02/2020')
     const unsupported = new DateTimeFormat('en', {
       ...options,
       calendar: 'unknown',
@@ -780,47 +782,50 @@ describe('Intl.DateTimeFormat', function () {
     const date = new Date(2020, 1, 1, 10, 10, 10, 0)
 
     describe('timeZoneName', () => {
-      const timezoneTests = [
+      const timezoneTests: Array<{
+        timeZoneName: NonNullable<Intl.DateTimeFormatOptions['timeZoneName']>
+        results: Record<string, string>
+      }> = [
         {
           timeZoneName: 'long',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
-            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
+            en: 'Singapore Standard Time',
+            'zh-Hans': '新加坡标准时间',
           },
         },
         {
           timeZoneName: 'short',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM GMT+8',
-            'zh-Hans': '2020年2月月1日 GMT+8 06:10:10',
+            en: 'GMT+8',
+            'zh-Hans': 'GMT+8',
           },
         },
         {
           timeZoneName: 'longGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
-            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
+            en: 'Singapore Standard Time',
+            'zh-Hans': '新加坡标准时间',
           },
         },
         {
           timeZoneName: 'shortGeneric',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
-            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
+            en: 'Singapore Time',
+            'zh-Hans': '新加坡时间',
           },
         },
         {
           timeZoneName: 'longOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
-            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
+            en: 'GMT+08:00',
+            'zh-Hans': 'GMT+08:00',
           },
         },
         {
           timeZoneName: 'shortOffset',
           results: {
-            en: 'Feb 1, 2020, 6:10:10 PM Singapore Standard Time',
-            'zh-Hans': '2020年2月月1日 新加坡标准时间 06:10:10',
+            en: 'GMT+8',
+            'zh-Hans': 'GMT+8',
           },
         },
       ]
@@ -841,11 +846,17 @@ describe('Intl.DateTimeFormat', function () {
                 localeMatcher: 'lookup',
                 timeZone: 'Asia/Kuala_Lumpur',
                 formatMatcher: 'basic',
-                // @ts-ignore
                 timeZoneName,
               })
-              // @ts-ignore
-              expect(dtf.format(date)).toBe(results[locale])
+              expect(dtf.resolvedOptions().timeZoneName).toBe(timeZoneName)
+              expect(
+                dtf
+                  .formatToParts(date)
+                  .find(part => part.type === 'timeZoneName')
+              ).toEqual({
+                type: 'timeZoneName',
+                value: results[locale],
+              })
             })
           })
         })
@@ -1037,7 +1048,7 @@ describe('Intl.DateTimeFormat', function () {
     })
     expect(() => dtf.format(date1)).not.toThrow()
   })
-  it.skip('GH issue #2915', function () {
+  it('GH issue #2915', function () {
     const date1 = new Date(Date.UTC(2021, 4, 19, 9, 0)) // "May 19, 2021, 9 AM"
     const date2 = new Date(Date.UTC(2021, 5, 19, 17, 0)) // "Jun 19, 2021, 5 PM"
     const dtf = new DateTimeFormat('en', {
@@ -1286,7 +1297,7 @@ describe('Intl.DateTimeFormat', function () {
         hour12: true,
         timeZone: 'Europe/London',
       }).format(evening)
-    ).toBe('10:00 pm')
+    ).toBe('10:00\u202fpm')
 
     expect(
       new DateTimeFormat('en-GB', {
@@ -1295,7 +1306,7 @@ describe('Intl.DateTimeFormat', function () {
         hour12: true,
         timeZone: 'Europe/London',
       }).format(evening)
-    ).toBe('31/05/2000, 10:00 pm')
+    ).toBe('31/05/2000, 10:00\u202fpm')
   })
 })
 

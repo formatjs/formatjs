@@ -124,6 +124,7 @@ fn token(character: char, length: usize, fields: &mut Components) -> Result<&'st
         }
         'q' | 'Q' | 'w' | 'W' => Err(Error::InvalidPattern),
         'M' | 'L' => {
+            fields.month_standalone = Some(character == 'L');
             fields.month = Some(match length {
                 1 => Width::Numeric,
                 2 => Width::TwoDigit,
@@ -142,10 +143,12 @@ fn token(character: char, length: usize, fields: &mut Components) -> Result<&'st
             Ok("{day}")
         }
         'E' => {
+            fields.weekday_standalone = Some(false);
             fields.weekday = Some(text(length));
             Ok("{weekday}")
         }
         'e' | 'c' => {
+            fields.weekday_standalone = Some(character == 'c');
             fields.weekday = match length {
                 3 | 6 => Some(TextWidth::Short),
                 4 => Some(TextWidth::Long),
@@ -184,7 +187,16 @@ fn token(character: char, length: usize, fields: &mut Components) -> Result<&'st
             fields.second = Some(NumericWidth::Numeric);
             Ok("{second}")
         }
-        'z' | 'Z' | 'O' | 'v' | 'V' | 'X' | 'x' => {
+        'v' | 'O' => {
+            fields.time_zone_name = Some(match (character, length < 4) {
+                ('v', true) => ZoneWidth::ShortGeneric,
+                ('v', false) => ZoneWidth::LongGeneric,
+                (_, true) => ZoneWidth::ShortOffset,
+                (_, false) => ZoneWidth::LongOffset,
+            });
+            Ok("{timeZoneName}")
+        }
+        'z' | 'Z' | 'V' | 'X' | 'x' => {
             fields.time_zone_name = Some(if length < 4 {
                 ZoneWidth::Short
             } else {
@@ -383,35 +395,82 @@ pub fn split_range(pattern: &str) -> Vec<PatternPart> {
     append(&mut parts, pattern, end_end, pattern.len(), Source::Shared);
     parts
 }
+pub fn range_pattern_info(pattern: &str) -> (&str, Option<bool>) {
+    if let Some(pattern) = pattern.strip_prefix("latestFirst:") {
+        (pattern, Some(true))
+    } else if let Some(pattern) = pattern.strip_prefix("earliestFirst:") {
+        (pattern, Some(false))
+    } else {
+        (pattern, None)
+    }
+}
+
 pub fn parse(
     skeleton: &str,
     raw_pattern: &str,
     ranges: &RawPatterns,
     fallback: Option<&str>,
 ) -> Result<Format, Error> {
+    let processed = process(raw_pattern)?;
     let mut range_patterns = BTreeMap::new();
     let mut range_patterns12 = BTreeMap::new();
+    let default_reversed = fallback
+        .and_then(|pattern| pattern.find("{0}").zip(pattern.find("{1}")))
+        .is_some_and(|(first, last)| last < first);
+    let mut entries = Vec::new();
     for (key, value) in &ranges.0 {
-        let key = range_key(key)?.to_owned();
+        if key == "date" {
+            for field in ["G", "y", "M", "d"] {
+                if !ranges.0.iter().any(|(key, _)| key == field) {
+                    entries.push((field, value.as_str()));
+                }
+            }
+        } else {
+            entries.push((key.as_str(), value.as_str()));
+        }
+    }
+    for (key, value) in entries {
+        let key = if key == "fallback" {
+            "default"
+        } else {
+            range_key(key)?
+        }
+        .to_owned();
+        let (value, reversed) = range_pattern_info(value);
         let parsed = process(value)?;
+        let parts = |pattern: &str| {
+            let mut parts = split_range(pattern);
+            if reversed.unwrap_or(default_reversed) {
+                for part in &mut parts {
+                    part.source = match part.source {
+                        Source::StartRange => Source::EndRange,
+                        Source::EndRange => Source::StartRange,
+                        Source::Shared => Source::Shared,
+                    };
+                }
+            }
+            parts
+        };
         range_patterns.insert(
             key.clone(),
             RangePattern {
                 components: parsed.fields,
-                pattern_parts: split_range(&parsed.pattern),
+                pattern_parts: parts(&parsed.pattern),
             },
         );
         range_patterns12.insert(
             key,
             RangePattern {
                 components: parsed.fields,
-                pattern_parts: split_range(&parsed.pattern12),
+                pattern_parts: parts(&parsed.pattern12),
             },
         );
     }
-    if let Some(fallback) = fallback.filter(|value| !value.is_empty()) {
+    if let Some(fallback) =
+        fallback.filter(|value| !value.is_empty() && !range_patterns.contains_key("default"))
+    {
         let range = RangePattern {
-            components: Components::default(),
+            components: processed.fields,
             pattern_parts: split_fallback(fallback),
         };
         range_patterns.insert("default".into(), range.clone());
@@ -419,7 +478,8 @@ pub fn parse(
     }
     let mut components = Components::default();
     let (_, fields_mask) = replace_tokens(skeleton, &mut components)?;
-    let processed = process(raw_pattern)?;
+    components.month_standalone = processed.fields.month_standalone;
+    components.weekday_standalone = processed.fields.weekday_standalone;
     let year_fields: Vec<&str> = ["{relatedYear}", "{yearName}"]
         .into_iter()
         .filter(|field| processed.pattern.contains(field))
