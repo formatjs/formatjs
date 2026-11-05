@@ -12,6 +12,271 @@ import {describe, expect, it, test} from 'vitest'
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, zhHans, fa, nl, ru)
 DateTimeFormat.__addTZData(allData)
+describe('range parity', () => {
+  test('shares punctuation outside fallback endpoint fields', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      calendar: 'gregory',
+      timeZone: 'UTC',
+      timeStyle: 'long',
+    }
+    const start = Date.UTC(2024, 0, 15, 10, 15)
+    const end = Date.UTC(2024, 0, 15, 11, 45)
+    expect(
+      new DateTimeFormat('fa', options).formatRangeToParts(start, end)
+    ).toEqual(
+      new Intl.DateTimeFormat('fa', options).formatRangeToParts(start, end)
+    )
+  })
+  test('uses CLDR ISO 8601 patterns independently of Gregorian patterns', () => {
+    const formatter = new DateTimeFormat('en', {
+      calendar: 'iso8601',
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    })
+    expect(formatter.format(0)).toBe('1970-01-01')
+    expect(formatter.resolvedOptions().calendar).toBe('iso8601')
+  })
+  test.each([
+    ['America/New_York', 'ET'],
+    ['Europe/Paris', 'France Time'],
+    ['Asia/Kathmandu', 'Nepal Time'],
+    ['Pacific/Auckland', 'New Zealand Time'],
+    ['UTC', 'GMT+0'],
+  ])('uses generic timezone names for %s', (timeZone, value) => {
+    const formatter = new DateTimeFormat('en', {
+      timeZone,
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'shortGeneric',
+    })
+    expect(
+      formatter.formatToParts(0).find(part => part.type === 'timeZoneName')
+    ).toEqual({type: 'timeZoneName', value})
+  })
+  test('retains fractional seconds in date-spanning intervals', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      fractionalSecondDigits: 3,
+      hourCycle: 'h23',
+    }
+    const formatter = new DateTimeFormat('en', options)
+    const start = Date.UTC(2024, 0, 15, 10, 15, 0, 123)
+    const end = Date.UTC(2024, 0, 17, 10, 45, 0, 789)
+    expect(formatter.formatRangeToParts(start, end)).toEqual(
+      new Intl.DateTimeFormat('en', options).formatRangeToParts(start, end)
+    )
+  })
+  test('uses the preferred CLDR hour cycle independently of allowed cycles', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      calendar: 'gregory',
+      numberingSystem: 'latn',
+      timeZone: 'UTC',
+      hour: 'numeric',
+      minute: '2-digit',
+    }
+    const formatter = new DateTimeFormat('fa', options)
+    expect(formatter.resolvedOptions().hourCycle).toBe('h23')
+    expect(formatter.format(0)).toBe(
+      new Intl.DateTimeFormat('fa', options).format(0)
+    )
+  })
+  test('resolves CLDR timezone aliases before looking up names', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'Asia/Kathmandu',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'long',
+    }
+    const formatter = new DateTimeFormat('en', options)
+    expect(
+      formatter.formatToParts(0).find(part => part.type === 'timeZoneName')
+    ).toEqual({type: 'timeZoneName', value: 'Nepal Time'})
+  })
+  test.each(['en', 'en-GB', 'nl', 'zh-Hans'])(
+    '%s includes dates when a time-only range crosses midnight',
+    locale => {
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'UTC',
+        hour: 'numeric',
+        minute: '2-digit',
+      }
+      const formatter = new DateTimeFormat(locale, options)
+      const oracle = new Intl.DateTimeFormat(locale, options)
+      const start = Date.UTC(2024, 0, 15, 10, 15)
+      const end = Date.UTC(2024, 0, 17, 10, 45)
+      expect(formatter.formatRangeToParts(start, end)).toEqual(
+        oracle.formatRangeToParts(start, end)
+      )
+    }
+  )
+  test('retains matched textual date widths in interval records', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'UTC',
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+    const formatter = new DateTimeFormat('en', options)
+    const oracle = new Intl.DateTimeFormat('en', options)
+    const start = Date.UTC(2024, 0, 15)
+    const end = Date.UTC(2024, 0, 17)
+    expect(formatter.formatRangeToParts(start, end)).toEqual(
+      oracle.formatRangeToParts(start, end)
+    )
+  })
+  test('matches time-only intervals after hour width matching', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }
+    const formatter = new DateTimeFormat('en-GB', options)
+    const oracle = new Intl.DateTimeFormat('en-GB', options)
+    const start = Date.UTC(2026, 10, 6, 20)
+    const end = Date.UTC(2026, 10, 6, 21, 15)
+    expect(formatter.formatRangeToParts(start, end)).toEqual(
+      oracle.formatRangeToParts(start, end)
+    )
+  })
+  test('uses interval widths without changing single-date widths', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'UTC',
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    }
+    const formatter = new DateTimeFormat('en', options)
+    const oracle = new Intl.DateTimeFormat('en', options)
+    const start = Date.UTC(2026, 10, 6, 5)
+    const end = Date.UTC(2026, 10, 6, 6, 15)
+    const single = formatter.formatToParts(start)
+    expect(formatter.formatRangeToParts(start, end)).toEqual(
+      oracle.formatRangeToParts(start, end)
+    )
+    expect(formatter.formatToParts(start)).toEqual(single)
+    expect(single.find(part => part.type === 'hour')?.value).toBe('05')
+    expect(formatter.resolvedOptions().hour).toBe('2-digit')
+  })
+  test('keeps both AM/PM values across noon when no AM/PM interval exists', () => {
+    const formatter = new DateTimeFormat('ru', {
+      timeZone: 'UTC',
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+    const parts = formatter.formatRangeToParts(
+      Date.UTC(2026, 10, 6, 11),
+      Date.UTC(2026, 10, 6, 12, 15)
+    )
+    expect(
+      parts
+        .filter(part => part.type === 'dayPeriod')
+        .map(({value, source}) => ({value, source}))
+    ).toEqual([
+      {value: 'AM', source: 'startRange'},
+      {value: 'PM', source: 'endRange'},
+    ])
+  })
+  test('combines date and time style intervals with a shared date', () => {
+    const options: Intl.DateTimeFormatOptions = {
+      timeZone: 'UTC',
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }
+    const formatter = new DateTimeFormat('en-GB', options)
+    const oracle = new Intl.DateTimeFormat('en-GB', options)
+    const start = Date.UTC(2026, 10, 6, 20)
+    const end = Date.UTC(2026, 10, 6, 21, 15)
+    expect(formatter.formatRangeToParts(start, end)).toEqual(
+      oracle.formatRangeToParts(start, end)
+    )
+  })
+})
+describe('ICU shares dates across hidden day-period boundaries', () => {
+  for (const locale of ['en', 'en-GB', 'nl', 'ru', 'fa', 'zh-Hans']) {
+    for (const hour12 of [false, true]) {
+      test(`${locale}, hour12=${hour12}`, () => {
+        const options: Intl.DateTimeFormatOptions = {
+          timeZone: 'UTC',
+          calendar: 'gregory',
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12,
+        }
+        const formatter = new DateTimeFormat(locale, options)
+        const oracle = new Intl.DateTimeFormat(locale, options)
+        for (const [startHour, endHour] of [
+          [5, 6],
+          [11, 12],
+          [17, 18],
+          [20, 21],
+        ]) {
+          const start = Date.UTC(2026, 10, 6, startHour)
+          const end = Date.UTC(2026, 10, 6, endHour, 15)
+          const sources = (parts: {type: string; source?: string}[]) =>
+            parts
+              .filter(part => ['weekday', 'month', 'day'].includes(part.type))
+              .map(({type, source}) => ({type, source}))
+          expect(sources(formatter.formatRangeToParts(start, end))).toEqual(
+            sources(oracle.formatRangeToParts(start, end))
+          )
+        }
+      })
+    }
+  }
+})
+test('GH issue #7868 - hidden day periods do not repeat the date', () => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Amsterdam',
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+  expect(
+    formatter.formatRange(
+      new Date('2026-11-06T19:00:00Z'),
+      new Date('2026-11-06T20:15:00Z')
+    )
+  ).toBe('Fri 6 Nov, 20:00–21:15')
+})
+test('shares date fields when combining date and time styles', () => {
+  const formatter = new DateTimeFormat('fa', {
+    calendar: 'gregory',
+    timeZone: 'Pacific/Auckland',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+  const parts = formatter.formatRangeToParts(1730613599000, 1730613600000)
+  expect(
+    parts
+      .filter(part => ['year', 'month', 'day'].includes(part.type))
+      .map(part => part.type)
+  ).toEqual(['day', 'month', 'year'])
+  expect(
+    parts
+      .filter(part => ['year', 'month', 'day'].includes(part.type))
+      .every(part => part.source === 'shared')
+  ).toBe(true)
+})
 describe('DateTimeFormat range format', function () {
   it('basic', function () {
     const d1 = new Date(2020, 1, 1)
@@ -392,8 +657,7 @@ test('default formatRange pattern (short), #2474', function () {
   )
 })
 
-// TODO: This is still off
-test.skip('default formatRange pattern (long), #2474', function () {
+test('default formatRange pattern (long), #2474', function () {
   const dtf = new DateTimeFormat('en', {
     year: 'numeric',
     month: 'long',
@@ -545,7 +809,7 @@ test('GH issue #4535 - en locale with hour12:true should not duplicate date (2-d
     new Date('2024-09-22T14:00:00'),
     new Date('2024-09-22T16:00:00')
   )
-  expect(result).toBe('Sun, Sep 22, 02:00\u2009\u2013\u200904:00\u202fPM')
+  expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
 })
 
 describe('GH issue #4535 - shared parts in formatRange', function () {
@@ -690,7 +954,7 @@ describe('GH issue #4535 - shared parts in formatRange', function () {
       new Date('2024-09-22T14:00:00'),
       new Date('2024-09-22T16:00:00')
     )
-    expect(result).toBe('Sun, Sep 22, 02:00\u2009\u2013\u200904:00\u202fPM')
+    expect(result).toBe('Sun, Sep 22, 2:00\u2009\u2013\u20094:00\u202fPM')
   })
 })
 
@@ -837,3 +1101,144 @@ it.each([
     formatter.formatRange(start, end)
   )
 })
+
+it('uses CLDR fallback hour width independently of single-date width', () => {
+  const formatter = new DateTimeFormat('en-GB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  const start = Date.UTC(2024, 0, 15, 5, 15)
+  const end = Date.UTC(2024, 0, 17, 5, 45)
+  expect(
+    formatter.formatToParts(start).find(part => part.type === 'hour')?.value
+  ).toBe('5')
+  expect(
+    formatter
+      .formatRangeToParts(start, end)
+      .filter(part => part.type === 'hour')
+      .map(part => part.value)
+  ).toEqual(['05', '05'])
+})
+
+it('formats shared timezone fields from the start endpoint across DST', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'America/New_York',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'long',
+  })
+  const start = Date.UTC(2024, 2, 10, 6, 59)
+  const end = Date.UTC(2024, 2, 10, 7)
+  expect(
+    formatter
+      .formatRangeToParts(start, end)
+      .filter(part => part.type === 'timeZoneName')
+  ).toEqual([{type: 'timeZoneName', value: 'EST', source: 'shared'}])
+})
+
+it('retains both flexible periods when their boundary precedes the hour difference', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: '2-digit',
+    hourCycle: 'h12',
+    dayPeriod: 'long',
+  })
+  expect(
+    formatter
+      .formatRangeToParts(
+        Date.UTC(2026, 10, 6, 17),
+        Date.UTC(2026, 10, 6, 18, 15)
+      )
+      .filter(part => part.type === 'dayPeriod')
+  ).toEqual([
+    {type: 'dayPeriod', value: 'in the afternoon', source: 'startRange'},
+    {type: 'dayPeriod', value: 'in the evening', source: 'endRange'},
+  ])
+})
+
+it('uses the closest CLDR zoned fallback independently of single-date widths', () => {
+  const formatter = new DateTimeFormat('fa', {
+    calendar: 'gregory',
+    numberingSystem: 'latn',
+    timeZone: 'America/New_York',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'long',
+  })
+  const start = Date.UTC(2024, 0, 15, 10, 15)
+  const end = Date.UTC(2024, 0, 17, 10, 45)
+  expect(
+    formatter.formatToParts(start).find(part => part.type === 'hour')?.value
+  ).toBe('5')
+  expect(
+    formatter
+      .formatRangeToParts(start, end)
+      .filter(part => part.type === 'hour')
+      .map(part => part.value)
+  ).toEqual(['05', '05'])
+})
+
+it('uses numeric CLDR dates for combined medium-style intervals', () => {
+  const formatter = new DateTimeFormat('zh', {
+    timeZone: 'UTC',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+  const start = Date.UTC(2024, 0, 15, 10, 15)
+  expect(formatter.formatRange(start, Date.UTC(2024, 0, 15, 11, 45))).toBe(
+    '2024/1/15 10:15–11:45'
+  )
+  expect(formatter.formatRange(start, Date.UTC(2024, 0, 17, 10, 45))).toBe(
+    '2024/1/15 10:15 – 2024/1/17 10:45'
+  )
+})
+
+it('uses complete fallback endpoints when an AM/PM interval is absent', () => {
+  const base = en as unknown as Parameters<
+    typeof DateTimeFormat.__addLocaleData
+  >[0]
+  DateTimeFormat.__addLocaleData({
+    ...base,
+    locale: 'en-XA',
+    data: {
+      ...base.data,
+      calendarData: {},
+      ca: ['gregory'],
+      formats: {gregory: {hm: 'h:mm a'}},
+      intervalFormats: {
+        intervalFormatFallback: '{0} – {1}',
+        hm: {h: 'h:mm–h:mm a', m: 'h:mm–h:mm a'},
+      },
+    },
+  })
+  const formatter = new DateTimeFormat('en-XA', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
+  expect(
+    formatter.formatRange(Date.UTC(2024, 0, 15, 1), Date.UTC(2024, 0, 15, 13))
+  ).toBe('1:00 AM – 1:00 PM')
+})
+
+it.each(['h11', 'h12'] as const)(
+  'keeps default CLDR spacing for en-GB %s',
+  hourCycle => {
+    const formatter = new DateTimeFormat('en-GB', {
+      timeZone: 'UTC',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle,
+    })
+    expect(formatter.format(Date.UTC(2024, 0, 15, 12))).toBe(
+      `${hourCycle === 'h11' ? '00' : '12'}:00\u202fpm`
+    )
+  }
+)

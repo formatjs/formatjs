@@ -22,6 +22,8 @@ export type Formats = Pick<
 > & {
   fractionalSecondDigits?: 1 | 2 | 3
   hour12?: boolean
+  monthStandalone?: boolean
+  weekdayStandalone?: boolean
   pattern: string
   pattern12: string
   skeleton: string
@@ -77,12 +79,16 @@ export type RangePatterns = Pick<
   | 'year'
   | 'month'
   | 'day'
+  | 'dayPeriod'
   | 'hour'
   | 'minute'
   | 'second'
   | 'timeZoneName'
 > & {
   hour12?: boolean
+  monthStandalone?: boolean
+  weekdayStandalone?: boolean
+  fractionalSecondDigits?: 1 | 2 | 3
   patternParts: Array<RangePatternPart>
 }
 
@@ -122,6 +128,8 @@ export type TimeZoneNameData = Record<
   {
     long?: [string, string]
     short?: [string, string]
+    shortGeneric?: string
+    longGeneric?: string
   }
 >
 
@@ -198,6 +206,12 @@ export interface DateTimeFormatLocaleInternalData {
   dateFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   timeFormat: {full: Formats; long: Formats; medium: Formats; short: Formats}
   dateTimeFormat: {full: string; long: string; medium: string; short: string}
+  dateTimeFormatAtTime?: {
+    full: string
+    long: string
+    medium: string
+    short: string
+  }
   /**
    * Interval format fallback pattern from CLDR (e.g., "{0} – {1}" for English, "{0}～{1}" for Japanese)
    * Used when no specific interval format is available for a given skeleton
@@ -209,9 +223,10 @@ export interface DateTimeFormatLocaleInternalData {
   ca: string[]
 }
 
-export type IntervalFormatsData = {
+export interface IntervalFormatsData {
   intervalFormatFallback: string
-} & Record<string, Record<string, string>>
+  [skeleton: string]: string | Record<string, string>
+}
 
 export interface TemporalDateTimeInput {
   readonly [Symbol.toStringTag]: `Temporal.${Exclude<TemporalDateTimeKind, 'ZonedDateTime'>}`

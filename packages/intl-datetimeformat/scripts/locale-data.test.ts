@@ -16,11 +16,12 @@ const gregorian = {
   ...expected,
   data: {
     ...base,
+    calendarData: {iso8601: calendarData.iso8601},
     formats: {gregory: formats.gregory, iso8601: formats.iso8601},
   },
 }
 
-test('base locale registers only Gregorian patterns', () => {
+test('base locale registers Gregorian and ISO 8601 patterns', () => {
   const registered: unknown[] = []
   runInNewContext(source, {
     Intl: {
@@ -82,7 +83,9 @@ test('calendar locale module queues before installation', () => {
 })
 
 test('CLDR data covers every registered calendar', () => {
-  expect(Object.keys(calendarData).sort()).toEqual([...calendars].sort())
+  expect(Object.keys(calendarData).sort()).toEqual(
+    [...calendars, 'iso8601'].sort()
+  )
   for (const calendar of [...calendars]) {
     expect(formats[calendar], calendar).toBeDefined()
   }

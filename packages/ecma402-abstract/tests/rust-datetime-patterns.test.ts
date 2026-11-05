@@ -43,7 +43,7 @@ function run<T = unknown>(requests: unknown[]): T[] {
   const result = spawnSync(executable, [], {
     input: requests.map(value => JSON.stringify(value)).join('\n') + '\n',
     encoding: 'utf8',
-    maxBuffer: 128 * 1024 * 1024,
+    maxBuffer: 512 * 1024 * 1024,
   })
   if (result.error) throw result.error
   expect(result.status, result.stderr).toBe(0)
@@ -87,6 +87,12 @@ it('matches LDML widths, quoting, Unicode whitespace and calendar interval field
     {y: 'y–y MMM d', d: 'MMM d–d, y'},
     {U: 'U年MMM d–d', r: 'r年MMM d–d'},
     {h: 'h:mm–h:mm a', B: 'h B–h B'},
+    {d: 'latestFirst:MMM d – d, y', M: 'earliestFirst:MMM d – MMM d, y'},
+    {
+      date: 'y-MM-dd HH:mm – y-MM-dd HH:mm',
+      M: 'MMM d – MMM d',
+      fallback: 'MMM d HH:mm – HH:mm',
+    },
   ]
   for (const skeleton of [
     'yMd',
@@ -366,6 +372,7 @@ it('matches real CLDR patterns and format matching across calendar and language 
       'dateFormat',
       'timeFormat',
       'dateTimeFormat',
+      'dateTimeFormatAtTime',
       'formats',
       'intervalFormats',
       'calendarData',
@@ -396,7 +403,8 @@ it('matches real CLDR patterns and format matching across calendar and language 
               styles: {
                 date: fields.dateFormat,
                 time: fields.timeFormat,
-                connector: fields.dateTimeFormat,
+                connector: fields.dateTimeFormatAtTime || fields.dateTimeFormat,
+                rangeConnector: fields.dateTimeFormat,
               },
               formats: registered.formats[calendar],
             },
@@ -416,7 +424,9 @@ it('matches real CLDR patterns and format matching across calendar and language 
         styles: {
           date: referenceData.dateFormat,
           time: referenceData.timeFormat,
-          connector: referenceData.dateTimeFormat,
+          connector:
+            referenceData.dateTimeFormatAtTime || referenceData.dateTimeFormat,
+          rangeConnector: referenceData.dateTimeFormat,
         },
       })
       const raw = Object.entries(patterns).map(
@@ -492,7 +502,7 @@ it('matches real CLDR patterns and format matching across calendar and language 
       calendarCount++
     }
   }
-  expect(calendarCount).toBe(120)
+  expect(calendarCount).toBe(128)
   expect(patternCount).toBeGreaterThan(70000)
 }, 300000)
 

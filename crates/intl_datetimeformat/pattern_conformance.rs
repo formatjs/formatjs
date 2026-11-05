@@ -718,6 +718,7 @@ fn run(request: Request) -> Result<Value, Error> {
             let data = StyleData {
                 date: styles(data.date)?,
                 time: styles(data.time)?,
+                range_connector: data.connector.clone(),
                 connector: data.connector,
             };
             serde_json::to_value(matching::style(

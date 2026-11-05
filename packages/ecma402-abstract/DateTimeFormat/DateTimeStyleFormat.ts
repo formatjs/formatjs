@@ -1,10 +1,64 @@
 import {
   type DateTimeFormatLocaleInternalData,
   type Formats,
+  type RangePatterns,
+  type TABLE_2,
+  RangePatternType,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+
+function combineStyleRanges(
+  date: Formats,
+  ranges: Formats['rangePatterns'],
+  connector: string,
+  timePattern: string,
+  fallbackConnector: string
+): Formats['rangePatterns'] {
+  const result = Object.create(null) as Formats['rangePatterns']
+  const fields = Object.create(null) as Partial<RangePatterns>
+  fields.monthStandalone = date.monthStandalone
+  fields.weekdayStandalone = date.weekdayStandalone
+  for (const field of DATE_TIME_PROPS) {
+    if (date[field] !== undefined) fields[field] = date[field] as never
+  }
+  for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
+    if (['era', 'year', 'month', 'day'].includes(field)) continue
+    const range = ranges[field]
+    let combined: string
+    const reversed =
+      range.patternParts.find(part => part.source !== RangePatternType.shared)
+        ?.source === RangePatternType.endRange
+    if (field === 'default') {
+      const endpoint = fallbackConnector
+        .replace('{0}', timePattern)
+        .replace('{1}', date.pattern)
+      combined = range.patternParts
+        .map(part =>
+          part.pattern === '{0}' || part.pattern === '{1}'
+            ? endpoint
+            : part.pattern
+        )
+        .join('')
+    } else {
+      combined = connector
+        .replace('{0}', range.patternParts.map(part => part.pattern).join(''))
+        .replace('{1}', date.pattern)
+    }
+    const patternParts = splitRangePattern(combined)
+    if (reversed)
+      for (const part of patternParts) {
+        if (part.source === 'startRange')
+          part.source = RangePatternType.endRange
+        else if (part.source === 'endRange')
+          part.source = RangePatternType.startRange
+      }
+    result[field] = {...fields, ...range, patternParts}
+  }
+  return result
+}
 
 function getTimeStyleFormat(
   timeStyle: Intl.DateTimeFormatOptions['timeStyle'],
@@ -87,7 +141,9 @@ export function DateTimeStyleFormat(
         format[field] = timeFormat[field]
       }
     }
-    const connector = dataLocaleData.dateTimeFormat[dateStyle]
+    const connector = (dataLocaleData.dateTimeFormatAtTime ||
+      dataLocaleData.dateTimeFormat)[dateStyle]
+    const rangeConnector = dataLocaleData.dateTimeFormat[dateStyle]
     const pattern = connector
       .replace('{0}', timeFormat!.pattern)
       .replace('{1}', dateFormat!.pattern)
@@ -99,14 +155,36 @@ export function DateTimeStyleFormat(
       format.pattern12 = pattern12
     }
 
+    const rangeDateFormat =
+      dateStyle === 'medium' &&
+      (dateFormat!.month === 'numeric' || dateFormat!.month === '2-digit')
+        ? {
+            ...dateFormat!,
+            pattern:
+              formats.find(format => format.skeleton === 'yMd')?.pattern ||
+              dateFormat!.pattern,
+          }
+        : dateFormat!
     // Merge rangePatterns from timeFormat (for time-related differences)
     // This is needed for formatRange to work with dateStyle/timeStyle
     // See: https://github.com/formatjs/formatjs/issues/4168
     if (timeFormat!.rangePatterns) {
-      format.rangePatterns = timeFormat!.rangePatterns
+      format.rangePatterns = combineStyleRanges(
+        rangeDateFormat,
+        timeFormat!.rangePatterns,
+        rangeConnector,
+        timeFormat!.pattern,
+        connector
+      )
     }
     if (timeFormat!.rangePatterns12) {
-      format.rangePatterns12 = timeFormat!.rangePatterns12
+      format.rangePatterns12 = combineStyleRanges(
+        rangeDateFormat,
+        timeFormat!.rangePatterns12,
+        rangeConnector,
+        timeFormat!.pattern12,
+        connector
+      )
     }
 
     return format

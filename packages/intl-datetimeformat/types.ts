@@ -39,6 +39,7 @@ export type RawDateTimeLocaleInternalData = Omit<
   | 'dateTimeFormat'
   | 'formats'
   | 'intervalFormats'
+  | 'intervalFormatFallback'
   | 'calendarData'
 > & {
   calendarData?: Record<
@@ -53,6 +54,7 @@ export type RawDateTimeLocaleInternalData = Omit<
       | 'dateFormat'
       | 'timeFormat'
       | 'dateTimeFormat'
+      | 'dateTimeFormatAtTime'
       | 'intervalFormats'
     >
   >
@@ -73,6 +75,8 @@ export type TimeZoneNameData = Record<
   {
     long?: [string, string]
     short?: [string, string]
+    shortGeneric?: string
+    longGeneric?: string
   }
 >
 

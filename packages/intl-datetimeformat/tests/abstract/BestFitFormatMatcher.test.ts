@@ -700,6 +700,7 @@ test('test #2291', function () {
     minute: '2-digit',
     month: 'numeric',
     pattern: '{year}年{month}月{day}日 {hour}:{minute}:{second}',
+    monthStandalone: false,
     pattern12: '{year}年{month}月{day}日 {ampm}{hour}:{minute}:{second}',
     rangePatterns: {},
     rangePatterns12: {},

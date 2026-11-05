@@ -9,6 +9,19 @@ exports_files([
 ])
 
 cc_test(
+    name = "intl_datetimeformat_range_conformance_test",
+    size = "small",
+    srcs = ["datetimeformat_range.cc"],
+    data = ["//conformance-tests/icu4j:date_time_range_boundary_fixtures"],
+    env = {"DATETIMEFORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:date_time_range_boundary_fixtures)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "intl_relativetimeformat_conformance_test",
     size = "small",
     srcs = ["relativetime.cc"],
@@ -112,5 +125,15 @@ genrule(
         "@platforms//os:linux",
     ],
     tools = [":intl_numberformat_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "date_time_format_range_fixtures",
+    testonly = True,
+    srcs = ["//conformance-tests/icu4j:date_time_format_fixtures"],
+    outs = ["date-time-format-range-fixtures.tsv"],
+    cmd = "$(location :intl_datetimeformat_range_conformance_test) $(location //conformance-tests/icu4j:date_time_format_fixtures) > $@",
+    tools = [":intl_datetimeformat_range_conformance_test"],
     visibility = ["//visibility:public"],
 )

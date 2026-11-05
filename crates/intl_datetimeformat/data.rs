@@ -64,6 +64,10 @@ pub struct TimeZoneNames {
     pub long: Option<[String; 2]>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub short: Option<[String; 2]>,
+    #[serde(rename = "shortGeneric", skip_serializing_if = "Option::is_none")]
+    pub short_generic: Option<String>,
+    #[serde(rename = "longGeneric", skip_serializing_if = "Option::is_none")]
+    pub long_generic: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -113,6 +117,7 @@ struct RawCalendar {
     date_format: Styles<String>,
     time_format: Styles<String>,
     date_time_format: Styles<String>,
+    date_time_format_at_time: Option<Styles<String>>,
     interval_formats: IntervalFormats,
 }
 
@@ -143,6 +148,7 @@ impl RawCalendar {
                 date_format: self.date_format,
                 time_format: self.time_format,
                 date_time_format: self.date_time_format,
+                date_time_format_at_time: self.date_time_format_at_time,
                 interval_formats: self.interval_formats,
             },
             formats: OnceLock::new(),
@@ -282,9 +288,6 @@ impl LocaleData {
         }
         let mut calendars = BTreeMap::new();
         for (calendar, formats) in data.formats.0 {
-            if calendar == "iso8601" {
-                continue;
-            }
             let mut raw = data
                 .calendar_data
                 .get(&calendar)
@@ -300,7 +303,9 @@ impl LocaleData {
         if !gregory_override {
             gregory.styles()?;
         }
-        let iso = if gregory_override || data.calendar_data.contains_key("iso8601") {
+        let iso = if let Some(iso) = calendars.get("iso8601") {
+            iso.clone()
+        } else if gregory_override || data.calendar_data.contains_key("iso8601") {
             let mut raw = data
                 .calendar_data
                 .get("iso8601")

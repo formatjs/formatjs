@@ -10,6 +10,8 @@ import {
   type Formats,
   type TemporalDateTimeKind,
   type IntlDateTimeFormatInternal,
+  type RangePatterns,
+  type TABLE_2,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   invariant,
@@ -21,6 +23,72 @@ import {BestFitFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/Be
 import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.js'
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+
+function matchRangeWidths(
+  ranges: Formats['rangePatterns'],
+  format: IntlDateTimeFormatInternal,
+  options: Opt
+): Formats['rangePatterns'] {
+  // CLDR matching adjusts textual date fields; interval time widths stay independent.
+  // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
+  const widths = Object.create(null) as Partial<RangePatterns>
+  for (const field of ['weekday', 'month'] as const) {
+    const width = format[field]
+    if (width === 'narrow' || width === 'short' || width === 'long')
+      widths[field] = width
+  }
+  if (format.era === 'narrow') widths.era = 'narrow'
+  if (
+    !Object.keys(widths).length &&
+    format.timeZoneName === undefined &&
+    options.dayPeriod === undefined &&
+    options.fractionalSecondDigits === undefined
+  )
+    return ranges
+  const result = Object.create(null) as Formats['rangePatterns']
+  for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
+    const range = ranges[field]
+    const zoneWidth = range.timeZoneName?.startsWith('long') ? 'long' : 'short'
+    const timeZoneName = ['era', 'year', 'month', 'day'].includes(field)
+      ? format.timeZoneName
+      : range.timeZoneName && format.timeZoneName
+        ? (`${zoneWidth}${
+            format.timeZoneName.endsWith('Generic')
+              ? 'Generic'
+              : format.timeZoneName.endsWith('Offset')
+                ? 'Offset'
+                : ''
+          }` as RangePatterns['timeZoneName'])
+        : range.timeZoneName
+    result[field] = {
+      ...range,
+      ...widths,
+      ...(range.weekdayStandalone && range.weekday
+        ? {weekday: range.weekday}
+        : {}),
+      ...(range.month === 'numeric' || range.month === '2-digit'
+        ? {month: range.month}
+        : {}),
+      ...(timeZoneName ? {timeZoneName} : {}),
+      ...(options.fractionalSecondDigits !== undefined
+        ? {fractionalSecondDigits: options.fractionalSecondDigits}
+        : {}),
+      ...(options.dayPeriod !== undefined && range.dayPeriod === undefined
+        ? {dayPeriod: options.dayPeriod}
+        : {}),
+      patternParts: range.patternParts.map(part => ({
+        ...part,
+        pattern: applyExplicitTimePatternOptions(
+          part.pattern,
+          options,
+          format.locale,
+          format.numberingSystem
+        ),
+      })),
+    }
+  }
+  return result
+}
 
 function isTimeRelated(opt: Opt) {
   for (const prop of ['hour', 'minute', 'second'] as Array<
@@ -83,13 +151,13 @@ function applyExplicitTimePatternOptions(
       decimal !== undefined,
       'Missing decimal separator for fractional seconds'
     )
-    pattern = pattern.replace(
+    pattern = pattern.replaceAll(
       '{second}',
       `{second}${decimal}{fractionalSecondDigits}`
     )
   }
   if (opt.dayPeriod !== undefined) {
-    pattern = pattern.replace('{ampm}', '{dayPeriod}')
+    pattern = pattern.replaceAll('{ampm}', '{dayPeriod}')
   }
   return pattern
 }
@@ -451,7 +519,11 @@ export function InitializeDateTimeFormat(
     internalSlots.numberingSystem
   )
   internalSlots.pattern = pattern
-  internalSlots.rangePatterns = rangePatterns
+  internalSlots.rangePatterns = matchRangeWidths(
+    rangePatterns,
+    internalSlots,
+    opt
+  )
   // Temporal GetDateTimeFormat and AdjustDateTimeStyleFormat use the original
   // component record. Cache variants without rereading the caller's options.
   // https://tc39.es/proposal-temporal/#sec-getdatetimeformat
@@ -562,9 +634,11 @@ export function InitializeDateTimeFormat(
       slots.locale,
       slots.numberingSystem
     )
-    slots.rangePatterns = use12
-      ? selected.rangePatterns12
-      : selected.rangePatterns
+    slots.rangePatterns = matchRangeWidths(
+      use12 ? selected.rangePatterns12 : selected.rangePatterns,
+      slots,
+      selectedOptions
+    )
     slots.format = selected
     temporalFormats.set(kind, slots)
     return slots

@@ -1,10 +1,18 @@
 use crate::{
     Error,
-    fields::{Field, Value},
+    fields::{Components, Field, Value},
     matching::{StyleData, Styles},
     pattern::{self, Format, RawPatterns},
 };
 use serde::Deserialize;
+use std::{collections::HashMap, sync::OnceLock};
+
+#[derive(Debug, Clone)]
+struct IntervalCandidate {
+    index: usize,
+    fields: Components,
+    context: Components,
+}
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -12,23 +20,52 @@ pub struct IntervalFormats {
     pub interval_format_fallback: String,
     #[serde(flatten)]
     pub patterns: RawPatterns<RawPatterns>,
+    #[serde(skip)]
+    lookup: OnceLock<HashMap<String, usize>>,
+    #[serde(skip)]
+    candidates: OnceLock<Result<Vec<IntervalCandidate>, Error>>,
+    #[serde(skip)]
+    groups: OnceLock<HashMap<u16, Vec<usize>>>,
+}
+
+fn interval_signature(fields: Components) -> u16 {
+    let mask = Field::ALL.into_iter().fold(0, |mask, field| {
+        mask | if fields.get(field).is_some() {
+            field.bit()
+        } else {
+            0
+        }
+    });
+    mask | if fields.hour12 == Some(true) {
+        1 << 14
+    } else {
+        0
+    } | if fields.month.map(Value::Width).is_some_and(Value::numeric) {
+        1 << 15
+    } else {
+        0
+    }
 }
 
 impl IntervalFormats {
     fn exact(&self, skeleton: &str) -> Option<&RawPatterns> {
-        self.patterns
-            .0
-            .iter()
-            .find(|(key, _)| key == skeleton)
-            .map(|(_, value)| value)
+        let lookup = self.lookup.get_or_init(|| {
+            self.patterns
+                .0
+                .iter()
+                .enumerate()
+                .map(|(index, (key, _))| (key.clone(), index))
+                .collect()
+        });
+        lookup.get(skeleton).map(|index| &self.patterns.0[*index].1)
     }
 
-    pub fn find(&self, skeleton: &str) -> Result<Option<&RawPatterns>, Error> {
+    pub fn find(&self, skeleton: &str, raw: &str) -> Result<Option<&RawPatterns>, Error> {
         if let Some((date, time)) = skeleton.split_once(", ") {
             let mut canonical = String::new();
             for character in time.chars() {
                 if character.is_ascii_alphabetic()
-                    && !matches!(character, 'a' | 'b' | 'B')
+                    && !matches!(character, 'a' | 'b')
                     && !canonical.ends_with(character)
                 {
                     canonical.push(character);
@@ -38,17 +75,57 @@ impl IntervalFormats {
                 return Ok(Some(value));
             }
         }
-        let target = pattern::process(skeleton)?.fields;
-        if target.hour.is_some()
-            || target.minute.is_some()
-            || target.second.is_some()
-            || target.day_period.is_some()
-            || target.time_zone_name.is_some()
+        let target = pattern::process(raw)?.fields;
+        let mut best = None;
+        let mut best_score = usize::MAX;
+        let candidates = self
+            .candidates
+            .get_or_init(|| {
+                self.patterns
+                    .0
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, (_, value))| !value.0.is_empty())
+                    .map(|(index, (key, value))| {
+                        Ok(IntervalCandidate {
+                            index,
+                            fields: pattern::process(key)?.fields,
+                            context: pattern::process(
+                                pattern::range_pattern_info(&value.0[0].1).0,
+                            )?
+                            .fields,
+                        })
+                    })
+                    .collect()
+            })
+            .as_ref()
+            .map_err(|error| *error)?;
+        let groups = self.groups.get_or_init(|| {
+            let mut groups: HashMap<u16, Vec<usize>> = HashMap::new();
+            for (index, entry) in candidates.iter().enumerate() {
+                groups
+                    .entry(interval_signature(entry.fields))
+                    .or_default()
+                    .push(index);
+            }
+            groups
+        });
+        for index in groups
+            .get(&interval_signature(target))
+            .into_iter()
+            .flatten()
         {
-            return Ok(None);
-        }
-        for (key, value) in &self.patterns.0 {
-            let candidate = pattern::process(key)?.fields;
+            let entry = &candidates[*index];
+            let candidate = entry.fields;
+            let value = &self.patterns.0[entry.index].1;
+            if target.weekday_standalone == Some(true)
+                && entry.context.weekday_standalone == Some(false)
+            {
+                continue;
+            }
+            if (target.hour12 == Some(true)) != (candidate.hour12 == Some(true)) {
+                continue;
+            }
             if target.month.map(Value::Width).is_some_and(Value::numeric)
                 != candidate
                     .month
@@ -61,24 +138,51 @@ impl IntervalFormats {
                 .into_iter()
                 .all(|field| target.get(field).is_some() == candidate.get(field).is_some())
             {
-                return Ok(Some(value));
+                let score = Field::ALL
+                    .into_iter()
+                    .map(|field| {
+                        if field == Field::TimeZoneName || target.get(field) == candidate.get(field)
+                        {
+                            0
+                        } else if field == Field::Month {
+                            2
+                        } else {
+                            1
+                        }
+                    })
+                    .sum();
+                if score < best_score {
+                    best = Some(value);
+                    best_score = score;
+                }
             }
         }
-        Ok(None)
+        Ok(best)
     }
 
     fn parse(&self, skeleton: &str, raw: &str, exact: bool) -> Result<Format, Error> {
-        let ranges = if exact { self.exact(skeleton) } else { None };
-        let ranges = match ranges {
-            Some(value) => Some(value),
-            None => self.find(skeleton)?,
-        };
-        pattern::parse(
+        let ranges = self.find(skeleton, raw)?;
+        let mut format = pattern::parse(
             skeleton,
             raw,
             ranges.unwrap_or(&RawPatterns::default()),
             Some(&self.interval_format_fallback),
-        )
+        )?;
+        if !exact {
+            for ranges in [&mut format.range_patterns, &mut format.range_patterns12] {
+                for (key, range) in ranges.iter_mut() {
+                    if key != "default" {
+                        continue;
+                    }
+                    for field in Field::ALL {
+                        if format.components.get(field).is_some() {
+                            range.components.set_from(field, format.components);
+                        }
+                    }
+                }
+            }
+        }
+        Ok(format)
     }
 }
 
@@ -89,6 +193,7 @@ pub struct CalendarPatterns {
     pub date_format: Styles<String>,
     pub time_format: Styles<String>,
     pub date_time_format: Styles<String>,
+    pub date_time_format_at_time: Option<Styles<String>>,
     pub interval_formats: IntervalFormats,
 }
 
@@ -112,16 +217,23 @@ impl CalendarPatterns {
                 short: self.interval_formats.parse(&raw.short, &raw.short, false)?,
             })
         };
-        let connector = &self.date_time_format;
-        Ok(StyleData {
-            date: parse(&self.date_format)?,
-            time: parse(&self.time_format)?,
-            connector: Styles {
+        let connectors = |connector: &Styles<String>| -> Result<Styles<String>, Error> {
+            Ok(Styles {
                 full: pattern::process(&connector.full)?.pattern,
                 long: pattern::process(&connector.long)?.pattern,
                 medium: pattern::process(&connector.medium)?.pattern,
                 short: pattern::process(&connector.short)?.pattern,
-            },
+            })
+        };
+        Ok(StyleData {
+            date: parse(&self.date_format)?,
+            time: parse(&self.time_format)?,
+            connector: connectors(
+                self.date_time_format_at_time
+                    .as_ref()
+                    .unwrap_or(&self.date_time_format),
+            )?,
+            range_connector: connectors(&self.date_time_format)?,
         })
     }
 }

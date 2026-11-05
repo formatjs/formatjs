@@ -205,7 +205,11 @@ impl DateTimeFormat {
             {
                 Components::default()
             } else {
-                self.main.components
+                Components {
+                    month_standalone: None,
+                    weekday_standalone: None,
+                    ..self.main.components
+                }
             },
             date_style: self.configuration.date_style,
             time_style: self.configuration.time_style,

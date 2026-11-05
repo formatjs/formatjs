@@ -21,6 +21,7 @@ import {
   ToLocalTime,
   type ToLocalTimeImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
+import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
@@ -33,6 +34,16 @@ const TABLE_2_FIELDS: Array<TABLE_2> = [
   'minute',
   'second',
   'fractionalSecondDigits',
+]
+
+const DATE_FIELDS = [
+  '{era}',
+  '{year}',
+  '{relatedYear}',
+  '{yearName}',
+  '{month}',
+  '{day}',
+  '{weekday}',
 ]
 
 export function PartitionDateTimeRangePattern(
@@ -101,7 +112,7 @@ export function PartitionDateTimeRangePattern(
     })),
   }
 
-  // ECMA-402 §11.5.9, steps 15–16 compare relevant fields and collapse
+  // ECMA-402 §11.5.8, steps 15–16 compare relevant fields and collapse
   // equal ranges. Use fallback intervals through displayed precision;
   // smaller undisplayed fields must not make the endpoints differ.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
@@ -109,6 +120,13 @@ export function PartitionDateTimeRangePattern(
   let rangePattern: RangePatterns | undefined
   for (let index = 0; index <= lastField; index++) {
     const field = TABLE_2_FIELDS[index]
+    // Hidden day periods must not override an hour or minute interval.
+    if (
+      (field === 'ampm' || field === 'dayPeriod') &&
+      !parts.some(part => part.type === field)
+    ) {
+      continue
+    }
     let equal
     if (field === 'ampm') {
       // Step 15.d.ii: noon starts at hour 12, including an 11 AM endpoint.
@@ -117,12 +135,14 @@ export function PartitionDateTimeRangePattern(
       const first = getDayPeriodName(
         dataLocaleData,
         tm1,
-        internalSlots.dayPeriod
+        internalSlots.dayPeriod,
+        internalSlots
       )
       const second = getDayPeriodName(
         dataLocaleData,
         tm2,
-        internalSlots.dayPeriod
+        internalSlots.dayPeriod,
+        internalSlots
       )
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
@@ -134,11 +154,7 @@ export function PartitionDateTimeRangePattern(
       equal = SameValue(tm1[field], tm2[field])
     }
     if (!equal) {
-      // CLDR may provide an hour interval but no separate AM/PM interval.
-      rangePattern =
-        rangePatterns[field] ||
-        (field === 'ampm' ? rangePatterns.hour : undefined) ||
-        fallback
+      rangePattern = rangePatterns[field] || fallback
       break
     }
   }
@@ -157,6 +173,46 @@ export function PartitionDateTimeRangePattern(
     return result
   }
 
+  // Some combined-style intervals contain only the time pattern.
+  const selected = rangePattern
+  if (
+    DATE_FIELDS.some(
+      field =>
+        pattern.includes(field) &&
+        !selected.patternParts.some(
+          part =>
+            part.pattern === '{0}' ||
+            part.pattern === '{1}' ||
+            part.pattern.includes(field)
+        )
+    )
+  ) {
+    rangePattern = fallback
+  }
+  const firstEndpoint = rangePattern.patternParts.find(
+    part => part.pattern === '{0}' || part.pattern === '{1}'
+  )
+  if (firstEndpoint) {
+    const expanded = splitRangePattern(
+      rangePattern.patternParts
+        .map(part =>
+          part.pattern === '{0}' || part.pattern === '{1}'
+            ? pattern
+            : part.pattern
+        )
+        .join('')
+    )
+    if (firstEndpoint.source === RangePatternType.endRange) {
+      for (const part of expanded) {
+        if (part.source !== RangePatternType.shared)
+          part.source =
+            part.source === RangePatternType.startRange
+              ? RangePatternType.endRange
+              : RangePatternType.startRange
+      }
+    }
+    rangePattern = {...rangePattern, patternParts: expanded}
+  }
   const result: IntlDateTimeFormatPart[] = []
   const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(
     rangePattern.patternParts
@@ -169,7 +225,7 @@ export function PartitionDateTimeRangePattern(
   )
   const rangeFormatOptions: NonNullable<
     FormatDateTimePatternImplDetails['rangeFormatOptions']
-  > = {patternParts: contextParts}
+  > = {patternParts: contextParts, format: rangePattern}
   const rangeImplDetails = {...implDetails, rangeFormatOptions}
   for (const part of rangePattern.patternParts) {
     const {source} = part

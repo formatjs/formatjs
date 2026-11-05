@@ -32,7 +32,7 @@ Processes 657 locales in parallel:
 4. **Timezone names**: Maps IANA zones → metazones → localized names (long/short, standard/daylight)
 5. **Interval formats**: Synthesizes combined date+time interval formats from separate patterns
 6. **Numbering systems**: Keep the locale default first and expose all CLDR numeric systems. Internal NumberFormat supplies digits; two-digit fields truncate Unicode code points, preserving supplementary digits.
-7. **Calendar support**: Gregorian patterns shared with ISO 8601; calendar-specific CLDR names, styles, and intervals support Buddhist, Coptic, Ethiopian, Amete Alem, ROC, Indian, tabular Islamic, Persian, Japanese, and Hebrew calendars
+7. **Calendar support**: Gregorian and ISO 8601 have separate patterns. `iso-patterns.ts` reads pinned CLDR XML, resolves locale inheritance, and retains ISO patterns in base locale packs. Calendar-specific CLDR packages supply the optional calendars.
 
 ### Timezone Pipeline
 
@@ -188,8 +188,8 @@ Minute/second-only formats keep their requested fields.
 
 With all calendar modules and locale patterns loaded, negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
 `ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
-`japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share patterns;
-other calendars use CLDR calendar packages. Arithmetic conversion uses the public
+`japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share arithmetic;
+ISO patterns come from CLDR XML, and other calendars use CLDR calendar packages. Arithmetic conversion uses the public
 `temporal-polyfill/fns` APIs.
 Umm al-Qura uses `@formatjs_generated/icu.calendar` month lengths generated from
 pinned ICU4X, with its documented civil-calendar fallback outside the official
@@ -215,6 +215,20 @@ Date styles receive matching CLDR interval patterns, including wider month names
 
 Range formatting compares endpoints at the displayed precision and keeps shared
 locale fallback patterns unchanged across formatter instances.
+AM/PM and flexible day periods participate only when their tokens appear in the
+selected pattern. Hidden day-period boundaries must not force a fallback that
+repeats the date. Larger calendar fields still participate, even when omitted.
+Intervals missing displayed date fields use the locale fallback rather than
+silently dropping those fields, including malformed combined-style intervals.
+Range rendering reads field widths from the selected interval record, as required
+by ECMA-402's `PartitionDateTimeRangePattern` and `FormatDateTimePattern`.
+CLDR matching adapts textual date widths to the matched format;
+interval time widths remain independent. Thus a 12-hour range can use unpadded
+hours even when single-date formatting and `resolvedOptions()` use `2-digit`.
+Compatible interval lookup requires the same fields and hour-cycle family;
+flexible `B` periods stay distinct from implicit AM/PM.
+Combined date/time styles wrap time intervals with the selected date pattern and
+locale connector, retaining a shared date and its grammatical context.
 
 Flexible day periods use CLDR format names and supplemental day-period rules,
 resolved through locale parents. `B` widths map to narrow/short/long names;
@@ -553,11 +567,60 @@ precision, avoiding repeated locks/key allocations. Neither caches locale names,
 calendar callbacks, nor local-time conversions; replacement data stays live.
 
 `//crates/intl_datetimeformat/tests:icu4j_conformance_snapshot_test` independently
-compares TS and Rust strings and parts against pinned ICU4J 79.1. Its 12,399 cases
+compares TS and Rust strings and parts against pinned ICU4J 79.1. Its 12,808 cases
 cover 17 locales, 16 calendars, seven digit systems, five zones, DST transitions,
 styles, fractional seconds, and ranges. Existing differences are exact snapshots,
 not ignored cases. The fixture hash and case count prevent silently dropping
 coverage. ICU output is an oracle baseline, not proof of ECMA-402 compliance.
+
+The matrix includes 145 day-period boundary ranges across six locales, with
+12/24-hour clocks, explicit flexible periods, and the Amsterdam case from #7868.
+`//conformance-tests/icu4c:intl_datetimeformat_range_conformance_test` checks
+those strings independently with ICU4C 79. Both oracles agree on this subset.
+Pass the full ICU4J fixture path to that target with `bazel run` to print ICU4C
+range strings and parts for a broader audit. ICU4J and ICU4C differ on some combined
+date/time/seconds ranges, so the full corpus cannot require their equality.
+The November 2026 audit found 247 string disagreements over 5,678 ranges.
+The audit retains both raw oracles. ECMA-402 collapse uses the exact single-date
+formatter; numeric Japanese years use the resolved NumberFormat instead of ICU's
+`jpanyear` override. Corrected expectations retain the original text and parts.
+Shared timezone fields use the start endpoint, as PartitionDateTimeRangePattern
+requires. Flexible day-period differences are compared before hour differences;
+ICU 79 compares AM/PM instead, so it can share a changing flexible period.
+
+Generated interval maps use `date` for one shared fallback for G/y/M/d and
+`fallback` for the remaining differences. TS and Rust expand these internal
+keys into ordinary range records; explicit CLDR fields take precedence. Records
+inherit fallback endpoint order; `latestFirst:` and `earliestFirst:` override it. This
+avoids repeating identical synthesized strings in every field.
+
+Range records retain their own widths and grammatical context. Lookup follows
+the fields in the selected CLDR pattern, including implicit eras and numeric
+months. Fallback records retain raw CLDR widths independently of single-date
+option adjustments. Single-date composition uses CLDR `atTime` connectors;
+interval composition uses standard connectors. Time-only ranges add dates when
+endpoints span days. Generic timezone names use metazone names, primary/single-zone
+territories, exemplar cities, then localized offsets. BCP47 aliases connect CLDR
+names to canonical timezone identifiers. CLDR `_preferred` chooses the default
+hour cycle independently of `_allowed`.
+
+CLDR preprocessing repairs AM/PM-difference records that omit both changing
+labels. ICU 79's Russian `hm/a` entry omits AM/PM; FormatJS retains both labels
+as an explicit data policy. These differences remain visible in snapshots.
+The current 12,808-case audit has no unclassified differences. TS and Rust match
+all single-date cases and agree on every string and part. Of 293 differences
+from ICU4J, 215 match ICU4C strings and parts exactly; 32 use the shared start
+timezone, 38 retain changing flexible periods, four honor the requested hour cycle, and four
+retain changing Russian AM/PM labels. Independent ICU field formatters verify
+the endpoint labels and any repaired hour padding; remaining nonliteral fields must match. Unclassified
+changes fail the audit, including snapshot-update runs. Raw output from both
+oracles remains in the snapshot.
+
+The matrix also covers month/year boundaries. Every case requires TS/Rust equality
+and parts that concatenate to the formatted string.
+The Test262 baseline gate remains separate from ICU parity. Passing it means no
+change to the 488-case baseline, which currently tracks 18 failures; it does not
+claim complete ECMA-402 conformance.
 
 Update explicitly, review every changed difference:
 

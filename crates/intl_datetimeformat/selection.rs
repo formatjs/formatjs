@@ -1,7 +1,7 @@
 use crate::{
     Error,
     data::{CalendarLocale, HourCycle, LocaleData, Metadata},
-    fields::{Components, Field, NumericWidth, Width},
+    fields::{Components, Field, NumericWidth, Value, Width, ZoneWidth},
     matching::{self, Style},
     pattern::{Format, RangePattern},
     registry::{Registry, Resolution},
@@ -246,11 +246,75 @@ fn make_profile(
     } else {
         None
     };
-    let range_patterns = if use12 {
+    let mut range_patterns = if use12 {
         format.range_patterns12.clone()
     } else {
         format.range_patterns.clone()
     };
+    // CLDR matching adjusts textual date fields; interval time widths stay independent.
+    for (field, range) in &mut range_patterns {
+        if let (Some(requested), Some(selected)) =
+            (components.time_zone_name, range.components.time_zone_name)
+        {
+            use ZoneWidth::*;
+            let long = matches!(selected, Long | LongGeneric | LongOffset);
+            range.components.time_zone_name = Some(match (requested, long) {
+                (ShortGeneric | LongGeneric, true) => LongGeneric,
+                (ShortGeneric | LongGeneric, false) => ShortGeneric,
+                (ShortOffset | LongOffset, true) => LongOffset,
+                (ShortOffset | LongOffset, false) => ShortOffset,
+                (_, true) => Long,
+                (_, false) => Short,
+            });
+        }
+        if matches!(field.as_str(), "era" | "year" | "month" | "day") {
+            range.components.time_zone_name = components.time_zone_name;
+        }
+        if let Some(digits) = requested.fractional_second_digits {
+            range.components.fractional_second_digits = Some(digits);
+            let separator = snapshot.locale.numbers()?.decimal(
+                &snapshot.resolution.locale,
+                &snapshot.resolution.numbering_system,
+            )?;
+            for part in &mut range.pattern_parts {
+                if !part.pattern.contains("{fractionalSecondDigits}") {
+                    part.pattern = part.pattern.replace(
+                        "{second}",
+                        &format!("{{second}}{separator}{{fractionalSecondDigits}}"),
+                    );
+                }
+            }
+        }
+        if requested.day_period.is_some() {
+            range.components.day_period = range.components.day_period.or(requested.day_period);
+            for part in &mut range.pattern_parts {
+                part.pattern = part.pattern.replace("{ampm}", "{dayPeriod}");
+            }
+        }
+        if components.era == Some(crate::fields::TextWidth::Narrow) {
+            range.components.era = components.era;
+        }
+        for field in [Field::Weekday, Field::Month] {
+            if field == Field::Weekday && range.components.weekday_standalone == Some(true) {
+                continue;
+            }
+            if field == Field::Month
+                && range
+                    .components
+                    .month
+                    .map(Value::Width)
+                    .is_some_and(Value::numeric)
+            {
+                continue;
+            }
+            if matches!(
+                components.get(field),
+                Some(Value::Width(Width::Narrow | Width::Short | Width::Long))
+            ) {
+                range.components.set_from(field, components);
+            }
+        }
+    }
     Ok(Profile {
         components,
         hour_cycle,

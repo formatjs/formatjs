@@ -19,9 +19,13 @@ A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformanc
 This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 TypeScript and Rust also run independent ICU4J 79.1 snapshot comparisons in
-Bazel CI: 12,399 cases covering 17 locales, calendars, numbering systems, DST,
-styles, fractional seconds, and range parts. Snapshots pin existing differences;
-they do not imply full ICU parity. See [snapshot coverage](https://github.com/formatjs/formatjs/tree/main/crates/intl_datetimeformat/tests).
+Bazel CI: 12,808 cases covering 17 locales, calendars, numbering systems, DST,
+styles, fractional seconds, and range parts. Snapshots retain raw ICU4J and ICU4C evidence, including differences required
+by ECMA-402; they do not imply full ICU parity. See [snapshot coverage](https://github.com/formatjs/formatjs/tree/main/crates/intl_datetimeformat/tests).
+ICU4C 79 independently checks 145 day-period boundary range strings against
+ICU4J, including 12/24-hour clocks and explicit flexible day periods. The full
+audit also captures ICU4C strings and parts for 5,678 ranges. Unclassified
+differences fail the audit; endpoint field evidence checks spec corrections.
 
 ### Implemented Features
 
@@ -32,6 +36,9 @@ they do not imply full ICU parity. See [snapshot coverage](https://github.com/fo
 - **`formatRange(startDate, endDate)`** - Format a date range ([Proposal](https://github.com/tc39/proposal-intl-DateTimeFormat-formatRange))
 - **`formatRangeToParts(startDate, endDate)`** - Format a date range and return parts array with source attribution
 - **`resolvedOptions()`** - Return resolved formatting options
+
+Range patterns can use different field widths from single-date patterns.
+Collapsed ranges reuse single-date output. Shared fields use the start endpoint.
 
 #### Temporal inputs
 
@@ -189,6 +196,8 @@ including the standard date and time defaults when only `timeZone` is set.
 ### Optional calendars
 
 The base polyfill and `locale-data/<locale>.js` include Gregorian and ISO 8601.
+ISO 8601 uses its own CLDR patterns, including year-first numeric dates such as
+`2024-01-15`; Gregorian formatting follows the locale's date order.
 Other calendars require both their arithmetic module and their localized names
 and patterns. Load them before constructing a formatter:
 
@@ -423,6 +432,15 @@ grammatical context.
 
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
+
+Range formatting ignores hidden AM/PM and flexible day-period boundaries.
+Hidden evening/night changes no longer force same-day 24-hour ranges to repeat
+the date.
+
+Range field widths follow the selected locale interval pattern. For example,
+12-hour intervals may use unpadded hours while `format()` and `resolvedOptions()`
+retain `hour: '2-digit'`. Combined date/time styles share the date for same-day
+time intervals when locale data provides a matching pattern.
 
 ## Benchmarks
 

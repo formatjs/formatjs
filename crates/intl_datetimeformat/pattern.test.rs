@@ -27,9 +27,9 @@ fn quoting_hour_variants_and_range_sources_preserve_literals() {
             .collect::<Vec<_>>(),
         vec![
             (Source::Shared, "{month} "),
-            (Source::StartRange, "{day}"),
-            (Source::Shared, "–"),
             (Source::EndRange, "{day}"),
+            (Source::Shared, "–"),
+            (Source::StartRange, "{day}"),
             (Source::Shared, ", {year}"),
         ]
     );

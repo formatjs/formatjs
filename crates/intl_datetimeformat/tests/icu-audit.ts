@@ -30,6 +30,184 @@ const rows = fixture
   .split('\n')
   .slice(1)
   .map(row => row.split('\t'))
+assert.ok(
+  rows.every(row => row.length === 11),
+  'Raw ICU evidence must accompany every case'
+)
+const rangeKey = (
+  locale: string,
+  options: string,
+  start: string,
+  end: string
+) => JSON.stringify([locale, options, start, end])
+const icu4cFixture = readFileSync(
+  resolve('conformance-tests/icu4c/date-time-format-range-fixtures.tsv'),
+  'utf8'
+)
+const icu4c = new Map(
+  icu4cFixture
+    .trimEnd()
+    .split('\n')
+    .map((line): [string, Output] => {
+      const row = line.split('\t')
+      assert.equal(row.length, 8)
+      return [
+        rangeKey(row[0], row[1], row[4], row[5]),
+        {text: row[6], parts: JSON.parse(row[7])} as Output,
+      ]
+    })
+)
+assert.equal(icu4c.size, rows.filter(row => row[5]).length)
+for (const row of rows)
+  if (row[5])
+    assert.ok(
+      icu4c.has(rangeKey(row[0], row[1], row[4], row[5])),
+      'Missing ICU4C range'
+    )
+for (const value of icu4c.values())
+  assert.equal(value.parts.map(part => part.value).join(''), value.text)
+const oracleTextDisagreements = rows.filter(
+  row =>
+    row[5] &&
+    icu4c.get(rangeKey(row[0], row[1], row[4], row[5]))!.text !== row[8]
+).length
+
+const contractAdjustments = {
+  collapsedRanges: rows.filter(
+    row => row[5] && (row[6] !== row[8] || row[7] !== row[9])
+  ).length,
+  numericYears: rows.filter(
+    row =>
+      !row[5] && JSON.parse(row[1]).calendar === 'japanese' && row[6] !== row[8]
+  ).length,
+  hourCycles: rows.filter(
+    row => !row[5] && JSON.parse(row[1]).hourCycle && row[6] !== row[8]
+  ).length,
+}
+interface FieldEvidence {
+  start: Record<string, string>
+  end: Record<string, string>
+}
+interface OracleFields {
+  periods?: FieldEvidence
+  zones?: FieldEvidence
+  clocks?: FieldEvidence
+}
+const same = (left: unknown, right: unknown) =>
+  JSON.stringify(left) === JSON.stringify(right)
+function classify(
+  options: Intl.DateTimeFormatOptions,
+  expected: Output,
+  actual: Output,
+  secondary: Output | undefined,
+  fields: OracleFields
+): string {
+  if (same(actual, secondary)) return 'icu4c'
+  let changedHour = false
+  const boundary: Partial<
+    Record<
+      NonNullable<Intl.DateTimeFormatOptions['hourCycle']>,
+      [number, number]
+    >
+  > = {h11: [12, 0], h12: [0, 12], h23: [24, 0], h24: [0, 24]}
+  const correction = options.hourCycle && boundary[options.hourCycle]
+  if (
+    correction &&
+    fields.clocks &&
+    actual.parts.length === expected.parts.length &&
+    expected.parts.every((part, index) => {
+      const other = actual.parts[index]
+      if (same(part, other)) return true
+      if (
+        part.type !== 'hour' ||
+        other.type !== part.type ||
+        part.source !== other.source ||
+        Number(part.value) !== correction[0] ||
+        Number(other.value) !== correction[1]
+      )
+        return false
+      changedHour = true
+      return Object.values(
+        fields.clocks![other.source === 'endRange' ? 'end' : 'start']
+      ).includes(other.value)
+    }) &&
+    changedHour
+  )
+    return 'hour-cycle'
+  let changedZone = false
+  if (
+    actual.parts.length === expected.parts.length &&
+    expected.parts.every((part, index) => {
+      const other = actual.parts[index]
+      if (same(part, other)) return true
+      if (
+        part.type !== 'timeZoneName' ||
+        other.type !== part.type ||
+        part.source !== 'shared' ||
+        other.source !== 'shared' ||
+        !fields.zones
+      )
+        return false
+      changedZone = true
+      return Object.keys(fields.zones.end).some(
+        pattern =>
+          fields.zones!.end[pattern] === part.value &&
+          fields.zones!.start[pattern] === other.value
+      )
+    }) &&
+    changedZone
+  )
+    return 'shared-start-timezone'
+  const periods = actual.parts.filter(part => part.type === 'dayPeriod')
+  const originalPeriods = expected.parts.filter(
+    part => part.type === 'dayPeriod'
+  )
+  const frame = (parts: Output['parts']) =>
+    parts.filter(part => !['literal', 'dayPeriod'].includes(part.type))
+  if (
+    fields.periods &&
+    periods.length === 2 &&
+    periods[0].source === 'startRange' &&
+    periods[1].source === 'endRange' &&
+    periods[0].value !== periods[1].value &&
+    periods.every((part, index) =>
+      Object.values(fields.periods![index ? 'end' : 'start']).includes(
+        part.value
+      )
+    )
+  ) {
+    const actualFrame = frame(actual.parts),
+      expectedFrame = frame(expected.parts)
+    if (
+      options.dayPeriod &&
+      new Set(originalPeriods.map(part => part.value)).size < 2 &&
+      same(actualFrame, expectedFrame)
+    )
+      return 'flexible-day-period'
+    if (
+      !options.dayPeriod &&
+      !originalPeriods.length &&
+      fields.periods.start.a !== undefined &&
+      actualFrame.length === expectedFrame.length &&
+      actualFrame.every((part, index) => {
+        const original = expectedFrame[index]
+        if (same(part, original)) return true
+        return (
+          part.type === 'hour' &&
+          original.type === part.type &&
+          part.source === original.source &&
+          Number(part.value) === Number(original.value) &&
+          fields.clocks &&
+          Object.values(
+            fields.clocks[part.source === 'endRange' ? 'end' : 'start']
+          ).includes(part.value)
+        )
+      })
+    )
+      return 'ampm-label-repair'
+  }
+  return 'unclassified'
+}
 const locales = new Set(rows.map(row => row[0]))
 const directory = resolve('crates/intl_datetimeformat/locale-data')
 const files = readdirSync(directory)
@@ -73,6 +251,7 @@ assert.equal(rust.length, cases.length)
 const formatters = new Map<string, InstanceType<typeof DateTimeFormat>>()
 const differences = []
 const summary: Record<string, number> = {}
+const parity: Record<string, number> = {}
 for (const [i, sample] of cases.entries()) {
   const key = sample.locale + JSON.stringify(sample.options)
   let formatter = formatters.get(key)
@@ -98,18 +277,41 @@ for (const [i, sample] of cases.entries()) {
       'Parts must concatenate to formatted string'
     )
   }
+  assert.deepEqual(ts, rust[i], `TS/Rust divergence: ${JSON.stringify(sample)}`)
   const actual = {ts, rust: rust[i]}
   for (const [engine, value] of Object.entries(actual)) {
     if (JSON.stringify(value) === JSON.stringify(expected)) continue
     const key = `${engine}/${sample.end === undefined ? 'single' : 'range'}/${value.text === expected.text ? 'parts-only' : 'text'}`
     summary[key] = (summary[key] || 0) + 1
   }
-  if (
-    Object.values(actual).some(
-      value => JSON.stringify(value) !== JSON.stringify(expected)
+  if (Object.values(actual).some(value => !same(value, expected))) {
+    const secondary =
+      sample.end === undefined
+        ? undefined
+        : icu4c.get(rangeKey(rows[i][0], rows[i][1], rows[i][4], rows[i][5]))
+    const fields: OracleFields = JSON.parse(rows[i][10])
+    const classification = classify(
+      sample.options,
+      expected,
+      ts,
+      secondary,
+      fields
     )
-  )
-    differences.push({...sample, expected, actual})
+    parity[classification] = (parity[classification] || 0) + 1
+    differences.push({
+      ...sample,
+      classification,
+      expected,
+      ...(secondary ? {icu4c: secondary} : {}),
+      ...(classification !== 'icu4c' && Object.keys(fields).length
+        ? {oracleFields: fields}
+        : {}),
+      ...(rows[i][6] !== rows[i][8] || rows[i][7] !== rows[i][9]
+        ? {rawExpected: {text: rows[i][8], parts: JSON.parse(rows[i][9])}}
+        : {}),
+      actual,
+    })
+  }
 }
 const snapshot =
   [
@@ -118,8 +320,17 @@ const snapshot =
       version: '79.1',
       cldr: '49',
       cases: cases.length,
+      contractAdjustments,
+      parity,
+      icu4c: {
+        version: '79.1',
+        cases: icu4c.size,
+        textDisagreements: oracleTextDisagreements,
+        fixtureSHA256: createHash('sha256').update(icu4cFixture).digest('hex'),
+      },
       fixtureSHA256: createHash('sha256').update(fixture).digest('hex'),
       differences: differences.length,
+      unclassified: parity.unclassified || 0,
     },
     ...differences,
   ]
@@ -150,7 +361,15 @@ else {
 console.log(
   JSON.stringify({
     cases: cases.length,
+    contractAdjustments,
+    parity,
     summary,
     differences: differences.length,
   })
+)
+
+assert.equal(
+  parity.unclassified || 0,
+  0,
+  `Unclassified ICU differences: ${update || process.env.TEST_UNDECLARED_OUTPUTS_DIR || 'audit output'}`
 )
