@@ -18,6 +18,12 @@
   ],
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js",
+    "./locale-data/*.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
