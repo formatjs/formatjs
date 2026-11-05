@@ -32,7 +32,6 @@ import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
 import {
   parseDateTimeSkeleton,
   processDateTimePattern,
-  getRangePatternInfo,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
 import {calendarFiles as CALENDAR_FILES} from '@formatjs_generated/datetimeformat.calendars/index.js'
@@ -672,6 +671,11 @@ async function loadDatesFields(
     rangeTimePatterns.set(skeleton, result)
     return result
   }
+  const intervalFormatTemplates: NonNullable<
+    RawDateTimeLocaleInternalData['intervalFormatTemplates']
+  > = {dates: [], times: []}
+  const templateDates = new Set<string>()
+  const templateTimes = new Set<string>()
   const parsedDates = Object.entries(dateFormats)
     .sort(
       ([left], [right]) =>
@@ -734,7 +738,15 @@ async function loadDatesFields(
       // provide interval formats for it, synthesize by combining the date pattern with time
       // interval patterns. This produces output like "Sun, 22 Sept 2024, 14:00 – 16:00"
       // instead of "Sun, 22 Sept 2024, 14:00 – Sun, 22 Sept 2024, 16:00"
-      const combinedIntervalFormats = intervalFormats[skeleton]
+      if (!templateDates.has(dateSkeleton)) {
+        templateDates.add(dateSkeleton)
+        intervalFormatTemplates.dates.push([
+          dateSkeleton,
+          intervalDate,
+          rawPattern,
+          singleConnector,
+        ])
+      }
       const canonicalTimeSkeleton = timeSkeleton
         .replace(NON_SKELETON_LETTERS, '')
         .replace(DAY_PERIOD_LETTERS, '')
@@ -777,7 +789,7 @@ async function loadDatesFields(
         }
       }
 
-      if (!combinedIntervalFormats) {
+      if (!templateTimes.has(timeSkeleton)) {
         const timeRanges =
           typeof timeIntervalFormats === 'object'
             ? {...timeIntervalFormats}
@@ -789,33 +801,12 @@ async function loadDatesFields(
             .replace('{1}', timePattern)
           timeRanges.fallback = fallbackTimeRange
         }
-        // Synthesize interval formats for each time field difference.
-        const synthesizedFormats: Record<string, string> = {}
-        for (const [field, timeIntervalPattern] of Object.entries(timeRanges)) {
-          if (typeof timeIntervalPattern === 'string') {
-            // Combine date pattern with time interval pattern using dateTimeFormat
-            const info = getRangePatternInfo(timeIntervalPattern)
-            const synthesizedPattern = rawPattern
-              .replace('{0}', info.pattern)
-              .replace('{1}', intervalDate)
-            synthesizedFormats[field] =
-              info.reversed === undefined
-                ? synthesizedPattern
-                : `${info.reversed ? 'latestFirst' : 'earliestFirst'}:${synthesizedPattern}`
-          }
-        }
-        if (typeof intervalFallback === 'string') {
-          const endpoint = singleConnector
-            .replace('{0}', intervalTimePattern)
-            .replace('{1}', intervalDate)
-          const complete = intervalFallback
-            .replace('{0}', endpoint)
-            .replace('{1}', endpoint)
-          synthesizedFormats.date = complete
-        }
-        if (Object.keys(synthesizedFormats).length > 0) {
-          intervalFormats[skeleton] = synthesizedFormats
-        }
+        templateTimes.add(timeSkeleton)
+        intervalFormatTemplates.times.push([
+          timeSkeleton,
+          intervalTimePattern,
+          timeRanges,
+        ])
       }
     }
   }
@@ -982,6 +973,7 @@ async function loadDatesFields(
     },
     // @ts-ignore
     intervalFormats,
+    intervalFormatTemplates,
     hourCycle: hc[0],
     hourCycle12,
     hourCycle24,
@@ -1030,6 +1022,7 @@ export async function extractDatesFields(
           dateTimeFormat,
           dateTimeFormatAtTime,
           intervalFormats,
+          intervalFormatTemplates,
         } = fields
         data.calendarData[calendar] = {
           era,
@@ -1043,6 +1036,7 @@ export async function extractDatesFields(
           dateTimeFormat,
           dateTimeFormatAtTime,
           intervalFormats,
+          intervalFormatTemplates,
         }
         data.formats[calendar] = fields.formats[calendar]
         if (!data.ca.includes(calendar)) data.ca.push(calendar)

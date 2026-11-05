@@ -375,6 +375,7 @@ it('matches real CLDR patterns and format matching across calendar and language 
       'dateTimeFormatAtTime',
       'formats',
       'intervalFormats',
+      'intervalFormatTemplates',
       'calendarData',
     ]
     const [loaded] = run([

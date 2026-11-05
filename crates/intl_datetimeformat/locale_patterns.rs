@@ -5,7 +5,16 @@ use crate::{
     pattern::{self, Format, RawPatterns},
 };
 use serde::Deserialize;
-use std::{collections::HashMap, sync::OnceLock};
+use std::{
+    collections::{HashMap, HashSet},
+    sync::OnceLock,
+};
+
+#[derive(Debug, Clone, Default, Deserialize)]
+pub struct IntervalFormatTemplates {
+    pub dates: Vec<(String, String, String, String)>,
+    pub times: Vec<(String, String, RawPatterns)>,
+}
 
 #[derive(Debug, Clone)]
 struct IntervalCandidate {
@@ -48,6 +57,50 @@ fn interval_signature(fields: Components) -> u16 {
 }
 
 impl IntervalFormats {
+    fn expand_templates(&self, templates: &IntervalFormatTemplates) -> Self {
+        let mut patterns = self.patterns.0.clone();
+        let mut keys: HashSet<_> = patterns.iter().map(|(key, _)| key.clone()).collect();
+        for (time_key, time, time_ranges) in &templates.times {
+            for (date_key, date, connector, fallback_connector) in &templates.dates {
+                let key = connector
+                    .replacen("{0}", time_key, 1)
+                    .replacen("{1}", date_key, 1);
+                if !keys.insert(key.clone()) {
+                    continue;
+                }
+                let mut ranges = Vec::new();
+                for (field, raw) in &time_ranges.0 {
+                    let (pattern, reversed) = pattern::range_pattern_info(raw);
+                    let combined = connector
+                        .replacen("{0}", pattern, 1)
+                        .replacen("{1}", date, 1);
+                    let value = match reversed {
+                        Some(true) => format!("latestFirst:{combined}"),
+                        Some(false) => format!("earliestFirst:{combined}"),
+                        None => combined,
+                    };
+                    ranges.push((field.clone(), value));
+                }
+                let endpoint = fallback_connector
+                    .replacen("{0}", time, 1)
+                    .replacen("{1}", date, 1);
+                ranges.push((
+                    "date".into(),
+                    self.interval_format_fallback
+                        .replacen("{0}", &endpoint, 1)
+                        .replacen("{1}", &endpoint, 1),
+                ));
+                patterns.push((key, RawPatterns(ranges)));
+            }
+        }
+        Self {
+            interval_format_fallback: self.interval_format_fallback.clone(),
+            patterns: RawPatterns(patterns),
+            lookup: OnceLock::new(),
+            candidates: OnceLock::new(),
+            groups: OnceLock::new(),
+        }
+    }
     fn exact(&self, skeleton: &str) -> Option<&RawPatterns> {
         let lookup = self.lookup.get_or_init(|| {
             self.patterns
@@ -195,26 +248,37 @@ pub struct CalendarPatterns {
     pub date_time_format: Styles<String>,
     pub date_time_format_at_time: Option<Styles<String>>,
     pub interval_formats: IntervalFormats,
+    #[serde(default)]
+    pub interval_format_templates: IntervalFormatTemplates,
+    #[serde(skip)]
+    pub(crate) expanded: OnceLock<IntervalFormats>,
 }
 
 impl CalendarPatterns {
+    fn intervals(&self) -> &IntervalFormats {
+        if self.interval_format_templates.dates.is_empty() {
+            return &self.interval_formats;
+        }
+        self.expanded.get_or_init(|| {
+            self.interval_formats
+                .expand_templates(&self.interval_format_templates)
+        })
+    }
     pub fn formats(&self) -> Result<Vec<Format>, Error> {
         self.formats
             .0
             .iter()
-            .map(|(skeleton, raw)| self.interval_formats.parse(skeleton, raw, true))
+            .map(|(skeleton, raw)| self.intervals().parse(skeleton, raw, true))
             .collect()
     }
 
     pub fn styles(&self) -> Result<StyleData, Error> {
         let parse = |raw: &Styles<String>| -> Result<Styles<Format>, Error> {
             Ok(Styles {
-                full: self.interval_formats.parse(&raw.full, &raw.full, false)?,
-                long: self.interval_formats.parse(&raw.long, &raw.long, false)?,
-                medium: self
-                    .interval_formats
-                    .parse(&raw.medium, &raw.medium, false)?,
-                short: self.interval_formats.parse(&raw.short, &raw.short, false)?,
+                full: self.intervals().parse(&raw.full, &raw.full, false)?,
+                long: self.intervals().parse(&raw.long, &raw.long, false)?,
+                medium: self.intervals().parse(&raw.medium, &raw.medium, false)?,
+                short: self.intervals().parse(&raw.short, &raw.short, false)?,
             })
         };
         let connectors = |connector: &Styles<String>| -> Result<Styles<String>, Error> {

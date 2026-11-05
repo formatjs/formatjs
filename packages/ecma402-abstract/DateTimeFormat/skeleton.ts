@@ -4,7 +4,47 @@ import {
   type RangePatterns,
   RangePatternType,
   type TABLE_2,
+  type IntervalFormatsData,
+  type IntervalFormatTemplates,
 } from '#packages/ecma402-abstract/types/date-time.js'
+
+export function expandIntervalFormatTemplates(
+  data: IntervalFormatsData,
+  templates?: IntervalFormatTemplates
+): IntervalFormatsData {
+  if (!templates) return data
+  const expanded = {...data}
+  for (const [timeKey, time, timeRanges] of templates.times) {
+    for (const [
+      dateKey,
+      date,
+      connector,
+      fallbackConnector,
+    ] of templates.dates) {
+      const key = connector.replace('{0}', timeKey).replace('{1}', dateKey)
+      if (expanded[key] !== undefined) continue
+      const ranges = Object.create(null) as Record<string, string>
+      for (const field of Object.keys(timeRanges)) {
+        const info = getRangePatternInfo(timeRanges[field])
+        const pattern = connector
+          .replace('{0}', info.pattern)
+          .replace('{1}', date)
+        ranges[field] =
+          info.reversed === undefined
+            ? pattern
+            : `${info.reversed ? 'latestFirst' : 'earliestFirst'}:${pattern}`
+      }
+      const endpoint = fallbackConnector
+        .replace('{0}', time)
+        .replace('{1}', date)
+      ranges.date = data.intervalFormatFallback
+        .replace('{0}', endpoint)
+        .replace('{1}', endpoint)
+      expanded[key] = ranges
+    }
+  }
+  return expanded
+}
 
 const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
 

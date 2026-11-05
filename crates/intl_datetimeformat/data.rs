@@ -2,7 +2,7 @@ use crate::{
     Error,
     calendar::CalendarRegistry,
     fields::TextWidth,
-    locale_patterns::{CalendarPatterns, IntervalFormats},
+    locale_patterns::{CalendarPatterns, IntervalFormatTemplates, IntervalFormats},
     matching::{StyleData, Styles},
     numbers::NumberData,
     pattern::{Format, RawPatterns},
@@ -119,6 +119,8 @@ struct RawCalendar {
     date_time_format: Styles<String>,
     date_time_format_at_time: Option<Styles<String>>,
     interval_formats: IntervalFormats,
+    #[serde(default)]
+    interval_format_templates: IntervalFormatTemplates,
 }
 
 impl RawCalendar {
@@ -150,6 +152,8 @@ impl RawCalendar {
                 date_time_format: self.date_time_format,
                 date_time_format_at_time: self.date_time_format_at_time,
                 interval_formats: self.interval_formats,
+                interval_format_templates: self.interval_format_templates,
+                expanded: OnceLock::new(),
             },
             formats: OnceLock::new(),
             formats_from: None,

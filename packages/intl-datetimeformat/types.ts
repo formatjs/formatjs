@@ -2,6 +2,7 @@ import type {LocaleData} from '#packages/ecma402-abstract/types/core.js'
 import type {
   DateTimeFormatLocaleInternalData,
   IntervalFormatsData,
+  IntervalFormatTemplates,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
 export interface PackedData {
@@ -56,12 +57,14 @@ export type RawDateTimeLocaleInternalData = Omit<
       | 'dateTimeFormat'
       | 'dateTimeFormatAtTime'
       | 'intervalFormats'
+      | 'intervalFormatTemplates'
     >
   >
   formats: Record<string, Record<string, string>>
   dateFormat: {full: string; long: string; medium: string; short: string}
   timeFormat: {full: string; long: string; medium: string; short: string}
   intervalFormats: IntervalFormatsData
+  intervalFormatTemplates?: IntervalFormatTemplates
   dateTimeFormat: {
     full: string
     long: string

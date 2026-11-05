@@ -7,7 +7,7 @@ import {
   mkdtempSync,
   mkdirSync,
   symlinkSync,
-  cpSync,
+  writeFileSync,
   rmSync,
 } from 'node:fs'
 import {tmpdir} from 'node:os'
@@ -157,6 +157,17 @@ function packageSize(root: URL): {bytes: number; files: number} {
   return {bytes, files}
 }
 
+function copyPackage(root: URL, destination: string): void {
+  mkdirSync(destination, {recursive: true})
+  for (const name of readdirSync(root)) {
+    const source = new URL(name, root)
+    const target = join(destination, name)
+    if (statSync(source).isDirectory())
+      copyPackage(new URL(name + '/', root), target)
+    else writeFileSync(target, readFileSync(source))
+  }
+}
+
 test('published packages keep optional locale data out of base and within install budgets', () => {
   const base = packageSize(pkg)
   expect(base.bytes).toBeLessThan(250_000_000)
@@ -200,10 +211,7 @@ test.each([
     const directory = mkdtempSync(join(tmpdir(), 'formatjs-tar-size-'))
     try {
       const root = new URL(`../../${name}/pkg/`, import.meta.url)
-      cpSync(fileURLToPath(root), join(directory, 'package'), {
-        recursive: true,
-        dereference: true,
-      })
+      copyPackage(root, join(directory, 'package'))
       const archive = join(directory, 'package.tgz')
       // Archive a stable copy, including files reached through runfile symlinks.
       execFileSync('tar', ['-czf', archive, '-C', directory, 'package'], {

@@ -141,10 +141,13 @@ test.each(['chinese', 'dangi'])(
             `${locale} ${month} ${new Date(time).toISOString()}`
           ).toEqual(expected.formatToParts(time))
           // Range records can use different numeric widths from single dates.
-          const normalize = (part: {type: string; value: string}) => ({
+          const normalize = (part: {
+            type: string
+            value: string | undefined
+          }) => ({
             type: part.type,
             value: ['month', 'day'].includes(part.type)
-              ? part.value.replace(/\d+/g, digits => String(Number(digits)))
+              ? part.value?.replace(/\d+/g, digits => String(Number(digits)))
               : part.value,
           })
           const actualRange = actual.formatRangeToParts(time, time + 86400000)

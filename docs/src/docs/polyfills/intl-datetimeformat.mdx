@@ -25,7 +25,8 @@ by ECMA-402; they do not imply full ICU parity. See [snapshot coverage](https://
 ICU4C 79 independently checks 145 day-period boundary range strings against
 ICU4J, including 12/24-hour clocks and explicit flexible day periods. The full
 audit also captures ICU4C strings and parts for 5,678 ranges. Unclassified
-differences fail the audit; endpoint field evidence checks spec corrections.
+differences fail the audit; endpoint field evidence checks spec corrections. Generated
+range templates expand before matching; package-size tests guard locale-data growth.
 
 ### Implemented Features
 

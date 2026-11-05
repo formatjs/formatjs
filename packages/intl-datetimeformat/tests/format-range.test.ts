@@ -1228,6 +1228,57 @@ it('uses complete fallback endpoints when an AM/PM interval is absent', () => {
   ).toBe('1:00 AM – 1:00 PM')
 })
 
+test('compact interval templates preserve connectors and endpoint order', () => {
+  const base = en as unknown as Parameters<
+    typeof DateTimeFormat.__addLocaleData
+  >[0]
+  DateTimeFormat.__addLocaleData({
+    ...base,
+    locale: 'en-XB',
+    data: {
+      ...base.data,
+      calendarData: {},
+      ca: ['gregory'],
+      formats: {gregory: {'yMMMd, Hm': 'MMM d, y HH:mm'}},
+      intervalFormats: {intervalFormatFallback: '{1} – {0}'},
+      intervalFormatTemplates: {
+        dates: [['yMMMd', 'MMM d, y', '{1}, {0}', "{1} 'at' {0}"]],
+        times: [
+          [
+            'Hm',
+            'HH:mm',
+            {
+              H: 'latestFirst:HH:mm–HH:mm',
+              fallback: 'HH:mm–HH:mm',
+            },
+          ],
+        ],
+      },
+    },
+  })
+  const formatter = new DateTimeFormat('en-XB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  })
+  const start = Date.UTC(2024, 0, 15, 10, 15)
+  const end = Date.UTC(2024, 0, 15, 11, 45)
+  expect(formatter.formatRange(start, end)).toBe('Jan 15, 2024, 11:45–10:15')
+  expect(formatter.formatRange(start, end + 86400000)).toBe(
+    'Jan 16, 2024 at 11:45 – Jan 15, 2024 at 10:15'
+  )
+  expect(
+    formatter
+      .formatRangeToParts(start, end)
+      .filter(part => part.type === 'hour')
+      .map(part => part.source)
+  ).toEqual(['endRange', 'startRange'])
+})
+
 it.each(['h11', 'h12'] as const)(
   'keeps default CLDR spacing for en-GB %s',
   hourCycle => {

@@ -198,6 +198,7 @@ ${ctor}.__addListFormatData(JSON.stringify(globalThis.__NATIVE_PACKS.list));`
       'pluralrules',
       'relativetimeformat',
       'durationformat',
+      'datetimeformat',
     ].includes(kind)
   ) {
     bootstrap +=
@@ -207,6 +208,9 @@ ${ctor}.__addListFormatData(JSON.stringify(globalThis.__NATIVE_PACKS.list));`
     for (const locale of Object.keys(nativePacks)) {
       bootstrap += `import '@formatjs/intl-numberformat/locale-data/${locale}.js';\nimport '@formatjs/intl-pluralrules/locale-data/${locale.split('-')[0]}.js';\n`
     }
+  if (kind === 'datetimeformat')
+    for (const locale of Object.keys(nativePacks))
+      bootstrap += `import '@formatjs/intl-numberformat/locale-data/${locale}.js';\n`
   if (kind === 'locale')
     bootstrap +=
       "import '@formatjs/intl-numberformat/locale-data/ar.js';\nimport '@formatjs/intl-numberformat/locale-data/ar-EG.js';\nimport '@formatjs/intl-numberformat/locale-data/ar-SA.js';\nimport '@formatjs/intl-numberformat/locale-data/ja.js';\nimport '@formatjs/intl-numberformat/locale-data/pt.js';\n"
@@ -276,7 +280,7 @@ Intl.DateTimeFormat.__addTZData(timezone);
     }
     if (kind === 'datetimeformat' && entry.name === 'index.test.ts') {
       exclusions[
-        'Intl.DateTimeFormat > shares Gregorian formats with explicitly supplied ISO locale data'
+        'Intl.DateTimeFormat > uses explicitly supplied ISO locale patterns'
       ] = 'TS localeData mutation'
       for (const name of [
         'toLocaleString returns "Invalid Date", GH #3508',

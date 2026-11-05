@@ -593,6 +593,11 @@ Generated interval maps use `date` for one shared fallback for G/y/M/d and
 keys into ordinary range records; explicit CLDR fields take precedence. Records
 inherit fallback endpoint order; `latestFirst:` and `earliestFirst:` override it. This
 avoids repeating identical synthesized strings in every field.
+Combined interval templates store date/time patterns, connectors and time ranges
+as date/time lists instead of repeating every combination and endpoint. TS
+expands these during registration; Rust expands them lazily per calendar. Both
+preserve candidate ordering when restoring pattern records before matching. Package tests check
+installed bytes and tarballs, including materialized Bazel runfile symlinks.
 
 Range records retain their own widths and grammatical context. Lookup follows
 the fields in the selected CLDR pattern, including implicit eras and numeric

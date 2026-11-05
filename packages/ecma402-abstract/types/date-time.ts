@@ -228,6 +228,20 @@ export interface IntervalFormatsData {
   [skeleton: string]: string | Record<string, string>
 }
 
+export interface IntervalFormatTemplates {
+  dates: Array<
+    [
+      skeleton: string,
+      pattern: string,
+      connector: string,
+      fallbackConnector: string,
+    ]
+  >
+  times: Array<
+    [skeleton: string, pattern: string, ranges: Record<string, string>]
+  >
+}
+
 export interface TemporalDateTimeInput {
   readonly [Symbol.toStringTag]: `Temporal.${Exclude<TemporalDateTimeKind, 'ZonedDateTime'>}`
 }

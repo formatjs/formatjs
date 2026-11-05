@@ -14,6 +14,7 @@ cc_test(
     srcs = ["datetimeformat_range.cc"],
     data = ["//conformance-tests/icu4j:date_time_range_boundary_fixtures"],
     env = {"DATETIMEFORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:date_time_range_boundary_fixtures)"},
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
@@ -134,6 +135,7 @@ genrule(
     srcs = ["//conformance-tests/icu4j:date_time_format_fixtures"],
     outs = ["date-time-format-range-fixtures.tsv"],
     cmd = "$(location :intl_datetimeformat_range_conformance_test) $(location //conformance-tests/icu4j:date_time_format_fixtures) > $@",
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
     tools = [":intl_datetimeformat_range_conformance_test"],
     visibility = ["//visibility:public"],
 )

@@ -35,6 +35,7 @@ import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeForma
 import {
   parseDateTimeSkeleton,
   getRangePatternInfo,
+  expandIntervalFormatTemplates,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
@@ -623,6 +624,20 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       if (d.ca.indexOf(patch.calendar) < 0) d.ca.push(patch.calendar)
       d.formats[patch.calendar] = patch.formats
       d.calendarData[patch.calendar] = patch.data
+    }
+    d.intervalFormats = expandIntervalFormatTemplates(
+      d.intervalFormats,
+      d.intervalFormatTemplates
+    )
+    delete d.intervalFormatTemplates
+    for (const calendar of Object.keys(d.calendarData)) {
+      const fields = {...d.calendarData[calendar]}
+      fields.intervalFormats = expandIntervalFormatTemplates(
+        fields.intervalFormats,
+        fields.intervalFormatTemplates
+      )
+      delete fields.intervalFormatTemplates
+      d.calendarData[calendar] = fields
     }
     const {
       dateFormat,
