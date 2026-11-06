@@ -18,6 +18,11 @@
   "author": "Michele Riva <ciao@micheleriva.it>",
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",

@@ -18,6 +18,10 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",
