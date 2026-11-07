@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.0.0...@formatjs/intl-supportedvaluesof@3.0.1) (2026-11-07)
+
+
+### Bug Fixes
+
+* declare sideEffects for the Intl polyfill packages ([#7869](https://github.com/formatjs/formatjs/issues/7869)) ([d2f7a6f](https://github.com/formatjs/formatjs/commit/d2f7a6fab5c33c9855c6ba32e062b0d05a721aa3))
+
 ## [3.0.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@2.5.0...@formatjs/intl-supportedvaluesof@3.0.0) (2026-10-31)
 
 
