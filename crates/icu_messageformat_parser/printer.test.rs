@@ -78,6 +78,24 @@ fn test_print_apostrophe_before_quoted_span_round_trip() {
 }
 
 #[test]
+fn test_print_consecutive_apostrophes_round_trip() {
+    for input in [
+        "a''''{x}",
+        "Say '''' for an apostrophe",
+        "{x}''''b",
+        "a'''''{'b",
+        "a '''''' b",
+        "{n, plural, one {''''#} other {''''}}",
+    ] {
+        let ast = parse_message(input);
+        let output = print_ast(&ast);
+
+        assert_eq!(parse_message(&output), ast, "printed message: {output}");
+    }
+    assert_eq!(print_ast(&parse_message("a''''{x}")), "a''''{x}");
+}
+
+#[test]
 fn test_print_literal_pounds_inside_plural_tag_round_trip() {
     let ast = parse_message("{count, plural, other {<b>'##'</b>}}");
     let output = print_ast(&ast);

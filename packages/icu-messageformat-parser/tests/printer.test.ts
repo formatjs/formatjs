@@ -130,6 +130,21 @@ test('doubles a literal apostrophe abutting a quoted span', function () {
   )
 })
 
+test('doubles consecutive literal apostrophes', function () {
+  for (const input of [
+    "a''''{x}",
+    "Say '''' for an apostrophe",
+    "{x}''''b",
+    "a'''''{'b",
+    "a '''''' b",
+    "{n, plural, one {''''#} other {''''}}",
+  ]) {
+    const output = printAST(parse(input))
+    expect(parse(output)).toEqual(parse(input))
+  }
+  expect(printAST(parse("a''''{x}"))).toBe("a''''{x}")
+})
+
 // printAST must emit plural/select branches in a deterministic, source-order-
 // independent order so that auto-generated message ids match the Rust extractor
 // (formatjs_cli) regardless of how branches were authored. See printer.rs:

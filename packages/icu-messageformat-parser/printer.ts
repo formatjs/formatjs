@@ -110,7 +110,9 @@ function printEscapedMessage(message: string, isInPlural = false): string {
 
     const literal = message.slice(literalStart, quotedStart)
     result += literal
-    if (literal.endsWith("'")) {
+    // A lone trailing `'` would start the quoted span; runs that are already
+    // doubled (even length) read back as apostrophes on their own.
+    if (/(^|[^'])('')*'$/.test(literal)) {
       result += "'"
     }
     result += quoteSyntaxToken(message.slice(quotedStart, quotedEnd))
@@ -156,14 +158,20 @@ function printLiteralElement(
   isFirstEl: boolean,
   isLastEl: boolean
 ) {
-  let escaped = value
+  // `''` reads back as a single `'`, so a run of two or more apostrophes has
+  // to be doubled to survive a round trip.
+  let escaped = value.replace(/'{2,}/g, run => run + run)
   // If this literal starts with a ' and its not the 1st node, this means the node before it is non-literal
   // and the `'` needs to be unescaped
-  if (!isFirstEl && escaped[0] === `'`) {
+  if (!isFirstEl && escaped[0] === `'` && escaped[1] !== `'`) {
     escaped = `''${escaped.slice(1)}`
   }
   // Same logic but for last el
-  if (!isLastEl && escaped[escaped.length - 1] === `'`) {
+  if (
+    !isLastEl &&
+    escaped[escaped.length - 1] === `'` &&
+    escaped[escaped.length - 2] !== `'`
+  ) {
     escaped = `${escaped.slice(0, escaped.length - 1)}''`
   }
   return printEscapedMessage(escaped, isInPlural)

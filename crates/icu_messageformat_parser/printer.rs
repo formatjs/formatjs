@@ -135,7 +135,10 @@ fn flush_quoted_syntax_token(
 
     let literal = &message[*literal_start..start];
     out.push_str(literal);
-    if literal.ends_with('\'') {
+    // A lone trailing `'` would start the quoted span; runs that are already
+    // doubled (even length) read back as apostrophes on their own.
+    let trailing_quotes = literal.len() - literal.trim_end_matches('\'').len();
+    if trailing_quotes % 2 == 1 {
         out.push('\'');
     }
     write_quoted_syntax_token(out, &message[start..quoted_end]);
@@ -212,25 +215,58 @@ fn write_literal_element(
     is_first_el: bool,
     is_last_el: bool,
 ) {
+    // `''` reads back as a single `'`, so a run of two or more apostrophes has
+    // to be doubled to survive a round trip.
+    let has_quote_run = el.value.contains("''");
     // If this literal starts with a ' and it's not the 1st node, this means the node before it is non-literal
     // and the `'` needs to be unescaped (doubled) to preserve it
-    let needs_leading_quote_escape = !is_first_el && el.value.starts_with('\'');
-    let needs_trailing_quote_escape = !is_last_el && el.value.ends_with('\'');
+    let needs_leading_quote_escape =
+        !is_first_el && el.value.starts_with('\'') && !el.value.starts_with("''");
+    let needs_trailing_quote_escape =
+        !is_last_el && el.value.ends_with('\'') && !el.value.ends_with("''");
 
-    if needs_leading_quote_escape || needs_trailing_quote_escape {
-        let mut escaped = el.value.clone();
+    if has_quote_run || needs_leading_quote_escape || needs_trailing_quote_escape {
+        let mut escaped = if has_quote_run {
+            double_quote_runs(&el.value)
+        } else {
+            el.value.clone()
+        };
         if needs_leading_quote_escape {
             escaped = format!("''{}", &escaped[1..]);
         }
 
         // Same logic but for the last element - preserve trailing quotes
-        if !is_last_el && escaped.ends_with('\'') {
+        if needs_trailing_quote_escape {
             escaped = format!("{}''", &escaped[..escaped.len() - 1]);
         }
 
         write_escaped_message(out, &escaped, is_in_plural);
     } else {
         write_escaped_message(out, &el.value, is_in_plural);
+    }
+}
+
+/// Doubles every run of two or more apostrophes; a lone `'` is left as is.
+fn double_quote_runs(value: &str) -> String {
+    let mut out = String::with_capacity(value.len() * 2);
+    let mut run = 0;
+    for ch in value.chars() {
+        if ch == '\'' {
+            run += 1;
+            continue;
+        }
+        push_quote_run(&mut out, run);
+        run = 0;
+        out.push(ch);
+    }
+    push_quote_run(&mut out, run);
+    out
+}
+
+fn push_quote_run(out: &mut String, run: usize) {
+    let count = if run >= 2 { run * 2 } else { run };
+    for _ in 0..count {
+        out.push('\'');
     }
 }
 
