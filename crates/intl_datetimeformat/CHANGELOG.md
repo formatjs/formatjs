@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.1...formatjs_intl_datetimeformat_v1.0.2) (2026-11-07)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** align range formatting with ECMA-402 and CLDR ([#7872](https://github.com/formatjs/formatjs/issues/7872)) ([136d91b](https://github.com/formatjs/formatjs/commit/136d91b26f94d64bafd048196f4c84734ed1e7c7))
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.0...formatjs_intl_datetimeformat_v1.0.1) (2026-10-31)
 
 

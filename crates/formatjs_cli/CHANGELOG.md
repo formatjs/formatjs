@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.10.0...formatjs_cli_v1.10.1) (2026-11-07)
+
+
+### Bug Fixes
+
+* **deps:** update ruff to v0.17.3 ([#7852](https://github.com/formatjs/formatjs/issues/7852)) ([43756f9](https://github.com/formatjs/formatjs/commit/43756f961c72e432a4ea6f27ba4978ce7ea549d3))
+
 ## [1.10.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.9.0...formatjs_cli_v1.10.0) (2026-10-31)
 
 
