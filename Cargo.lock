@@ -624,7 +624,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.10.0"
+version = "1.10.1"
 dependencies = [
  "anyhow",
  "base64",
@@ -764,7 +764,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -778,7 +778,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "formatjs_intl_datetimeformat",
  "serde",
@@ -818,7 +818,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",

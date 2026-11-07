@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-coptic@1.1.5...@formatjs/intl-datetimeformat-calendar-coptic@1.1.6) (2026-11-07)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 8.0.3
+
 ## [1.1.5](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-coptic@1.1.4...@formatjs/intl-datetimeformat-calendar-coptic@1.1.5) (2026-10-31)
 
 
