@@ -15,7 +15,7 @@ fn escapes_match_icu4j_fixtures_verified_by_icu4c() {
             ("0".into(), Value::from(3_i64)),
             ("1".into(), Value::from("x")),
             ("2".into(), Value::from("Y")),
-            ("n".into(), Value::from(fields[1].parse::<i64>().unwrap())),
+            ("n".into(), Value::from(fields[1].parse::<f64>().unwrap())),
             ("g".into(), Value::from(fields[2])),
             ("x".into(), Value::from("X")),
             ("name".into(), Value::from("Ada")),

@@ -254,3 +254,17 @@ test('GH #4202: three plurals with hash placeholders', function () {
     '{a,plural,one{{b,plural,one{{c,plural,one{{a, number} a, {b, number} b, and # c} other{{a, number} a, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} a, {b, number} bs, and # c} other{{a, number} a, {b, number} bs, and # cs}}}}} other{{b,plural,one{{c,plural,one{{a, number} as, {b, number} b, and # c} other{{a, number} as, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} as, {b, number} bs, and # c} other{{a, number} as, {b, number} bs, and # cs}}}}}}'
   )
 })
+
+test('preserves legal select keys during cloning and scoped hoisting', () => {
+  for (const captureEscapes of [false, true]) {
+    for (const source of [
+      '{g,select,__proto__{P} constructor{C} other{O}}',
+      '{n,plural,offset:1 other{# {g,select,__proto__{P} constructor{C} other{O}}}}',
+    ]) {
+      const ast = parse(source, {captureEscapes})
+      const original = printAST(ast)
+      expect(printAST(hoistSelectors(ast))).toBe(original)
+      expect(printAST(ast)).toBe(original)
+    }
+  }
+})

@@ -9,33 +9,22 @@ import {
   isTimeElement,
   type MessageFormatElement,
   type PluralElement,
-  type PluralOrSelectOption,
   type SelectElement,
   TYPE,
 } from '#packages/icu-messageformat-parser/types.js'
 
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    // @ts-expect-error meh
-    return obj.map(cloneDeep)
+    return obj.map(cloneDeep) as T
   }
   if (obj !== null && typeof obj === 'object') {
-    // @ts-expect-error meh
-    return Object.keys(obj).reduce((cloned, k) => {
-      // @ts-expect-error meh
-      cloned[k] = cloneDeep(obj[k])
-      return cloned
-    }, {})
+    return Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => [key, cloneDeep(value)])
+    ) as T
   }
   return obj
 }
 
-/**
- * Replace pound elements with number elements referencing the given variable.
- * This is needed when nesting plurals - the # in the outer plural should become
- * an explicit variable reference when nested inside another plural.
- * GH #4202
- */
 function replacePoundWithArgument(
   ast: MessageFormatElement[],
   variableName: string
@@ -79,17 +68,18 @@ function hoistPluralOrSelectElement(
     before = replacePoundWithArgument(before, parentPlural.value)
     after = replacePoundWithArgument(after, parentPlural.value)
   }
-  const options: Record<string, PluralOrSelectOption> = {}
-  for (const key of Object.keys(cloned.options)) {
-    options[key] = {
-      ...cloned.options[key],
-      value: hoistSelectorsInContext(
-        [...before, ...cloned.options[key].value, ...after],
-        isPluralElement(cloned) ? cloned : undefined
-      ),
-    }
-  }
-  cloned.options = options
+  cloned.options = Object.fromEntries(
+    Object.entries(cloned.options).map(([key, option]) => [
+      key,
+      {
+        ...option,
+        value: hoistSelectorsInContext(
+          [...before, ...option.value, ...after],
+          isPluralElement(cloned) ? cloned : undefined
+        ),
+      },
+    ])
+  )
   return cloned
 }
 
@@ -149,16 +139,18 @@ function hoistSelectorsInContext(
       // Offset pounds need their original plural scope; ICU has no subtraction argument.
       return ast.map(node => {
         if (!isPluralOrSelectElement(node)) return node
-        const options: Record<string, PluralOrSelectOption> = {}
-        for (const key of Object.keys(node.options)) {
-          options[key] = {
-            ...node.options[key],
-            value: hoistSelectorsInContext(
-              node.options[key].value,
-              isPluralElement(node) ? node : undefined
-            ),
-          }
-        }
+        const options = Object.fromEntries(
+          Object.entries(node.options).map(([key, option]) => [
+            key,
+            {
+              ...option,
+              value: hoistSelectorsInContext(
+                option.value,
+                isPluralElement(node) ? node : undefined
+              ),
+            },
+          ])
+        )
         return {...node, options}
       })
     }

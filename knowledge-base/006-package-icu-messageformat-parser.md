@@ -64,6 +64,9 @@ rich-text tags. Moving a zero-offset pound under another selector emits an
 explicit number argument. Nested selectors keep their own pounds. Nonzero
 offset pounds retain their plural scope, so flattening can leave some selectors
 inside sentence fragments rather than change the number being printed.
+Option maps and their deep copies preserve legal keys such as `__proto__`.
+Oracle tests include negative and fractional counts; rich-text tests also check
+object output, input immutability, and repeated flattening.
 
 ### Skeleton Integration
 
