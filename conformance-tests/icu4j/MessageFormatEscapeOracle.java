@@ -64,6 +64,16 @@ public class MessageFormatEscapeOracle {
             "{n, plural, other {{x}'#'#'{'#'}'}}",
             "{g, select, other {don't '' '{x}'}}", "literal <3 > # }"
         ));
+        patterns.addAll(List.of(
+            "{n, plural, one {# file in {0, plural, one {# folder} other {# folders}}} other {# files in {0, plural, one {# folder} other {# folders}}}}",
+            "{n, plural, one {# photo liked by {g, select, female {her} other {them}}} other {# photos liked by {g, select, female {her} other {them}}}}",
+            "{n, plural, offset:1 =0 {Nobody} one {You and # other} other {You and # others}} joined {g, select, female {her} other {their}} party",
+            "{n, plural, offset:2 other {# outer}} then {0, plural, other {# inner}}",
+            "{n, plural, other {{0, plural, other {# inner}} # outer}} {g, select, female {her} other {them}}",
+            "{n, plural, offset:1 other {# outer {n, plural, offset:2 other {# inner}} # outer}}",
+            "{n, selectordinal, other {# outer {0, plural, other {# inner}} # outer}}",
+            "{n, plural, offset:1 other {{g, select, female {her} other {them}} # outer}}"
+        ));
         String[] fragments = {"a", "'", "''", "''''", "'{x}'", "'}'", "'#'", "#", "{x}"};
         for (String left : fragments) {
             for (String right : fragments) {

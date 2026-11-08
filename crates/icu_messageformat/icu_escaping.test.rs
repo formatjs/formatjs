@@ -1,5 +1,5 @@
 use formatjs_icu_messageformat::{IcuMessageFormat, Value, Values};
-use formatjs_icu_messageformat_parser::{Parser, ParserOptions, print_ast};
+use formatjs_icu_messageformat_parser::{Parser, ParserOptions, hoist_selectors, print_ast};
 use std::{collections::HashMap, fs, process::Command};
 
 #[test]
@@ -39,6 +39,8 @@ fn escapes_match_icu4j_fixtures_verified_by_icu4c() {
                 "{}-{capture_escapes}\t{}\t{}\t{printed}\t{}\n",
                 fields[0], fields[1], fields[2], fields[4]
             ));
+            let flattened = hoist_selectors(ast.clone());
+            let flat_message = print_ast(&flattened);
             let direct = IcuMessageFormat::from_ast(ast)
                 .format_to_string("en", &values)
                 .unwrap();
@@ -51,6 +53,25 @@ fn escapes_match_icu4j_fixtures_verified_by_icu4c() {
                 roundtrip, fields[4],
                 "{row}; printed={printed}; capture={capture_escapes}"
             );
+            assert_eq!(
+                IcuMessageFormat::from_ast(flattened)
+                    .format_to_string("en", &values)
+                    .unwrap(),
+                fields[4],
+                "Flattened AST: {row}"
+            );
+            assert_eq!(
+                IcuMessageFormat::try_new(&flat_message)
+                    .unwrap()
+                    .format_to_string("en", &values)
+                    .unwrap(),
+                fields[4],
+                "Flattened message: {row}; {flat_message}"
+            );
+            printed_rows.push_str(&format!(
+                "{}-flat-{capture_escapes}\t{}\t{}\t{flat_message}\t{}\n",
+                fields[0], fields[1], fields[2], fields[4]
+            ));
         }
         checked += 1;
     }

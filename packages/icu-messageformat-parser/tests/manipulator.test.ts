@@ -216,6 +216,19 @@ test('GH #6212: variable names matching Map prototype properties should not conf
 })
 
 // https://github.com/formatjs/formatjs/issues/4202
+test.each([
+  [
+    '{n,plural,other{<b>#</b> {m,plural,other{#}}}}',
+    '{n,plural,other{{m,plural,other{<b>{n, number}</b> #}}}}',
+  ],
+  [
+    '{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}',
+    '{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}',
+  ],
+])('preserves pound scope through tags: %s', (input, expected) => {
+  expect(printAST(hoistSelectors(parse(input)))).toBe(expected)
+})
+
 test('GH #4202: multiple plurals with hash placeholders', function () {
   const input =
     '{topicCount, plural, one {# topic} other {# topics}} and {noteCount, plural, one {# note} other {# notes}}'

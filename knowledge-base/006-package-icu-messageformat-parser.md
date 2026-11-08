@@ -59,6 +59,12 @@ Uncaptured literals also escape apostrophes exactly once.
 Capture preserves escape spellings, not whole-message whitespace or selector
 ordering. The Python binding exposes the same Rust option as `capture_escapes`.
 
+Selector hoisting tracks the original plural owner of `#`, including through
+rich-text tags. Moving a zero-offset pound under another selector emits an
+explicit number argument. Nested selectors keep their own pounds. Nonzero
+offset pounds retain their plural scope, so flattening can leave some selectors
+inside sentence fragments rather than change the number being printed.
+
 ### Skeleton Integration
 
 Delegates number/datetime skeleton parsing to `@formatjs/icu-skeleton-parser`. Skeletons are the `::` syntax in ICU MessageFormat (e.g., `{amount, number, ::currency/USD}`).
