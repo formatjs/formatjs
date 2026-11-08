@@ -1,0 +1,62 @@
+a''''{x} '{b''''c}'
+---
+{
+  "captureEscapes": true,
+  "captureLocation": true
+}
+---
+{
+  "val": [
+    {
+      "type": 0,
+      "value": "a''",
+      "location": {
+        "start": {
+          "offset": 0,
+          "line": 1,
+          "column": 1
+        },
+        "end": {
+          "offset": 5,
+          "line": 1,
+          "column": 6
+        }
+      },
+      "rawValue": "a''''"
+    },
+    {
+      "type": 1,
+      "value": "x",
+      "location": {
+        "start": {
+          "offset": 5,
+          "line": 1,
+          "column": 6
+        },
+        "end": {
+          "offset": 8,
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " {b''c}",
+      "location": {
+        "start": {
+          "offset": 8,
+          "line": 1,
+          "column": 9
+        },
+        "end": {
+          "offset": 19,
+          "line": 1,
+          "column": 20
+        }
+      },
+      "rawValue": " '{b''''c}'"
+    }
+  ],
+  "err": null
+}

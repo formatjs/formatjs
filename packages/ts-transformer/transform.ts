@@ -592,7 +592,9 @@ function extractMessageDescriptor(
   // so that the ID generation sees the same message format as the final output
   if (flatten && msg.defaultMessage) {
     try {
-      msg.defaultMessage = printAST(hoistSelectors(parse(msg.defaultMessage)))
+      msg.defaultMessage = printAST(
+        hoistSelectors(parse(msg.defaultMessage, {captureEscapes: true}))
+      )
     } catch (e: any) {
       const {line, character} = sf.getLineAndCharacterOfPosition(node.pos)
       throw new Error(

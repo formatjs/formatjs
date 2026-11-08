@@ -3,6 +3,93 @@ import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {TYPE} from '#packages/icu-messageformat-parser/types.js'
 import {expect, test} from 'vitest'
 
+const escapedMessages = [
+  "a''''{x}",
+  "Say '''' for an apostrophe",
+  "{x}''{y}",
+  "{x}''''b",
+  "'{a''''b}'",
+  "'<a''''b>'",
+  "😀 '{''''}' don't",
+  "'{unterminated",
+  "abc'",
+  'plain text',
+  "aa}'{",
+  "a'{'}",
+  "a}''}",
+  "}''}'",
+]
+
+test.each(escapedMessages)('preserves captured escape spellings: %s', input => {
+  const ast = parse(input, {captureEscapes: true})
+  expect(printAST(ast)).toBe(input)
+  const serialized = JSON.parse(JSON.stringify(ast))
+  expect(printAST(serialized)).toBe(input)
+  expect(parse(printAST(serialized))).toEqual(parse(input))
+})
+
+test.each(escapedMessages)(
+  'round-trips literals without rawValue: %s',
+  input => {
+    expect(parse(printAST(parse(input)))).toEqual(parse(input))
+  }
+)
+
+test('round-trips combinations of literal syntax and apostrophes', () => {
+  const parts = ['a', "'", "''", '{', '}', '<b>', '#']
+  for (const a of parts)
+    for (const b of parts)
+      for (const c of parts) {
+        const ast = [{type: TYPE.literal as const, value: a + b + c}]
+        expect(parse(printAST(ast))).toEqual(ast)
+      }
+})
+
+test('captures escapes without changing decoded literal values', () => {
+  expect(parse("😀a''''{x}", {captureEscapes: true})).toEqual([
+    {
+      type: TYPE.literal,
+      value: "😀a''",
+      rawValue: "😀a''''",
+    },
+    {type: TYPE.argument, value: 'x'},
+  ])
+  expect(parse("a''''{x}")[0]).not.toHaveProperty('rawValue')
+})
+
+test('ignores stale rawValue after editing a literal', () => {
+  const ast = parse("a''''", {captureEscapes: true})
+  if (ast[0].type !== TYPE.literal) throw new Error('expected literal')
+  ast[0].value = "'{changed}''"
+  expect(parse(printAST(ast))).toEqual([
+    {type: TYPE.literal, value: "'{changed}''"},
+  ])
+})
+
+test.each(['{x}', '<b>text</b>'])(
+  'rejects structural syntax in rawValue: %s',
+  value => {
+    expect(
+      parse(printAST([{type: TYPE.literal, value, rawValue: value}]))
+    ).toEqual([{type: TYPE.literal, value}])
+  }
+)
+
+test.each([false, true])(
+  'preserves nested literal escapes, capture=%s',
+  captureEscapes => {
+    for (const input of [
+      "{n, plural, one {''''#} other {a''}}",
+      "{s, select, other {'{a''''b}' a''}}",
+      "{n, plural, other {<b>'#' ''''</b>}}",
+    ]) {
+      expect(parse(printAST(parse(input, {captureEscapes})))).toEqual(
+        parse(input)
+      )
+    }
+  }
+)
+
 test('parses plain top-level messages without changing AST shape', function () {
   expect(parse('Hello world')).toEqual([
     {
@@ -39,15 +126,16 @@ test('tracks plain top-level message location across surrogate pairs', function 
   ])
 })
 
-test('should escape things properly', function () {
+test('preserves captured apostrophes in literal text', function () {
   expect(printAST(parse("Name: ''{name}''."))).toBe("Name: ''{name}''.")
-  expect(printAST(parse("'just some {name} thing'"))).toBe(
-    "'just some {name} thing'"
-  )
+  expect(
+    printAST(parse("'just some {name} thing'", {captureEscapes: true}))
+  ).toBe("'just some {name} thing'")
   expect(
     printAST(
       parse(
-        "Peter's brother {name1} is taller than {name} who is Peter's friend."
+        "Peter's brother {name1} is taller than {name} who is Peter's friend.",
+        {captureEscapes: true}
       )
     )
   ).toBe("Peter's brother {name1} is taller than {name} who is Peter's friend.")

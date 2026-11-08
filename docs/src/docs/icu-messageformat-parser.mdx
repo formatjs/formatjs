@@ -23,6 +23,32 @@ const ast = parse(`this is {count, plural,
 }`)
 ```
 
+### Preserving escapes
+
+Use `captureEscapes: true` when parsing messages that will be printed or
+transformed. Literal nodes keep their decoded `value` and add a `rawValue` string
+containing their original ICU spelling:
+
+```ts
+import {parse} from '@formatjs/icu-messageformat-parser'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
+
+const message = "a''''{name}"
+const ast = parse(message, {captureEscapes: true})
+printAST(ast) // "a''''{name}"
+```
+
+`rawValue` survives JSON serialization. Formatting still uses the decoded value.
+The printer validates `rawValue` against the current value and context before
+reusing it. Stale or unsuitable spelling is escaped again. Moving literals into another context can require
+different quoting; selector ordering and argument formatting remain normalized.
+Without `rawValue`, the printer emits equivalent canonical escapes rather than
+preserving source spelling.
+
+Capture is disabled by default to keep runtime ASTs compact. The Babel plugin,
+TypeScript transformer, unplugin, and Rust CLI enable it when flattening messages.
+Rust callers use `ParserOptions { capture_escapes: true, ..Default::default() }`.
+
 ### Example
 
 ```tsx live

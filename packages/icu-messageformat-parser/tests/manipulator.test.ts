@@ -6,6 +6,33 @@ import {
 import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {expect, test} from 'vitest'
 
+test.each([
+  ["{s,select,other{'{'}}'}'", "{s,select,other{'{}'}}"],
+  ['<{s,select,other{b>}}', "{s,select,other{'<b>'}}"],
+])('joins captured literals without creating syntax: %s', (input, expected) => {
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(parse(printed)).toEqual(parse(expected))
+})
+
+test('retains captured escapes when hoisting literals into branches', () => {
+  const input = "a''''{x} {s, select, other {'{b''''c}'}}"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe("{s,select,other{a''''{x} '{b''''c}'}}")
+})
+
+test('closes captured EOF quotes before inserted branch delimiters', () => {
+  const input = "{s, select, other {yes}} '{tail"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe("{s,select,other{yes '{tail'}}")
+  expect(parse(printed)).toEqual(parse("{s,select,other{yes '{tail'}}"))
+})
+
+test('adapts literal pound escaping when selector context changes', () => {
+  const input = "{n, plural, other {'#' {s, select, other {text}}}}"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe('{n,plural,other{{s,select,other{# text}}}}')
+})
+
 test('shared date/time arguments allow reordering', function () {
   const source = parse(
     'Resets {resetDate, date, ::EEE} at {resetDate, time, short}.'

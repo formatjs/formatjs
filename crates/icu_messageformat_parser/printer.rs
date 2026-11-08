@@ -4,6 +4,7 @@
 //! back into their string representation, following the ICU MessageFormat syntax.
 
 use crate::types::*;
+use std::borrow::Cow;
 use std::fmt::Write;
 
 /// Prints a MessageFormat AST to its string representation.
@@ -29,19 +30,39 @@ use std::fmt::Write;
 /// ```
 pub fn print_ast(ast: &[MessageFormatElement]) -> String {
     let mut result = String::new();
-    write_ast(&mut result, ast, false);
+    write_ast(&mut result, ast, false, true);
     result
 }
 
-fn write_ast(out: &mut String, ast: &[MessageFormatElement], is_in_plural: bool) {
-    for (i, el) in ast.iter().enumerate() {
-        // Track position to handle special quote escaping at boundaries
-        let is_first = i == 0;
-        let is_last = i == ast.len() - 1;
-
+fn write_ast(
+    out: &mut String,
+    ast: &[MessageFormatElement],
+    is_in_plural: bool,
+    is_at_end_of_message: bool,
+) {
+    let mut elements = ast.iter().peekable();
+    while let Some(el) = elements.next() {
         match el {
             MessageFormatElement::Literal(lit) => {
-                write_literal_element(out, lit, is_in_plural, is_first, is_last)
+                let mut literal = Cow::Borrowed(lit);
+                while let Some(MessageFormatElement::Literal(next)) = elements.peek() {
+                    let merged = literal.to_mut();
+                    let raw_value = merged
+                        .raw_value
+                        .as_ref()
+                        .zip(next.raw_value.as_ref())
+                        .map(|(left, right)| format!("{left}{right}"));
+                    merged.value.push_str(&next.value);
+                    merged.raw_value = raw_value;
+                    elements.next();
+                }
+                write_literal_element(
+                    out,
+                    &literal,
+                    is_in_plural,
+                    is_at_end_of_message && elements.peek().is_none(),
+                    is_at_end_of_message,
+                )
             }
             MessageFormatElement::Argument(arg) => write_argument_element(out, arg),
             MessageFormatElement::Number(num) => write_number_element(out, num),
@@ -71,7 +92,7 @@ fn write_tag_element(out: &mut String, el: &TagElement, is_in_plural: bool) {
     out.push('<');
     out.push_str(&el.value);
     out.push('>');
-    write_ast(out, &el.children, is_in_plural);
+    write_ast(out, &el.children, is_in_plural, false);
     out.push_str("</");
     out.push_str(&el.value);
     out.push('>');
@@ -128,14 +149,15 @@ fn flush_quoted_syntax_token(
     literal_start: &mut usize,
     quoted_start: &mut Option<usize>,
     quoted_end: usize,
+    preserve_apostrophes: bool,
 ) {
     let Some(start) = *quoted_start else {
         return;
     };
 
     let literal = &message[*literal_start..start];
-    out.push_str(literal);
-    if literal.ends_with('\'') {
+    write_plain_text(out, literal, preserve_apostrophes);
+    if preserve_apostrophes && literal.ends_with('\'') {
         out.push('\'');
     }
     write_quoted_syntax_token(out, &message[start..quoted_end]);
@@ -145,6 +167,28 @@ fn flush_quoted_syntax_token(
 
 /// Escapes ICU syntax tokens in a literal message string.
 fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
+    write_escaped_text(out, message, is_in_plural, false);
+}
+
+fn write_plain_text(out: &mut String, text: &str, preserve_apostrophes: bool) {
+    if preserve_apostrophes {
+        out.push_str(text);
+    } else {
+        for ch in text.chars() {
+            out.push(ch);
+            if ch == '\'' {
+                out.push(ch);
+            }
+        }
+    }
+}
+
+fn write_escaped_text(
+    out: &mut String,
+    message: &str,
+    is_in_plural: bool,
+    preserve_apostrophes: bool,
+) {
     let bytes = message.as_bytes();
     let mut literal_start = 0;
     let mut quoted_start = None;
@@ -161,7 +205,10 @@ fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
         };
 
         if let Some(end) = end {
-            if quoted_start.is_some() && i == quoted_end {
+            if quoted_start.is_some()
+                && (i == quoted_end
+                    || (!preserve_apostrophes && bytes[quoted_end..i].iter().all(|b| *b == b'\'')))
+            {
                 quoted_end = end;
             } else {
                 flush_quoted_syntax_token(
@@ -170,6 +217,7 @@ fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
                     &mut literal_start,
                     &mut quoted_start,
                     quoted_end,
+                    preserve_apostrophes,
                 );
                 quoted_start = Some(i);
                 quoted_end = end;
@@ -186,49 +234,93 @@ fn write_escaped_message(out: &mut String, message: &str, is_in_plural: bool) {
         &mut literal_start,
         &mut quoted_start,
         quoted_end,
+        preserve_apostrophes,
     );
-    out.push_str(&message[literal_start..]);
+    write_plain_text(out, &message[literal_start..], preserve_apostrophes);
 }
 
-/// Prints a literal text element with appropriate escaping.
-///
-/// This handles special cases for quote escaping at element boundaries
-/// and '#' escaping inside plural elements.
-///
-/// # Arguments
-///
-/// * `el` - The literal element to print
-/// * `is_in_plural` - Whether this literal is inside a plural (affects '#' escaping)
-/// * `is_first_el` - Whether this is the first element in the sequence
-/// * `is_last_el` - Whether this is the last element in the sequence
-///
-/// # Returns
-///
-/// The properly escaped literal text
+fn validated_raw_value<'a>(
+    raw_value: &'a str,
+    value: &str,
+    is_in_plural: bool,
+    is_at_end_of_message: bool,
+    is_top_level: bool,
+) -> Option<Cow<'a, str>> {
+    let mut decoded = String::new();
+    let mut chars = raw_value.chars().peekable();
+    let mut close_quote = false;
+    while let Some(ch) = chars.next() {
+        if ch == '\'' {
+            let next = chars.peek().copied();
+            if next == Some('\'') {
+                decoded.push('\'');
+                chars.next();
+                continue;
+            }
+            if matches!(next, Some('{') | Some('}') | Some('<') | Some('>'))
+                || (is_in_plural && next == Some('#'))
+            {
+                let mut closed = false;
+                while let Some(quoted) = chars.next() {
+                    if quoted == '\'' {
+                        if chars.peek() == Some(&'\'') {
+                            decoded.push('\'');
+                            chars.next();
+                        } else {
+                            closed = true;
+                            break;
+                        }
+                    } else {
+                        decoded.push(quoted);
+                    }
+                }
+                close_quote = !closed && !is_at_end_of_message;
+                continue;
+            }
+            if chars.peek().is_none() && !is_at_end_of_message {
+                close_quote = true;
+            }
+        }
+        // Raw spelling must remain literal in the destination context.
+        if ch == '{'
+            || (!is_top_level && ch == '}')
+            || (is_in_plural && ch == '#')
+            || (ch == '<'
+                && chars
+                    .peek()
+                    .is_some_and(|next| next.is_ascii_alphabetic() || *next == '/'))
+        {
+            return None;
+        }
+        decoded.push(ch);
+    }
+    if decoded != value {
+        return None;
+    }
+    Some(if close_quote {
+        Cow::Owned(format!("{raw_value}'"))
+    } else {
+        Cow::Borrowed(raw_value)
+    })
+}
+
 fn write_literal_element(
     out: &mut String,
     el: &LiteralElement,
     is_in_plural: bool,
-    is_first_el: bool,
-    is_last_el: bool,
+    is_at_end_of_message: bool,
+    is_top_level: bool,
 ) {
-    // If this literal starts with a ' and it's not the 1st node, this means the node before it is non-literal
-    // and the `'` needs to be unescaped (doubled) to preserve it
-    let needs_leading_quote_escape = !is_first_el && el.value.starts_with('\'');
-    let needs_trailing_quote_escape = !is_last_el && el.value.ends_with('\'');
-
-    if needs_leading_quote_escape || needs_trailing_quote_escape {
-        let mut escaped = el.value.clone();
-        if needs_leading_quote_escape {
-            escaped = format!("''{}", &escaped[1..]);
-        }
-
-        // Same logic but for the last element - preserve trailing quotes
-        if !is_last_el && escaped.ends_with('\'') {
-            escaped = format!("{}''", &escaped[..escaped.len() - 1]);
-        }
-
-        write_escaped_message(out, &escaped, is_in_plural);
+    if let Some(raw_value) = el.raw_value.as_deref().and_then(|raw_value| {
+        validated_raw_value(
+            raw_value,
+            &el.value,
+            is_in_plural,
+            is_at_end_of_message,
+            is_top_level,
+        )
+    }) {
+        out.push_str(&raw_value);
     } else {
         write_escaped_message(out, &el.value, is_in_plural);
     }
@@ -343,7 +435,7 @@ fn write_number_skeleton_token(out: &mut String, token: &NumberSkeletonToken) {
 /// A string like `percent` or `::currency/USD`
 fn write_argument_style_number(out: &mut String, style: &NumberSkeletonOrStyle) {
     match style {
-        NumberSkeletonOrStyle::String(s) => write_escaped_message(out, s, false),
+        NumberSkeletonOrStyle::String(s) => write_escaped_text(out, s, false, true),
         NumberSkeletonOrStyle::Skeleton(skeleton) => {
             out.push_str("::");
             for (index, token) in skeleton.tokens.iter().enumerate() {
@@ -370,7 +462,7 @@ fn write_argument_style_number(out: &mut String, style: &NumberSkeletonOrStyle) 
 /// A string like `short` or `::yMMMd`
 fn write_argument_style_datetime(out: &mut String, style: &DateTimeSkeletonOrStyle) {
     match style {
-        DateTimeSkeletonOrStyle::String(s) => write_escaped_message(out, s, false),
+        DateTimeSkeletonOrStyle::String(s) => write_escaped_text(out, s, false, true),
         DateTimeSkeletonOrStyle::Skeleton(skeleton) => {
             out.push_str("::");
             out.push_str(&skeleton.pattern);
@@ -421,7 +513,7 @@ fn write_select_element(out: &mut String, el: &SelectElement) {
         let option = el.options.get(*id).expect("select key should exist");
         out.push_str(id);
         out.push('{');
-        write_ast(out, &option.value, false);
+        write_ast(out, &option.value, false, false);
         out.push('}');
     }
     out.push('}');
@@ -499,7 +591,7 @@ fn write_plural_element(out: &mut String, el: &PluralElement) {
         let option = &el.options[id];
         out.push_str(id.as_str());
         out.push('{');
-        write_ast(out, &option.value, true); // true = we're in a plural context
+        write_ast(out, &option.value, true, false);
         out.push('}');
     }
 

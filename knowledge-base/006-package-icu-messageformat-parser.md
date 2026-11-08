@@ -27,6 +27,9 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 ### AST Node Types
 
 - `LiteralElement` — Plain text
+- Optional `rawValue` strings preserve original ICU spelling when parsing with
+  `captureEscapes` (`capture_escapes` in Rust). Runtimes continue formatting decoded
+  `value`, with no new AST node kind.
 - `ArgumentElement` — `{var}`
 - `NumberElement` — `{var, number, ::skeleton}`
 - `DateElement` / `TimeElement` — `{var, date/time, ::skeleton}`
@@ -41,6 +44,20 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 - `no-parser.ts` — AST types, guards, and structural comparison with a throwing `parse` stub. Alias the package root to `@formatjs/icu-messageformat-parser/no-parser.js` after precompiling messages and defaults; AST input alone does not remove the parser dependency.
 - `printer.ts` — AST back to ICU MessageFormat string
 - `manipulator.ts` — AST transforms: `hoistSelectors` (flatten nested selects), `isStructurallySame`
+
+### Escape preservation
+
+Build tools enable escape capture before flattening. Literals store decoded
+`value` and original ICU source in `rawValue` (`raw_value` in Rust).
+Both implementations serialize the optional field as `rawValue`. Default parsing
+omits it, preserving compact runtime ASTs and existing JSON consumers.
+
+Printers validate raw spelling against the current decoded value and destination
+context before reuse. Stale spelling or text that would become syntax falls back
+to canonical escaping. EOF-terminated quotes close before inserted syntax.
+Uncaptured literals also escape apostrophes exactly once.
+Capture preserves escape spellings, not whole-message whitespace or selector
+ordering. The Python binding exposes the same Rust option as `capture_escapes`.
 
 ### Skeleton Integration
 
@@ -67,6 +84,16 @@ syntax; the Rust fast path applies when location capture is disabled.
 ## Test Strategy
 
 - Vitest unit tests with real-world message samples
+- Escape conformance uses pinned ICU4J 78.1 fixtures, independently checked by
+  ICU4C 78.1. TypeScript and Rust compare decoded AST and printed-message output
+  with capture enabled and disabled; ICU4J also formats both printers' output.
+  The corpus covers apostrophe runs, quoted braces, EOF quotes, plural `#`,
+  offsets, ordinals, nested selectors, Unicode, and malformed patterns. It includes
+  regressions from upstream [MessagePatternUtilTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessagePatternUtilTest.java),
+  [MessageRegressionTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessageRegressionTest.java),
+  and [tmsgfmt.cpp](https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/test/intltest/tmsgfmt.cpp).
+  Rich-text tag quoting is a FormatJS extension, covered by local tests rather
+  than ICU comparisons.
 - Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
 - The same fixture corpus runs under `withIdentifierFallbackForTesting` from
   `parser.ts`. This internal synchronous harness restores the previous matcher
