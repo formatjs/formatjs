@@ -13,14 +13,28 @@ import {
   TYPE,
 } from '#packages/icu-messageformat-parser/types.js'
 
+function mapValues<T, U>(
+  obj: Record<string, T>,
+  map: (value: T) => U
+): Record<string, U> {
+  const result: Record<string, U> = {}
+  for (const key of Object.keys(obj)) {
+    Object.defineProperty(result, key, {
+      value: map(obj[key]),
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    })
+  }
+  return result
+}
+
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {
     return obj.map(cloneDeep) as T
   }
   if (obj !== null && typeof obj === 'object') {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [key, cloneDeep(value)])
-    ) as T
+    return mapValues(obj as Record<string, unknown>, cloneDeep) as T
   }
   return obj
 }
@@ -68,18 +82,13 @@ function hoistPluralOrSelectElement(
     before = replacePoundWithArgument(before, parentPlural.value)
     after = replacePoundWithArgument(after, parentPlural.value)
   }
-  cloned.options = Object.fromEntries(
-    Object.entries(cloned.options).map(([key, option]) => [
-      key,
-      {
-        ...option,
-        value: hoistSelectorsInContext(
-          [...before, ...option.value, ...after],
-          isPluralElement(cloned) ? cloned : undefined
-        ),
-      },
-    ])
-  )
+  cloned.options = mapValues(cloned.options, option => ({
+    ...option,
+    value: hoistSelectorsInContext(
+      [...before, ...option.value, ...after],
+      isPluralElement(cloned) ? cloned : undefined
+    ),
+  }))
   return cloned
 }
 
@@ -139,18 +148,13 @@ function hoistSelectorsInContext(
       // Offset pounds need their original plural scope; ICU has no subtraction argument.
       return ast.map(node => {
         if (!isPluralOrSelectElement(node)) return node
-        const options = Object.fromEntries(
-          Object.entries(node.options).map(([key, option]) => [
-            key,
-            {
-              ...option,
-              value: hoistSelectorsInContext(
-                option.value,
-                isPluralElement(node) ? node : undefined
-              ),
-            },
-          ])
-        )
+        const options = mapValues(node.options, option => ({
+          ...option,
+          value: hoistSelectorsInContext(
+            option.value,
+            isPluralElement(node) ? node : undefined
+          ),
+        }))
         return {...node, options}
       })
     }

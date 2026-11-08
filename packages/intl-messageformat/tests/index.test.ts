@@ -44,9 +44,9 @@ it.each([
     const printed = printAST(flat)
     expect(printAST(hoistSelectors(flat))).toBe(printed)
     for (const locale of ['en', 'ar', 'ru']) {
-      const before = new IntlMessageFormat<RichPart>(ast, locale)
-      const direct = new IntlMessageFormat<RichPart>(flat, locale)
-      const after = new IntlMessageFormat<RichPart>(printed, locale)
+      const before = new IntlMessageFormat(ast, locale)
+      const direct = new IntlMessageFormat(flat, locale)
+      const after = new IntlMessageFormat(printed, locale)
       for (const n of [-1.5, 0, 1, 1.5, 3]) {
         const values = {n, m: 4, g: '__proto__', b}
         const expected = before.format(values)
