@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.2...@formatjs/intl-locale@5.4.3) (2026-11-08)
+
+
+### Bug Fixes
+
+* declare sideEffects for the Intl polyfill packages ([#7869](https://github.com/formatjs/formatjs/issues/7869)) ([d2f7a6f](https://github.com/formatjs/formatjs/commit/d2f7a6fab5c33c9855c6ba32e062b0d05a721aa3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.3.1
+    * @formatjs/intl-supportedvaluesof bumped to 3.0.1
+
 ## [5.4.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.1...@formatjs/intl-locale@5.4.2) (2026-10-31)
 
 
