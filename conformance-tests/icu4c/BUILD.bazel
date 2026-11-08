@@ -9,6 +9,19 @@ exports_files([
 ])
 
 cc_test(
+    name = "messageformat_escaping_conformance_test",
+    size = "small",
+    srcs = ["messageformat_escaping.cc"],
+    data = ["//conformance-tests/icu4j:messageformat_escape_fixtures"],
+    env = {"MESSAGEFORMAT_ESCAPE_FIXTURES": "$(rootpath //conformance-tests/icu4j:messageformat_escape_fixtures)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "intl_datetimeformat_range_conformance_test",
     size = "small",
     srcs = ["datetimeformat_range.cc"],

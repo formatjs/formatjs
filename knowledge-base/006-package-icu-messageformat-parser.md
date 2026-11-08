@@ -84,6 +84,16 @@ syntax; the Rust fast path applies when location capture is disabled.
 ## Test Strategy
 
 - Vitest unit tests with real-world message samples
+- Escape conformance uses pinned ICU4J 78.1 fixtures, independently checked by
+  ICU4C 78.1. TypeScript and Rust compare decoded AST and printed-message output
+  with capture enabled and disabled; ICU4J also formats both printers' output.
+  The corpus covers apostrophe runs, quoted braces, EOF quotes, plural `#`,
+  offsets, ordinals, nested selectors, Unicode, and malformed patterns. It includes
+  regressions from upstream [MessagePatternUtilTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessagePatternUtilTest.java),
+  [MessageRegressionTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessageRegressionTest.java),
+  and [tmsgfmt.cpp](https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/test/intltest/tmsgfmt.cpp).
+  Rich-text tag quoting is a FormatJS extension, covered by local tests rather
+  than ICU comparisons.
 - Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
 - The same fixture corpus runs under `withIdentifierFallbackForTesting` from
   `parser.ts`. This internal synchronous harness restores the previous matcher

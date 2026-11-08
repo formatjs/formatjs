@@ -66,16 +66,27 @@ formatjs_test(
     name = "intl-messageformat_test",
     srcs = [
         "tests/benchmark.ts",
+        "tests/icu-escaping.test.ts",
         "tests/index.test.ts",
         "tests/message-types.test.ts",
     ],
+    data = [
+        "//conformance-tests/icu4j:messageformat_escape_fixtures",  # keep: ICU oracle corpus
+        "//conformance-tests/icu4j:messageformat_escape_oracle",  # keep: verifies printed patterns
+    ],
+    env = {
+        "MESSAGEFORMAT_ESCAPE_FIXTURES": "$(rootpath //conformance-tests/icu4j:messageformat_escape_fixtures)",
+        "MESSAGEFORMAT_ESCAPE_ORACLE": "$(rootpath //conformance-tests/icu4j:messageformat_escape_oracle)",
+    },
     no_copy_to_bin = ["//:package.json"],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
     deps = [
         ":intl-messageformat",
         "//:node_modules/@formatjs/fast-memoize",
         "//:node_modules/@formatjs/icu-messageformat-parser",
         "//:node_modules/@formatjs/intl-pluralrules",
+        "//:node_modules/@types/node",
         "//:node_modules/tinybench",
         "//:node_modules/vitest",
     ],

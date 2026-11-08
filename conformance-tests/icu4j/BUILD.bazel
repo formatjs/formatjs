@@ -83,6 +83,24 @@ java_test(
     deps = [":icu4j"],
 )
 
+java_binary(
+    name = "messageformat_escape_oracle",
+    testonly = True,
+    srcs = ["MessageFormatEscapeOracle.java"],
+    main_class = "MessageFormatEscapeOracle",
+    visibility = ["//visibility:public"],
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "messageformat_escape_fixtures",
+    testonly = True,
+    outs = ["messageformat-escape-fixtures.tsv"],
+    cmd = "$(execpath :messageformat_escape_oracle) $@",
+    tools = [":messageformat_escape_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_test(
     name = "intl_collator_conformance_test",
     size = "small",
