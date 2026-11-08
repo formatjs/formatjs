@@ -4,8 +4,8 @@ import com.ibm.icu.util.VersionInfo;
 
 public class NumberSkeletonUnitConformanceTest {
     public static void main(String[] args) {
-        if (VersionInfo.ICU_VERSION.getMajor() != 78 || VersionInfo.ICU_VERSION.getMinor() != 1)
-            throw new AssertionError("ICU4J 78.1 required");
+        if (VersionInfo.ICU_VERSION.getMajor() != 79 || VersionInfo.ICU_VERSION.getMinor() != 1)
+            throw new AssertionError("ICU4J 79.1 required");
         String[][] cases = {
             {"unit/fluid-ounce", "5 fl oz"},
             {"unit/kilometer-per-hour", "5 km/h"},

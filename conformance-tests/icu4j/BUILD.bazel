@@ -89,7 +89,7 @@ java_test(
     srcs = ["NumberSkeletonUnitConformanceTest.java"],
     main_class = "NumberSkeletonUnitConformanceTest",
     test_class = "NumberSkeletonUnitConformanceTest",
-    deps = [":icu4j"],
+    deps = [":icu4j79"],
 )
 
 java_test(

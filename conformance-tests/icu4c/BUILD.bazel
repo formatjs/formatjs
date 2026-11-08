@@ -139,3 +139,15 @@ genrule(
     tools = [":intl_datetimeformat_range_conformance_test"],
     visibility = ["//visibility:public"],
 )
+
+cc_test(
+    name = "number_skeleton_unit_conformance_test",
+    size = "small",
+    srcs = ["number_skeleton_unit.cc"],
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
