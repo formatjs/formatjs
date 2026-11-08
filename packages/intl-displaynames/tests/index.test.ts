@@ -9,7 +9,7 @@ import agq from '#packages/intl-displaynames/tests/locale-data/agq.json' with {t
 import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
 
 it('composes scripts with localized separators and safe nested brackets', () => {
-  const data = structuredClone(en)
+  const data: typeof en = JSON.parse(JSON.stringify(en))
   data.data.types.language.dialect.long.en = 'English (test)'
   data.data.types.script.long.Latn = 'Latin (script)'
   data.data.types.region.long.US = 'United (States)'
