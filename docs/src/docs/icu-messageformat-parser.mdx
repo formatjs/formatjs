@@ -49,6 +49,10 @@ Capture is disabled by default to keep runtime ASTs compact. The Babel plugin,
 TypeScript transformer, unplugin, and Rust CLI enable it when flattening messages.
 Rust callers use `ParserOptions { capture_escapes: true, ..Default::default() }`.
 
+Selector hoisting preserves plural `#` scope and offsets. When moving an
+offset-adjusted `#` would change its meaning, flattening keeps that part of the
+message in its original plural scope.
+
 ### Example
 
 ```tsx live

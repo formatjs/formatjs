@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
     const icu::UnicodeString names[] = {"0", "1", "2", "n", "g", "x", "name"};
     const icu::Formattable values[] = {
         int32_t{3}, icu::UnicodeString("x"), icu::UnicodeString("Y"),
-        int32_t{std::stoi(fields[1])}, icu::UnicodeString::fromUTF8(fields[2]),
+        double{std::stod(fields[1])}, icu::UnicodeString::fromUTF8(fields[2]),
         icu::UnicodeString("X"), icu::UnicodeString("Ada")};
     icu::UnicodeString output;
     formatter.format(names, values, 7, output, status);

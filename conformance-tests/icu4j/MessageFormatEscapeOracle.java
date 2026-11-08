@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageFormatEscapeOracle {
-    private static String format(String pattern, int n, String g) {
+    private static String format(String pattern, double n, String g) {
         MessageFormat formatter = new MessageFormat("", ULocale.ENGLISH);
         formatter.applyPattern(pattern, MessagePattern.ApostropheMode.DOUBLE_OPTIONAL);
         Map<String, Object> values = Map.of(
@@ -27,7 +27,7 @@ public class MessageFormatEscapeOracle {
             List<String> rows = Files.readAllLines(Path.of(args[1]), StandardCharsets.UTF_8);
             for (String row : rows.subList(1, rows.size())) {
                 String[] fields = row.split("\t", -1);
-                String actual = outcome(fields[3], Integer.parseInt(fields[1]), fields[2]);
+                String actual = outcome(fields[3], Double.parseDouble(fields[1]), fields[2]);
                 if (!actual.equals(fields[4])) throw new AssertionError("ICU4J mismatch: " + row + "; got " + actual);
             }
             System.out.println((rows.size() - 1) + " ICU4J escape cases verified");
@@ -64,6 +64,16 @@ public class MessageFormatEscapeOracle {
             "{n, plural, other {{x}'#'#'{'#'}'}}",
             "{g, select, other {don't '' '{x}'}}", "literal <3 > # }"
         ));
+        patterns.addAll(List.of(
+            "{n, plural, one {# file in {0, plural, one {# folder} other {# folders}}} other {# files in {0, plural, one {# folder} other {# folders}}}}",
+            "{n, plural, one {# photo liked by {g, select, female {her} other {them}}} other {# photos liked by {g, select, female {her} other {them}}}}",
+            "{n, plural, offset:1 =0 {Nobody} one {You and # other} other {You and # others}} joined {g, select, female {her} other {their}} party",
+            "{n, plural, offset:2 other {# outer}} then {0, plural, other {# inner}}",
+            "{n, plural, other {{0, plural, other {# inner}} # outer}} {g, select, female {her} other {them}}",
+            "{n, plural, offset:1 other {# outer {n, plural, offset:2 other {# inner}} # outer}}",
+            "{n, selectordinal, other {# outer {0, plural, other {# inner}} # outer}}",
+            "{n, plural, offset:1 other {{g, select, female {her} other {them}} # outer}}"
+        ));
         String[] fragments = {"a", "'", "''", "''''", "'{x}'", "'}'", "'#'", "#", "{x}"};
         for (String left : fragments) {
             for (String right : fragments) {
@@ -76,18 +86,28 @@ public class MessageFormatEscapeOracle {
         List<String> rows = new ArrayList<>();
         rows.add("case\tn\tg\tpattern\texpected");
         for (int i = 0; i < patterns.size(); i++) {
-            for (int n : new int[] {0, 1, 2, 3, 11}) {
+            for (double n : new double[] {-1.5, -1, 0, 0.5, 1, 1.5, 2, 3, 5, 11}) {
                 for (String g : new String[] {"female", "other"}) {
                     String pattern = patterns.get(i);
                     rows.add(i + "\t" + n + "\t" + g + "\t" + pattern + "\t" + outcome(pattern, n, g));
                 }
             }
         }
+        String[] keyPatterns = {
+            "{g,select,__proto__{P} constructor{C} other{O}}",
+            "{n,plural,offset:1 other{# {g,select,__proto__{P} constructor{C} other{O}}}}",
+            "{n,plural,other{# {g,select,__proto__{P} constructor{C} other{O}}}}"
+        };
+        for (int i = 0; i < keyPatterns.length; i++) {
+            for (String g : new String[] {"__proto__", "constructor", "toString"}) {
+                rows.add("key-" + i + "\t3\t" + g + "\t" + keyPatterns[i] + "\t" + format(keyPatterns[i], 3, g));
+            }
+        }
         Files.write(Path.of(args[0]), rows, StandardCharsets.UTF_8);
         System.out.println((rows.size() - 1) + " ICU4J escape fixtures");
     }
 
-    private static String outcome(String pattern, int n, String g) {
+    private static String outcome(String pattern, double n, String g) {
         try {
             return format(pattern, n, g);
         } catch (IllegalArgumentException error) {

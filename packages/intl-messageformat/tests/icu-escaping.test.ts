@@ -5,6 +5,7 @@ import {join, resolve} from 'node:path'
 import {expect, test} from 'vitest'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {IntlMessageFormat} from '#packages/intl-messageformat/index.js'
 
 test('escapes match ICU4J fixtures verified independently by ICU4C', () => {
@@ -41,6 +42,19 @@ test('escapes match ICU4J fixtures verified independently by ICU4C', () => {
       )
       expect(new IntlMessageFormat(printed, 'en').format(values), context).toBe(
         expected
+      )
+      const flattened = hoistSelectors(ast)
+      const flatMessage = printAST(flattened)
+      expect(
+        new IntlMessageFormat(flattened, 'en').format(values),
+        context
+      ).toBe(expected)
+      expect(
+        new IntlMessageFormat(flatMessage, 'en').format(values),
+        context
+      ).toBe(expected)
+      printedRows.push(
+        [`${id}-flat-${captureEscapes}`, n, g, flatMessage, expected].join('\t')
       )
     }
   }
