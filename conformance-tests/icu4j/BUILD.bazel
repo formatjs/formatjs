@@ -47,6 +47,24 @@ java_import(
     visibility = ["//benchmarks/locale-matching:__pkg__"],
 )
 
+java_binary(
+    name = "displaynames_script_oracle",
+    testonly = True,
+    srcs = ["DisplayNamesScriptOracle.java"],
+    main_class = "DisplayNamesScriptOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "displaynames_script_fixtures",
+    testonly = True,
+    srcs = ["displaynames-script-icu-differences.tsv"],
+    outs = ["displaynames-script-fixtures.tsv"],
+    cmd = "$(execpath :displaynames_script_oracle) $@ $(location displaynames-script-icu-differences.tsv)",
+    tools = [":displaynames_script_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_test(
     name = "icu_conformance_test",
     size = "small",

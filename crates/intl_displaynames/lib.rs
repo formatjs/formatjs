@@ -105,6 +105,12 @@ struct Types {
 #[derive(Deserialize)]
 struct Patterns {
     locale: String,
+    #[serde(default = "default_separator")]
+    separator: String,
+}
+
+fn default_separator() -> String {
+    "{0}, {1}".to_owned()
 }
 #[derive(Deserialize)]
 struct Data {
@@ -296,42 +302,10 @@ impl DisplayNames {
         if let Some(name) = fields.name(self.options.style, &code) {
             return Ok(Some(name.to_owned()));
         }
-        // CLDR locale-display pattern selection follows TS: try a language name
-        // without its region, then compose with the localized region (or code).
-        // These generated fields implement the implementation-defined LocaleData.
-        // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/displaynames.html#L88-L100
         if self.options.kind == Type::Language {
-            let mut parts: Vec<_> = code.split('-').collect();
-            if let Some(index) = (1..parts.len()).find(|index| region(parts[*index])) {
-                let region = parts.remove(index);
-                if let Some(language) = fields.name(self.options.style, &parts.join("-")) {
-                    let region_name = data
-                        .region
-                        .name(self.options.style, region)
-                        .filter(|name| !name.is_empty());
-                    if region_name.is_some() || self.options.fallback == Fallback::Code {
-                        let pattern = &self.data.data.patterns.locale;
-                        // Substitute once without interpreting inserted text or
-                        // replacement-string tokens such as $&.
-                        let mut result = String::new();
-                        let mut rest = pattern.as_str();
-                        while let Some(index) = rest.find('{') {
-                            result.push_str(&rest[..index]);
-                            if rest[index..].starts_with("{0}") {
-                                result.push_str(language);
-                            } else if rest[index..].starts_with("{1}") {
-                                result.push_str(region_name.unwrap_or(region));
-                            } else {
-                                result.push('{');
-                                rest = &rest[index + 1..];
-                                continue;
-                            }
-                            rest = &rest[index + 3..];
-                        }
-                        result.push_str(rest);
-                        return Ok(Some(result));
-                    }
-                }
+            if let Some(name) = compose_language_name(&self.data.data, fields, &self.options, &code)
+            {
+                return Ok(Some(name));
             }
         }
         Ok((self.options.fallback == Fallback::Code).then_some(code))
@@ -348,4 +322,100 @@ impl<'de> serde::Deserialize<'de> for LocaleNames {
 #[cfg(feature = "compiled_data")]
 mod compiled_data {
     include!(env!("FORMATJS_COMPILED_LOCALES"));
+}
+
+fn substitute_pattern(pattern: &str, first: &str, second: &str) -> String {
+    let mut result = String::new();
+    let mut rest = pattern;
+    while let Some(index) = rest.find('{') {
+        result.push_str(&rest[..index]);
+        if rest[index..].starts_with("{0}") {
+            result.push_str(first);
+        } else if rest[index..].starts_with("{1}") {
+            result.push_str(second);
+        } else {
+            result.push('{');
+            rest = &rest[index + 1..];
+            continue;
+        }
+        rest = &rest[index + 3..];
+    }
+    result.push_str(rest);
+    result
+}
+
+fn compose_language_name(
+    data: &Data,
+    fields: &Styles,
+    options: &Options,
+    code: &str,
+) -> Option<String> {
+    let parts: Vec<_> = code.split('-').collect();
+    let script_index = parts
+        .get(1)
+        .filter(|part| part.len() == 4 && letters(part))
+        .map(|_| 1);
+    let region_index = (1..parts.len()).find(|index| region(parts[*index]));
+    let mut script = script_index.map(|index| parts[index]);
+    let mut territory = region_index.map(|index| parts[index]);
+    let without = |skip: Option<usize>, other: Option<usize>| {
+        parts
+            .iter()
+            .enumerate()
+            .filter(|(index, _)| Some(*index) != skip && Some(*index) != other)
+            .map(|(_, part)| *part)
+            .collect::<Vec<_>>()
+            .join("-")
+    };
+    let mut name = None;
+    if options.language_display == LanguageDisplay::Dialect
+        && script.is_some()
+        && territory.is_some()
+    {
+        name = fields.name(options.style, &without(region_index, None));
+        if name.is_some() {
+            script = None;
+        } else {
+            name = fields.name(options.style, &without(script_index, None));
+            if name.is_some() {
+                territory = None;
+            }
+        }
+    }
+    let name = name.or_else(|| fields.name(options.style, &without(script_index, region_index)))?;
+    if script.is_none() && territory.is_none() {
+        return None;
+    }
+    let pattern = &data.patterns.locale;
+    let nested = |value: &str| -> String {
+        value
+            .chars()
+            .map(|ch| match ch {
+                '(' if pattern.contains('(') => '[',
+                ')' if pattern.contains('(') => ']',
+                '（' if pattern.contains('（') => '［',
+                '）' if pattern.contains('（') => '］',
+                _ => ch,
+            })
+            .collect()
+    };
+    let mut qualifiers = Vec::new();
+    for (code, names) in [
+        (script, &data.types.script),
+        (territory, &data.types.region),
+    ] {
+        if let Some(code) = code {
+            let display = names
+                .name(options.style, code)
+                .filter(|name| !name.is_empty());
+            if display.is_none() && options.fallback == Fallback::None {
+                return None;
+            }
+            qualifiers.push(nested(display.unwrap_or(code)));
+        }
+    }
+    let qualifier = qualifiers
+        .into_iter()
+        .reduce(|first, second| substitute_pattern(&data.patterns.separator, &first, &second))?;
+    Some(substitute_pattern(pattern, &nested(name), &qualifier))
 }

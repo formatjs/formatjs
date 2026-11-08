@@ -9,6 +9,20 @@ exports_files([
 ])
 
 cc_test(
+    name = "displaynames_script_conformance_test",
+    size = "small",
+    srcs = ["displaynames_script.cc"],
+    data = ["//conformance-tests/icu4j:displaynames_script_fixtures"],
+    env = {"DISPLAYNAMES_SCRIPT_FIXTURES": "$(rootpath //conformance-tests/icu4j:displaynames_script_fixtures)"},
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "messageformat_escaping_conformance_test",
     size = "small",
     srcs = ["messageformat_escaping.cc"],
