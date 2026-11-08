@@ -143,92 +143,25 @@ function extractDateTimeFieldStyleData(
   return {long: longData, short: shortData, narrow: narrowData}
 }
 
-function getStandardLanguageValue(
-  key: string,
-  style: '-alt-narrow' | '-alt-short' | '',
-  dialectValue: string,
-  cldrLanguageData: Record<string, string>,
-  cldrRegionData: Record<string, string>,
-  localePattern: string
-): string {
-  const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(key)
-  if (regionMatch) {
-    const languageSubTag =
-      key.substring(0, regionMatch.index) +
-      key.substring(regionMatch.index + regionMatch[0].length)
-    const regionSubTag = regionMatch[1]
-
-    const languageDisplayName = cldrLanguageData[languageSubTag]
-    const regionDisplayName = cldrRegionData[regionSubTag + style]
-    return localePattern
-      .replace('{0}', languageDisplayName)
-      .replace('{1}', regionDisplayName || regionSubTag)
-  }
-  return dialectValue
-}
-
 function extractStandardLanguageStyleData(
-  cldrLanguageData: Record<string, string>,
-  cldrRegionData: Record<string, string>,
-  localePattern: string
+  cldrLanguageData: Record<string, string>
 ): Record<'long' | 'short' | 'narrow', Record<string, string>> {
-  const longData: Record<string, string> = {}
-  const shortData: Record<string, string> = {}
-  const narrowData: Record<string, string> = {}
-  for (const [key, value] of Object.entries(cldrLanguageData)) {
-    if (key.includes('-alt-')) {
-      // As of Jan 2020, there is no `-alt-narrow`.
-      if (key.includes('-alt-narrow')) {
-        const newKey = key.replace(/-alt-narrow.*/, '')
-        narrowData[newKey] = getStandardLanguageValue(
-          newKey,
-          '-alt-narrow',
-          value,
-          cldrLanguageData,
-          cldrRegionData,
-          localePattern
-        )
-      } else if (key.includes('-alt-short')) {
-        const newKey = key.replace(/-alt-short.*/, '')
-        shortData[newKey] = getStandardLanguageValue(
-          newKey,
-          '-alt-short',
-          value,
-          cldrLanguageData,
-          cldrRegionData,
-          localePattern
-        )
-      }
-      // Not sure why `-alt-long` exists. Ignore them for now.
-    } else {
-      longData[key] = getStandardLanguageValue(
-        key,
-        '',
-        value,
-        cldrLanguageData,
-        cldrRegionData,
-        localePattern
-      )
-    }
-  }
-  return {long: longData, short: shortData, narrow: narrowData}
+  // Standard names compose subtags at runtime instead of using dialect names.
+  const baseLanguages = Object.fromEntries(
+    Object.entries(cldrLanguageData).filter(
+      ([key]) => !key.replace(/-alt-(short|narrow)$/, '').includes('-')
+    )
+  )
+  return extractStyleData(baseLanguages)
 }
 
-function extractLanguageStyleData(
-  cldrLanguageData: LanguageRawData,
-  cldrRegionData: RegionRawData,
-  cldrLocalePatternData: LocalePatternRawData
-): {
+function extractLanguageStyleData(cldrLanguageData: LanguageRawData): {
   dialect: Record<'long' | 'short' | 'narrow', Record<string, string>>
   standard: Record<'long' | 'short' | 'narrow', Record<string, string>>
 } {
   return {
     dialect: extractStyleData(cldrLanguageData),
-    standard: extractStandardLanguageStyleData(
-      cldrLanguageData,
-      cldrRegionData,
-      cldrLocalePatternData
-    ),
+    standard: extractStandardLanguageStyleData(cldrLanguageData),
   }
 }
 
@@ -297,11 +230,7 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
 
   return {
     types: {
-      language: extractLanguageStyleData(
-        langData,
-        regionData,
-        localePatternData
-      ),
+      language: extractLanguageStyleData(langData),
       region: extractStyleData(regionData),
       script: extractStyleData(scriptData),
       currency: extractCurrencyStyleData(locale, currencyData),
@@ -311,6 +240,9 @@ async function loadDisplayNames(locale: string): Promise<DisplayNamesData> {
     patterns: {
       // No support for alt variants
       locale: localePatternData,
+      separator:
+        localeDisplayNames.main[locale].localeDisplayNames.localeDisplayPattern
+          .localeSeparator,
     },
   }
 }

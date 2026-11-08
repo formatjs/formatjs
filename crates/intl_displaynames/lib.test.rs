@@ -20,6 +20,68 @@ fn formatter(options: Options) -> DisplayNames {
 }
 
 #[test]
+fn script_composition_preserves_fallbacks_and_legacy_packs() {
+    let mut data = pack("en");
+    data["data"]["types"]["script"]["long"]["Latn"] = json!("Latin (script)");
+    data["data"]["patterns"]["locale"] = json!("{0} ({1})");
+    data["data"]["patterns"]["separator"] = json!("{0} / {1}");
+    let make = |data: &Value, options| {
+        DisplayNames::new(
+            Arc::new(LocaleNames::from_json(&data.to_string()).unwrap()),
+            options,
+        )
+    };
+    let standard = make(
+        &data,
+        Options {
+            language_display: LanguageDisplay::Standard,
+            ..Options::default()
+        },
+    );
+    assert_eq!(
+        standard.of("en-Latn-US").unwrap().as_deref(),
+        Some("English (Latin [script] / United States)")
+    );
+    let dialect = make(&data, Options::default());
+    assert_eq!(
+        dialect.of("en-Latn-GB").unwrap().as_deref(),
+        Some("British English (Latin [script])")
+    );
+    assert_eq!(
+        dialect.of("en-Qaaa-US").unwrap().as_deref(),
+        Some("English (Qaaa / United States)")
+    );
+    let none = make(
+        &data,
+        Options {
+            fallback: Fallback::None,
+            ..Options::default()
+        },
+    );
+    assert!(none.of("en-Qaaa-US").unwrap().is_none());
+    assert!(none.of("xx-Latn-US").unwrap().is_none());
+    assert_eq!(
+        dialect.of("en-Latn-US-1994").unwrap().as_deref(),
+        Some("en-Latn-US-1994")
+    );
+    data["data"]["patterns"]
+        .as_object_mut()
+        .unwrap()
+        .remove("separator");
+    let legacy = make(
+        &data,
+        Options {
+            language_display: LanguageDisplay::Standard,
+            ..Options::default()
+        },
+    );
+    assert_eq!(
+        legacy.of("en-Latn-US").unwrap().as_deref(),
+        Some("English (Latin [script], United States)")
+    );
+}
+
+#[test]
 fn canonical_codes_follow_each_grammar_and_ascii_case_rule() {
     for (kind, code, expected) in [
         (Type::Language, "EN", "en"),

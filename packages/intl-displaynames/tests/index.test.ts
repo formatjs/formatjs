@@ -7,6 +7,43 @@ import {describe, expect, it} from 'vitest'
 import en from '#packages/intl-displaynames/tests/locale-data/en.json' with {type: 'json'}
 import agq from '#packages/intl-displaynames/tests/locale-data/agq.json' with {type: 'json'}
 import zh from '#packages/intl-displaynames/tests/locale-data/zh.json' with {type: 'json'}
+
+it('composes scripts with localized separators and safe nested brackets', () => {
+  const data = structuredClone(en)
+  data.data.types.language.dialect.long.en = 'English (test)'
+  data.data.types.script.long.Latn = 'Latin (script)'
+  data.data.types.region.long.US = 'United (States)'
+  data.data.patterns.locale = '{0} ({1})'
+  data.data.patterns.separator = '{0} / {1}'
+  try {
+    DisplayNames.__addLocaleData(data)
+    expect(
+      new DisplayNames('en', {
+        type: 'language',
+        languageDisplay: 'standard',
+      }).of('sr-Latn-RS')
+    ).toBe('Serbian (Latin [script] / Serbia)')
+    expect(new DisplayNames('en', {type: 'language'}).of('en-Latn-XY')).toBe(
+      'English [test] (Latin [script] / XY)'
+    )
+    expect(
+      new DisplayNames('en', {type: 'language', fallback: 'none'}).of('en-Qaaa')
+    ).toBeUndefined()
+    const legacyData = {
+      ...data,
+      data: {...data.data, patterns: {locale: data.data.patterns.locale}},
+    }
+    DisplayNames.__addLocaleData(legacyData)
+    expect(
+      new DisplayNames('en', {
+        type: 'language',
+        languageDisplay: 'standard',
+      }).of('en-Latn-US')
+    ).toBe('English (Latin [script], United [States])')
+  } finally {
+    DisplayNames.__addLocaleData(en)
+  }
+})
 DisplayNames.__addLocaleData(en, zh)
 
 describe('.of()', () => {

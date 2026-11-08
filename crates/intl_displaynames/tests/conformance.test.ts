@@ -88,6 +88,96 @@ interface Case {
   codes: string[]
 }
 const cases: Case[] = []
+
+it('matches script-name oracle fixtures with explicit ICU differences', () => {
+  const rows = readFileSync(
+    resolve('conformance-tests/icu4j/displaynames-script-fixtures.tsv'),
+    'utf8'
+  )
+    .trimEnd()
+    .split('\n')
+    .slice(1)
+  expect(rows.length).toBeGreaterThan(0)
+  const grouped = new Map<
+    string,
+    {current: Case; expected: string | null; row: string}[]
+  >()
+  for (const row of rows) {
+    const [locale, style, languageDisplay, fallback, code, expected] =
+      row.split('\t')
+    const group = grouped.get(locale) || []
+    group.push({
+      current: {
+        options: {
+          type: 'language',
+          style: style as DisplayNamesOptions['style'],
+          languageDisplay:
+            languageDisplay as DisplayNamesOptions['languageDisplay'],
+          fallback: fallback as DisplayNamesOptions['fallback'],
+        },
+        codes: [code],
+      },
+      expected: expected === '!NONE' ? null : expected,
+      row,
+    })
+    grouped.set(locale, group)
+  }
+  const records = [...grouped].map(([locale, group]) => {
+    DisplayNames.__addLocaleData(
+      JSON.parse(
+        readFileSync(
+          resolve(`packages/intl-displaynames/cldr-raw/${locale}.json`),
+          'utf8'
+        )
+      )
+    )
+    return {
+      locale,
+      group,
+      pack: readFileSync(
+        resolve(`crates/intl_displaynames/locale-data/${locale}.json`),
+        'utf8'
+      ),
+    }
+  })
+  const result = spawnSync(
+    resolve('crates/intl_displaynames/conformance'),
+    [],
+    {
+      input:
+        records
+          .map(record =>
+            JSON.stringify({
+              pack: record.pack,
+              cases: record.group.map(item => item.current),
+            })
+          )
+          .join('\n') + '\n',
+      encoding: 'utf8',
+      maxBuffer: 16 * 1024 * 1024,
+    }
+  )
+  if (result.error) throw result.error
+  expect(result.status, result.stderr).toBe(0)
+  const actual = result.stdout
+    .trim()
+    .split('\n')
+    .map(line => JSON.parse(line))
+  expect(actual.length).toBe(records.length)
+  const mismatches: string[] = []
+  records.forEach((record, index) =>
+    record.group.forEach((item, j) => {
+      const ts =
+        new DisplayNames(record.locale, item.current.options).of(
+          item.current.codes[0]
+        ) ?? null
+      const rust = actual[index][j].values[0].value
+      if (ts !== item.expected || rust !== item.expected)
+        mismatches.push(`${item.row}; TS=${ts}; Rust=${rust}`)
+    })
+  )
+  expect(mismatches).toEqual([])
+}, 120_000)
 for (const type of Object.keys(codes) as (keyof typeof codes)[]) {
   for (const style of ['long', 'short', 'narrow'] as const)
     for (const fallback of ['code', 'none'] as const) {
