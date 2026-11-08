@@ -84,6 +84,15 @@ java_test(
 )
 
 java_test(
+    name = "number_skeleton_unit_conformance_test",
+    size = "small",
+    srcs = ["NumberSkeletonUnitConformanceTest.java"],
+    main_class = "NumberSkeletonUnitConformanceTest",
+    test_class = "NumberSkeletonUnitConformanceTest",
+    deps = [":icu4j"],
+)
+
+java_test(
     name = "intl_collator_conformance_test",
     size = "small",
     srcs = ["IntlCollatorConformanceTest.java"],

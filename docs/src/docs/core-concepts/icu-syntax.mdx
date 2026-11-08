@@ -53,6 +53,8 @@ Internally it uses the Intl.NumberFormat API. You can define custom values for t
 
 Sometimes embedding how the number will be formatted provides great context to translators. We also support ICU Number Skeletons using the same syntax:
 
+For units, `unit/fluid-ounce` and `unit/kilometer-per-hour` keep the full unit identifier. The legacy `measure-unit/volume-fluid-ounce` spelling includes a type prefix instead.
+
 <IcuEditor
   defaultMessage="The price of this bagel is {num, number, ::sign-always compact-short currency/GBP}"
   defaultValues='{"num": 10}'

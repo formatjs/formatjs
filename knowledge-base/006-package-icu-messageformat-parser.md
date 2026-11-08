@@ -46,6 +46,11 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 
 Delegates number/datetime skeleton parsing to `@formatjs/icu-skeleton-parser`. Skeletons are the `::` syntax in ICU MessageFormat (e.g., `{amount, number, ::currency/USD}`).
 
+Number skeletons preserve core identifiers after `unit/`, including hyphenated
+names such as `fluid-ounce` and `kilometer-per-hour`. Only `measure-unit/` strips
+the legacy type prefix, such as `volume-` in `volume-fluid-ounce`. TypeScript and
+Rust share this distinction; ICU4J checks the corresponding formatted outputs.
+
 Date skeleton `j` resolution prefers an explicit locale `hourCycle`, then `getHourCycles()`, then the legacy `hourCycles` property. Generated CLDR time data remains the fallback when neither API supplies a cycle. Both parsers prefer language-region entries over region defaults and use only the hour symbol from CLDR patterns.
 
 ### Rust Mirror + WASM
