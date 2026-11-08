@@ -83,6 +83,25 @@ describe('formatjs_cli vs @formatjs/unplugin conformance', () => {
     expect(pluginIds).toEqual(cliIds)
   }
 
+  test('escape spellings produce the same IDs in TS and Rust', async () => {
+    const messages = [
+      "a''''{x}",
+      "'{a''''b}'",
+      "{x}''{y}",
+      "don't {s, select, other {change}} this",
+      "{s, select, other {yes}} '{tail",
+    ]
+    await assertConformance(
+      messages
+        .map(
+          message =>
+            `defineMessage({defaultMessage: ${JSON.stringify(message)}});`
+        )
+        .join('\n'),
+      'escape-tokens.ts'
+    )
+  })
+
   test('empty descriptions preserve generated IDs', async () => {
     await assertConformance(
       `import {FormattedMessage, defineMessage} from 'react-intl';

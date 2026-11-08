@@ -63,6 +63,8 @@ export interface ParserOptions {
    * Default is false
    */
   captureLocation?: boolean
+  /** Preserve literal text and escape spellings for printing. Default is false. */
+  captureEscapes?: boolean
   /**
    * Instance of Intl.Locale to resolve locale-dependent skeleton
    */
@@ -202,6 +204,7 @@ export class Parser {
   private ignoreTag: boolean
   private requiresOtherClause: boolean
   private shouldParseSkeletons?: boolean
+  private captureEscapes: boolean
 
   constructor(message: string, options: ParserOptions = {}) {
     this.message = message
@@ -210,6 +213,7 @@ export class Parser {
     this.locale = options.locale
     this.requiresOtherClause = !!options.requiresOtherClause
     this.shouldParseSkeletons = !!options.shouldParseSkeletons
+    this.captureEscapes = !!options.captureEscapes
   }
 
   parse(): Result<MessageFormatElement[], ParserError> {
@@ -234,6 +238,9 @@ export class Parser {
               {
                 type: TYPE.literal,
                 value: this.message,
+                ...(this.captureEscapes && {
+                  rawValue: this.message,
+                }),
                 location: createLocation(start, this.clonePosition()),
               },
             ],
@@ -453,7 +460,14 @@ export class Parser {
 
     const location = createLocation(start, this.clonePosition())
     return {
-      val: {type: TYPE.literal, value, location},
+      val: {
+        type: TYPE.literal,
+        value,
+        location,
+        ...(this.captureEscapes && {
+          rawValue: this.message.slice(start.offset, this.offset()),
+        }),
+      },
       err: null,
     }
   }

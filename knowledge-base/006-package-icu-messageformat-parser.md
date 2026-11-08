@@ -27,6 +27,9 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 ### AST Node Types
 
 - `LiteralElement` — Plain text
+- Optional `rawValue` strings preserve original ICU spelling when parsing with
+  `captureEscapes` (`capture_escapes` in Rust). Runtimes continue formatting decoded
+  `value`, with no new AST node kind.
 - `ArgumentElement` — `{var}`
 - `NumberElement` — `{var, number, ::skeleton}`
 - `DateElement` / `TimeElement` — `{var, date/time, ::skeleton}`
@@ -41,6 +44,20 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 - `no-parser.ts` — AST types, guards, and structural comparison with a throwing `parse` stub. Alias the package root to `@formatjs/icu-messageformat-parser/no-parser.js` after precompiling messages and defaults; AST input alone does not remove the parser dependency.
 - `printer.ts` — AST back to ICU MessageFormat string
 - `manipulator.ts` — AST transforms: `hoistSelectors` (flatten nested selects), `isStructurallySame`
+
+### Escape preservation
+
+Build tools enable escape capture before flattening. Literals store decoded
+`value` and original ICU source in `rawValue` (`raw_value` in Rust).
+Both implementations serialize the optional field as `rawValue`. Default parsing
+omits it, preserving compact runtime ASTs and existing JSON consumers.
+
+Printers validate raw spelling against the current decoded value and destination
+context before reuse. Stale spelling or text that would become syntax falls back
+to canonical escaping. EOF-terminated quotes close before inserted syntax.
+Uncaptured literals also escape apostrophes exactly once.
+Capture preserves escape spellings, not whole-message whitespace or selector
+ordering. The Python binding exposes the same Rust option as `capture_escapes`.
 
 ### Skeleton Integration
 

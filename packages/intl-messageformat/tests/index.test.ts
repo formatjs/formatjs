@@ -7,8 +7,26 @@ import {IntlMessageFormat} from '#packages/intl-messageformat/core.js'
 import {MissingValueError} from '#packages/intl-messageformat/error.js'
 import {PART_TYPE} from '#packages/intl-messageformat/formatters.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {describe, expect, it} from 'vitest'
 describe('IntlMessageFormat', function () {
+  it('formats serialized rawValue and printed messages identically', () => {
+    for (const [source, expected] of [
+      ["a''''{x}", "a''X"],
+      ["'{a''''b}'", "{a''b}"],
+      ["{x}''{y}", "X'Y"],
+      ["{n, plural, other {a''}}", "a'"],
+    ]) {
+      const ast = JSON.parse(
+        JSON.stringify(parse(source, {captureEscapes: true}))
+      )
+      const values = {x: 'X', y: 'Y', n: 2}
+      expect(new IntlMessageFormat(ast, 'en').format(values)).toBe(expected)
+      expect(new IntlMessageFormat(printAST(ast), 'en').format(values)).toBe(
+        expected
+      )
+    }
+  })
   it('formats rich text with MicrosoftAjax startsWith, GH #7531', () => {
     const startsWith = String.prototype.startsWith
     let output
