@@ -5,6 +5,30 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 #[test]
+fn core_and_legacy_unit_skeletons_format_equivalently() {
+    let values: Values<String> = HashMap::from([("n".into(), Value::from(5_i64))]);
+    for (core, legacy) in [
+        ("unit/fluid-ounce", "measure-unit/volume-fluid-ounce"),
+        (
+            "unit/kilometer-per-hour",
+            "measure-unit/speed-kilometer-per-hour",
+        ),
+        (
+            "unit/meter-per-second",
+            "measure-unit/speed-meter-per-second",
+        ),
+    ] {
+        let format = |skeleton| {
+            IcuMessageFormat::try_new(format!("{{n, number, ::{skeleton}}}"))
+                .unwrap()
+                .format_to_string("en", &values)
+                .unwrap()
+        };
+        assert_eq!(format(core), format(legacy), "{core}");
+    }
+}
+
+#[test]
 fn formats_arguments_selects_and_plurals() {
     let formatter = IcuMessageFormat::try_new(
         "{name} has {count, plural, =0 {no tasks} one {# task} other {# tasks}}.",

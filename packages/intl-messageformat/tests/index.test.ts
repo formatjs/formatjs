@@ -9,6 +9,17 @@ import {PART_TYPE} from '#packages/intl-messageformat/formatters.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
 import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
 import {describe, expect, it} from 'vitest'
+
+it.each([
+  ['unit/fluid-ounce', '5 fl oz'],
+  ['unit/kilometer-per-hour', '5 km/h'],
+  ['unit/meter-per-second', '5 m/s'],
+  ['measure-unit/volume-fluid-ounce', '5 fl oz'],
+])('formats hyphenated unit skeleton %s', (skeleton, expected) => {
+  expect(
+    new IntlMessageFormat(`{n, number, ::${skeleton}}`, 'en').format({n: 5})
+  ).toBe(expected)
+})
 describe('IntlMessageFormat', function () {
   it('formats serialized rawValue and printed messages identically', () => {
     for (const [source, expected] of [
