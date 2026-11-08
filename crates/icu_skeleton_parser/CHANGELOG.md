@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/formatjs/formatjs/compare/formatjs_icu_skeleton_parser_v0.1.2...formatjs_icu_skeleton_parser_v0.1.3) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-skeleton-parser:** preserve core unit identifiers ([#7893](https://github.com/formatjs/formatjs/issues/7893)) ([8ba299d](https://github.com/formatjs/formatjs/commit/8ba299d087559304bcc33975fb9ba76437daadc6))
+
 ## 0.1.2 (2026-07-09)
 
 ## What's Changed

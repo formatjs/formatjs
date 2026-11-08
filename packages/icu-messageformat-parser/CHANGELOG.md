@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.5.23](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.22...@formatjs/icu-messageformat-parser@3.5.23) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** preserve literal escapes with rawValue ([#7891](https://github.com/formatjs/formatjs/issues/7891)) ([2b4c635](https://github.com/formatjs/formatjs/commit/2b4c6354e7ab8f5b58415eb89bb0620a45d25701))
+* **@formatjs/icu-messageformat-parser:** preserve plural pound scope when flattening ([#7894](https://github.com/formatjs/formatjs/issues/7894)) ([02fccca](https://github.com/formatjs/formatjs/commit/02fcccae8b3b10bcb668becc7188b256d39fa7b9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-skeleton-parser bumped to 2.1.13
+
 ## [3.5.22](https://github.com/formatjs/formatjs/compare/@formatjs/icu-messageformat-parser@3.5.21...@formatjs/icu-messageformat-parser@3.5.22) (2026-10-19)
 
 

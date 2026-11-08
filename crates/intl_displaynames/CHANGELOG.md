@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_displaynames_v0.2.1...formatjs_intl_displaynames_v0.2.2) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** compose language script names ([#7895](https://github.com/formatjs/formatjs/issues/7895)) ([507fe27](https://github.com/formatjs/formatjs/commit/507fe27c3f328482664ffd20454bc6083d3be40f))
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_displaynames_v0.2.0...formatjs_intl_displaynames_v0.2.1) (2026-10-31)
 
 
