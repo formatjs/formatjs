@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.10.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.10.0...formatjs_cli_v1.10.1) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** preserve literal escapes with rawValue ([#7891](https://github.com/formatjs/formatjs/issues/7891)) ([2b4c635](https://github.com/formatjs/formatjs/commit/2b4c6354e7ab8f5b58415eb89bb0620a45d25701))
+* **deps:** update ruff to v0.17.3 ([#7852](https://github.com/formatjs/formatjs/issues/7852)) ([43756f9](https://github.com/formatjs/formatjs/commit/43756f961c72e432a4ea6f27ba4978ce7ea549d3))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_icu_messageformat_parser bumped from 2.0.0 to 2.0.1
+    * formatjs_icu_skeleton_parser bumped from 0.1.2 to 0.1.3
+
 ## [1.10.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.9.0...formatjs_cli_v1.10.0) (2026-10-31)
 
 
