@@ -3,6 +3,26 @@ use formatjs_icu_messageformat_parser::types::*;
 use indexmap::IndexMap;
 
 #[test]
+fn preserves_pound_scope_through_tags() {
+    use formatjs_icu_messageformat_parser::{Parser, ParserOptions, print_ast};
+    for (input, expected) in [
+        (
+            "{n,plural,other{<b>#</b> {m,plural,other{#}}}}",
+            "{n,plural,other{{m,plural,other{<b>{n, number}</b> #}}}}",
+        ),
+        (
+            "{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}",
+            "{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}",
+        ),
+    ] {
+        let ast = Parser::new(input, ParserOptions::default())
+            .parse()
+            .unwrap();
+        assert_eq!(print_ast(&hoist_selectors(ast)), expected);
+    }
+}
+
+#[test]
 fn test_hoist_simple_plural() {
     // "I have {count, plural, one{a dog} other{many dogs}}"
     let mut plural_options = IndexMap::new();

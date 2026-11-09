@@ -117,9 +117,17 @@ formatjs_library(
     license = "MIT",
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
+    side_effects = [
+        "./polyfill.js",
+        "./polyfill-force.js",
+        "./polyfill.iife.js",
+        "./add-all-tz.js",
+        "./add-golden-tz.js",
+        "./locale-data/*.js",
+    ],
     type = "module",
     types = True,
-    version = "8.0.2",  # x-release-please-version
+    version = "8.0.3",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

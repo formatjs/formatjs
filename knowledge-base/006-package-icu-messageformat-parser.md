@@ -27,6 +27,9 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 ### AST Node Types
 
 - `LiteralElement` — Plain text
+- Optional `rawValue` strings preserve original ICU spelling when parsing with
+  `captureEscapes` (`capture_escapes` in Rust). Runtimes continue formatting decoded
+  `value`, with no new AST node kind.
 - `ArgumentElement` — `{var}`
 - `NumberElement` — `{var, number, ::skeleton}`
 - `DateElement` / `TimeElement` — `{var, date/time, ::skeleton}`
@@ -42,9 +45,37 @@ which breaks rich-text tags and ICU arguments. Avoid position-dependent
 - `printer.ts` — AST back to ICU MessageFormat string
 - `manipulator.ts` — AST transforms: `hoistSelectors` (flatten nested selects), `isStructurallySame`
 
+### Escape preservation
+
+Build tools enable escape capture before flattening. Literals store decoded
+`value` and original ICU source in `rawValue` (`raw_value` in Rust).
+Both implementations serialize the optional field as `rawValue`. Default parsing
+omits it, preserving compact runtime ASTs and existing JSON consumers.
+
+Printers validate raw spelling against the current decoded value and destination
+context before reuse. Stale spelling or text that would become syntax falls back
+to canonical escaping. EOF-terminated quotes close before inserted syntax.
+Uncaptured literals also escape apostrophes exactly once.
+Capture preserves escape spellings, not whole-message whitespace or selector
+ordering. The Python binding exposes the same Rust option as `capture_escapes`.
+
+Selector hoisting tracks the original plural owner of `#`, including through
+rich-text tags. Moving a zero-offset pound under another selector emits an
+explicit number argument. Nested selectors keep their own pounds. Nonzero
+offset pounds retain their plural scope, so flattening can leave some selectors
+inside sentence fragments rather than change the number being printed.
+Option maps and their deep copies preserve legal keys such as `__proto__`.
+Oracle tests include negative and fractional counts; rich-text tests also check
+object output, input immutability, and repeated flattening.
+
 ### Skeleton Integration
 
 Delegates number/datetime skeleton parsing to `@formatjs/icu-skeleton-parser`. Skeletons are the `::` syntax in ICU MessageFormat (e.g., `{amount, number, ::currency/USD}`).
+
+Number skeletons preserve core identifiers after `unit/`, including hyphenated
+names such as `fluid-ounce` and `kilometer-per-hour`. Only `measure-unit/` strips
+the legacy type prefix, such as `volume-` in `volume-fluid-ounce`. TypeScript and
+Rust share this distinction; ICU4J/ICU4C check the corresponding formatted outputs.
 
 Date skeleton `j` resolution prefers an explicit locale `hourCycle`, then `getHourCycles()`, then the legacy `hourCycles` property. Generated CLDR time data remains the fallback when neither API supplies a cycle. Both parsers prefer language-region entries over region defaults and use only the hour symbol from CLDR patterns.
 
@@ -67,6 +98,16 @@ syntax; the Rust fast path applies when location capture is disabled.
 ## Test Strategy
 
 - Vitest unit tests with real-world message samples
+- Escape conformance uses pinned ICU4J 78.1 fixtures, independently checked by
+  ICU4C 78.1. TypeScript and Rust compare decoded AST and printed-message output
+  with capture enabled and disabled; ICU4J also formats both printers' output.
+  The corpus covers apostrophe runs, quoted braces, EOF quotes, plural `#`,
+  offsets, ordinals, nested selectors, Unicode, and malformed patterns. It includes
+  regressions from upstream [MessagePatternUtilTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessagePatternUtilTest.java),
+  [MessageRegressionTest](https://github.com/unicode-org/icu/blob/release-78.1/icu4j/main/core/src/test/java/com/ibm/icu/dev/test/format/MessageRegressionTest.java),
+  and [tmsgfmt.cpp](https://github.com/unicode-org/icu/blob/release-78.1/icu4c/source/test/intltest/tmsgfmt.cpp).
+  Rich-text tag quoting is a FormatJS extension, covered by local tests rather
+  than ICU comparisons.
 - Integration tests comparing TypeScript and Rust parser output, including locale-default hour cycles and `u-hc` overrides. Checked-in expectations are verified by both the TypeScript generation diff tests and the Rust integration runner.
 - The same fixture corpus runs under `withIdentifierFallbackForTesting` from
   `parser.ts`. This internal synchronous harness restores the previous matcher

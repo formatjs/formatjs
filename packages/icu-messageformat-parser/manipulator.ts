@@ -9,33 +9,36 @@ import {
   isTimeElement,
   type MessageFormatElement,
   type PluralElement,
-  type PluralOrSelectOption,
   type SelectElement,
   TYPE,
 } from '#packages/icu-messageformat-parser/types.js'
 
+function mapValues<T, U>(
+  obj: Record<string, T>,
+  map: (value: T) => U
+): Record<string, U> {
+  const result: Record<string, U> = {}
+  for (const key of Object.keys(obj)) {
+    Object.defineProperty(result, key, {
+      value: map(obj[key]),
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    })
+  }
+  return result
+}
+
 function cloneDeep<T>(obj: T): T {
   if (Array.isArray(obj)) {
-    // @ts-expect-error meh
-    return obj.map(cloneDeep)
+    return obj.map(cloneDeep) as T
   }
   if (obj !== null && typeof obj === 'object') {
-    // @ts-expect-error meh
-    return Object.keys(obj).reduce((cloned, k) => {
-      // @ts-expect-error meh
-      cloned[k] = cloneDeep(obj[k])
-      return cloned
-    }, {})
+    return mapValues(obj as Record<string, unknown>, cloneDeep) as T
   }
   return obj
 }
 
-/**
- * Replace pound elements with number elements referencing the given variable.
- * This is needed when nesting plurals - the # in the outer plural should become
- * an explicit variable reference when nested inside another plural.
- * GH #4202
- */
 function replacePoundWithArgument(
   ast: MessageFormatElement[],
   variableName: string
@@ -50,16 +53,6 @@ function replacePoundWithArgument(
         location: el.location,
       }
     }
-    if (isPluralElement(el) || isSelectElement(el)) {
-      // Recursively process options
-      const newOptions: Record<string, PluralOrSelectOption> = {}
-      for (const key of Object.keys(el.options)) {
-        newOptions[key] = {
-          value: replacePoundWithArgument(el.options[key].value, variableName),
-        }
-      }
-      return {...el, options: newOptions}
-    }
     if (isTagElement(el)) {
       return {
         ...el,
@@ -70,43 +63,32 @@ function replacePoundWithArgument(
   })
 }
 
+function hasPound(ast: MessageFormatElement[]): boolean {
+  return ast.some(
+    el => isPoundElement(el) || (isTagElement(el) && hasPound(el.children))
+  )
+}
+
 function hoistPluralOrSelectElement(
   ast: MessageFormatElement[],
   el: PluralElement | SelectElement,
-  positionToInject: number
+  positionToInject: number,
+  parentPlural?: PluralElement
 ) {
-  // pull this out of the ast and move it to the top
   const cloned = cloneDeep(el)
-  const {options} = cloned
-
-  // GH #4202: Check if there are other plural/select elements after this one
-  const afterElements = ast.slice(positionToInject + 1)
-  const hasSubsequentPluralOrSelect = afterElements.some(
-    isPluralOrSelectElement
-  )
-
-  cloned.options = Object.keys(options).reduce(
-    (all: Record<string, PluralOrSelectOption>, k) => {
-      let optionValue = options[k].value
-
-      // GH #4202: If there are subsequent plurals/selects and this is a plural,
-      // replace # with explicit variable reference to avoid ambiguity
-      if (hasSubsequentPluralOrSelect && isPluralElement(el)) {
-        optionValue = replacePoundWithArgument(optionValue, el.value)
-      }
-
-      const newValue = hoistSelectors([
-        ...ast.slice(0, positionToInject),
-        ...optionValue,
-        ...afterElements,
-      ])
-      all[k] = {
-        value: newValue,
-      }
-      return all
-    },
-    {}
-  )
+  let before = ast.slice(0, positionToInject)
+  let after = ast.slice(positionToInject + 1)
+  if (parentPlural) {
+    before = replacePoundWithArgument(before, parentPlural.value)
+    after = replacePoundWithArgument(after, parentPlural.value)
+  }
+  cloned.options = mapValues(cloned.options, option => ({
+    ...option,
+    value: hoistSelectorsInContext(
+      [...before, ...option.value, ...after],
+      isPluralElement(cloned) ? cloned : undefined
+    ),
+  }))
   return cloned
 }
 
@@ -142,16 +124,41 @@ function findPluralOrSelectElement(ast: MessageFormatElement[]): boolean {
 export function hoistSelectors(
   ast: MessageFormatElement[]
 ): MessageFormatElement[] {
-  for (let i = 0; i < ast.length; i++) {
-    const el = ast[i]
-    if (isPluralOrSelectElement(el)) {
-      return [hoistPluralOrSelectElement(ast, el, i)]
-    }
+  return hoistSelectorsInContext(ast)
+}
+
+function hoistSelectorsInContext(
+  ast: MessageFormatElement[],
+  parentPlural?: PluralElement
+): MessageFormatElement[] {
+  for (const el of ast) {
     if (isTagElement(el) && findPluralOrSelectElement([el])) {
       throw new Error(
         'Cannot hoist plural/select within a tag element. Please put the tag element inside each plural/select option'
       )
     }
+  }
+  for (let i = 0; i < ast.length; i++) {
+    const el = ast[i]
+    if (!isPluralOrSelectElement(el)) continue
+    if (
+      parentPlural?.offset &&
+      (hasPound(ast.slice(0, i)) || hasPound(ast.slice(i + 1)))
+    ) {
+      // Offset pounds need their original plural scope; ICU has no subtraction argument.
+      return ast.map(node => {
+        if (!isPluralOrSelectElement(node)) return node
+        const options = mapValues(node.options, option => ({
+          ...option,
+          value: hoistSelectorsInContext(
+            option.value,
+            isPluralElement(node) ? node : undefined
+          ),
+        }))
+        return {...node, options}
+      })
+    }
+    return [hoistPluralOrSelectElement(ast, el, i, parentPlural)]
   }
   return ast
 }

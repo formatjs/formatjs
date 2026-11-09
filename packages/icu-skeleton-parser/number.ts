@@ -196,9 +196,12 @@ export function parseNumberSkeleton(
         result.maximumFractionDigits = 0
         continue
       case 'measure-unit':
-      case 'unit':
         result.style = 'unit'
         result.unit = icuUnitToEcma(token.options[0])
+        continue
+      case 'unit':
+        result.style = 'unit'
+        result.unit = token.options[0] as ExtendedNumberFormatOptions['unit']
         continue
       case 'compact-short':
       case 'K':

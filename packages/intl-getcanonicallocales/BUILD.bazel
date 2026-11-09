@@ -47,8 +47,13 @@ formatjs_library(
     license = "MIT",
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
+    side_effects = [
+        "./polyfill.js",
+        "./polyfill-force.js",
+        "./polyfill.iife.js",
+    ],
     type = "module",
-    version = "3.3.0",  # x-release-please-version
+    version = "3.3.1",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",

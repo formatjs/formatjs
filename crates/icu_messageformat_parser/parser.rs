@@ -63,6 +63,9 @@ pub struct ParserOptions {
     /// Default is false.
     pub capture_location: bool,
 
+    /// Preserve literal text and escape spellings for printing. Default is false.
+    pub capture_escapes: bool,
+
     /// Instance of Intl.Locale to resolve locale-dependent skeleton.
     pub locale: Option<Locale>,
 }
@@ -337,6 +340,7 @@ pub struct Parser<'a> {
     should_parse_skeletons: bool,
     /// Whether to capture location information
     capture_location: bool,
+    capture_escapes: bool,
 }
 
 impl<'a> Parser<'a> {
@@ -355,6 +359,7 @@ impl<'a> Parser<'a> {
             requires_other_clause: options.requires_other_clause,
             should_parse_skeletons: options.should_parse_skeletons,
             capture_location: options.capture_location,
+            capture_escapes: options.capture_escapes,
         }
     }
 
@@ -375,7 +380,10 @@ impl<'a> Parser<'a> {
         if self.offset() != 0 {
             cold_panic("parser can only be used once");
         }
-        if !self.capture_location && is_plain_top_level_message(self.message.as_ref()) {
+        if !self.capture_location
+            && !self.capture_escapes
+            && is_plain_top_level_message(self.message.as_ref())
+        {
             return Ok(vec![MessageFormatElement::Literal(LiteralElement::new(
                 self.message.into_owned(),
             ))]);
@@ -781,11 +789,15 @@ impl<'a> Parser<'a> {
             None
         };
 
-        Ok(if let Some(loc) = location {
+        let mut literal = if let Some(loc) = location {
             LiteralElement::with_location(value, loc)
         } else {
             LiteralElement::new(value)
-        })
+        };
+        literal.raw_value = self
+            .capture_escapes
+            .then(|| self.message[start.byte_offset..self.byte_offset()].to_string());
+        Ok(literal)
     }
 
     /// Parses a tag name.

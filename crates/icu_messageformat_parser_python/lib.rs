@@ -11,7 +11,8 @@ use pythonize::{depythonize, pythonize};
     ignore_tag = false,
     requires_other_clause = false,
     should_parse_skeletons = false,
-    capture_location = false
+    capture_location = false,
+    capture_escapes = false
 ))]
 fn parse(
     py: Python<'_>,
@@ -20,6 +21,7 @@ fn parse(
     requires_other_clause: bool,
     should_parse_skeletons: bool,
     capture_location: bool,
+    capture_escapes: bool,
 ) -> PyResult<Py<PyAny>> {
     let ast = Parser::new(
         message,
@@ -28,6 +30,7 @@ fn parse(
             requires_other_clause,
             should_parse_skeletons,
             capture_location,
+            capture_escapes,
             locale: None,
         },
     )

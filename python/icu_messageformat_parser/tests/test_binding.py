@@ -1,4 +1,14 @@
+import json
+
 from icu_messageformat_parser import parse, print_ast
+
+
+def test_captured_raw_value_survives_json() -> None:
+    message = "a''''{x} '{b''''c}'"
+    ast = json.loads(json.dumps(parse(message, capture_escapes=True)))
+    assert ast[0]["value"] == "a''"
+    assert ast[0]["rawValue"] == "a''''"
+    assert print_ast(ast) == message
 
 
 def test_parse_and_print() -> None:

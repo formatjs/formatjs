@@ -171,6 +171,7 @@ pub(crate) fn flatten_message_descriptors(
                     default_message,
                     ParserOptions {
                         ignore_tag: false,
+                        capture_escapes: true,
                         ..Default::default()
                     },
                 );

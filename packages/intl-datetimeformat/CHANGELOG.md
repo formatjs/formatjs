@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.2...@formatjs/intl-datetimeformat@8.0.3) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** align range formatting with ECMA-402 and CLDR ([#7872](https://github.com/formatjs/formatjs/issues/7872)) ([136d91b](https://github.com/formatjs/formatjs/commit/136d91b26f94d64bafd048196f4c84734ed1e7c7))
+* declare sideEffects for the Intl polyfill packages ([#7869](https://github.com/formatjs/formatjs/issues/7869)) ([d2f7a6f](https://github.com/formatjs/formatjs/commit/d2f7a6fab5c33c9855c6ba32e062b0d05a721aa3))
+
 ## [8.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.1...@formatjs/intl-datetimeformat@8.0.2) (2026-11-01)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@8.0.1...@formatjs/intl-displaynames@8.0.2) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-displaynames:** compose language script names ([#7895](https://github.com/formatjs/formatjs/issues/7895)) ([507fe27](https://github.com/formatjs/formatjs/commit/507fe27c3f328482664ffd20454bc6083d3be40f))
+* declare sideEffects for the Intl polyfill packages ([#7869](https://github.com/formatjs/formatjs/issues/7869)) ([d2f7a6f](https://github.com/formatjs/formatjs/commit/d2f7a6fab5c33c9855c6ba32e062b0d05a721aa3))
+
 ## [8.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-displaynames@8.0.0...@formatjs/intl-displaynames@8.0.1) (2026-10-31)
 
 

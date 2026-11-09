@@ -5,6 +5,7 @@ formatjs_test(
     size = "medium",
     srcs = ["conformance.test.ts"],
     data = [
+        "//conformance-tests/icu4j:displaynames_script_fixtures",  # keep: independent ICU expectations
         "//crates/intl_displaynames:conformance",
         "//crates/intl_displaynames:locale_data",
         "//packages/intl-displaynames:cldr-raw",

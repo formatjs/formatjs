@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.2.1](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.2.0...@formatjs/cli-lib@10.2.1) (2026-11-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.23
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.33
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.1
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.33
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.31
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.33
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.31
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.1
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.34
+
 ## [10.2.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli-lib@10.1.0...@formatjs/cli-lib@10.2.0) (2026-10-31)
 
 
