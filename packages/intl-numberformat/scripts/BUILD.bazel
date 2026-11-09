@@ -33,10 +33,15 @@ ts_binary(
 ts_binary(
     name = "cldr",
     data = [
+        "//:node_modules/fs-extra",
+        "//:node_modules/minimist",
         "//:root_package_json",
     ],
     entry_point = "cldr.ts",
-    visibility = ["//packages/intl-numberformat:__pkg__"],
+    visibility = [
+        "//packages/intl-numberformat:__pkg__",
+        "//tools:__pkg__",
+    ],
 )
 
 ts_binary(

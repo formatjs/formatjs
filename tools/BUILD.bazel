@@ -9,6 +9,26 @@ load("//tools:package_json.bzl", "formatjs_package_json")
 load("//tools:vitest.bzl", "vitest")
 
 js_test(
+    name = "locale_data_test",
+    size = "small",
+    args = [
+        "$(rootpath //packages/intl-numberformat/scripts:cldr)",
+        "$(rootpath //packages/intl-displaynames/scripts:cldr)",
+        "$(rootpath //packages/intl-listformat/scripts:cldr)",
+        "$(rootpath //packages/intl-relativetimeformat/scripts:cldr)",
+        "$(rootpath //packages/intl-pluralrules/scripts:cldr)",
+    ],
+    data = [
+        "//packages/intl-displaynames/scripts:cldr",
+        "//packages/intl-listformat/scripts:cldr",
+        "//packages/intl-numberformat/scripts:cldr",
+        "//packages/intl-pluralrules/scripts:cldr",
+        "//packages/intl-relativetimeformat/scripts:cldr",
+    ],
+    entry_point = "locale-data.test.ts",
+)
+
+js_test(
     name = "package_sourcemaps_test",
     size = "small",
     args = [

@@ -31,6 +31,13 @@ Each polyfill uses `rolldown_bundle` with `dts = True` to produce bundled output
 - Registration via `Intl.{API}.__addLocaleData()` static method
 - Buffered via `globalThis.__FORMATJS_{API}_DATA__` if polyfill not yet loaded
 - Two-stage build: `cldr-raw` (extraction) → `locale-data` (distribution)
+- NumberFormat, DisplayNames, ListFormat, RelativeTimeFormat, and PluralRules
+  emit one payload into a scoped IIFE shared by registration and buffering.
+  Preserve executable plural functions; do not JSON-serialize those payloads.
+  Keep script separators so concatenated locale files remain valid.
+- DateTimeFormat's AST emitter already emits one payload through a scoped function.
+- `bazel test //tools:locale_data_test` runs all five generators and checks payload
+  duplication, registration, buffering, concatenation, and plural functions.
 
 ### Static compilation (durationformat, segmenter, locale, getcanonicallocales, supportedvaluesof, collator)
 
