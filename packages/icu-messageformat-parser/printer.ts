@@ -30,11 +30,33 @@ export function printAST(ast: MessageFormatElement[]): string {
 
 export function doPrintAST(
   ast: MessageFormatElement[],
-  isInPlural: boolean
+  isInPlural: boolean,
+  isAtEndOfMessage = true
 ): string {
-  const printedNodes = ast.map((el, i) => {
+  const elements: MessageFormatElement[] = []
+  for (const el of ast) {
+    const previous = elements[elements.length - 1]
+    if (previous && isLiteralElement(previous) && isLiteralElement(el)) {
+      elements[elements.length - 1] = {
+        type: TYPE.literal,
+        value: previous.value + el.value,
+        ...(previous.rawValue !== undefined &&
+          el.rawValue !== undefined && {
+            rawValue: previous.rawValue + el.rawValue,
+          }),
+      }
+    } else {
+      elements.push(el)
+    }
+  }
+  const printedNodes = elements.map((el, i) => {
     if (isLiteralElement(el)) {
-      return printLiteralElement(el, isInPlural, i === 0, i === ast.length - 1)
+      return printLiteralElement(
+        el,
+        isInPlural,
+        isAtEndOfMessage && i === elements.length - 1,
+        isAtEndOfMessage
+      )
     }
 
     if (isArgumentElement(el)) {
@@ -64,7 +86,7 @@ export function doPrintAST(
 }
 
 function printTagElement(el: TagElement, isInPlural: boolean): string {
-  return `<${el.value}>${doPrintAST(el.children, isInPlural)}</${el.value}>`
+  return `<${el.value}>${doPrintAST(el.children, isInPlural, false)}</${el.value}>`
 }
 
 function quoteSyntaxToken(token: string): string {
@@ -97,7 +119,11 @@ function findBraceSyntaxEnd(message: string, index: number): number {
   return closingIndex === -1 ? index + 1 : closingIndex + 1
 }
 
-function printEscapedMessage(message: string, isInPlural = false): string {
+function printEscapedMessage(
+  message: string,
+  isInPlural = false,
+  preserveApostrophes = false
+): string {
   let result = ''
   let literalStart = 0
   let quotedStart = -1
@@ -109,8 +135,8 @@ function printEscapedMessage(message: string, isInPlural = false): string {
     }
 
     const literal = message.slice(literalStart, quotedStart)
-    result += literal
-    if (literal.endsWith("'")) {
+    result += preserveApostrophes ? literal : literal.replace(/'/g, "''")
+    if (preserveApostrophes && literal.endsWith("'")) {
       result += "'"
     }
     result += quoteSyntaxToken(message.slice(quotedStart, quotedEnd))
@@ -119,7 +145,11 @@ function printEscapedMessage(message: string, isInPlural = false): string {
   }
 
   function quoteToken(start: number, end: number) {
-    if (quotedStart !== -1 && start === quotedEnd) {
+    if (
+      quotedStart !== -1 &&
+      (start === quotedEnd ||
+        (!preserveApostrophes && /^'*$/.test(message.slice(quotedEnd, start))))
+    ) {
       quotedEnd = end
       return
     }
@@ -147,26 +177,86 @@ function printEscapedMessage(message: string, isInPlural = false): string {
   }
 
   flushQuotedToken()
-  return result + message.slice(literalStart)
+  const tail = message.slice(literalStart)
+  return result + (preserveApostrophes ? tail : tail.replace(/'/g, "''"))
+}
+
+function validatedRawValue(
+  rawValue: string,
+  value: string,
+  isInPlural: boolean,
+  isAtEndOfMessage: boolean,
+  isTopLevel: boolean
+): string | undefined {
+  let decoded = ''
+  let index = 0
+  let closeQuote = false
+  while (index < rawValue.length) {
+    const ch = rawValue[index++]
+    if (ch === "'") {
+      const next = rawValue[index]
+      if (next === "'") {
+        decoded += "'"
+        index++
+        continue
+      }
+      if (
+        next === '{' ||
+        next === '}' ||
+        next === '<' ||
+        next === '>' ||
+        (isInPlural && next === '#')
+      ) {
+        let closed = false
+        while (index < rawValue.length) {
+          const quoted = rawValue[index++]
+          if (quoted === "'") {
+            if (rawValue[index] === "'") {
+              decoded += "'"
+              index++
+            } else {
+              closed = true
+              break
+            }
+          } else {
+            decoded += quoted
+          }
+        }
+        closeQuote = !closed && !isAtEndOfMessage
+        continue
+      }
+      if (index === rawValue.length && !isAtEndOfMessage) closeQuote = true
+    }
+    // Raw spelling must remain literal in the destination context.
+    if (
+      ch === '{' ||
+      (!isTopLevel && ch === '}') ||
+      (isInPlural && ch === '#') ||
+      isTagSyntaxStart(rawValue, index - 1)
+    )
+      return undefined
+    decoded += ch
+  }
+  return decoded === value ? rawValue + (closeQuote ? "'" : '') : undefined
 }
 
 function printLiteralElement(
-  {value}: LiteralElement,
+  {value, rawValue}: LiteralElement,
   isInPlural: boolean,
-  isFirstEl: boolean,
-  isLastEl: boolean
+  isAtEndOfMessage: boolean,
+  isTopLevel: boolean
 ) {
-  let escaped = value
-  // If this literal starts with a ' and its not the 1st node, this means the node before it is non-literal
-  // and the `'` needs to be unescaped
-  if (!isFirstEl && escaped[0] === `'`) {
-    escaped = `''${escaped.slice(1)}`
-  }
-  // Same logic but for last el
-  if (!isLastEl && escaped[escaped.length - 1] === `'`) {
-    escaped = `${escaped.slice(0, escaped.length - 1)}''`
-  }
-  return printEscapedMessage(escaped, isInPlural)
+  const captured =
+    rawValue === undefined
+      ? undefined
+      : validatedRawValue(
+          rawValue,
+          value,
+          isInPlural,
+          isAtEndOfMessage,
+          isTopLevel
+        )
+  return captured ?? printEscapedMessage(value, isInPlural)
 }
 
 function printArgumentElement({value}: ArgumentElement) {
@@ -190,7 +280,7 @@ function printNumberSkeletonToken(token: NumberSkeletonToken): string {
 
 function printArgumentStyle(style: string | Skeleton) {
   if (typeof style === 'string') {
-    return printEscapedMessage(style)
+    return printEscapedMessage(style, false, true)
   } else if (style.type === SKELETON_TYPE.dateTime) {
     return `::${printDateTimeSkeleton(style)}`
   } else {
@@ -227,7 +317,7 @@ function printSelectElement(el: SelectElement) {
     el.value,
     'select',
     keys
-      .map(id => `${id}{${doPrintAST(el.options[id].value, false)}}`)
+      .map(id => `${id}{${doPrintAST(el.options[id].value, false, false)}}`)
       .join(' '),
   ].join(',')
   return `{${msg}}`
@@ -265,7 +355,9 @@ function printPluralElement(el: PluralElement) {
     type,
     [
       el.offset ? `offset:${el.offset}` : '',
-      ...keys.map(id => `${id}{${doPrintAST(el.options[id].value, true)}}`),
+      ...keys.map(
+        id => `${id}{${doPrintAST(el.options[id].value, true, false)}}`
+      ),
     ]
       .filter(Boolean)
       .join(' '),

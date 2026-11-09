@@ -4,7 +4,47 @@ import {
   type RangePatterns,
   RangePatternType,
   type TABLE_2,
+  type IntervalFormatsData,
+  type IntervalFormatTemplates,
 } from '#packages/ecma402-abstract/types/date-time.js'
+
+export function expandIntervalFormatTemplates(
+  data: IntervalFormatsData,
+  templates?: IntervalFormatTemplates
+): IntervalFormatsData {
+  if (!templates) return data
+  const expanded = {...data}
+  for (const [timeKey, time, timeRanges] of templates.times) {
+    for (const [
+      dateKey,
+      date,
+      connector,
+      fallbackConnector,
+    ] of templates.dates) {
+      const key = connector.replace('{0}', timeKey).replace('{1}', dateKey)
+      if (expanded[key] !== undefined) continue
+      const ranges = Object.create(null) as Record<string, string>
+      for (const field of Object.keys(timeRanges)) {
+        const info = getRangePatternInfo(timeRanges[field])
+        const pattern = connector
+          .replace('{0}', info.pattern)
+          .replace('{1}', date)
+        ranges[field] =
+          info.reversed === undefined
+            ? pattern
+            : `${info.reversed ? 'latestFirst' : 'earliestFirst'}:${pattern}`
+      }
+      const endpoint = fallbackConnector
+        .replace('{0}', time)
+        .replace('{1}', date)
+      ranges.date = data.intervalFormatFallback
+        .replace('{0}', endpoint)
+        .replace('{1}', endpoint)
+      expanded[key] = ranges
+    }
+  }
+  return expanded
+}
 
 const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
 
@@ -41,6 +81,8 @@ function matchSkeletonPattern(
     | 'timeZoneName'
   > & {
     hour12?: boolean
+    monthStandalone?: boolean
+    weekdayStandalone?: boolean
   }
 ) {
   const len = match.length
@@ -70,6 +112,7 @@ function matchSkeletonPattern(
     // Month
     case 'M':
     case 'L':
+      result.monthStandalone = match[0] === 'L'
       result.month = ['numeric', '2-digit', 'short', 'long', 'narrow'][
         len - 1
       ] as 'numeric'
@@ -91,10 +134,12 @@ function matchSkeletonPattern(
 
     // Weekday
     case 'E':
+      result.weekdayStandalone = false
       result.weekday = len === 4 ? 'long' : len === 5 ? 'narrow' : 'short'
       return '{weekday}'
 
     case 'e':
+      result.weekdayStandalone = false
       result.weekday = [
         undefined,
         undefined,
@@ -106,6 +151,7 @@ function matchSkeletonPattern(
       return '{weekday}'
 
     case 'c':
+      result.weekdayStandalone = true
       result.weekday = [
         undefined,
         undefined,
@@ -166,11 +212,15 @@ function matchSkeletonPattern(
     case 'A':
       result.second = 'numeric'
       return '{second}'
+    case 'v':
+      result.timeZoneName = len < 4 ? 'shortGeneric' : 'longGeneric'
+      return '{timeZoneName}'
+    case 'O':
+      result.timeZoneName = len < 4 ? 'shortOffset' : 'longOffset'
+      return '{timeZoneName}'
     // Zone
     case 'z': // 1..3, 4: specific non-location format
     case 'Z': // 1..3, 4, 5: The ISO8601 varios formats
-    case 'O': // 1, 4: milliseconds in day short, long
-    case 'v': // 1, 4: generic non-location format
     case 'V': // 1, 2, 3, 4: time zone ID or city
     case 'X': // 1, 2, 3, 4: The ISO8601 varios formats
     case 'x': // 1, 2, 3, 4: The ISO8601 varios formats
@@ -235,7 +285,10 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
 
 function replaceDateTimeTokens(
   pattern: string,
-  result: Intl.DateTimeFormatOptions
+  result: Intl.DateTimeFormatOptions & {
+    monthStandalone?: boolean
+    weekdayStandalone?: boolean
+  }
 ): string {
   let output = ''
   let quoted = false
@@ -282,7 +335,10 @@ function replaceDateTimeTokens(
 
 export function processDateTimePattern(
   pattern: string,
-  result: Intl.DateTimeFormatOptions = Object.create(null)
+  result: Intl.DateTimeFormatOptions & {
+    monthStandalone?: boolean
+    weekdayStandalone?: boolean
+  } = Object.create(null)
 ): [string, string] {
   const pattern12 = replaceDateTimeTokens(pattern, result)
   const period = pattern12.indexOf('{ampm}')
@@ -301,11 +357,23 @@ export function processDateTimePattern(
   return [withoutPeriod.trim(), pattern12]
 }
 
+export function getRangePatternInfo(rawPattern: string): {
+  pattern: string
+  reversed?: boolean
+} {
+  if (rawPattern.startsWith('latestFirst:'))
+    return {pattern: rawPattern.slice('latestFirst:'.length), reversed: true}
+  if (rawPattern.startsWith('earliestFirst:'))
+    return {pattern: rawPattern.slice('earliestFirst:'.length), reversed: false}
+  return {pattern: rawPattern}
+}
+
 export function parseDateTimeSkeleton(
   skeleton: string,
   rawPattern: string = skeleton,
   rangePatterns?: Record<string, string>,
-  intervalFormatFallback?: string
+  intervalFormatFallback?: string,
+  lazyRanges: boolean = false
 ): Formats {
   const result: Formats = Object.assign(Object.create(null), {
     pattern: '',
@@ -316,15 +384,45 @@ export function parseDateTimeSkeleton(
     rangePatterns12: Object.create(null) as Formats['rangePatterns12'],
   })
 
-  if (rangePatterns) {
-    for (const k in rangePatterns) {
-      const key = skeletonTokenToTable2(k)
-      const rawPattern = rangePatterns[k]
+  // Process skeleton
+  replaceDateTimeTokens(skeleton, result)
+  const fields: Intl.DateTimeFormatOptions = Object.create(null)
+  const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
+  patternFields.set(result, fields)
+  result.pattern = pattern
+  result.pattern12 = pattern12
+  for (const field of ['monthStandalone', 'weekdayStandalone'] as const) {
+    if ((fields as Formats)[field] !== undefined)
+      result[field] = (fields as Formats)[field]
+  }
+  // Matching inspects many candidates; parse intervals only for selected records.
+  function initializeRanges() {
+    Object.defineProperties(result, {
+      rangePatterns: {
+        value: Object.create(null),
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      },
+      rangePatterns12: {
+        value: Object.create(null),
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      },
+    })
+    const first = intervalFormatFallback?.indexOf('{0}') ?? -1
+    const last = intervalFormatFallback?.indexOf('{1}') ?? -1
+    const defaultReversed = first >= 0 && last >= 0 && last < first
+    function addRange(k: string, rawPattern: string) {
+      const info = getRangePatternInfo(rawPattern)
+      const reversed = info.reversed ?? defaultReversed
+      const key = k === 'fallback' ? 'default' : skeletonTokenToTable2(k)
       const intervalResult: RangePatterns = Object.assign(Object.create(null), {
         patternParts: [],
       })
       const [pattern, pattern12] = processDateTimePattern(
-        rawPattern,
+        info.pattern,
         intervalResult
       )
 
@@ -336,44 +434,77 @@ export function parseDateTimeSkeleton(
         ...intervalResult,
         patternParts: splitRangePattern(pattern12),
       }
+      if (reversed)
+        for (const range of [
+          result.rangePatterns[key],
+          result.rangePatterns12[key],
+        ]) {
+          for (const part of range.patternParts) {
+            if (part.source === RangePatternType.startRange)
+              part.source = RangePatternType.endRange
+            else if (part.source === RangePatternType.endRange)
+              part.source = RangePatternType.startRange
+          }
+        }
     }
-  }
-  if (intervalFormatFallback) {
-    const patternParts = splitFallbackRangePattern(intervalFormatFallback)
-    result.rangePatterns.default = {
-      patternParts,
+    if (rangePatterns) {
+      for (const key of Object.keys(rangePatterns)) {
+        if (key === 'date') {
+          for (const field of ['G', 'y', 'M', 'd']) {
+            if (!Object.prototype.hasOwnProperty.call(rangePatterns, field))
+              addRange(field, rangePatterns[key])
+          }
+        } else addRange(key, rangePatterns[key])
+      }
     }
-    result.rangePatterns12.default = {
-      patternParts,
+    if (intervalFormatFallback && !result.rangePatterns.default) {
+      const patternParts = splitFallbackRangePattern(intervalFormatFallback)
+      result.rangePatterns.default = {
+        ...fields,
+        patternParts,
+      }
+      result.rangePatterns12.default = {
+        ...fields,
+        patternParts,
+      }
     }
-  }
 
-  // Process skeleton
-  replaceDateTimeTokens(skeleton, result)
-  const fields: Intl.DateTimeFormatOptions = Object.create(null)
-  const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
-  patternFields.set(result, fields)
-  result.pattern = pattern
-  result.pattern12 = pattern12
-  // Interval data must preserve the selected calendar's year field types.
-  const yearFields = ['{relatedYear}', '{yearName}'].filter(field =>
-    pattern.includes(field)
-  )
-  if (yearFields.length) {
-    for (const patterns of [result.rangePatterns, result.rangePatterns12]) {
-      for (const field of Object.keys(patterns) as Array<
-        keyof typeof patterns
-      >) {
-        if (field === 'default') continue
-        const range = patterns[field]!.patternParts.map(
-          part => part.pattern
-        ).join('')
-        if (yearFields.some(yearField => !range.includes(yearField))) {
-          delete patterns[field]
+    // Interval data must preserve the selected calendar's year field types.
+    const yearFields = ['{relatedYear}', '{yearName}'].filter(field =>
+      pattern.includes(field)
+    )
+    if (yearFields.length) {
+      for (const patterns of [result.rangePatterns, result.rangePatterns12]) {
+        for (const field of Object.keys(patterns) as Array<
+          keyof typeof patterns
+        >) {
+          if (field === 'default') continue
+          const range = patterns[field]!.patternParts.map(
+            part => part.pattern
+          ).join('')
+          if (yearFields.some(yearField => !range.includes(yearField))) {
+            delete patterns[field]
+          }
         }
       }
     }
   }
+  if (lazyRanges)
+    for (const field of ['rangePatterns', 'rangePatterns12'] as const) {
+      Object.defineProperty(result, field, {
+        configurable: true,
+        enumerable: true,
+        get() {
+          initializeRanges()
+          return result[field]
+        },
+        set(value: Formats[typeof field]) {
+          initializeRanges()
+          result[field] = value
+        },
+      })
+    }
+  else initializeRanges()
   return result
 }
 

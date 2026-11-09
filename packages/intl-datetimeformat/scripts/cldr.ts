@@ -19,6 +19,9 @@ function main(args: Args) {
       ...raw,
       data: {
         ...data,
+        ...(_calendars?.iso8601
+          ? {calendarData: {iso8601: _calendars.iso8601}}
+          : {}),
         formats: {gregory: formats.gregory, iso8601: formats.iso8601},
       },
     })

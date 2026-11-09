@@ -55,12 +55,12 @@ export interface DisplayNamesData {
     }
   }
   /**
-   * Not in spec, but we need this to display both language and region in display name.
-   * e.g. zh-Hans-SG + "{0}（{1}）" -> 简体中文（新加坡）
-   * Here {0} is replaced by language display name and {1} is replaced by region display name.
+   * CLDR patterns for composing language names with script and region qualifiers.
    */
   patterns: {
     locale: string
+    /** Pattern joining script and region names. Defaults to "{0}, {1}". */
+    separator?: string
   }
 }
 

@@ -3,6 +3,7 @@ import {
   type DateTimeFormatLocaleInternalData,
   type IntlDateTimeFormatInternal,
   type IntlDateTimeFormatPart,
+  type RangePatterns,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
 
@@ -15,11 +16,18 @@ import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.j
 export function getDayPeriodName(
   data: DateTimeFormatLocaleInternalData,
   time: {hour: number; minute: number; second: number; millisecond: number},
-  width: 'narrow' | 'short' | 'long' = 'short'
+  width: 'narrow' | 'short' | 'long' = 'short',
+  format?: Pick<
+    Intl.DateTimeFormatOptions,
+    'hour' | 'minute' | 'second' | 'fractionalSecondDigits'
+  >
 ): string {
-  const value =
-    ((time.hour * 60 + time.minute) * 60 + time.second) * 1000 +
-    time.millisecond
+  const timed = format?.hour !== undefined
+  const minute = timed && format.minute === undefined ? 0 : time.minute
+  const second = timed && format.second === undefined ? 0 : time.second
+  const millisecond =
+    timed && format.fractionalSecondDigits === undefined ? 0 : time.millisecond
+  const value = ((time.hour * 60 + minute) * 60 + second) * 1000 + millisecond
   const rules = data.dayPeriodRules || []
   // ECMA-402 §11.5.5, step 15.d.iii selects the localized day period and width.
   // LDML variable-period rules 2-4, 8: inclusive start, exclusive end, wrap midnight.
@@ -69,14 +77,23 @@ function offsetToGmtString(
       .replace('H', String(hours))
       .replace('mm', pad(mins))
       .replace('m', String(mins))
-  } else if (mins || hours) {
+  } else {
     if (!mins) {
-      pattern = pattern.replace(/:?m+/, '')
+      const start = pattern.indexOf('m')
+      if (start >= 0) {
+        let end = start
+        while (pattern[end] === 'm') end++
+        pattern =
+          pattern.slice(0, pattern.lastIndexOf('H') + 1) + pattern.slice(end)
+      }
     }
-    offsetStr = pattern.replace(/H+/, String(hours)).replace(/m+/, String(mins))
+    offsetStr = pattern.replace(/H+/, String(hours)).replace(/m+/, pad(mins))
   }
 
-  return gmtFormat.replace('{0}', offsetStr)
+  return gmtFormat
+    .replace('{0}', offsetStr)
+    .replaceAll('\u200e\u200e', '\u200e')
+    .replaceAll('\u200f\u200f', '\u200f')
 }
 
 export interface FormatDateTimePatternImplDetails {
@@ -87,6 +104,7 @@ export interface FormatDateTimePatternImplDetails {
   getDefaultTimeZone(): string
   // Preserve the complete pattern when formatting one range record.
   rangeFormatOptions?: {
+    format?: RangePatterns
     patternParts?: IntlDateTimeFormatPart[]
     localTime?: ReturnType<typeof ToLocalTime>
     numberFormatters?: ReturnType<typeof createNumberFormatters>
@@ -107,9 +125,10 @@ const numberFormattersCache = new WeakMap<
 >()
 
 function createNumberFormatters(
-  internalSlots: IntlDateTimeFormatInternal
+  internalSlots: IntlDateTimeFormatInternal,
+  fractionalSecondDigits: IntlDateTimeFormatInternal['fractionalSecondDigits'] = internalSlots.fractionalSecondDigits
 ): NumberFormatters {
-  const {locale, numberingSystem, fractionalSecondDigits} = internalSlots
+  const {locale, numberingSystem} = internalSlots
   const cached = numberFormattersCache.get(internalSlots)
   if (
     cached &&
@@ -167,6 +186,7 @@ export function FormatDateTimePattern(
 ): IntlDateTimeFormatPart[] {
   /** IMPL START */
   const internalSlots = getInternalSlots(dtf)
+  const format = rangeFormatOptions?.format
   const dataLocale = internalSlots.dataLocale
   const rootLocaleData = localeData[dataLocale]
   const dataLocaleData =
@@ -177,12 +197,13 @@ export function FormatDateTimePattern(
   // every call with this profile. Retain the existing memoized formatters.
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1356-L1372
+  const fractionalSecondDigits =
+    format?.fractionalSecondDigits ?? internalSlots.fractionalSecondDigits
   const numberFormatters =
     rangeFormatOptions?.numberFormatters ||
-    createNumberFormatters(internalSlots)
+    createNumberFormatters(internalSlots, fractionalSecondDigits)
   if (rangeFormatOptions) rangeFormatOptions.numberFormatters = numberFormatters
   const {nf, nf2, nf3} = numberFormatters
-  const fractionalSecondDigits = internalSlots.fractionalSecondDigits
   // ECMA-402 11.5.5, step 12: reuse the identical endpoint conversion from
   // PartitionDateTimeRangePattern (11.5.9, steps 7-8) within this call.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
@@ -215,15 +236,20 @@ export function FormatDateTimePattern(
       part.type === 'weekday' ||
       part.type === 'era'
   )
-  const isMonthStandalone = hasMonth && !hasOtherDateFields
+  const isMonthStandalone =
+    format?.monthStandalone ??
+    internalSlots.format?.monthStandalone ??
+    (hasMonth && !hasOtherDateFields)
   // Weekday is stand-alone only when it is the sole field, as in the CLDR `E`
   // skeleton (`ccc`). With a day or a time it keeps the format form (`Ed`, `EHm`).
   // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
   const isWeekdayStandalone =
-    contextParts.some(part => part.type === 'weekday') &&
-    contextParts.every(
-      part => part.type === 'weekday' || part.type === 'literal'
-    )
+    format?.weekdayStandalone ??
+    internalSlots.format?.weekdayStandalone ??
+    (contextParts.some(part => part.type === 'weekday') &&
+      contextParts.every(
+        part => part.type === 'weekday' || part.type === 'literal'
+      ))
 
   for (const patternPart of patternParts) {
     const p = patternPart.type
@@ -243,15 +269,29 @@ export function FormatDateTimePattern(
     } else if (p === 'dayPeriod') {
       result.push({
         type: p,
-        value: getDayPeriodName(dataLocaleData, tm, internalSlots.dayPeriod),
+        value: getDayPeriodName(
+          dataLocaleData,
+          tm,
+          format?.dayPeriod ?? internalSlots.dayPeriod,
+          format ? {...internalSlots, ...format} : internalSlots
+        ),
       })
     } else if (p === 'timeZoneName') {
-      const f = internalSlots.timeZoneName
+      const f = format?.timeZoneName ?? internalSlots.timeZoneName
       let fv
       const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData
       const timeZone = internalSlots.timeZone || getDefaultTimeZone()
       const timeZoneData = timeZoneName[timeZone]
-      if (timeZoneData && timeZoneData[f as 'short']) {
+      if (f === 'shortGeneric' || f === 'longGeneric') {
+        fv =
+          timeZoneData?.[f] ||
+          offsetToGmtString(
+            gmtFormat,
+            hourFormat,
+            tm.timeZoneOffset,
+            f === 'longGeneric' ? 'long' : 'short'
+          )
+      } else if ((f === 'short' || f === 'long') && timeZoneData?.[f]) {
         const names = timeZoneData[f as 'short']!
         // GH #5114: If in DST and both standard/daylight names are the same,
         // fall back to GMT offset format (matches native browser behavior).
@@ -274,13 +314,13 @@ export function FormatDateTimePattern(
           gmtFormat,
           hourFormat,
           tm.timeZoneOffset,
-          f as 'long'
+          f === 'long' || f === 'longOffset' ? 'long' : 'short'
         )
       }
       result.push({type: p, value: fv})
     } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
       let fv = ''
-      let f = internalSlots[p as 'year'] as
+      let f = (format?.[p as 'year'] ?? internalSlots[p as 'year']) as
         | 'numeric'
         | '2-digit'
         | 'narrow'
@@ -298,13 +338,6 @@ export function FormatDateTimePattern(
       }
       if (p === 'month') {
         v = (tm.monthNumber ?? v) + 1
-        if (
-          internalSlots.calendar === 'hebrew' &&
-          hasOtherDateFields &&
-          (f === 'numeric' || f === '2-digit')
-        ) {
-          f = 'short'
-        }
       }
       const hourCycle = internalSlots.hourCycle
       if (p === 'hour' && (hourCycle === 'h11' || hourCycle === 'h12')) {

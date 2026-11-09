@@ -44,7 +44,9 @@ it('loads and parses every generated base locale pack without optional calendar 
   expect(files.length).toBe(657)
   for (let index = 0; index < files.length; index++) {
     const entry = JSON.parse(readFileSync(files[index], 'utf8')) as Packed
-    expect(entry.data.calendarData, entry.locale).toBeUndefined()
+    expect(Object.keys(entry.data.calendarData || {}), entry.locale).toEqual([
+      'iso8601',
+    ])
     expect(
       Object.keys(entry.data.formats).every(
         calendar => calendar === 'gregory' || calendar === 'iso8601'
@@ -83,6 +85,7 @@ it('preserves TS base data and supplies native numeric dependencies for renderin
     const {calendarData: _calendars, formats, ...data} = raw.data
     expect(entry.data, locale).toEqual({
       ...data,
+      calendarData: {iso8601: _calendars!.iso8601},
       formats: {
         gregory: formats.gregory,
         ...(formats.iso8601 ? {iso8601: formats.iso8601} : {}),

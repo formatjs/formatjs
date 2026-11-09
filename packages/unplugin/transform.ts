@@ -287,7 +287,9 @@ export function transform(
     // This must happen before ID generation so the ID matches formatjs extract and babel-plugin-formatjs
     if (flatten && defaultMessage) {
       try {
-        defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
+        defaultMessage = printAST(
+          hoistSelectors(parse(defaultMessage, {captureEscapes: true}))
+        )
       } catch {
         // If parsing fails, keep the original message
       }

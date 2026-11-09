@@ -1,7 +1,7 @@
 use crate::{
     Error,
     fields::{Components, Field, Value, ZoneWidth},
-    pattern::Format,
+    pattern::{self, Format, RangePattern, Source},
 };
 use serde::{Deserialize, Serialize};
 
@@ -80,12 +80,19 @@ fn best<'a>(
     options: Components,
     formats: &'a [Format],
     score: fn(Components, Components) -> i32,
+    prefer_month: bool,
 ) -> Result<&'a Format, Error> {
     let mut best = None;
     let mut best_score = i32::MIN;
     for format in formats {
         let score = score(options, format.components);
-        if score > best_score {
+        if score > best_score
+            || (prefer_month
+                && score == best_score
+                && options.month.is_some()
+                && format.components.month == options.month
+                && best.is_some_and(|best: &Format| best.components.month != options.month))
+        {
             best = Some(format);
             best_score = score;
         }
@@ -93,10 +100,10 @@ fn best<'a>(
     best.ok_or(Error::MissingFormats)
 }
 pub fn basic(options: Components, formats: &[Format]) -> Result<Format, Error> {
-    Ok(best(options, formats, basic_score)?.clone())
+    Ok(best(options, formats, basic_score, false)?.clone())
 }
 pub fn best_fit(options: Components, formats: &[Format]) -> Result<Format, Error> {
-    let selected = best(options, formats, best_fit_score)?;
+    let selected = best(options, formats, best_fit_score, true)?;
     let mut result = selected.clone();
     result.components = selected.pattern_fields;
     result.fields_mask = selected.pattern_fields_mask;
@@ -166,6 +173,8 @@ pub struct StyleData {
     pub date: Styles<Format>,
     pub time: Styles<Format>,
     pub connector: Styles<String>,
+    #[serde(rename = "rangeConnector")]
+    pub range_connector: Styles<String>,
 }
 pub fn style(
     date: Option<Style>,
@@ -214,8 +223,91 @@ pub fn style(
                 .get(date)
                 .replacen("{0}", &time.pattern12, 1)
                 .replacen("{1}", &data.date.get(date).pattern, 1);
-            result.range_patterns = time.range_patterns;
-            result.range_patterns12 = time.range_patterns12;
+            let date_format = data.date.get(date);
+            let mut range_date = date_format.clone();
+            if date == Style::Medium
+                && date_format
+                    .components
+                    .month
+                    .map(Value::Width)
+                    .is_some_and(Value::numeric)
+            {
+                if let Some(format) = formats.iter().find(|format| format.skeleton == "yMd") {
+                    range_date.pattern = format.pattern.clone();
+                }
+            }
+            let combine = |ranges: std::collections::BTreeMap<String, RangePattern>,
+                           time_pattern: &str| {
+                ranges
+                    .into_iter()
+                    .filter(|(field, _)| {
+                        !matches!(field.as_str(), "era" | "year" | "month" | "day")
+                    })
+                    .map(|(field, mut range)| {
+                        let reversed = range
+                            .pattern_parts
+                            .iter()
+                            .find(|part| part.source != Source::Shared)
+                            .is_some_and(|part| part.source == Source::EndRange);
+                        if field == "default" {
+                            let endpoint = data
+                                .connector
+                                .get(date)
+                                .replace("{0}", time_pattern)
+                                .replace("{1}", &range_date.pattern);
+                            let combined = range
+                                .pattern_parts
+                                .iter()
+                                .map(|part| {
+                                    if part.pattern == "{0}" || part.pattern == "{1}" {
+                                        endpoint.as_str()
+                                    } else {
+                                        part.pattern.as_str()
+                                    }
+                                })
+                                .collect::<String>();
+                            range.pattern_parts = pattern::split_range(&combined);
+                        } else {
+                            let time_pattern = range
+                                .pattern_parts
+                                .iter()
+                                .map(|part| part.pattern.as_str())
+                                .collect::<String>();
+                            let combined = data
+                                .range_connector
+                                .get(date)
+                                .replacen("{0}", &time_pattern, 1)
+                                .replacen("{1}", &range_date.pattern, 1);
+                            range.pattern_parts = pattern::split_range(&combined);
+                        }
+                        if reversed {
+                            for part in &mut range.pattern_parts {
+                                part.source = match part.source {
+                                    Source::StartRange => Source::EndRange,
+                                    Source::EndRange => Source::StartRange,
+                                    Source::Shared => Source::Shared,
+                                };
+                            }
+                        }
+                        for date_field in Field::ALL {
+                            if range.components.get(date_field).is_none() {
+                                range.components.set_from(date_field, range_date.components);
+                            }
+                        }
+                        range.components.month_standalone = range
+                            .components
+                            .month_standalone
+                            .or(range_date.components.month_standalone);
+                        range.components.weekday_standalone = range
+                            .components
+                            .weekday_standalone
+                            .or(range_date.components.weekday_standalone);
+                        (field, range)
+                    })
+                    .collect()
+            };
+            result.range_patterns = combine(time.range_patterns, &time.pattern);
+            result.range_patterns12 = combine(time.range_patterns12, &time.pattern12);
             Ok(result)
         }
         (Some(date), None) => Ok(data.date.get(date).clone()),

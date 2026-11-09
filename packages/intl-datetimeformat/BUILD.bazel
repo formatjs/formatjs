@@ -1,4 +1,5 @@
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 
 # gazelle:exclude tests/rust-timezones.test.ts
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
@@ -116,9 +117,17 @@ formatjs_library(
     license = "MIT",
     package_types = "index.d.ts",
     repository = "formatjs/formatjs.git",
+    side_effects = [
+        "./polyfill.js",
+        "./polyfill-force.js",
+        "./polyfill.iife.js",
+        "./add-all-tz.js",
+        "./add-golden-tz.js",
+        "./locale-data/*.js",
+    ],
     type = "module",
     types = True,
-    version = "8.0.2",  # x-release-please-version
+    version = "8.0.3",  # x-release-please-version
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
@@ -209,10 +218,19 @@ cldr_locale_list(
 
 CLDR_RAW_FILES = ["cldr-raw/%s.json" % locale for locale in ALL_LOCALES]
 
+copy_to_directory(
+    name = "calendar_pattern_xml",
+    srcs = ["@cldr_common//:main_xml"],
+    out = "calendar_pattern_xml",
+    include_external_repositories = ["+http_archive+cldr_common"],
+    root_paths = ["common/main"],
+)
+
 ts_run_binary(
     name = "cldr-raw",
     srcs = [
         "types.ts",
+        ":calendar_pattern_xml",
         "//:node_modules/@formatjs/intl-locale",
         "//:node_modules/cldr-bcp47",
         "//:node_modules/cldr-cal-buddhist-full",  # keep: dynamic calendar JSON imports
@@ -228,8 +246,10 @@ ts_run_binary(
         "//:node_modules/cldr-cal-roc-full",  # keep: dynamic calendar JSON imports
         "//:node_modules/cldr-core",
         "//:node_modules/cldr-dates-full",
+        "//:node_modules/cldr-localenames-full",  # keep: dynamic territory JSON imports
         "//:node_modules/cldr-numbers-full",
         "//:node_modules/fast-glob",
+        "//:node_modules/fast-xml-parser",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/lodash-es",
@@ -244,6 +264,8 @@ ts_run_binary(
     args = [
         "--outDir",
         "cldr-raw",
+        "--calendarXmlDir",
+        "calendar_pattern_xml",
     ],
     chdir = package_name(),
     tool = "//packages/intl-datetimeformat/scripts:cldr-raw",

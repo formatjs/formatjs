@@ -64,6 +64,15 @@ test.each(Object.entries(dateTimeSkeletonResults))(
 )
 
 const numberSkeletonResults = {
+  'unit/fluid-ounce': {style: 'unit', unit: 'fluid-ounce'},
+  'unit/kilometer-per-hour': {style: 'unit', unit: 'kilometer-per-hour'},
+  'unit/meter-per-second': {style: 'unit', unit: 'meter-per-second'},
+  'unit/meter': {style: 'unit', unit: 'meter'},
+  'measure-unit/volume-fluid-ounce': {style: 'unit', unit: 'fluid-ounce'},
+  'measure-unit/speed-kilometer-per-hour': {
+    style: 'unit',
+    unit: 'kilometer-per-hour',
+  },
   'percent .##': {
     maximumFractionDigits: 2,
     style: 'percent',

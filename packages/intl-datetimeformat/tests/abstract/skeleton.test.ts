@@ -50,12 +50,14 @@ test('parseDateTimeSkeleton', function () {
   ).toEqual({
     day: 'numeric',
     month: 'short',
+    monthStandalone: false,
     pattern: '{month} {day}',
     pattern12: '{month} {day}',
     rangePatterns: {
       day: {
         day: 'numeric',
         month: 'short',
+        monthStandalone: false,
         patternParts: [
           {pattern: '{month} ', source: 'shared'},
           {pattern: '{day}', source: 'startRange'},
@@ -69,6 +71,7 @@ test('parseDateTimeSkeleton', function () {
       month: {
         day: 'numeric',
         month: 'short',
+        monthStandalone: false,
         patternParts: [
           {pattern: '{month} {day}', source: 'startRange'},
           {pattern: ' – ', source: 'shared'},
@@ -79,6 +82,9 @@ test('parseDateTimeSkeleton', function () {
         ],
       },
       default: {
+        day: 'numeric',
+        month: 'short',
+        monthStandalone: false,
         patternParts: [
           {
             pattern: '{0}',
@@ -99,6 +105,7 @@ test('parseDateTimeSkeleton', function () {
       day: {
         day: 'numeric',
         month: 'short',
+        monthStandalone: false,
         patternParts: [
           {pattern: '{month} ', source: 'shared'},
           {pattern: '{day}', source: 'startRange'},
@@ -112,6 +119,7 @@ test('parseDateTimeSkeleton', function () {
       month: {
         day: 'numeric',
         month: 'short',
+        monthStandalone: false,
         patternParts: [
           {pattern: '{month} {day}', source: 'startRange'},
           {pattern: ' – ', source: 'shared'},
@@ -122,6 +130,9 @@ test('parseDateTimeSkeleton', function () {
         ],
       },
       default: {
+        day: 'numeric',
+        month: 'short',
+        monthStandalone: false,
         patternParts: [
           {
             pattern: '{0}',
@@ -170,4 +181,58 @@ test('pattern parsing preserves quoted fields and doubled apostrophes', () => {
     "'{year} year {month}",
     "'{year} year {month}",
   ])
+})
+
+test('expands compact fallback records while retaining explicit CLDR intervals', () => {
+  const format = parseDateTimeSkeleton(
+    'Hm',
+    'HH:mm',
+    {
+      date: 'y-MM-dd HH:mm – y-MM-dd HH:mm',
+      M: 'MMM d – MMM d',
+      fallback: 'MMM d HH:mm – HH:mm',
+    },
+    '{0} - {1}'
+  )
+  expect(format.rangePatterns.year?.patternParts).toEqual([
+    {pattern: '{year}-{month}-{day} {hour}:{minute}', source: 'startRange'},
+    {pattern: ' – ', source: 'shared'},
+    {pattern: '{year}-{month}-{day} {hour}:{minute}', source: 'endRange'},
+  ])
+  expect(format.rangePatterns.month?.month).toBe('short')
+  expect(format.rangePatterns.default.patternParts[0]).toEqual({
+    pattern: '{month} {day} ',
+    source: 'shared',
+  })
+  expect(format.rangePatterns.default.hour).toBe('2-digit')
+})
+
+test('preserves fallback order and explicit interval order overrides', () => {
+  const format = parseDateTimeSkeleton(
+    'yMd',
+    'y/M/d',
+    {
+      date: 'y/M/d – y/M/d',
+      M: 'earliestFirst:MMM d – MMM d',
+      d: 'latestFirst:MMM d – d, y',
+      fallback: 'y/M/d – y/M/d',
+    },
+    '{1} – {0}'
+  )
+  expect(
+    format.rangePatterns.year?.patternParts.find(
+      part => part.source !== 'shared'
+    )?.source
+  ).toBe('endRange')
+  expect(
+    format.rangePatterns.month?.patternParts.find(
+      part => part.source !== 'shared'
+    )?.source
+  ).toBe('startRange')
+  expect(
+    format.rangePatterns.day?.patternParts.find(
+      part => part.source !== 'shared'
+    )?.source
+  ).toBe('endRange')
+  expect(format.rangePatterns.default.patternParts[0].source).toBe('endRange')
 })

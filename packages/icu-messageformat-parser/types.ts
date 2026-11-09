@@ -66,7 +66,10 @@ export interface BaseElement<T extends TYPE> {
   location?: Location
 }
 
-export type LiteralElement = BaseElement<TYPE.literal>
+export interface LiteralElement extends BaseElement<TYPE.literal> {
+  /** Original ICU spelling, when captureEscapes is enabled. */
+  rawValue?: string
+}
 export type ArgumentElement = BaseElement<TYPE.argument>
 export interface TagElement extends BaseElement<TYPE.tag> {
   children: MessageFormatElement[]

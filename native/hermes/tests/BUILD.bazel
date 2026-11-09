@@ -702,12 +702,12 @@ js_test(
     name = "segmenter_icu_conformance_test",
     size = "medium",
     data = [
+        ":optimized_runtime",
         ":segmenter_oracle_suite.js",
         "//:node_modules/@bazel/runfiles",
         "//conformance-tests/icu4j:segmenter_fixtures",
         "//crates/intl_segmenter/tests:icu_ts_differences",
         "//native/hermes:extension_bundle_bytecode",
-        "//native/hermes:hermes_runner",
     ],
     entry_point = "run-segmenter-oracle.ts",
     env = {

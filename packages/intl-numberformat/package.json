@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-numberformat",
-  "version": "10.0.2",
+  "version": "10.0.3",
   "description": "Ponyfill for ES2020 Intl.NumberFormat",
   "keywords": [
     "Intl.NumberFormat",
@@ -18,6 +18,12 @@
   ],
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js",
+    "./locale-data/*.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",

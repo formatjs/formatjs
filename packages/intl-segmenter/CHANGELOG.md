@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.3.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.3.1...@formatjs/intl-segmenter@12.3.2) (2026-11-08)
+
+
+### Bug Fixes
+
+* declare sideEffects for the Intl polyfill packages ([#7869](https://github.com/formatjs/formatjs/issues/7869)) ([d2f7a6f](https://github.com/formatjs/formatjs/commit/d2f7a6fab5c33c9855c6ba32e062b0d05a721aa3))
+
 ## [12.3.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-segmenter@12.3.0...@formatjs/intl-segmenter@12.3.1) (2026-10-31)
 
 

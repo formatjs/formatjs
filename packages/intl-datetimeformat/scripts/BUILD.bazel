@@ -24,6 +24,7 @@ ts_binary(
     name = "cldr-raw",
     data = [
         "extract-dates.ts",
+        "iso-patterns.ts",
         "//:node_modules/@formatjs_generated/datetimeformat.calendars",
     ],
     entry_point = "cldr-raw.ts",
@@ -59,6 +60,7 @@ ts_binary(
 
 formatjs_test(
     name = "calendar_bundle_test",
+    size = "medium",
     srcs = ["calendar-bundle.test.ts"],
     data = [
         "//packages/intl-datetimeformat:pkg",

@@ -75,8 +75,13 @@ fn caches_repeated_constant_initializers() {
 }
 
 #[test]
-fn handles_template_surrogates() {
-    assert_eq!(evaluate("", r"`\uD83D\uDE00`"), Some("😀".to_owned()));
+fn handles_surrogates() {
+    for expression in [r"`\uD83D\uDE00`", r"'\uD83D\uDE00'", r"'\uD83D' + '\uDE00'"] {
+        assert_eq!(evaluate("", expression), Some("😀".to_owned()));
+    }
+    for expression in [r"'\uD800'", r"'\uDC00'", r"'\uD800' + 'text'"] {
+        assert_eq!(evaluate("", expression), None);
+    }
     assert_eq!(evaluate("", r"`\uD800`"), None);
     assert_eq!(evaluate("", r"`\uDC00`"), None);
 }

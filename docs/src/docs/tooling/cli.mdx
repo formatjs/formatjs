@@ -439,6 +439,9 @@ Whether to preserve whitespace and newlines in output. We typically remove conse
 
 Whether to hoist selectors & flatten sentences as much as possible. E.g:
 
+Plural `#` scope and offsets are preserved. Some selectors stay nested when
+hoisting them would change the number printed by `#`.
+
 ```
 I have {count, plural, one{a dog} other{many dogs}}
 ```

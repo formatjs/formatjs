@@ -9,6 +9,47 @@ exports_files([
 ])
 
 cc_test(
+    name = "displaynames_script_conformance_test",
+    size = "small",
+    srcs = ["displaynames_script.cc"],
+    data = ["//conformance-tests/icu4j:displaynames_script_fixtures"],
+    env = {"DISPLAYNAMES_SCRIPT_FIXTURES": "$(rootpath //conformance-tests/icu4j:displaynames_script_fixtures)"},
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+cc_test(
+    name = "messageformat_escaping_conformance_test",
+    size = "small",
+    srcs = ["messageformat_escaping.cc"],
+    data = ["//conformance-tests/icu4j:messageformat_escape_fixtures"],
+    env = {"MESSAGEFORMAT_ESCAPE_FIXTURES": "$(rootpath //conformance-tests/icu4j:messageformat_escape_fixtures)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c_linux_x86_64//:icu"],
+)
+
+cc_test(
+    name = "intl_datetimeformat_range_conformance_test",
+    size = "small",
+    srcs = ["datetimeformat_range.cc"],
+    data = ["//conformance-tests/icu4j:date_time_range_boundary_fixtures"],
+    env = {"DATETIMEFORMAT_FIXTURES": "$(rootpath //conformance-tests/icu4j:date_time_range_boundary_fixtures)"},
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+cc_test(
     name = "intl_relativetimeformat_conformance_test",
     size = "small",
     srcs = ["relativetime.cc"],
@@ -113,4 +154,27 @@ genrule(
     ],
     tools = [":intl_numberformat_oracle"],
     visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "date_time_format_range_fixtures",
+    testonly = True,
+    srcs = ["//conformance-tests/icu4j:date_time_format_fixtures"],
+    outs = ["date-time-format-range-fixtures.tsv"],
+    cmd = "$(location :intl_datetimeformat_range_conformance_test) $(location //conformance-tests/icu4j:date_time_format_fixtures) > $@",
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    tools = [":intl_datetimeformat_range_conformance_test"],
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "number_skeleton_unit_conformance_test",
+    size = "small",
+    srcs = ["number_skeleton_unit.cc"],
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
 )

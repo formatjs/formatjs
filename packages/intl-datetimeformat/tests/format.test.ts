@@ -16,6 +16,27 @@ import {describe, expect, it} from 'vitest'
 DateTimeFormat.__addLocaleData(bs, de, en, fi, ko, ru)
 DateTimeFormat.__addTZData(allData)
 
+it('preserves CLDR standalone weekday context inside full dates', () => {
+  const formatter = new DateTimeFormat('fi', {
+    timeZone: 'UTC',
+    dateStyle: 'full',
+  })
+  expect(formatter.format(Date.UTC(2024, 0, 15))).toBe(
+    'maanantai 15. tammikuuta 2024'
+  )
+})
+
+it('uses atTime connectors for single date and time styles', () => {
+  const formatter = new DateTimeFormat('fi', {
+    timeZone: 'UTC',
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+  expect(formatter.format(Date.UTC(2024, 0, 15, 10, 15))).toBe(
+    '15.1.2024 klo 10.15'
+  )
+})
+
 const tests: Array<{
   options: Intl.DateTimeFormatOptions
   ko: string
@@ -117,8 +138,8 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
       timeZoneName: 'short',
     },
-    ko: '서기 20년 6월 15일 월요일 오후 09시 48분 20초 GMT-7',
-    en: 'Monday, June 15, 20 Anno Domini, 09:48:20 PM PDT',
+    ko: '서기 20년 6월 15일 (월요일) 오후 09시 48분 20초 GMT-7',
+    en: 'Monday, June 15, 20 Anno Domini at 09:48:20 PM PDT',
   },
   {
     options: {
@@ -247,7 +268,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '2020년 6월 15일 오후 9시 48분 20초 미 태평양 하계 표준시',
-    en: 'June 15, 2020, 9:48:20 PM Pacific Daylight Time',
+    en: 'June 15, 2020 at 9:48:20 PM Pacific Daylight Time',
   },
   {
     options: {
@@ -274,7 +295,7 @@ const tests: Array<{
       timeZone: 'America/Los_Angeles',
     },
     ko: '2020년 6월 15일 월요일 오후 9:48',
-    en: 'Monday, June 15, 2020, 9:48 PM',
+    en: 'Monday, June 15, 2020 at 9:48 PM',
   },
 ]
 
@@ -472,7 +493,7 @@ describe('Bosnian month formatting (issue #4270)', function () {
     const result = fmt.format(date)
 
     // Should produce correct format with "novembar" for November (not "M11")
-    expect(result).toBe('petak, 15. novembar 2024., 14:30:45')
+    expect(result).toBe('petak, 15. novembar 2024. u 14:30:45')
   })
 })
 
@@ -499,6 +520,24 @@ it('formats flexible day periods at exact and wrapping boundaries', () => {
   expect(russian.format(date(23))).toBe('ночи')
 })
 
+it('selects noon using the displayed time precision', () => {
+  const hour = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    hour: 'numeric',
+    hourCycle: 'h12',
+    dayPeriod: 'long',
+  })
+  const dayPeriod = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    dayPeriod: 'long',
+  })
+  const start = Date.UTC(2024, 0, 15, 12, 15)
+  const end = Date.UTC(2024, 0, 15, 12, 45)
+  expect(hour.format(start)).toBe('12 noon')
+  expect(hour.formatRange(start, end)).toBe('12 noon')
+  expect(dayPeriod.format(start)).toBe('in the afternoon')
+})
+
 it('keeps requested seconds without interpreting alternate labels as skeletons', () => {
   const formatter = new DateTimeFormat('en', {
     timeZone: 'UTC',
@@ -515,4 +554,18 @@ it('keeps requested seconds without interpreting alternate labels as skeletons',
     second: '2-digit',
   })
   expect(formatter.resolvedOptions().weekday).toBeUndefined()
+})
+
+it('ISO 8601 retains Gregorian era identities with its own patterns', () => {
+  const formatter = new DateTimeFormat('en', {
+    calendar: 'iso8601',
+    timeZone: 'UTC',
+    era: 'long',
+    year: 'numeric',
+  })
+  expect(
+    formatter
+      .formatToParts(Date.UTC(2024, 0, 1))
+      .find(part => part.type === 'era')?.value
+  ).toBe('Anno Domini')
 })

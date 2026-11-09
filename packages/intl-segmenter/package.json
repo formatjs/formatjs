@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-segmenter",
-  "version": "12.3.1",
+  "version": "12.3.2",
   "description": "Polyfill for Intl.Segmenter",
   "keywords": [
     "ecma402",
@@ -16,6 +16,11 @@
   "author": "Matija Gaspar <matijagaspar@gmail.com>",
   "repository": "git@github.com:formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js"
+  ],
   "exports": {
     ".": "./index.js",
     "./polyfill-force.js": "./polyfill-force.js",

@@ -47,6 +47,24 @@ java_import(
     visibility = ["//benchmarks/locale-matching:__pkg__"],
 )
 
+java_binary(
+    name = "displaynames_script_oracle",
+    testonly = True,
+    srcs = ["DisplayNamesScriptOracle.java"],
+    main_class = "DisplayNamesScriptOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "displaynames_script_fixtures",
+    testonly = True,
+    srcs = ["displaynames-script-icu-differences.tsv"],
+    outs = ["displaynames-script-fixtures.tsv"],
+    cmd = "$(execpath :displaynames_script_oracle) $@ $(location displaynames-script-icu-differences.tsv)",
+    tools = [":displaynames_script_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_test(
     name = "icu_conformance_test",
     size = "small",
@@ -81,6 +99,33 @@ java_test(
     main_class = "MessageFormatEscapingConformanceTest",
     test_class = "MessageFormatEscapingConformanceTest",
     deps = [":icu4j"],
+)
+
+java_binary(
+    name = "messageformat_escape_oracle",
+    testonly = True,
+    srcs = ["MessageFormatEscapeOracle.java"],
+    main_class = "MessageFormatEscapeOracle",
+    visibility = ["//visibility:public"],
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "messageformat_escape_fixtures",
+    testonly = True,
+    outs = ["messageformat-escape-fixtures.tsv"],
+    cmd = "$(execpath :messageformat_escape_oracle) $@",
+    tools = [":messageformat_escape_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_test(
+    name = "number_skeleton_unit_conformance_test",
+    size = "small",
+    srcs = ["NumberSkeletonUnitConformanceTest.java"],
+    main_class = "NumberSkeletonUnitConformanceTest",
+    test_class = "NumberSkeletonUnitConformanceTest",
+    deps = [":icu4j79"],
 )
 
 java_test(
@@ -228,6 +273,15 @@ genrule(
     testonly = True,
     outs = ["date-time-format-fixtures.tsv"],
     cmd = "$(execpath :intl_datetimeformat_oracle) $@",
+    tools = [":intl_datetimeformat_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "date_time_range_boundary_fixtures",
+    testonly = True,
+    outs = ["date-time-range-boundary-fixtures.tsv"],
+    cmd = "$(execpath :intl_datetimeformat_oracle) $@ --range-boundaries",
     tools = [":intl_datetimeformat_oracle"],
     visibility = ["//visibility:public"],
 )

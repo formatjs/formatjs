@@ -407,7 +407,7 @@ fn abi_yearmonth_uses_reference_dates_beyond_numeric_timeclip() {
         json!({"year":"numeric","month":"long"}),
     );
     let text=handle.query(json!({"op":"format","value":{"type":"plain","kind":"PlainYearMonth","iso":"+275760-09-30[u-ca=iso8601]"}})).unwrap();
-    assert_eq!(text, "\"September 275760\"");
+    assert_eq!(text, "\"275760 September\"");
     assert_eq!(
         handle.query(json!({"op":"format","value":{"type":"number","value":"8640001468800000"}})),
         Err(1)

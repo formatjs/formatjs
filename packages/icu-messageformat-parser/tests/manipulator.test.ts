@@ -6,6 +6,33 @@ import {
 import {printAST} from '#packages/icu-messageformat-parser/printer.js'
 import {expect, test} from 'vitest'
 
+test.each([
+  ["{s,select,other{'{'}}'}'", "{s,select,other{'{}'}}"],
+  ['<{s,select,other{b>}}', "{s,select,other{'<b>'}}"],
+])('joins captured literals without creating syntax: %s', (input, expected) => {
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(parse(printed)).toEqual(parse(expected))
+})
+
+test('retains captured escapes when hoisting literals into branches', () => {
+  const input = "a''''{x} {s, select, other {'{b''''c}'}}"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe("{s,select,other{a''''{x} '{b''''c}'}}")
+})
+
+test('closes captured EOF quotes before inserted branch delimiters', () => {
+  const input = "{s, select, other {yes}} '{tail"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe("{s,select,other{yes '{tail'}}")
+  expect(parse(printed)).toEqual(parse("{s,select,other{yes '{tail'}}"))
+})
+
+test('adapts literal pound escaping when selector context changes', () => {
+  const input = "{n, plural, other {'#' {s, select, other {text}}}}"
+  const printed = printAST(hoistSelectors(parse(input, {captureEscapes: true})))
+  expect(printed).toBe('{n,plural,other{{s,select,other{# text}}}}')
+})
+
 test('shared date/time arguments allow reordering', function () {
   const source = parse(
     'Resets {resetDate, date, ::EEE} at {resetDate, time, short}.'
@@ -189,6 +216,19 @@ test('GH #6212: variable names matching Map prototype properties should not conf
 })
 
 // https://github.com/formatjs/formatjs/issues/4202
+test.each([
+  [
+    '{n,plural,other{<b>#</b> {m,plural,other{#}}}}',
+    '{n,plural,other{{m,plural,other{<b>{n, number}</b> #}}}}',
+  ],
+  [
+    '{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}',
+    '{n,plural,offset:1 other{<b>#</b> {g,select,other{ok}}}}',
+  ],
+])('preserves pound scope through tags: %s', (input, expected) => {
+  expect(printAST(hoistSelectors(parse(input)))).toBe(expected)
+})
+
 test('GH #4202: multiple plurals with hash placeholders', function () {
   const input =
     '{topicCount, plural, one {# topic} other {# topics}} and {noteCount, plural, one {# note} other {# notes}}'
@@ -213,4 +253,18 @@ test('GH #4202: three plurals with hash placeholders', function () {
   expect(result).toBe(
     '{a,plural,one{{b,plural,one{{c,plural,one{{a, number} a, {b, number} b, and # c} other{{a, number} a, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} a, {b, number} bs, and # c} other{{a, number} a, {b, number} bs, and # cs}}}}} other{{b,plural,one{{c,plural,one{{a, number} as, {b, number} b, and # c} other{{a, number} as, {b, number} b, and # cs}}} other{{c,plural,one{{a, number} as, {b, number} bs, and # c} other{{a, number} as, {b, number} bs, and # cs}}}}}}'
   )
+})
+
+test('preserves legal select keys during cloning and scoped hoisting', () => {
+  for (const captureEscapes of [false, true]) {
+    for (const source of [
+      '{g,select,__proto__{P} constructor{C} other{O}}',
+      '{n,plural,offset:1 other{# {g,select,__proto__{P} constructor{C} other{O}}}}',
+    ]) {
+      const ast = parse(source, {captureEscapes})
+      const original = printAST(ast)
+      expect(printAST(hoistSelectors(ast))).toBe(original)
+      expect(printAST(ast)).toBe(original)
+    }
+  }
 })

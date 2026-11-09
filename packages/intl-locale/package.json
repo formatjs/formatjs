@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-locale",
-  "version": "5.4.2",
+  "version": "5.4.3",
   "description": "Intl.Locale polyfill",
   "keywords": [
     "ecma402",
@@ -17,6 +17,11 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",

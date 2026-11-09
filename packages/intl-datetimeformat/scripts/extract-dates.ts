@@ -24,11 +24,18 @@ import parentLocaleData from 'cldr-core/supplemental/parentLocales.json' with {t
 import rawTimeData from 'cldr-core/supplemental/timeData.json' with {type: 'json'}
 import TimeZoneNames from 'cldr-dates-full/main/en/timeZoneNames.json' with {type: 'json'}
 import metaZones from 'cldr-core/supplemental/metaZones.json' with {type: 'json'}
+import timeZoneAliases from 'cldr-bcp47/bcp47/timezone.json' with {type: 'json'}
+import primaryZones from 'cldr-core/supplemental/primaryZones.json' with {type: 'json'}
+import type Territories from 'cldr-localenames-full/main/en/territories.json' with {type: 'json'}
 import IntlLocale from '@formatjs/intl-locale'
 import type {Formats} from '#packages/ecma402-abstract/types/date-time.js'
-import {parseDateTimeSkeleton} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
+import {
+  parseDateTimeSkeleton,
+  processDateTimePattern,
+} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {isEqual} from 'lodash-es'
 import {calendarFiles as CALENDAR_FILES} from '@formatjs_generated/datetimeformat.calendars/index.js'
+import type {IsoPatterns} from './iso-patterns.ts'
 const ERA_KEY = /^\d+$/
 
 function extractEras(eras: Record<string, string>, calendar: string) {
@@ -36,21 +43,28 @@ function extractEras(eras: Record<string, string>, calendar: string) {
     Object.entries(eras)
       .filter(([key]) => ERA_KEY.test(key))
       .map(([key, value]) => [
-        calendar === 'gregory' ? (key === '0' ? 'BC' : 'AD') : key,
+        calendar === 'gregory' || calendar === 'iso8601'
+          ? key === '0'
+            ? 'BC'
+            : 'AD'
+          : key,
         value,
       ])
   )
 }
 
 const NON_SKELETON_LETTERS = /[^a-zA-Z]/g
-const DAY_PERIOD_LETTERS = /[abB]/g
+const DAY_PERIOD_LETTERS = /[ab]/g
 const REPEATED_SKELETON_LETTERS = /(.)\1+/g
 
 const {timeData} = rawTimeData.supplemental
 const processedTimeData = Object.keys(timeData).reduce(
   (all: Record<string, string[]>, k) => {
-    all[k.replace('_', '-')] =
-      timeData[k as keyof typeof timeData]._allowed.split(' ')
+    const {_preferred, _allowed} = timeData[k as keyof typeof timeData]
+    all[k.replace('_', '-')] = [
+      _preferred,
+      ..._allowed.split(' ').filter(value => value !== _preferred),
+    ]
     return all
   },
   {}
@@ -109,6 +123,27 @@ function isTimeFormatOnly(opts: Intl.DateTimeFormatOptions) {
       k === 'weekday' ||
       k === 'quarter'
   )
+}
+
+function withoutZone(pattern: string): string {
+  let quoted = false
+  for (let index = 0; index < pattern.length; index++) {
+    const character = pattern[index]
+    if (character === "'") {
+      if (pattern[index + 1] === "'") index++
+      else quoted = !quoted
+    } else if (!quoted && 'zvO'.includes(character)) {
+      let end = index + 1
+      while (pattern[end] === character) end++
+      let start = index
+      if (pattern[index - 1] === '(' && pattern[end] === ')') {
+        start--
+        end++
+      }
+      return (pattern.slice(0, start) + pattern.slice(end)).trim()
+    }
+  }
+  return pattern
 }
 
 export function getAllLocales(): string[] {
@@ -215,39 +250,84 @@ function extractTimezoneToMetazoneMap(): Record<string, string> {
     }
   }
 
+  for (const entry of Object.values(timeZoneAliases.keyword.u.tz)) {
+    if (typeof entry !== 'object' || !('_alias' in entry)) continue
+    const aliases = entry._alias.split(' ')
+    const metazone = aliases.map(alias => map[alias]).find(Boolean)
+    if (metazone) for (const alias of aliases) map[alias] = metazone
+  }
   return map
 }
 
 const tzToMetaZoneMap = extractTimezoneToMetazoneMap()
+const zoneLocations: Record<
+  string,
+  {region: string; city: string; primary: boolean}
+> = {}
+const regionZones: Record<string, string[]> = {}
+for (const [key, entry] of Object.entries(timeZoneAliases.keyword.u.tz)) {
+  if (typeof entry !== 'object' || !('_alias' in entry)) continue
+  const aliases = entry._alias.split(' ')
+  const region =
+    '_region' in entry ? String(entry._region) : key.slice(0, 2).toUpperCase()
+  ;(regionZones[region] ||= []).push(aliases[0])
+  for (const alias of aliases) {
+    zoneLocations[alias] = {
+      region,
+      city: aliases[0],
+      primary: aliases.includes(
+        primaryZones.supplemental.primaryZones[region as 'NZ']
+      ),
+    }
+  }
+}
 
 async function loadDatesFields(
   locale: string,
-  calendar = 'gregory'
+  calendar = 'gregory',
+  iso?: IsoPatterns
 ): Promise<RawDateTimeLocaleInternalData> {
   const calendarFile = CALENDAR_FILES[calendar]
+  const territoryLocale = locale === 'und' ? 'en' : locale
   const calendarName = calendarFile?.[1] ?? 'gregorian'
-  const [caGregorianImport, tznImport, numbersImport] = await Promise.all([
-    import(
-      calendarFile
-        ? `cldr-cal-${calendarFile[0]}-full/main/${locale}/ca-${calendarName}.json`
-        : `cldr-dates-full/main/${locale}/ca-gregorian.json`,
-      {
+  const [caGregorianImport, tznImport, numbersImport, territoriesImport] =
+    await Promise.all([
+      import(
+        calendarFile
+          ? `cldr-cal-${calendarFile[0]}-full/main/${locale}/ca-${calendarName}.json`
+          : `cldr-dates-full/main/${locale}/ca-gregorian.json`,
+        {
+          with: {type: 'json'},
+        }
+      ) as Promise<{default: typeof DateFields}>,
+      import(`cldr-dates-full/main/${locale}/timeZoneNames.json`, {
         with: {type: 'json'},
-      }
-    ) as Promise<{default: typeof DateFields}>,
-    import(`cldr-dates-full/main/${locale}/timeZoneNames.json`, {
-      with: {type: 'json'},
-    }) as Promise<{default: typeof TimeZoneNames}>,
-    import(`cldr-numbers-full/main/${locale}/numbers.json`, {
-      with: {type: 'json'},
-    }).catch(_ => undefined) as Promise<
-      {default: typeof NumberFields} | undefined
-    >,
-  ])
-  const calendarFields =
+      }) as Promise<{default: typeof TimeZoneNames}>,
+      import(`cldr-numbers-full/main/${locale}/numbers.json`, {
+        with: {type: 'json'},
+      }).catch(_ => undefined) as Promise<
+        {default: typeof NumberFields} | undefined
+      >,
+      import(`cldr-localenames-full/main/${territoryLocale}/territories.json`, {
+        with: {type: 'json'},
+      }) as Promise<{default: typeof Territories}>,
+    ])
+  let calendarFields =
     caGregorianImport.default.main[locale as 'en'].dates.calendars[
       calendarName as 'gregorian'
     ]
+  if (calendar === 'iso8601' && iso) {
+    calendarFields = {
+      ...calendarFields,
+      dateFormats: iso.dateFormats,
+      timeFormats: iso.timeFormats,
+      dateTimeFormats: {
+        ...calendarFields.dateTimeFormats,
+        ...iso.dateTimeFormats,
+      },
+      'dateTimeFormats-atTime': {standard: iso.dateTimeFormats},
+    } as typeof calendarFields
+  }
   const gregorianEras =
     calendar === 'japanese'
       ? (
@@ -325,6 +405,40 @@ async function loadDatesFields(
                   : metazoneInfo.short.standard,
               ]
             }
+            const location = zoneLocations[tz]
+            const territories =
+              territoriesImport.default.main[territoryLocale as 'en']
+                .localeDisplayNames.territories
+            let locationName: string | undefined
+            if (location && territories) {
+              const country = territories[location.region as 'NZ']
+              if (country) {
+                const city = location.city
+                  .split('/')
+                  .reduce<unknown>(
+                    (value, key) =>
+                      (value as Record<string, unknown> | undefined)?.[key],
+                    timeZoneNames.zone
+                  ) as {exemplarCity?: string} | undefined
+                locationName = timeZoneNames.regionFormat.replace(
+                  '{0}',
+                  location.primary || regionZones[location.region].length === 1
+                    ? country
+                    : city?.exemplarCity ||
+                        location.city.split('/').at(-1)!.replaceAll('_', ' ')
+                )
+              }
+            }
+            all[tz].longGeneric =
+              metazoneInfo.long?.generic ||
+              (!metazoneInfo.long?.daylight
+                ? metazoneInfo.long?.standard
+                : undefined) ||
+              locationName
+            all[tz].shortGeneric =
+              ('short' in metazoneInfo
+                ? metazoneInfo.short.generic
+                : undefined) || locationName
           }
 
           return all
@@ -343,9 +457,12 @@ async function loadDatesFields(
   }
 
   const {short, full, medium, long} = calendarFields.dateTimeFormats
+  const atTime =
+    calendarFields['dateTimeFormats-atTime']?.standard ||
+    calendarFields.dateTimeFormats
 
   const {availableFormats} = calendarFields.dateTimeFormats
-  let rawIntervalFormats = calendarFields.dateTimeFormats.intervalFormats
+  const rawIntervalFormats = calendarFields.dateTimeFormats.intervalFormats
   const intervalFormats = Object.keys(rawIntervalFormats)
     .filter(isDefaultDataKey)
     .reduce((all: Record<string, string | Record<string, string>>, k) => {
@@ -353,6 +470,26 @@ async function loadDatesFields(
       all[k] = typeof v === 'string' ? v : filterKeys(v, isDefaultDataKey)
       return all
     }, {})
+  const intervalFallback = intervalFormats.intervalFormatFallback
+  if (typeof intervalFallback === 'string') {
+    for (const [skeleton, ranges] of Object.entries(intervalFormats)) {
+      if (typeof ranges !== 'object') continue
+      const single = availableFormats[skeleton as 'Bh']
+      if (typeof single !== 'string') continue
+      const [, singlePattern] = processDateTimePattern(single)
+      if (!singlePattern.includes('{ampm}')) continue
+      for (const field of ['a', 'b']) {
+        if (!ranges[field]) continue
+        const [, rangePattern] = processDateTimePattern(ranges[field])
+        // Differing AM/PM values must both survive the interval.
+        if (rangePattern.split('{ampm}').length !== 3) {
+          ranges[field] = intervalFallback
+            .replace('{0}', single)
+            .replace('{1}', single)
+        }
+      }
+    }
+  }
   const parsedAvailableFormats: Array<[string, string, Formats]> = Object.keys(
     availableFormats
   )
@@ -388,23 +525,23 @@ async function loadDatesFields(
       }
     })
     .filter((f): f is [string, string, Formats] => !!f)
-  const dateFormats = Object.values(calendarFields.dateFormats).reduce(
-    (all: Record<string, string>, v) => {
+  const dateFormats = Object.entries(calendarFields.dateFormats)
+    .filter(([key]) => isDefaultDataKey(key))
+    .map(([, value]) => value)
+    .reduce((all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
       const pattern = typeof v === 'object' ? (v as {_value: string})._value : v
       all[pattern] = pattern
       return all
-    },
-    {}
-  )
-  const timeFormats = Object.values(calendarFields.timeFormats).reduce(
-    (all: Record<string, string>, v) => {
+    }, {})
+  const timeFormats = Object.entries(calendarFields.timeFormats)
+    .filter(([key]) => isDefaultDataKey(key))
+    .map(([, value]) => value)
+    .reduce((all: Record<string, string>, v) => {
       // Locale haw got some weird structure https://github.com/unicode-cldr/cldr-dates-full/blob/master/main/haw/ca-gregorian.json
       all[v] = v
       return all
-    },
-    {}
-  )
+    }, {})
   const allFormats: Record<string, string> = {
     // LDML Date Field Symbol Table: standalone B uses the requested name width.
     // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
@@ -429,15 +566,142 @@ async function loadDatesFields(
   ] of parsedAvailableFormats) {
     if (isDateFormatOnly(availableFormatEntry)) {
       dateFormats[skeleton] = pattern
+      const cyclic = (availableFormats as Record<string, string>).UMd
+      const tokens = processDateTimePattern(pattern)[0]
+      if (
+        cyclic &&
+        typeof intervalFallback === 'string' &&
+        tokens.includes('{yearName}') &&
+        !tokens.includes('{relatedYear}') &&
+        availableFormatEntry.year &&
+        availableFormatEntry.day &&
+        !availableFormatEntry.era &&
+        !availableFormatEntry.weekday &&
+        (availableFormatEntry.month === 'numeric' ||
+          availableFormatEntry.month === '2-digit')
+      ) {
+        const complete = intervalFallback
+          .replace('{0}', cyclic)
+          .replace('{1}', cyclic)
+        intervalFormats[skeleton] = {date: complete}
+      }
     } else if (isTimeFormatOnly(availableFormatEntry)) {
       timeFormats[skeleton] = pattern
     }
   }
+  // Explicit minute/second widths can require appendItems rather than an
+  // availableFormats entry whose skeleton has different widths.
+  const appendZone = calendarFields.dateTimeFormats.appendItems.Timezone
+  for (const [skeleton, pattern, fields] of parsedAvailableFormats) {
+    if (
+      !isTimeFormatOnly(fields) ||
+      !fields.hour ||
+      !fields.minute ||
+      fields.timeZoneName ||
+      fields.dayPeriod
+    )
+      continue
+    const zoned = availableFormats[(skeleton + 'v') as 'Hmv']
+    const timePattern = typeof zoned === 'string' ? withoutZone(zoned) : pattern
+    const widths = skeleton.replace(/m+/g, 'mm').replace(/s+/g, 'ss')
+    for (const zone of ['z', 'zzzz', 'v', 'vvvv', 'O', 'OOOO']) {
+      const key = widths + zone
+      if (allFormats[key]) continue
+      const expanded = appendZone
+        .replace('{0}', timePattern)
+        .replace('{1}', zone)
+      allFormats[key] = expanded
+      timeFormats[key] = expanded
+    }
+  }
+  const timeIntervals = parsedAvailableFormats.filter(
+    ([key, , fields]) =>
+      isTimeFormatOnly(fields) && typeof intervalFormats[key] === 'object'
+  )
+  const rangeTimePatterns = new Map<string, string>()
+  function rangeTimePattern(skeleton: string, pattern: string): string {
+    const cached = rangeTimePatterns.get(skeleton)
+    if (cached !== undefined) return cached
+    if (skeleton === pattern) {
+      rangeTimePatterns.set(skeleton, pattern)
+      return pattern
+    }
+    const target = parseDateTimeSkeleton(pattern)
+    let result = pattern
+    if (target.timeZoneName) {
+      let bestScore = Infinity
+      for (const [, candidatePattern, candidate] of parsedAvailableFormats) {
+        if (!isTimeFormatOnly(candidate)) continue
+        if (
+          !!target.hour12 !== !!candidate.hour12 ||
+          !(
+            [
+              'hour',
+              'minute',
+              'second',
+              'dayPeriod',
+              'timeZoneName',
+              'fractionalSecondDigits',
+            ] as const
+          ).every(
+            field =>
+              (target[field] !== undefined) === (candidate[field] !== undefined)
+          )
+        )
+          continue
+        const score =
+          Number(target.minute !== candidate.minute) +
+          Number(target.second !== candidate.second)
+        if (score < bestScore) {
+          bestScore = score
+          const zone = {
+            short: 'z',
+            long: 'zzzz',
+            shortGeneric: 'v',
+            longGeneric: 'vvvv',
+            shortOffset: 'O',
+            longOffset: 'OOOO',
+          }[target.timeZoneName]
+          result = appendZone
+            .replace('{0}', withoutZone(candidatePattern))
+            .replace('{1}', zone)
+        }
+      }
+    }
+    rangeTimePatterns.set(skeleton, result)
+    return result
+  }
+  const intervalFormatTemplates: NonNullable<
+    RawDateTimeLocaleInternalData['intervalFormatTemplates']
+  > = {dates: [], times: []}
+  const templateDates = new Set<string>()
+  const templateTimes = new Set<string>()
+  const parsedDates = Object.entries(dateFormats)
+    .sort(
+      ([left], [right]) =>
+        Number(!/^[a-zA-Z]+$/.test(left)) - Number(!/^[a-zA-Z]+$/.test(right))
+    )
+    .map(
+      ([skeleton, pattern]) =>
+        [
+          skeleton,
+          pattern,
+          parseDateTimeSkeleton(skeleton, pattern),
+          parseDateTimeSkeleton(pattern),
+        ] as const
+    )
   // Based on https://unicode.org/reports/tr35/tr35-dates.html#Missing_Skeleton_Fields
   for (const [timeSkeleton, timePattern] of Object.entries(timeFormats)) {
-    for (const [dateSkeleton, datePattern] of Object.entries(dateFormats)) {
+    const intervalTimePattern = rangeTimePattern(timeSkeleton, timePattern)
+    for (const [dateSkeleton, datePattern, entry, actualDate] of parsedDates) {
+      const numericMonth =
+        actualDate.month === 'numeric' || actualDate.month === '2-digit'
+      const intervalDateKey = numericMonth
+        ? dateSkeleton.replace(/[ML]+/g, 'M')
+        : dateSkeleton
+      const intervalDate =
+        availableFormats[intervalDateKey as 'yMd'] || datePattern
       let rawPattern
-      const entry = parseDateTimeSkeleton(dateSkeleton, datePattern)
       if (entry.month === 'long') {
         rawPattern = entry.weekday ? full : long
       } else if (entry.month === 'short') {
@@ -445,7 +709,15 @@ async function loadDatesFields(
       } else {
         rawPattern = short
       }
-      const pattern = rawPattern
+      const singleConnector =
+        entry.month === 'long'
+          ? entry.weekday
+            ? atTime.full
+            : atTime.long
+          : entry.month === 'short'
+            ? atTime.medium
+            : atTime.short
+      const pattern = singleConnector
         .replace('{0}', timePattern)
         .replace('{1}', datePattern)
       const skeleton = rawPattern
@@ -466,13 +738,27 @@ async function loadDatesFields(
       // provide interval formats for it, synthesize by combining the date pattern with time
       // interval patterns. This produces output like "Sun, 22 Sept 2024, 14:00 – 16:00"
       // instead of "Sun, 22 Sept 2024, 14:00 – Sun, 22 Sept 2024, 16:00"
-      const combinedIntervalFormats = intervalFormats[skeleton]
+      if (!templateDates.has(dateSkeleton)) {
+        templateDates.add(dateSkeleton)
+        intervalFormatTemplates.dates.push([
+          dateSkeleton,
+          intervalDate,
+          rawPattern,
+          singleConnector,
+        ])
+      }
       const canonicalTimeSkeleton = timeSkeleton
         .replace(NON_SKELETON_LETTERS, '')
         .replace(DAY_PERIOD_LETTERS, '')
         .replace(REPEATED_SKELETON_LETTERS, '$1')
+      const intervalTimeSkeleton = canonicalTimeSkeleton.replace(
+        /[zZOvV]/g,
+        'v'
+      )
       let timeIntervalFormats =
-        intervalFormats[timeSkeleton] || intervalFormats[canonicalTimeSkeleton]
+        intervalFormats[timeSkeleton] ||
+        intervalFormats[canonicalTimeSkeleton] ||
+        intervalFormats[intervalTimeSkeleton]
 
       // GH #4535: If interval formats for the time skeleton don't exist, try the 24-hour variant.
       // This handles cases where CLDR provides formats for 'Hm' but not 'hm', or vice versa.
@@ -503,59 +789,66 @@ async function loadDatesFields(
         }
       }
 
-      if (!combinedIntervalFormats) {
+      if (!templateTimes.has(timeSkeleton)) {
         const timeRanges =
           typeof timeIntervalFormats === 'object'
             ? {...timeIntervalFormats}
             : {}
         const fallback = intervalFormats.intervalFormatFallback
         if (typeof fallback === 'string') {
-          // Combine a time-only fallback interval with the shared date.
-          // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
-          const timeFields = parseDateTimeSkeleton(timeSkeleton, timePattern)
           const fallbackTimeRange = fallback
             .replace('{0}', timePattern)
             .replace('{1}', timePattern)
-          for (const [field, property] of [
-            ['a', 'hour'],
-            ['h', 'hour'],
-            ['m', 'minute'],
-            ['s', 'second'],
-            ['S', 'fractionalSecondDigits'],
-            ['B', 'dayPeriod'],
-          ] as const) {
-            if (
-              field === 'a' &&
-              (!timeFields.hour12 || timeRanges.b !== undefined)
-            )
-              continue
-            if (
-              field === 'h' &&
-              ['h', 'H', 'K', 'k'].some(key => timeRanges[key] !== undefined)
-            )
-              continue
-            if (
-              timeFields[property] !== undefined &&
-              timeRanges[field] === undefined
-            ) {
-              timeRanges[field] = fallbackTimeRange
-            }
-          }
+          timeRanges.fallback = fallbackTimeRange
         }
-        // Synthesize interval formats for each time field difference.
-        const synthesizedFormats: Record<string, string> = {}
-        for (const [field, timeIntervalPattern] of Object.entries(timeRanges)) {
-          if (typeof timeIntervalPattern === 'string') {
-            // Combine date pattern with time interval pattern using dateTimeFormat
-            const synthesizedPattern = rawPattern
-              .replace('{0}', timeIntervalPattern)
-              .replace('{1}', datePattern)
-            synthesizedFormats[field] = synthesizedPattern
-          }
-        }
-        if (Object.keys(synthesizedFormats).length > 0) {
-          intervalFormats[skeleton] = synthesizedFormats
-        }
+        templateTimes.add(timeSkeleton)
+        intervalFormatTemplates.times.push([
+          timeSkeleton,
+          intervalTimePattern,
+          timeRanges,
+        ])
+      }
+    }
+  }
+  // Time-only intervals still need dates when the endpoints span calendar days.
+  // https://unicode.org/reports/tr35/tr35-dates.html#intervalFormats
+  const numericDate = availableFormats.yMd
+  if (typeof numericDate === 'string' && typeof intervalFallback === 'string') {
+    for (const [skeleton, timePattern] of Object.entries(timeFormats)) {
+      const target = parseDateTimeSkeleton(skeleton, timePattern)
+      if (!isTimeFormatOnly(target)) continue
+      const exact = intervalFormats[skeleton]
+      const compatible = timeIntervals.find(([, , candidate]) => {
+        return (
+          !!target.hour12 === !!candidate.hour12 &&
+          [
+            'year',
+            'month',
+            'day',
+            'weekday',
+            'dayPeriod',
+            'hour',
+            'minute',
+            'second',
+            'timeZoneName',
+          ].every(
+            field =>
+              (target[field as 'hour'] !== undefined) ===
+              (candidate[field as 'hour'] !== undefined)
+          )
+        )
+      })?.[0]
+      const compatibleRanges = compatible && intervalFormats[compatible]
+      const ranges = typeof exact === 'object' ? exact : compatibleRanges
+      const endpoint = atTime.short
+        .replace('{0}', rangeTimePattern(skeleton, timePattern))
+        .replace('{1}', numericDate)
+      const dateRange = intervalFallback
+        .replace('{0}', endpoint)
+        .replace('{1}', endpoint)
+      intervalFormats[skeleton] = {
+        ...(typeof ranges === 'object' ? ranges : {}),
+        date: dateRange,
       }
     }
   }
@@ -674,11 +967,13 @@ async function loadDatesFields(
     dateFormat: extractStyleFormatFields(calendarFields.dateFormats),
     timeFormat: extractStyleFormatFields(calendarFields.timeFormats),
     dateTimeFormat: extractStyleFormatFields(calendarFields.dateTimeFormats),
+    dateTimeFormatAtTime: extractStyleFormatFields(atTime),
     formats: {
       [calendar]: allFormats,
     },
     // @ts-ignore
     intervalFormats,
+    intervalFormatTemplates,
     hourCycle: hc[0],
     hourCycle12,
     hourCycle24,
@@ -697,7 +992,8 @@ async function loadDatesFields(
 }
 
 export async function extractDatesFields(
-  locales: string[] = AVAILABLE_LOCALES.availableLocales.full
+  locales: string[] = AVAILABLE_LOCALES.availableLocales.full,
+  isoPatterns?: (locale: string) => IsoPatterns
 ): Promise<Record<string, RawDateTimeLocaleInternalData>> {
   const data = await Promise.all(
     locales.map(async locale => {
@@ -709,6 +1005,11 @@ export async function extractDatesFields(
             [calendar, await loadDatesFields(locale, calendar)] as const
         )
       )
+      if (isoPatterns)
+        calendars.push([
+          'iso8601',
+          await loadDatesFields(locale, 'iso8601', isoPatterns(locale)),
+        ])
       for (const [calendar, fields] of calendars) {
         const {
           era,
@@ -719,7 +1020,9 @@ export async function extractDatesFields(
           dateFormat,
           timeFormat,
           dateTimeFormat,
+          dateTimeFormatAtTime,
           intervalFormats,
+          intervalFormatTemplates,
         } = fields
         data.calendarData[calendar] = {
           era,
@@ -731,10 +1034,12 @@ export async function extractDatesFields(
           dateFormat,
           timeFormat,
           dateTimeFormat,
+          dateTimeFormatAtTime,
           intervalFormats,
+          intervalFormatTemplates,
         }
         data.formats[calendar] = fields.formats[calendar]
-        data.ca.push(calendar)
+        if (!data.ca.includes(calendar)) data.ca.push(calendar)
       }
       return data
     })

@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-durationformat",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Intl.DurationFormat polyfill",
   "keywords": [
     "duration",
@@ -18,6 +18,10 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "repository": "formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",

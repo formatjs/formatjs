@@ -1,6 +1,6 @@
 {
   "name": "@formatjs/intl-listformat",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "description": "Formats JS list in a i18n-safe way",
   "keywords": [
     "format",
@@ -16,6 +16,12 @@
   "author": "Long Ho <holevietlong@gmail.com>",
   "repository": "git@github.com:formatjs/formatjs.git",
   "type": "module",
+  "sideEffects": [
+    "./polyfill.js",
+    "./polyfill-force.js",
+    "./polyfill.iife.js",
+    "./locale-data/*.js"
+  ],
   "types": "index.d.ts",
   "exports": {
     ".": "./index.js",

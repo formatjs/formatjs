@@ -8,6 +8,142 @@ fn parse_message(message: &str) -> Vec<MessageFormatElement> {
         .expect("message should parse")
 }
 
+fn parse_captured(message: &str) -> Vec<MessageFormatElement> {
+    Parser::new(
+        message,
+        ParserOptions {
+            capture_escapes: true,
+            ..Default::default()
+        },
+    )
+    .parse()
+    .unwrap()
+}
+
+#[test]
+fn preserves_escape_spellings_through_serialization() {
+    for input in [
+        "a''''{x}",
+        "Say '''' for an apostrophe",
+        "{x}''{y}",
+        "{x}''''b",
+        "'{a''''b}'",
+        "'<a''''b>'",
+        "😀 '{''''}' don't",
+        "'{unterminated",
+        "abc'",
+        "plain text",
+        "aa}'{",
+        "a'{'}",
+        "a}''}",
+        "}''}'",
+    ] {
+        let ast = parse_captured(input);
+        assert_eq!(print_ast(&ast), input);
+        let json = serde_json::to_string(&ast).unwrap();
+        let decoded: Vec<MessageFormatElement> = serde_json::from_str(&json).unwrap();
+        assert_eq!(print_ast(&decoded), input);
+        assert_eq!(parse_message(&print_ast(&decoded)), parse_message(input));
+        assert_eq!(
+            parse_message(&print_ast(&parse_message(input))),
+            parse_message(input)
+        );
+    }
+}
+
+#[test]
+fn captures_raw_value_without_changing_literal_values() {
+    let ast = parse_captured("😀a''''{x}");
+    assert_eq!(
+        serde_json::to_value(&ast).unwrap(),
+        serde_json::json!([
+            {"type": 0, "value": "😀a''", "rawValue": "😀a''''"},
+            {"type": 1, "value": "x"}
+        ])
+    );
+    assert!(
+        serde_json::to_value(parse_message("a''''{x}")).unwrap()[0]
+            .get("rawValue")
+            .is_none()
+    );
+}
+
+#[test]
+fn round_trips_combinations_of_literal_syntax_and_apostrophes() {
+    let parts = ["a", "'", "''", "{", "}", "<b>", "#"];
+    for a in parts {
+        for b in parts {
+            for c in parts {
+                let ast = vec![MessageFormatElement::literal(format!("{a}{b}{c}"))];
+                assert_eq!(parse_message(&print_ast(&ast)), ast);
+            }
+        }
+    }
+}
+
+#[test]
+fn ignores_stale_raw_value_after_editing_literals() {
+    let mut ast = parse_captured("a''''");
+    let MessageFormatElement::Literal(literal) = &mut ast[0] else {
+        panic!("expected literal")
+    };
+    literal.value = "'{changed}''".to_string();
+    assert_eq!(
+        parse_message(&print_ast(&ast)),
+        vec![MessageFormatElement::literal("'{changed}''".to_string())]
+    );
+}
+
+#[test]
+fn rejects_structural_syntax_in_raw_value() {
+    for value in ["{x}", "<b>text</b>"] {
+        let mut literal = LiteralElement::new(value.to_string());
+        literal.raw_value = Some(value.to_string());
+        assert_eq!(
+            parse_message(&print_ast(&[MessageFormatElement::Literal(literal)])),
+            vec![MessageFormatElement::literal(value.to_string())]
+        );
+    }
+}
+
+#[test]
+fn preserves_nested_literal_escapes() {
+    for input in [
+        "{n, plural, one {''''#} other {a''}}",
+        "{s, select, other {'{a''''b}' a''}}",
+        "{n, plural, other {<b>'#' ''''</b>}}",
+    ] {
+        for ast in [parse_message(input), parse_captured(input)] {
+            assert_eq!(parse_message(&print_ast(&ast)), parse_message(input));
+        }
+    }
+}
+
+#[test]
+fn hoisting_preserves_captured_literals_and_closes_eof_quotes() {
+    use formatjs_icu_messageformat_parser::hoist_selectors;
+    for (input, expected) in [
+        (
+            "a''''{x} {s, select, other {'{b''''c}'}}",
+            "{s,select,other{a''''{x} '{b''''c}'}}",
+        ),
+        (
+            "{s, select, other {yes}} '{tail",
+            "{s,select,other{yes '{tail'}}",
+        ),
+        (
+            "{n, plural, other {'#' {s, select, other {text}}}}",
+            "{n,plural,other{{s,select,other{# text}}}}",
+        ),
+        ("{s,select,other{'{'}}'}'", "{s,select,other{'{}'}}"),
+        ("<{s,select,other{b>}}", "{s,select,other{'<b>'}}"),
+    ] {
+        let printed = print_ast(&hoist_selectors(parse_captured(input)));
+        assert_eq!(printed, expected);
+        assert_eq!(parse_message(&printed), parse_message(expected));
+    }
+}
+
 #[test]
 fn test_print_literal() {
     let ast = vec![MessageFormatElement::Literal(LiteralElement::new(

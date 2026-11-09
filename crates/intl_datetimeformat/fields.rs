@@ -78,6 +78,10 @@ impl From<FractionalDigits> for u8 {
 #[serde(default, rename_all = "camelCase")]
 pub struct Components {
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub month_standalone: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub weekday_standalone: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub weekday: Option<TextWidth>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub era: Option<TextWidth>,
