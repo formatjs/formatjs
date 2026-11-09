@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@13.0.2...@formatjs/intl-relativetimeformat@13.0.3) (2026-11-09)
+
+
+### Bug Fixes
+
+* deduplicate polyfill locale data ([#7897](https://github.com/formatjs/formatjs/issues/7897)) ([fc49531](https://github.com/formatjs/formatjs/commit/fc4953174d71fcab85cbe3d47d10edc5f2bf3733))
+
 ## [13.0.2](https://github.com/formatjs/formatjs/compare/@formatjs/intl-relativetimeformat@13.0.1...@formatjs/intl-relativetimeformat@13.0.2) (2026-11-08)
 
 
