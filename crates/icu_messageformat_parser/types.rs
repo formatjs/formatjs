@@ -113,10 +113,12 @@ pub struct BaseElement {
     pub location: Option<Location>,
 }
 
-/// Literal element
+/// Literal element with optional original ICU spelling.
 #[derive(Debug, Clone, PartialEq, Serialize)]
 pub struct LiteralElement {
     pub value: String,
+    #[serde(rename = "rawValue", skip_serializing_if = "Option::is_none")]
+    pub raw_value: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
 }
@@ -257,6 +259,8 @@ struct DeserializedElement {
     #[serde(rename = "type")]
     element_type: u8,
     value: Option<String>,
+    #[serde(rename = "rawValue")]
+    raw_value: Option<String>,
     style: Option<DeserializedStyle>,
     options: Option<IndexMap<String, PluralOrSelectOption>>,
     offset: Option<i32>,
@@ -302,6 +306,7 @@ impl<'de> Deserialize<'de> for MessageFormatElement {
         match element.element_type {
             0 => Ok(Self::Literal(LiteralElement {
                 value: value()?,
+                raw_value: element.raw_value,
                 location: element.location,
             })),
             1 => Ok(Self::Argument(ArgumentElement {
@@ -425,10 +430,14 @@ impl Serialize for MessageFormatElement {
 
         match self {
             Self::Literal(el) => {
-                let field_count = 2 + if el.location.is_some() { 1 } else { 0 };
+                let field_count =
+                    2 + usize::from(el.location.is_some()) + usize::from(el.raw_value.is_some());
                 let mut map = serializer.serialize_map(Some(field_count))?;
                 map.serialize_entry("type", &Type::Literal)?;
                 map.serialize_entry("value", &el.value)?;
+                if let Some(raw_value) = &el.raw_value {
+                    map.serialize_entry("rawValue", raw_value)?;
+                }
                 if el.location.is_some() {
                     map.serialize_entry("location", &el.location)?;
                 }
@@ -625,6 +634,7 @@ impl LiteralElement {
     pub fn new(value: String) -> Self {
         Self {
             value,
+            raw_value: None,
             location: None,
         }
     }
@@ -632,6 +642,7 @@ impl LiteralElement {
     pub fn with_location(value: String, location: Location) -> Self {
         Self {
             value,
+            raw_value: None,
             location: Some(location),
         }
     }

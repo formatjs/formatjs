@@ -1,0 +1,31 @@
+locale	style	languageDisplay	fallback	code	icu4j	icu4c	preferred
+en	long	dialect	code	zh-Hant-TW	Traditional Chinese (Taiwan)	Chinese (Traditional, Taiwan)	Traditional Chinese (Taiwan)
+en	long	dialect	code	en-Latn-US	American English (Latin)	English (Latin, United States)	American English (Latin)
+en	long	dialect	code	en-Cyrl-GB	British English (Cyrillic)	English (Cyrillic, United Kingdom)	British English (Cyrillic)
+en	long	dialect	none	zh-Hant-TW	Traditional Chinese (Taiwan)	Chinese (Traditional, Taiwan)	Traditional Chinese (Taiwan)
+en	long	dialect	none	en-Latn-US	American English (Latin)	English (Latin, United States)	American English (Latin)
+en	long	dialect	none	en-Cyrl-GB	British English (Cyrillic)	English (Cyrillic, United Kingdom)	British English (Cyrillic)
+en	short	dialect	code	zh-Hant-TW	Traditional Chinese (Taiwan)	Chinese (Traditional, Taiwan)	Traditional Chinese (Taiwan)
+en	short	dialect	code	en-Latn-US	US English (Latin)	English (Latin, US)	US English (Latin)
+en	short	dialect	code	en-Cyrl-GB	UK English (Cyrillic)	English (Cyrillic, UK)	UK English (Cyrillic)
+en	short	dialect	none	zh-Hant-TW	Traditional Chinese (Taiwan)	Chinese (Traditional, Taiwan)	Traditional Chinese (Taiwan)
+en	short	dialect	none	en-Latn-US	US English (Latin)	English (Latin, US)	US English (Latin)
+en	short	dialect	none	en-Cyrl-GB	UK English (Cyrillic)	English (Cyrillic, UK)	UK English (Cyrillic)
+en	short	standard	code	en-Latn-US	English (Latin, United States)	English (Latin, US)	English (Latin, US)
+en	short	standard	none	en-Latn-US	English (Latin, United States)	English (Latin, US)	English (Latin, US)
+ar	long	dialect	code	zh-Hant-TW	الصينية التقليدية (تايوان)	الصينية (التقليدية، تايوان)	الصينية التقليدية (تايوان)
+ar	long	dialect	none	zh-Hant-TW	الصينية التقليدية (تايوان)	الصينية (التقليدية، تايوان)	الصينية التقليدية (تايوان)
+ar	short	dialect	code	zh-Hant-TW	الصينية التقليدية (تايوان)	الصينية (التقليدية، تايوان)	الصينية التقليدية (تايوان)
+ar	short	dialect	none	zh-Hant-TW	الصينية التقليدية (تايوان)	الصينية (التقليدية، تايوان)	الصينية التقليدية (تايوان)
+zh	long	dialect	code	zh-Hant-TW	繁体中文（台湾）	中文（繁体，台湾）	繁体中文（台湾）
+zh	long	dialect	code	en-Latn-US	美国英语（拉丁文）	英语（拉丁文，美国）	美国英语（拉丁文）
+zh	long	dialect	code	en-Cyrl-GB	英国英语（西里尔文）	英语（西里尔文，英国）	英国英语（西里尔文）
+zh	long	dialect	none	zh-Hant-TW	繁体中文（台湾）	中文（繁体，台湾）	繁体中文（台湾）
+zh	long	dialect	none	en-Latn-US	美国英语（拉丁文）	英语（拉丁文，美国）	美国英语（拉丁文）
+zh	long	dialect	none	en-Cyrl-GB	英国英语（西里尔文）	英语（西里尔文，英国）	英国英语（西里尔文）
+zh	short	dialect	code	zh-Hant-TW	繁体中文（台湾）	中文（繁体，台湾）	繁体中文（台湾）
+zh	short	dialect	code	en-Latn-US	美式英语（拉丁文）	英语（拉丁文，美国）	美式英语（拉丁文）
+zh	short	dialect	code	en-Cyrl-GB	英式英语（西里尔文）	英语（西里尔文，英国）	英式英语（西里尔文）
+zh	short	dialect	none	zh-Hant-TW	繁体中文（台湾）	中文（繁体，台湾）	繁体中文（台湾）
+zh	short	dialect	none	en-Latn-US	美式英语（拉丁文）	英语（拉丁文，美国）	美式英语（拉丁文）
+zh	short	dialect	none	en-Cyrl-GB	英式英语（西里尔文）	英语（西里尔文，英国）	英式英语（西里尔文）

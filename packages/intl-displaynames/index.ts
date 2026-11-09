@@ -342,45 +342,68 @@ function getNameForTypeLanguage(
   canonicalCode: string,
   fallback: DisplayNamesInternalSlots['fallback']
 ): string | undefined {
-  // First, try to get the name using the canonicalCode
   const typesData = localeData.types.language[languageDisplay]
-  const name = typesData[style][canonicalCode] || typesData.long[canonicalCode]
+  const languageName = (code: string) =>
+    typesData[style][code] || typesData.long[code]
+  const exact = languageName(canonicalCode)
+  if (exact !== undefined) return exact
 
-  if (name === undefined) {
-    // If no name has been found using the canonicalCode,
-    // check if the latter contains a region sub tag
-    const regionMatch = /-([a-z]{2}|\d{3})\b/i.exec(canonicalCode)
-    if (regionMatch) {
-      // Extract the language and region sub tags
-      const languageSubTag =
-        canonicalCode.substring(0, regionMatch.index) +
-        canonicalCode.substring(regionMatch.index + regionMatch[0].length)
-      const regionSubTag = regionMatch[1]
-
-      // Let's try again using languageSubTag this time
-      const name =
-        typesData[style][languageSubTag] || typesData.long[languageSubTag]
-
-      // If a name has been found and a region sub tag exists,
-      // compose them together or use the code fallback
-      if (name !== undefined && regionSubTag) {
-        // Retrieve region display names
-        const regionsData = localeData.types.region
-        const regionDisplayName: string | undefined =
-          regionsData[style][regionSubTag] || regionsData.long[regionSubTag]
-
-        if (regionDisplayName || fallback === 'code') {
-          // Interpolate into locale-specific pattern.
-          const pattern = localeData.patterns.locale
-          return pattern
-            .replace('{0}', name)
-            .replace('{1}', regionDisplayName || regionSubTag)
-        }
-      } else {
-        return name
+  const parts = canonicalCode.split('-')
+  const scriptIndex = /^[A-Z][a-z]{3}$/.test(parts[1] || '') ? 1 : -1
+  const regionIndex = parts.findIndex(
+    (part, index) => index > 0 && /^(?:[A-Z]{2}|[0-9]{3})$/.test(part)
+  )
+  let script: string | undefined = parts[scriptIndex]
+  let region: string | undefined = parts[regionIndex]
+  let name: string | undefined
+  if (languageDisplay === 'dialect') {
+    if (script && region) {
+      name = languageName(
+        parts.filter((_, index) => index !== regionIndex).join('-')
+      )
+      if (name !== undefined) script = undefined
+      else {
+        name = languageName(
+          parts.filter((_, index) => index !== scriptIndex).join('-')
+        )
+        if (name !== undefined) region = undefined
       }
     }
-  } else {
-    return name
   }
+  name ??= languageName(
+    parts
+      .filter((_, index) => index !== scriptIndex && index !== regionIndex)
+      .join('-')
+  )
+  if (name === undefined || (!script && !region)) return undefined
+
+  const qualifiers: string[] = []
+  for (const [code, names] of [
+    [script, localeData.types.script],
+    [region, localeData.types.region],
+  ] as const) {
+    if (!code) continue
+    const display = names[style][code] || names.long[code]
+    if (!display && fallback === 'none') return undefined
+    qualifiers.push(display || code)
+  }
+  const pattern = localeData.patterns.locale
+  const nested = (value: string) =>
+    value.replace(/[()（）]/g, bracket => {
+      if (pattern.includes('(') && (bracket === '(' || bracket === ')'))
+        return bracket === '(' ? '[' : ']'
+      if (pattern.includes('（') && (bracket === '（' || bracket === '）'))
+        return bracket === '（' ? '［' : '］'
+      return bracket
+    })
+  const substitute = (format: string, first: string, second: string) =>
+    format.replace(/\{([01])\}/g, (_, index) =>
+      index === '0' ? first : second
+    )
+  const qualifier = qualifiers
+    .map(nested)
+    .reduce((first, second) =>
+      substitute(localeData.patterns.separator ?? '{0}, {1}', first, second)
+    )
+  return substitute(pattern, nested(name), qualifier)
 }

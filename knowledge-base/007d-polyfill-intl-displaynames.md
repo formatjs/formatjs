@@ -59,6 +59,26 @@ code, such as `ZZZ` for an unknown currency supplied as `zzz`.
 Language display-name codes accept Unicode language subtags of two, three, or
 five to eight ASCII letters, with optional script, region, and variant subtags.
 
+Language names use CLDR longest-match lookup, then compose remaining script and
+region names with `patterns.locale` and `patterns.separator`. The optional
+separator defaults to `{0}, {1}` for older locale packs. Standard language data
+contains base names so regional dialect names do not leak into standard output.
+Missing qualifier names respect code/undefined fallback. Unknown variants are
+not silently discarded. Nested parentheses use CLDR bracket replacements.
+
+ECMA-402 leaves locale data implementation-defined; the composition follows the
+[CLDR locale display-name algorithm](https://unicode.org/reports/tr35/tr35-general.html#locale_display_name_algorithm).
+The TS and Rust suites check 560 cases against pinned ICU4J/ICU4C 79.1, matching
+the implementation's CLDR 49 data. Exact differences are recorded in
+`conformance-tests/icu4j/displaynames-script-icu-differences.tsv`; changed,
+unknown, or unused rows fail. No cases are skipped.
+
+The 30 ICU disagreements have two source-level explanations: ICU4C's
+[dialect lookup reuses its candidate buffer](https://github.com/unicode-org/icu/blob/release-79.1/icu4c/source/common/locdspnm.cpp#L559),
+while ICU4J [ignores a short region name equal to its code](https://github.com/unicode-org/icu/blob/release-79.1/icu4j/main/core/src/main/java/com/ibm/icu/impl/LocaleDisplayNamesImpl.java#L564),
+such as `US`. Preferred outputs follow CLDR longest-match lookup and short-name
+data. Test262 retains the two existing cross-realm constructor baseline failures.
+
 Calendar display-name data uses BCP 47 identifiers, including `gregory` and
 `ethioaa`, rather than CLDR legacy keys.
 

@@ -499,10 +499,30 @@ fn test_parse_number_skeleton_currency() {
 
 #[test]
 fn test_parse_number_skeleton_unit() {
-    let tokens = NumberSkeletonToken::parse_from_string("unit/length-meter").unwrap();
+    let tokens = NumberSkeletonToken::parse_from_string("unit/meter").unwrap();
     let result = parse_number_skeleton(&tokens).unwrap();
     assert_eq!(result.style(), Some(&NumberFormatOptionsStyle::Unit));
     assert_eq!(result.unit(), Some("meter"));
+}
+
+#[test]
+fn unit_identifiers_preserve_hyphens() {
+    for (skeleton, expected) in [
+        ("unit/fluid-ounce", "fluid-ounce"),
+        ("unit/kilometer-per-hour", "kilometer-per-hour"),
+        ("unit/meter-per-second", "meter-per-second"),
+        ("unit/meter", "meter"),
+        ("measure-unit/volume-fluid-ounce", "fluid-ounce"),
+        (
+            "measure-unit/speed-kilometer-per-hour",
+            "kilometer-per-hour",
+        ),
+    ] {
+        let tokens = NumberSkeletonToken::parse_from_string(skeleton).unwrap();
+        let result = parse_number_skeleton(&tokens).unwrap();
+        assert_eq!(result.style(), Some(&NumberFormatOptionsStyle::Unit));
+        assert_eq!(result.unit(), Some(expected), "{skeleton}");
+    }
 }
 
 #[test]

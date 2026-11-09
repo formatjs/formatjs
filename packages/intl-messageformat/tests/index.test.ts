@@ -7,8 +7,73 @@ import {IntlMessageFormat} from '#packages/intl-messageformat/core.js'
 import {MissingValueError} from '#packages/intl-messageformat/error.js'
 import {PART_TYPE} from '#packages/intl-messageformat/formatters.js'
 import {parse} from '@formatjs/icu-messageformat-parser'
+import {printAST} from '@formatjs/icu-messageformat-parser/printer.js'
+import {hoistSelectors} from '@formatjs/icu-messageformat-parser/manipulator.js'
 import {describe, expect, it} from 'vitest'
+
+it.each([
+  ['unit/fluid-ounce', '5 fl oz'],
+  ['unit/kilometer-per-hour', '5 km/h'],
+  ['unit/meter-per-second', '5 m/s'],
+  ['measure-unit/volume-fluid-ounce', '5 fl oz'],
+])('formats hyphenated unit skeleton %s', (skeleton, expected) => {
+  expect(
+    new IntlMessageFormat(`{n, number, ::${skeleton}}`, 'en').format({n: 5})
+  ).toBe(expected)
+})
+
+it.each([
+  '{n,plural,other{<b>#</b> {m,plural,offset:1 other{#}}}}',
+  '{n,plural,offset:1 other{<b>#</b> {g,select,female{F} other{O}}}}',
+  '{n,plural,other{<b>#</b> {g,select,__proto__{P} other{O}}}}',
+  '{g,select,female{<b>A</b>} other{<b>B</b>}} {n,plural,offset:2 other{#}}',
+])('preserves rich-text objects when flattening %s', message => {
+  interface RichPart {
+    tag: string
+    children: (string | RichPart)[]
+  }
+  const b = (children: (string | RichPart)[]): RichPart => ({
+    tag: 'b',
+    children,
+  })
+  for (const captureEscapes of [false, true]) {
+    const ast = parse(message, {captureEscapes})
+    const original = JSON.stringify(ast)
+    const flat = hoistSelectors(ast)
+    expect(JSON.stringify(ast)).toBe(original)
+    const printed = printAST(flat)
+    expect(printAST(hoistSelectors(flat))).toBe(printed)
+    for (const locale of ['en', 'ar', 'ru']) {
+      const before = new IntlMessageFormat(ast, locale)
+      const direct = new IntlMessageFormat(flat, locale)
+      const after = new IntlMessageFormat(printed, locale)
+      for (const n of [-1.5, 0, 1, 1.5, 3]) {
+        const values = {n, m: 4, g: '__proto__', b}
+        const expected = before.format(values)
+        expect(direct.format(values)).toEqual(expected)
+        expect(after.format(values)).toEqual(expected)
+      }
+    }
+  }
+})
 describe('IntlMessageFormat', function () {
+  it('formats serialized rawValue and printed messages identically', () => {
+    for (const [source, expected] of [
+      ["a''''{x}", "a''X"],
+      ["'{a''''b}'", "{a''b}"],
+      ["{x}''{y}", "X'Y"],
+      ["{n, plural, other {a''}}", "a'"],
+    ]) {
+      const ast = JSON.parse(
+        JSON.stringify(parse(source, {captureEscapes: true}))
+      )
+      const values = {x: 'X', y: 'Y', n: 2}
+      expect(new IntlMessageFormat(ast, 'en').format(values)).toBe(expected)
+      expect(new IntlMessageFormat(printAST(ast), 'en').format(values)).toBe(
+        expected
+      )
+    }
+  })
   it('formats rich text with MicrosoftAjax startsWith, GH #7531', () => {
     const startsWith = String.prototype.startsWith
     let output

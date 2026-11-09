@@ -175,52 +175,6 @@ fn replace_pound_with_argument(
                     location: pound.location.clone(),
                 })
             }
-            MessageFormatElement::Plural(plural) => {
-                // Recursively process options
-                let options = plural
-                    .options
-                    .iter()
-                    .map(|(key, option)| {
-                        let value = replace_pound_with_argument(&option.value, variable_name);
-                        (
-                            key.clone(),
-                            PluralOrSelectOption {
-                                value,
-                                location: option.location.clone(),
-                            },
-                        )
-                    })
-                    .collect();
-                MessageFormatElement::Plural(PluralElement {
-                    value: plural.value.clone(),
-                    options,
-                    offset: plural.offset,
-                    plural_type: plural.plural_type,
-                    location: plural.location.clone(),
-                })
-            }
-            MessageFormatElement::Select(select) => {
-                // Recursively process options
-                let options = select
-                    .options
-                    .iter()
-                    .map(|(key, option)| {
-                        let value = replace_pound_with_argument(&option.value, variable_name);
-                        (
-                            key.clone(),
-                            PluralOrSelectOption {
-                                value,
-                                location: option.location.clone(),
-                            },
-                        )
-                    })
-                    .collect();
-                MessageFormatElement::Select(SelectElement {
-                    value: select.value.clone(),
-                    options,
-                    location: select.location.clone(),
-                })
-            }
             MessageFormatElement::Tag(tag) => {
                 let children = replace_pound_with_argument(&tag.children, variable_name);
                 MessageFormatElement::Tag(TagElement {
@@ -275,120 +229,85 @@ fn find_plural_or_select_element(ast: &[MessageFormatElement]) -> bool {
 /// # Returns
 ///
 /// A new plural or select element with the surrounding AST distributed into each option
+fn has_pound(ast: &[MessageFormatElement]) -> bool {
+    ast.iter().any(|el| match el {
+        MessageFormatElement::Pound(_) => true,
+        MessageFormatElement::Tag(tag) => has_pound(&tag.children),
+        _ => false,
+    })
+}
+
 fn hoist_element(
     ast: &[MessageFormatElement],
     el: &MessageFormatElement,
     position: usize,
-) -> MessageFormatElement {
-    let before = &ast[..position];
-    let after = &ast[position + 1..];
-
-    // GH #4202: Check if there are other plural/select elements after this one
-    let has_subsequent_plural_or_select = after.iter().any(is_plural_or_select_element);
-
-    /// Helper to build a new option value by sandwiching the option's content
-    /// between the AST slices before and after the hoisted element.
-    fn build_option_value(
-        before: &[MessageFormatElement],
-        option_value: &[MessageFormatElement],
-        after: &[MessageFormatElement],
-    ) -> Vec<MessageFormatElement> {
-        let capacity = before.len() + option_value.len() + after.len();
-        let mut new_value = Vec::with_capacity(capacity);
-        new_value.extend_from_slice(before);
-        new_value.extend_from_slice(option_value);
-        new_value.extend_from_slice(after);
-        // Recursively hoist any nested plural/select elements
-        hoist_selectors_impl(new_value).unwrap_or_else(|e| {
-            // If hoisting fails (e.g., plural in tag), return the original value
-            // This shouldn't happen in practice, but we handle it gracefully
-            let mut result = Vec::with_capacity(capacity);
-            result.extend_from_slice(before);
-            result.extend_from_slice(option_value);
-            result.extend_from_slice(after);
-            panic!("{}", e)
-        })
+    parent_plural: Option<&PluralElement>,
+) -> Result<MessageFormatElement, ManipulatorError> {
+    let rebind = |elements: &[MessageFormatElement]| match parent_plural {
+        Some(parent) => replace_pound_with_argument(elements, &parent.value),
+        None => elements.to_vec(),
+    };
+    let before = rebind(&ast[..position]);
+    let after = rebind(&ast[position + 1..]);
+    let scope = match el {
+        MessageFormatElement::Plural(plural) => Some(plural),
+        _ => None,
+    };
+    let mut cloned = el.clone();
+    let options: Vec<&mut PluralOrSelectOption> = match &mut cloned {
+        MessageFormatElement::Plural(plural) => plural.options.values_mut().collect(),
+        MessageFormatElement::Select(select) => select.options.values_mut().collect(),
+        _ => unreachable!("Only plural or select elements can be hoisted"),
+    };
+    for option in options {
+        let mut value = Vec::with_capacity(before.len() + option.value.len() + after.len());
+        value.extend_from_slice(&before);
+        value.extend_from_slice(&option.value);
+        value.extend_from_slice(&after);
+        option.value = hoist_selectors_in_context(value, scope)?;
     }
-
-    match el {
-        MessageFormatElement::Plural(plural) => {
-            let options = plural
-                .options
-                .iter()
-                .map(|(key, option)| {
-                    // GH #4202: If there are subsequent plurals/selects,
-                    // replace # with explicit variable reference to avoid ambiguity
-                    let option_value = if has_subsequent_plural_or_select {
-                        replace_pound_with_argument(&option.value, &plural.value)
-                    } else {
-                        option.value.clone()
-                    };
-
-                    let value = build_option_value(before, &option_value, after);
-                    (
-                        key.clone(),
-                        PluralOrSelectOption {
-                            value,
-                            location: option.location.clone(),
-                        },
-                    )
-                })
-                .collect();
-
-            MessageFormatElement::Plural(PluralElement {
-                value: plural.value.clone(),
-                options,
-                offset: plural.offset,
-                plural_type: plural.plural_type,
-                location: plural.location.clone(),
-            })
-        }
-        MessageFormatElement::Select(select) => {
-            let options = select
-                .options
-                .iter()
-                .map(|(key, option)| {
-                    let value = build_option_value(before, &option.value, after);
-                    (
-                        key.clone(),
-                        PluralOrSelectOption {
-                            value,
-                            location: option.location.clone(),
-                        },
-                    )
-                })
-                .collect();
-
-            MessageFormatElement::Select(SelectElement {
-                value: select.value.clone(),
-                options,
-                location: select.location.clone(),
-            })
-        }
-        _ => unreachable!("Only plural or select elements should be passed to this function"),
-    }
+    Ok(cloned)
 }
 
 /// Internal implementation of `hoist_selectors` that returns a Result.
 fn hoist_selectors_impl(
     ast: Vec<MessageFormatElement>,
 ) -> Result<Vec<MessageFormatElement>, ManipulatorError> {
-    // Find the first plural or select element
-    for (i, el) in ast.iter().enumerate() {
-        if is_plural_or_select_element(el) {
-            // Found one - hoist it and return
-            return Ok(vec![hoist_element(&ast, el, i)]);
-        }
+    hoist_selectors_in_context(ast, None)
+}
 
-        // Check if there's a plural/select nested inside a tag
+fn hoist_selectors_in_context(
+    ast: Vec<MessageFormatElement>,
+    parent_plural: Option<&PluralElement>,
+) -> Result<Vec<MessageFormatElement>, ManipulatorError> {
+    for el in &ast {
         if matches!(el, MessageFormatElement::Tag(_))
             && find_plural_or_select_element(std::slice::from_ref(el))
         {
             return Err(ManipulatorError::PluralOrSelectInTag);
         }
     }
-
-    // No plural/select elements found - return AST unchanged
+    for (i, el) in ast.iter().enumerate() {
+        if !is_plural_or_select_element(el) {
+            continue;
+        }
+        if parent_plural.is_some_and(|parent| parent.offset != 0)
+            && (has_pound(&ast[..i]) || has_pound(&ast[i + 1..]))
+        {
+            // Offset pounds need their original plural scope; ICU has no subtraction argument.
+            return ast
+                .iter()
+                .map(|node| {
+                    if is_plural_or_select_element(node) {
+                        hoist_element(std::slice::from_ref(node), node, 0, None)
+                    } else {
+                        Ok(node.clone())
+                    }
+                })
+                .collect();
+        }
+        return Ok(vec![hoist_element(&ast, el, i, parent_plural)?]);
+    }
     Ok(ast)
 }
 

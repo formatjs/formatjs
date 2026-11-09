@@ -130,7 +130,9 @@ export function evaluateMessageDescriptor(
   // so that the ID generation sees the same message format as the final output
   if (flatten && defaultMessage) {
     try {
-      defaultMessage = printAST(hoistSelectors(parse(defaultMessage)))
+      defaultMessage = printAST(
+        hoistSelectors(parse(defaultMessage, {captureEscapes: true}))
+      )
     } catch (e: any) {
       const loc = descriptorPath.defaultMessage?.node.loc
       const locationStr = loc

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.13](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@2.1.12...@formatjs/icu-skeleton-parser@2.1.13) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-skeleton-parser:** preserve core unit identifiers ([#7893](https://github.com/formatjs/formatjs/issues/7893)) ([8ba299d](https://github.com/formatjs/formatjs/commit/8ba299d087559304bcc33975fb9ba76437daadc6))
+
 ## [2.1.12](https://github.com/formatjs/formatjs/compare/@formatjs/icu-skeleton-parser@2.1.11...@formatjs/icu-skeleton-parser@2.1.12) (2026-09-15)
 
 

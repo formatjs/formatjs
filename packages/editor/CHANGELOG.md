@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.8.0...@formatjs/editor@1.8.1) (2026-11-08)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.23
+
 ## [1.8.0](https://github.com/formatjs/formatjs/compare/@formatjs/editor@1.7.3...@formatjs/editor@1.8.0) (2026-10-27)
 
 

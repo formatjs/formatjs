@@ -67,6 +67,9 @@ fn json_to_parser_options(options_json: &Value) -> ParserOptions {
         if let Some(capture_location) = obj.get("captureLocation").and_then(|v| v.as_bool()) {
             options.capture_location = capture_location;
         }
+        if let Some(capture_escapes) = obj.get("captureEscapes").and_then(|v| v.as_bool()) {
+            options.capture_escapes = capture_escapes;
+        }
         if let Some(locale_str) = obj.get("locale").and_then(|v| v.as_str()) {
             options.locale = Some(locale_str.parse::<Locale>().expect("Invalid locale"));
         }

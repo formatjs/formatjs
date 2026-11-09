@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [13.0.11](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@13.0.10...babel-plugin-formatjs@13.0.11) (2026-11-08)
+
+
+### Bug Fixes
+
+* **@formatjs/icu-messageformat-parser:** preserve literal escapes with rawValue ([#7891](https://github.com/formatjs/formatjs/issues/7891)) ([2b4c635](https://github.com/formatjs/formatjs/commit/2b4c6354e7ab8f5b58415eb89bb0620a45d25701))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/icu-messageformat-parser bumped to 3.5.23
+    * @formatjs/ts-transformer bumped to 4.5.3
+
 ## [13.0.10](https://github.com/formatjs/formatjs/compare/babel-plugin-formatjs@13.0.9...babel-plugin-formatjs@13.0.10) (2026-10-31)
 
 

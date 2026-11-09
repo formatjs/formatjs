@@ -61,13 +61,22 @@ formatjs_rust_test(
     name = "icu_messageformat_test",
     size = "small",
     srcs = [
+        "icu_escaping.test.rs",
         "lib.test.rs",
         "provider.test.rs",
     ],
     compile_data = ["testdata/fr_pl.postcard"],
     crate_features = ["compiled_data"],
     crate_name = "icu_messageformat_test",
+    data = [
+        "//conformance-tests/icu4j:messageformat_escape_fixtures",
+        "//conformance-tests/icu4j:messageformat_escape_oracle",
+    ],
     edition = "2024",
+    env = {
+        "MESSAGEFORMAT_ESCAPE_FIXTURES": "$(rootpath //conformance-tests/icu4j:messageformat_escape_fixtures)",
+        "MESSAGEFORMAT_ESCAPE_ORACLE": "$(rootpath //conformance-tests/icu4j:messageformat_escape_oracle)",
+    },
     deps = [
         ":icu_messageformat",
         "//crates/icu_messageformat_parser",
