@@ -116,6 +116,9 @@ Commit-msg hook: `commitlint` validates Conventional Commits format.
 
 ## CI/CD (GitHub Actions)
 
+CodeQL/Code Quality scanning is disabled in repository settings. The Claude Code
+workflow and repository Copilot auto-review ruleset have been removed.
+
 | Workflow               | Trigger               | What it does                                                |
 | ---------------------- | --------------------- | ----------------------------------------------------------- |
 | `test.yml`             | PR, push to main      | Cargo metadata, examples, pnpm lockfile                     |

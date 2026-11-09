@@ -101,6 +101,9 @@ flowchart TD
 Required checks: `test`, `verify-hooks`, `Test all targets`,
 `Cross-build Release Artifacts`, and `Verify hooks`.
 
+CodeQL/Code Quality scanning is disabled in repository settings. The Claude Code
+workflow and repository Copilot auto-review ruleset have been removed.
+
 The shared Vitest macro includes committed `__snapshots__/<source>.snap` files
 beside each source as Bazel runtime inputs. Keep custom snapshot paths in the
 explicit `snapshots` attribute. Missing snapshots must fail tests, not be
