@@ -24,7 +24,7 @@ static HTML for GitHub Pages while the browser uses History API navigation. See
 
 ## Package Management: pnpm
 
-**Version:** pnpm 10.4.1 (pinned in MODULE.bazel), 11.8.0 (root package.json)
+**Version:** pnpm 10.4.1 (pinned in MODULE.bazel), 12.17.0 (root package.json)
 
 - `pnpm-workspace.yaml` defines workspace packages
 - `npm_translate_lock` in MODULE.bazel converts `pnpm-lock.yaml` to Bazel deps

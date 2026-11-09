@@ -7,153 +7,153 @@ importers:
     configDependencies: {}
     packageManagerDependencies:
       pnpm:
-        specifier: 12.16.1
-        version: 12.16.1
+        specifier: 12.17.0
+        version: 12.17.0
 
 packages:
 
-  '@pnpm/exe.android-arm64@12.16.1':
-    resolution: {integrity: sha512-PKf78Ew+i0CBYf0Xc+eMcqQiqyBT+u8XCVg1F5roc98/6wWfdYlWhrUMmEBiKWaJ3JqHxrtt8l1NwZ7qfJt2/Q==}
+  '@pnpm/exe.android-arm64@12.17.0':
+    resolution: {integrity: sha512-gwu/F5YyoJp1bIbrIBl7B8JO3rkjkGlKikwQg9s0aVa5xWaBYIqPX+ZJqQ7I4D1YfbdI/Omfze0+6vnYiWHG6A==}
     cpu: [arm64]
     os: [android]
 
-  '@pnpm/exe.android-x64@12.16.1':
-    resolution: {integrity: sha512-xdu7gMbB98pdvhwMeA6612Of515FDlRUtfA/1f7nWPZfPLnEdSRBO2u+1N0XBtQ/ennhPH/lrxB1gC6gnR/cdg==}
+  '@pnpm/exe.android-x64@12.17.0':
+    resolution: {integrity: sha512-qUNhCvWyeBrUByNWkqqQ3Koy1gIAQ8UV5HDHXxoo5NUWVTde0Ld2BxweNwWJw8CNKpqEGceCUdjZ506JYpTjJg==}
     cpu: [x64]
     os: [android]
 
-  '@pnpm/exe.darwin-arm64@12.16.1':
-    resolution: {integrity: sha512-pVbmIIbhixiLvADLu1WA3TaW8FZy/D72R1De27WbbFx8/2mxvnsTyFVm4fO9kjpjMY7RzJd48CiQ96p8fO3ebQ==}
+  '@pnpm/exe.darwin-arm64@12.17.0':
+    resolution: {integrity: sha512-0nkEqRLIbrm7dWl+p2EPpmyNKyM0bbdPEovdtMhHYbhkO+Vls38S+6emkx8kSTAr75BNXYXkCl4RtGinGG4Erg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@pnpm/exe.darwin-x64@12.16.1':
-    resolution: {integrity: sha512-xZvQBFqcZjO7vFKTK3XsJpqY6lnBL9EWSLCzVUPq3kZ94+D96gwJCa76xxGNK8Cj32f4eeM91Qg+yNRR4sRpDw==}
+  '@pnpm/exe.darwin-x64@12.17.0':
+    resolution: {integrity: sha512-w89cboNi4KCzmt/dSKrE4ijVNKICKiZsE9TcIWf77Tz+VpoDfuhPSmWPZK+iCHBvlI/9dIN+M3HiPPVsFnAx4Q==}
     cpu: [x64]
     os: [darwin]
 
-  '@pnpm/exe.freebsd-x64@12.16.1':
-    resolution: {integrity: sha512-zTtunfi9mBhRXiXEJYfwiJj0tk7MgTSfqDSRh+Az9FZ9THazVIiQiVNS8jpcsftDOqu7LKNffQdjmgwHDThfUg==}
+  '@pnpm/exe.freebsd-x64@12.17.0':
+    resolution: {integrity: sha512-DJ0FOaUDXc71icSgiuBFEvqReqoSiS/rmnC6kltoiC3MzPyw3awcGbT/7FnnYzi/ziuoTC7v6vfBh0Vzv7VKOQ==}
     cpu: [x64]
     os: [freebsd]
 
-  '@pnpm/exe.linux-arm64-musl@12.16.1':
-    resolution: {integrity: sha512-BJ3mOmcmQgcUo92Ee/WfEOt1pRiv3y2MMAkhEiYHd85UiPpHTfFhv+SpCbALmfExzXk3UlaRtMYwHlkQymc4VA==}
+  '@pnpm/exe.linux-arm64-musl@12.17.0':
+    resolution: {integrity: sha512-w5ZwZ4j8S804DGhMYlLLpc+G3Kkc+5GlDO++LLvO/nDIXBTHRhdxPfQBQU08q31k0JYfp3wXCQk0Y7DnsuVF6w==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-arm64@12.16.1':
-    resolution: {integrity: sha512-JaRd5gNxwdNGBBkrZFt8bknrK4YmHVJBW0JMhUQ0fJ0dEYp6C2GT9ExaCqOO8EwYEyqM+jpKgJIK+8WFaJy3ew==}
+  '@pnpm/exe.linux-arm64@12.17.0':
+    resolution: {integrity: sha512-Cj2nIzWTVm6ZuhQHqL9SiJ11scBnEGxJyNg7tYQPzh9fVF5UVRkv+LbyfwdftnAtJerK/7HDpK/55WeQqp8OkA==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-ppc64@12.16.1':
-    resolution: {integrity: sha512-FnSV0Jv40S1cMv7vFNWwvu0X567Lec4L4HCRead3CFcD6zQDNbGw81s8N5bcKPahtPD9ApVuhsbmFCx4rw6RMw==}
+  '@pnpm/exe.linux-ppc64@12.17.0':
+    resolution: {integrity: sha512-Gb//Wm15fXl+qWcxjNQmwlYDjGiJOnLU/A9uRZYmtkyZie2Yx8AHI6XkUIJioQz99TwVDKQ87ywD5Jtk8zcgyg==}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-riscv64@12.16.1':
-    resolution: {integrity: sha512-C1Sww4FN5IttD4atRRhAKmQtSGWVp04ZAKNxO8pfu2bkRPwOW+7v+2DH1Xs1W+kZYYpO86BYDvUcadefF+AgaQ==}
+  '@pnpm/exe.linux-riscv64@12.17.0':
+    resolution: {integrity: sha512-+kItEcFjdVZEDzODsc7icb8cB+3AouCrEzOCezzxLITRhw86m9t3J/qyPdcFELBjeMnS+IXV8sJaSCQcpSqfgA==}
     cpu: [riscv64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-s390x@12.16.1':
-    resolution: {integrity: sha512-kn2fautsTcxIMODoovQVqZyfpDRdNgGkoeVqNdrKqbeBBvrEl+fXLkmZiq5xDht1LMr4sYiCNcsMfNMT6JPFmg==}
+  '@pnpm/exe.linux-s390x@12.17.0':
+    resolution: {integrity: sha512-jf5ghD2uDeknWQgK/EsCFNwlyL7BYLWfXe687g5UMVFclPLt524CREZ8Yl5hf4u7p3evCIPBN/m5I1QXUmJpHw==}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-x64-musl@12.16.1':
-    resolution: {integrity: sha512-PM6ccHCOe/O9SsTflTJTYWfwogJZa6EmUvpnwZgiPguJBddh20wDQKgxUPXf48rDsPm9vMsIij0uHswwwbXL8g==}
+  '@pnpm/exe.linux-x64-musl@12.17.0':
+    resolution: {integrity: sha512-JGxrGSxkDkqRAUD49T9dOnKyJkQ3bWBeHnYH4o4mvj09R9eUzhWFi8oa6WPNyCO0/7/Max2gsSfgXOHj3QW7ug==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-x64@12.16.1':
-    resolution: {integrity: sha512-RK//8ZLcXGW8A2k8bQOXZDBN1Qu92zN4dYnG1bzj1zoQ1fkZ6jNzZ1AvXtsfGVma795CJtvoaF5bLXf4l/FIUw==}
+  '@pnpm/exe.linux-x64@12.17.0':
+    resolution: {integrity: sha512-vQAusDzMofc/Ee4KOUYjE6FWeHOlMGQyvhR7W39QSamVeJWS16co/n+bhjdjwjI3UFh8IWOpamvTS+b4lvQUog==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.win32-arm64@12.16.1':
-    resolution: {integrity: sha512-Ox3kNNVxtGw6pK7SVejmeOUgHhUTZgAM7NQQ6cU7frPw3ix9+j7d2MGbRg3fyEFAaKWq8ZAZLTQGcDyLnAu+qA==}
+  '@pnpm/exe.win32-arm64@12.17.0':
+    resolution: {integrity: sha512-qDQh8rmyK5sxlaCSCADcmPrvytJabMCbxtJ0nCitzRo2j3/8BhzLjlOcWF3C6iPGhR5CbIb+btNy+VCVhd06mQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@pnpm/exe.win32-x64@12.16.1':
-    resolution: {integrity: sha512-k+FhRJ0ttphFoFIVB1Sk4v76YJAulafmA/Ly57cysesUhhIzVlApeOShUz0jXubKx317TThlEfpQrukldnqORA==}
+  '@pnpm/exe.win32-x64@12.17.0':
+    resolution: {integrity: sha512-qCo1OQlE3WrFZIAUK0O5EoupLaQ1fST7zNX8Qd+Tc4ojWgCvYA/ze0uP9hox8mSFC/JPAGRSG5o8gUBSq2rRxw==}
     cpu: [x64]
     os: [win32]
 
-  pnpm@12.16.1:
-    resolution: {integrity: sha512-CR0d7nknV1Zhsl2rPCrjHK/BxU1rce1qZgDPDByxBDSkR+rhQBXxsj4ua+3u1535SpMuIWTSgyKA3OP7MvZW0Q==}
+  pnpm@12.17.0:
+    resolution: {integrity: sha512-uNIj6+wEtYContIG2qcdG8y2oe4dUu+pXMOw23UnFWHfjw2OLEOt05xewIAYr3qKlRCOcJD5Win4hye3pA/VPQ==}
     engines: {node: '>=18'}
     hasBin: true
 
 snapshots:
 
-  '@pnpm/exe.android-arm64@12.16.1':
+  '@pnpm/exe.android-arm64@12.17.0':
     optional: true
 
-  '@pnpm/exe.android-x64@12.16.1':
+  '@pnpm/exe.android-x64@12.17.0':
     optional: true
 
-  '@pnpm/exe.darwin-arm64@12.16.1':
+  '@pnpm/exe.darwin-arm64@12.17.0':
     optional: true
 
-  '@pnpm/exe.darwin-x64@12.16.1':
+  '@pnpm/exe.darwin-x64@12.17.0':
     optional: true
 
-  '@pnpm/exe.freebsd-x64@12.16.1':
+  '@pnpm/exe.freebsd-x64@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64-musl@12.16.1':
+  '@pnpm/exe.linux-arm64-musl@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64@12.16.1':
+  '@pnpm/exe.linux-arm64@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-ppc64@12.16.1':
+  '@pnpm/exe.linux-ppc64@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-riscv64@12.16.1':
+  '@pnpm/exe.linux-riscv64@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-s390x@12.16.1':
+  '@pnpm/exe.linux-s390x@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-x64-musl@12.16.1':
+  '@pnpm/exe.linux-x64-musl@12.17.0':
     optional: true
 
-  '@pnpm/exe.linux-x64@12.16.1':
+  '@pnpm/exe.linux-x64@12.17.0':
     optional: true
 
-  '@pnpm/exe.win32-arm64@12.16.1':
+  '@pnpm/exe.win32-arm64@12.17.0':
     optional: true
 
-  '@pnpm/exe.win32-x64@12.16.1':
+  '@pnpm/exe.win32-x64@12.17.0':
     optional: true
 
-  pnpm@12.16.1:
+  pnpm@12.17.0:
     optionalDependencies:
-      '@pnpm/exe.android-arm64': 12.16.1
-      '@pnpm/exe.android-x64': 12.16.1
-      '@pnpm/exe.darwin-arm64': 12.16.1
-      '@pnpm/exe.darwin-x64': 12.16.1
-      '@pnpm/exe.freebsd-x64': 12.16.1
-      '@pnpm/exe.linux-arm64': 12.16.1
-      '@pnpm/exe.linux-arm64-musl': 12.16.1
-      '@pnpm/exe.linux-ppc64': 12.16.1
-      '@pnpm/exe.linux-riscv64': 12.16.1
-      '@pnpm/exe.linux-s390x': 12.16.1
-      '@pnpm/exe.linux-x64': 12.16.1
-      '@pnpm/exe.linux-x64-musl': 12.16.1
-      '@pnpm/exe.win32-arm64': 12.16.1
-      '@pnpm/exe.win32-x64': 12.16.1
+      '@pnpm/exe.android-arm64': 12.17.0
+      '@pnpm/exe.android-x64': 12.17.0
+      '@pnpm/exe.darwin-arm64': 12.17.0
+      '@pnpm/exe.darwin-x64': 12.17.0
+      '@pnpm/exe.freebsd-x64': 12.17.0
+      '@pnpm/exe.linux-arm64': 12.17.0
+      '@pnpm/exe.linux-arm64-musl': 12.17.0
+      '@pnpm/exe.linux-ppc64': 12.17.0
+      '@pnpm/exe.linux-riscv64': 12.17.0
+      '@pnpm/exe.linux-s390x': 12.17.0
+      '@pnpm/exe.linux-x64': 12.17.0
+      '@pnpm/exe.linux-x64-musl': 12.17.0
+      '@pnpm/exe.win32-arm64': 12.17.0
+      '@pnpm/exe.win32-x64': 12.17.0
 
 ---
 lockfileVersion: '9.0'
@@ -1256,12 +1256,12 @@ packages:
     resolution: {integrity: sha512-T6dEcoMJ3L1hyLuNfRXcVlqQrN79kU/SB5bDygVgQNIOUgStdyEGzigtRA9K+9Coh7SZUSt543oWRBxvqYdyuQ==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@babel/generator@7.29.7':
-    resolution: {integrity: sha512-DkXD5OJQaAQIdZ1bt3UZdEnHAn9Imd3IVBdX03UFe+ony9Ojw5pzr9YVKGDY1jt+Gcn/FnGkNf8r+Vj5NOJWtQ==}
+  '@babel/generator@7.29.12':
+    resolution: {integrity: sha512-2W76mhjrpQFO1lK5e8IvGYB2D0YZ7S2R1Z2BjO2ZUYuW+amcpK/z60U6ZZmzskwoa7sJ6XohP/Wg8H5KxXI/IA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/generator@8.1.0':
-    resolution: {integrity: sha512-7fiBJ61wDV3AHbg7n/EfLBv3RU+lsdRP8QNJnydkKWA7e48FnnvKQWbVHsJQCBE7JHTj4xlzZL9fvQYsBUip2A==}
+  '@babel/generator@8.0.10':
+    resolution: {integrity: sha512-iC9p3U4Y3vp0qKjRcfFeNzpj+kkK8BVYZTbQepBWVD7vOBLH6ji0drNzKPTPtumFd2w2r/hbEKYjG4pscKa4bg==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
   '@babel/helper-annotate-as-pure@8.0.0':
@@ -1360,8 +1360,8 @@ packages:
     resolution: {integrity: sha512-xmCA9kP3IhySsqhzwIdWGlDN/1A4cCKNBO/uwZx/3YzmDoMePwno2Q5/Bq0q+tYaKbeF940YiKV/kaW8Mzvpjw==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@babel/helper-string-parser@7.29.7':
-    resolution: {integrity: sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==}
+  '@babel/helper-string-parser@7.29.11':
+    resolution: {integrity: sha512-snZbO7MEDOof+hvNa97EjEY7qD7h2kwvQr5AJC3ZhQudKW5dnej6k3kP9NQV88hJwaS8vDqRLFo9rivLEhle2g==}
     engines: {node: '>=6.9.0'}
 
   '@babel/helper-string-parser@8.0.8':
@@ -1388,31 +1388,21 @@ packages:
     resolution: {integrity: sha512-Qpm8+wi5xfDkBfollanwriCcKniFfBmMmaKB01GVM6VGzKXo1fdxosZp04qEr5HM+LKhwr3hG1yRy8+ORsficA==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@babel/helpers@7.29.7':
-    resolution: {integrity: sha512-1k2lAGRMfHTcwuNYcCNUmaUffmQv8KWMfh2iJUUeRlwlwH4FdNG7mfPI10NPfLHJFThE4Tyr4mv7kTNZOiPuBg==}
+  '@babel/helpers@7.29.10':
+    resolution: {integrity: sha512-EMCx3AGZ3WfAl6ht7AyQoPm2Lh+BGYEMdc4Q6Hf7uSCDOZFuLq44qNwL+iaim8VlyYhRAo4X43+weadK8ZB4Yg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/helpers@8.1.0':
-    resolution: {integrity: sha512-949bjw10dhaRdtQeCpfVShFA4jIcto97BkqmWnRjpzyQuHVZ7EDriaoCn/4D8h1NqSKlmI20xPU0vHf3jQbQRg==}
+  '@babel/helpers@8.0.10':
+    resolution: {integrity: sha512-tBG9yuaR26JJWFafcl/Dk4eib6bkRJ9H5e6lENcwZqFudA9ImNCuMXLjB3/t+Ub7/DOZv2Rmi5LCOi8q2DCekQ==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@babel/parser@7.29.7':
-    resolution: {integrity: sha512-hnORnjP/1P/zFEndoeX+n+t1RwWRJiJpM/jO7FW32Kn9r5+sJB2JWOdYo4L6k78j15eCwY3Gm/7364B1EMwtNg==}
+  '@babel/parser@7.29.12':
+    resolution: {integrity: sha512-WJ7JBp/Q4+z/ImydtI7jS6NVco5++632ExBemSX+Ysb+G1lCwQ5BVo3SY+jGGOcZXI4ZccbZSUSJLNBW6eEpJg==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  '@babel/parser@7.29.8':
-    resolution: {integrity: sha512-E8lTAYNB1KW+FH+VGJuZM1ioAx2E6oVlvQFRrf5P8ZZmsiJXYAD9vTFV7yyEURNzgh1dFqMZuO6tUwcARbqFCA==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-
-  '@babel/parser@7.29.9':
-    resolution: {integrity: sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-
-  '@babel/parser@8.1.0':
-    resolution: {integrity: sha512-fpqZYAC+Tthr19JbEKxXhCGutvfm/+roMe+ULrgUKI+GVyzkQiTMTSheORcWIAzW8T3Oo3W5UavWSvAWmsp7fA==}
+  '@babel/parser@8.0.10':
+    resolution: {integrity: sha512-h+ah2Kg0ne1Vii892dShj9gky9I5jPzkd8x4s/3xgN/P2bMWmHS3qq59tum3mCVjCBXI8uqfYyYtrfp1Mz6+1w==}
     engines: {node: ^22.18.0 || >=24.11.0}
     hasBin: true
 
@@ -1922,20 +1912,12 @@ packages:
     resolution: {integrity: sha512-t5DaGzMi9WlhMSFT2YavI8gl8yGihoQymSQUkIq9+MUh5tO3Vx9KHwr5gMCzeBdYkvs00xNvr18PxtQTRayucA==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
-  '@babel/types@7.29.7':
-    resolution: {integrity: sha512-4zBIxpPzowiZpusoFkyGVwakdRJUyuH5PxQ/PrqghfdFWWasvnCdPfQXHrenDai+gyLARulZjZowCOj6fjT4pA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/types@7.29.8':
-    resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
+  '@babel/types@7.29.11':
+    resolution: {integrity: sha512-WCsemW40Cpc6gouC1SrY6PBaZ+oLRlEVY9XBvZBI7il/HyUrb2nJ505wE1MHEFyDZNnrWDEuy4jL50WVHfTTSQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/types@8.0.10':
     resolution: {integrity: sha512-KV8Y+teoRsmXeEPS4sCJY1kwV+hcPzHP1qQqgCxrjKOehLdBaxpsFBfoJ8MXWFV80y6Jw56+TM95wR0Per8dYw==}
-    engines: {node: ^22.18.0 || >=24.11.0}
-
-  '@babel/types@8.1.0':
-    resolution: {integrity: sha512-8V8aSTDx012YPmDQF30vrokyxVFdRAU2YBS2VzrnfLAGkP8floVnjckwgFcD0Jrvf6GWMSRdCrYVsk3tyMwZRg==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
   '@bazel/ibazel@0.28.0':
@@ -7857,14 +7839,14 @@ snapshots:
   '@babel/core@7.29.7(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/generator': 7.29.7
+      '@babel/generator': 7.29.12
       '@babel/helper-compilation-targets': 7.29.7
       '@babel/helper-module-transforms': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
-      '@babel/helpers': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/helpers': 7.29.10
+      '@babel/parser': 7.29.12
       '@babel/template': 7.29.7
       '@babel/traverse': 7.29.7(supports-color@8.1.1)
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
       debug: 4.4.3(supports-color@8.1.1)
@@ -7877,10 +7859,10 @@ snapshots:
   '@babel/core@8.0.10':
     dependencies:
       '@babel/code-frame': 8.0.6
-      '@babel/generator': 8.1.0
+      '@babel/generator': 8.0.10
       '@babel/helper-compilation-targets': 8.0.7
-      '@babel/helpers': 8.1.0
-      '@babel/parser': 8.1.0
+      '@babel/helpers': 8.0.10
+      '@babel/parser': 8.0.10
       '@babel/template': 8.0.0
       '@babel/traverse': 8.0.10
       '@babel/types': 8.0.10
@@ -7893,18 +7875,18 @@ snapshots:
       obug: 3.0.0
       verkit: 0.5.0
 
-  '@babel/generator@7.29.7':
+  '@babel/generator@7.29.12':
     dependencies:
-      '@babel/parser': 7.29.8
-      '@babel/types': 7.29.8
+      '@babel/parser': 7.29.12
+      '@babel/types': 7.29.11
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
       jsesc: 3.1.0
 
-  '@babel/generator@8.1.0':
+  '@babel/generator@8.0.10':
     dependencies:
-      '@babel/parser': 8.1.0
-      '@babel/types': 8.1.0
+      '@babel/parser': 8.0.10
+      '@babel/types': 8.0.10
       '@jridgewell/gen-mapping': 0.4.0-beta.0
       '@jridgewell/trace-mapping': 0.3.31
       '@types/jsesc': 2.5.1
@@ -7975,7 +7957,7 @@ snapshots:
   '@babel/helper-module-imports@7.29.7(supports-color@8.1.1)':
     dependencies:
       '@babel/traverse': 7.29.7(supports-color@8.1.1)
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
     transitivePeerDependencies:
       - supports-color
 
@@ -8029,7 +8011,7 @@ snapshots:
       '@babel/traverse': 8.0.10
       '@babel/types': 8.0.10
 
-  '@babel/helper-string-parser@7.29.7': {}
+  '@babel/helper-string-parser@7.29.11': {}
 
   '@babel/helper-string-parser@8.0.8': {}
 
@@ -8047,31 +8029,23 @@ snapshots:
       '@babel/traverse': 8.0.10
       '@babel/types': 8.0.10
 
-  '@babel/helpers@7.29.7':
+  '@babel/helpers@7.29.10':
     dependencies:
       '@babel/template': 7.29.7
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
 
-  '@babel/helpers@8.1.0':
+  '@babel/helpers@8.0.10':
     dependencies:
       '@babel/template': 8.0.0
-      '@babel/types': 8.1.0
+      '@babel/types': 8.0.10
 
-  '@babel/parser@7.29.7':
+  '@babel/parser@7.29.12':
     dependencies:
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
 
-  '@babel/parser@7.29.8':
+  '@babel/parser@8.0.10':
     dependencies:
-      '@babel/types': 7.29.8
-
-  '@babel/parser@7.29.9':
-    dependencies:
-      '@babel/types': 7.29.8
-
-  '@babel/parser@8.1.0':
-    dependencies:
-      '@babel/types': 8.1.0
+      '@babel/types': 8.0.10
 
   '@babel/plugin-bugfix-firefox-class-in-computed-class-key@8.0.1(@babel/core@8.0.10)':
     dependencies:
@@ -8609,23 +8583,23 @@ snapshots:
   '@babel/template@7.29.7':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/parser': 7.29.8
-      '@babel/types': 7.29.8
+      '@babel/parser': 7.29.12
+      '@babel/types': 7.29.11
 
   '@babel/template@8.0.0':
     dependencies:
       '@babel/code-frame': 8.0.6
-      '@babel/parser': 8.1.0
+      '@babel/parser': 8.0.10
       '@babel/types': 8.0.10
 
   '@babel/traverse@7.29.7(supports-color@8.1.1)':
     dependencies:
       '@babel/code-frame': 7.29.7
-      '@babel/generator': 7.29.7
+      '@babel/generator': 7.29.12
       '@babel/helper-globals': 7.29.7
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.12
       '@babel/template': 7.29.7
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
       debug: 4.4.3(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
@@ -8633,29 +8607,19 @@ snapshots:
   '@babel/traverse@8.0.10':
     dependencies:
       '@babel/code-frame': 8.0.6
-      '@babel/generator': 8.1.0
+      '@babel/generator': 8.0.10
       '@babel/helper-globals': 8.0.6
-      '@babel/parser': 8.1.0
+      '@babel/parser': 8.0.10
       '@babel/template': 8.0.0
       '@babel/types': 8.0.10
       obug: 3.0.0
 
-  '@babel/types@7.29.7':
+  '@babel/types@7.29.11':
     dependencies:
-      '@babel/helper-string-parser': 7.29.7
-      '@babel/helper-validator-identifier': 7.29.7
-
-  '@babel/types@7.29.8':
-    dependencies:
-      '@babel/helper-string-parser': 7.29.7
+      '@babel/helper-string-parser': 7.29.11
       '@babel/helper-validator-identifier': 7.29.7
 
   '@babel/types@8.0.10':
-    dependencies:
-      '@babel/helper-string-parser': 8.0.8
-      '@babel/helper-validator-identifier': 8.0.6
-
-  '@babel/types@8.1.0':
     dependencies:
       '@babel/helper-string-parser': 8.0.8
       '@babel/helper-validator-identifier': 8.0.6
@@ -10047,7 +10011,7 @@ snapshots:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/helper-module-imports': 7.29.7(supports-color@8.1.1)
       '@babel/traverse': 7.29.7(supports-color@8.1.1)
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
       '@dual-bundle/import-meta-resolve': 4.2.1
       '@stylexjs/shared': 0.19.1
       '@stylexjs/stylex': 0.19.1
@@ -10192,15 +10156,15 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.29.7
-      '@babel/types': 7.29.7
+      '@babel/parser': 7.29.12
+      '@babel/types': 7.29.11
       '@types/babel__generator': 7.27.0
       '@types/babel__template': 7.4.4
       '@types/babel__traverse': 7.28.0
 
   '@types/babel__generator@7.27.0':
     dependencies:
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
 
   '@types/babel__helper-plugin-utils@7.10.3':
     dependencies:
@@ -10208,12 +10172,12 @@ snapshots:
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.29.8
-      '@babel/types': 7.29.8
+      '@babel/parser': 7.29.12
+      '@babel/types': 7.29.11
 
   '@types/babel__traverse@7.28.0':
     dependencies:
-      '@babel/types': 7.29.7
+      '@babel/types': 7.29.11
 
   '@types/chai@5.2.3':
     dependencies:
@@ -10446,7 +10410,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.44':
     dependencies:
-      '@babel/parser': 7.29.9
+      '@babel/parser': 7.29.12
       '@babel/types': 8.0.10
       '@vue/shared': 3.5.44
       entities: 7.0.1
@@ -10460,7 +10424,7 @@ snapshots:
 
   '@vue/compiler-sfc@3.5.44(patch_hash=c5ac0bf7b3e706836efc86993f694d3d8c2dd6b1a967fdd4ba17e0e3134ef2de)':
     dependencies:
-      '@babel/parser': 7.29.9
+      '@babel/parser': 7.29.12
       '@typescript/typescript6': 6.0.2
       '@vue/compiler-core': 3.5.44
       '@vue/compiler-dom': 3.5.44
@@ -10766,7 +10730,7 @@ snapshots:
   babel-plugin-jest-hoist@29.6.3:
     dependencies:
       '@babel/template': 7.29.7
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
       '@types/babel__core': 7.20.5
       '@types/babel__traverse': 7.28.0
 
@@ -12051,7 +12015,7 @@ snapshots:
   istanbul-lib-instrument@5.2.1(supports-color@8.1.1):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
-      '@babel/parser': 7.29.9
+      '@babel/parser': 7.29.12
       '@istanbuljs/schema': 0.1.6
       istanbul-lib-coverage: 3.2.2
       semver: 6.3.1
@@ -12061,7 +12025,7 @@ snapshots:
   istanbul-lib-instrument@6.0.3(supports-color@8.1.1):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
-      '@babel/parser': 7.29.9
+      '@babel/parser': 7.29.12
       '@istanbuljs/schema': 0.1.6
       istanbul-lib-coverage: 3.2.2
       semver: 7.8.5
@@ -12325,10 +12289,10 @@ snapshots:
   jest-snapshot@29.7.0(supports-color@8.1.1):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
-      '@babel/generator': 7.29.7
+      '@babel/generator': 7.29.12
       '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
       '@babel/plugin-syntax-typescript': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
-      '@babel/types': 7.29.8
+      '@babel/types': 7.29.11
       '@jest/expect-utils': 29.7.0
       '@jest/transform': 29.7.0(supports-color@8.1.1)
       '@jest/types': 29.6.3
