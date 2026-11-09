@@ -3,6 +3,7 @@ use std::collections::{HashMap, HashSet};
 
 use oxc::ast_visit::{Visit, walk};
 use oxc::semantic::{Semantic, SemanticBuilder};
+use oxc::str::JSStr;
 use oxc_allocator::{Allocator, GetAllocator};
 use oxc_ast::{
     AstKind,
@@ -141,7 +142,7 @@ impl<'a> EvaluationContext<'a, '_> {
                         value.push_str(&self.evaluate(expression)?.to_js_string(self)?);
                     }
                 }
-                Some(ConstantValue::String(value.into()))
+                Some(ConstantValue::String(JSStr::from_str_in(&value, self)))
             }
             // OXC skips binary expressions with a Boolean target. Evaluate first.
             Expression::LogicalExpression(logical) => {
@@ -182,11 +183,13 @@ impl<'a> Visit<'a> for StringVisitor<'a, '_> {
     fn visit_expression(&mut self, expression: &Expression<'a>) {
         let span = expression.span();
         if let Some(&(start, end)) = self.requests.get(&(span.start, span.end)) {
-            if let Some(ConstantValue::String(value)) = self.context.evaluate(expression) {
+            if let Some(ConstantValue::String(value)) = self.context.evaluate(expression)
+                && let Some(value) = value.as_str()
+            {
                 self.values.push(EvaluatedString {
                     start,
                     end,
-                    value: value.into_owned(),
+                    value: value.to_owned(),
                 });
             }
         }
