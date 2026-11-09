@@ -27,6 +27,10 @@ and 114 removed upstream; imports for removed locales such as `locale-data/aa`
 are no longer available. Check available locale-data files when upgrading.
 Localized names and formatting patterns may also change with CLDR releases.
 
+Locale scripts register data immediately when the polyfill is installed, or queue
+it until installation. Each script includes its payload once and keeps temporary
+variables scoped, so multiple locale scripts can load together.
+
 # Numeric inputs
 
 DateTimeFormat, RelativeTimeFormat, duration fields, and numeric options use
