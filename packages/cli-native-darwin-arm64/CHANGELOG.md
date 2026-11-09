@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.1.34](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-darwin-arm64@1.1.33...@formatjs/cli-native-darwin-arm64@1.1.34) (2026-11-09)
+
 ## [1.1.33](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-darwin-arm64@1.1.32...@formatjs/cli-native-darwin-arm64@1.1.33) (2026-11-08)
 
 ## [1.1.32](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-darwin-arm64@1.1.31...@formatjs/cli-native-darwin-arm64@1.1.32) (2026-10-31)
