@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.19.0](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.18.2...@formatjs/cli@6.19.0) (2026-11-12)
+
+
+### Features
+
+* **@formatjs/cli:** verify native Apple string resources ([#7922](https://github.com/formatjs/formatjs/issues/7922)) ([f747e83](https://github.com/formatjs/formatjs/commit/f747e8315af5a1835d04664f1e4ecb826ce30cbb))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * optionalDependencies
+    * @formatjs/cli-native-darwin-arm64 bumped to 1.1.35
+    * @formatjs/cli-native-darwin-x64 bumped to 1.1.3
+    * @formatjs/cli-native-linux-arm64 bumped to 1.2.35
+    * @formatjs/cli-native-linux-arm64-musl bumped to 1.0.33
+    * @formatjs/cli-native-linux-x64 bumped to 1.1.35
+    * @formatjs/cli-native-linux-x64-musl bumped to 1.0.33
+    * @formatjs/cli-native-win32-arm64 bumped to 1.1.3
+    * @formatjs/cli-native-win32-x64 bumped to 1.1.36
+
 ## [6.18.2](https://github.com/formatjs/formatjs/compare/@formatjs/cli@6.18.1...@formatjs/cli@6.18.2) (2026-11-09)
 
 
