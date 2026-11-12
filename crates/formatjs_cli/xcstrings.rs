@@ -500,14 +500,24 @@ pub fn verify_catalogs(
     source_locale: Option<&str>,
     options: VerificationOptions,
 ) -> Result<Vec<VerificationIssue>> {
-    ensure!(!catalogs.is_empty(), "No .xcstrings catalogs found");
-    let mut parsed = BTreeMap::new();
-    let mut locales = BTreeSet::new();
-    for (file, value) in catalogs {
+    for file in catalogs.keys() {
         ensure!(
             file.ends_with(".xcstrings"),
             "Apple verification accepts only .xcstrings files: {file}"
         );
+    }
+    verify_normalized_catalogs(catalogs, source_locale, options)
+}
+
+pub(crate) fn verify_normalized_catalogs(
+    catalogs: &BTreeMap<String, Value>,
+    source_locale: Option<&str>,
+    options: VerificationOptions,
+) -> Result<Vec<VerificationIssue>> {
+    ensure!(!catalogs.is_empty(), "No Apple resource catalogs found");
+    let mut parsed = BTreeMap::new();
+    let mut locales = BTreeSet::new();
+    for (file, value) in catalogs {
         let catalog: Catalog = serde_json::from_value(value.clone())
             .with_context(|| format!("Invalid .xcstrings catalog: {file}"))?;
         ensure!(

@@ -58,6 +58,16 @@ share this implementation through `formatjs_cli_napi::verify_java_printf`.
 ICU verification remains the default. Java printf catalogs contain string leaves;
 Android XML extraction and plural/array item splitting happen before verification.
 
+## Apple resource verification
+
+`formatjs_cli::apple_resources` parses text `.strings` and XML `.stringsdict`,
+including UTF-8/UTF-16 decoding, comments, escaping, and duplicate-key checks.
+Native paths identify locale (`*.lproj`) and owning string table. The CLI requires
+an explicit source locale, checks missing/extra keys within each table, and adapts
+plural dictionaries to the existing `xcstrings` argument/variation verifier.
+It reuses `formatjs_apple_printf_parser`; no second printf grammar is maintained.
+`roxmltree` parses plist XML without an external entity resolver.
+
 ## BUILD maintenance
 
 Run `bazel run //:gazelle -- -strict` after Rust module or import changes.

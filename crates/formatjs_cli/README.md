@@ -437,14 +437,14 @@ Width/precision changes are allowed when Java syntax permits them. Runtime Java 
 Input remains JSON catalogs with string leaves, optionally nested. This mode does not read Android XML.
 Decode XML, skip `formatted="false"`, and emit each independently formatted plural/array item as its own message before verification.
 
-### Apple Xcode catalog verification
+### Apple resource verification
 
 ```sh
 formatjs verify 'Resources/**/*.xcstrings' \
   --message-syntax apple-printf --structural-equality --missing-keys
 ```
 
-Apple mode accepts only `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
+Apple mode accepts `.xcstrings` versions 1.0/1.1. Rust and npm CLIs share
 catalog loading and validation in Rust. Source language is inferred; an explicit
 `--source-locale` must match `sourceLanguage`. Source values fall back to keys.
 
@@ -462,4 +462,26 @@ Formatting is inferred from source argument specifiers or substitution metadata;
 plain percentages remain literal. Whitespace after percent is ambiguous and alone
 does not identify a format. Root plurals with multiple numeric arguments need
 explicit substitution metadata; nested named substitutions and unknown axes fail
-explicitly. Legacy `.strings`/`.stringsdict` and flat JSON are unsupported.
+explicitly. Flat JSON is unsupported.
+
+Native `.strings` and XML `.stringsdict` files are supported directly:
+
+```sh
+formatjs verify 'Resources/**/*.strings*' --source-locale en \
+  --message-syntax apple-printf --structural-equality --missing-keys --extra-keys
+```
+
+Files must live under `<locale>.lproj`; `--source-locale` is required. The resource
+directory and table name namespace keys. Plain and plural files for the same table
+are checked together; plural entries override matching plain fallbacks, as in Foundation.
+Different tables
+may use the same key independently. Empty locale files still participate in missing-key
+checks; `--extra-keys` reports target keys absent from that table's source locale.
+
+The parser accepts UTF-8 (optional BOM) and BOM-marked UTF-16, quoted or bare strings,
+comments, Unicode/octal escapes, and XML plist dictionaries. It rejects duplicate keys,
+malformed escapes/XML, unbound plural variables, and unsupported plural metadata.
+Plural rules use `NSStringPluralRuleType`, `NSStringFormatValueTypeKey`, and required
+`other`. Existing Apple printf type, position, length, and plural-ownership checks apply.
+Parsing preserves source descriptions; verification never rewrites resource files.
+Binary plists and non-plural stringsdict rules are unsupported.

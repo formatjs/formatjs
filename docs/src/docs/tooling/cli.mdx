@@ -526,7 +526,7 @@ Input stays JSON with string leaves, optionally nested. This mode does not read
 Android XML: decode resource XML, skip `formatted="false"`, and emit each plural
 or array item as an independently formatted message before verification.
 
-Apple mode accepts only Xcode `.xcstrings` catalogs:
+Apple mode accepts Xcode `.xcstrings` catalogs and native `.strings` / `.stringsdict` resources:
 
 ```sh
 formatjs verify "Resources/**/*.xcstrings" \
@@ -561,9 +561,29 @@ This inference cannot distinguish every literal from a format string.
 
 Versions `1.0` and `1.1` are accepted. Ambiguous root plural selectors with multiple
 numeric arguments, nested named substitutions, unknown variation axes, `%n` and
-logging privacy syntax are rejected for formatted messages. Legacy `.strings`,
-`.stringsdict` and flat JSON are unsupported in Apple mode. Verification reads
-catalogs without changing metadata or translation state.
+logging privacy syntax are rejected for formatted messages. Flat JSON is unsupported
+in Apple mode. Verification reads catalogs without changing metadata or translation state.
+For native resource files:
+
+```sh
+formatjs verify 'Resources/**/*.strings*' --source-locale en \
+  --message-syntax apple-printf --structural-equality --missing-keys --extra-keys
+```
+
+Native files use `<locale>.lproj` directories and require `--source-locale`.
+Keys are scoped by resource directory and table name; `.strings` and `.stringsdict`
+for one table are verified together. Plural entries override matching plain fallbacks,
+as in Foundation. Duplicate keys within a file are errors.
+Missing/extra keys are checked against that table's source locale, including empty
+locale files. Other tables' locales do not create missing-key requirements.
+
+Text resources support UTF-8 with optional BOM and BOM-marked UTF-16, quoted and
+bare strings, comments, Unicode/octal escapes, and XML plist dictionaries.
+The parser preserves descriptions and rejects duplicate fields and malformed input.
+Plural rules require `NSStringPluralRuleType`, an argument type, named format
+references, and `other`. Argument ownership is checked with the existing Apple
+printf verifier. Binary plists and non-plural stringsdict rules are unsupported.
+
 See [Apple printf parser](/docs/tooling/rust-apple-printf-parser).
 
 ### `--extra-keys`

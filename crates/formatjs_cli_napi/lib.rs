@@ -56,6 +56,42 @@ pub fn verify_java_printf(catalogs_json: String, source_locale: String) -> napi:
     serde_json::to_string(&issues).map_err(to_napi_error)
 }
 
+#[napi(object)]
+pub struct AppleResourceInput {
+    pub filename: String,
+    pub content: napi::bindgen_prelude::Buffer,
+}
+
+#[napi]
+pub fn verify_apple_resources(
+    resources: Vec<AppleResourceInput>,
+    source_locale: Option<String>,
+    missing_keys: bool,
+    extra_keys: bool,
+    structural_equality: bool,
+) -> napi::Result<String> {
+    let files = resources
+        .into_iter()
+        .map(|resource| {
+            (
+                std::path::PathBuf::from(resource.filename),
+                resource.content.to_vec(),
+            )
+        })
+        .collect();
+    let issues = formatjs_cli::apple_resources::verify_resources(
+        &files,
+        source_locale.as_deref(),
+        formatjs_cli::apple_resources::VerificationOptions {
+            missing_keys,
+            extra_keys,
+            structural_equality,
+        },
+    )
+    .map_err(|error| Error::from_reason(format!("{error:#}")))?;
+    serde_json::to_string(&issues).map_err(to_napi_error)
+}
+
 #[napi]
 pub fn verify_xcstrings(
     catalogs_json: String,
