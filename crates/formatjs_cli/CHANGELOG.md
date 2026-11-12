@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.10.2...formatjs_cli_v1.11.0) (2026-11-12)
+
+
+### Features
+
+* **@formatjs/cli:** verify native Apple string resources ([#7922](https://github.com/formatjs/formatjs/issues/7922)) ([f747e83](https://github.com/formatjs/formatjs/commit/f747e8315af5a1835d04664f1e4ecb826ce30cbb))
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.157 ([#7905](https://github.com/formatjs/formatjs/issues/7905)) ([ecf9930](https://github.com/formatjs/formatjs/commit/ecf99300cb4b89dcb6c463ff644886b8d80bd665))
+
 ## [1.10.2](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.10.1...formatjs_cli_v1.10.2) (2026-11-09)
 
 
