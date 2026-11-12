@@ -39,6 +39,7 @@ rust_library(
     name = "formatjs_cli_lib",
     srcs = [
         "apple_printf.rs",
+        "apple_resources.rs",
         "compile.rs",
         "compile_folder.rs",
         "extract.rs",
@@ -84,6 +85,7 @@ rust_library(
         "@crates//:oxc_syntax",
         "@crates//:proc-macro2",
         "@crates//:rayon",
+        "@crates//:roxmltree",
         "@crates//:ruff_python_ast",
         "@crates//:ruff_python_parser",
         "@crates//:ruff_text_size",
@@ -118,6 +120,7 @@ formatjs_rust_test(
     name = "formatjs_cli_test",
     size = "small",
     srcs = [
+        "apple_resources.test.rs",
         "compile.test.rs",
         "compile_folder.test.rs",
         "extract.test.rs",

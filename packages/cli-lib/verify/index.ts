@@ -1,10 +1,11 @@
 import {basename} from 'path'
-import {verifyXcstringsWithNative} from '#packages/cli-lib/native.js'
+import {verifyAppleResourcesWithNative} from '#packages/cli-lib/native.js'
 import {debug, writeStderr} from '#packages/cli-lib/console_utils.js'
 import {checkJavaPrintfStructure} from '#packages/cli-lib/verify/checkJavaPrintfStructure.js'
 import {checkMissingKeys} from '#packages/cli-lib/verify/checkMissingKeys.js'
 import {checkExtraKeys} from '#packages/cli-lib/verify/checkExtraKeys.js'
 import {readJSON} from 'fs-extra/esm'
+import {readFile} from 'node:fs/promises'
 import {checkStructuralEquality} from '#packages/cli-lib/verify/checkStructuralEquality.js'
 export interface VerifyOpts {
   sourceLocale?: string
@@ -34,13 +35,17 @@ export async function verify(
   files.forEach(fn => debug(fn))
 
   if (messageSyntax === 'apple-printf') {
-    const catalogs = Object.fromEntries(
-      await Promise.all(files.map(async file => [file, await readJSON(file)]))
+    const resources = await Promise.all(
+      files.map(async filename => ({
+        filename,
+        content: await readFile(filename),
+      }))
     )
-    const issues = verifyXcstringsWithNative(
-      catalogs,
+    const issues = verifyAppleResourcesWithNative(
+      resources,
       sourceLocale,
       missingKeys,
+      extraKeys,
       structuralEquality
     )
     for (const issue of issues) {

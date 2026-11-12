@@ -1,4 +1,5 @@
 mod apple_printf;
+pub mod apple_resources;
 pub mod compile;
 pub mod compile_folder;
 pub mod extract;

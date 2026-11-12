@@ -259,7 +259,7 @@ sentences are not translator-friendly.`
     )
     .option(
       '--source-locale <sourceLocale>',
-      `The source locale of the translation files (inferred from sourceLanguage for Apple xcstrings).
+      `The source locale (required for native Apple resources; inferred from sourceLanguage for xcstrings).
       Other modes require a file named <sourceLocale>.json in the list of translation files.
       This is used as source to verify other translations against.`
     )

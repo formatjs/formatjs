@@ -239,7 +239,7 @@ enum Commands {
         #[arg(value_name = "TRANSLATION_FILES")]
         translation_files: Vec<PathBuf>,
 
-        /// Source locale; inferred from sourceLanguage for Apple .xcstrings catalogs.
+        /// Source locale; required for .strings/.stringsdict and inferred for .xcstrings.
         /// Other modes require a matching <sourceLocale>.json file.
         #[arg(long, value_name = "LOCALE")]
         source_locale: Option<String>,

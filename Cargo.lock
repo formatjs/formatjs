@@ -640,6 +640,7 @@ dependencies = [
  "oxc_syntax",
  "proc-macro2",
  "rayon",
+ "roxmltree",
  "ruff_python_ast",
  "ruff_python_parser",
  "ruff_text_size",
@@ -2629,6 +2630,15 @@ source = "git+https://github.com/astral-sh/ruff.git?tag=0.17.3#ba65abf8ba7bfbcc0
 dependencies = [
  "phf_codegen",
  "rand",
+]
+
+[[package]]
+name = "roxmltree"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1964b10c76125c36f8afe190065a4bf9a87bf324842c05701330bba9f1cacbb"
+dependencies = [
+ "memchr",
 ]
 
 [[package]]

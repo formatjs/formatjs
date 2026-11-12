@@ -102,6 +102,13 @@ export interface NativeBinding {
     filename?: string
   ): string
   verifyJavaPrintf(catalogsJson: string, sourceLocale: string): string
+  verifyAppleResources(
+    resources: {filename: string; content: Buffer}[],
+    sourceLocale: string | undefined,
+    missingKeys: boolean,
+    extraKeys: boolean,
+    structuralEquality: boolean
+  ): string
   verifyXcstrings(
     catalogsJson: string,
     sourceLocale: string | undefined,
@@ -255,23 +262,25 @@ export function verifyJavaPrintfWithNative(
   )
 }
 
-export function verifyXcstringsWithNative(
-  catalogs: Record<string, unknown>,
+export function verifyAppleResourcesWithNative(
+  resources: {filename: string; content: Buffer}[],
   sourceLocale: string | undefined,
   missingKeys: boolean,
+  extraKeys: boolean,
   structuralEquality: boolean
 ): NativeVerificationIssue[] {
   const native = loadNative()
-  if (typeof native.verifyXcstrings !== 'function') {
+  if (typeof native.verifyAppleResources !== 'function') {
     throw new Error(
-      'Installed FormatJS native package does not support xcstrings verification; update @formatjs/cli and its native package.'
+      'Installed FormatJS native package does not support Apple resource verification; update @formatjs/cli and its native package.'
     )
   }
   return JSON.parse(
-    native.verifyXcstrings(
-      JSON.stringify(catalogs),
+    native.verifyAppleResources(
+      resources,
       sourceLocale,
       missingKeys,
+      extraKeys,
       structuralEquality
     )
   )

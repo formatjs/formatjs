@@ -126,26 +126,25 @@ pub fn verify_with_syntax(
             .iter()
             .filter(|file| !should_ignore(file, ignore))
         {
-            let content = std::fs::read_to_string(file)
-                .with_context(|| format!("Failed to read file: {}", file.display()))?;
             catalogs.insert(
-                file.display().to_string(),
-                serde_json::from_str(&content)
-                    .with_context(|| format!("Failed to parse JSON in {}", file.display()))?,
+                file.clone(),
+                std::fs::read(file)
+                    .with_context(|| format!("Failed to read file: {}", file.display()))?,
             );
         }
-        let issues = crate::xcstrings::verify_catalogs(
+        let issues = crate::apple_resources::verify_resources(
             &catalogs,
             source_locale,
-            crate::xcstrings::VerificationOptions {
+            crate::apple_resources::VerificationOptions {
                 missing_keys,
+                extra_keys,
                 structural_equality,
             },
         )?;
         for issue in &issues {
             eprintln!("{}: {}: {}", issue.locale, issue.message_id, issue.error);
         }
-        anyhow::ensure!(issues.is_empty(), "Xcode catalog verification failed");
+        anyhow::ensure!(issues.is_empty(), "Apple resource verification failed");
         return Ok(());
     }
     let source_locale = source_locale.context("--source-locale is required for verify command")?;
