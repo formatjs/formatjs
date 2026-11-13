@@ -32,6 +32,10 @@ export function FormatNumericToString(
   roundedNumber: Decimal
   formattedString: string
 } {
+  if (intlObject.trailingZeroDisplay === 'stripToMinimum') {
+    digitCount = 0
+    fractionDigitCount = 0
+  }
   let x = _x
   let sign
   // -0

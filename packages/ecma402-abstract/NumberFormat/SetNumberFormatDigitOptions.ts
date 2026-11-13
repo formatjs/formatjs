@@ -88,12 +88,12 @@ Valid values are ${Array.from(VALID_ROUNDING_INCREMENTS).join(', ')}.`,
     'auto'
   )
 
-  // 11. Let trailingZeroDisplay be ? GetOption(opts, "trailingZeroDisplay", "string", « "auto", "stripIfInteger" », "auto").
+  // 11. Let trailingZeroDisplay be ? GetOption(opts, "trailingZeroDisplay", "string", « "auto", "stripIfInteger", "stripToMinimum" », "auto").
   const trailingZeroDisplay = GetOption(
     opts,
     'trailingZeroDisplay',
     'string',
-    ['auto', 'stripIfInteger'],
+    ['auto', 'stripIfInteger', 'stripToMinimum'],
     'auto'
   )
 

@@ -102,7 +102,7 @@ fn primitive_text_normalization_preserves_exact_values_and_number_range() {
         rules
             .select_mathematical(&format!("1{}e-40000", "0".repeat(40_000)), false)
             .unwrap(),
-        "one"
+        "other"
     );
     let ceil = PluralRules::new(
         payload.clone(),
@@ -185,4 +185,40 @@ fn canonical_mathematical_text_matches_exponent_path_at_number_boundaries() {
     assert_eq!(to_mathematical_value(&"9".repeat(309), false), "Infinity");
     let finite_long = "1".to_owned() + &"0".repeat(308);
     assert_eq!(to_mathematical_value(&finite_long, false), finite_long);
+}
+
+#[test]
+fn mathematical_records_retain_source_precision_and_primitive_kind() {
+    use formatjs_intl_pluralrules::mathematical::MathematicalValue;
+    for (input, expected, digits, fraction) in [
+        ("001.00", "1", 3, 2),
+        (".00100", "0.001", 3, 5),
+        ("1.20e1", "12", 3, 1),
+        ("1.20e-1", "0.12", 3, 3),
+        ("0.00e1", "0", 3, 1),
+        ("-0.00e-1", "-0", 3, 3),
+        ("1e-400", "0", 1, 400),
+        ("1.00e400", "Infinity", 0, 0),
+        ("0x001", "1", 0, 0),
+        ("", "0", 0, 0),
+        ("oops", "NaN", 0, 0),
+    ] {
+        let value = MathematicalValue::from_input(input, false, true);
+        assert_eq!(
+            (
+                value.value.as_str(),
+                value.string_digit_count,
+                value.string_fraction_digit_count
+            ),
+            (expected, digits, fraction),
+            "{input}"
+        );
+    }
+    for bigint in [false, true] {
+        let value = MathematicalValue::from_input("1", bigint, false);
+        assert_eq!(
+            (value.string_digit_count, value.string_fraction_digit_count),
+            (0, 0)
+        );
+    }
 }

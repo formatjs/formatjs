@@ -290,7 +290,11 @@ impl NumberFormat {
                     exponent = self.exponent(magnitude)?;
                 }
                 // Negative inputs can use different directed rounding in the final pass.
-                if !number.negative && exponent == preview_exponent {
+                if !number.negative
+                    && exponent == preview_exponent
+                    && input.digit_count == 0
+                    && input.fraction_digit_count == 0
+                {
                     reusable = Some((preview, text));
                 }
             }
@@ -301,7 +305,11 @@ impl NumberFormat {
                 let text = self
                     .resolved
                     .digits
-                    .format_string(&number.text()?)
+                    .format_string_with_precision(
+                        &number.text()?,
+                        input.digit_count,
+                        input.fraction_digit_count,
+                    )
                     .map_err(digit_error)?;
                 (Numeric::parse(&text)?, text)
             };

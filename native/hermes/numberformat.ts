@@ -188,30 +188,28 @@
     }
     throw new BadReceiver('Cannot convert object to primitive')
   }
-  function mathematical(value: unknown): {text: string; bigint: boolean} {
+  function mathematical(value: unknown): {
+    text: string
+    bigint: boolean
+    string: boolean
+  } {
     const prim = primitive(value)
     // Steps 2–4: BigInt stays exact; Symbol must throw outside numeric-string
     // parsing. Primitive Numbers use their intrinsic decimal representation.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1653-L1659
-    if (typeof prim === 'bigint') return {text: `${prim}`, bigint: true}
+    if (typeof prim === 'bigint')
+      return {text: `${prim}`, bigint: true, string: false}
     if (typeof prim === 'symbol')
       throw new BadReceiver('Cannot convert Symbol to number')
     const numeric = +prim
-    // Classify malformed strings and rounded zeros/infinities in the engine.
-    // Retain finite string text for exact Rust parsing; this also avoids passing
-    // malformed UTF-16 through JSON when numeric parsing must simply yield NaN.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1660-L1670
-    if (
-      typeof prim === 'string' &&
-      numeric === numeric &&
-      numeric !== Infinity &&
-      numeric !== -Infinity &&
-      numeric !== 0
-    )
-      return {text: prim, bigint: false}
+    // Keep valid numeric strings, including underflow/overflow source precision.
+    // Malformed UTF-16 never crosses the native boundary.
+    if (typeof prim === 'string' && numeric === numeric)
+      return {text: prim, bigint: false, string: true}
     return {
       text: numeric === 0 && 1 / numeric === -Infinity ? '-0' : `${numeric}`,
       bigint: false,
+      string: false,
     }
   }
   const metadata = decoded(nativeInfo())
@@ -388,7 +386,7 @@
     values.trailingZeroDisplay = option(
       opts,
       'trailingZeroDisplay',
-      ['auto', 'stripIfInteger'],
+      ['auto', 'stripIfInteger', 'stripToMinimum'],
       'auto'
     )
     const hasSignificant =
@@ -462,8 +460,20 @@
   })
   property(prototype, 'constructor', NumberFormat)
   property(NumberFormat, 'name', 'NumberFormat', false, false)
-  function numeric(value: {text: string; bigint: boolean}): string {
-    return '{"text":' + quote(value.text) + ',"bigint":' + value.bigint + '}'
+  function numeric(value: {
+    text: string
+    bigint: boolean
+    string: boolean
+  }): string {
+    return (
+      '{"text":' +
+      quote(value.text) +
+      ',"bigint":' +
+      value.bigint +
+      ',"string":' +
+      value.string +
+      '}'
+    )
   }
   function range(
     receiver: unknown,

@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {
   type LDMLPluralRule,
@@ -26,8 +27,8 @@ import {ResolvePluralInternal} from '#packages/ecma402-abstract/PluralRules/Reso
  */
 export function ResolvePluralRange(
   pluralRules: Intl.PluralRules,
-  x: Decimal,
-  y: Decimal,
+  x: Decimal | IntlMathematicalValue,
+  y: Decimal | IntlMathematicalValue,
   {
     getInternalSlots,
     PluralRuleSelect,
@@ -52,7 +53,10 @@ export function ResolvePluralRange(
   // ECMA-402 §17.5.4 ResolvePluralRange, steps 1–3.
   // https://tc39.es/ecma402/#sec-resolvepluralrange
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L356-L358
-  if (x.isNaN() || y.isNaN()) {
+  if (
+    ('value' in x ? x.value : x).isNaN() ||
+    ('value' in y ? y.value : y).isNaN()
+  ) {
     throw new RangeError(
       'selectRange requires start and end values not to be NaN'
     )

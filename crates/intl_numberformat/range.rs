@@ -44,6 +44,27 @@ impl NumberFormat {
     pub fn format_range_to_parts(&self, start: &str, end: &str) -> Result<Vec<Part>, Error> {
         let start = Numeric::parse(start)?;
         let end = Numeric::parse(end)?;
+        self.partition_range(start, end)
+    }
+    pub fn format_range_values(
+        &self,
+        start: &crate::MathematicalValue,
+        end: &crate::MathematicalValue,
+    ) -> Result<String, Error> {
+        Ok(self
+            .format_range_values_to_parts(start, end)?
+            .iter()
+            .map(|part| part.value.as_str())
+            .collect())
+    }
+    pub fn format_range_values_to_parts(
+        &self,
+        start: &crate::MathematicalValue,
+        end: &crate::MathematicalValue,
+    ) -> Result<Vec<Part>, Error> {
+        self.partition_range(Numeric::from_value(start)?, Numeric::from_value(end)?)
+    }
+    fn partition_range(&self, start: Numeric, end: Numeric) -> Result<Vec<Part>, Error> {
         if start.special == Some("NaN") || end.special == Some("NaN") {
             return Err(Error::Range("range"));
         }

@@ -281,11 +281,21 @@ still creates its own receiver, and resolved results stay fresh. Successful
 locale-data loading clears reuse so new instances see replacements while old
 instances retain their selected data. Map methods are captured during installation.
 
-### Source precision rounding core
+### Keep trailing zeros
 
-`Digits::format_with_precision(input, digit_count, fraction_digit_count)` accepts
-already-coerced finite decimal text plus source precision for the Keep trailing
-zeros draft. Zero counts preserve current rounding; public `select`/`selectRange`
-and Hermes still use that behavior. The TS shared rounding primitives accept
-matching optional counts. See `conformance-tests/precision/README.md` for the
-spec cases and independent ICU4C/ICU4J precision checks.
+TS `select`/`selectRange` retain source precision in Intl MV records. Rust's
+`MathematicalValue::from_input` normalizes values while retaining String digit
+counts; `select_input` / `select_range_input` accept the original primitive kind.
+The rounded decimal string drives both CLDR operands and range identity.
+`stripToMinimum` clears source counts; configured minima still apply.
+
+Hermes passes separate BigInt/String flags after ToPrimitive. New C entry points
+`formatjs_plural_select_input` / `formatjs_plural_select_range_input` carry those
+flags; existing C signatures remain numeric-text interfaces. The JSON query also
+accepts `string` / `startString` / `endString` flags for mathematical inputs.
+Existing raw decimal selection APIs retain zero-count behavior.
+
+The normal polyfill detects missing native String precision and strip mode support.
+Public TS/Rust and Hermes source/bytecode tests cover retained zeros, exponent
+syntax, underflow, ranges and strip modes. See `conformance-tests/precision/README.md`
+for independent ICU rounding checks and their precision-inference limits.

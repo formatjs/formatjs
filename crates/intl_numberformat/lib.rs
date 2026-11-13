@@ -11,6 +11,7 @@ pub mod registry;
 pub use data::LocaleData;
 use formatjs_intl_locale::{Locale, LocaleOptions};
 use formatjs_intl_pluralrules::digits::{Digits, Options as DigitOptions};
+pub use formatjs_intl_pluralrules::mathematical::MathematicalValue;
 pub use options::{Grouping, GroupingInput, Options, ResolvedOptions};
 use serde::Serialize;
 use std::sync::Arc;
@@ -131,6 +132,16 @@ impl NumberFormat {
             .iter()
             .map(|part| part.value.as_str())
             .collect())
+    }
+    pub fn format_value(&self, value: &MathematicalValue) -> Result<String, Error> {
+        Ok(self
+            .format_value_to_parts(value)?
+            .iter()
+            .map(|part| part.value.as_str())
+            .collect())
+    }
+    pub fn format_value_to_parts(&self, value: &MathematicalValue) -> Result<Vec<Part>, Error> {
+        self.partition(&numeric::Numeric::from_value(value)?, false)
     }
     pub fn format_to_parts(&self, value: &str) -> Result<Vec<Part>, Error> {
         self.partition(&numeric::Numeric::parse(value)?, false)

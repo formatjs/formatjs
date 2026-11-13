@@ -60,9 +60,15 @@ interface Result {
   ranges: unknown[]
   error?: string
 }
-function wire(input: Input): string {
+function wire(input: Input) {
   const value = ToIntlMathematicalValue(input)
-  return value.isZero() && value.isNegative() ? '-0' : value.toString()
+  return {
+    ...value,
+    value:
+      value.value.isZero() && value.value.isNegative()
+        ? '-0'
+        : value.value.toString(),
+  }
 }
 function compare(cases: Case[]) {
   const result = spawnSync(
@@ -444,3 +450,75 @@ it('compares rounding, precision, sign and grouping options with TS', () => {
       })
   compare(cases)
 }, 120_000)
+
+it('keeps original source precision across styles, notations, strip modes and ranges', () => {
+  const inputs = [
+    1,
+    1n,
+    '1.00',
+    '001.00',
+    '1.20e1',
+    '1.20e-1',
+    '0.00e1',
+    '-0.00',
+    '1e-9999',
+    '-1e-9999',
+    '0e-99999999999999999999',
+    '1.000e9999',
+    '1000',
+    '1.200e3',
+  ] as const
+  compare(
+    ['en', 'fr', 'ar'].flatMap(locale =>
+      [
+        {},
+        {style: 'percent', maximumFractionDigits: 3},
+        {notation: 'scientific'},
+        {notation: 'engineering'},
+        {notation: 'compact'},
+        {minimumSignificantDigits: 4, maximumSignificantDigits: 5},
+        {trailingZeroDisplay: 'stripIfInteger'},
+        {trailingZeroDisplay: 'stripToMinimum'},
+        {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
+        {
+          maximumFractionDigits: 2,
+          maximumSignificantDigits: 5,
+          roundingPriority: 'morePrecision',
+        },
+        {
+          maximumFractionDigits: 2,
+          maximumSignificantDigits: 5,
+          roundingPriority: 'lessPrecision',
+        },
+      ].map(options => ({
+        locales: [locale],
+        options: options as NumberFormatOptions,
+        values: inputs,
+        ranges: [
+          ['1', '1.00'],
+          ['1.0', '1.00'],
+          ['1.00', '1.00'],
+          ['0.00', '-0.00'],
+        ] as const,
+      }))
+    )
+  )
+})
+
+it('public source precision matches independent ICU formatting fixtures', () => {
+  const rows = readFileSync(
+    resolve('conformance-tests/precision/public-fixtures.tsv'),
+    'utf8'
+  )
+    .trimEnd()
+    .split('\n')
+    .slice(1)
+  expect(rows).toHaveLength(17)
+  const cases: Case[] = rows.map(row => {
+    const [input, , , options, , expected] = row.split('\t')
+    const parsed = JSON.parse(options)
+    expect(new NumberFormat('en', parsed).format(input), row).toBe(expected)
+    return {locales: ['en'], options: parsed, values: [input]}
+  })
+  compare(cases)
+})

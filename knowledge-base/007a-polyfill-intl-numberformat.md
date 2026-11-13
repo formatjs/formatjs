@@ -321,19 +321,25 @@ BigDecimal division by powers of ten skips precision padding and zero stripping
 when exponent arithmetic stays safe. Default rounding increment `1` shares this
 path; general divisors retain fixed division precision. See [benchmarks and legacy arithmetic guards](audits/2026-10-31-numberformat-power-division.md).
 
-## Source precision rounding core
+## Keep trailing zeros
 
-The shared TS `FormatNumericToString`, `ToRawFixed` and `ToRawPrecision`
-accept optional source digit/fraction counts, defaulting to zero. Rust's shared
-`Digits::format_with_precision` accepts the same counts; existing `format` and
-`format_string` callers keep their current behavior. Counts precede scaling.
-Nonzero values retain significant width; zero retains source fraction width.
-Rounding maxima still bound padding and the returned rounding magnitude stays
-independent of retained zeros.
+`ToIntlMathematicalValue` returns a Decimal plus source digit/fraction counts.
+Only decimal String primitives contribute counts. Coercion runs once with number
+hint; Number/BigInt, radix strings, empty input and non-numeric input use zero
+counts. Finite underflow retains source precision; overflow clears digit count.
+Counts describe the source before percent or notation scaling.
 
-This prepares the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
-Public NumberFormat/PluralRules inputs do not supply these counts yet, and
-`stripToMinimum` remains unsupported. `//conformance-tests/precision:all` checks
-TS/Rust count handling plus independent ICU4C/ICU4J rounding with explicitly
-matched precision skeletons. Those oracle checks do not implement the proposal's
-source parser or automatic precision inference.
+The shared rounding primitives preserve source precision up to their existing
+maxima; zero uses fraction width. `stripToMinimum` clears both counts before
+rounding. Exponent previews use zero counts and can be reused only when source
+counts are zero. Ranges retain both records when partitioning and comparing text.
+
+Rust shares `MathematicalValue::from_input` and the digit engine from PluralRules.
+NumberFormat's `format_value` / `format_range_values` families accept records;
+existing decimal-text methods retain zero-count behavior for internal numeric
+callers. The Hermes JSON boundary sends the original primitive kind with text.
+
+`//conformance-tests/precision:all` independently checks TS/Rust count handling
+and ICU4C/ICU4J rounding with explicit precision skeletons. ICU does not implement
+the draft's automatic source-count inference. Public TS/Rust and Hermes source/
+bytecode conformance cover strings, Number/BigInt, coercion, ranges and strip modes.

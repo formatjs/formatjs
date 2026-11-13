@@ -117,6 +117,7 @@ enum Priority {
 enum TrailingZeros {
     Auto,
     StripIfInteger,
+    StripToMinimum,
 }
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Kind {
@@ -296,6 +297,7 @@ impl Digits {
         {
             "auto" => TrailingZeros::Auto,
             "stripIfInteger" => TrailingZeros::StripIfInteger,
+            "stripToMinimum" => TrailingZeros::StripToMinimum,
             _ => return Err(Error::Range("trailingZeroDisplay")),
         };
         let has_significant = options.minimum_significant_digits.is_some()
@@ -393,6 +395,23 @@ impl Digits {
             kind,
         })
     }
+    /// Keeps the arbitrary-length BigInt path when no source precision is needed.
+    pub fn format_string_with_precision(
+        &self,
+        input: &str,
+        digit_count: usize,
+        fraction_digit_count: usize,
+    ) -> Result<String, Error> {
+        if (digit_count == 0 && fraction_digit_count == 0)
+            || self.trailing_zero_display == TrailingZeros::StripToMinimum
+        {
+            self.format_string(input)
+        } else {
+            self.format_with_precision(input, digit_count, fraction_digit_count)
+                .map(|value| value.formatted_string)
+        }
+    }
+
     pub fn format(&self, input: &str) -> Result<Formatted, Error> {
         self.format_with_precision(input, 0, 0)
     }
@@ -406,6 +425,12 @@ impl Digits {
         digit_count: usize,
         fraction_digit_count: usize,
     ) -> Result<Formatted, Error> {
+        let (digit_count, fraction_digit_count) =
+            if self.trailing_zero_display == TrailingZeros::StripToMinimum {
+                (0, 0)
+            } else {
+                (digit_count, fraction_digit_count)
+            };
         let mut number = Decimal::from_str(input).map_err(|_| Error::InvalidNumber)?;
         // FormatNumericToString 1–6: retain sign for directed rounding, but its
         // FormattedString is unsigned. Plural range equality uses that string.

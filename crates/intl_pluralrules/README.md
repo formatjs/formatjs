@@ -85,8 +85,16 @@ lazily into per-registry caches; mutable data never crosses registry boundaries.
 The original target and `Registry::default()` retain explicit registration for
 custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).
 
-`Digits::format_with_precision` also accepts source digit/fraction counts for
-[Keep trailing zeros](https://tc39.es/proposal-intl-keep-trailing-zeros/) rounding.
-Input text must already be a finite decimal; counts describe the source before
-notation or percent scaling. Existing `format` passes zero counts. Public plural
-selection does not yet infer source precision or accept `stripToMinimum`.
+`MathematicalValue::from_input` retains String precision for
+[Keep trailing zeros](https://tc39.es/proposal-intl-keep-trailing-zeros/).
+Use `select_input` / `select_range_input` with each original primitive kind;
+`select_mathematical` treats non-BigInt text as a numeric String. Existing `select`
+and `select_range` take already-normalized numeric values with zero source counts.
+
+`Digits::format_with_precision` accepts finite decimal text plus source digit/
+fraction counts before notation or percent scaling. `stripToMinimum` clears those
+counts while keeping configured minima. Existing `format` passes zero counts.
+
+The C ABI adds `formatjs_plural_select_input` and
+`formatjs_plural_select_range_input` with separate String/BigInt flags. Existing
+selection entry points retain their numeric-text behavior and signatures.

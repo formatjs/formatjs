@@ -61,6 +61,7 @@ formatjs_test(
         "tests/PartitionNumberRangePattern.test.ts",
         "tests/PartitionPattern.test.ts",
         "tests/SetNumberFormatDigitOptions.test.ts",
+        "tests/ToIntlMathematicalValue.test.ts",
         "tests/ToRawFixed.test.tsx",
         "tests/ToRawPrecision.test.tsx",
         "tests/utils.test.ts",

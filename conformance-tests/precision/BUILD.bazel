@@ -1,7 +1,15 @@
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_java//java:defs.bzl", "java_import", "java_test")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools:test.bzl", "formatjs_test")
+
+js_library(
+    name = "public_fixtures",
+    testonly = True,
+    srcs = ["public-fixtures.tsv"],
+    visibility = ["//crates/intl_numberformat/tests:__pkg__"],
+)
 
 java_import(
     name = "icu4j79",
@@ -12,8 +20,14 @@ java_test(
     name = "icu4j_test",
     size = "small",
     srcs = ["PrecisionOracle.java"],
-    data = ["fixtures.tsv"],
-    env = {"PRECISION_FIXTURES": "$(rootpath fixtures.tsv)"},
+    data = [
+        "fixtures.tsv",
+        "public-fixtures.tsv",
+    ],
+    env = {
+        "PRECISION_FIXTURES": "$(rootpath fixtures.tsv)",
+        "PUBLIC_PRECISION_FIXTURES": "$(rootpath public-fixtures.tsv)",
+    },
     main_class = "PrecisionOracle",
     use_testrunner = False,
     deps = [":icu4j79"],
@@ -23,8 +37,14 @@ cc_test(
     name = "icu4c_test",
     size = "small",
     srcs = ["precision.cc"],
-    data = ["fixtures.tsv"],
-    env = {"PRECISION_FIXTURES": "$(rootpath fixtures.tsv)"},
+    data = [
+        "fixtures.tsv",
+        "public-fixtures.tsv",
+    ],
+    env = {
+        "PRECISION_FIXTURES": "$(rootpath fixtures.tsv)",
+        "PUBLIC_PRECISION_FIXTURES": "$(rootpath public-fixtures.tsv)",
+    },
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",

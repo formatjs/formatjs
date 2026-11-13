@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
 import {
@@ -8,7 +9,7 @@ import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/Pa
 
 export function FormatNumericToParts(
   nf: Intl.NumberFormat,
-  x: Decimal,
+  x: Decimal | IntlMathematicalValue,
   implDetails: {
     getInternalSlots(nf: Intl.NumberFormat): NumberFormatInternal
   }

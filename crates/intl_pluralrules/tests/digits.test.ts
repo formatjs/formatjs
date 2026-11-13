@@ -159,6 +159,7 @@ it('matches Intl.PluralRules digit resolution, rounded selection and ranges agai
         ...digits
       } = options
       const request = {
+        mathematical: true,
         pack,
         cases,
         ranges: rangeCases,

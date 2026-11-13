@@ -1,3 +1,4 @@
+import {shouldPolyfill} from '#packages/intl-pluralrules/should-polyfill.js'
 import {GetOperands} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
@@ -483,4 +484,71 @@ it('parses StringNumericLiteral before exact mathematical rounding', () => {
   })
   expect(ceil.select('1e-9999' as any)).toBe('other')
   expect(french.select(' \uFEFF ' as any)).toBe('one')
+})
+
+describe('Keep trailing zeros', () => {
+  it.each([
+    [1, 'one'],
+    [1n, 'one'],
+    ['1', 'one'],
+    ['1.0', 'other'],
+    ['001.00', 'other'],
+    ['1.00e1', 'other'],
+    ['10e-1', 'other'],
+    ['1.00e0', 'other'],
+    ['0x1', 'one'],
+    ['1e-9999', 'other'],
+  ] as const)('selects %s', (value, expected) => {
+    expect(new PluralRules('en').select(value)).toBe(expected)
+  })
+  it('strip modes and minima control visible plural operands', () => {
+    expect(
+      new PluralRules('en', {trailingZeroDisplay: 'stripToMinimum'}).select(
+        '1.00'
+      )
+    ).toBe('one')
+    expect(
+      new PluralRules('en', {trailingZeroDisplay: 'stripIfInteger'}).select(
+        '1.00'
+      )
+    ).toBe('one')
+    expect(
+      new PluralRules('en', {
+        minimumFractionDigits: 2,
+        trailingZeroDisplay: 'stripToMinimum',
+      }).select('1.00')
+    ).toBe('other')
+    expect(
+      new PluralRules('en', {
+        trailingZeroDisplay: 'stripToMinimum',
+      }).resolvedOptions().trailingZeroDisplay
+    ).toBe('stripToMinimum')
+  })
+  it('range identity includes source precision', () => {
+    const keep = new PluralRules('en')
+    expect(keep.selectRange('1', '1')).toBe('one')
+    expect(keep.selectRange('1', '1.0')).toBe('other')
+    expect(keep.selectRange('1.0', '1.0')).toBe('other')
+    expect(
+      new PluralRules('en', {
+        trailingZeroDisplay: 'stripToMinimum',
+      }).selectRange('1', '1.0')
+    ).toBe('one')
+  })
+})
+
+it('detects missing source precision in native PluralRules', () => {
+  const original = Intl.PluralRules
+  try {
+    ;(Intl as any).PluralRules = PluralRules
+    expect(shouldPolyfill('en')).toBeUndefined()
+    ;(Intl as any).PluralRules = class extends PluralRules {
+      select(input: number | bigint | string) {
+        return super.select(typeof input === 'string' ? Number(input) : input)
+      }
+    }
+    expect(shouldPolyfill('en')).toBe('en')
+  } finally {
+    ;(Intl as any).PluralRules = original
+  }
 })

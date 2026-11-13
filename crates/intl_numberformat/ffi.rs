@@ -1,6 +1,6 @@
 //! Coerced primitive text only. Handles and results never borrow host runtime state.
 use crate::{Error, NumberFormat, Options, metadata, registry::Registry};
-use formatjs_intl_pluralrules::mathematical::to_mathematical_value;
+use formatjs_intl_pluralrules::mathematical::MathematicalValue;
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{
@@ -298,10 +298,12 @@ struct NumericInput {
     text: String,
     #[serde(default)]
     bigint: bool,
+    #[serde(default)]
+    string: bool,
 }
 impl NumericInput {
-    fn mathematical(&self) -> String {
-        to_mathematical_value(&self.text, self.bigint)
+    fn mathematical(&self) -> MathematicalValue {
+        MathematicalValue::from_input(&self.text, self.bigint, self.string)
     }
 }
 #[derive(Deserialize)]
@@ -349,20 +351,22 @@ pub unsafe extern "C" fn formatjs_number_query(
             Query::ResolvedOptions => {
                 serde_json::to_value(model.resolved_options()).map_err(|_| 2)?
             }
-            Query::Format { value } => json!(model.format(&value.mathematical()).map_err(status)?),
+            Query::Format { value } => {
+                json!(model.format_value(&value.mathematical()).map_err(status)?)
+            }
             Query::FormatToParts { value } => json!(
                 model
-                    .format_to_parts(&value.mathematical())
+                    .format_value_to_parts(&value.mathematical())
                     .map_err(status)?
             ),
             Query::FormatRange { start, end } => json!(
                 model
-                    .format_range(&start.mathematical(), &end.mathematical())
+                    .format_range_values(&start.mathematical(), &end.mathematical())
                     .map_err(status)?
             ),
             Query::FormatRangeToParts { start, end } => json!(
                 model
-                    .format_range_to_parts(&start.mathematical(), &end.mathematical())
+                    .format_range_values_to_parts(&start.mathematical(), &end.mathematical())
                     .map_err(status)?
             ),
         };
