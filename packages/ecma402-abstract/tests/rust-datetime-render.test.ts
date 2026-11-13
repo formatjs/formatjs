@@ -118,10 +118,9 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
         relevantExtensionKeys: ['nu', 'ca', 'hc'],
         tzData: Reference.tzData,
         uppercaseIdentifiers: Object.fromEntries(
-          [...Object.keys(Reference.tzData), ...Object.keys(links)].map(name => [
-            name.toUpperCase(),
-            name,
-          ])
+          [...Object.keys(Reference.tzData), ...Object.keys(links)].map(
+            name => [name.toUpperCase(), name]
+          )
         ),
         uppercaseLinks: Object.fromEntries(
           Object.entries(links).map(([name, target]) => [
