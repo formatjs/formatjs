@@ -70,6 +70,10 @@ function compareKV(t1: Array<any>, t2: Array<any>): number {
 }
 
 function compareExtension(e1: Extension, e2: Extension): number {
+  // Private use consumes following subtags, so it must follow every extension.
+  // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+  if (e1.type === 'x') return e2.type === 'x' ? 0 : 1
+  if (e2.type === 'x') return -1
   return e1.type < e2.type ? -1 : e1.type > e2.type ? 1 : 0
 }
 

@@ -109,6 +109,10 @@ Canonicalization creates list elements directly without calling an overridden
 Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
 Extension singleton matching is case-insensitive, including duplicate detection.
 
+Private-use sequences stay last when other extensions are sorted. For example,
+`en-z-foo-u-kn-x-private` becomes `en-u-kn-z-foo-x-private`; private-use
+payloads remain unchanged apart from casing.
+
 ## Measured performance
 
 ### TypeScript and native JavaScript

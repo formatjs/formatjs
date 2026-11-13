@@ -13,6 +13,9 @@ ICU4X 2.3.1 retains `kn=yes`. Neither result overrides ECMA-402/CLDR requirement
 The TS/Rust canonicalizers already handle these cases; native detection must
 replace affected host functions before other polyfills consume them.
 
+Extension sorting keeps private use last, including after `y` and `z` extensions.
+Moving `x` earlier would turn following extensions into private-use payload.
+
 ## Rust and Hermes
 
 Inline Rust and JavaScript comments map ECMA-402 algorithm steps to their
