@@ -1,0 +1,63 @@
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load("@rules_java//java:defs.bzl", "java_import", "java_test")
+load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools:test.bzl", "formatjs_test")
+
+java_import(
+    name = "icu4j79",
+    jars = ["@icu4j79_jar//file"],
+)
+
+java_test(
+    name = "icu4j_test",
+    size = "small",
+    srcs = ["PrecisionOracle.java"],
+    data = ["fixtures.tsv"],
+    env = {"PRECISION_FIXTURES": "$(rootpath fixtures.tsv)"},
+    main_class = "PrecisionOracle",
+    use_testrunner = False,
+    deps = [":icu4j79"],
+)
+
+cc_test(
+    name = "icu4c_test",
+    size = "small",
+    srcs = ["precision.cc"],
+    data = ["fixtures.tsv"],
+    env = {"PRECISION_FIXTURES": "$(rootpath fixtures.tsv)"},
+    target_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+    deps = ["@icu4c79_linux_x86_64//:icu"],
+)
+
+formatjs_rust_test(
+    name = "rust_test",
+    size = "small",
+    srcs = ["precision.test.rs"],
+    crate_name = "rust_test",
+    data = ["fixtures.tsv"],
+    edition = "2024",
+    env = {"PRECISION_FIXTURES": "$(rootpath fixtures.tsv)"},
+    deps = [
+        "//crates/intl_pluralrules",
+        "@crates//:serde_json",
+    ],
+)
+
+formatjs_test(
+    name = "typescript_test",
+    size = "small",
+    srcs = ["precision.test.ts"],
+    data = ["fixtures.tsv"],
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/NumberFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)

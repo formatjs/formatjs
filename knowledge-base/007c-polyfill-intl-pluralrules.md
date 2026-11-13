@@ -280,3 +280,12 @@ validated options JSON; keys over 512 characters bypass reuse. Each construction
 still creates its own receiver, and resolved results stay fresh. Successful
 locale-data loading clears reuse so new instances see replacements while old
 instances retain their selected data. Map methods are captured during installation.
+
+### Source precision rounding core
+
+`Digits::format_with_precision(input, digit_count, fraction_digit_count)` accepts
+already-coerced finite decimal text plus source precision for the Keep trailing
+zeros draft. Zero counts preserve current rounding; public `select`/`selectRange`
+and Hermes still use that behavior. The TS shared rounding primitives accept
+matching optional counts. See `conformance-tests/precision/README.md` for the
+spec cases and independent ICU4C/ICU4J precision checks.

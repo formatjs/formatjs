@@ -25,7 +25,9 @@ export function FormatNumericToString(
     | 'roundingMode'
     | 'trailingZeroDisplay'
   >,
-  _x: Decimal
+  _x: Decimal,
+  digitCount = 0,
+  fractionDigitCount = 0
 ): {
   roundedNumber: Decimal
   formattedString: string
@@ -65,7 +67,9 @@ export function FormatNumericToString(
         x,
         intlObject.minimumSignificantDigits,
         intlObject.maximumSignificantDigits,
-        unsignedRoundingMode
+        unsignedRoundingMode,
+        digitCount,
+        fractionDigitCount
       )
       break
     case 'fractionDigits':
@@ -74,7 +78,9 @@ export function FormatNumericToString(
         intlObject.minimumFractionDigits,
         intlObject.maximumFractionDigits,
         intlObject.roundingIncrement,
-        unsignedRoundingMode
+        unsignedRoundingMode,
+        digitCount,
+        fractionDigitCount
       )
       break
     default:
@@ -82,14 +88,18 @@ export function FormatNumericToString(
         x,
         intlObject.minimumSignificantDigits,
         intlObject.maximumSignificantDigits,
-        unsignedRoundingMode
+        unsignedRoundingMode,
+        digitCount,
+        fractionDigitCount
       )
       let fResult = ToRawFixed(
         x,
         intlObject.minimumFractionDigits,
         intlObject.maximumFractionDigits,
         intlObject.roundingIncrement,
-        unsignedRoundingMode
+        unsignedRoundingMode,
+        digitCount,
+        fractionDigitCount
       )
       if (intlObject.roundingType === 'morePrecision') {
         if (sResult.roundingMagnitude <= fResult.roundingMagnitude) {

@@ -299,3 +299,35 @@ describe('ToRawPrecision', () => {
     })
   })
 })
+
+// Zero retains fraction width; nonzero retains significant digits.
+it.each([
+  ['1', 3, 2, 1, 5, '1.00', '1', -4],
+  ['0', 3, 2, 1, 5, '0.00', '0', -4],
+  ['0', 1, 400, 1, 3, '0.00', '0', -2],
+  ['1', 0, 0, 1, 5, '1', '1', -4],
+  ['0.0012', 4, 6, 1, 5, '0.001200', '0.0012', -7],
+  ['1.2', 4, 0, 1, 5, '1.200', '1.2', -4],
+  ['9.995', 4, 3, 1, 3, '10.0', '10', -1],
+  ['99.95', 4, 2, 1, 3, '100', '100', 0],
+  ['0.0001', 1, 4, 1, 3, '0.0001', '0.0001', -6],
+  ['1', 1, 0, 4, 5, '1.000', '1', -4],
+] as const)(
+  'source precision: %s (%i digits, %i fraction digits)',
+  (input, digits, fraction, minimum, maximum, text, rounded, magnitude) => {
+    const result = ToRawPrecision(
+      new Decimal(input),
+      minimum,
+      maximum,
+      'half-infinity',
+      digits,
+      fraction
+    )
+    expect(result).toEqual({
+      formattedString: text,
+      roundedNumber: new Decimal(rounded),
+      integerDigitsCount: text.split('.')[0].length,
+      roundingMagnitude: magnitude,
+    })
+  }
+)

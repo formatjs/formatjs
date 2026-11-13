@@ -84,3 +84,9 @@ Rust validates packs and compiles plural rules during the build. Records decode
 lazily into per-registry caches; mutable data never crosses registry boundaries.
 The original target and `Registry::default()` retain explicit registration for
 custom providers. See [Hermes data setup](../../native/hermes/README.md#compiled-locale-data).
+
+`Digits::format_with_precision` also accepts source digit/fraction counts for
+[Keep trailing zeros](https://tc39.es/proposal-intl-keep-trailing-zeros/) rounding.
+Input text must already be a finite decimal; counts describe the source before
+notation or percent scaling. Existing `format` passes zero counts. Public plural
+selection does not yet infer source precision or accept `stripToMinimum`.
