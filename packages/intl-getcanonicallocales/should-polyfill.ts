@@ -1,10 +1,21 @@
 export function shouldPolyfill(): boolean {
-  return (
+  if (
     typeof Intl === 'undefined' ||
-    !('getCanonicalLocales' in Intl) ||
-    // Native Intl.getCanonicalLocales is just buggy
-    // https://bugs.chromium.org/p/v8/issues/detail?id=10682
-    ((Intl as any).getCanonicalLocales as any)('und-x-private')[0] ===
-      'x-private'
-  )
+    typeof (Intl as any).getCanonicalLocales !== 'function'
+  ) {
+    return true
+  }
+  try {
+    const canonicalize = (Intl as any).getCanonicalLocales
+    return (
+      // https://bugs.chromium.org/p/v8/issues/detail?id=10682
+      canonicalize('und-x-private')[0] !== 'und-x-private' ||
+      // ECMA-402 canonicalizes aliases by key; only whole "true" values disappear.
+      // https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid
+      canonicalize('en-u-aa-yes')[0] !== 'en-u-aa-yes' ||
+      canonicalize('en-u-kn-yes')[0] !== 'en-u-kn'
+    )
+  } catch {
+    return true
+  }
 }

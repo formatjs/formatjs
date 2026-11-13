@@ -1,6 +1,18 @@
 import {getCanonicalLocales} from '#packages/intl-getcanonicallocales/index.js'
 import {describe, expect, it} from 'vitest'
 describe('Intl.getCanonicalLocales', () => {
+  it.each([
+    ['en-z-foo-x-private', 'en-z-foo-x-private'],
+    ['en-z-foo-u-kn-x-private', 'en-u-kn-z-foo-x-private'],
+    ['en-0-foo-z-bar-x-private', 'en-0-foo-z-bar-x-private'],
+    [
+      'en-v-foo-y-bar-z-baz-x-u-ca-buddhist',
+      'en-v-foo-y-bar-z-baz-x-u-ca-buddhist',
+    ],
+    ['en-x-private-z-foo', 'en-x-private-z-foo'],
+  ])('keeps private use last in %s', (tag, expected) => {
+    expect(getCanonicalLocales(tag)).toEqual([expected])
+  })
   it('normalizes case before alias lookup', () => {
     expect(
       getCanonicalLocales([
@@ -33,6 +45,8 @@ describe('Intl.getCanonicalLocales', () => {
         'en-u-ca-islamicc',
         'en-u-ms-imperial',
         'en-u-kn-yes',
+        'en-u-aa-yes',
+        'en-u-fw-yes',
         'en-u-KN-TRUE-kn-false',
         'en-u-ks-primary',
       ])
@@ -42,6 +56,8 @@ describe('Intl.getCanonicalLocales', () => {
       'en-u-ca-islamic-civil',
       'en-u-ms-uksystem',
       'en-u-kn',
+      'en-u-aa-yes',
+      'en-u-fw-yes',
       'en-u-ks-level1',
     ])
   })

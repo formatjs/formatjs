@@ -55,9 +55,15 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 
 ### Dynamic import + capability detection
 
+`shouldPolyfill()` detects missing implementations and known canonicalization
+bugs. Normal installation replaces implementations that strip `yes` from
+unrelated keys (`en-u-aa-yes`) or fail to canonicalize boolean aliases
+(`en-u-kn-yes` to `en-u-kn`).
+
 ```tsx
+import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill.js'
+
 async function polyfill() {
-  // This platform already supports Intl.getCanonicalLocales
   if (shouldPolyfill()) {
     await import('@formatjs/intl-getcanonicallocales/polyfill.js')
   }
@@ -102,6 +108,10 @@ Canonicalization creates list elements directly without calling an overridden
 
 Locale parsing checks ASCII subtags directly and preserves legacy RegExp statics.
 Extension singleton matching is case-insensitive, including duplicate detection.
+
+Private-use sequences stay last when other extensions are sorted. For example,
+`en-z-foo-u-kn-x-private` becomes `en-u-kn-z-foo-x-private`; private-use
+payloads remain unchanged apart from casing.
 
 ## Measured performance
 
