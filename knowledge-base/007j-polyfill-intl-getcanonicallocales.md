@@ -1,5 +1,18 @@
 # @formatjs/intl-getcanonicallocales
 
+## Native feature detection
+
+`shouldPolyfill()` probes private-use preservation and key-specific `yes`
+aliases. Missing, non-callable, throwing, or incorrect implementations trigger
+normal polyfill installation. `en-u-aa-yes` stays unchanged;
+`en-u-kn-yes` becomes `en-u-kn`, following ECMA-402 CanonicalizeUnicodeLocaleId
+and CLDR BCP 47 aliases. Regression tests exercise detection and installation.
+
+Independent oracle probes found ICU4C/J 78.1 remove unknown `aa=yes`, while
+ICU4X 2.3.1 retains `kn=yes`. Neither result overrides ECMA-402/CLDR requirements.
+The TS/Rust canonicalizers already handle these cases; native detection must
+replace affected host functions before other polyfills consume them.
+
 ## Rust and Hermes
 
 Inline Rust and JavaScript comments map ECMA-402 algorithm steps to their

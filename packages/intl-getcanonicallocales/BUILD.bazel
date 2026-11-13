@@ -73,6 +73,7 @@ formatjs_test(
     srcs = [
         "tests/index.test.ts",
         "tests/parser.test.ts",
+        "tests/should-polyfill.test.ts",
     ],
     deps = [
         ":intl-getcanonicallocales",

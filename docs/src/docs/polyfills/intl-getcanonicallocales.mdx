@@ -55,9 +55,15 @@ import '@formatjs/intl-getcanonicallocales/polyfill.js'
 
 ### Dynamic import + capability detection
 
+`shouldPolyfill()` detects missing implementations and known canonicalization
+bugs. Normal installation replaces implementations that strip `yes` from
+unrelated keys (`en-u-aa-yes`) or fail to canonicalize boolean aliases
+(`en-u-kn-yes` to `en-u-kn`).
+
 ```tsx
+import {shouldPolyfill} from '@formatjs/intl-getcanonicallocales/should-polyfill.js'
+
 async function polyfill() {
-  // This platform already supports Intl.getCanonicalLocales
   if (shouldPolyfill()) {
     await import('@formatjs/intl-getcanonicallocales/polyfill.js')
   }

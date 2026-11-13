@@ -33,6 +33,8 @@ describe('Intl.getCanonicalLocales', () => {
         'en-u-ca-islamicc',
         'en-u-ms-imperial',
         'en-u-kn-yes',
+        'en-u-aa-yes',
+        'en-u-fw-yes',
         'en-u-KN-TRUE-kn-false',
         'en-u-ks-primary',
       ])
@@ -42,6 +44,8 @@ describe('Intl.getCanonicalLocales', () => {
       'en-u-ca-islamic-civil',
       'en-u-ms-uksystem',
       'en-u-kn',
+      'en-u-aa-yes',
+      'en-u-fw-yes',
       'en-u-ks-level1',
     ])
   })
