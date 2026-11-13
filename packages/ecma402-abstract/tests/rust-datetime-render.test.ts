@@ -117,6 +117,12 @@ function reference(entry: Packed, tz: string, request: Case): unknown {
         getDefaultTimeZone: () => Reference.getDefaultTimeZone(),
         relevantExtensionKeys: ['nu', 'ca', 'hc'],
         tzData: Reference.tzData,
+        uppercaseIdentifiers: Object.fromEntries(
+          [...Object.keys(Reference.tzData), ...Object.keys(links)].map(name => [
+            name.toUpperCase(),
+            name,
+          ])
+        ),
         uppercaseLinks: Object.fromEntries(
           Object.entries(links).map(([name, target]) => [
             name.toUpperCase(),
