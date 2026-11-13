@@ -21,11 +21,35 @@ import {
 import {currencyDigitsData} from '@formatjs_generated/cldr.number/currency-digits.js'
 // eslint-disable-next-line import/no-cycle
 import type Decimal from '@formatjs/bigdecimal'
-import getInternalSlots from '#packages/intl-numberformat/get_internal_slots.js'
+import getInternalSlots, {
+  hasInternalSlots,
+} from '#packages/intl-numberformat/get_internal_slots.js'
 import {
   type NumberFormatConstructor,
   type NumberFormat as NumberFormatType,
 } from '#packages/intl-numberformat/types.js'
+
+const legacyConstructedSymbol = Symbol('IntlLegacyConstructedSymbol')
+
+function unwrapNumberFormat(receiver: unknown): Intl.NumberFormat {
+  if (
+    receiver === null ||
+    (typeof receiver !== 'object' && typeof receiver !== 'function')
+  ) {
+    throw new TypeError('Receiver is not an object')
+  }
+  // Only format and resolvedOptions support legacy wrappers.
+  // https://tc39.es/ecma402/#sec-unwrapnumberformat
+  if (
+    !hasInternalSlots(receiver) &&
+    OrdinaryHasInstance(NumberFormat, receiver)
+  ) {
+    return (receiver as Record<symbol, Intl.NumberFormat>)[
+      legacyConstructedSymbol
+    ]
+  }
+  return receiver as Intl.NumberFormat
+}
 
 // Merge declaration with the constructor defined below.
 export type NumberFormat = NumberFormatType
@@ -55,17 +79,12 @@ const RESOLVED_OPTIONS_KEYS = [
 /**
  * https://tc39.es/ecma402/#sec-intl-numberformat-constructor
  */
-export const NumberFormat = function (
-  this: NumberFormat,
+function initializeNumberFormat(
+  numberFormat: NumberFormat,
   locales?: string | string[],
   options?: NumberFormatOptions
-) {
-  // Cannot use `new.target` bc of IE11 & TS transpiles it to something else
-  if (!this || !OrdinaryHasInstance(NumberFormat, this)) {
-    return new NumberFormat(locales, options)
-  }
-
-  InitializeNumberFormat(this as any, locales, options, {
+): NumberFormat {
+  InitializeNumberFormat(numberFormat as any, locales, options, {
     getInternalSlots: nf => getInternalSlots(nf, true),
     localeData: NumberFormat.localeData,
     availableLocales: NumberFormat.availableLocales,
@@ -73,7 +92,7 @@ export const NumberFormat = function (
     currencyDigitsData,
   })
 
-  const internalSlots = getInternalSlots(this as any)
+  const internalSlots = getInternalSlots(numberFormat as any)
 
   const dataLocale = internalSlots.dataLocale
   const dataLocaleData = NumberFormat.localeData[dataLocale]
@@ -96,8 +115,53 @@ export const NumberFormat = function (
       maximumSignificantDigits: internalSlots.maximumSignificantDigits,
     })
   )
-  return this
-} as NumberFormatConstructor
+  return numberFormat
+}
+
+export const NumberFormat = new Proxy(
+  function (
+    this: NumberFormat,
+    locales?: string | string[],
+    options?: NumberFormatOptions
+  ) {
+    const numberFormat = new NumberFormat(locales, options)
+    // ChainNumberFormat checks the receiver after all option reads.
+    // https://tc39.es/ecma402/#sec-chainnumberformat
+    if (OrdinaryHasInstance(NumberFormat, this)) {
+      Object.defineProperty(this, legacyConstructedSymbol, {
+        value: numberFormat,
+        writable: false,
+        enumerable: false,
+        configurable: false,
+      })
+      return this
+    }
+    return numberFormat
+  },
+  {
+    construct(_target, args, newTarget) {
+      // GetPrototypeFromConstructor reads prototype once, before locale/options.
+      // https://tc39.es/ecma262/#sec-getprototypefromconstructor
+      const prototype = newTarget.prototype
+      const objectPrototype =
+        prototype !== null &&
+        (typeof prototype === 'object' || typeof prototype === 'function')
+          ? prototype
+          : NumberFormat.prototype
+      return initializeNumberFormat(
+        Object.create(objectPrototype),
+        args[0],
+        args[1]
+      )
+    },
+  }
+) as unknown as NumberFormatConstructor
+
+Object.defineProperty(NumberFormat, 'name', {
+  value: 'NumberFormat',
+  configurable: true,
+})
+defineProperty(NumberFormat.prototype, 'constructor', {value: NumberFormat})
 
 // ECMA-402 §7 applies ECMA-262 §18 built-in function requirements: these
 // methods have no [[Construct]] or own prototype property.
@@ -173,7 +237,7 @@ defineProperty(NumberFormat.prototype, 'formatRangeToParts', {
 
 const {resolvedOptions} = {
   resolvedOptions() {
-    const internalSlots = getInternalSlots(this as any)
+    const internalSlots = getInternalSlots(unwrapNumberFormat(this))
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
       const value = internalSlots[key]
@@ -205,7 +269,7 @@ const formatDescriptor = {
   enumerable: false,
   configurable: true,
   get(this: NumberFormat) {
-    const internalSlots = getInternalSlots(this as any)
+    const internalSlots = getInternalSlots(unwrapNumberFormat(this))
     let boundFormat = internalSlots.boundFormat
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions

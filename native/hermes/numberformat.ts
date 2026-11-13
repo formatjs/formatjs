@@ -24,6 +24,8 @@
   const object = Object
   const objectPrototype = Object.prototype
   const own = Object.prototype.hasOwnProperty
+  const isPrototypeOf = Object.prototype.isPrototypeOf
+  const legacyConstructedSymbol = Symbol('IntlLegacyConstructedSymbol')
   const floor = Math.floor
   const parse = JSON.parse
   const stringify = JSON.stringify
@@ -443,10 +445,22 @@
     return receiver
   }
   let NumberFormat: any = function (
+    this: any,
     locales: unknown = undefined,
     optionsInput: unknown = undefined
   ): object {
-    return initialize(locales, optionsInput, NumberFormat)
+    const receiver = initialize(locales, optionsInput, NumberFormat)
+    // https://tc39.es/ecma402/#sec-chainnumberformat
+    if (isObject(this) && apply(isPrototypeOf, prototype, [this])) {
+      const descriptor = create(null)
+      descriptor.value = receiver
+      descriptor.writable = false
+      descriptor.enumerable = false
+      descriptor.configurable = false
+      define(this, legacyConstructedSymbol, descriptor)
+      return this
+    }
+    return receiver
   }
   const prototype = NumberFormat.prototype
   NumberFormat = new ProxyConstructor(NumberFormat, {
@@ -458,6 +472,16 @@
       )
     },
   })
+  function unwrap(receiver: any): State {
+    // https://tc39.es/ecma402/#sec-unwrapnumberformat
+    if (!isObject(receiver)) throw new BadReceiver('Expected an object')
+    const value = apply(getSlot, slots, [receiver]) as State | undefined
+    if (value) return value
+    if (apply(isPrototypeOf, prototype, [receiver])) {
+      return state(receiver[legacyConstructedSymbol])
+    }
+    return state(receiver)
+  }
   property(prototype, 'constructor', NumberFormat)
   property(NumberFormat, 'name', 'NumberFormat', false, false)
   function numeric(value: {
@@ -532,7 +556,7 @@
     },
     resolvedOptions(this: unknown): object {
       const values = decoded(
-        nativeQuery(state(this).handle, '{"method":"resolvedOptions"}')
+        nativeQuery(unwrap(this).handle, '{"method":"resolvedOptions"}')
       )
       const result = create(objectPrototype)
       const names = [
@@ -566,7 +590,7 @@
       return result
     },
     getFormat(this: unknown): (value: unknown) => string {
-      const value = state(this)
+      const value = unwrap(this)
       if (value.bound === undefined) {
         const format = (input: unknown): string =>
           decoded(
