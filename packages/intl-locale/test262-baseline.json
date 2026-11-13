@@ -1,9 +1,17 @@
 {
-  "total": 336,
+  "total": 380,
   "failures": {
     "intl402/Locale/canonicalize-locale-list-take-locale.js (default)": "Expected SameValue(«0», «1») to be true",
     "intl402/Locale/canonicalize-locale-list-take-locale.js (strict mode)": "Expected SameValue(«0», «1») to be true",
+    "intl402/Locale/constructor-options-firstDayOfWeek-valid.js (default)": "new Intl.Locale(\"en\", { firstDayOfWeek: yes }).toString() returns \"en-u-fw-yes\" Expected SameValue(«\"en-u-fw\"», «\"en-u-fw-yes\"») to be true",
+    "intl402/Locale/constructor-options-firstDayOfWeek-valid.js (strict mode)": "new Intl.Locale(\"en\", { firstDayOfWeek: yes }).toString() returns \"en-u-fw-yes\" Expected SameValue(«\"en-u-fw\"», «\"en-u-fw-yes\"») to be true",
+    "intl402/Locale/constructor-unicode-extension-uvalue-yes.js (default)": "new Intl.Locale(\"en-u-aa-yes\").toString() must be \"en-u-aa-yes\" Expected SameValue(«\"en-u-aa\"», «\"en-u-aa-yes\"») to be true",
+    "intl402/Locale/constructor-unicode-extension-uvalue-yes.js (strict mode)": "new Intl.Locale(\"en-u-aa-yes\").toString() must be \"en-u-aa-yes\" Expected SameValue(«\"en-u-aa\"», «\"en-u-aa-yes\"») to be true",
     "intl402/Locale/proto-from-ctor-realm.js (default)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
-    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'"
+    "intl402/Locale/proto-from-ctor-realm.js (strict mode)": "Expected no error, got TypeError: Intl.Locale must be called with 'new'",
+    "intl402/Locale/prototype/firstDayOfWeek/valid-id.js (default)": "new Intl.Locale(\"en-u-fw-yes\").firstDayOfWeek returns \"yes\" Expected SameValue(«\"\"», «\"yes\"») to be true",
+    "intl402/Locale/prototype/firstDayOfWeek/valid-id.js (strict mode)": "new Intl.Locale(\"en-u-fw-yes\").firstDayOfWeek returns \"yes\" Expected SameValue(«\"\"», «\"yes\"») to be true",
+    "intl402/Locale/prototype/firstDayOfWeek/valid-options.js (default)": "new Intl.Locale(\"en\", { firstDayOfWeek: yes }).firstDayOfWeek returns \"yes\" Expected SameValue(«\"\"», «\"yes\"») to be true",
+    "intl402/Locale/prototype/firstDayOfWeek/valid-options.js (strict mode)": "new Intl.Locale(\"en\", { firstDayOfWeek: yes }).firstDayOfWeek returns \"yes\" Expected SameValue(«\"\"», «\"yes\"») to be true"
   }
 }

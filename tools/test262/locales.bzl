@@ -1,5 +1,5 @@
 # Locale metadata identifies the data required by the pinned upstream suites.
-# https://github.com/tc39/test262/blob/419d3e0a2273ba01a3bfcbec423f2801425b8e93/INTERPRETING.md#L417-L425
+# https://github.com/tc39/test262/blob/2e58f87d8350ad51224617a041c6e041d52f8444/INTERPRETING.md#L417-L425
 # Include parent locales; packages omit aliases without standalone CLDR files.
 TEST262_LOCALES = [
     "ar",

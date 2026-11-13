@@ -1,5 +1,5 @@
 {
-  "total": 498,
+  "total": 502,
   "failures": {
     "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",
     "intl402/NumberFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Receiver is not an initialized Intl.NumberFormat",

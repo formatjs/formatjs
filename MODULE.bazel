@@ -346,12 +346,12 @@ http_archive(
     urls = ["https://data.iana.org/time-zones/releases/tzdata%s.tar.gz" % IANA_TZ_VERSION],
 )
 
-TEST262_COMMIT = "419d3e0a2273ba01a3bfcbec423f2801425b8e93"
+TEST262_COMMIT = "2e58f87d8350ad51224617a041c6e041d52f8444"
 
 http_archive(
     name = "com_github_tc39_test262",
     build_file = "@//:test262.BUILD",
-    sha256 = "0253f2c85b2dd43ab5bf0b45395fae603cb0d93429eca9ab7a909a86aed45997",
+    sha256 = "68e7365434e401ae2ce91be9cfc3406c8b0ef367538e2e57f085a2bef1d218ee",
     strip_prefix = "tc39-test262-%s" % TEST262_COMMIT[:7],
     type = "tar.gz",
     urls = ["https://github.com/tc39/test262/tarball/%s" % TEST262_COMMIT],
