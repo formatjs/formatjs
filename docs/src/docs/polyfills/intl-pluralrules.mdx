@@ -71,6 +71,28 @@ const pr = new PluralRules('en')
 pr.select(0) // "other"
 ```
 
+## Keep trailing zeros (Stage 3)
+
+Implements the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
+String precision contributes to visible plural operands; Number and BigInt inputs
+keep their existing behavior.
+
+```js
+const pr = new Intl.PluralRules('en')
+pr.select(1) // "one"
+pr.select('1.0') // "other"
+pr.selectRange('1', '1.0') // "other"
+
+new Intl.PluralRules('en', {trailingZeroDisplay: 'stripToMinimum'}).select(
+  '1.0'
+) // "one"
+```
+
+`stripToMinimum` strips source trailing zeros beyond the configured minimum
+fraction/significant digits. Digit maxima still limit precision. `stripIfInteger`
+strips the fraction when the rounded value is an integer. Both modes are returned
+by `resolvedOptions()`. The normal polyfill entry point detects missing native support.
+
 ## Installation
 
 <Tabs

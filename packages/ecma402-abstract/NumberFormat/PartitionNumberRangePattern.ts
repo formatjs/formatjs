@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
@@ -13,8 +14,8 @@ import {PartitionNumberPattern} from '#packages/ecma402-abstract/NumberFormat/Pa
  */
 export function PartitionNumberRangePattern(
   numberFormat: Intl.NumberFormat,
-  x: Decimal,
-  y: Decimal,
+  x: Decimal | IntlMathematicalValue,
+  y: Decimal | IntlMathematicalValue,
   {
     getInternalSlots,
   }: {
@@ -22,7 +23,12 @@ export function PartitionNumberRangePattern(
   }
 ): NumberFormatPart[] {
   // 1. Assert: x and y are both mathematical values.
-  invariant(!x.isNaN() && !y.isNaN(), 'Input must be a number', RangeError)
+  invariant(
+    !('value' in x ? x.value : x).isNaN() &&
+      !('value' in y ? y.value : y).isNaN(),
+    'Input must be a number',
+    RangeError
+  )
   const internalSlots = getInternalSlots(numberFormat)
 
   // 3. Let xResult be ? PartitionNumberPattern(numberFormat, x).

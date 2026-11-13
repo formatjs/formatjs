@@ -3,11 +3,21 @@ use crate::Error;
 #[derive(Clone)]
 pub(crate) struct Numeric {
     pub negative: bool,
+    pub digit_count: usize,
+    pub fraction_digit_count: usize,
     pub digits: String,
     pub point: i64,
     pub special: Option<&'static str>,
 }
 impl Numeric {
+    pub fn from_value(
+        value: &formatjs_intl_pluralrules::mathematical::MathematicalValue,
+    ) -> Result<Self, Error> {
+        let mut numeric = Self::parse(&value.value)?;
+        numeric.digit_count = value.string_digit_count;
+        numeric.fraction_digit_count = value.string_fraction_digit_count;
+        Ok(numeric)
+    }
     // Input is ToIntlMathematicalValue's normalized wire representation. Keeping
     // a decimal point separately avoids bounding BigInt magnitude to ICU's i16.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/numberformat.html#L1652-L1670
@@ -22,6 +32,8 @@ impl Numeric {
         if special.is_some() {
             return Ok(Self {
                 negative,
+                digit_count: 0,
+                fraction_digit_count: 0,
                 digits: "0".into(),
                 point: 1,
                 special,
@@ -44,6 +56,8 @@ impl Numeric {
             digits = "0".into();
             return Ok(Self {
                 negative,
+                digit_count: 0,
+                fraction_digit_count: 0,
                 digits,
                 point: 1,
                 special: None,
@@ -56,6 +70,8 @@ impl Numeric {
         digits.drain(..leading);
         Ok(Self {
             negative,
+            digit_count: 0,
+            fraction_digit_count: 0,
             digits,
             point,
             special: None,

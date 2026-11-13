@@ -133,7 +133,33 @@ impl PluralRules {
     /// Numeric text from a coerced primitive. BigInt bypasses Number-range
     /// clamping; JS ToPrimitive and Symbol rejection happen in the host.
     pub fn select_mathematical(&self, value: &str, bigint: bool) -> Result<&'static str, Error> {
-        self.select(&crate::mathematical::to_mathematical_value(value, bigint))
+        self.select_input(value, bigint, !bigint)
+    }
+
+    pub fn select_input(
+        &self,
+        value: &str,
+        bigint: bool,
+        string: bool,
+    ) -> Result<&'static str, Error> {
+        let value = crate::mathematical::MathematicalValue::from_input(value, bigint, string);
+        let formatted = self.formatted_value(&value)?;
+        self.rules
+            .select_rounded(&formatted, self.exponent(&formatted)?, self.ordinal)
+    }
+
+    fn formatted_value(
+        &self,
+        value: &crate::mathematical::MathematicalValue,
+    ) -> Result<String, Error> {
+        if ["NaN", "Infinity", "-Infinity"].contains(&value.value.as_str()) {
+            return Ok(value.value.clone());
+        }
+        Ok(self.digits.format_string_with_precision(
+            &value.value,
+            value.string_digit_count,
+            value.string_fraction_digit_count,
+        )?)
     }
 
     pub fn select_range_mathematical(
@@ -143,9 +169,39 @@ impl PluralRules {
         start_bigint: bool,
         end_bigint: bool,
     ) -> Result<&str, Error> {
-        self.select_range(
-            &crate::mathematical::to_mathematical_value(start, start_bigint),
-            &crate::mathematical::to_mathematical_value(end, end_bigint),
+        self.select_range_input(
+            start,
+            end,
+            start_bigint,
+            end_bigint,
+            !start_bigint,
+            !end_bigint,
+        )
+    }
+
+    pub fn select_range_input(
+        &self,
+        start: &str,
+        end: &str,
+        start_bigint: bool,
+        end_bigint: bool,
+        start_string: bool,
+        end_string: bool,
+    ) -> Result<&str, Error> {
+        let start =
+            crate::mathematical::MathematicalValue::from_input(start, start_bigint, start_string);
+        let end = crate::mathematical::MathematicalValue::from_input(end, end_bigint, end_string);
+        if start.value == "NaN" || end.value == "NaN" {
+            return Err(Error::InvalidRange);
+        }
+        let start = self.formatted_value(&start)?;
+        let end = self.formatted_value(&end)?;
+        self.rules.select_range_rounded(
+            &start,
+            &end,
+            self.exponent(&start)?,
+            self.exponent(&end)?,
+            self.ordinal,
         )
     }
 

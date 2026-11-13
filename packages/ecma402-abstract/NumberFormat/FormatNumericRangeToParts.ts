@@ -1,3 +1,4 @@
+import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {
   type NumberFormatInternal,
@@ -10,8 +11,8 @@ import {PartitionNumberRangePattern} from '#packages/ecma402-abstract/NumberForm
  */
 export function FormatNumericRangeToParts(
   numberFormat: Intl.NumberFormat,
-  x: Decimal,
-  y: Decimal,
+  x: Decimal | IntlMathematicalValue,
+  y: Decimal | IntlMathematicalValue,
   {
     getInternalSlots,
   }: {

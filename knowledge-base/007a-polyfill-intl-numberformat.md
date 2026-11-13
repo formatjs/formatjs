@@ -320,3 +320,26 @@ numeric fields; see [integer rendering](audits/2026-10-31-datetimeformat-integer
 BigDecimal division by powers of ten skips precision padding and zero stripping
 when exponent arithmetic stays safe. Default rounding increment `1` shares this
 path; general divisors retain fixed division precision. See [benchmarks and legacy arithmetic guards](audits/2026-10-31-numberformat-power-division.md).
+
+## Keep trailing zeros
+
+`ToIntlMathematicalValue` returns a Decimal plus source digit/fraction counts.
+Only decimal String primitives contribute counts. Coercion runs once with number
+hint; Number/BigInt, radix strings, empty input and non-numeric input use zero
+counts. Finite underflow retains source precision; overflow clears digit count.
+Counts describe the source before percent or notation scaling.
+
+The shared rounding primitives preserve source precision up to their existing
+maxima; zero uses fraction width. `stripToMinimum` clears both counts before
+rounding. Exponent previews use zero counts and can be reused only when source
+counts are zero. Ranges retain both records when partitioning and comparing text.
+
+Rust shares `MathematicalValue::from_input` and the digit engine from PluralRules.
+NumberFormat's `format_value` / `format_range_values` families accept records;
+existing decimal-text methods retain zero-count behavior for internal numeric
+callers. The Hermes JSON boundary sends the original primitive kind with text.
+
+`//conformance-tests/precision:all` independently checks TS/Rust count handling
+and ICU4C/ICU4J rounding with explicit precision skeletons. ICU does not implement
+the draft's automatic source-count inference. Public TS/Rust and Hermes source/
+bytecode conformance cover strings, Number/BigInt, coercion, ranges and strip modes.

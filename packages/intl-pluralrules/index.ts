@@ -29,8 +29,15 @@ import getInternalSlots from '#packages/intl-pluralrules/get_internal_slots.js'
 declare global {
   namespace Intl {
     interface PluralRules {
+      select(value: number | bigint | string): LDMLPluralRule
       // ECMA-402 Spec: selectRange method
-      selectRange(start: number | bigint, end: number | bigint): LDMLPluralRule
+      selectRange(
+        start: number | bigint | string,
+        end: number | bigint | string
+      ): LDMLPluralRule
+    }
+    interface ResolvedPluralRulesOptions {
+      trailingZeroDisplay: NumberFormatDigitInternalSlots['trailingZeroDisplay']
     }
     // Constructor delegates all digit options to SetNumberFormatDigitOptions.
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/pluralrules.html#L34
@@ -194,7 +201,7 @@ export class PluralRules {
     return opts as Intl.ResolvedPluralRulesOptions
   }
 
-  public select(val: number | bigint): LDMLPluralRule {
+  public select(val: number | bigint | string): LDMLPluralRule {
     validateInstance(this, 'select')
     // Use ToIntlMathematicalValue which handles bigint per ECMA-402
     // https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.select
@@ -236,8 +243,8 @@ export class PluralRules {
    * a browser bug - the spec requires BigInt support. This polyfill handles BigInt correctly.
    */
   public selectRange(
-    start: number | bigint,
-    end: number | bigint
+    start: number | bigint | string,
+    end: number | bigint | string
   ): LDMLPluralRule {
     validateInstance(this, 'selectRange')
     // Spec: https://tc39.es/ecma402/#sec-intl.pluralrules.prototype.selectrange

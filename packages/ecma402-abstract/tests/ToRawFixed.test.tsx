@@ -98,3 +98,50 @@ test.each([
     expect(result.roundedNumber.toString()).toBe(expected)
   }
 )
+
+// Counts describe source strings before notation or percent scaling.
+test.each([
+  ['1', 3, 2, 0, 3, 1, 'half-infinity', '1.00', '1'],
+  ['0', 3, 2, 0, 3, 1, 'half-infinity', '0.00', '0'],
+  ['0', 1, 400, 0, 3, 1, 'half-infinity', '0.000', '0'],
+  ['1', 0, 0, 0, 3, 1, 'half-infinity', '1', '1'],
+  ['12', 3, 1, 0, 3, 1, 'half-infinity', '12.0', '12'],
+  ['0.0012', 4, 6, 0, 5, 1, 'half-infinity', '0.00120', '0.0012'],
+  ['1.2', 4, 0, 0, 5, 1, 'half-infinity', '1.200', '1.2'],
+  ['1', 3, 4, 0, 3, 1, 'half-infinity', '1.00', '1'],
+  ['9.995', 4, 3, 0, 2, 1, 'half-infinity', '10.00', '10'],
+  ['0.009995', 4, 6, 0, 3, 1, 'half-infinity', '0.010', '0.01'],
+  ['0.0001', 1, 4, 0, 3, 1, 'half-infinity', '0.000', '0'],
+  ['1.005', 4, 3, 0, 2, 1, 'half-even', '1.00', '1'],
+  ['1.025', 4, 3, 2, 2, 5, 'half-even', '1.00', '1'],
+  ['1', 1, 0, 2, 3, 1, 'half-infinity', '1.00', '1'],
+] as const)(
+  'source precision: %s (%i digits, %i fraction digits)',
+  (
+    input,
+    digits,
+    fraction,
+    minimum,
+    maximum,
+    increment,
+    mode,
+    text,
+    rounded
+  ) => {
+    const result = ToRawFixed(
+      new Decimal(input),
+      minimum,
+      maximum,
+      increment,
+      mode,
+      digits,
+      fraction
+    )
+    expect(result).toEqual({
+      formattedString: text,
+      roundedNumber: new Decimal(rounded),
+      integerDigitsCount: text.split('.')[0].length,
+      roundingMagnitude: -maximum,
+    })
+  }
+)

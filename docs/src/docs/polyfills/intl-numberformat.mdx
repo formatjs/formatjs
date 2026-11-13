@@ -66,6 +66,30 @@ nf.format('12345678901234567890')
 
 - `'auto'` (default), `'always'`, `'never'`, `'exceptZero'`, `'negative'`
 
+#### Keep trailing zeros (Stage 3)
+
+Implements the [Keep trailing zeros draft](https://tc39.es/proposal-intl-keep-trailing-zeros/).
+Numeric strings retain their precision within the configured digit limits.
+Number and BigInt inputs keep their existing behavior.
+
+```js
+const nf = new Intl.NumberFormat('en')
+nf.format('1.00') // "1.00"
+nf.format(1) // "1"
+nf.format('1.0000') // "1.000" (default maximumFractionDigits: 3)
+nf.formatRange('1.0', '1.00') // "1.0–1.00"
+
+new Intl.NumberFormat('en', {trailingZeroDisplay: 'stripToMinimum'}).format(
+  '1.00'
+) // "1"
+```
+
+`stripToMinimum` removes source trailing zeros beyond the configured minimum
+fraction/significant digits. `stripIfInteger` removes the fraction only when the
+rounded result is an integer. Exponent notation in input strings retains source
+precision too: `nf.format('1.20e1')` returns `"12.0"`.
+The normal polyfill entry point replaces native implementations missing this behavior.
+
 #### Notation Styles
 
 - **`'standard'`** - Plain notation (default)

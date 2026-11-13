@@ -1,3 +1,11 @@
+type Primitive = string | number | bigint | boolean | symbol | undefined | null
+
+function IsPrimitive(value: unknown): value is Primitive {
+  return (
+    value === null || (typeof value !== 'object' && typeof value !== 'function')
+  )
+}
+
 function invariant(
   condition: boolean,
   message: string,
@@ -14,7 +22,7 @@ function IsCallable(fn: any): fn is Function {
 
 function OrdinaryToPrimitive<
   T extends 'string' | 'number' = 'string' | 'number',
->(O: object, hint: T): string | number | boolean | undefined | null {
+>(O: object, hint: T): Primitive {
   let methodNames: Array<'toString' | 'valueOf'>
   if (hint === 'string') {
     methodNames = ['toString', 'valueOf']
@@ -24,8 +32,8 @@ function OrdinaryToPrimitive<
   for (const name of methodNames) {
     const method = O[name]
     if (IsCallable(method)) {
-      let result = method.call(O)
-      if (typeof result !== 'object') {
+      let result = Reflect.apply(method, O, [])
+      if (IsPrimitive(result)) {
         return result
       }
     }
@@ -38,12 +46,14 @@ function OrdinaryToPrimitive<
  */
 export function ToPrimitive<
   T extends 'string' | 'number' = 'string' | 'number',
->(input: any, preferredType: T): string | number | boolean | undefined | null {
-  if (typeof input === 'object' && input != null) {
-    const exoticToPrim =
-      Symbol.toPrimitive in input ? input[Symbol.toPrimitive] : undefined
+>(input: any, preferredType: T): Primitive {
+  if (
+    input !== null &&
+    (typeof input === 'object' || typeof input === 'function')
+  ) {
+    const exoticToPrim = input[Symbol.toPrimitive]
     let hint
-    if (exoticToPrim !== undefined) {
+    if (exoticToPrim !== undefined && exoticToPrim !== null) {
       if (preferredType === undefined) {
         hint = 'default'
       } else if (preferredType === 'string') {
@@ -55,8 +65,8 @@ export function ToPrimitive<
         )
         hint = 'number'
       }
-      let result = exoticToPrim.call(input, hint)
-      if (typeof result !== 'object') {
+      let result = Reflect.apply(exoticToPrim, input, [hint])
+      if (IsPrimitive(result)) {
         return result
       }
       throw new TypeError('Cannot convert exotic object to primitive.')

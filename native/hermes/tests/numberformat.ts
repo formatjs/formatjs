@@ -61,6 +61,18 @@ const values = [
   '9007199254740993.125',
   9007199254740993n,
   ' 0x20000000000001 ',
+  '1.00',
+  '001.00',
+  '1.20e1',
+  '1.20e-1',
+  '0.00e1',
+  '-0.00',
+  '1e-9999',
+  '-1e-9999',
+  '0e-99999999999999999999999',
+  '1.000e9999',
+  '1000',
+  '1.200e3',
 ]
 function compare(
   locale: string | string[],
@@ -93,6 +105,10 @@ function compare(
   if (ranges)
     for (const [start, end] of [
       [1, 2],
+      ['1', '1.00'],
+      ['1.0', '1.00'],
+      ['0.00', '-0.00'],
+      ['1.00', '1.00'],
       [2.999, 3],
       [1234, 5678],
       [-2, -1],
@@ -128,6 +144,8 @@ const styles: NumberFormatOptions[] = [
   {notation: 'compact', compactDisplay: 'long'},
   {notation: 'scientific'},
   {notation: 'engineering'},
+  {trailingZeroDisplay: 'stripToMinimum'},
+  {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
 ]
 for (const locale of [
   'en',
@@ -255,6 +273,8 @@ for (const options of [
   {maximumSignificantDigits: 3},
   {notation: 'scientific'},
   {notation: 'engineering'},
+  {trailingZeroDisplay: 'stripToMinimum'},
+  {minimumFractionDigits: 2, trailingZeroDisplay: 'stripToMinimum'},
   {useGrouping: false},
 ] satisfies NumberFormatOptions[])
   compare('en', options, [

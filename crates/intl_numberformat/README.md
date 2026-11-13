@@ -18,6 +18,15 @@ and `format_range_to_parts` accept normalized mathematical strings from the host
 ToIntlMathematicalValue, including `NaN`, infinities and exact BigInt integers.
 The host still owns observable JS coercion and getter order.
 
+For [Keep trailing zeros](https://tc39.es/proposal-intl-keep-trailing-zeros/),
+construct `MathematicalValue::from_input(text, bigint, string)` with the original
+primitive kind and call `format_value` / `format_value_to_parts`, or the
+`format_range_values` / `format_range_values_to_parts` range methods. Records
+retain String digit counts before scaling. Existing normalized-text methods use
+zero source counts, as required by internal numeric callers. `stripToMinimum`
+removes source zeros beyond configured minima. Hermes carries primitive kinds
+through the owned JSON boundary.
+
 The standard decimal fast path retains its numeric part buffer and inserts any
 sign before it. RelativeTimeFormat shares this path, avoiding a second vector
 without changing sign order or nonfinite-number handling.

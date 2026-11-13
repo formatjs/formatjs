@@ -12,6 +12,8 @@ pub use formatjs_intl_pluralrules::ffi::{
     formatjs_plural_bytes_free, formatjs_plural_create, formatjs_plural_destroy,
     formatjs_plural_query, formatjs_plural_registry_create, formatjs_plural_registry_destroy,
     formatjs_plural_registry_info, formatjs_plural_registry_load, formatjs_plural_registry_match,
+    formatjs_plural_select, formatjs_plural_select_input, formatjs_plural_select_range,
+    formatjs_plural_select_range_input,
 };
 pub use formatjs_intl_supportedvaluesof::ffi::{
     formatjs_supported_values_of, formatjs_values_free,

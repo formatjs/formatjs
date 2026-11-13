@@ -1,6 +1,69 @@
 //! Primitive numeric text after JS ToPrimitive. BigInt bypasses the Number
 //! overflow/underflow clamp; strings follow StringNumericLiteral semantics.
 
+use serde::{Deserialize, Serialize};
+
+/// Exact mathematical text and source precision before notation/percent scaling.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct MathematicalValue {
+    pub value: String,
+    #[serde(default)]
+    pub string_digit_count: usize,
+    #[serde(default)]
+    pub string_fraction_digit_count: usize,
+}
+
+impl MathematicalValue {
+    /// The host performs ToPrimitive and rejects Symbols before calling this.
+    pub fn from_input(input: &str, bigint: bool, string: bool) -> Self {
+        let value = to_mathematical_value(input, bigint);
+        let mut result = Self {
+            value,
+            string_digit_count: 0,
+            string_fraction_digit_count: 0,
+        };
+        if !string || bigint || result.value == "NaN" {
+            return result;
+        }
+        let text = input
+            .trim_matches(whitespace)
+            .strip_prefix(['-', '+'])
+            .unwrap_or(input.trim_matches(whitespace));
+        let (mantissa, exponent) = text.split_once(['e', 'E']).unwrap_or((text, "0"));
+        let Some((integer, fraction)) = parts(mantissa) else {
+            return result;
+        };
+        let length = integer.len() + fraction.len();
+        let leading = integer
+            .bytes()
+            .chain(fraction.bytes())
+            .take_while(|digit| *digit == b'0')
+            .count();
+        result.string_digit_count = if leading == length {
+            fraction.len() + 1
+        } else {
+            length - leading
+        };
+        let negative = exponent.starts_with('-');
+        let exponent = exponent
+            .strip_prefix(['-', '+'])
+            .unwrap_or(exponent)
+            .bytes()
+            .fold(0i64, |n, d| {
+                n.saturating_mul(10).saturating_add(i64::from(d - b'0'))
+            });
+        let exponent = if negative { -exponent } else { exponent };
+        result.string_fraction_digit_count =
+            usize::try_from((fraction.len() as i64).saturating_sub(exponent).max(0))
+                .unwrap_or(usize::MAX);
+        if result.value.ends_with("Infinity") {
+            result.string_digit_count = 0;
+        }
+        result
+    }
+}
+
 fn whitespace(value: char) -> bool {
     matches!(value, '\u{0009}'..='\u{000d}' | '\u{0020}' | '\u{00a0}' | '\u{1680}' | '\u{2000}'..='\u{200a}' | '\u{2028}' | '\u{2029}' | '\u{202f}' | '\u{205f}' | '\u{3000}' | '\u{feff}')
 }

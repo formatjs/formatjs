@@ -129,7 +129,8 @@ function findN2E2R2(x: Decimal, p: number) {
 
 /**
  * https://tc39.es/ecma402/#sec-torawprecision
- * @param x a finite non-negative Number or BigInt
+ * https://tc39.es/proposal-intl-keep-trailing-zeros/
+ * @param x a finite non-negative mathematical value
  * @param minPrecision an integer between 1 and 21
  * @param maxPrecision an integer between 1 and 21
  */
@@ -137,7 +138,9 @@ export function ToRawPrecision(
   x: Decimal,
   minPrecision: number,
   maxPrecision: number,
-  unsignedRoundingMode: UnsignedRoundingModeType
+  unsignedRoundingMode: UnsignedRoundingModeType,
+  digitCount = 0,
+  fractionDigitCount = 0
 ): RawNumberFormatResult {
   // 1. Let p be maxPrecision.
   const p = maxPrecision
@@ -207,10 +210,13 @@ export function ToRawPrecision(
     int = 1
   }
 
-  // 7. If m contains ".", and maxPrecision > minPrecision, then
-  if (m.includes('.') && maxPrecision > minPrecision) {
-    // a. Let cut be maxPrecision - minPrecision.
-    let cut = maxPrecision - minPrecision
+  // https://tc39.es/proposal-intl-keep-trailing-zeros/#sec-torawprecision
+  const resolvedMinPrecision = Math.max(
+    minPrecision,
+    xFinal.isZero() ? fractionDigitCount + 1 : digitCount
+  )
+  if (m.includes('.') && maxPrecision > resolvedMinPrecision) {
+    let cut = maxPrecision - resolvedMinPrecision
     // b. Repeat, while cut > 0 and the last character of m is "0",
     while (cut > 0 && m[m.length - 1] === '0') {
       // i. Remove the last character from m.
