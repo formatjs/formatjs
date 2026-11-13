@@ -9,7 +9,7 @@ interface Args extends minimist.ParsedArgs {
 }
 
 // Test262 INTERPRETING.md: each test realm gets its own globals and $262 API.
-// https://github.com/tc39/test262/blob/419d3e0a2273ba01a3bfcbec423f2801425b8e93/INTERPRETING.md#L20-L51
+// https://github.com/tc39/test262/blob/2e58f87d8350ad51224617a041c6e041d52f8444/INTERPRETING.md#L20-L51
 // Keep payloads out of eshost's per-test script compilation.
 export function realmPrelude(sourceFile: string): string {
   return `(function install(file) {

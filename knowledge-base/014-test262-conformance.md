@@ -1,37 +1,59 @@
 # Test262 conformance baseline
 
-Refreshed 2026-10-30 with CLDR 49 against Test262 `419d3e0a2273ba01a3bfcbec423f2801425b8e93`,
+Refreshed 2026-11-12 with CLDR 49 against Test262 `2e58f87d8350ad51224617a041c6e041d52f8444`,
 using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
 
-Stage 4 timezone identifier preservation removes eight DateTimeFormat failures
-in both isolated and combined installation. Each mode now passes 478 of 488
-executions. The four upstream files cover aliases, UTC names, casing, and renamed
-zones; both strict/default scenarios pass. Remaining diagnostics are unchanged.
-The native Hermes suite also passes the same eight executions and now records
-478 passes with ten unchanged failures.
+The pin advances 43 upstream commits and adds 52 executions per mode: 44 Locale,
+four DateTimeFormat, and four NumberFormat. Locale Info cases cover collation
+ordering, formatter defaults, script direction metadata, and Unicode aliases.
+Existing locale data covers the new tests' English and German metadata.
+
+Stage 4 timezone identifier preservation passes the alias, UTC-name, casing, and
+renamed-zone cases. DateTimeFormat now runs 492 executions; ten existing failures
+remain in isolated, combined, and native Hermes installation.
 
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |                10 |              52 |                10 |
+| datetimeformat      |      492 |                10 |              52 |                10 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
-| locale              |      336 |                 4 |              22 |                 2 |
-| numberformat        |      498 |                 8 |               0 |                 8 |
+| locale              |      380 |                12 |              50 |                 2 |
+| numberformat        |      502 |                 8 |               0 |                 8 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 4 |               6 |                 0 |
 
-Total: 2,498 executions, 2,458 polyfill passes, 40 polyfill failures. The native
-control column retains the 2026-09-09 measurement (86 failures); it was not rerun.
-Native failures do not establish polyfill correctness.
+Total: 2,550 executions, 2,502 polyfill passes, 48 polyfill failures. Native controls
+use the same pin and Node 26.8.1 host: 2,436 passes and 114 failures. Native failures
+do not establish polyfill correctness.
 
-Combined: 2,498 executions, 2,464 passes, 34 failures.
+Combined and Hermes: 2,550 executions, 2,516 passes, 34 failures per mode.
+
+Eight newly exposed isolated Locale failures come from the host's
+`Intl.getCanonicalLocales`, which removes `yes` from keys without that alias.
+The isolated suite deliberately retains native prerequisites. Combined and
+Hermes installation use FormatJS canonicalization and pass these cases.
+[Native feature detection](https://github.com/formatjs/formatjs/pull/7929) replaces
+affected host functions during normal canonicalization polyfill installation.
+Load that polyfill before Locale when native canonicalization is incorrect.
+
+ECMA-402 [CanonicalizeUnicodeLocaleId](https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid)
+uses [CLDR's key-specific alias rules](https://unicode.org/reports/tr35/#processing-localeids):
+`en-u-aa-yes` stays unchanged, while `en-u-kn-yes` becomes `en-u-kn`.
+Targeted oracle probes found ICU4C/J 78.1 remove unknown `aa=yes`, while ICU4X
+2.3.1 retains `kn=yes`. Those differences do not override the specification.
+Independent NumberFormat and DateTimeFormat ICU snapshot/range gates supplement
+the JS conformance matrix; their reviewed differences remain explicit.
+
+This matrix selects twelve polyfill directories, not `intl402/Temporal`.
+Calendar formatting coverage does not establish complete Era/MonthCode Temporal
+construction or arithmetic conformance.
 
 Combined installation fixes two native Locale-branding failures. RelativeTimeFormat has the same two
 foreign-realm failures in both modes. Removing its redundant class constructor
@@ -80,7 +102,7 @@ not need a directory-wide Gazelle ignore.
 
 The [2026-09-11 tracking report](./015b-test262-progress-2026-09-11.md) records
 140 DateTimeFormat fixes, plus two combined calendar-enumeration fixes.
-The remaining 46 isolated and 44 combined failures have explicit runtime,
+Remaining failure counts appear in the table above, with explicit runtime,
 legacy, specification, or locale-data explanations.
 Foreign-realm/native-brand limitations, optional legacy construction, and
 specific data/proposal expectations stay visible in the raw counts.

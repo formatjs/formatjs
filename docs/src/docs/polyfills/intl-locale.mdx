@@ -162,6 +162,13 @@ async function polyfill() {
 
 The Bazel `:test262` target runs the upstream suite against a reviewed failure baseline. A green baseline check does not mean every test passed. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md); run `bazel test //packages/intl-locale:test262-strict` to require zero failures.
 
+Locale Info coverage includes collation ordering, formatter defaults, script
+direction metadata, and Unicode extension aliases. The isolated suite retains
+native prerequisites, including `Intl.getCanonicalLocales`.
+`bazel test //tools/test262:combined-locale` installs all FormatJS polyfills to
+check their behavior together. If native canonicalization mishandles `yes`
+values, load the `Intl.getCanonicalLocales` polyfill before `Intl.Locale`.
+
 ## Weekday and numeric options
 
 `firstDayOfWeek` accepts Unicode type identifiers such as `mon`. Numeric strings

@@ -1,5 +1,5 @@
 {
-  "total": 488,
+  "total": 492,
   "failures": {
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Incompatible Intl.DateTimeFormat receiver",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Incompatible Intl.DateTimeFormat receiver",
