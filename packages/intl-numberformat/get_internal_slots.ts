@@ -21,3 +21,7 @@ export default function getInternalSlots(
   }
   return internalSlots
 }
+
+export function hasInternalSlots(x: unknown): x is Intl.NumberFormat {
+  return internalSlotMap.has(x as Intl.NumberFormat)
+}

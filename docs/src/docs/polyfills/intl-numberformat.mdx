@@ -20,6 +20,15 @@ This package implements `Intl.NumberFormat`. See the [conformance report](https:
 - **`formatRangeToParts(start, end)`** - Format a number range and return parts array with source attribution
 - **`resolvedOptions()`** - Return resolved formatting options
 
+#### Legacy constructor calls
+
+Calling `NumberFormat.call(receiver, locales, options)` with a receiver inheriting
+from `NumberFormat.prototype` returns that receiver with a hidden formatter.
+Its `format` and `resolvedOptions` methods use the hidden formatter.
+`formatToParts`, `formatRange`, and `formatRangeToParts` require an initialized
+formatter and throw on these wrappers. Repeated legacy initialization throws.
+Calling an already initialized formatter preserves its original options.
+
 #### Formatting Styles
 
 - **`'decimal'`** - Plain number format (default)
@@ -248,6 +257,8 @@ pnpm add @formatjs/intl-numberformat
 ## Requirements
 
 This package requires the following capabilities:
+
+- Native `Proxy` support for constructor behavior.
 
 - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales) or [polyfill](intl-getcanonicallocales)
 - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) or [polyfill](intl-locale).

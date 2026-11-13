@@ -17,11 +17,11 @@ export function OrdinaryHasInstance(
     let BC = internalSlots?.boundTargetFunction
     return O instanceof BC
   }
-  if (typeof O !== 'object') {
+  if (O === null || (typeof O !== 'object' && typeof O !== 'function')) {
     return false
   }
   let P = C.prototype
-  if (typeof P !== 'object') {
+  if (P === null || (typeof P !== 'object' && typeof P !== 'function')) {
     throw new TypeError(
       'OrdinaryHasInstance called on an object with an invalid prototype property.'
     )

@@ -343,3 +343,20 @@ callers. The Hermes JSON boundary sends the original primitive kind with text.
 and ICU4C/ICU4J rounding with explicit precision skeletons. ICU does not implement
 the draft's automatic source-count inference. Public TS/Rust and Hermes source/
 bytecode conformance cover strings, Number/BigInt, coercion, ranges and strip modes.
+
+## Legacy constructor calls
+
+TS and Hermes implement ECMA-402's optional ChainNumberFormat and
+UnwrapNumberFormat behavior. A call without `new` creates a fresh formatter,
+then checks the receiver with OrdinaryHasInstance, after option reads finish.
+A matching receiver gets a non-writable, non-enumerable, non-configurable
+`IntlLegacyConstructedSymbol` property holding the new formatter.
+
+Only `format` and `resolvedOptions` unwrap unbranded receivers through an ordinary
+property Get. Parts/range methods retain direct brand checks. Calling a branded
+formatter adds the fallback property without replacing its original slots or bound
+format function. Repeated legacy calls throw when redefining the fallback property.
+A Proxy construction trap reads `newTarget.prototype` once before locale/options,
+preserving unrelated subclass prototypes and the same-realm intrinsic fallback.
+Foreign-realm intrinsic fallback remains a documented JavaScript limitation.
+The Rust formatting backend is unchanged; Hermes owns JS receiver semantics.

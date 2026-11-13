@@ -23,17 +23,17 @@ remain in isolated, combined, and native Hermes installation.
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
 | locale              |      380 |                12 |              50 |                 2 |
-| numberformat        |      502 |                 8 |               0 |                 8 |
+| numberformat        |      502 |                 2 |               0 |                 2 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 4 |               6 |                 0 |
 
-Total: 2,550 executions, 2,502 polyfill passes, 48 polyfill failures. Native controls
+Total: 2,550 executions, 2,508 polyfill passes, 42 polyfill failures. Native controls
 use the same pin and Node 26.8.1 host: 2,436 passes and 114 failures. Native failures
 do not establish polyfill correctness.
 
-Combined and Hermes: 2,550 executions, 2,516 passes, 34 failures per mode.
+Combined and Hermes: 2,550 executions, 2,522 passes, 28 failures per mode.
 
 Eight newly exposed isolated Locale failures come from the host's
 `Intl.getCanonicalLocales`, which removes `yes` from keys without that alias.
@@ -68,6 +68,11 @@ The isolated SupportedValuesOf suite uses the pinned host's native DisplayNames,
 which still names `CNX`, so its two cross-API executions are tracked as data-version
 mismatches. The combined suite installs both CLDR 49 polyfills and passes those
 checks. No tests are skipped and the supported currency list follows CLDR 49.
+
+NumberFormat implements optional legacy construction in TS and Hermes. All six
+legacy-constructor executions now pass in isolated, combined and Hermes modes.
+Only its two foreign-realm intrinsic executions remain failing. DateTimeFormat's
+six optional legacy-constructor executions remain tracked separately.
 
 ## Harness guarantees
 
