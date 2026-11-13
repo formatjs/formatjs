@@ -216,7 +216,9 @@ export function FormatDateTimePattern(
       epochNanoseconds,
       // @ts-ignore
       internalSlots.calendar,
-      isPlain ? '+00:00' : internalSlots.timeZone,
+      isPlain
+        ? '+00:00'
+        : (internalSlots.dataTimeZone ?? internalSlots.timeZone),
       {tzData, calendarData}
     )
   const result: Intl.DateTimeFormatPart[] = []
@@ -280,7 +282,9 @@ export function FormatDateTimePattern(
       const f = format?.timeZoneName ?? internalSlots.timeZoneName
       let fv
       const {timeZoneName, gmtFormat, hourFormat} = dataLocaleData
-      const timeZone = internalSlots.timeZone || getDefaultTimeZone()
+      const timeZone =
+        internalSlots.dataTimeZone ??
+        (internalSlots.timeZone || getDefaultTimeZone())
       const timeZoneData = timeZoneName[timeZone]
       if (f === 'shortGeneric' || f === 'longGeneric') {
         fv =

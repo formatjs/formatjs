@@ -24,6 +24,12 @@ interface Result {
 const uppercaseLinks = Object.fromEntries(
   Object.entries(links).map(([alias, target]) => [alias.toUpperCase(), target])
 )
+const identifiers = Object.fromEntries(
+  [...Object.keys(links), ...Object.values(links)].map(name => [
+    name.toUpperCase(),
+    name,
+  ])
+)
 const minimum = -8_640_000_000_000_000_000_000n,
   maximum = -minimum
 function run(pack: string, cases: Case[]): Result[] {
@@ -98,7 +104,9 @@ it.each(['all', 'golden'])(
         zoneNames: names,
         uppercaseLinks,
       })
-      expect(actual[index].name, entry.name).toBe(canonical)
+      expect(actual[index].name, entry.name).toBe(
+        identifiers[entry.name.toUpperCase()] ?? canonical
+      )
       expect(actual[index].samples!.length).toBe(entry.instants.length)
       for (let position = 0; position < entry.instants.length; position++) {
         const instant = BigInt(entry.instants[position])
@@ -174,7 +182,9 @@ it('matches aliases, ASCII case folding, fixed offsets and invalid names', () =>
       zoneNames: names,
       uppercaseLinks,
     })
-    expect(actual[index].name, entry.name).toBe(canonical)
+    expect(actual[index].name, entry.name).toBe(
+      identifiers[entry.name.toUpperCase()] ?? canonical
+    )
     for (let position = 0; position < entry.instants.length; position++) {
       const expected = ToLocalTime(
         BigInt(entry.instants[position]),

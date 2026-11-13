@@ -14,6 +14,7 @@ import my from '#packages/intl-datetimeformat/tests/locale-data/my.json' with {t
 import ne from '#packages/intl-datetimeformat/tests/locale-data/ne.json' with {type: 'json'}
 import zhHans from '#packages/intl-datetimeformat/tests/locale-data/zh-Hans.json' with {type: 'json'}
 import {describe, expect, it, afterEach} from 'vitest'
+import {shouldPolyfill} from '#packages/intl-datetimeformat/should-polyfill.js'
 DateTimeFormat.__addCalendarData(...calendars)
 // @ts-ignore
 DateTimeFormat.__addLocaleData(en, enGB, enCA, ja, zhHans, fa, arEG, bn, my, ne)
@@ -22,6 +23,71 @@ const DEFAULT_TIMEZONE = DateTimeFormat.getDefaultTimeZone()
 describe('Intl.DateTimeFormat', function () {
   afterEach(() => {
     DateTimeFormat.__setDefaultTimeZone(DEFAULT_TIMEZONE)
+  })
+  it.each([
+    ['us/eastern', 'US/Eastern', 'America/New_York'],
+    ['asia/calcutta', 'Asia/Calcutta', 'Asia/Kolkata'],
+    ['europe/bratislava', 'Europe/Bratislava', 'Europe/Prague'],
+    ['america/yellowknife', 'America/Yellowknife', 'America/Edmonton'],
+    ['etc/gmt', 'Etc/GMT', 'UTC'],
+    ['etc/utc', 'Etc/UTC', 'UTC'],
+    ['gmt', 'GMT', 'UTC'],
+    ['zulu', 'Zulu', 'UTC'],
+  ])(
+    'preserves %s as %s while formatting with target data',
+    (input, identifier, primary) => {
+      const options = {
+        dateStyle: 'full',
+        timeStyle: 'long',
+      } as const
+      const formatter = new DateTimeFormat('en', {...options, timeZone: input})
+      const reference = new DateTimeFormat('en', {
+        ...options,
+        timeZone: primary,
+      })
+      expect(formatter.resolvedOptions().timeZone).toBe(identifier)
+      for (const start of [Date.UTC(2024, 0, 1), Date.UTC(2024, 6, 1)]) {
+        const end = start + 86_400_000
+        expect(formatter.format(start)).toBe(reference.format(start))
+        expect(formatter.formatToParts(start)).toEqual(
+          reference.formatToParts(start)
+        )
+        expect(formatter.formatRange(start, end)).toBe(
+          reference.formatRange(start, end)
+        )
+        expect(formatter.formatRangeToParts(start, end)).toEqual(
+          reference.formatRangeToParts(start, end)
+        )
+      }
+      DateTimeFormat.__setDefaultTimeZone(input)
+      expect(DateTimeFormat.getDefaultTimeZone()).toBe(identifier)
+      const defaultFormatter = new DateTimeFormat('en', options)
+      expect(defaultFormatter.resolvedOptions().timeZone).toBe(identifier)
+      expect(defaultFormatter.format(0)).toBe(reference.format(0))
+    }
+  )
+  it.each([
+    ['Asia/Calcutta', 'Asia/Kolkata'],
+    ['Etc/UTC', 'UTC'],
+  ])('detects native canonicalization of %s', (identifier, primary) => {
+    const original = Intl.DateTimeFormat
+    const polyfill = DateTimeFormat as unknown as typeof Intl.DateTimeFormat
+    try {
+      Intl.DateTimeFormat = polyfill
+      expect(shouldPolyfill('en')).toBeUndefined()
+      Intl.DateTimeFormat = new Proxy(polyfill, {
+        construct(target, [locales, options]) {
+          return new target(locales, {
+            ...options,
+            timeZone:
+              options?.timeZone === identifier ? primary : options?.timeZone,
+          })
+        },
+      })
+      expect(shouldPolyfill('en')).toBe('en')
+    } finally {
+      Intl.DateTimeFormat = original
+    }
   })
   it('does not add an hour to minute/second-only requests', () => {
     const date = Date.UTC(2020, 0, 2, 1, 2, 3, 456)

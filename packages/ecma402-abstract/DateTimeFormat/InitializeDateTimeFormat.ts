@@ -187,6 +187,7 @@ export function InitializeDateTimeFormat(
     relevantExtensionKeys,
     tzData,
     uppercaseLinks,
+    uppercaseIdentifiers,
   }: {
     getInternalSlots(
       dtf: DateTimeFormat | Intl.DateTimeFormat
@@ -198,6 +199,7 @@ export function InitializeDateTimeFormat(
     localeData: Record<string, DateTimeFormatLocaleInternalData | undefined>
     tzData: Record<string, unknown>
     uppercaseLinks: Record<string, string>
+    uppercaseIdentifiers: Record<string, string>
   }
 ): Intl.DateTimeFormat {
   // @ts-ignore
@@ -271,14 +273,19 @@ export function InitializeDateTimeFormat(
     ) {
       throw new RangeError('Invalid timeZoneName')
     }
-    timeZone = CanonicalizeTimeZoneName(timeZone, {
-      zoneNames: Object.keys(tzData),
-      uppercaseLinks,
-    })
   } else {
     timeZone = getDefaultTimeZone()
   }
-  internalSlots.timeZone = timeZone
+  const dataTimeZone =
+    CanonicalizeTimeZoneName(timeZone, {
+      zoneNames: Object.keys(tzData),
+      uppercaseLinks,
+    }) ?? timeZone
+  // Temporal preserves the supplied identifier; formatting uses its target data.
+  // https://tc39.es/proposal-temporal/#sec-intl.datetimeformat
+  internalSlots.timeZone =
+    uppercaseIdentifiers[timeZone.toUpperCase()] ?? dataTimeZone
+  internalSlots.dataTimeZone = dataTimeZone
 
   opt = Object.create(null)
   opt.weekday = GetOption(

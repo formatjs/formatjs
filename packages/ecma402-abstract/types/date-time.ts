@@ -58,6 +58,7 @@ export interface IntlDateTimeFormatInternal {
   hourCycle: string
   numberingSystem: string
   timeZone: string
+  dataTimeZone?: string
   pattern: string
   format: Formats
   rangePatterns: Record<TABLE_2 | 'default', RangePatterns>

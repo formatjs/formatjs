@@ -55,6 +55,16 @@ const UPPERCASED_LINKS = Object.keys(links).reduce(
   {}
 )
 
+const UPPERCASED_IDENTIFIERS = Object.keys(links).reduce(
+  (all: Record<string, string>, alias) => {
+    const target = links[alias as 'Zulu']
+    all[alias.toUpperCase()] = alias
+    all[target.toUpperCase()] = target
+    return all
+  },
+  {}
+)
+
 const RESOLVED_OPTIONS_KEYS: Array<
   keyof Omit<IntlDateTimeFormatInternal, 'pattern' | 'boundFormat'>
 > = [
@@ -185,6 +195,7 @@ export const DateTimeFormat = function (
   InitializeDateTimeFormat(this, locales, options, {
     tzData: DateTimeFormat.tzData,
     uppercaseLinks: UPPERCASED_LINKS,
+    uppercaseIdentifiers: UPPERCASED_IDENTIFIERS,
     availableLocales: DateTimeFormat.availableLocales,
     relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
     getDefaultLocale: DateTimeFormat.getDefaultLocale,
@@ -374,10 +385,11 @@ DateTimeFormat.__setDefaultTimeZone = (timeZone: string) => {
     ) {
       throw new RangeError('Invalid timeZoneName')
     }
-    timeZone = CanonicalizeTimeZoneName(timeZone, {
+    const dataTimeZone = CanonicalizeTimeZoneName(timeZone, {
       zoneNames: Object.keys(DateTimeFormat.tzData),
       uppercaseLinks: UPPERCASED_LINKS,
     })
+    timeZone = UPPERCASED_IDENTIFIERS[timeZone.toUpperCase()] ?? dataTimeZone
   } else {
     timeZone = DEFAULT_TIMEZONE
   }

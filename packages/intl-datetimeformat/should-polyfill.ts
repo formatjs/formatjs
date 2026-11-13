@@ -13,6 +13,18 @@ function supportsDateStyle() {
   }
 }
 
+function preservesTimeZoneIdentifiers() {
+  try {
+    return ['Asia/Calcutta', 'Etc/UTC'].every(
+      timeZone =>
+        new Intl.DateTimeFormat('en', {timeZone}).resolvedOptions().timeZone ===
+        timeZone
+    )
+  } catch {
+    return false
+  }
+}
+
 /**
  * https://bugs.chromium.org/p/chromium/issues/detail?id=865351
  */
@@ -64,6 +76,7 @@ export function shouldPolyfill(locale = 'en'): string | undefined {
     hasChromeLt71Bug() ||
     hasUnthrownDateTimeStyleBug() ||
     !supportsDateStyle() ||
+    !preservesTimeZoneIdentifiers() ||
     !supportedLocalesOf(locale)
   ) {
     return locale ? match([locale], supportedLocales, 'en') : undefined
