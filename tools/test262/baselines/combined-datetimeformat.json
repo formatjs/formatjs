@@ -1,10 +1,6 @@
 {
   "total": 488,
   "failures": {
-    "intl402/DateTimeFormat/canonicalize-timezone.js (default)": "Time zone name Europe/Bratislava should be preserved and not canonicalized to Europe/Bratislava Expected SameValue(\u00ab\"Europe/Prague\"\u00bb, \u00ab\"Europe/Bratislava\"\u00bb) to be true",
-    "intl402/DateTimeFormat/canonicalize-timezone.js (strict mode)": "Time zone name Europe/Bratislava should be preserved and not canonicalized to Europe/Bratislava Expected SameValue(\u00ab\"Europe/Prague\"\u00bb, \u00ab\"Europe/Bratislava\"\u00bb) to be true",
-    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (default)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00ab\"UTC\"\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
-    "intl402/DateTimeFormat/canonicalize-utc-timezone.js (strict mode)": "Test262Error {\n  message: `Time zone name Etc/GMT should be preserved and not canonicalized to 'UTC' Expected SameValue(\u00ab\"UTC\"\u00bb, \u00ab\"Etc/GMT\"\u00bb) to be true`\n}",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (default)": "Expected no error, got TypeError: Cannot create proxy with a non-object as target or handler",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-on-unwrap.js (strict mode)": "Expected no error, got TypeError: Cannot create proxy with a non-object as target or handler",
     "intl402/DateTimeFormat/intl-legacy-constructed-symbol-property.js (default)": "return value of Intl.DateTimeFormat constructor Expected SameValue(\u00ab[object Intl.DateTimeFormat]\u00bb, \u00abundefined\u00bb) to be true",
@@ -14,10 +10,6 @@
     "intl402/DateTimeFormat/proto-from-ctor-realm.js (default)": "newTarget.prototype is undefined Expected SameValue(\u00ab[object Intl.DateTimeFormat]\u00bb, \u00ab[object Intl.DateTimeFormat]\u00bb) to be true",
     "intl402/DateTimeFormat/proto-from-ctor-realm.js (strict mode)": "newTarget.prototype is undefined Expected SameValue(\u00ab[object Intl.DateTimeFormat]\u00bb, \u00ab[object Intl.DateTimeFormat]\u00bb) to be true",
     "intl402/DateTimeFormat/prototype/format/numbering-system.js (default)": "en-US-u-nu-hanidec: display all time units in 2-digit Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true",
-    "intl402/DateTimeFormat/prototype/format/numbering-system.js (strict mode)": "en-US-u-nu-hanidec: display all time units in 2-digit Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true",
-    "intl402/DateTimeFormat/timezone-case-insensitive.js (default)": "Time zone created from string \"America/Yellowknife\" Expected SameValue(\u00ab\"America/Edmonton\"\u00bb, \u00ab\"America/Yellowknife\"\u00bb) to be true",
-    "intl402/DateTimeFormat/timezone-case-insensitive.js (strict mode)": "Time zone created from string \"America/Yellowknife\" Expected SameValue(\u00ab\"America/Edmonton\"\u00bb, \u00ab\"America/Yellowknife\"\u00bb) to be true",
-    "intl402/DateTimeFormat/timezone-not-canonicalized.js (default)": "Expected SameValue(\u00ab\"Asia/Kolkata\"\u00bb, \u00ab\"Asia/Calcutta\"\u00bb) to be true",
-    "intl402/DateTimeFormat/timezone-not-canonicalized.js (strict mode)": "Expected SameValue(\u00ab\"Asia/Kolkata\"\u00bb, \u00ab\"Asia/Calcutta\"\u00bb) to be true"
+    "intl402/DateTimeFormat/prototype/format/numbering-system.js (strict mode)": "en-US-u-nu-hanidec: display all time units in 2-digit Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true"
   }
 }

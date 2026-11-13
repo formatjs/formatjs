@@ -1,3 +1,4 @@
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 
@@ -349,15 +350,24 @@ ts_run_binary(
 ]
 
 # @formatjs_generated/tz — IANA timezone data
+copy_file(
+    name = "tz_etcetera",
+    src = "@iana_tzdata//:etcetera",
+    out = "tz_data_generated/etcetera",
+)
+
 generate_package_file(
     name = "tz_links",
     src = "links.ts",
     args = [
         "--input",
         package_name() + "/tz_data_generated/backward",
+        "--input",
+        package_name() + "/tz_data_generated/etcetera",
     ],
     data = [
         ":tz_data_generated/backward",
+        ":tz_etcetera",
         "//:node_modules/json-stable-stringify",
     ],
     tags = ["cldr"],

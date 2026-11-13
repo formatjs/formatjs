@@ -75,14 +75,18 @@ export function PartitionDateTimeRangePattern(
     first.epochNanoseconds,
     // @ts-ignore
     internalSlots.calendar,
-    first.isPlain ? '+00:00' : internalSlots.timeZone,
+    first.isPlain
+      ? '+00:00'
+      : (internalSlots.dataTimeZone ?? internalSlots.timeZone),
     {tzData, calendarData}
   )
   const tm2 = ToLocalTime(
     second.epochNanoseconds,
     // @ts-ignore
     internalSlots.calendar,
-    first.isPlain ? '+00:00' : internalSlots.timeZone,
+    first.isPlain
+      ? '+00:00'
+      : (internalSlots.dataTimeZone ?? internalSlots.timeZone),
     {tzData, calendarData}
   )
   const {pattern, rangePatterns} = internalSlots

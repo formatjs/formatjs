@@ -5,10 +5,17 @@ using the pinned Node 26.8.1 Test262 host. Counts include strict/default executi
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
 
+Stage 4 timezone identifier preservation removes eight DateTimeFormat failures
+in both isolated and combined installation. Each mode now passes 478 of 488
+executions. The four upstream files cover aliases, UTC names, casing, and renamed
+zones; both strict/default scenarios pass. Remaining diagnostics are unchanged.
+The native Hermes suite also passes the same eight executions and now records
+478 passes with ten unchanged failures.
+
 | Polyfill            | Executed | Polyfill failures | Native failures | Combined failures |
 | ------------------- | -------: | ----------------: | --------------: | ----------------: |
 | collator            |      130 |                 2 |               0 |                 2 |
-| datetimeformat      |      488 |                18 |              52 |                18 |
+| datetimeformat      |      488 |                10 |              52 |                10 |
 | displaynames        |      114 |                 2 |               0 |                 2 |
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
@@ -20,11 +27,11 @@ excluded because it fails.
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 4 |               6 |                 0 |
 
-Total: 2,498 executions, 2,450 polyfill passes, 48 polyfill failures. The native
+Total: 2,498 executions, 2,458 polyfill passes, 40 polyfill failures. The native
 control column retains the 2026-09-09 measurement (86 failures); it was not rerun.
 Native failures do not establish polyfill correctness.
 
-Combined: 2,498 executions, 2,456 passes, 42 failures.
+Combined: 2,498 executions, 2,464 passes, 34 failures.
 
 Combined installation fixes two native Locale-branding failures. RelativeTimeFormat has the same two
 foreign-realm failures in both modes. Removing its redundant class constructor

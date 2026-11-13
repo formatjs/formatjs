@@ -171,6 +171,19 @@ Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
 Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
 letter case only; non-ASCII lookalikes are rejected.
 
+Stage 4 Temporal timezone handling preserves the case-regularized identifier in
+`timeZone`, including aliases such as `Asia/Calcutta`, `US/Eastern`, and `Etc/GMT`.
+The separate `dataTimeZone` slot selects transition data and localized names
+for single dates, Temporal profiles, and ranges. Default timezone overrides also
+preserve identifiers. `shouldPolyfill` checks alias and UTC-name preservation.
+This follows the [Temporal integration text](https://tc39.es/proposal-temporal/#sec-intl.datetimeformat),
+which uses `[[Identifier]]` where the standalone ECMA-402 draft still uses
+`[[PrimaryIdentifier]]`.
+
+The alias generator reads both IANA `backward` and `etcetera`; the latter supplies
+`GMT`. Rust retains the same identifier/lookup-target distinction. Primary timezone
+enumeration in SupportedValuesOf remains separate from constructor alias support.
+
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
 
@@ -624,7 +637,7 @@ oracles remains in the snapshot.
 The matrix also covers month/year boundaries. Every case requires TS/Rust equality
 and parts that concatenate to the formatted string.
 The Test262 baseline gate remains separate from ICU parity. Passing it means no
-change to the 488-case baseline, which currently tracks 18 failures; it does not
+change to the 488-case baseline, which currently tracks 10 failures; it does not
 claim complete ECMA-402 conformance.
 
 Update explicitly, review every changed difference:

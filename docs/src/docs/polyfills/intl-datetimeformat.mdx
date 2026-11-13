@@ -399,6 +399,12 @@ Gregorian astronomical year zero formats as year 1 BC. Year 1 begins the AD era.
 Zero UTC offsets normalize to `+00:00`. Named timezone matching ignores ASCII
 letter case only; non-ASCII lookalikes are rejected.
 
+Following Stage 4 Temporal timezone behavior, `resolvedOptions().timeZone`
+preserves named identifiers with IANA casing: `asia/calcutta` becomes
+`Asia/Calcutta`, and `Etc/GMT` stays `Etc/GMT`. Formatting uses the linked zone's
+transition data and localized names. `__setDefaultTimeZone` preserves names too.
+`shouldPolyfill()` detects native implementations that replace these identifiers.
+
 Constructor options are read once in specification order. Default date fields
 are applied to internal records without writing to caller options.
 
