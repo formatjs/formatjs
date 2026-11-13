@@ -45,6 +45,7 @@ cc_test(
         "PRECISION_FIXTURES": "$(rootpath fixtures.tsv)",
         "PUBLIC_PRECISION_FIXTURES": "$(rootpath public-fixtures.tsv)",
     },
+    exec_properties = {"container-image": "docker://ubuntu:24.04"},
     target_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",

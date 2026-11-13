@@ -1,4 +1,3 @@
-import {shouldPolyfill} from '#packages/intl-pluralrules/should-polyfill.js'
 import {GetOperands} from '#packages/ecma402-abstract/PluralRules/GetOperands.js'
 import '@formatjs/intl-getcanonicallocales/polyfill.js'
 import '@formatjs/intl-locale/polyfill.js'
@@ -535,20 +534,4 @@ describe('Keep trailing zeros', () => {
       }).selectRange('1', '1.0')
     ).toBe('one')
   })
-})
-
-it('detects missing source precision in native PluralRules', () => {
-  const original = Intl.PluralRules
-  try {
-    ;(Intl as any).PluralRules = PluralRules
-    expect(shouldPolyfill('en')).toBeUndefined()
-    ;(Intl as any).PluralRules = class extends PluralRules {
-      select(input: number | bigint | string) {
-        return super.select(typeof input === 'string' ? Number(input) : input)
-      }
-    }
-    expect(shouldPolyfill('en')).toBe('en')
-  } finally {
-    ;(Intl as any).PluralRules = original
-  }
 })

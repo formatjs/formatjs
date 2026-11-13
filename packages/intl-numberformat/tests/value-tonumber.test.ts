@@ -1,4 +1,3 @@
-import {shouldPolyfill} from '#packages/intl-numberformat/should-polyfill.js'
 import {describe, it, expect} from 'vitest'
 import '@formatjs/intl-pluralrules/polyfill.js'
 import '@formatjs/intl-pluralrules/locale-data/en'
@@ -126,25 +125,4 @@ describe('Keep trailing zeros', () => {
       formatter.format({[Symbol.toPrimitive]: () => ({})} as any)
     ).toThrow(TypeError)
   })
-})
-
-it('detects missing source precision in native NumberFormat', () => {
-  const original = Intl.NumberFormat
-  try {
-    ;(Intl as any).NumberFormat = NumberFormat
-    expect(shouldPolyfill('en')).toBeUndefined()
-    ;(Intl as any).NumberFormat = class extends NumberFormat {
-      constructor(...args: ConstructorParameters<typeof NumberFormat>) {
-        super(...args)
-        const format = this.format
-        Object.defineProperty(this, 'format', {
-          value: (input: any) =>
-            format(typeof input === 'string' ? Number(input) : input),
-        })
-      }
-    }
-    expect(shouldPolyfill('en')).toBe('en')
-  } finally {
-    ;(Intl as any).NumberFormat = original
-  }
 })

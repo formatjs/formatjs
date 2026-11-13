@@ -490,6 +490,7 @@ formatjs_test(
         "tests/internal/decimal-cache.test.ts",
         "tests/internal/exponent-rounding.test.ts",
         "tests/internal/number-patterns.test.ts",
+        "tests/internal/should-polyfill.test.ts",
         "tests/legacy.test.ts",
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",
