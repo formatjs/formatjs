@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_datetimeformat"
-version = "1.0.2"
+version = "1.0.3"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "DateTimeFormat arithmetic and owned CLDR records"
@@ -16,7 +16,7 @@ compiled_data = []
 
 [dependencies]
 formatjs_intl_data = { path = "../intl_data", version = "0.2.0" }
-formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.2.1" }
+formatjs_intl_numberformat = { path = "../intl_numberformat", version = "0.3.0" }
 formatjs_intl_getcanonicallocales = { path = "../intl_getcanonicallocales", version = "1.0.0" }
 formatjs_intl_locale = { path = "../intl_locale", version = "1.0.0" }
 serde = { version = "1.0", features = ["derive"] }

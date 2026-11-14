@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_durationformat_v1.0.0...formatjs_intl_durationformat_v1.0.1) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+
 ## [1.0.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_durationformat_v0.2.0...formatjs_intl_durationformat_v1.0.0) (2026-10-31)
 
 

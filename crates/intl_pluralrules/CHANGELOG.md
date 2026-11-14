@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_pluralrules_v0.2.1...formatjs_intl_pluralrules_v0.3.0) (2026-11-14)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_pluralrules_v0.2.0...formatjs_intl_pluralrules_v0.2.1) (2026-10-31)
 
 

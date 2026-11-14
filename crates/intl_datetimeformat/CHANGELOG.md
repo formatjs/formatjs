@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.2...formatjs_intl_datetimeformat_v1.0.3) (2026-11-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** preserve timezone identifiers ([#7928](https://github.com/formatjs/formatjs/issues/7928)) ([62d33d9](https://github.com/formatjs/formatjs/commit/62d33d93a6e916d4dc81bd80f2d274c9c8f93014))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+
 ## [1.0.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_v1.0.1...formatjs_intl_datetimeformat_v1.0.2) (2026-11-08)
 
 

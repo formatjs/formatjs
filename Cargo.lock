@@ -618,7 +618,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.11.0"
+version = "1.11.1"
 dependencies = [
  "anyhow",
  "base64",
@@ -759,7 +759,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat"
-version = "1.0.2"
+version = "1.0.3"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -773,7 +773,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.2.3"
+version = "0.2.4"
 dependencies = [
  "formatjs_intl_datetimeformat",
  "serde",
@@ -793,7 +793,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_durationformat"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "formatjs_intl_getcanonicallocales",
  "formatjs_intl_listformat",
@@ -813,7 +813,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_hermes"
-version = "0.3.3"
+version = "0.4.0"
 dependencies = [
  "formatjs_intl_collator",
  "formatjs_intl_datetimeformat",
@@ -874,7 +874,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_numberformat"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",
@@ -888,7 +888,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_pluralrules"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "fixed_decimal",
  "formatjs_intl_data",
@@ -902,7 +902,7 @@ dependencies = [
 
 [[package]]
 name = "formatjs_intl_relativetimeformat"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "formatjs_intl_data",
  "formatjs_intl_getcanonicallocales",

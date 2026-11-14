@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.3.3...formatjs_intl_hermes_v0.4.0) (2026-11-14)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_pluralrules bumped from 0.2.1 to 0.3.0
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+    * formatjs_intl_relativetimeformat bumped from 0.2.1 to 0.2.2
+    * formatjs_intl_datetimeformat bumped from 1.0.2 to 1.0.3
+    * formatjs_intl_datetimeformat_calendars bumped from 0.2.3 to 0.2.4
+    * formatjs_intl_durationformat bumped from 1.0.0 to 1.0.1
+
 ## [0.3.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.3.2...formatjs_intl_hermes_v0.3.3) (2026-11-08)
 
 

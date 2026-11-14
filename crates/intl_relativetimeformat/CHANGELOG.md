@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.2](https://github.com/formatjs/formatjs/compare/formatjs_intl_relativetimeformat_v0.2.1...formatjs_intl_relativetimeformat_v0.2.2) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_numberformat bumped from 0.2.1 to 0.3.0
+    * formatjs_intl_pluralrules bumped from 0.2.1 to 0.3.0
+
 ## [0.2.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_relativetimeformat_v0.2.0...formatjs_intl_relativetimeformat_v0.2.1) (2026-10-31)
 
 
