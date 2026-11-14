@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.2.0](https://github.com/formatjs/formatjs/compare/intl-messageformat@12.1.5...intl-messageformat@12.2.0) (2026-11-14)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+
 ## [12.1.5](https://github.com/formatjs/formatjs/compare/intl-messageformat@12.1.4...intl-messageformat@12.1.5) (2026-11-08)
 
 
