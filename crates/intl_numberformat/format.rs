@@ -592,6 +592,9 @@ impl NumberFormat {
             }
             return Ok(parts);
         }
+        // CLDR has no compact percent patterns. Like ICU, format a compact
+        // percent as the short `percent` unit around the compact number.
+        let compact_percent = options.style == "percent" && options.notation == "compact";
         let compact = if options.notation == "compact" && number.magnitude != 0 {
             self.compact_rules(number.magnitude)?
                 .map(|rules| self.select(&number.rounded, rules))
@@ -609,7 +612,7 @@ impl NumberFormat {
                     &data.standard
                 }
             }
-            "percent" => &self.data.numbers.percent[&self.system],
+            "percent" if !compact_percent => &self.data.numbers.percent[&self.system],
             _ => &self.data.numbers.decimal[&self.system].standard,
         });
         let index = match number.sign {
@@ -777,10 +780,16 @@ impl NumberFormat {
             }
             return Ok(output);
         }
-        if options.style == "unit" {
+        if options.style == "unit" || compact_percent {
             let units = self.data.units.read().map_err(|_| missing("unit lock"))?;
-            let unit = options.unit.as_deref().unwrap();
-            let style = options.unit_display.as_deref().unwrap();
+            let (unit, style) = if compact_percent {
+                ("percent", "short")
+            } else {
+                (
+                    options.unit.as_deref().unwrap(),
+                    options.unit_display.as_deref().unwrap(),
+                )
+            };
             let pattern = if let Some(unit) = units.simple.get(unit) {
                 self.select(&expanded, unit_forms(unit, style))?.to_owned()
             } else {

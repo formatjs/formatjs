@@ -41,6 +41,48 @@ fn standard_decimal_signs_precede_finite_and_special_parts() {
 }
 
 #[test]
+fn compact_percent_keeps_the_percent_unit() {
+    let registry = registry();
+    for (value, compact_display, sign_display, expected) in [
+        ("12.34", "short", "auto", "1.2K%"),
+        ("10000", "short", "auto", "1M%"),
+        ("-12.34", "short", "auto", "-1.2K%"),
+        ("12.34", "long", "auto", "1.2 thousand%"),
+        ("12.34", "short", "always", "+1.2K%"),
+        ("0.5", "short", "auto", "50%"),
+    ] {
+        let number = registry
+            .create(
+                &["en".into()],
+                &options(json!({
+                    "style":"percent",
+                    "notation":"compact",
+                    "compactDisplay":compact_display,
+                    "signDisplay":sign_display
+                })),
+            )
+            .unwrap();
+        assert_eq!(number.format(value).unwrap(), expected, "{value}");
+    }
+    let number = registry
+        .create(
+            &["en".into()],
+            &options(json!({"style":"percent","notation":"compact"})),
+        )
+        .unwrap();
+    assert_eq!(
+        serde_json::to_value(number.format_to_parts("12.34").unwrap()).unwrap(),
+        json!([
+            {"type":"integer","value":"1"},
+            {"type":"decimal","value":"."},
+            {"type":"fraction","value":"2"},
+            {"type":"compact","value":"K"},
+            {"type":"unit","value":"%"}
+        ])
+    );
+}
+
+#[test]
 fn shared_plural_selection_keeps_visible_fraction_digits() {
     let registry = registry();
     let rules = formatjs_intl_pluralrules::LocaleRules::from_json(

@@ -60,7 +60,14 @@ export default function formatToParts(
   approximately = false
 ): NumberFormatPart[] {
   const {sign, exponent, magnitude} = numberResult
-  const {notation, style, numberingSystem} = options
+  const {notation, numberingSystem} = options
+  // CLDR has no compact percent patterns. ICU formats a compact percent as the
+  // short `percent` unit around the compact number ("1.2K%", "%1,2 B" in tr,
+  // "asilimia elfu 1.2" in sw), so do the same instead of dropping the sign.
+  const compactPercent = options.style === 'percent' && notation === 'compact'
+  const style: NumberFormatOptionsStyle = compactPercent
+    ? 'unit'
+    : options.style
   const defaultNumberingSystem = data.numbers.nu[0]
   const symbols =
     data.numbers.symbols[numberingSystem] ||
@@ -270,7 +277,8 @@ export default function formatToParts(
       }
     }
     case 'unit': {
-      const {unit, unitDisplay} = options
+      const unit = compactPercent ? 'percent' : options.unit
+      const unitDisplay = compactPercent ? 'short' : options.unitDisplay
 
       let unitData: UnitData | undefined = data.units.simple[unit!]
 

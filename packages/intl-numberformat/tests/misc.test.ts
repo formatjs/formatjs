@@ -61,15 +61,33 @@ LOCALES.forEach(locale => {
   NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
 })
 
-// Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.
-// For example, 10000 is formatted to "1M" (10000 * 100 = 1M).
+// CLDR has no compact percent patterns. ICU (Chrome, Node, Firefox) wraps the
+// compact number in the short `percent` unit pattern, so the sign is kept.
+// For example, 10000 is formatted to "1M%" (10000 * 100 = 1M).
 it('formats percentage with compact notation', () => {
-  expect(
-    NumberFormat('en-BS', {
-      style: 'percent',
-      notation: 'compact',
-    }).format(10_000)
-  ).toBe('1M')
+  const percent = (
+    locale: string,
+    options: {compactDisplay?: 'long'; signDisplay?: 'always'} = {}
+  ) => NumberFormat(locale, {style: 'percent', notation: 'compact', ...options})
+  expect(percent('en-BS').format(10_000)).toBe('1M%')
+  expect(percent('en').format(12.34)).toBe('1.2K%')
+  expect(percent('en', {compactDisplay: 'long'}).format(12.34)).toBe(
+    '1.2 thousand%'
+  )
+  expect(percent('en', {signDisplay: 'always'}).format(12.34)).toBe('+1.2K%')
+  expect(percent('en').format(0.5)).toBe('50%')
+  // No compact pattern for thousands in German, but the unit pattern still applies.
+  expect(percent('de').format(12.34)).toBe('1234 %')
+  expect(percent('de').format(123_456)).toBe('12\u00a0Mio. %')
+  // The sign goes inside the unit pattern, after a leading percent sign.
+  expect(percent('tr').format(-12.34)).toBe('%-1,2\u00a0B')
+  expect(percent('en').formatToParts(12.34)).toEqual([
+    {type: 'integer', value: '1'},
+    {type: 'decimal', value: '.'},
+    {type: 'fraction', value: '2'},
+    {type: 'compact', value: 'K'},
+    {type: 'unit', value: '%'},
+  ])
 })
 
 it('formats compact currency in a numbering system without compact patterns', () => {
