@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.1.6](https://github.com/formatjs/formatjs/compare/vue-intl@8.1.5...vue-intl@8.1.6) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl bumped to 6.1.6
+
 ## [8.1.5](https://github.com/formatjs/formatjs/compare/vue-intl@8.1.4...vue-intl@8.1.5) (2026-11-08)
 
 

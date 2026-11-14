@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [8.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.3...@formatjs/intl-datetimeformat@8.0.4) (2026-11-14)
+
+
+### Bug Fixes
+
+* **@formatjs/intl-datetimeformat:** preserve timezone identifiers ([#7928](https://github.com/formatjs/formatjs/issues/7928)) ([62d33d9](https://github.com/formatjs/formatjs/commit/62d33d93a6e916d4dc81bd80f2d274c9c8f93014))
+
 ## [8.0.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat@8.0.2...@formatjs/intl-datetimeformat@8.0.3) (2026-11-08)
 
 

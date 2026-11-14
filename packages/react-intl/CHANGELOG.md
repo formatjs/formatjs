@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [12.1.8](https://github.com/formatjs/formatjs/compare/react-intl@12.1.7...react-intl@12.1.8) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl bumped to 6.1.6
+    * intl-messageformat bumped to 12.2.0
+
 ## [12.1.7](https://github.com/formatjs/formatjs/compare/react-intl@12.1.6...react-intl@12.1.7) (2026-11-08)
 
 

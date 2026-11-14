@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-roc@1.1.6...@formatjs/intl-datetimeformat-calendar-roc@1.1.7) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 8.0.4
+
 ## [1.1.6](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-roc@1.1.5...@formatjs/intl-datetimeformat-calendar-roc@1.1.6) (2026-11-08)
 
 

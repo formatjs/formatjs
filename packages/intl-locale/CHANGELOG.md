@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.3...@formatjs/intl-locale@5.4.4) (2026-11-14)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @formatjs/intl-getcanonicallocales bumped to 3.3.2
+
 ## [5.4.3](https://github.com/formatjs/formatjs/compare/@formatjs/intl-locale@5.4.2...@formatjs/intl-locale@5.4.3) (2026-11-08)
 
 

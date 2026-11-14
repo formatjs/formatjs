@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v1.0.1...formatjs-hermes-intl_v1.1.0) (2026-11-14)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** support legacy construction ([#7936](https://github.com/formatjs/formatjs/issues/7936)) ([584304a](https://github.com/formatjs/formatjs/commit/584304ac4e4e09927be78c34f425b7164e6d1e9a))
+
 ## [1.0.1](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v1.0.0...formatjs-hermes-intl_v1.0.1) (2026-11-08)
 
 
