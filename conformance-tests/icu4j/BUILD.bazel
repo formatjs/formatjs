@@ -268,6 +268,23 @@ java_binary(
     deps = [":icu4j79"],
 )
 
+java_binary(
+    name = "temporal_timezone_oracle",
+    testonly = True,
+    srcs = ["TemporalTimeZoneOracle.java"],
+    main_class = "TemporalTimeZoneOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_timezone_fixtures",
+    testonly = True,
+    outs = ["temporal-timezone-fixtures.tsv"],
+    cmd = "$(execpath :temporal_timezone_oracle) $@",
+    tools = [":temporal_timezone_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 genrule(
     name = "date_time_format_fixtures",
     testonly = True,

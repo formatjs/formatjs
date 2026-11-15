@@ -3,6 +3,7 @@ load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 
 # gazelle:exclude tests/rust-timezones.test.ts
+# gazelle:exclude tests/timezone-icu.test.ts
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
@@ -21,6 +22,15 @@ load(":index.bzl", "generate_tz_data")
 load(":locales.generated.bzl", "ALL_LOCALES")
 
 exports_files(["LICENSE.md"])
+
+copy_to_bin(
+    name = "timezone_kernel_sources",
+    srcs = [
+        "types.ts",
+        "unpack.ts",
+    ],
+    visibility = ["//benchmarks/temporal:__pkg__"],
+)
 
 PACKAGE_NAME = "intl-datetimeformat"
 
@@ -675,6 +685,24 @@ formatjs_test(
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
         "//:node_modules/vitest",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+formatjs_test(
+    name = "timezone_icu_test",
+    srcs = ["tests/timezone-icu.test.ts"],
+    data = [
+        ":tz_all_json",
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//crates/intl_datetimeformat:timezone_conformance",
+    ],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/types",
     ],
 )
