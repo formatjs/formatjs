@@ -1,11 +1,13 @@
 #![no_std]
 
+mod calendar_difference;
 mod date;
 mod duration;
 mod format;
 mod iso;
 mod now;
 mod parse;
+mod plain_relative;
 mod relative_duration;
 mod rounding;
 mod short_dates;
@@ -15,6 +17,8 @@ mod timezone_identity;
 mod zoned;
 mod zoned_difference;
 
+pub use calendar_difference::DateTimeUnit;
+pub use calendar_difference::DateTimeUnit as ZonedUnit;
 use core::fmt;
 use core::str::FromStr;
 pub use date::{FormattedDateTime, Overflow, PlainDate, PlainDateTime};
@@ -30,7 +34,6 @@ pub use time::{FormattedTime, PlainTime};
 pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
 pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};
 pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
-pub use zoned_difference::ZonedUnit;
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
 pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;

@@ -31,6 +31,7 @@ temporal_wasm(
 rust_library(
     name = "temporal",
     srcs = [
+        "calendar_difference.rs",
         "date.rs",
         "duration.rs",
         "format.rs",
@@ -39,6 +40,7 @@ rust_library(
         "lib.rs",
         "now.rs",
         "parse.rs",
+        "plain_relative.rs",
         "relative_duration.rs",
         "rounding.rs",
         "short_dates.rs",
@@ -59,6 +61,7 @@ formatjs_rust_test(
     size = "small",
     srcs = ["lib.test.rs"],
     compile_data = [
+        "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
         "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
         "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
         "//packages/intl-datetimeformat:tz_all_json",
@@ -75,6 +78,7 @@ formatjs_rust_test(
     ],
     edition = "2024",
     rustc_env = {
+        "FORMATJS_TEMPORAL_PLAIN_RELATIVE": "$(execpath //conformance-tests/icu4j:temporal_plain_relative_fixtures)",
         "FORMATJS_TEMPORAL_TZ_IDENTITIES": "$(execpath //conformance-tests/icu4j:temporal_timezone_identity_fixtures)",
         "FORMATJS_TEMPORAL_ZONED_DIFFERENCE": "$(execpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
         "FORMATJS_TEMPORAL_TRANSITIONS": "$(execpath //conformance-tests/icu4j:temporal_transition_fixtures)",

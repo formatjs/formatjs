@@ -15,7 +15,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Native plain-relative adapters, remaining calendars, production IANA
+checked. Remaining calendars, production IANA
 registry loading, native Hermes bindings and complete WASM facades remain
 pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
 
@@ -61,3 +61,25 @@ bazel run -c opt //crates/temporal:identifiers
 
 Bazel derives this table from the generated TS timezone package. Runtime Rust
 remains dependency-free; production transition-data loading stays pending.
+
+PlainDate supplies ISO `total_duration`, `round_duration`, `compare_durations`
+and calendar-unit `until`/`since`. PlainDateTime differences now accept
+`DateTimeUnit` for years through nanoseconds; existing `TimeUnit` arguments still
+work. `ZonedUnit` remains an alias. Plain and zoned operations share calendar
+anchors and exact rounding while retaining separate range/offset rules.
+
+Independent ICU controls add 51,840 plain rounds, 17,280 rational totals, 20,736
+date differences and 4,224 comparisons, including BCE/year zero, leap/month ends
+and years -270000/+275000. TS runs the same corpus on Node and Hermes source/
+optimized bytecode. Native boundary cases also port pinned Test262 vectors for
+zero durations at date limits, normalized overflow, week prefixes and rounding
+beyond date limits. Clock carry validates the input endpoint before rounding;
+the rounded duration need not fit an actual date. Native non-ISO calendars and
+Hermes bindings remain pending.
+
+```rust
+use formatjs_temporal::{DateTimeUnit, Duration, PlainDate};
+let anchor = PlainDate::new(2020, 1, 31).unwrap();
+let month: Duration = "P1M".parse().unwrap();
+assert_eq!(anchor.total_duration(month, DateTimeUnit::Day).unwrap(), 29.0);
+```

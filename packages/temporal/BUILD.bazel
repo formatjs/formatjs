@@ -104,6 +104,15 @@ filegroup(
     )
     for name, sources, data in [
         (
+            "plain_relative_test",
+            [
+                "tests/plain-relative.test.ts",
+                "tests/plain-relative-oracle.ts",
+                "tests/plain-relative-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_plain_relative_fixtures"],
+        ),
+        (
             "timezone_identity_test",
             ["tests/timezone-identity.test.ts"],
             ["//conformance-tests/icu4j:temporal_timezone_identity_fixtures"],
@@ -866,4 +875,44 @@ js_test(
     ],
     entry_point = "tests/package.test.mjs",
     env = {"TZ": "UTC"},
+)
+
+rolldown_bundle(
+    name = "plain-relative-host",
+    srcs = [
+        "tests/plain-relative-host.ts",
+        "tests/plain-relative-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/plain-relative-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "plain_relative_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures",
+        ":plain-relative-host.js",
+    ],
+    outs = ["plain-relative-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures) $(location :plain-relative-host.js) > $@",
+)
+
+sh_test(
+    name = "plain_relative_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :plain_relative_hermes_source)",
+    ],
+    data = [
+        ":plain_relative_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
 )

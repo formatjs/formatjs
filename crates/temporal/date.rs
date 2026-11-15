@@ -164,30 +164,37 @@ impl PlainDateTime {
     pub fn until(
         self,
         other: Self,
-        largest: TimeUnit,
-        smallest: TimeUnit,
+        largest: impl Into<crate::DateTimeUnit>,
+        smallest: impl Into<crate::DateTimeUnit>,
         increment: u32,
         mode: RoundingMode,
     ) -> Result<Duration, Error> {
-        let maximum = match smallest {
-            TimeUnit::Hour => 24,
-            TimeUnit::Minute | TimeUnit::Second => 60,
-            _ => 1000,
-        };
-        if increment == 0
-            || increment >= maximum
-            || maximum % increment != 0
-            || largest.nanoseconds() < smallest.nanoseconds()
-        {
-            return Err(Error::InvalidRoundingOptions);
-        }
-        Duration::from_time_nanoseconds(
-            crate::rounding::round_duration(
-                other.0 - self.0,
-                smallest.nanoseconds() * i128::from(increment),
-                mode,
-            ),
-            largest,
+        crate::plain_relative::date_time_difference(
+            self,
+            other,
+            largest.into(),
+            smallest.into(),
+            increment,
+            mode,
+            false,
+        )
+    }
+    pub fn since(
+        self,
+        other: Self,
+        largest: impl Into<crate::DateTimeUnit>,
+        smallest: impl Into<crate::DateTimeUnit>,
+        increment: u32,
+        mode: RoundingMode,
+    ) -> Result<Duration, Error> {
+        crate::plain_relative::date_time_difference(
+            self,
+            other,
+            largest.into(),
+            smallest.into(),
+            increment,
+            mode,
+            true,
         )
     }
     pub fn format(

@@ -607,9 +607,9 @@ remain pending. ICU controls cover
 Gregorian conversion, calendar arithmetic, short-date references/rounding,
 clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
 
-The zoned core also supplies relative Duration total/round/compare operations.
+The plain and zoned cores also supply relative Duration total/round/compare operations.
 ICU controls exercise the owned IANA provider through these adapters. Native
-plain-relative operations and non-ISO calendar math remain pending. Rational-to-f64
+non-ISO calendar math remains pending. Rational-to-f64
 conversion stays in the dependency-free numeric core.
 
 Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.
@@ -619,3 +619,12 @@ build-time generator consumes `@formatjs_generated/tz`, without adding Rust runt
 dependencies. Regenerate with `bazel run -c opt //crates/temporal:identifiers`.
 Independent ICU controls verify all 597 names and 178,503 identity pairs using
 real transition providers. Production transition-data loading remains pending.
+
+`calendar_difference.rs` owns shared calendar-unit anchors and rounding.
+`plain_relative.rs` supplies ISO PlainDate relative Duration adapters and plain
+Date/DateTime differences; timezone providers remain behind the zoned anchor.
+`DateTimeUnit` covers all ten units, with `ZonedUnit` retained as an alias.
+PlainDateTime still accepts TimeUnit arguments. Input endpoint checks include
+clock carry; post-round endpoints can exceed date bounds when allowed.
+Independent ICU controls cover 51,840 plain rounds, 17,280 totals, 20,736 date
+differences and 4,224 comparisons. Rust remains allocation-free/dependency-free.

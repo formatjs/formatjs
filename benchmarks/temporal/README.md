@@ -253,7 +253,7 @@ bindings and complete WASM facade comparisons remain open.
 
 Duration provides validated branded fields, ISO parsing with exact fractional
 hours/minutes/seconds, immutable operations and serialization. Totals, comparison and rounding support plain-date and zoned relative contexts
-in TS. Rust supplies zoned relative adapters; native plain-relative adapters remain pending. Instant add/subtract and differences use exact nanoseconds,
+in TS. Rust supplies ISO plain/zoned relative adapters. Instant add/subtract and differences use exact nanoseconds,
 signed duration rounding and intrinsic Duration results.
 
 ICU4J's independent decimal oracle checks 5,430 signed rounding and rational
@@ -440,7 +440,7 @@ sample has faster relative rounding, slower totals and slower zoned comparison.
 
 Public Duration and Rust zoned adapters match 19,440 ICU relative rounds,
 6,480 exact totals and 1,340 transition comparisons. TS also has bounded Hebrew
-reference controls. Production Rust plain-relative adapters/native bindings and
+reference controls. Native bindings and
 complete calendar coverage remain pending.
 
 The primitive WASM TS entry now calls pure parse/format/total helpers, matching
@@ -462,16 +462,16 @@ The earlier matched pure TS/WASM primitive profile retains its separate scope.
 bazel run -c opt //benchmarks/temporal:size_benchmark
 ```
 
-[package-size-results.json](package-size-results.json) measures the current timezone-identity layer separately from earlier throughput samples. The first
+[package-size-results.json](package-size-results.json) measures the current plain-relative layer separately from earlier throughput samples. The first
 profile bundles each entry standalone. All full entries include owned IANA data;
 detection does not. Reference uses host Intl and supports more calendars/locale
 behavior. These alternatives are not additive and do not establish full equivalence.
 
 | Standalone bundle       | Minified bytes | Gzip bytes |
 | ----------------------- | -------------: | ---------: |
-| instant-code.js         |        445,143 |     86,269 |
-| polyfill-code.js        |        445,800 |     86,426 |
-| polyfill-force-code.js  |        445,802 |     86,428 |
+| instant-code.js         |        445,167 |     86,286 |
+| polyfill-code.js        |        445,824 |     86,443 |
+| polyfill-force-code.js  |        445,826 |     86,445 |
 | should-polyfill-code.js |            696 |        361 |
 | reference-bundle.js     |         56,696 |     19,393 |
 
@@ -482,17 +482,56 @@ A consumer bundler may compress/deduplicate the combined graph differently.
 
 | Published module   | Minified bytes | Gzip bytes |
 | ------------------ | -------------: | ---------: |
-| index.js           |        445,028 |     86,191 |
+| index.js           |        445,052 |     86,210 |
 | polyfill.js        |          1,058 |        485 |
 | polyfill-force.js  |          1,060 |        486 |
 | should-polyfill.js |            587 |        302 |
 
-Primary timezone identity adds 269 gzip bytes to the standalone namespace;
+Primary timezone identity added 269 gzip bytes to the standalone namespace;
+plain endpoint validation adds another 17 bytes.
 DateTimeFormat locale files do not gain this data.
 
 The current report also refreshes the matched data-free primitive sizes: TS
-3,757 gzip bytes; Rust WASM 19,679 plus 463 bytes of JS bridge, totaling 20,142.
+3,757 gzip bytes; Rust WASM 19,669 plus 463 bytes of JS bridge, totaling 20,132.
 WASM plus bridge is 5.36 times the matched TS bundle. The earlier timed WASM run
-above remains historical; throughput was not rerun for an identity-table change.
+above remains historical; current matched primitive measurements are recorded below.
 These primitives exclude the full facade and calendar/timezone data. Complete
 WASM equivalence and native Hermes artifact measurements remain pending.
+
+## Plain-relative Rust and endpoint range checks
+
+[plain-relative-results.json](plain-relative-results.json) records the current
+Node 24.14.0 Linux x64 run after adding plain endpoint clock-carry validation.
+It retains all 23 matched facade workloads, with 5,000 equality/warmup calls,
+seven alternating batches of 50,000 calls and median ns/call. Earlier facade
+results remain historical. Inputs include ordinary calendar anchors, DST/folds
+and fixed offsets; this does not establish full calendar/locale equivalence.
+
+Relative month Duration parse/total: TS 10,128 ns, temporal-polyfill 8,620 ns.
+Parse/round/toJSON: TS 15,769 ns, reference 33,878 ns. Both include API coercion
+and parsing; these are JS facade measurements, not native Rust timings.
+
+Rust now shares ISO plain/zoned calendar rounding and supplies plain-relative
+Duration adapters. Independent ICU controls run on native Rust, Node and Hermes
+source/bytecode. This does not add a native Hermes binding or a full WASM facade.
+Current sizes remain in package-size-results.json. The nested `matchedPrimitives`
+record refreshes the data-free TS/WASM comparison after extracting raw internal
+ISO coordinates; the earlier WASM report remains historical.
+
+Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+
+| Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
+| -------------------------------------------- | ----: | ------------: | ----------------: |
+| Instant parse/epoch string                   |   980 |           386 |             1,702 |
+| Instant parse/round microsecond/epoch string | 1,145 |           409 |             2,541 |
+| Instant parse/format UTC                     | 1,712 |           698 |             3,422 |
+| Duration parse/format                        | 2,401 |           828 |            51,861 |
+| Duration parse/total microseconds            | 1,947 |           505 |             2,331 |
+
+This profile checks 5,000 warmup inputs and runs nine rotating batches of 30,000
+calls. It excludes the public object facade and calendar/timezone data; the
+reference uses its class API to produce equivalent outputs. Twelve fresh-child
+loads give TS load/first-operation medians of 1.535/0.506 ms, WASM 1.145/0.576 ms.
+These exclude benchmark infrastructure/process startup; filesystem caches may be
+warm. Raw WASM is 43,900 bytes; minified/gzip TS and bridge sizes remain unchanged.
+Pinned Hermes still has no WebAssembly, so these timings cover Node only.

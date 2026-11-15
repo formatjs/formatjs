@@ -81,8 +81,7 @@ Duration now supports relative totals, comparison and rounding against plain dat
 or zoned values. Calendar anchors use the existing ISO/Hebrew engines; clock
 remainders retain exact nanoseconds. Week rounding preserves larger calendar
 prefixes. Totals round exact rational results once to binary64. Native Rust adds
-zoned total_duration, round_duration and compare_durations; native plain-relative
-adapters remain pending.
+plain/zoned total_duration, round_duration and compare_durations for ISO dates.
 
 The same ICU fixture now also checks 19,440 public Duration rounds and 6,480
 relative totals in both cores. Real IANA controls add 1,340 independent relative
@@ -154,3 +153,12 @@ preferred aliases. Raw Link targets do not determine identity. All 597 available
 IDs and 178,503 identity pairs match independent ICU4J expectations in TS and Rust.
 Rust exposes allocation-free identifier lookup and NamedTimeZone providers;
 production registry/data installation remains pending.
+
+Independent plain-relative ICU controls now run on Node, Hermes source/bytecode
+and native Rust: 51,840 rounds, 17,280 totals, 20,736 date differences and 4,224
+comparisons. Cases include month ends, BCE/year zero and wide years. Input clock
+carry must remain within valid plain-date bounds before round/total; rounding
+itself may produce a duration whose endpoint is outside that range.
+
+The large plain ICU unit case has a 30-second aggregate timeout. Test262 keeps its
+existing per-case limits; no additional exclusions.

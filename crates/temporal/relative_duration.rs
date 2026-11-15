@@ -1,3 +1,4 @@
+use crate::calendar_difference::{RelativeAnchor, difference, validate_options};
 use crate::{Duration, Error, Overflow, RoundingMode, TimeZone, ZonedDateTime, ZonedUnit};
 
 impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
@@ -9,44 +10,8 @@ impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
             return Ok(0.0);
         }
         let end = self.checked_add(duration, Overflow::Constrain)?;
-        let origin = self.instant().epoch_nanoseconds();
         let finish = end.instant().epoch_nanoseconds();
-        if let Some(time) = unit.time() {
-            return Ok(crate::duration::rational_to_f64(
-                finish - origin,
-                time.nanoseconds(),
-            ));
-        }
-        let difference = self.until(&end, unit, ZonedUnit::Nanosecond, 1, RoundingMode::Trunc)?;
-        let mut count = difference.fields()[unit as usize];
-        let mut fields = [0; 10];
-        fields[unit as usize] = count;
-        let mut a = self
-            .checked_add(Duration::new(fields)?, Overflow::Constrain)?
-            .instant()
-            .epoch_nanoseconds();
-        let sign = (finish - origin).signum();
-        while (a - finish) * sign > 0 {
-            count -= sign;
-            fields[unit as usize] = count;
-            a = self
-                .checked_add(Duration::new(fields)?, Overflow::Constrain)?
-                .instant()
-                .epoch_nanoseconds();
-        }
-        if a == finish {
-            return Ok(count as f64);
-        }
-        fields[unit as usize] = count + sign;
-        let b = self
-            .checked_add(Duration::new(fields)?, Overflow::Constrain)?
-            .instant()
-            .epoch_nanoseconds();
-        let span = (b - a) * sign;
-        Ok(crate::duration::rational_to_f64(
-            count * span + finish - a,
-            span,
-        ))
+        total(self, finish, unit)
     }
     pub fn round_duration(
         &self,
@@ -63,34 +28,14 @@ impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
             self.validate_duration_day(duration)?;
         }
         let end = self.checked_add(duration, Overflow::Constrain)?;
-        if smallest == ZonedUnit::Week && largest < ZonedUnit::Week {
-            let full = self
-                .until(&end, largest, ZonedUnit::Nanosecond, 1, RoundingMode::Trunc)?
-                .fields();
-            let mut fields = [0; 10];
-            fields[..2].copy_from_slice(&full[..2]);
-            let count = full[2] + full[3] / 7;
-            fields[2] = count;
-            let a = self
-                .checked_add(Duration::new(fields)?, Overflow::Constrain)?
-                .instant()
-                .epoch_nanoseconds();
-            let finish = end.instant().epoch_nanoseconds();
-            if a == finish {
-                return Duration::new(fields);
-            }
-            let sign = (finish - self.instant().epoch_nanoseconds()).signum();
-            fields[2] = count + sign;
-            let b = self
-                .checked_add(Duration::new(fields)?, Overflow::Constrain)?
-                .instant()
-                .epoch_nanoseconds();
-            let span = (b - a) * sign;
-            fields[2] =
-                crate::rounding::round_duration(count * span + finish - a, span, mode) / span;
-            return Duration::new(fields);
-        }
-        self.until(&end, largest, smallest, increment, mode)
+        round(
+            self,
+            end.instant().epoch_nanoseconds(),
+            largest,
+            smallest,
+            increment,
+            mode,
+        )
     }
 
     pub fn compare_durations(
@@ -123,4 +68,87 @@ impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
         anchor.checked_add(Duration::new(day)?, Overflow::Constrain)?;
         Ok(())
     }
+}
+
+pub(crate) fn total<A: RelativeAnchor>(
+    start: &A,
+    finish: i128,
+    unit: ZonedUnit,
+) -> Result<f64, Error> {
+    let origin = start.origin();
+    if let Some(time) = unit.time() {
+        return Ok(crate::duration::rational_to_f64(
+            finish - origin,
+            time.nanoseconds(),
+        ));
+    }
+    let difference = difference(
+        start,
+        finish,
+        unit,
+        ZonedUnit::Nanosecond,
+        1,
+        RoundingMode::Trunc,
+        false,
+    )?;
+    let mut count = difference.fields()[unit as usize];
+    let mut fields = [0; 10];
+    fields[unit as usize] = count;
+    let mut a = start.endpoint(fields)?;
+    let sign = (finish - origin).signum();
+    while (a - finish) * sign > 0 {
+        count -= sign;
+        fields[unit as usize] = count;
+        a = start.endpoint(fields)?;
+    }
+    if a == finish {
+        return Ok(count as f64);
+    }
+    fields[unit as usize] = count + sign;
+    let b = start.endpoint(fields)?;
+    let span = (b - a) * sign;
+    Ok(crate::duration::rational_to_f64(
+        count * span + finish - a,
+        span,
+    ))
+}
+pub(crate) fn round<A: RelativeAnchor>(
+    start: &A,
+    finish: i128,
+    largest: ZonedUnit,
+    smallest: ZonedUnit,
+    increment: u32,
+    mode: RoundingMode,
+) -> Result<Duration, Error> {
+    validate_options(largest, smallest, increment)?;
+    if smallest <= ZonedUnit::Day && largest < smallest && increment != 1 {
+        return Err(Error::InvalidRoundingOptions);
+    }
+    if smallest == ZonedUnit::Week && largest < ZonedUnit::Week {
+        let full = difference(
+            start,
+            finish,
+            largest,
+            ZonedUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc,
+            false,
+        )?
+        .fields();
+        let mut fields = [0; 10];
+        fields[..2].copy_from_slice(&full[..2]);
+        let count = full[2] + full[3] / 7;
+        fields[2] = count;
+        let a = start.endpoint(fields)?;
+        if a == finish {
+            return Duration::new(fields);
+        }
+        let sign = (finish - start.origin()).signum();
+        fields[2] = count + sign;
+        let b = start.endpoint(fields)?;
+        let span = (b - a) * sign;
+        fields[2] = crate::rounding::round_duration(count * span + finish - a, span, mode) / span;
+        return Duration::new(fields);
+    }
+    difference(start, finish, largest, smallest, increment, mode, false)
 }

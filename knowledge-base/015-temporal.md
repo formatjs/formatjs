@@ -80,7 +80,7 @@ comparison. Rust mirrors field validation/storage, parsing, signed rounding,
 formatting, totals and arithmetic. Instant arithmetic/differences reuse these
 cores. Totals round rational values once to binary64; unsafe numerator conversion
 before division would lose precision. TS relative Duration total/round/compare now use shared plain/zoned arithmetic.
-Rust exposes zoned relative adapters; native plain-relative adapters remain pending.
+Rust exposes ISO plain/zoned relative adapters; remaining calendar engines and native bindings stay required.
 
 Hermes compiler and runtime both enable ES6 block scoping. The compiler uses
 `-Xes6-block-scoping`; without it, captured getter loop bindings differed in
@@ -189,8 +189,8 @@ full Rust/native Hermes behavior and equivalent complete WASM measurements.
 The real short-date conversions add 30 passing PlainDate executions, bringing
 its full diagnostic to 1304/1308. All eight raw class reports agree across Node,
 Hermes source and optimized bytecode; normal selections total 4,986 executions
-per mode. All 68 normal package/Rust/WASM checks and four timezone data/ICU
-checks pass. Four shared packaging checks passed in the preceding layer. Full
+per mode. All 71 normal package/Rust/WASM checks pass. Four timezone data/ICU checks
+and four shared packaging checks passed in the preceding layers. Full
 diagnostics remain failing and separate from those gates.
 
 ## ZonedDateTime layer
@@ -254,7 +254,7 @@ rounding. Negation/absolute value also avoid observable array iteration.
 
 Rust's no_std ZonedDateTime adds total_duration, round_duration and
 compare_durations, using the borrowed IANA provider and the same exact-rational
-conversion. Native plain-relative adapters, remaining calendars and Hermes
+conversion. Remaining calendars and Hermes
 bindings remain pending. ICU controls verify 19,440 relative rounds, 6,480 totals
 and 1,340 transition-based comparisons. Bounded Hebrew controls use forced
 full/implementation; the production runtime remains independent.
@@ -363,3 +363,36 @@ Tests load actual packaged JS, preserve a reference namespace on conditional
 installation, then require force installation to share root constructors and the
 named Date bridge. The new build option is opt-in; existing package defaults
 retain their bundling behavior.
+
+## Native plain-relative arithmetic
+
+Rust PlainDate now exposes total_duration, round_duration, compare_durations and
+calendar-unit until/since. PlainDateTime until/since accept DateTimeUnit for all
+ten units, retaining existing TimeUnit calls. ZonedUnit remains an alias. Shared
+calendar difference/relative rounding code uses separate plain/zoned anchors;
+plain days stay exactly 24 hours and zoned days follow provider transitions.
+
+Both cores reject clock carry outside valid plain-date bounds before relative
+round/total. The prior TS non-calendar total fast path skipped that check. Range
+checks apply to the input endpoint; Test262 permits rounded durations beyond the
+date range. Zero durations preserve the existing early return at date limits.
+
+A new independent ICU proleptic Gregorian oracle covers eight anchors, including
+leap/month ends, BCE/year zero and years -270000/+275000. Node, Hermes source and
+optimized bytecode share 51,840 plain rounds, 17,280 totals, 20,736 date differences
+and 4,224 comparisons; Rust checks the same expectations. Native cases also port
+pinned Test262 range/overflow/prefix vectors. These numerical ports do not replace
+the required future native Hermes Test262 run. All-calendar Rust/TS support,
+locale integration, native bindings and complete WASM facade/data remain open.
+
+Shared Rust calendar differences use raw internal ISO coordinates when rounding
+crosses public date limits. Public constructors still enforce their full ranges;
+exact differences across both date limits match the forced reference for every
+calendar largest unit. The large ICU Vitest case has a 30-second aggregate budget.
+
+Current Node facade benchmarks retain 23 matched workloads against forced
+Temporal reference. A separate nested pure Instant/Duration profile refreshes
+TS/WASM/reference timings and cold loads after the ISO helper extraction.
+Primitive TS is 3,757 gzip bytes; WASM plus bridge 20,132. This narrow profile
+excludes the missing complete WASM facade/calendar/timezone data and does not
+supply a Hermes backend.

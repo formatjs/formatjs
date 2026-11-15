@@ -1,3 +1,4 @@
+import {dayCheck} from '#packages/temporal/calendar.js'
 import {toDurationFields} from '#packages/temporal/duration.js'
 import {roundDuration, type RoundingMode} from '#packages/temporal/rounding.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
@@ -106,6 +107,8 @@ export function relativeEndpoint(
     normalized >= maxDurationNanoseconds
   )
     throw new RangeError('Duration out of range')
+  // Clock carry must keep target date in range.
+  dayCheck(epochDayOf(end))
   return end
 }
 function validateZonedDay(fields: DurationFields, relative: RelativeTo): void {
@@ -155,6 +158,7 @@ export function relativeTotal(
         BigInt(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
       if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
         throw new RangeError('Duration out of range')
+      dayCheck(epochDayOf(relativeOrigin(relative) + value))
       return durationTotalNumber(value, factors[unit])
     }
   }

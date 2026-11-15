@@ -1283,3 +1283,264 @@ fn independent_icu_named_zone_identities() {
         assert_eq!(named(alias), named(primary));
     }
 }
+
+#[test]
+fn independent_icu_plain_relative_operations() {
+    use formatjs_temporal::{DateTimeUnit, Duration, PlainDateTime, TimeUnit};
+    let mut rounds = 0;
+    let mut totals = 0;
+    let mut dates = 0;
+    let mut comparisons = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_PLAIN_RELATIVE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let start = PlainDateTime::from_epoch_nanoseconds(fields[1].parse().unwrap()).unwrap();
+        let date = start.date();
+        if fields[0] == "C" {
+            let one = fields[2].parse().unwrap();
+            let two = fields[3].parse().unwrap();
+            assert_eq!(
+                date.compare_durations(one, two).unwrap() as i8,
+                fields[4].parse::<i8>().unwrap(),
+                "{line}"
+            );
+            comparisons += 1;
+            continue;
+        }
+        let end = PlainDateTime::from_epoch_nanoseconds(fields[2].parse().unwrap()).unwrap();
+        let unit: DateTimeUnit = fields[3].parse().unwrap();
+        let increment = fields[4].parse().unwrap();
+        let mode = fields[5].parse().unwrap();
+        let mut until = [0; 10];
+        until[unit as usize] = fields[6].parse().unwrap();
+        let mut since = [0; 10];
+        since[unit as usize] = fields[7].parse().unwrap();
+        if fields[0] == "D" {
+            assert_eq!(
+                date.until(end.date(), unit, unit, increment, mode)
+                    .unwrap()
+                    .fields(),
+                until,
+                "{line}"
+            );
+            assert_eq!(
+                date.since(end.date(), unit, unit, increment, mode)
+                    .unwrap()
+                    .fields(),
+                since,
+                "{line}"
+            );
+            dates += 1;
+            continue;
+        }
+        assert_eq!(
+            start
+                .until(end, unit, unit, increment, mode)
+                .unwrap()
+                .fields(),
+            until,
+            "{line}"
+        );
+        assert_eq!(
+            start
+                .since(end, unit, unit, increment, mode)
+                .unwrap()
+                .fields(),
+            since,
+            "{line}"
+        );
+        let duration = Duration::from_time_nanoseconds(
+            end.epoch_nanoseconds() - start.epoch_nanoseconds(),
+            TimeUnit::Hour,
+        )
+        .unwrap();
+        assert_eq!(
+            date.round_duration(duration, unit, unit, increment, mode)
+                .unwrap()
+                .fields(),
+            until,
+            "{line}"
+        );
+        rounds += 1;
+        if fields[8] != "null" {
+            assert_eq!(
+                date.total_duration(duration, unit).unwrap(),
+                fields[8].parse::<f64>().unwrap(),
+                "{line}"
+            );
+            totals += 1;
+        }
+    }
+    assert_eq!(rounds, 51840);
+    assert_eq!(totals, 17280);
+    assert_eq!(dates, 20736);
+    assert_eq!(comparisons, 4224);
+}
+
+#[test]
+fn plain_relative_test262_range_and_prefix_cases() {
+    use formatjs_temporal::{
+        DateTimeUnit as U, Duration, PlainDate, PlainDateTime, RoundingMode as R,
+    };
+    let zero = Duration::new([0; 10]).unwrap();
+    let earliest: PlainDate = "-271821-04-19".parse().unwrap();
+    let latest: PlainDate = "+275760-09-13".parse().unwrap();
+    for date in [earliest, latest] {
+        assert_eq!(date.total_duration(zero, U::Day).unwrap(), 0.0);
+        assert_eq!(
+            date.round_duration(zero, U::Year, U::Nanosecond, 1, R::HalfExpand)
+                .unwrap(),
+            zero
+        );
+    }
+    for (date, nanosecond, mode) in [
+        (latest, 1, R::Ceil),
+        ("-271821-04-20".parse().unwrap(), -1, R::Floor),
+    ] {
+        let duration = Duration::new([0, 0, 0, 0, 0, 0, 0, 0, 0, nanosecond]).unwrap();
+        assert_eq!(
+            date.round_duration(duration, U::Day, U::Day, 1_000_000_000, mode)
+                .unwrap()
+                .fields(),
+            [0, 0, 0, nanosecond * 1_000_000_000, 0, 0, 0, 0, 0, 0]
+        );
+    }
+    let near_min: PlainDate = "-271821-05-19".parse().unwrap();
+    assert_eq!(
+        near_min
+            .round_duration("-PT23H".parse().unwrap(), U::Year, U::Day, 1, R::Expand)
+            .unwrap()
+            .to_string(),
+        "-P1D"
+    );
+    let start: PlainDate = "2020-01-31".parse().unwrap();
+    assert_eq!(
+        start
+            .round_duration("P59D".parse().unwrap(), U::Year, U::Week, 1, R::Ceil)
+            .unwrap()
+            .to_string(),
+        "P1M5W"
+    );
+    let start: PlainDate = "2020-01-01".parse().unwrap();
+    for sign in [-1, 1] {
+        let long =
+            Duration::new([0, 0, 0, 0, 0, 0, sign * 9_007_199_254_740_991, 0, 0, 0]).unwrap();
+        for unit in [U::Year, U::Month, U::Week] {
+            assert!(start.total_duration(long, unit).is_err());
+            assert!(
+                start
+                    .round_duration(long, unit, unit, 1, R::HalfExpand)
+                    .is_err()
+            );
+        }
+        for unit in [U::Day, U::Hour, U::Second] {
+            assert!(start.total_duration(long, unit).is_err());
+            assert!(
+                start
+                    .round_duration(long, unit, U::Nanosecond, 1, R::Trunc)
+                    .is_err()
+            );
+        }
+        let overflow =
+            Duration::new([sign, 0, 0, 0, 0, 0, sign * 9_007_199_254_740_991, 0, 0, 0]).unwrap();
+        assert!(start.compare_durations(overflow, zero).is_err());
+        assert!(start.compare_durations(zero, overflow).is_err());
+    }
+    assert_eq!(
+        earliest
+            .until(latest, U::Day, U::Day, 1, R::Trunc)
+            .unwrap()
+            .fields()[3],
+        200_000_001
+    );
+    assert!(
+        start
+            .round_duration(zero, U::Year, U::Week, 2, R::Trunc)
+            .is_err()
+    );
+    assert!(start.until(start, U::Day, U::Hour, 1, R::Trunc).is_err());
+    let first: PlainDateTime = "2020-01-31T23:30".parse().unwrap();
+    let last: PlainDateTime = "2020-03-01T00:15".parse().unwrap();
+    assert_eq!(
+        first
+            .until(last, U::Year, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .to_string(),
+        "P1MT45M"
+    );
+    let first: PlainDateTime = "2020-01-31T00:00".parse().unwrap();
+    let last: PlainDateTime = "2020-02-29T00:00".parse().unwrap();
+    assert_eq!(
+        first
+            .until(last, U::Month, U::Day, 1, R::Trunc)
+            .unwrap()
+            .to_string(),
+        "P1M"
+    );
+    assert_eq!(
+        first
+            .since(last, U::Month, U::Day, 1, R::Trunc)
+            .unwrap()
+            .to_string(),
+        "-P1M"
+    );
+    assert_eq!(
+        last.until(first, U::Month, U::Day, 1, R::Trunc)
+            .unwrap()
+            .to_string(),
+        "-P29D"
+    );
+    let bound = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;
+    for edge in [-bound + 1, bound - 1] {
+        let edge = PlainDateTime::from_epoch_nanoseconds(edge).unwrap();
+        first
+            .until(edge, U::Year, U::Nanosecond, 1, R::Trunc)
+            .unwrap();
+        edge.until(first, U::Year, U::Nanosecond, 1, R::Trunc)
+            .unwrap();
+    }
+}
+
+#[test]
+fn plain_date_time_rounding_crosses_public_date_limits() {
+    use formatjs_temporal::{DateTimeUnit as U, PlainDateTime, RoundingMode as R};
+    let first: PlainDateTime = "2000-01-31T12:34:56".parse().unwrap();
+    for (last, mode, expected) in [
+        (
+            "+275760-09-13T23:59:59.999999999",
+            R::Ceil,
+            [
+                "P273760Y7M13DT12H",
+                "P3285127M13DT12H",
+                "P14284144W5DT12H",
+                "P99989013DT12H",
+            ],
+        ),
+        (
+            "-271821-04-19T00:00:00.000000001",
+            R::Floor,
+            [
+                "-P273820Y9M11DT13H",
+                "-P3285849M11DT13H",
+                "-P14287284WT13H",
+                "-P100010988DT13H",
+            ],
+        ),
+    ] {
+        let last = last.parse().unwrap();
+        for (largest, expected) in [U::Year, U::Month, U::Week, U::Day]
+            .into_iter()
+            .zip(expected)
+        {
+            assert_eq!(
+                first
+                    .until(last, largest, U::Hour, 1, mode)
+                    .unwrap()
+                    .to_string(),
+                expected
+            );
+        }
+    }
+}

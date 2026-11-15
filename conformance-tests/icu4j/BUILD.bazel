@@ -472,3 +472,36 @@ genrule(
     tools = [":temporal_timezone_identity_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_plain_relative_oracle",
+    testonly = True,
+    srcs = ["TemporalPlainRelativeOracle.java"],
+    main_class = "TemporalPlainRelativeOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_plain_relative_fixture_files",
+    testonly = True,
+    outs = [
+        "temporal-plain-relative-fixtures.tsv",
+        "temporal-plain-relative-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_plain_relative_oracle) $(@D)/temporal-plain-relative-fixtures.tsv $(@D)/temporal-plain-relative-fixtures.js",
+    tools = [":temporal_plain_relative_oracle"],
+)
+
+filegroup(
+    name = "temporal_plain_relative_fixtures",
+    testonly = True,
+    srcs = ["temporal-plain-relative-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_plain_relative_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-plain-relative-fixtures.js"],
+    visibility = ["//visibility:public"],
+)

@@ -302,3 +302,9 @@ Zoned strict selection now covers every non-locale built-ins family, including
 complete since/until directories. Independent ICU identity fixtures check all
 597 available IDs and 178,503 pairs in both TS and Rust. Country primaries remain
 distinct even when transition records or present offsets coincide.
+
+Native Rust plain-relative tests additionally port pinned Duration vectors for
+zero values at date limits, ±1 ns nudged to 10^9 days, minimum-date rounding,
+large clock/calendar endpoint overflow and week-prefix preservation. These ports
+supplement independent ICU controls; they do not claim a native Test262 harness.
+The TS range fix remains subject to the full existing strict selections.

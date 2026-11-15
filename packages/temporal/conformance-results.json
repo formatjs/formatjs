@@ -670,5 +670,32 @@
     "oracle": "ICU4J 79.1 TimeZone.getIanaID; only current available IANA IDs intersected, exact availability count asserted.",
     "rust": "Allocation-free case-insensitive identity lookup and NamedTimeZone with real IANA TransitionZone providers in tests. Production transition registry loading pending.",
     "exclusions": []
+  },
+  "plainRelative": {
+    "calendar": "iso8601 in Rust; existing TS ISO/Hebrew engines retained. Remaining calendars required.",
+    "oracle": "ICU4J 79.1 proleptic Gregorian Calendar.add and BigDecimal rounding/totals; eight anchors including BCE/year zero, leap/month ends and years -270000/+275000.",
+    "engines": [
+      "Node",
+      "Hermes source",
+      "Hermes optimized bytecode",
+      "native Rust"
+    ],
+    "icuRounds": 51840,
+    "icuTotals": 17280,
+    "icuDateDifferences": 20736,
+    "icuComparisons": 4224,
+    "rust": "PlainDate total_duration/round_duration/compare_durations and until/since; PlainDateTime calendar-unit until/since. DateTimeUnit retains ZonedUnit alias and TimeUnit argument conversions.",
+    "range": "Input endpoint includes clock carry and must fit plain-date bounds. Zero values keep date-limit early returns; rounded durations may extend beyond date limits.",
+    "nativeTest262Ports": [
+      "Duration/prototype/round/relativeto-date-limits.js",
+      "Duration/prototype/total/relativeto-date-limits.js",
+      "Duration/prototype/round/out-of-range-nudged-epochns.js",
+      "Duration/prototype/round/relativeto-rounding-near-minimum-date.js",
+      "Duration/prototype/round/relativeto-plaindate-large-time-component-out-of-range.js",
+      "Duration/prototype/total/relativeto-plaindate-large-time-component-out-of-range.js",
+      "Duration/compare/relativeto-plaindate-add24hourdaystonormalizedtimeduration-out-of-range.js"
+    ],
+    "exclusions": [],
+    "note": "Native numerical ports and independent oracles supplement TS Test262; complete native Hermes conformance/bindings still required."
   }
 }

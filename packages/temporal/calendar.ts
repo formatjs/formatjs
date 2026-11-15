@@ -40,7 +40,7 @@ function yearCheck(year: number): number {
     throw new RangeError('Calendar year out of range')
   return year
 }
-function dayCheck(day: number): number {
+export function dayCheck(day: number): number {
   if (integer(day) < -100000001 || day > 100000000)
     throw new RangeError('Calendar date out of range')
   return day
