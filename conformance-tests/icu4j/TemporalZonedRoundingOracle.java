@@ -20,7 +20,9 @@ public final class TemporalZonedRoundingOracle {
       {"Pacific/Kwajalein", "1969-09-30"}, {"Pacific/Apia", "1892-07-04"}
     };
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J earliest civil boundaries; TC39 repeated-date rounding cap");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalZonedRoundingOracle = [");
+      else out.println("# ICU4J earliest civil boundaries; TC39 repeated-date rounding cap");
       for (String[] seed : seeds) {
         GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(seed[0], TimeZone.TIMEZONE_ICU));
         calendar.setGregorianChange(new Date(Long.MIN_VALUE));
@@ -43,10 +45,12 @@ public final class TemporalZonedRoundingOracle {
               case "floor", "trunc" -> false;
               default -> elapsed * 2 > length || elapsed * 2 == length && (mode.equals("halfCeil") || mode.equals("halfExpand"));
             };
-            out.println(seed[0] + "\t" + instant + "\t" + start + "\t" + end + "\t" + mode + "\t" + (up ? end : start));
+            String row = seed[0] + "\t" + instant + "\t" + start + "\t" + end + "\t" + mode + "\t" + (up ? end : start);
+            out.println(javascript ? "\"" + row.replace("\t", "\\t") + "\"," : row);
           }
         }
       }
+      if (javascript) out.println("];");
     }
   }
   private static long boundary(Calendar calendar, int year, int month, int day) {

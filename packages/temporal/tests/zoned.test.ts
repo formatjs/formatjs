@@ -223,27 +223,3 @@ it('rounds repeated civil dates to earliest midnight boundaries', () => {
     }
   }
 })
-
-it('matches ICU civil boundaries and day rounding through historical transitions', () => {
-  const file = runfiles.resolve(
-    `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-zoned-rounding-fixtures.tsv`
-  )
-  let count = 0
-  for (const line of readFileSync(file, 'utf8').trim().split('\n')) {
-    if (line.startsWith('#')) continue
-    const [name, instant, start, end, roundingMode, expected] = line.split('\t')
-    const value = new Temporal.ZonedDateTime(BigInt(instant) * 1_000_000n, name)
-    expect(value.startOfDay().epochNanoseconds, line).toBe(
-      BigInt(start) * 1_000_000n
-    )
-    expect(value.hoursInDay, line).toBe(
-      (Number(end) - Number(start)) / 3_600_000
-    )
-    expect(
-      value.round({smallestUnit: 'day', roundingMode}).epochNanoseconds,
-      line
-    ).toBe(BigInt(expected) * 1_000_000n)
-    count++
-  }
-  expect(count).toBe(5292)
-})

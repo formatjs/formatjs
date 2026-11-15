@@ -1,3 +1,4 @@
+import type {ZonedSlot} from '#packages/temporal/plain-slots.js'
 import type {RelativeTo} from '#packages/temporal/relative-duration.js'
 import type {
   CalendarId,
@@ -25,6 +26,29 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  addZonedDateTime(
+    slot: ZonedSlot,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): bigint
+  differenceZonedDateTime(
+    start: ZonedSlot,
+    end: ZonedSlot,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  roundZonedDateTime(
+    slot: ZonedSlot,
+    unit: string,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
+  startOfZonedDay(slot: ZonedSlot, day?: number): bigint
+  hoursInZonedDay(slot: ZonedSlot): number
   addPlainDate(
     epochDay: number,
     calendar: string,
@@ -265,24 +289,69 @@ export function configureNativeTemporal(query: NativeQuery): void {
     fields.day = value.day
     return fields
   }
+  function zonedFields(slot: ZonedSlot): Record<string, unknown> {
+    const result = create(null)
+    result.nanoseconds = text(slot.epochNanoseconds)
+    result.calendar = slot.calendar
+    result.identifier = slot.timeZone
+    return result
+  }
   function relativeFields(
     relative?: RelativeTo
   ): Record<string, unknown> | undefined {
     if (!relative) return undefined
-    const result = create(null)
-    if ('date' in relative) {
-      result.kind = 'date'
-      result.epochDay = relative.date.epochDay
-      result.calendar = relative.date.calendar
-    } else {
+    if ('zoned' in relative) {
+      const result = zonedFields(relative.zoned)
       result.kind = 'zoned'
-      result.nanoseconds = text(relative.zoned.epochNanoseconds)
-      result.calendar = relative.zoned.calendar
-      result.identifier = relative.zoned.timeZone
+      return result
     }
+    const result = create(null)
+    result.kind = 'date'
+    result.epochDay = relative.date.epochDay
+    result.calendar = relative.date.calendar
     return result
   }
   native = {
+    addZonedDateTime: (slot, fields, subtract, overflow) =>
+      ToBigInt(
+        call('addZonedDateTime', {
+          value: zonedFields(slot),
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        })
+      ),
+    differenceZonedDateTime: (
+      start,
+      end,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differenceZonedDateTime', {
+        value: zonedFields(start),
+        other: zonedFields(end),
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    roundZonedDateTime: (slot, unit, increment, mode) =>
+      ToBigInt(
+        call('roundZonedDateTime', {
+          value: zonedFields(slot),
+          unit,
+          increment,
+          mode,
+        })
+      ),
+    startOfZonedDay: (slot, day) =>
+      ToBigInt(call('startOfZonedDay', {value: zonedFields(slot), day})),
+    hoursInZonedDay: slot =>
+      call('hoursInZonedDay', {value: zonedFields(slot)}),
     addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
       call('addPlainDate', {
         epochDay,

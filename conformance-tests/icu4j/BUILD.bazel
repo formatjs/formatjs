@@ -758,3 +758,12 @@ genrule(
     tools = [":temporal_zoned_difference_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "temporal_zoned_rounding_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-rounding-fixtures.js"],
+    cmd = "$(execpath :temporal_zoned_rounding_oracle) $@ --js",
+    tools = [":temporal_zoned_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)

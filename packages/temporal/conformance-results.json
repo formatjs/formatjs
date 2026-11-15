@@ -1226,5 +1226,63 @@
       "native Intl brand/styles/range integration",
       "equivalent full-backend performance and size comparisons"
     ]
+  },
+  "nativeZonedArithmeticBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 7,
+    "nativeOperations": 47,
+    "operations": [
+      "addZonedDateTime",
+      "differenceZonedDateTime",
+      "roundZonedDateTime",
+      "startOfZonedDay",
+      "hoursInZonedDay"
+    ],
+    "scope": "Typed Rust zoned add/subtract, until/since, clock/day rounding, civil day boundaries and hoursInDay. JS retains coercion, option access order, brands/slots, allocation and date parsing/formatting. Short-date operations, SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "zonedDifferenceRows": 19440,
+      "civilDayRows": 5292,
+      "note": "Differences verify until and since; civil rows verify earliest boundary, exact hoursInDay and all nine day-rounding modes through gaps, folds and repeated dates. Existing timezone controls verify future calendar-versus-elapsed additions and all16-calendar controls pass."
+    },
+    "backendSelection": "Per-operation faults require each zoned operation for operands created before activation, including US/Eastern year2400 and Lord Howe. Unrelated native operations remain real.",
+    "boundaryControls": "Direct ABI checks alias primary identity, 23-hour days, explicit civil boundaries, cross-zone elapsed differences and rejected cross-zone calendar differences/invalid increments/range.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804
+    },
+    "regressionTargets": 59,
+    "rustABITests": 9,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native date parsing/formatting and short-date/Now orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
   }
 }

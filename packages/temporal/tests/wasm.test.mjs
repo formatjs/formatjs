@@ -162,7 +162,7 @@ const oldABI = new WebAssembly.Module(
       ...exported('temporal_free', 0),
       ...exported('temporal_query', 0),
     ]),
-    ...section(10, [1, 4, 0, 65, 5, 11]),
+    ...section(10, [1, 4, 0, 65, 6, 11]),
   ])
 )
 assert.throws(
@@ -318,6 +318,20 @@ console.log(
       readFileSync(resolve(process.argv[20]), 'utf8'),
       rows(process.argv[7]),
       rows(process.argv[6]),
+      (actual, expected, context) => assert.equal(actual, expected, context)
+    ),
+  })
+)
+
+const {checkZonedArithmeticOracle} = await import(
+  pathToFileURL(resolve(process.argv[21])).href
+)
+console.log(
+  JSON.stringify({
+    zonedArithmetic: checkZonedArithmeticOracle(
+      Temporal,
+      readFileSync(resolve(process.argv[18]), 'utf8'),
+      readFileSync(resolve(process.argv[22]), 'utf8'),
       (actual, expected, context) => assert.equal(actual, expected, context)
     ),
   })

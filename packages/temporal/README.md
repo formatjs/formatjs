@@ -535,3 +535,40 @@ differences:61.43 to27.80. WASM loses all five to TS on this host. Consumer gzip
 TS361,031 bytes; WASM JS +binary779,413, including retained fallback data. See
 `benchmarks/temporal/README.md` and the plain-arithmetic snapshots for methods,
 reference comparisons, startup costs and scope.
+
+## Native zoned arithmetic
+
+Hermes/WASM now use typed Rust engines for ZonedDateTime add/subtract,
+until/since, clock/day rounding, startOfDay and hoursInDay. Calendar additions
+resolve local time before elapsed clock additions; day queries use actual civil
+boundaries, including historical midnight gaps and repeated dates. JS retains
+operand coercion, option order, brands/slots and allocation. Selected native
+errors propagate without a TS retry. Five operations bring the bridge to 47;
+WASM ABI 7 requires the matching asset.
+
+The same registry supplies all 16 calendars, IANA aliases, fixed offsets and future
+recurring rules. Relative Duration anchors share the normalized zoned adapter.
+Existing objects select the active backend per operation. Fault controls use
+pre-activation operands in New York, Lord Howe and year 2400 US/Eastern.
+
+Independent ICU controls verify 19,440 zoned differences in both directions and 5,292
+civil-day rows: earliest boundary, hoursInDay and all nine day-rounding modes.
+Shared verifiers accept the actual TS, Hermes source/HBC or published WASM namespace.
+Existing independent timezone controls retain future gap/fold additions and
+calendar-versus-elapsed-day checks. Direct ABI controls verify alias equality,
+23-hour calendar days, explicit civil boundaries, cross-zone elapsed differences
+and rejection of cross-zone calendar differences or invalid increments/bounds.
+
+Date parsing/formatting, short-date operations, real Hermes SDK installation and
+native Intl integration remain open. These remain partial native-backend results.
+
+Validation: 59 regression targets pass, including all eight full native class suites
+(9,090 executions per Hermes source/HBC and WASM mode), default TS full Zoned 1,804,
+Date 1,308, DateTime 1,552, Duration 1,086, independent ICU controls, package checks and
+Rust core/nine ABI tests. No new exclusions. Backend remains hybrid.
+
+Matched Hermes bytecode benchmarks improve all five zoned cases against TS;
+hour rounding drops from 47.68 to 9.81 microseconds (reference 27.18). Reference
+comparisons vary. WASM loses all five to TS here. Consumer gzip: TS 361,109 bytes;
+WASM JS +binary 783,358, including retained fallback packs. See the zoned-arithmetic
+snapshots and `benchmarks/temporal/README.md` for methods and startup costs.

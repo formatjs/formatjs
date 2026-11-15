@@ -347,6 +347,38 @@ const cases = [
         .toString(),
   },
   {
+    name: 'zonedRound',
+    owned: (index: number) =>
+      zonedValues[index]
+        .round({
+          smallestUnit: 'hour',
+          roundingIncrement: 1,
+          roundingMode: 'halfEven',
+        })
+        .epochNanoseconds.toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index]
+        .round({
+          smallestUnit: 'hour',
+          roundingIncrement: 1,
+          roundingMode: 'halfEven',
+        })
+        .epochNanoseconds.toString(),
+  },
+  {
+    name: 'zonedDayStart',
+    owned: (index: number) =>
+      zonedValues[index].startOfDay().epochNanoseconds.toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index].startOfDay().epochNanoseconds.toString(),
+  },
+  {
+    name: 'zonedHoursInDay',
+    owned: (index: number) => zonedValues[index].hoursInDay.toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index].hoursInDay.toString(),
+  },
+  {
     name: 'zonedTransition',
     iterations: 512,
     warmup: 128,
@@ -456,11 +488,11 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain arithmetic JSON bridge optional, all16 calendars and IANA records bundled, date parsing/formatting and remaining short-date/zoned orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic JSON bridge optional, all16 calendars and IANA records bundled, date parsing/formatting and remaining short-date orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
     backend: query
-      ? 'rust-iso-instant-time-calendars-zones-duration-plain'
+      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned'
       : 'typescript',
     iterations,
     samples,

@@ -286,3 +286,53 @@ fn plain_arithmetic_preserves_date_bounds_clock_carry_and_rejects_invalid_option
         assert_eq!(request(input), Err(1));
     }
 }
+
+#[test]
+fn zoned_arithmetic_uses_alias_identity_dst_days_and_strict_day_boundaries() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    let value = json!({"nanoseconds":"1583600400000000000","identifier":"America/New_York","calendar":"iso8601"});
+    let next =
+        json!({"nanoseconds":"1583683200000000000","identifier":"US/Eastern","calendar":"iso8601"});
+    let duration = json!({"years":"0","months":"0","weeks":"0","days":"1","hours":"0","minutes":"0","seconds":"0","milliseconds":"0","microseconds":"0","nanoseconds":"0"});
+    assert_eq!(
+        request(
+            json!({"op":"addZonedDateTime","value":value,"duration":duration,"subtract":false,"overflow":"reject"})
+        ),
+        Ok(json!("1583683200000000000"))
+    );
+    let difference = request(json!({"op":"differenceZonedDateTime","value":value,"other":next,"largest":"day","smallest":"day","increment":1,"mode":"trunc","since":false})).unwrap();
+    assert_eq!(difference["days"].as_f64(), Some(1.0));
+    assert_eq!(
+        request(json!({"op":"hoursInZonedDay","value":next}))
+            .unwrap()
+            .as_f64(),
+        Some(23.0)
+    );
+    assert_eq!(
+        request(json!({"op":"startOfZonedDay","value":next})),
+        Ok(json!("1583643600000000000"))
+    );
+    assert_eq!(
+        request(json!({"op":"startOfZonedDay","value":value,"day":18329})),
+        Ok(json!("1583643600000000000"))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"roundZonedDateTime","value":value,"unit":"day","increment":1,"mode":"ceil"})
+        ),
+        Ok(json!("1583643600000000000"))
+    );
+    let other =
+        json!({"nanoseconds":"1583683200000000000","identifier":"UTC","calendar":"iso8601"});
+    let elapsed = request(json!({"op":"differenceZonedDateTime","value":value,"other":other,"largest":"hour","smallest":"hour","increment":1,"mode":"trunc","since":false})).unwrap();
+    assert_eq!(elapsed["hours"].as_f64(), Some(23.0));
+    for input in [
+        json!({"op":"differenceZonedDateTime","value":value,"other":other,"largest":"day","smallest":"day","increment":1,"mode":"trunc","since":false}),
+        json!({"op":"roundZonedDateTime","value":value,"unit":"day","increment":2,"mode":"ceil"}),
+        json!({"op":"roundZonedDateTime","value":value,"unit":"hour","increment":24,"mode":"ceil"}),
+        json!({"op":"startOfZonedDay","value":value,"day":100000001}),
+        json!({"op":"hoursInZonedDay","value":{"nanoseconds":"0","identifier":"Unknown/Zone","calendar":"iso8601"}}),
+    ] {
+        assert_eq!(request(input), Err(1));
+    }
+}

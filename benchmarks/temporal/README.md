@@ -946,3 +946,42 @@ Native packs still duplicate retained TS fallback data. Compile/instantiate:
 3.07/9.79/1.13/1.73 ms. JS/TS already warm; these exclude cold JS loading.
 Date parsing/formatting, remaining short-date/zoned orchestration and full native
 SDK distribution remain open; these are partial-backend measurements.
+
+## Native zoned arithmetic
+
+`hermes-zoned-arithmetic-results.json`, `wasm-zoned-arithmetic-results.json` and
+`zoned-arithmetic-backend-size-results.json` extend the same commands to 31
+workloads. Zoned day addition/differences now use typed Rust operations. Three new
+cases measure hour rounding with halfEven, startOfDay and hoursInDay. Existing
+eight zoned inputs include DST gaps/folds, half-hour and skipped-day changes.
+Parity, warmup/sample counts, transition overrides and Intl providers match the
+plain-arithmetic profile. ISO throughput only; all 16 native calendar packs and
+owned IANA data remain included. Final runs execute sequentially after validation.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Zoned day add: 70.12 /36.35 /31.94.
+- Zoned day difference: 117.15 /49.33 /21.30.
+- Zoned hour round: 47.68 /9.81 /27.18.
+- Zoned day start: 30.06 /18.04 /19.45.
+- Zoned hoursInDay: 54.42 /30.00 /8.57.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Zoned day add: 6.97 /34.92 /3.45.
+- Zoned day difference: 13.84 /52.46 /47.52.
+- Zoned hour round: 4.06 /10.28 /3.00.
+- Zoned day start: 3.68 /21.10 /1.42.
+- Zoned hoursInDay: 4.46 /36.77 /2.20.
+
+All five Hermes cases improve against TS. Reference comparisons vary; hoursInDay
+remains substantially faster in the reference. WASM loses all five against TS.
+These partial-backend measurements do not establish a default-backend choice.
+
+Binary: 3,345,951 raw /419,656 gzip bytes. Consumer bundles: TS 361,109 gzip;
+WASM JS 363,702 +binary 419,656 =783,358. Separately compressed ESM: TS 363,110
+versus WASM 783,571. Native packs still duplicate retained TS fallback data.
+Compile/instantiate: 1.81/1.59 ms; first native/calendar/timezone/Duration calls:
+2.79/9.95/1.28/1.86 ms. JS/TS already warm; these exclude cold JS loading.
+Date parsing/formatting, short-date operations, SDK installation/distribution and
+native Intl integration remain open. Full-backend artifact sizes remain unproven.

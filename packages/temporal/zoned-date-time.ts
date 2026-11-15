@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
@@ -337,6 +338,13 @@ function add(
   sign: number
 ): ZonedDateTimeObject {
   const fields = toDurationFields(duration)
+  const native = nativeTemporal()
+  if (native)
+    return createZonedDateTime(
+      native.addZonedDateTime(slot, fields, sign < 0, overflowOption(options)),
+      slot.timeZone,
+      slot.calendar
+    )
   const keys = Object.keys(fields) as (keyof typeof fields)[]
   for (let i = 0; i < keys.length; i++) fields[keys[i]] *= sign
   const overflow = overflowOption(options)
@@ -453,6 +461,19 @@ export function differenceZonedDuration(
     throw new RangeError('Largest unit smaller than smallest unit')
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
     throw new RangeError('Timezones differ')
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differenceZonedDateTime(
+        start,
+        end,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since
+      )
+    )
   return createDuration(
     roundRelativeDifference(
       start.epochNanoseconds,
@@ -471,7 +492,10 @@ export function differenceZonedDuration(
   )
 }
 
-function startOfDay(slot: ZonedSlot, day = epochDayOf(local(slot))): bigint {
+function startOfDay(slot: ZonedSlot, day?: number): bigint {
+  const native = nativeTemporal()
+  if (native) return native.startOfZonedDay(slot, day)
+  day ??= epochDayOf(local(slot))
   const kernel = zonedKernel(slot.timeZone),
     midnight = BigInt(day) * nsPerDay
   const fields = epochNanosecondsToISO(midnight),
@@ -607,6 +631,8 @@ class ZonedDateTimeValue {
   }
   get hoursInDay(): number {
     const slot = read(this)
+    const native = nativeTemporal()
+    if (native) return native.hoursInZonedDay(slot)
     return (
       Number(startOfDay(slot, epochDayOf(local(slot)) + 1) - startOfDay(slot)) /
       3_600_000_000_000
@@ -669,6 +695,18 @@ class ZonedDateTimeValue {
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
+    const native = nativeTemporal()
+    if (native)
+      return createZonedDateTime(
+        native.roundZonedDateTime(
+          slot,
+          unit === 'day' ? 'day' : timeUnit(unit),
+          increment,
+          mode
+        ),
+        slot.timeZone,
+        slot.calendar
+      )
     let value: bigint
     if (unit === 'day') {
       if (increment !== 1) throw new RangeError('Invalid day increment')

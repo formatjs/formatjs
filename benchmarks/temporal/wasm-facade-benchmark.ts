@@ -344,6 +344,38 @@ function measure(namespace: typeof reference): unknown[] {
           .toString(),
     },
     {
+      name: 'zonedRound',
+      run: (index: number) =>
+        zonedValues[index]
+          .round({
+            smallestUnit: 'hour',
+            roundingIncrement: 1,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .round({
+            smallestUnit: 'hour',
+            roundingIncrement: 1,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedDayStart',
+      run: (index: number) =>
+        zonedValues[index].startOfDay().epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].startOfDay().epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedHoursInDay',
+      run: (index: number) => zonedValues[index].hoursInDay.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].hoursInDay.toString(),
+    },
+    {
       name: 'zonedTransition',
       iterations: 512,
       warmup: 128,
@@ -522,7 +554,7 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math and plain date arithmetic with16 native calendars and all IANA records; date parsing/formatting, remaining short-date/zoned orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math and plain/zoned arithmetic with16 native calendars and all IANA records; date parsing/formatting, remaining short-date orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
         'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,

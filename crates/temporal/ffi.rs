@@ -387,25 +387,87 @@ fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+fn zoned_value(
+    value: &Value,
+) -> Result<ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>, Error> {
+    Ok(ZonedDateTime::new_in_calendar(
+        instant(value, "nanoseconds")?,
+        time_zones().resolve(value["identifier"].as_str().ok_or(Error::InvalidTimeZone)?)?,
+        calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
+    ))
+}
+fn zoned_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    let value = zoned_value(&request["value"])?;
+    let unit = |key: &str| -> Result<DateTimeUnit, Error> {
+        request[key]
+            .as_str()
+            .ok_or(Error::InvalidRoundingOptions)?
+            .parse()
+    };
+    let increment = || -> Result<u32, Error> {
+        integer(request.get("increment"), None)?
+            .try_into()
+            .map_err(|_| Error::InvalidRoundingOptions)
+    };
+    match op {
+        "addZonedDateTime" => {
+            let duration = duration(request)?;
+            let overflow = match calendar_overflow(request)? {
+                Overflow::Constrain => crate::Overflow::Constrain,
+                Overflow::Reject => crate::Overflow::Reject,
+            };
+            let result = match request["subtract"].as_bool() {
+                Some(false) => value.checked_add(duration, overflow)?,
+                Some(true) => value.checked_subtract(duration, overflow)?,
+                None => return Err(Error::InvalidDuration),
+            };
+            Ok(json!(result.instant().epoch_nanoseconds().to_string()))
+        }
+        "differenceZonedDateTime" => {
+            let other = zoned_value(&request["other"])?;
+            let (largest, smallest, increment, mode) = (
+                unit("largest")?,
+                unit("smallest")?,
+                increment()?,
+                mode(request)?,
+            );
+            let result = match request["since"].as_bool() {
+                Some(false) => value.until(&other, largest, smallest, increment, mode)?,
+                Some(true) => value.since(&other, largest, smallest, increment, mode)?,
+                None => return Err(Error::InvalidRoundingOptions),
+            };
+            Ok(duration_record(result))
+        }
+        "roundZonedDateTime" => Ok(json!(
+            value
+                .round(unit("unit")?, increment()?, mode(request)?)?
+                .instant()
+                .epoch_nanoseconds()
+                .to_string()
+        )),
+        "startOfZonedDay" => {
+            let instant = match request.get("day") {
+                Some(day) => value.day_boundary(integer(Some(day), None)?)?,
+                None => value.start_of_day()?.instant(),
+            };
+            Ok(json!(instant.epoch_nanoseconds().to_string()))
+        }
+        "hoursInZonedDay" => Ok(json!(value.hours_in_day()?)),
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 enum DurationAnchor {
     Date(PlainDate<CalendarRef<'static>>),
     Zoned(ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>),
 }
 impl DurationAnchor {
     fn new(value: &Value) -> Result<Self, Error> {
-        let calendar =
-            calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
         match value["kind"].as_str() {
             Some("date") => Ok(Self::Date(PlainDate::from_epoch_day_in(
                 integer(value.get("epochDay"), None)?,
-                calendar,
+                calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
             )?)),
-            Some("zoned") => Ok(Self::Zoned(ZonedDateTime::new_in_calendar(
-                instant(value, "nanoseconds")?,
-                time_zones()
-                    .resolve(value["identifier"].as_str().ok_or(Error::InvalidTimeZone)?)?,
-                calendar,
-            ))),
+            Some("zoned") => Ok(Self::Zoned(zoned_value(value)?)),
             _ => Err(Error::InvalidDateTime),
         }
     }
@@ -818,12 +880,17 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain","calls":CALLS.load(Ordering::Relaxed),"operations":["addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned","calls":CALLS.load(Ordering::Relaxed),"operations":["addZonedDateTime","differenceZonedDateTime","roundZonedDateTime","startOfZonedDay","hoursInZonedDay","addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "addPlainDate"
+        "addZonedDateTime"
+            | "differenceZonedDateTime"
+            | "roundZonedDateTime"
+            | "startOfZonedDay"
+            | "hoursInZonedDay"
+            | "addPlainDate"
             | "addPlainDateTime"
             | "differencePlainDate"
             | "differencePlainDateTime"
@@ -889,6 +956,9 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let days = integer(request.get("days"), None)?;
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
+            }
+            _ if op.ends_with("ZonedDateTime") || op.ends_with("ZonedDay") => {
+                zoned_operation(op, &request)
             }
             _ if op.ends_with("PlainDate") || op.ends_with("PlainDateTime") => {
                 plain_operation(op, &request)
