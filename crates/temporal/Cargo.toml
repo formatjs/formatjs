@@ -10,6 +10,9 @@ repository = "https://github.com/formatjs/formatjs"
 [lib]
 path = "lib.rs"
 
+[features]
+compiled_time_zones = []
+
 [dependencies]
 formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars", version = "0.2.3", default-features = false }
 

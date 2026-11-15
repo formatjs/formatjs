@@ -602,8 +602,8 @@ Temporal also owns calendar-aware PlainDate/PlainDateTime/zoned cores and
 PlainYearMonth/PlainMonthDay. The no_std TimeZone provider supplies exact nanosecond
 offsets and transition queries. FixedOffset supplies constant zones; TransitionZone
 borrows explicit records and recurring rules. Zoned differences round against
-actual calendar spans. Production registry loading and Hermes bindings
-remain pending. ICU controls cover
+actual calendar spans. Native IANA registry lookup uses caller-owned or optional
+Bazel-compiled records without runtime dependencies; Hermes bindings remain pending. ICU controls cover
 Gregorian conversion, calendar arithmetic, short-date references/rounding,
 clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
 
@@ -668,3 +668,10 @@ constrained addition can be inverted. Native public date classes remain ISO.
 Borrowed `TableCalendar` views add Chinese, Dangi and Umm al-Qura to the same
 no_std numeric layer. Private `NumericCalendar` shares addition/difference math;
 loading, ownership and embedded packs remain outside the numeric core.
+
+Temporal's optional `with_time_zones` Bazel variant adds generated static timezone
+records through `compiled_time_zones`; no new crate dependency is added. The pure
+core retains borrowed registry APIs and excludes the pack. The generator imports
+`@formatjs_generated/tz` only at build time; checked const constructors validate
+records. Native ICU tests now resolve real zones through this production registry,
+including aliases and UTC, rather than decoding JSON in tests.

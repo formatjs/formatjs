@@ -267,3 +267,9 @@ Legacy native Intl adaptation remains incomplete: direct DateTimeFormat calls
 cannot yet inspect owned brands, YearMonth/MonthDay style filtering needs work,
 and native Date clipping limits extended plain dates. These remain required work;
 the package stays private. No native Temporal implementation is called.
+
+Native Rust also has a caller-owned IANA registry and an optional Bazel-compiled
+pack. Production lookup covers aliases, exact historical offsets and recurring
+future rules. The native ICU suite now uses this registry directly; native
+Hermes installation and complete WASM facade/data measurements remain pending.
+See the [Rust registry API](../../crates/temporal/README.md#iana-registry).

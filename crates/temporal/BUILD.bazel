@@ -1,6 +1,6 @@
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
-load("//tools:index.bzl", "generate_src_file")
+load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load(":wasm.bzl", "temporal_wasm")
 
@@ -48,6 +48,7 @@ rust_library(
         "time.rs",
         "timezone.rs",
         "timezone_identity.rs",
+        "timezone_registry.rs",
         "zoned.rs",
         "zoned_difference.rs",
     ],
@@ -95,7 +96,6 @@ formatjs_rust_test(
         "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
         "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
         "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
-        "//packages/intl-datetimeformat:tz_all_json",
         "//conformance-tests/icu4j:temporal_transition_fixtures",
         "//conformance-tests/icu4j:temporal_timezone_fixtures",
         "//conformance-tests/icu4j:temporal_short_date_fixtures",
@@ -115,7 +115,6 @@ formatjs_rust_test(
         "FORMATJS_TEMPORAL_ZONED_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
         "FORMATJS_TEMPORAL_ZONED_DIFFERENCE": "$(execpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
         "FORMATJS_TEMPORAL_TRANSITIONS": "$(execpath //conformance-tests/icu4j:temporal_transition_fixtures)",
-        "FORMATJS_TEMPORAL_TZ_DATA": "$(execpath //packages/intl-datetimeformat:tz_all_json)",
         "FORMATJS_TEMPORAL_TIMEZONE": "$(execpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
         "FORMATJS_TEMPORAL_SHORT_DATES": "$(execpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
         "FORMATJS_TEMPORAL_DATE_ARITHMETIC": "$(execpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
@@ -127,9 +126,9 @@ formatjs_rust_test(
         "FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)",
     },
     deps = [
-        ":temporal",
+        ":with_time_zones",
         "@crates//:serde_json",
-    ],
+    ],  # keep
 )
 
 generate_src_file(
@@ -137,4 +136,57 @@ generate_src_file(
     src = "identifiers_generated.rs",
     data = ["//:node_modules/@formatjs_generated/tz"],
     tool = "//crates/temporal/scripts:identifiers",
+)
+
+ts_run_binary(
+    name = "time_zones_data",
+    outs = ["timezones_data.rs"],
+    args = [
+        "--out",
+        "$(rootpath timezones_data.rs)",
+    ],
+    tool = "//crates/temporal/scripts:timezones",
+    use_execroot_entry_point = False,
+)
+
+rust_library(
+    name = "with_time_zones",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+    ],
+    compile_data = [":time_zones_data"],
+    crate_features = ["compiled_time_zones"],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)"},
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+)
+
+formatjs_rust_test(
+    name = "registry_test",
+    size = "small",
+    srcs = ["registry.test.rs"],
+    edition = "2024",
+    deps = [":temporal"],
 )

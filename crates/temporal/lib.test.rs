@@ -616,8 +616,8 @@ fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
 
 #[test]
 fn independent_icu_zoned_fields_and_disambiguation() {
-    use formatjs_temporal::{Disambiguation, TimeZone, TransitionZone, ZonedDateTime};
-    let zones = owned_iana_zones();
+    use formatjs_temporal::{Disambiguation, TimeZone, ZonedDateTime};
+    let zones = iana_registry();
     let mut count = 0;
     let mut transitions = 0;
     let mut previous: Option<(&str, i128, i128)> = None;
@@ -629,10 +629,9 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         let name = fields[0];
         let value = fields[1].parse::<i128>().unwrap() * 1_000_000;
         let offset = fields[2].parse::<i128>().unwrap() * 1_000_000_000;
-        let Some((initial, events, future)) = zones.get(name) else {
+        let Some(zone) = icu_zone(zones, name) else {
             continue;
         };
-        let zone = TransitionZone::new(*initial, events, *future).unwrap();
         let instant = Instant::from_epoch_nanoseconds(value).unwrap();
         assert_eq!(zone.offset_nanoseconds(instant), offset, "{line}");
         let zoned = ZonedDateTime::new(instant, zone);
@@ -710,97 +709,49 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         previous = Some((name, value, offset));
         count += 1;
     }
-    assert_eq!(count, 13160);
-    assert_eq!(transitions, 1340);
+    assert_eq!(count, 17640);
+    println!("{count} ICU named offset rows, {transitions} gap/fold controls");
+    assert_eq!(transitions, 1900);
 }
 
-fn owned_iana_zones() -> std::collections::BTreeMap<
-    String,
-    (
-        i32,
-        Vec<formatjs_temporal::OffsetTransition>,
-        Option<formatjs_temporal::FutureRule>,
-    ),
-> {
-    use formatjs_temporal::{FutureRule, OffsetTransition, TransitionRule};
-    use std::collections::BTreeMap;
-    fn rule(value: &serde_json::Value) -> TransitionRule {
-        let number = |name: &str| value[name].as_i64().unwrap();
-        match value["kind"].as_str().unwrap() {
-            "month" => TransitionRule::Month {
-                month: number("month") as u8,
-                week: number("week") as u8,
-                weekday: number("weekday") as u8,
-                seconds: number("seconds") as i32,
-            },
-            "day" => TransitionRule::Day {
-                day: number("day") as u16,
-                seconds: number("seconds") as i32,
-            },
-            "julian" => TransitionRule::Julian {
-                day: number("day") as u16,
-                seconds: number("seconds") as i32,
-            },
-            _ => panic!("unknown rule"),
-        }
+fn iana_registry() -> formatjs_temporal::TimeZoneRegistry<'static> {
+    formatjs_temporal::TimeZoneRegistry::compiled()
+}
+
+fn icu_zone(
+    registry: formatjs_temporal::TimeZoneRegistry<'static>,
+    name: &str,
+) -> Option<formatjs_temporal::ResolvedTimeZone<'static>> {
+    // ICU also enumerates legacy short IDs such as ACT; these are not IANA IDs.
+    if formatjs_temporal::named_time_zone_identifier(name).is_none() {
+        assert_eq!(
+            registry.resolve(name),
+            Err(formatjs_temporal::Error::InvalidTimeZone),
+            "{name}"
+        );
+        None
+    } else {
+        Some(
+            registry
+                .resolve(name)
+                .unwrap_or_else(|error| panic!("{name}: {error:?}")),
+        )
     }
-    let packed: serde_json::Value =
-        serde_json::from_str(include_str!(env!("FORMATJS_TEMPORAL_TZ_DATA"))).unwrap();
-    let offsets: Vec<i32> = packed["offsets"]
-        .as_str()
-        .unwrap()
-        .split('|')
-        .map(|value| i32::from_str_radix(value, 36).unwrap())
-        .collect();
-    let mut zones = BTreeMap::new();
-    for row in packed["zones"].as_array().unwrap() {
-        let mut parts = row.as_str().unwrap().split('|');
-        let name = parts.next().unwrap();
-        let mut initial = 0;
-        let mut transitions = Vec::new();
-        for part in parts {
-            let fields: Vec<&str> = part.split(',').collect();
-            let offset = offsets[fields[2].parse::<usize>().unwrap()];
-            if fields[0].is_empty() {
-                initial = offset;
-            } else {
-                transitions.push(OffsetTransition {
-                    epoch_seconds: i64::from_str_radix(fields[0], 36).unwrap(),
-                    offset_seconds: offset,
-                });
-            }
-        }
-        let value = &packed["future"][name];
-        let future = if value.is_null() {
-            None
-        } else {
-            let daylight = value["daylightOffset"]
-                .as_i64()
-                .map(|offset| (offset as i32, rule(&value["start"]), rule(&value["end"])));
-            Some(
-                FutureRule::new(value["standardOffset"].as_i64().unwrap() as i32, daylight)
-                    .unwrap(),
-            )
-        };
-        zones.insert(name.to_owned(), (initial, transitions, future));
-    }
-    zones
 }
 
 #[test]
 fn owned_iana_transitions_match_icu() {
-    use formatjs_temporal::{TimeZone, TransitionDirection, TransitionZone};
-    let zones = owned_iana_zones();
+    use formatjs_temporal::{TimeZone, TransitionDirection};
+    let zones = iana_registry();
     let mut count = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_TRANSITIONS"))
         .lines()
         .filter(|line| !line.starts_with('#'))
     {
         let fields: Vec<&str> = line.split('\t').collect();
-        let Some((initial, events, future)) = zones.get(fields[0]) else {
+        let Some(zone) = icu_zone(zones, fields[0]) else {
             continue;
         };
-        let zone = TransitionZone::new(*initial, events, *future).unwrap();
         let instant =
             Instant::from_epoch_nanoseconds(fields[1].parse::<i128>().unwrap() * 1_000_000)
                 .unwrap();
@@ -843,7 +794,7 @@ fn owned_iana_transitions_match_icu() {
         }
         count += 1;
     }
-    assert!(count > 10000);
+    assert_eq!(count, 14058);
     eprintln!(
         "{count} owned IANA/ICU transition queries, both directions and nanosecond boundaries"
     );
@@ -928,8 +879,8 @@ fn recurring_leap_only_changes_and_adjacent_gaps() {
 
 #[test]
 fn independent_icu_zoned_calendar_rounding() {
-    use formatjs_temporal::{FixedOffset, TransitionZone, ZonedDateTime, ZonedUnit};
-    let zones = owned_iana_zones();
+    use formatjs_temporal::{FixedOffset, ZonedDateTime, ZonedUnit};
+    let zones = iana_registry();
     let mut count = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_DIFFERENCE"))
         .lines()
@@ -960,8 +911,9 @@ fn independent_icu_zoned_calendar_rounding() {
                 "{line}"
             );
         } else {
-            let (initial, events, future) = zones.get(fields[0]).unwrap();
-            let zone = TransitionZone::new(*initial, events, *future).unwrap();
+            let zone = zones
+                .resolve(fields[0])
+                .unwrap_or_else(|error| panic!("{line}: {error:?}"));
             let a = ZonedDateTime::new(start, zone);
             let b = ZonedDateTime::new(end, zone);
             assert_eq!(
@@ -1031,8 +983,8 @@ fn zoned_differences_at_instant_limits() {
 
 #[test]
 fn independent_icu_relative_duration_operations() {
-    use formatjs_temporal::{Duration, RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
-    let zones = owned_iana_zones();
+    use formatjs_temporal::{Duration, RoundingMode, ZonedDateTime, ZonedUnit};
+    let zones = iana_registry();
     let mut rounds = 0;
     let mut totals = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_DIFFERENCE"))
@@ -1040,12 +992,9 @@ fn independent_icu_relative_duration_operations() {
         .filter(|line| !line.starts_with('#'))
     {
         let fields: Vec<&str> = line.split('\t').collect();
-        let zone = if fields[0] == "UTC" {
-            TransitionZone::new(0, &[], None).unwrap()
-        } else {
-            let (initial, events, future) = zones.get(fields[0]).unwrap();
-            TransitionZone::new(*initial, events, *future).unwrap()
-        };
+        let zone = zones
+            .resolve(fields[0])
+            .unwrap_or_else(|error| panic!("{line}: {error:?}"));
         let a = ZonedDateTime::new(
             Instant::from_epoch_nanoseconds(fields[1].parse().unwrap()).unwrap(),
             zone,
@@ -1144,26 +1093,25 @@ fn relative_duration_prefixes_and_day_boundaries() {
 
 #[test]
 fn now_uses_host_clock_and_owned_iana_with_icu_controls() {
-    use formatjs_temporal::{Now, SystemClock, TransitionZone};
+    use formatjs_temporal::{Now, SystemClock};
     struct Clock(i128);
     impl SystemClock for Clock {
         fn epoch_nanoseconds(&self) -> i128 {
             self.0
         }
     }
-    let zones = owned_iana_zones();
+    let zones = iana_registry();
     let mut count = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_TIMEZONE"))
         .lines()
         .filter(|line| !line.starts_with('#'))
     {
         let fields: Vec<&str> = line.split('\t').collect();
-        let Some((initial, events, future)) = zones.get(fields[0]) else {
+        let Some(zone) = icu_zone(zones, fields[0]) else {
             continue;
         };
         let value = fields[1].parse::<i128>().unwrap() * 1_000_000 + 123;
         let offset = fields[2].parse::<i128>().unwrap() * 1_000_000_000;
-        let zone = TransitionZone::new(*initial, events, *future).unwrap();
         let now = Now::new(Clock(value));
         let local = now.plain_date_time_iso(zone).unwrap();
         assert_eq!(now.instant().epoch_nanoseconds(), value, "{line}");
@@ -1177,7 +1125,7 @@ fn now_uses_host_clock_and_owned_iana_with_icu_controls() {
         assert_eq!(now.plain_time_iso(zone).unwrap(), local.time(), "{line}");
         count += 1;
     }
-    assert_eq!(count, 13160);
+    assert_eq!(count, 17640);
     for sign in [-1, 1] {
         let now = Now::new(Clock(sign * (MAX_EPOCH_NANOSECONDS + 1)));
         assert_eq!(
@@ -1189,21 +1137,9 @@ fn now_uses_host_clock_and_owned_iana_with_icu_controls() {
 
 #[test]
 fn independent_icu_named_zone_identities() {
-    use formatjs_temporal::{
-        NamedTimeZone, RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit,
-        named_time_zone_identifier,
-    };
-    let zones = owned_iana_zones();
-    let named = |id: &str| {
-        let record = named_time_zone_identifier(id).unwrap();
-        let provider = if record.primary == "UTC" {
-            TransitionZone::new(0, &[], None).unwrap()
-        } else {
-            let (initial, transitions, future) = zones.get(record.primary).unwrap();
-            TransitionZone::new(*initial, transitions, *future).unwrap()
-        };
-        NamedTimeZone::new(id, provider).unwrap()
-    };
+    use formatjs_temporal::{RoundingMode, ZonedDateTime, ZonedUnit, named_time_zone_identifier};
+    let zones = iana_registry();
+    let named = |id: &str| zones.resolve(id).unwrap();
     let mut count = 0;
     let mut controls = Vec::new();
     for line in include_str!(env!("FORMATJS_TEMPORAL_TZ_IDENTITIES"))
@@ -1223,6 +1159,21 @@ fn independent_icu_named_zone_identities() {
         count += 1;
     }
     assert_eq!(count, 597);
+    let expected: std::collections::BTreeSet<_> = controls
+        .iter()
+        .map(|(_, name)| *name)
+        .filter(|name| *name != "UTC")
+        .collect();
+    let actual: std::collections::BTreeSet<_> = zones
+        .records()
+        .iter()
+        .map(|record| record.identifier())
+        .collect();
+    assert_eq!(actual, expected);
+    eprintln!(
+        "{} compiled primary records cover {count} IANA identities",
+        actual.len()
+    );
     let mut pairs = 0;
     for (i, (one, expected_one)) in controls.iter().enumerate() {
         for (two, expected_two) in &controls[..=i] {
@@ -1590,10 +1541,9 @@ fn independent_icu_iso_calendar_total_windows() {
 
 #[test]
 fn zoned_month_difference_balances_wall_clocks_before_gap_resolution() {
-    use formatjs_temporal::{RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
-    let zones = owned_iana_zones();
-    let (initial, events, future) = zones.get("America/Vancouver").unwrap();
-    let zone = TransitionZone::new(*initial, events, *future).unwrap();
+    use formatjs_temporal::{RoundingMode, ZonedDateTime, ZonedUnit};
+    let zones = iana_registry();
+    let zone = zones.resolve("America/Vancouver").unwrap();
     let start = ZonedDateTime::new(
         Instant::from_epoch_nanoseconds(957258000000000000).unwrap(),
         zone,
@@ -1622,8 +1572,8 @@ fn zoned_month_difference_balances_wall_clocks_before_gap_resolution() {
 
 #[test]
 fn independent_icu_zoned_day_boundaries_and_rounding() {
-    use formatjs_temporal::{TransitionZone, ZonedDateTime, ZonedUnit};
-    let zones = owned_iana_zones();
+    use formatjs_temporal::{ZonedDateTime, ZonedUnit};
+    let zones = iana_registry();
     let mut count = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_ROUNDING"))
         .lines()
@@ -1631,12 +1581,9 @@ fn independent_icu_zoned_day_boundaries_and_rounding() {
     {
         let fields: Vec<&str> = line.split('\t').collect();
         let nanos = |index: usize| fields[index].parse::<i128>().unwrap() * 1_000_000;
-        let zone = if fields[0] == "UTC" {
-            TransitionZone::new(0, &[], None).unwrap()
-        } else {
-            let (initial, events, future) = zones.get(fields[0]).unwrap();
-            TransitionZone::new(*initial, events, *future).unwrap()
-        };
+        let zone = zones
+            .resolve(fields[0])
+            .unwrap_or_else(|error| panic!("{line}: {error:?}"));
         let value = ZonedDateTime::new(Instant::from_epoch_nanoseconds(nanos(1)).unwrap(), zone);
         assert_eq!(
             value.start_of_day().unwrap().instant().epoch_nanoseconds(),
@@ -1664,10 +1611,9 @@ fn independent_icu_zoned_day_boundaries_and_rounding() {
 
 #[test]
 fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
-    use formatjs_temporal::{RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
-    let zones = owned_iana_zones();
-    let (initial, events, future) = zones.get("America/New_York").unwrap();
-    let zone = TransitionZone::new(*initial, events, *future).unwrap();
+    use formatjs_temporal::{RoundingMode, ZonedDateTime, ZonedUnit};
+    let zones = iana_registry();
+    let zone = zones.resolve("America/New_York").unwrap();
     for (text, expected) in [
         ("2020-11-01T05:29:00Z", "2020-11-01T05:00:00Z"),
         ("2020-11-01T06:29:00Z", "2020-11-01T06:00:00Z"),

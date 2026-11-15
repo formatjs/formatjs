@@ -18,7 +18,7 @@ pub enum TransitionRule {
     },
 }
 impl TransitionRule {
-    fn valid(self) -> bool {
+    const fn valid(self) -> bool {
         let (valid, seconds) = match self {
             Self::Month {
                 month,
@@ -26,13 +26,13 @@ impl TransitionRule {
                 weekday,
                 seconds,
             } => (
-                (1..=12).contains(&month) && (1..=5).contains(&week) && weekday <= 6,
+                month >= 1 && month <= 12 && week >= 1 && week <= 5 && weekday <= 6,
                 seconds,
             ),
             Self::Day { day, seconds } => (day <= 365, seconds),
-            Self::Julian { day, seconds } => ((1..=365).contains(&day), seconds),
+            Self::Julian { day, seconds } => (day >= 1 && day <= 365, seconds),
         };
-        valid && (-604_799..=604_799).contains(&seconds)
+        valid && seconds >= -604_799 && seconds <= 604_799
     }
     fn event(self, year: i32) -> i64 {
         let start = crate::iso::epoch_day_from_iso(year, 1, 1);
@@ -74,17 +74,17 @@ pub struct FutureRule {
     daylight: Option<(i32, TransitionRule, TransitionRule)>,
 }
 impl FutureRule {
-    pub fn new(
+    pub const fn new(
         standard: i32,
         daylight: Option<(i32, TransitionRule, TransitionRule)>,
     ) -> Result<Self, Error> {
-        if standard <= -86_400
-            || standard >= 86_400
-            || daylight.is_some_and(|(offset, start, end)| {
-                offset <= -86_400 || offset >= 86_400 || !start.valid() || !end.valid()
-            })
-        {
+        if standard <= -86_400 || standard >= 86_400 {
             return Err(Error::InvalidDateTime);
+        }
+        if let Some((offset, start, end)) = daylight {
+            if offset <= -86_400 || offset >= 86_400 || !start.valid() || !end.valid() {
+                return Err(Error::InvalidDateTime);
+            }
         }
         Ok(Self { standard, daylight })
     }
@@ -132,7 +132,7 @@ pub struct TransitionZone<'a> {
     future: Option<FutureRule>,
 }
 impl<'a> TransitionZone<'a> {
-    pub fn new(
+    pub const fn new(
         initial: i32,
         transitions: &'a [OffsetTransition],
         future: Option<FutureRule>,
@@ -141,15 +141,18 @@ impl<'a> TransitionZone<'a> {
             return Err(Error::InvalidDateTime);
         }
         let mut previous = i64::MIN;
-        for event in transitions {
+        let mut index = 0;
+        while index < transitions.len() {
+            let event = &transitions[index];
             if event.epoch_seconds <= previous
                 || event.offset_seconds <= -86_400
                 || event.offset_seconds >= 86_400
-                || i128::from(event.epoch_seconds).abs() * 1_000_000_000 > MAX_EPOCH_NANOSECONDS
+                || (event.epoch_seconds as i128).abs() * 1_000_000_000 > MAX_EPOCH_NANOSECONDS
             {
                 return Err(Error::InvalidDateTime);
             }
             previous = event.epoch_seconds;
+            index += 1;
         }
         Ok(Self {
             initial,

@@ -969,5 +969,24 @@
     "wasm": "No new exports; existing primitive size measurements do not cover these public facades/data.",
     "test262": "Native numerical coverage; native Hermes Test262 remains pending.",
     "exclusions": []
+  },
+  "nativeTimeZoneRegistry": {
+    "records": 448,
+    "identifiers": 597,
+    "utc": "Intrinsic, including UTC aliases; available without loaded records.",
+    "offsets": "Minute identifiers normalize separately; negative zero becomes +00:00. Named UTC and offset zero retain distinct identity.",
+    "oracleRows": {
+      "futureOffsets": 17640,
+      "gapFoldControls": 1900,
+      "transitionQueryInstants": 14058,
+      "identityPairs": 178503
+    },
+    "controls": "Existing ICU4J corpora now use production registry, including aliases. Transition query instants check both directions and adjacent nanoseconds. All recognized IANA names must resolve; ICU-only legacy names absent from the pinned identifier table must reject. Primary record coverage equals independent ICU identity profile.",
+    "data": "Caller-owned borrowed records or Bazel-generated static all-zone pack via compiled_time_zones. Checked const constructors validate transitions and footer rules. No runtime allocation, JSON, serde or formatter dependency. Default core/WASM excludes the pack.",
+    "remaining": [
+      "Native zoned string facade",
+      "Hermes native installation and Test262",
+      "Complete WASM facade/data and matched benchmarks"
+    ]
   }
 }

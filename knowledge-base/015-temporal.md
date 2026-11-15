@@ -669,3 +669,34 @@ directions across 16 calendars. The generator reuses existing ICU forward-field
 math and HKO/KASI authority corrections. Existing public field/add/difference
 fixtures now exercise YearMonth integration too. Native Hermes Test262 and full
 WASM facade/data measurements remain pending; this layer adds no WASM exports.
+
+## Native IANA registry
+
+TimeZoneRegistry borrows validated, sorted TimeZoneRecord values. ResolvedTimeZone
+supplies exact offsets, every represented offset and strict transitions through
+the existing provider. It retains canonical identifier spelling and primary IANA
+identity; comparisons never substitute offset equivalence for zone identity.
+Minute offset strings normalize separately, including negative zero. Empty
+registries still supply UTC aliases and fixed offsets. Unknown identifiers,
+missing recognized-zone data and invalid record data have separate errors.
+
+`//crates/temporal:with_time_zones` enables `compiled_time_zones`. Its generator
+reads the pinned generated TS pack, emits 448 primary records to Bazel outputs,
+and retains structured future rules. UTC is intrinsic. Checked const constructors
+validate offsets, sorted transition times, public instant bounds and rule fields.
+The default core and primitive WASM build remain data-free; runtime loading uses
+caller-owned typed records, without JSON/serde/formatter dependencies.
+
+Existing native offset, disambiguation, Now, transition, identity, relative/zoned
+and day-rounding suites now use the production registry. Native checks expand
+from primary-only data to all 597 recognized IANA identities: 17,640 future
+samples, 1,900 gap/fold controls, 14,058 strict transition query instants (both
+directions and adjacent nanoseconds), plus 178,503 identity pairs. The ICU
+superset also contains legacy short IDs such as ACT; tests require those to
+reject when absent from the pinned IANA identifier table. Missing data for any
+recognized name fails. Record coverage equals the independent ICU identity
+profile's complete primary set.
+
+Native zoned string parsing/formatting, Hermes C ABI/JSI installation and native
+Test262 remain required. No WASM export or full-facade size/performance claim is
+added by this registry layer.

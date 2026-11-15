@@ -15,6 +15,7 @@ mod short_dates;
 mod time;
 mod timezone;
 mod timezone_identity;
+mod timezone_registry;
 mod zoned;
 mod zoned_difference;
 
@@ -36,6 +37,7 @@ pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
 pub use time::{FormattedTime, PlainTime};
 pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
 pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};
+pub use timezone_registry::{ResolvedTimeZone, TimeZoneRecord, TimeZoneRegistry};
 pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
@@ -43,6 +45,9 @@ pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
+    InvalidTimeZone,
+    InvalidTimeZoneData,
+    MissingTimeZoneData,
     InvalidSyntax,
     InvalidDateTime,
     InvalidDuration,
@@ -52,6 +57,9 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::InvalidTimeZone => "Invalid time zone",
+            Self::InvalidTimeZoneData => "Invalid time zone data",
+            Self::MissingTimeZoneData => "Time zone data not loaded",
             Self::InvalidSyntax => "Invalid instant string",
             Self::InvalidDateTime => "Invalid ISO date/time",
             Self::InvalidRoundingOptions => "Invalid rounding options",

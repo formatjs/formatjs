@@ -15,9 +15,8 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Production IANA
-registry loading, native Hermes bindings and complete WASM facades remain
-pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
+checked. Native zoned string facades, Hermes bindings and complete WASM facades
+remain pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
@@ -60,7 +59,8 @@ bazel run -c opt //crates/temporal:identifiers
 ```
 
 Bazel derives this table from the generated TS timezone package. Runtime Rust
-uses only the shared numeric calendar kernel; production transition-data loading stays pending.
+uses only the shared numeric calendar kernel; timezone records can be caller-owned
+or compiled through the optional registry below.
 
 PlainDate supplies ISO `total_duration`, `round_duration`, `compare_durations`
 and calendar-unit `until`/`since`. PlainDateTime differences now accept
@@ -166,3 +166,40 @@ years; `to_plain_date_fields` also accepts era/eraYear. Independent forward ICU
 catalogs verify 4,992 MonthDay cases. Another 5,184 YearMonth cases check both
 `until` and `since` across all nine rounding modes and 16 calendars. Existing
 field/add/difference controls also exercise public YearMonth integration.
+
+## IANA registry
+
+`TimeZoneRegistry` borrows sorted `TimeZoneRecord` values, without allocation or
+runtime JSON/formatter dependencies. `resolve` accepts case-insensitive IANA
+identifiers and minute-precision offset identifiers. `ResolvedTimeZone` retains
+canonical spelling and primary identity, implements `TimeZone`, and compares
+primary IDs. Equal offsets alone do not make named zones equal. UTC aliases and
+fixed offsets work with an empty registry. Unknown names, missing valid records
+and invalid data have distinct errors; missing data never substitutes UTC.
+
+`//crates/temporal:with_time_zones` enables `compiled_time_zones` and
+`TimeZoneRegistry::compiled()`. Bazel generates immutable Rust records from the
+pinned TS timezone pack; generated records stay in Bazel outputs. Checked const
+constructors validate transition bounds/order and future rules at compilation.
+The default core and existing primitive WASM build include no timezone pack.
+Like other compiled-data variants here, this feature uses Bazel's generated-file
+environment rather than Cargo build scripts.
+
+```rust
+use formatjs_temporal::{Instant, TimeZoneRegistry, ZonedDateTime};
+let registry = TimeZoneRegistry::compiled();
+let zone = registry.resolve("US/Eastern").unwrap();
+let value = ZonedDateTime::new("2400-07-01T00:00Z".parse::<Instant>().unwrap(), zone);
+assert_eq!(zone.identifier(), "US/Eastern");
+assert_eq!(value.local().unwrap().to_string(), "2400-06-30T20:00:00");
+```
+
+448 compiled primary records plus intrinsic UTC cover 597 IANA identifiers.
+Existing native ICU controls now use this production registry, replacing the
+former test-only JSON decoder. Alias coverage raises native checks to 17,640
+future offset/local samples, 1,900 gap/fold controls and 14,058 transition query
+instants (both directions plus nanosecond boundaries). ICU-only legacy names,
+such as ACT, are checked as invalid identifiers; every recognized IANA name must
+resolve successfully. Existing zoned/relative/day-rounding controls use the same
+registry. Native Hermes installation and full WASM facade/data benchmarks remain
+pending.
