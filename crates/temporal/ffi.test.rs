@@ -141,3 +141,70 @@ fn calendar_fields_keep_extended_coordinates_and_clamp_before_narrowing() {
         assert_eq!(request(value), Err(1));
     }
 }
+
+#[test]
+fn named_zones_keep_identity_candidates_and_strict_transition_boundaries() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    assert_eq!(
+        request(json!({"op":"timeZoneIdentity","identifier":"us/eastern"})),
+        Ok(json!({"identifier":"US/Eastern","primary":"America/New_York"}))
+    );
+    let fields = json!({"year":2020,"month":11,"day":1,"hour":1,"minute":30,"nanosecond":123});
+    assert_eq!(
+        request(
+            json!({"op":"timeZonePossibleInstants","identifier":"America/New_York","fields":fields})
+        ),
+        Ok(json!(["1604208600000000123", "1604212200000000123"]))
+    );
+    let gap = json!({"year":2020,"month":3,"day":8,"hour":2,"minute":30});
+    assert_eq!(
+        request(
+            json!({"op":"timeZonePossibleInstants","identifier":"America/New_York","fields":gap})
+        ),
+        Ok(json!([]))
+    );
+    for (mode, expected) in [
+        ("earlier", "1583649000000000000"),
+        ("later", "1583652600000000000"),
+        ("compatible", "1583652600000000000"),
+    ] {
+        assert_eq!(
+            request(
+                json!({"op":"timeZoneResolve","identifier":"America/New_York","fields":gap,"disambiguation":mode})
+            ),
+            Ok(json!(expected))
+        );
+    }
+    assert_eq!(
+        request(
+            json!({"op":"timeZoneTransition","identifier":"America/New_York","nanoseconds":"1604210400000000000","direction":"previous"})
+        ),
+        Ok(json!("1583650800000000000"))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"timeZoneTransition","identifier":"America/New_York","nanoseconds":"1604210400000000000","direction":"next"})
+        ),
+        Ok(json!("1615705200000000000"))
+    );
+    assert_eq!(
+        request(json!({"op":"timeZoneOffset","identifier":"+05:45","nanoseconds":"0"})),
+        Ok(json!("20700000000000"))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"timeZonePossibleInstants","identifier":"UTC","fields":{"year":1970,"month":1,"day":1}})
+        ),
+        Ok(json!(["0"]))
+    );
+    for value in [
+        json!({"op":"timeZoneResolve","identifier":"America/New_York","fields":gap,"disambiguation":"reject"}),
+        json!({"op":"timeZoneResolve","identifier":"UTC","fields":fields,"disambiguation":"bad"}),
+        json!({"op":"timeZoneTransition","identifier":"UTC","nanoseconds":"0","direction":"bad"}),
+        json!({"op":"timeZoneOffset","identifier":"UTC","nanoseconds":"8640000000000000000001"}),
+        json!({"op":"timeZoneIdentity","identifier":"+24:00"}),
+        json!({"op":"timeZoneIdentity","identifier":"Missing/Zone"}),
+    ] {
+        assert_eq!(request(value), Err(1));
+    }
+}

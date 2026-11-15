@@ -1,3 +1,4 @@
+import {zonedInputs} from './zoned-inputs.ts'
 import {readFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {cpus} from 'node:os'
@@ -50,6 +51,17 @@ function measure(namespace: typeof reference): unknown[] {
       value.daysInYear,
       value.dayOfYear,
     ].join(',')
+  const zonedStrings = zonedInputs.map(([id, local]) => local + '[' + id + ']')
+  const zonedValues = zonedStrings.map(value =>
+    namespace.ZonedDateTime.from(value)
+  )
+  const referenceZonedValues = zonedStrings.map(value =>
+    reference.ZonedDateTime.from(value)
+  )
+  const zonedEnds = zonedValues.map(value => value.add({days: 1, hours: 1}))
+  const referenceZonedEnds = referenceZonedValues.map(value =>
+    value.add({days: 1, hours: 1})
+  )
   const cases = [
     {
       name: 'parse',
@@ -220,23 +232,75 @@ function measure(namespace: typeof reference): unknown[] {
       check: (index: number) =>
         expectedYearMonths[index].add({years: 1, months: 3}).toString(),
     },
+    {
+      name: 'zonedParse',
+      run: (index: number) =>
+        namespace.ZonedDateTime.from(
+          zonedStrings[index]
+        ).epochNanoseconds.toString(),
+      check: (index: number) =>
+        reference.ZonedDateTime.from(
+          zonedStrings[index]
+        ).epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedOffset',
+      run: (index: number) => zonedValues[index].offsetNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].offsetNanoseconds.toString(),
+    },
+    {
+      name: 'zonedAddDay',
+      run: (index: number) =>
+        zonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedUntilDay',
+      run: (index: number) =>
+        zonedValues[index]
+          .until(zonedEnds[index], {largestUnit: 'day'})
+          .toString(),
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .until(referenceZonedEnds[index], {largestUnit: 'day'})
+          .toString(),
+    },
+    {
+      name: 'zonedTransition',
+      iterations: 512,
+      warmup: 128,
+      run: (index: number) =>
+        zonedValues[index]
+          .getTimeZoneTransition('next')
+          ?.epochNanoseconds.toString() ?? 'null',
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .getTimeZoneTransition('next')
+          ?.epochNanoseconds.toString() ?? 'null',
+    },
   ]
   return cases.map(test => {
+    const caseIterations = test.iterations ?? iterations
+    const caseWarmup = test.warmup ?? warmup
     for (let index = 0; index < 8; index++)
       if (test.run(index) !== test.check(index))
         throw new Error('Benchmark parity: ' + test.name)
-    for (let index = 0; index < warmup; index++)
+    for (let index = 0; index < caseWarmup; index++)
       checksum += test.run(index & 7).length
     const elapsed = []
     for (let sample = 0; sample < samples; sample++) {
       const start = performance.now()
-      for (let index = 0; index < iterations; index++)
+      for (let index = 0; index < caseIterations; index++)
         checksum += test.run(index & 7).length
-      elapsed.push(((performance.now() - start) * 1_000_000) / iterations)
+      elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
     }
     elapsed.sort((a, b) => a - b)
     return {
       operation: test.name,
+      iterations: caseIterations,
+      warmup: caseWarmup,
       medianNanoseconds: elapsed[Math.floor(samples / 2)],
       samplesNanoseconds: elapsed,
     }
@@ -264,6 +328,11 @@ checksum += Temporal.PlainDate.from({
   day: 1,
 }).monthCode.length
 const firstCalendarOperationMilliseconds = performance.now() - start
+start = performance.now()
+checksum += Temporal.ZonedDateTime.from(
+  zonedInputs[0][1] + '[' + zonedInputs[0][0] + ']'
+).epochNanoseconds.toString().length
+const firstTimezoneOperationMilliseconds = performance.now() - start
 const wasm = measure(Temporal)
 const referenceResults = measure(reference)
 const minify = (file: string) => {
@@ -307,14 +376,15 @@ console.log(
     {
       node: process.version,
       v8: process.versions.v8,
+      icu: process.versions.icu,
       platform: process.platform + ' ' + process.arch,
       cpu: cpus()[0]?.model ?? 'unknown',
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar math with16 native calendars; remaining algorithms and fallback data remain TS. ISO date workloads use basic reference, not non-ISO coverage. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone math with16 native calendars and all IANA records; remaining orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,
       samples,
       warmup,
@@ -326,6 +396,7 @@ console.log(
       instantiateMilliseconds,
       firstNativeOperationMilliseconds,
       firstCalendarOperationMilliseconds,
+      firstTimezoneOperationMilliseconds,
       initialMemoryBytes,
       finalMemoryBytes: query.memoryBytes,
       native: JSON.parse(query('{"op":"info"}')),

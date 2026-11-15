@@ -1066,5 +1066,56 @@
       "Intl native brand/styles/range integration",
       "equivalent full-backend performance and size comparisons"
     ]
+  },
+  "nativeTimezoneBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 4,
+    "nativeOperations": 29,
+    "scope": "Rust ISO, Instant, PlainTime, all16 calendar engines and owned IANA queries. Date/relative/zoned orchestration and remaining class algorithms stay JS. Experimental runner, not complete SDK installer or full native Intl integration.",
+    "icuPublicTimezoneControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "identities": 597,
+      "identityPairs": 178503,
+      "futureOffsets": 17640,
+      "gapFoldWindows": 1900,
+      "strictTransitionRows": 14058,
+      "futureYears": [2101, 2400, 2500, 10000, 275000],
+      "note": "Strict transitions verify both directions, advancing queries and nanosecond neighbors. Gap/fold windows verify earlier/later/compatible/reject, calendar versus elapsed days and Duration ordering."
+    },
+    "backendSelection": "Cached named/fixed kernels and existing public objects switch at operation time. Per-operation native fault injection proves there is no stale TS provider or fallback after native errors.",
+    "remaining": [
+      "remaining native class/relative/zoned orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "newExclusions": [],
+      "trackedFailures": 0,
+      "note": "Calendar Hermes gates use long timeout after 300-second parallel-run timeout; both pass rerun. Full 50-target regression pass includes those gates.",
+      "cacheFastPathValidation": "Subsequent cached-name fast path passes nine focused targets: full ZonedDateTime on default TS, Hermes source/HBC and WASM, plus independent timezone/alias controls and published package checks."
+    }
   }
 }

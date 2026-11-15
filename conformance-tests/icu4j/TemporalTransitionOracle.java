@@ -13,7 +13,9 @@ public final class TemporalTransitionOracle {
 
   public static void main(String[] args) throws Exception {
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU tzdb " + TimeZone.getTZDataVersion() + "; strict offset transitions");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalTransitionOracle = [");
+      if (!javascript) out.println("# ICU tzdb " + TimeZone.getTZDataVersion() + "; strict offset transitions");
       String[] identifiers = TimeZone.getAvailableIDs();
       Arrays.sort(identifiers);
       for (String id : identifiers) {
@@ -33,9 +35,10 @@ public final class TemporalTransitionOracle {
           samples.add(millis(1900, 1));
         }
         for (long query : samples) {
-          out.println(id + "\t" + query + "\t" + text(event(zone, query, true)) + "\t" + text(event(zone, query, false)));
+          row(out, javascript, id + "\t" + query + "\t" + text(event(zone, query, true)) + "\t" + text(event(zone, query, false)));
         }
       }
+      if (javascript) out.println("]; ");
     }
   }
 
@@ -55,4 +58,8 @@ public final class TemporalTransitionOracle {
   private static long millis(int year, int month) {
     return LocalDate.of(year, month, 1).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
   }
+  private static void row(PrintWriter out, boolean javascript, String value) {
+    out.println(javascript ? "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\t", "\\t") + "\"," : value);
+  }
+
 }

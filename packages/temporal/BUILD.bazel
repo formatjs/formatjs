@@ -160,6 +160,19 @@ filegroup(
             ["//conformance-tests/icu4j:temporal_plain_relative_fixtures"],
         ),
         (
+            "timezone_oracle_test",
+            [
+                "tests/timezone-oracle.test.ts",
+                "tests/timezone-oracle.ts",
+                "tests/native-timezone-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+                "//conformance-tests/icu4j:temporal_transition_fixtures",
+            ],
+        ),
+        (
             "timezone_identity_test",
             ["tests/timezone-identity.test.ts"],
             ["//conformance-tests/icu4j:temporal_timezone_identity_fixtures"],
@@ -1274,6 +1287,58 @@ rolldown_bundle(
 )
 
 rolldown_bundle(
+    name = "native-timezone-host",
+    srcs = [
+        "tests/native-timezone-host.ts",
+        "tests/timezone-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":native-timezone-host.js",
+    ],
+    outs = ["native-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_transition_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :native-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "native_timezone_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_timezone_hermes_source)",
+    ],
+    data = [
+        ":native_timezone_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "timezone-oracle",
+    srcs = ["tests/timezone-oracle.ts"],
+    entry_point = "tests/timezone-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
     name = "native-iso-host",
     srcs = [
         "tests/native-iso-host.ts",
@@ -1306,6 +1371,7 @@ genrule(
 sh_test(
     name = "native_iso_hermes_oracle_test",
     size = "medium",
+    timeout = "long",
     srcs = ["tests/oracle-host.sh"],
     args = [
         "$(rootpath //native/hermes:hermes_runner)",
@@ -1324,6 +1390,7 @@ sh_test(
     sh_test(
         name = "native_iso_hermes_" + suite + "_" + mode + "_test262",
         size = "medium",
+        timeout = "long" if suite == "calendars" else "moderate",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
@@ -1575,11 +1642,16 @@ js_test(
         "$(rlocationpath :public-calendar-oracle.js)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+        "$(rlocationpath :timezone-oracle.js)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_transition_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_identity_fixtures)",
     ],
     data = [
         ":pkg",
         ":plain-time-oracle.js",
         ":public-calendar-oracle.js",
+        ":timezone-oracle.js",
         "//:node_modules/@bazel/runfiles",
         "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
@@ -1587,6 +1659,9 @@ js_test(
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
         "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_fixtures",
         "//crates/temporal:wasm_backend",
     ],
     entry_point = "tests/wasm.test.mjs",

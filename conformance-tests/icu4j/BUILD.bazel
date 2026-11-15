@@ -724,3 +724,19 @@ genrule(
         ("temporal_time_carry_fixtures", "temporal-time-carry-fixtures.tsv", "--carry"),
     ]
 ]
+
+[
+    genrule(
+        name = "temporal_" + family + "_hermes_fixtures",
+        testonly = True,
+        outs = ["temporal-" + family.replace("_", "-") + "-fixtures.js"],
+        cmd = "$(execpath :temporal_" + family + "_oracle) $@ --js",
+        tools = [":temporal_" + family + "_oracle"],
+        visibility = ["//visibility:public"],
+    )
+    for family in [
+        "timezone",
+        "transition",
+        "timezone_identity",
+    ]
+]

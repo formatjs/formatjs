@@ -1,3 +1,6 @@
+import en from '../../crates/intl_datetimeformat/locale-data/en.json' with {type: 'json'}
+import packed from '@formatjs_generated/tz/all-tz.js'
+import {zonedInputs} from './zoned-inputs.ts'
 import {Temporal} from '#packages/temporal/index.js'
 import {
   configureNativeTemporal,
@@ -15,6 +18,12 @@ if (query) {
   configureNativeTemporal(query)
   delete host.__formatjsTemporalISOQuery
 }
+const dateTimeFormat = Intl.DateTimeFormat as typeof Intl.DateTimeFormat & {
+  __addLocaleData(data: string): void
+  __addTZData(data: string): void
+}
+dateTimeFormat.__addLocaleData(JSON.stringify(en))
+dateTimeFormat.__addTZData(JSON.stringify(packed))
 const strings = Array.from(
   {length: 8},
   (_, index) => `2020-02-${String(21 + index)}T23:59:59.123456789+05:45`
@@ -49,6 +58,17 @@ const dateFields = (
     value.daysInYear,
     value.dayOfYear,
   ].join(',')
+const zonedStrings = zonedInputs.map(([id, local]) => local + '[' + id + ']')
+const zonedValues = zonedStrings.map(value =>
+  Temporal.ZonedDateTime.from(value)
+)
+const referenceZonedValues = zonedStrings.map(value =>
+  reference.ZonedDateTime.from(value)
+)
+const zonedEnds = zonedValues.map(value => value.add({days: 1, hours: 1}))
+const referenceZonedEnds = referenceZonedValues.map(value =>
+  value.add({days: 1, hours: 1})
+)
 const cases = [
   {
     name: 'parse',
@@ -215,24 +235,74 @@ const cases = [
     reference: (index: number) =>
       referenceYearMonths[index].add({years: 1, months: 3}).toString(),
   },
+  {
+    name: 'zonedParse',
+    owned: (index: number) =>
+      Temporal.ZonedDateTime.from(
+        zonedStrings[index]
+      ).epochNanoseconds.toString(),
+    reference: (index: number) =>
+      reference.ZonedDateTime.from(
+        zonedStrings[index]
+      ).epochNanoseconds.toString(),
+  },
+  {
+    name: 'zonedOffset',
+    owned: (index: number) => zonedValues[index].offsetNanoseconds.toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index].offsetNanoseconds.toString(),
+  },
+  {
+    name: 'zonedAddDay',
+    owned: (index: number) =>
+      zonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+  },
+  {
+    name: 'zonedUntilDay',
+    owned: (index: number) =>
+      zonedValues[index]
+        .until(zonedEnds[index], {largestUnit: 'day'})
+        .toString(),
+    reference: (index: number) =>
+      referenceZonedValues[index]
+        .until(referenceZonedEnds[index], {largestUnit: 'day'})
+        .toString(),
+  },
+  {
+    name: 'zonedTransition',
+    iterations: 512,
+    warmup: 128,
+    owned: (index: number) =>
+      zonedValues[index]
+        .getTimeZoneTransition('next')
+        ?.epochNanoseconds.toString() ?? 'null',
+    reference: (index: number) =>
+      referenceZonedValues[index]
+        .getTimeZoneTransition('next')
+        ?.epochNanoseconds.toString() ?? 'null',
+  },
 ]
 const iterations = 5000,
   samples = 5,
   warmup = 1000
 let checksum = 0
 const results = cases.map(test => {
+  const caseIterations = test.iterations ?? iterations
+  const caseWarmup = test.warmup ?? warmup
   for (let index = 0; index < 8; index++)
     if (test.owned(index) !== test.reference(index))
       throw new Error('Benchmark parity: ' + test.name)
   const measure = (run: (index: number) => string) => {
-    for (let index = 0; index < warmup; index++)
+    for (let index = 0; index < caseWarmup; index++)
       checksum += run(index & 7).length
     const elapsed = []
     for (let sample = 0; sample < samples; sample++) {
       const start = performance.now()
-      for (let index = 0; index < iterations; index++)
+      for (let index = 0; index < caseIterations; index++)
         checksum += run(index & 7).length
-      elapsed.push(((performance.now() - start) * 1_000_000) / iterations)
+      elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
     }
     elapsed.sort((a, b) => a - b)
     return {
@@ -242,6 +312,8 @@ const results = cases.map(test => {
   }
   return {
     operation: test.name,
+    iterations: caseIterations,
+    warmup: caseWarmup,
     owned: measure(test.owned),
     reference: measure(test.reference),
   }
@@ -249,8 +321,10 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date workloads; Rust ISO/Instant/PlainTime/calendar JSON bridge optional, 16 native calendars bundled, remaining namespace algorithms TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Not complete native Temporal or WASM comparison.',
-    backend: query ? 'rust-iso-instant-time-calendars' : 'typescript',
+      'Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+    intlProvider:
+      'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
+    backend: query ? 'rust-iso-instant-time-calendars-zones' : 'typescript',
     iterations,
     samples,
     warmup,

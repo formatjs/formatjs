@@ -162,7 +162,7 @@ const oldABI = new WebAssembly.Module(
       ...exported('temporal_free', 0),
       ...exported('temporal_query', 0),
     ]),
-    ...section(10, [1, 4, 0, 65, 2, 11]),
+    ...section(10, [1, 4, 0, 65, 3, 11]),
   ])
 )
 assert.throws(
@@ -277,3 +277,18 @@ for (const path of process.argv.slice(10, 12)) {
     })
   )
 }
+
+const {checkTimezoneOracle} = await import(
+  pathToFileURL(resolve(process.argv[12])).href
+)
+console.log(
+  JSON.stringify({
+    timezones: checkTimezoneOracle(
+      Temporal,
+      readFileSync(resolve(process.argv[15]), 'utf8'),
+      readFileSync(resolve(process.argv[13]), 'utf8'),
+      readFileSync(resolve(process.argv[14]), 'utf8'),
+      (actual, expected, context) => assert.equal(actual, expected, context)
+    ),
+  })
+)

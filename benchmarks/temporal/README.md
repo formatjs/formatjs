@@ -826,3 +826,46 @@ Consumer bundles: TS 360,454 gzip; WASM JS 362,248 +binary 315,320 =677,568.
 Separately compressed ESM: TS 361,876 versus WASM 678,000. Native calendar tables
 now duplicate retained JS tables. Native timezone data and remaining native
 orchestration are still absent; full-backend cost remains unproven.
+
+## Native timezone bridge
+
+`hermes-timezone-results.json`, `wasm-timezone-results.json` and
+`timezone-backend-size-results.json` include all16 native calendars and the owned
+IANA registry. Five zoned workloads cover gap/fold parsing, exact offsets, calendar
+day addition/differences and next transitions. Eight inputs include New York,
+Paris, Lord Howe, Apia, Kathmandu, St Johns and UTC. Parity is checked before timing.
+Transitions use 128 warmup +512 calls per sample; other counts remain unchanged.
+
+Hermes enables native DateTimeFormat for both profiles and registers the generated
+native English locale/number pack plus owned timezone data. This supplies Intl to
+the reference; registration is outside timings. V8 uses its recorded host ICU.
+Final runs execute sequentially after validation. Older snapshots keep their scopes.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Zoned parse: 65.00 /47.03 /51.53.
+- Zoned offset: 2.64 /3.29 /0.22.
+- Zoned day add: 69.59 /57.11 /31.35.
+- Zoned day difference: 114.71 /106.80 /20.79.
+- Zoned next transition: 9.81 /5.04 /42.70.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Zoned parse: 5.74 /41.60 /6.81.
+- Zoned offset: 0.35 /3.51 /0.06.
+- Zoned day add: 6.76 /56.62 /3.19.
+- Zoned day difference: 13.69 /82.73 /47.40.
+- Zoned next transition: 1.21 /5.08 /7.17.
+
+Cached kernels avoid repeated identity normalization while selecting the current
+backend per operation. Rust improves four Hermes cases here; offset getters still
+cross JSON. The reference caches offsets. WASM loses all five against TS on this
+host. These partial-backend timings do not establish a default-backend choice.
+
+Binary: 3,255,057 raw /393,101 gzip bytes. Consumer bundles: TS 360,695 gzip;
+WASM JS 362,654 +binary 393,101 =755,755. Separate ESM: TS 362,249 versus WASM
+756,154. Both native calendar and timezone packs duplicate retained JS fallback
+packs. Native class/relative orchestration remains incomplete.
+
+WASM compile/instantiate costs: 1.56/1.61 ms; first native/calendar/timezone
+operations: 2.72/9.70/1.10 ms. JS/TS was already warm; these exclude cold JS loading.

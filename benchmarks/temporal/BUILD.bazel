@@ -39,7 +39,9 @@ formatjs_library(
         "wasm-inputs.ts",
         "wasm-test.ts",
         "wasm-ts-entry.ts",
+        "zoned-inputs.ts",
         "zones-entry.ts",
+        "//crates/intl_datetimeformat:locale-data/en.json",
         "//packages/intl-datetimeformat:locale-data-json/en.json",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
@@ -222,6 +224,8 @@ rolldown_bundle(
     name = "hermes-instant-bundle",
     srcs = [
         "hermes-instant.ts",
+        "zoned-inputs.ts",
+        "//crates/intl_datetimeformat:locale-data/en.json",
         "//packages/temporal:runtime_sources",
     ],
     entry_point = "hermes-instant.ts",
@@ -249,6 +253,7 @@ js_binary(
     name = "wasm_facade_benchmark",
     args = ["$(rlocationpath //packages/temporal:pkg)"],
     data = [
+        "zoned-inputs.ts",
         ":generated_package_json",
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/esbuild",

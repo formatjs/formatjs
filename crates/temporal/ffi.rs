@@ -1,6 +1,9 @@
 //! Normalized Temporal requests; host object semantics stay in JS.
 use crate::calendar::{Date, DateDuration, DateUnit, MonthCode, Overflow};
-use crate::{CalendarProvider, CalendarRef, CalendarRegistry};
+use crate::{
+    CalendarProvider, CalendarRef, CalendarRegistry, Disambiguation, TimeZone, TimeZoneRegistry,
+    TransitionDirection,
+};
 use crate::{
     Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime, Precision, RoundingMode,
     TimeUnit,
@@ -302,6 +305,74 @@ fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
     };
     Ok(result)
 }
+fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    #[cfg(feature = "compiled_time_zones")]
+    let registry = TimeZoneRegistry::compiled();
+    #[cfg(not(feature = "compiled_time_zones"))]
+    let registry = TimeZoneRegistry::empty();
+    let zone = registry.resolve(
+        request["identifier"]
+            .as_str()
+            .ok_or(Error::InvalidTimeZone)?,
+    )?;
+    match op {
+        "timeZoneIdentity" => {
+            Ok(json!({"identifier":zone.identifier(),"primary":zone.primary_identifier()}))
+        }
+        "timeZoneOffset" => Ok(json!(
+            zone.offset_nanoseconds(instant(request, "nanoseconds")?)
+                .to_string()
+        )),
+        "timeZoneTransition" => {
+            let direction = match request["direction"].as_str() {
+                Some("next") => TransitionDirection::Next,
+                Some("previous") => TransitionDirection::Previous,
+                _ => return Err(Error::InvalidTimeZone),
+            };
+            Ok(
+                match zone.transition(instant(request, "nanoseconds")?, direction) {
+                    Some(value) => json!(value.epoch_nanoseconds().to_string()),
+                    None => Value::Null,
+                },
+            )
+        }
+        "timeZonePossibleInstants" => {
+            let mut values = std::vec::Vec::new();
+            crate::zoned::visit_possible_instants(
+                fields(&request["fields"])?,
+                &zone,
+                &mut |value| {
+                    let value = value.epoch_nanoseconds();
+                    if !values.contains(&value) {
+                        values.push(value);
+                    }
+                },
+            )?;
+            values.sort_unstable();
+            Ok(json!(
+                values
+                    .iter()
+                    .map(ToString::to_string)
+                    .collect::<std::vec::Vec<_>>()
+            ))
+        }
+        "timeZoneResolve" => {
+            let mode = match request["disambiguation"].as_str() {
+                Some("compatible") => Disambiguation::Compatible,
+                Some("earlier") => Disambiguation::Earlier,
+                Some("later") => Disambiguation::Later,
+                Some("reject") => Disambiguation::Reject,
+                _ => return Err(Error::InvalidTimeZone),
+            };
+            Ok(json!(
+                crate::zoned::resolve_local(fields(&request["fields"])?, &zone, mode)?
+                    .epoch_nanoseconds()
+                    .to_string()
+            ))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parsePlainTime" {
         return Ok(json!(
@@ -503,12 +574,17 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars","calls":CALLS.load(Ordering::Relaxed),"operations":["calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones","calls":CALLS.load(Ordering::Relaxed),"operations":["timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "calendarStartOfYear"
+        "timeZoneIdentity"
+            | "timeZoneOffset"
+            | "timeZonePossibleInstants"
+            | "timeZoneResolve"
+            | "timeZoneTransition"
+            | "calendarStartOfYear"
             | "calendarMonthsInYear"
             | "calendarDaysInMonth"
             | "calendarToEpochDay"
@@ -557,6 +633,7 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
             }
+            _ if op.starts_with("timeZone") => time_zone_operation(op, &request),
             _ if op.starts_with("calendar") => calendar_operation(op, &request),
             _ if op.ends_with("PlainTime") => time_operation(op, &request),
             _ => instant_operation(op, &request),

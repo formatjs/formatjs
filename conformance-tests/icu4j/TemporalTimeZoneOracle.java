@@ -12,7 +12,9 @@ import java.util.TreeSet;
 public final class TemporalTimeZoneOracle {
   public static void main(String[] args) throws Exception {
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU tzdb " + TimeZone.getTZDataVersion());
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalTimezoneOracle = [");
+      if (!javascript) out.println("# ICU tzdb " + TimeZone.getTZDataVersion());
       String[] identifiers = TimeZone.getAvailableIDs();
       Arrays.sort(identifiers);
       for (String id : identifiers) {
@@ -34,13 +36,18 @@ public final class TemporalTimeZoneOracle {
           }
         }
         for (long instant : samples) {
-          out.println(id + "\t" + instant + "\t" + zone.getOffset(instant) / 1000);
+          row(out, javascript, id + "\t" + instant + "\t" + zone.getOffset(instant) / 1000);
         }
       }
+      if (javascript) out.println("]; ");
     }
   }
 
   private static long millis(int year, int month) {
     return LocalDate.of(year, month, 1).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
   }
+  private static void row(PrintWriter out, boolean javascript, String value) {
+    out.println(javascript ? "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"").replace("\t", "\\t") + "\"," : value);
+  }
+
 }

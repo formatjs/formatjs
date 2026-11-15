@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import primary from '@formatjs_generated/tz/primary.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import links from '@formatjs_generated/tz/links.js'
@@ -15,7 +16,7 @@ import {
 
 let identifiers: Map<string, string> | undefined
 const cache = new Map<string, ReturnType<typeof createTimeZone>>()
-export function timeZone(name: string): TimeZoneKernel {
+function typescriptTimeZone(name: string): TimeZoneKernel {
   if (!identifiers) {
     identifiers = new Map()
     for (let i = 0; i < packed.zones.length; i++) {
@@ -47,6 +48,50 @@ export function timeZone(name: string): TimeZoneKernel {
   }
   return zone
 }
+function withNativeZone(
+  identifier: string,
+  fallback: () => TimeZoneKernel
+): TimeZoneKernel {
+  return {
+    offsetNanoseconds: value => {
+      const native = nativeTemporal()
+      return native
+        ? native.timeZoneOffset(identifier, value)
+        : fallback().offsetNanoseconds(value)
+    },
+    possibleInstants: fields => {
+      const native = nativeTemporal()
+      return native
+        ? native.timeZonePossibleInstants(identifier, fields)
+        : fallback().possibleInstants(fields)
+    },
+    resolve: (fields, disambiguation = 'compatible') => {
+      const native = nativeTemporal()
+      return native
+        ? native.timeZoneResolve(identifier, fields, disambiguation)
+        : fallback().resolve(fields, disambiguation)
+    },
+    transition: (value, direction) => {
+      const native = nativeTemporal()
+      return native
+        ? native.timeZoneTransition(identifier, value, direction)
+        : fallback().transition(value, direction)
+    },
+  }
+}
+const namedKernels = new Map<string, TimeZoneKernel>()
+export function timeZone(name: string): TimeZoneKernel {
+  const existing = namedKernels.get(name)
+  if (existing) return existing
+  const identifier = timeZoneIdentifier(name)
+  if (/^[+-]/.test(identifier)) throw new RangeError('Expected named timezone')
+  let zone = namedKernels.get(identifier)
+  if (!zone) {
+    zone = withNativeZone(identifier, () => typescriptTimeZone(identifier))
+    namedKernels.set(identifier, zone)
+  }
+  return zone
+}
 export * from '#packages/temporal/kernel.js'
 
 export function resolveTimeZone(
@@ -57,11 +102,8 @@ export function resolveTimeZone(
   if (typeof value !== 'string')
     throw new TypeError('Timezone must be a string')
   const identifier = parseTimeZoneString(value)
-  if (/^[+-]/.test(identifier)) {
-    const offset = parseOffsetNanoseconds(identifier, true)
-    return {offsetNanoseconds: () => offset}
-  }
-  if (identifier.toUpperCase() === 'UTC') return {offsetNanoseconds: () => 0n}
+  if (/^[+-]/.test(identifier) || identifier.toUpperCase() === 'UTC')
+    return zonedKernel(timeZoneIdentifier(identifier))
   return timeZone(identifier)
 }
 
@@ -72,6 +114,8 @@ export function timeZoneIdentifier(value: unknown): string {
   if (typeof value !== 'string')
     throw new TypeError('Timezone must be a string')
   const name = parseTimeZoneString(value)
+  const native = nativeTemporal()
+  if (native) return native.timeZoneIdentity(name).identifier
   if (/^[+-]/.test(name)) {
     const offset = parseOffsetNanoseconds(name, true)
     const minutes = Number((offset < 0n ? -offset : offset) / 60_000_000_000n)
@@ -132,11 +176,14 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
     },
     resolve: fields => check(isoToEpochNanoseconds(fields) - offset),
   }
-  fixedKernels.set(key, result)
-  return result
+  const zone = withNativeZone(key, () => result)
+  fixedKernels.set(key, zone)
+  return zone
 }
 
 export function primaryTimeZoneIdentifier(id: string): string {
+  const native = nativeTemporal()
+  if (native) return native.timeZoneIdentity(id).primary
   return primary[id as keyof typeof primary] ?? id
 }
 export function timeZoneEquals(one: string, two: string): boolean {

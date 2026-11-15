@@ -16,7 +16,7 @@ TS date classes use all 16 specification calendars and owned IANA timezone data.
 Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
 numeric calendar math is shared. Native date classes resolve all 16 calendars.
 Experimental Hermes and WASM backends delegate ISO conversion, Instant and
-PlainTime operations plus all 16 calendar engines to Rust. Date/relative/zoned orchestration still uses TS. Complete native
+PlainTime operations plus all 16 calendar engines and owned IANA timezone queries to Rust. Date/relative/zoned orchestration still uses TS. Complete native
 Hermes installation and complete WASM facade/data remain pending.
 
 ## Delivery order
@@ -922,3 +922,44 @@ Rust improves three of five measured Hermes ISO date workloads; WASM loses to TS
 on all five. Current consumer bundles total 360,454 gzip bytes TS versus 677,568
 WASM, including the 315,320-byte native binary and retained JS calendar data.
 Equivalent full-native backend size/performance proof remains open.
+
+## Native timezone bridge
+
+Bazel `:with_ffi` now embeds the same checked IANA records/footer rules as the
+typed Rust timezone registry. Shared JS zone kernels delegate identity, exact
+nanosecond offsets, candidate instants, local disambiguation and strict transitions
+to Rust. Named aliases retain spelling separately from primary identity. Offset
+zones and UTC use the same backend selection as named zones.
+
+Cached kernels read the current backend on each operation. Objects created before
+activation use Rust afterwards; backend errors propagate without trying TS.
+The TS transition decoder remains lazy fallback data/code. Rust shares candidate
+visitation between typed local resolution and FFI; only FFI allocates output arrays.
+WASM ABI 4 rejects ABI-3 modules before replacing an active backend.
+
+Independent ICU public controls run on TS, Hermes source/HBC and the published
+WASM package: 597 identities, 178,503 identity pairs, 17,640 future offsets,
+1,900 gap/fold windows and 14,058 strict transition rows. Transition checks include
+both directions, nanosecond boundaries and advancing follow-up queries. Offset
+windows cover years 2101, 2400, 2500, 10000 and 275000; resolution checks compare
+calendar versus elapsed days and relative Duration ordering. Native tests warm
+named/fixed kernels before installation and reject all cached operations under a
+failing replacement backend, proving that cached TS providers cannot bypass Rust.
+
+Date/relative/zoned orchestration, remaining native class methods, real Hermes
+SDK installation and native Intl brand/styles/range integration remain open.
+Full backend comparisons remain required; these are still hybrid facades.
+
+The 50-target regression run passes full eight-class native/Hermes/WASM selections
+(9,090 executions per mode), overlapping calendar/Now/install gates, ICU controls
+and the default TS full ZonedDateTime selection. No new exclusions or tracked
+failures. Calendar Hermes gates use a longer timeout after parallel execution
+exceeded 300 seconds; both pass rerun. A subsequent cached-name fast path passes
+nine focused targets, including full ZonedDateTime on all four configurations.
+
+Current consumer bundles total 360,695 gzip bytes TS versus 755,755 with WASM.
+The native binary is 393,101 gzip bytes; retained JS data duplicates native packs.
+Zoned benchmarks improve four of five Hermes cases with Rust; WASM loses all five
+against TS. See `benchmarks/temporal/*timezone*results.json` for samples and scopes.
+Remaining native orchestration, SDK installation, Intl integration and equivalent
+full-backend comparisons remain required.

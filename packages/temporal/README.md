@@ -435,3 +435,37 @@ Rust improves three of five measured Hermes ISO date workloads; WASM loses to TS
 on all five. Current consumer bundles total 360,454 gzip bytes TS versus 677,568
 WASM, including the 315,320-byte native binary and retained JS calendar data.
 Equivalent full-native backend size/performance proof remains open.
+
+## Native timezone bridge
+
+Hermes/WASM now use the owned Rust IANA registry for identity, exact offsets,
+possible instants, gap/fold resolution and strict next/previous transitions.
+The FFI Bazel target embeds historical records and recurring future rules.
+UTC and fixed offsets use the same backend path. WASM ABI 4 requires the matching
+packaged binary; previous binaries reject before replacing active state.
+
+Cached JS kernels select the current backend on every operation, including kernels
+created before activation. Native errors propagate without falling back to TS.
+The default TS path keeps lazy owned-data decoding. JS still owns coercion, slots
+and date/relative/zoned orchestration; the complete Rust facade and SDK remain open.
+
+Independent ICU controls pass on TS, Hermes source/HBC and the published WASM
+namespace: 597 identities, 178,503 identity pairs, 17,640 offsets, 1,900 gap/fold
+windows and 14,058 transition rows. Future samples extend through year 275000.
+Transitions check both directions, strict boundaries and nanosecond neighbors;
+resolution checks calendar versus elapsed days and relative Duration comparisons.
+These controls do not establish complete native Temporal or native Intl support.
+
+The 50-target regression run passes full eight-class native/Hermes/WASM selections
+(9,090 executions per mode), overlapping calendar/Now/install gates, ICU controls
+and the default TS full ZonedDateTime selection. No new exclusions or tracked
+failures. Calendar Hermes gates use a longer timeout after parallel execution
+exceeded 300 seconds; both pass rerun. A subsequent cached-name fast path passes
+nine focused targets, including full ZonedDateTime on all four configurations.
+
+Current consumer bundles total 360,695 gzip bytes TS versus 755,755 with WASM.
+The native binary is 393,101 gzip bytes; retained JS data duplicates native packs.
+Zoned benchmarks improve four of five Hermes cases with Rust; WASM loses all five
+against TS. See `benchmarks/temporal/*timezone*results.json` for samples and scopes.
+Remaining native orchestration, SDK installation, Intl integration and equivalent
+full-backend comparisons remain required.

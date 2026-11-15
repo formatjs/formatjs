@@ -232,14 +232,12 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
         self.checked_add(duration.negated(), overflow)
     }
 }
-pub(crate) fn resolve_local<Z: TimeZone>(
+pub(crate) fn visit_possible_instants<Z: TimeZone>(
     fields: IsoDateTime,
     zone: &Z,
-    disambiguation: Disambiguation,
-) -> Result<Instant, Error> {
+    visitor: &mut dyn FnMut(Instant),
+) -> Result<(), Error> {
     let local = fields.to_epoch_nanoseconds()?;
-    let mut first: Option<i128> = None;
-    let mut last: Option<i128> = None;
     zone.visit_offsets(&mut |offset| {
         if offset <= -NANOSECONDS_PER_DAY || offset >= NANOSECONDS_PER_DAY {
             return;
@@ -247,11 +245,25 @@ pub(crate) fn resolve_local<Z: TimeZone>(
         let candidate = local - offset;
         if let Ok(instant) = Instant::from_epoch_nanoseconds(candidate) {
             if zone.offset_nanoseconds(instant) == offset {
-                first = Some(first.map_or(candidate, |old| old.min(candidate)));
-                last = Some(last.map_or(candidate, |old| old.max(candidate)));
+                visitor(instant);
             }
         }
     });
+    Ok(())
+}
+
+pub(crate) fn resolve_local<Z: TimeZone>(
+    fields: IsoDateTime,
+    zone: &Z,
+    disambiguation: Disambiguation,
+) -> Result<Instant, Error> {
+    let mut first: Option<i128> = None;
+    let mut last: Option<i128> = None;
+    visit_possible_instants(fields, zone, &mut |instant| {
+        let candidate = instant.epoch_nanoseconds();
+        first = Some(first.map_or(candidate, |old| old.min(candidate)));
+        last = Some(last.map_or(candidate, |old| old.max(candidate)));
+    })?;
     if let (Some(first), Some(last)) = (first, last) {
         if first != last && disambiguation == Disambiguation::Reject {
             return Err(Error::InvalidDateTime);
@@ -265,6 +277,7 @@ pub(crate) fn resolve_local<Z: TimeZone>(
     if disambiguation == Disambiguation::Reject {
         return Err(Error::InvalidDateTime);
     }
+    let local = fields.to_epoch_nanoseconds()?;
     let mut minimum = i128::MAX;
     let mut maximum = i128::MIN;
     zone.visit_offsets(&mut |offset| {

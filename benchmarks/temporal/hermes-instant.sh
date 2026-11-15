@@ -12,7 +12,7 @@ for profile in typescript rust; do
   for mode in source bytecode; do
     file="$source"
     if [[ "$mode" == bytecode ]]; then file="$temporary/instant.hbc"; fi
-    result="$(TZ=UTC "$runner" --es6-block-scoping "$file")"
+    result="$(TZ=UTC "$runner" --es6-block-scoping --native-datetimeformat "$file")"
     printf '{"mode":"%s","result":%s}\n' "$mode" "$result"
   done
 done

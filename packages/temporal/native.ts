@@ -5,7 +5,7 @@ import type {
   DateDuration,
   Overflow,
 } from '#packages/temporal/calendar.js'
-import type {ISODateTime} from '#packages/temporal/kernel.js'
+import type {ISODateTime, Disambiguation} from '#packages/temporal/kernel.js'
 import type {
   Precision,
   RoundingMode,
@@ -24,6 +24,19 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  timeZoneIdentity(identifier: string): {identifier: string; primary: string}
+  timeZoneOffset(identifier: string, value: bigint): bigint
+  timeZonePossibleInstants(identifier: string, fields: ISODateTime): bigint[]
+  timeZoneResolve(
+    identifier: string,
+    fields: ISODateTime,
+    disambiguation: Disambiguation
+  ): bigint
+  timeZoneTransition(
+    identifier: string,
+    value: bigint,
+    direction: 'next' | 'previous'
+  ): bigint | null
   calendarStartOfYear(calendar: CalendarId, year: number): number
   calendarMonthsInYear(calendar: CalendarId, year: number): number
   calendarDaysInMonth(calendar: CalendarId, year: number, month: number): number
@@ -118,6 +131,19 @@ export function configureNativeTemporal(query: NativeQuery): void {
       throw new BadRange('Invalid Temporal value or range')
     return parse(result)
   }
+  function isoFields(fields: ISODateTime): Record<string, number> {
+    const copy = create(null)
+    copy.year = fields.year
+    copy.month = fields.month
+    copy.day = fields.day
+    copy.hour = fields.hour ?? 0
+    copy.minute = fields.minute ?? 0
+    copy.second = fields.second ?? 0
+    copy.millisecond = fields.millisecond ?? 0
+    copy.microsecond = fields.microsecond ?? 0
+    copy.nanosecond = fields.nanosecond ?? 0
+    return copy
+  }
   function request(
     op: string,
     fields?: ISODateTime,
@@ -127,17 +153,7 @@ export function configureNativeTemporal(query: NativeQuery): void {
     const record = create(null)
     record.op = op
     if (fields) {
-      const copy = create(null)
-      copy.year = fields.year
-      copy.month = fields.month
-      copy.day = fields.day
-      copy.hour = fields.hour ?? 0
-      copy.minute = fields.minute ?? 0
-      copy.second = fields.second ?? 0
-      copy.millisecond = fields.millisecond ?? 0
-      copy.microsecond = fields.microsecond ?? 0
-      copy.nanosecond = fields.nanosecond ?? 0
-      record.fields = copy
+      record.fields = isoFields(fields)
     }
     if (value !== undefined) record.nanoseconds = apply(bigintText, value, [])
     if (days !== undefined) record.days = days
@@ -166,6 +182,35 @@ export function configureNativeTemporal(query: NativeQuery): void {
     return fields
   }
   native = {
+    timeZoneIdentity: identifier => call('timeZoneIdentity', {identifier}),
+    timeZoneOffset: (identifier, value) =>
+      ToBigInt(call('timeZoneOffset', {identifier, nanoseconds: text(value)})),
+    timeZonePossibleInstants: (identifier, fields) => {
+      const values = call('timeZonePossibleInstants', {
+        identifier,
+        fields: isoFields(fields),
+      })
+      const result: bigint[] = []
+      for (let index = 0; index < values.length; index++)
+        result.push(ToBigInt(values[index]))
+      return result
+    },
+    timeZoneResolve: (identifier, fields, disambiguation) =>
+      ToBigInt(
+        call('timeZoneResolve', {
+          identifier,
+          fields: isoFields(fields),
+          disambiguation,
+        })
+      ),
+    timeZoneTransition: (identifier, value, direction) => {
+      const result = call('timeZoneTransition', {
+        identifier,
+        nanoseconds: text(value),
+        direction,
+      })
+      return result === null ? null : ToBigInt(result)
+    },
     calendarStartOfYear: (calendar, year) =>
       call('calendarStartOfYear', {calendar, year}),
     calendarMonthsInYear: (calendar, year) =>

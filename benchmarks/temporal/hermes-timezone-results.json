@@ -1,0 +1,1661 @@
+{
+  "engine": "Hermes",
+  "engineRevision": "338ff13ff1e996934ae615952d174f8c621844d9",
+  "platform": "Linux x86_64",
+  "command": "bazel run -c opt //benchmarks/temporal:hermes_instant_benchmark",
+  "method": "Eight varying inputs, parity checked. Instant, PlainTime, ISO dates and zoned cases; all16 calendars and owned IANA data included. 1000 warmup +five samples x5000 calls, except transitions128 warmup +five x512. Reference temporal-polyfill1.0.7 basic uses FormatJS native DateTimeFormat with registered native en locale/number pack and owned IANA data on Hermes. Locale/timezone registration excluded from hot timings. Separate TS/Rust and source/HBC processes. Final benchmarks serialized after tests; partial native namespace, one host.",
+  "runs": [
+    {
+      "mode": "source",
+      "result": {
+        "scope": "Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.",
+        "intlProvider": "FormatJS native DateTimeFormat with registered en locale and owned IANA data",
+        "backend": "typescript",
+        "iterations": 5000,
+        "samples": 5,
+        "warmup": 1000,
+        "inputs": 8,
+        "checksum": 12392984,
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11466.25919342041,
+              "samplesNanoseconds": [
+                11432.802772521973, 11447.649383544922, 11466.25919342041,
+                11500.421524047852, 11732.873153686523
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 31888.392448425293,
+              "samplesNanoseconds": [
+                31843.947792053223, 31876.02081298828, 31888.392448425293,
+                31905.257987976074, 32065.466117858887
+              ]
+            }
+          },
+          {
+            "operation": "format",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11731.801223754883,
+              "samplesNanoseconds": [
+                11699.211502075195, 11719.39754486084, 11731.801223754883,
+                11746.886825561523, 11772.173309326172
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 12024.553489685059,
+              "samplesNanoseconds": [
+                11924.503898620605, 11924.5943069458, 12024.553489685059,
+                12039.520454406738, 12045.601272583008
+              ]
+            }
+          },
+          {
+            "operation": "add",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 8644.82479095459,
+              "samplesNanoseconds": [
+                8572.547149658203, 8620.8158493042, 8644.82479095459,
+                8670.828437805176, 8675.222778320312
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 30469.870948791504,
+              "samplesNanoseconds": [
+                30378.382301330566, 30391.512489318848, 30469.870948791504,
+                30511.124992370605, 30528.566932678223
+              ]
+            }
+          },
+          {
+            "operation": "round",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3744.8068618774414,
+              "samplesNanoseconds": [
+                3687.978935241699, 3732.3455810546875, 3744.8068618774414,
+                3758.3799362182617, 3843.912124633789
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 24565.031814575195,
+              "samplesNanoseconds": [
+                24394.376754760742, 24473.34098815918, 24565.031814575195,
+                24592.86403656006, 25311.66477203369
+              ]
+            }
+          },
+          {
+            "operation": "until",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 19626.636123657227,
+              "samplesNanoseconds": [
+                19556.892585754395, 19594.098472595215, 19626.636123657227,
+                19644.125747680664, 19791.69578552246
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 28594.078063964844,
+              "samplesNanoseconds": [
+                28495.530319213867, 28557.100868225098, 28594.078063964844,
+                28649.993133544922, 28941.987800598145
+              ]
+            }
+          },
+          {
+            "operation": "timeParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11104.300498962402,
+              "samplesNanoseconds": [
+                11030.965614318848, 11104.183387756348, 11104.300498962402,
+                11107.502937316895, 11120.323944091797
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 18234.672164916992,
+              "samplesNanoseconds": [
+                18203.3260345459, 18229.651832580566, 18234.672164916992,
+                18283.651161193848, 18356.139755249023
+              ]
+            }
+          },
+          {
+            "operation": "timeFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11154.155731201172,
+              "samplesNanoseconds": [
+                11119.152450561523, 11139.179611206055, 11154.155731201172,
+                11170.91178894043, 11325.671768188477
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 4961.480903625488,
+              "samplesNanoseconds": [
+                4938.8383865356445, 4961.329078674316, 4961.480903625488,
+                4966.184234619141, 4970.096778869629
+              ]
+            }
+          },
+          {
+            "operation": "timeAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 14898.599624633789,
+              "samplesNanoseconds": [
+                14842.081832885742, 14884.565162658691, 14898.599624633789,
+                14901.835632324219, 14968.45989227295
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 18762.94937133789,
+              "samplesNanoseconds": [
+                18726.55200958252, 18749.27463531494, 18762.94937133789,
+                18765.32554626465, 18877.77442932129
+              ]
+            }
+          },
+          {
+            "operation": "timeRoundFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 15146.718215942383,
+              "samplesNanoseconds": [
+                15138.911437988281, 15145.282173156738, 15146.718215942383,
+                15151.151847839355, 15152.483749389648
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 15307.838249206543,
+              "samplesNanoseconds": [
+                15293.70002746582, 15304.277992248535, 15307.838249206543,
+                15323.235321044922, 15395.486831665039
+              ]
+            }
+          },
+          {
+            "operation": "timeUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 21271.924209594727,
+              "samplesNanoseconds": [
+                21255.521392822266, 21261.34662628174, 21271.924209594727,
+                21342.841911315918, 21631.460189819336
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 24865.199661254883,
+              "samplesNanoseconds": [
+                24735.79864501953, 24853.36570739746, 24865.199661254883,
+                24919.337844848633, 24966.022491455078
+              ]
+            }
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 19723.58169555664,
+              "samplesNanoseconds": [
+                19616.45622253418, 19714.9845123291, 19723.58169555664,
+                20243.43204498291, 20720.04508972168
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11490.56224822998,
+              "samplesNanoseconds": [
+                11447.395706176758, 11477.968788146973, 11490.56224822998,
+                11525.725173950195, 11558.111000061035
+              ]
+            }
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 38287.989807128906,
+              "samplesNanoseconds": [
+                38241.01390838623, 38265.56034088135, 38287.989807128906,
+                38526.422119140625, 39873.73294830322
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 3330.653953552246,
+              "samplesNanoseconds": [
+                3323.1691360473633, 3326.4694213867188, 3330.653953552246,
+                3340.9229278564453, 3382.2988510131836
+              ]
+            }
+          },
+          {
+            "operation": "dateAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 72511.44256591797,
+              "samplesNanoseconds": [
+                72386.23485565186, 72474.41940307617, 72511.44256591797,
+                72528.25870513916, 79146.5087890625
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 20361.8709564209,
+              "samplesNanoseconds": [
+                20314.127731323242, 20354.97169494629, 20361.8709564209,
+                20363.118362426758, 20419.123077392578
+              ]
+            }
+          },
+          {
+            "operation": "dateUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 90447.4962234497,
+              "samplesNanoseconds": [
+                90358.65097045898, 90405.4313659668, 90447.4962234497,
+                90496.18911743164, 91139.32647705078
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 28588.357734680176,
+              "samplesNanoseconds": [
+                28497.518157958984, 28531.11000061035, 28588.357734680176,
+                28596.47159576416, 28619.36321258545
+              ]
+            }
+          },
+          {
+            "operation": "yearMonthAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 76650.80814361572,
+              "samplesNanoseconds": [
+                76334.8035812378, 76605.37300109863, 76650.80814361572,
+                76925.64144134521, 81490.5652999878
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 20302.156829833984,
+              "samplesNanoseconds": [
+                20274.016571044922, 20276.622772216797, 20302.156829833984,
+                20333.466720581055, 20386.75479888916
+              ]
+            }
+          },
+          {
+            "operation": "zonedParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 90944.71244812012,
+              "samplesNanoseconds": [
+                90530.49201965332, 90673.60649108887, 90944.71244812012,
+                91009.743309021, 93405.74779510498
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 76303.68633270264,
+              "samplesNanoseconds": [
+                76154.76684570312, 76170.09773254395, 76303.68633270264,
+                76390.78254699707, 76489.40563201904
+              ]
+            }
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3967.9821014404297,
+              "samplesNanoseconds": [
+                3931.899833679199, 3955.971908569336, 3967.9821014404297,
+                3990.5628204345703, 4003.5560607910156
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 305.67264556884766,
+              "samplesNanoseconds": [
+                299.6183395385742, 304.60033416748047, 305.67264556884766,
+                308.3101272583008, 318.04466247558594
+              ]
+            }
+          },
+          {
+            "operation": "zonedAddDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 108900.16021728516,
+              "samplesNanoseconds": [
+                108565.98606109619, 108874.4312286377, 108900.16021728516,
+                108933.11080932617, 109081.89697265625
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 51345.029640197754,
+              "samplesNanoseconds": [
+                51334.43641662598, 51337.832832336426, 51345.029640197754,
+                51413.15994262695, 59241.249656677246
+              ]
+            }
+          },
+          {
+            "operation": "zonedUntilDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 172668.70956420898,
+              "samplesNanoseconds": [
+                172425.89645385742, 172503.21712493896, 172668.70956420898,
+                173385.48011779785, 173993.53981018066
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 45234.42096710205,
+              "samplesNanoseconds": [
+                45137.77313232422, 45198.74668121338, 45234.42096710205,
+                45295.86086273193, 45628.54976654053
+              ]
+            }
+          },
+          {
+            "operation": "zonedTransition",
+            "iterations": 512,
+            "warmup": 128,
+            "owned": {
+              "medianNanoseconds": 16341.861337423325,
+              "samplesNanoseconds": [
+                15853.526070713997, 16090.981662273407, 16341.861337423325,
+                16413.653269410133, 16893.304884433746
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 69912.41872310638,
+              "samplesNanoseconds": [
+                69749.1317987442, 69826.8972337246, 69912.41872310638,
+                70067.2585517168, 70756.4726471901
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "bytecode",
+      "result": {
+        "scope": "Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.",
+        "intlProvider": "FormatJS native DateTimeFormat with registered en locale and owned IANA data",
+        "backend": "typescript",
+        "iterations": 5000,
+        "samples": 5,
+        "warmup": 1000,
+        "inputs": 8,
+        "checksum": 12392984,
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 9112.233543395996,
+              "samplesNanoseconds": [
+                8989.902305603027, 9002.581787109375, 9112.233543395996,
+                9132.3392868042, 9361.956024169922
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 17010.417556762695,
+              "samplesNanoseconds": [
+                16963.528633117676, 17009.399795532227, 17010.417556762695,
+                17012.920379638672, 17028.649139404297
+              ]
+            }
+          },
+          {
+            "operation": "format",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 8845.71762084961,
+              "samplesNanoseconds": [
+                8791.859245300293, 8818.557739257812, 8845.71762084961,
+                8889.568901062012, 8908.427429199219
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 9322.8178024292,
+              "samplesNanoseconds": [
+                9291.597747802734, 9311.450576782227, 9322.8178024292,
+                9333.603858947754, 9346.611976623535
+              ]
+            }
+          },
+          {
+            "operation": "add",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 8276.041984558105,
+              "samplesNanoseconds": [
+                6833.577346801758, 6868.274688720703, 8276.041984558105,
+                11574.775886535645, 12263.959503173828
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 17616.251182556152,
+              "samplesNanoseconds": [
+                17458.416748046875, 17501.60427093506, 17616.251182556152,
+                17737.899589538574, 17864.855194091797
+              ]
+            }
+          },
+          {
+            "operation": "round",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 2914.8109436035156,
+              "samplesNanoseconds": [
+                2884.542655944824, 2889.1687393188477, 2914.8109436035156,
+                2948.068618774414, 3572.7426528930664
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 15353.285217285156,
+              "samplesNanoseconds": [
+                15205.484199523926, 15223.6665725708, 15353.285217285156,
+                15401.485061645508, 15412.384414672852
+              ]
+            }
+          },
+          {
+            "operation": "until",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 15135.999870300293,
+              "samplesNanoseconds": [
+                15099.241638183594, 15109.5365524292, 15135.999870300293,
+                15180.438995361328, 18293.114852905273
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 16452.069854736328,
+              "samplesNanoseconds": [
+                16331.145668029785, 16387.99877166748, 16452.069854736328,
+                16640.360069274902, 16646.98486328125
+              ]
+            }
+          },
+          {
+            "operation": "timeParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 10401.804161071777,
+              "samplesNanoseconds": [
+                10199.551010131836, 10373.210144042969, 10401.804161071777,
+                10808.43334197998, 10916.339111328125
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 10502.390670776367,
+              "samplesNanoseconds": [
+                10436.47632598877, 10488.988876342773, 10502.390670776367,
+                10526.363372802734, 10554.757118225098
+              ]
+            }
+          },
+          {
+            "operation": "timeFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 8328.257942199707,
+              "samplesNanoseconds": [
+                8298.833847045898, 8307.0894241333, 8328.257942199707,
+                8347.48420715332, 8351.079750061035
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 3025.7402420043945,
+              "samplesNanoseconds": [
+                2996.5051651000977, 3001.8590927124023, 3025.7402420043945,
+                3029.1345596313477, 3059.9653244018555
+              ]
+            }
+          },
+          {
+            "operation": "timeAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 12942.940330505371,
+              "samplesNanoseconds": [
+                12910.63346862793, 12940.623664855957, 12942.940330505371,
+                13021.360778808594, 13156.339263916016
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11642.340850830078,
+              "samplesNanoseconds": [
+                11601.91707611084, 11622.706413269043, 11642.340850830078,
+                11668.792533874512, 11686.82632446289
+              ]
+            }
+          },
+          {
+            "operation": "timeRoundFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11635.80379486084,
+              "samplesNanoseconds": [
+                11602.441596984863, 11606.07738494873, 11635.80379486084,
+                11653.174591064453, 11675.156021118164
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 9457.935333251953,
+              "samplesNanoseconds": [
+                9398.310279846191, 9440.880393981934, 9457.935333251953,
+                9532.087135314941, 9568.048095703125
+              ]
+            }
+          },
+          {
+            "operation": "timeUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 16234.594917297363,
+              "samplesNanoseconds": [
+                16184.745979309082, 16217.946434020996, 16234.594917297363,
+                16349.218940734863, 16361.250686645508
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 13604.05044555664,
+              "samplesNanoseconds": [
+                13523.382377624512, 13600.20866394043, 13604.05044555664,
+                13701.253700256348, 13718.866157531738
+              ]
+            }
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 9019.918251037598,
+              "samplesNanoseconds": [
+                8956.820678710938, 9012.031936645508, 9019.918251037598,
+                9023.236846923828, 9037.553977966309
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 5033.560562133789,
+              "samplesNanoseconds": [
+                4957.702445983887, 5010.49861907959, 5033.560562133789,
+                5041.955757141113, 5331.10466003418
+              ]
+            }
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 21971.884727478027,
+              "samplesNanoseconds": [
+                21914.99137878418, 21919.01683807373, 21971.884727478027,
+                22002.949333190918, 22084.753608703613
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 1920.1398849487305,
+              "samplesNanoseconds": [
+                1914.3077850341797, 1919.478988647461, 1920.1398849487305,
+                1929.720687866211, 1935.3866577148438
+              ]
+            }
+          },
+          {
+            "operation": "dateAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 41943.90563964844,
+              "samplesNanoseconds": [
+                41816.117668151855, 41898.556900024414, 41943.90563964844,
+                41953.41701507568, 42737.58449554443
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11286.447715759277,
+              "samplesNanoseconds": [
+                11253.058433532715, 11282.758903503418, 11286.447715759277,
+                11323.746681213379, 11396.949195861816
+              ]
+            }
+          },
+          {
+            "operation": "dateUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 57879.89521026611,
+              "samplesNanoseconds": [
+                57831.72264099121, 57876.56135559082, 57879.89521026611,
+                58156.72092437744, 59169.90547180176
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 13112.144470214844,
+              "samplesNanoseconds": [
+                13072.42660522461, 13111.187553405762, 13112.144470214844,
+                13142.367935180664, 13205.174255371094
+              ]
+            }
+          },
+          {
+            "operation": "yearMonthAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 42345.95241546631,
+              "samplesNanoseconds": [
+                42280.161476135254, 42304.4340133667, 42345.95241546631,
+                42366.19815826416, 42626.37519836426
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11149.433898925781,
+              "samplesNanoseconds": [
+                11135.101890563965, 11138.669204711914, 11149.433898925781,
+                11191.205787658691, 11199.50180053711
+              ]
+            }
+          },
+          {
+            "operation": "zonedParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 65004.84848022461,
+              "samplesNanoseconds": [
+                64797.732734680176, 64965.92769622803, 65004.84848022461,
+                65045.196533203125, 65327.044677734375
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 50811.07044219971,
+              "samplesNanoseconds": [
+                50724.29256439209, 50751.37176513672, 50811.07044219971,
+                51101.701736450195, 51108.53404998779
+              ]
+            }
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 2643.0370330810547,
+              "samplesNanoseconds": [
+                2593.888282775879, 2629.5141220092773, 2643.0370330810547,
+                2732.065010070801, 2762.6474380493164
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 216.59564971923828,
+              "samplesNanoseconds": [
+                212.03632354736328, 214.45236206054688, 216.59564971923828,
+                218.017578125, 278.89156341552734
+              ]
+            }
+          },
+          {
+            "operation": "zonedAddDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 69586.24610900879,
+              "samplesNanoseconds": [
+                69424.1834640503, 69572.1025466919, 69586.24610900879,
+                69617.07935333252, 69714.8904800415
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 31043.696403503418,
+              "samplesNanoseconds": [
+                30978.644371032715, 30987.490844726562, 31043.696403503418,
+                31082.563400268555, 31094.414710998535
+              ]
+            }
+          },
+          {
+            "operation": "zonedUntilDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 114709.53598022461,
+              "samplesNanoseconds": [
+                114547.63813018799, 114687.42218017578, 114709.53598022461,
+                114818.137550354, 114936.51809692383
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 20136.526489257812,
+              "samplesNanoseconds": [
+                20098.969841003418, 20101.279258728027, 20136.526489257812,
+                20139.82334136963, 20439.1544342041
+              ]
+            }
+          },
+          {
+            "operation": "zonedTransition",
+            "iterations": 512,
+            "warmup": 128,
+            "owned": {
+              "medianNanoseconds": 9810.542687773705,
+              "samplesNanoseconds": [
+                9713.977575302124, 9753.772988915443, 9810.542687773705,
+                9824.248030781746, 10449.02391731739
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 39557.60411918163,
+              "samplesNanoseconds": [
+                39437.3070448637, 39489.12024497986, 39557.60411918163,
+                39572.64870405197, 39828.3451795578
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "source",
+      "result": {
+        "scope": "Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.",
+        "intlProvider": "FormatJS native DateTimeFormat with registered en locale and owned IANA data",
+        "backend": "rust-iso-instant-time-calendars-zones",
+        "iterations": 5000,
+        "samples": 5,
+        "warmup": 1000,
+        "inputs": 8,
+        "checksum": 12392984,
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3713.239097595215,
+              "samplesNanoseconds": [
+                3687.751007080078, 3709.6588134765625, 3713.239097595215,
+                3778.1415939331055, 3832.258987426758
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 32577.557945251465,
+              "samplesNanoseconds": [
+                32463.22479248047, 32521.159744262695, 32577.557945251465,
+                32591.41616821289, 32640.395164489746
+              ]
+            }
+          },
+          {
+            "operation": "format",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 7889.435195922852,
+              "samplesNanoseconds": [
+                7840.201759338379, 7867.163467407227, 7889.435195922852,
+                7949.095916748047, 7981.563377380371
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 12374.161911010742,
+              "samplesNanoseconds": [
+                12315.720748901367, 12338.689994812012, 12374.161911010742,
+                12408.21361541748, 12408.751106262207
+              ]
+            }
+          },
+          {
+            "operation": "add",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 17948.819541931152,
+              "samplesNanoseconds": [
+                17901.654815673828, 17906.640243530273, 17948.819541931152,
+                17968.436431884766, 17997.7725982666
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 30934.87434387207,
+              "samplesNanoseconds": [
+                30842.926597595215, 30853.86734008789, 30934.87434387207,
+                30981.906127929688, 31065.836143493652
+              ]
+            }
+          },
+          {
+            "operation": "round",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 6854.910087585449,
+              "samplesNanoseconds": [
+                6827.458190917969, 6853.7092208862305, 6854.910087585449,
+                6927.556228637695, 6972.271537780762
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 24884.532737731934,
+              "samplesNanoseconds": [
+                24814.263153076172, 24862.79010772705, 24884.532737731934,
+                24916.14761352539, 24935.848999023438
+              ]
+            }
+          },
+          {
+            "operation": "until",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 19338.000679016113,
+              "samplesNanoseconds": [
+                19320.069694519043, 19321.277046203613, 19338.000679016113,
+                19380.977058410645, 19442.61817932129
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 29614.35947418213,
+              "samplesNanoseconds": [
+                29571.51222229004, 29607.261848449707, 29614.35947418213,
+                29838.926696777344, 29900.07095336914
+              ]
+            }
+          },
+          {
+            "operation": "timeParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 9820.052146911621,
+              "samplesNanoseconds": [
+                9780.213165283203, 9808.212661743164, 9820.052146911621,
+                9847.039794921875, 9942.338180541992
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 18727.078819274902,
+              "samplesNanoseconds": [
+                18658.504104614258, 18688.772010803223, 18727.078819274902,
+                18857.63397216797, 18871.900749206543
+              ]
+            }
+          },
+          {
+            "operation": "timeFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3833.321952819824,
+              "samplesNanoseconds": [
+                3811.3914489746094, 3826.5697479248047, 3833.321952819824,
+                3836.3821029663086, 3839.0134811401367
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 5238.335037231445,
+              "samplesNanoseconds": [
+                5209.454917907715, 5211.413955688477, 5238.335037231445,
+                5241.524124145508, 5267.13809967041
+              ]
+            }
+          },
+          {
+            "operation": "timeAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 23993.88656616211,
+              "samplesNanoseconds": [
+                23955.59673309326, 23970.187187194824, 23993.88656616211,
+                24016.675758361816, 27181.25991821289
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 19563.6869430542,
+              "samplesNanoseconds": [
+                19473.361015319824, 19549.162483215332, 19563.6869430542,
+                19581.158447265625, 19590.049362182617
+              ]
+            }
+          },
+          {
+            "operation": "timeRoundFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 9684.428977966309,
+              "samplesNanoseconds": [
+                9642.974281311035, 9643.88370513916, 9684.428977966309,
+                9694.40631866455, 9789.847946166992
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 16277.44426727295,
+              "samplesNanoseconds": [
+                16139.201927185059, 16222.914123535156, 16277.44426727295,
+                16306.877517700195, 16324.46346282959
+              ]
+            }
+          },
+          {
+            "operation": "timeUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 20195.511436462402,
+              "samplesNanoseconds": [
+                20124.106216430664, 20125.248336791992, 20195.511436462402,
+                20293.64414215088, 20696.008110046387
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 25513.014030456543,
+              "samplesNanoseconds": [
+                25458.75644683838, 25508.613777160645, 25513.014030456543,
+                25514.363479614258, 25576.24340057373
+              ]
+            }
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 16884.207344055176,
+              "samplesNanoseconds": [
+                16871.281623840332, 16880.6453704834, 16884.207344055176,
+                16951.23462677002, 16956.870460510254
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11852.131652832031,
+              "samplesNanoseconds": [
+                11759.4820022583, 11798.186683654785, 11852.131652832031,
+                11935.897445678711, 12480.099105834961
+              ]
+            }
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 45147.60990142822,
+              "samplesNanoseconds": [
+                45007.802963256836, 45116.4888381958, 45147.60990142822,
+                45343.77746582031, 54524.80945587158
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 3435.453414916992,
+              "samplesNanoseconds": [
+                3414.973258972168, 3424.2603302001953, 3435.453414916992,
+                3438.345527648926, 3440.1968002319336
+              ]
+            }
+          },
+          {
+            "operation": "dateAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 47577.49137878418,
+              "samplesNanoseconds": [
+                47529.325675964355, 47553.07559967041, 47577.49137878418,
+                47639.737129211426, 47646.44069671631
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 20948.893547058105,
+              "samplesNanoseconds": [
+                20914.734268188477, 20930.943489074707, 20948.893547058105,
+                21022.052574157715, 21042.5386428833
+              ]
+            }
+          },
+          {
+            "operation": "dateUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 48753.59191894531,
+              "samplesNanoseconds": [
+                48536.93389892578, 48690.61679840088, 48753.59191894531,
+                48894.920349121094, 49124.224281311035
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 29569.159507751465,
+              "samplesNanoseconds": [
+                29516.375732421875, 29543.233489990234, 29569.159507751465,
+                29580.0968170166, 29845.336151123047
+              ]
+            }
+          },
+          {
+            "operation": "yearMonthAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 45835.06603240967,
+              "samplesNanoseconds": [
+                45712.36228942871, 45762.61520385742, 45835.06603240967,
+                45887.0059967041, 45994.287109375
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 21021.20704650879,
+              "samplesNanoseconds": [
+                20984.096336364746, 20988.347053527832, 21021.20704650879,
+                21092.002868652344, 21757.209587097168
+              ]
+            }
+          },
+          {
+            "operation": "zonedParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 55789.95227813721,
+              "samplesNanoseconds": [
+                55336.87686920166, 55383.591079711914, 55789.95227813721,
+                57594.557762145996, 59680.94234466553
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 78963.76514434814,
+              "samplesNanoseconds": [
+                78907.68337249756, 78935.42938232422, 78963.76514434814,
+                79280.42373657227, 79296.16603851318
+              ]
+            }
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3788.3317947387695,
+              "samplesNanoseconds": [
+                3760.3271484375, 3775.2010345458984, 3788.3317947387695,
+                3792.8993225097656, 3793.8486099243164
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 293.7175750732422,
+              "samplesNanoseconds": [
+                289.2402648925781, 292.78106689453125, 293.7175750732422,
+                294.5985794067383, 309.0127944946289
+              ]
+            }
+          },
+          {
+            "operation": "zonedAddDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 70833.57276916504,
+              "samplesNanoseconds": [
+                70774.66773986816, 70807.73544311523, 70833.57276916504,
+                70853.29723358154, 70898.64959716797
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 52388.96884918213,
+              "samplesNanoseconds": [
+                52190.718269348145, 52248.806953430176, 52388.96884918213,
+                52704.13284301758, 53016.001319885254
+              ]
+            }
+          },
+          {
+            "operation": "zonedUntilDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 137438.4490966797,
+              "samplesNanoseconds": [
+                136688.81397247314, 137008.48712921143, 137438.4490966797,
+                138418.36757659912, 146118.5230255127
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 46276.783752441406,
+              "samplesNanoseconds": [
+                46242.04730987549, 46263.18988800049, 46276.783752441406,
+                46428.330993652344, 46646.69437408447
+              ]
+            }
+          },
+          {
+            "operation": "zonedTransition",
+            "iterations": 512,
+            "warmup": 128,
+            "owned": {
+              "medianNanoseconds": 6051.294505596161,
+              "samplesNanoseconds": [
+                5919.506773352623, 6013.352423906326, 6051.294505596161,
+                6210.9604477882385, 6582.451984286308
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 73824.66644048691,
+              "samplesNanoseconds": [
+                73517.45665073395, 73608.99820923805, 73824.66644048691,
+                74476.79713368416, 87829.04036343098
+              ]
+            }
+          }
+        ],
+        "native": {
+          "backend": "rust-iso-instant-time-calendars-zones",
+          "calls": 1667406,
+          "operations": [
+            "timeZoneIdentity",
+            "timeZoneOffset",
+            "timeZonePossibleInstants",
+            "timeZoneResolve",
+            "timeZoneTransition",
+            "calendarStartOfYear",
+            "calendarMonthsInYear",
+            "calendarDaysInMonth",
+            "calendarToEpochDay",
+            "calendarFromEpochDay",
+            "calendarAdd",
+            "calendarUntil",
+            "calendarMonthSerial",
+            "calendarEra",
+            "calendarYearFromEra",
+            "isoToEpochNanoseconds",
+            "epochNanosecondsToISO",
+            "addISODays",
+            "parsePlainTime",
+            "regulatePlainTime",
+            "formatPlainTime",
+            "addPlainTime",
+            "roundPlainTime",
+            "differencePlainTime",
+            "parseInstant",
+            "formatInstant",
+            "addInstant",
+            "roundInstant",
+            "differenceInstant"
+          ],
+          "completeTemporalBackend": false
+        }
+      }
+    },
+    {
+      "mode": "bytecode",
+      "result": {
+        "scope": "Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.",
+        "intlProvider": "FormatJS native DateTimeFormat with registered en locale and owned IANA data",
+        "backend": "rust-iso-instant-time-calendars-zones",
+        "iterations": 5000,
+        "samples": 5,
+        "warmup": 1000,
+        "inputs": 8,
+        "checksum": 12392984,
+        "results": [
+          {
+            "operation": "parse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3224.1580963134766,
+              "samplesNanoseconds": [
+                3199.082374572754, 3209.305763244629, 3224.1580963134766,
+                3240.9826278686523, 3257.70263671875
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 17313.415336608887,
+              "samplesNanoseconds": [
+                17208.07056427002, 17212.122917175293, 17313.415336608887,
+                17330.445861816406, 18610.05344390869
+              ]
+            }
+          },
+          {
+            "operation": "format",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 6797.127342224121,
+              "samplesNanoseconds": [
+                6769.367980957031, 6796.192359924316, 6797.127342224121,
+                6813.077163696289, 6900.431442260742
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 9520.965003967285,
+              "samplesNanoseconds": [
+                9519.808197021484, 9520.699310302734, 9520.965003967285,
+                9623.13232421875, 9659.493637084961
+              ]
+            }
+          },
+          {
+            "operation": "add",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 15130.061531066895,
+              "samplesNanoseconds": [
+                15070.233345031738, 15078.968048095703, 15130.061531066895,
+                15138.444709777832, 15174.200820922852
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 17902.414512634277,
+              "samplesNanoseconds": [
+                17836.994552612305, 17843.519020080566, 17902.414512634277,
+                17907.501792907715, 17954.072761535645
+              ]
+            }
+          },
+          {
+            "operation": "round",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 5648.7714767456055,
+              "samplesNanoseconds": [
+                5636.35196685791, 5644.851112365723, 5648.7714767456055,
+                5652.3603439331055, 5652.966117858887
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 15638.662338256836,
+              "samplesNanoseconds": [
+                15589.690971374512, 15613.607406616211, 15638.662338256836,
+                15647.449111938477, 15854.513168334961
+              ]
+            }
+          },
+          {
+            "operation": "until",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 15628.600311279297,
+              "samplesNanoseconds": [
+                15617.063522338867, 15618.049049377441, 15628.600311279297,
+                15640.320587158203, 16033.280181884766
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 16981.28776550293,
+              "samplesNanoseconds": [
+                16942.819595336914, 16952.861785888672, 16981.28776550293,
+                17087.238311767578, 17097.149085998535
+              ]
+            }
+          },
+          {
+            "operation": "timeParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 9033.092880249023,
+              "samplesNanoseconds": [
+                9014.099884033203, 9028.46565246582, 9033.092880249023,
+                9069.713973999023, 9099.514961242676
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 10793.980407714844,
+              "samplesNanoseconds": [
+                10731.844520568848, 10780.79719543457, 10793.980407714844,
+                10836.997032165527, 10939.290237426758
+              ]
+            }
+          },
+          {
+            "operation": "timeFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3153.269386291504,
+              "samplesNanoseconds": [
+                3124.436378479004, 3126.8653869628906, 3153.269386291504,
+                3157.7890396118164, 3248.5090255737305
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 3118.901824951172,
+              "samplesNanoseconds": [
+                3079.7897338867188, 3108.253860473633, 3118.901824951172,
+                3126.326560974121, 3129.1866302490234
+              ]
+            }
+          },
+          {
+            "operation": "timeAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 21330.5513381958,
+              "samplesNanoseconds": [
+                21247.507858276367, 21313.89560699463, 21330.5513381958,
+                21375.75740814209, 21377.699851989746
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 12101.730346679688,
+              "samplesNanoseconds": [
+                12042.130088806152, 12067.89264678955, 12101.730346679688,
+                12108.54606628418, 12123.466300964355
+              ]
+            }
+          },
+          {
+            "operation": "timeRoundFormat",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 8001.148223876953,
+              "samplesNanoseconds": [
+                7926.6021728515625, 7992.706680297852, 8001.148223876953,
+                8007.222747802734, 8010.351943969727
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 9686.781311035156,
+              "samplesNanoseconds": [
+                9617.15259552002, 9645.391082763672, 9686.781311035156,
+                9705.095481872559, 9743.557929992676
+              ]
+            }
+          },
+          {
+            "operation": "timeUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 16184.05532836914,
+              "samplesNanoseconds": [
+                16172.533798217773, 16182.758140563965, 16184.05532836914,
+                16265.95230102539, 16406.69765472412
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 14049.797630310059,
+              "samplesNanoseconds": [
+                14031.4603805542, 14048.06957244873, 14049.797630310059,
+                14127.4019241333, 14148.688888549805
+              ]
+            }
+          },
+          {
+            "operation": "dateFromFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 11720.722198486328,
+              "samplesNanoseconds": [
+                11657.727432250977, 11679.76131439209, 11720.722198486328,
+                11732.448959350586, 11737.960052490234
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 5262.609481811523,
+              "samplesNanoseconds": [
+                5195.238876342773, 5251.8659591674805, 5262.609481811523,
+                5294.911766052246, 5508.284568786621
+              ]
+            }
+          },
+          {
+            "operation": "dateFields",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 37782.72399902344,
+              "samplesNanoseconds": [
+                37707.43999481201, 37716.414642333984, 37782.72399902344,
+                37808.99238586426, 37820.77732086182
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 2000.6961822509766,
+              "samplesNanoseconds": [
+                1960.579490661621, 1983.7247848510742, 2000.6961822509766,
+                2010.6536865234375, 2013.575553894043
+              ]
+            }
+          },
+          {
+            "operation": "dateAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 34833.47415924072,
+              "samplesNanoseconds": [
+                34709.715270996094, 34810.330963134766, 34833.47415924072,
+                35812.8568649292, 36392.08068847656
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11922.401809692383,
+              "samplesNanoseconds": [
+                11834.38720703125, 11842.905807495117, 11922.401809692383,
+                11965.85750579834, 11987.763023376465
+              ]
+            }
+          },
+          {
+            "operation": "dateUntil",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 35046.347427368164,
+              "samplesNanoseconds": [
+                34801.36737823486, 34958.846855163574, 35046.347427368164,
+                44357.89546966553, 44900.30059814453
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 13806.594848632812,
+              "samplesNanoseconds": [
+                13709.118461608887, 13745.27416229248, 13806.594848632812,
+                13841.421508789062, 13858.488464355469
+              ]
+            }
+          },
+          {
+            "operation": "yearMonthAdd",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 36391.355895996094,
+              "samplesNanoseconds": [
+                36114.75028991699, 36175.35972595215, 36391.355895996094,
+                36533.26377868652, 44369.686698913574
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 11632.404899597168,
+              "samplesNanoseconds": [
+                11623.195266723633, 11624.530410766602, 11632.404899597168,
+                11637.479972839355, 11699.4047164917
+              ]
+            }
+          },
+          {
+            "operation": "zonedParse",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 47028.02200317383,
+              "samplesNanoseconds": [
+                46861.99073791504, 46978.82823944092, 47028.02200317383,
+                47155.75866699219, 47167.07992553711
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 51533.3194732666,
+              "samplesNanoseconds": [
+                51466.461753845215, 51472.80445098877, 51533.3194732666,
+                51801.424407958984, 51970.75996398926
+              ]
+            }
+          },
+          {
+            "operation": "zonedOffset",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 3285.5913162231445,
+              "samplesNanoseconds": [
+                3279.3813705444336, 3281.3488006591797, 3285.5913162231445,
+                3339.5797729492188, 3365.3139114379883
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 220.12462615966797,
+              "samplesNanoseconds": [
+                217.80033111572266, 218.05057525634766, 220.12462615966797,
+                221.64630889892578, 261.7605209350586
+              ]
+            }
+          },
+          {
+            "operation": "zonedAddDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 57112.39032745361,
+              "samplesNanoseconds": [
+                56915.98663330078, 57105.39970397949, 57112.39032745361,
+                57193.864822387695, 57241.45603179932
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 31351.060104370117,
+              "samplesNanoseconds": [
+                31293.7162399292, 31326.976013183594, 31351.060104370117,
+                31364.019012451172, 31856.631088256836
+              ]
+            }
+          },
+          {
+            "operation": "zonedUntilDay",
+            "iterations": 5000,
+            "warmup": 1000,
+            "owned": {
+              "medianNanoseconds": 106802.75268554688,
+              "samplesNanoseconds": [
+                106752.35843658447, 106789.79969024658, 106802.75268554688,
+                106902.73456573486, 107504.72564697266
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 20794.197845458984,
+              "samplesNanoseconds": [
+                20708.41636657715, 20769.03953552246, 20794.197845458984,
+                20816.981315612793, 20968.358421325684
+              ]
+            }
+          },
+          {
+            "operation": "zonedTransition",
+            "iterations": 512,
+            "warmup": 128,
+            "owned": {
+              "medianNanoseconds": 5035.0092351436615,
+              "samplesNanoseconds": [
+                5017.826333642006, 5020.881071686745, 5035.0092351436615,
+                5048.973485827446, 5559.500306844711
+              ]
+            },
+            "reference": {
+              "medianNanoseconds": 42698.81919026375,
+              "samplesNanoseconds": [
+                42348.03840517998, 42522.80481159687, 42698.81919026375,
+                42766.015976667404, 42778.005823493004
+              ]
+            }
+          }
+        ],
+        "native": {
+          "backend": "rust-iso-instant-time-calendars-zones",
+          "calls": 1667406,
+          "operations": [
+            "timeZoneIdentity",
+            "timeZoneOffset",
+            "timeZonePossibleInstants",
+            "timeZoneResolve",
+            "timeZoneTransition",
+            "calendarStartOfYear",
+            "calendarMonthsInYear",
+            "calendarDaysInMonth",
+            "calendarToEpochDay",
+            "calendarFromEpochDay",
+            "calendarAdd",
+            "calendarUntil",
+            "calendarMonthSerial",
+            "calendarEra",
+            "calendarYearFromEra",
+            "isoToEpochNanoseconds",
+            "epochNanosecondsToISO",
+            "addISODays",
+            "parsePlainTime",
+            "regulatePlainTime",
+            "formatPlainTime",
+            "addPlainTime",
+            "roundPlainTime",
+            "differencePlainTime",
+            "parseInstant",
+            "formatInstant",
+            "addInstant",
+            "roundInstant",
+            "differenceInstant"
+          ],
+          "completeTemporalBackend": false
+        }
+      }
+    }
+  ]
+}
