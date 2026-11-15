@@ -6,21 +6,21 @@
   "sizes": [
     {
       "file": "instant-code.js",
-      "raw": 536302,
-      "minified": 445167,
-      "minifiedGzip": 86286
+      "raw": 538712,
+      "minified": 446549,
+      "minifiedGzip": 86815
     },
     {
       "file": "polyfill-code.js",
-      "raw": 537845,
-      "minified": 445824,
-      "minifiedGzip": 86443
+      "raw": 540255,
+      "minified": 447206,
+      "minifiedGzip": 86974
     },
     {
       "file": "polyfill-force-code.js",
-      "raw": 537861,
-      "minified": 445826,
-      "minifiedGzip": 86445
+      "raw": 540271,
+      "minified": 447208,
+      "minifiedGzip": 86976
     },
     {
       "file": "should-polyfill-code.js",
@@ -38,9 +38,9 @@
   "publishedModules": [
     {
       "file": "index.js",
-      "raw": 536134,
-      "minified": 445052,
-      "minifiedGzip": 86210
+      "raw": 538544,
+      "minified": 446434,
+      "minifiedGzip": 86744
     },
     {
       "file": "polyfill.js",
@@ -78,8 +78,8 @@
       }
     ],
     "wasm": {
-      "raw": 43900,
-      "gzip": 19669
+      "raw": 43665,
+      "gzip": 19561
     }
   }
 }

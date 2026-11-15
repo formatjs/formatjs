@@ -104,6 +104,15 @@ filegroup(
     )
     for name, sources, data in [
         (
+            "arithmetic_calendar_test",
+            [
+                "tests/arithmetic-calendar.test.ts",
+                "tests/arithmetic-calendar-oracle.ts",
+                "tests/arithmetic-calendar-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
+        ),
+        (
             "plain_relative_test",
             [
                 "tests/plain-relative.test.ts",
@@ -912,6 +921,46 @@ sh_test(
     ],
     data = [
         ":plain_relative_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "arithmetic-calendar-host",
+    srcs = [
+        "tests/arithmetic-calendar-host.ts",
+        "tests/arithmetic-calendar-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/arithmetic-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "arithmetic_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        ":arithmetic-calendar-host.js",
+    ],
+    outs = ["arithmetic-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location :arithmetic-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "arithmetic_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :arithmetic_calendar_hermes_source)",
+    ],
+    data = [
+        ":arithmetic_calendar_hermes_source",
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
     ],

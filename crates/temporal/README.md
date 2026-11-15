@@ -1,6 +1,6 @@
 # formatjs_temporal
 
-Dependency-free, allocation-free `no_std` Temporal core. Implementation in progress.
+Allocation-free `no_std` Temporal core. Implementation in progress.
 TypeScript package: [@formatjs/temporal](../../packages/temporal/README.md).
 
 Core supplies Instant parsing, ISO conversion, all nine rounding modes, exact
@@ -60,7 +60,7 @@ bazel run -c opt //crates/temporal:identifiers
 ```
 
 Bazel derives this table from the generated TS timezone package. Runtime Rust
-remains dependency-free; production transition-data loading stays pending.
+uses only the shared numeric calendar kernel; production transition-data loading stays pending.
 
 PlainDate supplies ISO `total_duration`, `round_duration`, `compare_durations`
 and calendar-unit `until`/`since`. PlainDateTime differences now accept
@@ -83,3 +83,13 @@ let anchor = PlainDate::new(2020, 1, 31).unwrap();
 let month: Duration = "P1M".parse().unwrap();
 assert_eq!(anchor.total_duration(month, DateTimeUnit::Day).unwrap(), 29.0);
 ```
+
+`calendar` re-exports the shared 13-calendar numeric kernel from
+`formatjs_intl_datetimeformat_calendars` with its default features disabled.
+ISO conversion, PlainDate addition and calendar differences reuse it without
+linking the formatter, serde or tables. Numeric operations include signed years,
+month codes, eras, inverse conversion and checked add/until. Public native
+PlainDate/PlainDateTime/short-date/zoned types still use ISO; all-calendar object
+integration remains pending. Independent ICU controls validate 34,366 field
+samples and 32,352 additions across all 13 engines. See
+[calendar kernel and oracle limits](../intl_datetimeformat_calendars/README.md#numeric-calendar-kernel).

@@ -581,7 +581,7 @@ read-only. Crate releases use Release Please and the existing release workflow.
 
 ## Temporal core
 
-`formatjs_temporal` (`crates/temporal`) is private, dependency-free and `no_std`.
+`formatjs_temporal` (`crates/temporal`) is private, allocation-free and `no_std`.
 It owns checked Instant values, ISO conversion, instant string parsing, rounding
 and serialization with caller-supplied offsets.
 Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
@@ -609,8 +609,8 @@ clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
 
 The plain and zoned cores also supply relative Duration total/round/compare operations.
 ICU controls exercise the owned IANA provider through these adapters. Native
-non-ISO calendar math remains pending. Rational-to-f64
-conversion stays in the dependency-free numeric core.
+non-ISO public calendar integration remains pending. Rational-to-f64
+conversion stays in the numeric core.
 
 Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.
 `named_time_zone_identifier` performs allocation-free ASCII-case-insensitive
@@ -627,4 +627,30 @@ Date/DateTime differences; timezone providers remain behind the zoned anchor.
 PlainDateTime still accepts TimeUnit arguments. Input endpoint checks include
 clock carry; post-round endpoints can exceed date bounds when allowed.
 Independent ICU controls cover 51,840 plain rounds, 17,280 totals, 20,736 date
-differences and 4,224 comparisons. Rust remains allocation-free/dependency-free.
+differences and 4,224 comparisons. Rust remains allocation-free with one pure numeric calendar dependency.
+
+Shared numeric calendar math lives in `intl_datetimeformat_calendars::calendar`.
+Its default `provider` feature enables DateTimeFormat, serde and the C ABI;
+`compiled_data` implies `provider`. Disabling defaults selects only the
+allocation-free, dependency-free no_std kernel. Bazel `:calendar_core` explicitly
+keeps empty deps because Gazelle does not evaluate feature-gated module imports.
+Default provider callers retain their API; callers disabling defaults must enable
+`provider` to keep registration APIs.
+
+```mermaid
+graph TD
+  Temporal[temporal] --> Core[calendar numeric module: no_std, no dependencies]
+  Provider[calendar provider feature] --> Core
+  Provider --> Formatter[intl_datetimeformat]
+  Provider --> Serde[serde / serde_json]
+  Compiled[compiled_data] --> Provider
+  Compiled --> Tables[generated calendar tables]
+```
+
+The 13 numeric engines expose conversion/inversion, month codes, signed eras,
+addition and differences. Native formatter adapters retain CLDR era/month keys;
+Temporal ISO conversion/addition/differences reuse the same math. Native public
+non-ISO date types remain pending. ICU controls run 34,366 field samples,
+32,352 additions and 176 range checks. The documented Hebrew/Persian oracle
+ranges and forward-only boundary checks avoid known ICU limitations without
+adding conformance exclusions.

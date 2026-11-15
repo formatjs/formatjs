@@ -11,7 +11,7 @@ name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
 The public entry exports partial Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime APIs. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust instant, duration, clock, ISO date/date-time and short-date core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
+and owned IANA timezone primitives are internal. `crates/temporal` now supplies a allocation-free `no_std` Rust instant, duration, clock, ISO date/date-time and short-date core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
 
@@ -95,7 +95,7 @@ that pin or the selected surface changes.
 
 ## WASM baseline
 
-`//crates/temporal:wasm` cross-compiles the dependency-free core through the pinned
+`//crates/temporal:wasm` cross-compiles the no_std numeric core through the pinned
 Bazel Rust toolchain. A benchmark-only, allocation-free string ABI covers matched
 Instant/Duration operations. Separate 256-byte buffers intentionally limit this
 initial ABI; it is not the public Temporal object model or a full WASM backend.
@@ -396,3 +396,35 @@ TS/WASM/reference timings and cold loads after the ISO helper extraction.
 Primitive TS is 3,757 gzip bytes; WASM plus bridge 20,132. This narrow profile
 excludes the missing complete WASM facade/calendar/timezone data and does not
 supply a Hermes backend.
+
+## Shared arithmetic calendar kernel
+
+TS and Rust now supply 13 numeric engines: ISO, Gregorian, Buddhist, Japanese,
+ROC, Coptic, Ethiopic, Amete Alem, Hebrew, Indian, civil/tabular Islamic and
+Persian. Operations cover inverse epoch conversion, month codes, eras, checked
+addition and differences. Native DateTimeFormat providers adapt the same Rust
+kernel; Temporal uses its pure no_std feature without formatter, serde or tables.
+Existing ISO/Hebrew TS differences and Rust ISO date math share these helpers.
+
+Independent ICU controls exercise 34,366 field cases, 32,352 additions and 176
+range rejections on Node, Hermes source/bytecode and Rust. Hebrew oracle range
+stays ±1000000 epoch days; Persian controls stay within official years 1206–1498.
+ICU forward field conversion plus boundary searches supply lengths/clamping,
+avoiding negative Coptic/Ethiopic month-length and reverse Indian-setting bugs.
+Full-range proleptic invariants cover all engines separately. No new Test262
+exclusions. These numeric controls do not establish public calendar conformance.
+
+Public TS types still recognize ISO/Gregorian/Hebrew; native date classes still
+use ISO. Next: integrate calendar/era fields and merge semantics into all public
+date/short-date/zoned classes, add Chinese/Dangi/Umm al-Qura table engines, then
+refresh full calendar Test262 diagnostics. Locale/Intl integration, native Hermes
+bindings and complete WASM facade/data remain open. Size/performance measurements
+must continue identifying the incomplete primitive WASM scope.
+
+The shared-kernel layer refreshes `benchmarks/temporal/calendar-kernel-results.json`
+with sequential facade and TS/WASM/reference primitive runs. Standalone namespace
+is 86,815 gzip bytes, 529 above the prior layer; full numeric TS calendar module
+is 3,126. Matched data-free TS primitives remain 3,757; WASM plus JS bridge is
+20,024. These sizes retain separate scopes and exclude complete WASM facade/data.
+Relative month totals measure TS 11,580 ns versus reference 8,700; rounding
+17,814 versus 33,686. Native Hermes bindings remain required.

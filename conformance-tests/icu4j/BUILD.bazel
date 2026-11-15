@@ -505,3 +505,36 @@ filegroup(
     srcs = ["temporal-plain-relative-fixtures.js"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_arithmetic_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalArithmeticCalendarOracle.java"],
+    main_class = "TemporalArithmeticCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_arithmetic_calendar_files",
+    testonly = True,
+    outs = [
+        "temporal-arithmetic-calendar-fixtures.tsv",
+        "temporal-arithmetic-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_arithmetic_calendar_oracle) $(@D)/temporal-arithmetic-calendar-fixtures.tsv $(@D)/temporal-arithmetic-calendar-fixtures.js",
+    tools = [":temporal_arithmetic_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_arithmetic_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-arithmetic-calendar-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_arithmetic_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-arithmetic-calendar-fixtures.js"],
+    visibility = ["//visibility:public"],
+)

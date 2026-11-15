@@ -1,6 +1,6 @@
 # formatjs_intl_datetimeformat_calendars
 
-Optional arithmetic providers for the native DateTimeFormat runtime. The base
+Shared numeric calendars and optional providers for native DateTimeFormat. The base
 `formatjs_intl_datetimeformat` crate does not depend on this crate or its tables.
 The standalone crate lets applications register selected calendars; the
 `with_compiled_data` variant registers all calendars for Hermes. Locale patches
@@ -51,3 +51,41 @@ core DateTimeFormat registry. It validates a selected pack before replacement;
 failed loads leave the previous provider installed. Locale patches still load
 separately. Both ABIs export through the single Rust SDK archive. Hermes loads
 compiled packs at startup; other embedders may call the selected-pack loader.
+
+## Numeric calendar kernel
+
+`calendar` exposes 13 allocation-free arithmetic engines: ISO, Gregorian,
+Buddhist, Japanese, ROC, Coptic, Ethiopic, Amete Alem, Hebrew, Indian, civil/tabular
+Islamic and Persian. It supplies signed years, ordinal months/month codes, eras,
+checked epoch-day conversion, constrained/rejected addition and calendar
+differences. Fixed 13-month calendars accept M13; Hebrew uses M05L.
+
+```rust
+use formatjs_intl_datetimeformat_calendars::calendar::{Calendar, Overflow};
+let calendar = Calendar::Hebrew;
+let day = calendar.to_epoch_day(5784, 6, 30, Overflow::Reject).unwrap();
+assert!(calendar.from_epoch_day(day).unwrap().month_code.leap);
+```
+
+Default `provider` feature retains DateTimeFormat registration, JSON and C ABI.
+`default-features = false` selects only the dependency-free `no_std` numeric
+kernel; explicitly disabling defaults no longer exposes Provider. Bazel's
+`:calendar_core` variant has no formatter/serde dependencies. `compiled_data`
+enables `provider`. Native Temporal reuses this kernel for ISO conversion,
+addition and differences; public non-ISO Temporal types remain pending.
+
+Public epoch-day operations enforce -100000001 through 100000000. `until_raw`
+accepts internal rounding coordinates within ±110000000 days; `iso_day` and
+`iso_fields` are unchecked numeric helpers for validated coordinates. Era input
+normalizes signed era years, including regnal years outside their era's dates.
+Persian retains the existing 33-year approximation outside official years
+1206–1498 AP. Chinese, Dangi and Umm al-Qura remain separate provider tables.
+
+Independent ICU4J controls cover 34,366 fields and 32,352 additions, plus 176
+range rejections, in Rust and TS on Node/Hermes source/bytecode. Hebrew ICU
+controls use epoch days ±1000000; Persian uses its official range. Full-range
+proleptic roundtrip and addition/difference invariants run separately.
+Lengths and clamping derive from ICU forward fields and binary-searched month/
+year boundaries. ICU's negative-year Coptic/Ethiopic month-length calculation
+and reverse Indian field setting are unsuitable controls at those extremes.
+These oracle limits do not exclude Temporal conformance tests.

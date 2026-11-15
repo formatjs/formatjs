@@ -704,3 +704,14 @@ This identity file is separate from transitions and per-locale CLDR data.
 Temporal consumes it for equality, calendar differences and Now system IDs;
 DateTimeFormat locale payloads do not gain this table. ICU4J's independent IANA
 identity oracle verifies all 597 available names in TS and Rust.
+
+Native arithmetic providers now delegate to the shared no_std numeric calendar
+kernel in `crates/intl_datetimeformat_calendars/core.rs`. The provider adapter
+preserves formatter era keys, Hebrew name indices and field contracts. Provider
+and compiled-data features keep formatter/serde/table dependencies optional;
+Temporal consumes only `:calendar_core` / Cargo `default-features = false`.
+The numeric API adds inverse conversion, month codes, eras and checked add/until
+for 13 calendars. Table providers and locale patch data remain separate.
+Independent forward ICU controls validate negative/proleptic years; boundary
+searches avoid ICU's negative Coptic/Ethiopic length and reverse Indian-setting
+bugs. Persian's 33-year approximation remains the existing provider policy.

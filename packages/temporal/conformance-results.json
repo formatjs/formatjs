@@ -697,5 +697,39 @@
     ],
     "exclusions": [],
     "note": "Native numerical ports and independent oracles supplement TS Test262; complete native Hermes conformance/bindings still required."
+  },
+  "arithmeticCalendars": {
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian"
+    ],
+    "scope": "Numeric kernels only. Public TS date types remain ISO/Gregorian/Hebrew; native date types remain ISO. Table calendars and all-calendar object integration pending.",
+    "icuFields": 34366,
+    "icuAdditions": 32352,
+    "icuRangeRejections": 176,
+    "modes": [
+      "native Rust",
+      "Node",
+      "Hermes source",
+      "Hermes optimized bytecode"
+    ],
+    "oracleLimits": {
+      "hebrew": "Epoch days -1000000 through 1000000. Full-range proleptic invariants checked separately.",
+      "persian": "Arithmetic years 1206 through 1498. Existing 33-year approximation outside official range.",
+      "lengthsAndClamping": "Derived from ICU forward fields and searched year/month boundaries; avoids negative Coptic/Ethiopic month-length and reverse Indian-setting defects.",
+      "japanese": "Era names normalized to Temporal era/monthCode rules; Gregorian eras before 1873."
+    },
+    "exclusions": []
   }
 }

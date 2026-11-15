@@ -8,12 +8,11 @@ import {
   calendarToEpochDay,
   calendarFromEpochDay,
   calendarFromEpochDayRaw,
+  calendarDateUntilRaw,
   daysInMonth,
   monthsInYear,
   calendarStartOfYear,
   addCalendarDate,
-  addCalendarDateRaw,
-  calendarToEpochDayRaw,
   type CalendarId,
   type Overflow,
   type CalendarDate,
@@ -322,59 +321,20 @@ export function checkDateTime(value: bigint): bigint {
   return value
 }
 
-function addDateForDifference(
-  slot: DateSlot,
-  duration: DurationFields,
-  overflow: Overflow
-): number {
-  const cal = baseCalendar(slot.calendar)
-  return calendarToEpochDayRaw(
-    cal,
-    addCalendarDateRaw(cal, dateFields(slot, true), duration, overflow),
-    'reject'
-  )
-}
 export function dateUntil(
   start: DateSlot,
   end: number,
   largest: string
 ): DurationFields {
-  const result = zeroDuration(),
-    sign = Math.sign(end - start.epochDay)
-  if (sign === 0) return result
-  let anchor = start.epochDay
-  const first = dateFields(start, true),
-    last = dateFields({epochDay: end, calendar: start.calendar}, true)
-  if (largest === 'year') {
-    result.years = last.year - first.year
-    anchor = addDateForDifference(start, result, 'constrain')
-    if ((anchor - end) * sign > 0) {
-      result.years -= sign
-      anchor = addDateForDifference(start, result, 'constrain')
-    }
+  return {
+    ...zeroDuration(),
+    ...calendarDateUntilRaw(
+      baseCalendar(start.calendar),
+      start.epochDay,
+      end,
+      largest
+    ),
   }
-  if (largest === 'year' || largest === 'month') {
-    const current = dateFields(
-      {epochDay: anchor, calendar: start.calendar},
-      true
-    )
-    const serial = (fields: CalendarDate): number =>
-      start.calendar === 'hebrew'
-        ? Math.floor((235 * fields.year - 234) / 19) + fields.month - 1
-        : fields.year * 12 + fields.month - 1
-    result.months = serial(last) - serial(current)
-    anchor = addDateForDifference(start, result, 'constrain')
-    if ((anchor - end) * sign > 0) {
-      result.months -= sign
-      anchor = addDateForDifference(start, result, 'constrain')
-    }
-  }
-  result.days = end - anchor
-  if (largest === 'week') {
-    result.weeks = Math.trunc(result.days / 7)
-    result.days %= 7
-  }
-  return result
 }
 function unroundedDifference(
   start: bigint,

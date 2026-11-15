@@ -23,8 +23,7 @@ fields, offset matching, all disambiguation modes, updates, arithmetic, rounding
 day boundaries, differences, transition queries and serialization. Calendar days follow local time; hours follow
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
-Missing: remaining calendar
-engines, locale/Intl integration and native Rust bindings. No implementation gap is an allowed conformance exclusion.
+Missing: table calendar engines, public all-calendar fields/arithmetic, locale/Intl integration and native Rust bindings. No implementation gap is an allowed conformance exclusion.
 
 ## Validation
 
@@ -64,7 +63,7 @@ and calendar-day versus 24-hour arithmetic. Both cores also match 10,528 ICU
 next/previous queries and 19,440 independent calendar-span/decimal-rounding cases. Hebrew controls use the documented
 bounded ICU range; forced full temporal-polyfill adds reference-date controls.
 
-The dependency-free no_std Rust core supplies Instant, Duration, clock, ISO
+The allocation-free no_std Rust core supplies Instant, Duration, clock, ISO
 plain/short-date and zoned foundations. Rust's TimeZone provider visits
 all offsets; FixedOffset supplies constant zones. ICU transition records exercise
 that boundary. TransitionZone borrows explicit IANA records and recurring footer rules; Rust
@@ -162,3 +161,17 @@ itself may produce a duration whose endpoint is outside that range.
 
 The large plain ICU unit case has a 30-second aggregate timeout. Test262 keeps its
 existing per-case limits; no additional exclusions.
+
+Internal numeric kernel now covers 13 arithmetic calendars, including inverse
+conversion, month codes, eras, checked addition and differences. Native formatter
+providers and Rust Temporal share the Rust counterpart without formatter/data
+runtime dependencies. Public TS types still accept ISO, Gregorian and Hebrew;
+remaining public calendar integration is pending. Chinese, Dangi and Umm al-Qura
+need their table engines. No claim of complete calendar conformance yet.
+
+Independent ICU controls add 34,366 field cases, 32,352 additions and 176 range
+rejections on Node, Hermes source and optimized bytecode, and native Rust.
+Hebrew uses ICU's trusted ±1000000 epoch-day range; Persian uses years 1206–1498.
+Other proleptic ranges have separate conversion/addition/difference invariants.
+ICU month/year boundary searches avoid negative-year length/reverse-setting bugs.
+These oracle constraints add no Test262 exclusions.

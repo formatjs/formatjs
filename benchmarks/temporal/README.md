@@ -462,16 +462,16 @@ The earlier matched pure TS/WASM primitive profile retains its separate scope.
 bazel run -c opt //benchmarks/temporal:size_benchmark
 ```
 
-[package-size-results.json](package-size-results.json) measures the current plain-relative layer separately from earlier throughput samples. The first
+[package-size-results.json](package-size-results.json) measures the current shared-calendar-kernel layer separately from earlier throughput samples. The first
 profile bundles each entry standalone. All full entries include owned IANA data;
 detection does not. Reference uses host Intl and supports more calendars/locale
 behavior. These alternatives are not additive and do not establish full equivalence.
 
 | Standalone bundle       | Minified bytes | Gzip bytes |
 | ----------------------- | -------------: | ---------: |
-| instant-code.js         |        445,167 |     86,286 |
-| polyfill-code.js        |        445,824 |     86,443 |
-| polyfill-force-code.js  |        445,826 |     86,445 |
+| instant-code.js         |        446,549 |     86,815 |
+| polyfill-code.js        |        447,206 |     86,974 |
+| polyfill-force-code.js  |        447,208 |     86,976 |
 | should-polyfill-code.js |            696 |        361 |
 | reference-bundle.js     |         56,696 |     19,393 |
 
@@ -482,25 +482,25 @@ A consumer bundler may compress/deduplicate the combined graph differently.
 
 | Published module   | Minified bytes | Gzip bytes |
 | ------------------ | -------------: | ---------: |
-| index.js           |        445,052 |     86,210 |
+| index.js           |        446,434 |     86,744 |
 | polyfill.js        |          1,058 |        485 |
 | polyfill-force.js  |          1,060 |        486 |
 | should-polyfill.js |            587 |        302 |
 
 Primary timezone identity added 269 gzip bytes to the standalone namespace;
-plain endpoint validation adds another 17 bytes.
+plain endpoint validation adds another 17 bytes. Shared calendar math adds 529 bytes.
 DateTimeFormat locale files do not gain this data.
 
 The current report also refreshes the matched data-free primitive sizes: TS
-3,757 gzip bytes; Rust WASM 19,669 plus 463 bytes of JS bridge, totaling 20,132.
-WASM plus bridge is 5.36 times the matched TS bundle. The earlier timed WASM run
+3,757 gzip bytes; Rust WASM 19,561 plus 463 bytes of JS bridge, totaling 20,024.
+WASM plus bridge is 5.33 times the matched TS bundle. The earlier timed WASM run
 above remains historical; current matched primitive measurements are recorded below.
 These primitives exclude the full facade and calendar/timezone data. Complete
 WASM equivalence and native Hermes artifact measurements remain pending.
 
 ## Plain-relative Rust and endpoint range checks
 
-[plain-relative-results.json](plain-relative-results.json) records the current
+[plain-relative-results.json](plain-relative-results.json) records the prior
 Node 24.14.0 Linux x64 run after adding plain endpoint clock-carry validation.
 It retains all 23 matched facade workloads, with 5,000 equality/warmup calls,
 seven alternating batches of 50,000 calls and median ns/call. Earlier facade
@@ -518,7 +518,7 @@ Current sizes remain in package-size-results.json. The nested `matchedPrimitives
 record refreshes the data-free TS/WASM comparison after extracting raw internal
 ISO coordinates; the earlier WASM report remains historical.
 
-Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+Prior ordinary-input median ns/call, including WASM UTF-8 transfers:
 
 | Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
 | -------------------------------------------- | ----: | ------------: | ----------------: |
@@ -535,3 +535,31 @@ loads give TS load/first-operation medians of 1.535/0.506 ms, WASM 1.145/0.576 m
 These exclude benchmark infrastructure/process startup; filesystem caches may be
 warm. Raw WASM is 43,900 bytes; minified/gzip TS and bridge sizes remain unchanged.
 Pinned Hermes still has no WebAssembly, so these timings cover Node only.
+
+## Shared arithmetic calendar kernel
+
+[calendar-kernel-results.json](calendar-kernel-results.json) refreshes all 23
+matched facade workloads and the nested TS/WASM/reference primitive profile.
+Runs execute sequentially without competing Bazel tests. Earlier plain-relative
+results remain historical. Numeric calendar coverage is now 13 engines; public
+TS classes still support ISO/Gregorian/Hebrew, native date classes remain ISO.
+
+Relative month totals: TS 11,580 ns/call, reference 8,700. Relative month rounding:
+TS 17,814 ns/call, reference 33,686. These include parsing and API coercion.
+Full exported TS numeric calendar module is 3,126 gzip bytes; namespace adds
+529 bytes after tree shaking. No DateTimeFormat locale data added.
+
+Matched data-free primitives remain 3,757 gzip bytes in TS. Rust WASM is 19,561;
+JS bridge adds 463, total 20,024. These measurements exclude the complete WASM
+facade/calendar/timezone data. Pinned Hermes still lacks WebAssembly; TS source/
+bytecode passes, native Rust Temporal bindings remain pending.
+
+Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+
+| Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
+| -------------------------------------------- | ----: | ------------: | ----------------: |
+| Instant parse/epoch string                   |   990 |           361 |             1,763 |
+| Instant parse/round microsecond/epoch string | 1,147 |           392 |             2,391 |
+| Instant parse/format UTC                     | 1,686 |           649 |             3,399 |
+| Duration parse/format                        | 2,329 |           815 |            51,455 |
+| Duration parse/total microseconds            | 1,937 |           509 |             2,335 |

@@ -26,10 +26,13 @@ rust_library(
     srcs = [
         "arithmetic.rs",
         "compiled.rs",
+        "core.rs",
         "ffi.rs",
         "lib.rs",
+        "provider.rs",
         "tables.rs",
     ],
+    crate_features = ["provider"],
     crate_name = "formatjs_intl_datetimeformat_calendars",
     crate_root = "lib.rs",
     edition = "2024",
@@ -52,12 +55,17 @@ rust_library(
     srcs = [
         "arithmetic.rs",
         "compiled.rs",
+        "core.rs",
         "ffi.rs",
         "lib.rs",
+        "provider.rs",
         "tables.rs",
     ],
     compile_data = [":calendar-data/%s.json" % calendar for calendar in CALENDARS],
-    crate_features = ["compiled_data"],
+    crate_features = [
+        "compiled_data",
+        "provider",
+    ],
     crate_name = "formatjs_intl_datetimeformat_calendars",
     crate_root = "lib.rs",
     edition = "2024",
@@ -134,4 +142,29 @@ filegroup(
         "*.toml",
     ]),
     visibility = ["//crates:__pkg__"],
+)
+
+# Gazelle does not resolve cfg(feature = "provider") for this no_std variant.
+rust_library(
+    name = "calendar_core",
+    srcs = [
+        "core.rs",
+        "lib.rs",
+    ],  # keep
+    crate_name = "formatjs_intl_datetimeformat_calendars",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [],  # keep
+)
+
+formatjs_rust_test(
+    name = "calendar_core_test",
+    size = "small",
+    srcs = ["core.test.rs"],
+    compile_data = ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
+    crate_name = "calendar_core_test",
+    edition = "2024",
+    rustc_env = {"FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)"},
+    deps = [":calendar_core"],  # keep
 )

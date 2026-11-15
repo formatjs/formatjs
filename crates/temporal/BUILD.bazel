@@ -54,6 +54,7 @@ rust_library(
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
 )
 
 formatjs_rust_test(

@@ -69,52 +69,29 @@ pub(crate) trait RelativeAnchor {
 fn endpoint<A: RelativeAnchor>(start: &A, fields: [i128; 10]) -> Result<i128, Error> {
     start.endpoint(fields)
 }
-fn date_anchor(start: i64, fields: [i128; 10]) -> Result<i64, Error> {
-    let (year, month, day) = date_fields(start);
-    let serial = (i128::from(year) + fields[0]) * 12 + i128::from(month) - 1 + fields[1];
-    let year: i32 = serial
-        .div_euclid(12)
-        .try_into()
-        .map_err(|_| Error::OutOfRange)?;
-    let month = (serial.rem_euclid(12) + 1) as u8;
-    let day = day.min(crate::date::month_length(year, month));
-    (i128::from(crate::iso::epoch_day_from_iso(year, month, day)) + fields[2] * 7 + fields[3])
-        .try_into()
-        .map_err(|_| Error::OutOfRange)
-}
 fn date_until(start: i64, end: i64, largest: DateTimeUnit) -> Result<[i128; 10], Error> {
-    let sign = (end - start).signum();
-    let mut fields = [0; 10];
-    if sign == 0 {
-        return Ok(fields);
-    }
-    let mut anchor = start;
-    let (first_year, first_month, _) = date_fields(start);
-    let (last_year, last_month, _) = date_fields(end);
-    if largest == DateTimeUnit::Year {
-        fields[0] = i128::from(last_year - first_year);
-        anchor = date_anchor(start, fields)?;
-        if (anchor - end) * sign > 0 {
-            fields[0] -= i128::from(sign);
-            anchor = date_anchor(start, fields)?;
-        }
-    }
-    if largest <= DateTimeUnit::Month {
-        let year = i128::from(first_year) + fields[0];
-        fields[1] =
-            (i128::from(last_year) - year) * 12 + i128::from(last_month) - i128::from(first_month);
-        anchor = date_anchor(start, fields)?;
-        if (anchor - end) * sign > 0 {
-            fields[1] -= i128::from(sign);
-            anchor = date_anchor(start, fields)?;
-        }
-    }
-    fields[3] = i128::from(end - anchor);
-    if largest == DateTimeUnit::Week {
-        fields[2] = fields[3] / 7;
-        fields[3] %= 7;
-    }
-    Ok(fields)
+    use crate::calendar::{Calendar, DateUnit};
+    let unit = match largest {
+        DateTimeUnit::Year => DateUnit::Year,
+        DateTimeUnit::Month => DateUnit::Month,
+        DateTimeUnit::Week => DateUnit::Week,
+        _ => DateUnit::Day,
+    };
+    let value = Calendar::Iso8601
+        .until_raw(start, end, unit)
+        .map_err(|_| Error::OutOfRange)?;
+    Ok([
+        i128::from(value.years),
+        i128::from(value.months),
+        i128::from(value.weeks),
+        i128::from(value.days),
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+    ])
 }
 pub(crate) fn unrounded<A: RelativeAnchor>(
     start: &A,
@@ -286,9 +263,4 @@ pub(crate) fn validate_options(
         }
     }
     Ok(())
-}
-
-fn date_fields(day: i64) -> (i32, u8, u8) {
-    let fields = crate::iso::iso_from_epoch_nanoseconds_raw(i128::from(day) * NANOSECONDS_PER_DAY);
-    (fields.year, fields.month, fields.day)
 }

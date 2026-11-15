@@ -54,19 +54,11 @@ impl IsoDateTime {
 pub(crate) fn iso_from_epoch_nanoseconds_raw(value: i128) -> IsoDateTime {
     let days = value.div_euclid(NANOSECONDS_PER_DAY);
     let time = value.rem_euclid(NANOSECONDS_PER_DAY);
-    let shifted = days + 719_468;
-    let era = shifted.div_euclid(146_097);
-    let day_of_era = shifted.rem_euclid(146_097);
-    let year_of_era =
-        (day_of_era - day_of_era / 1460 + day_of_era / 36524 - day_of_era / 146096) / 365;
-    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
-    let march_month = (5 * day_of_year + 2) / 153;
-    let day = day_of_year - (153 * march_month + 2) / 5 + 1;
-    let month = march_month + if march_month < 10 { 3 } else { -9 };
+    let (year, month, day) = crate::calendar::iso_fields(days as i64);
     IsoDateTime {
-        year: (year_of_era + era * 400 + i128::from(month <= 2)) as i32,
-        month: month as u8,
-        day: day as u8,
+        year,
+        month,
+        day,
         hour: (time / 3_600_000_000_000) as u8,
         minute: (time / 60_000_000_000 % 60) as u8,
         second: (time / 1_000_000_000 % 60) as u8,
@@ -75,16 +67,9 @@ pub(crate) fn iso_from_epoch_nanoseconds_raw(value: i128) -> IsoDateTime {
 }
 
 pub(crate) fn epoch_day_from_iso(year: i32, month: u8, day: u8) -> i64 {
-    let year = i128::from(year) - i128::from(month <= 2);
-    let era = year.div_euclid(400);
-    let year_of_era = year.rem_euclid(400);
-    let month = i128::from(month) + if month > 2 { -3 } else { 9 };
-    (era * 146_097 + year_of_era * 365 + year_of_era / 4 - year_of_era / 100
-        + (153 * month + 2) / 5
-        + i128::from(day)
-        - 1
-        - 719_468) as i64
+    crate::calendar::iso_day(year, month, day)
 }
+
 fn check_local(value: i128) -> Result<(), Error> {
     let bound = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;
     if value <= -bound || value >= bound {

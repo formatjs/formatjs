@@ -60,24 +60,27 @@ impl PlainDate {
         days: i128,
         overflow: Overflow,
     ) -> Result<Self, Error> {
-        let (year, month, day) = self.fields();
-        let serial = (i128::from(year) + years) * 12 + i128::from(month) - 1 + months;
-        let year: i32 = serial
-            .div_euclid(12)
-            .try_into()
-            .map_err(|_| Error::OutOfRange)?;
-        let month = (serial.rem_euclid(12) + 1) as u8;
-        let maximum = month_length(year, month);
-        if day > maximum && overflow == Overflow::Reject {
-            return Err(Error::InvalidDateTime);
-        }
-        let date = Self::new(year, month, day.min(maximum))?;
-        Self::from_epoch_day(
-            (i128::from(date.0) + days)
-                .try_into()
-                .map_err(|_| Error::OutOfRange)?,
-        )
+        use crate::calendar::{Calendar, DateDuration};
+        let duration = DateDuration {
+            years: years.try_into().map_err(|_| Error::OutOfRange)?,
+            months: months.try_into().map_err(|_| Error::OutOfRange)?,
+            days: days.try_into().map_err(|_| Error::OutOfRange)?,
+            ..DateDuration::default()
+        };
+        let overflow = match overflow {
+            Overflow::Constrain => crate::calendar::Overflow::Constrain,
+            Overflow::Reject => crate::calendar::Overflow::Reject,
+        };
+        let day =
+            Calendar::Iso8601
+                .add(self.0, duration, overflow)
+                .map_err(|error| match error {
+                    crate::calendar::Error::InvalidDate => Error::InvalidDateTime,
+                    _ => Error::OutOfRange,
+                })?;
+        Self::from_epoch_day(day)
     }
+
     pub fn to_date_time(self, time: PlainTime) -> Result<PlainDateTime, Error> {
         PlainDateTime::from_epoch_nanoseconds(
             i128::from(self.0) * NANOSECONDS_PER_DAY + time.nanoseconds(),

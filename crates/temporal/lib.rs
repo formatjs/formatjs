@@ -26,6 +26,7 @@ pub use duration::{
     Duration, FormattedDuration, MAX_DURATION_NANOSECONDS, round_duration_nanoseconds,
 };
 pub use format::{FormattedInstant, Precision};
+pub use formatjs_intl_datetimeformat_calendars::calendar;
 pub use iso::IsoDateTime;
 pub use now::{Now, SystemClock};
 pub use rounding::{RoundingMode, TimeUnit};
