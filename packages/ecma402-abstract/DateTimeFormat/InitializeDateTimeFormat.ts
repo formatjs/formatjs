@@ -1,3 +1,4 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
 import {CanonicalizeTimeZoneName} from '#packages/ecma402-abstract/CanonicalizeTimeZoneName.js'
@@ -168,6 +169,11 @@ interface Opt extends Omit<Formats, 'pattern' | 'pattern12'> {
   nu: Intl.DateTimeFormatOptions['numberingSystem']
   hc: Intl.DateTimeFormatOptions['hourCycle']
 }
+export interface DateTimeFormatContext {
+  required?: 'date' | 'time' | 'any'
+  defaults?: 'date' | 'time' | 'all'
+  timeZone?: string
+}
 /**
  * https://tc39.es/ecma402/#sec-createdatetimeformat
  * @param dtf DateTimeFormat
@@ -200,7 +206,12 @@ export function InitializeDateTimeFormat(
     tzData: Record<string, unknown>
     uppercaseLinks: Record<string, string>
     uppercaseIdentifiers: Record<string, string>
-  }
+  },
+  {
+    required = 'any',
+    defaults = 'date',
+    timeZone: localeTimeZone,
+  }: DateTimeFormatContext = {}
 ): Intl.DateTimeFormat {
   // @ts-ignore
   const requestedLocales: string[] = CanonicalizeLocaleList(locales)
@@ -264,7 +275,9 @@ export function InitializeDateTimeFormat(
   internalSlots.dataLocale = dataLocale
   let {timeZone} = options
   if (timeZone !== undefined) {
-    timeZone = String(timeZone)
+    if (localeTimeZone !== undefined)
+      throw new TypeError('timeZone option conflicts with ZonedDateTime')
+    timeZone = ToString(timeZone)
     if (
       !IsValidTimeZoneName(timeZone, {
         zoneNamesFromData: Object.keys(tzData),
@@ -274,7 +287,7 @@ export function InitializeDateTimeFormat(
       throw new RangeError('Invalid timeZoneName')
     }
   } else {
-    timeZone = getDefaultTimeZone()
+    timeZone = localeTimeZone ?? getDefaultTimeZone()
   }
   const dataTimeZone =
     CanonicalizeTimeZoneName(timeZone, {
@@ -425,21 +438,32 @@ export function InitializeDateTimeFormat(
     // defaults from the already-read fields, without touching options again.
     // https://tc39.es/ecma402/#sec-createdatetimeformat
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L135-L146
-    const needDefaults = [
-      'weekday',
-      'year',
-      'month',
-      'day',
+    const dateFields = ['weekday', 'year', 'month', 'day'] as const
+    const timeFields = [
       'dayPeriod',
       'hour',
       'minute',
       'second',
       'fractionalSecondDigits',
-    ].every(key => opt[key as keyof Opt] === undefined)
+    ] as const
+    const relevant =
+      required === 'date'
+        ? dateFields
+        : required === 'time'
+          ? timeFields
+          : [...dateFields, ...timeFields]
+    const needDefaults = relevant.every(key => opt[key] === undefined)
     if (needDefaults) {
-      opt.year = 'numeric'
-      opt.month = 'numeric'
-      opt.day = 'numeric'
+      if (defaults !== 'time') {
+        opt.year = 'numeric'
+        opt.month = 'numeric'
+        opt.day = 'numeric'
+      }
+      if (defaults !== 'date') {
+        opt.hour = 'numeric'
+        opt.minute = 'numeric'
+        opt.second = 'numeric'
+      }
     }
     if (formatMatcher === 'basic') {
       bestFormat = BasicFormatMatcher(opt, formats)
@@ -467,6 +491,11 @@ export function InitializeDateTimeFormat(
         )
       }
     }
+    if (
+      (required === 'date' && timeStyle !== undefined) ||
+      (required === 'time' && dateStyle !== undefined)
+    )
+      throw new TypeError('DateTimeFormat style conflicts with required type')
     // Spec: ECMA-402 11.1.2 CreateDateTimeFormat steps 12-14 resolve
     // hour12 to hc; step 30.5 picks the style format; step 33 stores
     // [[HourCycle]] when the selected format has [[hour]].
@@ -615,6 +644,12 @@ export function InitializeDateTimeFormat(
         }
         for (const key of defaults)
           Object.assign(selectedOptions, {[key]: 'numeric'})
+        if (
+          kind === 'Instant' &&
+          localeTimeZone !== undefined &&
+          selectedOptions.timeZoneName === undefined
+        )
+          selectedOptions.timeZoneName = 'short'
       }
       selectedOptions.hour12 =
         temporalHourCycle === 'h11' || temporalHourCycle === 'h12'

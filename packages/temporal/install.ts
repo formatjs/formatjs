@@ -1,3 +1,4 @@
+import {configureLocaleFormatting} from '#packages/temporal/locale.js'
 import {
   Temporal,
   toTemporalInstant,
@@ -19,6 +20,13 @@ export function installTemporal(force = false): void {
       configurable: true,
       enumerable: false,
     })
+  const Formatter = globalThis.Intl?.DateTimeFormat as
+    | (typeof Intl.DateTimeFormat & {
+        __addTemporalNamespace?: (namespace: TemporalNamespace) => void
+      })
+    | undefined
+  Formatter?.__addTemporalNamespace?.(target.Temporal)
+  configureLocaleFormatting()
   if (replace || typeof date.toTemporalInstant !== 'function') {
     const Constructor = target.Temporal.Instant
     Object.defineProperty(date, 'toTemporalInstant', {

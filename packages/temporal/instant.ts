@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import {
   createZonedDateTime,
@@ -33,6 +34,7 @@ import {resolveTimeZone} from '#packages/temporal/zones.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
 
 export interface InstantObject {
+  readonly [Symbol.toStringTag]: 'Temporal.Instant'
   readonly epochNanoseconds: bigint
   readonly epochMilliseconds: number
   until(other: unknown, options?: unknown): DurationObject
@@ -42,6 +44,7 @@ export interface InstantObject {
   round(roundTo: unknown): InstantObject
   toString(options?: unknown): string
   toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   equals(other: unknown): boolean
   valueOf(): never
@@ -134,6 +137,7 @@ function difference(
   return createDuration(balanceDurationTime(rounded, largeIndex + 4))
 }
 class InstantValue implements InstantObject {
+  declare readonly [Symbol.toStringTag]: 'Temporal.Instant'
   constructor(_epochNanoseconds: unknown) {
     throw new TypeError('Use the exported Instant constructor')
   }
@@ -225,6 +229,18 @@ class InstantValue implements InstantObject {
     const rounded = roundInstant(value, quantum, mode)
     return formatInstant(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {kind: 'Instant', epochNanoseconds: slot},
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return formatInstant(read(this))
   }
@@ -232,6 +248,8 @@ class InstantValue implements InstantObject {
     throw new TypeError('Cannot convert Temporal.Instant to primitive')
   }
 }
+const localeStringIntrinsic = InstantValue.prototype.toString
+
 Object.defineProperty(InstantValue, 'name', {
   value: 'Instant',
   configurable: true,

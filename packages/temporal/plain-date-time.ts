@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   zonedFromLocal,
   type ZonedDateTimeObject,
@@ -72,6 +73,7 @@ import {
 } from '#packages/temporal/rounding.js'
 
 export interface PlainDateTimeObject extends DateProperties {
+  readonly [Symbol.toStringTag]: 'Temporal.PlainDateTime'
   readonly hour: number
   readonly minute: number
   readonly second: number
@@ -91,6 +93,7 @@ export interface PlainDateTimeObject extends DateProperties {
   toPlainDate(): PlainDateObject
   toPlainTime(): PlainTimeObject
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -387,6 +390,18 @@ class PlainDateTimeValue {
       roundInstant(timeOf(slot.epochNanoseconds), quantum, mode)
     return formatInstant(value, precision).slice(0, -1) + suffix
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {kind: 'PlainDateTime', ...slot},
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return format(read(this))
   }
@@ -394,6 +409,8 @@ class PlainDateTimeValue {
     throw new TypeError('Cannot convert Temporal.PlainDateTime to primitive')
   }
 }
+const localeStringIntrinsic = PlainDateTimeValue.prototype.toString
+
 Object.defineProperty(PlainDateTimeValue, 'name', {
   value: 'PlainDateTime',
   configurable: true,

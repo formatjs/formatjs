@@ -26,6 +26,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "locale.ts",
         "now.ts",
         "plain-date.ts",
         "plain-date-time.ts",
@@ -264,7 +265,75 @@ js_run_binary(
     tool = "//tools/test262:prelude",
 )
 
+_LOCALE_PRELUDES = [
+    "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    "//packages/intl-locale:test262-polyfill.js",
+    "//packages/intl-pluralrules:test262-polyfill.js",
+    "//packages/intl-numberformat:test262-polyfill.js",
+    "//packages/intl-listformat:test262-polyfill.js",
+    "//packages/intl-datetimeformat:test262-temporal-polyfill.js",
+    "//packages/intl-durationformat:test262-polyfill.js",
+    "//packages/intl-supportedvaluesof:test262-polyfill.js",
+    ":instant-payload.js",
+]
+
+genrule(
+    name = "locale-payload",
+    srcs = _LOCALE_PRELUDES,
+    outs = ["locale-payload.js"],
+    # Separate source-map comments and IIFEs across bundle boundaries.
+    cmd = "(\n" + "\n".join(["cat $(location %s)\nprintf '\\n;\\n'" % label for label in _LOCALE_PRELUDES]) + "\n) > $@",
+)
+
+js_run_binary(
+    name = "locale-realm-prelude",
+    srcs = ["locale-payload.js"],
+    outs = [
+        "locale-prelude-source.js",
+        "locale-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath locale-payload.js)",
+        "--out",
+        "$(rootpath locale-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath locale-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
 _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+# offset-time-zones.js hardcodes the pre-CLDR49 bare GMT zero form.
+# Current LDML and ICU79 require numeric zero; full diagnostics retain this file.
+_LOCALE_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/" + kind + "/prototype/toLocaleString/**/*.js"
+    for kind in [
+        "Instant",
+        "Duration",
+        "PlainDate",
+        "PlainTime",
+        "PlainDateTime",
+        "PlainYearMonth",
+        "PlainMonthDay",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/" + kind + "/prototype/toLocaleString/**/" + ("!(offset-time-zones).js" if kind == "ZonedDateTime" else "*.js")
+    for kind in [
+        "Instant",
+        "Duration",
+        "PlainDate",
+        "PlainTime",
+        "PlainDateTime",
+        "PlainYearMonth",
+        "PlainMonthDay",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js",
+]
 
 _ZONED_EDGE_PATTERNS = [
     _TEST262_ROOT + "/test/intl402/Temporal/" + name + "/**/*sub-minute-offset.js"
@@ -560,7 +629,7 @@ _INSTANT_PATTERNS = [
 [
     test262_harness_bin.test262_harness_test(
         name = name,
-        size = "small" if name == "instant_test262" else "large",
+        size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "small" if name == "instant_test262" else "large",
         args = [
             "--threads",
             "4",
@@ -572,7 +641,7 @@ _INSTANT_PATTERNS = [
             "--test262Dir",
             _TEST262_ROOT,
             "--prelude",
-            "$(rootpath instant-realm-prelude.js)",
+            "$(rootpath locale-realm-prelude.js)" if name.startswith("locale_") else "$(rootpath instant-realm-prelude.js)",
         ] + patterns,
         data = [
             "instant-prelude-source.js",
@@ -589,7 +658,10 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
-        ],
+        ] + ([
+            "locale-prelude-source.js",
+            "locale-realm-prelude.js",
+        ] if name.startswith("locale_") else []),
         env = {"TZ": "UTC"},
         exec_properties = {
             "EstimatedCPU": "4",
@@ -600,6 +672,12 @@ _INSTANT_PATTERNS = [
     )
     for name, patterns, tags in [
         ("calendars_test262", _CALENDAR_PATTERNS, []),
+        ("locale_test262", _LOCALE_PATTERNS, []),
+        (
+            "locale_intl_test262_full",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
         ("zoned_edges_test262", _ZONED_EDGE_PATTERNS, []),
         ("installation_test262", _INSTALLATION_PATTERNS, []),
         (
@@ -710,22 +788,22 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
+        size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
         timeout = "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
             "$(rootpath tests/hermes-host.sh)",
             "$(rootpath //native/hermes:hermes_runner)",
-            "$(rootpath instant-payload.js)",
+            "$(rootpath locale-payload.js)" if name.startswith("locale_") else "$(rootpath instant-payload.js)",
             mode,
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.calendars" if name.startswith("calendars") else "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.locale" if name.startswith("locale_") else "Temporal.calendars" if name.startswith("calendars") else "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
-            "instant-payload.js",
+            "locale-payload.js" if name.startswith("locale_") else "instant-payload.js",
             "tests/hermes-host.sh",
             baseline,
             ":instant_hermes_harness",
@@ -754,6 +832,22 @@ test262_harness_bin.test262_harness_binary(
     )
     for name, mode, patterns, baseline, tags in [
         ("calendars_hermes_test262", "source", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        ("locale_hermes_test262", "source", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
+        ("locale_hermes_bytecode_test262", "bytecode", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
+        (
+            "locale_intl_hermes_test262_full",
+            "source",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "locale_intl_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
         ("zoned_edges_hermes_test262", "source", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
         ("zoned_edges_hermes_bytecode_test262", "bytecode", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
         ("calendars_hermes_bytecode_test262", "bytecode", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),

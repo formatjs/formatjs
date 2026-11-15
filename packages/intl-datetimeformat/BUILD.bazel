@@ -7,6 +7,7 @@ load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
 # gazelle:exclude tests/CalendarDateFromTime.test.ts
 # gazelle:exclude tests/temporal.test.ts
 # gazelle:exclude tests/temporal-polyfill.test.ts
+# gazelle:exclude tests/temporal-owned.test.ts
 load("//tools:cldr_locales.bzl", "cldr_locale_list")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:generated.bzl", "formatjs_generated_package", "generate_package_file")
@@ -34,6 +35,7 @@ TEST_LOCALES = [
     "en",
     "en-GB",
     "en-CA",
+    "fr",
     "ja",
     "ko",
     "my",
@@ -358,6 +360,15 @@ ts_run_binary(
             "-en",
             ["en"],
         ),
+        # Locale metadata in pinned intl402/Temporal requires these languages.
+        (
+            "-temporal",
+            [
+                "de",
+                "en",
+                "ja",
+            ],
+        ),
     ]
 ]
 
@@ -600,7 +611,10 @@ alias(
         entry_point = "test262%s-main.ts" % suffix,
         format = "iife",
         target = "es2020",
-        visibility = ["//tools/test262:__pkg__"],
+        visibility = [
+            "//packages/temporal:__pkg__",
+            "//tools/test262:__pkg__",
+        ],
         deps = [
             "//:node_modules/@formatjs/bigdecimal",
             "//:node_modules/@formatjs/intl-localematcher",
@@ -615,6 +629,7 @@ alias(
     for suffix in [
         "",
         "-en",
+        "-temporal",
     ]
 ]
 
@@ -772,4 +787,23 @@ filegroup(
     name = "polyfill_benchmark_timezones",
     srcs = [":tz_all_json"],
     visibility = ["//benchmarks/polyfills:__pkg__"],
+)
+
+formatjs_test(
+    name = "temporal_owned_test",
+    srcs = [
+        "tests/temporal-owned.test.ts",
+        ":tests-locale-data-de",
+        ":tests-locale-data-en",
+        ":tests-locale-data-fr",
+        ":tests-locale-data-ja",
+    ],
+    data = ["//conformance-tests/icu4j:temporal_locale_fixtures"],
+    deps = TEST_DEPS + [
+        "//:node_modules/@bazel/runfiles",
+        "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
+        "//packages/temporal:lib",
+        "//packages/temporal:types",
+    ],
 )

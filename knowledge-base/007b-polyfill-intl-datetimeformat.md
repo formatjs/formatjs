@@ -303,11 +303,11 @@ registration are excluded.
 
 ## Temporal input handling
 
-`TemporalDateTime.ts` captures the available Temporal intrinsic methods when the
-module loads. Brand-checking calls recognize foreign-realm values without reading
-instance properties. Intrinsic ISO serialization preserves the reference date of
-`PlainYearMonth` and `PlainMonthDay`; arithmetic conversion avoids Date's TimeClip.
-Load any Temporal polyfill before importing DateTimeFormat.
+`TemporalDateTime.ts` captures available global Temporal intrinsics at module load;
+`__addTemporalNamespace` registers later or isolated namespaces. Brand-checking calls
+avoid instance properties. Intrinsic ISO serialization preserves YearMonth/MonthDay
+reference dates; arithmetic conversion avoids Date's TimeClip. The FormatJS Temporal
+installer registers its namespace automatically.
 
 `InitializeDateTimeFormat` retains the already-read component options and caches
 formats by Temporal type. Plain values format in `+00:00` without changing the
@@ -717,3 +717,30 @@ for 13 calendars. Table providers and locale patch data remain separate.
 Independent forward ICU controls validate negative/proleptic years; boundary
 searches avoid ICU's negative Coptic/Ethiopic length and reverse Indian-setting
 bugs. Persian's 33-year approximation remains the existing provider policy.
+
+## Owned Temporal locale bridge
+
+`__addTemporalNamespace(namespace)` snapshots intrinsic getters/serializers into
+DateTimeFormat's private reader list. Registration is explicit and idempotent;
+namespace installation also registers automatically. Instance properties and
+Symbol.toStringTag do not confer a brand. Passing readers through the constructor
+keeps independently bundled packages interoperable without a shared global registry.
+
+`__formatTemporal(record, locales, options)` is the internal locale-method seam.
+It initializes a formatter with type-specific required/default fields and the
+ZonedDateTime timezone override. It formats exact nanoseconds directly; plain
+values avoid Date TimeClip. Zoned callers cannot supply a timeZone option.
+The formatter checks calendar compatibility and converts zoned records into
+Instant formatting records after initialization.
+
+Offset names retain historical seconds, including negative sub-minute offsets.
+Pre-1970 metazone names fall back to numeric offsets, matching ICU's name-data
+coverage; UTC names remain invariant. CLDR49 no longer has gmtZeroFormat and
+renders explicit numeric zero. Pinned Test262's older English assertion is
+retained as an unfiltered data-version diagnostic.
+
+`temporal_owned_test` checks independent namespace brands, constructor/instance
+poisoning, full plain ranges and 768 ICU4J style/skeleton/offset cases. Its English,
+German, French and Japanese locale data is test-only. The Temporal conformance
+prelude loads de/en/ja, the languages declared by pinned intl402/Temporal metadata,
+instead of every Intl test locale. Published locale data gains no fields.

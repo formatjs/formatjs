@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getTimeSlot as getSlot,
@@ -36,6 +37,7 @@ import {
 } from '#packages/temporal/rounding.js'
 
 export interface PlainTimeObject {
+  readonly [Symbol.toStringTag]: 'Temporal.PlainTime'
   readonly hour: number
   readonly minute: number
   readonly second: number
@@ -50,6 +52,7 @@ export interface PlainTimeObject {
   round(roundTo: unknown): PlainTimeObject
   equals(other: unknown): boolean
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -221,6 +224,7 @@ function format(value: bigint, precision: Precision = 'auto'): string {
   return formatInstant(value, precision).slice(11, -1)
 }
 class PlainTimeValue implements PlainTimeObject {
+  declare readonly [Symbol.toStringTag]: 'Temporal.PlainTime'
   constructor(
     _hour: unknown = undefined,
     _minute?: unknown,
@@ -317,6 +321,18 @@ class PlainTimeValue implements PlainTimeObject {
           : 10n ** BigInt(9 - precision)
     return format(roundInstant(value, quantum, mode) % day, precision)
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {kind: 'PlainTime', epochNanoseconds: slot},
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return format(read(this))
   }
@@ -324,6 +340,8 @@ class PlainTimeValue implements PlainTimeObject {
     throw new TypeError('Cannot convert Temporal.PlainTime to primitive')
   }
 }
+const localeStringIntrinsic = PlainTimeValue.prototype.toString
+
 Object.defineProperty(PlainTimeValue, 'name', {
   value: 'PlainTime',
   configurable: true,

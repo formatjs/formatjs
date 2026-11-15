@@ -64,21 +64,27 @@ function offsetToGmtString(
   offsetInMs: number,
   style: 'long' | 'short'
 ) {
-  const offsetInMinutes = Math.floor(offsetInMs / 60000)
-  const mins = Math.abs(offsetInMinutes) % 60
-  const hours = Math.floor(Math.abs(offsetInMinutes) / 60)
+  const absoluteSeconds = Math.abs(Math.trunc(offsetInMs / 1000))
+  const seconds = absoluteSeconds % 60
+  const mins = Math.floor(absoluteSeconds / 60) % 60
+  const hours = Math.floor(absoluteSeconds / 3600)
   const [positivePattern, negativePattern] = hourFormat.split(';')
 
   let offsetStr = ''
   let pattern = offsetInMs < 0 ? negativePattern : positivePattern
+  if (seconds) {
+    const separator = /H+([^Hm]*)m+/.exec(pattern)?.[1] ?? ':'
+    pattern = pattern.replace(/m+/, match => match + separator + 'ss')
+  }
   if (style === 'long') {
     offsetStr = pattern
       .replace('HH', pad(hours))
       .replace('H', String(hours))
       .replace('mm', pad(mins))
       .replace('m', String(mins))
+      .replace('ss', pad(seconds))
   } else {
-    if (!mins) {
+    if (!mins && !seconds) {
       const start = pattern.indexOf('m')
       if (start >= 0) {
         let end = start
@@ -87,7 +93,10 @@ function offsetToGmtString(
           pattern.slice(0, pattern.lastIndexOf('H') + 1) + pattern.slice(end)
       }
     }
-    offsetStr = pattern.replace(/H+/, String(hours)).replace(/m+/, pad(mins))
+    offsetStr = pattern
+      .replace(/H+/, String(hours))
+      .replace(/m+/, pad(mins))
+      .replace(/s+/, pad(seconds))
   }
 
   return gmtFormat
@@ -285,7 +294,11 @@ export function FormatDateTimePattern(
       const timeZone =
         internalSlots.dataTimeZone ??
         (internalSlots.timeZone || getDefaultTimeZone())
-      const timeZoneData = timeZoneName[timeZone]
+      // ICU metazone name data starts at 1970; UTC names are invariant.
+      const timeZoneData =
+        epochNanoseconds >= 0n || timeZone === 'UTC'
+          ? timeZoneName[timeZone]
+          : undefined
       if (f === 'shortGeneric' || f === 'longGeneric') {
         fv =
           timeZoneData?.[f] ||

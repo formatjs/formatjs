@@ -193,6 +193,20 @@ The polyfill also replaces `Date.prototype.toLocaleString`,
 `toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
 including the standard date and time defaults when only `timeZone` is set.
 
+### Temporal namespaces
+
+DateTimeFormat recognizes Temporal intrinsic brands, including separately bundled
+namespaces. When loading an isolated namespace, register it once before formatting:
+
+```js
+DateTimeFormat.__addTemporalNamespace(Temporal)
+```
+
+The FormatJS Temporal installer performs this registration automatically. Readers
+are captured during registration; shadowing instance fields does not change the
+formatted value. Temporal locale methods reuse the formatter's loaded locale,
+calendar and timezone data.
+
 ### Optional calendars
 
 The base polyfill and `locale-data/<locale>.js` include Gregorian and ISO 8601.

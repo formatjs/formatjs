@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {
@@ -88,6 +89,7 @@ import {
 import {formatInstant} from '#packages/temporal/instant-format.js'
 
 export interface ZonedDateTimeObject extends DateProperties {
+  readonly [Symbol.toStringTag]: 'Temporal.ZonedDateTime'
   readonly timeZoneId: string
   readonly epochNanoseconds: bigint
   readonly epochMilliseconds: number
@@ -117,6 +119,7 @@ export interface ZonedDateTimeObject extends DateProperties {
   toPlainTime(): PlainTimeObject
   toPlainDateTime(): PlainDateTimeObject
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -782,6 +785,18 @@ class ZonedDateTimeValue {
   toString(options: unknown = undefined): string {
     return format(read(this), options)
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {kind: 'ZonedDateTime', ...slot},
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return format(read(this))
   }
@@ -789,6 +804,8 @@ class ZonedDateTimeValue {
     throw new TypeError('Cannot convert Temporal.ZonedDateTime to primitive')
   }
 }
+const localeStringIntrinsic = ZonedDateTimeValue.prototype.toString
+
 Object.defineProperty(ZonedDateTimeValue, 'name', {
   value: 'ZonedDateTime',
   configurable: true,

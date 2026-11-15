@@ -75,8 +75,13 @@ category. String wrapper objects are accepted; Symbols throw `TypeError`.
 `Intl.supportedValuesOf` is callable but cannot be used as a constructor.
 
 Time-zone candidates include the pinned IANA `etcetera` Zone records and `UTC`,
-in addition to continental transition zones. Runtime filtering retains primary
-identifiers and omits aliases such as `Etc/UTC`.
+in addition to continental transition zones. The generator maps them through
+the shared IANA/zone.tab/CLDR primary table, removing aliases such as
+`America/Yellowknife` while retaining country primaries such as `Africa/Accra`.
+Runtime filtering probes construction only: current DateTimeFormat preserves
+aliases, and older hosts may resolve a primary ID to an older spelling. Neither
+resolved spelling determines primary identity. Rust uses the same candidate list
+and successful-construction rule.
 
 Collation enumeration probes CLDR-derived candidate locales for each type,
 including locale-specific collations such as German `phonebk` and Spanish `trad`.

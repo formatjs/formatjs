@@ -159,6 +159,26 @@ describe('Intl.supportedValuesOf', () => {
   })
 
   describe('timeZone', () => {
+    it('keeps primary IDs when host Intl uses older aliases', () => {
+      const result = supportedValuesOf('timeZone')
+      for (const zone of [
+        'America/Edmonton',
+        'Asia/Kathmandu',
+        'Europe/Kyiv',
+        'Africa/Accra',
+        'Africa/Abidjan',
+      ]) {
+        expect(result).toContain(zone)
+      }
+      for (const alias of [
+        'America/Yellowknife',
+        'America/Montreal',
+        'Asia/Katmandu',
+        'Europe/Kiev',
+      ]) {
+        expect(result).not.toContain(alias)
+      }
+    })
     it('should return an array of supported time zones', () => {
       const result = supportedValuesOf('timeZone')
       expect(result).toEqual(expect.any(Array))

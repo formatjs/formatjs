@@ -23,6 +23,8 @@ formatjs_library(
         "instant-entry.ts",
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
+        "locale-benchmark.ts",
+        "locale-entry.ts",
         "polyfill-entry.ts",
         "polyfill-force-entry.ts",
         "reference.ts",
@@ -35,15 +37,38 @@ formatjs_library(
         "wasm-test.ts",
         "wasm-ts-entry.ts",
         "zones-entry.ts",
+        "//packages/intl-datetimeformat:locale-data-json/en.json",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     tsconfig_types = ["node"],
     deps = [
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/@types/node",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
+        "//packages/intl-datetimeformat:lib",
+        "//packages/intl-datetimeformat:types",
+        "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
         "//packages/temporal:types",
+    ],
+)
+
+rolldown_bundle(
+    name = "locale-code",
+    srcs = [
+        ":srcs",
+        "//packages/intl-datetimeformat:locale-data-json/en.json",
+    ],
+    entry_point = "locale-entry.ts",
+    platform = "node",
+    target = "es2022",
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/intl-datetimeformat:lib",
+        "//packages/intl-durationformat:lib",
+        "//packages/temporal:lib",
     ],
 )
 
@@ -141,6 +166,15 @@ sh_test(
         entry_point = entry,
     )
     for name, entry, bundles in [
+        (
+            "locale_benchmark",
+            "locale-benchmark.ts",
+            [
+                ":locale-code",
+                ":instant-code",
+                ":reference-full-bundle",
+            ],
+        ),
         (
             "size_benchmark",
             "size-benchmark.ts",

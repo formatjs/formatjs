@@ -608,3 +608,20 @@ genrule(
     tools = [":temporal_zoned_rounding_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_locale_oracle",
+    testonly = True,
+    srcs = ["TemporalLocaleOracle.java"],
+    main_class = "TemporalLocaleOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_locale_fixtures",
+    testonly = True,
+    outs = ["temporal-locale-fixtures.tsv"],
+    cmd = "$(execpath :temporal_locale_oracle) $@",
+    tools = [":temporal_locale_oracle"],
+    visibility = ["//visibility:public"],
+)

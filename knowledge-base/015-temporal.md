@@ -575,3 +575,48 @@ Namespace size is 358,928 gzip bytes (+40); the host-Intl full reference is
 23,226. Matched primitives remain 3,757 TS bytes versus 20,020 WASM plus bridge.
 Zoned day differences measure TS/reference 12,962/51,032 ns. Full WASM facade/data
 and native Hermes backend measurements remain pending.
+
+## Locale methods
+
+All eight prototypes have intrinsic `toLocaleString` methods. Date/time methods
+pass private records to the owned DateTimeFormat locale bridge; Duration passes
+private field copies to DurationFormat. No native Temporal fallback. Formatter
+intrinsics refresh during installation so Intl polyfills may be installed first
+or followed by a Temporal installation. The namespace and global install entries
+continue to share brands.
+
+The owned path passes 306 strict locale/enumeration Test262 executions per
+Node/Hermes mode. The gate includes distinct enumerated timezone primaries.
+Candidates use the shared IANA/CLDR primary table; DateTimeFormat alias
+preservation cannot determine which identifiers are primary.
+The sole data-version exclusion is
+`ZonedDateTime/prototype/toLocaleString/offset-time-zones.js`: pinned Test262 expects
+bare GMT at zero, whereas [CLDR49](https://www.unicode.org/reports/tr35/49/tr35-dates.html#Time_Zone_Names)
+and ICU79 require explicit numeric zero. Unfiltered Intl diagnostics retain the
+file. Separate owned regressions verify zero, positive, negative and half-hour
+fixed offsets. No implementation failure is added to an accepted-failure baseline.
+
+Independent ICU4J controls cover 768 locale style/skeleton/offset cases in
+TypeScript and Rust across
+English, German, French and Japanese. Numeric-offset controls use ICU's requested
+component widths and locale timezone-append pattern; best-fit punctuation is not
+assumed to match a different skeleton request. Historical metazone name data is
+unavailable in ICU before 1970, so the formatter uses numeric names then, preserving
+invariant UTC names. Historical positive and negative offset seconds are retained.
+
+Legacy native-Intl diagnostics now pass 4,020/4,080. Direct native DateTimeFormat
+brand interop, YearMonth/MonthDay style filtering and native Date clipping of
+extended plain values remain required work. Owned full Intl diagnostics passed
+4,074/4,080 per mode before the enumeration fix. The fixed file now passes in all
+strict gates; refreshed full reports remain pending. The four other failures
+reflect pinned timezone/CLDR assumptions. Native calendar classes, native
+Hermes bindings and complete WASM facade/data remain open.
+
+Fresh locale benchmarks live in `benchmarks/temporal/locale-results.json`.
+The namespace is 360,277 gzip bytes; adding owned DateTimeFormat with English
+data, all calendars/timezones and DurationFormat gives 434,819 bytes. The full
+reference is 23,226 bytes plus host Intl. Date/time locale methods take
+330–1,545 µs versus reference 45–68 µs; Duration takes 29 versus 71 µs. All
+workloads check exact output equality. Globals are restored before timing so
+the reference uses host Intl and owned methods retain captured intrinsics.
+Complete WASM facade/data remains unmeasured.

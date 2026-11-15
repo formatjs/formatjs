@@ -1,7 +1,7 @@
 {
   "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
   "nativeFallback": false,
-  "note": "Whole native Temporal namespace replaced in every realm. Strict built-in and arithmetic-calendar slices are gates. Full built-in class diagnostics below are historical; refreshed full Intl diagnostics remain unfiltered and failing. Implementation gaps remain required work.",
+  "note": "Whole native Temporal namespace replaced in every realm. Strict built-in, calendar, timezone and owned locale slices are gates. Per-class full reports below are historical; localeFormatting records newer Intl diagnostics and remaining gaps. No complete conformance claim.",
   "selected": {
     "executions": 346,
     "passes": 346,
@@ -110,7 +110,7 @@
         }
       }
     },
-    "note": "All non-locale built-ins families pass, including relative total/round/compare. Locale integration, full intl402 calendar coverage and native bindings remain pending. No new exclusions.",
+    "note": "Non-locale families pass, including relative total/round/compare. Owned DurationFormat integration is covered by localeFormatting. Native bindings remain pending.",
     "icuRelativeRoundingCases": 19440,
     "icuRelativeTotalCases": 6480,
     "icuRelativeComparisonCases": 1340
@@ -661,7 +661,7 @@
         "hermesPass": false
       }
     ],
-    "note": "Unfiltered diagnostics after historical timezone-edge fixes. Locale/Intl integration remains required work; links.js assumes pre-2026d CST6CDT identity. No exclusions."
+    "note": "Historical bare-Intl reports after timezone-edge fixes. See localeFormatting for newer owned/legacy Intl diagnostics. links.js assumes pre-2026d CST6CDT identity. No exclusions in full diagnostics."
   },
   "timezoneIdentity": {
     "availableIdentifiers": 597,
@@ -778,10 +778,10 @@
   },
   "strictGatesPerMode": {
     "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
-    "executions": 7982,
-    "passes": 7982,
+    "executions": 8288,
+    "passes": 8288,
     "failures": 0,
-    "scope": "Union of strict built-in classes, Now, installation, named-calendar and historical timezone-edge gates. Full diagnostics remain separate; no complete conformance claim."
+    "scope": "Distinct union of strict built-in classes, Now, installation, named-calendar, historical timezone-edge and owned locale/enumeration gates. Full diagnostics remain separate; no complete conformance claim."
   },
   "tableCalendars": {
     "calendars": ["chinese", "dangi", "islamic-umalqura"],
@@ -853,5 +853,57 @@
       "spec": "https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database",
       "issue": "https://github.com/tc39/ecma402/issues/1103"
     }
+  },
+  "localeFormatting": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "strictTest262PerMode": {
+      "executions": 306,
+      "passes": 306,
+      "failures": 0
+    },
+    "scope": "Eight public toLocaleString methods with owned Intl prerequisites, plus distinct enumerated timezone primary identities. No native Temporal fallback.",
+    "icu": {
+      "casesPerLanguage": 768,
+      "languages": ["TypeScript", "Rust"],
+      "locales": ["en", "de", "fr", "ja"],
+      "source": "ICU4J 79.1 proleptic Gregorian styles and requested-width skeletons with locale zone-append patterns. Exact string comparison; no row exclusions or normalization."
+    },
+    "fullOwnedIntlBeforeEnumerationFix": {
+      "executionsPerMode": 4080,
+      "passesPerMode": 4074,
+      "failuresPerMode": 6,
+      "failuresByFile": {
+        "intl402/Temporal/ZonedDateTime/links.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js": 2
+      },
+      "note": "Unfiltered Node/Hermes source/bytecode runs. The enumeration failure exposed aliases in supportedValuesOf candidates; shared IANA/CLDR primary generation now fixes that file, checked by all three strict gates. Refreshed full reports pending; remaining raw data-version diagnostics retained."
+    },
+    "legacyNativeIntl": {
+      "engine": "Node",
+      "executions": 4080,
+      "passes": 4020,
+      "failures": 60,
+      "failuresByArea": {
+        "direct DateTimeFormat brand interop": 54,
+        "YearMonth/MonthDay full style filtering": 4,
+        "pinned timezone identity assumption": 2
+      },
+      "note": "Extended plain dates also hit native Date clipping outside these Test262 cases. These implementation gaps remain required work."
+    },
+    "exclusions": [
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js",
+        "executions": 2,
+        "reason": "Pinned assertion requires pre-CLDR49 bare GMT at zero. CLDR49 and ICU79 render explicit numeric zero. Full Intl diagnostics retain the file; owned regression tests cover all its fixed-offset cases.",
+        "source": "https://www.unicode.org/reports/tr35/49/tr35-dates.html#Time_Zone_Names"
+      }
+    ],
+    "pending": [
+      "Native Intl brand/style/extended-range integration",
+      "Native Rust calendar-aware public date classes",
+      "Native Hermes Temporal bindings",
+      "Complete WASM facade/data and matched full-backend measurements"
+    ]
   }
 }

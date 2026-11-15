@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   zonedFromLocal,
   type ZonedDateTimeObject,
@@ -84,6 +85,7 @@ export interface DateProperties {
   readonly inLeapYear: boolean
 }
 export interface PlainDateObject extends DateProperties {
+  readonly [Symbol.toStringTag]: 'Temporal.PlainDate'
   toPlainYearMonth(): PlainYearMonthObject
   toPlainMonthDay(): PlainMonthDayObject
   with(item: unknown, options?: unknown): PlainDateObject
@@ -96,6 +98,7 @@ export interface PlainDateObject extends DateProperties {
   toZonedDateTime(item: unknown): ZonedDateTimeObject
   toPlainDateTime(time?: unknown): PlainDateTimeObject
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -321,6 +324,23 @@ class PlainDateValue {
     const slot = read(this)
     return format(slot, optionsObject(options).calendarName)
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {
+        kind: 'PlainDate',
+        epochNanoseconds:
+          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+        calendar: slot.calendar,
+      },
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return format(read(this))
   }
@@ -328,6 +348,8 @@ class PlainDateValue {
     throw new TypeError('Cannot convert Temporal.PlainDate to primitive')
   }
 }
+const localeStringIntrinsic = PlainDateValue.prototype.toString
+
 Object.defineProperty(PlainDateValue, 'name', {
   value: 'PlainDate',
   configurable: true,

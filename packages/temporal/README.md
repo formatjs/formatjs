@@ -242,3 +242,25 @@ days, half-hour DST, midnight gaps/folds, skipped dates and repeated dates. Rust
 also exposes `start_of_day`, `hours_in_day` and zoned `round` for day/time units.
 A strict Intl timezone-edge suite adds 22 Test262 executions on Node and Hermes
 source/optimized bytecode. No exclusions.
+
+All eight prototypes expose `toLocaleString(locales?, options?)`. Locale methods
+read private slots and capture formatter intrinsics; changing instance fields or
+replacing the global formatter afterward does not change those intrinsics.
+Date/time classes use DateTimeFormat; Duration uses DurationFormat.
+
+For the owned Intl path, load the needed FormatJS Intl polyfills and locale,
+calendar and timezone data before installing Temporal. Temporal's installer
+registers its namespace with DateTimeFormat. Isolated namespaces can use
+`DateTimeFormat.__addTemporalNamespace(Temporal)` explicitly. Locale datasets
+remain outside the Temporal bundle.
+
+The owned path has 306 strict locale/enumeration Test262 executions on Node and Hermes
+source/optimized bytecode, plus 768 independent ICU locale style/offset controls
+in English, German, French and Japanese. One pinned Test262 file assumes the
+pre-CLDR49 bare-GMT zero form; current CLDR and ICU render numeric zero. The file
+remains in unfiltered diagnostics; dedicated regressions cover its fixed offsets.
+
+Legacy native Intl adaptation remains incomplete: direct DateTimeFormat calls
+cannot yet inspect owned brands, YearMonth/MonthDay style filtering needs work,
+and native Date clipping limits extended plain dates. These remain required work;
+the package stays private. No native Temporal implementation is called.

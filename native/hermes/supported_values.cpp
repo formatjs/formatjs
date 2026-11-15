@@ -72,7 +72,6 @@ int32_t probe(void *opaque, uint32_t key, FormatjsBorrowedString value,
       break;
     case FORMATJS_TIME_ZONE:
       constructor = "DateTimeFormat";
-      property = "timeZone";
       options.setProperty(rt, "timeZone", jsi::String::createFromUtf8(rt, identifier));
       break;
     case FORMATJS_UNIT:

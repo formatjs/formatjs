@@ -210,6 +210,72 @@ fn abi_plain_values_preserve_nanoseconds_and_date_noon() {
     ));
     assert!(matches!(construction.finish(json!({})), Err(2)));
 }
+
+#[test]
+fn temporal_inputs_match_independent_icu_locale_profiles() {
+    use formatjs_intl_datetimeformat::{
+        DateTimeValue, Runtime,
+        fields::Components,
+        registry::ResolutionOptions,
+        selection::{Kind, Options},
+    };
+    let runtime = Runtime::default();
+    for data in [
+        EN,
+        include_str!(env!("FORMATJS_DATETIME_DE")),
+        include_str!(env!("FORMATJS_DATETIME_FR")),
+        include_str!(env!("FORMATJS_DATETIME_JA")),
+    ] {
+        runtime.add_locale_data(data).unwrap();
+    }
+    runtime
+        .time_zones()
+        .load_json(include_str!(env!("FORMATJS_DATETIME_TZ")))
+        .unwrap();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_LOCALE_ORACLE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let cells: Vec<_> = line.split('\t').collect();
+        let [kind, locale, zone, milliseconds, raw_options, expected, _] = cells.as_slice() else {
+            panic!("Invalid ICU row: {line}")
+        };
+        let options: Value = serde_json::from_str(raw_options).unwrap();
+        let construction = runtime.begin();
+        let early: ResolutionOptions = serde_json::from_value(options.clone()).unwrap();
+        let resolution = construction.resolve(&[(*locale).into()], &early).unwrap();
+        let effective_zone = if *kind == "ZonedDateTime" {
+            Some(*zone)
+        } else {
+            options.get("timeZone").and_then(Value::as_str)
+        };
+        let zone = construction.time_zone(effective_zone).unwrap();
+        let components: Components = serde_json::from_value(options.clone()).unwrap();
+        let late: Options = serde_json::from_value(options).unwrap();
+        let config = construction
+            .capture(resolution, components)
+            .unwrap()
+            .select(&late)
+            .unwrap();
+        let formatter = construction.finish(config, zone);
+        let instant = matches!(*kind, "Instant" | "ZonedDateTime");
+        let kind: Kind =
+            serde_json::from_value(json!(if instant { "Instant" } else { kind })).unwrap();
+        let value = DateTimeValue::Temporal {
+            kind,
+            calendar: (!instant && kind != Kind::PlainTime).then(|| "gregory".into()),
+            epoch_nanoseconds: milliseconds.parse::<i128>().unwrap() * 1_000_000,
+        };
+        assert_eq!(
+            formatter.format(&value).unwrap(),
+            *expected,
+            "ICU row: {line}"
+        );
+        count += 1;
+    }
+    assert_eq!(count, 768);
+}
 struct CallbackState {
     registry: *const DateTimeRegistry,
     calls: Rc<RefCell<Vec<(i32, i64)>>>,

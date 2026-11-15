@@ -13,7 +13,27 @@ retain both entries. Primitive WASM comparisons retain the basic entry. The
 
 Current runtime exposes all 16 calendars. Latest profile has 26 facade workloads.
 Historical sections retain earlier implementation stages and measurements.
-Locale integration, full WASM facade/data and native Hermes bindings remain open.
+Native Intl integration, full WASM facade/data and native Hermes bindings remain open.
+
+## Locale methods
+
+```sh
+bazel run -c opt //benchmarks/temporal:locale_benchmark
+```
+
+`locale-results.json` measures all eight public locale methods. Owned methods
+capture FormatJS DateTimeFormat and DurationFormat; DateTimeFormat includes
+English data plus all calendar/timezone data. Other Intl prerequisites use host
+implementations. Globals are restored before measurement, keeping the forced
+`temporal-polyfill/full/implementation` reference on host Intl. Each workload
+checks exact output equality before timing.
+
+Namespace size is 360,277 gzip bytes. The combined locale bundle is 434,819;
+the reference is 23,226 plus host Intl implementation/data. These bundles are
+alternatives, not additive. Date/time locale methods take 330–1,545 µs versus
+45–68 µs for the reference; Duration takes 29 versus 71 µs. Constructor/pattern
+work remains a performance gap. This profile does not measure a complete WASM
+facade; matched data-free TS/WASM primitives remain separate below.
 
 ## Run
 

@@ -6,6 +6,8 @@ import {registerLocaleData} from '#packages/ecma402-abstract/registerLocaleData.
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 import {
   ToDateTimeFormattable,
+  registerTemporalDateTimeNamespace,
+  type TemporalDateTimeNamespace,
   type TemporalDateTimeValue,
 } from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -31,7 +33,10 @@ import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDa
 import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
 import {FormatDateTimeRangeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.js'
 import {FormatDateTimeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeToParts.js'
-import {InitializeDateTimeFormat} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
+import {
+  InitializeDateTimeFormat,
+  type DateTimeFormatContext,
+} from '#packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.js'
 import {
   parseDateTimeSkeleton,
   getRangePatternInfo,
@@ -161,6 +166,12 @@ export interface DateTimeFormatConstructor {
     options?: Intl.DateTimeFormatOptions
   ): IDateTimeFormat
 
+  __formatTemporal(
+    value: TemporalDateTimeValue & {timeZone?: string},
+    locales?: string | string[],
+    options?: Intl.DateTimeFormatOptions
+  ): string
+  __addTemporalNamespace(namespace: TemporalDateTimeNamespace): void
   __addLocaleData(...data: RawDateTimeLocaleData[]): void
   __addCalendarData(...data: CalendarData[]): void
   __addCalendarLocaleData(...data: RawCalendarLocaleData[]): void
@@ -192,20 +203,35 @@ export const DateTimeFormat = function (
     return new DateTimeFormat(locales, options)
   }
 
-  InitializeDateTimeFormat(this, locales, options, {
-    tzData: DateTimeFormat.tzData,
-    uppercaseLinks: UPPERCASED_LINKS,
-    uppercaseIdentifiers: UPPERCASED_IDENTIFIERS,
-    availableLocales: DateTimeFormat.availableLocales,
-    relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
-    getDefaultLocale: DateTimeFormat.getDefaultLocale,
-    getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
-    getInternalSlots: dtf => getInternalSlots(dtf, true),
-    localeData: DateTimeFormat.localeData,
-  })
+  initialize(this, locales, options)
+} as DateTimeFormatConstructor
+
+function initialize(
+  dtf: IDateTimeFormat,
+  locales?: string | string[],
+  options?: Intl.DateTimeFormatOptions,
+  context?: DateTimeFormatContext
+): void {
+  InitializeDateTimeFormat(
+    dtf,
+    locales,
+    options,
+    {
+      tzData: DateTimeFormat.tzData,
+      uppercaseLinks: UPPERCASED_LINKS,
+      uppercaseIdentifiers: UPPERCASED_IDENTIFIERS,
+      availableLocales: DateTimeFormat.availableLocales,
+      relevantExtensionKeys: DateTimeFormat.relevantExtensionKeys,
+      getDefaultLocale: DateTimeFormat.getDefaultLocale,
+      getDefaultTimeZone: DateTimeFormat.getDefaultTimeZone,
+      getInternalSlots: dtf => getInternalSlots(dtf, true),
+      localeData: DateTimeFormat.localeData,
+    },
+    context
+  )
 
   /** IMPL START */
-  const internalSlots = getInternalSlots(this)
+  const internalSlots = getInternalSlots(dtf)
 
   const dataLocale = internalSlots.dataLocale
   const dataLocaleData = DateTimeFormat.localeData[dataLocale]
@@ -214,7 +240,7 @@ export const DateTimeFormat = function (
     `Cannot load locale-dependent data for ${dataLocale}.`
   )
   /** IMPL END */
-} as DateTimeFormatConstructor
+}
 
 // ECMA-402 §7 applies ECMA-262 §18: methods are non-constructible built-ins.
 // https://tc39.es/ecma262/#sec-ecmascript-standard-built-in-objects
@@ -223,6 +249,38 @@ export const DateTimeFormat = function (
 // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype
 // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L193-L194
 Object.defineProperty(DateTimeFormat, 'prototype', {writable: false})
+
+defineProperty(DateTimeFormat, '__formatTemporal', {
+  value(
+    value: TemporalDateTimeValue & {timeZone?: string},
+    locales?: string | string[],
+    options?: Intl.DateTimeFormatOptions
+  ): string {
+    const dtf = Object.create(DateTimeFormat.prototype) as IDateTimeFormat
+    const date =
+      value.kind === 'PlainDate' ||
+      value.kind === 'PlainYearMonth' ||
+      value.kind === 'PlainMonthDay'
+    initialize(dtf, locales, options, {
+      required: date ? 'date' : value.kind === 'PlainTime' ? 'time' : 'any',
+      defaults: date ? 'date' : value.kind === 'PlainTime' ? 'time' : 'all',
+      timeZone: value.kind === 'ZonedDateTime' ? value.timeZone : undefined,
+    })
+    if (value.kind === 'ZonedDateTime') {
+      if (
+        value.calendar !== 'iso8601' &&
+        value.calendar !== getInternalSlots(dtf).calendar
+      )
+        throw new RangeError('Temporal calendar does not match DateTimeFormat')
+      value = {kind: 'Instant', epochNanoseconds: value.epochNanoseconds}
+    }
+    return FormatDateTime(dtf, value, getDateTimeImplementationDetails())
+  },
+})
+
+defineProperty(DateTimeFormat, '__addTemporalNamespace', {
+  value: registerTemporalDateTimeNamespace,
+})
 
 // Static properties
 const {supportedLocalesOf} = {

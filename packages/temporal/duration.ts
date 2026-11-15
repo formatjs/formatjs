@@ -1,3 +1,4 @@
+import {localeDuration} from '#packages/temporal/locale.js'
 import {formatDuration} from '#packages/temporal/duration-format.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
@@ -32,6 +33,7 @@ import {
 } from '#packages/temporal/rounding.js'
 
 export interface DurationObject extends Readonly<DurationFields> {
+  readonly [Symbol.toStringTag]: 'Temporal.Duration'
   readonly sign: number
   readonly blank: boolean
   with(fields: unknown): DurationObject
@@ -42,6 +44,7 @@ export interface DurationObject extends Readonly<DurationFields> {
   round(roundTo: unknown): DurationObject
   total(options: unknown): number
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -297,6 +300,15 @@ class DurationValue {
     balanced.weeks = fields.weeks
     balanced.days += fields.days
     return formatDuration(validateDuration(balanced), precision)
+  }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const fields = read(this)
+    return localeDuration(fields, locales, options, () =>
+      formatDuration(fields)
+    )
   }
   toJSON(): string {
     return formatDuration(read(this))

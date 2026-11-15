@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
@@ -62,6 +63,7 @@ export interface PlainYearMonthObject extends Pick<
   | 'monthsInYear'
   | 'inLeapYear'
 > {
+  readonly [Symbol.toStringTag]: 'Temporal.PlainYearMonth'
   with(item: unknown, options?: unknown): PlainYearMonthObject
   add(duration: unknown, options?: unknown): PlainYearMonthObject
   subtract(duration: unknown, options?: unknown): PlainYearMonthObject
@@ -70,6 +72,7 @@ export interface PlainYearMonthObject extends Pick<
   equals(other: unknown): boolean
   toPlainDate(item: unknown): PlainDateObject
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -299,6 +302,23 @@ class PlainYearMonthValue {
       optionsObject(options).calendarName
     )
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {
+        kind: 'PlainYearMonth',
+        epochNanoseconds:
+          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+        calendar: slot.calendar,
+      },
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return formatShortDate(read(this), 'year-month')
   }
@@ -306,6 +326,8 @@ class PlainYearMonthValue {
     throw new TypeError('Cannot convert Temporal.PlainYearMonth to primitive')
   }
 }
+const localeStringIntrinsic = PlainYearMonthValue.prototype.toString
+
 Object.defineProperty(PlainYearMonthValue, 'name', {
   value: 'PlainYearMonth',
   configurable: true,

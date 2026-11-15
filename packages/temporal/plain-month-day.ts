@@ -1,3 +1,4 @@
+import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   getMonthDaySlot,
   setMonthDaySlot,
@@ -29,6 +30,7 @@ import {
 } from '#packages/temporal/short-date-core.js'
 
 export interface PlainMonthDayObject {
+  readonly [Symbol.toStringTag]: 'Temporal.PlainMonthDay'
   readonly calendarId: string
   readonly monthCode: string
   readonly day: number
@@ -36,6 +38,7 @@ export interface PlainMonthDayObject {
   equals(other: unknown): boolean
   toPlainDate(item: unknown): PlainDateObject
   toString(options?: unknown): string
+  toLocaleString(locales?: unknown, options?: unknown): string
   toJSON(): string
   valueOf(): never
 }
@@ -140,6 +143,23 @@ class PlainMonthDayValue {
       optionsObject(options).calendarName
     )
   }
+  toLocaleString(
+    locales: unknown = undefined,
+    options: unknown = undefined
+  ): string {
+    const slot = read(this)
+    return localeDateTime(
+      {
+        kind: 'PlainMonthDay',
+        epochNanoseconds:
+          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+        calendar: slot.calendar,
+      },
+      locales,
+      options,
+      () => localeStringIntrinsic.call(this)
+    )
+  }
   toJSON(): string {
     return formatShortDate(read(this), 'month-day')
   }
@@ -147,6 +167,8 @@ class PlainMonthDayValue {
     throw new TypeError('Cannot convert Temporal.PlainMonthDay to primitive')
   }
 }
+const localeStringIntrinsic = PlainMonthDayValue.prototype.toString
+
 Object.defineProperty(PlainMonthDayValue, 'name', {
   value: 'PlainMonthDay',
   configurable: true,
