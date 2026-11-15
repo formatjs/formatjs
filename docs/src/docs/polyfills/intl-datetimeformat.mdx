@@ -9,10 +9,9 @@ A polyfill for Intl.DateTimeFormat tested by the [official ECMAScript Conformanc
   calendar.
 </Admonition>
 
-<Admonition type="caution">
-  Right now this polyfill supports daylight transition until 2100 to reduce the
-  dataset size
-</Admonition>
+Timezone packs retain historical transitions and recurring future rules from
+IANA TZif files. DST continues beyond 2100 using the pinned release's rules;
+later legal changes require updated timezone data.
 
 ## ECMA-402 Spec Compliance
 

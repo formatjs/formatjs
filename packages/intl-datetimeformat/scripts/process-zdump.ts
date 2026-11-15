@@ -5,8 +5,16 @@ import minimist from 'minimist'
 import {promisify} from 'util'
 import {pack} from './packer.ts'
 import {type UnpackedData, type ZoneData} from '../types.ts'
+import type {TimeZoneFutureRule} from '#packages/ecma402-abstract/types/date-time.js'
 
 const readFile = promisify(_readFile)
+interface Args extends minimist.ParsedArgs {
+  polyfill?: boolean
+  golden?: boolean
+  json?: boolean
+  out: string
+}
+
 const SPACE_REGEX = /[\s\t]+/
 
 const MONTHS = [
@@ -381,7 +389,7 @@ const SPECIAL_CASES = [
   }`
 })
 
-async function main(args: minimist.ParsedArgs) {
+async function main(args: Args) {
   const {_: files, polyfill, out, golden} = args
   const inputs = files.slice(2)
   inputs.sort() // sort so result is stable
@@ -399,7 +407,26 @@ async function main(args: minimist.ParsedArgs) {
     inputs.map((input: string) => readFile(input, 'utf8'))
   )
 
-  processZone([contents, ...SPECIAL_CASES].join('\n'), data, golden)
+  for (const content of contents) {
+    const zone = JSON.parse(content) as {
+      name: string
+      transitions: [number | null, string, number, number][]
+      future?: TimeZoneFutureRule
+    }
+    if (golden && !GOLDEN_TIMEZONES.has(zone.name)) continue
+    zones[zone.name] = zone.transitions.map(
+      ([timestamp, abbreviation, offset, dst]) => {
+        let abbreviationIndex = abbrvs.indexOf(abbreviation)
+        if (abbreviationIndex < 0)
+          abbreviationIndex = abbrvs.push(abbreviation) - 1
+        let offsetIndex = offsets.indexOf(offset)
+        if (offsetIndex < 0) offsetIndex = offsets.push(offset) - 1
+        return [timestamp ?? '', abbreviationIndex, offsetIndex, dst]
+      }
+    )
+    if (zone.future) (data.future ??= {})[zone.name] = zone.future
+  }
+  processZone(SPECIAL_CASES.join('\n'), data, golden)
 
   if (args.json) {
     outputFileSync(out, stringify(pack(data)) + '\n')
@@ -417,10 +444,19 @@ if ('DateTimeFormat' in Intl && Intl.DateTimeFormat.__addTZData) {
       out,
       `// @generated
 // prettier-ignore
+type TransitionRule =
+  | {kind: 'month'; month: number; week: number; weekday: number; seconds: number}
+  | {kind: 'day' | 'julian'; day: number; seconds: number}
 const data: {
   abbrvs: string;
   offsets: string;
   zones: string[];
+  future?: Record<string, {
+    standardOffset: number;
+    daylightOffset?: number;
+    start?: TransitionRule;
+    end?: TransitionRule;
+  }>;
 } = ${stringify(pack(data), {
         space: 2,
       })}
@@ -430,5 +466,7 @@ export default data`
 }
 
 if (import.meta.filename === process.argv[1]) {
-  main(minimist(process.argv, {boolean: ['polyfill', 'golden', 'json']}))
+  main(
+    minimist(process.argv, {boolean: ['polyfill', 'golden', 'json']}) as Args
+  )
 }

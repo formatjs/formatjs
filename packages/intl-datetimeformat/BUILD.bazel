@@ -154,6 +154,17 @@ formatjs_library(
 )
 
 formatjs_test(
+    name = "timezone_future_test",
+    srcs = ["tests/timezone-future.test.ts"],
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/vitest",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+formatjs_test(
     name = "intl-datetimeformat_test",
     srcs = [
         "tests/abstract/BestFitFormatMatcher.test.ts",
@@ -202,8 +213,8 @@ generate_tz_data(
 )
 
 filegroup(
-    name = "zdumps",
-    srcs = ["tz_data_generated/zdump/%s" % zone for zone in ZONES],
+    name = "tzif_data",
+    srcs = ["tz_data_generated/tzif/%s.json" % zone for zone in ZONES],
 )
 
 # CLDR
@@ -378,11 +389,11 @@ generate_package_file(
     name = "tz_all_tz",
     src = "all-tz.ts",
     args = [
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
     ],
     data = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/json-stable-stringify",
         "//:root_package_json",
         "//packages/ecma262-abstract",
@@ -409,7 +420,7 @@ formatjs_generated_package(
         name = "tz_%s_json" % selection,
         srcs = [
             "types.ts",
-            ":zdumps",
+            ":tzif_data",
             "//:node_modules/fs-extra",
             "//:node_modules/json-stable-stringify",
             "//:node_modules/minimist",
@@ -417,7 +428,7 @@ formatjs_generated_package(
         ],
         outs = ["tz-%s.json" % selection],
         args = ["--json"] + (["--golden"] if selection == "golden" else []) + [
-            "$(rootpaths :zdumps)",
+            "$(rootpaths :tzif_data)",
             "--out",
             "$(rootpath tz-%s.json)" % selection,
         ],
@@ -440,7 +451,7 @@ ts_run_binary(
     name = "add-all-tz",
     srcs = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -453,7 +464,7 @@ ts_run_binary(
     outs = ["add-all-tz.js"],
     args = [
         "--polyfill",
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
         "--out",
         "$(rootpath add-all-tz.js)",
     ],
@@ -469,7 +480,7 @@ ts_run_binary(
     name = "add-golden-tz",
     srcs = [
         "types.ts",
-        ":zdumps",
+        ":tzif_data",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",
@@ -483,7 +494,7 @@ ts_run_binary(
     args = [
         "--golden",
         "--polyfill",
-        "$(rootpaths :zdumps)",
+        "$(rootpaths :tzif_data)",
         "--out",
         "$(rootpath add-golden-tz.js)",
     ],

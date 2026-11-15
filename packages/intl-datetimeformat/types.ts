@@ -3,12 +3,14 @@ import type {
   DateTimeFormatLocaleInternalData,
   IntervalFormatsData,
   IntervalFormatTemplates,
+  TimeZoneFutureRule,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
 export interface PackedData {
   zones: string[]
   abbrvs: string
   offsets: string
+  future?: Record<string, TimeZoneFutureRule>
 }
 
 export interface UnpackedData {
@@ -18,6 +20,7 @@ export interface UnpackedData {
    * Offset in seconds, base 36
    */
   offsets: number[]
+  future?: Record<string, TimeZoneFutureRule>
 }
 
 export type ZoneData = [

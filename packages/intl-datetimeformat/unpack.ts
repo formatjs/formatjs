@@ -1,11 +1,11 @@
 import type {PackedData} from '#packages/intl-datetimeformat/types.js'
-import type {UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
-export function unpack(data: PackedData): Record<string, UnpackedZoneData[]> {
+export function unpack(data: PackedData): Record<string, UnpackedTimeZoneData> {
   const abbrvs = data.abbrvs.split('|')
   const offsets = data.offsets.split('|').map(n => parseInt(n, 36))
   const packedZones = data.zones
-  const zones: Record<string, UnpackedZoneData[]> = {}
+  const zones: Record<string, UnpackedTimeZoneData> = {}
   for (const d of packedZones) {
     const [zone, ...zoneData] = d.split('|')
 
@@ -17,6 +17,7 @@ export function unpack(data: PackedData): Record<string, UnpackedZoneData[]> {
         offsets[+offsetIndex],
         dst === '1',
       ])
+    if (data.future?.[zone]) zones[zone].future = data.future[zone]
   }
   return zones
 }

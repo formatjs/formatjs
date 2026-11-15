@@ -288,6 +288,27 @@ export type UnpackedZoneData = [
   boolean,
 ]
 
+export type TimeZoneTransitionRule =
+  | {
+      kind: 'month'
+      month: number
+      week: number
+      weekday: number
+      seconds: number
+    }
+  | {kind: 'day' | 'julian'; day: number; seconds: number}
+
+export interface TimeZoneFutureRule {
+  standardOffset: number
+  daylightOffset?: number
+  start?: TimeZoneTransitionRule
+  end?: TimeZoneTransitionRule
+}
+
+export interface UnpackedTimeZoneData extends Array<UnpackedZoneData> {
+  future?: TimeZoneFutureRule
+}
+
 export type IntlDateTimeFormatPartType =
   | Intl.DateTimeFormatPartTypes
   | 'ampm'
