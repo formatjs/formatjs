@@ -1,5 +1,7 @@
 //! Normalized primitive requests; never borrow host runtime objects.
-use crate::{Error, IsoDateTime, NANOSECONDS_PER_DAY};
+use crate::{
+    Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, Precision, RoundingMode, TimeUnit,
+};
 use serde_json::{Value, json};
 use std::{
     boxed::Box,
@@ -64,16 +66,155 @@ fn fields(value: &Value) -> Result<IsoDateTime, Error> {
 fn record(fields: IsoDateTime) -> Value {
     json!({"year":fields.year,"month":fields.month,"day":fields.day,"hour":fields.hour,"minute":fields.minute,"second":fields.second,"millisecond":fields.nanosecond/1_000_000,"microsecond":fields.nanosecond/1000%1000,"nanosecond":fields.nanosecond%1000})
 }
+const DURATION_FIELDS: [&str; 10] = [
+    "years",
+    "months",
+    "weeks",
+    "days",
+    "hours",
+    "minutes",
+    "seconds",
+    "milliseconds",
+    "microseconds",
+    "nanoseconds",
+];
+fn decimal(request: &Value, key: &str) -> Result<i128, Error> {
+    request[key]
+        .as_str()
+        .ok_or(Error::InvalidSyntax)?
+        .parse()
+        .map_err(|_| Error::OutOfRange)
+}
+fn instant(request: &Value, key: &str) -> Result<Instant, Error> {
+    Instant::from_epoch_nanoseconds(decimal(request, key)?)
+}
+fn mode(request: &Value) -> Result<RoundingMode, Error> {
+    request["mode"]
+        .as_str()
+        .ok_or(Error::InvalidRoundingOptions)?
+        .parse()
+}
+fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    if op == "parseInstant" {
+        return Ok(json!(
+            request["text"]
+                .as_str()
+                .ok_or(Error::InvalidSyntax)?
+                .parse::<Instant>()?
+                .epoch_nanoseconds()
+                .to_string()
+        ));
+    }
+    let value = instant(request, "nanoseconds")?;
+    match op {
+        "formatInstant" => {
+            let precision = match request["precision"].as_str() {
+                Some("auto") => Precision::Auto,
+                Some("minute") => Precision::Minute,
+                _ => Precision::Digits(
+                    integer(request.get("precision"), None)?
+                        .try_into()
+                        .map_err(|_| Error::InvalidRoundingOptions)?,
+                ),
+            };
+            let offset = if request.get("offset").is_some() {
+                Some(
+                    decimal(request, "offset")?
+                        .try_into()
+                        .map_err(|_| Error::OutOfRange)?,
+                )
+            } else {
+                None
+            };
+            Ok(json!(
+                value
+                    .format(precision, RoundingMode::Trunc, offset)?
+                    .to_string()
+            ))
+        }
+        "addInstant" => {
+            let mut fields = [0; 10];
+            for (index, key) in DURATION_FIELDS.iter().enumerate() {
+                fields[index] = decimal(&request["duration"], key)?;
+            }
+            let duration = Duration::new(fields)?;
+            let result = match request["subtract"].as_bool() {
+                Some(false) => value.checked_add(duration)?,
+                Some(true) => value.checked_subtract(duration)?,
+                None => return Err(Error::InvalidDuration),
+            };
+            Ok(json!(result.epoch_nanoseconds().to_string()))
+        }
+        "roundInstant" => {
+            let quantum = decimal(request, "quantum")?;
+            if quantum <= 0 || quantum > NANOSECONDS_PER_DAY || NANOSECONDS_PER_DAY % quantum != 0 {
+                return Err(Error::InvalidRoundingOptions);
+            }
+            let unit = [
+                TimeUnit::Hour,
+                TimeUnit::Minute,
+                TimeUnit::Second,
+                TimeUnit::Millisecond,
+                TimeUnit::Microsecond,
+                TimeUnit::Nanosecond,
+            ]
+            .into_iter()
+            .find(|unit| quantum % unit.nanoseconds() == 0)
+            .ok_or(Error::InvalidRoundingOptions)?;
+            let increment = (quantum / unit.nanoseconds())
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?;
+            Ok(json!(
+                value
+                    .round(unit, increment, mode(request)?)?
+                    .epoch_nanoseconds()
+                    .to_string()
+            ))
+        }
+        "differenceInstant" => {
+            let other = instant(request, "other")?;
+            let largest = request["largest"]
+                .as_str()
+                .ok_or(Error::InvalidRoundingOptions)?
+                .parse()?;
+            let smallest = request["smallest"]
+                .as_str()
+                .ok_or(Error::InvalidRoundingOptions)?
+                .parse()?;
+            let increment = integer(request.get("increment"), None)?
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?;
+            let fields = value
+                .until(other, largest, smallest, increment, mode(request)?)?
+                .fields();
+            Ok(Value::Object(
+                DURATION_FIELDS
+                    .iter()
+                    .enumerate()
+                    .map(|(index, key)| (key.to_string(), json!(fields[index] as f64)))
+                    .collect(),
+            ))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso","calls":CALLS.load(Ordering::Relaxed),"operations":["isoToEpochNanoseconds","epochNanosecondsToISO","addISODays"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant","calls":CALLS.load(Ordering::Relaxed),"operations":["isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "isoToEpochNanoseconds" | "epochNanosecondsToISO" | "addISODays"
+        "isoToEpochNanoseconds"
+            | "epochNanosecondsToISO"
+            | "addISODays"
+            | "parseInstant"
+            | "formatInstant"
+            | "addInstant"
+            | "roundInstant"
+            | "differenceInstant"
     ) {
         return Err(2);
     }
@@ -99,7 +240,7 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
             }
-            _ => unreachable!(),
+            _ => instant_operation(op, &request),
         }
     })();
     result.map_err(|_| 1)

@@ -1,19 +1,21 @@
 import {
-  configureNativeISO,
-  type NativeISOQuery,
-} from '#packages/temporal/native-iso.js'
+  configureNativeTemporal,
+  type NativeQuery,
+} from '#packages/temporal/native.js'
 import {installTemporal} from '#packages/temporal/install.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {addISODays} from '#packages/temporal/kernel.js'
 
 declare const __temporalISOOracle: number[][]
+declare const __temporalInstantRoundingOracle: string[][]
+declare const __temporalDurationOracle: string[][]
 declare function print(value: string): void
 const host = globalThis as typeof globalThis & {
-  __formatjsTemporalISOQuery?: NativeISOQuery
+  __formatjsTemporalISOQuery?: NativeQuery
 }
 const query = host.__formatjsTemporalISOQuery!
 if (!query) throw new Error('Rust Temporal ISO bridge missing')
-configureNativeISO(query)
+configureNativeTemporal(query)
 delete host.__formatjsTemporalISOQuery
 installTemporal(true)
 function check(value: boolean, context: string): void {
@@ -25,6 +27,23 @@ for (const row of __temporalISOOracle) {
     row
   if (Math.abs(milliseconds) > 8_640_000_000_000_000) continue
   const instant = Temporal.Instant.fromEpochMilliseconds(milliseconds)
+  const pad = (value: number, digits = 2) => String(value).padStart(digits, '0')
+  const expected =
+    (year < 0
+      ? '-' + pad(-year, 6)
+      : year > 9999
+        ? '+' + pad(year, 6)
+        : pad(year, 4)) +
+    `-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:${pad(second)}.${pad(millisecond, 3)}Z`
+  check(
+    instant.toString({fractionalSecondDigits: 3}) === expected,
+    'ICU instant formatting: ' + row
+  )
+  check(
+    Temporal.Instant.from(expected).epochNanoseconds ===
+      BigInt(milliseconds) * 1_000_000n,
+    'ICU instant parsing: ' + row
+  )
   const date = instant.toZonedDateTimeISO('UTC').toPlainDateTime()
   check(
     [
@@ -53,6 +72,78 @@ for (const row of __temporalISOOracle) {
   )
   count++
 }
+let rounds = 0
+for (const [
+  epoch,
+  unit,
+  increment,
+  mode,
+  expected,
+] of __temporalInstantRoundingOracle) {
+  const value = Temporal.Instant.fromEpochNanoseconds(BigInt(epoch))
+  check(
+    value.round({
+      smallestUnit: unit,
+      roundingIncrement: Number(increment),
+      roundingMode: mode,
+    }).epochNanoseconds === BigInt(expected),
+    'ICU Instant rounding: ' + [epoch, unit, increment, mode]
+  )
+  rounds++
+}
+let differences = 0
+const limit = 8_640_000_000_000_000_000_000n
+for (const [kind, epoch, unit, mode, expected] of __temporalDurationOracle) {
+  const amount = BigInt(epoch)
+  if (
+    kind !== 'round' ||
+    unit === 'day' ||
+    amount < -2n * limit ||
+    amount > 2n * limit
+  )
+    continue
+  const origin = amount < 0n ? limit : -limit
+  const first = Temporal.Instant.fromEpochNanoseconds(origin)
+  const last = Temporal.Instant.fromEpochNanoseconds(origin + amount)
+  const options = {largestUnit: 'hour', smallestUnit: unit, roundingMode: mode}
+  for (const duration of [
+    first.until(last, options),
+    last.since(first, options),
+  ]) {
+    const actual =
+      BigInt(duration.hours) * 3_600_000_000_000n +
+      BigInt(duration.minutes) * 60_000_000_000n +
+      BigInt(duration.seconds) * 1_000_000_000n +
+      BigInt(duration.milliseconds) * 1_000_000n +
+      BigInt(duration.microseconds) * 1000n +
+      BigInt(duration.nanoseconds)
+    check(
+      actual === BigInt(expected),
+      'ICU signed Instant difference: ' + [epoch, unit, mode]
+    )
+  }
+  differences++
+}
+const start = Temporal.Instant.from('2000-02-29T23:59:59.999999999Z')
+for (const text of ['\ud800', '\udfff', '1970-01-01T00:00Z[foo=\ud800]']) {
+  let rejected = false
+  try {
+    Temporal.Instant.from(text)
+  } catch (error) {
+    rejected = error instanceof RangeError
+  }
+  check(rejected, 'Invalid UTF-16 must produce RangeError')
+}
+const end = start.add({nanoseconds: 1})
+check(
+  end.toString() === '2000-03-01T00:00:00Z' &&
+    end.subtract({nanoseconds: 1}).equals(start),
+  'Rust Instant arithmetic'
+)
+check(
+  start.until(end).nanoseconds === 1 && start.since(end).nanoseconds === -1,
+  'Rust signed Instant difference'
+)
 check(
   Temporal.PlainDate.from('2020-02-28').add({days: 2}).toString() ===
     '2020-03-01',
@@ -116,8 +207,10 @@ try {
   JSON.stringify = json.stringify
 }
 const date = Temporal.PlainDateTime.from('2020-02-28T12:00')
+const instant = Temporal.Instant.fromEpochNanoseconds(0n)
+const later = Temporal.Instant.fromEpochNanoseconds(1n)
 try {
-  configureNativeISO(() => 1)
+  configureNativeTemporal(() => 1)
   let rejected = false
   try {
     date.toZonedDateTime('UTC')
@@ -125,7 +218,29 @@ try {
     rejected = error instanceof RangeError
   }
   check(rejected, 'Native error must not fall back to TS')
+  for (const action of [
+    () => Temporal.Instant.from('1970-01-01T00:00Z'),
+    () => instant.toJSON(),
+    () => instant.add({nanoseconds: 1}),
+    () => instant.round('second'),
+    () => instant.until(later),
+  ]) {
+    let rejected = false
+    try {
+      action()
+    } catch (error) {
+      rejected = error instanceof RangeError
+    }
+    check(rejected, 'Instant operation must require native backend')
+  }
 } finally {
-  configureNativeISO(query)
+  configureNativeTemporal(query)
 }
-print('Rust ISO Hermes ICU rows: ' + count)
+print(
+  'Rust ISO/Instant Hermes ICU rows: ' +
+    count +
+    '; rounding: ' +
+    rounds +
+    '; signed differences: ' +
+    differences
+)

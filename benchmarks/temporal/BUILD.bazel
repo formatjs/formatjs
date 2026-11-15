@@ -1,4 +1,5 @@
 load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
@@ -20,6 +21,7 @@ formatjs_library(
         "benchmark.ts",
         "calendar-entry.ts",
         "facade-benchmark.ts",
+        "hermes-instant.ts",
         "instant-entry.ts",
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
@@ -214,3 +216,30 @@ sh_test(
         ),
     ]
 ]
+
+rolldown_bundle(
+    name = "hermes-instant-bundle",
+    srcs = [
+        "hermes-instant.ts",
+        "//packages/temporal:runtime_sources",
+    ],
+    entry_point = "hermes-instant.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_binary(
+    name = "hermes_instant_benchmark",
+    srcs = ["hermes-instant.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :hermes-instant-bundle.js)",
+    ],
+    data = [
+        ":hermes-instant-bundle.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)

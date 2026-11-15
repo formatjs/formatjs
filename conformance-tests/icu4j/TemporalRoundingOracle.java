@@ -14,7 +14,9 @@ public final class TemporalRoundingOracle {
     String[] modes = {"ceil", "floor", "expand", "trunc", "halfCeil", "halfFloor", "halfExpand", "halfTrunc", "halfEven"};
     int[] icuModes = {BigDecimal.ROUND_CEILING, BigDecimal.ROUND_FLOOR, BigDecimal.ROUND_CEILING, BigDecimal.ROUND_FLOOR, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_DOWN, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_DOWN, BigDecimal.ROUND_HALF_EVEN};
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J 79.1 BigDecimal; epoch nanoseconds, unit, increment, mode, rounded epoch nanoseconds");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalInstantRoundingOracle = [");
+      else out.println("# ICU4J 79.1 BigDecimal; epoch nanoseconds, unit, increment, mode, rounded epoch nanoseconds");
       for (int i = 0; i < units.length; i++) {
         BigInteger quantum = BigInteger.valueOf(factors[i]).multiply(BigInteger.valueOf(increments[i]));
         if (!origin.mod(quantum.multiply(BigInteger.TWO)).equals(BigInteger.ZERO)) throw new IllegalStateException("Origin must be an even quantum multiple");
@@ -29,10 +31,12 @@ public final class TemporalRoundingOracle {
           for (int mode = 0; mode < modes.length; mode++) {
             BigDecimal positive = new BigDecimal(value.add(origin).toString());
             BigInteger rounded = positive.divide(new BigDecimal(quantum.toString()), 0, icuModes[mode]).toBigIntegerExact().multiply(quantum).subtract(origin);
-            out.println(value + "\t" + units[i] + "\t" + increments[i] + "\t" + modes[mode] + "\t" + rounded);
+            String row = value + "\t" + units[i] + "\t" + increments[i] + "\t" + modes[mode] + "\t" + rounded;
+            out.println(javascript ? "[\"" + row.replace("\t", "\",\"") + "\"]," : row);
           }
         }
       }
+      if (javascript) out.println("];");
     }
   }
 }

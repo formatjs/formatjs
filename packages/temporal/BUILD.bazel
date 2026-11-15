@@ -27,7 +27,7 @@ formatjs_library(
         "instant-string.ts",
         "kernel.ts",
         "locale.ts",
-        "native-iso.ts",
+        "native.ts",
         "now.ts",
         "plain-date.ts",
         "plain-date-time.ts",
@@ -1273,10 +1273,12 @@ genrule(
     testonly = True,
     srcs = [
         "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_rounding_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
         ":native-iso-host.js",
     ],
     outs = ["native-iso-hermes.js"],
-    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location :native-iso-host.js) > $@",
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location :native-iso-host.js) > $@",
 )
 
 sh_test(
@@ -1329,7 +1331,11 @@ sh_test(
         },
     )
     for suite, patterns, baseline in [
-        ("instant", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json"),
+        (
+            "instant",
+            [_INSTANT_ROOT + "/**/*.js"],
+            "tests/instant-full-test262-count.json",
+        ),
         ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
         ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
         ("time", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json"),

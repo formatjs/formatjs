@@ -1,4 +1,5 @@
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 
 export type RoundingMode =
   | 'ceil'
@@ -132,7 +133,8 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   const maximum = 86_400_000_000_000n / timeUnitNanoseconds[unit]
   if (BigInt(increment) > maximum || maximum % BigInt(increment) !== 0n)
     throw new RangeError('Rounding increment must divide a day')
-  return roundInstant(
+  const native = nativeTemporal()
+  return (native ? native.roundInstant : roundInstant)(
     value,
     BigInt(increment) * timeUnitNanoseconds[unit],
     mode

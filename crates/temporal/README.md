@@ -310,3 +310,30 @@ requests, error ownership and fractional day arithmetic. The native ISO Test262
 targets pass 7,982 executions per mode with strict per-family baselines.
 This proves the hybrid configuration only. Complete Rust/WASM backends and equivalent full-backend
 performance/size comparisons remain required.
+
+## Native Instant operations on Hermes
+
+The experimental backend now delegates Instant parsing, formatting, add/subtract,
+rounding and until/since to Rust. Shared JS code retains coercion, property access
+order, slots, brands and numeric projections/comparisons. The private interface
+is now `native.ts` / `configureNativeTemporal`; runner flag and existing ISO
+profile target names remain compatible. Other Temporal algorithms and locale
+integration still require native work.
+
+The full pinned Instant Test262 selection has 934 executions per Hermes mode;
+the wider strict native profile covers 8,570 per mode. Independent public-class
+controls add parsing/formatting across 25,265 ICU Gregorian rows, 2,349 BigDecimal
+rounding cases and 3,168 signed difference cases (both until and since). Signed
+controls use valid Instant endpoint spans and time units; day rounding is outside
+Instant's difference API. ABI validation rejects malformed options and durations.
+
+`//benchmarks/temporal:hermes_instant_benchmark` compares public Instant operations
+with TS and `temporal-polyfill` 1.0.7 in Hermes source and optimized bytecode.
+Recorded bytecode parsing takes about 3.17 microseconds with Rust versus 9.00 TS;
+formatting 6.70 versus 8.88. The JSON bridge makes add and round slower than TS;
+until is close. These hot-operation samples do not measure full native Temporal,
+startup, full WASM or full backend size. Backend selection remains open.
+
+Invalid UTF-16 Instant strings retain `RangeError`: escaped code units are
+rejected before JSON-to-UTF-8 decoding. Source/bytecode regressions cover lone
+surrogates, captured intrinsics and mandatory native calls for every new operation.

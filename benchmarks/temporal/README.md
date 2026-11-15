@@ -697,3 +697,29 @@ data-free primitives are 3,773 TS bytes versus 19,494 WASM plus 463 bridge bytes
 opt-in; these numbers do not measure its native archive or a full WASM facade.
 Reference `temporal-polyfill` 1.0.7 remains 19,393 bytes basic / 23,226 full,
 using host Intl. Equivalent full-backend throughput and size remain open.
+
+`hermes-instant-results.json` records the public Instant facade in Hermes source
+and optimized bytecode, with pure TS and the opt-in Rust ISO/Instant JSON bridge.
+Run `bazel run -c opt //benchmarks/temporal:hermes_instant_benchmark`.
+Each process checks eight inputs against `temporal-polyfill` 1.0.7 basic, warms
+1,000 calls, then measures five samples of 5,000 calls. Startup and data size are
+excluded. The Rust namespace remains hybrid outside ISO/Instant.
+
+Bytecode medians, TS / Rust / reference (Rust-process sample), microseconds/op:
+
+- Parse: 9.00 / 3.17 / 17.12.
+- Format: 8.88 / 6.70 / 9.35.
+- Add: 6.82 / 15.09 / 17.90.
+- Round: 2.91 / 5.63 / 15.51.
+- Until: 15.04 / 15.59 / 17.00.
+
+Rust improves parsing/formatting here; JSON transport hurts cheaper operations.
+Reference measurements from each process and every sample remain in the JSON.
+One host does not establish universal speed. Full WASM/native facades, equivalent
+data and shipped backend comparisons remain required.
+
+`native-instant-size-results.json` refreshes the unchanged size scopes: default
+namespace TS 360,301 gzip bytes (+14); data-free primitive TS 3,783 versus WASM
+19,494 + 463 bridge bytes (19,957 combined). The full native Instant JSON ABI is
+not exposed by the existing primitive WASM export. These remain partial WASM
+measurements, separate from the Hermes public-operation timings above.

@@ -31,6 +31,14 @@ fn errors_leave_no_owned_output() {
         json!({"op":"isoToEpochNanoseconds","fields":{"year":1970,"month":1,"day":1,"nanosecond":1000}}),
         json!({"op":"epochNanosecondsToISO","nanoseconds":"170141183460469231731687303715884105728"}),
         json!({"op":"addISODays","fields":{"year":1970,"month":1,"day":1},"days":0.5}),
+        json!({"op":"parseInstant","text":"2021-02-29T00:00Z"}),
+        json!({"op":"formatInstant","nanoseconds":"0","precision":10}),
+        json!({"op":"formatInstant","nanoseconds":"0","precision":"auto","offset":"86400000000000"}),
+        json!({"op":"roundInstant","nanoseconds":"0","quantum":"0","mode":"ceil"}),
+        json!({"op":"roundInstant","nanoseconds":"0","quantum":"7","mode":"ceil"}),
+        json!({"op":"roundInstant","nanoseconds":"0","quantum":"1","mode":"invalid"}),
+        json!({"op":"differenceInstant","nanoseconds":"0","other":"1","largest":"second","smallest":"hour","increment":1,"mode":"trunc"}),
+        json!({"op":"addInstant","nanoseconds":"0","duration":{},"subtract":false}),
     ] {
         assert_eq!(query(input.to_string().as_bytes()), Err(1));
     }

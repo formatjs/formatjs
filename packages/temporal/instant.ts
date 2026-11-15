@@ -32,6 +32,18 @@ import {
 } from '#packages/temporal/rounding.js'
 import {resolveTimeZone} from '#packages/temporal/zones.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
+
+function instantString(
+  value: bigint,
+  precision: Precision = 'auto',
+  offset?: bigint
+): string {
+  const native = nativeTemporal()
+  return native
+    ? native.formatInstant(value, precision, offset)
+    : formatInstant(value, precision, offset)
+}
 
 export interface InstantObject {
   readonly [Symbol.toStringTag]: 'Temporal.Instant'
@@ -128,6 +140,18 @@ function difference(
   const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex]
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeError('Invalid duration rounding increment')
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differenceInstant(
+        since ? end : value,
+        since ? value : end,
+        names[largeIndex],
+        smallestTime,
+        increment,
+        mode
+      )
+    )
   const valueToRound = (end - value) * (since ? -1n : 1n)
   const rounded = roundDuration(
     valueToRound,
@@ -185,14 +209,24 @@ class InstantValue implements InstantObject {
       fields = toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
-    return createInstant(value + durationNanoseconds(fields, false))
+    const native = nativeTemporal()
+    return createInstant(
+      native
+        ? native.addInstant(value, fields, false)
+        : value + durationNanoseconds(fields, false)
+    )
   }
   subtract(other: unknown): InstantObject {
     const value = read(this),
       fields = toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
-    return createInstant(value - durationNanoseconds(fields, false))
+    const native = nativeTemporal()
+    return createInstant(
+      native
+        ? native.addInstant(value, fields, true)
+        : value - durationNanoseconds(fields, false)
+    )
   }
   round(roundTo: unknown): InstantObject {
     return createInstant(roundInstantOptions(read(this), roundTo))
@@ -226,8 +260,11 @@ class InstantValue implements InstantObject {
         : precision === 'minute'
           ? timeUnitNanoseconds.minute
           : 10n ** BigInt(9 - precision)
-    const rounded = roundInstant(value, quantum, mode)
-    return formatInstant(rounded, precision, zone?.offsetNanoseconds(rounded))
+    const native = nativeTemporal()
+    const rounded = native
+      ? native.roundInstant(value, quantum, mode)
+      : roundInstant(value, quantum, mode)
+    return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
   toLocaleString(
     locales: unknown = undefined,
@@ -242,7 +279,7 @@ class InstantValue implements InstantObject {
     )
   }
   toJSON(): string {
-    return formatInstant(read(this))
+    return instantString(read(this))
   }
   valueOf(): never {
     throw new TypeError('Cannot convert Temporal.Instant to primitive')

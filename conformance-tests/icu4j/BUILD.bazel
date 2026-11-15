@@ -691,3 +691,21 @@ genrule(
     tools = [":temporal_iso_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "temporal_rounding_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-rounding-fixtures.js"],
+    cmd = "$(execpath :temporal_rounding_oracle) $@ --js",
+    tools = [":temporal_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_duration_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-duration-fixtures.js"],
+    cmd = "$(execpath :temporal_duration_oracle) $@ --js",
+    tools = [":temporal_duration_oracle"],
+    visibility = ["//visibility:public"],
+)
