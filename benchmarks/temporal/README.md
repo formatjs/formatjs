@@ -25,9 +25,9 @@ disambiguation. `zones.ts` decodes only the requested canonical zone through the
 existing datetimeformat unpacker. No host Intl timezone lookup.
 
 No Temporal classes, coercion/branding rules, parsers, durations, rounding,
-non-ISO arithmetic, aliases or transition-query API. Calendar reuse is limited
-to ISO/Gregorian date primitives. Most existing optional TS calendars still
-use temporal-polyfill; they cannot yet serve as an independent replacement.
+aliases or transition-query API. `calendar.ts` separately supplies numeric
+ISO/Hebrew arithmetic. Other optional TS calendars still use temporal-polyfill;
+they cannot yet serve as an independent replacement.
 The gap resolver assumes IANA gaps are isolated within its two-day window.
 That assumption is tested here, not a general-purpose transition-index contract.
 No Test262 conformance claim.
@@ -46,6 +46,27 @@ Kernel tests derive gap/fold local times and expected results from those ICU
 transitions. Additional fixed expectations cover New York, Lord Howe, Apia's
 skipped day, Paris historical seconds, leap days, negative nanoseconds and
 instant boundaries. Differential checks use the forced JS polyfill.
+
+## Independent calendar arithmetic
+
+`calendar.ts` converts ISO/Hebrew fields to/from epoch days, resolves ordinal
+months and month codes (including Hebrew `M05L`), applies constrain/reject,
+adds years/months/weeks/days, and computes day differences. It ports the existing
+Rust Hebrew postponement formulas; runtime imports no Temporal or host Intl.
+This is a numeric internal contract, not Temporal property-bag/coercion semantics.
+Month/year differences, other calendars and calendar field merging remain open.
+
+```sh
+bazel test -c opt //benchmarks/temporal:calendar_test
+```
+
+ICU fixtures cover over 6,000 dates in epoch days -1,000,000 through +1,000,000
+plus denser 1900–2100 coverage. Both conversion directions match. An initial
+full-range ICU4J 79.1 oracle stalled in `CalendarCache.findIndex` on extreme
+negative dates; that unreliable range is excluded from the ICU control, not
+claimed as validated by it. Separate forced-polyfill checks cover both full
+Temporal date boundaries, leap-month/year arithmetic and signed durations.
+The earlier size/runtime records below predate this separate calendar module.
 
 ## Measured footprint
 

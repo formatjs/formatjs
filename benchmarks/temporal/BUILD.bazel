@@ -18,6 +18,7 @@ formatjs_library(
     name = "temporal",
     srcs = [
         "benchmark.ts",
+        "calendar.ts",
         "kernel.ts",
         "reference.ts",
         "zones.ts",
@@ -96,4 +97,17 @@ js_binary(
         "//:node_modules/esbuild",
     ],
     entry_point = "benchmark.ts",
+)
+
+formatjs_test(
+    name = "calendar_test",
+    srcs = ["calendar.test.ts"],
+    data = ["//conformance-tests/icu4j:temporal_calendar_fixtures"],
+    deps = [
+        ":temporal",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
 )

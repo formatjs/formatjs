@@ -281,6 +281,10 @@ so investigate newly introduced rule differences before updating expectations.
 The unpublished [Temporal kernel experiment](../benchmarks/temporal/README.md)
 adds ICU-derived gap/fold checks and records timezone bundle-size comparisons.
 It reuses shared ISO/timezone primitives, not a complete Temporal implementation.
+Its separate ISO/Hebrew arithmetic experiment adds reverse field conversion and
+date addition without the TS formatter calendars’ existing Temporal dependency.
+ICU conversion fixtures use a bounded range; full-range boundary checks use the
+forced JS Temporal implementation. See the experiment README for oracle limits.
 
 ## Benchmarks
 

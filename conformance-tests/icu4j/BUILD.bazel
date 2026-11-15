@@ -302,3 +302,20 @@ genrule(
     tools = [":intl_datetimeformat_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalCalendarOracle.java"],
+    main_class = "TemporalCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_calendar_fixtures",
+    testonly = True,
+    outs = ["temporal-calendar-fixtures.tsv"],
+    cmd = "$(execpath :temporal_calendar_oracle) $@",
+    tools = [":temporal_calendar_oracle"],
+    visibility = ["//visibility:public"],
+)
