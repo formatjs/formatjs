@@ -18,7 +18,7 @@ pub enum ZonedUnit {
     Nanosecond,
 }
 impl ZonedUnit {
-    fn time(self) -> Option<TimeUnit> {
+    pub(crate) fn time(self) -> Option<TimeUnit> {
         match self {
             Self::Hour => Some(TimeUnit::Hour),
             Self::Minute => Some(TimeUnit::Minute),

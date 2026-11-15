@@ -606,3 +606,8 @@ actual calendar spans. Production registry/alias loading and Hermes bindings
 remain pending. ICU controls cover
 Gregorian conversion, calendar arithmetic, short-date references/rounding,
 clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
+
+The zoned core also supplies relative Duration total/round/compare operations.
+ICU controls exercise the owned IANA provider through these adapters. Native
+plain-relative operations and non-ISO calendar math remain pending. Rational-to-f64
+conversion stays in the dependency-free numeric core.

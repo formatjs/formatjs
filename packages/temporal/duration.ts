@@ -1,3 +1,11 @@
+import {formatDuration} from '#packages/temporal/duration-format.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  toRelativeTo,
+  relativeTotal,
+  relativeEndpoint,
+  relativeRound,
+} from '#packages/temporal/relative-duration.js'
 import {
   durationFieldNames,
   durationNanoseconds,
@@ -18,6 +26,9 @@ import {
   roundingMode,
   unitOption,
   roundDuration,
+  roundingIncrement,
+  timeUnitNanoseconds,
+  type TimeUnit,
 } from '#packages/temporal/rounding.js'
 
 export interface DurationObject extends Readonly<DurationFields> {
@@ -28,6 +39,7 @@ export interface DurationObject extends Readonly<DurationFields> {
   abs(): DurationObject
   add(other: unknown): DurationObject
   subtract(other: unknown): DurationObject
+  round(roundTo: unknown): DurationObject
   total(options: unknown): number
   toString(options?: unknown): string
   toJSON(): string
@@ -74,42 +86,7 @@ function addDurations(
     )
   )
 }
-function formatDuration(
-  fields: DurationFields,
-  digits: number | 'auto' = 'auto'
-): string {
-  const sign = durationSign(fields)
-  const absolute = zeroDuration()
-  for (let index = 0; index < durationFieldNames.length; index++) {
-    const key = durationFieldNames[index]
-    absolute[key] = Math.abs(fields[key])
-  }
-  let result = sign < 0 ? '-P' : 'P'
-  const designators = ['Y', 'M', 'W', 'D']
-  for (let index = 0; index < 4; index++) {
-    const key = durationFieldNames[index]
-    if (absolute[key]) result += absolute[key] + designators[index]
-  }
-  let time = ''
-  if (absolute.hours) time += absolute.hours + 'H'
-  if (absolute.minutes) time += absolute.minutes + 'M'
-  const secondNs =
-    BigInt(absolute.seconds) * 1_000_000_000n +
-    BigInt(absolute.milliseconds) * 1_000_000n +
-    BigInt(absolute.microseconds) * 1000n +
-    BigInt(absolute.nanoseconds)
-  const fraction = String(secondNs % 1_000_000_000n).padStart(9, '0')
-  const decimals =
-    digits === 'auto' ? fraction.replace(/0+$/, '') : fraction.slice(0, digits)
-  if (
-    secondNs !== 0n ||
-    digits !== 'auto' ||
-    ((result === 'P' || result === '-P') && time === '')
-  )
-    time +=
-      String(secondNs / 1_000_000_000n) + (decimals ? '.' + decimals : '') + 'S'
-  return result + (time ? 'T' + time : '')
-}
+
 class DurationValue {
   constructor(..._values: unknown[]) {
     throw new TypeError('Use exported Duration constructor')
@@ -122,10 +99,23 @@ class DurationValue {
     const left = toDurationFields(one),
       right = toDurationFields(two)
     const resolved = optionsObject(options)
-    if (resolved.relativeTo !== undefined)
-      throw new RangeError('Relative calendar operations are not implemented')
+    const relative = toRelativeTo(resolved.relativeTo)
     if (durationFieldNames.every(field => left[field] === right[field]))
       return 0
+    if (relative) {
+      const sameDate =
+        left.years === right.years &&
+        left.months === right.months &&
+        left.weeks === right.weeks &&
+        left.days === right.days
+      const a = sameDate
+          ? durationNanoseconds(left, false)
+          : relativeEndpoint(relative, left),
+        b = sameDate
+          ? durationNanoseconds(right, false)
+          : relativeEndpoint(relative, right)
+      return a < b ? -1 : a > b ? 1 : 0
+    }
     if (
       left.years ||
       left.months ||
@@ -153,24 +143,93 @@ class DurationValue {
     return createDuration({...original, ...partialDuration(fields)})
   }
   negated(): DurationObject {
-    return createDuration(
-      Object.fromEntries(
-        durationFieldNames.map(key => [key, -read(this)[key] || 0])
-      ) as DurationFields
-    )
+    const fields = read(this),
+      result = zeroDuration()
+    for (let i = 0; i < durationFieldNames.length; i++) {
+      const key = durationFieldNames[i]
+      result[key] = -fields[key] || 0
+    }
+    return createDuration(result)
   }
   abs(): DurationObject {
-    return createDuration(
-      Object.fromEntries(
-        durationFieldNames.map(key => [key, Math.abs(read(this)[key])])
-      ) as DurationFields
-    )
+    const fields = read(this),
+      result = zeroDuration()
+    for (let i = 0; i < durationFieldNames.length; i++) {
+      const key = durationFieldNames[i]
+      result[key] = Math.abs(fields[key])
+    }
+    return createDuration(result)
   }
   add(other: unknown): DurationObject {
     return addDurations(read(this), other, 1)
   }
   subtract(other: unknown): DurationObject {
     return addDurations(read(this), other, -1)
+  }
+  round(roundTo: unknown): DurationObject {
+    const fields = read(this)
+    if (roundTo === undefined) throw new TypeError('roundTo required')
+    const resolved: Record<string, unknown> =
+      typeof roundTo === 'string'
+        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        : optionsObject(roundTo)
+    const largestRaw = resolved.largestUnit,
+      largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+    const largestOption =
+      largestText === 'auto' ? undefined : unitOption(largestText)
+    const relative = toRelativeTo(resolved.relativeTo),
+      increment = roundingIncrement(resolved.roundingIncrement),
+      mode = roundingMode(resolved.roundingMode, 'halfExpand'),
+      smallestOption = unitOption(resolved.smallestUnit)
+    if (largestRaw === undefined && smallestOption === undefined)
+      throw new RangeError('Rounding unit required')
+    const units = [
+      'year',
+      'month',
+      'week',
+      'day',
+      'hour',
+      'minute',
+      'second',
+      'millisecond',
+      'microsecond',
+      'nanosecond',
+    ]
+    const smallest = smallestOption ?? 'nanosecond',
+      smallIndex = units.indexOf(smallest)
+    const largest =
+        largestOption ??
+        units[Math.min(largestDurationField(fields), smallIndex)],
+      largeIndex = units.indexOf(largest)
+    if (largeIndex > smallIndex)
+      throw new RangeError('Largest unit smaller than smallest unit')
+    if (smallIndex > 3) {
+      const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
+      if (increment >= maximum || maximum % increment)
+        throw new RangeError('Invalid rounding increment')
+    }
+    if (smallIndex < 4 && largeIndex < smallIndex && increment !== 1)
+      throw new RangeError('Calendar increment cannot balance to larger units')
+    if (relative)
+      return createDuration(
+        relativeRound(fields, relative, largest, smallest, increment, mode)
+      )
+    if (fields.years || fields.months || fields.weeks || largeIndex < 3)
+      throw new RangeError('Calendar rounding requires relativeTo')
+    const quantum =
+      smallest === 'day'
+        ? 86_400_000_000_000n
+        : timeUnitNanoseconds[smallest as TimeUnit]
+    return createDuration(
+      balanceDurationTime(
+        roundDuration(
+          durationNanoseconds(fields),
+          BigInt(increment) * quantum,
+          mode
+        ),
+        largeIndex
+      )
+    )
   }
   total(options: unknown): number {
     const fields = read(this)
@@ -179,11 +238,10 @@ class DurationValue {
       typeof options === 'string'
         ? Object.assign(Object.create(null), {unit: options})
         : optionsObject(options)
-    const relativeTo = resolved.relativeTo
+    const relative = toRelativeTo(resolved.relativeTo)
     const unit = unitOption(resolved.unit)
-    if (relativeTo !== undefined)
-      throw new RangeError('Relative calendar operations are not implemented')
     if (unit === undefined) throw new RangeError('unit is required')
+    if (relative) return relativeTotal(fields, relative, unit)
     const factors: Record<string, bigint> = {
       day: 86_400_000_000_000n,
       hour: 3_600_000_000_000n,

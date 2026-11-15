@@ -41,7 +41,7 @@ public final class TemporalZonedDifferenceOracle {
               for (String mode : MODES) {
                 long until = rounded(value, mode) * increment;
                 long since = rounded(value.negate(), mode) * increment;
-                out.println(zone + "\t" + origin + "\t" + end + "\t" + UNITS[unit] + "\t" + increment + "\t" + mode + "\t" + until + "\t" + since);
+                out.println(zone + "\t" + origin + "\t" + end + "\t" + UNITS[unit] + "\t" + increment + "\t" + mode + "\t" + until + "\t" + since + "\t" + (increment == 1 ? Double.toString(value.doubleValue()) : "null"));
               }
             }
           }

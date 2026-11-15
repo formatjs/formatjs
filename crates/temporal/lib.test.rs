@@ -690,6 +690,11 @@ fn independent_icu_zoned_fields_and_disambiguation() {
                     start.epoch_nanoseconds() + NANOSECONDS_PER_DAY,
                     "{line}"
                 );
+                assert_eq!(
+                    zoned.compare_durations(day, hours).unwrap(),
+                    (old_offset - offset).cmp(&0),
+                    "{line}"
+                );
                 transitions += 1;
             }
         }
@@ -1013,4 +1018,117 @@ fn zoned_differences_at_instant_limits() {
             assert_eq!(a, b.negated());
         }
     }
+}
+
+#[test]
+fn independent_icu_relative_duration_operations() {
+    use formatjs_temporal::{Duration, RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
+    let zones = owned_iana_zones();
+    let mut rounds = 0;
+    let mut totals = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_DIFFERENCE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let zone = if fields[0] == "UTC" {
+            TransitionZone::new(0, &[], None).unwrap()
+        } else {
+            let (initial, events, future) = zones.get(fields[0]).unwrap();
+            TransitionZone::new(*initial, events, *future).unwrap()
+        };
+        let a = ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(fields[1].parse().unwrap()).unwrap(),
+            zone,
+        );
+        let b = ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(fields[2].parse().unwrap()).unwrap(),
+            zone,
+        );
+        let unit: ZonedUnit = fields[3].parse().unwrap();
+        let increment = fields[4].parse().unwrap();
+        let mode = fields[5].parse().unwrap();
+        let duration = a
+            .until(&b, unit, ZonedUnit::Nanosecond, 1, RoundingMode::Trunc)
+            .unwrap();
+        let mut expected = [0; 10];
+        expected[unit as usize] = fields[6].parse().unwrap();
+        assert_eq!(
+            a.round_duration(duration, unit, unit, increment, mode)
+                .unwrap(),
+            Duration::new(expected).unwrap(),
+            "{line}"
+        );
+        rounds += 1;
+        if fields[8] != "null" {
+            assert_eq!(
+                a.total_duration(duration, unit).unwrap(),
+                fields[8].parse::<f64>().unwrap(),
+                "{line}"
+            );
+            totals += 1;
+        }
+    }
+    assert_eq!(rounds, 19440);
+    assert_eq!(totals, 6480);
+}
+
+#[test]
+fn relative_duration_prefixes_and_day_boundaries() {
+    use formatjs_temporal::{Duration, FixedOffset, RoundingMode, ZonedDateTime, ZonedUnit};
+    let zone = FixedOffset::new(0).unwrap();
+    let start = ZonedDateTime::new("2020-01-31T00:00Z".parse().unwrap(), zone);
+    let days = Duration::new([0, 0, 0, 59, 0, 0, 0, 0, 0, 0]).unwrap();
+    assert_eq!(
+        start
+            .round_duration(
+                days,
+                ZonedUnit::Year,
+                ZonedUnit::Week,
+                1,
+                RoundingMode::Ceil
+            )
+            .unwrap()
+            .fields(),
+        [0, 1, 5, 0, 0, 0, 0, 0, 0, 0]
+    );
+    let blank = Duration::new([0; 10]).unwrap();
+    let edge = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        zone,
+    );
+    assert!(
+        edge.round_duration(
+            blank,
+            ZonedUnit::Day,
+            ZonedUnit::Minute,
+            1,
+            RoundingMode::Trunc
+        )
+        .is_err()
+    );
+    let before = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(
+            MAX_EPOCH_NANOSECONDS - NANOSECONDS_PER_DAY + 1_000_000_000,
+        )
+        .unwrap(),
+        zone,
+    );
+    assert!(before.total_duration(blank, ZonedUnit::Day).is_err());
+    let close = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 1_000_000_000).unwrap(),
+        zone,
+    );
+    assert_eq!(
+        close
+            .round_duration(
+                blank,
+                ZonedUnit::Year,
+                ZonedUnit::Nanosecond,
+                1,
+                RoundingMode::HalfExpand
+            )
+            .unwrap(),
+        blank
+    );
 }

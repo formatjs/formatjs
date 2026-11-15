@@ -61,8 +61,8 @@
   },
   "duration": {
     "selected": {
-      "executions": 468,
-      "passes": 468,
+      "executions": 1072,
+      "passes": 1072,
       "failures": 0
     },
     "methodsDiagnostic": {
@@ -75,54 +75,48 @@
     },
     "fullDiagnostic": {
       "executions": 1086,
-      "passes": 724,
-      "failures": 362,
+      "passes": 1082,
+      "failures": 4,
       "failuresByArea": {
-        "compare": 42,
-        "prototype/round": 246,
-        "prototype/toLocaleString": 4,
-        "prototype/total": 70
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
       "selected": {
         "source": {
-          "executions": 468,
-          "passes": 468,
+          "executions": 1072,
+          "passes": 1072,
           "failures": 0
         },
         "optimizedBytecode": {
-          "executions": 468,
-          "passes": 468,
+          "executions": 1072,
+          "passes": 1072,
           "failures": 0
         }
       },
       "fullDiagnostic": {
         "source": {
           "executions": 1086,
-          "passes": 724,
-          "failures": 362,
+          "passes": 1082,
+          "failures": 4,
           "failuresByArea": {
-            "compare": 42,
-            "prototype/round": 246,
-            "prototype/toLocaleString": 4,
-            "prototype/total": 70
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 1086,
-          "passes": 724,
-          "failures": 362,
+          "passes": 1082,
+          "failures": 4,
           "failuresByArea": {
-            "compare": 42,
-            "prototype/round": 246,
-            "prototype/toLocaleString": 4,
-            "prototype/total": 70
+            "prototype/toLocaleString": 4
           }
         }
       }
     },
-    "note": "Calendar-relative operations, Duration.round and remaining class integration are incomplete. No individual-file exclusions or tracked-failure baseline."
+    "note": "Calendar-relative operations, Duration.round and remaining class integration are incomplete. No individual-file exclusions or tracked-failure baseline.",
+    "icuRelativeRoundingCases": 19440,
+    "icuRelativeTotalCases": 6480,
+    "icuRelativeComparisonCases": 1340
   },
   "plainTime": {
     "selected": {
@@ -182,12 +176,10 @@
     },
     "full": {
       "executions": 1308,
-      "passes": 1300,
-      "failures": 8,
+      "passes": 1304,
+      "failures": 4,
       "failuresByArea": {
-        "prototype/since": 2,
-        "prototype/toLocaleString": 4,
-        "prototype/until": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
@@ -206,22 +198,18 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1308,
-          "passes": 1300,
-          "failures": 8,
+          "passes": 1304,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 1308,
-          "passes": 1300,
-          "failures": 8,
+          "passes": 1304,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         }
       }
@@ -237,12 +225,10 @@
     },
     "full": {
       "executions": 1552,
-      "passes": 1542,
-      "failures": 10,
+      "passes": 1546,
+      "failures": 6,
       "failuresByArea": {
-        "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/until": 2,
         "prototype/with": 2
       }
     },
@@ -262,23 +248,19 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1552,
-          "passes": 1542,
-          "failures": 10,
+          "passes": 1546,
+          "failures": 6,
           "failuresByArea": {
-            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 2,
             "prototype/with": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1552,
-          "passes": 1542,
-          "failures": 10,
+          "passes": 1546,
+          "failures": 6,
           "failuresByArea": {
-            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 2,
             "prototype/with": 2
           }
         }
@@ -290,34 +272,28 @@
   "plainYearMonth": {
     "full": {
       "executions": 1022,
-      "passes": 1014,
-      "failures": 8,
+      "passes": 1018,
+      "failures": 4,
       "failuresByArea": {
-        "prototype/since": 2,
-        "prototype/toLocaleString": 4,
-        "prototype/until": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 1022,
-          "passes": 1014,
-          "failures": 8,
+          "passes": 1018,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 1022,
-          "passes": 1014,
-          "failures": 8,
+          "passes": 1018,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         }
       },
@@ -394,34 +370,28 @@
   "zonedDateTime": {
     "full": {
       "executions": 1804,
-      "passes": 1796,
-      "failures": 8,
+      "passes": 1800,
+      "failures": 4,
       "failuresByArea": {
-        "prototype/since": 2,
-        "prototype/toLocaleString": 4,
-        "prototype/until": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 1804,
-          "passes": 1796,
-          "failures": 8,
+          "passes": 1800,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 1804,
-          "passes": 1796,
-          "failures": 8,
+          "passes": 1800,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/since": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/until": 2
+            "prototype/toLocaleString": 4
           }
         }
       },

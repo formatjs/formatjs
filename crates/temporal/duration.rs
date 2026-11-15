@@ -182,7 +182,7 @@ fn time_index(unit: TimeUnit) -> usize {
     }
 }
 // Round the exact ratio once, before any float conversion.
-fn rational_to_f64(value: i128, divisor: i128) -> f64 {
+pub(crate) fn rational_to_f64(value: i128, divisor: i128) -> f64 {
     if value == 0 {
         return 0.0;
     }

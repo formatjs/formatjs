@@ -63,9 +63,9 @@ no completed slice establishes complete Temporal compliance.
 
 ## Existing evidence
 
-Strict selections pass 346 Instant and 468 Duration executions on Node and
+Strict selections pass 346 Instant and 1,072 Duration executions on Node and
 Hermes source/optimized bytecode. Full diagnostics remain failing: Instant
-930/934, Duration 724/1086. Full eight-class counts and failure areas live in
+930/934, Duration 1082/1086. Full eight-class counts and failure areas live in
 packages/temporal/conformance-results.json. Calendar and integration behavior
 remain implementation gaps, never exclusions.
 
@@ -79,8 +79,8 @@ operations, time addition/subtraction, serialization and time-only totals and
 comparison. Rust mirrors field validation/storage, parsing, signed rounding,
 formatting, totals and arithmetic. Instant arithmetic/differences reuse these
 cores. Totals round rational values once to binary64; unsafe numerator conversion
-before division would lose precision. Calendar-relative Duration methods and
-Duration.round remain incomplete.
+before division would lose precision. TS relative Duration total/round/compare now use shared plain/zoned arithmetic.
+Rust exposes zoned relative adapters; native plain-relative adapters remain pending.
 
 Hermes compiler and runtime both enable ES6 block scoping. The compiler uses
 `-Xes6-block-scoping`; without it, captured getter loop bindings differed in
@@ -151,7 +151,7 @@ Both cores independently match 840 ICU Gregorian arithmetic cases, including
 leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
 ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
 364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
-Full diagnostics remain failing: 1300/1308 and 1542/1552. Existing PlainTime
+Full diagnostics remain failing: 1304/1308 and 1546/1552. Existing PlainTime
 improves to 982/986 through real date-time conversions. No missing behavior is
 allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
 integration, all calendars, native Hermes installation and complete WASM facades
@@ -180,16 +180,17 @@ against actual calendar lengths. A forced full polyfill adds bounded Hebrew
 reference-date controls; basic implementation remains the ISO timing reference.
 
 Strict whole-family selections pass 348 YearMonth and 150 MonthDay executions
-per Node/Hermes source/bytecode mode. Full diagnostics pass 1014/1022 and 394/398.
+per Node/Hermes source/bytecode mode. Full diagnostics pass 1018/1022 and 394/398.
 No missing zoned/Intl/relative Duration behavior is an allowed exclusion.
 Normal package gates and raw diagnostics remain separate. The active goal still
 requires complete ZonedDateTime, Now, remaining calendar engines, Intl/Date integration,
 full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
-its full diagnostic to 1300/1308. All eight raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 3,818 executions
-per mode. All 52 normal package/Rust/WASM/shared-primitive checks pass. Full diagnostics
+its full diagnostic to 1304/1308. All eight raw class reports agree across Node,
+Hermes source and optimized bytecode; normal selections total 4,422 executions
+per mode. All 53 normal package/Rust/WASM checks pass; the shared primitive gate passed in
+the preceding layer. Full diagnostics
 remain failing and separate from those gates.
 
 ## ZonedDateTime layer
@@ -203,8 +204,7 @@ serializing intermediate objects. Internal Instant creation/validation avoids
 calling mutable public static methods.
 
 ZonedDateTime has 1,390 strict executions per engine mode. Full diagnostic is
-1,796/1,804; relative Duration helpers and locale formatting stay
-visible. The bytecode selection uses a medium Bazel target timeout for its larger
+1,800/1,804; locale formatting failures stay visible. The bytecode selection uses a medium Bazel target timeout for its larger
 corpus; per-case timeout remains 30 seconds. No new exclusions.
 
 Both language cores verify 13,160 ICU offset/local-field samples and 1,340 future
@@ -241,3 +241,30 @@ Rust registry/alias loading, calendars and native Hermes installation stay pendi
 
 The Rust dependency page was restored from its last correct version; an earlier
 Temporal layer had overwritten it with the Test262 page.
+
+## Relative Duration arithmetic
+
+TS Duration total/round/compare now prepare relative plain dates or zoned slots
+with ordered field access. Internal adapters share calendar/zoned math; validated
+records do not use reference Temporal. Blank values, range-limited intermediates,
+normalization overflow and required next-day boundaries remain checked. Rounding
+weeks retains year/month prefixes instead of rebalancing them into smaller days.
+Rational totals combine integer and fractional components before one binary64
+rounding. Negation/absolute value also avoid observable array iteration.
+
+Rust's no_std ZonedDateTime adds total_duration, round_duration and
+compare_durations, using the borrowed IANA provider and the same exact-rational
+conversion. Native plain-relative adapters, remaining calendars and Hermes
+bindings remain pending. ICU controls verify 19,440 relative rounds, 6,480 totals
+and 1,340 transition-based comparisons. Bounded Hebrew controls use forced
+full/implementation; the production runtime remains independent.
+
+Duration's strict selection expands from 468 to all 1,072 non-locale executions
+on Node/Hermes source/bytecode. All eight full reports agree; locale failures and
+the PlainDateTime helper requiring Now remain failing, not exclusions. Complete
+Intl/Date integration, Now, all calendars, native Hermes and full WASM equivalence
+stay required by the goal.
+
+Duration formatting was separated into a pure module. The matched WASM TS entry
+now uses pure parse/format/total operations rather than Duration object machinery.
+That is a new primitive measurement scope; full facade/data size remains separate.

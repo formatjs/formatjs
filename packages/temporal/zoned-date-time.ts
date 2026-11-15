@@ -220,7 +220,10 @@ function resolve(
     throw new RangeError('Offset does not match timezone')
   return kernel.resolve(fields, ambiguous)
 }
-function toSlot(item: unknown, options?: unknown): ZonedSlot {
+export function toZonedDateTimeSlot(
+  item: unknown,
+  options?: unknown
+): ZonedSlot {
   const existing = getZonedSlot(item as object)
   let value: bigint | undefined,
     calendar: string,
@@ -357,10 +360,13 @@ function add(
     slot.calendar
   )
 }
-function endpoint(slot: ZonedSlot, fields: DurationFields): bigint {
+export function addZonedDuration(
+  slot: ZonedSlot,
+  fields: DurationFields
+): bigint {
   return getZonedSlot(add(slot, fields, undefined, 1))!.epochNanoseconds
 }
-function unroundedDifference(
+export function unroundedZonedDifference(
   start: ZonedSlot,
   end: bigint,
   largest: string
@@ -381,7 +387,7 @@ function unroundedDifference(
   )
   const anchorFor = (fields: DurationFields): bigint => {
     try {
-      return endpoint(start, fields)
+      return addZonedDuration(start, fields)
     } catch (error) {
       if (!(error instanceof RangeError)) throw error
       return BigInt(sign) * 8_640_000_000_000_000_000_001n
@@ -409,13 +415,13 @@ function unroundedDifference(
   }
   return fields
 }
-function difference(
+export function differenceZonedDuration(
   start: ZonedSlot,
   other: unknown,
   options: unknown,
   since: boolean
 ): DurationObject {
-  const end = toSlot(other)
+  const end = toZonedDateTimeSlot(other)
   if (start.calendar !== end.calendar) throw new RangeError('Calendars differ')
   const resolved = optionsObject(options),
     largestRaw = resolved.largestUnit,
@@ -457,11 +463,11 @@ function difference(
       throw new RangeError('Invalid rounding increment')
     const fields =
       largeIndex < 4
-        ? unroundedDifference(start, end.epochNanoseconds, largest)
+        ? unroundedZonedDifference(start, end.epochNanoseconds, largest)
         : zeroDuration()
     for (let i = 0; i < clockNames.length; i++)
       fields[(clockNames[i] + 's') as keyof DurationFields] = 0
-    const anchor = endpoint(start, fields)
+    const anchor = addZonedDuration(start, fields)
     rounded =
       anchor +
       sinceSign *
@@ -473,7 +479,11 @@ function difference(
   } else if (start.epochNanoseconds === end.epochNanoseconds)
     rounded = start.epochNanoseconds
   else {
-    const fields = unroundedDifference(start, end.epochNanoseconds, largest),
+    const fields = unroundedZonedDifference(
+        start,
+        end.epochNanoseconds,
+        largest
+      ),
       prefix = zeroDuration()
     for (let i = largeIndex; i < smallIndex; i++)
       prefix[(names[i] + 's') as keyof DurationFields] =
@@ -485,12 +495,12 @@ function difference(
         : fields[key]
     const truncated = Math.trunc(count / increment) * increment
     prefix[key] = truncated
-    const a = endpoint(start, prefix)
+    const a = addZonedDuration(start, prefix)
     if (a === end.epochNanoseconds) rounded = a
     else {
       const sign = end.epochNanoseconds < start.epochNanoseconds ? -1 : 1
       prefix[key] = truncated + sign * increment
-      const b = endpoint(start, prefix),
+      const b = addZonedDuration(start, prefix),
         positive = BigInt(sign) * sinceSign > 0n
       let expand =
         mode === 'expand' ||
@@ -511,7 +521,7 @@ function difference(
       rounded = expand ? b : a
     }
   }
-  const fields = unroundedDifference(start, rounded, largest),
+  const fields = unroundedZonedDifference(start, rounded, largest),
     keys = Object.keys(fields) as (keyof DurationFields)[]
   if (since) for (let i = 0; i < keys.length; i++) fields[keys[i]] *= -1
   return createDuration(fields)
@@ -618,7 +628,7 @@ class ZonedDateTimeValue {
     item: unknown,
     options: unknown = undefined
   ): ZonedDateTimeObject {
-    const slot = toSlot(item, options)
+    const slot = toZonedDateTimeSlot(item, options)
     return createZonedDateTime(
       slot.epochNanoseconds,
       slot.timeZone,
@@ -626,8 +636,8 @@ class ZonedDateTimeValue {
     )
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
-    const a = toSlot(one).epochNanoseconds,
-      b = toSlot(two).epochNanoseconds
+    const a = toZonedDateTimeSlot(one).epochNanoseconds,
+      b = toZonedDateTimeSlot(two).epochNanoseconds
     return a < b ? -1 : a > b ? 1 : 0
   }
   get epochNanoseconds(): bigint {
@@ -784,10 +794,10 @@ class ZonedDateTimeValue {
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
-    return difference(read(this), other, options, false)
+    return differenceZonedDuration(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
-    return difference(read(this), other, options, true)
+    return differenceZonedDuration(read(this), other, options, true)
   }
   add(duration: unknown, options: unknown = undefined): ZonedDateTimeObject {
     return add(read(this), duration, options, 1)
@@ -821,7 +831,7 @@ class ZonedDateTimeValue {
   }
   equals(other: unknown): boolean {
     const a = read(this),
-      b = toSlot(other)
+      b = toZonedDateTimeSlot(other)
     return (
       a.epochNanoseconds === b.epochNanoseconds &&
       a.calendar === b.calendar &&

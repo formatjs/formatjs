@@ -15,6 +15,7 @@ formatjs_library(
         "date-core.ts",
         "duration.ts",
         "duration-core.ts",
+        "duration-format.ts",
         "index.ts",
         "instant.ts",
         "instant-format.ts",
@@ -26,6 +27,7 @@ formatjs_library(
         "plain-slots.ts",
         "plain-time.ts",
         "plain-year-month.ts",
+        "relative-duration.ts",
         "rounding.ts",
         "short-date-core.ts",
         "zoned-date-time.ts",
@@ -75,6 +77,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "relative_duration_test",
+            ["tests/relative-duration.test.ts"],
+            ["//conformance-tests/icu4j:temporal_zoned_difference_fixtures"],
+        ),
         (
             "zoned_difference_test",
             ["tests/zoned-differences.test.ts"],
@@ -345,6 +352,11 @@ _DURATION_CORE_PATTERNS = [
     _DURATION_ROOT + "/prototype/*.js",
 ] + [_DURATION_ROOT + "/" + directory + "/**/*.js" for directory in [
     "from",
+    "compare",
+    "prototype/round",
+    "prototype/total",
+    "prototype/toString",
+    "prototype/toStringTag",
     "prototype/years",
     "prototype/months",
     "prototype/weeks",
@@ -366,7 +378,7 @@ _DURATION_CORE_PATTERNS = [
     "prototype/valueOf",
 ]]
 
-_DURATION_PATTERNS = _DURATION_CORE_PATTERNS + [_DURATION_ROOT + "/prototype/toString/**/*.js"]
+_DURATION_PATTERNS = _DURATION_CORE_PATTERNS
 
 _INSTANT_PATTERNS = [
     _INSTANT_ROOT + "/*.js",
@@ -528,7 +540,7 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "large" if "full" in name else "medium" if name.startswith("zoned") else "small",
+        size = "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") else "small",
         timeout = "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [

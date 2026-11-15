@@ -36,6 +36,7 @@ rust_library(
         "iso.rs",
         "lib.rs",
         "parse.rs",
+        "relative_duration.rs",
         "rounding.rs",
         "short_dates.rs",
         "time.rs",

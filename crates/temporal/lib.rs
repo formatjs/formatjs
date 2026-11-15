@@ -5,6 +5,7 @@ mod duration;
 mod format;
 mod iso;
 mod parse;
+mod relative_duration;
 mod rounding;
 mod short_dates;
 mod time;

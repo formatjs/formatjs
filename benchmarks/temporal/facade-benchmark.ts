@@ -108,6 +108,52 @@ pairs.push([
     referenceZonedValues[i % 4].getTimeZoneTransition('next')
       ?.epochNanoseconds ?? 0n,
 ])
+const relativeDurations = ['P1M14D', 'P3M15D', '-P1M15D', 'P0D']
+pairs.push([
+  'Duration parse/total months relative to date',
+  i =>
+    Duration.from(relativeDurations[i % 4]).total({
+      relativeTo: '2019-01-01',
+      unit: 'month',
+    }),
+  i =>
+    reference.Duration.from(relativeDurations[i % 4]).total({
+      relativeTo: '2019-01-01',
+      unit: 'month',
+    }),
+])
+pairs.push([
+  'Duration parse/round months relative to date/toJSON',
+  i =>
+    Duration.from(relativeDurations[i % 4])
+      .round({
+        relativeTo: '2019-01-01',
+        largestUnit: 'month',
+        smallestUnit: 'month',
+        roundingMode: 'halfEven',
+      })
+      .toJSON(),
+  i =>
+    reference.Duration.from(relativeDurations[i % 4])
+      .round({
+        relativeTo: '2019-01-01',
+        largestUnit: 'month',
+        smallestUnit: 'month',
+        roundingMode: 'halfEven',
+      })
+      .toJSON(),
+])
+pairs.push([
+  'Duration compare day versus 24 hours relative to zone',
+  i =>
+    Duration.compare({days: 1}, {hours: 24}, {relativeTo: zonedValues[i % 4]}),
+  i =>
+    reference.Duration.compare(
+      {days: 1},
+      {hours: 24},
+      {relativeTo: referenceZonedValues[i % 4]}
+    ),
+])
 const strings = [
   '1970-01-01T00:00:00.000000001Z',
   '20000229T123456.123456789+0530',

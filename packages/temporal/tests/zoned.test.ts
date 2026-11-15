@@ -64,6 +64,9 @@ it('matches independent ICU offsets and local fields through future transitions'
       expect(before.add({hours: 24}).epochNanoseconds).toBe(
         before.epochNanoseconds + 86_400_000_000_000n
       )
+      expect(
+        Temporal.Duration.compare({days: 1}, {hours: 24}, {relativeTo: before})
+      ).toBe(previous.offset > offset ? 1 : -1)
       transitions++
     }
     previous = {name, instant, offset}

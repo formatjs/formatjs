@@ -110,36 +110,39 @@ results remain observable through bigint/number sinks. Inputs mix ordinary and
 extreme-range cases, so these are not representative application averages.
 One shared-host V8 run, ns/op:
 
-| Operation                                          | Facade | Reference |
-| -------------------------------------------------- | -----: | --------: |
-| construct/get epochNanoseconds                     |    451 |       349 |
-| fromEpochNanoseconds/get epochMilliseconds         |    460 |       346 |
-| fromEpochMilliseconds/get epochNanoseconds         |    500 |       301 |
-| ZonedDateTime parse/add day/toJSON                 | 12,862 |    11,312 |
-| ZonedDateTime parse/round hour/toJSON              |  9,682 |    10,953 |
-| ZonedDateTime until days/toJSON                    | 37,893 |    50,578 |
-| ZonedDateTime next transition/get epochNanoseconds |    934 |       558 |
-| from ISO string/get epochNanoseconds               |  1,813 |     2,030 |
-| round microsecond/get epochNanoseconds             |    951 |     1,370 |
-| toJSON                                             |  1,340 |     2,246 |
-| toString named timezone                            |  2,006 |     5,803 |
-| Duration parse/toJSON                              |  4,295 |    51,382 |
-| Duration total microseconds                        |  3,989 |     2,823 |
-| Instant until/toJSON                               |  4,723 |    25,619 |
-| PlainYearMonth parse/add/toJSON                    |  6,504 |     3,862 |
-| PlainMonthDay parse/toPlainDate/toJSON             |  3,587 |     3,744 |
-| PlainDate parse/add/toJSON                         |  6,237 |     4,452 |
-| PlainDateTime parse/add/toJSON                     |  7,880 |    10,747 |
-| PlainTime parse/round/toJSON                       |  2,746 |     4,484 |
-| PlainTime parse/add/toJSON                         |  4,467 |     6,041 |
+| Operation                                             | Facade | Reference |
+| ----------------------------------------------------- | -----: | --------: |
+| construct/get epochNanoseconds                        |    450 |       324 |
+| fromEpochNanoseconds/get epochMilliseconds            |    458 |       504 |
+| fromEpochMilliseconds/get epochNanoseconds            |    536 |       336 |
+| ZonedDateTime parse/add day/toJSON                    | 12,733 |    11,647 |
+| ZonedDateTime parse/round hour/toJSON                 |  9,720 |    11,142 |
+| ZonedDateTime until days/toJSON                       | 39,451 |    50,933 |
+| ZonedDateTime next transition/get epochNanoseconds    |    928 |       582 |
+| Duration parse/total months relative to date          | 10,447 |     8,684 |
+| Duration parse/round months relative to date/toJSON   | 16,326 |    34,151 |
+| Duration compare day versus 24 hours relative to zone | 15,528 |     3,666 |
+| from ISO string/get epochNanoseconds                  |  1,833 |     2,036 |
+| round microsecond/get epochNanoseconds                |  1,054 |     1,390 |
+| toJSON                                                |  1,322 |     2,331 |
+| toString named timezone                               |  1,968 |     5,659 |
+| Duration parse/toJSON                                 |  4,063 |    51,673 |
+| Duration total microseconds                           |  4,078 |     2,866 |
+| Instant until/toJSON                                  |  4,906 |    25,656 |
+| PlainYearMonth parse/add/toJSON                       |  6,506 |     3,938 |
+| PlainMonthDay parse/toPlainDate/toJSON                |  3,561 |     3,760 |
+| PlainDate parse/add/toJSON                            |  6,304 |     4,570 |
+| PlainDateTime parse/add/toJSON                        |  7,793 |    10,973 |
+| PlainTime parse/round/toJSON                          |  2,817 |     4,483 |
+| PlainTime parse/add/toJSON                            |  4,460 |     6,009 |
 
 Workload results vary. The zoned parse/add and parse/round workloads compare ordinary DST dates,
 a fold with an explicit offset, a fixed-offset leap day and UTC. Output equality
 is checked before timing. This shared-host run does not establish a complete
 polyfill performance win; reference timezone data comes from host Intl.
 
-Minified gzip: eight-class namespace **84,509 bytes**, including owned IANA data
-and aliases. Independent Instant primitives are **2,688 bytes**; numeric calendar
+Minified gzip: eight-class namespace **85,705 bytes**, including owned IANA data
+and aliases. Independent Instant primitives are **2,689 bytes**; numeric calendar
 code is **1,902 bytes**. These entries differ in API coverage and are not additive.
 Reference is **19,393 bytes**, using host Intl timezone data. The WASM baseline
 below covers earlier data-free Instant/Duration operations; complete facade/data
@@ -206,9 +209,8 @@ No browser/Hermes performance measurement yet.
 
 ## Next decision
 
-Continue with the remaining Temporal class foundations and calendar-relative Duration operations, connect
-ISO/Hebrew arithmetic to a PlainDate facade, and replace the gap-window
-assumption with a transition index. Expand strict Test262 coverage as each complete surface lands.
+Finish Now, locale/Date integration, remaining calendars and native Rust adapters.
+Expand strict Test262 coverage as each complete surface lands.
 Then compare equivalent standalone/shared-data packages on V8 and Hermes/browser
 engines. Consider WASM after an equivalent core demonstrates a concrete benefit.
 
@@ -250,9 +252,8 @@ bindings and complete WASM facade comparisons remain open.
 ## Duration and Instant arithmetic
 
 Duration provides validated branded fields, ISO parsing with exact fractional
-hours/minutes/seconds, immutable operations and serialization. Time-only totals
-and comparison are implemented; calendar-relative operations and Duration.round
-remain incomplete. Instant add/subtract and differences use exact nanoseconds,
+hours/minutes/seconds, immutable operations and serialization. Totals, comparison and rounding support plain-date and zoned relative contexts
+in TS. Rust supplies zoned relative adapters; native plain-relative adapters remain pending. Instant add/subtract and differences use exact nanoseconds,
 signed duration rounding and intrinsic Duration results.
 
 ICU4J's independent decimal oracle checks 5,430 signed rounding and rational
@@ -262,10 +263,10 @@ Float64-representable integer storage, including intentionally lossy balancing
 into large millisecond/microsecond/nanosecond fields.
 
 Node and Hermes source/optimized bytecode all pass strict selections of 346
-Instant and 468 Duration executions. Full diagnostics remain failing: Instant
-930/934, Duration 724/1086. Enable ES6 block scoping in both Hermes compilation
-(`-Xes6-block-scoping`) and runtime. Native Rust bindings, remaining classes,
-calendar-relative semantics and complete WASM facade comparisons are still pending.
+Instant and 1,072 Duration executions. Full diagnostics remain failing: Instant
+930/934, Duration 1082/1086. Enable ES6 block scoping in both Hermes compilation
+(`-Xes6-block-scoping`) and runtime. Native Rust bindings, Now, remaining calendars, locale integration and complete
+WASM facade comparisons are still pending.
 
 ## WASM baseline
 
@@ -284,29 +285,29 @@ byte counts additionally use esbuild minification and gzip level 9.
 
 | Artifact                           | Minified JS / raw WASM bytes | Gzip bytes |
 | ---------------------------------- | ---------------------------: | ---------: |
-| Owned TS operation bundle          |                       13,690 |      5,051 |
+| Owned TS operation bundle          |                        9,527 |      3,757 |
 | WASM JS bridge                     |                          799 |        463 |
 | Forced temporal-polyfill reference |                       56,696 |     19,393 |
 | Rust WASM                          |                       43,911 |     19,669 |
 
-WASM plus bridge costs 20,132 gzip bytes, 4.0 times the matched TS bundle.
+WASM plus bridge costs 20,132 gzip bytes, 5.4 times the matched TS bundle.
 Its initial linear memory is 1,114,112 bytes. Both owned bundles omit calendar
-and timezone data. The TS bundle includes Duration object machinery; the WASM
+and timezone data. The TS bundle uses pure parse/format/total operations; the WASM
 bridge is a benchmark-only synchronous string ABI with 256-byte input/output
 buffers, not Temporal brands, coercions or the complete public facade. The
 reference supplies a broader API and host Intl integration. These sizes do not
-predict a complete polyfill's size; the current 84,509-byte public TS namespace measurement
+predict a complete polyfill's size; the current 85,705-byte public TS namespace measurement
 above includes owned IANA data, date/time classes and a different entry surface.
 
 Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
 
 | Operation                                    |    TS | WASM + bridge | temporal-polyfill |
 | -------------------------------------------- | ----: | ------------: | ----------------: |
-| Instant parse/epoch string                   |   982 |           364 |             1,708 |
-| Instant parse/round microsecond/epoch string | 1,158 |           398 |             2,549 |
-| Instant parse/format UTC                     | 1,728 |           690 |             3,485 |
-| Duration parse/format                        | 3,588 |           819 |            50,809 |
-| Duration parse/total microseconds            | 3,243 |           509 |             2,402 |
+| Instant parse/epoch string                   |   992 |           368 |             1,698 |
+| Instant parse/round microsecond/epoch string | 1,141 |           403 |             2,500 |
+| Instant parse/format UTC                     | 1,738 |           686 |             3,415 |
+| Duration parse/format                        | 2,417 |           812 |            51,612 |
+| Duration parse/total microseconds            | 1,940 |           511 |             2,384 |
 
 Each workload checks full results against forced `temporal-polyfill/implementation`
 1.0.7 during 5,000 warmup calls, then measures nine rotating backend-order batches
@@ -314,7 +315,7 @@ of 30,000 calls. Boundary profiles remain separate in JSON; WASM is faster there
 as well. This is one shared host, not a full-API or cross-engine performance claim.
 
 Twelve fresh child processes alternate load order. Median module load / first
-operation times in milliseconds: TS 1.758 / 0.502; WASM 1.136 / 0.565; reference 5.008 / 0.834. These exclude process startup and benchmark infrastructure imports;
+operation times in milliseconds: TS 1.538 / 0.512; WASM 1.129 / 0.570; reference 5.000 / 0.830. These exclude process startup and benchmark infrastructure imports;
 filesystem caches may be warm. The WASM load includes reading bytes, importing
 the bridge, compilation and instantiation.
 
@@ -365,9 +366,9 @@ checks resulting weekday, ordinal and ISO week/year metadata against ICU. Existi
 
 Strict selections cover complete construction/prototype/getter/arithmetic families:
 364 PlainDate and 518 PlainDateTime executions pass on Node and Hermes source and
-optimized bytecode. Full diagnostics pass 1300/1308 and 1542/1552,
-respectively. Intl integration and Duration-relative helper paths remain raw
-failures. Real date-time conversions
+optimized bytecode. Full diagnostics pass 1304/1308 and 1546/1552,
+respectively. Locale integration and a PlainDateTime helper requiring
+Temporal.Now remain raw failures. Real date-time conversions
 improve full PlainTime coverage to 982/986. No implementation gap is an exclusion.
 
 Five-class public namespace grows 5,071 gzip bytes from the previous measurement.
@@ -395,8 +396,8 @@ Array-iterator poisoning tests check builtin calendar field preparation.
 
 Complete construction/getter/arithmetic/conversion/serialization selections pass
 348 YearMonth and 150 MonthDay executions per Node/Hermes source/bytecode mode.
-Full diagnostics pass 1014/1022 and 394/398. Missing ZonedDateTime, Intl and relative
-Duration integration remain failures, never allowed exclusions. Other calendar
+Full diagnostics pass 1018/1022 and 394/398. Remaining locale failures stay
+visible, never allowed exclusions. Other calendar
 engines, native Hermes installation and complete WASM facades stay required.
 
 The earlier short-date layer added 2,122 gzip bytes. Current eight-class sizes
@@ -407,8 +408,7 @@ and all timing samples are recorded in facade-results.json.
 Owned TS timezone data now supplies zoned construction, fields, gap/fold and
 offset matching, calendar versus elapsed arithmetic, updates, rounding, day
 boundaries and conversions. Strict selection: 1,390 executions per Node/Hermes
-source/bytecode mode. Full diagnostic: 1,796/1,804. Relative Duration helpers
-and Intl integration remain failing, not exclusions.
+source/bytecode mode. Full diagnostic: 1,800/1,804. Locale integration remains failing, not excluded.
 
 Both language cores check ICU offset/local-field and future-transition controls.
 Rust uses independently generated offset/transition providers; production IANA
@@ -431,3 +431,20 @@ leap-only recurring changes across 2100. Real Rust providers now consume the
 owned IANA records in tests, including all 13,160 offset/local cases and 1,340
 gap/fold controls. Production registry/alias decoding and native Hermes binding
 remain pending. The WASM profile still covers narrower Instant/Duration primitives.
+
+## Relative Duration layer
+
+The namespace adds 1,196 gzip bytes. New workloads cover totals and half-even
+month rounding relative to a date, plus calendar-day versus 24-hour comparison
+relative to a zone. All outputs match the forced reference before timing. This
+sample has faster relative rounding, slower totals and slower zoned comparison.
+
+Public Duration and Rust zoned adapters match 19,440 ICU relative rounds,
+6,480 exact totals and 1,340 transition comparisons. TS also has bounded Hebrew
+reference controls. Production Rust plain-relative adapters/native bindings and
+complete calendar coverage remain pending.
+
+The primitive WASM TS entry now calls pure parse/format/total helpers, matching
+the numeric ABI without Duration object/facade machinery. This changed the TS
+measurement scope; it is not a public-package size reduction. Both primitive
+backends omit calendar/timezone data. The full namespace profile remains separate.

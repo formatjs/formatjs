@@ -24,7 +24,7 @@ day boundaries, differences, transition queries and serialization. Calendar days
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
 Missing: Now, remaining calendar
-engines, relative Duration operations/rounding, Date/Intl integration and global
+engines, Date/Intl integration and global
 installation/detection. No implementation gap is an allowed conformance exclusion.
 
 ## Validation
@@ -37,17 +37,17 @@ counts alone do not establish whole-method conformance.
 | Class          | Strict executions | Full diagnostic passes/total |
 | -------------- | ----------------: | ---------------------------: |
 | Instant        |               346 |                      930/934 |
-| Duration       |               468 |                    724/1,086 |
+| Duration       |             1,072 |                  1,082/1,086 |
 | PlainTime      |               234 |                      982/986 |
-| PlainDate      |               364 |                  1,300/1,308 |
-| PlainDateTime  |               518 |                  1,542/1,552 |
-| PlainYearMonth |               348 |                  1,014/1,022 |
+| PlainDate      |               364 |                  1,304/1,308 |
+| PlainDateTime  |               518 |                  1,546/1,552 |
+| PlainYearMonth |               348 |                  1,018/1,022 |
 | PlainMonthDay  |               150 |                      394/398 |
-| ZonedDateTime  |             1,390 |                  1,796/1,804 |
+| ZonedDateTime  |             1,390 |                  1,800/1,804 |
 
 See [raw counts and failure areas](conformance-results.json). No new exclusions.
-Hermes enables ES6 block scoping in compiler/runtime. The larger zoned bytecode
-selection uses a medium Bazel target timeout; per-case timeout stays 30 seconds.
+Hermes enables ES6 block scoping in compiler/runtime. The larger zoned and Duration Hermes
+selections use a medium Bazel target timeout; per-case timeout stays 30 seconds.
 
 ```sh
 bazel test -c opt //packages/temporal/... //crates/temporal:temporal_test
@@ -61,8 +61,6 @@ rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock-rounding case
 840 date-arithmetic cases and 2,028 short-date cases. Zoned controls cover 13,160
 offset/local-field samples and 1,340 future transitions, including gap/fold choices
 and calendar-day versus 24-hour arithmetic. Both cores also match 10,528 ICU
-next/previous queries and 19,440 independent calendar-span/decimal-rounding cases. Both cores also match 10,528 ICU
-next/previous queries and 19,440 independent calendar-span/decimal-rounding cases. Both cores also match 10,528 ICU
 next/previous queries and 19,440 independent calendar-span/decimal-rounding cases. Hebrew controls use the documented
 bounded ICU range; forced full temporal-polyfill adds reference-date controls.
 
@@ -78,3 +76,17 @@ primitives; a complete WASM facade remains pending.
 
 [Completion plan](../../knowledge-base/015-temporal.md).
 [Benchmark methods, measurements and limits](../../benchmarks/temporal/README.md).
+
+Duration now supports relative totals, comparison and rounding against plain dates
+or zoned values. Calendar anchors use the existing ISO/Hebrew engines; clock
+remainders retain exact nanoseconds. Week rounding preserves larger calendar
+prefixes. Totals round exact rational results once to binary64. Native Rust adds
+zoned total_duration, round_duration and compare_durations; native plain-relative
+adapters remain pending.
+
+The same ICU fixture now also checks 19,440 public Duration rounds and 6,480
+relative totals in both cores. Real IANA controls add 1,340 independent relative
+comparisons across future transitions. Forced full-polyfill Hebrew controls and
+poisoned-array-iterator checks cover the facade paths. Duration's strict selection
+now includes all 1,072 non-locale executions; full diagnostics still retain locale
+failures. PlainDateTime also retains a helper requiring the unfinished Now API.
