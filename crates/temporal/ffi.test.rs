@@ -39,6 +39,10 @@ fn errors_leave_no_owned_output() {
         json!({"op":"roundInstant","nanoseconds":"0","quantum":"1","mode":"invalid"}),
         json!({"op":"differenceInstant","nanoseconds":"0","other":"1","largest":"second","smallest":"hour","increment":1,"mode":"trunc"}),
         json!({"op":"addInstant","nanoseconds":"0","duration":{},"subtract":false}),
+        json!({"op":"parsePlainTime","text":"24:00"}),
+        json!({"op":"formatPlainTime","nanoseconds":"86400000000000","precision":"auto","mode":"trunc"}),
+        json!({"op":"roundPlainTime","nanoseconds":"0","unit":"hour","increment":24,"mode":"halfExpand"}),
+        json!({"op":"regulatePlainTime","fields":{"hour":1e100,"minute":0,"second":0,"millisecond":0,"microsecond":0,"nanosecond":0},"constrain":false}),
     ] {
         assert_eq!(query(input.to_string().as_bytes()), Err(1));
     }
@@ -53,6 +57,12 @@ fn errors_leave_no_owned_output() {
         assert_eq!(output.len, 0);
         formatjs_temporal_bytes_free(output);
     }
+}
+
+#[test]
+fn time_rounding_preserves_carry_and_regulation_clamps_before_narrowing() {
+    assert_eq!(query(br#"{"op":"roundPlainTime","nanoseconds":"86399999999999","unit":"hour","increment":1,"mode":"ceil"}"#),Ok(json!("86400000000000")));
+    assert_eq!(query(br#"{"op":"regulatePlainTime","fields":{"hour":1e100,"minute":-1e100,"second":0,"millisecond":0,"microsecond":0,"nanosecond":0},"constrain":true}"#),Ok(json!("82800000000000")));
 }
 
 #[test]

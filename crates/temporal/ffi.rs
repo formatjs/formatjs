@@ -1,6 +1,7 @@
 //! Normalized primitive requests; never borrow host runtime objects.
 use crate::{
-    Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, Precision, RoundingMode, TimeUnit,
+    Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime, Precision, RoundingMode,
+    TimeUnit,
 };
 use serde_json::{Value, json};
 use std::{
@@ -94,6 +95,142 @@ fn mode(request: &Value) -> Result<RoundingMode, Error> {
         .ok_or(Error::InvalidRoundingOptions)?
         .parse()
 }
+fn precision(request: &Value) -> Result<Precision, Error> {
+    Ok(match request["precision"].as_str() {
+        Some("auto") => Precision::Auto,
+        Some("minute") => Precision::Minute,
+        _ => Precision::Digits(
+            integer(request.get("precision"), None)?
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?,
+        ),
+    })
+}
+fn duration(request: &Value) -> Result<Duration, Error> {
+    let mut fields = [0; 10];
+    for (index, key) in DURATION_FIELDS.iter().enumerate() {
+        fields[index] = decimal(&request["duration"], key)?;
+    }
+    Duration::new(fields)
+}
+fn duration_record(duration: Duration) -> Value {
+    let fields = duration.fields();
+    Value::Object(
+        DURATION_FIELDS
+            .iter()
+            .enumerate()
+            .map(|(index, key)| (key.to_string(), json!(fields[index] as f64)))
+            .collect(),
+    )
+}
+fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    if op == "parsePlainTime" {
+        return Ok(json!(
+            request["text"]
+                .as_str()
+                .ok_or(Error::InvalidSyntax)?
+                .parse::<PlainTime>()?
+                .nanoseconds()
+                .to_string()
+        ));
+    }
+    if op == "regulatePlainTime" {
+        let constrain = request["constrain"]
+            .as_bool()
+            .ok_or(Error::InvalidDateTime)?;
+        let mut values = [0; 6];
+        for (index, (key, maximum)) in [
+            ("hour", 23.),
+            ("minute", 59.),
+            ("second", 59.),
+            ("millisecond", 999.),
+            ("microsecond", 999.),
+            ("nanosecond", 999.),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let value = request["fields"][key]
+                .as_f64()
+                .ok_or(Error::InvalidDateTime)?;
+            if !value.is_finite() || value.fract() != 0. {
+                return Err(Error::InvalidDateTime);
+            }
+            let value = if constrain {
+                value.clamp(0., *maximum)
+            } else {
+                value
+            };
+            if value < 0. || value > *maximum {
+                return Err(Error::InvalidDateTime);
+            }
+            values[index] = value as u32;
+        }
+        return Ok(json!(
+            PlainTime::new(
+                values[0] as u8,
+                values[1] as u8,
+                values[2] as u8,
+                values[3] * 1_000_000 + values[4] * 1000 + values[5]
+            )?
+            .nanoseconds()
+            .to_string()
+        ));
+    }
+    let value = PlainTime::from_nanoseconds(decimal(request, "nanoseconds")?)?;
+    match op {
+        "formatPlainTime" => Ok(json!(
+            value
+                .format(precision(request)?, mode(request)?)?
+                .to_string()
+        )),
+        "addPlainTime" => {
+            let duration = duration(request)?;
+            let result = match request["subtract"].as_bool() {
+                Some(false) => value.checked_add(duration)?,
+                Some(true) => value.checked_subtract(duration)?,
+                None => return Err(Error::InvalidDuration),
+            };
+            Ok(json!(result.nanoseconds().to_string()))
+        }
+        "roundPlainTime" => {
+            let unit = request["unit"]
+                .as_str()
+                .ok_or(Error::InvalidRoundingOptions)?
+                .parse()?;
+            let increment = integer(request.get("increment"), None)?
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?;
+            Ok(json!(
+                value
+                    .rounded_nanoseconds(unit, increment, mode(request)?)?
+                    .to_string()
+            ))
+        }
+        "differencePlainTime" => {
+            let other = PlainTime::from_nanoseconds(decimal(request, "other")?)?;
+            let largest = request["largest"]
+                .as_str()
+                .ok_or(Error::InvalidRoundingOptions)?
+                .parse()?;
+            let smallest = request["smallest"]
+                .as_str()
+                .ok_or(Error::InvalidRoundingOptions)?
+                .parse()?;
+            let increment = integer(request.get("increment"), None)?
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?;
+            Ok(duration_record(value.until(
+                other,
+                largest,
+                smallest,
+                increment,
+                mode(request)?,
+            )?))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parseInstant" {
         return Ok(json!(
@@ -108,15 +245,7 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let value = instant(request, "nanoseconds")?;
     match op {
         "formatInstant" => {
-            let precision = match request["precision"].as_str() {
-                Some("auto") => Precision::Auto,
-                Some("minute") => Precision::Minute,
-                _ => Precision::Digits(
-                    integer(request.get("precision"), None)?
-                        .try_into()
-                        .map_err(|_| Error::InvalidRoundingOptions)?,
-                ),
-            };
+            let precision = precision(request)?;
             let offset = if request.get("offset").is_some() {
                 Some(
                     decimal(request, "offset")?
@@ -133,11 +262,7 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
             ))
         }
         "addInstant" => {
-            let mut fields = [0; 10];
-            for (index, key) in DURATION_FIELDS.iter().enumerate() {
-                fields[index] = decimal(&request["duration"], key)?;
-            }
-            let duration = Duration::new(fields)?;
+            let duration = duration(request)?;
             let result = match request["subtract"].as_bool() {
                 Some(false) => value.checked_add(duration)?,
                 Some(true) => value.checked_subtract(duration)?,
@@ -184,16 +309,13 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
             let increment = integer(request.get("increment"), None)?
                 .try_into()
                 .map_err(|_| Error::InvalidRoundingOptions)?;
-            let fields = value
-                .until(other, largest, smallest, increment, mode(request)?)?
-                .fields();
-            Ok(Value::Object(
-                DURATION_FIELDS
-                    .iter()
-                    .enumerate()
-                    .map(|(index, key)| (key.to_string(), json!(fields[index] as f64)))
-                    .collect(),
-            ))
+            Ok(duration_record(value.until(
+                other,
+                largest,
+                smallest,
+                increment,
+                mode(request)?,
+            )?))
         }
         _ => Err(Error::InvalidSyntax),
     }
@@ -202,7 +324,7 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant","calls":CALLS.load(Ordering::Relaxed),"operations":["isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time","calls":CALLS.load(Ordering::Relaxed),"operations":["isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
@@ -210,6 +332,12 @@ fn execute(request: Value) -> Result<Value, i32> {
         "isoToEpochNanoseconds"
             | "epochNanosecondsToISO"
             | "addISODays"
+            | "parsePlainTime"
+            | "regulatePlainTime"
+            | "formatPlainTime"
+            | "addPlainTime"
+            | "roundPlainTime"
+            | "differencePlainTime"
             | "parseInstant"
             | "formatInstant"
             | "addInstant"
@@ -240,6 +368,7 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
             }
+            _ if op.ends_with("PlainTime") => time_operation(op, &request),
             _ => instant_operation(op, &request),
         }
     })();

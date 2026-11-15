@@ -21,6 +21,9 @@ const strings = Array.from(
 )
 const owned = strings.map(value => Temporal.Instant.from(value))
 const other = strings.map(value => reference.Instant.from(value))
+const clocks = strings.map((_, index) => `23:59:${51 + index}.12345678${index}`)
+const times = clocks.map(value => Temporal.PlainTime.from(value))
+const referenceTimes = clocks.map(value => reference.PlainTime.from(value))
 const cases = [
   {
     name: 'parse',
@@ -81,6 +84,67 @@ const cases = [
         })
         .toString(),
   },
+  {
+    name: 'timeParse',
+    owned: (index: number) =>
+      Temporal.PlainTime.from(clocks[index]).nanosecond.toString(),
+    reference: (index: number) =>
+      reference.PlainTime.from(clocks[index]).nanosecond.toString(),
+  },
+  {
+    name: 'timeFormat',
+    owned: (index: number) =>
+      times[index].toString({fractionalSecondDigits: 9}),
+    reference: (index: number) =>
+      referenceTimes[index].toString({fractionalSecondDigits: 9}),
+  },
+  {
+    name: 'timeAdd',
+    owned: (index: number) =>
+      times[index].add({hours: 1, nanoseconds: 1}).nanosecond.toString(),
+    reference: (index: number) =>
+      referenceTimes[index]
+        .add({hours: 1, nanoseconds: 1})
+        .nanosecond.toString(),
+  },
+  {
+    name: 'timeRoundFormat',
+    owned: (index: number) =>
+      times[index]
+        .round({
+          smallestUnit: 'millisecond',
+          roundingIncrement: 125,
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+    reference: (index: number) =>
+      referenceTimes[index]
+        .round({
+          smallestUnit: 'millisecond',
+          roundingIncrement: 125,
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+  },
+  {
+    name: 'timeUntil',
+    owned: (index: number) =>
+      times[index]
+        .until(times[(index + 1) & 7], {
+          largestUnit: 'hour',
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfExpand',
+        })
+        .toString(),
+    reference: (index: number) =>
+      referenceTimes[index]
+        .until(referenceTimes[(index + 1) & 7], {
+          largestUnit: 'hour',
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfExpand',
+        })
+        .toString(),
+  },
 ]
 const iterations = 5000,
   samples = 5,
@@ -115,8 +179,8 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant facade; Rust ISO/Instant JSON bridge optional, remaining namespace operations TS. Reference temporal-polyfill 1.0.7 basic implementation. Not complete native Temporal or WASM comparison.',
-    backend: query ? 'rust-iso-instant' : 'typescript',
+      'Public Instant/PlainTime facade; Rust ISO/Instant/PlainTime JSON bridge optional, remaining namespace operations TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Not complete native Temporal or WASM comparison.',
+    backend: query ? 'rust-iso-instant-time' : 'typescript',
     iterations,
     samples,
     warmup,

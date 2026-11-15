@@ -756,3 +756,34 @@ and adds `publishedGraphs`: index.js requires private native.js, and the WASM
 profile additionally requires wasm.js plus the binary. Counting only index.js
 would now undercount direct ESM delivery. The old 19,494-byte primitive binary
 remains a separate export with a much smaller API; it is not this backend.
+
+`hermes-plain-time-results.json` and `wasm-plain-time-results.json` extend the same
+public-operation benchmarks with five PlainTime workloads. `timeParse` and
+`timeAdd` read the nanosecond projection; `timeRoundFormat` includes serialization.
+All eight inputs pass reference parity. Earlier snapshots retain their scopes.
+
+Hermes bytecode medians, TS / Rust / reference (Rust-process sample), microseconds:
+
+- Time parse + projection: 10.28 /9.10 /10.62.
+- Time format: 8.33 /3.14 /3.11.
+- Time add + projection: 12.97 /21.40 /12.21.
+- Time round + format: 11.71 /8.01 /9.59.
+- Time until: 16.29 /16.39 /14.16.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Time parse + projection: 1.18 /3.30 /2.71.
+- Time format: 0.74 /3.44 /0.76.
+- Time add + projection: 2.45 /10.30 /1.56.
+- Time round + format: 1.29 /7.88 /1.84.
+- Time until: 2.59 /9.49 /24.44.
+
+Rust helps Hermes formatting/rounding here; JSON and projection costs limit other
+operations. WASM loses to TS on these five V8 workloads. One host and these inputs
+do not establish universal speed or justify a default backend switch.
+
+`plain-time-backend-size-results.json` refreshes the existing delivery scopes.
+The current binary is 147,964 raw /62,954 gzip bytes. Consumer bundles are 360,302
+TS versus 361,781 JS +62,954 binary =424,735 WASM bytes. Required separate ESM
+files total 361,425 TS versus 425,183 WASM bytes. Native calendar/timezone
+algorithms/data still use TS; full-backend size proof remains open.

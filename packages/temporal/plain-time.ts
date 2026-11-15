@@ -1,4 +1,5 @@
 import {localeDateTime} from '#packages/temporal/locale.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getTimeSlot as getSlot,
@@ -104,6 +105,8 @@ function overflow(options: unknown): boolean {
   return value === 'constrain'
 }
 function regulate(values: number[], constrain: boolean): bigint {
+  const native = nativeTemporal()
+  if (native) return native.regulatePlainTime(values, constrain)
   let result = 0n
   for (let index = 0; index < 6; index++) {
     let value = values[index]
@@ -177,6 +180,8 @@ export function roundTime(
   mode: RoundingMode
 ): bigint {
   validateIncrement(unit, increment)
+  const native = nativeTemporal()
+  if (native) return native.roundPlainTime(value, unit, increment, mode)
   const index = names.indexOf(unit)
   const parent = index === 0 ? day : factors[index - 1]
   const base = (value / parent) * parent
@@ -204,6 +209,18 @@ function difference(
   if (largeIndex > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
   validateIncrement(smallest, increment)
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differencePlainTime(
+        since ? end : value,
+        since ? value : end,
+        names[largeIndex],
+        smallest,
+        increment,
+        mode
+      )
+    )
   return createDuration(
     balanceDurationTime(
       roundDuration(
@@ -216,12 +233,28 @@ function difference(
   )
 }
 function add(value: bigint, other: unknown, sign: bigint): PlainTimeObject {
-  return create(
-    value + sign * durationNanoseconds(toDurationFields(other), false)
-  )
+  const duration = toDurationFields(other)
+  const native = nativeTemporal()
+  if (native) return create(native.addPlainTime(value, duration, sign < 0n))
+  return create(value + sign * durationNanoseconds(duration, false))
 }
-function format(value: bigint, precision: Precision = 'auto'): string {
-  return formatInstant(value, precision).slice(11, -1)
+function format(
+  value: bigint,
+  precision: Precision = 'auto',
+  mode: RoundingMode = 'trunc'
+): string {
+  const native = nativeTemporal()
+  if (native) return native.formatPlainTime(value, precision, mode)
+  const quantum =
+    precision === 'auto'
+      ? 1n
+      : precision === 'minute'
+        ? factors[1]
+        : 10n ** BigInt(9 - precision)
+  return formatInstant(
+    quantum === 1n ? value : roundInstant(value, quantum, mode) % day,
+    precision
+  ).slice(11, -1)
 }
 class PlainTimeValue implements PlainTimeObject {
   declare readonly [Symbol.toStringTag]: 'Temporal.PlainTime'
@@ -313,13 +346,7 @@ class PlainTimeValue implements PlainTimeObject {
               : raw === 'nanosecond'
                 ? 9
                 : digits
-    const quantum =
-      precision === 'auto'
-        ? 1n
-        : precision === 'minute'
-          ? factors[1]
-          : 10n ** BigInt(9 - precision)
-    return format(roundInstant(value, quantum, mode) % day, precision)
+    return format(value, precision, mode)
   }
   toLocaleString(
     locales: unknown = undefined,

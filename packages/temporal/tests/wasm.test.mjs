@@ -133,6 +133,44 @@ assert.throws(
 )
 assert.equal(Temporal.Instant.from('1970-01-01T00:00Z').epochNanoseconds, 0n)
 
+// Old ABI fixture exports the expected names; rejection must check its version.
+const section = (id, body) => [id, body.length, ...body]
+const exported = (name, kind) => [
+  name.length,
+  ...new TextEncoder().encode(name),
+  kind,
+  0,
+]
+const oldABI = new WebAssembly.Module(
+  new Uint8Array([
+    0,
+    97,
+    115,
+    109,
+    1,
+    0,
+    0,
+    0,
+    ...section(1, [1, 96, 0, 1, 127]),
+    ...section(3, [1, 0]),
+    ...section(5, [1, 0, 1]),
+    ...section(7, [
+      5,
+      ...exported('memory', 2),
+      ...exported('temporal_abi_version', 0),
+      ...exported('temporal_alloc', 0),
+      ...exported('temporal_free', 0),
+      ...exported('temporal_query', 0),
+    ]),
+    ...section(10, [1, 4, 0, 65, 1, 11]),
+  ])
+)
+assert.throws(
+  () => configureWasmBackend(new WebAssembly.Instance(oldABI, {})),
+  TypeError
+)
+assert.equal(Temporal.PlainTime.from('12:00').toJSON(), '12:00:00')
+
 const beforeGrowth = query.memoryBytes
 assert.equal(
   Temporal.Instant.from('1970-01-01T00:00Z[foo=' + 'a'.repeat(2_000_000) + ']')
@@ -208,5 +246,19 @@ console.log(
     differences,
     memoryBytes: query.memoryBytes,
     backend: JSON.parse(query('{"op":"info"}')),
+  })
+)
+
+const {checkPlainTimeOracle} = await import(
+  pathToFileURL(resolve(process.argv[8])).href
+)
+console.log(
+  JSON.stringify({
+    plainTime: checkPlainTimeOracle(
+      Temporal,
+      rows(process.argv[4]),
+      rows(process.argv[7]),
+      rows(process.argv[6])
+    ),
   })
 )

@@ -3,7 +3,8 @@ import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {PlainTime} from '#packages/temporal/plain-time.js'
-import type {TimeUnit, RoundingMode} from '#packages/temporal/rounding.js'
+import {Temporal} from '#packages/temporal/index.js'
+import {checkPlainTimeOracle} from '#packages/temporal/tests/plain-time-oracle.js'
 import strings from '#packages/temporal/tests/plain-time-strings.json' with {type: 'json'}
 
 it('shares strict ISO time parsing vectors with Rust', () => {
@@ -13,47 +14,28 @@ it('shares strict ISO time parsing vectors with Rust', () => {
     expect(() => PlainTime.from(text), text).toThrow(RangeError)
 })
 
-it('matches independent ICU field-relative clock rounding', () => {
-  const file = runfiles.resolve(
-    `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-time-fixtures.tsv`
+it('matches independent ICU clock fields, carry, arithmetic and signed differences', () => {
+  const rows = (file: string): string[][] =>
+    readFileSync(
+      runfiles.resolve(
+        `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/${file}`
+      ),
+      'utf8'
+    )
+      .trim()
+      .split('\n')
+      .filter(line => !line.startsWith('#'))
+      .map(line => line.split('\t'))
+  const stats = checkPlainTimeOracle(
+    Temporal,
+    rows('temporal-iso-fixtures.tsv'),
+    rows('temporal-time-carry-fixtures.tsv'),
+    rows('temporal-duration-fixtures.tsv')
   )
-  const components = (
-    text: string
-  ): [number, number, number, number, number, number] => {
-    const value = Number(text)
-    return [
-      Math.floor(value / 3_600_000_000_000),
-      Math.floor(value / 60_000_000_000) % 60,
-      Math.floor(value / 1_000_000_000) % 60,
-      Math.floor(value / 1_000_000) % 1000,
-      Math.floor(value / 1000) % 1000,
-      value % 1000,
-    ]
-  }
-  let count = 0
-  for (const line of readFileSync(file, 'utf8').trim().split('\n')) {
-    if (line.startsWith('#')) continue
-    const [value, unit, increment, mode, expected] = line.split('\t')
-    const actual = new PlainTime(...components(value)).round({
-      smallestUnit: unit as TimeUnit,
-      roundingIncrement: +increment,
-      roundingMode: mode as RoundingMode,
-    })
-    expect(
-      [
-        actual.hour,
-        actual.minute,
-        actual.second,
-        actual.millisecond,
-        actual.microsecond,
-        actual.nanosecond,
-      ],
-      line
-    ).toEqual(components(expected))
-    count++
-  }
-  expect(count).toBeGreaterThan(3000)
-  console.log(`${count} independent ICU field-relative clock rounding cases`)
+  expect(stats.fields).toBeGreaterThan(25_000)
+  expect(stats.rounds).toBeGreaterThan(7_000)
+  expect(stats.differences).toBeGreaterThan(1_000)
+  console.log(stats)
 })
 
 it('wraps time while ignoring calendar fields; preserves signed differences', () => {

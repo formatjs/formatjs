@@ -20,6 +20,32 @@ export interface NativeTemporal {
   isoToEpochNanoseconds(fields: ISODateTime): bigint
   epochNanosecondsToISO(value: bigint): Required<ISODateTime>
   addISODays(fields: ISODateTime, days: number): Required<ISODateTime>
+  parsePlainTime(value: string): bigint
+  regulatePlainTime(values: number[], constrain: boolean): bigint
+  formatPlainTime(
+    value: bigint,
+    precision: Precision,
+    mode: RoundingMode
+  ): string
+  addPlainTime(
+    value: bigint,
+    duration: DurationFields,
+    subtract: boolean
+  ): bigint
+  roundPlainTime(
+    value: bigint,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
+  differencePlainTime(
+    value: bigint,
+    other: bigint,
+    largest: TimeUnit,
+    smallest: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): DurationFields
   parseInstant(value: string): bigint
   formatInstant(value: bigint, precision: Precision, offset?: bigint): string
   addInstant(value: bigint, duration: DurationFields, subtract: boolean): bigint
@@ -48,7 +74,10 @@ export function configureNativeTemporal(query: NativeQuery): void {
       input[names[index]] = properties[names[index]]
     const source = stringify(input)
     // Escaped code units violate Temporal's ASCII grammar; reject before UTF-8 decoding.
-    if (op === 'parseInstant' && apply(indexOf, source, ['\\u']) >= 0)
+    if (
+      (op === 'parseInstant' || op === 'parsePlainTime') &&
+      apply(indexOf, source, ['\\u']) >= 0
+    )
       throw new BadRange('Invalid instant string')
     const result = query(source)
     if (typeof result === 'number')
@@ -80,6 +109,20 @@ export function configureNativeTemporal(query: NativeQuery): void {
     if (days !== undefined) record.days = days
     return call(op, record)
   }
+  function addition(
+    op: string,
+    value: bigint,
+    fields: DurationFields,
+    subtract: boolean
+  ): bigint {
+    const duration = create(null)
+    const names = keys(fields)
+    for (let index = 0; index < names.length; index++)
+      duration[names[index]] = text(
+        ToBigInt(fields[names[index] as keyof DurationFields])
+      )
+    return ToBigInt(call(op, {nanoseconds: text(value), duration, subtract}))
+  }
   native = {
     isoToEpochNanoseconds: fields =>
       ToBigInt(request('isoToEpochNanoseconds', fields)),
@@ -87,6 +130,39 @@ export function configureNativeTemporal(query: NativeQuery): void {
       request('epochNanosecondsToISO', undefined, value),
     addISODays: (fields, days) =>
       request('addISODays', fields, undefined, days),
+    parsePlainTime: value => ToBigInt(call('parsePlainTime', {text: value})),
+    regulatePlainTime: (values, constrain) => {
+      const fields = create(null)
+      fields.hour = values[0]
+      fields.minute = values[1]
+      fields.second = values[2]
+      fields.millisecond = values[3]
+      fields.microsecond = values[4]
+      fields.nanosecond = values[5]
+      return ToBigInt(call('regulatePlainTime', {fields, constrain}))
+    },
+    formatPlainTime: (value, precision, mode) =>
+      call('formatPlainTime', {nanoseconds: text(value), precision, mode}),
+    addPlainTime: (value, fields, subtract) =>
+      addition('addPlainTime', value, fields, subtract),
+    roundPlainTime: (value, unit, increment, mode) =>
+      ToBigInt(
+        call('roundPlainTime', {
+          nanoseconds: text(value),
+          unit,
+          increment,
+          mode,
+        })
+      ),
+    differencePlainTime: (value, other, largest, smallest, increment, mode) =>
+      call('differencePlainTime', {
+        nanoseconds: text(value),
+        other: text(other),
+        largest,
+        smallest,
+        increment,
+        mode,
+      }),
     parseInstant: value => ToBigInt(call('parseInstant', {text: value})),
     formatInstant: (value, precision, offset) =>
       call('formatInstant', {
@@ -94,17 +170,8 @@ export function configureNativeTemporal(query: NativeQuery): void {
         precision,
         offset: offset === undefined ? undefined : text(offset),
       }),
-    addInstant: (value, fields, subtract) => {
-      const duration = create(null)
-      const names = keys(fields)
-      for (let index = 0; index < names.length; index++)
-        duration[names[index]] = text(
-          ToBigInt(fields[names[index] as keyof DurationFields])
-        )
-      return ToBigInt(
-        call('addInstant', {nanoseconds: text(value), duration, subtract})
-      )
-    },
+    addInstant: (value, fields, subtract) =>
+      addition('addInstant', value, fields, subtract),
     roundInstant: (value, quantum, mode) =>
       ToBigInt(
         call('roundInstant', {

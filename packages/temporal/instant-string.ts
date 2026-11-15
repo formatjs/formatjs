@@ -208,6 +208,8 @@ export function parseCalendarString(value: string): string {
 }
 
 export function parsePlainTimeString(value: string): bigint {
+  const native = nativeTemporal()
+  if (native) return native.parsePlainTime(value)
   const index = value.indexOf('[')
   let body = index < 0 ? value : value.slice(0, index)
   validateAnnotations(index < 0 ? '' : value.slice(index))

@@ -376,3 +376,30 @@ WASM versus 360,183 TS bytes. The binary itself is 132,990 raw / 58,527 gzip byt
 Both profiles include owned TS calendar/IANA data; they retain TS fallback code.
 This does not establish full native/WASM backend costs or a default-backend choice.
 See `benchmarks/temporal/wasm-facade-results.json` for raw samples and delivery modes.
+
+## Rust PlainTime backend
+
+Hermes and WASM now delegate PlainTime parsing, field regulation, formatting,
+add/subtract, rounding and until/since to Rust. JS retains coercion/property order,
+slots, brands, projections/comparisons and shared locale integration. The shared
+rounding operation returns unwrapped nanoseconds so PlainDateTime/ZonedDateTime
+preserve day carry; PlainTime wraps its own result. Large finite fields constrain
+before integer narrowing. Selected operations never fall back after native errors.
+
+WASM ABI version 2 requires the matching packaged binary. Version-1 instances are
+rejected before replacing the active backend. The source/HBC/WASM full PlainTime
+Test262 gate passes all 986 executions; wider hybrid profiles pass 9,322 per mode.
+Other class algorithms and native calendar/timezone data remain unfinished.
+
+Shared independent controls run against pure TS, Hermes source/HBC and the real
+published WASM package: 25,269 ICU clock rows (parse/format/add/subtract), 7,740
+BigDecimal rounds plus date-time day carry, and 1,656 signed differences checked
+both directions. Tests cover ignored date units, huge finite fields, invalid
+UTF-16 and mandatory native calls for all six operations.
+
+Fresh benchmark records include PlainTime on Hermes and V8/WASM. Hermes bytecode
+time formatting takes about 3.14 microseconds Rust versus 8.33 TS; add is slower,
+21.40 versus 12.97. On the recorded V8 host the WASM JSON bridge loses to TS across
+all five time workloads. Consumer bundle totals are 360,302 gzip bytes TS versus
+424,735 WASM profile; binary alone 147,964 raw /62,954 gzip bytes. These remain
+partial native profiles with retained TS code/data, not full-backend comparisons.

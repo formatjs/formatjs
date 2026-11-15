@@ -1,0 +1,345 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "platform": "linux x64",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "memoryScope": "WASM linear memory only; excludes JS heap and compiled code.",
+  "scope": "Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime only; remaining algorithms/fallback/data remain TS. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.",
+  "method": "Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.",
+  "iterations": 10000,
+  "samples": 7,
+  "warmup": 3000,
+  "checksum": 28990125,
+  "typescript": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 1647.3298,
+      "samplesNanoseconds": [
+        1616.6738999999977, 1627.4293999999998, 1628.7529000000006, 1647.3298,
+        1969.0694000000008, 2059.370899999999, 2481.519
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 669.1227000000026,
+      "samplesNanoseconds": [
+        635.0437999999997, 635.3913999999975, 644.4524999999999,
+        669.1227000000026, 771.3900999999964, 1069.726399999999,
+        1085.4867000000013
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 2331.3374000000013,
+      "samplesNanoseconds": [
+        2292.0153000000028, 2324.792100000002, 2325.218000000001,
+        2331.3374000000013, 2382.8461, 2553.914100000003, 2638.174299999997
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 815.3188,
+      "samplesNanoseconds": [
+        336.70119999999315, 406.26210000000356, 592.4449999999979, 815.3188,
+        821.7900000000043, 909.4411000000038, 947.6445000000014
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 2385.5728,
+      "samplesNanoseconds": [
+        2293.7043000000017, 2307.3005999999964, 2309.7936000000004, 2385.5728,
+        2399.701399999992, 2591.1225999999942, 2991.2504999999896
+      ]
+    },
+    {
+      "operation": "timeParse",
+      "medianNanoseconds": 1177.5471000000039,
+      "samplesNanoseconds": [
+        993.2658000000059, 1114.574600000003, 1147.6773999999978,
+        1177.5471000000039, 1333.2307000000014, 1575.1870000000054,
+        1674.685199999999
+      ]
+    },
+    {
+      "operation": "timeFormat",
+      "medianNanoseconds": 744.1843999999946,
+      "samplesNanoseconds": [
+        724.3753999999967, 736.9921999999974, 740.2369000000022,
+        744.1843999999946, 745.6188999999995, 750.9998999999993,
+        947.0749000000069
+      ]
+    },
+    {
+      "operation": "timeAdd",
+      "medianNanoseconds": 2449.7224999999958,
+      "samplesNanoseconds": [
+        2435.409400000003, 2436.6162999999915, 2438.5195000000067,
+        2449.7224999999958, 2494.0920000000006, 2527.0743999999922, 2587.9413
+      ]
+    },
+    {
+      "operation": "timeRoundFormat",
+      "medianNanoseconds": 1287.8543000000036,
+      "samplesNanoseconds": [
+        1191.0722999999962, 1259.1310000000021, 1275.6157999999914,
+        1287.8543000000036, 1289.7619000000077, 1306.7101000000093, 1811.3202
+      ]
+    },
+    {
+      "operation": "timeUntil",
+      "medianNanoseconds": 2589.1529999999875,
+      "samplesNanoseconds": [
+        2504.6674999999823, 2557.923800000003, 2563.398499999994,
+        2589.1529999999875, 2628.0213000000003, 2645.5062, 3159.7424000000046
+      ]
+    }
+  ],
+  "wasm": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 3213.8697999999977,
+      "samplesNanoseconds": [
+        2838.1324999999833, 2987.103500000012, 3181.8457999999964,
+        3213.8697999999977, 3247.9104000000007, 3255.819900000006,
+        3775.6805999999865
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 7138.480299999993,
+      "samplesNanoseconds": [
+        7020.7809, 7065.921500000013, 7083.613200000013, 7138.480299999993,
+        7153.386299999988, 7194.521099999997, 7605.613400000015
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 10310.748199999989,
+      "samplesNanoseconds": [
+        10142.036899999994, 10170.873900000015, 10177.759000000015,
+        10310.748199999989, 10318.429100000003, 10396.836499999972,
+        11130.541800000037
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 4332.4571000000105,
+      "samplesNanoseconds": [
+        3850.7008999999925, 3854.4100999999955, 3885.2157999999686,
+        4332.4571000000105, 4396.322500000042, 4454.858699999977,
+        4693.263999999999
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 9448.62189999999,
+      "samplesNanoseconds": [
+        9390.97999999999, 9440.205400000013, 9441.463299999987,
+        9448.62189999999, 9493.958599999996, 9611.301400000002, 9613.14080000002
+      ]
+    },
+    {
+      "operation": "timeParse",
+      "medianNanoseconds": 3297.790299999997,
+      "samplesNanoseconds": [
+        2974.2119000000002, 2976.6413000000284, 3011.196999999993,
+        3297.790299999997, 3470.710099999996, 3489.9611000000277,
+        3497.228399999995
+      ]
+    },
+    {
+      "operation": "timeFormat",
+      "medianNanoseconds": 3443.5496000000057,
+      "samplesNanoseconds": [
+        3422.193400000015, 3424.808500000017, 3434.230500000013,
+        3443.5496000000057, 3477.74959999997, 3616.8746000000283,
+        3995.3677000000425
+      ]
+    },
+    {
+      "operation": "timeAdd",
+      "medianNanoseconds": 10294.98309999999,
+      "samplesNanoseconds": [
+        10088.741000000027, 10260.533000000032, 10283.306300000004,
+        10294.98309999999, 10304.65239999994, 10338.036899999952,
+        10421.351900000082
+      ]
+    },
+    {
+      "operation": "timeRoundFormat",
+      "medianNanoseconds": 7878.39270000004,
+      "samplesNanoseconds": [
+        7659.840999999959, 7661.386500000025, 7767.620200000055,
+        7878.39270000004, 7879.525000000012, 7921.2665000000015,
+        8248.493400000007
+      ]
+    },
+    {
+      "operation": "timeUntil",
+      "medianNanoseconds": 9494.491000000016,
+      "samplesNanoseconds": [
+        9394.956600000023, 9412.623200000053, 9493.545199999971,
+        9494.491000000016, 9561.758800000007, 9594.462500000009,
+        9840.222899999935
+      ]
+    }
+  ],
+  "reference": [
+    {
+      "operation": "parse",
+      "medianNanoseconds": 2670.8512000000155,
+      "samplesNanoseconds": [
+        2425.814300000002, 2624.1165000000365, 2637.0168000000376,
+        2670.8512000000155, 2758.464499999991, 2926.312600000074,
+        3459.9654999999984
+      ]
+    },
+    {
+      "operation": "format",
+      "medianNanoseconds": 1402.8365000000122,
+      "samplesNanoseconds": [
+        1336.5569999999934, 1355.4586999999628, 1381.3341999999466,
+        1402.8365000000122, 1419.2466999999851, 1534.881199999927,
+        2042.753999999968
+      ]
+    },
+    {
+      "operation": "add",
+      "medianNanoseconds": 1629.6868000000359,
+      "samplesNanoseconds": [
+        1323.0094999999892, 1359.8777999999584, 1398.8885000000664,
+        1629.6868000000359, 1703.4451999999874, 1796.6601000000082,
+        1826.5172999999777
+      ]
+    },
+    {
+      "operation": "round",
+      "medianNanoseconds": 697.9781999999432,
+      "samplesNanoseconds": [
+        611.5173000000141, 626.307799999995, 633.9130000000296,
+        697.9781999999432, 916.6132000000289, 997.1736999999847,
+        1141.569299999992
+      ]
+    },
+    {
+      "operation": "until",
+      "medianNanoseconds": 25009.592299999895,
+      "samplesNanoseconds": [
+        23767.83290000003, 24671.986500000094, 24843.814500000008,
+        25009.592299999895, 25160.465399999975, 25229.9798, 25513.207499999953
+      ]
+    },
+    {
+      "operation": "timeParse",
+      "medianNanoseconds": 2706.0748000001695,
+      "samplesNanoseconds": [
+        2606.3175999999658, 2610.8876999998756, 2677.851499999997,
+        2706.0748000001695, 3175.944100000015, 3316.993099999854,
+        4014.941200000066
+      ]
+    },
+    {
+      "operation": "timeFormat",
+      "medianNanoseconds": 759.2665000000125,
+      "samplesNanoseconds": [
+        738.015599999926, 738.4162000000288, 741.8268999999782,
+        759.2665000000125, 767.8827999998248, 768.3458999999857,
+        796.3920000000144
+      ]
+    },
+    {
+      "operation": "timeAdd",
+      "medianNanoseconds": 1560.6662999998662,
+      "samplesNanoseconds": [
+        1476.3332000000446, 1480.325300000004, 1492.8030000000945,
+        1560.6662999998662, 1844.1143999998533, 2013.709200000085,
+        2293.907600000057
+      ]
+    },
+    {
+      "operation": "timeRoundFormat",
+      "medianNanoseconds": 1843.5577000000194,
+      "samplesNanoseconds": [
+        1483.2172000000355, 1488.5794000001624, 1502.448800000093,
+        1843.5577000000194, 1845.6013999999416, 1862.5920000000406,
+        2191.365600000063
+      ]
+    },
+    {
+      "operation": "timeUntil",
+      "medianNanoseconds": 24437.208400000054,
+      "samplesNanoseconds": [
+        23872.023400000035, 23940.282899999875, 24028.21589999985,
+        24437.208400000054, 24803.619699999945, 25005.92940000006,
+        27783.68630000005
+      ]
+    }
+  ],
+  "compileMilliseconds": 0.36783300000001873,
+  "instantiateMilliseconds": 0.11659099999997125,
+  "initialMemoryBytes": 1114112,
+  "finalMemoryBytes": 1179648,
+  "native": {
+    "backend": "rust-iso-instant-time",
+    "calls": 876112,
+    "operations": [
+      "isoToEpochNanoseconds",
+      "epochNanosecondsToISO",
+      "addISODays",
+      "parsePlainTime",
+      "regulatePlainTime",
+      "formatPlainTime",
+      "addPlainTime",
+      "roundPlainTime",
+      "differencePlainTime",
+      "parseInstant",
+      "formatInstant",
+      "addInstant",
+      "roundInstant",
+      "differenceInstant"
+    ],
+    "completeTemporalBackend": false
+  },
+  "size": {
+    "modules": [
+      {
+        "file": "index.js",
+        "raw": 3418134,
+        "minified": 3199106,
+        "gzip": 360511
+      },
+      {
+        "file": "native.js",
+        "raw": 4192,
+        "minified": 2241,
+        "gzip": 914
+      },
+      {
+        "file": "wasm.js",
+        "raw": 3242,
+        "minified": 1732,
+        "gzip": 804
+      }
+    ],
+    "binary": {
+      "raw": 147964,
+      "gzip": 62954
+    },
+    "consumer": {
+      "typescript": {
+        "minified": 3197834,
+        "gzip": 360302
+      },
+      "wasmJS": {
+        "minified": 3201638,
+        "gzip": 361781
+      },
+      "wasmCombinedGzip": 424735
+    },
+    "separateModules": {
+      "typescriptGzip": 361425,
+      "wasmCombinedGzip": 425183
+    }
+  }
+}

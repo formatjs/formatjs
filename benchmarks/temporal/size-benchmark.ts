@@ -107,7 +107,7 @@ console.log(
       publishedModules,
       publishedGraphs: {
         scope:
-          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant only; all remaining TS algorithms/data still included. Source maps, declarations and notices are not runtime imports.',
+          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime only; all remaining TS algorithms/data still included. Source maps, declarations and notices are not runtime imports.',
         typescript: namespaceGraph,
         wasm: {
           ...wasmGraph,

@@ -13,7 +13,10 @@ public final class TemporalTimeOracle {
     String[] modes = {"ceil", "floor", "expand", "trunc", "halfCeil", "halfFloor", "halfExpand", "halfTrunc", "halfEven"};
     int[] rounding = {BigDecimal.ROUND_CEILING, BigDecimal.ROUND_FLOOR, BigDecimal.ROUND_UP, BigDecimal.ROUND_DOWN, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_DOWN, BigDecimal.ROUND_HALF_UP, BigDecimal.ROUND_HALF_DOWN, BigDecimal.ROUND_HALF_EVEN};
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J 79.1 BigDecimal; clock nanoseconds, unit, increment, mode, wrapped clock nanoseconds");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      boolean carry = javascript || args.length > 1 && args[1].equals("--carry");
+      if (javascript) out.println("var __temporalPlainTimeOracle = [");
+      else out.println("# ICU4J 79.1 BigDecimal; clock nanoseconds, unit, increment, mode, wrapped clock nanoseconds" + (carry ? ", unwrapped clock nanoseconds" : ""));
       for (int unit = 0; unit < units.length; unit++) {
         long parent = unit == 0 ? day : factors[unit - 1];
         for (int increment : increments[unit]) {
@@ -31,11 +34,14 @@ public final class TemporalTimeOracle {
             long base = value / parent * parent;
             for (int mode = 0; mode < modes.length; mode++) {
               long rounded = new BigDecimal(value - base).divide(new BigDecimal(quantum), 0, rounding[mode]).longValueExact() * quantum;
-              out.println(value + "\t" + units[unit] + "\t" + increment + "\t" + modes[mode] + "\t" + ((base + rounded) % day));
+              String row = value + "\t" + units[unit] + "\t" + increment + "\t" + modes[mode] + "\t" + ((base + rounded) % day);
+              if (carry) row += "\t" + (base + rounded);
+              out.println(javascript ? "[\"" + row.replace("\t", "\",\"") + "\"]," : row);
             }
           }
         }
       }
+      if (javascript) out.println("];");
     }
   }
 }

@@ -211,9 +211,14 @@ filegroup(
             "plain_time_test",
             [
                 "tests/plain-time.test.ts",
+                "tests/plain-time-oracle.ts",
                 "tests/plain-time-strings.json",
             ],
-            ["//conformance-tests/icu4j:temporal_time_fixtures"],
+            [
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+                "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
         ),
         (
             "kernel_test",
@@ -1272,6 +1277,7 @@ rolldown_bundle(
     name = "native-iso-host",
     srcs = [
         "tests/native-iso-host.ts",
+        "tests/plain-time-oracle.ts",
         ":srcs",
     ],
     entry_point = "tests/native-iso-host.ts",
@@ -1287,10 +1293,11 @@ genrule(
         "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_hermes_fixtures",
         "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_time_hermes_fixtures",
         ":native-iso-host.js",
     ],
     outs = ["native-iso-hermes.js"],
-    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location :native-iso-host.js) > $@",
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location :native-iso-host.js) > $@",
 )
 
 sh_test(
@@ -1350,7 +1357,11 @@ sh_test(
         ),
         ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
         ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
-        ("time", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json"),
+        (
+            "time",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+        ),
         ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
         ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
         ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
@@ -1476,7 +1487,11 @@ test262_harness_bin.test262_harness_binary(
         ),
         ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
         ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
-        ("time", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json"),
+        (
+            "time",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+        ),
         ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
         ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
         ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
@@ -1497,13 +1512,17 @@ js_test(
         "$(rlocationpath //conformance-tests/icu4j:temporal_iso_fixtures)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_time_carry_fixtures)",
+        "$(rlocationpath :plain-time-oracle.js)",
     ],
     data = [
         ":pkg",
+        ":plain-time-oracle.js",
         "//:node_modules/@bazel/runfiles",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
+        "//conformance-tests/icu4j:temporal_time_carry_fixtures",
         "//crates/temporal:wasm_backend",
     ],
     entry_point = "tests/wasm.test.mjs",
@@ -1548,4 +1567,13 @@ copy_file(
     name = "wasm_notices",
     src = "//native/hermes/package:THIRD_PARTY_NOTICES.html",
     out = "WASM_NOTICES.html",
+)
+
+rolldown_bundle(
+    name = "plain-time-oracle",
+    srcs = ["tests/plain-time-oracle.ts"],
+    entry_point = "tests/plain-time-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
 )

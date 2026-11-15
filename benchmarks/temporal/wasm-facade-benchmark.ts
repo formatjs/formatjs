@@ -22,6 +22,11 @@ let checksum = 0
 function measure(namespace: typeof reference): unknown[] {
   const values = strings.map(value => namespace.Instant.from(value))
   const expected = strings.map(value => reference.Instant.from(value))
+  const clocks = strings.map(
+    (_, index) => `23:59:${51 + index}.12345678${index}`
+  )
+  const times = clocks.map(value => namespace.PlainTime.from(value))
+  const expectedTimes = clocks.map(value => reference.PlainTime.from(value))
   const cases = [
     {
       name: 'parse',
@@ -80,6 +85,67 @@ function measure(namespace: typeof reference): unknown[] {
       check: (index: number) =>
         expected[index]
           .until(expected[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+    },
+    {
+      name: 'timeParse',
+      run: (index: number) =>
+        namespace.PlainTime.from(clocks[index]).nanosecond.toString(),
+      check: (index: number) =>
+        reference.PlainTime.from(clocks[index]).nanosecond.toString(),
+    },
+    {
+      name: 'timeFormat',
+      run: (index: number) =>
+        times[index].toString({fractionalSecondDigits: 9}),
+      check: (index: number) =>
+        expectedTimes[index].toString({fractionalSecondDigits: 9}),
+    },
+    {
+      name: 'timeAdd',
+      run: (index: number) =>
+        times[index].add({hours: 1, nanoseconds: 1}).nanosecond.toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .add({hours: 1, nanoseconds: 1})
+          .nanosecond.toString(),
+    },
+    {
+      name: 'timeRoundFormat',
+      run: (index: number) =>
+        times[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'timeUntil',
+      run: (index: number) =>
+        times[index]
+          .until(times[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .until(expectedTimes[(index + 1) & 7], {
             largestUnit: 'hour',
             smallestUnit: 'microsecond',
             roundingMode: 'halfExpand',
@@ -167,9 +233,9 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant only; remaining algorithms/fallback/data remain TS. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime only; remaining algorithms/fallback/data remain TS. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. Hot operations exclude startup. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,
       samples,
       warmup,

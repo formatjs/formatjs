@@ -4,11 +4,13 @@ import {
 } from '#packages/temporal/native.js'
 import {installTemporal} from '#packages/temporal/install.js'
 import {Temporal} from '#packages/temporal/index.js'
+import {checkPlainTimeOracle} from '#packages/temporal/tests/plain-time-oracle.js'
 import {addISODays} from '#packages/temporal/kernel.js'
 
 declare const __temporalISOOracle: number[][]
 declare const __temporalInstantRoundingOracle: string[][]
 declare const __temporalDurationOracle: string[][]
+declare const __temporalPlainTimeOracle: string[][]
 declare function print(value: string): void
 const host = globalThis as typeof globalThis & {
   __formatjsTemporalISOQuery?: NativeQuery
@@ -209,6 +211,7 @@ try {
 const date = Temporal.PlainDateTime.from('2020-02-28T12:00')
 const instant = Temporal.Instant.fromEpochNanoseconds(0n)
 const later = Temporal.Instant.fromEpochNanoseconds(1n)
+const time = Temporal.PlainTime.from('23:59:59.999999999')
 try {
   configureNativeTemporal(() => 1)
   let rejected = false
@@ -224,6 +227,12 @@ try {
     () => instant.add({nanoseconds: 1}),
     () => instant.round('second'),
     () => instant.until(later),
+    () => Temporal.PlainTime.from('12:00'),
+    () => Temporal.PlainTime.from({hour: 12}),
+    () => time.toJSON(),
+    () => time.add({nanoseconds: 1}),
+    () => time.round('hour'),
+    () => time.until(time),
   ]) {
     let rejected = false
     try {
@@ -236,6 +245,17 @@ try {
 } finally {
   configureNativeTemporal(query)
 }
+print(
+  'Rust PlainTime ICU: ' +
+    JSON.stringify(
+      checkPlainTimeOracle(
+        Temporal,
+        __temporalISOOracle,
+        __temporalPlainTimeOracle,
+        __temporalDurationOracle
+      )
+    )
+)
 print(
   'Rust ISO/Instant Hermes ICU rows: ' +
     count +
