@@ -1,6 +1,119 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn independent_icu_short_dates() {
+    use formatjs_temporal::{Duration, Overflow, PlainMonthDay, PlainYearMonth, YearMonthUnit};
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_SHORT_DATES"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let number = |index: usize| fields[index].parse::<i128>().unwrap();
+        match fields[0] {
+            "ym" => {
+                let start = PlainYearMonth::new(number(1) as i32, number(2) as u8, number(3) as u8)
+                    .unwrap();
+                let duration =
+                    Duration::new([number(4), number(5), 0, 0, 0, 0, 0, 0, 0, 0]).unwrap();
+                let result = start.checked_add(duration, Overflow::Constrain);
+                if fields[10] == "false" {
+                    assert!(result.is_err(), "{line}");
+                } else {
+                    let result = result.unwrap();
+                    assert_eq!(
+                        result.fields(),
+                        (number(6) as i32, number(7) as u8, 1),
+                        "{line}"
+                    );
+                    assert_eq!(result.days_in_month(), number(8) as u8, "{line}");
+                    assert_eq!(result.days_in_year(), number(9) as u16, "{line}");
+                }
+            }
+            "md" => {
+                let start =
+                    PlainMonthDay::new(number(1) as u8, number(2) as u8, number(3) as i32).unwrap();
+                let result = start.to_plain_date(number(4) as i32, Overflow::Constrain);
+                if fields[6] == "false" {
+                    assert!(result.is_err(), "{line}");
+                } else {
+                    assert_eq!(
+                        result.unwrap().fields(),
+                        (number(4) as i32, number(1) as u8, number(5) as u8),
+                        "{line}"
+                    );
+                }
+            }
+            _ => {
+                let start = PlainYearMonth::new(number(1) as i32, number(2) as u8, 1).unwrap();
+                let end = PlainYearMonth::new(number(3) as i32, number(4) as u8, 1).unwrap();
+                let unit = if fields[5] == "year" {
+                    YearMonthUnit::Year
+                } else {
+                    YearMonthUnit::Month
+                };
+                let mode = fields[7].parse().unwrap();
+                let until = start
+                    .until(end, unit, unit, number(6) as u32, mode)
+                    .unwrap()
+                    .fields();
+                let since = start
+                    .since(end, unit, unit, number(6) as u32, mode)
+                    .unwrap()
+                    .fields();
+                assert_eq!(until[0] * 12 + until[1], number(8), "{line}");
+                assert_eq!(since[0] * 12 + since[1], number(9), "{line}");
+            }
+        }
+        count += 1;
+    }
+    assert!(count > 2000);
+    println!("{count} independent ICU short-date cases");
+}
+
+#[test]
+fn short_date_reference_fields_and_parser_limits() {
+    use formatjs_temporal::{Overflow, PlainMonthDay, PlainYearMonth};
+    assert!(PlainYearMonth::new(-271821, 4, 1).is_ok());
+    assert!(PlainYearMonth::new(-271821, 3, 31).is_err());
+    assert!(PlainYearMonth::new(275760, 9, 30).is_ok());
+    assert!(PlainYearMonth::new(275760, 10, 1).is_err());
+    assert_eq!(
+        "2020-02-29T12:34+05:30"
+            .parse::<PlainYearMonth>()
+            .unwrap()
+            .fields(),
+        (2020, 2, 1)
+    );
+    assert_eq!(
+        "+999999-10-01".parse::<PlainMonthDay>().unwrap().fields(),
+        (10, 1, 1972)
+    );
+    assert_eq!(
+        "-999999-10-01".parse::<PlainMonthDay>().unwrap().fields(),
+        (10, 1, 1972)
+    );
+    assert_eq!(
+        "--0229"
+            .parse::<PlainMonthDay>()
+            .unwrap()
+            .to_plain_date(1900, Overflow::Constrain)
+            .unwrap()
+            .to_string(),
+        "1900-02-28"
+    );
+    assert!("2019-02-29".parse::<PlainMonthDay>().is_err());
+    assert_ne!(
+        PlainYearMonth::new(2020, 2, 2).unwrap(),
+        PlainYearMonth::new(2020, 2, 1).unwrap()
+    );
+    assert_ne!(
+        PlainMonthDay::new(2, 29, 2000).unwrap(),
+        PlainMonthDay::new(2, 29, 1972).unwrap()
+    );
+}
+
+#[test]
 fn independent_icu_date_arithmetic() {
     use formatjs_temporal::{Duration, Overflow, PlainDateTime};
     let mut count = 0;

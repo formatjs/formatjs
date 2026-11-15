@@ -177,3 +177,15 @@ copy_to_bin(
     srcs = glob(["test/built-ins/Temporal/PlainDateTime/**/*.js"]),
     visibility = ["@//packages/temporal:__pkg__"],
 )
+
+copy_to_bin(
+    name = "test262-temporal-year-month-copy",
+    srcs = glob(["test/built-ins/Temporal/PlainYearMonth/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-temporal-month-day-copy",
+    srcs = glob(["test/built-ins/Temporal/PlainMonthDay/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)

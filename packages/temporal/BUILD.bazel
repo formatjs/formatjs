@@ -22,9 +22,12 @@ formatjs_library(
         "kernel.ts",
         "plain-date.ts",
         "plain-date-time.ts",
+        "plain-month-day.ts",
         "plain-slots.ts",
         "plain-time.ts",
+        "plain-year-month.ts",
         "rounding.ts",
+        "short-date-core.ts",
         "zones.ts",
     ],
     description = "Temporal implementation",
@@ -71,6 +74,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "short_date_test",
+            ["tests/short-dates.test.ts"],
+            ["//conformance-tests/icu4j:temporal_short_date_fixtures"],
+        ),
         (
             "plain_date_time_test",
             ["tests/plain-date-time.test.ts"],
@@ -151,6 +159,10 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
 
+_YEARMONTH_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainYearMonth"
+
+_MONTHDAY_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainMonthDay"
+
 _DATE_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDate"
 
 _DATETIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDateTime"
@@ -158,6 +170,41 @@ _DATETIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDateTime"
 _TIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainTime"
 
 _DURATION_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Duration"
+
+_YEARMONTH_CORE_PATTERNS = [
+    _YEARMONTH_ROOT + "/*.js",
+    _YEARMONTH_ROOT + "/prototype/*.js",
+] + [_YEARMONTH_ROOT + "/prototype/" + name + "/**/*.js" for name in [
+    "calendarId",
+    "era",
+    "eraYear",
+    "year",
+    "month",
+    "monthCode",
+    "daysInYear",
+    "daysInMonth",
+    "monthsInYear",
+    "inLeapYear",
+    "add",
+    "subtract",
+    "toPlainDate",
+    "toString",
+    "toJSON",
+    "valueOf",
+]]
+
+_MONTHDAY_CORE_PATTERNS = [
+    _MONTHDAY_ROOT + "/*.js",
+    _MONTHDAY_ROOT + "/prototype/*.js",
+] + [_MONTHDAY_ROOT + "/prototype/" + name + "/**/*.js" for name in [
+    "calendarId",
+    "monthCode",
+    "day",
+    "toPlainDate",
+    "toString",
+    "toJSON",
+    "valueOf",
+]]
 
 _DATE_CORE_DIRECTORIES = ["prototype/" + name for name in [
     "calendarId",
@@ -294,9 +341,11 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
         ],
         env = {"TZ": "UTC"},
         exec_properties = {
@@ -307,6 +356,18 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("year_month_test262", _YEARMONTH_CORE_PATTERNS, []),
+        ("month_day_test262", _MONTHDAY_CORE_PATTERNS, []),
+        (
+            "year_month_test262_full",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "month_day_test262_full",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
         ("plain_date_test262", _DATE_CORE_PATTERNS, []),
         ("plain_date_time_test262", _DATETIME_CORE_PATTERNS, []),
         (
@@ -374,9 +435,11 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-temporal-duration-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
     ],
     node_toolchain = "//tools/test262:node-runtime",
     tags = ["manual"],
@@ -397,7 +460,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -409,9 +472,11 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@hermes//:hermesc",
         ],
         env = {"TZ": "UTC"},
@@ -422,6 +487,38 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("year_month_hermes_test262_strict", "source", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
+        ("year_month_hermes_bytecode_test262_strict", "bytecode", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
+        ("month_day_hermes_test262_strict", "source", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json", []),
+        ("month_day_hermes_bytecode_test262_strict", "bytecode", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json", []),
+        (
+            "year_month_hermes_test262_full",
+            "source",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "year_month_hermes_bytecode_test262_full",
+            "bytecode",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "month_day_hermes_test262_full",
+            "source",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "month_day_hermes_bytecode_test262_full",
+            "bytecode",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+            ["manual"],
+        ),
         ("plain_date_hermes_test262_strict", "source", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
         ("plain_date_hermes_bytecode_test262_strict", "bytecode", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
         ("plain_date_time_hermes_test262_strict", "source", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json", []),

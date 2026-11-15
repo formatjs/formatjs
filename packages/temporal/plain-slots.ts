@@ -21,3 +21,14 @@ export const getTimeSlot: (value: object) => bigint | undefined =
   times.get.bind(times)
 export const setTimeSlot: (value: object, slot: bigint) => unknown =
   times.set.bind(times)
+
+const yearMonths = new WeakMap<object, DateSlot>()
+const monthDays = new WeakMap<object, DateSlot>()
+export const getYearMonthSlot: (value: object) => DateSlot | undefined =
+  yearMonths.get.bind(yearMonths)
+export const setYearMonthSlot: (value: object, slot: DateSlot) => unknown =
+  yearMonths.set.bind(yearMonths)
+export const getMonthDaySlot: (value: object) => DateSlot | undefined =
+  monthDays.get.bind(monthDays)
+export const setMonthDaySlot: (value: object, slot: DateSlot) => unknown =
+  monthDays.set.bind(monthDays)

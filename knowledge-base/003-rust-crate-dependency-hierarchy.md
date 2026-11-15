@@ -295,3 +295,8 @@ integration paths stay failing, with no allowed implementation exclusions.
 constrain/reject arithmetic, parsing, clock carry/differences and rounding.
 They remain dependency-free and match 840 independent ICU arithmetic cases.
 Non-ISO/native calendar-relative APIs remain pending.
+
+`PlainYearMonth` and `PlainMonthDay` add ISO short-date parsing, validated reference
+fields, conversion, year/month arithmetic and calendar-span rounding/differences.
+They reuse the ISO epoch-day calculation and pass 2,028 independent ICU controls.
+The crate remains dependency-free and no_std.

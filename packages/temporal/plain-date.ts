@@ -4,6 +4,18 @@ import {
 } from '#packages/temporal/plain-date-time.js'
 import {PlainTime} from '#packages/temporal/plain-time.js'
 import {
+  createPlainYearMonth,
+  type PlainYearMonthObject,
+} from '#packages/temporal/plain-year-month.js'
+import {
+  createPlainMonthDay,
+  type PlainMonthDayObject,
+} from '#packages/temporal/plain-month-day.js'
+import {
+  yearMonthFields,
+  monthDayFields,
+} from '#packages/temporal/short-date-core.js'
+import {
   getDateSlot,
   setDateSlot,
   getDateTimeSlot,
@@ -64,6 +76,8 @@ export interface DateProperties {
   readonly inLeapYear: boolean
 }
 export interface PlainDateObject extends DateProperties {
+  toPlainYearMonth(): PlainYearMonthObject
+  toPlainMonthDay(): PlainMonthDayObject
   with(item: unknown, options?: unknown): PlainDateObject
   withCalendar(calendar: unknown): PlainDateObject
   add(duration: unknown, options?: unknown): PlainDateObject
@@ -197,6 +211,18 @@ function format(slot: DateSlot, calendarName: unknown = undefined): string {
   )
 }
 class PlainDateValue {
+  toPlainYearMonth(): PlainYearMonthObject {
+    const slot = read(this)
+    return createPlainYearMonth(
+      yearMonthFields(slot.calendar, {...dateFields(slot)}, 'constrain')
+    )
+  }
+  toPlainMonthDay(): PlainMonthDayObject {
+    const slot = read(this)
+    return createPlainMonthDay(
+      monthDayFields(slot.calendar, {...dateFields(slot)}, 'constrain')
+    )
+  }
   constructor(
     _year: unknown,
     _month: unknown,

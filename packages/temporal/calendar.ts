@@ -145,7 +145,7 @@ function monthFromCode(
   const month = Number(code.slice(1))
   return month + Number(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
 }
-export function calendarToEpochDay(
+export function calendarToEpochDayRaw(
   calendar: CalendarId,
   fields: CalendarFields,
   overflow: Overflow = 'constrain'
@@ -171,14 +171,28 @@ export function calendarToEpochDay(
   )
   let epoch = start(calendar, year) + day - 1
   for (let m = 1; m < month; m++) epoch += daysInMonth(calendar, year, m)
-  return dayCheck(epoch)
+  return integer(epoch)
+}
+export function calendarToEpochDay(
+  calendar: CalendarId,
+  fields: CalendarFields,
+  overflow: Overflow = 'constrain'
+): number {
+  return dayCheck(calendarToEpochDayRaw(calendar, fields, overflow))
 }
 export function calendarFromEpochDay(
   calendar: CalendarId,
   epoch: number
 ): CalendarDate {
+  return calendarFromEpochDayRaw(calendar, dayCheck(epoch))
+}
+export function calendarFromEpochDayRaw(
+  calendar: CalendarId,
+  epoch: number
+): CalendarDate {
   calendarCheck(calendar)
-  dayCheck(epoch)
+  if (Math.abs(integer(epoch)) > 110000000)
+    throw new RangeError('Calendar date out of range')
   if (calendar === 'iso8601') {
     const t = epoch * 86400000
     const year = YearFromTime(t),
@@ -204,16 +218,16 @@ export function calendarFromEpochDay(
     day: remaining + 1,
   }
 }
-export function addCalendarDate(
+export function addCalendarDateRaw(
   calendar: CalendarId,
   fields: CalendarFields,
   duration: DateDuration,
   overflow: Overflow = 'constrain'
 ): CalendarDate {
   overflowCheck(overflow)
-  const original = calendarFromEpochDay(
+  const original = calendarFromEpochDayRaw(
     calendar,
-    calendarToEpochDay(calendar, fields, 'reject')
+    calendarToEpochDayRaw(calendar, fields, 'reject')
   )
   const values = [
     duration.years ?? 0,
@@ -237,15 +251,25 @@ export function addCalendarDate(
     while (elapsedMonths(year + 1) <= serial) year++
     month = serial - elapsedMonths(year) + 1
   }
-  const epoch = calendarToEpochDay(
+  const epoch = calendarToEpochDayRaw(
     calendar,
     {year, month, day: original.day},
     overflow
   )
-  return calendarFromEpochDay(
+  return calendarFromEpochDayRaw(
     calendar,
-    dayCheck(epoch + integer(7 * values[2] + values[3]))
+    epoch + integer(7 * values[2] + values[3])
   )
+}
+export function addCalendarDate(
+  calendar: CalendarId,
+  fields: CalendarFields,
+  duration: DateDuration,
+  overflow: Overflow = 'constrain'
+): CalendarDate {
+  const result = addCalendarDateRaw(calendar, fields, duration, overflow)
+  dayCheck(calendarToEpochDayRaw(calendar, result, 'reject'))
+  return result
 }
 export function calendarDaysUntil(
   calendar: CalendarId,

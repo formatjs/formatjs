@@ -9,9 +9,15 @@ const resolve = (file: string) =>
   runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/benchmarks/temporal/${file}`
   )
-const {Instant, Duration, PlainTime, PlainDate, PlainDateTime} = await import(
-  pathToFileURL(resolve('instant-code.js')).href
-)
+const {
+  Instant,
+  Duration,
+  PlainTime,
+  PlainDate,
+  PlainDateTime,
+  PlainYearMonth,
+  PlainMonthDay,
+} = await import(pathToFileURL(resolve('instant-code.js')).href)
 const {Temporal: reference} = await import(
   pathToFileURL(resolve('reference-bundle.js')).href
 )
@@ -122,6 +128,32 @@ pairs.push(
   ]
 )
 let numberSink = 0
+const yearMonths = ['2020-02', '1970-01', '-000001-12', '+275760-08']
+const monthDays = ['02-29', '--1231', '2000-02-29', '+999999-10-01']
+pairs.push(
+  [
+    'PlainYearMonth parse/add/toJSON',
+    i =>
+      PlainYearMonth.from(yearMonths[i % yearMonths.length])
+        .add('P1M')
+        .toJSON(),
+    i =>
+      reference.PlainYearMonth.from(yearMonths[i % yearMonths.length])
+        .add('P1M')
+        .toJSON(),
+  ],
+  [
+    'PlainMonthDay parse/toPlainDate/toJSON',
+    i =>
+      PlainMonthDay.from(monthDays[i % monthDays.length])
+        .toPlainDate({year: 2001})
+        .toJSON(),
+    i =>
+      reference.PlainMonthDay.from(monthDays[i % monthDays.length])
+        .toPlainDate({year: 2001})
+        .toJSON(),
+  ]
+)
 const dates = ['2020-02-29', '2000-01-31', '1970-01-01', '-000001-12-31']
 pairs.push(
   [
@@ -240,7 +272,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration, PlainTime, PlainDate and PlainDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

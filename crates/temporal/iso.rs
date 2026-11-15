@@ -34,14 +34,7 @@ impl IsoDateTime {
         {
             return Err(Error::InvalidDateTime);
         }
-        let year = i128::from(self.year) - i128::from(self.month <= 2);
-        let era = year.div_euclid(400);
-        let year_of_era = year.rem_euclid(400);
-        let month = i128::from(self.month) + if self.month > 2 { -3 } else { 9 };
-        let day_of_year = (153 * month + 2) / 5 + i128::from(self.day) - 1;
-        let epoch_day = era * 146_097 + year_of_era * 365 + year_of_era / 4 - year_of_era / 100
-            + day_of_year
-            - 719_468;
+        let epoch_day = i128::from(epoch_day_from_iso(self.year, self.month, self.day));
         let value = epoch_day * NANOSECONDS_PER_DAY
             + (i128::from(self.hour) * 3600
                 + i128::from(self.minute) * 60
@@ -74,6 +67,17 @@ impl IsoDateTime {
             nanosecond: (time % 1_000_000_000) as u32,
         })
     }
+}
+pub(crate) fn epoch_day_from_iso(year: i32, month: u8, day: u8) -> i64 {
+    let year = i128::from(year) - i128::from(month <= 2);
+    let era = year.div_euclid(400);
+    let year_of_era = year.rem_euclid(400);
+    let month = i128::from(month) + if month > 2 { -3 } else { 9 };
+    (era * 146_097 + year_of_era * 365 + year_of_era / 4 - year_of_era / 100
+        + (153 * month + 2) / 5
+        + i128::from(day)
+        - 1
+        - 719_468) as i64
 }
 fn check_local(value: i128) -> Result<(), Error> {
     let bound = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;

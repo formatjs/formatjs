@@ -114,32 +114,34 @@ One shared-host V8 run, ns/op:
 
 | Operation                                  | Facade | Reference |
 | ------------------------------------------ | -----: | --------: |
-| construct/get epochNanoseconds             |    457 |       295 |
-| fromEpochNanoseconds/get epochMilliseconds |    402 |       473 |
-| fromEpochMilliseconds/get epochNanoseconds |    297 |       345 |
-| from ISO string/get epochNanoseconds       |  1,785 |     2,006 |
-| round microsecond/get epochNanoseconds     |  1,011 |     1,187 |
-| toJSON                                     |  1,311 |     2,266 |
-| toString named timezone                    |  2,028 |     5,734 |
-| Duration parse/toJSON                      |  5,067 |    52,787 |
-| Duration total microseconds                |  4,870 |     3,395 |
-| Instant until/toJSON                       |  7,133 |    30,023 |
-| PlainDate parse/add/toJSON                 |  6,930 |     5,448 |
-| PlainDateTime parse/add/toJSON             |  9,437 |    12,806 |
-| PlainTime parse/round/toJSON               |  4,327 |     5,401 |
-| PlainTime parse/add/toJSON                 |  5,688 |     7,298 |
+| construct/get epochNanoseconds             |    394 |       295 |
+| fromEpochNanoseconds/get epochMilliseconds |    387 |       468 |
+| fromEpochMilliseconds/get epochNanoseconds |    511 |       338 |
+| from ISO string/get epochNanoseconds       |  1,791 |     2,058 |
+| round microsecond/get epochNanoseconds     |  1,014 |     1,247 |
+| toJSON                                     |  1,273 |     2,320 |
+| toString named timezone                    |  1,913 |     5,735 |
+| Duration parse/toJSON                      |  4,946 |    51,803 |
+| Duration total microseconds                |  4,048 |     2,805 |
+| Instant until/toJSON                       |  5,356 |    25,722 |
+| PlainYearMonth parse/add/toJSON            |  6,522 |     3,822 |
+| PlainMonthDay parse/toPlainDate/toJSON     |  3,513 |     3,887 |
+| PlainDate parse/add/toJSON                 |  6,294 |     4,538 |
+| PlainDateTime parse/add/toJSON             |  7,825 |    10,965 |
+| PlainTime parse/round/toJSON               |  2,788 |     4,428 |
+| PlainTime parse/add/toJSON                 |  4,495 |     6,089 |
 
-Instant construction, Duration totals and PlainDate arithmetic are slower in
-this shared-host run. PlainDateTime arithmetic is faster. Partial workloads do
-not establish a complete polyfill performance win. Timezone cases use rules
-that agree between owned IANA 2026f and reference host Intl data.
+Instant construction, millisecond factories, Duration totals, PlainDate arithmetic
+and PlainYearMonth arithmetic are slower in this shared-host run. Other selected
+paths are faster. These partial workloads do not establish a complete polyfill
+performance win. Timezone rules agree for the selected cases.
 
-Minified gzip: public Instant/Duration/PlainTime/PlainDate/PlainDateTime namespace
-**78,854 bytes**, including owned IANA data and aliases. Independent Instant
-primitives are **2,688 bytes**; ISO/Hebrew calendar code is **1,841 bytes**. These
-entries cover different APIs and are not additive. Reference is **19,393 bytes**,
-using host Intl timezone data. The data-free WASM baseline below covers the
-earlier Instant/Duration operation surface; complete facade/data size is pending.
+Minified gzip: seven-class namespace **80,976 bytes**, including owned IANA data
+and aliases. Independent Instant primitives are **2,688 bytes**; numeric calendar
+code is **1,902 bytes**. These entries differ in API coverage and are not additive.
+Reference is **19,393 bytes**, using host Intl timezone data. The WASM baseline
+below covers earlier data-free Instant/Duration operations; complete facade/data
+comparisons remain pending.
 
 The full Instant serialization selection passes **454/456**. Duration's complete
 implemented-method selection passes **554/556**. Missing class constructors in
@@ -293,7 +295,7 @@ and timezone data. The TS bundle includes Duration object machinery; the WASM
 bridge is a benchmark-only synchronous string ABI with 256-byte input/output
 buffers, not Temporal brands, coercions or the complete public facade. The
 reference supplies a broader API and host Intl integration. These sizes do not
-predict a complete polyfill's size; the current 78,854-byte public TS namespace measurement
+predict a complete polyfill's size; the current 80,976-byte public TS namespace measurement
 above includes owned IANA data, date/time classes and a different entry surface.
 
 Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
@@ -364,7 +366,7 @@ checks resulting weekday, ordinal and ISO week/year metadata against ICU. Existi
 
 Strict selections cover complete construction/prototype/getter/arithmetic families:
 364 PlainDate and 518 PlainDateTime executions pass on Node and Hermes source and
-optimized bytecode. Full diagnostics retain 164/1308 and 108/1552 failures,
+optimized bytecode. Full diagnostics retain 134/1308 and 108/1552 failures,
 respectively. Missing year-month/month-day/zoned classes, Intl integration and
 Duration-relative helper paths remain raw failures. Real date-time conversions
 improve full PlainTime coverage to 958/986. No implementation gap is an exclusion.
@@ -372,3 +374,32 @@ improve full PlainTime coverage to 958/986. No implementation gap is an exclusio
 Five-class public namespace grows 5,071 gzip bytes from the previous measurement.
 Native Rust Hermes installation, all calendar engines and complete WASM/public
 object integration remain required by the full implementation goal.
+
+## PlainYearMonth and PlainMonthDay
+
+Both real classes share private calendar slots with date/time classes. Constructors
+preserve reference ISO fields; string/property-bag conversions choose canonical
+reference dates. Year-month bounds include reference days outside PlainDate's
+range. Separate internal calendar conversion helpers handle those days while
+public date bounds remain unchanged. Difference calculations allow unbounded
+intermediate calendar anchors but still validate required date endpoints.
+
+Rust provides ISO short-date parsing, reference-field storage, conversion,
+year/month arithmetic and differences/rounding. TS also uses the existing Hebrew
+calendar primitives; bounded Hebrew controls use forced full/implementation,
+while the timing reference remains the forced basic implementation.
+
+Both cores pass 2,028 independent ICU4J 79.1 cases covering Gregorian arithmetic,
+month/year metadata, reference dates, leap-day constraining and nine-mode calendar
+span rounding. Actual month lengths determine half ties, not fixed month counts.
+Array-iterator poisoning tests check builtin calendar field preparation.
+
+Complete construction/getter/arithmetic/conversion/serialization selections pass
+348 YearMonth and 150 MonthDay executions per Node/Hermes source/bytecode mode.
+Full diagnostics pass 1002/1022 and 388/398. Missing ZonedDateTime, Intl and relative
+Duration integration remain failures, never allowed exclusions. Other calendar
+engines, native Hermes installation and complete WASM facades stay required.
+
+Seven-class namespace adds 2,122 gzip bytes. Sampled YearMonth parsing/addition is
+slower than the reference; MonthDay conversion is slightly faster. Full results,
+including ordinary and boundary inputs, remain in facade-results.json.

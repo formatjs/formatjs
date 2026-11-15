@@ -10,8 +10,8 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports partial Instant, Duration, PlainTime, PlainDate and PlainDateTime APIs. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/Duration/PlainTime/ISO core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
+The public entry exports partial Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay APIs. ISO/Hebrew arithmetic
+and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust instant, duration, clock, ISO date/date-time and short-date core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
 
@@ -152,8 +152,43 @@ Both cores independently match 840 ICU Gregorian arithmetic cases, including
 leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
 ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
 364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
-Full diagnostics remain failing: 1144/1308 and 1444/1552. Existing PlainTime
+Full diagnostics remain failing: 1174/1308 and 1444/1552. Existing PlainTime
 improves to 958/986 through real date-time conversions. No missing behavior is
 allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
 integration, all calendars, native Hermes installation and complete WASM facades
 remain part of the active goal.
+
+## Short-date classes
+
+`plain-year-month.ts` and `plain-month-day.ts` provide real classes and private
+calendar slots. Reference ISO fields are preserved for constructor/brand copies
+and canonicalized for string/property-bag conversions. YearMonth includes months
+that intersect the valid Date domain even when the reference first day is outside
+that domain. `calendar.ts` now separates checked date conversions from internal
+extended-range helpers; checked Date limits stay unchanged. Date differences use
+extended calendar anchors so a temporary January outside the Date range does not
+reject an otherwise valid month difference. Required YearMonth date endpoints
+remain checked.
+
+Both TS and Rust ISO cores cover parsing, validation, reference-field equality,
+date conversion, year/month-only arithmetic and calendar-span rounding/differences.
+TS retains owned Hebrew month-code arithmetic and canonical reference searches.
+Other calendar engines and complete non-ISO conformance remain pending.
+
+Independent ICU4J Gregorian/BigDecimal controls supply 2,028 cases: arithmetic,
+month/year metadata, leap-day conversion, boundaries and signed nine-mode rounding
+against actual calendar lengths. A forced full polyfill adds bounded Hebrew
+reference-date controls; basic implementation remains the ISO timing reference.
+
+Strict whole-family selections pass 348 YearMonth and 150 MonthDay executions
+per Node/Hermes source/bytecode mode. Full diagnostics pass 1002/1022 and 388/398.
+No missing ZonedDateTime/Intl/relative Duration path is an allowed exclusion.
+Normal package gates and raw diagnostics remain separate. The active goal still
+requires ZonedDateTime/Now, remaining calendar engines, Intl/Date integration,
+full Rust/native Hermes behavior and equivalent complete WASM measurements.
+
+The real short-date conversions add 30 passing PlainDate executions, bringing
+its full diagnostic to 1174/1308. All seven raw class reports agree across Node,
+Hermes source and optimized bytecode; normal selections total 2,428 executions
+per mode. All 42 normal Temporal package/Rust/WASM checks pass. Full diagnostics
+remain failing and separate from those gates.

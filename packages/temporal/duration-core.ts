@@ -38,7 +38,8 @@ export function zeroDuration(): DurationFields {
   }
 }
 export function durationSign(fields: DurationFields): -1 | 0 | 1 {
-  for (const key of durationFieldNames) {
+  for (let index = 0; index < durationFieldNames.length; index++) {
+    const key = durationFieldNames[index]
     if (fields[key] < 0) return -1
     if (fields[key] > 0) return 1
   }
@@ -55,7 +56,8 @@ export function durationNanoseconds(
 }
 export function validateDuration(fields: DurationFields): DurationFields {
   const sign = durationSign(fields)
-  for (const key of durationFieldNames) {
+  for (let index = 0; index < durationFieldNames.length; index++) {
+    const key = durationFieldNames[index]
     const value = fields[key]
     if (
       !Number.isInteger(value) ||
@@ -89,7 +91,9 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
     throw new TypeError('Duration fields must be an object')
   const result: Partial<DurationFields> = Object.create(null)
   let found = false
-  for (const field of [...durationFieldNames].sort()) {
+  const sorted = durationFieldNames.slice().sort()
+  for (let index = 0; index < sorted.length; index++) {
+    const field = sorted[index]
     const number = (value as Record<string, unknown>)[field]
     if (number !== undefined) {
       result[field] = integralDurationNumber(number)
@@ -115,7 +119,7 @@ export function parseDurationString(value: string): DurationFields {
   )
     throw new RangeError('Invalid duration string')
   const result = zeroDuration()
-  for (const [index, field] of [
+  const parsedFields = [
     [2, 'years'],
     [3, 'months'],
     [4, 'weeks'],
@@ -123,8 +127,11 @@ export function parseDurationString(value: string): DurationFields {
     [6, 'hours'],
     [8, 'minutes'],
     [10, 'seconds'],
-  ] as const)
-    result[field] = +(match[index] ?? 0)
+  ] as const
+  for (let index = 0; index < parsedFields.length; index++) {
+    const pair = parsedFields[index]
+    result[pair[1]] = +(match[pair[0]] ?? 0)
+  }
   const fraction = (text: string | undefined): bigint =>
     BigInt((text?.slice(1) ?? '').padEnd(9, '0'))
   let extra =
@@ -137,7 +144,10 @@ export function parseDurationString(value: string): DurationFields {
   result.microseconds = Number((extra / 1000n) % 1000n)
   result.nanoseconds = Number(extra % 1000n)
   if (match[1] === '-')
-    for (const field of durationFieldNames) result[field] = -result[field] || 0
+    for (let index = 0; index < durationFieldNames.length; index++) {
+      const field = durationFieldNames[index]
+      result[field] = -result[field] || 0
+    }
   return validateDuration(result)
 }
 export function balanceDurationTime(

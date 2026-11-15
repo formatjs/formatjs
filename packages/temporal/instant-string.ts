@@ -1,4 +1,7 @@
-import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
+import {
+  isoToEpochNanoseconds,
+  type ISODateTime,
+} from '#packages/temporal/kernel.js'
 
 export function parseOffsetNanoseconds(
   value: string,
@@ -102,10 +105,10 @@ function isValidDate(year: string, month: string, day: string): boolean {
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
-export function parsePlainDateTimeString(
-  value: string,
-  dateOnly = false
-): {epochNanoseconds: bigint; calendar: string} {
+export interface ParsedDateFields extends Required<ISODateTime> {
+  calendar: string
+}
+export function parseISODateParts(value: string): ParsedDateFields {
   const match =
     /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ](\d{2})(?:(:?)(\d{2})(?:\6(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?)?([\s\S]*)$/.exec(
       value
@@ -121,19 +124,64 @@ export function parsePlainDateTimeString(
     throw new RangeError('Invalid ISO time')
   const fraction = (match[9] ?? '').padEnd(9, '0')
   return {
-    epochNanoseconds: isoToEpochNanoseconds({
-      year: +match[1],
-      month: +match[3],
-      day: +match[4],
-      hour: dateOnly ? 12 : hour,
-      minute: dateOnly ? 0 : minute,
-      second: dateOnly ? 0 : Math.min(59, second),
-      millisecond: dateOnly ? 0 : +fraction.slice(0, 3),
-      microsecond: dateOnly ? 0 : +fraction.slice(3, 6),
-      nanosecond: dateOnly ? 0 : +fraction.slice(6, 9),
-    }),
+    year: +match[1],
+    month: +match[3],
+    day: +match[4],
+    hour,
+    minute,
+    second: Math.min(59, second),
+    millisecond: +fraction.slice(0, 3),
+    microsecond: +fraction.slice(3, 6),
+    nanosecond: +fraction.slice(6, 9),
     calendar: annotations.calendar ?? 'iso8601',
   }
+}
+export function parsePlainDateTimeString(
+  value: string,
+  dateOnly = false
+): {epochNanoseconds: bigint; calendar: string} {
+  const fields = parseISODateParts(value)
+  return {
+    epochNanoseconds: isoToEpochNanoseconds(
+      dateOnly
+        ? {
+            ...fields,
+            hour: 12,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+            microsecond: 0,
+            nanosecond: 0,
+          }
+        : fields
+    ),
+    calendar: fields.calendar,
+  }
+}
+export function parseShortDateString(
+  value: string,
+  kind: 'year-month' | 'month-day'
+): {year: number; month: number; day: number; calendar: string} {
+  const index = value.indexOf('['),
+    body = index < 0 ? value : value.slice(0, index)
+  const annotation = validateAnnotations(index < 0 ? '' : value.slice(index))
+  const short =
+    kind === 'year-month'
+      ? /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body)
+      : /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+  if (short) {
+    if (
+      annotation.calendar !== undefined &&
+      annotation.calendar.toLowerCase() !== 'iso8601'
+    )
+      throw new RangeError('Short ISO date requires ISO calendar')
+    const year = kind === 'year-month' ? short[1] : '1972',
+      month = kind === 'year-month' ? short[2] : short[1],
+      day = kind === 'year-month' ? '01' : short[2]
+    if (!isValidDate(year, month, day)) throw new RangeError('Invalid ISO date')
+    return {year: +year, month: +month, day: +day, calendar: 'iso8601'}
+  }
+  return parseISODateParts(value)
 }
 export function parseCalendarString(value: string): string {
   const index = value.indexOf('['),

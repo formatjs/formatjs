@@ -321,6 +321,23 @@ genrule(
 )
 
 java_binary(
+    name = "temporal_short_date_oracle",
+    testonly = True,
+    srcs = ["TemporalShortDateOracle.java"],
+    main_class = "TemporalShortDateOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_date_fixtures",
+    testonly = True,
+    outs = ["temporal-short-date-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_date_oracle) $@",
+    tools = [":temporal_short_date_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
     name = "temporal_date_arithmetic_oracle",
     testonly = True,
     srcs = ["TemporalDateArithmeticOracle.java"],

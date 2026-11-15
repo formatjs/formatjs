@@ -6,6 +6,7 @@ mod format;
 mod iso;
 mod parse;
 mod rounding;
+mod short_dates;
 mod time;
 
 use core::fmt;
@@ -17,6 +18,7 @@ pub use duration::{
 pub use format::{FormattedInstant, Precision};
 pub use iso::IsoDateTime;
 pub use rounding::{RoundingMode, TimeUnit};
+pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
 pub use time::{FormattedTime, PlainTime};
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;

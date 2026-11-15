@@ -4,6 +4,8 @@ import {
   setTimeSlot as setSlot,
   getDateTimeSlot,
   getDateSlot,
+  getYearMonthSlot,
+  getMonthDaySlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainTimeString} from '#packages/temporal/instant-string.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
@@ -246,7 +248,9 @@ class PlainTimeValue implements PlainTimeObject {
       !object(item) ||
       getSlot(item) !== undefined ||
       getDateTimeSlot(item) ||
-      getDateSlot(item)
+      getDateSlot(item) ||
+      getYearMonthSlot(item) ||
+      getMonthDaySlot(item)
     )
       throw new TypeError('Expected partial time object')
     if (item.calendar !== undefined || item.timeZone !== undefined)

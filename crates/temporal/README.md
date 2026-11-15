@@ -13,7 +13,8 @@ instant.epochNanoseconds // 1n
 ```
 
 Current API: partial `Temporal.Instant`, `Temporal.Duration`, `Temporal.PlainTime`,
-`Temporal.PlainDate` and `Temporal.PlainDateTime`. Instant supports
+`Temporal.PlainDate`, `Temporal.PlainDateTime`, `Temporal.PlainYearMonth` and
+`Temporal.PlainMonthDay`. Instant supports
 construction, parsing, comparison, rounding, serialization, add/subtract and
 differences. Duration supports construction, ISO parsing, getters, immutable
 field changes, negation/absolute value, add/subtract, serialization and time-only
@@ -61,7 +62,7 @@ selection still has two missing-family helper failures (454/456 pass);
 it remains a failing manual diagnostic.
 
 Duration has a separate 468-execution strict core gate, passing on Node and
-Hermes source/bytecode. Its raw full diagnostic passes 698/1086. The complete
+Hermes source/bytecode. Its raw full diagnostic passes 710/1086. The complete
 implemented-method selection is 554/556; string helper scenarios need the
 remaining class constructors. No individual files or raw failures are hidden.
 
@@ -96,14 +97,31 @@ Missing classes, Intl integration and relative Duration paths remain failing.
 bazel test -c opt //packages/temporal:plain_date_time_test //packages/temporal:plain_date_test262 //packages/temporal:plain_date_time_test262
 ```
 
-## ISO date foundations
+PlainYearMonth/PlainMonthDay add validated reference ISO fields, parsing,
+updates, comparisons, date conversion and serialization. YearMonth supports
+year/month arithmetic and relative rounding/differences. The Rust ISO cores and
+TS implementation independently match 2,028 ICU short-date cases. TS Hebrew
+reference-date/month-code controls also pass against the forced full polyfill.
 
-`PlainDate`/`PlainDateTime` add checked ISO dates, exact local nanoseconds,
-ISO string parsing, date/time conversion, year/month constraining or rejection,
-signed clock carry, clock-unit differences, rounding and precision formatting.
-Calendar annotations other than ISO are not represented by these Rust types yet.
-Rust calendar-relative differences and the remaining calendars still need work.
+Strict selections pass 348 YearMonth and 150 MonthDay executions on Node and
+Hermes source/optimized bytecode. Raw diagnostics pass 1002/1022 and 388/398;
+missing ZonedDateTime, Intl and relative Duration paths remain visible failures.
+Other calendar engines and full native/WASM integration remain incomplete.
 
-An ICU4J 79.1 proleptic Gregorian oracle checks 840 arithmetic cases independently
-in Rust and TS, including month ends, BCE, leap years, nanosecond carry and range
-boundaries. Existing Gregorian conversion and clock-rounding controls remain.
+```sh
+bazel test -c opt //packages/temporal:short_date_test //packages/temporal:year_month_test262 //packages/temporal:month_day_test262
+```
+
+## ISO short-date cores
+
+`PlainYearMonth`/`PlainMonthDay` preserve reference ISO fields, parse short/full
+ISO strings and convert to checked dates. YearMonth supports year/month-only
+arithmetic and differences with actual calendar-span rounding. Year-month bounds
+include reference days outside PlainDate's domain; operations requiring a real
+date still validate that intermediate. MonthDay parsing uses the input year only
+for validation, then chooses the ISO reference year 1972.
+
+Both cores match 2,028 independent ICU calendar/decimal controls, including
+BCE, range edges, metadata, leap days and all nine rounding modes. The shared ISO
+epoch-day calculation remains protected by the full Gregorian conversion oracle.
+Non-ISO/native object-model integration remains pending.

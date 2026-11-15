@@ -7,10 +7,13 @@ import {
 import {
   calendarToEpochDay,
   calendarFromEpochDay,
+  calendarFromEpochDayRaw,
   daysInMonth,
   monthsInYear,
   calendarStartOfYear,
   addCalendarDate,
+  addCalendarDateRaw,
+  calendarToEpochDayRaw,
   type CalendarId,
   type Overflow,
   type CalendarDate,
@@ -24,6 +27,8 @@ import {
   getDateSlot,
   getDateTimeSlot,
   getTimeSlot,
+  getYearMonthSlot,
+  getMonthDaySlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -75,7 +80,11 @@ export function overflowOption(options: unknown): Overflow {
   return value
 }
 export function calendarId(value: unknown = 'iso8601'): string {
-  const slot = getDateSlot(value as object) ?? getDateTimeSlot(value as object)
+  const slot =
+    getDateSlot(value as object) ??
+    getDateTimeSlot(value as object) ??
+    getYearMonthSlot(value as object) ??
+    getMonthDaySlot(value as object)
   if (slot) return slot.calendar
   if (typeof value !== 'string')
     throw new TypeError('Calendar must be a string')
@@ -109,8 +118,11 @@ export function timeOf(value: bigint): bigint {
 export function isoDay(year: number, month: number, day: number): number {
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
-export function dateFields(slot: DateSlot): CalendarDate {
-  return calendarFromEpochDay(baseCalendar(slot.calendar), slot.epochDay)
+export function dateFields(slot: DateSlot, extended = false): CalendarDate {
+  return (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
+    baseCalendar(slot.calendar),
+    slot.epochDay
+  )
 }
 export function dayFromFields(
   calendar: string,
@@ -148,7 +160,8 @@ export function clockNanoseconds(
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
-  partial = false
+  partial = false,
+  shape: 'date' | 'year-month' = 'date'
 ): Record<string, unknown> {
   const names = withTime
     ? [
@@ -166,7 +179,9 @@ export function readDateFields(
     : ['day', 'month', 'monthCode', 'year']
   const result = Object.create(null) as Record<string, unknown>
   let any = false
-  for (const key of names) {
+  for (let index = 0; index < names.length; index++) {
+    const key = names[index]
+    if (shape === 'year-month' && key === 'day') continue
     const value = item[key]
     if (value !== undefined) {
       if (key === 'monthCode') {
@@ -192,7 +207,9 @@ export function partialObject(item: unknown): Record<string, unknown> {
     !object(item) ||
     getDateSlot(item) ||
     getDateTimeSlot(item) ||
-    getTimeSlot(item) !== undefined
+    getTimeSlot(item) !== undefined ||
+    getYearMonthSlot(item) ||
+    getMonthDaySlot(item)
   )
     throw new TypeError('Expected partial Temporal object')
   if (item.calendar !== undefined || item.timeZone !== undefined)
@@ -236,10 +253,11 @@ export const datePropertyNames = [
 ] as const
 export function dateProperty(
   slot: DateSlot,
-  key: string
+  key: string,
+  extended = false
 ): string | number | boolean | undefined {
   if (key === 'calendarId') return slot.calendar
-  const fields = dateFields(slot),
+  const fields = dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)
   switch (key) {
     case 'era':
@@ -301,6 +319,18 @@ export function checkDateTime(value: bigint): bigint {
   return value
 }
 
+function addDateForDifference(
+  slot: DateSlot,
+  duration: DurationFields,
+  overflow: Overflow
+): number {
+  const cal = baseCalendar(slot.calendar)
+  return calendarToEpochDayRaw(
+    cal,
+    addCalendarDateRaw(cal, dateFields(slot, true), duration, overflow),
+    'reject'
+  )
+}
 export function dateUntil(
   start: DateSlot,
   end: number,
@@ -310,27 +340,30 @@ export function dateUntil(
     sign = Math.sign(end - start.epochDay)
   if (sign === 0) return result
   let anchor = start.epochDay
-  const first = dateFields(start),
-    last = dateFields({epochDay: end, calendar: start.calendar})
+  const first = dateFields(start, true),
+    last = dateFields({epochDay: end, calendar: start.calendar}, true)
   if (largest === 'year') {
     result.years = last.year - first.year
-    anchor = addDate(start, result, 'constrain')
+    anchor = addDateForDifference(start, result, 'constrain')
     if ((anchor - end) * sign > 0) {
       result.years -= sign
-      anchor = addDate(start, result, 'constrain')
+      anchor = addDateForDifference(start, result, 'constrain')
     }
   }
   if (largest === 'year' || largest === 'month') {
-    const current = dateFields({epochDay: anchor, calendar: start.calendar})
+    const current = dateFields(
+      {epochDay: anchor, calendar: start.calendar},
+      true
+    )
     const serial = (fields: CalendarDate): number =>
       start.calendar === 'hebrew'
         ? Math.floor((235 * fields.year - 234) / 19) + fields.month - 1
         : fields.year * 12 + fields.month - 1
     result.months = serial(last) - serial(current)
-    anchor = addDate(start, result, 'constrain')
+    anchor = addDateForDifference(start, result, 'constrain')
     if ((anchor - end) * sign > 0) {
       result.months -= sign
-      anchor = addDate(start, result, 'constrain')
+      anchor = addDateForDifference(start, result, 'constrain')
     }
   }
   result.days = end - anchor
@@ -364,15 +397,18 @@ function unroundedDifference(
     largest
   )
   const clock = balanceDurationTime(time, 4)
-  for (const name of [
+  const timeFields = [
     'hours',
     'minutes',
     'seconds',
     'milliseconds',
     'microseconds',
     'nanoseconds',
-  ] as const)
+  ] as const
+  for (let index = 0; index < timeFields.length; index++) {
+    const name = timeFields[index]
     result[name] = clock[name]
+  }
   return result
 }
 function relativeEndpoint(
@@ -437,7 +473,9 @@ export function roundedDateTimeDifference(
     if (start === end) return zeroDuration()
     const fields = unroundedDifference(start, end, calendar, largest)
     const prefix = zeroDuration()
-    for (const unit of ['year', 'month', 'week', 'day']) {
+    const dateUnits = ['year', 'month', 'week', 'day']
+    for (let index = 0; index < dateUnits.length; index++) {
+      const unit = dateUnits[index]
       if (unit === smallest) break
       const key = `${unit}s` as keyof DurationFields
       prefix[key] = fields[key]
@@ -487,8 +525,12 @@ export function roundedDateTimeDifference(
     }
   }
   const result = unroundedDifference(start, rounded, calendar, largest)
-  if (since)
-    for (const key of Object.keys(result) as (keyof DurationFields)[])
+  if (since) {
+    const keys = Object.keys(result) as (keyof DurationFields)[]
+    for (let index = 0; index < keys.length; index++) {
+      const key = keys[index]
       result[key] = -result[key] || 0
+    }
+  }
   return result
 }

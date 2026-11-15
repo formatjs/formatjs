@@ -15,7 +15,31 @@ import {
   PlainDate,
   type PlainDateConstructor,
 } from '#packages/temporal/plain-date.js'
-export {Instant, Duration, PlainTime, PlainDateTime, PlainDate}
+import {
+  PlainYearMonth,
+  type PlainYearMonthConstructor,
+} from '#packages/temporal/plain-year-month.js'
+import {
+  PlainMonthDay,
+  type PlainMonthDayConstructor,
+} from '#packages/temporal/plain-month-day.js'
+export {
+  Instant,
+  Duration,
+  PlainTime,
+  PlainDateTime,
+  PlainDate,
+  PlainYearMonth,
+  PlainMonthDay,
+}
+export type {
+  PlainYearMonthConstructor,
+  PlainYearMonthObject,
+} from '#packages/temporal/plain-year-month.js'
+export type {
+  PlainMonthDayConstructor,
+  PlainMonthDayObject,
+} from '#packages/temporal/plain-month-day.js'
 export type {
   PlainDateTimeConstructor,
   PlainDateTimeObject,
@@ -42,6 +66,8 @@ export const Temporal: {
   PlainTime: PlainTimeConstructor
   PlainDateTime: PlainDateTimeConstructor
   PlainDate: PlainDateConstructor
+  PlainYearMonth: PlainYearMonthConstructor
+  PlainMonthDay: PlainMonthDayConstructor
 } = Object.defineProperties(
   {},
   {
@@ -50,6 +76,8 @@ export const Temporal: {
     PlainTime: {value: PlainTime, writable: true, configurable: true},
     PlainDateTime: {value: PlainDateTime, writable: true, configurable: true},
     PlainDate: {value: PlainDate, writable: true, configurable: true},
+    PlainYearMonth: {value: PlainYearMonth, writable: true, configurable: true},
+    PlainMonthDay: {value: PlainMonthDay, writable: true, configurable: true},
     [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
   }
 ) as {
@@ -58,4 +86,6 @@ export const Temporal: {
   PlainTime: PlainTimeConstructor
   PlainDateTime: PlainDateTimeConstructor
   PlainDate: PlainDateConstructor
+  PlainYearMonth: PlainYearMonthConstructor
+  PlainMonthDay: PlainMonthDayConstructor
 }

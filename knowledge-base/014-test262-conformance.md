@@ -276,7 +276,7 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 ## Temporal development selections
 
 `packages/temporal` owns strict selections of 346 Instant, 468 Duration, 234 PlainTime,
-364 PlainDate and 518 PlainDateTime
+364 PlainDate, 518 PlainDateTime, 348 PlainYearMonth and 150 PlainMonthDay
 executions, passing on Node/Hermes source and optimized bytecode. These are
 separate from the twelve complete Intl selections above. Full Temporal compliance
 is not established: raw Instant is 882/934; raw Duration is 710/1086; raw PlainTime is 958/986. PlainTime has 28 raw
@@ -286,7 +286,7 @@ Complete implemented-method sweeps retain two missing-class string helper
 failures each. No missing class, method or calendar behavior is treated as an
 allowed conformance exclusion. See [implementation tracking](015-temporal.md).
 
-Date/date-time development diagnostics pass 1144/1308 and 1444/1552 on Node and
+Date/date-time development diagnostics pass 1174/1308 and 1444/1552 on Node and
 Hermes source/bytecode. These remain incomplete implementation diagnostics,
 separate from passing strict selections. All missing class/calendar/Intl/Duration
 integration paths stay failing, with no allowed implementation exclusions.
@@ -295,3 +295,7 @@ Full Hermes Temporal development targets use Bazel's large test budget so the
 complete source/bytecode reports finish under concurrent load. The harness keeps
 its 30-second per-case deadline. A timed-out/truncated report never counts as a
 completed diagnostic or an allowed implementation failure.
+
+Short-date development selections pass 348 YearMonth and 150 MonthDay executions
+per Node/Hermes source/bytecode mode. Full diagnostics pass 1002/1022 and 388/398,
+retaining all missing class/Intl/relative Duration behavior as failures.

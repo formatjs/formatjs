@@ -227,8 +227,8 @@
     },
     "full": {
       "executions": 1308,
-      "passes": 1144,
-      "failures": 164,
+      "passes": 1174,
+      "failures": 134,
       "failuresByArea": {
         "compare": 6,
         "from": 10,
@@ -236,8 +236,6 @@
         "prototype/since": 6,
         "prototype/toLocaleString": 4,
         "prototype/toPlainDateTime": 6,
-        "prototype/toPlainMonthDay": 14,
-        "prototype/toPlainYearMonth": 16,
         "prototype/toZonedDateTime": 88,
         "prototype/until": 6,
         "prototype/with": 2,
@@ -260,8 +258,8 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1308,
-          "passes": 1144,
-          "failures": 164,
+          "passes": 1174,
+          "failures": 134,
           "failuresByArea": {
             "compare": 6,
             "from": 10,
@@ -269,8 +267,6 @@
             "prototype/since": 6,
             "prototype/toLocaleString": 4,
             "prototype/toPlainDateTime": 6,
-            "prototype/toPlainMonthDay": 14,
-            "prototype/toPlainYearMonth": 16,
             "prototype/toZonedDateTime": 88,
             "prototype/until": 6,
             "prototype/with": 2,
@@ -279,8 +275,8 @@
         },
         "optimizedBytecode": {
           "executions": 1308,
-          "passes": 1144,
-          "failures": 164,
+          "passes": 1174,
+          "failures": 134,
           "failuresByArea": {
             "compare": 6,
             "from": 10,
@@ -288,8 +284,6 @@
             "prototype/since": 6,
             "prototype/toLocaleString": 4,
             "prototype/toPlainDateTime": 6,
-            "prototype/toPlainMonthDay": 14,
-            "prototype/toPlainYearMonth": 16,
             "prototype/toZonedDateTime": 88,
             "prototype/until": 6,
             "prototype/with": 2,
@@ -379,5 +373,130 @@
     },
     "exclusions": [],
     "icuArithmeticCases": 840
+  },
+  "plainYearMonth": {
+    "full": {
+      "executions": 1022,
+      "passes": 1002,
+      "failures": 20,
+      "failuresByArea": {
+        "compare": 2,
+        "from": 2,
+        "prototype/equals": 2,
+        "prototype/since": 4,
+        "prototype/toLocaleString": 4,
+        "prototype/until": 4,
+        "prototype/with": 2
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1022,
+          "passes": 1002,
+          "failures": 20,
+          "failuresByArea": {
+            "compare": 2,
+            "from": 2,
+            "prototype/equals": 2,
+            "prototype/since": 4,
+            "prototype/toLocaleString": 4,
+            "prototype/until": 4,
+            "prototype/with": 2
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1022,
+          "passes": 1002,
+          "failures": 20,
+          "failuresByArea": {
+            "compare": 2,
+            "from": 2,
+            "prototype/equals": 2,
+            "prototype/since": 4,
+            "prototype/toLocaleString": 4,
+            "prototype/until": 4,
+            "prototype/with": 2
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 348,
+          "passes": 348,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 348,
+          "passes": 348,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 348,
+      "passes": 348,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuShortDateCases": 2028
+  },
+  "plainMonthDay": {
+    "full": {
+      "executions": 398,
+      "passes": 388,
+      "failures": 10,
+      "failuresByArea": {
+        "from": 2,
+        "prototype/equals": 2,
+        "prototype/toLocaleString": 4,
+        "prototype/with": 2
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 398,
+          "passes": 388,
+          "failures": 10,
+          "failuresByArea": {
+            "from": 2,
+            "prototype/equals": 2,
+            "prototype/toLocaleString": 4,
+            "prototype/with": 2
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 398,
+          "passes": 388,
+          "failures": 10,
+          "failuresByArea": {
+            "from": 2,
+            "prototype/equals": 2,
+            "prototype/toLocaleString": 4,
+            "prototype/with": 2
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 150,
+          "passes": 150,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 150,
+          "passes": 150,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 150,
+      "passes": 150,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuShortDateCases": 2028
   }
 }

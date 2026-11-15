@@ -13,7 +13,8 @@ instant.epochNanoseconds // 1n
 ```
 
 Current API: partial `Temporal.Instant`, `Temporal.Duration`, `Temporal.PlainTime`,
-`Temporal.PlainDate` and `Temporal.PlainDateTime`. Instant supports
+`Temporal.PlainDate`, `Temporal.PlainDateTime`, `Temporal.PlainYearMonth` and
+`Temporal.PlainMonthDay`. Instant supports
 construction, parsing, comparison, rounding, serialization, add/subtract and
 differences. Duration supports construction, ISO parsing, getters, immutable
 field changes, negation/absolute value, add/subtract, serialization and time-only
@@ -89,9 +90,24 @@ Rust provides ISO date/date-time foundations; native calendar-relative APIs
 remain incomplete. Both cores match 840 independent ICU arithmetic cases.
 
 Strict date/date-time selections pass 364 and 518 executions on Node and Hermes
-source/optimized bytecode. Full raw diagnostics pass 1144/1308 and 1444/1552.
+source/optimized bytecode. Full raw diagnostics pass 1174/1308 and 1444/1552.
 Missing classes, Intl integration and relative Duration paths remain failing.
 
 ```sh
 bazel test -c opt //packages/temporal:plain_date_time_test //packages/temporal:plain_date_test262 //packages/temporal:plain_date_time_test262
+```
+
+PlainYearMonth/PlainMonthDay add validated reference ISO fields, parsing,
+updates, comparisons, date conversion and serialization. YearMonth supports
+year/month arithmetic and relative rounding/differences. The Rust ISO cores and
+TS implementation independently match 2,028 ICU short-date cases. TS Hebrew
+reference-date/month-code controls also pass against the forced full polyfill.
+
+Strict selections pass 348 YearMonth and 150 MonthDay executions on Node and
+Hermes source/optimized bytecode. Raw diagnostics pass 1002/1022 and 388/398;
+missing ZonedDateTime, Intl and relative Duration paths remain visible failures.
+Other calendar engines and full native/WASM integration remain incomplete.
+
+```sh
+bazel test -c opt //packages/temporal:short_date_test //packages/temporal:year_month_test262 //packages/temporal:month_day_test262
 ```

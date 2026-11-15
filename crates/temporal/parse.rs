@@ -200,20 +200,7 @@ pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
 
 pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
-    annotations(&value[index..])?;
-    let mut calendar_seen = false;
-    for annotation in value[index..].split('[').skip(1) {
-        let text = annotation
-            .trim_end_matches(']')
-            .strip_prefix('!')
-            .unwrap_or(annotation.trim_end_matches(']'));
-        if let Some(calendar) = text.strip_prefix("u-ca=") {
-            if !calendar_seen && !calendar.eq_ignore_ascii_case("iso8601") {
-                return Err(Error::InvalidSyntax);
-            }
-            calendar_seen = true;
-        }
-    }
+    iso_annotations(&value[index..])?;
     let body = &value[..index];
     let mut input = Cursor::new(body);
     let negative = input.take(b'-');
@@ -250,6 +237,76 @@ pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> 
         second,
         nanosecond,
     })
+}
+
+fn iso_annotations(value: &str) -> Result<(), Error> {
+    annotations(value)?;
+    let mut calendar_seen = false;
+    for annotation in value.split('[').skip(1) {
+        let text = annotation
+            .trim_end_matches(']')
+            .strip_prefix('!')
+            .unwrap_or(annotation.trim_end_matches(']'));
+        if let Some(calendar) = text.strip_prefix("u-ca=") {
+            if !calendar_seen && !calendar.eq_ignore_ascii_case("iso8601") {
+                return Err(Error::InvalidSyntax);
+            }
+            calendar_seen = true;
+        }
+    }
+    Ok(())
+}
+pub(crate) fn short_date_fields(value: &str, year_month: bool) -> Result<IsoDateTime, Error> {
+    let index = value.find('[').unwrap_or(value.len());
+    iso_annotations(&value[index..])?;
+    let body = &value[..index];
+    if !year_month
+        && (body.len() > 7
+            || body.starts_with('+')
+            || (body.starts_with('-') && !body.starts_with("--")))
+    {
+        let fields = plain_date_time_fields(value)?;
+        if fields.day == 0 || fields.day > crate::date::month_length(fields.year, fields.month) {
+            return Err(Error::InvalidDateTime);
+        }
+        return Ok(fields);
+    }
+    let mut input = Cursor::new(body);
+    let short = if year_month {
+        let negative = input.take(b'-');
+        let extended = negative || input.take(b'+');
+        let year = input.number(if extended { 6 } else { 4 })? as i32;
+        if negative && year == 0 {
+            return Err(Error::InvalidSyntax);
+        }
+        input.take(b'-');
+        let month = input.number(2)? as u8;
+        (if negative { -year } else { year }, month, 1)
+    } else {
+        let md = body.strip_prefix("--").unwrap_or(body);
+        input = Cursor::new(md);
+        let month = input.number(2)? as u8;
+        input.take(b'-');
+        let day = input.number(2)? as u8;
+        (1972, month, day)
+    };
+    let fields = if input.position == input.bytes.len() {
+        IsoDateTime {
+            year: short.0,
+            month: short.1,
+            day: short.2,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            nanosecond: 0,
+        }
+    } else {
+        plain_date_time_fields(value)?
+    };
+    if fields.day == 0 || fields.day > crate::date::month_length(fields.year, fields.month) {
+        return Err(Error::InvalidDateTime);
+    }
+    Ok(fields)
 }
 
 fn annotations(mut value: &str) -> Result<(), Error> {
