@@ -700,3 +700,40 @@ profile's complete primary set.
 Native zoned string parsing/formatting, Hermes C ABI/JSI installation and native
 Test262 remain required. No WASM export or full-facade size/performance claim is
 added by this registry layer.
+
+## Native zoned strings
+
+Rust ZonedDateTime now parses required zone annotations through TimeZoneRegistry.
+`parse` selects arithmetic calendars; `parse_in` takes an explicit provider for
+all 16, including borrowed table engines. `FromStr` uses the optional compiled
+registry with the default arithmetic calendar type. Basic/extended ISO syntax,
+critical/unknown annotations, calendar aliases and first-calendar handling reuse
+the shared grammar. Strings retain ISO coordinates independently of the calendar.
+
+`from_local_with_offset` separates UTC Z, wall time, exact offsets and
+minute-precision string offsets. Reject/prefer/use/ignore policies preserve
+historical second matching and disambiguation rules. Prefer/reject check the local
+UTC-day range; use/ignore can accept lower-limit local fields whose offset-adjusted
+instant is valid. Date-only strings use start-of-day even when reject is selected.
+These controls follow InterpretISODateTimeOffset and pinned Test262 limit vectors.
+
+Display/format on resolved zones support precision, all rounding modes, offset
+visibility, zone-name critical/visibility and calendar annotation options. Round
+the instant first, then query its offset; crossing gaps/folds cannot reuse the old
+offset. ISO date/time and offset-minute formatting reuse existing primitives.
+
+A new ICU4J/java.time oracle supplies 23,610 recognized-IANA string rows, adding
+1850/1900/1945/1970/2000 January/July histories to existing post-2100 samples.
+5,940 ICU/BigDecimal rows cover all nine modes, minute/digits0..9, both signs,
+transition crossings, exact instant limits and annotation policies. No recognized
+IANA rows are excluded. ICU-only legacy IDs must reject. Typed calendar tests check
+all 16 providers through UTC parse/format, without requiring the compiled zone pack.
+Native Test262-derived vectors cover syntactic offset matching, extreme bounds,
+fold/gap choices and date-only skipped dates. These are numerical/string controls;
+native Hermes Test262 and full WASM facade/data measurements remain required.
+
+The shared offset formatter's primitive size refresh is
+`benchmarks/temporal/zoned-string-size-results.json`: WASM raw 43,568/gzip 19,531,
+bridge 463 gzip bytes, matched TS 3,757. Namespace TS remains 360,277 gzip.
+This remains a data-free primitive ABI measurement, excluding the new zoned facade
+and compiled calendar/timezone packs. Full backend size/performance remains open.

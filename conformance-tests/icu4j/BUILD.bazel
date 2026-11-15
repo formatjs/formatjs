@@ -664,3 +664,21 @@ genrule(
     tools = [":temporal_short_calendar_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_zoned_string_oracle",
+    testonly = True,
+    srcs = ["TemporalZonedStringOracle.java"],
+    main_class = "TemporalZonedStringOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_zoned_string_fixtures",
+    testonly = True,
+    srcs = [":temporal_timezone_fixtures"],
+    outs = ["temporal-zoned-string-fixtures.tsv"],
+    cmd = "$(execpath :temporal_zoned_string_oracle) $@ $(location :temporal_timezone_fixtures)",
+    tools = [":temporal_zoned_string_oracle"],
+    visibility = ["//visibility:public"],
+)

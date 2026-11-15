@@ -15,8 +15,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Native zoned string facades, Hermes bindings and complete WASM facades
-remain pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
+checked. Native Hermes bindings and complete WASM facades remain pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
@@ -203,3 +202,46 @@ such as ACT, are checked as invalid identifiers; every recognized IANA name must
 resolve successfully. Existing zoned/relative/day-rounding controls use the same
 registry. Native Hermes installation and full WASM facade/data benchmarks remain
 pending.
+
+## Zoned strings
+
+`ZonedDateTime::parse` takes a registry and `ZonedParseOptions`. Strings require a
+zone annotation. `parse_in` additionally accepts a calendar provider, including
+borrowed Chinese/Dangi/Umm al-Qura tables. The default arithmetic calendar parser
+accepts the 13 arithmetic calendar IDs; explicit providers cover all 16. The
+compiled-timezone variant also implements `FromStr` for its default calendar type.
+
+`OffsetInput` distinguishes wall time, UTC `Z`, exact offsets and minute-precision
+string offsets. `OffsetOption` supplies reject/prefer/use/ignore; disambiguation
+supplies compatible/earlier/later/reject. Property-bag bridges use `Exact`, while
+minute-only strings may match rounded historical second offsets. Explicit seconds
+require exact matching. `Z` uses UTC regardless of the offset option. Date-only
+strings select the first instant of the day, including skipped dates.
+
+```rust
+use formatjs_temporal::{ResolvedTimeZone, ZonedDateTime};
+let value: ZonedDateTime<ResolvedTimeZone<'static>> =
+    "1900-01-01T00:00+00:09[Europe/Paris]".parse().unwrap();
+assert_eq!(value.to_string(), "1900-01-01T00:00:00+00:09[Europe/Paris]");
+```
+
+`Display` and `format(ZonedFormatOptions)` use resolved zone identity. Precision,
+all nine rounding modes, offset visibility, zone-name visibility/critical flags
+and calendar annotations are supported. Formatting rounds the instant first,
+then recomputes the zone offset; crossing a transition prints the resulting local
+clock/offset. ISO reference fields remain independent of the selected calendar.
+Arbitrary unnamed `TimeZone` providers still support arithmetic and typed
+`from_local_with_offset`; string output requires the identity supplied by a
+resolved registry zone.
+
+Independent ICU/java.time controls check 23,610 parsed/default strings across
+historical and future dates. Another 5,940 ICU/BigDecimal controls check explicit
+precision, all rounding modes, transitions, public instant limits and annotation
+options. Native Test262-derived cases cover folds/gaps, offset policies, date-only
+midnight gaps, syntax-dependent historical matching and asymmetric local bounds.
+These typed numerical/string checks do not install a native Hermes backend.
+
+The [size refresh](../../benchmarks/temporal/zoned-string-size-results.json) keeps
+the existing data-free primitive scope: TS 3,757 gzip bytes, WASM 19,531 plus
+463 bridge bytes. The full TS namespace remains 360,277 gzip bytes. These numbers
+do not measure the native zoned facade or compiled calendar/timezone data.

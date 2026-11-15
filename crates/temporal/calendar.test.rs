@@ -1070,3 +1070,47 @@ fn public_short_date_fields_validate_years_codes_and_annotations() {
     );
     assert!(hebrew_leap.checked_add(one_year, Overflow::Reject).is_err());
 }
+
+#[test]
+fn zoned_strings_retain_all_calendar_providers() {
+    with_all_calendars(|providers| {
+        for &calendar in providers {
+            let text = format!("2020-02-29T12:34:56.123456789[UTC][u-ca={}]", calendar.id());
+            let value = ZonedDateTime::parse_in(
+                &text,
+                formatjs_temporal::TimeZoneRegistry::empty(),
+                calendar,
+                formatjs_temporal::ZonedParseOptions::default(),
+            )
+            .unwrap();
+            assert_eq!(value.calendar_id(), calendar.id());
+            let expected = PlainDate::new(2020, 2, 29)
+                .unwrap()
+                .with_calendar(calendar)
+                .unwrap();
+            assert_eq!(
+                value.local().unwrap().calendar_fields().unwrap(),
+                expected.calendar_fields().unwrap()
+            );
+            let serialized = value.to_string();
+            let roundtrip = ZonedDateTime::parse_in(
+                &serialized,
+                formatjs_temporal::TimeZoneRegistry::empty(),
+                calendar,
+                formatjs_temporal::ZonedParseOptions::default(),
+            )
+            .unwrap();
+            assert_eq!(roundtrip.instant(), value.instant());
+            assert_eq!(roundtrip.calendar_id(), calendar.id());
+            assert!(
+                ZonedDateTime::parse_in(
+                    "2020-02-29[UTC][u-ca=unknown]",
+                    formatjs_temporal::TimeZoneRegistry::empty(),
+                    calendar,
+                    formatjs_temporal::ZonedParseOptions::default()
+                )
+                .is_err()
+            );
+        }
+    });
+}

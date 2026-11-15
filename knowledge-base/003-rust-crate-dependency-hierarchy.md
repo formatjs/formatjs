@@ -676,3 +676,11 @@ core retains borrowed registry APIs and excludes the pack. The generator imports
 `@formatjs_generated/tz` only at build time; checked const constructors validate
 records. Native ICU tests now resolve real zones through this production registry,
 including aliases and UTC, rather than decoding JSON in tests.
+
+`temporal/zoned_string.rs` resolves strings through TimeZoneRegistry. Typed offset
+hints keep UTC, wall time, exact and rounded-minute matching separate; date-only
+strings reuse the existing start-of-day operation. Resolved-zone formatting rounds
+instants before querying offsets and preserves calendar annotations. Plain/Instant
+and zoned formatting share offset-minute rounding. ICU/java.time/BigDecimal
+controls verify strings and all rounding modes; native Hermes installation remains
+pending.

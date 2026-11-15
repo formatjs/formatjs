@@ -954,7 +954,7 @@
     "controls": "ICU4J 79.1 arithmetic and mixed ICU/HKO/KASI table fixtures. Public getters, typed field reconstruction, addition, comparison, differences, relative totals and ceil/floor/trunc rounding. No oracle rows excluded.",
     "utcZonedScope": "Requires representable UTC Instants. Separate +/-12-hour fixed-zone controls cover both extended plain-date limits across all 16 providers.",
     "calendarIdentity": "Differences reject mismatches for all units. compare orders ISO coordinates; equals also checks calendar ID. Representation may differ between arithmetic and CalendarRef providers.",
-    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned string/registry facade remains pending. Short-date parsing canonicalizes calendar reference dates.",
+    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned strings now use the production registry. Short-date parsing canonicalizes calendar reference dates.",
     "implementation": "Sealed copyable CalendarProvider; CalendarRef unifies 13 arithmetic and three borrowed table engines. No formatter, runtime ICU or allocation dependency. Existing fields() retains ISO coordinates; calendar_fields() supplies calendar values.",
     "test262": "Native numerical/oracle coverage only. Native Hermes Test262 backend not installed yet.",
     "exclusions": []
@@ -984,9 +984,22 @@
     "controls": "Existing ICU4J corpora now use production registry, including aliases. Transition query instants check both directions and adjacent nanoseconds. All recognized IANA names must resolve; ICU-only legacy names absent from the pinned identifier table must reject. Primary record coverage equals independent ICU identity profile.",
     "data": "Caller-owned borrowed records or Bazel-generated static all-zone pack via compiled_time_zones. Checked const constructors validate transitions and footer rules. No runtime allocation, JSON, serde or formatter dependency. Default core/WASM excludes the pack.",
     "remaining": [
-      "Native zoned string facade",
       "Hermes native installation and Test262",
       "Complete WASM facade/data and matched benchmarks"
     ]
+  },
+  "nativeZonedStrings": {
+    "oracleRows": {
+      "parsingAndDefaultFormatting": 23610,
+      "roundingAndFormatOptions": 5940
+    },
+    "controls": "ICU4J 79.1 offsets, java.time fields and BigDecimal rounding. Historical 1850/1900/1945/1970/2000 plus post-2100 samples; all nine modes and public instant limits. Every recognized IANA row checks production lookup; ICU-only legacy IDs reject.",
+    "offsets": "UTC, wall, exact and minute-precision hints; reject/prefer/use/ignore; exact matching for explicit seconds, historical rounding for minute strings.",
+    "annotations": "ISO grammar, calendar aliases/critical/duplicate rules, explicit borrowed calendar providers across all 16 calendars. Default FromStr uses the 13 arithmetic calendars and optional compiled timezone pack.",
+    "formatting": "Rounds instant before querying offset; precision, offset visibility, zone critical/visibility and calendar annotations.",
+    "test262": "Pinned native numerical/string regression vectors; native Hermes backend still absent.",
+    "exclusions": [],
+    "sizeSnapshot": "benchmarks/temporal/zoned-string-size-results.json",
+    "sizeScope": "Existing data-free primitive ABI only: TS3757 gzip bytes, WASM19531 plus463 bridge. New zoned facade and calendar/timezone data are not exported by this ABI."
   }
 }

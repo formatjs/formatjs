@@ -239,6 +239,75 @@ pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> 
     })
 }
 
+pub(crate) struct ZonedFields<'a> {
+    pub fields: IsoDateTime,
+    pub zone: &'a str,
+    pub offset: crate::OffsetInput,
+    pub date_only: bool,
+}
+pub(crate) fn zoned_fields(value: &str) -> Result<ZonedFields<'_>, Error> {
+    let index = value.find('[').ok_or(Error::InvalidSyntax)?;
+    annotations(&value[index..])?;
+    let zone = value[index..]
+        .split('[')
+        .skip(1)
+        .find_map(|part| {
+            let text = part.trim_end_matches(']').trim_start_matches('!');
+            (!text.contains('=')).then_some(text)
+        })
+        .ok_or(Error::InvalidSyntax)?;
+    let body = &value[..index];
+    let mut input = Cursor::new(body);
+    let negative = input.take(b'-');
+    let extended = negative || input.take(b'+');
+    let year = input.number(if extended { 6 } else { 4 })? as i32;
+    if negative && year == 0 {
+        return Err(Error::InvalidSyntax);
+    }
+    let separated = input.take(b'-');
+    let month = input.number(2)? as u8;
+    if separated && !input.take(b'-') {
+        return Err(Error::InvalidSyntax);
+    }
+    let day = input.number(2)? as u8;
+    let has_time = input.take(b'T') || input.take(b't') || input.take(b' ');
+    let (hour, minute, second, nanosecond) = if has_time {
+        input.time(false, true)?
+    } else {
+        (0, 0, 0, 0)
+    };
+    let offset = if has_time && (input.take(b'Z') || input.take(b'z')) {
+        crate::OffsetInput::Utc
+    } else if has_time && input.peek().is_some() {
+        let start = input.position;
+        let value = input.offset(true)?;
+        if matches!(input.position - start, 3 | 5 | 6) {
+            crate::OffsetInput::Minute(value)
+        } else {
+            crate::OffsetInput::Exact(value)
+        }
+    } else {
+        crate::OffsetInput::Wall
+    };
+    if input.position != body.len() {
+        return Err(Error::InvalidSyntax);
+    }
+    Ok(ZonedFields {
+        fields: IsoDateTime {
+            year: if negative { -year } else { year },
+            month,
+            day,
+            hour,
+            minute,
+            second,
+            nanosecond,
+        },
+        zone,
+        offset,
+        date_only: !has_time,
+    })
+}
+
 fn calendar_annotation(value: &str) -> Option<&str> {
     value.split('[').skip(1).find_map(|part| {
         part.trim_end_matches(']')

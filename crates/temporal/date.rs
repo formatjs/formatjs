@@ -196,7 +196,10 @@ impl<C: CalendarProvider> fmt::Display for PlainDate<C> {
         write_calendar(f, self.calendar_id())
     }
 }
-fn write_date(f: &mut fmt::Formatter<'_>, (year, month, day): (i32, u8, u8)) -> fmt::Result {
+pub(crate) fn write_date(
+    f: &mut fmt::Formatter<'_>,
+    (year, month, day): (i32, u8, u8),
+) -> fmt::Result {
     if (0..=9999).contains(&year) {
         write!(f, "{year:04}")?;
     } else {

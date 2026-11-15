@@ -683,3 +683,9 @@ WASM plus 463 bridge bytes (20,015 combined). Minification/compression uses the
 same Bazel/Node path as earlier size reports; prior throughput is separate.
 The new public Rust facades and calendar data are not exposed by that primitive
 WASM ABI. Full WASM facade/data and native Hermes Temporal bindings remain open.
+
+`zoned-string-size-results.json` refreshes the same primitive profile after native
+zoned parsing/formatting and shared offset formatting. Namespace TS stays 360,277
+gzip bytes; matched primitives stay 3,757 TS bytes, while WASM is 19,531 plus 463
+bridge bytes (19,994 combined). Native zoned/calendar facades and their data are
+not exported by this primitive ABI. Full backend size/performance remains open.

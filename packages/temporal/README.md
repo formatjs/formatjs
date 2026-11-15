@@ -273,3 +273,10 @@ pack. Production lookup covers aliases, exact historical offsets and recurring
 future rules. The native ICU suite now uses this registry directly; native
 Hermes installation and complete WASM facade/data measurements remain pending.
 See the [Rust registry API](../../crates/temporal/README.md#iana-registry).
+
+Rust zoned strings now parse through the registry, including offset policies,
+minute-precision historical matching and date-only start-of-day behavior. String
+formatting supports precision/rounding and annotation options, with fresh offset
+lookup after rounding. ICU/java.time and BigDecimal supply 29,550 independent
+controls. See [native zoned strings](../../crates/temporal/README.md#zoned-strings).
+Native Hermes installation and full WASM facade/data benchmarks remain pending.

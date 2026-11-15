@@ -18,6 +18,7 @@ mod timezone_identity;
 mod timezone_registry;
 mod zoned;
 mod zoned_difference;
+mod zoned_string;
 
 pub use calendar_difference::DateTimeUnit;
 pub use calendar_difference::DateTimeUnit as ZonedUnit;
@@ -39,6 +40,10 @@ pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone}
 pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};
 pub use timezone_registry::{ResolvedTimeZone, TimeZoneRecord, TimeZoneRegistry};
 pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
+pub use zoned_string::{
+    CalendarName, FormattedZonedDateTime, OffsetInput, OffsetOption, TimeZoneName,
+    ZonedFormatOptions, ZonedParseOptions,
+};
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
 pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;

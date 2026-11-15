@@ -168,7 +168,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             self.calendar,
         ))
     }
-    fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
+    pub(crate) fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
         let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
         let fields = IsoDateTime::from_epoch_nanoseconds(midnight)?;
         let candidate = resolve_local(fields, &self.time_zone, Disambiguation::Compatible)?;
@@ -232,7 +232,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
         self.checked_add(duration.negated(), overflow)
     }
 }
-fn resolve_local<Z: TimeZone>(
+pub(crate) fn resolve_local<Z: TimeZone>(
     fields: IsoDateTime,
     zone: &Z,
     disambiguation: Disambiguation,

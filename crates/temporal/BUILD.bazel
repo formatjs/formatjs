@@ -51,6 +51,7 @@ rust_library(
         "timezone_registry.rs",
         "zoned.rs",
         "zoned_difference.rs",
+        "zoned_string.rs",
     ],
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
@@ -172,6 +173,7 @@ rust_library(
         "timezone_registry.rs",
         "zoned.rs",
         "zoned_difference.rs",
+        "zoned_string.rs",
     ],
     compile_data = [":time_zones_data"],
     crate_features = ["compiled_time_zones"],
@@ -189,4 +191,14 @@ formatjs_rust_test(
     srcs = ["registry.test.rs"],
     edition = "2024",
     deps = [":temporal"],
+)
+
+formatjs_rust_test(
+    name = "zoned_string_test",
+    size = "small",
+    srcs = ["zoned_string.test.rs"],
+    compile_data = ["//conformance-tests/icu4j:temporal_zoned_string_fixtures"],
+    edition = "2024",
+    rustc_env = {"FORMATJS_ZONED_STRINGS": "$(execpath //conformance-tests/icu4j:temporal_zoned_string_fixtures)"},
+    deps = [":with_time_zones"],  # keep
 )

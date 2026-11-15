@@ -82,16 +82,21 @@ impl fmt::Display for FormattedInstant {
         }
         match self.offset {
             None => f.write_str("Z"),
-            Some(offset) => {
-                let minutes = (offset.abs() + 30_000_000_000) / 60_000_000_000;
-                write!(
-                    f,
-                    "{}{:02}:{:02}",
-                    if offset < 0 && minutes != 0 { '-' } else { '+' },
-                    minutes / 60,
-                    minutes % 60
-                )
-            }
+            Some(offset) => write_offset(f, i128::from(offset)),
         }
     }
+}
+
+pub(crate) fn offset_minutes(offset: i128) -> i128 {
+    offset.signum() * ((offset.abs() + 30_000_000_000) / 60_000_000_000)
+}
+pub(crate) fn write_offset(f: &mut fmt::Formatter<'_>, offset: i128) -> fmt::Result {
+    let minutes = offset_minutes(offset);
+    write!(
+        f,
+        "{}{:02}:{:02}",
+        if minutes < 0 { '-' } else { '+' },
+        minutes.abs() / 60,
+        minutes.abs() % 60
+    )
 }
