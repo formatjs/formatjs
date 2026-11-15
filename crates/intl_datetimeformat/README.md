@@ -41,10 +41,12 @@ offset seconds and DST state, using binary search at transition boundaries.
 
 Differential tests compare every generated full/golden transition at the preceding,
 exact and following nanosecond, plus full Date bounds, aliases and fixed offsets.
-The current packs cover 453 full zones and 247 golden zones: 428,850 transition and
-boundary samples. Raw JSON equals the shipped JS registration payload in both
-modes. Generation excludes zdump end markers beyond Date's range and parses only
-IANA `Link` records as aliases.
+The current packs cover 453 full zones and 247 golden zones. Raw JSON equals the
+shipped JS registration payload in both modes. Pinned Python decodes zic's TZif
+output, retaining historical transitions and structured future recurrence rules.
+TS and Rust continue DST beyond 2100 using those rules. Future legal changes
+require updated tzdata. Packs without future rules keep their final offset.
+Only IANA `Link` records supply aliases.
 
 ## Patterns and matching
 

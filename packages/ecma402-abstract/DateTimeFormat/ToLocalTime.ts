@@ -5,7 +5,8 @@ import {
   WeekDay,
   msFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
-import {type UnpackedZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import {type UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
+import {TimeZoneOffset} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {
   CalendarDateFromTime,
   type CalendarRegistry,
@@ -93,7 +94,7 @@ function ParseTimeZoneOffsetString(offsetString: string): number {
 function getApplicableZoneData(
   t: number,
   timeZone: string,
-  tzData: Record<string, UnpackedZoneData[]>
+  tzData: Record<string, UnpackedTimeZoneData>
 ): [number, boolean] {
   // 1. If IsTimeZoneOffsetString(timeZone) is true, then
   //    a. Let offsetNs be ParseTimeZoneOffsetString(timeZone)
@@ -112,15 +113,7 @@ function getApplicableZoneData(
   }
 
   // 4. Find the applicable transition for time t
-  let i = 0
-  let offset = 0
-  let dst = false
-  for (; i <= zoneData.length; i++) {
-    if (i === zoneData.length || zoneData[i][0] * 1e3 > t) {
-      ;[, , offset, dst] = zoneData[i - 1]
-      break
-    }
-  }
+  const [offset, dst] = TimeZoneOffset(t, zoneData)
 
   // 5. Return offset in milliseconds and DST flag
   return [offset * 1e3, dst]
@@ -128,7 +121,7 @@ function getApplicableZoneData(
 
 export interface ToLocalTimeImplDetails {
   calendarData?: CalendarRegistry
-  tzData: Record<string, UnpackedZoneData[]>
+  tzData: Record<string, UnpackedTimeZoneData>
 }
 
 /**

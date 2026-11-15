@@ -1,3 +1,5 @@
+use crate::timezone_future::FutureRule;
+pub use crate::timezone_future::TimeZoneOffset;
 use crate::{Error, civil::CivilDateTime};
 use serde::Deserialize;
 use std::{
@@ -10,11 +12,8 @@ struct PackedData {
     abbrvs: String,
     offsets: String,
     zones: Vec<String>,
-}
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct TimeZoneOffset {
-    pub seconds: i32,
-    pub in_dst: bool,
+    #[serde(default)]
+    future: BTreeMap<String, FutureRule>,
 }
 struct Transition {
     seconds: i64,
@@ -23,6 +22,7 @@ struct Transition {
 struct Zone {
     name: String,
     transitions: Vec<Transition>,
+    future: Option<FutureRule>,
 }
 struct State {
     zones: Arc<BTreeMap<String, Zone>>,
@@ -141,7 +141,7 @@ fn etc_gmt_zone(value: &str) -> Option<TimeZone> {
         target: None,
     })
 }
-fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
+fn decode(mut data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
     let abbreviations: Vec<&str> = data.abbrvs.split('|').collect();
     let offsets: Vec<i32> = if data.offsets.is_empty() {
         Vec::new()
@@ -201,18 +201,26 @@ fn decode(data: PackedData) -> Result<BTreeMap<String, Zone>, Error> {
             return Err(Error::InvalidTimeZoneData);
         }
         let key = name.to_ascii_uppercase();
+        let future = data.future.remove(name);
+        if future.as_ref().is_some_and(|rule| !rule.valid()) {
+            return Err(Error::InvalidTimeZoneData);
+        }
         if result
             .insert(
                 key,
                 Zone {
                     name: name.into(),
                     transitions,
+                    future,
                 },
             )
             .is_some()
         {
             return Err(Error::InvalidTimeZoneData);
         }
+    }
+    if !data.future.is_empty() {
+        return Err(Error::InvalidTimeZoneData);
     }
     Ok(result)
 }
@@ -288,6 +296,19 @@ impl TimeZoneSnapshot {
             };
         };
         let seconds = epoch_nanoseconds.div_euclid(1_000_000_000);
+        if data
+            .transitions
+            .last()
+            .is_some_and(|last| seconds > i128::from(last.seconds))
+        {
+            if let Some(offset) = data
+                .future
+                .as_ref()
+                .and_then(|rule| rule.offset_at(epoch_nanoseconds))
+            {
+                return offset;
+            }
+        }
         let index = data
             .transitions
             .partition_point(|transition| i128::from(transition.seconds) <= seconds);

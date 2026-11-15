@@ -19,7 +19,7 @@ import {
   type Formats,
   type TABLE_6,
   type TemporalDateTimeInput,
-  type UnpackedZoneData,
+  type UnpackedTimeZoneData,
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   defineProperty,
@@ -178,7 +178,7 @@ export interface DateTimeFormatConstructor {
   localeData: Record<string, DateTimeFormatLocaleInternalData>
   availableLocales: Set<string>
   polyfilled: boolean
-  tzData: Record<string, UnpackedZoneData[]>
+  tzData: Record<string, UnpackedTimeZoneData>
   __addTZData(d: PackedData): void
 }
 

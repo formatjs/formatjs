@@ -87,6 +87,10 @@ it.each(['all', 'golden'])(
         '0',
         '1',
         '4102444800000000000',
+        String(BigInt(Date.parse('2500-01-15T12:00:00Z')) * 1_000_000n),
+        String(BigInt(Date.parse('2500-07-15T12:00:00Z')) * 1_000_000n),
+        String(BigInt(Date.parse('2500-03-14T07:00:00Z')) * 1_000_000n - 1n),
+        String(BigInt(Date.parse('2500-03-14T07:00:00Z')) * 1_000_000n),
       ])
       for (const [timestamp] of tzData[name]) {
         if (!Number.isFinite(timestamp)) continue

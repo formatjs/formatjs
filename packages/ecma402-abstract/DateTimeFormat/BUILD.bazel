@@ -18,6 +18,7 @@ formatjs_library(
         "PartitionDateTimePattern.ts",
         "PartitionDateTimeRangePattern.ts",
         "TemporalDateTime.ts",
+        "TimeZoneOffset.ts",
         "ToDateTimeOptions.ts",
         "ToLocalTime.ts",
         "skeleton.ts",

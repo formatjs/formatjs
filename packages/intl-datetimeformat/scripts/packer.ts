@@ -4,6 +4,9 @@ export function pack(data: UnpackedData): PackedData {
   const zoneNames = Object.keys(data.zones)
   zoneNames.sort() // so output is stable
   return {
+    ...(data.future && Object.keys(data.future).length
+      ? {future: data.future}
+      : {}),
     zones: zoneNames.map(zone =>
       [
         zone,

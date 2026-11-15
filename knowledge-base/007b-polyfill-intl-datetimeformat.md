@@ -45,21 +45,21 @@ This is unique to DateTimeFormat — no other polyfill processes timezone data.
 ```
 Pinned IANA tzdata/tzcode archives from MODULE.bazel
     ↓
-Bazel builds zic/zdump from source for macOS and Linux execution platforms
+Bazel builds zic from source for macOS and Linux execution platforms
 with rules_cc and pinned hermetic LLVM
     ↓
-generate_tz_data: pinned Node runs zic, then zdump -c 2100 -v for 427 zones
+generate_tz_data: pinned Python runs zic for 427 zones
     ↓
-zdump files (raw transition dumps)
+Pinned CPython zoneinfo decodes TZif transitions and POSIX future rules
     ↓
-process-zdump.ts: parse transitions, pack with base-36 encoding
+process-zdump.ts: pack structured records with base-36 encoding
     ↓
-@formatjs_generated/tz/all-tz.js (~1.4MB packed)
+@formatjs_generated/tz/all-tz.js
 @formatjs_generated/tz/links.js (timezone aliases)
 ```
 
 **427 primary IANA zones plus 26 fixed Etc/GMT zones** in the full pack, with
-transitions from historical LMT through year 2100. The current golden output
+historical LMT transitions plus recurring rules for later years. The current golden output
 contains 247 zones selected by the shared golden-zone set.
 
 **Packing format:**
@@ -67,6 +67,16 @@ contains 247 zones selected by the shared golden-zone set.
 - Zone data: `"Zone_Name|timestamp_b36,abbr_idx,offset_idx,dst|..."`
 - Abbreviations: `"EST|EDT|GMT|..."` (indexed)
 - Offsets: Base-36 encoded seconds from UTC (indexed)
+- Future rules: optional per-zone structured offsets and transition rules. Explicit
+  transitions apply through the final transition; subsequent dates use footer rules.
+
+`tzdata/generator.py` uses `zoneinfo._common.load_data` and
+`zoneinfo._zoneinfo._parse_tz_str` from hermetic Python 3.12.7. These are private
+CPython interfaces; revalidate return shapes when upgrading Python. Runtime code
+parses no POSIX strings. TS and Rust evaluate month/week/weekday, Julian and
+ordinal-day rules, including signed transition times and southern-hemisphere DST.
+Packs without future rules retain legacy final-offset behavior. Future legal
+changes require a pinned tzdata update.
 
 **Two distribution sizes:**
 
@@ -96,7 +106,7 @@ Stage 2: locale-data (cldr.ts)
   Output: locale-data/{locale}.js + d.ts (1,314 files)
 
 Stage 3: Timezone processing (parallel)
-  generate_tz_data → zdump files (427 primary zones)
+  generate_tz_data → TZif JSON records (427 primary zones)
   process-zdump.ts → @formatjs_generated/tz/all-tz.js
   link.ts → @formatjs_generated/tz/links.js
   add-all-tz.js (polyfill bundle)
@@ -143,7 +153,7 @@ Stage 4: supported-locales.generated.ts
 
 ## Key Design Decisions
 
-- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic`/`zdump` for macOS and Linux execution platforms with pinned hermetic LLVM, and runs them through pinned Node actions
+- **Hermetic tz compilation**: Bazel fetches checksum-pinned IANA `tzdata`/`tzcode` archives, generates the tzcode headers without a host shell, builds `zic` for macOS and Linux execution platforms with pinned hermetic LLVM, and decodes its TZif output through pinned Python actions
 - **Base-36 packing**: Reduces timezone data size significantly vs raw JSON
 - **Golden timezone subset**: Allows apps to ship 251 zones instead of 427 for smaller bundles
 - **Hour cycle fallback**: When interval formats don't exist for a locale's hour cycle, synthesizes from alternate cycle
@@ -358,10 +368,10 @@ existing records use its current transitions. Local conversion preserves exact
 historical seconds and DST flags, with binary search and nanosecond boundaries.
 Fixed offsets and ASCII-only matching follow the TS validation contract.
 
-Differential coverage compares 428,850 samples across all 453 full/247 golden
-zones, every transition, aliases and Date endpoints. Raw JSON must equal the
-shipped JS payload. Generator flags are explicitly boolean so the first zdump
-file stays positional. End markers outside Date's range are excluded before
+Differential coverage compares all 453 full/247 golden zones, every explicit
+transition, aliases, Date endpoints and year-2500 samples. Raw JSON must equal the
+shipped JS payload. Generator flags are explicitly boolean so the first TZif JSON
+file stays positional. TZif timestamps outside the supported range are excluded before
 packing; IANA `Zone` lines and comments cannot become bogus link aliases.
 Canonicalization also recognizes known alias targets before transitions load.
 
