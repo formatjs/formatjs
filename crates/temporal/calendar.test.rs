@@ -1,12 +1,11 @@
 use formatjs_temporal::{
-    CalendarProvider, CalendarRef, DateFields, DateTimeUnit, Duration, FixedOffset, Instant,
-    NANOSECONDS_PER_DAY, OffsetTransition, Overflow, PlainDate, PlainDateTime, PlainMonthDay,
-    PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit, TransitionDirection,
-    TransitionZone, YearMonthUnit, ZonedDateTime,
+    CalendarProvider, CalendarRef, CalendarRegistry, DateFields, DateTimeUnit, Duration,
+    FixedOffset, Instant, NANOSECONDS_PER_DAY, OffsetTransition, Overflow, PlainDate,
+    PlainDateTime, PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode,
+    TemporalContext, TimeUnit, TimeZoneRegistry, TransitionDirection, TransitionZone,
+    YearMonthUnit, ZonedDateTime,
     calendar::{Calendar, MonthCode},
-    table_calendar::{LunisolarData, TableCalendar, TableCalendarId, UmmAlQuraData},
 };
-use serde_json::Value;
 
 fn month_code(text: &str) -> MonthCode {
     MonthCode {
@@ -29,7 +28,11 @@ fn date_fields(year: i32, code: MonthCode, day: i32) -> DateFields<'static> {
     }
 }
 
-fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
+fn check_oracle<C: CalendarProvider>(
+    row: &[&str],
+    calendar: C,
+    registry: CalendarRegistry<'_>,
+) -> usize {
     let epoch = row[2].parse::<i64>().unwrap();
     let date = PlainDate::from_epoch_day_in(epoch, calendar).unwrap();
     let noon = PlainTime::new(12, 0, 0, 0).unwrap();
@@ -39,6 +42,15 @@ fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
         .map(|instant| ZonedDateTime::new_in_calendar(instant, zero_zone(), calendar));
     match row[0] {
         "F" => {
+            let parsed = TemporalContext::new(registry, TimeZoneRegistry::empty())
+                .parse_date(&date.to_string())
+                .unwrap();
+            assert_eq!(
+                parsed.calendar_fields().unwrap(),
+                date.calendar_fields().unwrap(),
+                "{row:?}"
+            );
+            assert_eq!(parsed.calendar_id(), row[1]);
             let expected = (
                 row[3].parse::<i32>().unwrap(),
                 row[4].parse::<u8>().unwrap(),
@@ -320,14 +332,15 @@ fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
 
 #[test]
 fn public_arithmetic_calendar_types_match_icu() {
+    let registry = CalendarRegistry::compiled().unwrap();
     let mut counts = [0; 5];
     for line in include_str!(env!("FORMATJS_ARITHMETIC_CALENDARS"))
         .lines()
         .filter(|line| !line.starts_with('#'))
     {
         let row: Vec<_> = line.split('\t').collect();
-        let calendar = Calendar::from_name(row[1]).unwrap();
-        counts[check_oracle(&row, calendar)] += 1;
+        let calendar = registry.resolve(row[1]).unwrap();
+        counts[check_oracle(&row, calendar, registry)] += 1;
     }
     assert_eq!(counts, [34366, 32352, 32352, 176, 5408]);
     for calendar in Calendar::ALL {
@@ -368,74 +381,18 @@ fn check_date_limits<C: CalendarProvider>(calendar: C) {
     }
 }
 
-struct Lunar {
-    first: i32,
-    end: i64,
-    checkpoints: Vec<i64>,
-    months: Vec<i64>,
-    dictionary: Vec<u32>,
-    years: String,
-}
-impl Lunar {
-    fn load(text: &str) -> Self {
-        let raw: Value = serde_json::from_str(text).unwrap();
-        let raw = &raw["data"];
-        Self {
-            first: raw["firstYear"].as_i64().unwrap() as i32,
-            end: raw["endDay"].as_i64().unwrap(),
-            checkpoints: serde_json::from_value(raw["checkpoints"].clone()).unwrap(),
-            months: serde_json::from_value(raw["monthCheckpoints"].clone()).unwrap(),
-            dictionary: serde_json::from_value(raw["dictionary"].clone()).unwrap(),
-            years: raw["years"].as_str().unwrap().into(),
-        }
-    }
-    fn calendar(&self, id: TableCalendarId) -> TableCalendar<'_> {
-        TableCalendar::lunisolar(
-            id,
-            LunisolarData {
-                first_year: self.first,
-                end_day: self.end,
-                checkpoints: &self.checkpoints,
-                month_checkpoints: &self.months,
-                dictionary: &self.dictionary,
-                years: &self.years,
-            },
-        )
-        .unwrap()
-    }
-}
-
 #[test]
 fn public_borrowed_calendar_types_match_icu_and_published_authorities() {
-    let chinese = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_CHINESE")));
-    let dangi = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_DANGI")));
-    let raw: Value =
-        serde_json::from_str(include_str!(env!("FORMATJS_CALENDAR_ISLAMIC_UMALQURA"))).unwrap();
-    let raw = &raw["data"];
-    let starts: Vec<i64> = serde_json::from_value(raw["startDays"].clone()).unwrap();
-    let lengths: Vec<u16> = serde_json::from_value(raw["monthLengths"].clone()).unwrap();
-    let umm = TableCalendar::umm_al_qura(UmmAlQuraData {
-        first_year: raw["firstYear"].as_i64().unwrap() as i32,
-        start_days: &starts,
-        month_lengths: &lengths,
-    })
-    .unwrap();
-    let providers = [
-        chinese.calendar(TableCalendarId::Chinese),
-        dangi.calendar(TableCalendarId::Dangi),
-        umm,
-    ];
+    let registry = CalendarRegistry::compiled().unwrap();
+    let providers =
+        ["chinese", "dangi", "islamic-umalqura"].map(|id| registry.resolve(id).unwrap());
     for provider in providers {
         check_date_limits(provider);
         let date = PlainDate::new(2020, 2, 29)
             .unwrap()
             .with_calendar(provider)
             .unwrap();
-        assert!(
-            date.equals(
-                PlainDate::parse_in(&date.to_string(), CalendarRef::Table(provider)).unwrap()
-            )
-        );
+        assert!(date.equals(PlainDate::parse_in(&date.to_string(), provider).unwrap()));
         assert!(date.to_string().parse::<PlainDate>().is_err());
         let datetime = date
             .to_date_time(PlainTime::new(12, 34, 56, 123).unwrap())
@@ -453,8 +410,8 @@ fn public_borrowed_calendar_types_match_icu_and_published_authorities() {
             "dangi" => 1,
             _ => 2,
         };
-        let provider = CalendarRef::Table(providers[index]);
-        counts[check_oracle(&row, provider)] += 1;
+        let provider = providers[index];
+        counts[check_oracle(&row, provider, registry)] += 1;
     }
     assert_eq!(counts, [15932, 6720, 6720, 0, 1248]);
 }
@@ -660,31 +617,8 @@ fn non_iso_month_addition_resolves_offset_after_calendar_arithmetic() {
 }
 
 fn with_all_calendars(check: impl FnOnce(&[CalendarRef<'_>])) {
-    let chinese = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_CHINESE")));
-    let dangi = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_DANGI")));
-    let raw: Value =
-        serde_json::from_str(include_str!(env!("FORMATJS_CALENDAR_ISLAMIC_UMALQURA"))).unwrap();
-    let raw = &raw["data"];
-    let starts: Vec<i64> = serde_json::from_value(raw["startDays"].clone()).unwrap();
-    let lengths: Vec<u16> = serde_json::from_value(raw["monthLengths"].clone()).unwrap();
-    let umm = TableCalendar::umm_al_qura(UmmAlQuraData {
-        first_year: raw["firstYear"].as_i64().unwrap() as i32,
-        start_days: &starts,
-        month_lengths: &lengths,
-    })
-    .unwrap();
-    let mut providers: Vec<_> = Calendar::ALL
-        .into_iter()
-        .map(CalendarRef::Arithmetic)
-        .collect();
-    providers.extend(
-        [
-            chinese.calendar(TableCalendarId::Chinese),
-            dangi.calendar(TableCalendarId::Dangi),
-            umm,
-        ]
-        .map(CalendarRef::Table),
-    );
+    let registry = CalendarRegistry::compiled().unwrap();
+    let providers: Vec<_> = registry.calendars().collect();
     check(&providers);
 }
 

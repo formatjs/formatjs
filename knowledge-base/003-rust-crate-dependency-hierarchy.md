@@ -684,3 +684,11 @@ instants before querying offsets and preserves calendar annotations. Plain/Insta
 and zoned formatting share offset-minute rounding. ICU/java.time/BigDecimal
 controls verify strings and all rounding modes; native Hermes installation remains
 pending.
+
+Temporal now has CalendarRegistry and TemporalContext. The optional
+`with_calendars` target builds static calendar descriptors from the existing
+`@formatjs_generated/icu.calendar` package; `with_compiled_data` adds timezone
+records too. Checked table constructors validate packs once when creating a
+context. Runtime views remain borrowed/no_std/allocation-free, without serde or
+formatter dependencies. Context string factories select all 16 calendars. Native
+ICU calendar tests now use this registry rather than a test-only JSON loader.

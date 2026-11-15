@@ -33,6 +33,8 @@ rust_library(
     srcs = [
         "calendar_difference.rs",
         "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
         "date.rs",
         "duration.rs",
         "format.rs",
@@ -68,23 +70,16 @@ formatjs_rust_test(
         "//conformance-tests/icu4j:temporal_short_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
-        "//crates/intl_datetimeformat_calendars:calendar-data/chinese.json",
-        "//crates/intl_datetimeformat_calendars:calendar-data/dangi.json",
-        "//crates/intl_datetimeformat_calendars:calendar-data/islamic-umalqura.json",
     ],
     edition = "2024",
     rustc_env = {
         "FORMATJS_SHORT_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_short_calendar_fixtures)",
         "FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
         "FORMATJS_TABLE_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
-        "FORMATJS_CALENDAR_CHINESE": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/chinese.json)",
-        "FORMATJS_CALENDAR_DANGI": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/dangi.json)",
-        "FORMATJS_CALENDAR_ISLAMIC_UMALQURA": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/islamic-umalqura.json)",
     },
     deps = [
-        ":temporal",
-        "@crates//:serde_json",
-    ],
+        ":with_calendars",
+    ],  # keep
 )
 
 formatjs_rust_test(
@@ -155,6 +150,8 @@ rust_library(
     srcs = [
         "calendar_difference.rs",
         "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
         "date.rs",
         "duration.rs",
         "format.rs",
@@ -201,4 +198,107 @@ formatjs_rust_test(
     edition = "2024",
     rustc_env = {"FORMATJS_ZONED_STRINGS": "$(execpath //conformance-tests/icu4j:temporal_zoned_string_fixtures)"},
     deps = [":with_time_zones"],  # keep
+)
+
+ts_run_binary(
+    name = "calendar_data",
+    outs = ["calendar_data.rs"],
+    args = [
+        "--out",
+        "$(rootpath calendar_data.rs)",
+    ],
+    tool = "//crates/temporal/scripts:calendars",
+    use_execroot_entry_point = False,
+)
+
+rust_library(
+    name = "with_calendars",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],
+    compile_data = [":calendar_data"],
+    crate_features = ["compiled_calendars"],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)"},
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+)
+
+rust_library(
+    name = "with_compiled_data",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],
+    compile_data = [
+        ":calendar_data",
+        ":time_zones_data",
+    ],
+    crate_features = [
+        "compiled_data",
+        "compiled_calendars",
+        "compiled_time_zones",
+    ],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)",
+        "FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)",
+    },
+    visibility = ["//visibility:public"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+)
+
+formatjs_rust_test(
+    name = "context_test",
+    size = "small",
+    srcs = ["context.test.rs"],
+    edition = "2024",
+    deps = [":with_compiled_data"],  # keep
 )

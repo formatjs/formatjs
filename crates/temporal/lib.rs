@@ -2,6 +2,8 @@
 
 mod calendar_difference;
 mod calendar_provider;
+mod calendar_registry;
+mod context;
 mod date;
 mod duration;
 mod format;
@@ -23,6 +25,8 @@ mod zoned_string;
 pub use calendar_difference::DateTimeUnit;
 pub use calendar_difference::DateTimeUnit as ZonedUnit;
 pub use calendar_provider::{CalendarProvider, CalendarRef, DateFields, table_calendar};
+pub use calendar_registry::CalendarRegistry;
+pub use context::TemporalContext;
 use core::fmt;
 use core::str::FromStr;
 pub use date::{FormattedDateTime, Overflow, PlainDate, PlainDateTime};
@@ -50,6 +54,9 @@ pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
+    InvalidCalendar,
+    InvalidCalendarData,
+    MissingCalendarData,
     InvalidTimeZone,
     InvalidTimeZoneData,
     MissingTimeZoneData,
@@ -62,6 +69,9 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
+            Self::InvalidCalendar => "Invalid calendar",
+            Self::InvalidCalendarData => "Invalid calendar data",
+            Self::MissingCalendarData => "Calendar data not loaded",
             Self::InvalidTimeZone => "Invalid time zone",
             Self::InvalidTimeZoneData => "Invalid time zone data",
             Self::MissingTimeZoneData => "Time zone data not loaded",

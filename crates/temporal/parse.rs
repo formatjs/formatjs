@@ -308,7 +308,7 @@ pub(crate) fn zoned_fields(value: &str) -> Result<ZonedFields<'_>, Error> {
     })
 }
 
-fn calendar_annotation(value: &str) -> Option<&str> {
+pub(crate) fn calendar_annotation(value: &str) -> Option<&str> {
     value.split('[').skip(1).find_map(|part| {
         part.trim_end_matches(']')
             .trim_start_matches('!')
@@ -316,21 +316,12 @@ fn calendar_annotation(value: &str) -> Option<&str> {
     })
 }
 pub(crate) fn arithmetic_calendar(value: &str) -> Result<crate::calendar::Calendar, Error> {
-    let name = calendar_annotation(value).unwrap_or("iso8601");
-    crate::calendar::Calendar::ALL
-        .into_iter()
-        .find(|calendar| calendar.name().eq_ignore_ascii_case(name))
-        .or_else(|| {
-            if name.eq_ignore_ascii_case("islamicc") {
-                Some(crate::calendar::Calendar::IslamicCivil)
-            } else if name.eq_ignore_ascii_case("ethiopic-amete-alem") {
-                Some(crate::calendar::Calendar::Ethioaa)
-            } else {
-                None
-            }
-        })
-        .ok_or(Error::InvalidDateTime)
+    match crate::CalendarRegistry::arithmetic().for_string(value)? {
+        crate::CalendarRef::Arithmetic(calendar) => Ok(calendar),
+        crate::CalendarRef::Table(_) => Err(Error::MissingCalendarData),
+    }
 }
+
 pub(crate) fn check_calendar(value: &str, expected: &str) -> Result<(), Error> {
     if calendar_annotation(value).is_some_and(|name| !name.eq_ignore_ascii_case(expected))
         && arithmetic_calendar(value).map_or(true, |calendar| calendar.name() != expected)

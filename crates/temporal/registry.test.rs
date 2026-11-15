@@ -106,3 +106,70 @@ fn offset_registry_normalizes_minutes_and_rejects_non_identifiers() {
         assert_eq!(registry.resolve(id), Err(Error::InvalidTimeZone), "{id}");
     }
 }
+
+#[test]
+fn calendar_registry_resolves_aliases_and_rejects_missing_or_duplicate_tables() {
+    use formatjs_temporal::{
+        CalendarProvider, CalendarRegistry, TemporalContext,
+        table_calendar::{LunisolarData, TableCalendar, TableCalendarId},
+    };
+    let registry = CalendarRegistry::arithmetic();
+    assert_eq!(registry.calendars().count(), 13);
+    for (input, expected) in [
+        ("ISO8601", "iso8601"),
+        ("ISLAMICC", "islamic-civil"),
+        ("ETHIOPIC-AMETE-ALEM", "ethioaa"),
+    ] {
+        assert_eq!(registry.resolve(input).unwrap().id(), expected);
+    }
+    for id in ["chinese", "DANGI", "islamic-umalqura"] {
+        assert!(matches!(
+            registry.resolve(id),
+            Err(Error::MissingCalendarData)
+        ));
+    }
+    for id in [
+        "",
+        "unknown",
+        "gregorian",
+        "islamic",
+        " hebrew",
+        "hebrew ",
+        "HEBRЕW",
+    ] {
+        assert!(
+            matches!(registry.resolve(id), Err(Error::InvalidCalendar)),
+            "{id}"
+        );
+    }
+    // Tiny synthetic pack keeps this test independent of compiled data.
+    let data = LunisolarData {
+        first_year: 2000,
+        end_day: 348,
+        checkpoints: &[0],
+        month_checkpoints: &[0],
+        dictionary: &[0],
+        years: "AA",
+    };
+    let chinese = TableCalendar::lunisolar(TableCalendarId::Chinese, data).unwrap();
+    let dangi = TableCalendar::lunisolar(TableCalendarId::Dangi, data).unwrap();
+    let selected = CalendarRegistry::new(&[dangi, chinese]).unwrap();
+    assert_eq!(selected.calendars().count(), 15);
+    assert_eq!(
+        selected.resolve("CHINESE").unwrap().date(0).unwrap().year,
+        2000
+    );
+    assert!(CalendarRegistry::new(&[chinese, chinese]).is_err());
+    let context = TemporalContext::new(selected, TimeZoneRegistry::empty());
+    assert_eq!(
+        context
+            .parse_date("1970-01-01[u-ca=chinese]")
+            .unwrap()
+            .calendar_id(),
+        "chinese"
+    );
+    assert!(matches!(
+        TemporalContext::default().parse_date("1970-01-01[u-ca=chinese]"),
+        Err(Error::MissingCalendarData)
+    ));
+}

@@ -11,6 +11,7 @@ load("//tools:index.bzl", "ts_binary")
         deps = [":scripts"],
     )
     for name in [
+        "calendars",
         "identifiers",
         "timezones",
     ]
@@ -19,11 +20,13 @@ load("//tools:index.bzl", "ts_binary")
 formatjs_library(
     name = "scripts",
     srcs = [
+        "calendars.ts",
         "identifiers.ts",
         "timezones.ts",
     ],
     tsconfig_types = ["node"],
     deps = [
+        "//:node_modules/@formatjs_generated/icu.calendar",
         "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",

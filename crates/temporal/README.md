@@ -245,3 +245,45 @@ The [size refresh](../../benchmarks/temporal/zoned-string-size-results.json) kee
 the existing data-free primitive scope: TS 3,757 gzip bytes, WASM 19,531 plus
 463 bridge bytes. The full TS namespace remains 360,277 gzip bytes. These numbers
 do not measure the native zoned facade or compiled calendar/timezone data.
+
+## Calendar registry and native context
+
+`CalendarRegistry` resolves case-insensitive calendar IDs and normalized aliases.
+Arithmetic engines are always available. `new` adds validated borrowed table
+providers, rejecting duplicate IDs; unknown IDs and recognized-but-unloaded table
+calendars have distinct errors. Lookup never substitutes ISO for missing data.
+The registry copies provider views, so it does not borrow the temporary list used
+to construct it. Data storage must outlive the returned values.
+
+`//crates/temporal:with_calendars` enables `compiled_calendars` and
+`CalendarRegistry::compiled()`. Bazel generates immutable Rust descriptors from
+`@formatjs_generated/icu.calendar`. Registry creation validates the three table
+packs through their existing checked constructors; retain the registry instead
+of recreating it for each lookup. No runtime JSON/serde/formatter dependency or
+allocation is added. Generated records remain in Bazel outputs.
+
+`TemporalContext` combines calendar and timezone registries. Its `parse_date`,
+`parse_date_time`, `parse_year_month`, `parse_month_day` and `parse_zoned` methods
+select the calendar from string annotations and return values retaining their
+providers. This includes Chinese, Dangi and Umm al-Qura without caller-side JSON
+loading. The arithmetic-only default context still handles UTC/fixed-offset zones.
+
+```rust
+use formatjs_temporal::TemporalContext;
+let context = TemporalContext::compiled().unwrap();
+let date = context.parse_date("2023-03-22[u-ca=chinese]").unwrap();
+assert!(date.calendar_fields().unwrap().month_code.leap);
+```
+
+`//crates/temporal:with_compiled_data` enables both data features and
+`TemporalContext::compiled()`. This validates table packs once during context
+creation. As with the timezone variant, generated-file environments are supplied
+by Bazel. The default core remains data-free, `no_std` and allocation-free.
+
+Existing ICU/HKO/KASI calendar tests now resolve providers through the production
+registry, replacing the test-only JSON loader. All 50,298 field rows additionally
+parse through `TemporalContext`; existing arithmetic/difference/relative/short-date
+controls retain their full scope. Native context tests cover all date classes,
+aliases, retained data lifetimes, leap-month policies and public date limits.
+The context supplies data and typed values; native Hermes installation and full
+WASM facade/data benchmarks remain required.

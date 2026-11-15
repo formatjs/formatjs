@@ -737,3 +737,37 @@ The shared offset formatter's primitive size refresh is
 bridge 463 gzip bytes, matched TS 3,757. Namespace TS remains 360,277 gzip.
 This remains a data-free primitive ABI measurement, excluding the new zoned facade
 and compiled calendar/timezone packs. Full backend size/performance remains open.
+
+## Compiled calendars and native context
+
+CalendarRegistry keeps the 13 arithmetic engines plus optional validated borrowed
+Chinese/Dangi/Umm al-Qura providers. IDs are case-insensitive; islamicc and
+ethiopic-amete-alem normalize. Duplicate table providers, unknown IDs and missing
+recognized-table data have explicit errors. Provider iteration retains data
+lifetimes independently of the temporary construction list.
+
+The `compiled_calendars` feature / `with_calendars` Bazel target generates static
+Rust descriptors from the pinned ICU calendar package. Existing checked table
+constructors validate packs once at registry creation; no unchecked provider
+constructor is added. Retain the resulting registry/context. The `compiled_data`
+feature / `with_compiled_data` target combines calendar and timezone packs. Default
+core and existing primitive WASM targets include neither pack.
+
+TemporalContext owns copyable registry views. Its string factories return date,
+date-time, year-month, month-day and zoned values with CalendarRef providers,
+selecting all 16 calendars from annotations. This closes the default arithmetic
+type's table-calendar selection gap for native namespace entry points. Returned
+values retain their data views after the context itself is dropped, while the
+underlying caller-owned storage must remain alive.
+
+Public native calendar tests now resolve all providers through production registry
+lookup, replacing duplicated JSON loaders and removing serde_json from that test
+target. All 50,298 independent field rows additionally verify context parsing;
+39,072 additions/differences, 6,656 relative windows and the 10,176 short-date cases
+retain their full scope and ICU/HKO/KASI authority policy. Separate context tests
+cover every date class across all 16 calendars, aliases, leap-month constrain/reject,
+borrowed-data lifetimes and both public plain-date limits.
+
+Native Hermes C ABI/JSI installation and native Test262 are now the next required
+implementation work. No native JS backend or full WASM facade has been installed
+by these typed data/context changes. Full-backend benchmark/size proof remains open.

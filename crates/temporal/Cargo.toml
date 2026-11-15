@@ -11,6 +11,8 @@ repository = "https://github.com/formatjs/formatjs"
 path = "lib.rs"
 
 [features]
+compiled_calendars = []
+compiled_data = ["compiled_calendars", "compiled_time_zones"]
 compiled_time_zones = []
 
 [dependencies]

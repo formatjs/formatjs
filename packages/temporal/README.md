@@ -280,3 +280,9 @@ formatting supports precision/rounding and annotation options, with fresh offset
 lookup after rounding. ICU/java.time and BigDecimal supply 29,550 independent
 controls. See [native zoned strings](../../crates/temporal/README.md#zoned-strings).
 Native Hermes installation and full WASM facade/data benchmarks remain pending.
+
+Native `TemporalContext::compiled()` now combines the calendar/timezone registries.
+Its string factories select all 16 calendars, including table calendars, without
+manual JSON loading. The existing ICU calendar corpus exercises this production
+path. See [native context](../../crates/temporal/README.md#calendar-registry-and-native-context).
+Hermes native installation and complete WASM facade/data benchmarks remain pending.

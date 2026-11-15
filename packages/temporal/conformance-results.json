@@ -1001,5 +1001,26 @@
     "exclusions": [],
     "sizeSnapshot": "benchmarks/temporal/zoned-string-size-results.json",
     "sizeScope": "Existing data-free primitive ABI only: TS3757 gzip bytes, WASM19531 plus463 bridge. New zoned facade and calendar/timezone data are not exported by this ABI."
+  },
+  "nativeCalendarRegistry": {
+    "calendars": 16,
+    "arithmeticEngines": 13,
+    "compiledTablePacks": ["chinese", "dangi", "islamic-umalqura"],
+    "runtime": "Borrowed validated providers; checked pack constructors run at registry/context creation, no per-lookup validation, allocation, JSON, serde or formatter dependency.",
+    "contextFactories": [
+      "parse_date",
+      "parse_date_time",
+      "parse_year_month",
+      "parse_month_day",
+      "parse_zoned"
+    ],
+    "controls": "Production registry replaces manual test JSON loading. All 50,298 ICU/HKO/KASI field rows additionally verify context parsing; existing arithmetic/difference/relative/short-date corpora retain full scope. All 16 calendars checked through every context factory.",
+    "errors": "Unknown calendar, invalid provider data and recognized-but-unloaded data remain distinct. Missing tables never fall back to ISO.",
+    "build": "with_calendars or with_compiled_data; generated static Rust descriptors stay in Bazel outputs. Default core and primitive WASM exclude packs.",
+    "remaining": [
+      "Hermes native C ABI/JSI installation and Test262",
+      "Complete WASM facade/data and matched benchmarks"
+    ],
+    "exclusions": []
   }
 }
