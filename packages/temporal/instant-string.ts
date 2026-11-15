@@ -102,6 +102,60 @@ function isValidDate(year: string, month: string, day: string): boolean {
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
+export function parsePlainDateTimeString(
+  value: string,
+  dateOnly = false
+): {epochNanoseconds: bigint; calendar: string} {
+  const match =
+    /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ](\d{2})(?:(:?)(\d{2})(?:\6(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?)?([\s\S]*)$/.exec(
+      value
+    )
+  if (!match || !isValidDate(match[1], match[3], match[4]))
+    throw new RangeError('Invalid ISO date/time')
+  const annotations = validateAnnotations(match[11])
+  if (match[10]) parseOffsetNanoseconds(match[10])
+  const hour = +(match[5] ?? 0),
+    minute = +(match[7] ?? 0),
+    second = +(match[8] ?? 0)
+  if (hour > 23 || minute > 59 || second > 60)
+    throw new RangeError('Invalid ISO time')
+  const fraction = (match[9] ?? '').padEnd(9, '0')
+  return {
+    epochNanoseconds: isoToEpochNanoseconds({
+      year: +match[1],
+      month: +match[3],
+      day: +match[4],
+      hour: dateOnly ? 12 : hour,
+      minute: dateOnly ? 0 : minute,
+      second: dateOnly ? 0 : Math.min(59, second),
+      millisecond: dateOnly ? 0 : +fraction.slice(0, 3),
+      microsecond: dateOnly ? 0 : +fraction.slice(3, 6),
+      nanosecond: dateOnly ? 0 : +fraction.slice(6, 9),
+    }),
+    calendar: annotations.calendar ?? 'iso8601',
+  }
+}
+export function parseCalendarString(value: string): string {
+  const index = value.indexOf('['),
+    body = index < 0 ? value : value.slice(0, index)
+  const annotation = validateAnnotations(index < 0 ? '' : value.slice(index))
+  const ym = /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body),
+    md = /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+  if (
+    (ym && isValidDate(ym[1], ym[2], '01')) ||
+    (md && isValidDate('1972', md[1], md[2]))
+  ) {
+    if (
+      annotation.calendar !== undefined &&
+      annotation.calendar.toLowerCase() !== 'iso8601'
+    )
+      throw new RangeError('Short ISO date requires ISO calendar')
+  } else if (/^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]|$)/.test(body))
+    parsePlainDateTimeString(body.replace(/[Zz]$/, ''), true)
+  else parsePlainTimeString(body)
+  return annotation.calendar ?? 'iso8601'
+}
+
 export function parsePlainTimeString(value: string): bigint {
   const index = value.indexOf('[')
   let body = index < 0 ? value : value.slice(0, index)

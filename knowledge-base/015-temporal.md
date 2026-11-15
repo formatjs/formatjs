@@ -10,7 +10,7 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports partial `Temporal.Instant`, `Temporal.Duration` and `Temporal.PlainTime` APIs. ISO/Hebrew arithmetic
+The public entry exports partial Instant, Duration, PlainTime, PlainDate and PlainDateTime APIs. ISO/Hebrew arithmetic
 and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/Duration/PlainTime/ISO core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
@@ -65,7 +65,7 @@ no completed slice establishes complete Temporal compliance.
 
 Strict selections pass 346 Instant and 468 Duration executions on Node and
 Hermes source/optimized bytecode. Full diagnostics remain failing: Instant
-882/934, Duration 698/1086. The implemented-method sweeps still have two
+882/934, Duration 710/1086. The implemented-method sweeps still have two
 missing-class string helper scenarios each; missing classes and calendar behavior
 are implementation gaps, never exclusions.
 
@@ -127,8 +127,33 @@ parent fields and midnight. Shared TS/Rust vectors check grammar boundaries.
 
 A complete construction/getter/add/subtract/toJSON/valueOf selection passes 234
 executions on Node and Hermes source/optimized bytecode. Full upstream PlainTime
-runs all 986 executions on each engine mode: 954 pass, 32 fail. Remaining
+runs all 986 executions on each engine mode: 958 pass, 28 fail. Remaining
 failures retain PlainDateTime/ZonedDateTime conversions, missing Intl integration
 and helper dependencies on missing classes. Full diagnostics stay failing;
 missing behavior is not excluded. Public facades and native bindings for the
 remaining classes are still required by the full goal.
+
+## Date and date-time foundations
+
+`plain-slots.ts` owns private records shared by the real PlainDate, PlainDateTime
+and PlainTime classes. This enables branded conversions without invoking public
+getters. `date-core.ts` owns field coercion, merge rules, calendar resolution,
+metadata, arithmetic and relative difference/rounding calculations. Constructors
+interpret ISO fields; property bags interpret calendar fields. Calendar annotation
+identifiers are validated separately from calendar-like ISO strings.
+
+TS uses existing ISO/Hebrew numeric arithmetic plus Gregorian field metadata.
+Unimplemented calendar identifiers remain rejected; full calendar coverage is
+still required. Rust now has checked ISO PlainDate/PlainDateTime values, parsing,
+calendar-field addition, clock carry/differences, rounding and serialization.
+Rust calendar-relative difference APIs and non-ISO date types remain pending.
+
+Both cores independently match 840 ICU Gregorian arithmetic cases, including
+leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
+ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
+364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
+Full diagnostics remain failing: 1144/1308 and 1444/1552. Existing PlainTime
+improves to 958/986 through real date-time conversions. No missing behavior is
+allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
+integration, all calendars, native Hermes installation and complete WASM facades
+remain part of the active goal.

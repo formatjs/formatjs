@@ -12,7 +12,8 @@ const instant = Temporal.Instant.fromEpochNanoseconds(1n)
 instant.epochNanoseconds // 1n
 ```
 
-Current API: partial `Temporal.Instant`, `Temporal.Duration` and `Temporal.PlainTime`. Instant supports
+Current API: partial `Temporal.Instant`, `Temporal.Duration`, `Temporal.PlainTime`,
+`Temporal.PlainDate` and `Temporal.PlainDateTime`. Instant supports
 construction, parsing, comparison, rounding, serialization, add/subtract and
 differences. Duration supports construction, ISO parsing, getters, immutable
 field changes, negation/absolute value, add/subtract, serialization and time-only
@@ -60,7 +61,7 @@ selection still has two missing-family helper failures (454/456 pass);
 it remains a failing manual diagnostic.
 
 Duration has a separate 468-execution strict core gate, passing on Node and
-Hermes source/bytecode. Its raw full diagnostic passes 698/1086. The complete
+Hermes source/bytecode. Its raw full diagnostic passes 710/1086. The complete
 implemented-method selection is 554/556; string helper scenarios need the
 remaining class constructors. No individual files or raw failures are hidden.
 
@@ -69,7 +70,7 @@ Hermes bytecode uses `-Xes6-block-scoping`, matching source runtime semantics.
 
 PlainTime adds a 234-execution strict construction/getter/arithmetic selection on
 Node and Hermes source/optimized bytecode. Its full 986-execution diagnostic
-passes 954; 32 failures retain missing PlainDateTime/ZonedDateTime/Intl integration
+passes 958; 28 failures retain missing PlainDateTime/ZonedDateTime/Intl integration
 and class-dependent helpers. No implementation gap is an allowed exclusion.
 TS and Rust independently match 7,740 ICU clock-rounding cases, including
 half-even parity within fields and midnight wrapping.
@@ -78,4 +79,19 @@ half-even parity within fields and midnight wrapping.
 bazel test -c opt //packages/temporal:plain_time_test //packages/temporal:plain_time_test262 //packages/temporal:plain_time_hermes_test262_strict //packages/temporal:plain_time_hermes_bytecode_test262_strict
 # Raw diagnostic, currently failing.
 bazel test -c opt //packages/temporal:plain_time_test262_full
+```
+
+PlainDate/PlainDateTime add owned date fields, parsing, updates, arithmetic,
+comparison, differences/rounding and serialization. Conversions share private
+slots with PlainTime. TS currently uses ISO/Hebrew arithmetic and Gregorian
+fields; other calendar engines and full non-ISO conformance remain pending.
+Rust provides ISO date/date-time foundations; native calendar-relative APIs
+remain incomplete. Both cores match 840 independent ICU arithmetic cases.
+
+Strict date/date-time selections pass 364 and 518 executions on Node and Hermes
+source/optimized bytecode. Full raw diagnostics pass 1144/1308 and 1444/1552.
+Missing classes, Intl integration and relative Duration paths remain failing.
+
+```sh
+bazel test -c opt //packages/temporal:plain_date_time_test //packages/temporal:plain_date_test262 //packages/temporal:plain_date_time_test262
 ```

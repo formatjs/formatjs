@@ -96,14 +96,14 @@
     },
     "fullDiagnostic": {
       "executions": 1086,
-      "passes": 698,
-      "failures": 388,
+      "passes": 710,
+      "failures": 376,
       "failuresByArea": {
-        "compare": 48,
+        "compare": 44,
         "prototype/round": 248,
         "prototype/toLocaleString": 4,
         "prototype/toString": 2,
-        "prototype/total": 86
+        "prototype/total": 78
       }
     },
     "hermes": {
@@ -122,26 +122,26 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1086,
-          "passes": 698,
-          "failures": 388,
+          "passes": 710,
+          "failures": 376,
           "failuresByArea": {
-            "compare": 48,
+            "compare": 44,
             "prototype/round": 248,
             "prototype/toLocaleString": 4,
             "prototype/toString": 2,
-            "prototype/total": 86
+            "prototype/total": 78
           }
         },
         "optimizedBytecode": {
           "executions": 1086,
-          "passes": 698,
-          "failures": 388,
+          "passes": 710,
+          "failures": 376,
           "failuresByArea": {
-            "compare": 48,
+            "compare": 44,
             "prototype/round": 248,
             "prototype/toLocaleString": 4,
             "prototype/toString": 2,
-            "prototype/total": 86
+            "prototype/total": 78
           }
         }
       }
@@ -157,13 +157,12 @@
     "selection": "Complete constructor/prototype-root/getter/add/subtract/toJSON/valueOf directories; remaining methods retained in full diagnostics.",
     "full": {
       "executions": 986,
-      "passes": 954,
-      "failures": 32,
+      "passes": 958,
+      "failures": 28,
       "failuresByArea": {
         "compare": 2,
-        "from": 8,
+        "from": 6,
         "prototype/equals": 4,
-        "prototype/round": 2,
         "prototype/since": 4,
         "prototype/toLocaleString": 4,
         "prototype/toString": 2,
@@ -175,13 +174,12 @@
       "fullDiagnostic": {
         "source": {
           "executions": 986,
-          "passes": 954,
-          "failures": 32,
+          "passes": 958,
+          "failures": 28,
           "failuresByArea": {
             "compare": 2,
-            "from": 8,
+            "from": 6,
             "prototype/equals": 4,
-            "prototype/round": 2,
             "prototype/since": 4,
             "prototype/toLocaleString": 4,
             "prototype/toString": 2,
@@ -191,13 +189,12 @@
         },
         "optimizedBytecode": {
           "executions": 986,
-          "passes": 954,
-          "failures": 32,
+          "passes": 958,
+          "failures": 28,
           "failuresByArea": {
             "compare": 2,
-            "from": 8,
+            "from": 6,
             "prototype/equals": 4,
-            "prototype/round": 2,
             "prototype/since": 4,
             "prototype/toLocaleString": 4,
             "prototype/toString": 2,
@@ -221,5 +218,166 @@
     },
     "exclusions": [],
     "icuClockRoundingCases": 7740
+  },
+  "plainDate": {
+    "selected": {
+      "executions": 364,
+      "passes": 364,
+      "failures": 0
+    },
+    "full": {
+      "executions": 1308,
+      "passes": 1144,
+      "failures": 164,
+      "failuresByArea": {
+        "compare": 6,
+        "from": 10,
+        "prototype/equals": 4,
+        "prototype/since": 6,
+        "prototype/toLocaleString": 4,
+        "prototype/toPlainDateTime": 6,
+        "prototype/toPlainMonthDay": 14,
+        "prototype/toPlainYearMonth": 16,
+        "prototype/toZonedDateTime": 88,
+        "prototype/until": 6,
+        "prototype/with": 2,
+        "prototype/withCalendar": 2
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 364,
+          "passes": 364,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 364,
+          "passes": 364,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1308,
+          "passes": 1144,
+          "failures": 164,
+          "failuresByArea": {
+            "compare": 6,
+            "from": 10,
+            "prototype/equals": 4,
+            "prototype/since": 6,
+            "prototype/toLocaleString": 4,
+            "prototype/toPlainDateTime": 6,
+            "prototype/toPlainMonthDay": 14,
+            "prototype/toPlainYearMonth": 16,
+            "prototype/toZonedDateTime": 88,
+            "prototype/until": 6,
+            "prototype/with": 2,
+            "prototype/withCalendar": 2
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1308,
+          "passes": 1144,
+          "failures": 164,
+          "failuresByArea": {
+            "compare": 6,
+            "from": 10,
+            "prototype/equals": 4,
+            "prototype/since": 6,
+            "prototype/toLocaleString": 4,
+            "prototype/toPlainDateTime": 6,
+            "prototype/toPlainMonthDay": 14,
+            "prototype/toPlainYearMonth": 16,
+            "prototype/toZonedDateTime": 88,
+            "prototype/until": 6,
+            "prototype/with": 2,
+            "prototype/withCalendar": 2
+          }
+        }
+      }
+    },
+    "exclusions": [],
+    "icuArithmeticCases": 840
+  },
+  "plainDateTime": {
+    "selected": {
+      "executions": 518,
+      "passes": 518,
+      "failures": 0
+    },
+    "full": {
+      "executions": 1552,
+      "passes": 1444,
+      "failures": 108,
+      "failuresByArea": {
+        "compare": 4,
+        "from": 10,
+        "prototype/equals": 6,
+        "prototype/since": 8,
+        "prototype/toLocaleString": 4,
+        "prototype/toString": 2,
+        "prototype/toZonedDateTime": 58,
+        "prototype/until": 8,
+        "prototype/with": 2,
+        "prototype/withCalendar": 2,
+        "prototype/withPlainTime": 4
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 518,
+          "passes": 518,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 518,
+          "passes": 518,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1552,
+          "passes": 1444,
+          "failures": 108,
+          "failuresByArea": {
+            "compare": 4,
+            "from": 10,
+            "prototype/equals": 6,
+            "prototype/since": 8,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/toZonedDateTime": 58,
+            "prototype/until": 8,
+            "prototype/with": 2,
+            "prototype/withCalendar": 2,
+            "prototype/withPlainTime": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1552,
+          "passes": 1444,
+          "failures": 108,
+          "failuresByArea": {
+            "compare": 4,
+            "from": 10,
+            "prototype/equals": 6,
+            "prototype/since": 8,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/toZonedDateTime": 58,
+            "prototype/until": 8,
+            "prototype/with": 2,
+            "prototype/withCalendar": 2,
+            "prototype/withPlainTime": 4
+          }
+        }
+      }
+    },
+    "exclusions": [],
+    "icuArithmeticCases": 840
   }
 }

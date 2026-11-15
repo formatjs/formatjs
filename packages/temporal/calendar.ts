@@ -89,6 +89,14 @@ function start(calendar: CalendarId, year: number): number {
         : 0)
   )
 }
+export function calendarStartOfYear(
+  calendar: CalendarId,
+  year: number
+): number {
+  calendarCheck(calendar)
+  yearCheck(year)
+  return start(calendar, year)
+}
 export function monthsInYear(calendar: CalendarId, year: number): number {
   calendarCheck(calendar)
   yearCheck(year)

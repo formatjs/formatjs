@@ -198,6 +198,60 @@ pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
     PlainTime::new(hour, minute, second, fraction)
 }
 
+pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> {
+    let index = value.find('[').unwrap_or(value.len());
+    annotations(&value[index..])?;
+    let mut calendar_seen = false;
+    for annotation in value[index..].split('[').skip(1) {
+        let text = annotation
+            .trim_end_matches(']')
+            .strip_prefix('!')
+            .unwrap_or(annotation.trim_end_matches(']'));
+        if let Some(calendar) = text.strip_prefix("u-ca=") {
+            if !calendar_seen && !calendar.eq_ignore_ascii_case("iso8601") {
+                return Err(Error::InvalidSyntax);
+            }
+            calendar_seen = true;
+        }
+    }
+    let body = &value[..index];
+    let mut input = Cursor::new(body);
+    let negative = input.take(b'-');
+    let extended = negative || input.take(b'+');
+    let year = input.number(if extended { 6 } else { 4 })? as i32;
+    if negative && year == 0 {
+        return Err(Error::InvalidSyntax);
+    }
+    let separated = input.take(b'-');
+    let month = input.number(2)? as u8;
+    if separated && !input.take(b'-') {
+        return Err(Error::InvalidSyntax);
+    }
+    let day = input.number(2)? as u8;
+    let (hour, minute, second, nanosecond) =
+        if input.take(b'T') || input.take(b't') || input.take(b' ') {
+            let fields = input.time(false, true)?;
+            if input.peek().is_some() {
+                input.offset(true)?;
+            }
+            fields
+        } else {
+            (0, 0, 0, 0)
+        };
+    if input.position != body.len() {
+        return Err(Error::InvalidSyntax);
+    }
+    Ok(IsoDateTime {
+        year: if negative { -year } else { year },
+        month,
+        day,
+        hour,
+        minute,
+        second,
+        nanosecond,
+    })
+}
+
 fn annotations(mut value: &str) -> Result<(), Error> {
     let (mut calendar_seen, mut critical_calendar, mut annotation_seen, mut zone_seen) =
         (false, false, false, false);

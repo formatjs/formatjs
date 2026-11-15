@@ -30,6 +30,7 @@ temporal_wasm(
 rust_library(
     name = "temporal",
     srcs = [
+        "date.rs",
         "duration.rs",
         "format.rs",
         "iso.rs",
@@ -49,6 +50,7 @@ formatjs_rust_test(
     size = "small",
     srcs = ["lib.test.rs"],
     compile_data = [
+        "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
         "//packages/temporal:plain_time_string_fixtures",
         "//conformance-tests/icu4j:temporal_time_fixtures",
         "//packages/temporal:instant_string_fixtures",
@@ -58,6 +60,7 @@ formatjs_rust_test(
     ],
     edition = "2024",
     rustc_env = {
+        "FORMATJS_TEMPORAL_DATE_ARITHMETIC": "$(execpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
         "FORMATJS_TEMPORAL_TIME_STRINGS": "$(execpath //packages/temporal:plain_time_string_fixtures)",
         "FORMATJS_TEMPORAL_TIME": "$(execpath //conformance-tests/icu4j:temporal_time_fixtures)",
         "FORMATJS_TEMPORAL_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_rounding_fixtures)",

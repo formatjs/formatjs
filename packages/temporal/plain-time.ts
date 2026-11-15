@@ -1,4 +1,10 @@
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  getTimeSlot as getSlot,
+  setTimeSlot as setSlot,
+  getDateTimeSlot,
+  getDateSlot,
+} from '#packages/temporal/plain-slots.js'
 import {parsePlainTimeString} from '#packages/temporal/instant-string.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
@@ -67,9 +73,6 @@ const names = [
 const factors = names.map(name => timeUnitNanoseconds[name])
 const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
-const slots = new WeakMap<object, bigint>()
-const getSlot = slots.get.bind(slots),
-  setSlot = slots.set.bind(slots)
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
   if (result === undefined) throw new TypeError('Invalid PlainTime receiver')
@@ -131,6 +134,11 @@ function toTime(value: unknown, options?: unknown): bigint {
     overflow(options)
     return existing
   }
+  const datetime = getDateTimeSlot(value as object)
+  if (datetime) {
+    overflow(options)
+    return ((datetime.epochNanoseconds % day) + day) % day
+  }
   if (object(value)) {
     const values = timeFields(value)
     return regulate(values, overflow(options))
@@ -145,6 +153,9 @@ function create(value: bigint): PlainTimeObject {
   const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
   setSlot(result, ((value % day) + day) % day)
   return result
+}
+export function createPlainTime(value: bigint): PlainTimeObject {
+  return create(value)
 }
 function validateIncrement(unit: TimeUnit, increment: number): void {
   const maximum = maxima[names.indexOf(unit)]
@@ -231,7 +242,12 @@ class PlainTimeValue implements PlainTimeObject {
   }
   with(item: unknown, options: unknown = undefined): PlainTimeObject {
     const value = read(this)
-    if (!object(item) || getSlot(item) !== undefined)
+    if (
+      !object(item) ||
+      getSlot(item) !== undefined ||
+      getDateTimeSlot(item) ||
+      getDateSlot(item)
+    )
       throw new TypeError('Expected partial time object')
     if (item.calendar !== undefined || item.timeZone !== undefined)
       throw new TypeError('Unexpected calendar or timeZone')

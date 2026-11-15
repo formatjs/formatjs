@@ -12,6 +12,7 @@ formatjs_library(
     package_name = "@formatjs/temporal",
     srcs = [
         "calendar.ts",
+        "date-core.ts",
         "duration.ts",
         "duration-core.ts",
         "index.ts",
@@ -19,6 +20,9 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "plain-date.ts",
+        "plain-date-time.ts",
+        "plain-slots.ts",
         "plain-time.ts",
         "rounding.ts",
         "zones.ts",
@@ -67,6 +71,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "plain_date_time_test",
+            ["tests/plain-date-time.test.ts"],
+            ["//conformance-tests/icu4j:temporal_date_arithmetic_fixtures"],
+        ),
         (
             "plain_time_test",
             [
@@ -142,9 +151,56 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
 
+_DATE_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDate"
+
+_DATETIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDateTime"
+
 _TIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainTime"
 
 _DURATION_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Duration"
+
+_DATE_CORE_DIRECTORIES = ["prototype/" + name for name in [
+    "calendarId",
+    "era",
+    "eraYear",
+    "year",
+    "month",
+    "monthCode",
+    "day",
+    "dayOfWeek",
+    "dayOfYear",
+    "weekOfYear",
+    "yearOfWeek",
+    "daysInWeek",
+    "daysInMonth",
+    "daysInYear",
+    "monthsInYear",
+    "inLeapYear",
+    "add",
+    "subtract",
+    "toJSON",
+    "valueOf",
+]]
+
+_DATE_CORE_PATTERNS = [
+    _DATE_ROOT + "/*.js",
+    _DATE_ROOT + "/prototype/*.js",
+] + [_DATE_ROOT + "/" + directory + "/**/*.js" for directory in _DATE_CORE_DIRECTORIES + ["prototype/toString"]]
+
+_DATETIME_CORE_PATTERNS = [
+    _DATETIME_ROOT + "/*.js",
+    _DATETIME_ROOT + "/prototype/*.js",
+] + [_DATETIME_ROOT + "/" + directory + "/**/*.js" for directory in _DATE_CORE_DIRECTORIES + ["prototype/" + name for name in [
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond",
+    "round",
+    "toPlainDate",
+    "toPlainTime",
+]]]
 
 _TIME_CORE_PATTERNS = [
     _TIME_ROOT + "/*.js",
@@ -238,6 +294,8 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
         ],
         env = {"TZ": "UTC"},
@@ -249,6 +307,18 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("plain_date_test262", _DATE_CORE_PATTERNS, []),
+        ("plain_date_time_test262", _DATETIME_CORE_PATTERNS, []),
+        (
+            "plain_date_test262_full",
+            [_DATE_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "plain_date_time_test262_full",
+            [_DATETIME_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
         ("plain_time_test262", _TIME_CORE_PATTERNS, []),
         (
             "plain_time_test262_full",
@@ -304,6 +374,8 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-temporal-duration-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
     ],
     node_toolchain = "//tools/test262:node-runtime",
@@ -313,7 +385,8 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "large",
+        size = "large" if "full" in name else "small",
+        timeout = "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
@@ -324,7 +397,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -336,6 +409,8 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
             "@hermes//:hermesc",
         ],
@@ -347,6 +422,38 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("plain_date_hermes_test262_strict", "source", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
+        ("plain_date_hermes_bytecode_test262_strict", "bytecode", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
+        ("plain_date_time_hermes_test262_strict", "source", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json", []),
+        ("plain_date_time_hermes_bytecode_test262_strict", "bytecode", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json", []),
+        (
+            "plain_date_hermes_test262_full",
+            "source",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_time_hermes_test262_full",
+            "source",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_time_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+            ["manual"],
+        ),
         ("plain_time_hermes_test262_strict", "source", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
         ("plain_time_hermes_bytecode_test262_strict", "bytecode", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
         (

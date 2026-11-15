@@ -41,6 +41,17 @@ impl PlainTime {
         self.checked_add(duration.negated())
     }
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
+        Ok(Self(
+            self.rounded_nanoseconds(unit, increment, mode)?
+                .rem_euclid(NANOSECONDS_PER_DAY),
+        ))
+    }
+    pub(crate) fn rounded_nanoseconds(
+        self,
+        unit: TimeUnit,
+        increment: u32,
+        mode: RoundingMode,
+    ) -> Result<i128, Error> {
         validate_increment(unit, increment)?;
         let parent = match unit {
             TimeUnit::Hour => NANOSECONDS_PER_DAY,
@@ -51,15 +62,12 @@ impl PlainTime {
             TimeUnit::Nanosecond => TimeUnit::Microsecond.nanoseconds(),
         };
         let base = self.0 / parent * parent;
-        Ok(Self(
-            (base
-                + round_instant(
-                    self.0 - base,
-                    unit.nanoseconds() * i128::from(increment),
-                    mode,
-                ))
-            .rem_euclid(NANOSECONDS_PER_DAY),
-        ))
+        Ok(base
+            + round_instant(
+                self.0 - base,
+                unit.nanoseconds() * i128::from(increment),
+                mode,
+            ))
     }
     pub fn until(
         self,

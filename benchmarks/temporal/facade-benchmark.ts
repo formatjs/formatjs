@@ -9,7 +9,7 @@ const resolve = (file: string) =>
   runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/benchmarks/temporal/${file}`
   )
-const {Instant, Duration, PlainTime} = await import(
+const {Instant, Duration, PlainTime, PlainDate, PlainDateTime} = await import(
   pathToFileURL(resolve('instant-code.js')).href
 )
 const {Temporal: reference} = await import(
@@ -122,6 +122,33 @@ pairs.push(
   ]
 )
 let numberSink = 0
+const dates = ['2020-02-29', '2000-01-31', '1970-01-01', '-000001-12-31']
+pairs.push(
+  [
+    'PlainDate parse/add/toJSON',
+    i =>
+      PlainDate.from(dates[i % dates.length])
+        .add('P1Y1M')
+        .toJSON(),
+    i =>
+      reference.PlainDate.from(dates[i % dates.length])
+        .add('P1Y1M')
+        .toJSON(),
+  ],
+  [
+    'PlainDateTime parse/add/toJSON',
+    i =>
+      PlainDateTime.from(dates[i % dates.length] + 'T23:59:59.999999999')
+        .add('P1MT0.000000001S')
+        .toJSON(),
+    i =>
+      reference.PlainDateTime.from(
+        dates[i % dates.length] + 'T23:59:59.999999999'
+      )
+        .add('P1MT0.000000001S')
+        .toJSON(),
+  ]
+)
 const times = ['00:00:00', '01:06', '23:59:59.999999999', 'T1231']
 pairs.push(
   [
@@ -213,7 +240,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration and PlainTime numeric paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate and PlainDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

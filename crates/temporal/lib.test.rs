@@ -1,6 +1,68 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn independent_icu_date_arithmetic() {
+    use formatjs_temporal::{Duration, Overflow, PlainDateTime};
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_DATE_ARITHMETIC"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let values: Vec<i128> = line.split('\t').map(|x| x.parse().unwrap()).collect();
+        let input = PlainDateTime::from_epoch_nanoseconds(values[0]).unwrap();
+        let duration = Duration::new([
+            values[1], values[2], values[3], values[4], 0, 0, 0, 0, 0, values[5],
+        ])
+        .unwrap();
+        let actual = input.checked_add(duration, Overflow::Constrain);
+        let limit = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;
+        if values[6] <= -limit || values[6] >= limit {
+            assert!(actual.is_err(), "{line}");
+        } else {
+            assert_eq!(actual.unwrap().epoch_nanoseconds(), values[6], "{line}");
+        }
+        count += 1;
+    }
+    assert_eq!(count, 840);
+}
+
+#[test]
+fn iso_date_types_parse_round_and_validate() {
+    use formatjs_temporal::{Overflow, PlainDate, PlainDateTime, RoundingMode, TimeUnit};
+    assert_eq!(
+        "2020-02-29"
+            .parse::<PlainDate>()
+            .unwrap()
+            .checked_add("P1Y1M".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .to_string(),
+        "2021-03-29"
+    );
+    let value: PlainDateTime = "2020-02-29T23:59:59.999999999+05:30".parse().unwrap();
+    assert_eq!(
+        value
+            .round(TimeUnit::Second, 1, RoundingMode::HalfExpand)
+            .unwrap()
+            .to_string(),
+        "2020-03-01T00:00:00"
+    );
+    assert_eq!(
+        "2020-01-01T01:01"
+            .parse::<PlainDateTime>()
+            .unwrap()
+            .round(TimeUnit::Hour, 1, RoundingMode::HalfExpand)
+            .unwrap()
+            .to_string(),
+        "2020-01-01T01:00:00"
+    );
+    for text in ["2020-02-30", "-000000-01-01T12", "2020-01-01T12Z"] {
+        assert!(text.parse::<PlainDateTime>().is_err(), "{text}");
+    }
+    assert!("-271821-04-19".parse::<PlainDate>().is_ok());
+    assert!("-271821-04-19".parse::<PlainDateTime>().is_err());
+}
+
+#[test]
 fn independent_icu_clock_rounding() {
     use formatjs_temporal::PlainTime;
     let mut count = 0;

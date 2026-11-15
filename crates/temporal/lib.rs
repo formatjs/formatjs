@@ -1,5 +1,6 @@
 #![no_std]
 
+mod date;
 mod duration;
 mod format;
 mod iso;
@@ -9,6 +10,7 @@ mod time;
 
 use core::fmt;
 use core::str::FromStr;
+pub use date::{FormattedDateTime, Overflow, PlainDate, PlainDateTime};
 pub use duration::{
     Duration, FormattedDuration, MAX_DURATION_NANOSECONDS, round_duration_nanoseconds,
 };

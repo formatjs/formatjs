@@ -1,0 +1,307 @@
+import {
+  createPlainDateTime,
+  type PlainDateTimeObject,
+} from '#packages/temporal/plain-date-time.js'
+import {PlainTime} from '#packages/temporal/plain-time.js'
+import {
+  getDateSlot,
+  setDateSlot,
+  getDateTimeSlot,
+  getTimeSlot,
+  type DateSlot,
+} from '#packages/temporal/plain-slots.js'
+import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
+import {formatInstant} from '#packages/temporal/instant-format.js'
+import {
+  dateFields,
+  dateProperty,
+  datePropertyNames,
+  calendarId,
+  constructorCalendar,
+  calendarAnnotation,
+  readDateFields,
+  isoDay,
+  epochDayOf,
+  dayFromFields,
+  partialObject,
+  object,
+  integer,
+  overflowOption,
+  addDate,
+  nsPerDay,
+  roundedDateTimeDifference,
+} from '#packages/temporal/date-core.js'
+import {
+  toDurationFields,
+  createDuration,
+  type DurationObject,
+} from '#packages/temporal/duration.js'
+import {durationNanoseconds} from '#packages/temporal/duration-core.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  optionsObject,
+  unitOption,
+  roundingIncrement,
+  roundingMode,
+} from '#packages/temporal/rounding.js'
+
+export interface DateProperties {
+  readonly calendarId: string
+  readonly era: string | undefined
+  readonly eraYear: number | undefined
+  readonly year: number
+  readonly month: number
+  readonly monthCode: string
+  readonly day: number
+  readonly dayOfWeek: number
+  readonly dayOfYear: number
+  readonly weekOfYear: number | undefined
+  readonly yearOfWeek: number | undefined
+  readonly daysInWeek: number
+  readonly daysInMonth: number
+  readonly daysInYear: number
+  readonly monthsInYear: number
+  readonly inLeapYear: boolean
+}
+export interface PlainDateObject extends DateProperties {
+  with(item: unknown, options?: unknown): PlainDateObject
+  withCalendar(calendar: unknown): PlainDateObject
+  add(duration: unknown, options?: unknown): PlainDateObject
+  subtract(duration: unknown, options?: unknown): PlainDateObject
+  until(other: unknown, options?: unknown): DurationObject
+  since(other: unknown, options?: unknown): DurationObject
+  equals(other: unknown): boolean
+  toPlainDateTime(time?: unknown): PlainDateTimeObject
+  toString(options?: unknown): string
+  toJSON(): string
+  valueOf(): never
+}
+export interface PlainDateConstructor {
+  new (
+    year: unknown,
+    month: unknown,
+    day: unknown,
+    calendar?: unknown
+  ): PlainDateObject
+  readonly prototype: PlainDateObject
+  from(item: unknown, options?: unknown): PlainDateObject
+  compare(one: unknown, two: unknown): -1 | 0 | 1
+}
+function read(item: unknown): DateSlot {
+  const slot = getDateSlot(item as object)
+  if (!slot) throw new TypeError('Invalid PlainDate receiver')
+  return slot
+}
+export function createPlainDate(
+  epochDay: number,
+  calendar: string
+): PlainDateObject {
+  if (
+    !Number.isInteger(epochDay) ||
+    epochDay < -100000001 ||
+    epochDay > 100000000
+  )
+    throw new RangeError('Date out of range')
+  const result = Object.create(PlainDateValue.prototype) as PlainDateObject
+  setDateSlot(result, {epochDay, calendar})
+  return result
+}
+export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
+  const date = getDateSlot(item as object),
+    datetime = getDateTimeSlot(item as object)
+  if (date || datetime) {
+    overflowOption(options)
+    return (
+      date ?? {
+        epochDay: epochDayOf(datetime!.epochNanoseconds),
+        calendar: datetime!.calendar,
+      }
+    )
+  }
+  if (object(item)) {
+    const calendar = calendarId(item.calendar)
+    const fields = readDateFields(item, false)
+    return {
+      epochDay: dayFromFields(calendar, fields, overflowOption(options)),
+      calendar,
+    }
+  }
+  if (typeof item !== 'string')
+    throw new TypeError('Expected date string or object')
+  const parsed = parsePlainDateTimeString(item, true)
+  const calendar = constructorCalendar(parsed.calendar)
+  overflowOption(options)
+  return {epochDay: epochDayOf(parsed.epochNanoseconds), calendar}
+}
+function add(
+  value: DateSlot,
+  duration: unknown,
+  options: unknown,
+  sign: number
+): PlainDateObject {
+  const fields = toDurationFields(duration)
+  for (const key of Object.keys(fields) as (keyof typeof fields)[])
+    fields[key] *= sign
+  const time = durationNanoseconds(fields, false)
+  fields.days += Number(time / nsPerDay)
+  return createPlainDate(
+    addDate(value, fields, overflowOption(options)),
+    value.calendar
+  )
+}
+function difference(
+  slot: DateSlot,
+  other: unknown,
+  options: unknown,
+  since: boolean
+): DurationObject {
+  const end = toPlainDateSlot(other)
+  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  const resolved = optionsObject(options)
+  const largestRaw = resolved.largestUnit,
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  const increment = roundingIncrement(resolved.roundingIncrement),
+    mode = roundingMode(resolved.roundingMode, 'trunc')
+  const smallest = unitOption(resolved.smallestUnit) ?? 'day'
+  const names = ['year', 'month', 'week', 'day'],
+    smallIndex = names.indexOf(smallest)
+  const largest =
+    largestText === 'auto'
+      ? names[Math.min(3, smallIndex)]
+      : unitOption(largestText)!
+  if (
+    smallIndex < 0 ||
+    !names.includes(largest) ||
+    names.indexOf(largest) > smallIndex
+  )
+    throw new RangeError('Invalid date units')
+  return createDuration(
+    roundedDateTimeDifference(
+      BigInt(slot.epochDay) * nsPerDay,
+      BigInt(end.epochDay) * nsPerDay,
+      slot.calendar,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    )
+  )
+}
+
+function format(slot: DateSlot, calendarName: unknown = undefined): string {
+  return (
+    formatInstant(BigInt(slot.epochDay) * nsPerDay + nsPerDay / 2n).split(
+      'T'
+    )[0] + calendarAnnotation(slot.calendar, calendarName)
+  )
+}
+class PlainDateValue {
+  constructor(
+    _year: unknown,
+    _month: unknown,
+    _day: unknown,
+    _calendar: unknown = undefined
+  ) {
+    throw new TypeError('Use exported PlainDate constructor')
+  }
+  static from(item: unknown, options: unknown = undefined): PlainDateObject {
+    const slot = toPlainDateSlot(item, options)
+    return createPlainDate(slot.epochDay, slot.calendar)
+  }
+  static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    const a = toPlainDateSlot(one).epochDay,
+      b = toPlainDateSlot(two).epochDay
+    return a < b ? -1 : a > b ? 1 : 0
+  }
+  with(item: unknown, options: unknown = undefined): PlainDateObject {
+    const slot = read(this),
+      partial = readDateFields(partialObject(item), false, true)
+    const fields: Record<string, unknown> = {...dateFields(slot), ...partial}
+    if (partial.month !== undefined && partial.monthCode === undefined)
+      delete fields.monthCode
+    if (partial.monthCode !== undefined && partial.month === undefined)
+      delete fields.month
+    return createPlainDate(
+      dayFromFields(slot.calendar, fields, overflowOption(options)),
+      slot.calendar
+    )
+  }
+  withCalendar(calendar: unknown): PlainDateObject {
+    const slot = read(this)
+    if (calendar === undefined) throw new TypeError('Calendar required')
+    return createPlainDate(slot.epochDay, calendarId(calendar))
+  }
+  add(duration: unknown, options: unknown = undefined): PlainDateObject {
+    return add(read(this), duration, options, 1)
+  }
+  subtract(duration: unknown, options: unknown = undefined): PlainDateObject {
+    return add(read(this), duration, options, -1)
+  }
+  until(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, false)
+  }
+  since(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, true)
+  }
+  equals(other: unknown): boolean {
+    const a = read(this),
+      b = toPlainDateSlot(other)
+    return a.epochDay === b.epochDay && a.calendar === b.calendar
+  }
+  toPlainDateTime(time: unknown = undefined): PlainDateTimeObject {
+    const slot = read(this)
+    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    return createPlainDateTime(
+      BigInt(slot.epochDay) * nsPerDay + clock,
+      slot.calendar
+    )
+  }
+  toString(options: unknown = undefined): string {
+    const slot = read(this)
+    return format(slot, optionsObject(options).calendarName)
+  }
+  toJSON(): string {
+    return format(read(this))
+  }
+  valueOf(): never {
+    throw new TypeError('Cannot convert Temporal.PlainDate to primitive')
+  }
+}
+Object.defineProperty(PlainDateValue, 'name', {
+  value: 'PlainDate',
+  configurable: true,
+})
+export const PlainDate: PlainDateConstructor = new Proxy(PlainDateValue, {
+  construct(target, args, newTarget) {
+    const year = integer(args[0]),
+      month = integer(args[1]),
+      day = integer(args[2]),
+      calendar = constructorCalendar(args[3])
+    const epochDay = isoDay(year, month, day)
+    const prototype = Reflect.get(newTarget, 'prototype')
+    const result = Object.create(
+      object(prototype) ? prototype : target.prototype
+    )
+    setDateSlot(result, {epochDay, calendar})
+    return result
+  },
+}) as unknown as PlainDateConstructor
+Object.defineProperties(PlainDateValue.prototype, {
+  constructor: {value: PlainDate, writable: true, configurable: true},
+  [Symbol.toStringTag]: {value: 'Temporal.PlainDate', configurable: true},
+})
+for (const name of datePropertyNames) {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    {
+      get [name]() {
+        return dateProperty(read(this), name)
+      },
+    },
+    name
+  )!
+  Object.defineProperty(PlainDateValue.prototype, name, {
+    ...descriptor,
+    enumerable: false,
+  })
+}
