@@ -142,6 +142,27 @@ impl Duration {
         }
         Ok(rational_to_f64(self.time_nanoseconds(true)?, FACTORS[0]))
     }
+    pub fn round(
+        self,
+        largest: crate::DateTimeUnit,
+        smallest: crate::DateTimeUnit,
+        increment: u32,
+        mode: RoundingMode,
+    ) -> Result<Self, Error> {
+        if largest < crate::DateTimeUnit::Day || self.0[..3].iter().any(|value| *value != 0) {
+            return Err(Error::InvalidDuration);
+        }
+        crate::calendar_difference::validate_options(largest, smallest, increment)?;
+        let quantum =
+            i128::from(increment) * smallest.time().map_or(FACTORS[0], TimeUnit::nanoseconds);
+        let mut value = round_duration(self.time_nanoseconds(true)?, quantum, mode);
+        let mut fields = [0; 10];
+        for index in largest as usize..10 {
+            fields[index] = value / FACTORS[index - 3];
+            value %= FACTORS[index - 3];
+        }
+        Self::new(fields)
+    }
     pub fn checked_add(self, other: Self) -> Result<Self, Error> {
         if self.0[..3]
             .iter()

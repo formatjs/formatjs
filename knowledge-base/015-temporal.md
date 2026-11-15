@@ -16,7 +16,7 @@ TS date classes use all 16 specification calendars and owned IANA timezone data.
 Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
 numeric calendar math is shared. Native date classes resolve all 16 calendars.
 Experimental Hermes and WASM backends delegate ISO conversion, Instant and
-PlainTime operations plus all 16 calendar engines and owned IANA timezone queries to Rust. Date/relative/zoned orchestration still uses TS. Complete native
+PlainTime and Duration operations plus all 16 calendar engines and owned IANA timezone queries to Rust. Date/relative/zoned orchestration still uses TS. Complete native
 Hermes installation and complete WASM facade/data remain pending.
 
 ## Delivery order
@@ -963,3 +963,42 @@ Zoned benchmarks improve four of five Hermes cases with Rust; WASM loses all fiv
 against TS. See `benchmarks/temporal/*timezone*results.json` for samples and scopes.
 Remaining native orchestration, SDK installation, Intl integration and equivalent
 full-backend comparisons remain required.
+
+## Native Duration bridge
+
+Hermes/WASM now delegate Duration parsing, normalized range checks, formatting,
+add/subtract, negated/abs, comparison, totals and rounding to Rust. Plain-date and
+zoned relative operations send normalized anchors to typed Rust adapters, retaining
+all 16 calendars and owned IANA providers. Calendar registries validate once;
+request-local anchors borrow their immutable data. JS retains input coercion,
+property access order, brands/slots, field projections and sign/blank metadata.
+
+Native relative operations replace repeated JS/native scalar crossings with one
+calculation request. JS never retries a selected native operation after errors.
+WASM ABI 5 requires the matching asset; ABI-4 instances reject before activation.
+The default TS implementation remains available through the same facades.
+
+Rust Duration::round adds unanchored day/time rounding with DateTimeUnit, including
+multi-day increments. It uses Duration bounds rather than an invented Instant
+anchor. A billion-day Duration remains valid without relativeTo; an anchored
+operation still checks its endpoint range. Calendar units require a real anchor.
+
+Independent controls now parameterize the actual namespace: 5,430 scalar cases,
+51,840 plain rounds, 17,280 plain totals, 4,224 plain comparisons, 19,440 zoned
+rounds and 6,480 zoned totals on TS, Hermes source/HBC and the published WASM
+package. Existing calendar controls add relative windows across all 16 calendars.
+Native fault injection isolates each Duration operation while other Rust calls
+remain live, proving that relative algorithms cannot silently use the TS path.
+Remaining native date/zoned orchestration, Now, SDK installation and Intl
+integration remain required for the full goal.
+
+Duration bridge validation: 51 regression targets pass, including all eight full
+native class suites (9,090 executions per Hermes source/HBC and WASM mode),
+independent ICU controls, default TS full Duration, package and Rust core/ABI
+checks. No new exclusions. These remain hybrid-backend results.
+
+Matched Duration benchmarks improve Hermes formatting and relative round/total;
+parse/add still pay bridge costs. WASM loses all five Duration cases to TS on the
+recorded host. Consumer gzip: TS 360,908 bytes; WASM JS +binary 773,668 bytes,
+including retained TS fallback packs. See `benchmarks/temporal/README.md` and its
+Duration snapshots for methods, reference timings and startup costs.

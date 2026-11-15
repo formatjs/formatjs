@@ -162,7 +162,7 @@ const oldABI = new WebAssembly.Module(
       ...exported('temporal_free', 0),
       ...exported('temporal_query', 0),
     ]),
-    ...section(10, [1, 4, 0, 65, 3, 11]),
+    ...section(10, [1, 4, 0, 65, 4, 11]),
   ])
 )
 assert.throws(
@@ -288,6 +288,21 @@ console.log(
       readFileSync(resolve(process.argv[15]), 'utf8'),
       readFileSync(resolve(process.argv[13]), 'utf8'),
       readFileSync(resolve(process.argv[14]), 'utf8'),
+      (actual, expected, context) => assert.equal(actual, expected, context)
+    ),
+  })
+)
+
+const {checkDurationOracle} = await import(
+  pathToFileURL(resolve(process.argv[16])).href
+)
+console.log(
+  JSON.stringify({
+    duration: checkDurationOracle(
+      Temporal,
+      rows(process.argv[6]),
+      readFileSync(resolve(process.argv[17]), 'utf8'),
+      readFileSync(resolve(process.argv[18]), 'utf8'),
       (actual, expected, context) => assert.equal(actual, expected, context)
     ),
   })

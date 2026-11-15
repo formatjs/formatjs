@@ -15,7 +15,9 @@ public final class TemporalZonedDifferenceOracle {
 
   public static void main(String[] args) throws Exception {
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J Gregorian zoned calendar spans and BigDecimal signed rounding");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalZonedDifferenceOracle = [");
+      if (!javascript) out.println("# ICU4J Gregorian zoned calendar spans and BigDecimal signed rounding");
       for (String zone : new String[] {"UTC", "America/New_York", "Australia/Lord_Howe", "Pacific/Apia", "Europe/Paris", "Asia/Kolkata"}) {
         GregorianCalendar start = new GregorianCalendar(TimeZone.getTimeZone(zone, TimeZone.TIMEZONE_ICU));
         start.setGregorianChange(new Date(Long.MIN_VALUE));
@@ -41,12 +43,14 @@ public final class TemporalZonedDifferenceOracle {
               for (String mode : MODES) {
                 long until = rounded(value, mode) * increment;
                 long since = rounded(value.negate(), mode) * increment;
-                out.println(zone + "\t" + origin + "\t" + end + "\t" + UNITS[unit] + "\t" + increment + "\t" + mode + "\t" + until + "\t" + since + "\t" + (increment == 1 ? Double.toString(value.doubleValue()) : "null"));
+                String row = zone + "\t" + origin + "\t" + end + "\t" + UNITS[unit] + "\t" + increment + "\t" + mode + "\t" + until + "\t" + since + "\t" + (increment == 1 ? Double.toString(value.doubleValue()) : "null");
+                out.println(javascript ? "\"" + row.replace("\t", "\\t") + "\"," : row);
               }
             }
           }
         }
       }
+      if (javascript) out.println("];");
     }
   }
   private static BigInteger nanos(Calendar calendar) {return BigInteger.valueOf(calendar.getTimeInMillis()).multiply(BigInteger.valueOf(1000000));}

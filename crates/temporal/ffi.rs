@@ -5,8 +5,8 @@ use crate::{
     TransitionDirection,
 };
 use crate::{
-    Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime, Precision, RoundingMode,
-    TimeUnit,
+    DateTimeUnit, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainDate, PlainTime,
+    Precision, ResolvedTimeZone, RoundingMode, TimeUnit, ZonedDateTime,
 };
 use serde_json::{Value, json};
 use std::{
@@ -115,9 +115,12 @@ fn precision(request: &Value) -> Result<Precision, Error> {
     })
 }
 fn duration(request: &Value) -> Result<Duration, Error> {
+    duration_value(&request["duration"])
+}
+fn duration_value(value: &Value) -> Result<Duration, Error> {
     let mut fields = [0; 10];
     for (index, key) in DURATION_FIELDS.iter().enumerate() {
-        fields[index] = decimal(&request["duration"], key)?;
+        fields[index] = decimal(value, key)?;
     }
     Duration::new(fields)
 }
@@ -140,6 +143,23 @@ fn compiled_calendars() -> Result<CalendarRegistry<'static>, Error> {
     #[cfg(not(feature = "compiled_calendars"))]
     {
         Ok(CalendarRegistry::arithmetic())
+    }
+}
+fn calendars() -> Result<CalendarRegistry<'static>, Error> {
+    CALENDARS
+        .get_or_init(compiled_calendars)
+        .as_ref()
+        .copied()
+        .map_err(|error| *error)
+}
+fn time_zones() -> TimeZoneRegistry<'static> {
+    #[cfg(feature = "compiled_time_zones")]
+    {
+        TimeZoneRegistry::compiled()
+    }
+    #[cfg(not(feature = "compiled_time_zones"))]
+    {
+        TimeZoneRegistry::empty()
     }
 }
 fn calendar_record(value: Date) -> Value {
@@ -206,10 +226,7 @@ fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Erro
     }
 }
 fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
-    let registry = CALENDARS
-        .get_or_init(compiled_calendars)
-        .as_ref()
-        .map_err(|error| *error)?;
+    let registry = calendars()?;
     let calendar = registry.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     let number = |key| integer(request.get(key), None);
     let year =
@@ -306,10 +323,7 @@ fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
     Ok(result)
 }
 fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
-    #[cfg(feature = "compiled_time_zones")]
-    let registry = TimeZoneRegistry::compiled();
-    #[cfg(not(feature = "compiled_time_zones"))]
-    let registry = TimeZoneRegistry::empty();
+    let registry = time_zones();
     let zone = registry.resolve(
         request["identifier"]
             .as_str()
@@ -369,6 +383,131 @@ fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
                     .epoch_nanoseconds()
                     .to_string()
             ))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
+enum DurationAnchor {
+    Date(PlainDate<CalendarRef<'static>>),
+    Zoned(ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>),
+}
+impl DurationAnchor {
+    fn new(value: &Value) -> Result<Self, Error> {
+        let calendar =
+            calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+        match value["kind"].as_str() {
+            Some("date") => Ok(Self::Date(PlainDate::from_epoch_day_in(
+                integer(value.get("epochDay"), None)?,
+                calendar,
+            )?)),
+            Some("zoned") => Ok(Self::Zoned(ZonedDateTime::new_in_calendar(
+                instant(value, "nanoseconds")?,
+                time_zones()
+                    .resolve(value["identifier"].as_str().ok_or(Error::InvalidTimeZone)?)?,
+                calendar,
+            ))),
+            _ => Err(Error::InvalidDateTime),
+        }
+    }
+    fn total(&self, duration: Duration, unit: DateTimeUnit) -> Result<f64, Error> {
+        match self {
+            Self::Date(value) => value.total_duration(duration, unit),
+            Self::Zoned(value) => value.total_duration(duration, unit),
+        }
+    }
+    fn round(
+        &self,
+        duration: Duration,
+        largest: DateTimeUnit,
+        smallest: DateTimeUnit,
+        increment: u32,
+        mode: RoundingMode,
+    ) -> Result<Duration, Error> {
+        match self {
+            Self::Date(value) => value.round_duration(duration, largest, smallest, increment, mode),
+            Self::Zoned(value) => {
+                value.round_duration(duration, largest, smallest, increment, mode)
+            }
+        }
+    }
+    fn compare(&self, one: Duration, two: Duration) -> Result<core::cmp::Ordering, Error> {
+        match self {
+            Self::Date(value) => value.compare_durations(one, two),
+            Self::Zoned(value) => value.compare_durations(one, two),
+        }
+    }
+}
+fn duration_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    if op == "parseDuration" {
+        return Ok(duration_record(
+            request["text"]
+                .as_str()
+                .ok_or(Error::InvalidSyntax)?
+                .parse::<Duration>()?,
+        ));
+    }
+    let value = duration(request)?;
+    let unit = |key: &str| -> Result<DateTimeUnit, Error> {
+        request[key]
+            .as_str()
+            .ok_or(Error::InvalidRoundingOptions)?
+            .parse()
+    };
+    let relative = request
+        .get("relative")
+        .filter(|value| !value.is_null())
+        .map(DurationAnchor::new)
+        .transpose()?;
+    match op {
+        "validateDuration" => Ok(Value::Null),
+        "transformDuration" => Ok(duration_record(match request["absolute"].as_bool() {
+            Some(true) => value.abs(),
+            Some(false) => value.negated(),
+            None => return Err(Error::InvalidDuration),
+        })),
+        "formatDuration" => Ok(json!(
+            value
+                .format(precision(request)?, mode(request)?)?
+                .to_string()
+        )),
+        "addDuration" => {
+            let other = duration_value(&request["other"])?;
+            let result = match request["subtract"].as_bool() {
+                Some(false) => value.checked_add(other)?,
+                Some(true) => value.checked_subtract(other)?,
+                None => return Err(Error::InvalidDuration),
+            };
+            Ok(duration_record(result))
+        }
+        "compareDuration" => {
+            let other = duration_value(&request["other"])?;
+            Ok(json!(match relative {
+                Some(anchor) => anchor.compare(value, other)?,
+                None => value.compare_time(other)?,
+            } as i8))
+        }
+        "totalDuration" => {
+            let unit = unit("unit")?;
+            Ok(json!(match relative {
+                Some(anchor) => anchor.total(value, unit)?,
+                None => match unit.time() {
+                    Some(unit) => value.total(unit)?,
+                    None if unit == DateTimeUnit::Day => value.total_days()?,
+                    None => return Err(Error::InvalidDuration),
+                },
+            }))
+        }
+        "roundDuration" => {
+            let largest = unit("largest")?;
+            let smallest = unit("smallest")?;
+            let increment = integer(request.get("increment"), None)?
+                .try_into()
+                .map_err(|_| Error::InvalidRoundingOptions)?;
+            let mode = mode(request)?;
+            Ok(duration_record(match relative {
+                Some(anchor) => anchor.round(value, largest, smallest, increment, mode)?,
+                None => value.round(largest, smallest, increment, mode)?,
+            }))
         }
         _ => Err(Error::InvalidSyntax),
     }
@@ -574,12 +713,20 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones","calls":CALLS.load(Ordering::Relaxed),"operations":["timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration","calls":CALLS.load(Ordering::Relaxed),"operations":["transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "timeZoneIdentity"
+        "transformDuration"
+            | "parseDuration"
+            | "validateDuration"
+            | "formatDuration"
+            | "addDuration"
+            | "compareDuration"
+            | "totalDuration"
+            | "roundDuration"
+            | "timeZoneIdentity"
             | "timeZoneOffset"
             | "timeZonePossibleInstants"
             | "timeZoneResolve"
@@ -633,6 +780,7 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
             }
+            _ if op.ends_with("Duration") => duration_operation(op, &request),
             _ if op.starts_with("timeZone") => time_zone_operation(op, &request),
             _ if op.starts_with("calendar") => calendar_operation(op, &request),
             _ if op.ends_with("PlainTime") => time_operation(op, &request),

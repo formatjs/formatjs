@@ -1,6 +1,7 @@
-import {Temporal} from '#packages/temporal/index.js'
+import type {Temporal as TemporalNamespace} from '#packages/temporal/index.js'
 
 export function checkPlainRelativeOracle(
+  Temporal: typeof TemporalNamespace,
   fixture: string,
   equal: (
     actual: string | number,

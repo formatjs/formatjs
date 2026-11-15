@@ -12,8 +12,10 @@ it('matches independent ICU plain calendar rounding, totals and comparisons', ()
     ),
     'utf8'
   )
-  const counts = checkPlainRelativeOracle(fixture, (actual, expected, line) =>
-    expect(actual, line).toBe(expected)
+  const counts = checkPlainRelativeOracle(
+    Temporal,
+    fixture,
+    (actual, expected, line) => expect(actual, line).toBe(expected)
   )
   expect(counts).toEqual({
     rounds: 51840,

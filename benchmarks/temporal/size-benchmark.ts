@@ -107,7 +107,7 @@ console.log(
       publishedModules,
       publishedGraphs: {
         scope:
-          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone math; all16 native calendar tables and IANA records plus retained TS algorithms/data included. Source maps, declarations and notices are not runtime imports.',
+          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone/Duration math; all16 native calendar tables and IANA records plus retained TS algorithms/data included. Source maps, declarations and notices are not runtime imports.',
         typescript: namespaceGraph,
         wasm: {
           ...wasmGraph,

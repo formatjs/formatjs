@@ -469,3 +469,34 @@ Zoned benchmarks improve four of five Hermes cases with Rust; WASM loses all fiv
 against TS. See `benchmarks/temporal/*timezone*results.json` for samples and scopes.
 Remaining native orchestration, SDK installation, Intl integration and equivalent
 full-backend comparisons remain required.
+
+## Native Duration bridge
+
+Hermes/WASM now delegate Duration parsing, validation, formatting, addition,
+subtraction, negated/abs, comparisons, totals and rounding to Rust. Relative
+operations use typed plain/zoned anchors with all 16 calendars and owned IANA
+data. JS keeps coercion/order, brands/slots and field/sign/blank projections.
+Selected native operations propagate errors without a TS retry. ABI 5 requires
+the matching packaged WASM asset; older instances reject before activation.
+
+Rust Duration::round supports unanchored day/time rounding with DateTimeUnit,
+including multi-day increments. Large scalar Durations use Duration bounds;
+relative calculations still check the actual calendar/instant endpoint.
+
+Independent controls run through actual TS, Hermes source/HBC and published WASM
+namespaces: 5,430 scalar cases, 51,840 plain rounds, 17,280 plain totals, 4,224 plain
+comparisons, 19,440 zoned rounds and 6,480 zoned totals. Existing public calendar
+controls retain all-16-calendar relative windows. Per-operation faults require
+Rust for both scalar and relative calculations. Native date/zoned orchestration,
+Now, SDK installation and Intl integration remain open.
+
+Duration bridge validation: 51 regression targets pass, including all eight full
+native class suites (9,090 executions per Hermes source/HBC and WASM mode),
+independent ICU controls, default TS full Duration, package and Rust core/ABI
+checks. No new exclusions. These remain hybrid-backend results.
+
+Matched Duration benchmarks improve Hermes formatting and relative round/total;
+parse/add still pay bridge costs. WASM loses all five Duration cases to TS on the
+recorded host. Consumer gzip: TS 360,908 bytes; WASM JS +binary 773,668 bytes,
+including retained TS fallback packs. See `benchmarks/temporal/README.md` and its
+Duration snapshots for methods, reference timings and startup costs.

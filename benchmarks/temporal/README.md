@@ -869,3 +869,41 @@ packs. Native class/relative orchestration remains incomplete.
 
 WASM compile/instantiate costs: 1.56/1.61 ms; first native/calendar/timezone
 operations: 2.72/9.70/1.10 ms. JS/TS was already warm; these exclude cold JS loading.
+
+## Native Duration bridge
+
+`hermes-duration-results.json`, `wasm-duration-results.json` and
+`duration-backend-size-results.json` extend the same commands to 25 workloads.
+Five additions cover Duration parsing, microsecond formatting, addition, relative
+rounding and relative totals. Relative cases include month prefixes and alternate
+plain/zoned anchors. ISO throughput only; all16 calendar packs remain included.
+Parity against temporal-polyfill1.0.7 basic passes before timing. Warmup, sample
+counts, transition overrides and Intl providers match the timezone profile.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Duration parse: 13.60 /14.40 /13.65.
+- Duration format: 26.97 /8.91 /13.04.
+- Duration add + format: 24.09 /45.06 /24.10.
+- Relative round + format: 232.82 /69.87 /51.80.
+- Relative total: 59.70 /19.57 /14.59.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Duration parse: 2.24 /13.30 /1.88.
+- Duration format: 2.33 /8.24 /86.50.
+- Duration add + format: 4.77 /38.54 /88.58.
+- Relative round + format: 26.22 /75.46 /54.77.
+- Relative total: 6.13 /20.90 /3.31.
+
+Native relative calculations reduce repeated crossings on Hermes. Parsing and
+addition still pay marshalling and result-validation costs. WASM loses all five
+against TS here. No default-backend recommendation from this partial profile.
+
+Binary: 3,316,093 raw /410,408 gzip bytes. Consumer bundles: TS 360,908 gzip;
+WASM JS 363,260 +binary 410,408 =773,668. Separate ESM: TS 362,728 versus WASM
+773,940. Native packs still duplicate retained TS fallback data. Compile and
+instantiate: 1.68/1.45 ms; first native/calendar/timezone/Duration calls:
+3.15/9.75/1.11/1.58 ms. JS/TS already warm; these exclude cold JS loading.
+Remaining date/zoned orchestration, SDK distribution and full-backend artifact
+sizes remain open.

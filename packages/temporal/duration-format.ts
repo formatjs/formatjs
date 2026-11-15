@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   durationFieldNames,
   durationSign,
@@ -9,6 +10,8 @@ export function formatDuration(
   fields: DurationFields,
   digits: number | 'auto' = 'auto'
 ): string {
+  const native = nativeTemporal()
+  if (native) return native.formatDuration(fields, digits, 'trunc')
   const sign = durationSign(fields)
   const absolute = zeroDuration()
   for (let index = 0; index < durationFieldNames.length; index++) {

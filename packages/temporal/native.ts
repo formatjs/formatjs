@@ -1,3 +1,4 @@
+import type {RelativeTo} from '#packages/temporal/relative-duration.js'
 import type {
   CalendarId,
   CalendarFields,
@@ -24,6 +25,37 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  transformDuration(fields: DurationFields, absolute: boolean): DurationFields
+  parseDuration(value: string): DurationFields
+  validateDuration(fields: DurationFields): void
+  formatDuration(
+    fields: DurationFields,
+    precision: number | 'auto',
+    mode: RoundingMode
+  ): string
+  addDuration(
+    one: DurationFields,
+    two: DurationFields,
+    subtract: boolean
+  ): DurationFields
+  compareDuration(
+    one: DurationFields,
+    two: DurationFields,
+    relative?: RelativeTo
+  ): -1 | 0 | 1
+  totalDuration(
+    fields: DurationFields,
+    unit: string,
+    relative?: RelativeTo
+  ): number
+  roundDuration(
+    fields: DurationFields,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    relative?: RelativeTo
+  ): DurationFields
   timeZoneIdentity(identifier: string): {identifier: string; primary: string}
   timeZoneOffset(identifier: string, value: bigint): bigint
   timeZonePossibleInstants(identifier: string, fields: ISODateTime): bigint[]
@@ -122,10 +154,12 @@ export function configureNativeTemporal(query: NativeQuery): void {
     const source = stringify(input)
     // Escaped code units violate Temporal's ASCII grammar; reject before UTF-8 decoding.
     if (
-      (op === 'parseInstant' || op === 'parsePlainTime') &&
+      (op === 'parseInstant' ||
+        op === 'parsePlainTime' ||
+        op === 'parseDuration') &&
       apply(indexOf, source, ['\\u']) >= 0
     )
-      throw new BadRange('Invalid instant string')
+      throw new BadRange('Invalid Temporal string')
     const result = query(source)
     if (typeof result === 'number')
       throw new BadRange('Invalid Temporal value or range')
@@ -165,13 +199,22 @@ export function configureNativeTemporal(query: NativeQuery): void {
     fields: DurationFields,
     subtract: boolean
   ): bigint {
+    return ToBigInt(
+      call(op, {
+        nanoseconds: text(value),
+        duration: durationFields(fields),
+        subtract,
+      })
+    )
+  }
+  function durationFields(fields: DurationFields): Record<string, string> {
     const duration = create(null)
     const names = keys(fields)
     for (let index = 0; index < names.length; index++)
       duration[names[index]] = text(
         ToBigInt(fields[names[index] as keyof DurationFields])
       )
-    return ToBigInt(call(op, {nanoseconds: text(value), duration, subtract}))
+    return duration
   }
   function dateFields(value: CalendarFields): Record<string, unknown> {
     const fields = create(null)
@@ -181,7 +224,63 @@ export function configureNativeTemporal(query: NativeQuery): void {
     fields.day = value.day
     return fields
   }
+  function relativeFields(
+    relative?: RelativeTo
+  ): Record<string, unknown> | undefined {
+    if (!relative) return undefined
+    const result = create(null)
+    if ('date' in relative) {
+      result.kind = 'date'
+      result.epochDay = relative.date.epochDay
+      result.calendar = relative.date.calendar
+    } else {
+      result.kind = 'zoned'
+      result.nanoseconds = text(relative.zoned.epochNanoseconds)
+      result.calendar = relative.zoned.calendar
+      result.identifier = relative.zoned.timeZone
+    }
+    return result
+  }
   native = {
+    transformDuration: (fields, absolute) =>
+      call('transformDuration', {duration: durationFields(fields), absolute}),
+    parseDuration: value => call('parseDuration', {text: value}),
+    validateDuration: fields => {
+      call('validateDuration', {duration: durationFields(fields)})
+    },
+    formatDuration: (fields, precision, mode) =>
+      call('formatDuration', {
+        duration: durationFields(fields),
+        precision,
+        mode,
+      }),
+    addDuration: (one, two, subtract) =>
+      call('addDuration', {
+        duration: durationFields(one),
+        other: durationFields(two),
+        subtract,
+      }),
+    compareDuration: (one, two, relative) =>
+      call('compareDuration', {
+        duration: durationFields(one),
+        other: durationFields(two),
+        relative: relativeFields(relative),
+      }),
+    totalDuration: (fields, unit, relative) =>
+      call('totalDuration', {
+        duration: durationFields(fields),
+        unit,
+        relative: relativeFields(relative),
+      }),
+    roundDuration: (fields, largest, smallest, increment, mode, relative) =>
+      call('roundDuration', {
+        duration: durationFields(fields),
+        largest,
+        smallest,
+        increment,
+        mode,
+        relative: relativeFields(relative),
+      }),
     timeZoneIdentity: identifier => call('timeZoneIdentity', {identifier}),
     timeZoneOffset: (identifier, value) =>
       ToBigInt(call('timeZoneOffset', {identifier, nanoseconds: text(value)})),

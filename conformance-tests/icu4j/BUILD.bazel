@@ -740,3 +740,12 @@ genrule(
         "timezone_identity",
     ]
 ]
+
+genrule(
+    name = "temporal_zoned_difference_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-difference-fixtures.js"],
+    cmd = "$(execpath :temporal_zoned_difference_oracle) $@ --js",
+    tools = [":temporal_zoned_difference_oracle"],
+    visibility = ["//visibility:public"],
+)

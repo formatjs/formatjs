@@ -69,6 +69,23 @@ const zonedEnds = zonedValues.map(value => value.add({days: 1, hours: 1}))
 const referenceZonedEnds = referenceZonedValues.map(value =>
   value.add({days: 1, hours: 1})
 )
+const durationStrings = strings.map(
+  (_, index) => `P1DT${index + 1}H2M3.12345678${index}S`
+)
+const durations = durationStrings.map(value => Temporal.Duration.from(value))
+const referenceDurations = durationStrings.map(value =>
+  reference.Duration.from(value)
+)
+const calendarDurations = durations.map(value => value.with({months: 1}))
+const referenceCalendarDurations = referenceDurations.map(value =>
+  value.with({months: 1})
+)
+const durationAnchors = dates.map((value, index) =>
+  index % 2 ? value : zonedValues[index]
+)
+const referenceDurationAnchors = referenceDates.map((value, index) =>
+  index % 2 ? value : referenceZonedValues[index]
+)
 const cases = [
   {
     name: 'parse',
@@ -283,6 +300,65 @@ const cases = [
         .getTimeZoneTransition('next')
         ?.epochNanoseconds.toString() ?? 'null',
   },
+  {
+    name: 'durationParse',
+    owned: (index: number) =>
+      Temporal.Duration.from(durationStrings[index]).nanoseconds.toString(),
+    reference: (index: number) =>
+      reference.Duration.from(durationStrings[index]).nanoseconds.toString(),
+  },
+  {
+    name: 'durationFormat',
+    owned: (index: number) =>
+      durations[index].toString({
+        smallestUnit: 'microsecond',
+        roundingMode: 'halfEven',
+      }),
+    reference: (index: number) =>
+      referenceDurations[index].toString({
+        smallestUnit: 'microsecond',
+        roundingMode: 'halfEven',
+      }),
+  },
+  {
+    name: 'durationAdd',
+    owned: (index: number) =>
+      durations[index].add({hours: 25, nanoseconds: 1}).toString(),
+    reference: (index: number) =>
+      referenceDurations[index].add({hours: 25, nanoseconds: 1}).toString(),
+  },
+  {
+    name: 'durationRoundRelative',
+    owned: (index: number) =>
+      calendarDurations[index]
+        .round({
+          relativeTo: durationAnchors[index],
+          largestUnit: 'month',
+          smallestUnit: 'day',
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+    reference: (index: number) =>
+      referenceCalendarDurations[index]
+        .round({
+          relativeTo: referenceDurationAnchors[index],
+          largestUnit: 'month',
+          smallestUnit: 'day',
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+  },
+  {
+    name: 'durationTotalRelative',
+    owned: (index: number) =>
+      calendarDurations[index]
+        .total({relativeTo: durationAnchors[index], unit: 'hour'})
+        .toString(),
+    reference: (index: number) =>
+      referenceCalendarDurations[index]
+        .total({relativeTo: referenceDurationAnchors[index], unit: 'hour'})
+        .toString(),
+  },
 ]
 const iterations = 5000,
   samples = 5,
@@ -321,10 +397,12 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/zoned workloads; Rust ISO/Instant/PlainTime/calendar/timezone JSON bridge optional, all16 calendars and IANA records bundled, remaining orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration JSON bridge optional, all16 calendars and IANA records bundled, remaining date/zoned orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
-    backend: query ? 'rust-iso-instant-time-calendars-zones' : 'typescript',
+    backend: query
+      ? 'rust-iso-instant-time-calendars-zones-duration'
+      : 'typescript',
     iterations,
     samples,
     warmup,

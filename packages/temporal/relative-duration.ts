@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {dayCheck} from '#packages/temporal/calendar.js'
 import {toDurationFields} from '#packages/temporal/duration.js'
 import {roundDuration, type RoundingMode} from '#packages/temporal/rounding.js'
@@ -121,6 +122,8 @@ export function relativeTotal(
   relative: RelativeTo,
   unit: string
 ): number {
+  const native = nativeTemporal()
+  if (native) return native.totalDuration(fields, unit, relative)
   const factors: Record<string, bigint> = {
     week: 7n * nsPerDay,
     day: nsPerDay,
@@ -196,6 +199,16 @@ export function relativeRound(
   increment: number,
   mode: RoundingMode
 ): DurationFields {
+  const native = nativeTemporal()
+  if (native)
+    return native.roundDuration(
+      fields,
+      largest,
+      smallest,
+      increment,
+      mode,
+      relative
+    )
   const start = relativeOrigin(relative)
   if (durationSign(fields) && 'date' in relative) checkDateTime(start)
   const end = relativeEndpoint(relative, fields)

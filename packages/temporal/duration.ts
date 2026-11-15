@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDuration} from '#packages/temporal/locale.js'
 import {formatDuration} from '#packages/temporal/duration-format.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -79,6 +80,8 @@ function addDurations(
   sign: number
 ): DurationObject {
   const two = toDurationFields(other)
+  const native = nativeTemporal()
+  if (native) return createDuration(native.addDuration(one, two, sign < 0))
   const largest = Math.min(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
     throw new RangeError('Calendar units cannot be added without a calendar')
@@ -105,6 +108,8 @@ class DurationValue {
     const relative = toRelativeTo(resolved.relativeTo)
     if (durationFieldNames.every(field => left[field] === right[field]))
       return 0
+    const native = nativeTemporal()
+    if (native) return native.compareDuration(left, right, relative)
     if (relative) {
       const sameDate =
         left.years === right.years &&
@@ -146,8 +151,10 @@ class DurationValue {
     return createDuration({...original, ...partialDuration(fields)})
   }
   negated(): DurationObject {
-    const fields = read(this),
-      result = zeroDuration()
+    const fields = read(this)
+    const native = nativeTemporal()
+    if (native) return createDuration(native.transformDuration(fields, false))
+    const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
       result[key] = -fields[key] || 0
@@ -155,8 +162,10 @@ class DurationValue {
     return createDuration(result)
   }
   abs(): DurationObject {
-    const fields = read(this),
-      result = zeroDuration()
+    const fields = read(this)
+    const native = nativeTemporal()
+    if (native) return createDuration(native.transformDuration(fields, true))
+    const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
       result[key] = Math.abs(fields[key])
@@ -217,6 +226,11 @@ class DurationValue {
       return createDuration(
         relativeRound(fields, relative, largest, smallest, increment, mode)
       )
+    const native = nativeTemporal()
+    if (native)
+      return createDuration(
+        native.roundDuration(fields, largest, smallest, increment, mode)
+      )
     if (fields.years || fields.months || fields.weeks || largeIndex < 3)
       throw new RangeError('Calendar rounding requires relativeTo')
     const quantum =
@@ -245,6 +259,8 @@ class DurationValue {
     const unit = unitOption(resolved.unit)
     if (unit === undefined) throw new RangeError('unit is required')
     if (relative) return relativeTotal(fields, relative, unit)
+    const native = nativeTemporal()
+    if (native) return native.totalDuration(fields, unit)
     const factors: Record<string, bigint> = {
       day: 86_400_000_000_000n,
       hour: 3_600_000_000_000n,
@@ -284,6 +300,8 @@ class DurationValue {
             : unit === 'nanosecond'
               ? 9
               : digits
+    const native = nativeTemporal()
+    if (native) return native.formatDuration(fields, precision, mode)
     if (precision === 'auto' || precision === 9)
       return formatDuration(fields, precision)
     const rounded = roundDuration(

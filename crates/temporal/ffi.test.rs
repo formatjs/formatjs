@@ -208,3 +208,44 @@ fn named_zones_keep_identity_candidates_and_strict_transition_boundaries() {
         assert_eq!(request(value), Err(1));
     }
 }
+
+#[test]
+fn duration_day_rounding_has_no_instant_anchor_limit() {
+    let fields = |days: &str| json!({"years":"0","months":"0","weeks":"0","days":days,"hours":"0","minutes":"0","seconds":"0","milliseconds":"0","microseconds":"0","nanoseconds":"0"});
+    let request = |value: Value| query(value.to_string().as_bytes());
+    for (days, expected) in [
+        ("5", 4),
+        ("7", 8),
+        ("-5", -4),
+        ("-7", -8),
+        ("1000000000", 1000000000),
+    ] {
+        let result = request(json!({"op":"roundDuration","duration":fields(days),"largest":"day","smallest":"day","increment":2,"mode":"halfEven"})).unwrap();
+        assert_eq!(result["days"].as_f64(), Some(f64::from(expected)));
+    }
+    assert_eq!(
+        request(
+            json!({"op":"formatDuration","duration":fields("1000000000"),"precision":"auto","mode":"trunc"})
+        ),
+        Ok(json!("P1000000000D"))
+    );
+    assert_eq!(
+        request(json!({"op":"totalDuration","duration":fields("1000000000"),"unit":"day"})),
+        Ok(json!(1000000000.0))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"totalDuration","duration":fields("1000000000"),"unit":"day","relative":{"kind":"date","epochDay":0,"calendar":"iso8601"}})
+        ),
+        Err(1)
+    );
+    for value in [
+        json!({"op":"roundDuration","duration":fields("1"),"largest":"day","smallest":"day","increment":0,"mode":"trunc"}),
+        json!({"op":"roundDuration","duration":fields("1"),"largest":"day","smallest":"month","increment":1,"mode":"trunc"}),
+        json!({"op":"totalDuration","duration":fields("1"),"unit":"year"}),
+        json!({"op":"totalDuration","duration":fields("1"),"unit":"day","relative":{"kind":"date","epochDay":0,"calendar":"unknown"}}),
+        json!({"op":"totalDuration","duration":fields("1"),"unit":"day","relative":{"kind":"zoned","nanoseconds":"0","calendar":"iso8601","identifier":"Unknown/Zone"}}),
+    ] {
+        assert_eq!(request(value), Err(1));
+    }
+}

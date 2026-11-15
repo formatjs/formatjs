@@ -1117,5 +1117,54 @@
       "note": "Calendar Hermes gates use long timeout after 300-second parallel-run timeout; both pass rerun. Full 50-target regression pass includes those gates.",
       "cacheFastPathValidation": "Subsequent cached-name fast path passes nine focused targets: full ZonedDateTime on default TS, Hermes source/HBC and WASM, plus independent timezone/alias controls and published package checks."
     }
+  },
+  "nativeDurationBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 5,
+    "nativeOperations": 37,
+    "scope": "Duration parsing, validation, transform, formatting, arithmetic, comparison, total and round use Rust after JS coercion. Plain/zoned relative anchors normalized in JS; all16 native calendars and IANA rules included. Remaining date/zoned orchestration and SDK/Intl integration incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "scalarBigDecimalRows": 5430,
+      "plainRounds": 51840,
+      "plainTotals": 17280,
+      "plainComparisons": 4224,
+      "zonedRounds": 19440,
+      "zonedTotals": 6480,
+      "note": "Existing public calendar controls additionally verify relative windows across all16 calendars. Actual namespace passed to shared oracle helpers."
+    },
+    "backendSelection": "Objects and relative anchors created before native activation still use Rust. Per-operation fault injection independently checks parse/validate/transform/format/add/compare/total/round, including plain and zoned anchors.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26
+    },
+    "regression": "51 focused and broad targets pass, including all full native class suites, default TS full Duration1086, ICU controls, package checks and Rust core/ABI tests.",
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "remaining native class/relative/zoned orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
   }
 }

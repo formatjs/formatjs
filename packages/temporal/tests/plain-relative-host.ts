@@ -1,12 +1,18 @@
+import {Temporal} from '#packages/temporal/index.js'
 import {checkPlainRelativeOracle} from '#packages/temporal/tests/plain-relative-oracle.js'
 
 declare function print(value: string): void
 const fixture = (
   globalThis as unknown as {__formatjsTemporalPlainRelative: string}
 ).__formatjsTemporalPlainRelative
-const counts = checkPlainRelativeOracle(fixture, (actual, expected, line) => {
-  if (actual !== expected) throw new Error(`${line}: ${actual} !== ${expected}`)
-})
+const counts = checkPlainRelativeOracle(
+  Temporal,
+  fixture,
+  (actual, expected, line) => {
+    if (actual !== expected)
+      throw new Error(`${line}: ${actual} !== ${expected}`)
+  }
+)
 if (
   counts.rounds !== 51840 ||
   counts.totals !== 17280 ||
