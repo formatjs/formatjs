@@ -1,6 +1,114 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn independent_icu_clock_rounding() {
+    use formatjs_temporal::PlainTime;
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_TIME"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let value = PlainTime::from_nanoseconds(fields[0].parse().unwrap()).unwrap();
+        let rounded = value
+            .round(
+                fields[1].parse().unwrap(),
+                fields[2].parse().unwrap(),
+                fields[3].parse().unwrap(),
+            )
+            .unwrap();
+        assert_eq!(
+            rounded.nanoseconds(),
+            fields[4].parse::<i128>().unwrap(),
+            "{line}"
+        );
+        count += 1;
+    }
+    assert!(count > 3000);
+    println!("{count} independent ICU field-relative clock rounding cases");
+}
+
+#[test]
+fn plain_time_parsing_wrapping_and_signed_differences() {
+    use formatjs_temporal::{PlainTime, Precision, RoundingMode, TimeUnit};
+    let strings: serde_json::Value =
+        serde_json::from_str(include_str!(env!("FORMATJS_TEMPORAL_TIME_STRINGS"))).unwrap();
+    for case in strings["valid"].as_array().unwrap() {
+        let text = case[0].as_str().unwrap();
+        assert_eq!(
+            text.parse::<PlainTime>().unwrap().to_string(),
+            case[1].as_str().unwrap(),
+            "{text}"
+        );
+    }
+    for case in strings["invalid"].as_array().unwrap() {
+        let text = case.as_str().unwrap();
+        assert!(text.parse::<PlainTime>().is_err(), "{text}");
+    }
+    let midnight = PlainTime::new(0, 0, 0, 0).unwrap();
+    let last: PlainTime = "23:59:59.999999999".parse().unwrap();
+    assert_eq!(
+        last.format(Precision::Digits(0), RoundingMode::Ceil)
+            .unwrap()
+            .to_string(),
+        "00:00:00"
+    );
+    assert_eq!(
+        midnight
+            .format(Precision::Digits(9), RoundingMode::Trunc)
+            .unwrap()
+            .to_string(),
+        "00:00:00.000000000"
+    );
+    assert_eq!(
+        last.format(Precision::Minute, RoundingMode::Trunc)
+            .unwrap()
+            .to_string(),
+        "23:59"
+    );
+    assert_eq!(
+        midnight
+            .checked_subtract("P1Y2M3W4DT0.000000001S".parse().unwrap())
+            .unwrap()
+            .to_string(),
+        "23:59:59.999999999"
+    );
+    let end = "12:18".parse().unwrap();
+    let start: PlainTime = "01:06".parse().unwrap();
+    assert_eq!(
+        start
+            .until(
+                end,
+                TimeUnit::Hour,
+                TimeUnit::Minute,
+                12,
+                RoundingMode::HalfEven
+            )
+            .unwrap()
+            .to_string(),
+        "PT11H12M"
+    );
+    assert_eq!(
+        start
+            .since(
+                end,
+                TimeUnit::Hour,
+                TimeUnit::Minute,
+                12,
+                RoundingMode::HalfEven
+            )
+            .unwrap()
+            .to_string(),
+        "-PT11H12M"
+    );
+    assert!(
+        start
+            .round(TimeUnit::Minute, 60, RoundingMode::Trunc)
+            .is_err()
+    );
+}
+
+#[test]
 fn exact_range_and_negative_millisecond_floor() {
     for value in [-MAX_EPOCH_NANOSECONDS, -1, 0, 1, MAX_EPOCH_NANOSECONDS] {
         let instant = Instant::from_epoch_nanoseconds(value).unwrap();

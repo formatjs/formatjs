@@ -114,28 +114,30 @@ One shared-host V8 run, ns/op:
 
 | Operation                                  | Facade | Reference |
 | ------------------------------------------ | -----: | --------: |
-| construct/get epochNanoseconds             |    382 |       422 |
-| fromEpochNanoseconds/get epochMilliseconds |    437 |       515 |
-| fromEpochMilliseconds/get epochNanoseconds |    299 |       355 |
-| from ISO string/get epochNanoseconds       |  1,809 |     1,976 |
-| round microsecond/get epochNanoseconds     |  1,038 |     1,403 |
-| toJSON                                     |  1,471 |     2,586 |
-| toString named timezone                    |  2,011 |     5,958 |
-| Duration parse/toJSON                      |  5,156 |    52,140 |
-| Duration total microseconds                |  4,137 |     2,784 |
-| Instant until/toJSON                       |  5,264 |    25,605 |
+| construct/get epochNanoseconds             |    390 |       419 |
+| fromEpochNanoseconds/get epochMilliseconds |    384 |       453 |
+| fromEpochMilliseconds/get epochNanoseconds |    481 |       320 |
+| from ISO string/get epochNanoseconds       |  1,823 |     2,033 |
+| round microsecond/get epochNanoseconds     |  1,015 |     1,189 |
+| toJSON                                     |  1,331 |     2,283 |
+| toString named timezone                    |  1,982 |     5,745 |
+| Duration parse/toJSON                      |  5,035 |    51,759 |
+| Duration total microseconds                |  5,181 |     3,910 |
+| Instant until/toJSON                       |  6,433 |    28,728 |
+| PlainTime parse/round/toJSON               |  2,941 |     4,605 |
+| PlainTime parse/add/toJSON                 |  4,578 |     6,029 |
 
-Duration total is slower in this run; parsing/differences are faster on this
-mixed-range sample. These partial API workloads do not establish a complete
-polyfill performance win. Timezone cases use rules that agree between owned
-IANA 2026f and the reference's host Intl data.
+Millisecond factories and Duration totals are slower in this run. These partial
+API workloads do not establish a complete polyfill performance win. Timezone
+cases use rules that agree between owned IANA 2026f and reference host Intl data.
 
-Minified gzip: public Instant/Duration namespace **72,450 bytes**, including
-all owned IANA timezone data and aliases. Independent Instant parsing/rounding/
-format primitives are **2,688 bytes**, without facade, Duration or timezone
-resolver/data; ISO/Hebrew arithmetic is **1,822 bytes**. Bundles are not additive
-and cover different APIs. The reference is **19,393 bytes** and uses host Intl
-timezone data. WASM sizes remain unmeasured.
+Minified gzip: public Instant/Duration/PlainTime namespace **73,783 bytes**,
+including all owned IANA timezone data and aliases. Independent Instant parsing/
+rounding/format primitives are **2,688 bytes**, without facade, Duration, PlainTime
+or timezone resolver/data; ISO/Hebrew arithmetic is **1,822 bytes**. Bundles are
+not additive and cover different APIs. Reference is **19,393 bytes**, using host
+Intl timezone data. Initial data-free WASM measurements appear below; complete
+WASM facade/data size remains unmeasured.
 
 The full Instant serialization selection passes **454/456**. Duration's complete
 implemented-method selection passes **554/556**. Missing class constructors in
@@ -157,8 +159,8 @@ These implement different APIs. Kernel size excludes the missing Temporal API
 and non-ISO calendars. Code-only size is not measured incremental npm size:
 sharing data/source across separately bundled published packages needs a packaging
 plan and its own measurement. Data dominates the standalone owned-data variant.
-WASM would still need that data plus JS object semantics/glue; no WASM size was
-measured.
+WASM would still need that data plus JS object semantics/glue; this earlier
+measurement did not include WASM. See the separate data-free baseline below.
 
 `timezone-size-results.json` compares actual Bazel artifacts before/after the
 future-rule change, with the same IANA pin and gzip settings. These are shipped
@@ -289,8 +291,8 @@ and timezone data. The TS bundle includes Duration object machinery; the WASM
 bridge is a benchmark-only synchronous string ABI with 256-byte input/output
 buffers, not Temporal brands, coercions or the complete public facade. The
 reference supplies a broader API and host Intl integration. These sizes do not
-predict a complete polyfill's size; the 72,450-byte public TS namespace measurement
-above includes owned IANA data and a different entry surface.
+predict a complete polyfill's size; the current 73,783-byte public TS namespace measurement
+above includes owned IANA data, PlainTime and a different entry surface.
 
 Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
 
@@ -323,3 +325,19 @@ capability probe. Both source and optimized bytecode report `WebAssembly` as
 undefined. No WASM benchmark runs on Hermes. Keep TS support and implement native
 Rust bindings; WASM cannot currently replace either path there. A complete WASM
 facade, its object/coercion overhead and matching full data remain unmeasured.
+
+## PlainTime
+
+TS/Rust support independent ISO time/date-time parsing, field validation,
+wraparound arithmetic, signed differences, field-relative rounding and precision
+serialization. Date duration fields are ignored after duration validation. The
+new ICU4J 79.1 decimal oracle verifies 7,740 clock-rounding cases across every
+mode, ties, parent-field parity and midnight. Shared parser vectors cover basic
+forms, annotations, ignored offsets, leap seconds and ambiguity rejection.
+
+A complete construction/getter/add/subtract/toJSON/valueOf selection passes 234
+executions on Node and Hermes source/optimized bytecode. Full PlainTime diagnostics
+run 986 executions per mode: 954 pass, 32 fail. Other-class conversions, locale
+integration and class-dependent helpers remain raw failures, not exclusions.
+The public namespace grows 1,333 gzip bytes from the previous Instant/Duration
+measurement. Native Rust Hermes bindings and the remaining classes remain open.

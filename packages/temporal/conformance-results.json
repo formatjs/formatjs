@@ -147,5 +147,79 @@
       }
     },
     "note": "Calendar-relative operations, Duration.round and remaining class integration are incomplete. No individual-file exclusions or tracked-failure baseline."
+  },
+  "plainTime": {
+    "selected": {
+      "executions": 234,
+      "passes": 234,
+      "failures": 0
+    },
+    "selection": "Complete constructor/prototype-root/getter/add/subtract/toJSON/valueOf directories; remaining methods retained in full diagnostics.",
+    "full": {
+      "executions": 986,
+      "passes": 954,
+      "failures": 32,
+      "failuresByArea": {
+        "compare": 2,
+        "from": 8,
+        "prototype/equals": 4,
+        "prototype/round": 2,
+        "prototype/since": 4,
+        "prototype/toLocaleString": 4,
+        "prototype/toString": 2,
+        "prototype/until": 4,
+        "prototype/with": 2
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 986,
+          "passes": 954,
+          "failures": 32,
+          "failuresByArea": {
+            "compare": 2,
+            "from": 8,
+            "prototype/equals": 4,
+            "prototype/round": 2,
+            "prototype/since": 4,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/until": 4,
+            "prototype/with": 2
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 986,
+          "passes": 954,
+          "failures": 32,
+          "failuresByArea": {
+            "compare": 2,
+            "from": 8,
+            "prototype/equals": 4,
+            "prototype/round": 2,
+            "prototype/since": 4,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/until": 4,
+            "prototype/with": 2
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 234,
+          "passes": 234,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 234,
+          "passes": 234,
+          "failures": 0
+        }
+      }
+    },
+    "exclusions": [],
+    "icuClockRoundingCases": 7740
   }
 }

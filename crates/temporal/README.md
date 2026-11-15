@@ -64,3 +64,13 @@ Temporal WASM polyfill.
 Pinned Hermes has no `WebAssembly` global in source or optimized bytecode. Hermes
 support therefore needs the TS facade or native Rust bindings. Size, cold-start
 and throughput records live in [benchmark notes](../../benchmarks/temporal/README.md#wasm-baseline).
+
+## PlainTime
+
+`PlainTime` adds strict ISO time/date-time parsing, exact within-day nanoseconds,
+checked fields, wraparound arithmetic that ignores date duration fields,
+comparison, signed differences, all nine rounding modes and allocation-free
+precision formatting. Field-relative rounding preserves half-even parity for
+increments such as 12 minutes and 8 nanoseconds. Shared TS/Rust parsing vectors
+cover annotations, offsets, ambiguity, leap seconds and invalid dates. Both
+implementations match all 7,740 independent ICU clock-rounding cases.

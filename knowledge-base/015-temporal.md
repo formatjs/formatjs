@@ -10,8 +10,8 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports partial `Temporal.Instant` and `Temporal.Duration` APIs. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/Duration/ISO core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
+The public entry exports partial `Temporal.Instant`, `Temporal.Duration` and `Temporal.PlainTime` APIs. ISO/Hebrew arithmetic
+and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/Duration/PlainTime/ISO core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
 
@@ -114,3 +114,21 @@ size or conformance cannot be inferred from these results.
 the pinned Hermes overlay. Both report `WebAssembly` as undefined. No WASM timing
 is claimed for Hermes; TS and native Rust installation remain required paths.
 See [recorded measurements](../benchmarks/temporal/README.md#wasm-baseline).
+
+## PlainTime
+
+TS/Rust now provide clock fields, strict ISO time/date-time parsing, comparison,
+wrapping add/subtract, signed differences, field-relative rounding and precision
+serialization. Date duration fields are ignored after full duration validation.
+`halfEven` parity is relative to the rounded field, not the full day's quotient;
+for example, 01:06 rounded to 12 minutes yields 01:00. An independent ICU4J 79.1
+decimal oracle validates 7,740 cases across all modes, ties, odd quotient counts,
+parent fields and midnight. Shared TS/Rust vectors check grammar boundaries.
+
+A complete construction/getter/add/subtract/toJSON/valueOf selection passes 234
+executions on Node and Hermes source/optimized bytecode. Full upstream PlainTime
+runs all 986 executions on each engine mode: 954 pass, 32 fail. Remaining
+failures retain PlainDateTime/ZonedDateTime conversions, missing Intl integration
+and helper dependencies on missing classes. Full diagnostics stay failing;
+missing behavior is not excluded. Public facades and native bindings for the
+remaining classes are still required by the full goal.

@@ -9,7 +9,7 @@ const resolve = (file: string) =>
   runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/benchmarks/temporal/${file}`
   )
-const {Instant, Duration} = await import(
+const {Instant, Duration, PlainTime} = await import(
   pathToFileURL(resolve('instant-code.js')).href
 )
 const {Temporal: reference} = await import(
@@ -122,6 +122,39 @@ pairs.push(
   ]
 )
 let numberSink = 0
+const times = ['00:00:00', '01:06', '23:59:59.999999999', 'T1231']
+pairs.push(
+  [
+    'PlainTime parse/round/toJSON',
+    i =>
+      PlainTime.from(times[i % times.length])
+        .round({
+          smallestUnit: 'minute',
+          roundingIncrement: 12,
+          roundingMode: 'halfEven',
+        })
+        .toJSON(),
+    i =>
+      reference.PlainTime.from(times[i % times.length])
+        .round({
+          smallestUnit: 'minute',
+          roundingIncrement: 12,
+          roundingMode: 'halfEven',
+        })
+        .toJSON(),
+  ],
+  [
+    'PlainTime parse/add/toJSON',
+    i =>
+      PlainTime.from(times[i % times.length])
+        .add('PT1.000000001S')
+        .toJSON(),
+    i =>
+      reference.PlainTime.from(times[i % times.length])
+        .add('PT1.000000001S')
+        .toJSON(),
+  ]
+)
 let sink = 0n
 function consume(value: Value): void {
   if (typeof value === 'number') {
@@ -180,7 +213,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant and Duration numeric paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration and PlainTime numeric paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

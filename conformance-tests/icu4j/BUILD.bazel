@@ -321,6 +321,23 @@ genrule(
 )
 
 java_binary(
+    name = "temporal_time_oracle",
+    testonly = True,
+    srcs = ["TemporalTimeOracle.java"],
+    main_class = "TemporalTimeOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_time_fixtures",
+    testonly = True,
+    outs = ["temporal-time-fixtures.tsv"],
+    cmd = "$(execpath :temporal_time_oracle) $@",
+    tools = [":temporal_time_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
     name = "temporal_iso_oracle",
     testonly = True,
     srcs = ["TemporalISOOracle.java"],

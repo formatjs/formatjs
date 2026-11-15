@@ -5,6 +5,7 @@ mod format;
 mod iso;
 mod parse;
 mod rounding;
+mod time;
 
 use core::fmt;
 use core::str::FromStr;
@@ -14,6 +15,7 @@ pub use duration::{
 pub use format::{FormattedInstant, Precision};
 pub use iso::IsoDateTime;
 pub use rounding::{RoundingMode, TimeUnit};
+pub use time::{FormattedTime, PlainTime};
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
 pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;

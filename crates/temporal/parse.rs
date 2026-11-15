@@ -1,4 +1,4 @@
-use crate::{Error, Instant, IsoDateTime};
+use crate::{Error, Instant, IsoDateTime, PlainTime};
 
 struct Cursor<'a> {
     bytes: &'a [u8],
@@ -119,6 +119,85 @@ pub fn instant(value: &str) -> Result<Instant, Error> {
         offset,
     )
 }
+pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
+    let index = value.find('[').unwrap_or(value.len());
+    let body = &value[..index];
+    annotations(&value[index..])?;
+    let mut input = Cursor::new(body);
+    if let Some(separator) = body.find(['T', 't', ' ']) {
+        if separator == 0 && body.starts_with(' ') {
+            return Err(Error::InvalidSyntax);
+        }
+        if separator > 0 {
+            let negative = input.take(b'-');
+            let extended = negative || input.take(b'+');
+            let year = input.number(if extended { 6 } else { 4 })?;
+            let separated = input.take(b'-');
+            let month = input.number(2)?;
+            if separated && !input.take(b'-') {
+                return Err(Error::InvalidSyntax);
+            }
+            let day = input.number(2)?;
+            let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+            let maximum = match month {
+                2 => 28 + u32::from(leap),
+                4 | 6 | 9 | 11 => 30,
+                _ => 31,
+            };
+            if (negative && year == 0)
+                || !(1..=12).contains(&month)
+                || day == 0
+                || day > maximum
+                || input.position != separator
+            {
+                return Err(Error::InvalidDateTime);
+            }
+        }
+        input.position = separator + 1;
+    } else {
+        let (digits, separated) = match body.len() {
+            4 => (4, false),
+            5 if body.as_bytes()[2] == b'-' => (4, true),
+            6 => (6, false),
+            7 if body.as_bytes()[4] == b'-' => (6, true),
+            _ => (0, false),
+        };
+        if digits > 0 {
+            let mut date = Cursor::new(body);
+            if let Ok(first) = date.number(if digits == 4 { 2 } else { 4 }) {
+                if separated {
+                    date.take(b'-');
+                }
+                if let Ok(second) = date.number(2) {
+                    let valid = if digits == 6 {
+                        (1..=12).contains(&second)
+                    } else {
+                        (1..=12).contains(&first)
+                            && second > 0
+                            && second
+                                <= match first {
+                                    2 => 29,
+                                    4 | 6 | 9 | 11 => 30,
+                                    _ => 31,
+                                }
+                    };
+                    if valid {
+                        return Err(Error::InvalidSyntax);
+                    }
+                }
+            }
+        }
+    }
+    let (hour, minute, second, fraction) = input.time(false, true)?;
+    if input.peek().is_some() {
+        input.offset(true)?;
+    }
+    if input.position != body.len() {
+        return Err(Error::InvalidSyntax);
+    }
+    PlainTime::new(hour, minute, second, fraction)
+}
+
 fn annotations(mut value: &str) -> Result<(), Error> {
     let (mut calendar_seen, mut critical_calendar, mut annotation_seen, mut zone_seen) =
         (false, false, false, false);

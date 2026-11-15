@@ -36,6 +36,7 @@ rust_library(
         "lib.rs",
         "parse.rs",
         "rounding.rs",
+        "time.rs",
     ],
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
@@ -48,6 +49,8 @@ formatjs_rust_test(
     size = "small",
     srcs = ["lib.test.rs"],
     compile_data = [
+        "//packages/temporal:plain_time_string_fixtures",
+        "//conformance-tests/icu4j:temporal_time_fixtures",
         "//packages/temporal:instant_string_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
@@ -55,6 +58,8 @@ formatjs_rust_test(
     ],
     edition = "2024",
     rustc_env = {
+        "FORMATJS_TEMPORAL_TIME_STRINGS": "$(execpath //packages/temporal:plain_time_string_fixtures)",
+        "FORMATJS_TEMPORAL_TIME": "$(execpath //conformance-tests/icu4j:temporal_time_fixtures)",
         "FORMATJS_TEMPORAL_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
         "FORMATJS_TEMPORAL_STRINGS": "$(execpath //packages/temporal:instant_string_fixtures)",
         "FORMATJS_TEMPORAL_DURATION": "$(execpath //conformance-tests/icu4j:temporal_duration_fixtures)",

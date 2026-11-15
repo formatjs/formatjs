@@ -586,9 +586,14 @@ It owns checked Instant values, ISO conversion, instant string parsing, rounding
 and serialization with caller-supplied offsets.
 Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
 conversion directions across Temporal’s full instant range. Hermes native
-bindings, WASM and remaining Temporal operations are pending.
+bindings, complete WASM facades and remaining Temporal operations are pending.
+The core builds through a scoped WASM target for matched primitive benchmarks.
 
 `formatjs_temporal::Duration` now supplies Number-representable integer fields,
 ISO parsing, signed rounding, serialization, exact totals and arithmetic. Instant
 differences/addition reuse it. ICU independently checks signed rounding and
 rational-to-binary64 totals. Calendar-relative operations remain pending.
+
+`formatjs_temporal::PlainTime` adds ISO parsing, checked clock fields, wrapping
+arithmetic, signed differences, field-relative rounding and precision formatting.
+TS/Rust share grammar vectors and match 7,740 independent ICU clock cases.

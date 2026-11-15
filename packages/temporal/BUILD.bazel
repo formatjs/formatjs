@@ -19,6 +19,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "plain-time.ts",
         "rounding.ts",
         "zones.ts",
     ],
@@ -66,6 +67,14 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "plain_time_test",
+            [
+                "tests/plain-time.test.ts",
+                "tests/plain-time-strings.json",
+            ],
+            ["//conformance-tests/icu4j:temporal_time_fixtures"],
+        ),
         (
             "kernel_test",
             [
@@ -133,7 +142,28 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
 
+_TIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainTime"
+
 _DURATION_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Duration"
+
+_TIME_CORE_PATTERNS = [
+    _TIME_ROOT + "/*.js",
+    _TIME_ROOT + "/prototype/*.js",
+] + [
+    _TIME_ROOT + "/" + directory + "/**/*.js"
+    for directory in [
+        "prototype/hour",
+        "prototype/minute",
+        "prototype/second",
+        "prototype/millisecond",
+        "prototype/microsecond",
+        "prototype/nanosecond",
+        "prototype/add",
+        "prototype/subtract",
+        "prototype/toJSON",
+        "prototype/valueOf",
+    ]
+]
 
 _DURATION_CORE_PATTERNS = [
     _DURATION_ROOT + "/*.js",
@@ -208,6 +238,7 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
         ],
         env = {"TZ": "UTC"},
         exec_properties = {
@@ -218,6 +249,12 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("plain_time_test262", _TIME_CORE_PATTERNS, []),
+        (
+            "plain_time_test262_full",
+            [_TIME_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
         ("instant_test262", _INSTANT_PATTERNS, []),
         ("duration_test262", _DURATION_CORE_PATTERNS, []),
         (
@@ -246,6 +283,13 @@ _INSTANT_PATTERNS = [
 ]
 
 filegroup(
+    name = "plain_time_string_fixtures",
+    testonly = True,
+    srcs = ["tests/plain-time-strings.json"],
+    visibility = ["//crates/temporal:__pkg__"],
+)
+
+filegroup(
     name = "instant_string_fixtures",
     testonly = True,
     srcs = ["tests/instant-strings.json"],
@@ -260,6 +304,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-temporal-duration-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
     ],
     node_toolchain = "//tools/test262:node-runtime",
     tags = ["manual"],
@@ -279,7 +324,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -291,6 +336,7 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
             "@hermes//:hermesc",
         ],
         env = {"TZ": "UTC"},
@@ -301,6 +347,22 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("plain_time_hermes_test262_strict", "source", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
+        ("plain_time_hermes_bytecode_test262_strict", "bytecode", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
+        (
+            "plain_time_hermes_test262_full",
+            "source",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_time_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+            ["manual"],
+        ),
         ("duration_hermes_test262_strict", "source", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
         ("duration_hermes_bytecode_test262_strict", "bytecode", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
         (

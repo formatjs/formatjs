@@ -102,6 +102,47 @@ function isValidDate(year: string, month: string, day: string): boolean {
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
+export function parsePlainTimeString(value: string): bigint {
+  const index = value.indexOf('[')
+  let body = index < 0 ? value : value.slice(0, index)
+  validateAnnotations(index < 0 ? '' : value.slice(index))
+  const date = /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})[Tt ]/.exec(body)
+  if (date) {
+    if (!isValidDate(date[1], date[3], date[4]))
+      throw new RangeError('Invalid ISO date')
+    body = body.slice(date[0].length)
+  } else if (/^[Tt]/.test(body)) body = body.slice(1)
+  else {
+    const ym = /^(\d{4})-?(\d{2})$/.exec(body)
+    const md = /^(\d{2})-?(\d{2})$/.exec(body)
+    if (
+      (ym && isValidDate(ym[1], ym[2], '01')) ||
+      (md && isValidDate('1972', md[1], md[2]))
+    )
+      throw new RangeError('Ambiguous ISO time')
+  }
+  const match =
+    /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?$/.exec(
+      body
+    )
+  if (
+    !match ||
+    match[0] !== body ||
+    +match[1] > 23 ||
+    +(match[3] ?? 0) > 59 ||
+    +(match[4] ?? 0) > 60
+  )
+    throw new RangeError('Invalid ISO time')
+  if (match[6]) parseOffsetNanoseconds(match[6])
+  return (
+    BigInt(
+      +match[1] * 3600 + +(match[3] ?? 0) * 60 + Math.min(59, +(match[4] ?? 0))
+    ) *
+      1_000_000_000n +
+    BigInt((match[5] ?? '').padEnd(9, '0'))
+  )
+}
+
 export function parseTimeZoneString(value: string): string {
   if (
     /^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*(?![\s\S])/.test(
