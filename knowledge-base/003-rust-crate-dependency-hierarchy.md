@@ -598,7 +598,7 @@ rational-to-binary64 totals. Plain/zoned anchors below supply calendar-relative 
 arithmetic, signed differences, field-relative rounding and precision formatting.
 TS/Rust share grammar vectors and match 7,740 independent ICU clock cases.
 
-Temporal also owns calendar-aware PlainDate/PlainDateTime/zoned cores and ISO
+Temporal also owns calendar-aware PlainDate/PlainDateTime/zoned cores and
 PlainYearMonth/PlainMonthDay. The no_std TimeZone provider supplies exact nanosecond
 offsets and transition queries. FixedOffset supplies constant zones; TransitionZone
 borrows explicit records and recurring rules. Zoned differences round against
@@ -611,7 +611,9 @@ The plain and zoned cores also supply relative Duration total/round/compare oper
 ICU controls exercise the owned IANA provider through these adapters. Sealed
 CalendarProvider values retain all 16 calendars through public date/date-time
 and zoned operations; CalendarRef unifies arithmetic and borrowed table views.
-Native short-date calendar integration remains pending. Rational-to-f64
+Short dates reuse bounded extended calendar coordinates for reference dates,
+with canonical MonthDay windows and calendar-aware YearMonth rounding.
+Independent short-date controls cover all 16 providers. Rational-to-f64
 conversion stays in the numeric core.
 
 Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.

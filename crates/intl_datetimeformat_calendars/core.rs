@@ -423,6 +423,27 @@ impl Calendar {
         check_day(epoch)?;
         check_day(self.add_raw(epoch, duration, overflow)?)
     }
+    /// Internal reference dates and rounding coordinates within ±110000000 epoch days.
+    pub fn from_epoch_day_extended(self, epoch: i64) -> Result<Date, Error> {
+        self.from_epoch_day_raw(epoch)
+    }
+    pub fn to_epoch_day_extended(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, Error> {
+        check_extended_day(self.to_epoch_day_raw(year, month, day, overflow)?)
+    }
+    pub fn add_extended(
+        self,
+        epoch: i64,
+        duration: DateDuration,
+        overflow: Overflow,
+    ) -> Result<i64, Error> {
+        check_extended_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
+    }
     pub fn until(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         check_day(one)?;
         check_day(two)?;
@@ -433,7 +454,11 @@ impl Calendar {
         NumericCalendar::until_raw(self, one, two, largest)
     }
     pub fn era(self, epoch: i64) -> Result<Option<Era>, Error> {
-        Ok(self.era_of(self.from_epoch_day(epoch)?, epoch))
+        check_day(epoch)?;
+        self.era_extended(epoch)
+    }
+    pub fn era_extended(self, epoch: i64) -> Result<Option<Era>, Error> {
+        Ok(self.era_of(self.from_epoch_day_extended(epoch)?, epoch))
     }
     pub(crate) fn era_of(self, date: Date, epoch: i64) -> Option<Era> {
         let y = date.year;
@@ -524,6 +549,13 @@ pub(crate) fn check_year(year: i64) -> Result<i64, Error> {
 }
 pub(crate) fn check_day(day: i64) -> Result<i64, Error> {
     if (MIN_DAY..=MAX_DAY).contains(&day) {
+        Ok(day)
+    } else {
+        Err(Error::OutOfRange)
+    }
+}
+pub(crate) fn check_extended_day(day: i64) -> Result<i64, Error> {
+    if (-110_000_000..=110_000_000).contains(&day) {
         Ok(day)
     } else {
         Err(Error::OutOfRange)

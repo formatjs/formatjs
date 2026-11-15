@@ -20,7 +20,7 @@ public final class TemporalTableCalendarOracle {
   private static final List<Month> AUTHORITY = new ArrayList<>();
   private static final Map<Integer,Integer> YEAR_STARTS = new HashMap<>();
   private static boolean rawIcu;
-  private static void loadAuthority(String file) throws Exception {
+  static void loadAuthority(String file) throws Exception {
     for(String line:Files.readAllLines(Path.of(file),StandardCharsets.UTF_8)) {
       if(line.startsWith("#"))continue;
       String[] row=line.split("\\t");
@@ -88,7 +88,7 @@ public final class TemporalTableCalendarOracle {
     while(cursor+monthLength(at(value,cursor),id)<=epoch) {cursor+=monthLength(at(value,cursor),id);count++;}
     return count;
   }
-  private static Calendar add(Calendar source,String id,int unit,int amount) {
+  static Calendar add(Calendar source,String id,int unit,int amount) {
     long epoch=source.getTimeInMillis()/DAY;
     if(unit>=2) return at(source,epoch+(long)amount*(unit==2?7:1));
     long first=epoch-source.get(Calendar.DATE)+1;
@@ -111,7 +111,8 @@ public final class TemporalTableCalendarOracle {
     Calendar target=add(add(source,id,0,years),id,1,months);
     return sign*compare(year(target,id),code(target),source.get(Calendar.DATE),end,id)>0;
   }
-  private static int[] until(Calendar source,Calendar end,String id,int largest) {
+  static int[] until(Calendar source,Calendar end,String id,int largest) {
+    if(source.getTimeInMillis()==end.getTimeInMillis())return new int[4];
     int sign=Long.compare(end.getTimeInMillis(),source.getTimeInMillis()),years=0,months=0,weeks=0;
     if(largest==0)while(!surpasses(source,end,id,sign,years+sign,0))years+=sign;
     if(largest<=1)while(!surpasses(source,end,id,sign,years,months+sign))months+=sign;
@@ -120,13 +121,16 @@ public final class TemporalTableCalendarOracle {
     int days=(int)(end.getTimeInMillis()/DAY-first-Math.min(source.get(Calendar.DATE),monthLength(target,id))+1);
     if(largest==2){weeks=days/7;days%=7;}return new int[]{years,months,weeks,days};
   }
+  static Calendar calendar(String id) {
+    return id.equals("chinese") && !rawIcu ? new AuthorityChineseCalendar() : id.equals("dangi") && !rawIcu ? new AuthorityDangiCalendar() : Calendar.getInstance(TimeZone.getTimeZone("UTC",TimeZone.TIMEZONE_ICU),ULocale.forLanguageTag("und-u-ca-"+id));
+  }
   public static void main(String[] args) throws Exception {
     rawIcu=args.length>3 && args[3].equals("--raw-icu");
     loadAuthority(args[2]);
     try(PrintWriter out=new PrintWriter(args[0],StandardCharsets.UTF_8)) {
       out.println("# ICU4J controls; complete Chinese years 1901..2099 use independent published HKO fields; Dangi February 2017 uses the KASI boundary. Raw ICU mode: "+rawIcu+". Official Chinese 1900..2100, Dangi 1900..2050, Umm al-Qura 1300..1600 AH; approximation outside these ranges checked separately.");
       for(String id:new String[]{"chinese","dangi","islamic-umalqura"}) {
-        Calendar value=id.equals("chinese") && !rawIcu ? new AuthorityChineseCalendar() : id.equals("dangi") && !rawIcu ? new AuthorityDangiCalendar() : Calendar.getInstance(TimeZone.getTimeZone("UTC",TimeZone.TIMEZONE_ICU),ULocale.forLanguageTag("und-u-ca-"+id));
+        Calendar value=calendar(id);
         if(!value.getType().equals(id)) throw new IllegalStateException(id+" resolved to "+value.getType());
         int minimum=id.equals("islamic-umalqura")?1300:1900,maximum=id.equals("chinese")?2100:id.equals("dangi")?2050:1600;
         // Approach year boundaries from known modern forward conversions.

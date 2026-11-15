@@ -10,6 +10,21 @@ mod sealed {
 /// Validated arithmetic engines or immutable borrowed calendar tables.
 pub trait CalendarProvider: sealed::Sealed + Copy {
     fn id(self) -> &'static str;
+    fn date_extended(self, epoch: i64) -> Result<Date, crate::calendar::Error>;
+    fn epoch_day_extended(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, crate::calendar::Error>;
+    fn add_extended(
+        self,
+        epoch: i64,
+        duration: DateDuration,
+        overflow: Overflow,
+    ) -> Result<i64, crate::calendar::Error>;
+    fn era_extended(self, epoch: i64) -> Result<Option<Era>, crate::calendar::Error>;
     fn date(self, epoch_day: i64) -> Result<Date, crate::calendar::Error>;
     fn epoch_day(
         self,
@@ -49,6 +64,29 @@ macro_rules! provider {
         impl CalendarProvider for $type {
             fn id(self) -> &'static str {
                 ($id)(self)
+            }
+            fn date_extended(self, epoch: i64) -> Result<Date, crate::calendar::Error> {
+                self.from_epoch_day_extended(epoch)
+            }
+            fn epoch_day_extended(
+                self,
+                year: i32,
+                month: i32,
+                day: i32,
+                overflow: Overflow,
+            ) -> Result<i64, crate::calendar::Error> {
+                self.to_epoch_day_extended(year, month, day, overflow)
+            }
+            fn add_extended(
+                self,
+                epoch: i64,
+                duration: DateDuration,
+                overflow: Overflow,
+            ) -> Result<i64, crate::calendar::Error> {
+                self.add_extended(epoch, duration, overflow)
+            }
+            fn era_extended(self, epoch: i64) -> Result<Option<Era>, crate::calendar::Error> {
+                self.era_extended(epoch)
             }
             fn date(self, epoch: i64) -> Result<Date, crate::calendar::Error> {
                 self.from_epoch_day(epoch)
@@ -143,6 +181,29 @@ impl CalendarProvider for CalendarRef<'_> {
     fn id(self) -> &'static str {
         dispatch!(self, id)
     }
+    fn date_extended(self, epoch: i64) -> Result<Date, crate::calendar::Error> {
+        dispatch!(self, date_extended, epoch)
+    }
+    fn epoch_day_extended(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, crate::calendar::Error> {
+        dispatch!(self, epoch_day_extended, year, month, day, overflow)
+    }
+    fn add_extended(
+        self,
+        epoch: i64,
+        duration: DateDuration,
+        overflow: Overflow,
+    ) -> Result<i64, crate::calendar::Error> {
+        dispatch!(self, add_extended, epoch, duration, overflow)
+    }
+    fn era_extended(self, epoch: i64) -> Result<Option<Era>, crate::calendar::Error> {
+        dispatch!(self, era_extended, epoch)
+    }
     fn date(self, day: i64) -> Result<Date, crate::calendar::Error> {
         dispatch!(self, date, day)
     }
@@ -224,10 +285,21 @@ pub(crate) fn resolve_fields<C: CalendarProvider>(
     fields: DateFields<'_>,
     mode: crate::Overflow,
 ) -> Result<i64, crate::Error> {
-    if fields.month.is_some_and(|value| value <= 0) || fields.day.is_some_and(|value| value <= 0) {
-        return Err(crate::Error::InvalidDateTime);
-    }
-    let era_year = if calendar.id() == "iso8601" {
+    let (year, month) = resolve_year_month(calendar, fields, mode)?;
+    calendar
+        .epoch_day(
+            year,
+            month,
+            fields.day.ok_or(crate::Error::InvalidDateTime)?,
+            overflow(mode),
+        )
+        .map_err(error)
+}
+pub(crate) fn resolve_year<C: CalendarProvider>(
+    calendar: C,
+    fields: DateFields<'_>,
+) -> Result<Option<i32>, crate::Error> {
+    let era_year = if matches!(calendar.id(), "iso8601" | "chinese" | "dangi") {
         None
     } else {
         match (fields.era, fields.era_year) {
@@ -236,13 +308,22 @@ pub(crate) fn resolve_fields<C: CalendarProvider>(
             _ => return Err(crate::Error::InvalidDateTime),
         }
     };
-    let year = fields
-        .year
-        .or(era_year)
-        .ok_or(crate::Error::InvalidDateTime)?;
-    if era_year.is_some_and(|value| value != year) {
+    if let (Some(year), Some(era)) = (fields.year, era_year) {
+        if year != era {
+            return Err(crate::Error::InvalidDateTime);
+        }
+    }
+    Ok(fields.year.or(era_year))
+}
+pub(crate) fn resolve_year_month<C: CalendarProvider>(
+    calendar: C,
+    fields: DateFields<'_>,
+    mode: crate::Overflow,
+) -> Result<(i32, i32), crate::Error> {
+    if fields.month.is_some_and(|value| value <= 0) || fields.day.is_some_and(|value| value <= 0) {
         return Err(crate::Error::InvalidDateTime);
     }
+    let year = resolve_year(calendar, fields)?.ok_or(crate::Error::InvalidDateTime)?;
     let month = if let Some(code) = fields.month_code {
         let value = calendar
             .month_from_code(year, code, overflow(mode))
@@ -254,12 +335,5 @@ pub(crate) fn resolve_fields<C: CalendarProvider>(
     } else {
         fields.month.ok_or(crate::Error::InvalidDateTime)?
     };
-    calendar
-        .epoch_day(
-            year,
-            month,
-            fields.day.ok_or(crate::Error::InvalidDateTime)?,
-            overflow(mode),
-        )
-        .map_err(error)
+    Ok((year, month))
 }

@@ -210,8 +210,9 @@ Independent controls add 32,352 differences, plus public validation of 34,366
 field cases, 32,352 additions, 176 bounds and 2,021 cross-class conversions.
 Node and Hermes source/bytecode run these controls; Rust checks the same numeric
 calendar differences through public date/date-time and zoned providers too.
-Native short-date calendars, Hermes bindings and complete WASM facade/data
-remain pending. See the [Rust API](../../crates/temporal/README.md#calendar-aware-public-types).
+Native short dates now retain all 16 calendars, including reference-date
+canonicalization and calendar-span rounding. Hermes bindings and complete WASM
+facade/data remain pending. See the [Rust API](../../crates/temporal/README.md#calendar-aware-public-types).
 
 ICU month-end controls add 5,408 year/month total windows across 13 calendars,
 checked through plain and UTC-zoned TS and Rust anchors. Native public

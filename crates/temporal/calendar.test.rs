@@ -1,7 +1,8 @@
 use formatjs_temporal::{
     CalendarProvider, CalendarRef, DateFields, DateTimeUnit, Duration, FixedOffset, Instant,
-    NANOSECONDS_PER_DAY, OffsetTransition, Overflow, PlainDate, PlainDateTime, PlainTime,
-    Precision, RoundingMode, TimeUnit, TransitionDirection, TransitionZone, ZonedDateTime,
+    NANOSECONDS_PER_DAY, OffsetTransition, Overflow, PlainDate, PlainDateTime, PlainMonthDay,
+    PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit, TransitionDirection,
+    TransitionZone, YearMonthUnit, ZonedDateTime,
     calendar::{Calendar, MonthCode},
     table_calendar::{LunisolarData, TableCalendar, TableCalendarId, UmmAlQuraData},
 };
@@ -104,6 +105,50 @@ fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
                     PlainDate::from_calendar_fields(calendar, bag, Overflow::Reject).unwrap()
                 ));
             }
+            let year_month = PlainYearMonth::from_epoch_day_in(epoch, calendar).unwrap();
+            assert_eq!(
+                year_month.calendar_fields().unwrap(),
+                date.calendar_fields().unwrap(),
+                "{row:?}"
+            );
+            assert_eq!(
+                year_month.days_in_month().unwrap(),
+                date.days_in_month().unwrap()
+            );
+            assert_eq!(
+                year_month.months_in_year().unwrap(),
+                date.months_in_year().unwrap()
+            );
+            assert_eq!(
+                year_month.days_in_year().unwrap(),
+                date.days_in_year().unwrap()
+            );
+            assert_eq!(
+                year_month.in_leap_year().unwrap(),
+                date.in_leap_year().unwrap()
+            );
+            assert_eq!(year_month.era().unwrap(), date.era().unwrap());
+            assert!(
+                year_month
+                    .to_plain_date(expected.3, Overflow::Reject)
+                    .unwrap()
+                    .equals(date)
+            );
+            let normalized =
+                PlainYearMonth::from_calendar_fields(calendar, fields, Overflow::Reject);
+            let first = epoch - i64::from(expected.3) + 1;
+            if first < PlainYearMonth::new(-271821, 4, 1).unwrap().epoch_day() {
+                assert!(normalized.is_err(), "{row:?}");
+                assert!(PlainYearMonth::parse_in(&year_month.to_string(), calendar).is_err());
+            } else {
+                let normalized = normalized.unwrap();
+                assert_eq!(normalized.epoch_day(), first, "{row:?}");
+                assert!(
+                    normalized.equals(
+                        PlainYearMonth::parse_in(&year_month.to_string(), calendar).unwrap()
+                    )
+                );
+            }
             0
         }
         "A" | "X" => {
@@ -120,6 +165,12 @@ fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
                 return 3;
             }
             let end = row[5].parse::<i64>().unwrap();
+            if date.calendar_fields().unwrap().day == 1 && matches!(row[3], "year" | "month") {
+                let start = PlainYearMonth::from_epoch_day_in(epoch, calendar).unwrap();
+                let actual = start.checked_add(duration, Overflow::Constrain).unwrap();
+                assert_eq!(actual.epoch_day(), end, "{row:?}");
+                assert_eq!(actual.calendar_id(), calendar.id());
+            }
             let result = result.unwrap();
             assert_eq!(result.epoch_day(), end, "{row:?}");
             assert_eq!(result.calendar_id(), date.calendar_id());
@@ -158,6 +209,35 @@ fn check_oracle<C: CalendarProvider>(row: &[&str], calendar: C) -> usize {
             let end = PlainDate::from_epoch_day_in(row[3].parse().unwrap(), calendar).unwrap();
             let expected: Vec<i128> = row[5..9].iter().map(|n| n.parse().unwrap()).collect();
             let largest = unit(row[4]);
+            if date.calendar_fields().unwrap().day == 1
+                && end.calendar_fields().unwrap().day == 1
+                && matches!(row[4], "year" | "month")
+            {
+                let start = PlainYearMonth::from_epoch_day_in(epoch, calendar).unwrap();
+                let finish = PlainYearMonth::from_epoch_day_in(end.epoch_day(), calendar).unwrap();
+                let unit = if row[4] == "year" {
+                    YearMonthUnit::Year
+                } else {
+                    YearMonthUnit::Month
+                };
+                assert_eq!(
+                    &start
+                        .until(finish, unit, YearMonthUnit::Month, 1, RoundingMode::Trunc)
+                        .unwrap()
+                        .fields()[..4],
+                    expected.as_slice(),
+                    "{row:?}"
+                );
+                let inverse: Vec<_> = expected.iter().map(|value| -value).collect();
+                assert_eq!(
+                    &start
+                        .since(finish, unit, YearMonthUnit::Month, 1, RoundingMode::Trunc)
+                        .unwrap()
+                        .fields()[..4],
+                    inverse.as_slice(),
+                    "{row:?}"
+                );
+            }
             let end_time = end.to_date_time(noon).unwrap();
             let end_zoned = Instant::from_epoch_nanoseconds(end_time.epoch_nanoseconds())
                 .ok()
@@ -577,4 +657,416 @@ fn non_iso_month_addition_resolves_offset_after_calendar_arithmetic() {
             .calendar_id(),
         "hebrew"
     );
+}
+
+fn with_all_calendars(check: impl FnOnce(&[CalendarRef<'_>])) {
+    let chinese = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_CHINESE")));
+    let dangi = Lunar::load(include_str!(env!("FORMATJS_CALENDAR_DANGI")));
+    let raw: Value =
+        serde_json::from_str(include_str!(env!("FORMATJS_CALENDAR_ISLAMIC_UMALQURA"))).unwrap();
+    let raw = &raw["data"];
+    let starts: Vec<i64> = serde_json::from_value(raw["startDays"].clone()).unwrap();
+    let lengths: Vec<u16> = serde_json::from_value(raw["monthLengths"].clone()).unwrap();
+    let umm = TableCalendar::umm_al_qura(UmmAlQuraData {
+        first_year: raw["firstYear"].as_i64().unwrap() as i32,
+        start_days: &starts,
+        month_lengths: &lengths,
+    })
+    .unwrap();
+    let mut providers: Vec<_> = Calendar::ALL
+        .into_iter()
+        .map(CalendarRef::Arithmetic)
+        .collect();
+    providers.extend(
+        [
+            chinese.calendar(TableCalendarId::Chinese),
+            dangi.calendar(TableCalendarId::Dangi),
+            umm,
+        ]
+        .map(CalendarRef::Table),
+    );
+    check(&providers);
+}
+
+#[test]
+fn public_short_dates_match_independent_icu_catalog_and_rounding() {
+    with_all_calendars(|providers| {
+        let mut count = 0;
+        for line in include_str!(env!("FORMATJS_SHORT_CALENDARS"))
+            .lines()
+            .filter(|line| !line.starts_with('#'))
+        {
+            let row: Vec<_> = line.split('\t').collect();
+            let calendar = *providers
+                .iter()
+                .find(|calendar| calendar.id() == row[1])
+                .unwrap();
+            if row[0] == "R" {
+                let start =
+                    PlainYearMonth::from_epoch_day_in(row[2].parse().unwrap(), calendar).unwrap();
+                let end =
+                    PlainYearMonth::from_epoch_day_in(row[3].parse().unwrap(), calendar).unwrap();
+                let unit = |name| {
+                    if name == "year" {
+                        YearMonthUnit::Year
+                    } else {
+                        YearMonthUnit::Month
+                    }
+                };
+                let increment = row[6].parse().unwrap();
+                let mode = row[7].parse().unwrap();
+                for (operation, actual) in [
+                    start.until(end, unit(row[4]), unit(row[5]), increment, mode),
+                    start.since(end, unit(row[4]), unit(row[5]), increment, mode),
+                ]
+                .into_iter()
+                .enumerate()
+                {
+                    let expected = Duration::new([
+                        row[8 + operation * 2].parse().unwrap(),
+                        row[9 + operation * 2].parse().unwrap(),
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                    ])
+                    .unwrap();
+                    assert_eq!(
+                        actual.unwrap_or_else(|error| panic!("{line}: {error:?}")),
+                        expected,
+                        "{line}"
+                    );
+                }
+                count += 1;
+                continue;
+            }
+            let row = &row[1..];
+            let fields = DateFields {
+                month_code: Some(month_code(row[1])),
+                day: Some(row[2].parse().unwrap()),
+                ..DateFields::default()
+            };
+            let overflow = if row[3] == "reject" {
+                Overflow::Reject
+            } else {
+                Overflow::Constrain
+            };
+            let actual = PlainMonthDay::from_calendar_fields(calendar, fields, overflow);
+            if row[4] == "X" {
+                assert!(actual.is_err(), "{line}: {actual:?}");
+            } else {
+                let actual = actual.unwrap_or_else(|error| panic!("{line}: {error:?}"));
+                assert_eq!(actual.epoch_day(), row[4].parse::<i64>().unwrap(), "{line}");
+                assert_eq!(actual.calendar_id(), row[0]);
+                assert!(
+                    actual.equals(PlainMonthDay::parse_in(&actual.to_string(), calendar).unwrap())
+                );
+                let reference = actual.calendar_fields().unwrap();
+                let date = actual
+                    .to_plain_date(reference.year, Overflow::Reject)
+                    .unwrap();
+                assert_eq!(date.epoch_day(), actual.epoch_day(), "{line}");
+                let year_fields = match date.era().unwrap() {
+                    Some(era) => DateFields {
+                        era: Some(era.name),
+                        era_year: Some(era.year),
+                        ..DateFields::default()
+                    },
+                    None => DateFields {
+                        year: Some(reference.year),
+                        ..DateFields::default()
+                    },
+                };
+                assert!(
+                    actual
+                        .to_plain_date_fields(year_fields, Overflow::Reject)
+                        .unwrap()
+                        .equals(date)
+                );
+            }
+            count += 1;
+        }
+        assert_eq!(count, 10176);
+        println!("{count} independent all-calendar short-date cases");
+    });
+}
+
+#[test]
+fn public_short_dates_calendar_bounds_identity_and_overflow() {
+    with_all_calendars(|providers| {
+        let zero = Duration::new([0; 10]).unwrap();
+        for &calendar in providers {
+            for epoch in [i64::MIN, -110_000_001, 110_000_001, i64::MAX] {
+                assert!(calendar.date_extended(epoch).is_err());
+                assert!(calendar.era_extended(epoch).is_err());
+                assert!(
+                    calendar
+                        .add_extended(
+                            epoch,
+                            formatjs_temporal::calendar::DateDuration::default(),
+                            formatjs_temporal::calendar::Overflow::Constrain
+                        )
+                        .is_err()
+                );
+            }
+            for (year, month, day) in [(-271821, 4, 1), (275760, 9, 30)] {
+                let raw = PlainYearMonth::new(year, month, day)
+                    .unwrap()
+                    .with_calendar(calendar)
+                    .unwrap();
+                assert_eq!(raw.fields(), (year, month, day));
+                let text = raw.to_string();
+                let normalized = PlainYearMonth::parse_in(&text, calendar);
+                let first = raw.epoch_day() - i64::from(raw.calendar_fields().unwrap().day) + 1;
+                if let Ok(normalized) = normalized {
+                    assert_eq!(normalized.epoch_day(), first);
+                    assert_eq!(normalized.calendar_id(), calendar.id());
+                }
+                assert_eq!(
+                    raw.until(
+                        raw,
+                        YearMonthUnit::Year,
+                        YearMonthUnit::Month,
+                        1,
+                        RoundingMode::Trunc
+                    )
+                    .unwrap(),
+                    zero
+                );
+                if first < -100_000_001 {
+                    assert!(raw.checked_add(zero, Overflow::Constrain).is_err());
+                }
+                assert!(PlainMonthDay::from_epoch_day_in(raw.epoch_day(), calendar).is_err());
+            }
+            let iso = PlainYearMonth::new(2024, 3, 15)
+                .unwrap()
+                .with_calendar(CalendarRef::Arithmetic(Calendar::Iso8601))
+                .unwrap();
+            let raw = iso.with_calendar(calendar).unwrap();
+            assert_eq!(iso.compare(raw), core::cmp::Ordering::Equal);
+            assert_eq!(iso.equals(raw), calendar.id() == "iso8601");
+            if calendar.id() != "iso8601" {
+                assert!(
+                    iso.until(
+                        raw,
+                        YearMonthUnit::Year,
+                        YearMonthUnit::Month,
+                        1,
+                        RoundingMode::Trunc
+                    )
+                    .is_err()
+                );
+                assert!(
+                    PlainYearMonth::parse_in(&format!("2024-03[u-ca={}]", calendar.id()), calendar)
+                        .is_err()
+                );
+                assert!(
+                    PlainMonthDay::parse_in(&format!("03-15[u-ca={}]", calendar.id()), calendar)
+                        .is_err()
+                );
+            }
+            let first = raw.epoch_day() - i64::from(raw.calendar_fields().unwrap().day) + 1;
+            assert_eq!(
+                raw.checked_add(zero, Overflow::Constrain)
+                    .unwrap()
+                    .epoch_day(),
+                first
+            );
+            let date = raw.to_plain_date(255, Overflow::Constrain).unwrap();
+            assert_eq!(
+                date.calendar_fields().unwrap().day,
+                raw.days_in_month().unwrap()
+            );
+            assert!(raw.to_plain_date(255, Overflow::Reject).is_err());
+            assert!(raw.to_plain_date(0, Overflow::Constrain).is_err());
+        }
+    });
+    let leap = PlainMonthDay::from_calendar_fields(
+        Calendar::Hebrew,
+        DateFields {
+            month_code: Some(month_code("M05L")),
+            day: Some(30),
+            ..DateFields::default()
+        },
+        Overflow::Reject,
+    )
+    .unwrap();
+    assert_eq!(
+        leap.to_plain_date(5783, Overflow::Constrain)
+            .unwrap()
+            .calendar_fields()
+            .unwrap()
+            .month_code,
+        month_code("M06")
+    );
+    assert!(leap.to_plain_date(5783, Overflow::Reject).is_err());
+    assert!(
+        PlainMonthDay::from_calendar_fields(
+            Calendar::Gregory,
+            DateFields {
+                year: Some(2020),
+                month: Some(2),
+                day: Some(29),
+                era: Some("ce"),
+                era_year: Some(2019),
+                ..DateFields::default()
+            },
+            Overflow::Constrain
+        )
+        .is_err()
+    );
+}
+
+#[test]
+fn public_short_date_fields_validate_years_codes_and_annotations() {
+    let start = PlainYearMonth::new(2019, 1, 1).unwrap();
+    let end = PlainYearMonth::new(2021, 9, 1).unwrap();
+    assert_eq!(
+        start
+            .until(
+                end,
+                YearMonthUnit::Year,
+                YearMonthUnit::Month,
+                5,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .to_string(),
+        "P2Y5M"
+    );
+    let fields = DateFields {
+        year: Some(2019),
+        month: Some(2),
+        day: Some(29),
+        ..DateFields::default()
+    };
+    for calendar in [Calendar::Iso8601, Calendar::Gregory] {
+        let value =
+            PlainMonthDay::from_calendar_fields(calendar, fields, Overflow::Constrain).unwrap();
+        assert_eq!(value.fields(), (2, 28, 1972));
+        assert!(PlainMonthDay::from_calendar_fields(calendar, fields, Overflow::Reject).is_err());
+        let conflict = DateFields {
+            month_code: Some(month_code("M03")),
+            ..fields
+        };
+        assert!(
+            PlainMonthDay::from_calendar_fields(calendar, conflict, Overflow::Constrain).is_err()
+        );
+        assert!(
+            PlainYearMonth::from_calendar_fields(calendar, conflict, Overflow::Constrain).is_err()
+        );
+    }
+    let missing = DateFields {
+        month: Some(2),
+        day: Some(29),
+        ..DateFields::default()
+    };
+    assert!(
+        PlainMonthDay::from_calendar_fields(Calendar::Gregory, missing, Overflow::Constrain)
+            .is_err()
+    );
+    assert_eq!(
+        PlainMonthDay::from_calendar_fields(Calendar::Iso8601, missing, Overflow::Constrain)
+            .unwrap()
+            .fields(),
+        (2, 29, 1972)
+    );
+    let regnal = DateFields {
+        era: Some("reiwa"),
+        era_year: Some(1),
+        month_code: Some(month_code("M02")),
+        day: Some(15),
+        ..DateFields::default()
+    };
+    assert_eq!(
+        PlainYearMonth::from_calendar_fields(Calendar::Japanese, regnal, Overflow::Reject)
+            .unwrap()
+            .fields(),
+        (2019, 2, 1)
+    );
+    for text in [
+        "2020-02-29[u-ca=hebrew][!u-ca=iso8601]",
+        "2020-02-29[!x=unknown]",
+        "2020-02-29[u-ca=unknown]",
+    ] {
+        assert!(text.parse::<PlainYearMonth>().is_err());
+        assert!(text.parse::<PlainMonthDay>().is_err());
+    }
+    assert_eq!(
+        "2020-02-29[u-ca=HEBREW][u-ca=unknown]"
+            .parse::<PlainYearMonth>()
+            .unwrap()
+            .calendar_id(),
+        "hebrew"
+    );
+    assert_eq!(
+        "2020-02-29[!u-ca=ISLAMICC]"
+            .parse::<PlainMonthDay>()
+            .unwrap()
+            .calendar_id(),
+        "islamic-civil"
+    );
+    assert!(PlainMonthDay::parse_in("2020-02-29[u-ca=gregory]", Calendar::Hebrew).is_err());
+    assert!(PlainYearMonth::parse_in("2020-02-29[u-ca=gregory]", Calendar::Hebrew).is_err());
+    let year_month = PlainYearMonth::from_calendar_fields(
+        Calendar::Hebrew,
+        DateFields {
+            year: Some(5782),
+            month_code: Some(month_code("M01")),
+            ..DateFields::default()
+        },
+        Overflow::Reject,
+    )
+    .unwrap();
+    let one_year: Duration = "P1Y".parse().unwrap();
+    let end = year_month.checked_add(one_year, Overflow::Reject).unwrap();
+    assert_eq!(
+        year_month
+            .until(
+                end,
+                YearMonthUnit::Month,
+                YearMonthUnit::Month,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .to_string(),
+        "P13M"
+    );
+    assert_eq!(
+        year_month
+            .until(
+                end,
+                YearMonthUnit::Year,
+                YearMonthUnit::Month,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap(),
+        one_year
+    );
+    let hebrew_leap = PlainYearMonth::from_calendar_fields(
+        Calendar::Hebrew,
+        DateFields {
+            year: Some(5782),
+            month_code: Some(month_code("M05L")),
+            ..DateFields::default()
+        },
+        Overflow::Reject,
+    )
+    .unwrap();
+    assert_eq!(
+        hebrew_leap
+            .checked_add(one_year, Overflow::Constrain)
+            .unwrap()
+            .calendar_fields()
+            .unwrap()
+            .month_code,
+        month_code("M06")
+    );
+    assert!(hebrew_leap.checked_add(one_year, Overflow::Reject).is_err());
 }

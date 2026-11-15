@@ -5,7 +5,7 @@ TypeScript package: [@formatjs/temporal](../../packages/temporal/README.md).
 
 Core supplies Instant parsing, ISO conversion, all nine rounding modes, exact
 Duration parsing/formatting/totals, clock arithmetic, calendar-aware plain
-date/date-time and zoned types, plus ISO short-date types. Rational totals round once to binary64.
+date/date-time, short-date and zoned types. Rational totals round once to binary64.
 
 `ZonedDateTime<Z, C>` keeps an Instant with timezone and calendar providers. `FixedOffset`
 supplies constant zones; `TransitionZone` borrows sorted explicit records plus
@@ -15,7 +15,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Calendar-aware short dates, production IANA
+checked. Production IANA
 registry loading, native Hermes bindings and complete WASM facades remain
 pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
 
@@ -74,8 +74,7 @@ and years -270000/+275000. TS runs the same corpus on Node and Hermes source/
 optimized bytecode. Native boundary cases also port pinned Test262 vectors for
 zero durations at date limits, normalized overflow, week prefixes and rounding
 beyond date limits. Clock carry validates the input endpoint before rounding;
-the rounded duration need not fit an actual date. Calendar-aware short dates and
-native Hermes bindings remain pending.
+the rounded duration need not fit an actual date. Native Hermes bindings remain pending.
 
 ```rust
 use formatjs_temporal::{DateTimeUnit, Duration, PlainDate};
@@ -90,7 +89,7 @@ ISO conversion, PlainDate addition and calendar differences reuse it without
 linking the formatter or serde. Numeric operations include signed years,
 month codes, eras, inverse conversion and checked add/until. Public native
 PlainDate/PlainDateTime/zoned types accept arithmetic engines or borrowed table
-providers; short-date integration remains pending. Independent ICU controls validate 34,366 field
+providers, including short-date types. Independent ICU controls validate 34,366 field
 samples and 32,352 additions across all 13 engines. See
 [calendar kernel and oracle limits](../intl_datetimeformat_calendars/README.md#numeric-calendar-kernel).
 
@@ -100,8 +99,7 @@ only boundaries crossed by expansion. Independent ICU rounding/totals remain
 unchanged. Pinned native Node 26.8.1 controls verify that Jan 31 to Feb 29 is P29D,
 while month rounding gives P1M; older hand-written native expectations were fixed.
 The numeric kernel also checks 32,352 independent ICU-derived differences.
-Native plain date/date-time and zoned classes retain their calendar providers;
-short-date classes still use ISO. Public TS classes expose all 16 calendars.
+Native plain date/date-time, short-date and zoned classes retain their calendar providers. Public TS classes expose all 16 calendars.
 
 ICU month-end controls add 5,408 year/month total windows across 13 calendars,
 checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
@@ -118,7 +116,8 @@ avoiding a spurious whole month across Vancouver's spring gap.
 
 ## Calendar-aware public types
 
-`PlainDate<C>`, `PlainDateTime<C>` and `ZonedDateTime<Z, C>` retain a sealed,
+`PlainDate<C>`, `PlainDateTime<C>`, `PlainYearMonth<C>`, `PlainMonthDay<C>` and
+`ZonedDateTime<Z, C>` retain a sealed,
 copyable `CalendarProvider`. Default constructors use ISO. `with_calendar` accepts
 any of the 13 arithmetic calendars or a validated borrowed `TableCalendar` for
 Chinese, Dangi or Umm al-Qura. `CalendarRef` provides one enum for all 16 when
@@ -153,3 +152,17 @@ existing arithmetic and table fixtures, retaining their ICU/HKO/KASI authority
 policy. UTC-zoned checks require representable Instants; separate offset-zone
 controls cover both public plain-date limits. This is native numerical coverage,
 not a claim that Test262 runs against native Hermes bindings.
+
+Short-date constructors retain ISO reference fields. `from_calendar_fields` and
+`parse_in` canonicalize references using the selected calendar. YearMonth adds
+and differences use calendar months/years, including leap months; all rounding
+modes use actual calendar spans. Calendar month starts must satisfy PlainDate
+bounds when arithmetic requires them, while stored YearMonth references use the
+wider ISO year/month limits. Length getters return `Result` like PlainDate.
+
+MonthDay chooses reference dates in 1900–1972, then 1973–2035, with the prescribed
+Chinese/Dangi rare-leap-month constraints. `to_plain_date` retains monthCode across
+years; `to_plain_date_fields` also accepts era/eraYear. Independent forward ICU
+catalogs verify 4,992 MonthDay cases. Another 5,184 YearMonth cases check both
+`until` and `since` across all nine rounding modes and 16 calendars. Existing
+field/add/difference controls also exercise public YearMonth integration.

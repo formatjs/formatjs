@@ -642,3 +642,25 @@ genrule(
     tools = [":temporal_locale_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_short_calendar_oracle",
+    testonly = True,
+    srcs = [
+        "TemporalArithmeticCalendarOracle.java",
+        "TemporalShortCalendarOracle.java",
+        "TemporalTableCalendarOracle.java",
+    ],
+    main_class = "TemporalShortCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_calendar_fixtures",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = ["temporal-short-calendar-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_calendar_oracle) $@ $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv)",
+    tools = [":temporal_short_calendar_oracle"],
+    visibility = ["//visibility:public"],
+)

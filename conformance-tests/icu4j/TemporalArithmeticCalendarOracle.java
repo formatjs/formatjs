@@ -13,7 +13,7 @@ import java.util.TreeSet;
 
 public final class TemporalArithmeticCalendarOracle {
   private static final String[] CALENDARS = {"iso8601","gregory","buddhist","japanese","roc","coptic","ethiopic","ethioaa","hebrew","indian","islamic-civil","islamic-tbla","persian"};
-  private static Calendar calendar(String id) {
+  static Calendar calendar(String id) {
     Calendar result = Calendar.getInstance(TimeZone.getTimeZone("UTC",TimeZone.TIMEZONE_ICU),ULocale.forLanguageTag("und-u-ca-" + id));
     String expected=id.equals("ethioaa")?"ethiopic-amete-alem":id.equals("gregory")||id.equals("iso8601")?"gregorian":id;
     if(!result.getType().equals(expected)) throw new IllegalStateException(id+" resolved to "+result.getType());
@@ -70,7 +70,7 @@ public final class TemporalArithmeticCalendarOracle {
     }
     return (int)(low-start);
   }
-  private static Calendar add(Calendar value,String id,int unit,int amount) {
+  static Calendar add(Calendar value,String id,int unit,int amount) {
     Calendar target=(Calendar)value.clone();
     long epoch=value.getTimeInMillis()/86400000L;
     if(unit>=2) {target.setTimeInMillis((epoch+amount*(unit==2?7:1))*86400000L);return target;}
@@ -107,7 +107,8 @@ public final class TemporalArithmeticCalendarOracle {
     Calendar target=monthTarget(start,id,years,months);
     return sign*compare(year(target,id),target.get(Calendar.MONTH),day,end,id)>0;
   }
-  private static int[] until(Calendar start,Calendar end,String id,int largest) {
+  static int[] until(Calendar start,Calendar end,String id,int largest) {
+    if(start.getTimeInMillis()==end.getTimeInMillis())return new int[4];
     int sign=Long.compare(end.getTimeInMillis(),start.getTimeInMillis());
     int years=0,months=0,weeks=0;
     if(largest==0) while(!surpasses(start,end,id,sign,years+sign,0)) years+=sign;

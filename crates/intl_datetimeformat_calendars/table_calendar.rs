@@ -1,7 +1,7 @@
 //! Borrowed ICU calendar tables. Loading and storage belong to the embedder.
 use crate::calendar::{
-    Calendar, Date, DateDuration, DateUnit, Era, Error, MonthCode, Overflow, check_day, check_year,
-    regulate,
+    Calendar, Date, DateDuration, DateUnit, Era, Error, MonthCode, Overflow, check_day,
+    check_extended_day, check_year, regulate,
 };
 use crate::date_math::NumericCalendar;
 
@@ -137,7 +137,11 @@ impl<'a> TableCalendar<'a> {
         })
     }
     pub fn era(self, epoch: i64) -> Result<Option<Era>, Error> {
-        let date = self.from_epoch_day(epoch)?;
+        check_day(epoch)?;
+        self.era_extended(epoch)
+    }
+    pub fn era_extended(self, epoch: i64) -> Result<Option<Era>, Error> {
+        let date = self.from_epoch_day_extended(epoch)?;
         if self.id != TableCalendarId::IslamicUmmAlQura {
             return Ok(None);
         }
@@ -320,6 +324,27 @@ impl<'a> TableCalendar<'a> {
     pub fn add(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         check_day(epoch)?;
         check_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
+    }
+    /// Internal reference dates and rounding coordinates within ±110000000 epoch days.
+    pub fn from_epoch_day_extended(self, epoch: i64) -> Result<Date, Error> {
+        self.from_epoch_day_raw(epoch)
+    }
+    pub fn to_epoch_day_extended(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, Error> {
+        check_extended_day(self.to_epoch_day_raw(year, month, day, overflow)?)
+    }
+    pub fn add_extended(
+        self,
+        epoch: i64,
+        duration: DateDuration,
+        overflow: Overflow,
+    ) -> Result<i64, Error> {
+        check_extended_day(NumericCalendar::add_raw(self, epoch, duration, overflow)?)
     }
     pub fn until(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
         check_day(one)?;

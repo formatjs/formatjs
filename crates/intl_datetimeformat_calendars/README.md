@@ -72,10 +72,12 @@ Default `provider` feature retains DateTimeFormat registration, JSON and C ABI.
 kernel; explicitly disabling defaults no longer exposes Provider. Bazel's
 `:calendar_core` variant has no formatter/serde dependencies. `compiled_data`
 enables `provider`. Native Temporal reuses this kernel for ISO conversion,
-addition and differences; public non-ISO Temporal types remain pending.
+addition and differences, including public calendar-aware Temporal types.
 
-Public epoch-day operations enforce -100000001 through 100000000. `until_raw`
-accepts internal rounding coordinates within ±110000000 days; `iso_day` and
+Public date operations enforce -100000001 through 100000000. Explicit
+`from_epoch_day_extended`, `to_epoch_day_extended`, `add_extended`, `era_extended`
+and `until_raw` accept internal reference/rounding coordinates within
+±110000000 days; `iso_day` and
 `iso_fields` are unchecked numeric helpers for validated coordinates. Era input
 normalizes signed era years, including regnal years outside their era's dates.
 Persian retains the existing 33-year approximation outside official years
@@ -103,7 +105,7 @@ in both languages too.
 engines. `LunisolarData` and `UmmAlQuraData` borrow caller-owned packs. Constructors
 validate dictionary entries, encoding, month/day checkpoints and end bounds before
 use. The backend allocates nothing and embeds no tables into arithmetic-only
-consumers. Native Temporal date classes still need non-ISO integration.
+consumers. Native Temporal date, short-date and zoned classes retain these providers.
 
 Both backends share checked addition and difference algorithms through private
 `NumericCalendar`. Table lookup uses checkpoints every 64 years for days and

@@ -290,7 +290,7 @@ fn iso_annotations(value: &str) -> Result<(), Error> {
 }
 pub(crate) fn short_date_fields(value: &str, year_month: bool) -> Result<IsoDateTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
-    iso_annotations(&value[index..])?;
+    annotations(&value[index..])?;
     let body = &value[..index];
     if !year_month
         && (body.len() > 7
@@ -323,6 +323,7 @@ pub(crate) fn short_date_fields(value: &str, year_month: bool) -> Result<IsoDate
         (1972, month, day)
     };
     let fields = if input.position == input.bytes.len() {
+        iso_annotations(&value[index..])?;
         IsoDateTime {
             year: short.0,
             month: short.1,

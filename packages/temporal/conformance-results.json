@@ -919,7 +919,13 @@
     }
   },
   "nativeCalendarFacades": {
-    "types": ["PlainDate", "PlainDateTime", "ZonedDateTime"],
+    "types": [
+      "PlainDate",
+      "PlainDateTime",
+      "ZonedDateTime",
+      "PlainYearMonth",
+      "PlainMonthDay"
+    ],
     "calendars": [
       "iso8601",
       "gregory",
@@ -948,9 +954,20 @@
     "controls": "ICU4J 79.1 arithmetic and mixed ICU/HKO/KASI table fixtures. Public getters, typed field reconstruction, addition, comparison, differences, relative totals and ceil/floor/trunc rounding. No oracle rows excluded.",
     "utcZonedScope": "Requires representable UTC Instants. Separate +/-12-hour fixed-zone controls cover both extended plain-date limits across all 16 providers.",
     "calendarIdentity": "Differences reject mismatches for all units. compare orders ISO coordinates; equals also checks calendar ID. Representation may differ between arithmetic and CalendarRef providers.",
-    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned string/registry facade and short-date calendars remain pending.",
+    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned string/registry facade remains pending. Short-date parsing canonicalizes calendar reference dates.",
     "implementation": "Sealed copyable CalendarProvider; CalendarRef unifies 13 arithmetic and three borrowed table engines. No formatter, runtime ICU or allocation dependency. Existing fields() retains ISO coordinates; calendar_fields() supplies calendar values.",
     "test262": "Native numerical/oracle coverage only. Native Hermes Test262 backend not installed yet.",
+    "exclusions": []
+  },
+  "nativeCalendarShortDates": {
+    "calendars": 16,
+    "monthDayOracleCases": 4992,
+    "yearMonthRoundingOracleCases": 5184,
+    "yearMonthRoundingOperations": ["until", "since"],
+    "controls": "ICU4J 79.1 forward month catalog and calendar-span BigDecimal rounding, with existing HKO/KASI corrections. YearMonth integration also uses existing field/add/difference fixtures.",
+    "bounds": "YearMonth reference fields use ISO year/month bounds; required calendar month starts enforce PlainDate bounds. MonthDay conversion retains monthCode across years.",
+    "wasm": "No new exports; existing primitive size measurements do not cover these public facades/data.",
+    "test262": "Native numerical coverage; native Hermes Test262 remains pending.",
     "exclusions": []
   }
 }

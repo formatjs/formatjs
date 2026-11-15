@@ -632,8 +632,8 @@ calendar annotations.
 RelativeAnchor now supplies its calendar to shared difference/round/total logic.
 Date/time conversions, clock rounding, zoned day boundaries and transition queries
 retain the provider. Differences reject calendar mismatches for every unit.
-Native calendar-aware short dates, production registry loading, string-zoned
-facades, native Hermes bindings and full WASM facade/data remain pending.
+Production registry loading, string-zoned facades, native Hermes bindings and
+full WASM facade/data remain pending.
 Independent public-facade controls pass 50,298 field rows, 39,072 additions,
 39,072 differences, 6,656 relative windows and 176 range rejections, across all
 16 providers. Arithmetic rows use ICU; table rows retain published HKO/KASI
@@ -646,3 +646,26 @@ The matching size refresh is `benchmarks/temporal/native-calendar-size-results.j
 3,757 gzip TS primitive bytes versus 20,015 WASM plus bridge; namespace 360,277.
 This measures the existing data-free ABI, not the new calendar-aware public Rust
 facades or their data. Complete WASM facade measurement remains pending.
+
+## Native calendar short dates
+
+PlainYearMonth/PlainMonthDay now retain CalendarProvider values too. Existing
+constructors and fields() keep ISO reference semantics; typed bags and strings
+canonicalize references in the chosen calendar. YearMonth length getters now
+return Result consistently with PlainDate. Addition, difference and all nine
+rounding modes use the shared calendar math, including 13-month years.
+Differences reject calendar mismatches before coordinate equality.
+
+Explicit bounded extended conversion/add/era methods in the shared numeric
+kernel support reference dates beyond PlainDate limits without weakening public
+date validation. YearMonth add/difference still validate required calendar month
+starts. MonthDay uses 1900–1972 then 1973–2035 reference windows, plus prescribed
+Chinese/Dangi rare-leap-month constraints. Year conversion preserves monthCode;
+era/eraYear input is supported separately.
+
+The new ICU4J forward-month catalog checks 4,992 MonthDay cases; 5,184 independent
+YearMonth rounding cases check until/since, nine modes, increments 1/2/5 and both
+directions across 16 calendars. The generator reuses existing ICU forward-field
+math and HKO/KASI authority corrections. Existing public field/add/difference
+fixtures now exercise YearMonth integration too. Native Hermes Test262 and full
+WASM facade/data measurements remain pending; this layer adds no WASM exports.

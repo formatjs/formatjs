@@ -26,8 +26,8 @@ fn independent_icu_short_dates() {
                         (number(6) as i32, number(7) as u8, 1),
                         "{line}"
                     );
-                    assert_eq!(result.days_in_month(), number(8) as u8, "{line}");
-                    assert_eq!(result.days_in_year(), number(9) as u16, "{line}");
+                    assert_eq!(result.days_in_month().unwrap(), number(8) as u8, "{line}");
+                    assert_eq!(result.days_in_year().unwrap(), number(9) as u16, "{line}");
                 }
             }
             "md" => {
