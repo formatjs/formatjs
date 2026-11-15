@@ -108,3 +108,19 @@ it('represents literal-only compact templates without inventing a number slot', 
   )
   expect(plan.parts).toEqual([['compact', 'mille']])
 })
+
+it('keeps style around a numberless notation template', () => {
+  const original = NumberFormat.localeData.en!
+  const data = structuredClone(original)
+  data.numbers.decimal.latn.short['1000'] = {other: 'mille'}
+  try {
+    NumberFormat.__addLocaleData({locale: 'en', data})
+    expect(
+      new NumberFormat('en', {style: 'percent', notation: 'compact'}).format(
+        -10
+      )
+    ).toBe('-mille%')
+  } finally {
+    NumberFormat.__addLocaleData({locale: 'en', data: original})
+  }
+})

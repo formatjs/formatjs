@@ -77,22 +77,6 @@ describe('style and notation composition', () => {
     ).toBe(expected)
   })
 
-  it('keeps style around a numberless notation template', () => {
-    const original = NumberFormat.localeData.en!
-    const data = structuredClone(original)
-    data.numbers.decimal.latn.short['1000'] = {other: 'mille'}
-    try {
-      NumberFormat.__addLocaleData({locale: 'en', data})
-      expect(
-        new NumberFormat('en', {style: 'percent', notation: 'compact'}).format(
-          -10
-        )
-      ).toBe('-mille%')
-    } finally {
-      NumberFormat.__addLocaleData({locale: 'en', data: original})
-    }
-  })
-
   it.each([
     [undefined, '1,000,000,000T'],
     [false, '1000000000T'],
