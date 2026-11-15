@@ -723,3 +723,36 @@ namespace TS 360,301 gzip bytes (+14); data-free primitive TS 3,783 versus WASM
 19,494 + 463 bridge bytes (19,957 combined). The full native Instant JSON ABI is
 not exposed by the existing primitive WASM export. These remain partial WASM
 measurements, separate from the Hermes public-operation timings above.
+
+`wasm-facade-results.json` measures actual published namespace entries, comparing
+TS, the opt-in ISO/Instant WASM JSON backend and `temporal-polyfill` 1.0.7 basic.
+Run `bazel run -c opt //benchmarks/temporal:wasm_facade_benchmark`.
+Eight inputs pass parity checks; 3,000 warmup calls precede seven samples of 10,000
+calls. Profiles run TS, WASM, reference in one process; timing excludes startup.
+
+Recorded Node24/V8 medians, TS / WASM / reference, microseconds/op:
+
+- Parse: 1.71 / 3.10 / 2.69.
+- Format: 0.69 / 7.04 / 1.37.
+- Add: 2.33 / 10.08 / 1.49.
+- Round: 0.57 / 4.01 / 0.68.
+- Until: 2.35 / 9.41 / 24.32.
+
+WASM's JSON transport loses to TS here. This partial backend still retains TS
+algorithms and all owned calendar/IANA data. It does not benchmark full native
+Temporal, native calendar/timezone data or production workload distributions.
+Raw samples, cold compile/instantiate time and WASM linear memory are recorded.
+Memory figures exclude the JS heap. One host does not establish universal speed.
+
+Consumer bundles (all index exports, optional WASM setup; esbuild es2022 minify,
+gzip9) are 360,183 bytes TS versus 361,477 JS +58,527 binary =420,004 WASM profile.
+The binary is 132,990 raw bytes. Required ESM modules compressed separately total
+361,144 TS versus 420,475 WASM bytes. These are alternative delivery modes.
+Declarations, source maps and notices ship in the package but are not runtime
+imports. Rust dependency notices accompany the binary as `WASM_NOTICES.html`.
+
+`wasm-backend-size-results.json` refreshes the existing Rolldown/primitive report
+and adds `publishedGraphs`: index.js requires private native.js, and the WASM
+profile additionally requires wasm.js plus the binary. Counting only index.js
+would now undercount direct ESM delivery. The old 19,494-byte primitive binary
+remains a separate export with a much smaller API; it is not this backend.

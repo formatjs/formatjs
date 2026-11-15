@@ -1,4 +1,5 @@
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_test")
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -41,19 +42,28 @@ formatjs_library(
         "rounding.ts",
         "short-date-core.ts",
         "should-polyfill.ts",
+        "wasm.ts",
         "zoned-date-time.ts",
         "zones.ts",
     ],
     description = "Temporal implementation",
     entry_point_external_paths = {
+        "index.ts": {"#packages/temporal/native.js": "./native.js"},
+        "wasm.ts": {"#packages/temporal/native.js": "./native.js"},
         "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
         "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
     },
     entry_points = [
         "index.ts",
+        "native.ts",
+        "wasm.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
+    ],
+    extra_npm_srcs = [
+        ":wasm_asset",
+        ":wasm_notices",
     ],
     license = "MIT",
     package_types = "index.d.ts",
@@ -69,6 +79,8 @@ formatjs_library(
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
+        "./wasm.js": "./wasm.js",
+        "./temporal-backend.wasm": "./temporal-backend.wasm",
         "./polyfill.js": "./polyfill.js",
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
@@ -1353,3 +1365,187 @@ sh_test(
         "bytecode",
     ]
 ]
+
+rolldown_bundle(
+    name = "wasm-payload",
+    srcs = [
+        "tests/wasm-prelude.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/wasm-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_run_binary(
+    name = "wasm-module-prelude",
+    srcs = ["//crates/temporal:wasm_backend"],
+    outs = ["wasm-module-prelude.js"],
+    args = [
+        "--wasm",
+        "$(rootpath //crates/temporal:wasm_backend)",
+        "--out",
+        "$(rootpath wasm-module-prelude.js)",
+    ],
+    tool = "//packages/temporal/scripts:wasm-prelude",
+)
+
+js_run_binary(
+    name = "wasm-realm-prelude",
+    srcs = [
+        "wasm-module-prelude.js",
+        "wasm-payload.js",
+    ],
+    outs = [
+        "wasm-prelude-source.js",
+        "wasm-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath wasm-module-prelude.js)",
+        "--input",
+        "$(rootpath wasm-payload.js)",
+        "--out",
+        "$(rootpath wasm-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath wasm-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "wasm_harness",
+    data = [
+        "wasm-prelude-source.js",
+        "wasm-realm-prelude.js",
+        "//crates/temporal:wasm_backend",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+[
+    sh_test(
+        name = "wasm_" + suite + "_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :wasm_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.WASM." + suite,
+            "$(rootpath %s)" % baseline,
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath wasm-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            ":wasm_harness",
+            "//tools/test262:validator",
+            baseline,
+            "wasm-prelude-source.js",
+            "wasm-realm-prelude.js",
+            "//crates/temporal:wasm_backend",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for suite, patterns, baseline in [
+        (
+            "instant",
+            [_INSTANT_ROOT + "/**/*.js"],
+            "tests/instant-full-test262-count.json",
+        ),
+        ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
+        ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
+        ("time", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json"),
+        ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
+        ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
+        ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
+        ("zoned", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json"),
+        ("zoned_edges", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json"),
+        ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
+        ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
+        ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+    ]
+]
+
+js_test(
+    name = "wasm_package_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //crates/temporal:wasm_backend)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_iso_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_duration_fixtures",
+        "//conformance-tests/icu4j:temporal_iso_fixtures",
+        "//conformance-tests/icu4j:temporal_rounding_fixtures",
+        "//crates/temporal:wasm_backend",
+    ],
+    entry_point = "tests/wasm.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+copy_file(
+    name = "wasm_asset",
+    src = "//crates/temporal:wasm_backend",
+    out = "temporal-backend.wasm",
+)
+
+rolldown_bundle(
+    name = "wasm-unavailable-host",
+    srcs = [
+        "tests/wasm-unavailable-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/wasm-unavailable-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "wasm_unavailable_hermes_test",
+    size = "small",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :wasm-unavailable-host.js)",
+    ],
+    data = [
+        ":wasm-unavailable-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+copy_file(
+    name = "wasm_notices",
+    src = "//native/hermes/package:THIRD_PARTY_NOTICES.html",
+    out = "WASM_NOTICES.html",
+)

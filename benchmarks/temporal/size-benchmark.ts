@@ -37,6 +37,8 @@ const publishedModules = [
   'polyfill.js',
   'polyfill-force.js',
   'should-polyfill.js',
+  'native.js',
+  'wasm.js',
 ].map(file => {
   const source = readFileSync(join(publishedDirectory, file), 'utf8')
   const minified = transformSync(source, {
@@ -53,6 +55,19 @@ const publishedModules = [
   }
 })
 const primitiveWasm = readFileSync(runfiles.resolve(process.argv[3]))
+const namespaceWasm = readFileSync(
+  join(publishedDirectory, 'temporal-backend.wasm')
+)
+const graph = (files: string[]): {files: string[]; minifiedGzip: number} => ({
+  files,
+  minifiedGzip: files.reduce(
+    (sum, file) =>
+      sum + publishedModules.find(module => module.file === file)!.minifiedGzip,
+    0
+  ),
+})
+const namespaceGraph = graph(['index.js', 'native.js'])
+const wasmGraph = graph(['index.js', 'native.js', 'wasm.js'])
 const primitiveJS = ['wasm-ts-code.js', 'wasm-bridge-code.js'].map(file => {
   const source = readFileSync(
     runfiles.resolve(
@@ -90,6 +105,20 @@ console.log(
       },
       sizes,
       publishedModules,
+      publishedGraphs: {
+        scope:
+          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant only; all remaining TS algorithms/data still included. Source maps, declarations and notices are not runtime imports.',
+        typescript: namespaceGraph,
+        wasm: {
+          ...wasmGraph,
+          binary: {
+            raw: namespaceWasm.length,
+            gzip: gzipSync(namespaceWasm, {level: 9}).length,
+          },
+          combinedGzip:
+            wasmGraph.minifiedGzip + gzipSync(namespaceWasm, {level: 9}).length,
+        },
+      },
       primitiveProfile: {
         scope:
           'Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.',

@@ -35,6 +35,7 @@ formatjs_library(
         "size-benchmark.ts",
         "wasm-benchmark.ts",
         "wasm-bridge.ts",
+        "wasm-facade-benchmark.ts",
         "wasm-inputs.ts",
         "wasm-test.ts",
         "wasm-ts-entry.ts",
@@ -242,4 +243,17 @@ sh_binary(
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
     ],
+)
+
+js_binary(
+    name = "wasm_facade_benchmark",
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//:node_modules/temporal-polyfill",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "wasm-facade-benchmark.ts",
 )

@@ -15,9 +15,9 @@ PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. Publ
 TS date classes use all 16 specification calendars and owned IANA timezone data.
 Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
 numeric calendar math is shared. Native date classes resolve all 16 calendars.
-An experimental Hermes bridge delegates ISO conversion/day arithmetic to Rust;
-remaining namespace operations still use TS. Complete native Hermes installation
-and complete WASM facade/data remain pending.
+Experimental Hermes and WASM backends delegate ISO conversion and Instant
+operations to Rust. Other namespace algorithms still use TS. Complete native
+Hermes installation and complete WASM facade/data remain pending.
 
 ## Delivery order
 
@@ -823,3 +823,42 @@ startup, full WASM or full backend size. Backend selection remains open.
 Invalid UTF-16 Instant strings retain `RangeError`: escaped code units are
 rejected before JSON-to-UTF-8 decoding. Source/bytecode regressions cover lone
 surrogates, captured intrinsics and mandatory native calls for every new operation.
+
+## Optional WASM backend
+
+`@formatjs/temporal/wasm.js` exposes `configureWasmBackend(instance)`. Load the
+packaged `temporal-backend.wasm` with the application's asset loader, instantiate
+it, then select it for the existing namespace:
+
+```ts
+import {Temporal} from '@formatjs/temporal'
+import {configureWasmBackend} from '@formatjs/temporal/wasm.js'
+
+const {instance} = await WebAssembly.instantiate(bytes, {})
+configureWasmBackend(instance)
+Temporal.Instant.from('2020-02-29T12:00Z').round('hour')
+```
+
+`bytes` contains the packaged WASM asset. Configuration preserves constructors
+and existing values; it does not install globals. The optional module can be
+imported on Hermes, but activation fails explicitly there because WebAssembly
+is unavailable. TS remains the default. Rust JSI uses the separate Hermes profile.
+
+This backend delegates ISO conversion and Instant parsing, formatting, arithmetic,
+rounding and differences to Rust. Other algorithms and owned calendar/timezone
+data remain TS. It is a partial backend, not complete native Temporal. No selected
+Rust operation falls back to TS after an error.
+
+The WASM profile passes 8,570 pinned Test262 executions, including the full 934
+Instant cases. Published-package controls verify 25,265 ICU Gregorian rows,
+2,349 BigDecimal rounds and 3,168 signed differences. Tests also exercise actual
+shared backend state, memory growth, repeated errors/freeing, malformed UTF-16,
+ABI rejection and captured codecs/views. Hermes source and optimized bytecode
+verify optional import and explicit unavailability without breaking TS.
+
+On the recorded Node/V8 host, this JSON bridge is slower than TS across all five
+measured Instant operations. The consumer bundle is 420,004 gzip bytes including
+WASM versus 360,183 TS bytes. The binary itself is 132,990 raw / 58,527 gzip bytes.
+Both profiles include owned TS calendar/IANA data; they retain TS fallback code.
+This does not establish full native/WASM backend costs or a default-backend choice.
+See `benchmarks/temporal/wasm-facade-results.json` for raw samples and delivery modes.

@@ -7,6 +7,11 @@ load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
 load(":dist.bzl", "android_archive", "android_x86_64_archive", "darwin_archive", "darwin_x86_64_archive", "ios_arm64_archive", "ios_sim_arm64_archive", "ios_sim_x86_64_archive", "linux_archive")
 
+exports_files(
+    ["THIRD_PARTY_NOTICES.html"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
 ts_project(
     name = "pluralrules_smoke_typecheck",
     srcs = ["pluralrules-smoke.ts"],

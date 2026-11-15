@@ -635,3 +635,12 @@ source-only tests can hide independently bundled copies of the same classes.
 Rolldown temporary tsconfigs use unique directories, cleaned after output. Sandbox
 processes can share PIDs, so PID-only files in shared /tmp collide across parallel
 actions and can silently leave workspace imports unresolved in emitted bundles.
+
+## Temporal WASM dependencies
+
+The workspace `crate.from_cargo` platform list includes `wasm32-unknown-unknown`
+so the Temporal std/serde JSON backend can use the same pinned dependency graph.
+`//crates/temporal:wasm_backend` transitions an optimized shared-library target;
+`//packages/temporal:wasm_asset` copies it into the npm package. Use cquery for its
+actual transitioned artifact path. The earlier no_std primitive WASM target stays
+separate and cannot represent full facade/data size.

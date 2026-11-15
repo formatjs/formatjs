@@ -8,6 +8,30 @@ load(":wasm.bzl", "temporal_wasm")
 
 # gazelle:ignore
 rust_shared_library(
+    name = "wasm_backend_core",
+    srcs = ["wasm_backend.rs"],
+    crate_name = "formatjs_temporal_wasm_backend",
+    crate_root = "wasm_backend.rs",
+    edition = "2024",
+    rustc_flags = [
+        "-Copt-level=z",
+        "-Cstrip=symbols",
+        "-Cpanic=abort",
+    ],
+    target_compatible_with = ["@platforms//cpu:wasm32"],
+    deps = [":with_ffi"],
+)
+
+temporal_wasm(
+    name = "wasm_backend",
+    srcs = [":wasm_backend_core"],
+    outs = ["temporal-backend.wasm"],
+    cmd = "cp $< $@",
+    visibility = ["//visibility:public"],
+)
+
+# gazelle:ignore
+rust_shared_library(
     name = "wasm_core",
     srcs = ["wasm.rs"],
     crate_name = "formatjs_temporal_wasm",
