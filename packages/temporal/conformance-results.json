@@ -481,48 +481,48 @@
     "files": 2040,
     "node": {
       "executions": 4080,
-      "passes": 3884,
-      "failures": 196,
+      "passes": 3906,
+      "failures": 174,
       "failuresByAPI": {
-        "Duration": 8,
+        "Duration": 2,
         "Instant": 26,
         "PlainDate": 24,
         "PlainDateTime": 26,
         "PlainMonthDay": 22,
         "PlainTime": 22,
         "PlainYearMonth": 22,
-        "ZonedDateTime": 46
+        "ZonedDateTime": 30
       }
     },
     "hermes": {
       "source": {
         "executions": 4080,
-        "passes": 3862,
-        "failures": 218,
+        "passes": 3884,
+        "failures": 196,
         "failuresByAPI": {
-          "Duration": 14,
+          "Duration": 8,
           "Instant": 26,
           "PlainDate": 28,
           "PlainDateTime": 30,
           "PlainMonthDay": 24,
           "PlainTime": 22,
           "PlainYearMonth": 24,
-          "ZonedDateTime": 50
+          "ZonedDateTime": 34
         }
       },
       "optimizedBytecode": {
         "executions": 4080,
-        "passes": 3862,
-        "failures": 218,
+        "passes": 3884,
+        "failures": 196,
         "failuresByAPI": {
-          "Duration": 14,
+          "Duration": 8,
           "Instant": 26,
           "PlainDate": 28,
           "PlainDateTime": 30,
           "PlainMonthDay": 24,
           "PlainTime": 22,
           "PlainYearMonth": 24,
-          "ZonedDateTime": 50
+          "ZonedDateTime": 34
         }
       }
     },
@@ -661,7 +661,7 @@
         "hermesPass": false
       }
     ],
-    "note": "Manual failing diagnostics, not accepted failure baselines. Refreshed after all 16 calendars. Bare Hermes lacks DateTimeFormat and enumerates zero timezones; its distinct-primary-pair case remains vacuous. Locale integration, offset precision and zoned boundary failures remain required work."
+    "note": "Unfiltered diagnostics after historical timezone-edge fixes. Locale/Intl integration remains required work; links.js assumes pre-2026d CST6CDT identity. No exclusions."
   },
   "timezoneIdentity": {
     "availableIdentifiers": 597,
@@ -778,10 +778,10 @@
   },
   "strictGatesPerMode": {
     "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
-    "executions": 7960,
-    "passes": 7960,
+    "executions": 7982,
+    "passes": 7982,
     "failures": 0,
-    "scope": "Union of existing strict built-in class, Now, installation and named arithmetic-calendar gates. Full diagnostics remain separate; no complete conformance claim."
+    "scope": "Union of strict built-in classes, Now, installation, named-calendar and historical timezone-edge gates. Full diagnostics remain separate; no complete conformance claim."
   },
   "tableCalendars": {
     "calendars": ["chinese", "dangi", "islamic-umalqura"],
@@ -833,6 +833,25 @@
         "dangi/2017": 4
       },
       "status": "Manual failing diagnostic, unfiltered; published authority controls explain oracle discrepancies. No accepted-failure baseline."
+    }
+  },
+  "zonedEdges": {
+    "strictTest262PerMode": 22,
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "icuCivilBoundaryRoundsPerLanguage": 5292,
+    "languages": ["TypeScript", "Rust"],
+    "offsetPrecision": "TS string syntax distinguishes minute matching from exact seconds/fractions; bags exact. Rust zoned-string facade still pending.",
+    "calendarDifference": "TS/Rust compare wall clocks before gap-compatible calendar anchor resolution.",
+    "nativeRust": "ZonedDateTime start_of_day, hours_in_day, round day/clock units; original offset preferred for clock rounding.",
+    "exclusions": [],
+    "timezoneIdentityDiagnostic": {
+      "file": "intl402/Temporal/ZonedDateTime/links.js",
+      "executionsPerMode": 2,
+      "iana": "2026f",
+      "icu": "79.1",
+      "reason": "TZDB 2026d restored four POSIX IDs as Zones. Current ECMA-402 requires Zone primaries; TG2 2026-10-08 agreed to future alias policy. Keep raw ICU controls and failing Test262 diagnostic.",
+      "spec": "https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database",
+      "issue": "https://github.com/tc39/ecma402/issues/1103"
     }
   }
 }

@@ -293,7 +293,7 @@ export function toZonedDateTimeSlot(
     zone = timeZoneIdentifier(parsed.timeZone)
     offset = parsed.offset
     value = isoToEpochNanoseconds(parsed.fields)
-    matchMinute = true
+    matchMinute = offset !== undefined && /^[+-]\d{2}(?::?\d{2})?$/.test(offset)
   }
   const resolved = optionsObject(options),
     ambiguous = disambiguation(resolved.disambiguation),
@@ -372,9 +372,13 @@ export function unroundedZonedDifference(
   const sign =
     end < start.epochNanoseconds ? -1 : end > start.epochNanoseconds ? 1 : 0
   if (!sign) return zeroDuration()
-  const begin = epochDayOf(local(start)),
-    finish = epochDayOf(local({...start, epochNanoseconds: end}))
-  let day = (finish - begin) * sign < 0 ? begin : finish
+  const beginLocal = local(start),
+    endLocal = local({...start, epochNanoseconds: end}),
+    begin = epochDayOf(beginLocal),
+    finish = epochDayOf(endLocal)
+  let day = finish
+  if ((timeOf(endLocal) - timeOf(beginLocal)) * BigInt(sign) < 0n) day -= sign
+  if ((day - begin) * sign < 0) day = begin
   let fields = dateUntil(
     {epochDay: begin, calendar: start.calendar},
     day,
@@ -667,8 +671,9 @@ class ZonedDateTimeValue {
       if (increment !== 1) throw new RangeError('Invalid day increment')
       const start = startOfDay(slot),
         end = startOfDay(slot, epochDayOf(local(slot)) + 1)
-      value =
-        start + roundInstant(slot.epochNanoseconds - start, end - start, mode)
+      const current =
+        slot.epochNanoseconds < end ? slot.epochNanoseconds : end - 1n
+      value = start + roundInstant(current - start, end - start, mode)
     } else {
       const current = local(slot),
         rounded =

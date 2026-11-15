@@ -106,3 +106,11 @@ ICU month-end controls add 5,408 year/month total windows across 13 calendars,
 checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
 windows. Total windows advance past constrained month ends before computing the
 fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.
+
+ZonedDateTime supplies `start_of_day`, `hours_in_day` and `round` for day and
+clock units. Day boundaries use the earliest midnight or first valid instant
+when midnight is skipped. Day rounding handles repeated dates; clock rounding
+prefers the original offset when valid. Independent ICU4J controls verify 5,292
+boundary/rounding cases across historical gaps, folds and date-line changes.
+Zoned month differences compare wall clocks before resolving calendar anchors,
+avoiding a spurious whole month across Vancouver's spring gap.

@@ -64,6 +64,9 @@ pub(crate) trait RelativeAnchor {
     const ZONED: bool;
     fn origin(&self) -> i128;
     fn date_at(&self, value: i128) -> Result<i64, Error>;
+    fn clock_at(&self, value: i128) -> Result<i128, Error> {
+        Ok(value.rem_euclid(NANOSECONDS_PER_DAY))
+    }
     fn endpoint(&self, fields: [i128; 10]) -> Result<i128, Error>;
 }
 fn endpoint<A: RelativeAnchor>(start: &A, fields: [i128; 10]) -> Result<i128, Error> {
@@ -122,11 +125,13 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
         );
         return Ok(fields);
     }
-    let mut day = if i128::from(finish - begin) * sign < 0 {
-        begin
-    } else {
-        finish
-    };
+    let mut day = finish;
+    if (start.clock_at(end)? - start.clock_at(origin)?) * sign < 0 {
+        day -= sign as i64;
+    }
+    if i128::from(day - begin) * sign < 0 {
+        day = begin;
+    }
     let mut fields = date_until(begin, day, largest)?;
     let mut anchor;
     loop {

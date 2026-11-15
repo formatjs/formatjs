@@ -178,7 +178,10 @@ filegroup(
         (
             "zoned_test",
             ["tests/zoned.test.ts"],
-            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+                "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
+            ],
         ),
         (
             "short_date_test",
@@ -262,6 +265,22 @@ js_run_binary(
 )
 
 _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+_ZONED_EDGE_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/" + name + "/**/*sub-minute-offset.js"
+    for name in [
+        "Duration",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/" + name + "/dst-month-day-boundary.js"
+    for name in [
+        "until",
+        "since",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/round/same-date-starts-twice.js",
+]
 
 _NOW_PATTERNS = [
     _TEST262_ROOT + "/test/built-ins/Temporal/Now/**/*.js",
@@ -581,6 +600,7 @@ _INSTANT_PATTERNS = [
     )
     for name, patterns, tags in [
         ("calendars_test262", _CALENDAR_PATTERNS, []),
+        ("zoned_edges_test262", _ZONED_EDGE_PATTERNS, []),
         ("installation_test262", _INSTALLATION_PATTERNS, []),
         (
             "intl_test262_full",
@@ -734,6 +754,8 @@ test262_harness_bin.test262_harness_binary(
     )
     for name, mode, patterns, baseline, tags in [
         ("calendars_hermes_test262", "source", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        ("zoned_edges_hermes_test262", "source", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
+        ("zoned_edges_hermes_bytecode_test262", "bytecode", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
         ("calendars_hermes_bytecode_test262", "bytecode", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
         ("installation_hermes_test262", "source", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
         ("installation_hermes_bytecode_test262", "bytecode", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),

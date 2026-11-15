@@ -66,4 +66,13 @@ impl<Z: TimeZone + Clone> RelativeAnchor for ZonedDateTime<Z> {
             .instant()
             .epoch_nanoseconds())
     }
+    fn clock_at(&self, value: i128) -> Result<i128, Error> {
+        Ok(ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(value)?,
+            self.time_zone().clone(),
+        )
+        .local()?
+        .time()
+        .nanoseconds())
+    }
 }

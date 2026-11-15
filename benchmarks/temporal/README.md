@@ -37,8 +37,8 @@ disambiguation. `zones.ts` decodes only the requested canonical zone through the
 shared timezone unpacker. No host Intl timezone lookup.
 
 The Instant facade supplies the supported Instant operations; locale formatting remains incomplete; Duration now supplies the arithmetic foundation. `calendar.ts` separately supplies numeric
-13-calendar arithmetic. Public TS classes now use 13 owned arithmetic calendar engines. Chinese, Dangi
-and Umm al-Qura remain unimplemented.
+13-calendar arithmetic. Public TS classes combine these engines with owned Chinese, Dangi
+and Umm al-Qura tables for all 16 specification calendars.
 Gap resolution walks indexed transitions. Offset bounds limit the search region;
 multiple nearby gaps need no isolation assumption.
 No full Temporal conformance claim.
@@ -64,8 +64,7 @@ instant boundaries. Differential checks use the forced JS polyfill.
 months and month codes (including Hebrew `M05L`), applies constrain/reject,
 adds years/months/weeks/days, and computes day differences. It ports the existing
 Rust Hebrew postponement formulas; runtime imports no Temporal or host Intl.
-This is a numeric internal contract, not Temporal property-bag/coercion semantics.
-Month/year differences, other calendars and calendar field merging remain open.
+This numeric internal contract is separate from public Temporal property-bag/coercion semantics. The later profiles below cover all 16 calendars, month/year differences and field merging.
 
 ```sh
 bazel test -c opt //packages/temporal:calendar_test
@@ -637,3 +636,20 @@ Hermes backend measurements remain pending; Hermes has no WebAssembly.
 | Instant parse/format UTC                     |      1,776 |                   659 |             3,422 |
 | Duration parse/format                        |      2,261 |                   822 |            51,534 |
 | Duration parse/total microseconds            |      1,945 |                   508 |             2,383 |
+
+## Historical zoned edges
+
+[zoned-edge-results.json](zoned-edge-results.json) refreshes the same 26 facade
+workloads after exact-offset parsing, DST month differences and repeated-date
+rounding fixes. Every warmup output agrees with forced `temporal-polyfill`
+1.0.7 full/implementation. This run follows 87 passing regression targets.
+
+Standalone namespace is 358,928 gzip bytes (+40); full reference is 23,226,
+using host Intl. Zoned day differences measure TS/reference 12,962/51,032 ns;
+relative-month totals 10,896/8,740 ns; relative-month rounds 13,030/33,721 ns.
+Single-host timings describe these workloads, not complete API equivalence.
+
+Matched data-free primitives remain 3,757 TS gzip bytes versus 19,557 WASM plus
+463 JS bridge, 20,020 total. Fresh nested samples retain the basic ISO/Gregorian
+reference and the same validation/batch method. Full WASM facade/data and native
+Hermes backend measurements remain pending.

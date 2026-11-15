@@ -536,3 +536,42 @@ Validation for the table layer passes 89 targeted tests across Temporal, Rust,
 Hermes, WASM and shared formatter paths. Strict Test262 gates execute 7,960 cases
 per engine mode. Full Intl diagnostics remain failing: Node 3,884/4,080; Hermes
 source/bytecode 3,862/4,080. Locale/offset/zoned failures remain required work.
+
+## Historical zoned edges
+
+String offsets retain precision: minute-only syntax may match a rounded historical
+zone offset; explicit seconds/fractions require exact matching. Property bags
+always require exact matches. TS zoned differences and the shared Rust anchor
+engine compare local clocks before selecting calendar months across DST gaps.
+
+Day rounding caps the input below the next earliest civil midnight. This follows
+[TC39's repeated-date fix](https://github.com/tc39/proposal-temporal/issues/3312),
+including Casey's repeated 2010-03-04. Rust exposes `start_of_day`, `hours_in_day`
+and `round` for day/clock units; clock rounding prefers the original offset.
+A separate ICU4J generator supplies 5,292 boundary/rounding cases for TS/Rust,
+covering half-hour DST, midnight gaps/folds, skipped and repeated dates.
+
+A strict Intl timezone-edge gate adds 22 Test262 executions per engine mode.
+The aggregate strict gate now covers 7,982 executions on Node, Hermes source
+and Hermes optimized bytecode. Full Intl diagnostics still run unfiltered.
+
+`ZonedDateTime/links.js` assumes `CST6CDT` aliases Chicago. TZDB 2026d restored
+four POSIX IDs as separate Zones; pinned IANA 2026f and ICU79 agree. Current
+[ECMA-402 primary-ID rules](https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database)
+require Zones to remain primary. TG2 agreed to retain alias behavior on
+2026-10-08, but the normative change remains pending in
+[ECMA-402 #1103](https://github.com/tc39/ecma402/issues/1103).
+Keep this data-version/spec-policy diagnostic visible; no Test262 exclusion or
+silent override of the independently checked primary mapping.
+
+This layer passes 87 Temporal/Rust/Hermes/WASM regression targets. Refreshed full
+Intl diagnostics pass 3,906/4,080 on Node and 3,884/4,080 on Hermes source/bytecode;
+remaining failures stay required work. Native public calendar classes, native
+Hermes bindings and complete WASM facade/data remain pending.
+
+Fresh measurements live in `benchmarks/temporal/zoned-edge-results.json`:
+26 full-reference facade workloads plus matched data-free TS/WASM primitives.
+Namespace size is 358,928 gzip bytes (+40); the host-Intl full reference is
+23,226. Matched primitives remain 3,757 TS bytes versus 20,020 WASM plus bridge.
+Zoned day differences measure TS/reference 12,962/51,032 ns. Full WASM facade/data
+and native Hermes backend measurements remain pending.

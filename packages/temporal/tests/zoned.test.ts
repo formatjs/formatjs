@@ -136,3 +136,114 @@ it('uses first valid instant for date-only gaps regardless of disambiguation', (
   })
   expect(skipped.toString()).toBe('2011-12-31T00:00:00+14:00[Pacific/Apia]')
 })
+
+it('matches historical offset strings according to syntactic precision', () => {
+  const minute = Temporal.ZonedDateTime.from(
+    '1900-01-01T00:00+00:09[Europe/Paris]'
+  )
+  for (const offset of ['+0009', '+00:09:21', '+000921.000000000']) {
+    expect(
+      Temporal.ZonedDateTime.from(`1900-01-01T00:00${offset}[Europe/Paris]`)
+        .epochNanoseconds
+    ).toBe(minute.epochNanoseconds)
+  }
+  for (const offset of ['+00:09:00', '+000900', '+00:09:00.000']) {
+    const text = `1900-01-01T00:00${offset}[Europe/Paris]`
+    expect(() => Temporal.ZonedDateTime.from(text)).toThrow(RangeError)
+    expect(
+      Temporal.ZonedDateTime.from(text, {offset: 'prefer'}).epochNanoseconds
+    ).toBe(minute.epochNanoseconds)
+    expect(
+      Temporal.ZonedDateTime.from(text, {offset: 'ignore'}).epochNanoseconds
+    ).toBe(minute.epochNanoseconds)
+    expect(
+      Temporal.ZonedDateTime.from(text, {offset: 'use'}).epochNanoseconds -
+        minute.epochNanoseconds
+    ).toBe(21_000_000_000n)
+  }
+  expect(() =>
+    Temporal.ZonedDateTime.from({
+      year: 1900,
+      month: 1,
+      day: 1,
+      timeZone: 'Europe/Paris',
+      offset: '+00:09',
+    })
+  ).toThrow(RangeError)
+})
+
+it('balances wall clocks before calendar months across spring gaps', () => {
+  const start = new Temporal.ZonedDateTime(
+    957258000000000000n,
+    'America/Vancouver'
+  )
+  const end = new Temporal.ZonedDateTime(
+    954669600000000000n,
+    'America/Vancouver'
+  )
+  for (const largestUnit of ['year', 'month', 'day']) {
+    expect(start.until(end, {largestUnit}).toString()).toBe('-P29DT23H')
+    expect(start.since(end, {largestUnit}).toString()).toBe('P29DT23H')
+  }
+  expect(start.until(end, {largestUnit: 'hour'}).toString()).toBe('-PT719H')
+})
+
+it('rounds repeated civil dates to earliest midnight boundaries', () => {
+  for (const [text, floor, ceil, half] of [
+    ['2010-03-04T23:10+11:00', '2010-03-04', '2010-03-05', '2010-03-05'],
+    ['2010-03-05T00:45+11:00', '2010-03-05', '2010-03-06', '2010-03-05'],
+    ['2010-03-04T23:10+08:00', '2010-03-04', '2010-03-05', '2010-03-05'],
+    ['2010-03-05T00:45+08:00', '2010-03-05', '2010-03-06', '2010-03-05'],
+  ]) {
+    const value = Temporal.ZonedDateTime.from(`${text}[Antarctica/Casey]`)
+    for (const roundingMode of [
+      'floor',
+      'trunc',
+      'ceil',
+      'expand',
+      'halfCeil',
+      'halfFloor',
+      'halfExpand',
+      'halfTrunc',
+      'halfEven',
+    ]) {
+      const date =
+        roundingMode === 'floor' || roundingMode === 'trunc'
+          ? floor
+          : roundingMode === 'ceil' || roundingMode === 'expand'
+            ? ceil
+            : half
+      expect(
+        value.round({smallestUnit: 'day', roundingMode}).epochNanoseconds,
+        `${text} ${roundingMode}`
+      ).toBe(
+        Temporal.ZonedDateTime.from(`${date}[Antarctica/Casey]`)
+          .epochNanoseconds
+      )
+    }
+  }
+})
+
+it('matches ICU civil boundaries and day rounding through historical transitions', () => {
+  const file = runfiles.resolve(
+    `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-zoned-rounding-fixtures.tsv`
+  )
+  let count = 0
+  for (const line of readFileSync(file, 'utf8').trim().split('\n')) {
+    if (line.startsWith('#')) continue
+    const [name, instant, start, end, roundingMode, expected] = line.split('\t')
+    const value = new Temporal.ZonedDateTime(BigInt(instant) * 1_000_000n, name)
+    expect(value.startOfDay().epochNanoseconds, line).toBe(
+      BigInt(start) * 1_000_000n
+    )
+    expect(value.hoursInDay, line).toBe(
+      (Number(end) - Number(start)) / 3_600_000
+    )
+    expect(
+      value.round({smallestUnit: 'day', roundingMode}).epochNanoseconds,
+      line
+    ).toBe(BigInt(expected) * 1_000_000n)
+    count++
+  }
+  expect(count).toBe(5292)
+})

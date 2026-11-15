@@ -1587,3 +1587,108 @@ fn independent_icu_iso_calendar_total_windows() {
     }
     assert_eq!(count, 416);
 }
+
+#[test]
+fn zoned_month_difference_balances_wall_clocks_before_gap_resolution() {
+    use formatjs_temporal::{RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
+    let zones = owned_iana_zones();
+    let (initial, events, future) = zones.get("America/Vancouver").unwrap();
+    let zone = TransitionZone::new(*initial, events, *future).unwrap();
+    let start = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(957258000000000000).unwrap(),
+        zone,
+    );
+    let end = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(954669600000000000).unwrap(),
+        zone,
+    );
+    for largest in [ZonedUnit::Year, ZonedUnit::Month, ZonedUnit::Day] {
+        assert_eq!(
+            start
+                .until(&end, largest, ZonedUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            [0, 0, 0, -29, -23, 0, 0, 0, 0, 0]
+        );
+        assert_eq!(
+            start
+                .since(&end, largest, ZonedUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            [0, 0, 0, 29, 23, 0, 0, 0, 0, 0]
+        );
+    }
+}
+
+#[test]
+fn independent_icu_zoned_day_boundaries_and_rounding() {
+    use formatjs_temporal::{TransitionZone, ZonedDateTime, ZonedUnit};
+    let zones = owned_iana_zones();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_ROUNDING"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let nanos = |index: usize| fields[index].parse::<i128>().unwrap() * 1_000_000;
+        let zone = if fields[0] == "UTC" {
+            TransitionZone::new(0, &[], None).unwrap()
+        } else {
+            let (initial, events, future) = zones.get(fields[0]).unwrap();
+            TransitionZone::new(*initial, events, *future).unwrap()
+        };
+        let value = ZonedDateTime::new(Instant::from_epoch_nanoseconds(nanos(1)).unwrap(), zone);
+        assert_eq!(
+            value.start_of_day().unwrap().instant().epoch_nanoseconds(),
+            nanos(2),
+            "{line}"
+        );
+        assert_eq!(
+            value.hours_in_day().unwrap(),
+            (nanos(3) - nanos(2)) as f64 / 3_600_000_000_000.0,
+            "{line}"
+        );
+        assert_eq!(
+            value
+                .round(ZonedUnit::Day, 1, fields[4].parse().unwrap())
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            nanos(5),
+            "{line}"
+        );
+        count += 1;
+    }
+    assert_eq!(count, 5292);
+}
+
+#[test]
+fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
+    use formatjs_temporal::{RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit};
+    let zones = owned_iana_zones();
+    let (initial, events, future) = zones.get("America/New_York").unwrap();
+    let zone = TransitionZone::new(*initial, events, *future).unwrap();
+    for (text, expected) in [
+        ("2020-11-01T05:29:00Z", "2020-11-01T05:00:00Z"),
+        ("2020-11-01T06:29:00Z", "2020-11-01T06:00:00Z"),
+        ("2020-03-08T06:45:00Z", "2020-03-08T07:00:00Z"),
+    ] {
+        let value = ZonedDateTime::new(text.parse::<Instant>().unwrap(), zone);
+        let rounded = value
+            .round(ZonedUnit::Hour, 1, RoundingMode::HalfExpand)
+            .unwrap();
+        assert_eq!(
+            rounded.instant(),
+            expected.parse::<Instant>().unwrap(),
+            "{text}"
+        );
+        for (unit, increment) in [
+            (ZonedUnit::Month, 1),
+            (ZonedUnit::Day, 2),
+            (ZonedUnit::Minute, 7),
+            (ZonedUnit::Hour, 0),
+        ] {
+            assert!(value.round(unit, increment, RoundingMode::Trunc).is_err());
+        }
+    }
+}

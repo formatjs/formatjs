@@ -73,6 +73,84 @@ impl<Z: TimeZone> ZonedDateTime<Z> {
     }
 }
 impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
+    pub fn start_of_day(&self) -> Result<Self, Error> {
+        let day = self.local()?.date().epoch_day();
+        Ok(Self::new(self.day_boundary(day)?, self.time_zone.clone()))
+    }
+    pub fn hours_in_day(&self) -> Result<f64, Error> {
+        let day = self.local()?.date().epoch_day();
+        Ok((self.day_boundary(day + 1)?.epoch_nanoseconds()
+            - self.day_boundary(day)?.epoch_nanoseconds()) as f64
+            / 3_600_000_000_000.0)
+    }
+    pub fn round(
+        &self,
+        unit: crate::DateTimeUnit,
+        increment: u32,
+        mode: crate::RoundingMode,
+    ) -> Result<Self, Error> {
+        let instant = if unit == crate::DateTimeUnit::Day {
+            if increment != 1 {
+                return Err(Error::InvalidRoundingOptions);
+            }
+            let day = self.local()?.date().epoch_day();
+            let start = self.day_boundary(day)?.epoch_nanoseconds();
+            let end = self.day_boundary(day + 1)?.epoch_nanoseconds();
+            let current = self.instant.epoch_nanoseconds().min(end - 1);
+            Instant::from_epoch_nanoseconds(
+                start + crate::rounding::round_instant(current - start, end - start, mode),
+            )?
+        } else {
+            let time = unit.time().ok_or(Error::InvalidRoundingOptions)?;
+            let rounded = self.local()?.round(time, increment, mode)?;
+            let offset = self.time_zone.offset_nanoseconds(self.instant);
+            let preferred = Instant::from_epoch_nanoseconds(rounded.epoch_nanoseconds() - offset);
+            if let Ok(value) = preferred {
+                if self.time_zone.offset_nanoseconds(value) == offset {
+                    return Ok(Self::new(value, self.time_zone.clone()));
+                }
+            }
+            resolve_local(
+                rounded.fields(),
+                &self.time_zone,
+                Disambiguation::Compatible,
+            )?
+        };
+        Ok(Self::new(instant, self.time_zone.clone()))
+    }
+    fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
+        let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
+        let fields = IsoDateTime::from_epoch_nanoseconds(midnight)?;
+        let candidate = resolve_local(fields, &self.time_zone, Disambiguation::Compatible)?;
+        if candidate.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(candidate) == midnight
+        {
+            return Ok(candidate);
+        }
+        let mut cursor = candidate;
+        while cursor.epoch_nanoseconds() >= midnight - NANOSECONDS_PER_DAY {
+            let value = cursor.epoch_nanoseconds();
+            if value > -crate::MAX_EPOCH_NANOSECONDS {
+                let before = self
+                    .time_zone
+                    .offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
+                let after = self.time_zone.offset_nanoseconds(cursor);
+                if after > before && midnight >= value + before && midnight < value + after {
+                    return Ok(cursor);
+                }
+            }
+            let Some(previous) = self
+                .time_zone
+                .transition(cursor, TransitionDirection::Previous)
+            else {
+                break;
+            };
+            if previous.epoch_nanoseconds() >= value {
+                break;
+            }
+            cursor = previous;
+        }
+        Err(Error::InvalidDateTime)
+    }
     pub fn transition(&self, direction: TransitionDirection) -> Option<Self> {
         self.time_zone
             .transition(self.instant, direction)

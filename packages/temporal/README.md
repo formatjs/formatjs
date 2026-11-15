@@ -229,3 +229,16 @@ cases, 6,720 additions/differences and 1,248 total windows, plus all 2,474 HKO
 month starts. The raw ICU diagnostic stays unfiltered and failing where its
 approximate astronomy disagrees with those authorities. See
 [authority provenance](../../conformance-tests/calendar-authorities/README.md).
+
+Historical offset strings now retain syntactic precision: `+00:09` may match
+Paris's `+00:09:21`, while `+00:09:00` must match exactly. Property bags always
+match exactly. Zoned differences compare wall clocks before choosing calendar
+months across DST gaps.
+
+Day rounding caps elapsed time before the next earliest midnight. This handles
+Casey's repeated 2010-03-04 without producing a second day's boundary. TS and
+Rust check 5,292 independent ICU civil-boundary/rounding controls across ordinary
+days, half-hour DST, midnight gaps/folds, skipped dates and repeated dates. Rust
+also exposes `start_of_day`, `hours_in_day` and zoned `round` for day/time units.
+A strict Intl timezone-edge suite adds 22 Test262 executions on Node and Hermes
+source/optimized bytecode. No exclusions.
