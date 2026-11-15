@@ -1,3 +1,10 @@
+import type {
+  CalendarId,
+  CalendarFields,
+  CalendarDate,
+  DateDuration,
+  Overflow,
+} from '#packages/temporal/calendar.js'
 import type {ISODateTime} from '#packages/temporal/kernel.js'
 import type {
   Precision,
@@ -17,6 +24,33 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  calendarStartOfYear(calendar: CalendarId, year: number): number
+  calendarMonthsInYear(calendar: CalendarId, year: number): number
+  calendarDaysInMonth(calendar: CalendarId, year: number, month: number): number
+  calendarToEpochDay(
+    calendar: CalendarId,
+    fields: CalendarFields,
+    overflow: Overflow
+  ): number
+  calendarFromEpochDay(calendar: CalendarId, epoch: number): CalendarDate
+  calendarAdd(
+    calendar: CalendarId,
+    fields: CalendarFields,
+    duration: DateDuration,
+    overflow: Overflow
+  ): CalendarDate
+  calendarUntil(
+    calendar: CalendarId,
+    one: number,
+    two: number,
+    largest: string
+  ): DateDuration
+  calendarMonthSerial(calendar: CalendarId, year: number, month: number): number
+  calendarEra(
+    calendar: CalendarId,
+    epoch: number
+  ): {era: string; eraYear: number} | undefined
+  calendarYearFromEra(calendar: CalendarId, era: string, year: number): number
   isoToEpochNanoseconds(fields: ISODateTime): bigint
   epochNanosecondsToISO(value: bigint): Required<ISODateTime>
   addISODays(fields: ISODateTime, days: number): Required<ISODateTime>
@@ -123,7 +157,50 @@ export function configureNativeTemporal(query: NativeQuery): void {
       )
     return ToBigInt(call(op, {nanoseconds: text(value), duration, subtract}))
   }
+  function dateFields(value: CalendarFields): Record<string, unknown> {
+    const fields = create(null)
+    fields.year = value.year
+    if (value.month !== undefined) fields.month = value.month
+    if (value.monthCode !== undefined) fields.monthCode = value.monthCode
+    fields.day = value.day
+    return fields
+  }
   native = {
+    calendarStartOfYear: (calendar, year) =>
+      call('calendarStartOfYear', {calendar, year}),
+    calendarMonthsInYear: (calendar, year) =>
+      call('calendarMonthsInYear', {calendar, year}),
+    calendarDaysInMonth: (calendar, year, month) =>
+      call('calendarDaysInMonth', {calendar, year, month}),
+    calendarToEpochDay: (calendar, fields, overflow) =>
+      call('calendarToEpochDay', {
+        calendar,
+        fields: dateFields(fields),
+        overflow,
+      }),
+    calendarFromEpochDay: (calendar, epoch) =>
+      call('calendarFromEpochDay', {calendar, epoch}),
+    calendarAdd: (calendar, fields, values, overflow) => {
+      const duration = create(null)
+      duration.years = values.years ?? 0
+      duration.months = values.months ?? 0
+      duration.weeks = values.weeks ?? 0
+      duration.days = values.days ?? 0
+      return call('calendarAdd', {
+        calendar,
+        fields: dateFields(fields),
+        duration,
+        overflow,
+      })
+    },
+    calendarUntil: (calendar, one, two, largest) =>
+      call('calendarUntil', {calendar, one, two, largest}),
+    calendarMonthSerial: (calendar, year, month) =>
+      call('calendarMonthSerial', {calendar, year, month}),
+    calendarEra: (calendar, epoch) =>
+      call('calendarEra', {calendar, epoch}) ?? undefined,
+    calendarYearFromEra: (calendar, era, year) =>
+      call('calendarYearFromEra', {calendar, era, year}),
     isoToEpochNanoseconds: fields =>
       ToBigInt(request('isoToEpochNanoseconds', fields)),
     epochNanosecondsToISO: value =>

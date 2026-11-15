@@ -1,4 +1,6 @@
-//! Normalized primitive requests; never borrow host runtime objects.
+//! Normalized Temporal requests; host object semantics stay in JS.
+use crate::calendar::{Date, DateDuration, DateUnit, MonthCode, Overflow};
+use crate::{CalendarProvider, CalendarRef, CalendarRegistry};
 use crate::{
     Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime, Precision, RoundingMode,
     TimeUnit,
@@ -9,7 +11,10 @@ use std::{
     panic::{AssertUnwindSafe, catch_unwind},
     ptr, slice, str,
     string::ToString,
-    sync::atomic::{AtomicU64, Ordering},
+    sync::{
+        OnceLock,
+        atomic::{AtomicU64, Ordering},
+    },
 };
 
 static CALLS: AtomicU64 = AtomicU64::new(0);
@@ -122,6 +127,180 @@ fn duration_record(duration: Duration) -> Value {
             .map(|(index, key)| (key.to_string(), json!(fields[index] as f64)))
             .collect(),
     )
+}
+static CALENDARS: OnceLock<Result<CalendarRegistry<'static>, Error>> = OnceLock::new();
+fn compiled_calendars() -> Result<CalendarRegistry<'static>, Error> {
+    #[cfg(feature = "compiled_calendars")]
+    {
+        CalendarRegistry::compiled()
+    }
+    #[cfg(not(feature = "compiled_calendars"))]
+    {
+        Ok(CalendarRegistry::arithmetic())
+    }
+}
+fn calendar_record(value: Date) -> Value {
+    json!({"year":value.year,"month":value.month,"day":value.day,
+        "monthCode":std::format!("M{:02}{}",value.month_code.number,if value.month_code.leap {"L"} else {""})})
+}
+fn calendar_overflow(request: &Value) -> Result<Overflow, Error> {
+    match request["overflow"].as_str() {
+        Some("constrain") => Ok(Overflow::Constrain),
+        Some("reject") => Ok(Overflow::Reject),
+        _ => Err(Error::InvalidDateTime),
+    }
+}
+fn calendar_epoch(
+    calendar: CalendarRef<'_>,
+    fields: &Value,
+    overflow: Overflow,
+) -> Result<i64, Error> {
+    let year: i32 = integer(fields.get("year"), None)?
+        .try_into()
+        .map_err(|_| Error::OutOfRange)?;
+    let month = if let Some(code) = fields.get("monthCode") {
+        let code = code.as_str().ok_or(Error::InvalidDateTime)?.as_bytes();
+        if !(code.len() == 3 || code.len() == 4 && code[3] == b'L')
+            || code[0] != b'M'
+            || !code[1].is_ascii_digit()
+            || !code[2].is_ascii_digit()
+        {
+            return Err(Error::InvalidDateTime);
+        }
+        let month = calendar
+            .month_from_code(
+                year,
+                MonthCode {
+                    number: (code[1] - b'0') * 10 + code[2] - b'0',
+                    leap: code.len() == 4,
+                },
+                overflow,
+            )
+            .map_err(crate::calendar_provider::error)?;
+        if fields.get("month").is_some() && integer(fields.get("month"), None)? != i64::from(month)
+        {
+            return Err(Error::InvalidDateTime);
+        }
+        i32::from(month)
+    } else {
+        calendar_field(fields.get("month"), overflow)?
+    };
+    calendar
+        .epoch_day_extended(
+            year,
+            month,
+            calendar_field(fields.get("day"), overflow)?,
+            overflow,
+        )
+        .map_err(crate::calendar_provider::error)
+}
+fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Error> {
+    let value = integer(value, None)?;
+    if overflow == Overflow::Constrain {
+        Ok(value.clamp(i64::from(i32::MIN), i64::from(i32::MAX)) as i32)
+    } else {
+        value.try_into().map_err(|_| Error::OutOfRange)
+    }
+}
+fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    let registry = CALENDARS
+        .get_or_init(compiled_calendars)
+        .as_ref()
+        .map_err(|error| *error)?;
+    let calendar = registry.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let number = |key| integer(request.get(key), None);
+    let year =
+        || -> Result<i32, Error> { number("year")?.try_into().map_err(|_| Error::OutOfRange) };
+    let result = match op {
+        "calendarStartOfYear" => json!(
+            calendar
+                .start_of_year(year()?)
+                .map_err(crate::calendar_provider::error)?
+        ),
+        "calendarMonthsInYear" => json!(
+            calendar
+                .months_in_year(year()?)
+                .map_err(crate::calendar_provider::error)?
+        ),
+        "calendarDaysInMonth" => json!(
+            calendar
+                .days_in_month(
+                    year()?,
+                    number("month")?
+                        .try_into()
+                        .map_err(|_| Error::InvalidDateTime)?
+                )
+                .map_err(crate::calendar_provider::error)?
+        ),
+        "calendarToEpochDay" => json!(calendar_epoch(
+            calendar,
+            &request["fields"],
+            calendar_overflow(request)?
+        )?),
+        "calendarFromEpochDay" => calendar_record(
+            calendar
+                .date_extended(number("epoch")?)
+                .map_err(crate::calendar_provider::error)?,
+        ),
+        "calendarAdd" => {
+            let overflow = calendar_overflow(request)?;
+            let origin = calendar_epoch(calendar, &request["fields"], Overflow::Reject)?;
+            let duration = &request["duration"];
+            let duration = DateDuration {
+                years: integer(duration.get("years"), Some(0))?,
+                months: integer(duration.get("months"), Some(0))?,
+                weeks: integer(duration.get("weeks"), Some(0))?,
+                days: integer(duration.get("days"), Some(0))?,
+            };
+            let epoch = calendar
+                .add_extended(origin, duration, overflow)
+                .map_err(crate::calendar_provider::error)?;
+            calendar_record(
+                calendar
+                    .date_extended(epoch)
+                    .map_err(crate::calendar_provider::error)?,
+            )
+        }
+        "calendarUntil" => {
+            let unit = match request["largest"].as_str() {
+                Some("year") => DateUnit::Year,
+                Some("month") => DateUnit::Month,
+                Some("week") => DateUnit::Week,
+                Some("day") => DateUnit::Day,
+                _ => return Err(Error::InvalidRoundingOptions),
+            };
+            let value = calendar
+                .until_raw(number("one")?, number("two")?, unit)
+                .map_err(crate::calendar_provider::error)?;
+            json!({"years":value.years,"months":value.months,"weeks":value.weeks,"days":value.days})
+        }
+        "calendarMonthSerial" => {
+            let year = year()?;
+            let before = match calendar {
+                CalendarRef::Arithmetic(value) => value.months_before_year(year),
+                CalendarRef::Table(value) => value.months_before_year(year),
+            }
+            .map_err(crate::calendar_provider::error)?;
+            json!(before + number("month")? - 1)
+        }
+        "calendarEra" => match calendar
+            .era_extended(number("epoch")?)
+            .map_err(crate::calendar_provider::error)?
+        {
+            Some(era) => json!({"era":era.name,"eraYear":era.year}),
+            None => Value::Null,
+        },
+        "calendarYearFromEra" => json!(
+            calendar
+                .year_from_era(
+                    request["era"].as_str().ok_or(Error::InvalidDateTime)?,
+                    year()?
+                )
+                .map_err(crate::calendar_provider::error)?
+        ),
+        _ => return Err(Error::InvalidSyntax),
+    };
+    Ok(result)
 }
 fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parsePlainTime" {
@@ -324,12 +503,22 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time","calls":CALLS.load(Ordering::Relaxed),"operations":["isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars","calls":CALLS.load(Ordering::Relaxed),"operations":["calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "isoToEpochNanoseconds"
+        "calendarStartOfYear"
+            | "calendarMonthsInYear"
+            | "calendarDaysInMonth"
+            | "calendarToEpochDay"
+            | "calendarFromEpochDay"
+            | "calendarAdd"
+            | "calendarUntil"
+            | "calendarMonthSerial"
+            | "calendarEra"
+            | "calendarYearFromEra"
+            | "isoToEpochNanoseconds"
             | "epochNanosecondsToISO"
             | "addISODays"
             | "parsePlainTime"
@@ -368,6 +557,7 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
             }
+            _ if op.starts_with("calendar") => calendar_operation(op, &request),
             _ if op.ends_with("PlainTime") => time_operation(op, &request),
             _ => instant_operation(op, &request),
         }

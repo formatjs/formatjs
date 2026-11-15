@@ -27,6 +27,29 @@ function measure(namespace: typeof reference): unknown[] {
   )
   const times = clocks.map(value => namespace.PlainTime.from(value))
   const expectedTimes = clocks.map(value => reference.PlainTime.from(value))
+  const dates = strings.map(value =>
+    namespace.PlainDate.from(value.slice(0, 10))
+  )
+  const expectedDates = strings.map(value =>
+    reference.PlainDate.from(value.slice(0, 10))
+  )
+  const yearMonths = dates.map((value, index) =>
+    value.toPlainYearMonth().add({months: index})
+  )
+  const expectedYearMonths = expectedDates.map((value, index) =>
+    value.toPlainYearMonth().add({months: index})
+  )
+  const dateFields = (value: InstanceType<typeof reference.PlainDate>) =>
+    [
+      value.year,
+      value.month,
+      value.monthCode,
+      value.day,
+      value.daysInMonth,
+      value.monthsInYear,
+      value.daysInYear,
+      value.dayOfYear,
+    ].join(',')
   const cases = [
     {
       name: 'parse',
@@ -152,6 +175,51 @@ function measure(namespace: typeof reference): unknown[] {
           })
           .toString(),
     },
+    {
+      name: 'dateFromFields',
+      run: (index: number) =>
+        namespace.PlainDate.from({
+          year: 2020,
+          monthCode: 'M02',
+          day: 21 + index,
+        }).day.toString(),
+      check: (index: number) =>
+        reference.PlainDate.from({
+          year: 2020,
+          monthCode: 'M02',
+          day: 21 + index,
+        }).day.toString(),
+    },
+    {
+      name: 'dateFields',
+      run: (index: number) => dateFields(dates[index]),
+      check: (index: number) => dateFields(expectedDates[index]),
+    },
+    {
+      name: 'dateAdd',
+      run: (index: number) =>
+        dates[index].add({years: 1, months: 2, days: 3}).toString(),
+      check: (index: number) =>
+        expectedDates[index].add({years: 1, months: 2, days: 3}).toString(),
+    },
+    {
+      name: 'dateUntil',
+      run: (index: number) =>
+        dates[index]
+          .until(dates[(index + 1) & 7], {largestUnit: 'month'})
+          .toString(),
+      check: (index: number) =>
+        expectedDates[index]
+          .until(expectedDates[(index + 1) & 7], {largestUnit: 'month'})
+          .toString(),
+    },
+    {
+      name: 'yearMonthAdd',
+      run: (index: number) =>
+        yearMonths[index].add({years: 1, months: 3}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].add({years: 1, months: 3}).toString(),
+    },
   ]
   return cases.map(test => {
     for (let index = 0; index < 8; index++)
@@ -185,6 +253,17 @@ const instantiateMilliseconds = performance.now() - start
 configureWasmBackend(instance)
 const query = createWasmQuery(instance)
 const initialMemoryBytes = query.memoryBytes
+start = performance.now()
+checksum += Temporal.Instant.from(strings[0]).epochNanoseconds.toString().length
+const firstNativeOperationMilliseconds = performance.now() - start
+start = performance.now()
+checksum += Temporal.PlainDate.from({
+  calendar: 'chinese',
+  year: 2020,
+  monthCode: 'M01',
+  day: 1,
+}).monthCode.length
+const firstCalendarOperationMilliseconds = performance.now() - start
 const wasm = measure(Temporal)
 const referenceResults = measure(reference)
 const minify = (file: string) => {
@@ -233,9 +312,9 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime only; remaining algorithms/fallback/data remain TS. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar math with16 native calendars; remaining algorithms and fallback data remain TS. ISO date workloads use basic reference, not non-ISO coverage. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,
       samples,
       warmup,
@@ -245,6 +324,8 @@ console.log(
       reference: referenceResults,
       compileMilliseconds,
       instantiateMilliseconds,
+      firstNativeOperationMilliseconds,
+      firstCalendarOperationMilliseconds,
       initialMemoryBytes,
       finalMemoryBytes: query.memoryBytes,
       native: JSON.parse(query('{"op":"info"}')),

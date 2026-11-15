@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   isLunisolar,
   tableLeapMonth,
@@ -163,11 +164,15 @@ export function calendarStartOfYear(
 ): number {
   calendarCheck(calendar)
   yearCheck(year)
+  const native = nativeTemporal()
+  if (native) return native.calendarStartOfYear(calendar, year)
   return start(calendar, year)
 }
 export function monthsInYear(calendar: CalendarId, year: number): number {
   calendarCheck(calendar)
   yearCheck(year)
+  const native = nativeTemporal()
+  if (native) return native.calendarMonthsInYear(calendar, year)
   if (isLunisolar(calendar)) return tableLeapMonth(calendar, year) ? 13 : 12
   return ['coptic', 'ethiopic', 'ethioaa'].includes(calendar) ||
     (calendar === 'hebrew' && hebrewLeap(year))
@@ -179,6 +184,8 @@ export function daysInMonth(
   year: number,
   month: number
 ): number {
+  const native = nativeTemporal()
+  if (native) return native.calendarDaysInMonth(calendar, year, month)
   const count = monthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
     throw new RangeError('Invalid calendar month')
@@ -268,6 +275,12 @@ export function calendarToEpochDayRaw(
   calendarCheck(calendar)
   overflowCheck(overflow)
   const year = yearCheck(fields.year)
+  const native = nativeTemporal()
+  if (native) {
+    if (fields.month === undefined && fields.monthCode === undefined)
+      throw new TypeError('Month or monthCode required')
+    return native.calendarToEpochDay(calendar, fields, overflow)
+  }
   let month: number
   if (fields.monthCode !== undefined) {
     month = monthFromCode(calendar, year, fields.monthCode, overflow)
@@ -308,6 +321,8 @@ export function calendarFromEpochDayRaw(
   calendarCheck(calendar)
   if (Math.abs(integer(epoch)) > 110000000)
     throw new RangeError('Calendar date out of range')
+  const native = nativeTemporal()
+  if (native) return native.calendarFromEpochDay(calendar, epoch)
   if (isLunisolar(calendar)) {
     const value = tableDate(calendar, epoch)
     return {...value, monthCode: monthCode(calendar, value.year, value.month)}
@@ -406,6 +421,8 @@ export function addCalendarDateRaw(
   overflow: Overflow = 'constrain'
 ): CalendarDate {
   overflowCheck(overflow)
+  const native = nativeTemporal()
+  if (native) return native.calendarAdd(calendar, fields, duration, overflow)
   const original = calendarFromEpochDayRaw(
     calendar,
     calendarToEpochDayRaw(calendar, fields, 'reject')
@@ -462,6 +479,8 @@ export function calendarMonthSerial(
   month: number
 ): number {
   calendarCheck(calendar)
+  const native = nativeTemporal()
+  if (native) return native.calendarMonthSerial(calendar, year, month)
   if (isLunisolar(calendar)) return tableMonthSerial(calendar, year, month)
   return calendar === 'hebrew'
     ? elapsedMonths(year) + month - 1
@@ -473,6 +492,8 @@ export function calendarDateUntilRaw(
   two: number,
   largest: string
 ): DateDuration {
+  const native = nativeTemporal()
+  if (native) return native.calendarUntil(calendar, one, two, largest)
   const first = calendarFromEpochDayRaw(calendar, one),
     last = calendarFromEpochDayRaw(calendar, two)
   const result = {years: 0, months: 0, weeks: 0, days: 0},
@@ -540,6 +561,11 @@ export function calendarEra(
   epoch: number,
   extended = false
 ): {era: string; eraYear: number} | undefined {
+  const native = nativeTemporal()
+  if (native) {
+    if (!extended) dayCheck(epoch)
+    return native.calendarEra(calendar, epoch)
+  }
   const {year} = (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
     calendar,
     epoch
@@ -587,6 +613,8 @@ export function calendarYearFromEra(
 ): number {
   calendarCheck(calendar)
   integer(eraYear)
+  const native = nativeTemporal()
+  if (native) return native.calendarYearFromEra(calendar, era, eraYear)
   if (calendar === 'japanese')
     for (const [, name, offset] of japaneseEras)
       if (era === name) return yearCheck(eraYear + offset)

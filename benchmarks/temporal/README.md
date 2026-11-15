@@ -787,3 +787,42 @@ The current binary is 147,964 raw /62,954 gzip bytes. Consumer bundles are 360,3
 TS versus 361,781 JS +62,954 binary =424,735 WASM bytes. Required separate ESM
 files total 361,425 TS versus 425,183 WASM bytes. Native calendar/timezone
 algorithms/data still use TS; full-backend size proof remains open.
+
+## Native calendar bridge
+
+`hermes-calendar-results.json` and `wasm-calendar-results.json` add five ISO date
+workloads to the existing Instant/PlainTime commands. All eight inputs pass
+`temporal-polyfill` 1.0.7 basic-reference parity. YearMonth inputs vary their month;
+`dateFields` reads eight fields/metadata values. All 16 native calendars ship,
+but these throughput cases measure ISO behavior. Independent ICU controls supply
+non-ISO coverage. Final Hermes and V8 runs ran sequentially without concurrent
+build/test/benchmark work. Earlier snapshots retain their original scopes.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Date from bag + day: 9.03 /11.60 /5.24.
+- Date fields/metadata: 22.38 /37.53 /1.99.
+- Date add + format: 41.71 /34.57 /11.91.
+- Date until + format: 57.88 /34.70 /14.07.
+- YearMonth add + format: 42.51 /36.18 /11.83.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Date from bag + day: 1.37 /10.03 /0.87.
+- Date fields/metadata: 2.70 /45.86 /0.44.
+- Date add + format: 5.67 /30.16 /2.04.
+- Date until + format: 6.14 /9.17 /24.05.
+- YearMonth add + format: 5.55 /37.26 /1.94.
+
+Rust improves three Hermes workloads here; repeated JSON crossings hurt getters.
+WASM loses all five cases against TS. One host and partial native coverage do not
+establish a default backend. Recorded WASM compile/instantiate costs are 1.25/1.51
+milliseconds; first native call 3.37 ms, first calendar operation 9.69 ms including
+registry validation. JS/TS was already warm; these are not cold JS-load timings.
+
+`calendar-backend-size-results.json` measures the shipped native pack plus retained
+TS fallback algorithms/data. The WASM binary is 2,905,657 raw /315,320 gzip bytes.
+Consumer bundles: TS 360,454 gzip; WASM JS 362,248 +binary 315,320 =677,568.
+Separately compressed ESM: TS 361,876 versus WASM 678,000. Native calendar tables
+now duplicate retained JS tables. Native timezone data and remaining native
+orchestration are still absent; full-backend cost remains unproven.

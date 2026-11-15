@@ -1278,6 +1278,7 @@ rolldown_bundle(
     srcs = [
         "tests/native-iso-host.ts",
         "tests/plain-time-oracle.ts",
+        "tests/public-calendar-oracle.ts",
         ":srcs",
     ],
     entry_point = "tests/native-iso-host.ts",
@@ -1291,13 +1292,15 @@ genrule(
     testonly = True,
     srcs = [
         "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_hermes_fixtures",
         "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
         "//conformance-tests/icu4j:temporal_time_hermes_fixtures",
         ":native-iso-host.js",
     ],
     outs = ["native-iso-hermes.js"],
-    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location :native-iso-host.js) > $@",
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location :native-iso-host.js) > $@",
 )
 
 sh_test(
@@ -1355,18 +1358,41 @@ sh_test(
             [_INSTANT_ROOT + "/**/*.js"],
             "tests/instant-full-test262-count.json",
         ),
-        ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
-        ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
+        (
+            "date",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+        ),
+        (
+            "datetime",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+        ),
         (
             "time",
             [_TIME_ROOT + "/**/*.js"],
             "tests/plain-time-full-test262-count.json",
         ),
-        ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
-        ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
-        ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
-        ("zoned", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json"),
-        ("zoned_edges", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json"),
+        (
+            "yearmonth",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+        ),
+        (
+            "monthday",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+        ),
+        (
+            "duration",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+        ),
+        (
+            "zoned",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+        ),
         ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
         ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
         ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
@@ -1485,23 +1511,55 @@ test262_harness_bin.test262_harness_binary(
             [_INSTANT_ROOT + "/**/*.js"],
             "tests/instant-full-test262-count.json",
         ),
-        ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
-        ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
+        (
+            "date",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+        ),
+        (
+            "datetime",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+        ),
         (
             "time",
             [_TIME_ROOT + "/**/*.js"],
             "tests/plain-time-full-test262-count.json",
         ),
-        ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
-        ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
-        ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
-        ("zoned", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json"),
-        ("zoned_edges", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json"),
+        (
+            "yearmonth",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+        ),
+        (
+            "monthday",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+        ),
+        (
+            "duration",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+        ),
+        (
+            "zoned",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+        ),
         ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
         ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
         ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
     ]
 ]
+
+rolldown_bundle(
+    name = "public-calendar-oracle",
+    srcs = ["tests/public-calendar-oracle.ts"],
+    entry_point = "tests/public-calendar-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
 
 js_test(
     name = "wasm_package_test",
@@ -1514,14 +1572,20 @@ js_test(
         "$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_time_carry_fixtures)",
         "$(rlocationpath :plain-time-oracle.js)",
+        "$(rlocationpath :public-calendar-oracle.js)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
     ],
     data = [
         ":pkg",
         ":plain-time-oracle.js",
+        ":public-calendar-oracle.js",
         "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_time_carry_fixtures",
         "//crates/temporal:wasm_backend",
     ],

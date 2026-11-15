@@ -357,10 +357,15 @@ rust_library(
         "zoned_difference.rs",
         "zoned_string.rs",
     ],  # keep
-    crate_features = ["ffi"],
+    compile_data = [":calendar_data"],
+    crate_features = [
+        "ffi",
+        "compiled_calendars",
+    ],
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
     edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)"},
     visibility = ["//visibility:public"],
     deps = [
         "//crates/intl_datetimeformat_calendars:calendar_core",

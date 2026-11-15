@@ -13,6 +13,7 @@ it('matches independent ICU, HKO and KASI fields, arithmetic and relative totals
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-table-calendar-fixtures.tsv`
   )
   const counts = checkPublicCalendarOracle(
+    Temporal,
     readFileSync(file, 'utf8'),
     (actual, expected, line) => expect(actual, line).toBe(expected)
   )

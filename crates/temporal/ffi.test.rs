@@ -105,3 +105,39 @@ fn independent_icu_fields_cross_ffi_in_both_directions() {
 fn day_arithmetic_preserves_fraction_and_crosses_year_zero() {
     assert_eq!(query(br#"{"op":"addISODays","fields":{"year":0,"month":1,"day":1,"nanosecond":1},"days":-1}"#),Ok(json!({"year":-1,"month":12,"day":31,"hour":0,"minute":0,"second":0,"millisecond":0,"microsecond":0,"nanosecond":1})));
 }
+
+#[test]
+fn calendar_fields_keep_extended_coordinates_and_clamp_before_narrowing() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    let extreme = json!({"op":"calendarFromEpochDay","calendar":"chinese","epoch":-110000000});
+    let fields = request(extreme).unwrap();
+    assert_eq!(
+        request(
+            json!({"op":"calendarToEpochDay","calendar":"chinese","fields":fields,"overflow":"reject"})
+        ),
+        Ok(json!(-110000000))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"calendarToEpochDay","calendar":"iso8601","fields":{"year":2024,"month":9007199254740991i64,"day":9007199254740991i64},"overflow":"constrain"})
+        ),
+        Ok(json!(20088))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"calendarToEpochDay","calendar":"hebrew","fields":{"year":5784,"monthCode":"M05L","day":1},"overflow":"reject"})
+        ),
+        Ok(json!(19763))
+    );
+    for value in [
+        json!({"op":"calendarToEpochDay","calendar":"hebrew","fields":{"year":5783,"monthCode":"M05L","day":1},"overflow":"reject"}),
+        json!({"op":"calendarToEpochDay","calendar":"hebrew","fields":{"year":5784,"month":6,"monthCode":"M06","day":1},"overflow":"reject"}),
+        json!({"op":"calendarToEpochDay","calendar":"iso8601","fields":{"year":2024,"monthCode":"M00","day":1},"overflow":"reject"}),
+        json!({"op":"calendarToEpochDay","calendar":"iso8601","fields":{"year":2024,"monthCode":"M1","day":1},"overflow":"reject"}),
+        json!({"op":"calendarToEpochDay","calendar":"iso8601","fields":{"year":2024,"month":1,"day":1},"overflow":"bad"}),
+        json!({"op":"calendarAdd","calendar":"iso8601","fields":{"year":2024,"month":1,"day":1},"duration":{"years":1,"days":-1},"overflow":"constrain"}),
+        json!({"op":"calendarFromEpochDay","calendar":"iso8601","epoch":110000001}),
+    ] {
+        assert_eq!(request(value), Err(1));
+    }
+}

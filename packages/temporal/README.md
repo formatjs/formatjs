@@ -403,3 +403,35 @@ time formatting takes about 3.14 microseconds Rust versus 8.33 TS; add is slower
 all five time workloads. Consumer bundle totals are 360,302 gzip bytes TS versus
 424,735 WASM profile; binary alone 147,964 raw /62,954 gzip bytes. These remain
 partial native profiles with retained TS code/data, not full-backend comparisons.
+
+## Native calendar bridge
+
+Hermes/WASM delegate conversion, month/year metadata, eras, calendar addition and
+differences to Rust for all 16 calendars. The FFI Bazel target embeds generated
+calendar tables and validates its immutable registry once per process/module.
+The default Rust core remains data-free and no_std. WASM ABI 3 requires the
+matching packaged binary; ABI-2 modules reject before replacing active state.
+
+JS retains object/coercion semantics and date/relative/zoned orchestration.
+Timezone algorithms and data still use TS. Native operations propagate errors;
+they never silently retry in TS. Extended calendar coordinates preserve short-date
+reference windows; public date bounds remain checked by callers. Large safe
+integer month/day values constrain before narrowing to native integers.
+
+Independent public-class ICU controls now execute against Hermes source/HBC and
+the published WASM namespace: 50,298 field/inverse samples, 39,072 additions,
+39,072 differences, 176 bounds, 2,958 cross-class bridges and 6,656 relative Duration
+windows. Both plain and UTC-zoned anchors check each relative window. These are
+hybrid backend controls; complete native bindings, SDK installation and Intl
+integration remain required.
+
+Full eight-class Test262 gates now pass 9,090 executions per Hermes source/HBC
+and WASM mode, with zero tracked failures or new exclusions. Separate calendar
+regression gates overlap those cases; Now and installation gates also pass.
+This does not establish complete Intl integration or a complete Rust backend.
+
+Calendar benchmark snapshots live under `benchmarks/temporal/*calendar*results.json`.
+Rust improves three of five measured Hermes ISO date workloads; WASM loses to TS
+on all five. Current consumer bundles total 360,454 gzip bytes TS versus 677,568
+WASM, including the 315,320-byte native binary and retained JS calendar data.
+Equivalent full-native backend size/performance proof remains open.

@@ -1022,5 +1022,49 @@
       "Complete WASM facade/data and matched benchmarks"
     ],
     "exclusions": []
+  },
+  "nativeCalendarBridge": {
+    "backend": "rust-iso-instant-time-calendars",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 3,
+    "calendars": 16,
+    "nativeOperations": 24,
+    "scope": "Rust ISO, Instant, PlainTime and calendar engines; JS object semantics and date/relative/zoned orchestration, timezone algorithms/data and locale adaptation retained. Full class gates prove this hybrid configuration, not full native Temporal or complete Intl support.",
+    "test262": {
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "newExclusions": [],
+      "newTrackedFailures": 0,
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      }
+    },
+    "icuPublicCalendarControlsPerMode": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fieldAndInverseSamples": 50298,
+      "additions": 39072,
+      "differences": 39072,
+      "bounds": 176,
+      "crossClassBridges": 2958,
+      "relativeDurationWindows": 6656,
+      "note": "Each relative Duration window checks plain and UTC-zoned anchors. Independent pinned ICU expectations; numeric agreement alone is not the oracle."
+    },
+    "remaining": [
+      "native timezone bindings/data",
+      "remaining native class operations and relative orchestration",
+      "Hermes SDK installer/distribution",
+      "Intl native brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
   }
 }

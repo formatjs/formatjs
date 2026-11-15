@@ -9,6 +9,7 @@ it('exposes ICU calendar fields, inverse bags and arithmetic through public clas
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-arithmetic-calendar-fixtures.tsv`
   )
   const counts = checkPublicCalendarOracle(
+    Temporal,
     readFileSync(file, 'utf8'),
     (actual, expected, line) => expect(actual, line).toBe(expected)
   )

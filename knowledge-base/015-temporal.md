@@ -16,7 +16,7 @@ TS date classes use all 16 specification calendars and owned IANA timezone data.
 Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
 numeric calendar math is shared. Native date classes resolve all 16 calendars.
 Experimental Hermes and WASM backends delegate ISO conversion, Instant and
-PlainTime operations to Rust. Other namespace algorithms still use TS. Complete native
+PlainTime operations plus all 16 calendar engines to Rust. Date/relative/zoned orchestration still uses TS. Complete native
 Hermes installation and complete WASM facade/data remain pending.
 
 ## Delivery order
@@ -889,3 +889,36 @@ time formatting takes about 3.14 microseconds Rust versus 8.33 TS; add is slower
 all five time workloads. Consumer bundle totals are 360,302 gzip bytes TS versus
 424,735 WASM profile; binary alone 147,964 raw /62,954 gzip bytes. These remain
 partial native profiles with retained TS code/data, not full-backend comparisons.
+
+## Native calendar bridge
+
+The shared native backend now delegates calendar conversion/inversion, month/year
+metadata, era resolution, addition and differences to Rust for all 16 calendars.
+Bazel `:with_ffi` embeds the existing generated calendar descriptors. A process-
+local `OnceLock` validates and retains the immutable registry once; independent
+WASM instances own independent registries. No runtime formatter dependency enters
+Temporal. The default no_std core still excludes data and allocation.
+
+JS retains coercion/property order, private slots, date/relative/zoned orchestration
+and timezone algorithms. Selected native operations never fall back after errors.
+Extended calendar coordinates remain available for short-date reference windows;
+public callers retain their narrower range checks. Constrained month/day values
+clamp before Rust integer narrowing. WASM ABI 3 requires matching packaged binary.
+
+Public-class ICU controls run against Hermes source/optimized bytecode and the
+actual published WASM package. They cover all 16 calendars, inverse bags, eras,
+calendar arithmetic/differences and plain/UTC-zoned relative Duration windows.
+The checker accepts the actual namespace, preventing a duplicate TS bundle from
+standing in for the packaged WASM implementation. Remaining native bindings,
+Hermes SDK installation, Intl adaptation and full-backend comparisons stay open.
+
+Full eight-class Test262 gates now pass 9,090 executions per Hermes source/HBC
+and WASM mode, with zero tracked failures or new exclusions. Separate calendar
+regression gates overlap those cases; Now and installation gates also pass.
+This does not establish complete Intl integration or a complete Rust backend.
+
+Calendar benchmark snapshots live under `benchmarks/temporal/*calendar*results.json`.
+Rust improves three of five measured Hermes ISO date workloads; WASM loses to TS
+on all five. Current consumer bundles total 360,454 gzip bytes TS versus 677,568
+WASM, including the 315,320-byte native binary and retained JS calendar data.
+Equivalent full-native backend size/performance proof remains open.

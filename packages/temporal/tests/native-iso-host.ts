@@ -1,4 +1,17 @@
 import {
+  calendarStartOfYear,
+  monthsInYear,
+  daysInMonth,
+  calendarToEpochDayRaw,
+  calendarFromEpochDayRaw,
+  addCalendarDateRaw,
+  calendarDateUntilRaw,
+  calendarMonthSerial,
+  calendarEra,
+  calendarYearFromEra,
+} from '#packages/temporal/calendar.js'
+import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
+import {
   configureNativeTemporal,
   type NativeQuery,
 } from '#packages/temporal/native.js'
@@ -7,6 +20,8 @@ import {Temporal} from '#packages/temporal/index.js'
 import {checkPlainTimeOracle} from '#packages/temporal/tests/plain-time-oracle.js'
 import {addISODays} from '#packages/temporal/kernel.js'
 
+declare const __formatjsArithmeticCalendarOracle: string
+declare const __formatjsTableCalendarOracle: string
 declare const __temporalISOOracle: number[][]
 declare const __temporalInstantRoundingOracle: string[][]
 declare const __temporalDurationOracle: string[][]
@@ -233,6 +248,22 @@ try {
     () => time.add({nanoseconds: 1}),
     () => time.round('hour'),
     () => time.until(time),
+    () => calendarStartOfYear('hebrew', 5784),
+    () => monthsInYear('hebrew', 5784),
+    () => daysInMonth('hebrew', 5784, 6),
+    () =>
+      calendarToEpochDayRaw('hebrew', {year: 5784, monthCode: 'M05L', day: 1}),
+    () => calendarFromEpochDayRaw('hebrew', 19763),
+    () =>
+      addCalendarDateRaw(
+        'hebrew',
+        {year: 5784, monthCode: 'M05L', day: 1},
+        {years: 1}
+      ),
+    () => calendarDateUntilRaw('hebrew', 19763, 20118, 'year'),
+    () => calendarMonthSerial('hebrew', 5784, 6),
+    () => calendarEra('hebrew', 19763),
+    () => calendarYearFromEra('hebrew', 'am', 5784),
   ]) {
     let rejected = false
     try {
@@ -240,7 +271,7 @@ try {
     } catch (error) {
       rejected = error instanceof RangeError
     }
-    check(rejected, 'Instant operation must require native backend')
+    check(rejected, 'Operation must require native backend')
   }
 } finally {
   configureNativeTemporal(query)
@@ -264,3 +295,28 @@ print(
     '; signed differences: ' +
     differences
 )
+
+for (const fixture of [
+  __formatjsArithmeticCalendarOracle,
+  __formatjsTableCalendarOracle,
+]) {
+  const counts = checkPublicCalendarOracle(
+    Temporal,
+    fixture,
+    (actual, expected, context) => {
+      if (!Object.is(actual, expected))
+        throw new Error(
+          context + ': ' + String(actual) + ' !== ' + String(expected)
+        )
+    }
+  )
+  const table = fixture === __formatjsTableCalendarOracle
+  check(
+    counts.fields === (table ? 15932 : 34366) &&
+      counts.additions === (table ? 6720 : 32352) &&
+      counts.differences === (table ? 6720 : 32352) &&
+      counts.windows === (table ? 1248 : 5408),
+    'Incomplete native calendar corpus'
+  )
+  print('Rust calendar ICU: ' + JSON.stringify(counts))
+}

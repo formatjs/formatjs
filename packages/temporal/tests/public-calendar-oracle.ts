@@ -1,7 +1,7 @@
-import {Temporal} from '#packages/temporal/index.js'
-import {calendarFromEpochDayRaw} from '#packages/temporal/calendar.js'
+import type {Temporal as TemporalNamespace} from '#packages/temporal/index.js'
 
 export function checkPublicCalendarOracle(
+  Temporal: typeof TemporalNamespace,
   fixture: string,
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): {
@@ -20,10 +20,8 @@ export function checkPublicCalendarOracle(
     differences: 0,
     windows: 0,
   }
-  const date = (epoch: number, calendar: string) => {
-    const iso = calendarFromEpochDayRaw('iso8601', epoch)
-    return new Temporal.PlainDate(iso.year, iso.month, iso.day, calendar)
-  }
+  const date = (epoch: number, calendar: string) =>
+    new Temporal.PlainDate(1970, 1, 1).add({days: epoch}).withCalendar(calendar)
   for (const line of fixture.trim().split('\n')) {
     if (line.startsWith('#')) continue
     const row = line.split('\t'),

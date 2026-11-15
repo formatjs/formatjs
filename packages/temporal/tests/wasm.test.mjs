@@ -162,7 +162,7 @@ const oldABI = new WebAssembly.Module(
       ...exported('temporal_free', 0),
       ...exported('temporal_query', 0),
     ]),
-    ...section(10, [1, 4, 0, 65, 1, 11]),
+    ...section(10, [1, 4, 0, 65, 2, 11]),
   ])
 )
 assert.throws(
@@ -262,3 +262,18 @@ console.log(
     ),
   })
 )
+
+const {checkPublicCalendarOracle} = await import(
+  pathToFileURL(resolve(process.argv[9])).href
+)
+for (const path of process.argv.slice(10, 12)) {
+  console.log(
+    JSON.stringify({
+      calendars: checkPublicCalendarOracle(
+        Temporal,
+        readFileSync(resolve(path), 'utf8'),
+        (actual, expected, context) => assert.equal(actual, expected, context)
+      ),
+    })
+  )
+}

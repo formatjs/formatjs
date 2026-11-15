@@ -1,9 +1,11 @@
+import {Temporal} from '#packages/temporal/index.js'
 import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
 declare function print(value: string): void
 const fixture = (
   globalThis as unknown as {__formatjsArithmeticCalendarOracle: string}
 ).__formatjsArithmeticCalendarOracle
 const counts = checkPublicCalendarOracle(
+  Temporal,
   fixture,
   (actual, expected, context) => {
     if (!Object.is(actual, expected))
