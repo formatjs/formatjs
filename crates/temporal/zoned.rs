@@ -8,10 +8,17 @@ pub enum Disambiguation {
     Reject,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TransitionDirection {
+    Next,
+    Previous,
+}
+
 /// Offsets are exact nanoseconds; visit every offset represented by this zone.
 pub trait TimeZone {
     fn offset_nanoseconds(&self, instant: Instant) -> i128;
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128));
+    fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -25,6 +32,9 @@ impl FixedOffset {
     }
 }
 impl TimeZone for FixedOffset {
+    fn transition(&self, _: Instant, _: TransitionDirection) -> Option<Instant> {
+        None
+    }
     fn offset_nanoseconds(&self, _: Instant) -> i128 {
         self.0
     }
@@ -63,6 +73,11 @@ impl<Z: TimeZone> ZonedDateTime<Z> {
     }
 }
 impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
+    pub fn transition(&self, direction: TransitionDirection) -> Option<Self> {
+        self.time_zone
+            .transition(self.instant, direction)
+            .map(|instant| Self::new(instant, self.time_zone.clone()))
+    }
     pub fn checked_add(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         let mut value = self.instant;
@@ -118,23 +133,34 @@ fn resolve_local<Z: TimeZone>(
     if disambiguation == Disambiguation::Reject {
         return Err(Error::InvalidDateTime);
     }
-    let before = Instant::from_epoch_nanoseconds(
-        (local - NANOSECONDS_PER_DAY).max(-crate::MAX_EPOCH_NANOSECONDS),
-    )?;
-    let after = Instant::from_epoch_nanoseconds(
-        (local + NANOSECONDS_PER_DAY).min(crate::MAX_EPOCH_NANOSECONDS),
-    )?;
-    let before = zone.offset_nanoseconds(before);
-    let after = zone.offset_nanoseconds(after);
-    if after <= before {
-        return Err(Error::InvalidDateTime);
+    let mut minimum = i128::MAX;
+    let mut maximum = i128::MIN;
+    zone.visit_offsets(&mut |offset| {
+        minimum = minimum.min(offset);
+        maximum = maximum.max(offset);
+    });
+    let lower = (local - maximum).max(-crate::MAX_EPOCH_NANOSECONDS);
+    let upper = (local - minimum).min(crate::MAX_EPOCH_NANOSECONDS);
+    let mut cursor =
+        Instant::from_epoch_nanoseconds((lower - 1).max(-crate::MAX_EPOCH_NANOSECONDS))?;
+    while let Some(event) = zone.transition(cursor, TransitionDirection::Next) {
+        let value = event.epoch_nanoseconds();
+        if value > upper || value <= cursor.epoch_nanoseconds() {
+            break;
+        }
+        let before = zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
+        let after = zone.offset_nanoseconds(event);
+        if after > before && local >= value + before && local < value + after {
+            return Instant::from_epoch_nanoseconds(
+                local
+                    - if disambiguation == Disambiguation::Earlier {
+                        after
+                    } else {
+                        before
+                    },
+            );
+        }
+        cursor = event;
     }
-    Instant::from_epoch_nanoseconds(
-        local
-            - if disambiguation == Disambiguation::Earlier {
-                after
-            } else {
-                before
-            },
-    )
+    Err(Error::InvalidDateTime)
 }

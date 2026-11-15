@@ -607,26 +607,8 @@ fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
 
 #[test]
 fn independent_icu_zoned_fields_and_disambiguation() {
-    use formatjs_temporal::{Disambiguation, FixedOffset, TimeZone, ZonedDateTime};
-    #[derive(Clone, Copy)]
-    struct Transition {
-        instant: i128,
-        before: i128,
-        after: i128,
-    }
-    impl TimeZone for Transition {
-        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
-            if instant.epoch_nanoseconds() < self.instant {
-                self.before
-            } else {
-                self.after
-            }
-        }
-        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
-            visitor(self.before);
-            visitor(self.after);
-        }
-    }
+    use formatjs_temporal::{Disambiguation, TimeZone, TransitionZone, ZonedDateTime};
+    let zones = owned_iana_zones();
     let mut count = 0;
     let mut transitions = 0;
     let mut previous: Option<(&str, i128, i128)> = None;
@@ -638,10 +620,13 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         let name = fields[0];
         let value = fields[1].parse::<i128>().unwrap() * 1_000_000;
         let offset = fields[2].parse::<i128>().unwrap() * 1_000_000_000;
-        let zoned = ZonedDateTime::new(
-            Instant::from_epoch_nanoseconds(value).unwrap(),
-            FixedOffset::new(offset).unwrap(),
-        );
+        let Some((initial, events, future)) = zones.get(name) else {
+            continue;
+        };
+        let zone = TransitionZone::new(*initial, events, *future).unwrap();
+        let instant = Instant::from_epoch_nanoseconds(value).unwrap();
+        assert_eq!(zone.offset_nanoseconds(instant), offset, "{line}");
+        let zoned = ZonedDateTime::new(instant, zone);
         assert_eq!(
             zoned.local().unwrap().epoch_nanoseconds(),
             value + offset,
@@ -649,11 +634,6 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         );
         if let Some((old_name, old_value, old_offset)) = previous {
             if old_name == name && value == old_value + 1_000_000 && offset != old_offset {
-                let zone = Transition {
-                    instant: value,
-                    before: old_offset,
-                    after: offset,
-                };
                 let local = value + (offset + old_offset) / 2 + 123;
                 let fields = IsoDateTime::from_epoch_nanoseconds(local).unwrap();
                 let earlier = local - offset.max(old_offset);
@@ -716,6 +696,321 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         previous = Some((name, value, offset));
         count += 1;
     }
-    assert!(count >= 13160);
-    assert!(transitions >= 1340);
+    assert_eq!(count, 13160);
+    assert_eq!(transitions, 1340);
+}
+
+fn owned_iana_zones() -> std::collections::BTreeMap<
+    String,
+    (
+        i32,
+        Vec<formatjs_temporal::OffsetTransition>,
+        Option<formatjs_temporal::FutureRule>,
+    ),
+> {
+    use formatjs_temporal::{FutureRule, OffsetTransition, TransitionRule};
+    use std::collections::BTreeMap;
+    fn rule(value: &serde_json::Value) -> TransitionRule {
+        let number = |name: &str| value[name].as_i64().unwrap();
+        match value["kind"].as_str().unwrap() {
+            "month" => TransitionRule::Month {
+                month: number("month") as u8,
+                week: number("week") as u8,
+                weekday: number("weekday") as u8,
+                seconds: number("seconds") as i32,
+            },
+            "day" => TransitionRule::Day {
+                day: number("day") as u16,
+                seconds: number("seconds") as i32,
+            },
+            "julian" => TransitionRule::Julian {
+                day: number("day") as u16,
+                seconds: number("seconds") as i32,
+            },
+            _ => panic!("unknown rule"),
+        }
+    }
+    let packed: serde_json::Value =
+        serde_json::from_str(include_str!(env!("FORMATJS_TEMPORAL_TZ_DATA"))).unwrap();
+    let offsets: Vec<i32> = packed["offsets"]
+        .as_str()
+        .unwrap()
+        .split('|')
+        .map(|value| i32::from_str_radix(value, 36).unwrap())
+        .collect();
+    let mut zones = BTreeMap::new();
+    for row in packed["zones"].as_array().unwrap() {
+        let mut parts = row.as_str().unwrap().split('|');
+        let name = parts.next().unwrap();
+        let mut initial = 0;
+        let mut transitions = Vec::new();
+        for part in parts {
+            let fields: Vec<&str> = part.split(',').collect();
+            let offset = offsets[fields[2].parse::<usize>().unwrap()];
+            if fields[0].is_empty() {
+                initial = offset;
+            } else {
+                transitions.push(OffsetTransition {
+                    epoch_seconds: i64::from_str_radix(fields[0], 36).unwrap(),
+                    offset_seconds: offset,
+                });
+            }
+        }
+        let value = &packed["future"][name];
+        let future = if value.is_null() {
+            None
+        } else {
+            let daylight = value["daylightOffset"]
+                .as_i64()
+                .map(|offset| (offset as i32, rule(&value["start"]), rule(&value["end"])));
+            Some(
+                FutureRule::new(value["standardOffset"].as_i64().unwrap() as i32, daylight)
+                    .unwrap(),
+            )
+        };
+        zones.insert(name.to_owned(), (initial, transitions, future));
+    }
+    zones
+}
+
+#[test]
+fn owned_iana_transitions_match_icu() {
+    use formatjs_temporal::{TimeZone, TransitionDirection, TransitionZone};
+    let zones = owned_iana_zones();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_TRANSITIONS"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let Some((initial, events, future)) = zones.get(fields[0]) else {
+            continue;
+        };
+        let zone = TransitionZone::new(*initial, events, *future).unwrap();
+        let instant =
+            Instant::from_epoch_nanoseconds(fields[1].parse::<i128>().unwrap() * 1_000_000)
+                .unwrap();
+        for (index, direction) in [
+            (2, TransitionDirection::Next),
+            (3, TransitionDirection::Previous),
+        ] {
+            let expected = if fields[index] == "null" {
+                None
+            } else {
+                Some(fields[index].parse::<i128>().unwrap() * 1_000_000)
+            };
+            let actual = zone.transition(instant, direction);
+            assert_eq!(
+                actual.map(Instant::epoch_nanoseconds),
+                expected,
+                "{line} {direction:?}"
+            );
+            if let Some(event) = actual {
+                let adjacent = Instant::from_epoch_nanoseconds(
+                    event.epoch_nanoseconds()
+                        + if direction == TransitionDirection::Next {
+                            -1
+                        } else {
+                            1
+                        },
+                )
+                .unwrap();
+                assert_eq!(zone.transition(adjacent, direction), Some(event), "{line}");
+                let other = zone.transition(event, direction);
+                assert!(
+                    other.is_none_or(|value| if direction == TransitionDirection::Next {
+                        value > event
+                    } else {
+                        value < event
+                    }),
+                    "{line}"
+                );
+            }
+        }
+        count += 1;
+    }
+    assert!(count > 10000);
+    eprintln!(
+        "{count} owned IANA/ICU transition queries, both directions and nanosecond boundaries"
+    );
+}
+
+#[test]
+fn recurring_leap_only_changes_and_adjacent_gaps() {
+    use formatjs_temporal::{
+        Disambiguation, FutureRule, OffsetTransition, Overflow, TimeZone, TransitionDirection,
+        TransitionRule, TransitionZone, ZonedDateTime,
+    };
+    let future = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Julian {
+                day: 60,
+                seconds: 0,
+            },
+            TransitionRule::Day {
+                day: 59,
+                seconds: 3600,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(3600, &[], Some(future)).unwrap();
+    let query: Instant = "2100-06-01T00:00Z".parse().unwrap();
+    assert_eq!(
+        zone.transition(query, TransitionDirection::Next),
+        Some("2104-02-29T00:00Z".parse().unwrap())
+    );
+    assert_eq!(
+        zone.transition(query, TransitionDirection::Previous),
+        Some("2096-03-01T00:00Z".parse().unwrap())
+    );
+    let events = [
+        OffsetTransition {
+            epoch_seconds: 0,
+            offset_seconds: 0,
+        },
+        OffsetTransition {
+            epoch_seconds: 3600,
+            offset_seconds: 3600,
+        },
+        OffsetTransition {
+            epoch_seconds: 7200,
+            offset_seconds: 7200,
+        },
+    ];
+    let zone = TransitionZone::new(0, &events, None).unwrap();
+    assert_eq!(
+        zone.transition(
+            Instant::from_epoch_nanoseconds(-1).unwrap(),
+            TransitionDirection::Next
+        ),
+        Some(Instant::from_epoch_nanoseconds(3600_000_000_000).unwrap())
+    );
+    let local = IsoDateTime {
+        year: 1970,
+        month: 1,
+        day: 1,
+        hour: 1,
+        minute: 30,
+        second: 0,
+        nanosecond: 0,
+    };
+    let later = ZonedDateTime::from_local(local, zone, Disambiguation::Compatible).unwrap();
+    let earlier = ZonedDateTime::from_local(local, zone, Disambiguation::Earlier).unwrap();
+    assert_eq!(later.instant().epoch_nanoseconds(), 5400_000_000_000);
+    assert_eq!(earlier.instant().epoch_nanoseconds(), 1800_000_000_000);
+    let duration = formatjs_temporal::Duration::new([0, 0, 0, 0, 1, 0, 0, 0, 0, 0]).unwrap();
+    assert_eq!(
+        later
+            .checked_add(duration, Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        9000_000_000_000
+    );
+}
+
+#[test]
+fn independent_icu_zoned_calendar_rounding() {
+    use formatjs_temporal::{FixedOffset, TransitionZone, ZonedDateTime, ZonedUnit};
+    let zones = owned_iana_zones();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_ZONED_DIFFERENCE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let start = Instant::from_epoch_nanoseconds(fields[1].parse().unwrap()).unwrap();
+        let end = Instant::from_epoch_nanoseconds(fields[2].parse().unwrap()).unwrap();
+        let unit: ZonedUnit = fields[3].parse().unwrap();
+        let increment = fields[4].parse().unwrap();
+        let mode = fields[5].parse().unwrap();
+        let mut expected_until = [0; 10];
+        expected_until[unit as usize] = fields[6].parse().unwrap();
+        let mut expected_since = [0; 10];
+        expected_since[unit as usize] = fields[7].parse().unwrap();
+        if fields[0] == "UTC" {
+            let zone = FixedOffset::new(0).unwrap();
+            let a = ZonedDateTime::new(start, zone);
+            let b = ZonedDateTime::new(end, zone);
+            assert_eq!(
+                a.until(&b, unit, unit, increment, mode).unwrap().fields(),
+                expected_until,
+                "{line}"
+            );
+            assert_eq!(
+                a.since(&b, unit, unit, increment, mode).unwrap().fields(),
+                expected_since,
+                "{line}"
+            );
+        } else {
+            let (initial, events, future) = zones.get(fields[0]).unwrap();
+            let zone = TransitionZone::new(*initial, events, *future).unwrap();
+            let a = ZonedDateTime::new(start, zone);
+            let b = ZonedDateTime::new(end, zone);
+            assert_eq!(
+                a.until(&b, unit, unit, increment, mode).unwrap().fields(),
+                expected_until,
+                "{line}"
+            );
+            assert_eq!(
+                a.since(&b, unit, unit, increment, mode).unwrap().fields(),
+                expected_since,
+                "{line}"
+            );
+        }
+        count += 1;
+    }
+    assert_eq!(count, 19440);
+}
+
+#[test]
+fn zoned_differences_at_instant_limits() {
+    use formatjs_temporal::{FixedOffset, RoundingMode, ZonedDateTime, ZonedUnit};
+    for seconds in [0, 7200, -25200, 1080, -29520] {
+        let zone = FixedOffset::new(seconds * 1_000_000_000).unwrap();
+        for extreme in [-MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS] {
+            let limit = ZonedDateTime::new(Instant::from_epoch_nanoseconds(extreme).unwrap(), zone);
+            let ordinary = ZonedDateTime::new("1970-09-01T15:47:32Z".parse().unwrap(), zone);
+            ordinary
+                .until(
+                    &limit,
+                    ZonedUnit::Year,
+                    ZonedUnit::Nanosecond,
+                    1,
+                    RoundingMode::Trunc,
+                )
+                .unwrap_or_else(|error| panic!("ordinary to limit {seconds} {extreme}: {error:?}"));
+            limit
+                .until(
+                    &ordinary,
+                    ZonedUnit::Year,
+                    ZonedUnit::Nanosecond,
+                    1,
+                    RoundingMode::Trunc,
+                )
+                .unwrap_or_else(|error| panic!("limit to ordinary {seconds} {extreme}: {error:?}"));
+            let a = ordinary
+                .until(
+                    &limit,
+                    ZonedUnit::Second,
+                    ZonedUnit::Nanosecond,
+                    1,
+                    RoundingMode::Trunc,
+                )
+                .unwrap();
+            let b = limit
+                .until(
+                    &ordinary,
+                    ZonedUnit::Second,
+                    ZonedUnit::Nanosecond,
+                    1,
+                    RoundingMode::Trunc,
+                )
+                .unwrap();
+            assert_eq!(a, b.negated());
+        }
+    }
 }

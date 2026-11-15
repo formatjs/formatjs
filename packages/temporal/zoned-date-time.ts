@@ -53,9 +53,19 @@ import {
   epochDayOf,
   timeOf,
   addDate,
+  dateUntil,
 } from '#packages/temporal/date-core.js'
-import {toDurationFields} from '#packages/temporal/duration.js'
-import {durationNanoseconds} from '#packages/temporal/duration-core.js'
+import {
+  toDurationFields,
+  createDuration,
+  type DurationObject,
+} from '#packages/temporal/duration.js'
+import {
+  durationNanoseconds,
+  zeroDuration,
+  balanceDurationTime,
+  type DurationFields,
+} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
   roundingIncrement,
@@ -64,6 +74,9 @@ import {
   unitOption,
   timeUnit,
   roundInstant,
+  roundDuration,
+  timeUnitNanoseconds,
+  type TimeUnit,
   type Precision,
 } from '#packages/temporal/rounding.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
@@ -83,11 +96,14 @@ export interface ZonedDateTimeObject extends DateProperties {
   readonly hoursInDay: number
   with(item: unknown, options?: unknown): ZonedDateTimeObject
   round(roundTo: unknown): ZonedDateTimeObject
+  until(other: unknown, options?: unknown): DurationObject
+  since(other: unknown, options?: unknown): DurationObject
   add(duration: unknown, options?: unknown): ZonedDateTimeObject
   subtract(duration: unknown, options?: unknown): ZonedDateTimeObject
   withTimeZone(timeZone: unknown): ZonedDateTimeObject
   withCalendar(calendar: unknown): ZonedDateTimeObject
   withPlainTime(time?: unknown): ZonedDateTimeObject
+  getTimeZoneTransition(direction: unknown): ZonedDateTimeObject | null
   startOfDay(): ZonedDateTimeObject
   equals(other: unknown): boolean
   toInstant(): InstantObject
@@ -210,7 +226,8 @@ function toSlot(item: unknown, options?: unknown): ZonedSlot {
     calendar: string,
     zone: string,
     offset: string | undefined,
-    matchMinute = false
+    matchMinute = false,
+    dateOnly = false
   if (existing) {
     calendar = existing.calendar
     zone = existing.timeZone
@@ -273,6 +290,7 @@ function toSlot(item: unknown, options?: unknown): ZonedSlot {
     if (typeof item !== 'string')
       throw new TypeError('Expected zoned date/time string or object')
     const parsed = parseZonedDateTimeString(item)
+    dateOnly = !/[Tt ]/.test(item.slice(0, item.indexOf('[')))
     calendar = constructorCalendar(parsed.fields.calendar)
     zone = timeZoneIdentifier(parsed.timeZone)
     offset = parsed.offset
@@ -289,6 +307,15 @@ function toSlot(item: unknown, options?: unknown): ZonedSlot {
     ])
   overflowOption(resolved)
   if (existing) return existing
+  if (dateOnly)
+    return {
+      epochNanoseconds: startOfDay(
+        {epochNanoseconds: 0n, timeZone: zone, calendar},
+        epochDayOf(value!)
+      ),
+      timeZone: zone,
+      calendar,
+    }
   return {
     epochNanoseconds: resolve(
       value!,
@@ -330,23 +357,189 @@ function add(
     slot.calendar
   )
 }
+function endpoint(slot: ZonedSlot, fields: DurationFields): bigint {
+  return getZonedSlot(add(slot, fields, undefined, 1))!.epochNanoseconds
+}
+function unroundedDifference(
+  start: ZonedSlot,
+  end: bigint,
+  largest: string
+): DurationFields {
+  const clockIndex = (clockNames as readonly string[]).indexOf(largest)
+  if (clockIndex >= 0)
+    return balanceDurationTime(end - start.epochNanoseconds, clockIndex + 4)
+  const sign =
+    end < start.epochNanoseconds ? -1 : end > start.epochNanoseconds ? 1 : 0
+  if (!sign) return zeroDuration()
+  const begin = epochDayOf(local(start)),
+    finish = epochDayOf(local({...start, epochNanoseconds: end}))
+  let day = (finish - begin) * sign < 0 ? begin : finish
+  let fields = dateUntil(
+    {epochDay: begin, calendar: start.calendar},
+    day,
+    largest
+  )
+  const anchorFor = (fields: DurationFields): bigint => {
+    try {
+      return endpoint(start, fields)
+    } catch (error) {
+      if (!(error instanceof RangeError)) throw error
+      return BigInt(sign) * 8_640_000_000_000_000_000_001n
+    }
+  }
+  let anchor = anchorFor(fields)
+  while ((anchor - end) * BigInt(sign) > 0n) {
+    day -= sign
+    if ((day - begin) * sign < 0) {
+      fields = zeroDuration()
+      anchor = start.epochNanoseconds
+      break
+    }
+    fields = dateUntil(
+      {epochDay: begin, calendar: start.calendar},
+      day,
+      largest
+    )
+    anchor = anchorFor(fields)
+  }
+  const time = balanceDurationTime(end - anchor, 4)
+  for (let i = 0; i < clockNames.length; i++) {
+    const name = (clockNames[i] + 's') as keyof DurationFields
+    fields[name] = time[name]
+  }
+  return fields
+}
+function difference(
+  start: ZonedSlot,
+  other: unknown,
+  options: unknown,
+  since: boolean
+): DurationObject {
+  const end = toSlot(other)
+  if (start.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  const resolved = optionsObject(options),
+    largestRaw = resolved.largestUnit,
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  const increment = roundingIncrement(resolved.roundingIncrement),
+    mode = roundingMode(resolved.roundingMode, 'trunc'),
+    smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
+  const names = [
+      'year',
+      'month',
+      'week',
+      'day',
+      'hour',
+      'minute',
+      'second',
+      'millisecond',
+      'microsecond',
+      'nanosecond',
+    ],
+    smallIndex = names.indexOf(smallest)
+  const largest =
+    largestText === 'auto'
+      ? names[Math.min(4, smallIndex)]
+      : unitOption(largestText)!
+  const largeIndex = names.indexOf(largest)
+  if (largeIndex > smallIndex)
+    throw new RangeError('Largest unit smaller than smallest unit')
+  if (
+    largeIndex < 4 &&
+    start.timeZone !== end.timeZone &&
+    zonedKernel(start.timeZone) !== zonedKernel(end.timeZone)
+  )
+    throw new RangeError('Timezones differ')
+  const sinceSign = since ? -1n : 1n
+  let rounded: bigint
+  if (smallIndex >= 4) {
+    const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
+    if (increment >= maximum || maximum % increment)
+      throw new RangeError('Invalid rounding increment')
+    const fields =
+      largeIndex < 4
+        ? unroundedDifference(start, end.epochNanoseconds, largest)
+        : zeroDuration()
+    for (let i = 0; i < clockNames.length; i++)
+      fields[(clockNames[i] + 's') as keyof DurationFields] = 0
+    const anchor = endpoint(start, fields)
+    rounded =
+      anchor +
+      sinceSign *
+        roundDuration(
+          (end.epochNanoseconds - anchor) * sinceSign,
+          BigInt(increment) * timeUnitNanoseconds[smallest as TimeUnit],
+          mode
+        )
+  } else if (start.epochNanoseconds === end.epochNanoseconds)
+    rounded = start.epochNanoseconds
+  else {
+    const fields = unroundedDifference(start, end.epochNanoseconds, largest),
+      prefix = zeroDuration()
+    for (let i = largeIndex; i < smallIndex; i++)
+      prefix[(names[i] + 's') as keyof DurationFields] =
+        fields[(names[i] + 's') as keyof DurationFields]
+    const key = (smallest + 's') as keyof DurationFields
+    const count =
+      smallest === 'week'
+        ? fields.weeks + Math.trunc(fields.days / 7)
+        : fields[key]
+    const truncated = Math.trunc(count / increment) * increment
+    prefix[key] = truncated
+    const a = endpoint(start, prefix)
+    if (a === end.epochNanoseconds) rounded = a
+    else {
+      const sign = end.epochNanoseconds < start.epochNanoseconds ? -1 : 1
+      prefix[key] = truncated + sign * increment
+      const b = endpoint(start, prefix),
+        positive = BigInt(sign) * sinceSign > 0n
+      let expand =
+        mode === 'expand' ||
+        (mode === 'ceil' && positive) ||
+        (mode === 'floor' && !positive)
+      if (mode.startsWith('half')) {
+        const distance = (end.epochNanoseconds - a) * BigInt(sign),
+          span = (b - a) * BigInt(sign)
+        expand =
+          2n * distance > span ||
+          (2n * distance === span &&
+            (mode === 'halfExpand' ||
+              (mode === 'halfCeil' && positive) ||
+              (mode === 'halfFloor' && !positive) ||
+              (mode === 'halfEven' &&
+                Math.abs(truncated / increment) % 2 === 1)))
+      }
+      rounded = expand ? b : a
+    }
+  }
+  const fields = unroundedDifference(start, rounded, largest),
+    keys = Object.keys(fields) as (keyof DurationFields)[]
+  if (since) for (let i = 0; i < keys.length; i++) fields[keys[i]] *= -1
+  return createDuration(fields)
+}
+
 function startOfDay(slot: ZonedSlot, day = epochDayOf(local(slot))): bigint {
   const kernel = zonedKernel(slot.timeZone),
     midnight = BigInt(day) * nsPerDay
-  let value = kernel.resolve(epochNanosecondsToISO(midnight))
-  // Midnight can fall within a gap which began on the previous date.
-  if (value + kernel.offsetNanoseconds(value) > midnight) {
-    let low = value - nsPerDay,
-      high = value
-    while (low + 1n < high) {
-      const middle = (low + high) >> 1n
-      if (middle + kernel.offsetNanoseconds(middle) < midnight) low = middle
-      else high = middle
+  const fields = epochNanosecondsToISO(midnight),
+    candidates = kernel.possibleInstants(fields)
+  if (candidates.length) return candidates[0]
+  let event: bigint | null = kernel.resolve(fields)
+  while (event !== null && event >= midnight - nsPerDay) {
+    if (event > -8_640_000_000_000_000_000_000n) {
+      const before = kernel.offsetNanoseconds(event - 1n),
+        after = kernel.offsetNanoseconds(event)
+      if (
+        after > before &&
+        midnight >= event + before &&
+        midnight < event + after
+      )
+        return event
     }
-    value = high
+    event = kernel.transition(event, 'previous')
   }
-  return value
+  throw new RangeError('No day boundary in instant range')
 }
+
 function offsetText(slot: ZonedSlot): string {
   const offset = zonedKernel(slot.timeZone).offsetNanoseconds(
     slot.epochNanoseconds
@@ -590,6 +783,12 @@ class ZonedDateTimeValue {
           )
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
+  until(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, false)
+  }
+  since(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, true)
+  }
   add(duration: unknown, options: unknown = undefined): ZonedDateTimeObject {
     return add(read(this), duration, options, 1)
   }
@@ -598,6 +797,23 @@ class ZonedDateTimeValue {
     options: unknown = undefined
   ): ZonedDateTimeObject {
     return add(read(this), duration, options, -1)
+  }
+  getTimeZoneTransition(direction: unknown): ZonedDateTimeObject | null {
+    const slot = read(this)
+    if (direction === undefined) throw new TypeError('Direction required')
+    const raw =
+      typeof direction === 'string'
+        ? direction
+        : optionsObject(direction).direction
+    if (raw === undefined) throw new RangeError('Direction required')
+    const choice = option(raw, 'next', ['next', 'previous'])
+    const value = zonedKernel(slot.timeZone).transition(
+      slot.epochNanoseconds,
+      choice
+    )
+    return value === null
+      ? null
+      : createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
   startOfDay(): ZonedDateTimeObject {
     const slot = read(this)

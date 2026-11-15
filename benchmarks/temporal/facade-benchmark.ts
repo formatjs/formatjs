@@ -28,6 +28,14 @@ const zonedStrings = [
   '2000-02-29T23:59:59.123456789+05:30[+05:30]',
   '1970-01-01T00:00Z[UTC]',
 ]
+const zonedValues = zonedStrings.map(value => ZonedDateTime.from(value))
+const zonedEnds = zonedValues.map(value => value.add({days: 8, hours: 12}))
+const referenceZonedValues = zonedStrings.map(value =>
+  reference.ZonedDateTime.from(value)
+)
+const referenceZonedEnds = referenceZonedValues.map(value =>
+  value.add({days: 8, hours: 12})
+)
 const inputs = [-1000001n, -1n, 0n, 1n, 123456789n, 8640000000000000000000n]
 type Value = bigint | string | number
 const pairs: [string, (i: number) => Value, (i: number) => Value][] = [
@@ -78,6 +86,27 @@ pairs.push([
     reference.ZonedDateTime.from(zonedStrings[i % zonedStrings.length])
       .round('hour')
       .toJSON(),
+])
+pairs.push([
+  'ZonedDateTime until days/toJSON',
+  i =>
+    zonedValues[i % 4]
+      .until(zonedEnds[i % 4], {largestUnit: 'day', smallestUnit: 'minute'})
+      .toJSON(),
+  i =>
+    referenceZonedValues[i % 4]
+      .until(referenceZonedEnds[i % 4], {
+        largestUnit: 'day',
+        smallestUnit: 'minute',
+      })
+      .toJSON(),
+])
+pairs.push([
+  'ZonedDateTime next transition/get epochNanoseconds',
+  i => zonedValues[i % 4].getTimeZoneTransition('next')?.epochNanoseconds ?? 0n,
+  i =>
+    referenceZonedValues[i % 4].getTimeZoneTransition('next')
+      ?.epochNanoseconds ?? 0n,
 ])
 const strings = [
   '1970-01-01T00:00:00.000000001Z',

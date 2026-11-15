@@ -8,7 +8,9 @@ mod parse;
 mod rounding;
 mod short_dates;
 mod time;
+mod timezone;
 mod zoned;
+mod zoned_difference;
 
 use core::fmt;
 use core::str::FromStr;
@@ -21,7 +23,9 @@ pub use iso::IsoDateTime;
 pub use rounding::{RoundingMode, TimeUnit};
 pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
 pub use time::{FormattedTime, PlainTime};
-pub use zoned::{Disambiguation, FixedOffset, TimeZone, ZonedDateTime};
+pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
+pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
+pub use zoned_difference::ZonedUnit;
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
 pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;

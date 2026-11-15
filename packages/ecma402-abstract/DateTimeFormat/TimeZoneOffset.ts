@@ -11,7 +11,10 @@ import type {
 
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
-function transition(year: number, rule: TimeZoneTransitionRule): number {
+export function TimeZoneRuleTransition(
+  year: number,
+  rule: TimeZoneTransitionRule
+): number {
   const leap = DaysInYear(year) === 366
   let day: number
   if (rule.kind === 'month') {
@@ -45,8 +48,8 @@ function futureOffset(t: number, rule: TimeZoneFutureRule): [number, boolean] {
   let inDST = false
   // Extended transition times can cross year boundaries.
   for (let y = year - 1; y <= year + 1; y++) {
-    const begin = transition(y, start) - standardOffset
-    const finish = transition(y, end) - daylightOffset
+    const begin = TimeZoneRuleTransition(y, start) - standardOffset
+    const finish = TimeZoneRuleTransition(y, end) - daylightOffset
     // TZif's all-year DST form has coincident end/start events; start wins.
     if (begin <= seconds && begin >= latest) {
       latest = begin

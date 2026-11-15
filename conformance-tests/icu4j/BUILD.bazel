@@ -421,3 +421,37 @@ genrule(
     tools = [":temporal_duration_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_transition_oracle",
+    testonly = True,
+    srcs = ["TemporalTransitionOracle.java"],
+    main_class = "TemporalTransitionOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_transition_fixtures",
+    testonly = True,
+    outs = ["temporal-transition-fixtures.tsv"],
+    cmd = "$(execpath :temporal_transition_oracle) $@",
+    tools = [":temporal_transition_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_zoned_difference_oracle",
+    testonly = True,
+    srcs = ["TemporalZonedDifferenceOracle.java"],
+    main_class = "TemporalZonedDifferenceOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_zoned_difference_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-difference-fixtures.tsv"],
+    cmd = "$(execpath :temporal_zoned_difference_oracle) $@",
+    tools = [":temporal_zoned_difference_oracle"],
+    visibility = ["//visibility:public"],
+)

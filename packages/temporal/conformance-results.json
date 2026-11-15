@@ -9,11 +9,10 @@
   },
   "full": {
     "executions": 934,
-    "passes": 928,
-    "failures": 6,
+    "passes": 930,
+    "failures": 4,
     "failuresByArea": {
-      "prototype/toLocaleString": 4,
-      "prototype/toZonedDateTimeISO": 2
+      "prototype/toLocaleString": 4
     }
   },
   "hermes": {
@@ -35,20 +34,18 @@
     "fullDiagnostic": {
       "source": {
         "executions": 934,
-        "passes": 928,
-        "failures": 6,
+        "passes": 930,
+        "failures": 4,
         "failuresByArea": {
-          "prototype/toLocaleString": 4,
-          "prototype/toZonedDateTimeISO": 2
+          "prototype/toLocaleString": 4
         }
       },
       "optimizedBytecode": {
         "executions": 934,
-        "passes": 928,
-        "failures": 6,
+        "passes": 930,
+        "failures": 4,
         "failuresByArea": {
-          "prototype/toLocaleString": 4,
-          "prototype/toZonedDateTimeISO": 2
+          "prototype/toLocaleString": 4
         }
       }
     }
@@ -185,12 +182,11 @@
     },
     "full": {
       "executions": 1308,
-      "passes": 1298,
-      "failures": 10,
+      "passes": 1300,
+      "failures": 8,
       "failuresByArea": {
         "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/toZonedDateTime": 2,
         "prototype/until": 2
       }
     },
@@ -210,23 +206,21 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1308,
-          "passes": 1298,
-          "failures": 10,
+          "passes": 1300,
+          "failures": 8,
           "failuresByArea": {
             "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toZonedDateTime": 2,
             "prototype/until": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1308,
-          "passes": 1298,
-          "failures": 10,
+          "passes": 1300,
+          "failures": 8,
           "failuresByArea": {
             "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toZonedDateTime": 2,
             "prototype/until": 2
           }
         }
@@ -243,12 +237,11 @@
     },
     "full": {
       "executions": 1552,
-      "passes": 1540,
-      "failures": 12,
+      "passes": 1542,
+      "failures": 10,
       "failuresByArea": {
         "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/toZonedDateTime": 2,
         "prototype/until": 2,
         "prototype/with": 2
       }
@@ -269,24 +262,22 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1552,
-          "passes": 1540,
-          "failures": 12,
+          "passes": 1542,
+          "failures": 10,
           "failuresByArea": {
             "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toZonedDateTime": 2,
             "prototype/until": 2,
             "prototype/with": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1552,
-          "passes": 1540,
-          "failures": 12,
+          "passes": 1542,
+          "failures": 10,
           "failuresByArea": {
             "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toZonedDateTime": 2,
             "prototype/until": 2,
             "prototype/with": 2
           }
@@ -403,60 +394,59 @@
   "zonedDateTime": {
     "full": {
       "executions": 1804,
-      "passes": 1384,
-      "failures": 420,
+      "passes": 1796,
+      "failures": 8,
       "failuresByArea": {
-        "prototype/getTimeZoneTransition": 24,
-        "prototype/since": 198,
+        "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/until": 194
+        "prototype/until": 2
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 1804,
-          "passes": 1384,
-          "failures": 420,
+          "passes": 1796,
+          "failures": 8,
           "failuresByArea": {
-            "prototype/getTimeZoneTransition": 24,
-            "prototype/since": 198,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 194
+            "prototype/until": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1804,
-          "passes": 1384,
-          "failures": 420,
+          "passes": 1796,
+          "failures": 8,
           "failuresByArea": {
-            "prototype/getTimeZoneTransition": 24,
-            "prototype/since": 198,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 194
+            "prototype/until": 2
           }
         }
       },
       "selected": {
         "source": {
-          "executions": 1362,
-          "passes": 1362,
+          "executions": 1390,
+          "passes": 1390,
           "failures": 0
         },
         "optimizedBytecode": {
-          "executions": 1362,
-          "passes": 1362,
+          "executions": 1390,
+          "passes": 1390,
           "failures": 0
         }
       }
     },
     "selected": {
-      "executions": 1362,
-      "passes": 1362,
+      "executions": 1390,
+      "passes": 1390,
       "failures": 0
     },
     "exclusions": [],
     "icuOffsetSamples": 13160,
-    "icuTransitionCases": 1340
+    "icuTransitionCases": 1340,
+    "icuTransitionQueries": 10528,
+    "icuZonedDifferenceCases": 19440
   }
 }

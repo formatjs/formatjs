@@ -121,3 +121,15 @@ it('preserves variable-length days, offsets, references and private conversions'
   expect(historical.offset).toBe('+00:09:21')
   expect(historical.toString()).toBe('1900-01-01T00:00:00+00:09[Europe/Paris]')
 })
+
+it('uses first valid instant for date-only gaps regardless of disambiguation', () => {
+  const value = Temporal.ZonedDateTime.from('1986-01-01[Asia/Kathmandu]', {
+    disambiguation: 'reject',
+  })
+  expect(value.toString()).toBe('1986-01-01T00:15:00+05:45[Asia/Kathmandu]')
+  expect(value.startOfDay().epochNanoseconds).toBe(value.epochNanoseconds)
+  const skipped = Temporal.ZonedDateTime.from('2011-12-30[Pacific/Apia]', {
+    disambiguation: 'reject',
+  })
+  expect(skipped.toString()).toBe('2011-12-31T00:00:00+14:00[Pacific/Apia]')
+})

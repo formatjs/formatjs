@@ -126,11 +126,17 @@ BCE, range edges, metadata, leap days and all nine rounding modes. The shared IS
 epoch-day calculation remains protected by the full Gregorian conversion oracle.
 Non-ISO/native object-model integration remains pending.
 
-`ZonedDateTime<Z>` keeps an Instant with a `TimeZone` provider. The dependency-free
-core resolves local fields with all four disambiguation modes, retains exact
-nanosecond offsets, and separates calendar addition from elapsed clock addition.
-`FixedOffset` supplies the constant-offset case. ICU offset and transition rows
-verify local conversion, gap/fold choices and day-versus-24-hour arithmetic. A
-production IANA provider, calendar-aware zoned differences and Hermes bindings
-remain pending. Gap resolution currently uses the same two-day offset window as
-the TS kernel.
+`ZonedDateTime<Z>` keeps an Instant with a TimeZone provider. FixedOffset supplies
+constant zones; TransitionZone borrows sorted explicit records plus optional
+recurring TZif rules. The no_std core supplies nanosecond-exact offsets, strict
+next/previous queries, local ambiguity resolution and ISO zoned differences with
+calendar-span rounding. Queries skip events which change only abbreviations/DST
+metadata. Gap resolution walks transitions rather than assuming isolated gaps.
+
+The owned JSON pack is decoded in tests, not loaded by the runtime core. Against
+ICU, real TransitionZone records match 13,160 offset/local samples, 1,340 future
+gap/fold cases, 10,528 transition queries and 19,440 zoned rounding cases. Separate
+cases cover instant bounds, adjacent gaps and leap-only footer changes across a
+non-leap century. Public date/instant bounds remain checked; internal difference
+anchors may extend beyond them. Production registry/alias loading, non-ISO zoned
+math, native Hermes bindings and complete WASM integration remain pending.

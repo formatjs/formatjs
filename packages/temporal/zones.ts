@@ -16,17 +16,21 @@ let identifiers: Map<string, string> | undefined
 const cache = new Map<string, ReturnType<typeof createTimeZone>>()
 export function timeZone(name: string): TimeZoneKernel {
   if (!identifiers) {
-    identifiers = new Map(
-      packed.zones.map(entry => {
-        const canonical = entry.slice(0, entry.indexOf('|'))
-        return [canonical.toLowerCase(), canonical]
-      })
-    )
-    for (const [alias, target] of Object.entries(links))
+    identifiers = new Map()
+    for (let i = 0; i < packed.zones.length; i++) {
+      const entry = packed.zones[i],
+        canonical = entry.slice(0, entry.indexOf('|'))
+      identifiers.set(canonical.toLowerCase(), canonical)
+    }
+    const aliases = Object.keys(links)
+    for (let i = 0; i < aliases.length; i++) {
+      const alias = aliases[i],
+        target = links[alias as keyof typeof links]
       identifiers.set(
         alias.toLowerCase(),
         identifiers.get(target.toLowerCase()) ?? target
       )
+    }
   }
   const canonical = identifiers.get(name.toLowerCase())
   if (canonical === undefined) throw new RangeError('Unknown timezone')
@@ -47,6 +51,8 @@ export * from '#packages/temporal/kernel.js'
 export function resolveTimeZone(
   value: unknown
 ): Pick<TimeZoneKernel, 'offsetNanoseconds'> {
+  const slot = getZonedSlot(value as object)
+  if (slot) return zonedKernel(slot.timeZone)
   if (typeof value !== 'string')
     throw new TypeError('Timezone must be a string')
   const identifier = parseTimeZoneString(value)
@@ -77,12 +83,14 @@ export function timeZoneIdentifier(value: unknown): string {
   }
   if (!spellings) {
     spellings = new Map()
-    for (const entry of packed.zones) {
-      const id = entry.slice(0, entry.indexOf('|'))
+    for (let i = 0; i < packed.zones.length; i++) {
+      const entry = packed.zones[i],
+        id = entry.slice(0, entry.indexOf('|'))
       spellings.set(id.toLowerCase(), id)
     }
-    for (const alias of Object.keys(links))
-      spellings.set(alias.toLowerCase(), alias)
+    const aliases = Object.keys(links)
+    for (let i = 0; i < aliases.length; i++)
+      spellings.set(aliases[i].toLowerCase(), aliases[i])
     spellings.set('utc', 'UTC')
   }
   const id = spellings.get(name.toLowerCase())
@@ -106,6 +114,10 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
     return value
   }
   const result: TimeZoneKernel = {
+    transition: instant => {
+      check(instant)
+      return null
+    },
     offsetNanoseconds: instant => {
       check(instant)
       return offset

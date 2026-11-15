@@ -76,6 +76,16 @@ filegroup(
     )
     for name, sources, data in [
         (
+            "zoned_difference_test",
+            ["tests/zoned-differences.test.ts"],
+            ["//conformance-tests/icu4j:temporal_zoned_difference_fixtures"],
+        ),
+        (
+            "transition_test",
+            ["tests/transitions.test.ts"],
+            ["//conformance-tests/icu4j:temporal_transition_fixtures"],
+        ),
+        (
             "zoned_test",
             ["tests/zoned.test.ts"],
             ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
@@ -188,6 +198,7 @@ _ZONED_CORE_PATTERNS = [
     "prototype/eraYear",
     "prototype/hour",
     "prototype/hoursInDay",
+    "prototype/getTimeZoneTransition",
     "prototype/inLeapYear",
     "prototype/microsecond",
     "prototype/millisecond",

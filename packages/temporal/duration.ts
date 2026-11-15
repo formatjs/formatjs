@@ -79,17 +79,17 @@ function formatDuration(
   digits: number | 'auto' = 'auto'
 ): string {
   const sign = durationSign(fields)
-  const absolute = Object.fromEntries(
-    durationFieldNames.map(key => [key, Math.abs(fields[key])])
-  ) as DurationFields
+  const absolute = zeroDuration()
+  for (let index = 0; index < durationFieldNames.length; index++) {
+    const key = durationFieldNames[index]
+    absolute[key] = Math.abs(fields[key])
+  }
   let result = sign < 0 ? '-P' : 'P'
-  for (const [key, designator] of [
-    ['years', 'Y'],
-    ['months', 'M'],
-    ['weeks', 'W'],
-    ['days', 'D'],
-  ] as const)
-    if (absolute[key]) result += absolute[key] + designator
+  const designators = ['Y', 'M', 'W', 'D']
+  for (let index = 0; index < 4; index++) {
+    const key = durationFieldNames[index]
+    if (absolute[key]) result += absolute[key] + designators[index]
+  }
   let time = ''
   if (absolute.hours) time += absolute.hours + 'H'
   if (absolute.minutes) time += absolute.minutes + 'M'

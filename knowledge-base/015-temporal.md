@@ -65,7 +65,7 @@ no completed slice establishes complete Temporal compliance.
 
 Strict selections pass 346 Instant and 468 Duration executions on Node and
 Hermes source/optimized bytecode. Full diagnostics remain failing: Instant
-928/934, Duration 724/1086. Full eight-class counts and failure areas live in
+930/934, Duration 724/1086. Full eight-class counts and failure areas live in
 packages/temporal/conformance-results.json. Calendar and integration behavior
 remain implementation gaps, never exclusions.
 
@@ -151,7 +151,7 @@ Both cores independently match 840 ICU Gregorian arithmetic cases, including
 leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
 ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
 364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
-Full diagnostics remain failing: 1298/1308 and 1540/1552. Existing PlainTime
+Full diagnostics remain failing: 1300/1308 and 1542/1552. Existing PlainTime
 improves to 982/986 through real date-time conversions. No missing behavior is
 allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
 integration, all calendars, native Hermes installation and complete WASM facades
@@ -187,9 +187,9 @@ requires complete ZonedDateTime, Now, remaining calendar engines, Intl/Date inte
 full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
-its full diagnostic to 1298/1308. All eight raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 3,790 executions
-per mode. All 47 normal Temporal package/Rust/WASM checks pass. Full diagnostics
+its full diagnostic to 1300/1308. All eight raw class reports agree across Node,
+Hermes source and optimized bytecode; normal selections total 3,818 executions
+per mode. All 52 normal package/Rust/WASM/shared-primitive checks pass. Full diagnostics
 remain failing and separate from those gates.
 
 ## ZonedDateTime layer
@@ -202,8 +202,8 @@ PlainDateTime expose zoned construction; Instant accepts zoned values and expose
 serializing intermediate objects. Internal Instant creation/validation avoids
 calling mutable public static methods.
 
-ZonedDateTime has 1,362 strict executions per engine mode. Full diagnostic is
-1,384/1,804; missing `until`/`since`, transition lookup and locale formatting stay
+ZonedDateTime has 1,390 strict executions per engine mode. Full diagnostic is
+1,796/1,804; relative Duration helpers and locale formatting stay
 visible. The bytecode selection uses a medium Bazel target timeout for its larger
 corpus; per-case timeout remains 30 seconds. No new exclusions.
 
@@ -213,4 +213,31 @@ calendar-day versus elapsed-24-hour arithmetic. Rust's no_std `TimeZone` provide
 interface visits all possible offsets; its ISO `ZonedDateTime<Z>` and `FixedOffset`
 cores validate instant/local ranges independently. Rust production IANA loading,
 all-calendar zoned math, Now, Date/Intl installation and native Hermes bindings
-remain unfinished. Gap resolution retains the documented two-day window.
+remain unfinished. Gap resolution now walks actual transitions.
+
+## Zoned differences and indexed transitions
+
+TS and Rust now supply zoned differences and strict next/previous offset queries.
+Calendar rounding uses actual zoned endpoints, including DST and half-hour shifts;
+clock rounding applies to elapsed remainders after calendar anchors. Internal ISO
+anchors may lie outside PlainDate bounds while required public endpoints stay
+checked. Date-only gaps use the first valid instant of the date, including skipped
+dates, independently of the disambiguation option.
+
+Transition lookup combines explicit records with recurring footer events. Extended
+rule times include adjacent years; a 400-year Gregorian cycle bounds searches for
+leap-only changes. Same-offset abbreviation/DST metadata changes are skipped.
+Gap resolution walks all candidate events instead of assuming isolated changes.
+Cold setup, unpacking, ISO validation and Duration serialization avoid observable
+array iteration; a poisoned Array.prototype iterator guards these paths.
+
+Rust's borrowed TransitionZone has no runtime dependencies/allocations. Test-only
+JSON decoding loads the owned IANA pack into this provider. Both implementations
+match 10,528 independent ICU next/previous queries and 19,440 ICU calendar-span /
+BigDecimal rounding cases across all units, modes and signs. Real Rust IANA records
+also match the original 13,160 offsets and 1,340 gap/fold controls. New synthetic
+controls cover adjacent gaps and leap-only recurrences across 2100. Production
+Rust registry/alias loading, calendars and native Hermes installation stay pending.
+
+The Rust dependency page was restored from its last correct version; an earlier
+Temporal layer had overwritten it with the Test262 page.
