@@ -23,3 +23,9 @@ conversion directions with ICU4J 79.1 across Temporal's full instant range.
 
 Duration/calendar/timezone operations, Hermes native bindings and WASM remain
 incomplete. See [implementation tracking](../../knowledge-base/015-temporal.md).
+
+`Instant::round` supports all nine Temporal modes and valid day-dividing
+increments. `Display` writes UTC ISO strings; `Instant::format` supports explicit
+precision and caller-supplied offsets without allocation. Named zone lookup is
+not implemented in Rust yet. An independent ICU decimal oracle supplies 2,349
+rounding cases, including negative epochs, ties and range boundaries.

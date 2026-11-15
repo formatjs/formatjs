@@ -3,25 +3,24 @@
   "nativeFallback": false,
   "note": "Whole native Temporal namespace replaced in every realm. Focused supported slice is strict. Full corpus is a failing manual diagnostic, not a passing baseline.",
   "selected": {
-    "executions": 134,
-    "passes": 134,
+    "executions": 154,
+    "passes": 154,
     "failures": 0
   },
   "full": {
     "executions": 934,
-    "passes": 300,
-    "failures": 634,
+    "passes": 502,
+    "failures": 432,
     "failuresByArea": {
-      "compare": 4,
-      "from": 4,
+      "compare": 2,
+      "from": 2,
       "prototype/add": 52,
-      "prototype/equals": 4,
-      "prototype/round": 80,
+      "prototype/equals": 2,
+      "prototype/round": 2,
       "prototype/since": 140,
       "prototype/subtract": 50,
-      "prototype/toJSON": 20,
       "prototype/toLocaleString": 4,
-      "prototype/toString": 102,
+      "prototype/toString": 4,
       "prototype/toZonedDateTimeISO": 36,
       "prototype/until": 138
     }
@@ -31,16 +30,38 @@
     "nativeTemporalFallback": false,
     "selected": {
       "source": {
-        "executions": 134,
-        "passes": 134,
+        "executions": 154,
+        "passes": 154,
         "failures": 0
       },
       "optimizedBytecode": {
-        "executions": 134,
-        "passes": 134,
+        "executions": 154,
+        "passes": 154,
         "failures": 0
       }
     },
-    "exclusions": []
+    "exclusions": [],
+    "fullDiagnostic": {
+      "source": {
+        "executions": 934,
+        "passes": 502,
+        "failures": 432
+      },
+      "optimizedBytecode": {
+        "executions": 934,
+        "passes": 502,
+        "failures": 432
+      }
+    }
+  },
+  "serializationDiagnostic": {
+    "executions": 346,
+    "passes": 340,
+    "failures": 6,
+    "failuresByArea": {
+      "prototype/round": 2,
+      "prototype/toString": 4
+    },
+    "note": "Six raw failures involve missing Temporal family constructors in helper/type tests. No exclusions or expected-failure baseline."
   }
 }

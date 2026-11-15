@@ -275,9 +275,9 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 
 ## Temporal development slice
 
-`packages/temporal` separately owns a strict 134-execution Instant constructor,
-numeric factory/getter and string-parser slice. It passes on Node and Hermes
+`packages/temporal` separately owns a strict 154-execution Instant constructor,
+numeric factory/getter, string-parser and toJSON slice. It passes on Node and Hermes
 in source and optimized bytecode modes, with no exclusions or tracked failures.
-The raw full Instant diagnostic remains manual and failing: 300/934 pass.
+The raw full Instant diagnostic remains manual and failing: 502/934 pass.
 This separate slice is not part of the twelve complete Intl selections above
 and does not establish full Temporal compliance. See [implementation tracking](015-temporal.md).

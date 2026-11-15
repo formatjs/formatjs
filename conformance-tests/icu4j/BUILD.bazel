@@ -336,3 +336,20 @@ genrule(
     tools = [":temporal_iso_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_rounding_oracle",
+    testonly = True,
+    srcs = ["TemporalRoundingOracle.java"],
+    main_class = "TemporalRoundingOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_rounding_fixtures",
+    testonly = True,
+    outs = ["temporal-rounding-fixtures.tsv"],
+    cmd = "$(execpath :temporal_rounding_oracle) $@",
+    tools = [":temporal_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)

@@ -20,6 +20,7 @@ formatjs_library(
         "calendar-entry.ts",
         "facade-benchmark.ts",
         "instant-entry.ts",
+        "instant-primitives-entry.ts",
         "kernel-entry.ts",
         "reference.ts",
         "zones-entry.ts",
@@ -55,6 +56,7 @@ formatjs_library(
         ("kernel-code", "kernel-entry.ts"),
         ("calendar-code", "calendar-entry.ts"),
         ("instant-code", "instant-entry.ts"),
+        ("instant-primitives-code", "instant-primitives-entry.ts"),
         ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),
     ]
@@ -84,6 +86,7 @@ formatjs_library(
             "facade-benchmark.ts",
             [
                 ":instant-code",
+                ":instant-primitives-code",
                 ":calendar-code",
                 ":reference-bundle",
             ],

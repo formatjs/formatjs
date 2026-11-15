@@ -1,6 +1,9 @@
 import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
 
-function offsetNanoseconds(value: string, annotation = false): bigint {
+export function parseOffsetNanoseconds(
+  value: string,
+  annotation = false
+): bigint {
   const match =
     /^([+-])(\d{2})(?:(:?)(\d{2})(?:\3(\d{2})(?:[.,](\d{1,9}))?)?)?$/.exec(
       value
@@ -18,7 +21,11 @@ function offsetNanoseconds(value: string, annotation = false): bigint {
   return match[1] === '-' ? -result : result
 }
 
-function validateAnnotations(value: string): void {
+function validateAnnotations(value: string): {
+  timeZone?: string
+  calendar?: string
+} {
+  let timeZone: string | undefined, calendar: string | undefined
   let calendarSeen = false,
     criticalCalendar = false,
     annotationSeen = false,
@@ -37,6 +44,7 @@ function validateAnnotations(value: string): void {
       if (annotation[1] === 'u-ca') {
         if (calendarSeen && (critical || criticalCalendar))
           throw new RangeError('Duplicate critical calendar annotation')
+        calendar ??= annotation[2]
         calendarSeen = true
         criticalCalendar ||= critical
       } else if (critical) throw new RangeError('Unknown critical annotation')
@@ -44,7 +52,8 @@ function validateAnnotations(value: string): void {
       if (zoneSeen || annotationSeen)
         throw new RangeError('Unexpected timezone annotation')
       zoneSeen = true
-      if (/^[+-]/.test(text)) offsetNanoseconds(text, true)
+      timeZone = text
+      if (/^[+-]/.test(text)) parseOffsetNanoseconds(text, true)
       else if (
         !/^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*(?![\s\S])/.test(
           text
@@ -54,6 +63,7 @@ function validateAnnotations(value: string): void {
     }
     value = value.slice(match[0].length)
   }
+  return {timeZone, calendar}
 }
 
 export function parseInstantString(value: string): bigint {
@@ -77,5 +87,83 @@ export function parseInstantString(value: string): bigint {
     microsecond: +fraction.slice(3, 6),
     nanosecond: +fraction.slice(6, 9),
   })
-  return local - (/^[Zz]$/.test(match[10]) ? 0n : offsetNanoseconds(match[10]))
+  return (
+    local - (/^[Zz]$/.test(match[10]) ? 0n : parseOffsetNanoseconds(match[10]))
+  )
+}
+
+function isValidDate(year: string, month: string, day: string): boolean {
+  const y = +year,
+    m = +month,
+    d = +day
+  const leap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0)
+  const maximum =
+    m === 2 ? 28 + Number(leap) : [4, 6, 9, 11].includes(m) ? 30 : 31
+  return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
+}
+
+export function parseTimeZoneString(value: string): string {
+  if (
+    /^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*(?![\s\S])/.test(
+      value
+    )
+  )
+    return value
+  if (/^[+-]\d{2}(?::?\d{2})?(?![\s\S])/.test(value)) {
+    parseOffsetNanoseconds(value, true)
+    return value
+  }
+  const index = value.indexOf('[')
+  const body = index < 0 ? value : value.slice(0, index)
+  const annotations = validateAnnotations(index < 0 ? '' : value.slice(index))
+  let time: string | undefined, offset: string | undefined
+  const date =
+    /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]([\s\S]+))?$/.exec(body)
+  if (date && date[0] === body) {
+    if (!isValidDate(date[1], date[3], date[4]))
+      throw new RangeError('Invalid ISO date')
+    time = date[5]
+  } else {
+    let yearMonth = /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body)
+    let monthDay = /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+    if (yearMonth && !isValidDate(yearMonth[1], yearMonth[2], '01'))
+      yearMonth = null
+    if (monthDay && !isValidDate('1972', monthDay[1], monthDay[2]))
+      monthDay = null
+    if (
+      (yearMonth && yearMonth[0] === body) ||
+      (monthDay && monthDay[0] === body)
+    ) {
+      if (
+        annotations.calendar !== undefined &&
+        annotations.calendar.toLowerCase() !== 'iso8601'
+      )
+        throw new RangeError('Short ISO date requires ISO calendar')
+    } else time = /^[Tt]/.test(body) ? body.slice(1) : body
+  }
+  if (time !== undefined) {
+    const match =
+      /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2})(?:[.,](\d{1,9}))?)?)?([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?$/.exec(
+        time
+      )
+    if (
+      !match ||
+      match[0] !== time ||
+      +match[1] > 23 ||
+      +(match[3] ?? 0) > 59 ||
+      +(match[4] ?? 0) > 60
+    )
+      throw new RangeError('Invalid ISO time')
+    offset = match[6]
+    if (offset && !/^[Zz]$/.test(offset)) parseOffsetNanoseconds(offset)
+    if (!date && offset && /^[Zz]$/.test(offset))
+      throw new RangeError('Time-only string cannot use Z')
+  }
+  if (annotations.timeZone !== undefined) return annotations.timeZone
+  if (offset && /^[Zz]$/.test(offset)) return 'UTC'
+  if (offset !== undefined) {
+    parseOffsetNanoseconds(offset, true)
+    return offset
+  }
+  throw new RangeError('Timezone string needs an offset or annotation')
 }

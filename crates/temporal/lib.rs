@@ -1,11 +1,15 @@
 #![no_std]
 
+mod format;
 mod iso;
 mod parse;
+mod rounding;
 
 use core::fmt;
 use core::str::FromStr;
+pub use format::{FormattedInstant, Precision};
 pub use iso::IsoDateTime;
+pub use rounding::{RoundingMode, TimeUnit};
 
 pub const NANOSECONDS_PER_DAY: i128 = 86_400_000_000_000;
 pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;
@@ -14,6 +18,7 @@ pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;
 pub enum Error {
     InvalidSyntax,
     InvalidDateTime,
+    InvalidRoundingOptions,
     OutOfRange,
 }
 impl fmt::Display for Error {
@@ -21,6 +26,7 @@ impl fmt::Display for Error {
         f.write_str(match self {
             Self::InvalidSyntax => "Invalid instant string",
             Self::InvalidDateTime => "Invalid ISO date/time",
+            Self::InvalidRoundingOptions => "Invalid rounding options",
             Self::OutOfRange => "Instant out of range",
         })
     }

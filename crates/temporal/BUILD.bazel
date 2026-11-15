@@ -5,9 +5,11 @@ load("//tools:rust_test.bzl", "formatjs_rust_test")
 rust_library(
     name = "temporal",
     srcs = [
+        "format.rs",
         "iso.rs",
         "lib.rs",
         "parse.rs",
+        "rounding.rs",
     ],
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
@@ -21,10 +23,12 @@ formatjs_rust_test(
     srcs = ["lib.test.rs"],
     compile_data = [
         "//packages/temporal:instant_string_fixtures",
+        "//conformance-tests/icu4j:temporal_rounding_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
     ],
     edition = "2024",
     rustc_env = {
+        "FORMATJS_TEMPORAL_ROUNDING": "$(execpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
         "FORMATJS_TEMPORAL_STRINGS": "$(execpath //packages/temporal:instant_string_fixtures)",
         "FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)",
     },

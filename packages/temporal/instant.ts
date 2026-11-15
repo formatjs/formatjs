@@ -1,10 +1,26 @@
 // Instant facade; durations and cross-realm slots remain incomplete.
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
+import {formatInstant} from '#packages/temporal/instant-format.js'
+import {
+  fractionalSecondDigits,
+  optionsObject,
+  roundingMode,
+  unitOption,
+  timeUnit,
+  timeUnitNanoseconds,
+  roundInstant,
+  roundInstantOptions,
+  type Precision,
+} from '#packages/temporal/rounding.js'
+import {resolveTimeZone} from '#packages/temporal/zones.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
 
 export interface InstantObject {
   readonly epochNanoseconds: bigint
   readonly epochMilliseconds: number
+  round(roundTo: unknown): InstantObject
+  toString(options?: unknown): string
+  toJSON(): string
   equals(other: unknown): boolean
   valueOf(): never
 }
@@ -85,6 +101,44 @@ class InstantValue implements InstantObject {
   }
   equals(other: unknown): boolean {
     return read(this) === toInstant(other)
+  }
+  round(roundTo: unknown): InstantObject {
+    return create(roundInstantOptions(read(this), roundTo))
+  }
+  toString(options: unknown = undefined): string {
+    const value = read(this)
+    const resolved = optionsObject(options)
+    const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
+    const mode = roundingMode(resolved.roundingMode, 'trunc')
+    const unit = unitOption(resolved.smallestUnit)
+    const zoneOption = resolved.timeZone
+    if (unit !== undefined && timeUnit(unit) === 'hour')
+      throw new RangeError('Cannot serialize with hour precision')
+    const zone =
+      zoneOption === undefined ? undefined : resolveTimeZone(zoneOption)
+    const precision: Precision =
+      unit === 'minute'
+        ? 'minute'
+        : unit === 'second'
+          ? 0
+          : unit === 'millisecond'
+            ? 3
+            : unit === 'microsecond'
+              ? 6
+              : unit === 'nanosecond'
+                ? 9
+                : digits
+    const quantum =
+      precision === 'auto'
+        ? 1n
+        : precision === 'minute'
+          ? timeUnitNanoseconds.minute
+          : 10n ** BigInt(9 - precision)
+    const rounded = roundInstant(value, quantum, mode)
+    return formatInstant(rounded, precision, zone?.offsetNanoseconds(rounded))
+  }
+  toJSON(): string {
+    return formatInstant(read(this))
   }
   valueOf(): never {
     throw new TypeError('Cannot convert Temporal.Instant to primitive')

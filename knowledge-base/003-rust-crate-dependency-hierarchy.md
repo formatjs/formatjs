@@ -582,7 +582,8 @@ read-only. Crate releases use Release Please and the existing release workflow.
 ## Temporal core
 
 `formatjs_temporal` (`crates/temporal`) is private, dependency-free and `no_std`.
-It owns checked Instant values, ISO conversion and instant string parsing.
+It owns checked Instant values, ISO conversion, instant string parsing, rounding
+and serialization with caller-supplied offsets.
 Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
 conversion directions across Temporal’s full instant range. Hermes native
 bindings, WASM and remaining Temporal operations are pending.

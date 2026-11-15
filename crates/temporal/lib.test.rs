@@ -87,3 +87,86 @@ fn independent_icu_gregorian_fields_across_full_range() {
     assert!(count > 25000);
     println!("{count} independent ICU Gregorian samples, both directions");
 }
+
+#[test]
+fn independent_icu_rounding_all_modes_and_epoch_signs() {
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_ROUNDING"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<_> = line.split('\t').collect();
+        let instant = Instant::from_epoch_nanoseconds(fields[0].parse().unwrap()).unwrap();
+        let unit = fields[1].parse().unwrap();
+        let increment = fields[2].parse().unwrap();
+        let mode = fields[3].parse().unwrap();
+        let expected: i128 = fields[4].parse().unwrap();
+        assert_eq!(
+            instant
+                .round(unit, increment, mode)
+                .unwrap()
+                .epoch_nanoseconds(),
+            expected,
+            "{line}"
+        );
+        count += 1;
+    }
+    assert!(count > 1500);
+    println!("{count} independent ICU decimal rounding cases");
+}
+
+#[test]
+fn formatting_precision_offsets_and_range_edges() {
+    use formatjs_temporal::{Precision, RoundingMode, TimeUnit};
+    for value in [-MAX_EPOCH_NANOSECONDS, -1, 0, 1, MAX_EPOCH_NANOSECONDS] {
+        let instant = Instant::from_epoch_nanoseconds(value).unwrap();
+        assert_eq!(instant.to_string().parse::<Instant>().unwrap(), instant);
+    }
+    let instant = Instant::from_epoch_nanoseconds(-1).unwrap();
+    assert_eq!(instant.to_string(), "1969-12-31T23:59:59.999999999Z");
+    assert_eq!(
+        instant
+            .format(Precision::Digits(3), RoundingMode::Trunc, None)
+            .unwrap()
+            .to_string(),
+        "1969-12-31T23:59:59.999Z"
+    );
+    assert_eq!(
+        instant
+            .format(
+                Precision::Minute,
+                RoundingMode::Ceil,
+                Some(3_600_000_000_000)
+            )
+            .unwrap()
+            .to_string(),
+        "1970-01-01T01:00+01:00"
+    );
+    assert_eq!(
+        Instant::from_epoch_nanoseconds(0)
+            .unwrap()
+            .format(Precision::Auto, RoundingMode::Trunc, Some(-1_000_000_000))
+            .unwrap()
+            .to_string(),
+        "1969-12-31T23:59:59+00:00"
+    );
+    assert!(
+        instant
+            .format(Precision::Digits(10), RoundingMode::Trunc, None)
+            .is_err()
+    );
+    for offset in [i64::MIN, -86_400_000_000_000, 86_400_000_000_000, i64::MAX] {
+        assert!(
+            instant
+                .format(Precision::Auto, RoundingMode::Trunc, Some(offset))
+                .is_err()
+        );
+    }
+    for increment in [0, 7, 25, u32::MAX] {
+        assert!(
+            instant
+                .round(TimeUnit::Hour, increment, RoundingMode::Trunc)
+                .is_err()
+        );
+    }
+}

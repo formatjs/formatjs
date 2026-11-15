@@ -14,7 +14,8 @@ const {Temporal: reference} = await import(
   pathToFileURL(resolve('reference-bundle.js')).href
 )
 const inputs = [-1000001n, -1n, 0n, 1n, 123456789n, 8640000000000000000000n]
-const pairs: [string, (i: number) => bigint, (i: number) => bigint][] = [
+type Value = bigint | string
+const pairs: [string, (i: number) => Value, (i: number) => Value][] = [
   [
     'construct/get epochNanoseconds',
     i => new Instant(inputs[i % inputs.length]).epochNanoseconds,
@@ -53,18 +54,49 @@ pairs.push([
   i => Instant.from(strings[i % strings.length]).epochNanoseconds,
   i => reference.Instant.from(strings[i % strings.length]).epochNanoseconds,
 ])
+pairs.push(
+  [
+    'round microsecond/get epochNanoseconds',
+    i =>
+      new Instant(inputs[i % inputs.length]).round('microsecond')
+        .epochNanoseconds,
+    i =>
+      new reference.Instant(inputs[i % inputs.length]).round('microsecond')
+        .epochNanoseconds,
+  ],
+  [
+    'toJSON',
+    i => new Instant(inputs[i % inputs.length]).toJSON(),
+    i => new reference.Instant(inputs[i % inputs.length]).toJSON(),
+  ],
+  [
+    'toString named timezone',
+    i =>
+      new Instant(inputs[i % inputs.length]).toString({
+        timeZone: 'America/New_York',
+      }),
+    i =>
+      new reference.Instant(inputs[i % inputs.length]).toString({
+        timeZone: 'America/New_York',
+      }),
+  ]
+)
 let sink = 0n
+function consume(value: Value): void {
+  sink ^= typeof value === 'string' ? BigInt(value.length) : value
+}
 const throughput = pairs.map(([name, ours, theirs]) => {
   for (let i = 0; i < 5000; i++) {
     if (ours(i) !== theirs(i)) throw new Error(`Results disagree: ${name}`)
-    sink ^= ours(i) ^ theirs(i)
+    consume(ours(i))
+    consume(theirs(i))
   }
   const samples: number[][] = [[], []]
   for (let sample = 0; sample < 7; sample++) {
     for (const index of sample % 2 ? [1, 0] : [0, 1]) {
       const operation = index === 0 ? ours : theirs
       const start = performance.now()
-      for (let i = 0; i < 50000; i++) sink ^= operation(i)
+      for (let i = 0; i < 50000; i++) consume(operation(i))
       samples[index].push(((performance.now() - start) * 1e6) / 50000)
     }
   }
@@ -78,6 +110,7 @@ const throughput = pairs.map(([name, ours, theirs]) => {
 })
 const sizes = [
   'instant-code.js',
+  'instant-primitives-code.js',
   'calendar-code.js',
   'reference-bundle.js',
 ].map(file => {
@@ -102,7 +135,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant constructor/factories/getters and ISO string parsing, versus forced temporal-polyfill 1.0.7 classes. Partial API; no full-polyfill size or conformance claim.',
+        'Instant numeric paths, parsing, rounding, UTC and named-zone serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

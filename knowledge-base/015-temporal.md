@@ -64,12 +64,12 @@ no completed slice establishes complete Temporal compliance.
 
 ## Existing evidence
 
-The package README and benchmark notes record the current 134-execution strict
+The package README and benchmark notes record the current 154-execution strict
 Instant slice, failing full Instant diagnostic, bounded ICU calendar controls,
 post-2100 timezone controls and early TS-only measurements. Rust and TS also consume independent ICU4J 79.1 proleptic Gregorian fixtures
 across the full instant range, including the adjacent local-date window. These
 validate ISO fields in both directions, separate from the bounded Hebrew oracle.
-The same 134-execution slice passes on real Hermes in source and optimized
+The same 154-execution slice passes on real Hermes in source and optimized
 bytecode modes, without reference Temporal, exclusions or tracked failures.
 The owned TS payload is compiled with the pinned engine compiler for the bytecode
 control. Native Rust Hermes bindings remain pending.
@@ -80,3 +80,9 @@ Parsing follows the [Temporal ISO grammar](https://tc39.es/proposal-temporal/#se
 and [ParseISODateTime](https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime).
 Test262 remains pinned in `MODULE.bazel`; update counts and diagnostics when the
 pin or selected surface changes.
+
+Rust and TS now implement Instant rounding and ISO serialization. TS named zones
+use the owned IANA pack, including aliases and future rules. ICU4J decimal
+rounding independently validates 2,349 cases. The full serialization/rounding
+selection still fails six missing-family integration cases; full Instant is
+502/934 on Node and Hermes source/bytecode, with no exclusions.
