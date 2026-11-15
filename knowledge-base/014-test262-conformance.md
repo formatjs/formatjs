@@ -272,3 +272,12 @@ test verifies the CLDR output and that joining `formatToParts()` reproduces it.
 These executions remain visible in the raw failure counts. ECMA-402 11.2.3 makes
 locale data implementation-defined ([source line 222](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L222))
 and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L854)).
+
+## Temporal development slice
+
+`packages/temporal` separately owns a strict 134-execution Instant constructor,
+numeric factory/getter and string-parser slice. It passes on Node and Hermes
+in source and optimized bytecode modes, with no exclusions or tracked failures.
+The raw full Instant diagnostic remains manual and failing: 300/934 pass.
+This separate slice is not part of the twelve complete Intl selections above
+and does not establish full Temporal compliance. See [implementation tracking](015-temporal.md).

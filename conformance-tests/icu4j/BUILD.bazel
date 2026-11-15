@@ -319,3 +319,20 @@ genrule(
     tools = [":temporal_calendar_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_iso_oracle",
+    testonly = True,
+    srcs = ["TemporalISOOracle.java"],
+    main_class = "TemporalISOOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_iso_fixtures",
+    testonly = True,
+    outs = ["temporal-iso-fixtures.tsv"],
+    cmd = "$(execpath :temporal_iso_oracle) $@",
+    tools = [":temporal_iso_oracle"],
+    visibility = ["//visibility:public"],
+)

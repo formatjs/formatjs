@@ -41,6 +41,18 @@ const pairs: [string, (i: number) => bigint, (i: number) => bigint][] = [
         .epochNanoseconds,
   ],
 ]
+const strings = [
+  '1970-01-01T00:00:00.000000001Z',
+  '20000229T123456.123456789+0530',
+  '1969-12-31T23:59:59.999999999Z',
+  '+275760-09-13T23:59:59.999999999+23:59:59.999999999',
+  '1970-01-01T00Z[!America/New_York][u-ca=hebrew]',
+]
+pairs.push([
+  'from ISO string/get epochNanoseconds',
+  i => Instant.from(strings[i % strings.length]).epochNanoseconds,
+  i => reference.Instant.from(strings[i % strings.length]).epochNanoseconds,
+])
 let sink = 0n
 const throughput = pairs.map(([name, ours, theirs]) => {
   for (let i = 0; i < 5000; i++) {
@@ -90,7 +102,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Numeric Instant constructor/factories/getters only, versus forced temporal-polyfill 1.0.7 classes. Partial API; no full-polyfill size or conformance claim.',
+        'Instant constructor/factories/getters and ISO string parsing, versus forced temporal-polyfill 1.0.7 classes. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

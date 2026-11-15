@@ -11,8 +11,8 @@ name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
 The public entry exports a partial `Temporal.Instant`. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. Rust Temporal and Hermes
-Temporal installation do not exist yet. Existing Intl Rust/Hermes infrastructure
+and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/ISO
+core and parser. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
 
@@ -64,7 +64,19 @@ no completed slice establishes complete Temporal compliance.
 
 ## Existing evidence
 
-The package README and benchmark notes record the current 94-execution strict
+The package README and benchmark notes record the current 134-execution strict
 Instant slice, failing full Instant diagnostic, bounded ICU calendar controls,
-post-2100 timezone controls and early TS-only measurements. Neither complete
-Temporal nor Rust/WASM/Hermes Temporal performance has been measured yet.
+post-2100 timezone controls and early TS-only measurements. Rust and TS also consume independent ICU4J 79.1 proleptic Gregorian fixtures
+across the full instant range, including the adjacent local-date window. These
+validate ISO fields in both directions, separate from the bounded Hebrew oracle.
+The same 134-execution slice passes on real Hermes in source and optimized
+bytecode modes, without reference Temporal, exclusions or tracked failures.
+The owned TS payload is compiled with the pinned engine compiler for the bytecode
+control. Native Rust Hermes bindings remain pending.
+Neither complete Temporal nor Rust/WASM/Hermes Temporal performance has been
+measured yet.
+
+Parsing follows the [Temporal ISO grammar](https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar)
+and [ParseISODateTime](https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime).
+Test262 remains pinned in `MODULE.bazel`; update counts and diagnostics when the
+pin or selected surface changes.

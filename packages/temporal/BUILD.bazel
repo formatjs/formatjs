@@ -1,5 +1,6 @@
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
@@ -66,8 +67,12 @@ filegroup(
             [
                 "tests/kernel.test.ts",
                 "tests/icu.test.ts",
+                "tests/iso.test.ts",
             ],
-            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+            ],
         ),
         (
             "calendar_test",
@@ -76,7 +81,10 @@ filegroup(
         ),
         (
             "instant_test",
-            ["tests/instant.test.ts"],
+            [
+                "tests/instant.test.ts",
+                "tests/instant-strings.json",
+            ],
             [],
         ),
     ]
@@ -126,6 +134,12 @@ _INSTANT_PATTERNS = [
     "prototype/epochNanoseconds",
     "prototype/valueOf",
     "prototype/toStringTag",
+]] + [_INSTANT_ROOT + "/from/" + pattern for pattern in [
+    "argument-string*.js",
+    "instant-string*.js",
+    "leap-second.js",
+    "no-fractional-minutes-hours.js",
+    "year-zero.js",
 ]]
 
 [
@@ -166,5 +180,63 @@ _INSTANT_PATTERNS = [
             [_INSTANT_ROOT + "/**/*.js"],
             ["manual"],
         ),
+    ]
+]
+
+filegroup(
+    name = "instant_string_fixtures",
+    testonly = True,
+    srcs = ["tests/instant-strings.json"],
+    visibility = ["//crates/temporal:__pkg__"],
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "instant_hermes_harness",
+    testonly = True,
+    data = [
+        "instant-payload.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+    tags = ["manual"],
+)
+
+[
+    sh_test(
+        name = name,
+        size = "small",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes:hermes_runner)",
+            "$(rootpath instant-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath tests/hermes-test262-baseline.json)",
+            "$(rootpath //tools/test262:validator)",
+        ] + _INSTANT_PATTERNS,
+        data = [
+            "instant-payload.js",
+            "tests/hermes-host.sh",
+            "tests/hermes-test262-baseline.json",
+            ":instant_hermes_harness",
+            "//native/hermes:hermes_runner",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@hermes//:hermesc",
+        ],
+        env = {"TZ": "UTC"},
+        exec_properties = {
+            "EstimatedCPU": "4",
+            "EstimatedMemory": "2GB",
+        },
+        tags = ["cpu:4"],
+    )
+    for name, mode in [
+        ("instant_hermes_test262_strict", "source"),
+        ("instant_hermes_bytecode_test262_strict", "bytecode"),
     ]
 ]

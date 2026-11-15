@@ -1,4 +1,4 @@
-// Experimental Instant slice. Limited strings; no durations or cross-realm slots.
+// Instant facade; durations and cross-realm slots remain incomplete.
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
 
@@ -11,6 +11,7 @@ export interface InstantObject {
 export interface InstantConstructor {
   new (epochNanoseconds: unknown): InstantObject
   readonly prototype: InstantObject
+  compare(one: unknown, two: unknown): -1 | 0 | 1
   from(item: unknown): InstantObject
   fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject
   fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject
@@ -55,6 +56,11 @@ function toInstant(item: unknown): bigint {
 class InstantValue implements InstantObject {
   constructor(_epochNanoseconds: unknown) {
     throw new TypeError('Use the exported Instant constructor')
+  }
+  static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    const left = toInstant(one),
+      right = toInstant(two)
+    return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
     return create(toInstant(item))

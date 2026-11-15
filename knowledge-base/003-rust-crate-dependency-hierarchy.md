@@ -578,3 +578,11 @@ with documented ambiguity around printf-looking literal text. Root plurals with
 multiple numeric arguments require substitution metadata; nested named
 substitutions and unknown variation axes fail explicitly. The verifier is
 read-only. Crate releases use Release Please and the existing release workflow.
+
+## Temporal core
+
+`formatjs_temporal` (`crates/temporal`) is private, dependency-free and `no_std`.
+It owns checked Instant values, ISO conversion and instant string parsing.
+Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
+conversion directions across Temporal’s full instant range. Hermes native
+bindings, WASM and remaining Temporal operations are pending.

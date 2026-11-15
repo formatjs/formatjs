@@ -3,19 +3,19 @@
   "nativeFallback": false,
   "note": "Whole native Temporal namespace replaced in every realm. Focused supported slice is strict. Full corpus is a failing manual diagnostic, not a passing baseline.",
   "selected": {
-    "executions": 94,
-    "passes": 94,
+    "executions": 134,
+    "passes": 134,
     "failures": 0
   },
   "full": {
     "executions": 934,
-    "passes": 202,
-    "failures": 732,
+    "passes": 300,
+    "failures": 634,
     "failuresByArea": {
-      "compare": 60,
-      "from": 28,
+      "compare": 4,
+      "from": 4,
       "prototype/add": 52,
-      "prototype/equals": 22,
+      "prototype/equals": 4,
       "prototype/round": 80,
       "prototype/since": 140,
       "prototype/subtract": 50,
@@ -25,5 +25,22 @@
       "prototype/toZonedDateTimeISO": 36,
       "prototype/until": 138
     }
+  },
+  "hermes": {
+    "overlayCommit": "338ff13ff1e996934ae615952d174f8c621844d9",
+    "nativeTemporalFallback": false,
+    "selected": {
+      "source": {
+        "executions": 134,
+        "passes": 134,
+        "failures": 0
+      },
+      "optimizedBytecode": {
+        "executions": 134,
+        "passes": 134,
+        "failures": 0
+      }
+    },
+    "exclusions": []
   }
 }

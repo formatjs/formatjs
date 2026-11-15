@@ -1,3 +1,4 @@
+import strings from '#packages/temporal/tests/instant-strings.json' with {type: 'json'}
 import {expect, it} from 'vitest'
 import {Instant} from '#packages/temporal/index.js'
 
@@ -75,7 +76,7 @@ it('coerces numeric factories once and keeps results intrinsic', () => {
   ).toThrow(TypeError)
 })
 
-it('parses the supported ISO instant subset, preserves offsets and copies branded values', () => {
+it('parses ISO instants, preserves offsets and copies branded values', () => {
   expect(Instant.from('1970-01-01T00:00:00.000000001Z').epochNanoseconds).toBe(
     1n
   )
@@ -98,4 +99,32 @@ it('parses the supported ISO instant subset, preserves offsets and copies brande
     '1970-01-01T00:00:00.1234567890Z',
   ])
     expect(() => Instant.from(text)).toThrow(RangeError)
+})
+
+it('shares exact parser expectations with the Rust core', () => {
+  for (const {input, epochNanoseconds} of strings.valid)
+    expect(Instant.from(input).epochNanoseconds, input).toBe(
+      BigInt(epochNanoseconds)
+    )
+  for (const input of strings.invalid)
+    expect(() => Instant.from(input), input).toThrow(RangeError)
+})
+
+it('compares exact instants, coercing left before right', () => {
+  const order: string[] = []
+  const input = (name: string, text: string) => ({
+    toString() {
+      order.push(name)
+      return text
+    },
+  })
+  expect(
+    Instant.compare(
+      input('left', '1970-01-01T00Z'),
+      input('right', '1970-01-01T00:00:00.000000001Z')
+    )
+  ).toBe(-1)
+  expect(order).toEqual(['left', 'right'])
+  expect(Instant.compare(new Instant(1n), new Instant(0n))).toBe(1)
+  expect(Instant.compare('19700101T00Z', new Instant(0n))).toBe(0)
 })

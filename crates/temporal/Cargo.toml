@@ -1,0 +1,14 @@
+[package]
+name = "formatjs_temporal"
+version = "0.0.0"
+publish = false
+edition = "2024"
+description = "Temporal calendar, date, time and timezone primitives"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+
+[lib]
+path = "lib.rs"
+
+[dev-dependencies]
+serde_json = { workspace = true }

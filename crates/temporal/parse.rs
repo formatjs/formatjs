@@ -1,0 +1,179 @@
+use crate::{Error, Instant, IsoDateTime};
+
+struct Cursor<'a> {
+    bytes: &'a [u8],
+    position: usize,
+}
+impl<'a> Cursor<'a> {
+    fn new(value: &'a str) -> Self {
+        Self {
+            bytes: value.as_bytes(),
+            position: 0,
+        }
+    }
+    fn peek(&self) -> Option<u8> {
+        self.bytes.get(self.position).copied()
+    }
+    fn take(&mut self, byte: u8) -> bool {
+        if self.peek() != Some(byte) {
+            return false;
+        }
+        self.position += 1;
+        true
+    }
+    fn number(&mut self, digits: usize) -> Result<u32, Error> {
+        let mut result = 0;
+        for _ in 0..digits {
+            let byte = self.peek().ok_or(Error::InvalidSyntax)?;
+            if !byte.is_ascii_digit() {
+                return Err(Error::InvalidSyntax);
+            }
+            self.position += 1;
+            result = result * 10 + u32::from(byte - b'0');
+        }
+        Ok(result)
+    }
+    fn time(&mut self, offset: bool, sub_minute: bool) -> Result<(u8, u8, u8, u32), Error> {
+        let hour = self.number(2)?;
+        let (mut minute, mut second, mut fraction) = (0, 0, 0);
+        let extended = self.take(b':');
+        if extended || self.peek().is_some_and(|b| b.is_ascii_digit()) {
+            minute = self.number(2)?;
+            let has_second = if extended {
+                self.take(b':')
+            } else {
+                self.peek().is_some_and(|b| b.is_ascii_digit())
+            };
+            if has_second {
+                if !sub_minute {
+                    return Err(Error::InvalidSyntax);
+                }
+                second = self.number(2)?;
+                if self.take(b'.') || self.take(b',') {
+                    let mut digits = 0;
+                    while self.peek().is_some_and(|b| b.is_ascii_digit()) {
+                        if digits == 9 {
+                            return Err(Error::InvalidSyntax);
+                        }
+                        fraction = fraction * 10 + self.number(1)?;
+                        digits += 1;
+                    }
+                    if digits == 0 {
+                        return Err(Error::InvalidSyntax);
+                    }
+                    fraction *= 10u32.pow(9 - digits);
+                }
+            }
+        }
+        if hour > 23 || minute > 59 || second > if offset { 59 } else { 60 } {
+            return Err(Error::InvalidDateTime);
+        }
+        Ok((hour as u8, minute as u8, second.min(59) as u8, fraction))
+    }
+    fn offset(&mut self, sub_minute: bool) -> Result<i128, Error> {
+        let negative = self.take(b'-');
+        if !negative && !self.take(b'+') {
+            return Err(Error::InvalidSyntax);
+        }
+        let (h, m, s, ns) = self.time(true, sub_minute)?;
+        let value = (i128::from(h) * 3600 + i128::from(m) * 60 + i128::from(s)) * 1_000_000_000
+            + i128::from(ns);
+        Ok(if negative { -value } else { value })
+    }
+}
+
+pub fn instant(value: &str) -> Result<Instant, Error> {
+    let mut input = Cursor::new(value);
+    let negative = input.take(b'-');
+    let extended_year = negative || input.take(b'+');
+    let year = input.number(if extended_year { 6 } else { 4 })? as i32;
+    if negative && year == 0 {
+        return Err(Error::InvalidSyntax);
+    }
+    let separated = input.take(b'-');
+    let month = input.number(2)?;
+    if separated && !input.take(b'-') {
+        return Err(Error::InvalidSyntax);
+    }
+    let day = input.number(2)?;
+    if !input.take(b'T') && !input.take(b't') && !input.take(b' ') {
+        return Err(Error::InvalidSyntax);
+    }
+    let (hour, minute, second, nanosecond) = input.time(false, true)?;
+    let offset = if input.take(b'Z') || input.take(b'z') {
+        0
+    } else {
+        input.offset(true)?
+    };
+    annotations(&value[input.position..])?;
+    Instant::from_iso_offset(
+        IsoDateTime {
+            year: if negative { -year } else { year },
+            month: month as u8,
+            day: day as u8,
+            hour,
+            minute,
+            second,
+            nanosecond,
+        },
+        offset,
+    )
+}
+fn annotations(mut value: &str) -> Result<(), Error> {
+    let (mut calendar_seen, mut critical_calendar, mut annotation_seen, mut zone_seen) =
+        (false, false, false, false);
+    while !value.is_empty() {
+        value = value.strip_prefix('[').ok_or(Error::InvalidSyntax)?;
+        let critical = value.starts_with('!');
+        if critical {
+            value = &value[1..];
+        }
+        let end = value.find(']').ok_or(Error::InvalidSyntax)?;
+        let text = &value[..end];
+        if let Some((key, contents)) = text.split_once('=') {
+            let lower = |b: u8| b.is_ascii_lowercase() || b == b'_';
+            if !key.as_bytes().first().copied().is_some_and(lower)
+                || !key
+                    .bytes()
+                    .all(|b| lower(b) || b.is_ascii_digit() || b == b'-')
+                || !contents
+                    .split('-')
+                    .all(|part| !part.is_empty() && part.bytes().all(|b| b.is_ascii_alphanumeric()))
+            {
+                return Err(Error::InvalidSyntax);
+            }
+            annotation_seen = true;
+            if key == "u-ca" {
+                if calendar_seen && (critical || critical_calendar) {
+                    return Err(Error::InvalidSyntax);
+                }
+                calendar_seen = true;
+                critical_calendar |= critical;
+            } else if critical {
+                return Err(Error::InvalidSyntax);
+            }
+        } else {
+            if zone_seen || annotation_seen {
+                return Err(Error::InvalidSyntax);
+            }
+            zone_seen = true;
+            if text.starts_with(['+', '-']) {
+                let mut zone = Cursor::new(text);
+                zone.offset(false)?;
+                if zone.position != text.len() {
+                    return Err(Error::InvalidSyntax);
+                }
+            } else if !text.split('/').all(|part| {
+                let leading = |b: u8| b.is_ascii_alphabetic() || b == b'.' || b == b'_';
+                part.as_bytes().first().copied().is_some_and(leading)
+                    && part
+                        .bytes()
+                        .all(|b| leading(b) || b.is_ascii_digit() || b == b'+' || b == b'-')
+            }) {
+                return Err(Error::InvalidSyntax);
+            }
+        }
+        value = &value[end + 1..];
+    }
+    Ok(())
+}

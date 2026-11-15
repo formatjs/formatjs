@@ -72,15 +72,18 @@ The earlier size/runtime records below predate this separate calendar module.
 
 ## Instant facade and Test262 slice
 
-`instant.ts` adds the Instant constructor, numeric factories, private branding,
+`instant.ts` adds the Instant constructor, numeric factories, comparison, private branding,
 read-only epoch getters, `valueOf`, and limited `from`/`equals`. Constructor input
 coercion precedes observable `newTarget.prototype` access; a construct trap avoids
 JS's normal allocation-before-body order. Static factories ignore subclass
 receivers. WeakMap slots stay off instances and reject proxies/forged receivers.
 
-String support is an explicit RFC 3339-style subset: extended years, nanoseconds,
-UTC/numeric offsets and leap-second normalization. Basic ISO forms, RFC 9557
-annotations, ZonedDateTime input and full serialization remain unsupported.
+String parsing accepts basic/extended dates and times, optional minutes/seconds,
+nanosecond fractions, fractional numeric offsets, leap-second normalization and
+RFC 9557 annotations. Unknown noncritical annotations are ignored; unknown
+critical annotations and duplicate critical calendars are rejected. Annotations
+do not change an Instant’s offset. ZonedDateTime input and serialization remain
+unsupported.
 Cross-realm slot sharing and foreign-realm default-prototype fallback remain open.
 This slice is not installed globally outside the test prelude.
 
@@ -92,13 +95,14 @@ bazel test -c opt //packages/temporal:instant_test262_full
 ```
 
 The strict slice executes all constructor/prototype-root tests and complete
-numeric-factory, epoch-getter, valueOf and toStringTag directories from the pinned
-Test262 checkout: **94/94 executions pass**. No individual-file exclusions or
+numeric-factory, epoch-getter, valueOf and toStringTag directories, plus
+parser-related `from` file groups from the pinned
+Test262 checkout: **134/134 executions pass**. No individual-file exclusions or
 expected-failure baseline. The prelude replaces the entire native Temporal
 namespace in every realm, including recursively created realms.
 
 The full Instant corpus is a separate manual raw diagnostic: **934 executions,
-202 passes, 732 failures**. Missing arithmetic, rounding, serialization and parser
+300 passes, 634 failures**. Missing arithmetic, rounding, serialization and parser
 forms dominate. Negative cases can pass incidentally when methods/types are
 missing; these aggregate passes do not establish whole-method conformance.
 [`conformance-results.json`](../../packages/temporal/conformance-results.json) records counts and failure areas. Raw failures remain
@@ -110,14 +114,15 @@ warmups. One shared-host V8 run, median ns/operation:
 
 | Operation                                    | Facade | Reference |
 | -------------------------------------------- | -----: | --------: |
-| Construct, read epochNanoseconds             |    375 |       293 |
-| fromEpochNanoseconds, read epochMilliseconds |    408 |       466 |
-| fromEpochMilliseconds, read epochNanoseconds |    305 |       341 |
+| Construct, read epochNanoseconds             |    391 |       403 |
+| fromEpochNanoseconds, read epochMilliseconds |    514 |       445 |
+| fromEpochMilliseconds, read epochNanoseconds |    300 |       355 |
+| Parse ISO string, read epochNanoseconds      |  1,738 |     1,976 |
 
-Constructor is slower; factories modestly faster in this run. The numeric
+Results are mixed: the nanosecond factory is slower; parsing is modestly faster. The numeric
 kernel's earlier advantage does not translate into an established object-API
 win. Profile matched full behavior before choosing a runtime architecture.
-Minified gzip: Instant slice **2,085 bytes**, independent ISO/Hebrew arithmetic
+Minified gzip: Instant slice **2,484 bytes**, independent ISO/Hebrew arithmetic
 **1,822 bytes**. These are separate bundles, exclude timezone data, and implement
 far less API than the 19,393-byte reference. Sizes are not additive or a full
 Temporal size estimate.
@@ -180,10 +185,27 @@ No browser/Hermes measurement yet.
 ## Next decision
 
 Continue TS by connecting the ISO/Hebrew kernel to a PlainDate facade, completing
-instant parsing/serialization and replacing the gap-window assumption with a
+instant serialization and replacing the gap-window assumption with a
 transition index. Expand strict Test262 coverage as each complete surface lands.
 Then compare equivalent standalone/shared-data packages on V8 and Hermes/browser
 engines. Consider WASM after an equivalent core demonstrates a concrete benefit.
 
 References: [ICU BasicTimeZone](https://unicode-org.github.io/icu-docs/apidoc/dev/icu4j/com/ibm/icu/util/BasicTimeZone.html),
 [Temporal timezone semantics](https://tc39.es/proposal-temporal/docs/timezone.html).
+
+## Rust core and Hermes checks
+
+`crates/temporal` supplies an allocation-free, `no_std` Instant/ISO core and
+parser. TS and Rust share exact valid/invalid parser cases. A separate ICU4J
+79.1 proleptic Gregorian oracle supplies 25,269 samples across the full instant
+range and adjacent local-date window; both implementations match both conversion
+directions. This Gregorian control does not extend the bounded Hebrew oracle.
+
+```sh
+bazel test -c opt //crates/temporal:temporal_test //packages/temporal:instant_hermes_test262_strict //packages/temporal:instant_hermes_bytecode_test262_strict
+```
+
+Hermes tests install the owned TS payload without a reference Temporal fallback.
+The current strict slice passes all 134 executions in both source and optimized bytecode modes, with no
+exclusions or tracked failures. A zero-failure count guard pins the selection. Bytecode uses the compiler from the same pinned Hermes overlay. Rust native
+Hermes bindings, complete Temporal coverage and WASM comparisons remain open.
