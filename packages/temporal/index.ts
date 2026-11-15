@@ -1,3 +1,7 @@
+import {
+  ZonedDateTime,
+  type ZonedDateTimeConstructor,
+} from '#packages/temporal/zoned-date-time.js'
 import {Instant, type InstantConstructor} from '#packages/temporal/instant.js'
 import {
   Duration,
@@ -24,6 +28,7 @@ import {
   type PlainMonthDayConstructor,
 } from '#packages/temporal/plain-month-day.js'
 export {
+  ZonedDateTime,
   Instant,
   Duration,
   PlainTime,
@@ -32,6 +37,10 @@ export {
   PlainYearMonth,
   PlainMonthDay,
 }
+export type {
+  ZonedDateTimeConstructor,
+  ZonedDateTimeObject,
+} from '#packages/temporal/zoned-date-time.js'
 export type {
   PlainYearMonthConstructor,
   PlainYearMonthObject,
@@ -61,6 +70,7 @@ export type {
   DurationObject,
 } from '#packages/temporal/duration.js'
 export const Temporal: {
+  ZonedDateTime: ZonedDateTimeConstructor
   Instant: InstantConstructor
   Duration: DurationConstructor
   PlainTime: PlainTimeConstructor
@@ -71,6 +81,7 @@ export const Temporal: {
 } = Object.defineProperties(
   {},
   {
+    ZonedDateTime: {value: ZonedDateTime, writable: true, configurable: true},
     Instant: {value: Instant, writable: true, configurable: true},
     Duration: {value: Duration, writable: true, configurable: true},
     PlainTime: {value: PlainTime, writable: true, configurable: true},
@@ -81,6 +92,7 @@ export const Temporal: {
     [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
   }
 ) as {
+  ZonedDateTime: ZonedDateTimeConstructor
   Instant: InstantConstructor
   Duration: DurationConstructor
   PlainTime: PlainTimeConstructor

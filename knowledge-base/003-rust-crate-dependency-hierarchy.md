@@ -300,3 +300,9 @@ Non-ISO/native calendar-relative APIs remain pending.
 fields, conversion, year/month arithmetic and calendar-span rounding/differences.
 They reuse the ISO epoch-day calculation and pass 2,028 independent ICU controls.
 The crate remains dependency-free and no_std.
+
+Temporal's no_std leaf also owns `ZonedDateTime<Z>`, `TimeZone` and `FixedOffset`.
+Providers expose exact offsets and enumerate their offset set; the core resolves
+local ambiguity and calendar/clock addition. ICU transition records exercise the
+provider boundary. Production IANA loading and native Hermes integration remain
+pending; the core does not depend on the higher-level datetime formatter crate.

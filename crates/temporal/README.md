@@ -125,3 +125,12 @@ Both cores match 2,028 independent ICU calendar/decimal controls, including
 BCE, range edges, metadata, leap days and all nine rounding modes. The shared ISO
 epoch-day calculation remains protected by the full Gregorian conversion oracle.
 Non-ISO/native object-model integration remains pending.
+
+`ZonedDateTime<Z>` keeps an Instant with a `TimeZone` provider. The dependency-free
+core resolves local fields with all four disambiguation modes, retains exact
+nanosecond offsets, and separates calendar addition from elapsed clock addition.
+`FixedOffset` supplies the constant-offset case. ICU offset and transition rows
+verify local conversion, gap/fold choices and day-versus-24-hour arithmetic. A
+production IANA provider, calendar-aware zoned differences and Hermes bindings
+remain pending. Gap resolution currently uses the same two-day offset window as
+the TS kernel.

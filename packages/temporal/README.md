@@ -1,113 +1,75 @@
 # @formatjs/temporal
 
-Independent TypeScript and Rust Temporal implementations in progress.
-Native Hermes integration remains pending. Initial WASM primitive measurements live in
-[benchmark notes](../../benchmarks/temporal/README.md#wasm-baseline). Private until implementation and
-conformance coverage are ready.
+In-development Temporal implementation. Private until complete. Importing installs
+no global; no native Temporal or reference-polyfill runtime fallback.
 
 ```ts
 import {Temporal} from '@formatjs/temporal'
 
-const instant = Temporal.Instant.fromEpochNanoseconds(1n)
-instant.epochNanoseconds // 1n
+const value = Temporal.ZonedDateTime.from(
+  '2020-03-07T12:00-05:00[America/New_York]'
+)
+value.add({days: 1}).toString()
+// 2020-03-08T12:00:00-04:00[America/New_York]
+value.add({hours: 24}).toString()
+// 2020-03-08T13:00:00-04:00[America/New_York]
 ```
 
-Current API: partial `Temporal.Instant`, `Temporal.Duration`, `Temporal.PlainTime`,
-`Temporal.PlainDate`, `Temporal.PlainDateTime`, `Temporal.PlainYearMonth` and
-`Temporal.PlainMonthDay`. Instant supports
-construction, parsing, comparison, rounding, serialization, add/subtract and
-differences. Duration supports construction, ISO parsing, getters, immutable
-field changes, negation/absolute value, add/subtract, serialization and time-only
-comparison/totals. Calendar-relative methods, Duration.round, locale formatting
-and remaining Temporal classes are incomplete. PlainTime supports construction,
-ISO parsing, field updates, comparison, rounding, arithmetic, differences and
-serialization; other-class conversions and locale formatting remain pending. Importing installs no global.
+Eight partial classes: Instant, Duration, PlainTime, PlainDate, PlainDateTime,
+PlainYearMonth, PlainMonthDay and ZonedDateTime. TS owns ISO/Hebrew arithmetic,
+Gregorian fields and IANA timezone data, including future recurring rules.
+Conversions share private slots. ZonedDateTime supports construction, parsing,
+fields, offset matching, all disambiguation modes, updates, arithmetic, rounding,
+day boundaries and serialization. Calendar days follow local time; hours follow
+elapsed time. Alias spelling survives separately from primary-zone equality.
 
-Internal modules provide ISO/Hebrew calendar arithmetic and IANA timezone
-resolution using FormatJS data, including recurring future rules. Runtime
-imports shared primitives; `temporal-polyfill` is only a test/benchmark control.
+Missing: ZonedDateTime differences/transition lookup, Now, remaining calendar
+engines, relative Duration operations/rounding, Date/Intl integration and global
+installation/detection. No implementation gap is an allowed conformance exclusion.
 
 ## Validation
 
+All three engines/modes agree: Node, Hermes source and optimized bytecode. Strict
+selections cover complete supported families. Full diagnostics remain failing.
+Negative cases can pass incidentally when a method is missing; full aggregate
+counts alone do not establish whole-method conformance.
+
+| Class          | Strict executions | Full diagnostic passes/total |
+| -------------- | ----------------: | ---------------------------: |
+| Instant        |               346 |                      928/934 |
+| Duration       |               468 |                    724/1,086 |
+| PlainTime      |               234 |                      982/986 |
+| PlainDate      |               364 |                  1,298/1,308 |
+| PlainDateTime  |               518 |                  1,540/1,552 |
+| PlainYearMonth |               348 |                  1,014/1,022 |
+| PlainMonthDay  |               150 |                      394/398 |
+| ZonedDateTime  |             1,362 |                  1,384/1,804 |
+
+See [raw counts and failure areas](conformance-results.json). No new exclusions.
+Hermes enables ES6 block scoping in compiler/runtime. The larger zoned bytecode
+selection uses a medium Bazel target timeout; per-case timeout stays 30 seconds.
+
 ```sh
-bazel build -c opt //packages/temporal:pkg
-bazel test -c opt //packages/temporal:kernel_test //packages/temporal:calendar_test //packages/temporal:instant_test //packages/temporal:instant_test262
-# Raw diagnostic; remaining Instant API currently fails.
-bazel test -c opt //packages/temporal:instant_test262_full
+bazel test -c opt //packages/temporal/... //crates/temporal:temporal_test
+# Raw diagnostics, expected to fail until remaining behavior exists.
+bazel test -c opt //packages/temporal:zoned_test262_full
 bazel run -c opt //benchmarks/temporal:facade_benchmark
 ```
 
-The strict Test262 slice covers 346 executions. The full Instant diagnostic has
-934 executions: 882 pass, 52 fail. See
-[recorded results](conformance-results.json). This is not full Temporal compliance.
-ICU timezone/calendar oracles, benchmark methods and their limits are recorded
-in the [benchmark notes](../../benchmarks/temporal/README.md).
+Independent ICU4J controls cover 25,269 Gregorian conversion samples, 2,349 Instant
+rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock-rounding cases,
+840 date-arithmetic cases and 2,028 short-date cases. Zoned controls cover 13,160
+offset/local-field samples and 1,340 future transitions, including gap/fold choices
+and calendar-day versus 24-hour arithmetic. Hebrew controls use the documented
+bounded ICU range; forced full temporal-polyfill adds reference-date controls.
 
-## Completion plan
+The dependency-free no_std Rust core supplies Instant, Duration, clock, ISO
+plain/short-date and generic zoned foundations. Rust's TimeZone provider visits
+all offsets; FixedOffset supplies constant zones. ICU transition records exercise
+that boundary. Production Rust IANA loading, all-calendar zoned math and native
+Hermes bindings remain pending. Gap resolution retains the documented two-day
+offset window. The measured WASM build covers earlier matched Instant/Duration
+primitives; a complete WASM facade remains pending.
 
-Track work in [Temporal implementation](../../knowledge-base/015-temporal.md).
-
-The independent `formatjs_temporal` Rust core shares parser vectors and matches
-ICU4J Gregorian fields across the full instant range. Rust Hermes bindings and a complete WASM facade remain pending; the core now
-builds to WASM for matched primitive benchmarks.
-
-The same 346-execution strict slice passes on real Hermes in source and optimized
-bytecode modes without reference Temporal or test exclusions. This verifies the
-current TS slice, not a native Rust backend or complete Hermes Temporal support.
-
-Rounding supports all nine modes with Instant’s positive-direction semantics.
-`toString` accepts owned IANA zones and aliases, fixed offsets, ISO timezone
-strings and precision/rounding options. The complete serialization/rounding
-selection still has two missing-family helper failures (454/456 pass);
-it remains a failing manual diagnostic.
-
-Duration has a separate 468-execution strict core gate, passing on Node and
-Hermes source/bytecode. Its raw full diagnostic passes 710/1086. The complete
-implemented-method selection is 554/556; string helper scenarios need the
-remaining class constructors. No individual files or raw failures are hidden.
-
-Both cores match 5,430 independent ICU signed rounding/rational-total cases.
-Hermes bytecode uses `-Xes6-block-scoping`, matching source runtime semantics.
-
-PlainTime adds a 234-execution strict construction/getter/arithmetic selection on
-Node and Hermes source/optimized bytecode. Its full 986-execution diagnostic
-passes 958; 28 failures retain missing PlainDateTime/ZonedDateTime/Intl integration
-and class-dependent helpers. No implementation gap is an allowed exclusion.
-TS and Rust independently match 7,740 ICU clock-rounding cases, including
-half-even parity within fields and midnight wrapping.
-
-```sh
-bazel test -c opt //packages/temporal:plain_time_test //packages/temporal:plain_time_test262 //packages/temporal:plain_time_hermes_test262_strict //packages/temporal:plain_time_hermes_bytecode_test262_strict
-# Raw diagnostic, currently failing.
-bazel test -c opt //packages/temporal:plain_time_test262_full
-```
-
-PlainDate/PlainDateTime add owned date fields, parsing, updates, arithmetic,
-comparison, differences/rounding and serialization. Conversions share private
-slots with PlainTime. TS currently uses ISO/Hebrew arithmetic and Gregorian
-fields; other calendar engines and full non-ISO conformance remain pending.
-Rust provides ISO date/date-time foundations; native calendar-relative APIs
-remain incomplete. Both cores match 840 independent ICU arithmetic cases.
-
-Strict date/date-time selections pass 364 and 518 executions on Node and Hermes
-source/optimized bytecode. Full raw diagnostics pass 1174/1308 and 1444/1552.
-Missing classes, Intl integration and relative Duration paths remain failing.
-
-```sh
-bazel test -c opt //packages/temporal:plain_date_time_test //packages/temporal:plain_date_test262 //packages/temporal:plain_date_time_test262
-```
-
-PlainYearMonth/PlainMonthDay add validated reference ISO fields, parsing,
-updates, comparisons, date conversion and serialization. YearMonth supports
-year/month arithmetic and relative rounding/differences. The Rust ISO cores and
-TS implementation independently match 2,028 ICU short-date cases. TS Hebrew
-reference-date/month-code controls also pass against the forced full polyfill.
-
-Strict selections pass 348 YearMonth and 150 MonthDay executions on Node and
-Hermes source/optimized bytecode. Raw diagnostics pass 1002/1022 and 388/398;
-missing ZonedDateTime, Intl and relative Duration paths remain visible failures.
-Other calendar engines and full native/WASM integration remain incomplete.
-
-```sh
-bazel test -c opt //packages/temporal:short_date_test //packages/temporal:year_month_test262 //packages/temporal:month_day_test262
-```
+[Completion plan](../../knowledge-base/015-temporal.md).
+[Benchmark methods, measurements and limits](../../benchmarks/temporal/README.md).

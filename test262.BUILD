@@ -189,3 +189,9 @@ copy_to_bin(
     srcs = glob(["test/built-ins/Temporal/PlainMonthDay/**/*.js"]),
     visibility = ["@//packages/temporal:__pkg__"],
 )
+
+copy_to_bin(
+    name = "test262-temporal-zoned-copy",
+    srcs = glob(["test/built-ins/Temporal/ZonedDateTime/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)

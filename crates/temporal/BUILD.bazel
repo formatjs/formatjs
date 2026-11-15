@@ -39,6 +39,7 @@ rust_library(
         "rounding.rs",
         "short_dates.rs",
         "time.rs",
+        "zoned.rs",
     ],
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
@@ -51,6 +52,7 @@ formatjs_rust_test(
     size = "small",
     srcs = ["lib.test.rs"],
     compile_data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
         "//conformance-tests/icu4j:temporal_short_date_fixtures",
         "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
         "//packages/temporal:plain_time_string_fixtures",
@@ -62,6 +64,7 @@ formatjs_rust_test(
     ],
     edition = "2024",
     rustc_env = {
+        "FORMATJS_TEMPORAL_TIMEZONE": "$(execpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
         "FORMATJS_TEMPORAL_SHORT_DATES": "$(execpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
         "FORMATJS_TEMPORAL_DATE_ARITHMETIC": "$(execpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
         "FORMATJS_TEMPORAL_TIME_STRINGS": "$(execpath //packages/temporal:plain_time_string_fixtures)",

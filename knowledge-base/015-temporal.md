@@ -10,7 +10,7 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports partial Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay APIs. ISO/Hebrew arithmetic
+The public entry exports partial Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime APIs. ISO/Hebrew arithmetic
 and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust instant, duration, clock, ISO date/date-time and short-date core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
@@ -65,9 +65,9 @@ no completed slice establishes complete Temporal compliance.
 
 Strict selections pass 346 Instant and 468 Duration executions on Node and
 Hermes source/optimized bytecode. Full diagnostics remain failing: Instant
-882/934, Duration 710/1086. The implemented-method sweeps still have two
-missing-class string helper scenarios each; missing classes and calendar behavior
-are implementation gaps, never exclusions.
+928/934, Duration 724/1086. Full eight-class counts and failure areas live in
+packages/temporal/conformance-results.json. Calendar and integration behavior
+remain implementation gaps, never exclusions.
 
 ICU4J 79.1 independently checks 25,269 proleptic Gregorian samples across the
 full instant range, 2,349 Instant rounding cases and 5,430 signed Duration
@@ -127,9 +127,8 @@ parent fields and midnight. Shared TS/Rust vectors check grammar boundaries.
 
 A complete construction/getter/add/subtract/toJSON/valueOf selection passes 234
 executions on Node and Hermes source/optimized bytecode. Full upstream PlainTime
-runs all 986 executions on each engine mode: 958 pass, 28 fail. Remaining
-failures retain PlainDateTime/ZonedDateTime conversions, missing Intl integration
-and helper dependencies on missing classes. Full diagnostics stay failing;
+runs all 986 executions on each engine mode: 982 pass, 4 fail. Remaining
+failures cover locale formatting. Full diagnostics stay failing;
 missing behavior is not excluded. Public facades and native bindings for the
 remaining classes are still required by the full goal.
 
@@ -152,8 +151,8 @@ Both cores independently match 840 ICU Gregorian arithmetic cases, including
 leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
 ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
 364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
-Full diagnostics remain failing: 1174/1308 and 1444/1552. Existing PlainTime
-improves to 958/986 through real date-time conversions. No missing behavior is
+Full diagnostics remain failing: 1298/1308 and 1540/1552. Existing PlainTime
+improves to 982/986 through real date-time conversions. No missing behavior is
 allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
 integration, all calendars, native Hermes installation and complete WASM facades
 remain part of the active goal.
@@ -181,14 +180,37 @@ against actual calendar lengths. A forced full polyfill adds bounded Hebrew
 reference-date controls; basic implementation remains the ISO timing reference.
 
 Strict whole-family selections pass 348 YearMonth and 150 MonthDay executions
-per Node/Hermes source/bytecode mode. Full diagnostics pass 1002/1022 and 388/398.
-No missing ZonedDateTime/Intl/relative Duration path is an allowed exclusion.
+per Node/Hermes source/bytecode mode. Full diagnostics pass 1014/1022 and 394/398.
+No missing zoned/Intl/relative Duration behavior is an allowed exclusion.
 Normal package gates and raw diagnostics remain separate. The active goal still
-requires ZonedDateTime/Now, remaining calendar engines, Intl/Date integration,
+requires complete ZonedDateTime, Now, remaining calendar engines, Intl/Date integration,
 full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
-its full diagnostic to 1174/1308. All seven raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 2,428 executions
-per mode. All 42 normal Temporal package/Rust/WASM checks pass. Full diagnostics
+its full diagnostic to 1298/1308. All eight raw class reports agree across Node,
+Hermes source and optimized bytecode; normal selections total 3,790 executions
+per mode. All 47 normal Temporal package/Rust/WASM checks pass. Full diagnostics
 remain failing and separate from those gates.
+
+## ZonedDateTime layer
+
+The eighth TS class adds private zoned slots, owned named/fixed timezone lookup,
+annotation/offset matching, construction, calendar and clock fields, arithmetic,
+field replacement, rounding, day boundaries and conversions. PlainDate and
+PlainDateTime expose zoned construction; Instant accepts zoned values and exposes
+`toZonedDateTimeISO`. All conversions retain calendar/zone identity without
+serializing intermediate objects. Internal Instant creation/validation avoids
+calling mutable public static methods.
+
+ZonedDateTime has 1,362 strict executions per engine mode. Full diagnostic is
+1,384/1,804; missing `until`/`since`, transition lookup and locale formatting stay
+visible. The bytecode selection uses a medium Bazel target timeout for its larger
+corpus; per-case timeout remains 30 seconds. No new exclusions.
+
+Both language cores verify 13,160 ICU offset/local-field samples and 1,340 future
+transition controls. Those transition controls check all disambiguation modes and
+calendar-day versus elapsed-24-hour arithmetic. Rust's no_std `TimeZone` provider
+interface visits all possible offsets; its ISO `ZonedDateTime<Z>` and `FixedOffset`
+cores validate instant/local ranges independently. Rust production IANA loading,
+all-calendar zoned math, Now, Date/Intl installation and native Hermes bindings
+remain unfinished. Gap resolution retains the documented two-day window.

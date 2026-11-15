@@ -3,6 +3,8 @@ import {
   getTimeSlot as getSlot,
   setTimeSlot as setSlot,
   getDateTimeSlot,
+  getZonedDateTimeSlot,
+  getZonedSlot,
   getDateSlot,
   getYearMonthSlot,
   getMonthDaySlot,
@@ -136,7 +138,8 @@ function toTime(value: unknown, options?: unknown): bigint {
     overflow(options)
     return existing
   }
-  const datetime = getDateTimeSlot(value as object)
+  const datetime =
+    getDateTimeSlot(value as object) ?? getZonedDateTimeSlot(value as object)
   if (datetime) {
     overflow(options)
     return ((datetime.epochNanoseconds % day) + day) % day
@@ -248,6 +251,7 @@ class PlainTimeValue implements PlainTimeObject {
       !object(item) ||
       getSlot(item) !== undefined ||
       getDateTimeSlot(item) ||
+      getZonedSlot(item) ||
       getDateSlot(item) ||
       getYearMonthSlot(item) ||
       getMonthDaySlot(item)

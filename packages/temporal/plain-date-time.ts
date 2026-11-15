@@ -1,3 +1,7 @@
+import {
+  zonedFromLocal,
+  type ZonedDateTimeObject,
+} from '#packages/temporal/zoned-date-time.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   createPlainDate,
@@ -12,6 +16,7 @@ import {
 } from '#packages/temporal/plain-time.js'
 import {
   getDateSlot,
+  getZonedDateTimeSlot,
   getDateTimeSlot,
   setDateTimeSlot,
   getTimeSlot,
@@ -80,6 +85,7 @@ export interface PlainDateTimeObject extends DateProperties {
   since(other: unknown, options?: unknown): DurationObject
   round(roundTo: unknown): PlainDateTimeObject
   equals(other: unknown): boolean
+  toZonedDateTime(timeZone: unknown, options?: unknown): ZonedDateTimeObject
   toPlainDate(): PlainDateObject
   toPlainTime(): PlainTimeObject
   toString(options?: unknown): string
@@ -126,7 +132,8 @@ export function toPlainDateTimeSlot(
   item: unknown,
   options?: unknown
 ): DateTimeSlot {
-  const existing = getDateTimeSlot(item as object),
+  const existing =
+      getDateTimeSlot(item as object) ?? getZonedDateTimeSlot(item as object),
     date = getDateSlot(item as object)
   if (existing || date) {
     overflowOption(options)
@@ -301,6 +308,18 @@ class PlainDateTimeValue {
       b = toPlainDateTimeSlot(other)
     return (
       a.epochNanoseconds === b.epochNanoseconds && a.calendar === b.calendar
+    )
+  }
+  toZonedDateTime(
+    timeZone: unknown,
+    options: unknown = undefined
+  ): ZonedDateTimeObject {
+    const slot = read(this)
+    return zonedFromLocal(
+      slot.epochNanoseconds,
+      timeZone,
+      slot.calendar,
+      options
     )
   }
   toPlainDate(): PlainDateObject {

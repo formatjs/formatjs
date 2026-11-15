@@ -1,4 +1,9 @@
 import {
+  zonedFromLocal,
+  type ZonedDateTimeObject,
+} from '#packages/temporal/zoned-date-time.js'
+import {timeZoneIdentifier} from '#packages/temporal/zones.js'
+import {
   createPlainDateTime,
   type PlainDateTimeObject,
 } from '#packages/temporal/plain-date-time.js'
@@ -17,6 +22,7 @@ import {
 } from '#packages/temporal/short-date-core.js'
 import {
   getDateSlot,
+  getZonedDateTimeSlot,
   setDateSlot,
   getDateTimeSlot,
   getTimeSlot,
@@ -85,6 +91,7 @@ export interface PlainDateObject extends DateProperties {
   until(other: unknown, options?: unknown): DurationObject
   since(other: unknown, options?: unknown): DurationObject
   equals(other: unknown): boolean
+  toZonedDateTime(item: unknown): ZonedDateTimeObject
   toPlainDateTime(time?: unknown): PlainDateTimeObject
   toString(options?: unknown): string
   toJSON(): string
@@ -122,7 +129,8 @@ export function createPlainDate(
 }
 export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   const date = getDateSlot(item as object),
-    datetime = getDateTimeSlot(item as object)
+    datetime =
+      getDateTimeSlot(item as object) ?? getZonedDateTimeSlot(item as object)
   if (date || datetime) {
     overflowOption(options)
     return (
@@ -274,6 +282,24 @@ class PlainDateValue {
     const a = read(this),
       b = toPlainDateSlot(other)
     return a.epochDay === b.epochDay && a.calendar === b.calendar
+  }
+  toZonedDateTime(item: unknown): ZonedDateTimeObject {
+    const slot = read(this)
+    let zone: unknown = item,
+      time: unknown
+    if (object(item)) {
+      const raw = item.timeZone
+      zone = timeZoneIdentifier(raw === undefined ? item : raw)
+      time = item.plainTime
+    } else zone = timeZoneIdentifier(item)
+    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    return zonedFromLocal(
+      BigInt(slot.epochDay) * nsPerDay + clock,
+      zone,
+      slot.calendar,
+      undefined,
+      time === undefined
+    )
   }
   toPlainDateTime(time: unknown = undefined): PlainDateTimeObject {
     const slot = read(this)

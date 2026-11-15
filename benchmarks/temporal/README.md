@@ -81,7 +81,7 @@ String parsing accepts basic/extended dates and times, optional minutes/seconds,
 nanosecond fractions, fractional numeric offsets, leap-second normalization and
 RFC 9557 annotations. Unknown noncritical annotations are ignored; unknown
 critical annotations and duplicate critical calendars are rejected. Annotations
-do not change an Instant’s offset. ZonedDateTime input and locale formatting remain unsupported.
+do not change an Instant’s offset. ZonedDateTime input is supported; locale formatting remains unfinished.
 Cross-realm slot sharing and foreign-realm default-prototype fallback remain open.
 This slice is not installed globally outside the test prelude.
 
@@ -99,9 +99,7 @@ Test262 checkout: **346/346 executions pass**. No individual-file exclusions or
 expected-failure baseline. The prelude replaces the entire native Temporal
 namespace in every realm, including recursively created realms.
 
-The full Instant corpus is a separate manual raw diagnostic: **934 executions,
-882 passes, 52 failures**. ZonedDateTime and locale/class integration account for the remaining Instant failures. Negative cases can pass incidentally when methods/types are
-missing; these aggregate passes do not establish whole-method conformance.
+The full Instant corpus remains a failing manual raw diagnostic. See
 [`conformance-results.json`](../../packages/temporal/conformance-results.json) records counts and failure areas. Raw failures remain
 in Bazel test output; the full diagnostic does not turn them into a green gate.
 
@@ -114,39 +112,39 @@ One shared-host V8 run, ns/op:
 
 | Operation                                  | Facade | Reference |
 | ------------------------------------------ | -----: | --------: |
-| construct/get epochNanoseconds             |    394 |       295 |
-| fromEpochNanoseconds/get epochMilliseconds |    387 |       468 |
-| fromEpochMilliseconds/get epochNanoseconds |    511 |       338 |
-| from ISO string/get epochNanoseconds       |  1,791 |     2,058 |
-| round microsecond/get epochNanoseconds     |  1,014 |     1,247 |
-| toJSON                                     |  1,273 |     2,320 |
-| toString named timezone                    |  1,913 |     5,735 |
-| Duration parse/toJSON                      |  4,946 |    51,803 |
-| Duration total microseconds                |  4,048 |     2,805 |
-| Instant until/toJSON                       |  5,356 |    25,722 |
-| PlainYearMonth parse/add/toJSON            |  6,522 |     3,822 |
-| PlainMonthDay parse/toPlainDate/toJSON     |  3,513 |     3,887 |
-| PlainDate parse/add/toJSON                 |  6,294 |     4,538 |
-| PlainDateTime parse/add/toJSON             |  7,825 |    10,965 |
-| PlainTime parse/round/toJSON               |  2,788 |     4,428 |
-| PlainTime parse/add/toJSON                 |  4,495 |     6,089 |
+| construct/get epochNanoseconds             |    391 |       409 |
+| fromEpochNanoseconds/get epochMilliseconds |    394 |       464 |
+| fromEpochMilliseconds/get epochNanoseconds |    506 |       386 |
+| ZonedDateTime parse/add day/toJSON         | 12,789 |    11,610 |
+| ZonedDateTime parse/round hour/toJSON      |  9,795 |    11,141 |
+| from ISO string/get epochNanoseconds       |  1,820 |     2,113 |
+| round microsecond/get epochNanoseconds     |  1,048 |     1,409 |
+| toJSON                                     |  1,405 |     2,364 |
+| toString named timezone                    |  1,992 |     5,703 |
+| Duration parse/toJSON                      |  4,951 |    52,074 |
+| Duration total microseconds                |  4,024 |     2,901 |
+| Instant until/toJSON                       |  5,346 |    25,808 |
+| PlainYearMonth parse/add/toJSON            |  6,444 |     3,729 |
+| PlainMonthDay parse/toPlainDate/toJSON     |  3,577 |     3,667 |
+| PlainDate parse/add/toJSON                 |  6,315 |     4,342 |
+| PlainDateTime parse/add/toJSON             |  7,848 |    10,747 |
+| PlainTime parse/round/toJSON               |  2,790 |     4,508 |
+| PlainTime parse/add/toJSON                 |  4,497 |     6,034 |
 
-Instant construction, millisecond factories, Duration totals, PlainDate arithmetic
-and PlainYearMonth arithmetic are slower in this shared-host run. Other selected
-paths are faster. These partial workloads do not establish a complete polyfill
-performance win. Timezone rules agree for the selected cases.
+Workload results vary. The two new zoned workloads compare ordinary DST dates,
+a fold with an explicit offset, a fixed-offset leap day and UTC. Output equality
+is checked before timing. This shared-host run does not establish a complete
+polyfill performance win; reference timezone data comes from host Intl.
 
-Minified gzip: seven-class namespace **80,976 bytes**, including owned IANA data
+Minified gzip: eight-class namespace **83,221 bytes**, including owned IANA data
 and aliases. Independent Instant primitives are **2,688 bytes**; numeric calendar
 code is **1,902 bytes**. These entries differ in API coverage and are not additive.
 Reference is **19,393 bytes**, using host Intl timezone data. The WASM baseline
 below covers earlier data-free Instant/Duration operations; complete facade/data
 comparisons remain pending.
 
-The full Instant serialization selection passes **454/456**. Duration's complete
-implemented-method selection passes **554/556**. Missing class constructors in
-string helpers remain raw failures. No files are excluded to manufacture a
-passing method gate.
+Full conformance reports retain every implementation failure. See the package
+README and conformance-results.json for current counts across all eight classes.
 
 ## Measured footprint
 
@@ -243,7 +241,7 @@ Instant's positive-direction semantics and half-even parity. Both Rust and TS
 match every case; this does not validate signed Duration rounding.
 
 The full Instant diagnostic runs all 934 executions on Node and Hermes in
-source/optimized-bytecode modes: 882 pass, 52 fail. ZonedDateTime and remaining locale/class integration dominate. Strict gates cover the
+source/optimized-bytecode modes: 928 pass, 6 fail. Remaining locale/integration behavior stays visible. Strict gates cover the
 346 passing constructor/parser/getter/toJSON executions. Native Rust Hermes
 bindings and complete WASM facade comparisons remain open.
 
@@ -263,7 +261,7 @@ into large millisecond/microsecond/nanosecond fields.
 
 Node and Hermes source/optimized bytecode all pass strict selections of 346
 Instant and 468 Duration executions. Full diagnostics remain failing: Instant
-882/934, Duration 710/1086. Enable ES6 block scoping in both Hermes compilation
+928/934, Duration 724/1086. Enable ES6 block scoping in both Hermes compilation
 (`-Xes6-block-scoping`) and runtime. Native Rust bindings, remaining classes,
 calendar-relative semantics and complete WASM facade comparisons are still pending.
 
@@ -295,7 +293,7 @@ and timezone data. The TS bundle includes Duration object machinery; the WASM
 bridge is a benchmark-only synchronous string ABI with 256-byte input/output
 buffers, not Temporal brands, coercions or the complete public facade. The
 reference supplies a broader API and host Intl integration. These sizes do not
-predict a complete polyfill's size; the current 80,976-byte public TS namespace measurement
+predict a complete polyfill's size; the current 83,221-byte public TS namespace measurement
 above includes owned IANA data, date/time classes and a different entry surface.
 
 Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
@@ -341,8 +339,8 @@ forms, annotations, ignored offsets, leap seconds and ambiguity rejection.
 
 A complete construction/getter/add/subtract/toJSON/valueOf selection passes 234
 executions on Node and Hermes source/optimized bytecode. Full PlainTime diagnostics
-run 986 executions per mode: 958 pass, 28 fail. Other-class conversions, locale
-integration and class-dependent helpers remain raw failures, not exclusions.
+run 986 executions per mode: 982 pass, 4 fail. Locale formatting remains
+failing, not excluded.
 The public namespace grows 1,333 gzip bytes from the previous Instant/Duration
 measurement. Native Rust Hermes bindings and the remaining classes remain open.
 
@@ -366,10 +364,10 @@ checks resulting weekday, ordinal and ISO week/year metadata against ICU. Existi
 
 Strict selections cover complete construction/prototype/getter/arithmetic families:
 364 PlainDate and 518 PlainDateTime executions pass on Node and Hermes source and
-optimized bytecode. Full diagnostics retain 134/1308 and 108/1552 failures,
-respectively. Missing year-month/month-day/zoned classes, Intl integration and
-Duration-relative helper paths remain raw failures. Real date-time conversions
-improve full PlainTime coverage to 958/986. No implementation gap is an exclusion.
+optimized bytecode. Full diagnostics pass 1298/1308 and 1540/1552,
+respectively. Intl integration and Duration-relative helper paths remain raw
+failures. Real date-time conversions
+improve full PlainTime coverage to 982/986. No implementation gap is an exclusion.
 
 Five-class public namespace grows 5,071 gzip bytes from the previous measurement.
 Native Rust Hermes installation, all calendar engines and complete WASM/public
@@ -396,10 +394,22 @@ Array-iterator poisoning tests check builtin calendar field preparation.
 
 Complete construction/getter/arithmetic/conversion/serialization selections pass
 348 YearMonth and 150 MonthDay executions per Node/Hermes source/bytecode mode.
-Full diagnostics pass 1002/1022 and 388/398. Missing ZonedDateTime, Intl and relative
+Full diagnostics pass 1014/1022 and 394/398. Missing ZonedDateTime, Intl and relative
 Duration integration remain failures, never allowed exclusions. Other calendar
 engines, native Hermes installation and complete WASM facades stay required.
 
-Seven-class namespace adds 2,122 gzip bytes. Sampled YearMonth parsing/addition is
-slower than the reference; MonthDay conversion is slightly faster. Full results,
-including ordinary and boundary inputs, remain in facade-results.json.
+The earlier short-date layer added 2,122 gzip bytes. Current eight-class sizes
+and all timing samples are recorded in facade-results.json.
+
+## ZonedDateTime facade and Rust provider core
+
+Owned TS timezone data now supplies zoned construction, fields, gap/fold and
+offset matching, calendar versus elapsed arithmetic, updates, rounding, day
+boundaries and conversions. Strict selection: 1,362 executions per Node/Hermes
+source/bytecode mode. Full diagnostic: 1,384/1,804. Differences, transition lookup
+and Intl integration remain failing, not exclusions.
+
+Both language cores check ICU offset/local-field and future-transition controls.
+Rust uses independently generated offset/transition providers; production IANA
+loading, native Hermes bindings and complete WASM integration remain pending.
+The WASM measurements above retain their earlier, narrower data-free scope.

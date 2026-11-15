@@ -17,10 +17,17 @@ const {
   PlainDateTime,
   PlainYearMonth,
   PlainMonthDay,
+  ZonedDateTime,
 } = await import(pathToFileURL(resolve('instant-code.js')).href)
 const {Temporal: reference} = await import(
   pathToFileURL(resolve('reference-bundle.js')).href
 )
+const zonedStrings = [
+  '2020-03-07T12:00-05:00[America/New_York]',
+  '2020-11-01T01:30-05:00[America/New_York]',
+  '2000-02-29T23:59:59.123456789+05:30[+05:30]',
+  '1970-01-01T00:00Z[UTC]',
+]
 const inputs = [-1000001n, -1n, 0n, 1n, 123456789n, 8640000000000000000000n]
 type Value = bigint | string | number
 const pairs: [string, (i: number) => Value, (i: number) => Value][] = [
@@ -50,6 +57,28 @@ const pairs: [string, (i: number) => Value, (i: number) => Value][] = [
         .epochNanoseconds,
   ],
 ]
+pairs.push([
+  'ZonedDateTime parse/add day/toJSON',
+  i =>
+    ZonedDateTime.from(zonedStrings[i % zonedStrings.length])
+      .add({days: 1})
+      .toJSON(),
+  i =>
+    reference.ZonedDateTime.from(zonedStrings[i % zonedStrings.length])
+      .add({days: 1})
+      .toJSON(),
+])
+pairs.push([
+  'ZonedDateTime parse/round hour/toJSON',
+  i =>
+    ZonedDateTime.from(zonedStrings[i % zonedStrings.length])
+      .round('hour')
+      .toJSON(),
+  i =>
+    reference.ZonedDateTime.from(zonedStrings[i % zonedStrings.length])
+      .round('hour')
+      .toJSON(),
+])
 const strings = [
   '1970-01-01T00:00:00.000000001Z',
   '20000229T123456.123456789+0530',
@@ -272,7 +301,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),

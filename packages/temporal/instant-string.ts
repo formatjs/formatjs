@@ -310,3 +310,29 @@ export function parseTimeZoneString(value: string): string {
   }
   throw new RangeError('Timezone string needs an offset or annotation')
 }
+
+export function parseZonedDateTimeString(value: string): {
+  fields: ParsedDateFields
+  timeZone: string
+  offset: string | undefined
+} {
+  const index = value.indexOf('[')
+  if (index < 0) throw new RangeError('Timezone annotation required')
+  const body = value.slice(0, index),
+    annotations = validateAnnotations(value.slice(index))
+  if (annotations.timeZone === undefined)
+    throw new RangeError('Timezone annotation required')
+  const offset =
+    /([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)$/.exec(body)?.[1]
+  // Keep local fields independent of any supplied UTC offset.
+  if (/[Zz]$/.test(body) && !/[Tt ]/.test(body))
+    throw new RangeError('Offset requires time')
+  const fields = parseISODateParts(
+    body.replace(/[Zz]$/, '') + value.slice(index)
+  )
+  return {
+    fields,
+    timeZone: annotations.timeZone,
+    offset: /[Tt ]/.test(body) ? offset : undefined,
+  }
+}

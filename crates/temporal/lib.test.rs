@@ -604,3 +604,118 @@ fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
             .is_err()
     );
 }
+
+#[test]
+fn independent_icu_zoned_fields_and_disambiguation() {
+    use formatjs_temporal::{Disambiguation, FixedOffset, TimeZone, ZonedDateTime};
+    #[derive(Clone, Copy)]
+    struct Transition {
+        instant: i128,
+        before: i128,
+        after: i128,
+    }
+    impl TimeZone for Transition {
+        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
+            if instant.epoch_nanoseconds() < self.instant {
+                self.before
+            } else {
+                self.after
+            }
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            visitor(self.before);
+            visitor(self.after);
+        }
+    }
+    let mut count = 0;
+    let mut transitions = 0;
+    let mut previous: Option<(&str, i128, i128)> = None;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_TIMEZONE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let name = fields[0];
+        let value = fields[1].parse::<i128>().unwrap() * 1_000_000;
+        let offset = fields[2].parse::<i128>().unwrap() * 1_000_000_000;
+        let zoned = ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(value).unwrap(),
+            FixedOffset::new(offset).unwrap(),
+        );
+        assert_eq!(
+            zoned.local().unwrap().epoch_nanoseconds(),
+            value + offset,
+            "{line}"
+        );
+        if let Some((old_name, old_value, old_offset)) = previous {
+            if old_name == name && value == old_value + 1_000_000 && offset != old_offset {
+                let zone = Transition {
+                    instant: value,
+                    before: old_offset,
+                    after: offset,
+                };
+                let local = value + (offset + old_offset) / 2 + 123;
+                let fields = IsoDateTime::from_epoch_nanoseconds(local).unwrap();
+                let earlier = local - offset.max(old_offset);
+                let later = local - offset.min(old_offset);
+                assert_eq!(
+                    ZonedDateTime::from_local(fields, zone, Disambiguation::Earlier)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    earlier,
+                    "{line}"
+                );
+                assert_eq!(
+                    ZonedDateTime::from_local(fields, zone, Disambiguation::Later)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    later,
+                    "{line}"
+                );
+                assert_eq!(
+                    ZonedDateTime::from_local(fields, zone, Disambiguation::Compatible)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    if offset > old_offset { later } else { earlier },
+                    "{line}"
+                );
+                assert!(
+                    ZonedDateTime::from_local(fields, zone, Disambiguation::Reject).is_err(),
+                    "{line}"
+                );
+                let start =
+                    Instant::from_epoch_nanoseconds(value - NANOSECONDS_PER_DAY / 2).unwrap();
+                let zoned = ZonedDateTime::new(start, zone);
+                let day = formatjs_temporal::Duration::new([0, 0, 0, 1, 0, 0, 0, 0, 0, 0]).unwrap();
+                let hours =
+                    formatjs_temporal::Duration::new([0, 0, 0, 0, 24, 0, 0, 0, 0, 0]).unwrap();
+                assert_eq!(
+                    zoned
+                        .checked_add(day, formatjs_temporal::Overflow::Constrain)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    start.epoch_nanoseconds() + NANOSECONDS_PER_DAY + old_offset - offset,
+                    "{line}"
+                );
+                assert_eq!(
+                    zoned
+                        .checked_add(hours, formatjs_temporal::Overflow::Constrain)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    start.epoch_nanoseconds() + NANOSECONDS_PER_DAY,
+                    "{line}"
+                );
+                transitions += 1;
+            }
+        }
+        previous = Some((name, value, offset));
+        count += 1;
+    }
+    assert!(count >= 13160);
+    assert!(transitions >= 1340);
+}

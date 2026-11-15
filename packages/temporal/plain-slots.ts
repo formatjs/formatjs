@@ -1,3 +1,4 @@
+import {zonedKernel} from '#packages/temporal/zones.js'
 export interface DateSlot {
   readonly epochDay: number
   readonly calendar: string
@@ -32,3 +33,24 @@ export const getMonthDaySlot: (value: object) => DateSlot | undefined =
   monthDays.get.bind(monthDays)
 export const setMonthDaySlot: (value: object, slot: DateSlot) => unknown =
   monthDays.set.bind(monthDays)
+
+export interface ZonedSlot extends DateTimeSlot {
+  readonly timeZone: string
+}
+const zonedDates = new WeakMap<object, ZonedSlot>()
+export const getZonedSlot: (value: object) => ZonedSlot | undefined =
+  zonedDates.get.bind(zonedDates)
+export const setZonedSlot: (value: object, slot: ZonedSlot) => unknown =
+  zonedDates.set.bind(zonedDates)
+
+export function getZonedDateTimeSlot(value: object): DateTimeSlot | undefined {
+  const slot = getZonedSlot(value)
+  return (
+    slot && {
+      epochNanoseconds:
+        slot.epochNanoseconds +
+        zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds),
+      calendar: slot.calendar,
+    }
+  )
+}

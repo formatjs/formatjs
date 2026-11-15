@@ -25,6 +25,7 @@ import {
 import {optionsObject} from '#packages/temporal/rounding.js'
 import {
   getDateSlot,
+  getZonedSlot,
   getDateTimeSlot,
   getTimeSlot,
   getYearMonthSlot,
@@ -81,6 +82,7 @@ export function overflowOption(options: unknown): Overflow {
 }
 export function calendarId(value: unknown = 'iso8601'): string {
   const slot =
+    getZonedSlot(value as object) ??
     getDateSlot(value as object) ??
     getDateTimeSlot(value as object) ??
     getYearMonthSlot(value as object) ??
@@ -205,6 +207,7 @@ export function readDateFields(
 export function partialObject(item: unknown): Record<string, unknown> {
   if (
     !object(item) ||
+    getZonedSlot(item) ||
     getDateSlot(item) ||
     getDateTimeSlot(item) ||
     getTimeSlot(item) !== undefined ||

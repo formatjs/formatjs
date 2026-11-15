@@ -9,17 +9,11 @@
   },
   "full": {
     "executions": 934,
-    "passes": 882,
-    "failures": 52,
+    "passes": 928,
+    "failures": 6,
     "failuresByArea": {
-      "compare": 2,
-      "from": 2,
-      "prototype/equals": 2,
-      "prototype/since": 2,
       "prototype/toLocaleString": 4,
-      "prototype/toString": 2,
-      "prototype/toZonedDateTimeISO": 36,
-      "prototype/until": 2
+      "prototype/toZonedDateTimeISO": 2
     }
   },
   "hermes": {
@@ -41,32 +35,20 @@
     "fullDiagnostic": {
       "source": {
         "executions": 934,
-        "passes": 882,
-        "failures": 52,
+        "passes": 928,
+        "failures": 6,
         "failuresByArea": {
-          "compare": 2,
-          "from": 2,
-          "prototype/equals": 2,
-          "prototype/since": 2,
           "prototype/toLocaleString": 4,
-          "prototype/toString": 2,
-          "prototype/toZonedDateTimeISO": 36,
-          "prototype/until": 2
+          "prototype/toZonedDateTimeISO": 2
         }
       },
       "optimizedBytecode": {
         "executions": 934,
-        "passes": 882,
-        "failures": 52,
+        "passes": 928,
+        "failures": 6,
         "failuresByArea": {
-          "compare": 2,
-          "from": 2,
-          "prototype/equals": 2,
-          "prototype/since": 2,
           "prototype/toLocaleString": 4,
-          "prototype/toString": 2,
-          "prototype/toZonedDateTimeISO": 36,
-          "prototype/until": 2
+          "prototype/toZonedDateTimeISO": 2
         }
       }
     }
@@ -96,14 +78,13 @@
     },
     "fullDiagnostic": {
       "executions": 1086,
-      "passes": 710,
-      "failures": 376,
+      "passes": 724,
+      "failures": 362,
       "failuresByArea": {
-        "compare": 44,
-        "prototype/round": 248,
+        "compare": 42,
+        "prototype/round": 246,
         "prototype/toLocaleString": 4,
-        "prototype/toString": 2,
-        "prototype/total": 78
+        "prototype/total": 70
       }
     },
     "hermes": {
@@ -122,26 +103,24 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1086,
-          "passes": 710,
-          "failures": 376,
+          "passes": 724,
+          "failures": 362,
           "failuresByArea": {
-            "compare": 44,
-            "prototype/round": 248,
+            "compare": 42,
+            "prototype/round": 246,
             "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/total": 78
+            "prototype/total": 70
           }
         },
         "optimizedBytecode": {
           "executions": 1086,
-          "passes": 710,
-          "failures": 376,
+          "passes": 724,
+          "failures": 362,
           "failuresByArea": {
-            "compare": 44,
-            "prototype/round": 248,
+            "compare": 42,
+            "prototype/round": 246,
             "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/total": 78
+            "prototype/total": 70
           }
         }
       }
@@ -157,49 +136,28 @@
     "selection": "Complete constructor/prototype-root/getter/add/subtract/toJSON/valueOf directories; remaining methods retained in full diagnostics.",
     "full": {
       "executions": 986,
-      "passes": 958,
-      "failures": 28,
+      "passes": 982,
+      "failures": 4,
       "failuresByArea": {
-        "compare": 2,
-        "from": 6,
-        "prototype/equals": 4,
-        "prototype/since": 4,
-        "prototype/toLocaleString": 4,
-        "prototype/toString": 2,
-        "prototype/until": 4,
-        "prototype/with": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 986,
-          "passes": 958,
-          "failures": 28,
+          "passes": 982,
+          "failures": 4,
           "failuresByArea": {
-            "compare": 2,
-            "from": 6,
-            "prototype/equals": 4,
-            "prototype/since": 4,
-            "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/until": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 986,
-          "passes": 958,
-          "failures": 28,
+          "passes": 982,
+          "failures": 4,
           "failuresByArea": {
-            "compare": 2,
-            "from": 6,
-            "prototype/equals": 4,
-            "prototype/since": 4,
-            "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/until": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         }
       },
@@ -227,19 +185,13 @@
     },
     "full": {
       "executions": 1308,
-      "passes": 1174,
-      "failures": 134,
+      "passes": 1298,
+      "failures": 10,
       "failuresByArea": {
-        "compare": 6,
-        "from": 10,
-        "prototype/equals": 4,
-        "prototype/since": 6,
+        "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/toPlainDateTime": 6,
-        "prototype/toZonedDateTime": 88,
-        "prototype/until": 6,
-        "prototype/with": 2,
-        "prototype/withCalendar": 2
+        "prototype/toZonedDateTime": 2,
+        "prototype/until": 2
       }
     },
     "hermes": {
@@ -258,36 +210,24 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1308,
-          "passes": 1174,
-          "failures": 134,
+          "passes": 1298,
+          "failures": 10,
           "failuresByArea": {
-            "compare": 6,
-            "from": 10,
-            "prototype/equals": 4,
-            "prototype/since": 6,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toPlainDateTime": 6,
-            "prototype/toZonedDateTime": 88,
-            "prototype/until": 6,
-            "prototype/with": 2,
-            "prototype/withCalendar": 2
+            "prototype/toZonedDateTime": 2,
+            "prototype/until": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1308,
-          "passes": 1174,
-          "failures": 134,
+          "passes": 1298,
+          "failures": 10,
           "failuresByArea": {
-            "compare": 6,
-            "from": 10,
-            "prototype/equals": 4,
-            "prototype/since": 6,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toPlainDateTime": 6,
-            "prototype/toZonedDateTime": 88,
-            "prototype/until": 6,
-            "prototype/with": 2,
-            "prototype/withCalendar": 2
+            "prototype/toZonedDateTime": 2,
+            "prototype/until": 2
           }
         }
       }
@@ -303,20 +243,14 @@
     },
     "full": {
       "executions": 1552,
-      "passes": 1444,
-      "failures": 108,
+      "passes": 1540,
+      "failures": 12,
       "failuresByArea": {
-        "compare": 4,
-        "from": 10,
-        "prototype/equals": 6,
-        "prototype/since": 8,
+        "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/toString": 2,
-        "prototype/toZonedDateTime": 58,
-        "prototype/until": 8,
-        "prototype/with": 2,
-        "prototype/withCalendar": 2,
-        "prototype/withPlainTime": 4
+        "prototype/toZonedDateTime": 2,
+        "prototype/until": 2,
+        "prototype/with": 2
       }
     },
     "hermes": {
@@ -335,38 +269,26 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1552,
-          "passes": 1444,
-          "failures": 108,
+          "passes": 1540,
+          "failures": 12,
           "failuresByArea": {
-            "compare": 4,
-            "from": 10,
-            "prototype/equals": 6,
-            "prototype/since": 8,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/toZonedDateTime": 58,
-            "prototype/until": 8,
-            "prototype/with": 2,
-            "prototype/withCalendar": 2,
-            "prototype/withPlainTime": 4
+            "prototype/toZonedDateTime": 2,
+            "prototype/until": 2,
+            "prototype/with": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1552,
-          "passes": 1444,
-          "failures": 108,
+          "passes": 1540,
+          "failures": 12,
           "failuresByArea": {
-            "compare": 4,
-            "from": 10,
-            "prototype/equals": 6,
-            "prototype/since": 8,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/toString": 2,
-            "prototype/toZonedDateTime": 58,
-            "prototype/until": 8,
-            "prototype/with": 2,
-            "prototype/withCalendar": 2,
-            "prototype/withPlainTime": 4
+            "prototype/toZonedDateTime": 2,
+            "prototype/until": 2,
+            "prototype/with": 2
           }
         }
       }
@@ -377,46 +299,34 @@
   "plainYearMonth": {
     "full": {
       "executions": 1022,
-      "passes": 1002,
-      "failures": 20,
+      "passes": 1014,
+      "failures": 8,
       "failuresByArea": {
-        "compare": 2,
-        "from": 2,
-        "prototype/equals": 2,
-        "prototype/since": 4,
+        "prototype/since": 2,
         "prototype/toLocaleString": 4,
-        "prototype/until": 4,
-        "prototype/with": 2
+        "prototype/until": 2
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 1022,
-          "passes": 1002,
-          "failures": 20,
+          "passes": 1014,
+          "failures": 8,
           "failuresByArea": {
-            "compare": 2,
-            "from": 2,
-            "prototype/equals": 2,
-            "prototype/since": 4,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 4,
-            "prototype/with": 2
+            "prototype/until": 2
           }
         },
         "optimizedBytecode": {
           "executions": 1022,
-          "passes": 1002,
-          "failures": 20,
+          "passes": 1014,
+          "failures": 8,
           "failuresByArea": {
-            "compare": 2,
-            "from": 2,
-            "prototype/equals": 2,
-            "prototype/since": 4,
+            "prototype/since": 2,
             "prototype/toLocaleString": 4,
-            "prototype/until": 4,
-            "prototype/with": 2
+            "prototype/until": 2
           }
         }
       },
@@ -444,37 +354,28 @@
   "plainMonthDay": {
     "full": {
       "executions": 398,
-      "passes": 388,
-      "failures": 10,
+      "passes": 394,
+      "failures": 4,
       "failuresByArea": {
-        "from": 2,
-        "prototype/equals": 2,
-        "prototype/toLocaleString": 4,
-        "prototype/with": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
       "fullDiagnostic": {
         "source": {
           "executions": 398,
-          "passes": 388,
-          "failures": 10,
+          "passes": 394,
+          "failures": 4,
           "failuresByArea": {
-            "from": 2,
-            "prototype/equals": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 398,
-          "passes": 388,
-          "failures": 10,
+          "passes": 394,
+          "failures": 4,
           "failuresByArea": {
-            "from": 2,
-            "prototype/equals": 2,
-            "prototype/toLocaleString": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         }
       },
@@ -498,5 +399,64 @@
     },
     "exclusions": [],
     "icuShortDateCases": 2028
+  },
+  "zonedDateTime": {
+    "full": {
+      "executions": 1804,
+      "passes": 1384,
+      "failures": 420,
+      "failuresByArea": {
+        "prototype/getTimeZoneTransition": 24,
+        "prototype/since": 198,
+        "prototype/toLocaleString": 4,
+        "prototype/until": 194
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1804,
+          "passes": 1384,
+          "failures": 420,
+          "failuresByArea": {
+            "prototype/getTimeZoneTransition": 24,
+            "prototype/since": 198,
+            "prototype/toLocaleString": 4,
+            "prototype/until": 194
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1804,
+          "passes": 1384,
+          "failures": 420,
+          "failuresByArea": {
+            "prototype/getTimeZoneTransition": 24,
+            "prototype/since": 198,
+            "prototype/toLocaleString": 4,
+            "prototype/until": 194
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 1362,
+          "passes": 1362,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 1362,
+          "passes": 1362,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 1362,
+      "passes": 1362,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuOffsetSamples": 13160,
+    "icuTransitionCases": 1340
   }
 }

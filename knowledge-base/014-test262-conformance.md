@@ -275,27 +275,20 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 
 ## Temporal development selections
 
-`packages/temporal` owns strict selections of 346 Instant, 468 Duration, 234 PlainTime,
-364 PlainDate, 518 PlainDateTime, 348 PlainYearMonth and 150 PlainMonthDay
-executions, passing on Node/Hermes source and optimized bytecode. These are
-separate from the twelve complete Intl selections above. Full Temporal compliance
-is not established: raw Instant is 882/934; raw Duration is 710/1086; raw PlainTime is 958/986. PlainTime has 28 raw
-failures across missing class/Intl integration and class-dependent helpers.
+`packages/temporal` has eight partial classes. Strict selections total 3,790
+executions per Node/Hermes source/optimized-bytecode mode; these stay separate
+from the twelve complete Intl selections above. Current class counts and failure
+areas live in [the package record](../packages/temporal/conformance-results.json)
+and [package README](../packages/temporal/README.md).
 
-Complete implemented-method sweeps retain two missing-class string helper
-failures each. No missing class, method or calendar behavior is treated as an
-allowed conformance exclusion. See [implementation tracking](015-temporal.md).
+Full diagnostics agree across all three modes but remain failing. ZonedDateTime
+passes 1,384/1,804; missing differences, transition lookup and locale formatting
+remain visible. Remaining calendars, relative Duration behavior and Intl/Date
+integration are implementation gaps, never exclusions. Negative assertions can
+pass incidentally when a method is absent; aggregate counts do not establish
+whole-method conformance.
 
-Date/date-time development diagnostics pass 1174/1308 and 1444/1552 on Node and
-Hermes source/bytecode. These remain incomplete implementation diagnostics,
-separate from passing strict selections. All missing class/calendar/Intl/Duration
-integration paths stay failing, with no allowed implementation exclusions.
-
-Full Hermes Temporal development targets use Bazel's large test budget so the
-complete source/bytecode reports finish under concurrent load. The harness keeps
-its 30-second per-case deadline. A timed-out/truncated report never counts as a
-completed diagnostic or an allowed implementation failure.
-
-Short-date development selections pass 348 YearMonth and 150 MonthDay executions
-per Node/Hermes source/bytecode mode. Full diagnostics pass 1002/1022 and 388/398,
-retaining all missing class/Intl/relative Duration behavior as failures.
+Full Hermes development targets use Bazel's large test budget. The 1,362-execution
+strict zoned suite uses a medium budget for source/bytecode; per-case harness
+limit stays 30 seconds. Timed-out/truncated JSON never counts as a completed
+raw diagnostic. No new exclusions. See [implementation tracking](015-temporal.md).

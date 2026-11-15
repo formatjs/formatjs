@@ -1,3 +1,9 @@
+import {getZonedSlot} from '#packages/temporal/plain-slots.js'
+import {
+  createZonedDateTime,
+  type ZonedDateTimeObject,
+} from '#packages/temporal/zoned-date-time.js'
+import {timeZoneIdentifier} from '#packages/temporal/zones.js'
 import {
   toDurationFields,
   createDuration,
@@ -35,6 +41,7 @@ export interface InstantObject {
   subtract(other: unknown): InstantObject
   round(roundTo: unknown): InstantObject
   toString(options?: unknown): string
+  toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject
   toJSON(): string
   equals(other: unknown): boolean
   valueOf(): never
@@ -51,7 +58,7 @@ const slots = new WeakMap<object, bigint>()
 const getSlot = slots.get.bind(slots)
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
-function validate(value: bigint): bigint {
+export function validateInstant(value: bigint): bigint {
   if (value < -limit || value > limit)
     throw new RangeError('Instant out of range')
   return value
@@ -71,18 +78,19 @@ function read(value: unknown): bigint {
   if (result === undefined) throw new TypeError('Invalid Instant receiver')
   return result
 }
-function create(value: bigint): InstantObject {
+export function createInstant(value: bigint): InstantObject {
   const result = Object.create(InstantValue.prototype) as InstantObject
-  setSlot(result, validate(value))
+  setSlot(result, validateInstant(value))
   return result
 }
 function toInstant(item: unknown): bigint {
-  const existing = getSlot(item as object)
+  const existing =
+    getZonedSlot(item as object)?.epochNanoseconds ?? getSlot(item as object)
   if (existing !== undefined) return existing
   const primitive = ToPrimitive(item, 'string')
   if (typeof primitive !== 'string')
     throw new TypeError('Expected Instant or instant string')
-  return validate(parseInstantString(primitive))
+  return validateInstant(parseInstantString(primitive))
 }
 function difference(
   value: bigint,
@@ -135,15 +143,19 @@ class InstantValue implements InstantObject {
     return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
-    return create(toInstant(item))
+    return createInstant(toInstant(item))
   }
   static fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject {
-    return create(toBigInt(epochNanoseconds))
+    return createInstant(toBigInt(epochNanoseconds))
   }
   static fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject {
     // Unary + is ToNumber; unlike BigInt(), it rejects BigInt/Symbol input.
     const milliseconds = +(epochMilliseconds as number)
-    return create(BigInt(milliseconds) * 1_000_000n)
+    return createInstant(BigInt(milliseconds) * 1_000_000n)
+  }
+  toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject {
+    const value = read(this)
+    return createZonedDateTime(value, timeZoneIdentifier(timeZone), 'iso8601')
   }
   get epochNanoseconds(): bigint {
     return read(this)
@@ -169,17 +181,17 @@ class InstantValue implements InstantObject {
       fields = toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
-    return create(value + durationNanoseconds(fields, false))
+    return createInstant(value + durationNanoseconds(fields, false))
   }
   subtract(other: unknown): InstantObject {
     const value = read(this),
       fields = toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
-    return create(value - durationNanoseconds(fields, false))
+    return createInstant(value - durationNanoseconds(fields, false))
   }
   round(roundTo: unknown): InstantObject {
-    return create(roundInstantOptions(read(this), roundTo))
+    return createInstant(roundInstantOptions(read(this), roundTo))
   }
   toString(options: unknown = undefined): string {
     const value = read(this)
@@ -227,7 +239,7 @@ Object.defineProperty(InstantValue, 'name', {
 // A normal JS constructor allocates before its body; Temporal coerces first.
 export const Instant: InstantConstructor = new Proxy(InstantValue, {
   construct(target, args, newTarget) {
-    const value = validate(toBigInt(args[0]))
+    const value = validateInstant(toBigInt(args[0]))
     const prototype = Reflect.get(newTarget, 'prototype')
     const result = Object.create(
       prototype !== null &&

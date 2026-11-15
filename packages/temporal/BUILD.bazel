@@ -28,6 +28,7 @@ formatjs_library(
         "plain-year-month.ts",
         "rounding.ts",
         "short-date-core.ts",
+        "zoned-date-time.ts",
         "zones.ts",
     ],
     description = "Temporal implementation",
@@ -74,6 +75,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "zoned_test",
+            ["tests/zoned.test.ts"],
+            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+        ),
         (
             "short_date_test",
             ["tests/short-dates.test.ts"],
@@ -158,6 +164,61 @@ js_run_binary(
 _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
+
+_ZONED_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/ZonedDateTime"
+
+_ZONED_CORE_PATTERNS = [
+    _ZONED_ROOT + "/*.js",
+    _ZONED_ROOT + "/prototype/*.js",
+] + [_ZONED_ROOT + "/" + family + "/**/*.js" for family in [
+    "compare",
+    "from",
+    "prototype/add",
+    "prototype/calendarId",
+    "prototype/day",
+    "prototype/dayOfWeek",
+    "prototype/dayOfYear",
+    "prototype/daysInMonth",
+    "prototype/daysInWeek",
+    "prototype/daysInYear",
+    "prototype/epochMilliseconds",
+    "prototype/epochNanoseconds",
+    "prototype/equals",
+    "prototype/era",
+    "prototype/eraYear",
+    "prototype/hour",
+    "prototype/hoursInDay",
+    "prototype/inLeapYear",
+    "prototype/microsecond",
+    "prototype/millisecond",
+    "prototype/minute",
+    "prototype/month",
+    "prototype/monthCode",
+    "prototype/monthsInYear",
+    "prototype/nanosecond",
+    "prototype/offset",
+    "prototype/offsetNanoseconds",
+    "prototype/round",
+    "prototype/second",
+    "prototype/startOfDay",
+    "prototype/subtract",
+    "prototype/timeZoneId",
+    "prototype/toInstant",
+    "prototype/toJSON",
+    "prototype/toPlainDate",
+    "prototype/toPlainDateTime",
+    "prototype/toPlainTime",
+    "prototype/toString",
+    "prototype/toStringTag",
+    "prototype/valueOf",
+    "prototype/weekOfYear",
+    "prototype/with",
+    "prototype/withCalendar",
+    "prototype/withPlainTime",
+    "prototype/withTimeZone",
+    "prototype/year",
+    "prototype/yearOfWeek",
+]]
 
 _YEARMONTH_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainYearMonth"
 
@@ -346,6 +407,7 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
         ],
         env = {"TZ": "UTC"},
         exec_properties = {
@@ -356,6 +418,12 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("zoned_test262", _ZONED_CORE_PATTERNS, []),
+        (
+            "zoned_test262_full",
+            [_TEST262_ROOT + "/test/built-ins/Temporal/ZonedDateTime/**/*.js"],
+            ["manual"],
+        ),
         ("year_month_test262", _YEARMONTH_CORE_PATTERNS, []),
         ("month_day_test262", _MONTHDAY_CORE_PATTERNS, []),
         (
@@ -440,6 +508,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
         "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
     ],
     node_toolchain = "//tools/test262:node-runtime",
     tags = ["manual"],
@@ -448,7 +517,7 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "large" if "full" in name else "small",
+        size = "large" if "full" in name else "medium" if name.startswith("zoned") else "small",
         timeout = "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [
@@ -460,7 +529,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -477,6 +546,7 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
             "@hermes//:hermesc",
         ],
         env = {"TZ": "UTC"},
@@ -487,6 +557,22 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("zoned_hermes_test262_strict", "source", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
+        ("zoned_hermes_bytecode_test262_strict", "bytecode", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
+        (
+            "zoned_hermes_test262_full",
+            "source",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "zoned_hermes_bytecode_test262_full",
+            "bytecode",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+            ["manual"],
+        ),
         ("year_month_hermes_test262_strict", "source", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
         ("year_month_hermes_bytecode_test262_strict", "bytecode", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
         ("month_day_hermes_test262_strict", "source", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json", []),
