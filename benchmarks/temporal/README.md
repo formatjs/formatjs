@@ -224,7 +224,8 @@ bazel test -c opt //crates/temporal:temporal_test //packages/temporal:instant_he
 Hermes tests install the owned TS payload without a reference Temporal fallback.
 The current strict slice passes all 346 executions in both source and optimized bytecode modes, with no
 exclusions or tracked failures. A zero-failure count guard pins the selection. Bytecode uses the compiler from the same pinned Hermes overlay. Rust native
-Hermes bindings, complete Temporal coverage and WASM comparisons remain open.
+Hermes bindings and complete Temporal coverage remain open. Initial WASM
+primitive comparisons are recorded below.
 
 ## Independent rounding control
 
@@ -238,7 +239,7 @@ match every case; this does not validate signed Duration rounding.
 The full Instant diagnostic runs all 934 executions on Node and Hermes in
 source/optimized-bytecode modes: 882 pass, 52 fail. ZonedDateTime and remaining locale/class integration dominate. Strict gates cover the
 346 passing constructor/parser/getter/toJSON executions. Native Rust Hermes
-bindings and WASM comparisons remain open.
+bindings and complete WASM facade comparisons remain open.
 
 ## Duration and Instant arithmetic
 
@@ -258,4 +259,67 @@ Node and Hermes source/optimized bytecode all pass strict selections of 346
 Instant and 468 Duration executions. Full diagnostics remain failing: Instant
 882/934, Duration 698/1086. Enable ES6 block scoping in both Hermes compilation
 (`-Xes6-block-scoping`) and runtime. Native Rust bindings, remaining classes,
-calendar-relative semantics and WASM comparisons are still pending.
+calendar-relative semantics and complete WASM facade comparisons are still pending.
+
+## WASM baseline
+
+```sh
+bazel build -c opt //crates/temporal:wasm
+bazel test -c opt //benchmarks/temporal:wasm_test //benchmarks/temporal:hermes_wasm_probe
+bazel run -c opt //benchmarks/temporal:wasm_benchmark
+```
+
+[wasm-results.json](wasm-results.json) records one Linux x64 run on Node 24.14.0,
+V8 13.6 and Intel Xeon Platinum 8488C. Rust 1.97.0 targets
+`wasm32-unknown-unknown`; the cdylib uses `opt-level=z`, symbol stripping and
+abort-on-panic, with the core dependency in normal optimized mode. No wasm-opt,
+wasm-bindgen or new runtime dependencies. Timings execute Bazel bundles; JS
+byte counts additionally use esbuild minification and gzip level 9.
+
+| Artifact                           | Minified JS / raw WASM bytes | Gzip bytes |
+| ---------------------------------- | ---------------------------: | ---------: |
+| Owned TS operation bundle          |                       13,532 |      5,006 |
+| Rust WASM                          |                       43,995 |     19,759 |
+| WASM JS bridge                     |                          799 |        463 |
+| Forced temporal-polyfill reference |                       56,696 |     19,393 |
+
+WASM plus bridge costs 20,222 gzip bytes, about four times the matched TS bundle.
+Its initial linear memory is 1,114,112 bytes. Both owned bundles omit calendar
+and timezone data. The TS bundle includes Duration object machinery; the WASM
+bridge is a benchmark-only synchronous string ABI with 256-byte input/output
+buffers, not Temporal brands, coercions or the complete public facade. The
+reference supplies a broader API and host Intl integration. These sizes do not
+predict a complete polyfill's size; the 72,450-byte public TS namespace measurement
+above includes owned IANA data and a different entry surface.
+
+Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
+
+| Operation                                        |    TS | WASM + bridge | temporal-polyfill |
+| ------------------------------------------------ | ----: | ------------: | ----------------: |
+| Instant parse / epoch string                     | 1,088 |           396 |             1,760 |
+| Instant parse / round microsecond / epoch string | 1,229 |           444 |             2,642 |
+| Instant parse / format UTC                       | 1,770 |           725 |             3,490 |
+| Duration parse / format                          | 4,559 |           880 |            51,192 |
+| Duration parse / total microseconds              | 3,192 |           520 |             2,348 |
+
+Each workload checks full results against forced `temporal-polyfill/implementation`
+1.0.7 during 5,000 warmup calls, then measures nine rotating backend-order batches
+of 30,000 calls. Boundary profiles remain separate in JSON; WASM is faster there
+as well. This is one shared host, not a full-API or cross-engine performance claim.
+
+Twelve fresh child processes alternate load order. Median module load / first
+operation times in milliseconds: TS 1.750 / 0.506; WASM 1.164 / 0.571; reference
+4.963 / 0.833. These exclude process startup and benchmark infrastructure imports;
+filesystem caches may be warm. The WASM load includes reading bytes, importing
+the bridge, compilation and instantiation.
+
+The actual WASM binary passes all 5,430 independent ICU4J 79.1 signed rounding
+and exact-total cases, plus invalid ABI/UTF-8/input checks, instant boundaries
+and forced-polyfill controls. Existing native Rust and TS conformance gates
+remain separate; this does not establish full Temporal compliance.
+
+[wasm-host-results.json](wasm-host-results.json) records the pinned Hermes
+capability probe. Both source and optimized bytecode report `WebAssembly` as
+undefined. No WASM benchmark runs on Hermes. Keep TS support and implement native
+Rust bindings; WASM cannot currently replace either path there. A complete WASM
+facade, its object/coercion overhead and matching full data remain unmeasured.

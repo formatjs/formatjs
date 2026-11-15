@@ -1,4 +1,5 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_test")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -23,6 +24,11 @@ formatjs_library(
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
         "reference.ts",
+        "wasm-benchmark.ts",
+        "wasm-bridge.ts",
+        "wasm-inputs.ts",
+        "wasm-test.ts",
+        "wasm-ts-entry.ts",
         "zones-entry.ts",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
@@ -59,8 +65,58 @@ formatjs_library(
         ("instant-primitives-code", "instant-primitives-entry.ts"),
         ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),
+        ("wasm-ts-code", "wasm-ts-entry.ts"),
+        ("wasm-bridge-code", "wasm-bridge.ts"),
     ]
 ]
+
+js_binary(
+    name = "wasm_benchmark",
+    data = [
+        "wasm-inputs.ts",
+        ":generated_package_json",
+        ":reference-bundle",
+        ":wasm-bridge-code",
+        ":wasm-ts-code",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//crates/temporal:wasm",
+    ],
+    entry_point = "wasm-benchmark.ts",
+)
+
+js_test(
+    name = "wasm_test",
+    size = "small",
+    args = ["$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)"],
+    data = [
+        "wasm-inputs.ts",
+        ":generated_package_json",
+        ":reference-bundle",
+        ":wasm-bridge-code",
+        ":wasm-ts-code",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_duration_fixtures",
+        "//crates/temporal:wasm",
+    ],
+    entry_point = "wasm-test.ts",
+)
+
+sh_test(
+    name = "hermes_wasm_probe",
+    size = "small",
+    srcs = ["hermes-wasm-probe.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :hermes-wasm-probe.js)",
+    ],
+    data = [
+        "hermes-wasm-probe.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
 
 [
     js_binary(

@@ -1,7 +1,8 @@
 # @formatjs/temporal
 
 Independent TypeScript and Rust Temporal implementations in progress.
-Native Hermes integration and WASM comparison remain pending. Private until implementation and
+Native Hermes integration remains pending. Initial WASM primitive measurements live in
+[benchmark notes](../../benchmarks/temporal/README.md#wasm-baseline). Private until implementation and
 conformance coverage are ready.
 
 ```ts
@@ -43,8 +44,8 @@ in the [benchmark notes](../../benchmarks/temporal/README.md).
 Track work in [Temporal implementation](../../knowledge-base/015-temporal.md).
 
 The independent `formatjs_temporal` Rust core shares parser vectors and matches
-ICU4J Gregorian fields across the full instant range. Rust bindings and WASM are
-still pending.
+ICU4J Gregorian fields across the full instant range. Rust Hermes bindings and a complete WASM facade remain pending; the core now
+builds to WASM for matched primitive benchmarks.
 
 The same 346-execution strict slice passes on real Hermes in source and optimized
 bytecode modes without reference Temporal or test exclusions. This verifies the

@@ -21,8 +21,8 @@ bazel test -c opt //crates/temporal:temporal_test
 Tests share parser vectors with TS and independently compare both Gregorian
 conversion directions with ICU4J 79.1 across Temporal's full instant range.
 
-Duration/calendar/timezone operations, Hermes native bindings and WASM remain
-incomplete. See [implementation tracking](../../knowledge-base/015-temporal.md).
+Calendar/timezone operations, Hermes native bindings and a complete WASM facade
+remain incomplete. See [implementation tracking](../../knowledge-base/015-temporal.md).
 
 `Instant::round` supports all nine Temporal modes and valid day-dividing
 increments. `Display` writes UTC ISO strings; `Instant::format` supports explicit
@@ -40,3 +40,27 @@ Calendar-relative Duration operations remain pending. An independent ICU oracle
 checks 5,430 signed rounding and exact rational-to-double total cases, including
 unsafe-integer results. Totals round once to IEEE binary64; converting the
 numerator to f64 before division would introduce double rounding.
+
+## WASM baseline
+
+```sh
+bazel build -c opt //crates/temporal:wasm
+bazel test -c opt //benchmarks/temporal:wasm_test //benchmarks/temporal:hermes_wasm_probe
+bazel run -c opt //benchmarks/temporal:wasm_benchmark
+```
+
+`:wasm` scopes the `wasm32-unknown-unknown` transition to this artifact. No new
+runtime dependencies, wasm-bindgen or wasm-opt. The stripped cdylib uses size
+optimization; its core dependency uses the normal optimized configuration.
+
+`wasm.rs` exposes a synchronous benchmark-only string ABI with separate 256-byte
+input/output buffers. It covers Instant parsing/rounding/UTC formatting, Duration
+parsing/formatting/totals and signed rounding. It does not provide JavaScript
+brands/coercions, unbounded ISO annotations, calendars or named timezone lookup.
+WASM execution matches all 5,430 independent ICU Duration cases, plus boundary,
+invalid-input and forced `temporal-polyfill` controls. This is not a complete
+Temporal WASM polyfill.
+
+Pinned Hermes has no `WebAssembly` global in source or optimized bytecode. Hermes
+support therefore needs the TS facade or native Rust bindings. Size, cold-start
+and throughput records live in [benchmark notes](../../benchmarks/temporal/README.md#wasm-baseline).

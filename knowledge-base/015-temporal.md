@@ -85,9 +85,32 @@ Duration.round remain incomplete.
 Hermes compiler and runtime both enable ES6 block scoping. The compiler uses
 `-Xes6-block-scoping`; without it, captured getter loop bindings differed in
 bytecode. Native Rust Hermes installation, remaining classes/calendars, complete
-Temporal conformance and WASM performance/size measurements remain pending.
+Temporal conformance and complete WASM facade comparisons remain pending. An
+initial matched primitive WASM baseline now exists; see below.
 
 Parsing follows the [Temporal ISO grammar](https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar)
 and [ParseISODateTime](https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime).
 Test262 remains pinned in `MODULE.bazel`; review counts and diagnostics whenever
 that pin or the selected surface changes.
+
+## WASM baseline
+
+`//crates/temporal:wasm` cross-compiles the dependency-free core through the pinned
+Bazel Rust toolchain. A benchmark-only, allocation-free string ABI covers matched
+Instant/Duration operations. Separate 256-byte buffers intentionally limit this
+initial ABI; it is not the public Temporal object model or a full WASM backend.
+The actual WASM artifact passes all 5,430 independent ICU signed rounding/total
+cases, boundary/invalid-input checks and forced JS polyfill controls.
+
+`//benchmarks/temporal:wasm_benchmark` measures TS primitives, WASM plus per-call
+JS UTF-8 transfers, and forced `temporal-polyfill` 1.0.7. It records minified/gzip
+JS, raw/gzip WASM, linear memory, cold module load/first operation from twelve
+fresh children, and nine rotating steady-state batches per workload. Ordinary
+and boundary inputs stay separate. No calendar/timezone data is included in
+either owned primitive bundle. The reference has a broader API; full-polyfill
+size or conformance cannot be inferred from these results.
+
+`//benchmarks/temporal:hermes_wasm_probe` runs source and optimized bytecode on
+the pinned Hermes overlay. Both report `WebAssembly` as undefined. No WASM timing
+is claimed for Hermes; TS and native Rust installation remain required paths.
+See [recorded measurements](../benchmarks/temporal/README.md#wasm-baseline).

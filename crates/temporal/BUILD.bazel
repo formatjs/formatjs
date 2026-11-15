@@ -1,7 +1,32 @@
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
+load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load(":wasm.bzl", "temporal_wasm")
 
 # gazelle:ignore
+rust_shared_library(
+    name = "wasm_core",
+    srcs = ["wasm.rs"],
+    crate_name = "formatjs_temporal_wasm",
+    crate_root = "wasm.rs",
+    edition = "2024",
+    rustc_flags = [
+        "-Copt-level=z",
+        "-Cstrip=symbols",
+        "-Cpanic=abort",
+    ],
+    target_compatible_with = ["@platforms//cpu:wasm32"],
+    deps = [":temporal"],
+)
+
+temporal_wasm(
+    name = "wasm",
+    srcs = [":wasm_core"],
+    outs = ["temporal-core.wasm"],
+    cmd = "cp $< $@",
+    visibility = ["//visibility:public"],
+)
+
 rust_library(
     name = "temporal",
     srcs = [
