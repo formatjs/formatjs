@@ -146,3 +146,10 @@ copy_to_bin(
     srcs = [":test262-harness"],
     visibility = ["//visibility:public"],
 )
+
+# Complete upstream Instant corpus, used by both focused and full diagnostics.
+copy_to_bin(
+    name = "test262-temporal-instant-copy",
+    srcs = glob(["test/built-ins/Temporal/Instant/**/*.js"]),
+    visibility = ["@//benchmarks/temporal:__pkg__"],
+)

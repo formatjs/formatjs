@@ -24,13 +24,13 @@ conversion, ISO day addition, possible instants and earlier/later/compatible/rej
 disambiguation. `zones.ts` decodes only the requested canonical zone through the
 existing datetimeformat unpacker. No host Intl timezone lookup.
 
-No Temporal classes, coercion/branding rules, parsers, durations, rounding,
-aliases or transition-query API. `calendar.ts` separately supplies numeric
+Experimental `instant.ts` adds an Instant slice; durations, rounding, aliases
+and transition queries remain unimplemented. `calendar.ts` separately supplies numeric
 ISO/Hebrew arithmetic. Other optional TS calendars still use temporal-polyfill;
 they cannot yet serve as an independent replacement.
 The gap resolver assumes IANA gaps are isolated within its two-day window.
 That assumption is tested here, not a general-purpose transition-index contract.
-No Test262 conformance claim.
+No full Temporal conformance claim.
 
 ## Independent checks
 
@@ -67,6 +67,58 @@ negative dates; that unreliable range is excluded from the ICU control, not
 claimed as validated by it. Separate forced-polyfill checks cover both full
 Temporal date boundaries, leap-month/year arithmetic and signed durations.
 The earlier size/runtime records below predate this separate calendar module.
+
+## Instant facade and Test262 slice
+
+`instant.ts` adds the Instant constructor, numeric factories, private branding,
+read-only epoch getters, `valueOf`, and limited `from`/`equals`. Constructor input
+coercion precedes observable `newTarget.prototype` access; a construct trap avoids
+JS's normal allocation-before-body order. Static factories ignore subclass
+receivers. WeakMap slots stay off instances and reject proxies/forged receivers.
+
+String support is an explicit RFC 3339-style subset: extended years, nanoseconds,
+UTC/numeric offsets and leap-second normalization. Basic ISO forms, RFC 9557
+annotations, ZonedDateTime input and full serialization remain unsupported.
+Cross-realm slot sharing and foreign-realm default-prototype fallback remain open.
+This slice is not installed globally outside the test prelude.
+
+```sh
+bazel test -c opt //benchmarks/temporal:instant_test //benchmarks/temporal:instant_test262
+bazel run -c opt //benchmarks/temporal:facade_benchmark
+# Diagnostic: expected to fail until the remaining Instant API exists.
+bazel test -c opt //benchmarks/temporal:instant_test262_full
+```
+
+The strict slice executes all constructor/prototype-root tests and complete
+numeric-factory, epoch-getter, valueOf and toStringTag directories from the pinned
+Test262 checkout: **94/94 executions pass**. No individual-file exclusions or
+expected-failure baseline. The prelude replaces the entire native Temporal
+namespace in every realm, including recursively created realms.
+
+The full Instant corpus is a separate manual raw diagnostic: **934 executions,
+202 passes, 732 failures**. Missing arithmetic, rounding, serialization and parser
+forms dominate. Negative cases can pass incidentally when methods/types are
+missing; these aggregate passes do not establish whole-method conformance.
+`conformance-results.json` records counts and failure areas. Raw failures remain
+in Bazel test output; the full diagnostic does not turn them into a green gate.
+
+`facade-results.json` measures the supported object paths against forced
+`temporal-polyfill` 1.0.7 classes, seven alternating batches of 50,000 after 5,000
+warmups. One shared-host V8 run, median ns/operation:
+
+| Operation                                    | Facade | Reference |
+| -------------------------------------------- | -----: | --------: |
+| Construct, read epochNanoseconds             |    375 |       293 |
+| fromEpochNanoseconds, read epochMilliseconds |    408 |       466 |
+| fromEpochMilliseconds, read epochNanoseconds |    305 |       341 |
+
+Constructor is slower; factories modestly faster in this run. The numeric
+kernel's earlier advantage does not translate into an established object-API
+win. Profile matched full behavior before choosing a runtime architecture.
+Minified gzip: Instant slice **2,085 bytes**, independent ISO/Hebrew arithmetic
+**1,822 bytes**. These are separate bundles, exclude timezone data, and implement
+far less API than the 19,393-byte reference. Sizes are not additive or a full
+Temporal size estimate.
 
 ## Measured footprint
 
@@ -125,9 +177,10 @@ No browser/Hermes measurement yet.
 
 ## Next decision
 
-Keep TS for the next spike. Build the Temporal object facade and independent
-calendar reverse/arithmetic operations; use applicable Test262 suites. Then
-compare equivalent standalone and shared-data packages on V8 and Hermes/browser
+Continue TS by connecting the ISO/Hebrew kernel to a PlainDate facade, completing
+instant parsing/serialization and replacing the gap-window assumption with a
+transition index. Expand strict Test262 coverage as each complete surface lands.
+Then compare equivalent standalone/shared-data packages on V8 and Hermes/browser
 engines. Consider WASM after an equivalent core demonstrates a concrete benefit.
 
 References: [ICU BasicTimeZone](https://unicode-org.github.io/icu-docs/apidoc/dev/icu4j/com/ibm/icu/util/BasicTimeZone.html),

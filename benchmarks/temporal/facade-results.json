@@ -1,0 +1,75 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "platform": "linux",
+  "arch": "x64",
+  "scope": "Numeric Instant constructor/factories/getters only, versus forced temporal-polyfill 1.0.7 classes. Partial API; no full-polyfill size or conformance claim.",
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "minified": 5098,
+      "minifiedGzip": 2085
+    },
+    {
+      "file": "calendar-code.js",
+      "minified": 4332,
+      "minifiedGzip": 1822
+    },
+    {
+      "file": "reference-bundle.js",
+      "minified": 56696,
+      "minifiedGzip": 19393
+    }
+  ],
+  "throughput": [
+    {
+      "name": "construct/get epochNanoseconds",
+      "oursMedianNs": 374.86879999999985,
+      "referenceMedianNs": 292.93210000000045,
+      "samples": [
+        [
+          342.7019799999993, 343.09987999999976, 356.39159999999947,
+          374.86879999999985, 465.78897999999975, 600.8442600000001, 630.88512
+        ],
+        [
+          220.32337999999982, 257.73121999999944, 283.2803999999999,
+          292.93210000000045, 428.0728799999997, 914.05348, 986.7941199999996
+        ]
+      ]
+    },
+    {
+      "name": "fromEpochNanoseconds/get epochMilliseconds",
+      "oursMedianNs": 407.8784400000007,
+      "referenceMedianNs": 465.6779800000004,
+      "samples": [
+        [
+          305.46080000000075, 324.75353999999925, 395.80305999999837,
+          407.8784400000007, 504.9094200000001, 533.0025599999999,
+          591.9289600000002
+        ],
+        [
+          328.50243999999975, 329.91277999999966, 403.6213199999998,
+          465.6779800000004, 480.67676000000006, 560.7399799999985,
+          690.2801599999998
+        ]
+      ]
+    },
+    {
+      "name": "fromEpochMilliseconds/get epochNanoseconds",
+      "oursMedianNs": 305.3409600000009,
+      "referenceMedianNs": 341.2369599999988,
+      "samples": [
+        [
+          276.21149999999943, 280.91515999999956, 282.08844, 305.3409600000009,
+          501.48829999999856, 516.6078000000016, 1015.6145199999991
+        ],
+        [
+          269.5799999999963, 316.4403799999991, 333.0083600000012,
+          341.2369599999988, 580.507520000001, 589.7459800000001,
+          642.0455399999992
+        ]
+      ]
+    }
+  ],
+  "sink": "0"
+}

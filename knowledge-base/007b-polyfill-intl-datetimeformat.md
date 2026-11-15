@@ -285,6 +285,9 @@ Its separate ISO/Hebrew arithmetic experiment adds reverse field conversion and
 date addition without the TS formatter calendars’ existing Temporal dependency.
 ICU conversion fixtures use a bounded range; full-range boundary checks use the
 forced JS Temporal implementation. See the experiment README for oracle limits.
+The subsequent Instant facade has a strict 94-execution Test262 slice and a
+separate failing full-corpus diagnostic. Native Temporal is replaced in every
+test realm; the slice does not establish full Temporal compliance.
 
 ## Benchmarks
 

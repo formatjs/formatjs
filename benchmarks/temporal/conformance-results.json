@@ -1,0 +1,29 @@
+{
+  "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+  "nativeFallback": false,
+  "note": "Whole native Temporal namespace replaced in every realm. Focused supported slice is strict. Full corpus is a failing manual diagnostic, not a passing baseline.",
+  "selected": {
+    "executions": 94,
+    "passes": 94,
+    "failures": 0
+  },
+  "full": {
+    "executions": 934,
+    "passes": 202,
+    "failures": 732,
+    "failuresByArea": {
+      "compare": 60,
+      "from": 28,
+      "prototype/add": 52,
+      "prototype/equals": 22,
+      "prototype/round": 80,
+      "prototype/since": 140,
+      "prototype/subtract": 50,
+      "prototype/toJSON": 20,
+      "prototype/toLocaleString": 4,
+      "prototype/toString": 102,
+      "prototype/toZonedDateTimeISO": 36,
+      "prototype/until": 138
+    }
+  }
+}

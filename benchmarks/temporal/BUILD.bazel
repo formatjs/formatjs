@@ -1,4 +1,5 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -19,6 +20,10 @@ formatjs_library(
     srcs = [
         "benchmark.ts",
         "calendar.ts",
+        "facade-benchmark.ts",
+        "instant.ts",
+        "instant-prelude.ts",
+        "instant-string.ts",
         "kernel.ts",
         "reference.ts",
         "zones.ts",
@@ -81,6 +86,8 @@ formatjs_test(
     )
     for name, entry in [
         ("kernel-code", "kernel.ts"),
+        ("calendar-code", "calendar.ts"),
+        ("instant-code", "instant.ts"),
         ("kernel-all-zones", "zones.ts"),
         ("reference-bundle", "reference.ts"),
     ]
@@ -110,4 +117,113 @@ formatjs_test(
         "//:node_modules/temporal-polyfill",
         "//:node_modules/vitest",
     ],
+)
+
+formatjs_test(
+    name = "instant_test",
+    srcs = ["instant.test.ts"],
+    deps = [
+        ":temporal",
+        "//:node_modules/vitest",
+    ],
+)
+
+rolldown_bundle(
+    name = "instant-payload",
+    srcs = [
+        ":srcs",
+        ":temporal",
+    ],
+    entry_point = "instant-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = ["//packages/ecma262-abstract"],
+)
+
+js_run_binary(
+    name = "instant-realm-prelude",
+    srcs = ["instant-payload.js"],
+    outs = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath instant-payload.js)",
+        "--out",
+        "$(rootpath instant-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath instant-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+_INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
+
+_INSTANT_PATTERNS = [
+    _INSTANT_ROOT + "/*.js",
+    _INSTANT_ROOT + "/prototype/*.js",
+] + [_INSTANT_ROOT + "/" + directory + "/**/*.js" for directory in [
+    "fromEpochMilliseconds",
+    "fromEpochNanoseconds",
+    "prototype/epochMilliseconds",
+    "prototype/epochNanoseconds",
+    "prototype/valueOf",
+    "prototype/toStringTag",
+]]
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = name,
+        size = "small" if name == "instant_test262" else "large",
+        args = [
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath instant-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            "instant-prelude-source.js",
+            "instant-realm-prelude.js",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        ],
+        env = {"TZ": "UTC"},
+        exec_properties = {
+            "EstimatedCPU": "4",
+            "EstimatedMemory": "2GB",
+        },
+        node_toolchain = "//tools/test262:node-runtime",
+        tags = tags + ["cpu:4"],
+    )
+    for name, patterns, tags in [
+        ("instant_test262", _INSTANT_PATTERNS, []),
+        (
+            "instant_test262_full",
+            [_INSTANT_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+    ]
+]
+
+js_binary(
+    name = "facade_benchmark",
+    data = [
+        ":calendar-code",
+        ":generated_package_json",
+        ":instant-code",
+        ":reference-bundle",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+    ],
+    entry_point = "facade-benchmark.ts",
 )
