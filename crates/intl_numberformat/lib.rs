@@ -39,6 +39,7 @@ pub struct NumberFormat {
     resolved: ResolvedOptions,
     system: String,
     plural_digits: Digits,
+    style_plans: Option<[usize; 6]>,
 }
 impl NumberFormat {
     pub(crate) fn new(
@@ -116,12 +117,36 @@ impl NumberFormat {
         };
         let plural_digits = Digits::new(&plural_options, false).map_err(options::digit_error)?;
         let system = data.numbers.system(&system)?.to_owned();
-        Ok(Self {
+        let mut formatter = Self {
             data,
             resolved,
             system,
             plural_digits,
-        })
+            style_plans: None,
+        };
+        formatter.style_plans = formatter
+            .data
+            .numbers
+            .pattern_plans
+            .as_ref()
+            .and_then(|patterns| patterns.standard.get(formatter.style_pattern()))
+            .and_then(|ids| ids.as_slice().try_into().ok());
+        Ok(formatter)
+    }
+
+    fn style_pattern(&self) -> &str {
+        match self.resolved.style.as_str() {
+            "currency" if self.resolved.currency_display.as_deref() != Some("name") => {
+                let data = &self.data.numbers.currency[&self.system];
+                if self.resolved.currency_sign.as_deref() == Some("accounting") {
+                    &data.accounting
+                } else {
+                    &data.standard
+                }
+            }
+            "percent" => &self.data.numbers.percent[&self.system],
+            _ => &self.data.numbers.decimal[&self.system].standard,
+        }
     }
     pub fn resolved_options(&self) -> &ResolvedOptions {
         &self.resolved

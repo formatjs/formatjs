@@ -133,6 +133,7 @@ export interface RawCurrencyData {
   currencySpacing: CurrencySpacingData
   standard: string
   accounting: string
+  /** Legacy CLDR payloads; notation now uses decimal compact patterns for every style. */
   short?: Record<DecimalFormatNum, LDMLPluralRuleMap<string>>
   // IMPORTANT: We're making the assumption here that currency unitPattern
   // are the same for all LDMLPluralRule

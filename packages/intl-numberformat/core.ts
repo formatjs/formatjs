@@ -363,10 +363,6 @@ NumberFormat.__addLocaleData = function __addLocaleData(
       compactTables.add(source.numbers.decimal[system].short)
       compactTables.add(source.numbers.decimal[system].long)
     }
-    for (const system of Object.keys(source.numbers.currency)) {
-      const short = source.numbers.currency[system].short
-      if (short) compactTables.add(short)
-    }
     for (const table of compactTables) invalidateCompactPatterns(table)
     registerLocaleData(
       locale,

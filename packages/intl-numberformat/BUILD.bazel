@@ -495,6 +495,7 @@ formatjs_test(
         "tests/misc.test.ts",
         "tests/notation-compact-ko-KR.test.ts",
         "tests/notation-compact-zh-TW.test.ts",
+        "tests/notation-composition.test.ts",
         "tests/percent/percentTest.ts",
         "tests/signDisplay-currency-zh-TW.test.ts",
         "tests/signDisplay-zh-TW.test.ts",

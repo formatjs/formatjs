@@ -13,6 +13,115 @@ fn options(value: Value) -> Options {
 }
 
 #[test]
+fn styles_wrap_unsigned_compact_notation() {
+    let registry = registry();
+    let percent = registry
+        .create(
+            &["en".into()],
+            &options(json!({
+                "style":"percent", "notation":"compact"
+            })),
+        )
+        .unwrap();
+    for (value, expected) in [
+        ("12.34", "1.2K%"),
+        ("-12.34", "-1.2K%"),
+        ("0.5", "50%"),
+        ("9.994", "999%"),
+        ("9.995", "1K%"),
+        ("9999.5", "1M%"),
+        ("-0", "-0%"),
+        ("NaN", "NaN%"),
+        ("Infinity", "∞%"),
+        ("-Infinity", "-∞%"),
+    ] {
+        assert_eq!(percent.format(value).unwrap(), expected, "{value}");
+    }
+    assert_eq!(
+        serde_json::to_value(percent.format_to_parts("12.34").unwrap()).unwrap(),
+        json!([
+            {"type":"integer","value":"1"},
+            {"type":"decimal","value":"."},
+            {"type":"fraction","value":"2"},
+            {"type":"compact","value":"K"},
+            {"type":"percentSign","value":"%"}
+        ])
+    );
+    assert_eq!(percent.format_range("12", "13").unwrap(), "1.2K% – 1.3K%");
+    assert_eq!(percent.format_range("12", "12").unwrap(), "~1.2K%");
+    let accounting = registry
+        .create(
+            &["en".into()],
+            &options(json!({
+                "style":"currency", "currency":"USD", "currencySign":"accounting",
+                "notation":"compact", "compactDisplay":"long"
+            })),
+        )
+        .unwrap();
+    assert_eq!(accounting.format("-1234").unwrap(), "($1.2 thousand)");
+    assert_eq!(
+        accounting.format_range("-2000", "-1000").unwrap(),
+        "($2 thousand) – ($1 thousand)"
+    );
+    for (grouping, expected) in [
+        (json!("min2"), "1,000,000,000T"),
+        (json!(false), "1000000000T"),
+        (json!("always"), "1,000,000,000T"),
+    ] {
+        let formatter = registry
+            .create(
+                &["en".into()],
+                &options(json!({
+                    "notation":"compact", "useGrouping":grouping
+                })),
+            )
+            .unwrap();
+        assert_eq!(formatter.format("1e21").unwrap(), expected);
+    }
+}
+
+#[test]
+fn range_collapse_preserves_endpoint_signs_and_accounting_pairs() {
+    let registry = registry();
+    let meter = registry
+        .create(
+            &["en".into()],
+            &options(json!({
+                "style":"unit", "unit":"meter", "unitDisplay":"long"
+            })),
+        )
+        .unwrap();
+    assert_eq!(meter.format_range("-3", "-2").unwrap(), "-3 – -2 meters");
+    assert_eq!(meter.format_range("-3", "2").unwrap(), "-3–2 meters");
+    let parts = meter.format_range_to_parts("-3", "-2").unwrap();
+    assert_eq!(
+        parts
+            .iter()
+            .filter(|part| part.kind == "minusSign")
+            .map(|part| part.source)
+            .collect::<Vec<_>>(),
+        vec![Some("startRange"), Some("endRange")]
+    );
+}
+
+#[test]
+fn numberless_compact_template_still_keeps_style_and_sign() {
+    let mut pack: Value = serde_json::from_str(include_str!(env!("FORMATJS_NUMBER_EN"))).unwrap();
+    pack["data"]["numbers"]["decimal"]["latn"]["short"]["1000"] = json!({"other":"mille"});
+    let mut registry = Registry::default();
+    registry.add_locale_data(&pack.to_string()).unwrap();
+    let percent = registry
+        .create(
+            &["en".into()],
+            &options(json!({
+                "style":"percent", "notation":"compact"
+            })),
+        )
+        .unwrap();
+    assert_eq!(percent.format("-10").unwrap(), "-mille%");
+}
+
+#[test]
 fn standard_decimal_signs_precede_finite_and_special_parts() {
     let number = registry()
         .create(
@@ -360,11 +469,13 @@ fn generated_and_legacy_pattern_packs_match() {
     for profile in [
         json!({}),
         json!({"style":"percent"}),
+        json!({"style":"percent","notation":"compact"}),
         json!({"style":"currency","currency":"CHF","currencyDisplay":"code"}),
         json!({"style":"currency","currency":"USD","currencySign":"accounting"}),
         json!({"notation":"scientific"}),
         json!({"notation":"compact"}),
         json!({"style":"currency","currency":"USD","notation":"compact"}),
+        json!({"style":"currency","currency":"USD","currencySign":"accounting","notation":"compact","compactDisplay":"long"}),
     ] {
         for sign in ["auto", "always", "never"] {
             let mut profile = profile.clone();

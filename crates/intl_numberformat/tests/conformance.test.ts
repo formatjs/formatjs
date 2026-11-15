@@ -168,6 +168,20 @@ it('compares number styles and notations with TS across locale families', () => 
   const options: NumberFormatOptions[] = [
     {},
     {style: 'percent'},
+    {style: 'percent', notation: 'compact'},
+    {
+      style: 'percent',
+      notation: 'compact',
+      compactDisplay: 'long',
+      signDisplay: 'always',
+    },
+    {
+      style: 'currency',
+      currency: 'USD',
+      currencySign: 'accounting',
+      notation: 'compact',
+      compactDisplay: 'long',
+    },
     {style: 'currency', currency: 'USD'},
     {style: 'currency', currency: 'JPY'},
     {
@@ -221,6 +235,8 @@ it('compares every generated locale for decimal, currency, percent, unit and com
     {style: 'currency', currency: 'USD'},
     {style: 'currency', currency: 'USD', currencyDisplay: 'name'},
     {style: 'percent'},
+    {style: 'percent', notation: 'compact'},
+    {style: 'currency', currency: 'USD', notation: 'compact'},
     {style: 'unit', unit: 'day', unitDisplay: 'long'},
     {notation: 'compact'},
   ]

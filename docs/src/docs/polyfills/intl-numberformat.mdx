@@ -107,6 +107,17 @@ The normal polyfill entry point replaces native implementations missing this beh
 - **`'compact'`** - Compact notation (e.g., "1.2K", "1.2M")
   - `compactDisplay`: `'short'` or `'long'`
 
+Compact notation fills the number slot inside the selected style and sign
+pattern. Percent output retains `percentSign` parts; currency output retains
+its currency/accounting pattern and honors `compactDisplay: 'long'`. Grouping
+still follows `useGrouping`, including numbers beyond the largest compact suffix.
+
+This follows ECMA-402's separate style and notation patterns. Native ICU-based
+formatters can differ: compact percent may use `unit` parts or different percent
+placement, and compact currency may use a different pattern. These model gaps
+are discussed in [tc39/ecma402#439](https://github.com/tc39/ecma402/issues/439) and
+the [ICU/spec analysis](https://github.com/formatjs/formatjs/blob/main/knowledge-base/audits/2026-11-14-compact-percent-icu-spec.md).
+
 #### Currency Options
 
 - **currencyDisplay**: `'symbol'`, `'narrowSymbol'`, `'code'`, `'name'`

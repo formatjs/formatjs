@@ -19,12 +19,20 @@ it('keeps compiled and legacy text, parts, and approximate ranges identical', ()
   const profiles: NumberFormatOptions[] = [
     {},
     {style: 'percent'},
+    {style: 'percent', notation: 'compact'},
     {style: 'currency', currency: 'CHF', currencyDisplay: 'code'},
     {style: 'currency', currency: 'USD', currencySign: 'accounting'},
     {style: 'unit', unit: 'meter', unitDisplay: 'long'},
     {notation: 'scientific'},
     {notation: 'compact'},
     {style: 'currency', currency: 'USD', notation: 'compact'},
+    {
+      style: 'currency',
+      currency: 'USD',
+      currencySign: 'accounting',
+      notation: 'compact',
+      compactDisplay: 'long',
+    },
   ]
   const collect = () =>
     profiles.flatMap(options =>

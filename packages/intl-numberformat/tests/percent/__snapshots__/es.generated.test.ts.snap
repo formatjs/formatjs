@@ -18,15 +18,23 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "millón",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 millón - +2 millones"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 millón - 2 millones %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=long 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
   },
@@ -52,11 +60,6 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
   },
   {
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
@@ -69,6 +72,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
     "source": "endRange",
     "type": "compact",
     "value": "millones",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -91,15 +104,23 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "M",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 M - +2 M"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 M - 2 M %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDisplay=short 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
   },
@@ -125,11 +146,6 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
   },
   {
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
@@ -142,6 +158,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=always, compactDis
     "source": "endRange",
     "type": "compact",
     "value": "M",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -160,10 +186,18 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "millón",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 millón - 2 millones"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 millón - 2 millones %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
 [
@@ -202,6 +236,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "millones",
   },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -219,10 +263,18 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "M",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 M - 2 M"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 M - 2 M %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
 [
@@ -261,6 +313,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "M",
   },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -282,15 +344,23 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "millón",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 millón - +2 millones"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 millón - 2 millones %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
   },
@@ -316,11 +386,6 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
   },
   {
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
@@ -333,6 +398,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
     "source": "endRange",
     "type": "compact",
     "value": "millones",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -355,15 +430,23 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "M",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 M - +2 M"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 M - 2 M %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
   {
-    "source": "startRange",
+    "source": "shared",
     "type": "plusSign",
     "value": "+",
   },
@@ -389,11 +472,6 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
   },
   {
     "source": "endRange",
-    "type": "plusSign",
-    "value": "+",
-  },
-  {
-    "source": "endRange",
     "type": "integer",
     "value": "2",
   },
@@ -406,6 +484,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=exceptZero, compac
     "source": "endRange",
     "type": "compact",
     "value": "M",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -424,10 +512,18 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "millón",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 millón - 2 millones"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 millón - 2 millones %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=long 3`] = `
 [
@@ -466,6 +562,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "millones",
   },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -483,10 +589,18 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "M",
   },
+  {
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 M - 2 M"`;
+exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 M - 2 M %"`;
 
 exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisplay=short 3`] = `
 [
@@ -524,6 +638,16 @@ exports[`Intl.NumberFormat es > notation=compact, signDisplay=never, compactDisp
     "source": "endRange",
     "type": "compact",
     "value": "M",
+  },
+  {
+    "source": "shared",
+    "type": "literal",
+    "value": " ",
+  },
+  {
+    "source": "shared",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
