@@ -907,3 +907,42 @@ instantiate: 1.68/1.45 ms; first native/calendar/timezone/Duration calls:
 3.15/9.75/1.11/1.58 ms. JS/TS already warm; these exclude cold JS loading.
 Remaining date/zoned orchestration, SDK distribution and full-backend artifact
 sizes remain open.
+
+## Native plain date arithmetic
+
+`hermes-plain-arithmetic-results.json`, `wasm-plain-arithmetic-results.json` and
+`plain-arithmetic-backend-size-results.json` extend the commands to28 workloads.
+Existing Date add/difference cases now use high-level Rust operations. Three new
+PlainDateTime cases measure add +format, difference +format and round +format.
+Differences span one month, three days, two hours and481 nanoseconds; rounding
+uses125 microseconds and halfEven. Eight inputs, parity checks, warmup/sample
+counts, transition overrides and Intl providers match the Duration profile.
+ISO throughput only; all16 owned calendar and IANA packs remain included.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Date add +format:41.45 /29.32 /11.90.
+- Date difference +format:58.13 /26.60 /13.97.
+- DateTime add +format:51.98 /36.30 /28.83.
+- DateTime difference +format:61.43 /27.80 /28.01.
+- DateTime round +format:21.07 /19.14 /18.91.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Date add +format:5.60 /23.09 /2.19.
+- Date difference +format:6.14 /24.47 /24.54.
+- DateTime add +format:5.93 /28.81 /5.51.
+- DateTime difference +format:6.05 /25.20 /69.12.
+- DateTime round +format:1.82 /15.53 /3.78.
+
+Native operations reduce repeated crossings on Hermes; all five cases improve
+against TS here. WASM loses all five against TS. One host and partial backend
+coverage do not establish a default-backend choice.
+
+Binary:3,335,338 raw /415,898 gzip bytes. Consumer bundles:TS361,031 gzip;
+WASM JS363,515 +binary415,898 =779,413. Separate ESM:TS362,922 versus WASM779,625.
+Native packs still duplicate retained TS fallback data. Compile/instantiate:
+1.70/1.38 ms; first native/calendar/timezone/Duration operations:
+3.07/9.79/1.13/1.73 ms. JS/TS already warm; these exclude cold JS loading.
+Date parsing/formatting, remaining short-date/zoned orchestration and full native
+SDK distribution remain open; these are partial-backend measurements.

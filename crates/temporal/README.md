@@ -15,7 +15,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Native Hermes bindings and complete WASM facades remain pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
+checked. Experimental Hermes/WASM bindings delegate normalized operations to this core. Complete native orchestration, Hermes SDK installation and Intl integration remain pending.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
@@ -33,8 +33,9 @@ relative Duration tests share 19,440 calendar-span rounds, including 6,480 exact
 relative totals. Relative comparisons reuse the same future-transition controls.
 Separate cases cover range edges, adjacent gaps and recurring leap-only rules.
 
-The measured WASM ABI covers matched Instant/Duration primitives, excluding
-calendar/timezone data and the public object model. Pinned Hermes exposes no
+Initial WASM primitive measurements cover matched Instant/Duration kernels, excluding
+calendar/timezone data and the public object model. Later partial-facade profiles
+include all16 native calendar packs, IANA data and retained TS fallback packs. Pinned Hermes exposes no
 `WebAssembly` in either source or bytecode mode. See
 [benchmark scope and results](../../benchmarks/temporal/README.md#wasm-baseline)
 and [completion plan](../../knowledge-base/015-temporal.md).
@@ -500,3 +501,37 @@ parse/add still pay bridge costs. WASM loses all five Duration cases to TS on th
 recorded host. Consumer gzip: TS 360,908 bytes; WASM JS +binary 773,668 bytes,
 including retained TS fallback packs. See `benchmarks/temporal/README.md` and its
 Duration snapshots for methods, reference timings and startup costs.
+
+## Native plain date arithmetic
+
+Hermes/WASM now delegate PlainDate and PlainDateTime add/subtract and
+until/since to typed Rust engines. PlainDateTime rounding also runs in Rust,
+including midnight carry and day rounding. JS retains operand coercion, option
+access order, brands/slots and object allocation. Already-created operands use
+the active backend; selected native errors propagate without a TS retry.
+Five operations bring the normalized bridge to42 operations. WASM ABI6 rejects
+older assets before activation. Date parsing/formatting and remaining short-date/
+zoned orchestration still use TS; complete native SDK installation remains open.
+
+Independent ICU controls run through each actual namespace on TS, Hermes
+source/HBC and the published WASM package:840 arithmetic rows,7740 clock rounds,
+126 day rounds, plus existing plain-relative date/date-time differences and all16
+calendar windows. Arithmetic verifies both add and subtract, nanosecond carries,
+metadata and out-of-range endpoints. Per-operation faults isolate all five new
+native operations using operands created before backend activation.
+
+PlainDate retains its extra minimum boundary day without inventing an invalid
+PlainDateTime midnight. Direct ABI controls cover that boundary, negative
+nanosecond carry and invalid units/increments/calendar IDs.
+
+Validation:55 regression targets pass, including eight full native class suites
+(9090 executions per Hermes source/HBC and WASM mode), default TS full Date1308,
+DateTime1552 and Duration1086, independent ICU controls, package checks and Rust
+core/ABI tests. No new exclusions. Backend remains hybrid.
+
+Matched Hermes bytecode benchmarks improve all five Date/DateTime arithmetic
+cases against TS. Date differences:58.13 to26.60 microseconds; DateTime
+differences:61.43 to27.80. WASM loses all five to TS on this host. Consumer gzip:
+TS361,031 bytes; WASM JS +binary779,413, including retained fallback data. See
+`benchmarks/temporal/README.md` and the plain-arithmetic snapshots for methods,
+reference comparisons, startup costs and scope.

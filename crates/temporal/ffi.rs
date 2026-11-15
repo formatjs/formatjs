@@ -5,8 +5,8 @@ use crate::{
     TransitionDirection,
 };
 use crate::{
-    DateTimeUnit, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainDate, PlainTime,
-    Precision, ResolvedTimeZone, RoundingMode, TimeUnit, ZonedDateTime,
+    DateTimeUnit, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainDate,
+    PlainDateTime, PlainTime, Precision, ResolvedTimeZone, RoundingMode, TimeUnit, ZonedDateTime,
 };
 use serde_json::{Value, json};
 use std::{
@@ -620,6 +620,111 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+fn plain_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    let calendar =
+        calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let subtract = || request["subtract"].as_bool().ok_or(Error::InvalidDuration);
+    let since = || {
+        request["since"]
+            .as_bool()
+            .ok_or(Error::InvalidRoundingOptions)
+    };
+    let overflow = || -> Result<crate::Overflow, Error> {
+        Ok(match calendar_overflow(request)? {
+            Overflow::Constrain => crate::Overflow::Constrain,
+            Overflow::Reject => crate::Overflow::Reject,
+        })
+    };
+    let unit = |key: &str| -> Result<DateTimeUnit, Error> {
+        request[key]
+            .as_str()
+            .ok_or(Error::InvalidRoundingOptions)?
+            .parse()
+    };
+    let increment = || -> Result<u32, Error> {
+        integer(request.get("increment"), None)?
+            .try_into()
+            .map_err(|_| Error::InvalidRoundingOptions)
+    };
+    if op.ends_with("PlainDate") {
+        let value =
+            PlainDate::from_epoch_day_in(integer(request.get("epochDay"), None)?, calendar)?;
+        return match op {
+            "addPlainDate" => {
+                let duration = duration(request)?;
+                let result = if subtract()? {
+                    value.checked_subtract(duration, overflow()?)?
+                } else {
+                    value.checked_add(duration, overflow()?)?
+                };
+                Ok(json!(result.epoch_day()))
+            }
+            "differencePlainDate" => {
+                let other =
+                    PlainDate::from_epoch_day_in(integer(request.get("other"), None)?, calendar)?;
+                let (largest, smallest, increment, mode) = (
+                    unit("largest")?,
+                    unit("smallest")?,
+                    increment()?,
+                    mode(request)?,
+                );
+                Ok(duration_record(if since()? {
+                    value.since(other, largest, smallest, increment, mode)?
+                } else {
+                    value.until(other, largest, smallest, increment, mode)?
+                }))
+            }
+            _ => Err(Error::InvalidSyntax),
+        };
+    }
+    let value =
+        PlainDateTime::from_epoch_nanoseconds_in(decimal(request, "nanoseconds")?, calendar)?;
+    match op {
+        "addPlainDateTime" => {
+            let duration = duration(request)?;
+            let result = if subtract()? {
+                value.checked_subtract(duration, overflow()?)?
+            } else {
+                value.checked_add(duration, overflow()?)?
+            };
+            Ok(json!(result.epoch_nanoseconds().to_string()))
+        }
+        "differencePlainDateTime" => {
+            let other =
+                PlainDateTime::from_epoch_nanoseconds_in(decimal(request, "other")?, calendar)?;
+            let (largest, smallest, increment, mode) = (
+                unit("largest")?,
+                unit("smallest")?,
+                increment()?,
+                mode(request)?,
+            );
+            Ok(duration_record(if since()? {
+                value.since(other, largest, smallest, increment, mode)?
+            } else {
+                value.until(other, largest, smallest, increment, mode)?
+            }))
+        }
+        "roundPlainDateTime" => {
+            let unit = unit("unit")?;
+            let increment = increment()?;
+            let mode = mode(request)?;
+            let result = if unit == DateTimeUnit::Day {
+                if increment != 1 {
+                    return Err(Error::InvalidRoundingOptions);
+                }
+                value.round_day(mode)?
+            } else {
+                value.round(
+                    unit.time().ok_or(Error::InvalidRoundingOptions)?,
+                    increment,
+                    mode,
+                )?
+            };
+            Ok(json!(result.epoch_nanoseconds().to_string()))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parseInstant" {
         return Ok(json!(
@@ -713,12 +818,17 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones-duration","calls":CALLS.load(Ordering::Relaxed),"operations":["transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain","calls":CALLS.load(Ordering::Relaxed),"operations":["addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "transformDuration"
+        "addPlainDate"
+            | "addPlainDateTime"
+            | "differencePlainDate"
+            | "differencePlainDateTime"
+            | "roundPlainDateTime"
+            | "transformDuration"
             | "parseDuration"
             | "validateDuration"
             | "formatDuration"
@@ -779,6 +889,9 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let days = integer(request.get("days"), None)?;
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
+            }
+            _ if op.ends_with("PlainDate") || op.ends_with("PlainDateTime") => {
+                plain_operation(op, &request)
             }
             _ if op.ends_with("Duration") => duration_operation(op, &request),
             _ if op.starts_with("timeZone") => time_zone_operation(op, &request),

@@ -4,7 +4,7 @@ use formatjs_temporal::ffi::{
 
 #[unsafe(no_mangle)]
 pub extern "C" fn temporal_abi_version() -> u32 {
-    5
+    6
 }
 
 #[unsafe(no_mangle)]

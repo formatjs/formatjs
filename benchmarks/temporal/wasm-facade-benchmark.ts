@@ -34,6 +34,18 @@ function measure(namespace: typeof reference): unknown[] {
   const expectedDates = strings.map(value =>
     reference.PlainDate.from(value.slice(0, 10))
   )
+  const dateTimes = strings.map(value =>
+    namespace.PlainDateTime.from(value.slice(0, -6))
+  )
+  const referenceDateTimes = strings.map(value =>
+    reference.PlainDateTime.from(value.slice(0, -6))
+  )
+  const dateTimeEnds = dateTimes.map(value =>
+    value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+  )
+  const referenceDateTimeEnds = referenceDateTimes.map(value =>
+    value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+  )
   const yearMonths = dates.map((value, index) =>
     value.toPlainYearMonth().add({months: index})
   )
@@ -240,6 +252,53 @@ function measure(namespace: typeof reference): unknown[] {
       check: (index: number) =>
         expectedDates[index]
           .until(expectedDates[(index + 1) & 7], {largestUnit: 'month'})
+          .toString(),
+    },
+    {
+      name: 'dateTimeAdd',
+      run: (index: number) =>
+        dateTimes[index].add({months: 1, hours: 25, nanoseconds: 1}).toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .add({months: 1, hours: 25, nanoseconds: 1})
+          .toString(),
+    },
+    {
+      name: 'dateTimeUntil',
+      run: (index: number) =>
+        dateTimes[index]
+          .until(dateTimeEnds[index], {
+            largestUnit: 'month',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .until(referenceDateTimeEnds[index], {
+            largestUnit: 'month',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'dateTimeRoundFormat',
+      run: (index: number) =>
+        dateTimes[index]
+          .round({
+            smallestUnit: 'microsecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .round({
+            smallestUnit: 'microsecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
           .toString(),
     },
     {
@@ -463,7 +522,7 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math with16 native calendars and all IANA records; remaining orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math and plain date arithmetic with16 native calendars and all IANA records; date parsing/formatting, remaining short-date/zoned orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
         'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,

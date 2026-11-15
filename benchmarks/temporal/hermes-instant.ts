@@ -37,6 +37,18 @@ const dates = strings.map(value => Temporal.PlainDate.from(value.slice(0, 10)))
 const referenceDates = strings.map(value =>
   reference.PlainDate.from(value.slice(0, 10))
 )
+const dateTimes = strings.map(value =>
+  Temporal.PlainDateTime.from(value.slice(0, -6))
+)
+const referenceDateTimes = strings.map(value =>
+  reference.PlainDateTime.from(value.slice(0, -6))
+)
+const dateTimeEnds = dateTimes.map(value =>
+  value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+)
+const referenceDateTimeEnds = referenceDateTimes.map(value =>
+  value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+)
 const yearMonths = dates.map((value, index) =>
   value.toPlainYearMonth().add({months: index})
 )
@@ -246,6 +258,53 @@ const cases = [
         .toString(),
   },
   {
+    name: 'dateTimeAdd',
+    owned: (index: number) =>
+      dateTimes[index].add({months: 1, hours: 25, nanoseconds: 1}).toString(),
+    reference: (index: number) =>
+      referenceDateTimes[index]
+        .add({months: 1, hours: 25, nanoseconds: 1})
+        .toString(),
+  },
+  {
+    name: 'dateTimeUntil',
+    owned: (index: number) =>
+      dateTimes[index]
+        .until(dateTimeEnds[index], {
+          largestUnit: 'month',
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+    reference: (index: number) =>
+      referenceDateTimes[index]
+        .until(referenceDateTimeEnds[index], {
+          largestUnit: 'month',
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+  },
+  {
+    name: 'dateTimeRoundFormat',
+    owned: (index: number) =>
+      dateTimes[index]
+        .round({
+          smallestUnit: 'microsecond',
+          roundingIncrement: 125,
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+    reference: (index: number) =>
+      referenceDateTimes[index]
+        .round({
+          smallestUnit: 'microsecond',
+          roundingIncrement: 125,
+          roundingMode: 'halfEven',
+        })
+        .toString(),
+  },
+  {
     name: 'yearMonthAdd',
     owned: (index: number) =>
       yearMonths[index].add({years: 1, months: 3}).toString(),
@@ -397,11 +456,11 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration JSON bridge optional, all16 calendars and IANA records bundled, remaining date/zoned orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain arithmetic JSON bridge optional, all16 calendars and IANA records bundled, date parsing/formatting and remaining short-date/zoned orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
     backend: query
-      ? 'rust-iso-instant-time-calendars-zones-duration'
+      ? 'rust-iso-instant-time-calendars-zones-duration-plain'
       : 'typescript',
     iterations,
     samples,

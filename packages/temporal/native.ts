@@ -25,6 +25,47 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  addPlainDate(
+    epochDay: number,
+    calendar: string,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): number
+  addPlainDateTime(
+    value: bigint,
+    calendar: string,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): bigint
+  differencePlainDate(
+    start: number,
+    end: number,
+    calendar: string,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  differencePlainDateTime(
+    start: bigint,
+    end: bigint,
+    calendar: string,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  roundPlainDateTime(
+    value: bigint,
+    calendar: string,
+    unit: string,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
   transformDuration(fields: DurationFields, absolute: boolean): DurationFields
   parseDuration(value: string): DurationFields
   validateDuration(fields: DurationFields): void
@@ -242,6 +283,74 @@ export function configureNativeTemporal(query: NativeQuery): void {
     return result
   }
   native = {
+    addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
+      call('addPlainDate', {
+        epochDay,
+        calendar,
+        duration: durationFields(fields),
+        subtract,
+        overflow,
+      }),
+    addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
+      ToBigInt(
+        call('addPlainDateTime', {
+          nanoseconds: text(value),
+          calendar,
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        })
+      ),
+    differencePlainDate: (
+      start,
+      end,
+      calendar,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainDate', {
+        epochDay: start,
+        other: end,
+        calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    differencePlainDateTime: (
+      start,
+      end,
+      calendar,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainDateTime', {
+        nanoseconds: text(start),
+        other: text(end),
+        calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    roundPlainDateTime: (value, calendar, unit, increment, mode) =>
+      ToBigInt(
+        call('roundPlainDateTime', {
+          nanoseconds: text(value),
+          calendar,
+          unit,
+          increment,
+          mode,
+        })
+      ),
     transformDuration: (fields, absolute) =>
       call('transformDuration', {duration: durationFields(fields), absolute}),
     parseDuration: value => call('parseDuration', {text: value}),

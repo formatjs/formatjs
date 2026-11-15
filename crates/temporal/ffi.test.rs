@@ -249,3 +249,40 @@ fn duration_day_rounding_has_no_instant_anchor_limit() {
         assert_eq!(request(value), Err(1));
     }
 }
+
+#[test]
+fn plain_arithmetic_preserves_date_bounds_clock_carry_and_rejects_invalid_options() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    let duration = |nanoseconds: &str| json!({"years":"0","months":"0","weeks":"0","days":"0","hours":"0","minutes":"0","seconds":"0","milliseconds":"0","microseconds":"0","nanoseconds":nanoseconds});
+    assert_eq!(
+        request(
+            json!({"op":"addPlainDate","epochDay":-100000001,"calendar":"iso8601","duration":duration("0"),"subtract":false,"overflow":"reject"})
+        ),
+        Ok(json!(-100000001))
+    );
+    let difference = request(json!({"op":"differencePlainDate","epochDay":-100000001,"other":-100000000,"calendar":"iso8601","largest":"day","smallest":"day","increment":1,"mode":"trunc","since":false})).unwrap();
+    assert_eq!(difference["days"].as_f64(), Some(1.0));
+    assert_eq!(
+        request(
+            json!({"op":"addPlainDateTime","nanoseconds":"0","calendar":"iso8601","duration":duration("1"),"subtract":true,"overflow":"reject"})
+        ),
+        Ok(json!("-1"))
+    );
+    assert_eq!(
+        request(
+            json!({"op":"roundPlainDateTime","nanoseconds":"-1","calendar":"iso8601","unit":"second","increment":1,"mode":"ceil"})
+        ),
+        Ok(json!("0"))
+    );
+    for input in [
+        json!({"op":"addPlainDate","epochDay":-100000001,"calendar":"iso8601","duration":duration("86400000000000"),"subtract":true,"overflow":"reject"}),
+        json!({"op":"addPlainDateTime","nanoseconds":"-8640000086400000000000","calendar":"iso8601","duration":duration("0"),"subtract":false,"overflow":"reject"}),
+        json!({"op":"roundPlainDateTime","nanoseconds":"0","calendar":"iso8601","unit":"day","increment":2,"mode":"ceil"}),
+        json!({"op":"roundPlainDateTime","nanoseconds":"0","calendar":"iso8601","unit":"hour","increment":24,"mode":"ceil"}),
+        json!({"op":"differencePlainDate","epochDay":0,"other":1,"calendar":"iso8601","largest":"hour","smallest":"hour","increment":1,"mode":"trunc","since":false}),
+        json!({"op":"differencePlainDateTime","nanoseconds":"0","other":"1","calendar":"iso8601","largest":"second","smallest":"hour","increment":1,"mode":"trunc","since":false}),
+        json!({"op":"addPlainDateTime","nanoseconds":"0","calendar":"unknown","duration":duration("1"),"subtract":false,"overflow":"reject"}),
+    ] {
+        assert_eq!(request(input), Err(1));
+    }
+}

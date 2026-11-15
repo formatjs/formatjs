@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   zonedFromLocal,
@@ -174,6 +175,18 @@ function add(
   sign: number
 ): PlainDateTimeObject {
   const fields = toDurationFields(duration)
+  const native = nativeTemporal()
+  if (native)
+    return createPlainDateTime(
+      native.addPlainDateTime(
+        slot.epochNanoseconds,
+        slot.calendar,
+        fields,
+        sign < 0,
+        overflowOption(options)
+      ),
+      slot.calendar
+    )
   for (const key of Object.keys(fields) as (keyof typeof fields)[])
     fields[key] *= sign
   const overflow = overflowOption(options)
@@ -209,6 +222,20 @@ function difference(
       : unitOption(largestText)!
   if (names.indexOf(largest) > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differencePlainDateTime(
+        slot.epochNanoseconds,
+        end.epochNanoseconds,
+        slot.calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since
+      )
+    )
   return createDuration(
     roundedDateTimeDifference(
       slot.epochNanoseconds,
@@ -346,6 +373,18 @@ class PlainDateTimeValue {
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
+    const native = nativeTemporal()
+    if (native)
+      return createPlainDateTime(
+        native.roundPlainDateTime(
+          slot.epochNanoseconds,
+          slot.calendar,
+          unit === 'day' ? 'day' : timeUnit(unit),
+          increment,
+          mode
+        ),
+        slot.calendar
+      )
     const clock = timeOf(slot.epochNanoseconds)
     let rounded: bigint
     if (unit === 'day') {

@@ -231,8 +231,17 @@ filegroup(
         ),
         (
             "plain_date_time_test",
-            ["tests/plain-date-time.test.ts"],
-            ["//conformance-tests/icu4j:temporal_date_arithmetic_fixtures"],
+            [
+                "tests/plain-date-time.test.ts",
+                "tests/plain-arithmetic-oracle.ts",
+                "tests/native-plain-host.ts",
+                "tests/plain-relative-oracle.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
+                "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
         ),
         (
             "plain_time_test",
@@ -1301,6 +1310,60 @@ rolldown_bundle(
 )
 
 rolldown_bundle(
+    name = "native-plain-host",
+    srcs = [
+        "tests/native-plain-host.ts",
+        "tests/plain-arithmetic-oracle.ts",
+        "tests/plain-relative-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-plain-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_plain_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_date_arithmetic_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_time_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures",
+        ":native-plain-host.js",
+    ],
+    outs = ["native-plain-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_date_arithmetic_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures) $(location :native-plain-host.js) > $@",
+)
+
+sh_test(
+    name = "native_plain_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_plain_hermes_source)",
+    ],
+    data = [
+        ":native_plain_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "plain-arithmetic-oracle",
+    srcs = ["tests/plain-arithmetic-oracle.ts"],
+    entry_point = "tests/plain-arithmetic-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
     name = "native-duration-host",
     srcs = [
         "tests/duration-oracle.ts",
@@ -1720,15 +1783,19 @@ js_test(
         "$(rlocationpath :duration-oracle.js)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_plain_relative_fixtures)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
+        "$(rlocationpath :plain-arithmetic-oracle.js)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
     ],
     data = [
         ":duration-oracle.js",
         ":pkg",
+        ":plain-arithmetic-oracle.js",
         ":plain-time-oracle.js",
         ":public-calendar-oracle.js",
         ":timezone-oracle.js",
         "//:node_modules/@bazel/runfiles",
         "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
         "//conformance-tests/icu4j:temporal_duration_fixtures",
         "//conformance-tests/icu4j:temporal_iso_fixtures",
         "//conformance-tests/icu4j:temporal_plain_relative_fixtures",

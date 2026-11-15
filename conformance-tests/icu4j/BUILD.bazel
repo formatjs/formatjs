@@ -371,6 +371,15 @@ genrule(
     visibility = ["//visibility:public"],
 )
 
+genrule(
+    name = "temporal_date_arithmetic_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-date-arithmetic-fixtures.js"],
+    cmd = "$(execpath :temporal_date_arithmetic_oracle) $@ --js",
+    tools = [":temporal_date_arithmetic_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_binary(
     name = "temporal_time_oracle",
     testonly = True,

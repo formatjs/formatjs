@@ -3,65 +3,29 @@ import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal} from '#packages/temporal/index.js'
-import {
-  epochNanosecondsToISO,
-  isoToEpochNanoseconds,
-} from '#packages/temporal/kernel.js'
+import {checkPlainArithmeticOracle} from '#packages/temporal/tests/plain-arithmetic-oracle.js'
 
-it('matches independent ICU proleptic Gregorian arithmetic and date metadata', () => {
-  const file = runfiles.resolve(
-    `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-date-arithmetic-fixtures.tsv`
-  )
-  let count = 0
-  for (const line of readFileSync(file, 'utf8').trim().split('\n')) {
-    if (line.startsWith('#')) continue
-    const values = line.split('\t'),
-      numeric = values.map(Number)
-    const input = Temporal.PlainDateTime.from(
-      epochNanosecondsToISO(BigInt(values[0]))
+it('matches independent ICU arithmetic, metadata and clock carry', () => {
+  const fixture = (name: string) =>
+    readFileSync(
+      runfiles.resolve(
+        `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-${name}-fixtures.tsv`
+      ),
+      'utf8'
     )
-    const duration = {
-      years: numeric[1],
-      months: numeric[2],
-      weeks: numeric[3],
-      days: numeric[4],
-      nanoseconds: numeric[5],
-    }
-    const expected = BigInt(values[6]),
-      limit = 8_640_000_000_000_000_000_000n + 86_400_000_000_000n
-    if (expected <= -limit || expected >= limit)
-      expect(() => input.add(duration), line).toThrow(RangeError)
-    else {
-      const actual = input.add(duration)
-      const fields = {
-        year: actual.year,
-        month: actual.month,
-        day: actual.day,
-        hour: actual.hour,
-        minute: actual.minute,
-        second: actual.second,
-        millisecond: actual.millisecond,
-        microsecond: actual.microsecond,
-        nanosecond: actual.nanosecond,
-      }
-      expect(isoToEpochNanoseconds(fields), line).toBe(expected)
-      expect(
-        [
-          actual.year,
-          actual.month,
-          actual.day,
-          actual.dayOfWeek,
-          actual.dayOfYear,
-          actual.weekOfYear,
-          actual.yearOfWeek,
-        ],
-        line
-      ).toEqual(numeric.slice(7))
-    }
-    count++
-  }
-  expect(count).toBe(840)
-  console.log(`${count} independent ICU calendar arithmetic/metadata cases`)
+  const rows = (name: string) =>
+    fixture(name)
+      .trim()
+      .split('\n')
+      .filter(line => !line.startsWith('#'))
+      .map(line => line.split('\t'))
+  checkPlainArithmeticOracle(
+    Temporal,
+    fixture('date-arithmetic'),
+    rows('time-carry'),
+    rows('duration'),
+    (actual, expected, context) => expect(actual, context).toBe(expected)
+  )
 })
 
 it('preserves private slots during conversions and rounds across midnight', () => {

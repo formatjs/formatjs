@@ -1166,5 +1166,65 @@
       "native Intl brand/styles/range integration",
       "equivalent full-backend performance and size comparisons"
     ]
+  },
+  "nativePlainArithmeticBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 6,
+    "nativeOperations": 42,
+    "operations": [
+      "addPlainDate",
+      "addPlainDateTime",
+      "differencePlainDate",
+      "differencePlainDateTime",
+      "roundPlainDateTime"
+    ],
+    "scope": "PlainDate/PlainDateTime add/subtract and until/since; PlainDateTime clock/day rounding. Typed Rust engines use all16 calendar providers. JS retains coercion, property order, slots/brands and allocation. Date parsing/formatting, short-date/zoned orchestration and real SDK/Intl installation remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "arithmeticRows": 840,
+      "clockRounds": 7740,
+      "dayRounds": 126,
+      "plainDateRelativeRows": 20736,
+      "plainDateTimeRelativeRows": 51840,
+      "note": "Arithmetic rows verify add and subtract, exact nanosecond clock fields, calendar metadata and rejected endpoints. Existing all16-calendar controls also pass."
+    },
+    "backendSelection": "Per-operation fault injection requires each native operation using operands created before backend activation; unrelated native operations stay real.",
+    "boundaryControls": "PlainDate minimum epoch day -100000001 supports zero addition and day differences without constructing an invalid PlainDateTime midnight. Direct ABI cases cover negative nanosecond carry and invalid units/increments/calendar IDs.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086
+    },
+    "regressionTargets": 55,
+    "rustABITests": 8,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native date parsing/formatting and remaining short-date/zoned/Now orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
   }
 }

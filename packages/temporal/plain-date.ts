@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   zonedFromLocal,
@@ -167,6 +168,18 @@ function add(
   sign: number
 ): PlainDateObject {
   const fields = toDurationFields(duration)
+  const native = nativeTemporal()
+  if (native)
+    return createPlainDate(
+      native.addPlainDate(
+        value.epochDay,
+        value.calendar,
+        fields,
+        sign < 0,
+        overflowOption(options)
+      ),
+      value.calendar
+    )
   for (const key of Object.keys(fields) as (keyof typeof fields)[])
     fields[key] *= sign
   const time = durationNanoseconds(fields, false)
@@ -202,6 +215,20 @@ function difference(
     names.indexOf(largest) > smallIndex
   )
     throw new RangeError('Invalid date units')
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differencePlainDate(
+        slot.epochDay,
+        end.epochDay,
+        slot.calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since
+      )
+    )
   return createDuration(
     roundedDateTimeDifference(
       BigInt(slot.epochDay) * nsPerDay,
