@@ -275,7 +275,7 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 
 ## Temporal development selections
 
-`packages/temporal` has eight partial classes plus Now. Strict selections total 4,560
+`packages/temporal` has eight partial classes plus Now. Strict selections total 4,586
 executions per Node/Hermes source/optimized-bytecode mode; these stay separate
 from the twelve complete Intl selections above. Current class counts and failure
 areas live in [the package record](../packages/temporal/conformance-results.json)
@@ -291,3 +291,9 @@ Full Hermes development targets use Bazel's large test budget. The 1,390-executi
 strict zoned suite and 1,072-execution Duration suite use medium budgets; per-case harness
 limit stays 30 seconds. Timed-out/truncated JSON never counts as a completed
 raw diagnostic. No new exclusions. See [implementation tracking](015-temporal.md).
+
+Temporal installation adds 26 namespace/Date executions per mode, using the real
+force entry as the Test262 prelude. Separate manual intl402/Temporal targets cover
+all 4,080 scenarios, retaining every failure. The bare Hermes diagnostic lacks an
+installed DateTimeFormat prerequisite; this is recorded, not an allowed exclusion.
+Latest engine-specific results live in the Temporal conformance record.

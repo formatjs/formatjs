@@ -1,0 +1,64 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned IANA 2026f data included except detection. Forced temporal-polyfill 1.0.7 reference uses host Intl and has broader calendar/locale support. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "raw": 530712,
+      "minified": 440476,
+      "minifiedGzip": 86000
+    },
+    {
+      "file": "polyfill-code.js",
+      "raw": 532255,
+      "minified": 441133,
+      "minifiedGzip": 86170
+    },
+    {
+      "file": "polyfill-force-code.js",
+      "raw": 532271,
+      "minified": 441135,
+      "minifiedGzip": 86172
+    },
+    {
+      "file": "should-polyfill-code.js",
+      "raw": 1283,
+      "minified": 696,
+      "minifiedGzip": 361
+    },
+    {
+      "file": "reference-bundle.js",
+      "raw": 172962,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    }
+  ],
+  "publishedModules": [
+    {
+      "file": "index.js",
+      "raw": 530544,
+      "minified": 440361,
+      "minifiedGzip": 85937
+    },
+    {
+      "file": "polyfill.js",
+      "raw": 2108,
+      "minified": 1058,
+      "minifiedGzip": 485
+    },
+    {
+      "file": "polyfill-force.js",
+      "raw": 2124,
+      "minified": 1060,
+      "minifiedGzip": 486
+    },
+    {
+      "file": "should-polyfill.js",
+      "raw": 1117,
+      "minified": 587,
+      "minifiedGzip": 302
+    }
+  ]
+}

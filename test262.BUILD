@@ -201,3 +201,15 @@ copy_to_bin(
     srcs = glob(["test/built-ins/Temporal/Now/**/*.js", "test/intl402/Temporal/Now/**/*.js"]),
     visibility = ["@//packages/temporal:__pkg__"],
 )
+
+copy_to_bin(
+    name = "test262-temporal-installation-copy",
+    srcs = glob(["test/built-ins/Temporal/*.js", "test/built-ins/Temporal/toStringTag/**/*.js", "test/built-ins/Date/prototype/toTemporalInstant/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)
+
+copy_to_bin(
+    name = "test262-temporal-intl-copy",
+    srcs = glob(["test/intl402/Temporal/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)

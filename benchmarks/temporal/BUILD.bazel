@@ -23,7 +23,11 @@ formatjs_library(
         "instant-entry.ts",
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
+        "polyfill-entry.ts",
+        "polyfill-force-entry.ts",
         "reference.ts",
+        "should-polyfill-entry.ts",
+        "size-benchmark.ts",
         "wasm-benchmark.ts",
         "wasm-bridge.ts",
         "wasm-inputs.ts",
@@ -60,6 +64,9 @@ formatjs_library(
     )
     for name, entry in [
         ("kernel-code", "kernel-entry.ts"),
+        ("polyfill-code", "polyfill-entry.ts"),
+        ("polyfill-force-code", "polyfill-force-entry.ts"),
+        ("should-polyfill-code", "should-polyfill-entry.ts"),
         ("calendar-code", "calendar-entry.ts"),
         ("instant-code", "instant-entry.ts"),
         ("instant-primitives-code", "instant-primitives-entry.ts"),
@@ -121,6 +128,7 @@ sh_test(
 [
     js_binary(
         name = name,
+        args = ["$(rlocationpath //packages/temporal:pkg)"] if name == "size_benchmark" else [],
         data = [":generated_package_json"] + bundles + [
             "//:node_modules/@bazel/runfiles",
             "//:node_modules/esbuild",
@@ -128,6 +136,18 @@ sh_test(
         entry_point = entry,
     )
     for name, entry, bundles in [
+        (
+            "size_benchmark",
+            "size-benchmark.ts",
+            [
+                ":instant-code",
+                ":polyfill-code",
+                ":polyfill-force-code",
+                ":should-polyfill-code",
+                ":reference-bundle",
+                "//packages/temporal:pkg",
+            ],
+        ),
         (
             "benchmark",
             "benchmark.ts",

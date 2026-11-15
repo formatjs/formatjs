@@ -108,3 +108,6 @@ export const Temporal: {
 }
 
 export type {NowObject} from '#packages/temporal/now.js'
+
+export type TemporalNamespace = typeof Temporal
+export {toTemporalInstant} from '#packages/temporal/date-to-temporal-instant.js'

@@ -188,8 +188,8 @@ full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
 its full diagnostic to 1304/1308. All eight raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 4,560 executions
-per mode. All 59 normal package/Rust/WASM checks pass; the shared primitive gate passed in
+Hermes source and optimized bytecode; normal selections total 4,586 executions
+per mode. All 66 normal package/Rust/WASM checks pass; four shared packaging checks also pass; the shared primitive gate passed in
 the preceding layer. Full diagnostics
 remain failing and separate from those gates.
 
@@ -299,3 +299,69 @@ conversion primitives/data can be extracted below the formatter layer.
 The next integration slice also needs built-ins/Date/prototype/toTemporalInstant
 (eight files), Temporal namespace/global installation and detection. Those paths
 are not included in the per-class report totals.
+
+## Installation and Date bridge
+
+Public entries now include index, polyfill, polyfill-force and should-polyfill.
+Only the two installation entries have package side effects. The root remains
+pure. Conditional installation preserves a structurally available Temporal
+namespace, repairing only a missing Date bridge. A repaired bridge captures its
+Instant constructor. Forced installation sets the owned namespace and bridge;
+repeat installation preserves the same owned identities. Explicit descriptors
+reset enumerability even when replacing ordinary user-assigned properties.
+
+Namespace detection and package detection differ: a missing Date method requests
+loading the package, without replacing an otherwise available namespace. Presence
+checks never certify calendar/Intl conformance. The package remains private.
+
+The Date bridge calls captured intrinsic Date.getTime, then exact BigInt scaling.
+It does not coerce the receiver or call public getters/factories. Invalid Dates
+throw RangeError; proxies/fake Dates throw TypeError. This coercion/branding seam
+can feed native Rust Instant creation later. The Rust millisecond constructor
+and TS bridge match 25,265 independent ICU Gregorian samples. The four extended
+local-date fixture samples outside Date/Instant range stay rejected.
+
+The Test262 prelude imports the real force entry in every realm. Namespace roots,
+Symbol.toStringTag and Date.prototype.toTemporalInstant add 26 strict executions
+per Node/Hermes source/bytecode mode. Real bare-Hermes consumer tests execute the
+conditional entry under UTC, New York and Kathmandu; pure root imports preserve
+the absent globals on the pinned host. Unit controls preserve forced-reference
+brands when repairing an existing namespace's missing Date bridge.
+
+Complete intl402/Temporal diagnostics now execute all 2,040 files/4,080 scenarios
+on Node and both Hermes modes. They stay manual and failing; baseline files pin
+discovery counts with zero allowed failures. Hermes currently has no DateTimeFormat
+prerequisite installed in this profile. That prerequisite and all calendar/locale
+failures must be fixed or covered by a proper combined installation, never silently
+excluded. Raw class diagnostics from the preceding layer remain separate records.
+
+The separate size benchmark compares namespace, conditional installation, force
+installation, detection and the forced reference. It reads bundles without executing
+the installation entries. Prior throughput and primitive TS/WASM profiles retain
+their declared scopes; adding an entrypoint does not justify rerunning every timed
+workload. Full WASM facade/data and native Hermes measurements remain required.
+
+The new Intl corpus exposes a concrete next fix: Node's
+ZonedDateTime/prototype/equals/canonical-not-equal.js rejects the owned merge of
+Africa/Accra and Africa/Abidjan. Identity must preserve zone.tab primary IDs,
+independently of shared transition data. Raw IANA Link targets alone are
+insufficient; country-preserving mappings also use backzone. The same mapping
+must feed Now system IDs and supportedValuesOf, rather than trusting a narrower
+host list to hide equality errors. See [ECMA-402 primary identity](https://tc39.es/ecma402/#sec-availablenamedtimezoneidentifiers).
+
+Bare Hermes currently reports zero timezone IDs from supportedValuesOf without
+DateTimeFormat installed. Its distinct-primary-pair test therefore passes
+vacuously. Node's corresponding two scenarios fail on Accra/Abidjan. Another 22
+Node-positive scenarios fail on Hermes because their calendar helpers construct
+DateTimeFormat. Keep the engine differences explicit and add independent primary
+identity controls in the next fix.
+
+The assembled npm package has an additional identity test. Independent bundles
+of index and force installation originally created duplicate private brands.
+Installation entries now import the published index through an explicit emitted
+path mapping. Pure Date coercion lives separately from owned Instant creation,
+so the installer cannot accidentally inline a second constructor/slot registry.
+Tests load actual packaged JS, preserve a reference namespace on conditional
+installation, then require force installation to share root constructors and the
+named Date bridge. The new build option is opt-in; existing package defaults
+retain their bundling behavior.

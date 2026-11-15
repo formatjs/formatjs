@@ -1,4 +1,4 @@
-load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_test")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
@@ -12,11 +12,15 @@ formatjs_library(
     package_name = "@formatjs/temporal",
     srcs = [
         "calendar.ts",
+        "date-bridge.ts",
         "date-core.ts",
+        "date-to-temporal-instant.ts",
+        "detect.ts",
         "duration.ts",
         "duration-core.ts",
         "duration-format.ts",
         "index.ts",
+        "install.ts",
         "instant.ts",
         "instant-format.ts",
         "instant-string.ts",
@@ -28,23 +32,44 @@ formatjs_library(
         "plain-slots.ts",
         "plain-time.ts",
         "plain-year-month.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
         "relative-duration.ts",
         "rounding.ts",
         "short-date-core.ts",
+        "should-polyfill.ts",
         "zoned-date-time.ts",
         "zones.ts",
     ],
     description = "Temporal implementation",
+    entry_point_external_paths = {
+        "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
+        "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
+    },
+    entry_points = [
+        "index.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+    ],
     license = "MIT",
     package_types = "index.d.ts",
     private = True,
-    side_effects = False,
+    side_effects = [
+        "./polyfill.js",
+        "./polyfill-force.js",
+    ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     type = "module",
     types = True,
     version = "0.0.0",
     visibility = ["//visibility:public"],
-    exports = {".": "./index.js"},
+    exports = {
+        ".": "./index.js",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
     deps = [
         "//:node_modules/@formatjs_generated/tz",
         "//packages/ecma262-abstract",
@@ -78,6 +103,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "installation_test",
+            ["tests/installation.test.ts"],
+            ["//conformance-tests/icu4j:temporal_iso_fixtures"],
+        ),
         (
             "now_test",
             ["tests/now.test.ts"],
@@ -189,6 +219,12 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 _NOW_PATTERNS = [
     _TEST262_ROOT + "/test/built-ins/Temporal/Now/**/*.js",
     _TEST262_ROOT + "/test/intl402/Temporal/Now/**/*.js",
+]
+
+_INSTALLATION_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/*.js",
+    _TEST262_ROOT + "/test/built-ins/Temporal/toStringTag/**/*.js",
+    _TEST262_ROOT + "/test/built-ins/Date/prototype/toTemporalInstant/**/*.js",
 ]
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
@@ -435,7 +471,9 @@ _INSTANT_PATTERNS = [
             "instant-realm-prelude.js",
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-installation-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
             "@com_github_tc39_test262//:test262-temporal-month-day-copy",
             "@com_github_tc39_test262//:test262-temporal-now-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
@@ -453,6 +491,12 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("installation_test262", _INSTALLATION_PATTERNS, []),
+        (
+            "intl_test262_full",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
         ("now_test262", _NOW_PATTERNS, []),
         ("zoned_test262", _ZONED_CORE_PATTERNS, []),
         (
@@ -538,7 +582,9 @@ test262_harness_bin.test262_harness_binary(
         "instant-payload.js",
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
         "@com_github_tc39_test262//:test262-temporal-month-day-copy",
         "@com_github_tc39_test262//:test262-temporal-now-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
@@ -566,7 +612,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -577,7 +623,9 @@ test262_harness_bin.test262_harness_binary(
             "//tools/test262:validator",
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-installation-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
             "@com_github_tc39_test262//:test262-temporal-month-day-copy",
             "@com_github_tc39_test262//:test262-temporal-now-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
@@ -595,6 +643,22 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("installation_hermes_test262", "source", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
+        ("installation_hermes_bytecode_test262", "bytecode", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
+        (
+            "intl_hermes_test262_full",
+            "source",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "intl_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
         ("now_hermes_test262", "source", _NOW_PATTERNS, "tests/now-test262-count.json", []),
         ("now_hermes_bytecode_test262", "bytecode", _NOW_PATTERNS, "tests/now-test262-count.json", []),
         ("zoned_hermes_test262_strict", "source", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
@@ -754,4 +818,45 @@ sh_test(
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
     ],
+)
+
+rolldown_bundle(
+    name = "installation-host",
+    srcs = [
+        "tests/installation-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/installation-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "installation_hermes_host_test",
+    size = "small",
+    srcs = ["tests/now-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :installation-host.js)",
+    ],
+    data = [
+        "installation-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+js_test(
+    name = "package_test",
+    size = "small",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/temporal-polyfill",
+    ],
+    entry_point = "tests/package.test.mjs",
+    env = {"TZ": "UTC"},
 )

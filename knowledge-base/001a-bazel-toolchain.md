@@ -623,3 +623,15 @@ current workflow. Every checkout uses that tag, including publication's version
 check. Optional `apple_run_id` reuses an SDK workflow artifact only after its
 source commit matches the checkout; the publish job needs Actions read access
 for this download. Use `dry_run` before publishing a repaired release.
+
+Temporal's installation entries share its published index to preserve private
+brands across imports. `formatjs_library(entry_point_external_paths = {...})`
+opts individual entries into external import mappings; `rolldown_bundle`
+forwards `external_paths` and rewrites emitted imports with Rolldown `paths`.
+Default bundling stays unchanged. The mapping is shell-quoted JSON and applies
+to JS and declaration output. Assembled-package tests must verify identity;
+source-only tests can hide independently bundled copies of the same classes.
+
+Rolldown temporary tsconfigs use unique directories, cleaned after output. Sandbox
+processes can share PIDs, so PID-only files in shared /tmp collide across parallel
+actions and can silently leave workspace imports unresolved in emitted bundles.

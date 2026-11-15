@@ -3,6 +3,8 @@ import {Temporal} from '#packages/temporal/index.js'
 function check(value: boolean): void {
   if (!value) throw new Error('Now host assertion failed')
 }
+check(typeof globalThis.Temporal === 'undefined')
+check(typeof Date.prototype.toTemporalInstant === 'undefined')
 const before = Date.now(),
   zoned = Temporal.Now.zonedDateTimeISO(),
   after = Date.now()

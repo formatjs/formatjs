@@ -24,8 +24,7 @@ day boundaries, differences, transition queries and serialization. Calendar days
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
 Missing: remaining calendar
-engines, Date/Intl integration and global
-installation/detection. No implementation gap is an allowed conformance exclusion.
+engines, locale/Intl integration and native Rust bindings. No implementation gap is an allowed conformance exclusion.
 
 ## Validation
 
@@ -34,7 +33,7 @@ selections cover complete supported families. Full diagnostics remain failing.
 Negative cases can pass incidentally when a method is missing; full aggregate
 counts alone do not establish whole-method conformance.
 
-| Class          | Strict executions | Full diagnostic passes/total |
+| API            | Strict executions | Full diagnostic passes/total |
 | -------------- | ----------------: | ---------------------------: |
 | Instant        |               346 |                      930/934 |
 | Duration       |             1,072 |                  1,082/1,086 |
@@ -108,3 +107,37 @@ executions per mode, with no exclusions. TS and Rust injected clocks also match
 
 Rust's no_std `Now<SystemClock>` accepts a host wall clock and TimeZone provider.
 Native system-clock/timezone installation remains part of the pending binding.
+
+## Installation
+
+```ts
+import '@formatjs/temporal/polyfill.js'
+
+new Date(0).toTemporalInstant().epochNanoseconds // 0n
+```
+
+`polyfill.js` installs an absent/incomplete namespace and repairs a missing Date
+bridge. Existing namespace/bridge functions survive conditional installation.
+A repaired bridge constructs that namespace's Instant, preserving its brands.
+`polyfill-force.js` installs the owned namespace and Date bridge together.
+Both entries share the published index and set standard non-enumerable descriptors. The root import stays pure;
+it also exports the owned `toTemporalInstant` method for explicit use.
+
+```ts
+import {shouldPolyfill} from '@formatjs/temporal/should-polyfill.js'
+if (shouldPolyfill()) await import('@formatjs/temporal/polyfill.js')
+```
+
+Detection checks constructor/Now presence and the Date method; it is not a
+conformance certificate. The package remains private while implementation gaps
+remain. Tests always force the owned implementation, even on Node with native
+Temporal. TypeScript builds use the repository's ESNext Temporal standard lib.
+
+Installation's 26 Test262 executions pass on Node and Hermes source/bytecode.
+Bare Hermes also runs the conditional entry under three system zones. Separate
+pure-entry checks protect globals. TS and Rust Date paths match 25,265 independent
+ICU Gregorian samples; four fixture dates outside Date's range remain rejected.
+
+The new complete intl402/Temporal diagnostic covers 2,040 files separately from
+built-ins class reports. Calendar/locale failures remain visible; no new exclusions.
+See conformance-results.json for engine-specific counts and missing prerequisites.

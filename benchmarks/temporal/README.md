@@ -455,3 +455,37 @@ namespace now measures 85,948 bytes gzip, including owned IANA data. Timed
 workloads still cover the eight classes; this run does not measure Now throughput.
 These shared-host V8 samples were rerun after conformance tests completed.
 The earlier matched pure TS/WASM primitive profile retains its separate scope.
+
+## Installation and published modules
+
+```sh
+bazel run -c opt //benchmarks/temporal:size_benchmark
+```
+
+[package-size-results.json](package-size-results.json) measures the latest Date
+bridge/installation layer separately from earlier throughput samples. The first
+profile bundles each entry standalone. All full entries include owned IANA data;
+detection does not. Reference uses host Intl and supports more calendars/locale
+behavior. These alternatives are not additive and do not establish full equivalence.
+
+| Standalone bundle       | Minified bytes | Gzip bytes |
+| ----------------------- | -------------: | ---------: |
+| instant-code.js         |        440,476 |     86,000 |
+| polyfill-code.js        |        441,133 |     86,170 |
+| polyfill-force-code.js  |        441,135 |     86,172 |
+| should-polyfill-code.js |            696 |        361 |
+| reference-bundle.js     |         56,696 |     19,393 |
+
+Published installation modules import the shared index, preserving constructors,
+private slots and the named Date bridge across entrypoints. These per-file gzip
+sizes describe an unbundled npm installation; add the index once for an installer.
+A consumer bundler may compress/deduplicate the combined graph differently.
+
+| Published module   | Minified bytes | Gzip bytes |
+| ------------------ | -------------: | ---------: |
+| index.js           |        440,361 |     85,937 |
+| polyfill.js        |          1,058 |        485 |
+| polyfill-force.js  |          1,060 |        486 |
+| should-polyfill.js |            587 |        302 |
+
+Prior matched primitive TS/WASM measurements retain their narrower scope.

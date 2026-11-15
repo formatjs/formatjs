@@ -341,6 +341,7 @@ fn parser_cases_shared_with_typescript() {
 #[test]
 fn independent_icu_gregorian_fields_across_full_range() {
     let mut count = 0;
+    let mut date_count = 0;
     for line in include_str!(env!("FORMATJS_TEMPORAL_ISO"))
         .lines()
         .filter(|line| !line.starts_with('#'))
@@ -365,9 +366,17 @@ fn independent_icu_gregorian_fields_across_full_range() {
             "{line}"
         );
         assert_eq!(expected.to_epoch_nanoseconds().unwrap(), epoch, "{line}");
+        let instant = Instant::from_epoch_milliseconds(values[0]);
+        if (-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&epoch) {
+            assert_eq!(instant.unwrap().to_iso(), expected, "{line}");
+            date_count += 1;
+        } else {
+            assert!(instant.is_err(), "{line}");
+        }
         count += 1;
     }
     assert!(count > 25000);
+    assert_eq!(date_count, 25265);
     println!("{count} independent ICU Gregorian samples, both directions");
 }
 

@@ -450,8 +450,228 @@
     "systemTimeZone": "Captured Intl.DateTimeFormat named ID, normalized to owned IANA primary ID; current Date offset on hosts without DateTimeFormat.",
     "rust": "no_std Now<SystemClock> converts through supplied TimeZone providers; production native clock/zone installation pending."
   },
-  "pendingIntl402Temporal": {
-    "files": 2037,
-    "note": "Remaining intl402/Temporal files outside Now are not covered by current class reports; calendars and Intl integration remain required."
+  "installation": {
+    "node": {
+      "executions": 26,
+      "passes": 26,
+      "failures": 0,
+      "failuresByAPI": {}
+    },
+    "hermes": {
+      "source": {
+        "executions": 26,
+        "passes": 26,
+        "failures": 0,
+        "failuresByAPI": {}
+      },
+      "optimizedBytecode": {
+        "executions": 26,
+        "passes": 26,
+        "failures": 0,
+        "failuresByAPI": {}
+      }
+    },
+    "icuGregorianDateCases": 25265,
+    "icuOutOfRangeDateCases": 4,
+    "exclusions": [],
+    "packageIdentity": "Assembled JS test requires root/global constructors and Date bridge to share private brands; native/reference namespaces survive conditional installation."
+  },
+  "intl402Diagnostic": {
+    "files": 2040,
+    "node": {
+      "executions": 4080,
+      "passes": 778,
+      "failures": 3302,
+      "failuresByAPI": {
+        "Duration": 14,
+        "Instant": 26,
+        "PlainDate": 862,
+        "PlainDateTime": 836,
+        "PlainMonthDay": 104,
+        "PlainTime": 22,
+        "PlainYearMonth": 556,
+        "ZonedDateTime": 882
+      }
+    },
+    "hermes": {
+      "source": {
+        "executions": 4080,
+        "passes": 758,
+        "failures": 3322,
+        "failuresByAPI": {
+          "Duration": 20,
+          "Instant": 26,
+          "PlainDate": 866,
+          "PlainDateTime": 840,
+          "PlainMonthDay": 106,
+          "PlainTime": 22,
+          "PlainYearMonth": 558,
+          "ZonedDateTime": 884
+        }
+      },
+      "optimizedBytecode": {
+        "executions": 4080,
+        "passes": 758,
+        "failures": 3322,
+        "failuresByAPI": {
+          "Duration": 20,
+          "Instant": 26,
+          "PlainDate": 866,
+          "PlainDateTime": 840,
+          "PlainMonthDay": 106,
+          "PlainTime": 22,
+          "PlainYearMonth": 558,
+          "ZonedDateTime": 884
+        }
+      }
+    },
+    "exclusions": [],
+    "engineDifferences": [
+      {
+        "file": "intl402/Temporal/Duration/compare/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/compare/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/round/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/round/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/total/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/total/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainMonthDay/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainMonthDay/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainYearMonth/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainYearMonth/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js",
+        "scenario": "default",
+        "nodePass": false,
+        "hermesPass": true
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js",
+        "scenario": "strict mode",
+        "nodePass": false,
+        "hermesPass": true
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      }
+    ],
+    "note": "Manual failing diagnostics, not accepted failure baselines. Bare Hermes lacks DateTimeFormat and enumerates zero timezones. Its distinct-primary-pair case passes vacuously; Node exposes owned Accra/Abidjan identity merging. Calendar and locale failures remain required work."
   }
 }
