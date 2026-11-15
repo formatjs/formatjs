@@ -1,4 +1,4 @@
-import {isoToEpochNanoseconds} from './kernel.js'
+import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
 
 // RFC 3339-style subset; extended years and nanosecond offsets, no annotations.
 export function parseInstantString(value: string): bigint {

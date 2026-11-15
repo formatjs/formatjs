@@ -1,0 +1,170 @@
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+
+# gazelle:ignore
+formatjs_library(
+    name = "temporal",
+    package_name = "@formatjs/temporal",
+    srcs = [
+        "calendar.ts",
+        "index.ts",
+        "instant.ts",
+        "instant-string.ts",
+        "kernel.ts",
+        "zones.ts",
+    ],
+    description = "Temporal implementation",
+    license = "MIT",
+    package_types = "index.d.ts",
+    private = True,
+    side_effects = False,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    type = "module",
+    types = True,
+    version = "0.0.0",
+    visibility = ["//visibility:public"],
+    exports = {".": "./index.js"},
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+filegroup(
+    name = "runtime_sources",
+    srcs = [":srcs"],
+    visibility = ["//benchmarks/temporal:__pkg__"],
+)
+
+[
+    formatjs_test(
+        name = name,
+        srcs = sources,
+        data = data,
+        tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+        deps = [
+            ":lib",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@formatjs_generated/tz",
+            "//:node_modules/@types/node",
+            "//:node_modules/temporal-polyfill",
+            "//:node_modules/vitest",
+            "//packages/ecma262-abstract",
+            "//packages/ecma402-abstract/DateTimeFormat",
+            "//packages/ecma402-abstract/types",
+        ],
+    )
+    for name, sources, data in [
+        (
+            "kernel_test",
+            [
+                "tests/kernel.test.ts",
+                "tests/icu.test.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+        ),
+        (
+            "calendar_test",
+            ["tests/calendar.test.ts"],
+            ["//conformance-tests/icu4j:temporal_calendar_fixtures"],
+        ),
+        (
+            "instant_test",
+            ["tests/instant.test.ts"],
+            [],
+        ),
+    ]
+]
+
+rolldown_bundle(
+    name = "instant-payload",
+    srcs = [
+        "tests/instant-prelude.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/instant-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = ["//packages/ecma262-abstract"],
+)
+
+js_run_binary(
+    name = "instant-realm-prelude",
+    srcs = ["instant-payload.js"],
+    outs = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath instant-payload.js)",
+        "--out",
+        "$(rootpath instant-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath instant-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+_INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
+
+_INSTANT_PATTERNS = [
+    _INSTANT_ROOT + "/*.js",
+    _INSTANT_ROOT + "/prototype/*.js",
+] + [_INSTANT_ROOT + "/" + directory + "/**/*.js" for directory in [
+    "fromEpochMilliseconds",
+    "fromEpochNanoseconds",
+    "prototype/epochMilliseconds",
+    "prototype/epochNanoseconds",
+    "prototype/valueOf",
+    "prototype/toStringTag",
+]]
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = name,
+        size = "small" if name == "instant_test262" else "large",
+        args = [
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath instant-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            "instant-prelude-source.js",
+            "instant-realm-prelude.js",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        ],
+        env = {"TZ": "UTC"},
+        exec_properties = {
+            "EstimatedCPU": "4",
+            "EstimatedMemory": "2GB",
+        },
+        node_toolchain = "//tools/test262:node-runtime",
+        tags = tags + ["cpu:4"],
+    )
+    for name, patterns, tags in [
+        ("instant_test262", _INSTANT_PATTERNS, []),
+        (
+            "instant_test262_full",
+            [_INSTANT_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+    ]
+]

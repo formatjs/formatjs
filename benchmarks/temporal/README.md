@@ -1,12 +1,14 @@
-# Temporal kernel experiment
+# Temporal benchmarks
 
 TS timezone/ISO primitives look worth pursuing. Full Temporal size, speed and
-compliance remain unproven. This directory is experimental, unpublished code.
+compliance remain unproven. Runtime and tests live in
+[`packages/temporal`](../../packages/temporal/README.md); this directory owns
+benchmarks and recorded measurements.
 
 ## Run
 
 ```sh
-bazel test -c opt //packages/intl-datetimeformat:timezone_icu_test //benchmarks/temporal:kernel_test
+bazel test -c opt //packages/intl-datetimeformat:timezone_icu_test //packages/temporal:kernel_test
 bazel run -c opt //benchmarks/temporal:benchmark
 ```
 
@@ -18,11 +20,11 @@ agree. Results do not compare identical data policies or API coverage.
 
 ## What runs
 
-`kernel.ts` reuses `ecma262-abstract/DateOperations` and
+Package `kernel.ts` reuses `ecma262-abstract/DateOperations` and
 `ecma402-abstract/DateTimeFormat/TimeZoneOffset`. It adds exact nanosecond/ISO
 conversion, ISO day addition, possible instants and earlier/later/compatible/reject
 disambiguation. `zones.ts` decodes only the requested canonical zone through the
-existing datetimeformat unpacker. No host Intl timezone lookup.
+shared timezone unpacker. No host Intl timezone lookup.
 
 Experimental `instant.ts` adds an Instant slice; durations, rounding, aliases
 and transition queries remain unimplemented. `calendar.ts` separately supplies numeric
@@ -57,7 +59,7 @@ This is a numeric internal contract, not Temporal property-bag/coercion semantic
 Month/year differences, other calendars and calendar field merging remain open.
 
 ```sh
-bazel test -c opt //benchmarks/temporal:calendar_test
+bazel test -c opt //packages/temporal:calendar_test
 ```
 
 ICU fixtures cover over 6,000 dates in epoch days -1,000,000 through +1,000,000
@@ -83,10 +85,10 @@ Cross-realm slot sharing and foreign-realm default-prototype fallback remain ope
 This slice is not installed globally outside the test prelude.
 
 ```sh
-bazel test -c opt //benchmarks/temporal:instant_test //benchmarks/temporal:instant_test262
+bazel test -c opt //packages/temporal:instant_test //packages/temporal:instant_test262
 bazel run -c opt //benchmarks/temporal:facade_benchmark
 # Diagnostic: expected to fail until the remaining Instant API exists.
-bazel test -c opt //benchmarks/temporal:instant_test262_full
+bazel test -c opt //packages/temporal:instant_test262_full
 ```
 
 The strict slice executes all constructor/prototype-root tests and complete
@@ -99,7 +101,7 @@ The full Instant corpus is a separate manual raw diagnostic: **934 executions,
 202 passes, 732 failures**. Missing arithmetic, rounding, serialization and parser
 forms dominate. Negative cases can pass incidentally when methods/types are
 missing; these aggregate passes do not establish whole-method conformance.
-`conformance-results.json` records counts and failure areas. Raw failures remain
+[`conformance-results.json`](../../packages/temporal/conformance-results.json) records counts and failure areas. Raw failures remain
 in Bazel test output; the full diagnostic does not turn them into a green gate.
 
 `facade-results.json` measures the supported object paths against forced

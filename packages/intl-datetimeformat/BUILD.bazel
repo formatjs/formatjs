@@ -23,15 +23,6 @@ load(":locales.generated.bzl", "ALL_LOCALES")
 
 exports_files(["LICENSE.md"])
 
-copy_to_bin(
-    name = "timezone_kernel_sources",
-    srcs = [
-        "types.ts",
-        "unpack.ts",
-    ],
-    visibility = ["//benchmarks/temporal:__pkg__"],
-)
-
 PACKAGE_NAME = "intl-datetimeformat"
 
 TEST_LOCALES = [

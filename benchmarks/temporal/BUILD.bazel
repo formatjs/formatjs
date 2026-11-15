@@ -1,15 +1,13 @@
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary")
-load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:package_json.bzl", "generate_package_json")
 load("//tools:rolldown.bzl", "rolldown_bundle")
-load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 # gazelle:ignore
 
 generate_package_json(
-    package_name = "temporal-kernel-experiment",
+    package_name = "temporal-benchmark",
     private = True,
     type = "module",
     version = "0.0.0",
@@ -19,47 +17,21 @@ formatjs_library(
     name = "temporal",
     srcs = [
         "benchmark.ts",
-        "calendar.ts",
+        "calendar-entry.ts",
         "facade-benchmark.ts",
-        "instant.ts",
-        "instant-prelude.ts",
-        "instant-string.ts",
-        "kernel.ts",
+        "instant-entry.ts",
+        "kernel-entry.ts",
         "reference.ts",
-        "zones.ts",
+        "zones-entry.ts",
     ],
     tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
     tsconfig_types = ["node"],
     deps = [
         "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@formatjs_generated/tz",
         "//:node_modules/@types/node",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
-        "//packages/ecma262-abstract",
-        "//packages/ecma402-abstract/DateTimeFormat",
-        "//packages/ecma402-abstract/types",
-        "//packages/intl-datetimeformat:types",
-    ],
-)
-
-formatjs_test(
-    name = "kernel_test",
-    srcs = [
-        "icu.test.ts",
-        "kernel.test.ts",
-    ],
-    data = [
-        "//conformance-tests/icu4j:temporal_timezone_fixtures",
-        "//packages/intl-datetimeformat:timezone_kernel_sources",
-    ],
-    deps = [
-        ":temporal",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@formatjs_generated/tz",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
+        "//packages/temporal:types",
     ],
 )
 
@@ -69,161 +41,52 @@ formatjs_test(
         srcs = [
             entry,
             ":srcs",
-            ":temporal",
-            "//packages/intl-datetimeformat:timezone_kernel_sources",
+            "//packages/temporal:runtime_sources",
         ],
         entry_point = entry,
         platform = "node",
         target = "es2022",
         deps = [
-            "//:node_modules/@formatjs_generated/tz",
             "//:node_modules/temporal-polyfill",
-            "//packages/ecma262-abstract",
-            "//packages/ecma402-abstract/DateTimeFormat",
-            "//packages/ecma402-abstract/types",
-            "//packages/intl-datetimeformat:types",
+            "//packages/temporal:lib",
         ],
     )
     for name, entry in [
-        ("kernel-code", "kernel.ts"),
-        ("calendar-code", "calendar.ts"),
-        ("instant-code", "instant.ts"),
-        ("kernel-all-zones", "zones.ts"),
+        ("kernel-code", "kernel-entry.ts"),
+        ("calendar-code", "calendar-entry.ts"),
+        ("instant-code", "instant-entry.ts"),
+        ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),
     ]
 ]
 
-js_binary(
-    name = "benchmark",
-    data = [
-        ":generated_package_json",
-        ":kernel-all-zones",
-        ":kernel-code",
-        ":reference-bundle",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/esbuild",
-    ],
-    entry_point = "benchmark.ts",
-)
-
-formatjs_test(
-    name = "calendar_test",
-    srcs = ["calendar.test.ts"],
-    data = ["//conformance-tests/icu4j:temporal_calendar_fixtures"],
-    deps = [
-        ":temporal",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
-    ],
-)
-
-formatjs_test(
-    name = "instant_test",
-    srcs = ["instant.test.ts"],
-    deps = [
-        ":temporal",
-        "//:node_modules/vitest",
-    ],
-)
-
-rolldown_bundle(
-    name = "instant-payload",
-    srcs = [
-        ":srcs",
-        ":temporal",
-    ],
-    entry_point = "instant-prelude.ts",
-    format = "iife",
-    target = "es2022",
-    deps = ["//packages/ecma262-abstract"],
-)
-
-js_run_binary(
-    name = "instant-realm-prelude",
-    srcs = ["instant-payload.js"],
-    outs = [
-        "instant-prelude-source.js",
-        "instant-realm-prelude.js",
-    ],
-    args = [
-        "--input",
-        "$(rootpath instant-payload.js)",
-        "--out",
-        "$(rootpath instant-realm-prelude.js)",
-        "--sourceOut",
-        "$(rootpath instant-prelude-source.js)",
-    ],
-    tool = "//tools/test262:prelude",
-)
-
-_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
-
-_INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
-
-_INSTANT_PATTERNS = [
-    _INSTANT_ROOT + "/*.js",
-    _INSTANT_ROOT + "/prototype/*.js",
-] + [_INSTANT_ROOT + "/" + directory + "/**/*.js" for directory in [
-    "fromEpochMilliseconds",
-    "fromEpochNanoseconds",
-    "prototype/epochMilliseconds",
-    "prototype/epochNanoseconds",
-    "prototype/valueOf",
-    "prototype/toStringTag",
-]]
-
 [
-    test262_harness_bin.test262_harness_test(
+    js_binary(
         name = name,
-        size = "small" if name == "instant_test262" else "large",
-        args = [
-            "--threads",
-            "4",
-            "--errorForFailures",
-            "--reporter",
-            "json",
-            "--reporter-keys",
-            "file,scenario,result",
-            "--test262Dir",
-            _TEST262_ROOT,
-            "--prelude",
-            "$(rootpath instant-realm-prelude.js)",
-        ] + patterns,
-        data = [
-            "instant-prelude-source.js",
-            "instant-realm-prelude.js",
-            "@com_github_tc39_test262//:test262-harness-copy",
-            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        data = [":generated_package_json"] + bundles + [
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/esbuild",
         ],
-        env = {"TZ": "UTC"},
-        exec_properties = {
-            "EstimatedCPU": "4",
-            "EstimatedMemory": "2GB",
-        },
-        node_toolchain = "//tools/test262:node-runtime",
-        tags = tags + ["cpu:4"],
+        entry_point = entry,
     )
-    for name, patterns, tags in [
-        ("instant_test262", _INSTANT_PATTERNS, []),
+    for name, entry, bundles in [
         (
-            "instant_test262_full",
-            [_INSTANT_ROOT + "/**/*.js"],
-            ["manual"],
+            "benchmark",
+            "benchmark.ts",
+            [
+                ":kernel-all-zones",
+                ":kernel-code",
+                ":reference-bundle",
+            ],
+        ),
+        (
+            "facade_benchmark",
+            "facade-benchmark.ts",
+            [
+                ":instant-code",
+                ":calendar-code",
+                ":reference-bundle",
+            ],
         ),
     ]
 ]
-
-js_binary(
-    name = "facade_benchmark",
-    data = [
-        ":calendar-code",
-        ":generated_package_json",
-        ":instant-code",
-        ":reference-bundle",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/esbuild",
-    ],
-    entry_point = "facade-benchmark.ts",
-)

@@ -278,13 +278,15 @@ samples beyond 2100. ICU fixtures use their own compiled timezone rules; they do
 not derive expectations from FormatJS data. The oracle and IANA pins can differ,
 so investigate newly introduced rule differences before updating expectations.
 
-The unpublished [Temporal kernel experiment](../benchmarks/temporal/README.md)
+The private [Temporal package](../packages/temporal/README.md)
 adds ICU-derived gap/fold checks and records timezone bundle-size comparisons.
 It reuses shared ISO/timezone primitives, not a complete Temporal implementation.
-Its separate ISO/Hebrew arithmetic experiment adds reverse field conversion and
+Its internal ISO/Hebrew arithmetic adds reverse field conversion and
 date addition without the TS formatter calendars’ existing Temporal dependency.
 ICU conversion fixtures use a bounded range; full-range boundary checks use the
-forced JS Temporal implementation. See the experiment README for oracle limits.
+forced JS Temporal implementation. See the benchmark README for oracle limits.
+Shared `UnpackTimeZoneData` lives in `ecma402-abstract/DateTimeFormat`;
+DateTimeFormat preserves its `unpack` export as a compatibility alias.
 The subsequent Instant facade has a strict 94-execution Test262 slice and a
 separate failing full-corpus diagnostic. Native Temporal is replaced in every
 test realm; the slice does not establish full Temporal compliance.

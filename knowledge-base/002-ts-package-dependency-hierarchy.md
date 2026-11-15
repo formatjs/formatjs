@@ -30,6 +30,10 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 | `@formatjs/icu-skeleton-parser`      | ecma402-abstract                      |
 | `@formatjs/icu-messageformat-parser` | ecma402-abstract, icu-skeleton-parser |
 
+`@formatjs/temporal` is currently private. It uses `ecma262-abstract`,
+`ecma402-abstract/DateTimeFormat`, shared types and generated timezone data.
+It does not depend on formatter packages. See [Temporal implementation](015-temporal.md).
+
 **Intl Polyfills** (all depend on `ecma402-abstract` + `intl-localematcher`):
 
 | Package                             | Extra Internal Dependencies                        |

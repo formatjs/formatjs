@@ -151,5 +151,5 @@ copy_to_bin(
 copy_to_bin(
     name = "test262-temporal-instant-copy",
     srcs = glob(["test/built-ins/Temporal/Instant/**/*.js"]),
-    visibility = ["@//benchmarks/temporal:__pkg__"],
+    visibility = ["@//packages/temporal:__pkg__"],
 )

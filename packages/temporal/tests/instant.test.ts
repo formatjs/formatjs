@@ -1,5 +1,5 @@
 import {expect, it} from 'vitest'
-import {Instant} from './instant.js'
+import {Instant} from '#packages/temporal/index.js'
 
 it('coerces before reading newTarget.prototype, propagates abrupt completions', () => {
   const order: string[] = []

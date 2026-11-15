@@ -10,7 +10,7 @@ import {
   daysInMonth,
   type CalendarId,
   type DateDuration,
-} from './calendar.js'
+} from '#packages/temporal/calendar.js'
 
 it('matches independent ICU Hebrew fields in both directions across the oracle range', () => {
   const path = runfiles.resolve(

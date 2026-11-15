@@ -2,8 +2,8 @@ import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
-import {epochNanosecondsToISO} from './kernel.js'
-import {timeZone} from './zones.js'
+import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
+import {timeZone} from '#packages/temporal/zones.js'
 
 it('resolves future gaps and folds derived from ICU transitions', () => {
   const file = runfiles.resolve(

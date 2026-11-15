@@ -6,8 +6,8 @@ import {
   isoToEpochNanoseconds,
   type Disambiguation,
   type ISODateTime,
-} from './kernel.js'
-import {timeZone} from './zones.js'
+} from '#packages/temporal/kernel.js'
+import {timeZone} from '#packages/temporal/zones.js'
 
 const instant = (text: string) => Temporal.Instant.from(text).epochNanoseconds
 it('keeps nanoseconds across negative epochs, leap days and instant bounds', () => {

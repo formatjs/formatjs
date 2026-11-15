@@ -1,6 +1,6 @@
 // Experimental Instant slice. Limited strings; no durations or cross-realm slots.
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
-import {parseInstantString} from './instant-string.js'
+import {parseInstantString} from '#packages/temporal/instant-string.js'
 
 export interface InstantObject {
   readonly epochNanoseconds: bigint

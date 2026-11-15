@@ -58,6 +58,7 @@
     "@formatjs/intl-segmenter": "workspace:*",
     "@formatjs/intl-supportedvaluesof": "workspace:*",
     "@formatjs/svelte-intl": "workspace:*",
+    "@formatjs/temporal": "workspace:*",
     "@formatjs/ts-transformer": "workspace:*",
     "@formatjs/unplugin": "workspace:*",
     "@formatjs/utils": "workspace:*",

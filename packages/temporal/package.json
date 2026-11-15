@@ -1,0 +1,13 @@
+{
+  "name": "@formatjs/temporal",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Temporal implementation",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.js"
+  }
+}

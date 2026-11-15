@@ -305,6 +305,13 @@ export interface TimeZoneFutureRule {
   end?: TimeZoneTransitionRule
 }
 
+export interface PackedTimeZoneData {
+  zones: string[]
+  abbrvs: string
+  offsets: string
+  future?: Record<string, TimeZoneFutureRule>
+}
+
 export interface UnpackedTimeZoneData extends Array<UnpackedZoneData> {
   future?: TimeZoneFutureRule
 }
