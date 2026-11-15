@@ -23,14 +23,21 @@ public final class TemporalISOOracle {
     samples.add(-8640000086400000L + 1);
     samples.add(8640000086400000L - 1);
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J 79.1 proleptic Gregorian; epoch milliseconds, year, month, day, hour, minute, second, millisecond");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) {
+        out.println("var __temporalISOOracle = [");
+      } else {
+        out.println("# ICU4J 79.1 proleptic Gregorian; epoch milliseconds, year, month, day, hour, minute, second, millisecond");
+      }
       for (long milliseconds : samples) {
         calendar.setTimeInMillis(milliseconds);
-        out.println(milliseconds + "\t" + calendar.get(Calendar.EXTENDED_YEAR) + "\t" +
+        String row = milliseconds + "\t" + calendar.get(Calendar.EXTENDED_YEAR) + "\t" +
           (calendar.get(Calendar.MONTH) + 1) + "\t" + calendar.get(Calendar.DATE) + "\t" +
           calendar.get(Calendar.HOUR_OF_DAY) + "\t" + calendar.get(Calendar.MINUTE) + "\t" +
-          calendar.get(Calendar.SECOND) + "\t" + calendar.get(Calendar.MILLISECOND));
+          calendar.get(Calendar.SECOND) + "\t" + calendar.get(Calendar.MILLISECOND);
+        out.println(javascript ? "[" + row.replace('\t', ',') + "]," : row);
       }
+      if (javascript) out.println("];");
     }
   }
 }

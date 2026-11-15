@@ -27,6 +27,7 @@ formatjs_library(
         "instant-string.ts",
         "kernel.ts",
         "locale.ts",
+        "native-iso.ts",
         "now.ts",
         "plain-date.ts",
         "plain-date-time.ts",
@@ -1242,3 +1243,107 @@ formatjs_test(
         "//:node_modules/vitest",
     ],
 )
+
+rolldown_bundle(
+    name = "native-iso-payload",
+    srcs = [
+        "tests/native-iso-prelude.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-iso-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-iso-host",
+    srcs = [
+        "tests/native-iso-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-iso-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_iso_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        ":native-iso-host.js",
+    ],
+    outs = ["native-iso-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location :native-iso-host.js) > $@",
+)
+
+sh_test(
+    name = "native_iso_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_iso_hermes_source)",
+    ],
+    data = [
+        ":native_iso_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+[
+    sh_test(
+        name = "native_iso_hermes_" + suite + "_" + mode + "_test262",
+        size = "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes:hermes_runner)",
+            "$(rootpath native-iso-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath %s)" % baseline,
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.rustISO." + suite,
+        ] + patterns,
+        data = [
+            "native-iso-payload.js",
+            "tests/hermes-host.sh",
+            baseline,
+            ":instant_hermes_harness",
+            "//native/hermes:hermes_runner",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+            "FORMATJS_TEMPORAL_RUST_ISO": "1",
+        },
+    )
+    for suite, patterns, baseline in [
+        ("instant", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json"),
+        ("date", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json"),
+        ("datetime", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json"),
+        ("time", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json"),
+        ("yearmonth", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json"),
+        ("monthday", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json"),
+        ("duration", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json"),
+        ("zoned", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json"),
+        ("zoned_edges", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json"),
+        ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
+        ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
+        ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+    ]
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+]

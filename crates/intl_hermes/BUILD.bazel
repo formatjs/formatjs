@@ -1,4 +1,4 @@
-# gazelle:alias_kind rust_static_library rust_library
+# gazelle:ignore
 load("@rules_rs//rs:rust_static_library.bzl", "rust_static_library")
 
 config_setting(
@@ -33,9 +33,12 @@ alias(
 
 rust_static_library(
     name = "without_compiled_data",
-    srcs = ["lib.rs"],
+    srcs = [
+        "lib.rs",
+        "with_temporal.rs",
+    ],
     crate_name = "formatjs_intl_hermes_uncompiled",
-    crate_root = "lib.rs",
+    crate_root = "with_temporal.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = [
@@ -52,6 +55,7 @@ rust_static_library(
         "//crates/intl_relativetimeformat",
         "//crates/intl_segmenter",
         "//crates/intl_supportedvaluesof",
+        "//crates/temporal:with_ffi",
     ],
 )
 
@@ -69,18 +73,22 @@ COMPILED_DEPS = [
     "//crates/intl_relativetimeformat:with_compiled_data",
     "//crates/intl_segmenter",
     "//crates/intl_supportedvaluesof",
+    "//crates/temporal:with_ffi",
 ]
 
 rust_static_library(
     name = "with_compiled_data",
-    srcs = ["lib.rs"],
+    srcs = [
+        "lib.rs",
+        "with_temporal.rs",
+    ],
     compile_data = select({
         ":android_arm64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_aarch64-linux-android"],
         ":android_x86_64": ["@androidndk//toolchains/llvm/prebuilt/linux-x86_64/sysroot:static_runtime_lib_x86_64-linux-android"],
         "//conditions:default": [],
     }),
     crate_name = "formatjs_intl_hermes",
-    crate_root = "lib.rs",
+    crate_root = "with_temporal.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = COMPILED_DEPS,

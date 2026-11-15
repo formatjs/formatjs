@@ -14,8 +14,10 @@ The public entry exports Instant, Duration, PlainTime, PlainDate, PlainDateTime,
 PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. Public
 TS date classes use all 16 specification calendars and owned IANA timezone data.
 Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
-numeric calendar math is shared, while native date classes still use ISO.
-Native Hermes installation and complete WASM facade/data remain pending.
+numeric calendar math is shared. Native date classes resolve all 16 calendars.
+An experimental Hermes bridge delegates ISO conversion/day arithmetic to Rust;
+remaining namespace operations still use TS. Complete native Hermes installation
+and complete WASM facade/data remain pending.
 
 ## Delivery order
 
@@ -771,3 +773,26 @@ borrowed-data lifetimes and both public plain-date limits.
 Native Hermes C ABI/JSI installation and native Test262 are now the next required
 implementation work. No native JS backend or full WASM facade has been installed
 by these typed data/context changes. Full-backend benchmark/size proof remains open.
+
+## Experimental Hermes Rust ISO bridge
+
+The `ffi` feature (`//crates/temporal:with_ffi`) exposes normalized JSON requests
+for ISO fields/epoch conversion and day arithmetic. The unified Hermes Rust
+archive reexports the ABI through a Bazel-only crate root; the published Cargo
+archive has no dependency on the private Temporal crate. C++ owns and frees each
+response. Without this feature, the default Rust core remains data-free,
+allocation-free and `no_std`.
+
+`FORMATJS_TEMPORAL_RUST_ISO=1` enables a runner-only callback. The experimental
+payload captures/removes it, configures the private ISO backend, then installs
+the public Temporal namespace. Those three operations require Rust; errors never
+fall back to TS. Coercion, slots, descriptors and remaining operations still use
+TS. This is a partial backend, not complete native Temporal or SDK installation.
+
+`native_iso_hermes_oracle_test` verifies 25,265 independent ICU proleptic Gregorian
+rows through public classes in Hermes source and optimized bytecode. Rust ABI
+checks additionally cover the oracle's extended plain-date bounds, malformed
+requests, error ownership and fractional day arithmetic. The native ISO Test262
+targets pass 7,982 executions per mode with strict per-family baselines.
+This proves the hybrid configuration only. Complete Rust/WASM backends and equivalent full-backend
+performance/size comparisons remain required.

@@ -689,3 +689,11 @@ zoned parsing/formatting and shared offset formatting. Namespace TS stays 360,27
 gzip bytes; matched primitives stay 3,757 TS bytes, while WASM is 19,531 plus 463
 bridge bytes (19,994 combined). Native zoned/calendar facades and their data are
 not exported by this primitive ABI. Full backend size/performance remains open.
+
+`native-iso-size-results.json` refreshes size after the experimental Hermes Rust
+ISO bridge. Default namespace TS is 360,287 gzip bytes, up 10 bytes. Matched
+data-free primitives are 3,773 TS bytes versus 19,494 WASM plus 463 bridge bytes
+(19,957 combined). The native ISO JSON bridge is a partial backend and remains
+opt-in; these numbers do not measure its native archive or a full WASM facade.
+Reference `temporal-polyfill` 1.0.7 remains 19,393 bytes basic / 23,226 full,
+using host Intl. Equivalent full-backend throughput and size remain open.

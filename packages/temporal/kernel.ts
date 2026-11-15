@@ -1,3 +1,4 @@
+import {nativeISO} from '#packages/temporal/native-iso.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
 import {
   DateFromTime,
@@ -48,6 +49,8 @@ function checkInstant(value: bigint): bigint {
 }
 
 export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
+  const native = nativeISO()
+  if (native) return native.isoToEpochNanoseconds(fields)
   const {year, month, day: date} = fields
   const time = [
     fields.hour ?? 0,
@@ -92,6 +95,8 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
 }
 
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
+  const native = nativeISO()
+  if (native) return native.epochNanosecondsToISO(value)
   if (value <= -limit - day || value >= limit + day)
     throw new RangeError('Local date out of range')
   const days = floorDivide(value, day)
@@ -120,6 +125,8 @@ export function addISODays(
   fields: ISODateTime,
   days: number
 ): Required<ISODateTime> {
+  const native = nativeISO()
+  if (native) return native.addISODays(fields, days)
   if (!Number.isSafeInteger(days)) throw new RangeError('Invalid day count')
   return epochNanosecondsToISO(
     isoToEpochNanoseconds(fields) + BigInt(days) * day

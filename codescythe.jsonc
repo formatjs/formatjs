@@ -2,6 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/perplexityai/codescythe/main/codescythe.schema.json",
   "entry": [
     "packages/temporal/index.ts",
+    "packages/temporal/tests/native-iso-host.ts",
+    "packages/temporal/tests/native-iso-prelude.ts",
     "packages/babel-plugin-formatjs/index.ts",
     "packages/bigdecimal/index.ts",
     "packages/cli-lib/index.ts",

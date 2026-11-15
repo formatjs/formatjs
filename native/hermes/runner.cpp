@@ -12,8 +12,11 @@
 #include <formatjs/hermes/supported_values.h>
 
 #include <hermes/hermes.h>
+#include "bridge.h"
+#include <formatjs/intl/temporal.h>
 
 #include <chrono>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <iterator>
@@ -34,6 +37,13 @@ int main(int argc, char **argv) {
     runtime = facebook::hermes::makeHermesRuntime(
         ::hermes::vm::RuntimeConfig::Builder().withES6BlockScoping(blockScoping).build());
     auto &rt = *runtime;
+    if (std::getenv("FORMATJS_TEMPORAL_RUST_ISO")) {
+      using Bytes = formatjs::hermes_bridge::Buffer<FormatjsTemporalBytes, formatjs_temporal_bytes_free>;
+      rt.global().setProperty(rt, "__formatjsTemporalISOQuery",
+          formatjs::hermes_bridge::json<1, Bytes>(rt, "temporalISOQuery",
+              "Expected Temporal ISO JSON", {2, "Rust Temporal ISO bridge failed"},
+              formatjs_temporal_query));
+    }
     auto print = jsi::Function::createFromHostFunction(
         rt, jsi::PropNameID::forAscii(rt, "print"), 0,
         [](jsi::Runtime &rt, const jsi::Value &, const jsi::Value *args,

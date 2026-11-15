@@ -11,11 +11,13 @@ repository = "https://github.com/formatjs/formatjs"
 path = "lib.rs"
 
 [features]
+ffi = ["dep:serde_json"]
 compiled_calendars = []
 compiled_data = ["compiled_calendars", "compiled_time_zones"]
 compiled_time_zones = []
 
 [dependencies]
+serde_json = { workspace = true, optional = true }
 formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars", version = "0.2.3", default-features = false }
 
 [dev-dependencies]

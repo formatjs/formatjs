@@ -1,7 +1,9 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
 load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
+load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 load(":wasm.bzl", "temporal_wasm")
 
 # gazelle:ignore
@@ -54,12 +56,12 @@ rust_library(
         "zoned.rs",
         "zoned_difference.rs",
         "zoned_string.rs",
-    ],
+    ],  # keep
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
     edition = "2024",
     visibility = ["//visibility:public"],
-    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
 )
 
 formatjs_rust_test(
@@ -171,7 +173,7 @@ rust_library(
         "zoned.rs",
         "zoned_difference.rs",
         "zoned_string.rs",
-    ],
+    ],  # keep
     compile_data = [":time_zones_data"],
     crate_features = ["compiled_time_zones"],
     crate_name = "formatjs_temporal",
@@ -179,7 +181,7 @@ rust_library(
     edition = "2024",
     rustc_env = {"FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)"},
     visibility = ["//visibility:public"],
-    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
 )
 
 formatjs_rust_test(
@@ -237,7 +239,7 @@ rust_library(
         "zoned.rs",
         "zoned_difference.rs",
         "zoned_string.rs",
-    ],
+    ],  # keep
     compile_data = [":calendar_data"],
     crate_features = ["compiled_calendars"],
     crate_name = "formatjs_temporal",
@@ -245,7 +247,7 @@ rust_library(
     edition = "2024",
     rustc_env = {"FORMATJS_TEMPORAL_CALENDARS": "$(execpath :calendar_data)"},
     visibility = ["//visibility:public"],
-    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
 )
 
 rust_library(
@@ -274,7 +276,7 @@ rust_library(
         "zoned.rs",
         "zoned_difference.rs",
         "zoned_string.rs",
-    ],
+    ],  # keep
     compile_data = [
         ":calendar_data",
         ":time_zones_data",
@@ -283,7 +285,7 @@ rust_library(
         "compiled_data",
         "compiled_calendars",
         "compiled_time_zones",
-    ],
+    ],  # keep
     crate_name = "formatjs_temporal",
     crate_root = "lib.rs",
     edition = "2024",
@@ -292,7 +294,7 @@ rust_library(
         "FORMATJS_TEMPORAL_TIME_ZONES": "$(execpath :time_zones_data)",
     },
     visibility = ["//visibility:public"],
-    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+    deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],  # keep
 )
 
 formatjs_rust_test(
@@ -301,4 +303,70 @@ formatjs_rust_test(
     srcs = ["context.test.rs"],
     edition = "2024",
     deps = [":with_compiled_data"],  # keep
+)
+
+rust_library(
+    name = "with_ffi",
+    srcs = [
+        "calendar_difference.rs",
+        "calendar_provider.rs",
+        "calendar_registry.rs",
+        "context.rs",
+        "date.rs",
+        "duration.rs",
+        "ffi.rs",
+        "format.rs",
+        "identifiers_generated.rs",
+        "iso.rs",
+        "lib.rs",
+        "now.rs",
+        "parse.rs",
+        "plain_relative.rs",
+        "relative_duration.rs",
+        "rounding.rs",
+        "short_dates.rs",
+        "time.rs",
+        "timezone.rs",
+        "timezone_identity.rs",
+        "timezone_registry.rs",
+        "zoned.rs",
+        "zoned_difference.rs",
+        "zoned_string.rs",
+    ],  # keep
+    crate_features = ["ffi"],
+    crate_name = "formatjs_temporal",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//crates/intl_datetimeformat_calendars:calendar_core",
+        "@crates//:serde_json",
+    ],  # keep
+)
+
+rust_ffi_header(
+    name = "generate_header",
+    src = "ffi.rs",
+    out = "temporal.h",
+)
+
+cc_library(
+    name = "headers",
+    hdrs = ["temporal.h"],
+    include_prefix = "formatjs/intl",
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+)
+
+formatjs_rust_test(
+    name = "ffi_test",
+    size = "small",
+    srcs = ["ffi.test.rs"],
+    compile_data = ["//conformance-tests/icu4j:temporal_iso_fixtures"],
+    edition = "2024",
+    rustc_env = {"FORMATJS_TEMPORAL_ISO": "$(execpath //conformance-tests/icu4j:temporal_iso_fixtures)"},
+    deps = [
+        ":with_ffi",
+        "@crates//:serde_json",
+    ],  # keep
 )

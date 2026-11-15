@@ -682,3 +682,12 @@ genrule(
     tools = [":temporal_zoned_string_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "temporal_iso_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-iso-fixtures.js"],
+    cmd = "$(execpath :temporal_iso_oracle) $@ --js",
+    tools = [":temporal_iso_oracle"],
+    visibility = ["//visibility:public"],
+)
