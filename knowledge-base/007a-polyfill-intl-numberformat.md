@@ -27,8 +27,9 @@ numeric numbering systems. The resolver applies parent locales, root aliases,
 and same-locale plural fallback; unconfirmed/provisional entries are excluded,
 matching the CLDR JSON threshold. Identical systems share Latin data through
 registration-time aliases without mutating the caller's data.
-When a numbering system has no short compact currency patterns, generation uses
-the locale's Latin patterns while retaining the selected digits and symbols.
+All styles share decimal compact tables inside their style/sign pattern.
+Generation drops currency compact tables; legacy payloads still load.
+See the [audit](audits/2026-11-14-compact-percent-icu-spec.md) for ICU differences.
 
 `scripts/number-data/` is a Gazelle-managed Bazel package containing the LDML
 resolver, numbering-system projection, shared plural helpers, and resolver tests.
@@ -276,9 +277,9 @@ flowchart LR
 
 Runtime formatting selects an existing plan rather than splitting CLDR patterns,
 inferring grouping, or rewriting signs. Currency labels and spacing remain dynamic.
-Whole signed plans retain accounting affixes together; range collapse itself is
-unchanged. Unit-template composition, plural selection, and existing compact
-magnitude indexes also remain unchanged.
+Range collapse keeps negative endpoint signs and accounting pairs. TS caches
+composed plans; Rust binds style plan IDs at construction and streams notation
+into the number slot. The style plan supplies grouping.
 
 The field is optional: TS lazily compiles missing raw templates into a WeakMap
 cache; Rust caches its raw-template fallback per immutable locale record. Neither adapter changes the input

@@ -45,7 +45,12 @@ public final class IntlNumberFormatOracle {
         new Profile("{\"signDisplay\":\"negative\"}", "sign-negative .###"),
         new Profile("{\"notation\":\"compact\",\"maximumSignificantDigits\":3}", "compact-short @## group-min2"),
         new Profile("{\"style\":\"unit\",\"unit\":\"meter\",\"unitDisplay\":\"long\",\"minimumFractionDigits\":2,\"trailingZeroDisplay\":\"stripIfInteger\"}", "measure-unit/length-meter unit-width-full-name .00#/w"),
-        new Profile("{\"style\":\"currency\",\"currency\":\"USD\",\"currencyDisplay\":\"name\",\"trailingZeroDisplay\":\"stripIfInteger\"}", "currency/USD unit-width-full-name .00/w")
+        new Profile("{\"style\":\"currency\",\"currency\":\"USD\",\"currencyDisplay\":\"name\",\"trailingZeroDisplay\":\"stripIfInteger\"}", "currency/USD unit-width-full-name .00/w"),
+        // Keep ICU field provenance: percent + compact emits MEASURE_UNIT.
+        new Profile("{\"style\":\"percent\",\"notation\":\"compact\"}", "percent scale/100 compact-short group-min2"),
+        new Profile("{\"style\":\"percent\",\"notation\":\"compact\",\"compactDisplay\":\"long\"}", "percent scale/100 compact-long group-min2"),
+        new Profile("{\"style\":\"percent\",\"notation\":\"compact\",\"signDisplay\":\"always\"}", "percent scale/100 compact-short group-min2 sign-always"),
+        new Profile("{\"style\":\"currency\",\"currency\":\"USD\",\"currencySign\":\"accounting\",\"notation\":\"compact\",\"compactDisplay\":\"long\"}", "currency/USD sign-accounting compact-long group-min2")
     ));
     static int excluded = 0;
     static final String[] VALUES = {"0", "-0", "1", "2", "-1", "1.025", "-1.025", "1234.5", "999.5", "999999.5", "0.0000001", "1e21", "1e100", "9007199254740993.125", "NaN", "Infinity", "-Infinity"};
@@ -136,7 +141,7 @@ public final class IntlNumberFormatOracle {
         if (VersionInfo.ICU_VERSION.getMajor() != 79) throw new AssertionError("ICU 79 required");
         List<String> rows = new ArrayList<>();
         rows.add("locale\toptions\tskeleton\tstart\tend\ttext\tparts");
-        for (String locale : new String[]{"en","fr","de","ar","hi","bn","ja","zh-Hant","pl","ru","cs","he","fa","se-FI","sw","ca","de-CH"})
+        for (String locale : new String[]{"en","fr","de","ar","hi","bn","ja","zh-Hant","pl","ru","cs","he","fa","se-FI","sw","ca","de-CH","tr"})
             for (Profile profile : PROFILES) rows(rows, locale, profile, true);
         for (String name : NumberingSystem.getAvailableNames()) {
             if (NumberingSystem.getInstanceByName(name).isAlgorithmic()) continue;

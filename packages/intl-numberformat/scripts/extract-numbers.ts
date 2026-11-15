@@ -117,7 +117,6 @@ function extractNumbers(d: Numbers): RawNumberData {
         standard,
         accounting,
         'unitPattern-count-other': unitPattern,
-        short,
       } = d[
         `currencyFormats-numberSystem-${ns}` as 'currencyFormats-numberSystem-latn'
       ]
@@ -130,9 +129,6 @@ function extractNumbers(d: Numbers): RawNumberData {
         accounting,
         unitPattern,
       } as RawCurrencyData
-      if (short) {
-        all[ns].short = reduceNumCount(short.standard)
-      }
       return all
     }, {}),
   }

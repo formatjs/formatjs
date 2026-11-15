@@ -107,6 +107,10 @@ The normal polyfill entry point replaces native implementations missing this beh
 - **`'compact'`** - Compact notation (e.g., "1.2K", "1.2M")
   - `compactDisplay`: `'short'` or `'long'`
 
+Compact notation keeps percent signs and currency/accounting formatting.
+`useGrouping` still applies. Percent parts stay `percentSign`. Some native ICU layouts differ
+from ECMA-402's current model; see [spec PR #1117](https://github.com/tc39/ecma402/pull/1117).
+
 #### Currency Options
 
 - **currencyDisplay**: `'symbol'`, `'narrowSymbol'`, `'code'`, `'name'`

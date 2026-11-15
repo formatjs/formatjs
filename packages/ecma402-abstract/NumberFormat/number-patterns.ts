@@ -11,6 +11,10 @@ const NUMBER = /[#0](?:[.,][#0]+)*/g
 const TOKENS = /({c:[^}]+}|\{approximatelySign\}|\{0\}|[¤%\-+])/g
 const cache = new WeakMap<RawNumberData, Map<string, NumberPatternPlan[]>>()
 const prepared = new WeakMap<CompiledNumberPatterns, NumberPatternPlan[]>()
+const composed = new WeakMap<
+  NumberPatternPlan,
+  WeakMap<NumberPatternPlan, NumberPatternPlan>
+>()
 
 function approximate(pattern: string, sign: number): string {
   const index = sign === 0 ? -1 : pattern.indexOf(sign === 1 ? '+' : '-')
@@ -146,7 +150,6 @@ export function compileNumberPatterns(
   for (const value of values(data.currency)) {
     add(value.standard)
     add(value.accounting)
-    compact(value.short)
   }
   return result
 }
@@ -191,4 +194,27 @@ export function getNumberPattern(
     patterns.set(key, plans)
   }
   return plans[index]
+}
+
+/** Style owns signs and affixes; notation only fills its number slot. */
+export function composeNumberPattern(
+  style: NumberPatternPlan,
+  notation: NumberPatternPlan
+): NumberPatternPlan {
+  let patterns = composed.get(style)
+  if (!patterns) {
+    patterns = new WeakMap()
+    composed.set(style, patterns)
+  }
+  let result = patterns.get(notation)
+  if (!result) {
+    result = {
+      grouping: style.grouping,
+      parts: [],
+    }
+    for (const part of style.parts)
+      result.parts.push(...(part[0] === 'number' ? notation.parts : [part]))
+    patterns.set(notation, result)
+  }
+  return result
 }

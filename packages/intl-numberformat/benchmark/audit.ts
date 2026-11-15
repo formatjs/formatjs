@@ -63,6 +63,8 @@ const profiles: [string, NumberFormatOptions][] = [
   ['unit', {style: 'unit', unit: 'meter', unitDisplay: 'long'}],
   ['scientific', {notation: 'scientific'}],
   ['compact', {notation: 'compact'}],
+  ['percent', {style: 'percent'}],
+  ['compact percent', {style: 'percent', notation: 'compact'}],
   [
     'compact currency',
     {style: 'currency', currency: 'USD', notation: 'compact'},

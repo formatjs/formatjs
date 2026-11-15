@@ -1,4 +1,7 @@
-import {getNumberPattern} from '#packages/ecma402-abstract/NumberFormat/number-patterns.js'
+import {
+  composeNumberPattern,
+  getNumberPattern,
+} from '#packages/ecma402-abstract/NumberFormat/number-patterns.js'
 import type {Decimal} from '@formatjs/bigdecimal'
 import {S_UNICODE_REGEX} from '@formatjs_generated/unicode/regex.js'
 import {
@@ -76,9 +79,7 @@ export default function formatToParts(
       numberResult,
       pl,
       data,
-      style,
       options.compactDisplay!,
-      options.currencyDisplay,
       numberingSystem
     )
   }
@@ -105,44 +106,33 @@ export default function formatToParts(
     }
   }
 
-  let numberPattern: string
-  if (!compactNumberPattern) {
-    // Note: if the style is unit, or is currency and the currency display is name,
-    // its unit parts will be interpolated in part 2. So here we can fallback to decimal.
-    if (
-      style === 'decimal' ||
-      style === 'unit' ||
-      (style === 'currency' && options.currencyDisplay === 'name')
-    ) {
-      // Shortcut for decimal
-      const decimalData =
-        data.numbers.decimal[numberingSystem] ||
-        data.numbers.decimal[defaultNumberingSystem]
-      numberPattern = decimalData.standard
-    } else if (style === 'currency') {
-      const currencyData =
-        data.numbers.currency[numberingSystem] ||
-        data.numbers.currency[defaultNumberingSystem]
-
-      numberPattern = currencyData[options.currencySign!]
-    } else {
-      // percent
-      const percentPattern =
-        data.numbers.percent[numberingSystem] ||
+  const decimal =
+    data.numbers.decimal[numberingSystem] ||
+    data.numbers.decimal[defaultNumberingSystem]
+  const currency =
+    data.numbers.currency[numberingSystem] ||
+    data.numbers.currency[defaultNumberingSystem]
+  const numberPattern =
+    style === 'percent'
+      ? data.numbers.percent[numberingSystem] ||
         data.numbers.percent[defaultNumberingSystem]
-      numberPattern = percentPattern
-    }
-  } else {
-    numberPattern = compactNumberPattern
-  }
-
-  const plan = getNumberPattern(
+      : style === 'currency' && options.currencyDisplay !== 'name'
+        ? currency[options.currencySign!]
+        : decimal.standard
+  const stylePlan = getNumberPattern(
     data.numbers,
     numberPattern,
-    !!compactNumberPattern,
+    false,
     sign,
     approximately
   )
+  // ECMA-402 GetNumberFormatPattern and GetNotationSubPattern are independent.
+  const plan = compactNumberPattern
+    ? composeNumberPattern(
+        stylePlan,
+        getNumberPattern(data.numbers, compactNumberPattern, true, 0, false)
+      )
+    : stylePlan
   const spacing =
     style === 'currency' && options.currencyDisplay !== 'name'
       ? (
@@ -170,7 +160,7 @@ export default function formatToParts(
             notation,
             exponent,
             numberingSystem,
-            !compactNumberPattern && (options.useGrouping ?? true),
+            options.useGrouping ?? true,
             plan.grouping,
             data.numbers.minimumGroupingDigits ?? 1,
             style
@@ -485,16 +475,14 @@ function partitionNumberIntoParts(
 
 // Find the CLDR pattern for compact notation based on the magnitude of data and style.
 //
-// Returns the raw template; generated plans provide its signed tokens.
+// Returns the unsigned notation template; style retains its own signed plan.
 //
 // Returning null means the compact display pattern cannot be found.
 function getCompactDisplayPattern(
   numberResult: NumberResult,
   pl: Intl.PluralRules,
   data: NumberFormatLocaleInternalData,
-  style: NumberFormatOptionsStyle,
   compactDisplay: NumberFormatOptionsCompactDisplay,
-  currencyDisplay: NumberFormatOptionsCurrencyDisplay | undefined,
   numberingSystem: string
 ): string | null {
   const {roundedNumber, magnitude} = numberResult
@@ -502,16 +490,10 @@ function getCompactDisplayPattern(
   // "1e-7" lexically with CLDR thresholds would select the largest suffix.
   if (magnitude < 0) return null
   const defaultNumberingSystem = data.numbers.nu[0]
-  const currency =
-    data.numbers.currency[numberingSystem] ||
-    data.numbers.currency[defaultNumberingSystem]
   const decimal =
     data.numbers.decimal[numberingSystem] ||
     data.numbers.decimal[defaultNumberingSystem]
-  const patterns =
-    style === 'currency' && currencyDisplay !== 'name'
-      ? currency.short
-      : decimal[compactDisplay]
+  const patterns = decimal[compactDisplay]
   const entry = getCompactPattern(patterns, magnitude)
   if (!entry) return null
   const pattern = selectPlural(pl, roundedNumber.toNumber(), entry.rules)

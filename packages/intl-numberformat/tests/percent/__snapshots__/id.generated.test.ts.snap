@@ -18,10 +18,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "juta",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 juta – +2 juta"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=long 2`] = `"+1 juta% – +2 juta%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=long 3`] = `
 [
@@ -46,6 +50,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "value": "juta",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -70,6 +79,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "juta",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -91,10 +105,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "jt",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 jt – +2 jt"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=short 2`] = `"+1 jt% – +2 jt%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDisplay=short 3`] = `
 [
@@ -119,6 +137,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "value": "jt",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -143,6 +166,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=always, compactDis
     "type": "compact",
     "value": "jt",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -160,10 +188,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "juta",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 juta – 2 juta"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=long 2`] = `"1 juta% – 2 juta%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=long 3`] = `
 [
@@ -183,6 +215,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "value": "juta",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -202,6 +239,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "juta",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -219,10 +261,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "type": "compact",
     "value": "jt",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 jt – 2 jt"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=short 2`] = `"1 jt% – 2 jt%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDisplay=short 3`] = `
 [
@@ -240,6 +286,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "source": "startRange",
     "type": "compact",
     "value": "jt",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -260,6 +311,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=auto, compactDispl
     "source": "endRange",
     "type": "compact",
     "value": "jt",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;
@@ -282,10 +338,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "juta",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 juta – +2 juta"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=long 2`] = `"+1 juta% – +2 juta%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=long 3`] = `
 [
@@ -310,6 +370,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "value": "juta",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -334,6 +399,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "juta",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -355,10 +425,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "jt",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 jt – +2 jt"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=short 2`] = `"+1 jt% – +2 jt%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compactDisplay=short 3`] = `
 [
@@ -383,6 +457,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "value": "jt",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -407,6 +486,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=exceptZero, compac
     "type": "compact",
     "value": "jt",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -424,10 +508,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "juta",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 juta – 2 juta"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=long 2`] = `"1 juta% – 2 juta%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=long 3`] = `
 [
@@ -447,6 +535,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "value": "juta",
   },
   {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
+  },
+  {
     "source": "shared",
     "type": "literal",
     "value": " – ",
@@ -466,6 +559,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "juta",
   },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
@@ -483,10 +581,14 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "type": "compact",
     "value": "jt",
   },
+  {
+    "type": "percentSign",
+    "value": "%",
+  },
 ]
 `;
 
-exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 jt – 2 jt"`;
+exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=short 2`] = `"1 jt% – 2 jt%"`;
 
 exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisplay=short 3`] = `
 [
@@ -504,6 +606,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "source": "startRange",
     "type": "compact",
     "value": "jt",
+  },
+  {
+    "source": "startRange",
+    "type": "percentSign",
+    "value": "%",
   },
   {
     "source": "shared",
@@ -524,6 +631,11 @@ exports[`Intl.NumberFormat id > notation=compact, signDisplay=never, compactDisp
     "source": "endRange",
     "type": "compact",
     "value": "jt",
+  },
+  {
+    "source": "endRange",
+    "type": "percentSign",
+    "value": "%",
   },
 ]
 `;

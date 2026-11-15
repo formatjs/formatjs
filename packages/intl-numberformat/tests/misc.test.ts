@@ -61,15 +61,14 @@ LOCALES.forEach(locale => {
   NumberFormat.__addLocaleData(require(`./locale-data/${locale}.json`))
 })
 
-// Replicate Google Chrome's behavior: when there is a compact pattern, drop the percentage sign.
-// For example, 10000 is formatted to "1M" (10000 * 100 = 1M).
+// Percent style wraps the compact notation subpattern.
 it('formats percentage with compact notation', () => {
   expect(
     NumberFormat('en-BS', {
       style: 'percent',
       notation: 'compact',
     }).format(10_000)
-  ).toBe('1M')
+  ).toBe('1M%')
 })
 
 it('formats compact currency in a numbering system without compact patterns', () => {
@@ -193,7 +192,7 @@ describe('test262 examples', function () {
         notation: 'compact',
         compactDisplay: 'long',
       }).format(10000)
-    ).toBe('+ZWD 10K')
+    ).toBe('+ZWD 10 thousand')
     expect(
       new NumberFormat('en-US', {
         style: 'currency',
@@ -524,8 +523,8 @@ test('#4236 compact notation with very large numbers (quadrillion scale)', () =>
   expect(formatter.format(1e15)).toBe('1000T')
 
   // Even larger numbers should continue to use the T suffix
-  expect(formatter.format(1e16)).toBe('10000T') // 10 quadrillion
-  expect(formatter.format(5.5e16)).toBe('55000T') // 55 quadrillion
+  expect(formatter.format(1e16)).toBe('10,000T') // 10 quadrillion
+  expect(formatter.format(5.5e16)).toBe('55,000T') // 55 quadrillion
 })
 
 it('negotiates well-formed numbering systems and rejects malformed ones', () => {
@@ -923,7 +922,7 @@ it('formats approximate ranges with signs, accounting, and compact notation', ()
   ).toBe('~3 meters')
 })
 
-it('shares matching signs with a shared currency suffix', () => {
+it('retains negative endpoint signs with a shared currency suffix', () => {
   const nf = new NumberFormat('pt-PT', {
     style: 'currency',
     currency: 'EUR',
@@ -933,7 +932,7 @@ it('shares matching signs with a shared currency suffix', () => {
   expect(
     nf.formatRangeToParts(2.9, 3.1).filter(part => part.type === 'plusSign')
   ).toEqual([{type: 'plusSign', value: '+', source: 'shared'}])
-  expect(nf.formatRange(-3.1, -2.9)).toBe('-3,10 - 2,90 €')
+  expect(nf.formatRange(-3.1, -2.9)).toBe('-3,10 - -2,90 €')
   expect(nf.formatRange(-2.9, 3.1)).toBe('-2,90 - +3,10 €')
   expect(
     nf

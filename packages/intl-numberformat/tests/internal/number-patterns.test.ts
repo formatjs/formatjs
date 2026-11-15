@@ -19,12 +19,20 @@ it('keeps compiled and legacy text, parts, and approximate ranges identical', ()
   const profiles: NumberFormatOptions[] = [
     {},
     {style: 'percent'},
+    {style: 'percent', notation: 'compact'},
     {style: 'currency', currency: 'CHF', currencyDisplay: 'code'},
     {style: 'currency', currency: 'USD', currencySign: 'accounting'},
     {style: 'unit', unit: 'meter', unitDisplay: 'long'},
     {notation: 'scientific'},
     {notation: 'compact'},
     {style: 'currency', currency: 'USD', notation: 'compact'},
+    {
+      style: 'currency',
+      currency: 'USD',
+      currencySign: 'accounting',
+      notation: 'compact',
+      compactDisplay: 'long',
+    },
   ]
   const collect = () =>
     profiles.flatMap(options =>
@@ -99,4 +107,20 @@ it('represents literal-only compact templates without inventing a number slot', 
     false
   )
   expect(plan.parts).toEqual([['compact', 'mille']])
+})
+
+it('keeps style around a numberless notation template', () => {
+  const original = NumberFormat.localeData.en!
+  const data = structuredClone(original)
+  data.numbers.decimal.latn.short['1000'] = {other: 'mille'}
+  try {
+    NumberFormat.__addLocaleData({locale: 'en', data})
+    expect(
+      new NumberFormat('en', {style: 'percent', notation: 'compact'}).format(
+        -10
+      )
+    ).toBe('-mille%')
+  } finally {
+    NumberFormat.__addLocaleData({locale: 'en', data: original})
+  }
 })
