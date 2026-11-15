@@ -10,9 +10,8 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports a partial `Temporal.Instant`. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/ISO
-core and parser. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
+The public entry exports partial `Temporal.Instant` and `Temporal.Duration` APIs. ISO/Hebrew arithmetic
+and owned IANA timezone primitives are internal. `crates/temporal` now supplies a dependency-free `no_std` Rust Instant/Duration/ISO core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
 is reusable; existing Temporal-based formatter calendars are not independent
 Temporal implementations.
 
@@ -64,25 +63,31 @@ no completed slice establishes complete Temporal compliance.
 
 ## Existing evidence
 
-The package README and benchmark notes record the current 154-execution strict
-Instant slice, failing full Instant diagnostic, bounded ICU calendar controls,
-post-2100 timezone controls and early TS-only measurements. Rust and TS also consume independent ICU4J 79.1 proleptic Gregorian fixtures
-across the full instant range, including the adjacent local-date window. These
-validate ISO fields in both directions, separate from the bounded Hebrew oracle.
-The same 154-execution slice passes on real Hermes in source and optimized
-bytecode modes, without reference Temporal, exclusions or tracked failures.
-The owned TS payload is compiled with the pinned engine compiler for the bytecode
-control. Native Rust Hermes bindings remain pending.
-Neither complete Temporal nor Rust/WASM/Hermes Temporal performance has been
-measured yet.
+Strict selections pass 346 Instant and 468 Duration executions on Node and
+Hermes source/optimized bytecode. Full diagnostics remain failing: Instant
+882/934, Duration 698/1086. The implemented-method sweeps still have two
+missing-class string helper scenarios each; missing classes and calendar behavior
+are implementation gaps, never exclusions.
+
+ICU4J 79.1 independently checks 25,269 proleptic Gregorian samples across the
+full instant range, 2,349 Instant rounding cases and 5,430 signed Duration
+rounding/rational-total cases. Hebrew conversion uses the documented bounded
+oracle range. Future timezone tests retain independent ICU transition controls.
+
+Duration supplies branded TS records, exact ISO fractions, immutable field/sign
+operations, time addition/subtraction, serialization and time-only totals and
+comparison. Rust mirrors field validation/storage, parsing, signed rounding,
+formatting, totals and arithmetic. Instant arithmetic/differences reuse these
+cores. Totals round rational values once to binary64; unsafe numerator conversion
+before division would lose precision. Calendar-relative Duration methods and
+Duration.round remain incomplete.
+
+Hermes compiler and runtime both enable ES6 block scoping. The compiler uses
+`-Xes6-block-scoping`; without it, captured getter loop bindings differed in
+bytecode. Native Rust Hermes installation, remaining classes/calendars, complete
+Temporal conformance and WASM performance/size measurements remain pending.
 
 Parsing follows the [Temporal ISO grammar](https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar)
 and [ParseISODateTime](https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime).
-Test262 remains pinned in `MODULE.bazel`; update counts and diagnostics when the
-pin or selected surface changes.
-
-Rust and TS now implement Instant rounding and ISO serialization. TS named zones
-use the owned IANA pack, including aliases and future rules. ICU4J decimal
-rounding independently validates 2,349 cases. The full serialization/rounding
-selection still fails six missing-family integration cases; full Instant is
-502/934 on Node and Hermes source/bytecode, with no exclusions.
+Test262 remains pinned in `MODULE.bazel`; review counts and diagnostics whenever
+that pin or the selected surface changes.

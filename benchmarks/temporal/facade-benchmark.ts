@@ -9,12 +9,14 @@ const resolve = (file: string) =>
   runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/benchmarks/temporal/${file}`
   )
-const {Instant} = await import(pathToFileURL(resolve('instant-code.js')).href)
+const {Instant, Duration} = await import(
+  pathToFileURL(resolve('instant-code.js')).href
+)
 const {Temporal: reference} = await import(
   pathToFileURL(resolve('reference-bundle.js')).href
 )
 const inputs = [-1000001n, -1n, 0n, 1n, 123456789n, 8640000000000000000000n]
-type Value = bigint | string
+type Value = bigint | string | number
 const pairs: [string, (i: number) => Value, (i: number) => Value][] = [
   [
     'construct/get epochNanoseconds',
@@ -81,8 +83,51 @@ pairs.push(
       }),
   ]
 )
+const durationStrings = [
+  'PT1H2M3.123456789S',
+  '-PT0.000000001S',
+  'P1DT23H59M59.999999999S',
+  'PT9007199254740991.999999999S',
+]
+pairs.push(
+  [
+    'Duration parse/toJSON',
+    i => Duration.from(durationStrings[i % durationStrings.length]).toJSON(),
+    i =>
+      reference.Duration.from(
+        durationStrings[i % durationStrings.length]
+      ).toJSON(),
+  ],
+  [
+    'Duration total microseconds',
+    i =>
+      Duration.from(durationStrings[i % durationStrings.length]).total(
+        'microsecond'
+      ),
+    i =>
+      reference.Duration.from(
+        durationStrings[i % durationStrings.length]
+      ).total('microsecond'),
+  ],
+  [
+    'Instant until/toJSON',
+    i =>
+      new Instant(inputs[i % inputs.length])
+        .until(new Instant(inputs[(i + 1) % inputs.length]))
+        .toJSON(),
+    i =>
+      new reference.Instant(inputs[i % inputs.length])
+        .until(new reference.Instant(inputs[(i + 1) % inputs.length]))
+        .toJSON(),
+  ]
+)
+let numberSink = 0
 let sink = 0n
 function consume(value: Value): void {
+  if (typeof value === 'number') {
+    numberSink += value
+    return
+  }
   sink ^= typeof value === 'string' ? BigInt(value.length) : value
 }
 const throughput = pairs.map(([name, ours, theirs]) => {
@@ -135,10 +180,11 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant numeric paths, parsing, rounding, UTC and named-zone serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant and Duration numeric paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),
+      numberSink,
     },
     null,
     2

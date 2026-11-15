@@ -12,6 +12,8 @@ formatjs_library(
     package_name = "@formatjs/temporal",
     srcs = [
         "calendar.ts",
+        "duration.ts",
+        "duration-core.ts",
         "index.ts",
         "instant.ts",
         "instant-format.ts",
@@ -86,9 +88,13 @@ filegroup(
             [
                 "tests/instant.test.ts",
                 "tests/rounding.test.ts",
+                "tests/duration.test.ts",
                 "tests/instant-strings.json",
             ],
-            ["//conformance-tests/icu4j:temporal_rounding_fixtures"],
+            [
+                "//conformance-tests/icu4j:temporal_rounding_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
         ),
     ]
 ]
@@ -127,6 +133,36 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
 
+_DURATION_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Duration"
+
+_DURATION_CORE_PATTERNS = [
+    _DURATION_ROOT + "/*.js",
+    _DURATION_ROOT + "/prototype/*.js",
+] + [_DURATION_ROOT + "/" + directory + "/**/*.js" for directory in [
+    "from",
+    "prototype/years",
+    "prototype/months",
+    "prototype/weeks",
+    "prototype/days",
+    "prototype/hours",
+    "prototype/minutes",
+    "prototype/seconds",
+    "prototype/milliseconds",
+    "prototype/microseconds",
+    "prototype/nanoseconds",
+    "prototype/sign",
+    "prototype/blank",
+    "prototype/with",
+    "prototype/abs",
+    "prototype/negated",
+    "prototype/add",
+    "prototype/subtract",
+    "prototype/toJSON",
+    "prototype/valueOf",
+]]
+
+_DURATION_PATTERNS = _DURATION_CORE_PATTERNS + [_DURATION_ROOT + "/prototype/toString/**/*.js"]
+
 _INSTANT_PATTERNS = [
     _INSTANT_ROOT + "/*.js",
     _INSTANT_ROOT + "/prototype/*.js",
@@ -137,6 +173,9 @@ _INSTANT_PATTERNS = [
     "prototype/epochNanoseconds",
     "prototype/valueOf",
     "prototype/toJSON",
+    "prototype/add",
+    "prototype/subtract",
+    "prototype/round",
     "prototype/toStringTag",
 ]] + [_INSTANT_ROOT + "/from/" + pattern for pattern in [
     "argument-string*.js",
@@ -167,6 +206,7 @@ _INSTANT_PATTERNS = [
             "instant-prelude-source.js",
             "instant-realm-prelude.js",
             "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
         ],
         env = {"TZ": "UTC"},
@@ -179,10 +219,20 @@ _INSTANT_PATTERNS = [
     )
     for name, patterns, tags in [
         ("instant_test262", _INSTANT_PATTERNS, []),
+        ("duration_test262", _DURATION_CORE_PATTERNS, []),
+        (
+            "duration_methods_test262",
+            _DURATION_PATTERNS,
+            ["manual"],
+        ),
+        (
+            "duration_test262_full",
+            [_DURATION_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
         (
             "instant_serialization_test262",
             _INSTANT_PATTERNS + [
-                _INSTANT_ROOT + "/prototype/round/**/*.js",
                 _INSTANT_ROOT + "/prototype/toString/**/*.js",
             ],
             ["manual"],
@@ -208,6 +258,7 @@ test262_harness_bin.test262_harness_binary(
     data = [
         "instant-payload.js",
         "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
     ],
     node_toolchain = "//tools/test262:node-runtime",
@@ -228,6 +279,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
+            "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -237,6 +289,7 @@ test262_harness_bin.test262_harness_binary(
             "//native/hermes:hermes_runner",
             "//tools/test262:validator",
             "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
             "@hermes//:hermesc",
         ],
@@ -248,6 +301,22 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("duration_hermes_test262_strict", "source", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
+        ("duration_hermes_bytecode_test262_strict", "bytecode", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
+        (
+            "duration_hermes_test262_full",
+            "source",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "duration_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+            ["manual"],
+        ),
         ("instant_hermes_test262_strict", "source", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json", []),
         ("instant_hermes_bytecode_test262_strict", "bytecode", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json", []),
         (

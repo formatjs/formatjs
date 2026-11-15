@@ -29,3 +29,14 @@ increments. `Display` writes UTC ISO strings; `Instant::format` supports explici
 precision and caller-supplied offsets without allocation. Named zone lookup is
 not implemented in Rust yet. An independent ICU decimal oracle supplies 2,349
 rounding cases, including negative epochs, ties and range boundaries.
+
+Duration stores Number-representable integer fields and validates mixed signs,
+calendar-field bounds and the exact nanosecond limit. It parses ISO fractional
+hours/minutes/seconds, formats without allocation, supports signed precision
+rounding, immutable sign changes, time addition/subtraction, time comparison and
+totals. Instant add/subtract and differences reuse this core.
+
+Calendar-relative Duration operations remain pending. An independent ICU oracle
+checks 5,430 signed rounding and exact rational-to-double total cases, including
+unsafe-integer results. Totals round once to IEEE binary64; converting the
+numerator to f64 before division would introduce double rounding.

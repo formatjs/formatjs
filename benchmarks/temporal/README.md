@@ -26,7 +26,7 @@ conversion, ISO day addition, possible instants and earlier/later/compatible/rej
 disambiguation. `zones.ts` decodes only the requested canonical zone through the
 shared timezone unpacker. No host Intl timezone lookup.
 
-Experimental `instant.ts` adds an Instant slice; durations and transition queries remain unimplemented. `calendar.ts` separately supplies numeric
+Experimental `instant.ts` adds an Instant slice; transition queries and remaining class integration are incomplete; Duration now supplies the arithmetic foundation. `calendar.ts` separately supplies numeric
 ISO/Hebrew arithmetic. Other optional TS calendars still use temporal-polyfill;
 they cannot yet serve as an independent replacement.
 The gap resolver assumes IANA gaps are isolated within its two-day window.
@@ -81,8 +81,7 @@ String parsing accepts basic/extended dates and times, optional minutes/seconds,
 nanosecond fractions, fractional numeric offsets, leap-second normalization and
 RFC 9557 annotations. Unknown noncritical annotations are ignored; unknown
 critical annotations and duplicate critical calendars are rejected. Annotations
-do not change an Instant’s offset. ZonedDateTime input, duration arithmetic and locale formatting remain
-unsupported.
+do not change an Instant’s offset. ZonedDateTime input and locale formatting remain unsupported.
 Cross-realm slot sharing and foreign-realm default-prototype fallback remain open.
 This slice is not installed globally outside the test prelude.
 
@@ -96,48 +95,52 @@ bazel test -c opt //packages/temporal:instant_test262_full
 The strict slice executes all constructor/prototype-root tests and complete
 numeric-factory, epoch-getter, valueOf, toJSON and toStringTag directories, plus
 parser-related `from` file groups from the pinned
-Test262 checkout: **154/154 executions pass**. No individual-file exclusions or
+Test262 checkout: **346/346 executions pass**. No individual-file exclusions or
 expected-failure baseline. The prelude replaces the entire native Temporal
 namespace in every realm, including recursively created realms.
 
 The full Instant corpus is a separate manual raw diagnostic: **934 executions,
-502 passes, 432 failures**. Missing duration arithmetic/differences, ZonedDateTime and class
-integration dominate. Negative cases can pass incidentally when methods/types are
+882 passes, 52 failures**. ZonedDateTime and locale/class integration account for the remaining Instant failures. Negative cases can pass incidentally when methods/types are
 missing; these aggregate passes do not establish whole-method conformance.
 [`conformance-results.json`](../../packages/temporal/conformance-results.json) records counts and failure areas. Raw failures remain
 in Bazel test output; the full diagnostic does not turn them into a green gate.
 
 `facade-results.json` measures supported paths against forced `temporal-polyfill`
 1.0.7 classes: seven alternating batches of 50,000 after 5,000 warmups. Output
-values are compared before timing. String timings consume output length;
-numeric timings consume the returned bigint. One shared-host V8 run, ns/op:
+values are compared before timing. Strings consume output length; numeric
+results remain observable through bigint/number sinks. Inputs mix ordinary and
+extreme-range cases, so these are not representative application averages.
+One shared-host V8 run, ns/op:
 
-| Operation                            | Facade | Reference |
-| ------------------------------------ | -----: | --------: |
-| Construct/read epochNanoseconds      |    367 |       450 |
-| Nanosecond factory/read milliseconds |    410 |       489 |
-| Millisecond factory/read nanoseconds |    517 |       345 |
-| Parse ISO/read nanoseconds           |  1,796 |     2,114 |
-| Round microsecond/read nanoseconds   |  1,088 |     1,386 |
-| toJSON                               |  1,282 |     2,327 |
-| toString, New York                   |  1,927 |     5,765 |
+| Operation                                  | Facade | Reference |
+| ------------------------------------------ | -----: | --------: |
+| construct/get epochNanoseconds             |    382 |       422 |
+| fromEpochNanoseconds/get epochMilliseconds |    437 |       515 |
+| fromEpochMilliseconds/get epochNanoseconds |    299 |       355 |
+| from ISO string/get epochNanoseconds       |  1,809 |     1,976 |
+| round microsecond/get epochNanoseconds     |  1,038 |     1,403 |
+| toJSON                                     |  1,471 |     2,586 |
+| toString named timezone                    |  2,011 |     5,958 |
+| Duration parse/toJSON                      |  5,156 |    52,140 |
+| Duration total microseconds                |  4,137 |     2,784 |
+| Instant until/toJSON                       |  5,264 |    25,605 |
 
-Results are mixed across numeric factories. These are partial API workloads,
-not an established complete-polyfill performance win. Timezone cases use rules
-that agree between owned IANA 2026f and the reference's host Intl data.
+Duration total is slower in this run; parsing/differences are faster on this
+mixed-range sample. These partial API workloads do not establish a complete
+polyfill performance win. Timezone cases use rules that agree between owned
+IANA 2026f and the reference's host Intl data.
 
-Minified gzip: public Instant slice **69,939 bytes**, now including all owned
-IANA timezone data and aliases for named-zone serialization. The earlier
-2,484-byte slice had no named-zone serialization/data. Independent parsing,
-rounding and string-format primitives are **2,688 bytes** without the facade or
-timezone resolver/data; ISO/Hebrew arithmetic is **1,822 bytes**. These bundles
-are not additive and cover different APIs. The reference is **19,393 bytes**
-and relies on host Intl timezone data. No WASM size has been measured yet.
+Minified gzip: public Instant/Duration namespace **72,450 bytes**, including
+all owned IANA timezone data and aliases. Independent Instant parsing/rounding/
+format primitives are **2,688 bytes**, without facade, Duration or timezone
+resolver/data; ISO/Hebrew arithmetic is **1,822 bytes**. Bundles are not additive
+and cover different APIs. The reference is **19,393 bytes** and uses host Intl
+timezone data. WASM sizes remain unmeasured.
 
-The full rounding/serialization selection passes **340/346**. Its six raw
-failures involve missing Temporal family constructors in shared helpers/type
-checks. They remain failures in `instant_serialization_test262` and in full
-Node/Hermes diagnostics; no files are excluded to obtain a passing method gate.
+The full Instant serialization selection passes **454/456**. Duration's complete
+implemented-method selection passes **554/556**. Missing class constructors in
+string helpers remain raw failures. No files are excluded to manufacture a
+passing method gate.
 
 ## Measured footprint
 
@@ -197,7 +200,7 @@ No browser/Hermes performance measurement yet.
 
 ## Next decision
 
-Continue with Duration and the remaining Temporal class foundations, connect
+Continue with the remaining Temporal class foundations and calendar-relative Duration operations, connect
 ISO/Hebrew arithmetic to a PlainDate facade, and replace the gap-window
 assumption with a transition index. Expand strict Test262 coverage as each complete surface lands.
 Then compare equivalent standalone/shared-data packages on V8 and Hermes/browser
@@ -219,7 +222,7 @@ bazel test -c opt //crates/temporal:temporal_test //packages/temporal:instant_he
 ```
 
 Hermes tests install the owned TS payload without a reference Temporal fallback.
-The current strict slice passes all 154 executions in both source and optimized bytecode modes, with no
+The current strict slice passes all 346 executions in both source and optimized bytecode modes, with no
 exclusions or tracked failures. A zero-failure count guard pins the selection. Bytecode uses the compiler from the same pinned Hermes overlay. Rust native
 Hermes bindings, complete Temporal coverage and WASM comparisons remain open.
 
@@ -233,7 +236,26 @@ Instant's positive-direction semantics and half-even parity. Both Rust and TS
 match every case; this does not validate signed Duration rounding.
 
 The full Instant diagnostic runs all 934 executions on Node and Hermes in
-source/optimized-bytecode modes: 502 pass, 432 fail. Missing duration operations,
-ZonedDateTime and remaining class integration dominate. Strict gates cover the
-154 passing constructor/parser/getter/toJSON executions. Native Rust Hermes
+source/optimized-bytecode modes: 882 pass, 52 fail. ZonedDateTime and remaining locale/class integration dominate. Strict gates cover the
+346 passing constructor/parser/getter/toJSON executions. Native Rust Hermes
 bindings and WASM comparisons remain open.
+
+## Duration and Instant arithmetic
+
+Duration provides validated branded fields, ISO parsing with exact fractional
+hours/minutes/seconds, immutable operations and serialization. Time-only totals
+and comparison are implemented; calendar-relative operations and Duration.round
+remain incomplete. Instant add/subtract and differences use exact nanoseconds,
+signed duration rounding and intrinsic Duration results.
+
+ICU4J's independent decimal oracle checks 5,430 signed rounding and rational
+number-total cases. Totals perform one IEEE binary64 rounding, avoiding loss
+from first converting the nanosecond numerator to Number/f64. Rust fields follow
+Float64-representable integer storage, including intentionally lossy balancing
+into large millisecond/microsecond/nanosecond fields.
+
+Node and Hermes source/optimized bytecode all pass strict selections of 346
+Instant and 468 Duration executions. Full diagnostics remain failing: Instant
+882/934, Duration 698/1086. Enable ES6 block scoping in both Hermes compilation
+(`-Xes6-block-scoping`) and runtime. Native Rust bindings, remaining classes,
+calendar-relative semantics and WASM comparisons are still pending.

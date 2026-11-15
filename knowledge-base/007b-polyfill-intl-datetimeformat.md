@@ -287,7 +287,7 @@ ICU conversion fixtures use a bounded range; full-range boundary checks use the
 forced JS Temporal implementation. See the benchmark README for oracle limits.
 Shared `UnpackTimeZoneData` lives in `ecma402-abstract/DateTimeFormat`;
 DateTimeFormat preserves its `unpack` export as a compatibility alias.
-The subsequent Instant facade has a strict 154-execution Test262 slice and a
+The subsequent Instant facade has a strict 346-execution Instant Test262 slice and a
 separate failing full-corpus diagnostic. Native Temporal is replaced in every
 test realm; the slice does not establish full Temporal compliance.
 

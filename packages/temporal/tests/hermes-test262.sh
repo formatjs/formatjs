@@ -11,7 +11,8 @@ if [[ "$mode" == bytecode ]]; then
 fi
 baseline="$7"
 validator="$8"
-shift 8
+suite="$9"
+shift 9
 root="../+http_archive+com_github_tc39_test262"
 export BAZEL_BINDIR=.
 report="${TEST_UNDECLARED_OUTPUTS_DIR:?}/results.json"
@@ -21,6 +22,6 @@ status=0
   --errorForFailures --timeout=30000 --test262Dir="$root" \
   --prelude="$prelude" "$@" >"$report" 2>"${TEST_UNDECLARED_OUTPUTS_DIR}/stderr.txt" || status=$?
 printf '%s\n' "$status" >"${TEST_UNDECLARED_OUTPUTS_DIR}/exit-code.txt"
-exec "$validator" --suite Temporal.Instant --baseline "$baseline" --report "$report" \
+exec "$validator" --suite "$suite" --baseline "$baseline" --report "$report" \
   --status "${TEST_UNDECLARED_OUTPUTS_DIR}/exit-code.txt" \
   --stderr "${TEST_UNDECLARED_OUTPUTS_DIR}/stderr.txt"

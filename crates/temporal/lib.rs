@@ -1,5 +1,6 @@
 #![no_std]
 
+mod duration;
 mod format;
 mod iso;
 mod parse;
@@ -7,6 +8,9 @@ mod rounding;
 
 use core::fmt;
 use core::str::FromStr;
+pub use duration::{
+    Duration, FormattedDuration, MAX_DURATION_NANOSECONDS, round_duration_nanoseconds,
+};
 pub use format::{FormattedInstant, Precision};
 pub use iso::IsoDateTime;
 pub use rounding::{RoundingMode, TimeUnit};
@@ -18,6 +22,7 @@ pub const MAX_EPOCH_NANOSECONDS: i128 = 100_000_000 * NANOSECONDS_PER_DAY;
 pub enum Error {
     InvalidSyntax,
     InvalidDateTime,
+    InvalidDuration,
     InvalidRoundingOptions,
     OutOfRange,
 }
@@ -27,6 +32,7 @@ impl fmt::Display for Error {
             Self::InvalidSyntax => "Invalid instant string",
             Self::InvalidDateTime => "Invalid ISO date/time",
             Self::InvalidRoundingOptions => "Invalid rounding options",
+            Self::InvalidDuration => "Invalid duration",
             Self::OutOfRange => "Instant out of range",
         })
     }

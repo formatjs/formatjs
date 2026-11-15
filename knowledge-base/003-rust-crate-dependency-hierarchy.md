@@ -587,3 +587,8 @@ and serialization with caller-supplied offsets.
 Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both
 conversion directions across Temporal’s full instant range. Hermes native
 bindings, WASM and remaining Temporal operations are pending.
+
+`formatjs_temporal::Duration` now supplies Number-representable integer fields,
+ISO parsing, signed rounding, serialization, exact totals and arithmetic. Instant
+differences/addition reuse it. ICU independently checks signed rounding and
+rational-to-binary64 totals. Calendar-relative operations remain pending.

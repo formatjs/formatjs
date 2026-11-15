@@ -138,3 +138,23 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
     mode
   )
 }
+
+export function roundDuration(
+  value: bigint,
+  quantum: bigint,
+  mode: RoundingMode
+): bigint {
+  if (value >= 0n) return roundInstant(value, quantum, mode)
+  const reversed: Record<RoundingMode, RoundingMode> = {
+    ceil: 'floor',
+    floor: 'ceil',
+    expand: 'expand',
+    trunc: 'trunc',
+    halfCeil: 'halfFloor',
+    halfFloor: 'halfCeil',
+    halfExpand: 'halfExpand',
+    halfTrunc: 'halfTrunc',
+    halfEven: 'halfEven',
+  }
+  return -roundInstant(-value, quantum, reversed[mode])
+}

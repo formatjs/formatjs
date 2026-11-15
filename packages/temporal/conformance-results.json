@@ -3,26 +3,23 @@
   "nativeFallback": false,
   "note": "Whole native Temporal namespace replaced in every realm. Focused supported slice is strict. Full corpus is a failing manual diagnostic, not a passing baseline.",
   "selected": {
-    "executions": 154,
-    "passes": 154,
+    "executions": 346,
+    "passes": 346,
     "failures": 0
   },
   "full": {
     "executions": 934,
-    "passes": 502,
-    "failures": 432,
+    "passes": 882,
+    "failures": 52,
     "failuresByArea": {
       "compare": 2,
       "from": 2,
-      "prototype/add": 52,
       "prototype/equals": 2,
-      "prototype/round": 2,
-      "prototype/since": 140,
-      "prototype/subtract": 50,
+      "prototype/since": 2,
       "prototype/toLocaleString": 4,
-      "prototype/toString": 4,
+      "prototype/toString": 2,
       "prototype/toZonedDateTimeISO": 36,
-      "prototype/until": 138
+      "prototype/until": 2
     }
   },
   "hermes": {
@@ -30,13 +27,13 @@
     "nativeTemporalFallback": false,
     "selected": {
       "source": {
-        "executions": 154,
-        "passes": 154,
+        "executions": 346,
+        "passes": 346,
         "failures": 0
       },
       "optimizedBytecode": {
-        "executions": 154,
-        "passes": 154,
+        "executions": 346,
+        "passes": 346,
         "failures": 0
       }
     },
@@ -44,24 +41,111 @@
     "fullDiagnostic": {
       "source": {
         "executions": 934,
-        "passes": 502,
-        "failures": 432
+        "passes": 882,
+        "failures": 52,
+        "failuresByArea": {
+          "compare": 2,
+          "from": 2,
+          "prototype/equals": 2,
+          "prototype/since": 2,
+          "prototype/toLocaleString": 4,
+          "prototype/toString": 2,
+          "prototype/toZonedDateTimeISO": 36,
+          "prototype/until": 2
+        }
       },
       "optimizedBytecode": {
         "executions": 934,
-        "passes": 502,
-        "failures": 432
+        "passes": 882,
+        "failures": 52,
+        "failuresByArea": {
+          "compare": 2,
+          "from": 2,
+          "prototype/equals": 2,
+          "prototype/since": 2,
+          "prototype/toLocaleString": 4,
+          "prototype/toString": 2,
+          "prototype/toZonedDateTimeISO": 36,
+          "prototype/until": 2
+        }
       }
     }
   },
   "serializationDiagnostic": {
-    "executions": 346,
-    "passes": 340,
-    "failures": 6,
+    "executions": 456,
+    "passes": 454,
+    "failures": 2,
     "failuresByArea": {
-      "prototype/round": 2,
-      "prototype/toString": 4
+      "prototype/toString": 2
     },
-    "note": "Six raw failures involve missing Temporal family constructors in helper/type tests. No exclusions or expected-failure baseline."
+    "note": "Two string helper scenarios need missing Temporal family constructors; raw failures remain visible."
+  },
+  "duration": {
+    "selected": {
+      "executions": 468,
+      "passes": 468,
+      "failures": 0
+    },
+    "methodsDiagnostic": {
+      "executions": 556,
+      "passes": 554,
+      "failures": 2,
+      "failuresByArea": {
+        "prototype/toString": 2
+      }
+    },
+    "fullDiagnostic": {
+      "executions": 1086,
+      "passes": 698,
+      "failures": 388,
+      "failuresByArea": {
+        "compare": 48,
+        "prototype/round": 248,
+        "prototype/toLocaleString": 4,
+        "prototype/toString": 2,
+        "prototype/total": 86
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 468,
+          "passes": 468,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 468,
+          "passes": 468,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1086,
+          "passes": 698,
+          "failures": 388,
+          "failuresByArea": {
+            "compare": 48,
+            "prototype/round": 248,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/total": 86
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1086,
+          "passes": 698,
+          "failures": 388,
+          "failuresByArea": {
+            "compare": 48,
+            "prototype/round": 248,
+            "prototype/toLocaleString": 4,
+            "prototype/toString": 2,
+            "prototype/total": 86
+          }
+        }
+      }
+    },
+    "note": "Calendar-relative operations, Duration.round and remaining class integration are incomplete. No individual-file exclusions or tracked-failure baseline."
   }
 }

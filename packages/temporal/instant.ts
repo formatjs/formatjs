@@ -1,4 +1,15 @@
+import {
+  toDurationFields,
+  createDuration,
+  type DurationObject,
+} from '#packages/temporal/duration.js'
+import {
+  durationNanoseconds,
+  balanceDurationTime,
+} from '#packages/temporal/duration-core.js'
 // Instant facade; durations and cross-realm slots remain incomplete.
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {roundingIncrement, roundDuration} from '#packages/temporal/rounding.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
@@ -18,6 +29,10 @@ import {parseInstantString} from '#packages/temporal/instant-string.js'
 export interface InstantObject {
   readonly epochNanoseconds: bigint
   readonly epochMilliseconds: number
+  until(other: unknown, options?: unknown): DurationObject
+  since(other: unknown, options?: unknown): DurationObject
+  add(other: unknown): InstantObject
+  subtract(other: unknown): InstantObject
   round(roundTo: unknown): InstantObject
   toString(options?: unknown): string
   toJSON(): string
@@ -69,6 +84,47 @@ function toInstant(item: unknown): bigint {
     throw new TypeError('Expected Instant or instant string')
   return validate(parseInstantString(primitive))
 }
+function difference(
+  value: bigint,
+  other: unknown,
+  options: unknown,
+  since: boolean
+): DurationObject {
+  const end = toInstant(other)
+  const resolved = optionsObject(options)
+  const largestRaw = resolved.largestUnit
+  const largestString = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  const largest =
+    largestString === 'auto' ? undefined : unitOption(largestString)
+  const increment = roundingIncrement(resolved.roundingIncrement)
+  const mode = roundingMode(resolved.roundingMode, 'trunc')
+  const smallest = unitOption(resolved.smallestUnit)
+  const smallestTime = timeUnit(smallest ?? 'nanosecond')
+  const names = [
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+  ] as const
+  const smallIndex = names.indexOf(smallestTime)
+  const largeIndex = names.indexOf(
+    timeUnit(largest ?? names[Math.min(2, smallIndex)])
+  )
+  if (largeIndex > smallIndex)
+    throw new RangeError('Largest unit smaller than smallest unit')
+  const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex]
+  if (increment >= maximum || maximum % increment !== 0)
+    throw new RangeError('Invalid duration rounding increment')
+  const valueToRound = (end - value) * (since ? -1n : 1n)
+  const rounded = roundDuration(
+    valueToRound,
+    BigInt(increment) * timeUnitNanoseconds[smallestTime],
+    mode
+  )
+  return createDuration(balanceDurationTime(rounded, largeIndex + 4))
+}
 class InstantValue implements InstantObject {
   constructor(_epochNanoseconds: unknown) {
     throw new TypeError('Use the exported Instant constructor')
@@ -101,6 +157,26 @@ class InstantValue implements InstantObject {
   }
   equals(other: unknown): boolean {
     return read(this) === toInstant(other)
+  }
+  until(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, false)
+  }
+  since(other: unknown, options: unknown = undefined): DurationObject {
+    return difference(read(this), other, options, true)
+  }
+  add(other: unknown): InstantObject {
+    const value = read(this),
+      fields = toDurationFields(other)
+    if (fields.years || fields.months || fields.weeks || fields.days)
+      throw new RangeError('Instant arithmetic requires time units')
+    return create(value + durationNanoseconds(fields, false))
+  }
+  subtract(other: unknown): InstantObject {
+    const value = read(this),
+      fields = toDurationFields(other)
+    if (fields.years || fields.months || fields.weeks || fields.days)
+      throw new RangeError('Instant arithmetic requires time units')
+    return create(value - durationNanoseconds(fields, false))
   }
   round(roundTo: unknown): InstantObject {
     return create(roundInstantOptions(read(this), roundTo))
@@ -167,10 +243,3 @@ Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},
 })
-export const Temporal: {Instant: InstantConstructor} = Object.defineProperties(
-  {},
-  {
-    Instant: {value: Instant, writable: true, configurable: true},
-    [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
-  }
-) as {Instant: InstantConstructor}

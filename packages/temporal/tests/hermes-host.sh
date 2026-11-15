@@ -11,7 +11,7 @@ if [[ -n "${FORMATJS_TEMPORAL_HERMES_COMPILER:-}" ]]; then
   directory="$(mktemp -d)"
   trap 'rm -rf "$directory"' EXIT
   # Temporal is installed dynamically; eshost treats compiler warnings as errors.
-  "$FORMATJS_TEMPORAL_HERMES_COMPILER" -Wno-undefined-variable -O -emit-binary -out "$directory/test.hbc" "${args[@]}"
+  "$FORMATJS_TEMPORAL_HERMES_COMPILER" -Xes6-block-scoping -Wno-undefined-variable -O -emit-binary -out "$directory/test.hbc" "${args[@]}"
   "$FORMATJS_TEMPORAL_HERMES_RUNNER" --es6-block-scoping "$directory/test.hbc"
   exit $?
 fi

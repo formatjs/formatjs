@@ -98,3 +98,17 @@ impl Instant {
         ))
     }
 }
+
+pub(crate) fn round_duration(value: i128, quantum: i128, mode: RoundingMode) -> i128 {
+    if value >= 0 {
+        return round_instant(value, quantum, mode);
+    }
+    let reversed = match mode {
+        RoundingMode::Ceil => RoundingMode::Floor,
+        RoundingMode::Floor => RoundingMode::Ceil,
+        RoundingMode::HalfCeil => RoundingMode::HalfFloor,
+        RoundingMode::HalfFloor => RoundingMode::HalfCeil,
+        other => other,
+    };
+    -round_instant(-value, quantum, reversed)
+}

@@ -170,3 +170,154 @@ fn formatting_precision_offsets_and_range_edges() {
         );
     }
 }
+
+#[test]
+fn duration_fields_parser_float64_slots_and_instant_arithmetic() {
+    use formatjs_temporal::{Duration, RoundingMode, TimeUnit};
+    for text in [
+        "P1Y2M3W4DT5H66M71.50040904S",
+        "-PT1.000000001H",
+        "PT0.000000001M",
+        "PT60S",
+        "-P1DT0.123456789S",
+    ] {
+        let value: Duration = text.parse().unwrap();
+        assert_eq!(value.to_string().parse::<Duration>().unwrap(), value);
+        assert_eq!(value.negated().negated(), value);
+        assert!(value.abs().sign() >= 0);
+    }
+    for text in [
+        "P",
+        "PT",
+        "P1DT",
+        "P1H",
+        "PT1.5H0M",
+        "PT1.1234567890S",
+        "P1Y\n",
+        "P4294967296Y",
+        "PT9007199254740992S",
+    ] {
+        assert!(text.parse::<Duration>().is_err(), "{text}");
+    }
+    let zero = Instant::from_epoch_nanoseconds(0).unwrap();
+    let one = zero.checked_add("PT0.000000001S".parse().unwrap()).unwrap();
+    assert_eq!(one.epoch_nanoseconds(), 1);
+    assert_eq!(
+        one.checked_subtract("PT0.000000001S".parse().unwrap())
+            .unwrap(),
+        zero
+    );
+    assert_eq!(
+        zero.until(
+            one,
+            TimeUnit::Second,
+            TimeUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc
+        )
+        .unwrap()
+        .to_string(),
+        "PT0.000000001S"
+    );
+    assert!(zero.checked_add("P1D".parse().unwrap()).is_err());
+    assert!(
+        zero.until(
+            one,
+            TimeUnit::Second,
+            TimeUnit::Minute,
+            1,
+            RoundingMode::Trunc
+        )
+        .is_err()
+    );
+    let lossy =
+        Duration::from_time_nanoseconds(9_007_199_254_740_993, TimeUnit::Nanosecond).unwrap();
+    assert_eq!(lossy.fields()[9], 9_007_199_254_740_992);
+}
+
+#[test]
+fn independent_icu_signed_duration_rounding_and_totals() {
+    use formatjs_temporal::{Duration, MAX_DURATION_NANOSECONDS, TimeUnit};
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_DURATION"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<_> = line.split('\t').collect();
+        let value: i128 = fields[1].parse().unwrap();
+        let mut record = [0; 10];
+        record[6] = value / 1_000_000_000;
+        record[9] = value % 1_000_000_000;
+        let duration = Duration::new(record).unwrap();
+        if fields[0] == "total" {
+            let actual = if fields[2] == "day" {
+                duration.total_days().unwrap()
+            } else {
+                duration.total(fields[2].parse().unwrap()).unwrap()
+            };
+            let expected: f64 = fields[4].parse().unwrap();
+            assert_eq!(actual.to_bits(), expected.to_bits(), "{line}");
+        } else {
+            let quantum = if fields[2] == "day" {
+                NANOSECONDS_PER_DAY
+            } else {
+                fields[2].parse::<TimeUnit>().unwrap().nanoseconds()
+            };
+            let expected: i128 = fields[4].parse().unwrap();
+            // Instant's typed difference accepts only valid time increments; use the shared signed core here.
+            let actual = formatjs_temporal::round_duration_nanoseconds(
+                value,
+                quantum,
+                fields[3].parse().unwrap(),
+            );
+            if expected.unsigned_abs() >= MAX_DURATION_NANOSECONDS as u128 {
+                assert!(actual.is_err(), "{line}");
+            } else {
+                assert_eq!(actual.unwrap(), expected, "{line}");
+            }
+        }
+        count += 1;
+    }
+    assert!(count > 3000);
+    println!("{count} independent ICU signed duration rounding/total cases");
+}
+
+#[test]
+fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
+    use formatjs_temporal::{Duration, Precision, RoundingMode};
+    let value: Duration = "P1Y2M3W4DT5H66M71.50040904S".parse().unwrap();
+    assert_eq!(
+        value
+            .format(Precision::Digits(9), RoundingMode::Trunc)
+            .unwrap()
+            .to_string(),
+        "P1Y2M3W4DT5H66M71.500409040S"
+    );
+    assert_eq!(
+        value
+            .format(Precision::Digits(0), RoundingMode::HalfExpand)
+            .unwrap()
+            .to_string(),
+        "P1Y2M3W4DT6H7M12S"
+    );
+    let value: Duration = "-PT0.000000001S".parse().unwrap();
+    assert_eq!(
+        value
+            .format(Precision::Digits(6), RoundingMode::Floor)
+            .unwrap()
+            .to_string(),
+        "-PT0.000001S"
+    );
+    assert_eq!(
+        value
+            .format(Precision::Digits(6), RoundingMode::Ceil)
+            .unwrap()
+            .to_string(),
+        "PT0.000000S"
+    );
+    assert!(
+        value
+            .format(Precision::Minute, RoundingMode::Trunc)
+            .is_err()
+    );
+}
