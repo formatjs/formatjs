@@ -275,15 +275,14 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 
 ## Temporal development selections
 
-`packages/temporal` has eight partial classes. Strict selections total 4,422
+`packages/temporal` has eight partial classes plus Now. Strict selections total 4,560
 executions per Node/Hermes source/optimized-bytecode mode; these stay separate
 from the twelve complete Intl selections above. Current class counts and failure
 areas live in [the package record](../packages/temporal/conformance-results.json)
 and [package README](../packages/temporal/README.md).
 
 Full diagnostics agree across all three modes but remain failing. Duration
-passes 1,082/1,086 and ZonedDateTime 1,800/1,804. Locale failures and the
-PlainDateTime helper requiring Now remain visible. Remaining calendars and Intl/Date
+passes 1,082/1,086 and ZonedDateTime 1,800/1,804. The 138-execution complete Now built-ins/intl402 corpus passes. Locale failures remain visible. Remaining calendars and Intl/Date
 integration are implementation gaps, never exclusions. Negative assertions can
 pass incidentally when a method is absent; aggregate counts do not establish
 whole-method conformance.

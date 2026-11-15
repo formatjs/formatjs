@@ -23,7 +23,7 @@ fields, offset matching, all disambiguation modes, updates, arithmetic, rounding
 day boundaries, differences, transition queries and serialization. Calendar days follow local time; hours follow
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
-Missing: Now, remaining calendar
+Missing: remaining calendar
 engines, Date/Intl integration and global
 installation/detection. No implementation gap is an allowed conformance exclusion.
 
@@ -40,10 +40,11 @@ counts alone do not establish whole-method conformance.
 | Duration       |             1,072 |                  1,082/1,086 |
 | PlainTime      |               234 |                      982/986 |
 | PlainDate      |               364 |                  1,304/1,308 |
-| PlainDateTime  |               518 |                  1,546/1,552 |
+| PlainDateTime  |               518 |                  1,548/1,552 |
 | PlainYearMonth |               348 |                  1,018/1,022 |
 | PlainMonthDay  |               150 |                      394/398 |
 | ZonedDateTime  |             1,390 |                  1,800/1,804 |
+| Now            |               138 |                      138/138 |
 
 See [raw counts and failure areas](conformance-results.json). No new exclusions.
 Hermes enables ES6 block scoping in compiler/runtime. The larger zoned and Duration Hermes
@@ -89,4 +90,21 @@ relative totals in both cores. Real IANA controls add 1,340 independent relative
 comparisons across future transitions. Forced full-polyfill Hebrew controls and
 poisoned-array-iterator checks cover the facade paths. Duration's strict selection
 now includes all 1,072 non-locale executions; full diagnostics still retain locale
-failures. PlainDateTime also retains a helper requiring the unfinished Now API.
+failures. Now also supplies the PlainDateTime helper needed by the full non-locale corpus.
+
+## Host clock
+
+`Temporal.Now` exposes instant, zoned/date/time ISO views and the system zone.
+Host clock precision is milliseconds in TS. Clock values clamp to Instant bounds;
+explicit zone validation precedes the clock read. Conversion uses owned IANA
+rules and intrinsic constructors, independent of mutable public Now methods.
+
+Named system zones come from captured host Intl.DateTimeFormat. Hermes without
+Intl uses Date's current system offset; it does not guess an IANA location from
+that offset. Source and optimized-bytecode host checks run under UTC,
+America/New_York and Asia/Kathmandu. The complete Now Test262 built-ins and intl402 corpora have 138
+executions per mode, with no exclusions. TS and Rust injected clocks also match
+13,160 independent ICU future-offset/local-field samples.
+
+Rust's no_std `Now<SystemClock>` accepts a host wall clock and TimeZone provider.
+Native system-clock/timezone installation remains part of the pending binding.

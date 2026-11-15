@@ -112,36 +112,36 @@ One shared-host V8 run, ns/op:
 
 | Operation                                             | Facade | Reference |
 | ----------------------------------------------------- | -----: | --------: |
-| construct/get epochNanoseconds                        |    450 |       324 |
-| fromEpochNanoseconds/get epochMilliseconds            |    458 |       504 |
-| fromEpochMilliseconds/get epochNanoseconds            |    536 |       336 |
-| ZonedDateTime parse/add day/toJSON                    | 12,733 |    11,647 |
-| ZonedDateTime parse/round hour/toJSON                 |  9,720 |    11,142 |
-| ZonedDateTime until days/toJSON                       | 39,451 |    50,933 |
-| ZonedDateTime next transition/get epochNanoseconds    |    928 |       582 |
-| Duration parse/total months relative to date          | 10,447 |     8,684 |
-| Duration parse/round months relative to date/toJSON   | 16,326 |    34,151 |
-| Duration compare day versus 24 hours relative to zone | 15,528 |     3,666 |
-| from ISO string/get epochNanoseconds                  |  1,833 |     2,036 |
-| round microsecond/get epochNanoseconds                |  1,054 |     1,390 |
-| toJSON                                                |  1,322 |     2,331 |
-| toString named timezone                               |  1,968 |     5,659 |
-| Duration parse/toJSON                                 |  4,063 |    51,673 |
-| Duration total microseconds                           |  4,078 |     2,866 |
-| Instant until/toJSON                                  |  4,906 |    25,656 |
-| PlainYearMonth parse/add/toJSON                       |  6,506 |     3,938 |
-| PlainMonthDay parse/toPlainDate/toJSON                |  3,561 |     3,760 |
-| PlainDate parse/add/toJSON                            |  6,304 |     4,570 |
-| PlainDateTime parse/add/toJSON                        |  7,793 |    10,973 |
-| PlainTime parse/round/toJSON                          |  2,817 |     4,483 |
-| PlainTime parse/add/toJSON                            |  4,460 |     6,009 |
+| construct/get epochNanoseconds                        |    471 |       303 |
+| fromEpochNanoseconds/get epochMilliseconds            |    465 |       349 |
+| fromEpochMilliseconds/get epochNanoseconds            |    565 |       334 |
+| ZonedDateTime parse/add day/toJSON                    | 12,472 |    11,441 |
+| ZonedDateTime parse/round hour/toJSON                 |  9,627 |    11,155 |
+| ZonedDateTime until days/toJSON                       | 37,260 |    51,521 |
+| ZonedDateTime next transition/get epochNanoseconds    |    887 |       549 |
+| Duration parse/total months relative to date          | 10,062 |     8,658 |
+| Duration parse/round months relative to date/toJSON   | 15,673 |    33,730 |
+| Duration compare day versus 24 hours relative to zone | 15,046 |     3,708 |
+| from ISO string/get epochNanoseconds                  |  1,816 |     2,098 |
+| round microsecond/get epochNanoseconds                |  1,097 |     1,396 |
+| toJSON                                                |  1,314 |     2,246 |
+| toString named timezone                               |  1,950 |     5,726 |
+| Duration parse/toJSON                                 |  4,135 |    52,154 |
+| Duration total microseconds                           |  4,047 |     2,839 |
+| Instant until/toJSON                                  |  4,729 |    25,472 |
+| PlainYearMonth parse/add/toJSON                       |  6,477 |     3,940 |
+| PlainMonthDay parse/toPlainDate/toJSON                |  3,590 |     3,815 |
+| PlainDate parse/add/toJSON                            |  6,304 |     4,565 |
+| PlainDateTime parse/add/toJSON                        |  8,086 |    11,123 |
+| PlainTime parse/round/toJSON                          |  2,738 |     4,476 |
+| PlainTime parse/add/toJSON                            |  4,471 |     6,004 |
 
 Workload results vary. The zoned parse/add and parse/round workloads compare ordinary DST dates,
 a fold with an explicit offset, a fixed-offset leap day and UTC. Output equality
 is checked before timing. This shared-host run does not establish a complete
 polyfill performance win; reference timezone data comes from host Intl.
 
-Minified gzip: eight-class namespace **85,705 bytes**, including owned IANA data
+Minified gzip: eight-class namespace plus Now **85,948 bytes**, including owned IANA data
 and aliases. Independent Instant primitives are **2,689 bytes**; numeric calendar
 code is **1,902 bytes**. These entries differ in API coverage and are not additive.
 Reference is **19,393 bytes**, using host Intl timezone data. The WASM baseline
@@ -209,7 +209,7 @@ No browser/Hermes performance measurement yet.
 
 ## Next decision
 
-Finish Now, locale/Date integration, remaining calendars and native Rust adapters.
+Finish locale/Date integration, remaining calendars and native Rust adapters.
 Expand strict Test262 coverage as each complete surface lands.
 Then compare equivalent standalone/shared-data packages on V8 and Hermes/browser
 engines. Consider WASM after an equivalent core demonstrates a concrete benefit.
@@ -265,7 +265,7 @@ into large millisecond/microsecond/nanosecond fields.
 Node and Hermes source/optimized bytecode all pass strict selections of 346
 Instant and 1,072 Duration executions. Full diagnostics remain failing: Instant
 930/934, Duration 1082/1086. Enable ES6 block scoping in both Hermes compilation
-(`-Xes6-block-scoping`) and runtime. Native Rust bindings, Now, remaining calendars, locale integration and complete
+(`-Xes6-block-scoping`) and runtime. Native Rust bindings, remaining calendars, locale integration and complete
 WASM facade comparisons are still pending.
 
 ## WASM baseline
@@ -296,7 +296,7 @@ and timezone data. The TS bundle uses pure parse/format/total operations; the WA
 bridge is a benchmark-only synchronous string ABI with 256-byte input/output
 buffers, not Temporal brands, coercions or the complete public facade. The
 reference supplies a broader API and host Intl integration. These sizes do not
-predict a complete polyfill's size; the current 85,705-byte public TS namespace measurement
+predict a complete polyfill's size; the current 85,948-byte public TS namespace measurement
 above includes owned IANA data, date/time classes and a different entry surface.
 
 Median ns/call for ordinary inputs, including WASM UTF-8 input/output transfers:
@@ -366,9 +366,8 @@ checks resulting weekday, ordinal and ISO week/year metadata against ICU. Existi
 
 Strict selections cover complete construction/prototype/getter/arithmetic families:
 364 PlainDate and 518 PlainDateTime executions pass on Node and Hermes source and
-optimized bytecode. Full diagnostics pass 1304/1308 and 1546/1552,
-respectively. Locale integration and a PlainDateTime helper requiring
-Temporal.Now remain raw failures. Real date-time conversions
+optimized bytecode. Full diagnostics pass 1304/1308 and 1548/1552,
+respectively. Locale integration remains a raw failure. Real date-time conversions
 improve full PlainTime coverage to 982/986. No implementation gap is an exclusion.
 
 Five-class public namespace grows 5,071 gzip bytes from the previous measurement.
@@ -448,3 +447,11 @@ The primitive WASM TS entry now calls pure parse/format/total helpers, matching
 the numeric ABI without Duration object/facade machinery. This changed the TS
 measurement scope; it is not a public-package size reduction. Both primitive
 backends omit calendar/timezone data. The full namespace profile remains separate.
+
+## Now namespace size
+
+Now adds 243 gzip bytes to the preceding relative-Duration layer. The
+namespace now measures 85,948 bytes gzip, including owned IANA data. Timed
+workloads still cover the eight classes; this run does not measure Now throughput.
+These shared-host V8 samples were rerun after conformance tests completed.
+The earlier matched pure TS/WASM primitive profile retains its separate scope.

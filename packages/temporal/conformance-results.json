@@ -1,7 +1,7 @@
 {
   "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
   "nativeFallback": false,
-  "note": "Whole native Temporal namespace replaced in every realm. Focused supported slice is strict. Full corpus is a failing manual diagnostic, not a passing baseline.",
+  "note": "Whole native Temporal namespace replaced in every realm. Now passes its complete corpus; focused class slices are strict. Full class diagnostics retain locale failures. Remaining calendar and integration behavior needs separate coverage.",
   "selected": {
     "executions": 346,
     "passes": 346,
@@ -52,12 +52,10 @@
   },
   "serializationDiagnostic": {
     "executions": 456,
-    "passes": 454,
-    "failures": 2,
-    "failuresByArea": {
-      "prototype/toString": 2
-    },
-    "note": "Two string helper scenarios need missing Temporal family constructors; raw failures remain visible."
+    "passes": 456,
+    "failures": 0,
+    "failuresByArea": {},
+    "note": "Derived from the full Instant report: strict selection plus complete toString family."
   },
   "duration": {
     "selected": {
@@ -66,12 +64,10 @@
       "failures": 0
     },
     "methodsDiagnostic": {
-      "executions": 556,
-      "passes": 554,
-      "failures": 2,
-      "failuresByArea": {
-        "prototype/toString": 2
-      }
+      "executions": 1072,
+      "passes": 1072,
+      "failures": 0,
+      "note": "Manual target aliases the complete non-locale strict selection."
     },
     "fullDiagnostic": {
       "executions": 1086,
@@ -113,7 +109,7 @@
         }
       }
     },
-    "note": "Calendar-relative operations, Duration.round and remaining class integration are incomplete. No individual-file exclusions or tracked-failure baseline.",
+    "note": "All non-locale built-ins families pass, including relative total/round/compare. Locale integration, full intl402 calendar coverage and native bindings remain pending. No new exclusions.",
     "icuRelativeRoundingCases": 19440,
     "icuRelativeTotalCases": 6480,
     "icuRelativeComparisonCases": 1340
@@ -225,11 +221,10 @@
     },
     "full": {
       "executions": 1552,
-      "passes": 1546,
-      "failures": 6,
+      "passes": 1548,
+      "failures": 4,
       "failuresByArea": {
-        "prototype/toLocaleString": 4,
-        "prototype/with": 2
+        "prototype/toLocaleString": 4
       }
     },
     "hermes": {
@@ -248,20 +243,18 @@
       "fullDiagnostic": {
         "source": {
           "executions": 1552,
-          "passes": 1546,
-          "failures": 6,
+          "passes": 1548,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/toLocaleString": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         },
         "optimizedBytecode": {
           "executions": 1552,
-          "passes": 1546,
-          "failures": 6,
+          "passes": 1548,
+          "failures": 4,
           "failuresByArea": {
-            "prototype/toLocaleString": 4,
-            "prototype/with": 2
+            "prototype/toLocaleString": 4
           }
         }
       }
@@ -418,5 +411,47 @@
     "icuTransitionCases": 1340,
     "icuTransitionQueries": 10528,
     "icuZonedDifferenceCases": 19440
+  },
+  "now": {
+    "full": {
+      "executions": 138,
+      "passes": 138,
+      "failures": 0,
+      "failuresByArea": {}
+    },
+    "selected": {
+      "executions": 138,
+      "passes": 138,
+      "failures": 0,
+      "failuresByArea": {}
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 138,
+          "passes": 138,
+          "failures": 0,
+          "failuresByArea": {}
+        },
+        "optimizedBytecode": {
+          "executions": 138,
+          "passes": 138,
+          "failures": 0,
+          "failuresByArea": {}
+        }
+      },
+      "systemZoneHostChecks": ["UTC", "America/New_York", "Asia/Kathmandu"]
+    },
+    "builtInsExecutions": 132,
+    "intl402Executions": 6,
+    "exclusions": [],
+    "icuClockOffsetSamples": 13160,
+    "hostClock": "Captured Date.now; millisecond precision. Native Rust accepts host epoch nanoseconds.",
+    "systemTimeZone": "Captured Intl.DateTimeFormat named ID, normalized to owned IANA primary ID; current Date offset on hosts without DateTimeFormat.",
+    "rust": "no_std Now<SystemClock> converts through supplied TimeZone providers; production native clock/zone installation pending."
+  },
+  "pendingIntl402Temporal": {
+    "files": 2037,
+    "note": "Remaining intl402/Temporal files outside Now are not covered by current class reports; calendars and Intl integration remain required."
   }
 }

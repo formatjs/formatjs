@@ -4,6 +4,7 @@ mod date;
 mod duration;
 mod format;
 mod iso;
+mod now;
 mod parse;
 mod relative_duration;
 mod rounding;
@@ -21,6 +22,7 @@ pub use duration::{
 };
 pub use format::{FormattedInstant, Precision};
 pub use iso::IsoDateTime;
+pub use now::{Now, SystemClock};
 pub use rounding::{RoundingMode, TimeUnit};
 pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
 pub use time::{FormattedTime, PlainTime};

@@ -40,3 +40,9 @@ calendar/timezone data and the public object model. Pinned Hermes exposes no
 `WebAssembly` in either source or bytecode mode. See
 [benchmark scope and results](../../benchmarks/temporal/README.md#wasm-baseline)
 and [completion plan](../../knowledge-base/015-temporal.md).
+
+`Now<SystemClock>` accepts host epoch nanoseconds, clamps Instant bounds and
+converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
+plain date/time, date and time views. Injected clock tests reuse all 13,160
+independent ICU timezone samples, including sub-millisecond nanoseconds. This
+host boundary does not install a system clock or discover a system zone itself.

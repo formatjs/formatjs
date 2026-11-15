@@ -21,6 +21,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "now.ts",
         "plain-date.ts",
         "plain-date-time.ts",
         "plain-month-day.ts",
@@ -77,6 +78,11 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "now_test",
+            ["tests/now.test.ts"],
+            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+        ),
         (
             "relative_duration_test",
             ["tests/relative-duration.test.ts"],
@@ -179,6 +185,11 @@ js_run_binary(
 )
 
 _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+_NOW_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/Now/**/*.js",
+    _TEST262_ROOT + "/test/intl402/Temporal/Now/**/*.js",
+]
 
 _INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
 
@@ -426,6 +437,7 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
             "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-now-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
@@ -441,6 +453,7 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("now_test262", _NOW_PATTERNS, []),
         ("zoned_test262", _ZONED_CORE_PATTERNS, []),
         (
             "zoned_test262_full",
@@ -527,6 +540,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-temporal-duration-copy",
         "@com_github_tc39_test262//:test262-temporal-instant-copy",
         "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
@@ -552,7 +566,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -565,6 +579,7 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
             "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-now-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
@@ -580,6 +595,8 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("now_hermes_test262", "source", _NOW_PATTERNS, "tests/now-test262-count.json", []),
+        ("now_hermes_bytecode_test262", "bytecode", _NOW_PATTERNS, "tests/now-test262-count.json", []),
         ("zoned_hermes_test262_strict", "source", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
         ("zoned_hermes_bytecode_test262_strict", "bytecode", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
         (
@@ -710,3 +727,31 @@ test262_harness_bin.test262_harness_binary(
         ),
     ]
 ]
+
+rolldown_bundle(
+    name = "now-host",
+    srcs = [
+        "tests/now-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/now-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "now_hermes_host_test",
+    size = "small",
+    srcs = ["tests/now-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :now-host.js)",
+    ],
+    data = [
+        "now-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)

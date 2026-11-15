@@ -195,3 +195,9 @@ copy_to_bin(
     srcs = glob(["test/built-ins/Temporal/ZonedDateTime/**/*.js"]),
     visibility = ["@//packages/temporal:__pkg__"],
 )
+
+copy_to_bin(
+    name = "test262-temporal-now-copy",
+    srcs = glob(["test/built-ins/Temporal/Now/**/*.js", "test/intl402/Temporal/Now/**/*.js"]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)

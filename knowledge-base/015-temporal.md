@@ -84,7 +84,7 @@ Rust exposes zoned relative adapters; native plain-relative adapters remain pend
 
 Hermes compiler and runtime both enable ES6 block scoping. The compiler uses
 `-Xes6-block-scoping`; without it, captured getter loop bindings differed in
-bytecode. Native Rust Hermes installation, remaining classes/calendars, complete
+bytecode. Native Rust Hermes installation, remaining calendars/integration, complete
 Temporal conformance and complete WASM facade comparisons remain pending. An
 initial matched primitive WASM baseline now exists; see below.
 
@@ -151,10 +151,10 @@ Both cores independently match 840 ICU Gregorian arithmetic cases, including
 leap/month ends, BCE, nanosecond carry and range bounds. Date metadata also matches
 ICU weekdays, ordinals and ISO week/year. Strict complete-family selections pass
 364 PlainDate and 518 PlainDateTime executions on Node/Hermes source/bytecode.
-Full diagnostics remain failing: 1304/1308 and 1546/1552. Existing PlainTime
+Full diagnostics remain failing: 1304/1308 and 1548/1552. Existing PlainTime
 improves to 982/986 through real date-time conversions. No missing behavior is
-allowed as an exclusion. Remaining month-day/year-month/zoned/Now classes, Intl
-integration, all calendars, native Hermes installation and complete WASM facades
+allowed as an exclusion. Remaining calendar engines, Intl/Date
+integration, native Hermes installation and complete WASM facades
 remain part of the active goal.
 
 ## Short-date classes
@@ -183,13 +183,13 @@ Strict whole-family selections pass 348 YearMonth and 150 MonthDay executions
 per Node/Hermes source/bytecode mode. Full diagnostics pass 1018/1022 and 394/398.
 No missing zoned/Intl/relative Duration behavior is an allowed exclusion.
 Normal package gates and raw diagnostics remain separate. The active goal still
-requires complete ZonedDateTime, Now, remaining calendar engines, Intl/Date integration,
+requires complete ZonedDateTime, remaining calendar engines, Intl/Date integration,
 full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
 its full diagnostic to 1304/1308. All eight raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 4,422 executions
-per mode. All 53 normal package/Rust/WASM checks pass; the shared primitive gate passed in
+Hermes source and optimized bytecode; normal selections total 4,560 executions
+per mode. All 59 normal package/Rust/WASM checks pass; the shared primitive gate passed in
 the preceding layer. Full diagnostics
 remain failing and separate from those gates.
 
@@ -212,7 +212,7 @@ transition controls. Those transition controls check all disambiguation modes an
 calendar-day versus elapsed-24-hour arithmetic. Rust's no_std `TimeZone` provider
 interface visits all possible offsets; its ISO `ZonedDateTime<Z>` and `FixedOffset`
 cores validate instant/local ranges independently. Rust production IANA loading,
-all-calendar zoned math, Now, Date/Intl installation and native Hermes bindings
+all-calendar zoned math, Date/Intl installation and native Hermes bindings
 remain unfinished. Gap resolution now walks actual transitions.
 
 ## Zoned differences and indexed transitions
@@ -260,11 +260,42 @@ and 1,340 transition-based comparisons. Bounded Hebrew controls use forced
 full/implementation; the production runtime remains independent.
 
 Duration's strict selection expands from 468 to all 1,072 non-locale executions
-on Node/Hermes source/bytecode. All eight full reports agree; locale failures and
-the PlainDateTime helper requiring Now remain failing, not exclusions. Complete
-Intl/Date integration, Now, all calendars, native Hermes and full WASM equivalence
+on Node/Hermes source/bytecode. All eight full reports agree; locale failures remain visible, not exclusions. Complete
+Intl/Date integration, all calendars, native Hermes and full WASM equivalence
 stay required by the goal.
 
 Duration formatting was separated into a pure module. The matched WASM TS entry
 now uses pure parse/format/total operations rather than Duration object machinery.
 That is a new primitive measurement scope; full facade/data size remains separate.
+
+## Now and host clock
+
+TS implements all six Now methods through an internal SystemClock boundary.
+Default TS clock captures Date.now (millisecond precision). Host Intl supplies
+named system-zone discovery; hosts without DateTimeFormat use Date's current
+system offset, never an inferred IANA location. Explicit zones continue to use
+owned IANA data. Each call validates the zone before reading the clock; supplied
+zones skip system-zone discovery. Captured constructors preserve intrinsic
+results after public Now methods are replaced.
+
+Rust adds no_std Now<SystemClock>, clamped wall-clock instants and ISO views
+through existing TimeZone providers. Production Rust system-zone/clock discovery
+and native Hermes installation remain pending. Injected clocks in both languages
+match 13,160 independent ICU timezone samples, preserving sub-millisecond fields.
+Clock-bound controls include negative epochs, Instant limits and detached methods.
+
+All 138 upstream Now built-ins/intl402 executions pass on Node, Hermes source and optimized
+bytecode. Separate real Hermes host tests exercise UTC, New York and Kathmandu.
+No Realm or implementation exclusions added. See [Temporal.Now semantics](https://tc39.es/proposal-temporal/#sec-temporal.now)
+and [SystemTimeZoneIdentifier](https://tc39.es/ecma262/#sec-systemtimezoneidentifier).
+
+The pinned intl402/Temporal tree contains 2,040 files. This layer adds its three
+Now files (six executions); the remaining 2,037 files are outside the current
+class reports. Calendar/Intl compliance must cover that tree separately. Most
+formatter calendar providers still call temporal-polyfill/fns and cannot be
+used as independent Temporal implementations. Owned Chinese/Dangi/umm-al-Qura
+conversion primitives/data can be extracted below the formatter layer.
+
+The next integration slice also needs built-ins/Date/prototype/toTemporalInstant
+(eight files), Temporal namespace/global installation and detection. Those paths
+are not included in the per-class report totals.

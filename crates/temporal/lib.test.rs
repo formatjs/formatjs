@@ -1132,3 +1132,48 @@ fn relative_duration_prefixes_and_day_boundaries() {
         blank
     );
 }
+
+#[test]
+fn now_uses_host_clock_and_owned_iana_with_icu_controls() {
+    use formatjs_temporal::{Now, SystemClock, TransitionZone};
+    struct Clock(i128);
+    impl SystemClock for Clock {
+        fn epoch_nanoseconds(&self) -> i128 {
+            self.0
+        }
+    }
+    let zones = owned_iana_zones();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_TIMEZONE"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<&str> = line.split('\t').collect();
+        let Some((initial, events, future)) = zones.get(fields[0]) else {
+            continue;
+        };
+        let value = fields[1].parse::<i128>().unwrap() * 1_000_000 + 123;
+        let offset = fields[2].parse::<i128>().unwrap() * 1_000_000_000;
+        let zone = TransitionZone::new(*initial, events, *future).unwrap();
+        let now = Now::new(Clock(value));
+        let local = now.plain_date_time_iso(zone).unwrap();
+        assert_eq!(now.instant().epoch_nanoseconds(), value, "{line}");
+        assert_eq!(
+            now.zoned_date_time_iso(zone).instant().epoch_nanoseconds(),
+            value,
+            "{line}"
+        );
+        assert_eq!(local.epoch_nanoseconds(), value + offset, "{line}");
+        assert_eq!(now.plain_date_iso(zone).unwrap(), local.date(), "{line}");
+        assert_eq!(now.plain_time_iso(zone).unwrap(), local.time(), "{line}");
+        count += 1;
+    }
+    assert_eq!(count, 13160);
+    for sign in [-1, 1] {
+        let now = Now::new(Clock(sign * (MAX_EPOCH_NANOSECONDS + 1)));
+        assert_eq!(
+            now.instant().epoch_nanoseconds(),
+            sign * MAX_EPOCH_NANOSECONDS
+        );
+    }
+}

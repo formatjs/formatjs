@@ -376,7 +376,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Namespace also includes Now. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
       sizes,
       throughput,
       sink: String(sink),
