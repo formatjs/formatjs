@@ -406,7 +406,7 @@ and all timing samples are recorded in facade-results.json.
 
 Owned TS timezone data now supplies zoned construction, fields, gap/fold and
 offset matching, calendar versus elapsed arithmetic, updates, rounding, day
-boundaries and conversions. Strict selection: 1,390 executions per Node/Hermes
+boundaries and conversions. Strict selection: 1,790 executions per Node/Hermes
 source/bytecode mode. Full diagnostic: 1,800/1,804. Locale integration remains failing, not excluded.
 
 Both language cores check ICU offset/local-field and future-transition controls.
@@ -428,7 +428,7 @@ across all ten units, nine modes and signs. Calendar arithmetic tests include DS
 and half-hour changes; separate controls cover skipped dates, adjacent gaps and
 leap-only recurring changes across 2100. Real Rust providers now consume the
 owned IANA records in tests, including all 13,160 offset/local cases and 1,340
-gap/fold controls. Production registry/alias decoding and native Hermes binding
+gap/fold controls. Production transition registry decoding and native Hermes binding
 remain pending. The WASM profile still covers narrower Instant/Duration primitives.
 
 ## Relative Duration layer
@@ -462,17 +462,16 @@ The earlier matched pure TS/WASM primitive profile retains its separate scope.
 bazel run -c opt //benchmarks/temporal:size_benchmark
 ```
 
-[package-size-results.json](package-size-results.json) measures the latest Date
-bridge/installation layer separately from earlier throughput samples. The first
+[package-size-results.json](package-size-results.json) measures the current timezone-identity layer separately from earlier throughput samples. The first
 profile bundles each entry standalone. All full entries include owned IANA data;
 detection does not. Reference uses host Intl and supports more calendars/locale
 behavior. These alternatives are not additive and do not establish full equivalence.
 
 | Standalone bundle       | Minified bytes | Gzip bytes |
 | ----------------------- | -------------: | ---------: |
-| instant-code.js         |        440,476 |     86,000 |
-| polyfill-code.js        |        441,133 |     86,170 |
-| polyfill-force-code.js  |        441,135 |     86,172 |
+| instant-code.js         |        445,143 |     86,269 |
+| polyfill-code.js        |        445,800 |     86,426 |
+| polyfill-force-code.js  |        445,802 |     86,428 |
 | should-polyfill-code.js |            696 |        361 |
 | reference-bundle.js     |         56,696 |     19,393 |
 
@@ -483,9 +482,17 @@ A consumer bundler may compress/deduplicate the combined graph differently.
 
 | Published module   | Minified bytes | Gzip bytes |
 | ------------------ | -------------: | ---------: |
-| index.js           |        440,361 |     85,937 |
+| index.js           |        445,028 |     86,191 |
 | polyfill.js        |          1,058 |        485 |
 | polyfill-force.js  |          1,060 |        486 |
 | should-polyfill.js |            587 |        302 |
 
-Prior matched primitive TS/WASM measurements retain their narrower scope.
+Primary timezone identity adds 269 gzip bytes to the standalone namespace;
+DateTimeFormat locale files do not gain this data.
+
+The current report also refreshes the matched data-free primitive sizes: TS
+3,757 gzip bytes; Rust WASM 19,679 plus 463 bytes of JS bridge, totaling 20,142.
+WASM plus bridge is 5.36 times the matched TS bundle. The earlier timed WASM run
+above remains historical; throughput was not rerun for an identity-table change.
+These primitives exclude the full facade and calendar/timezone data. Complete
+WASM equivalence and native Hermes artifact measurements remain pending.

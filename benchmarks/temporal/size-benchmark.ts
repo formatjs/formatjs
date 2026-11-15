@@ -51,6 +51,27 @@ const publishedModules = [
     minifiedGzip: gzipSync(minified, {level: 9}).length,
   }
 })
+const primitiveWasm = readFileSync(runfiles.resolve(process.argv[3]))
+const primitiveJS = ['wasm-ts-code.js', 'wasm-bridge-code.js'].map(file => {
+  const source = readFileSync(
+    runfiles.resolve(
+      `${process.env.TEST_WORKSPACE || '_main'}/benchmarks/temporal/${file}`
+    ),
+    'utf8'
+  )
+  const minified = transformSync(source, {
+    loader: 'js',
+    target: 'es2022',
+    minify: true,
+    legalComments: 'none',
+  }).code
+  return {
+    file,
+    raw: Buffer.byteLength(source),
+    minified: Buffer.byteLength(minified),
+    minifiedGzip: gzipSync(minified, {level: 9}).length,
+  }
+})
 console.log(
   JSON.stringify(
     {
@@ -62,6 +83,15 @@ console.log(
         'Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.',
       sizes,
       publishedModules,
+      primitiveProfile: {
+        scope:
+          'Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.',
+        js: primitiveJS,
+        wasm: {
+          raw: primitiveWasm.length,
+          gzip: gzipSync(primitiveWasm, {level: 9}).length,
+        },
+      },
     },
     null,
     2

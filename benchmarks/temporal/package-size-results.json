@@ -6,21 +6,21 @@
   "sizes": [
     {
       "file": "instant-code.js",
-      "raw": 530712,
-      "minified": 440476,
-      "minifiedGzip": 86000
+      "raw": 536215,
+      "minified": 445143,
+      "minifiedGzip": 86269
     },
     {
       "file": "polyfill-code.js",
-      "raw": 532255,
-      "minified": 441133,
-      "minifiedGzip": 86170
+      "raw": 537758,
+      "minified": 445800,
+      "minifiedGzip": 86426
     },
     {
       "file": "polyfill-force-code.js",
-      "raw": 532271,
-      "minified": 441135,
-      "minifiedGzip": 86172
+      "raw": 537774,
+      "minified": 445802,
+      "minifiedGzip": 86428
     },
     {
       "file": "should-polyfill-code.js",
@@ -38,9 +38,9 @@
   "publishedModules": [
     {
       "file": "index.js",
-      "raw": 530544,
-      "minified": 440361,
-      "minifiedGzip": 85937
+      "raw": 536047,
+      "minified": 445028,
+      "minifiedGzip": 86191
     },
     {
       "file": "polyfill.js",
@@ -60,5 +60,26 @@
       "minified": 587,
       "minifiedGzip": 302
     }
-  ]
+  ],
+  "primitiveProfile": {
+    "scope": "Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.",
+    "js": [
+      {
+        "file": "wasm-ts-code.js",
+        "raw": 17864,
+        "minified": 9527,
+        "minifiedGzip": 3757
+      },
+      {
+        "file": "wasm-bridge-code.js",
+        "raw": 1412,
+        "minified": 799,
+        "minifiedGzip": 463
+      }
+    ],
+    "wasm": {
+      "raw": 43911,
+      "gzip": 19679
+    }
+  }
 }

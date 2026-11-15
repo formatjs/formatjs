@@ -455,3 +455,20 @@ genrule(
     tools = [":temporal_zoned_difference_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_timezone_identity_oracle",
+    testonly = True,
+    srcs = ["TemporalTimeZoneIdentityOracle.java"],
+    main_class = "TemporalTimeZoneIdentityOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_timezone_identity_fixtures",
+    testonly = True,
+    outs = ["temporal-timezone-identity-fixtures.tsv"],
+    cmd = "$(execpath :temporal_timezone_identity_oracle) $@",
+    tools = [":temporal_timezone_identity_oracle"],
+    visibility = ["//visibility:public"],
+)

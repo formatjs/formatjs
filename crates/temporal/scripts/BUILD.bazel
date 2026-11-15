@@ -1,0 +1,12 @@
+# gazelle:ignore
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "identifiers",
+    entry_point = "identifiers.ts",
+    visibility = ["//crates/temporal:__pkg__"],
+    deps = [
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/minimist",
+    ],
+)

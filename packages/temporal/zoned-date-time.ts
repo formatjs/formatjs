@@ -25,7 +25,11 @@ import {
   getTimeSlot,
   type ZonedSlot,
 } from '#packages/temporal/plain-slots.js'
-import {timeZoneIdentifier, zonedKernel} from '#packages/temporal/zones.js'
+import {
+  timeZoneIdentifier,
+  zonedKernel,
+  timeZoneEquals,
+} from '#packages/temporal/zones.js'
 import {
   parseZonedDateTimeString,
   parseOffsetNanoseconds,
@@ -449,11 +453,7 @@ export function differenceZonedDuration(
   const largeIndex = names.indexOf(largest)
   if (largeIndex > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
-  if (
-    largeIndex < 4 &&
-    start.timeZone !== end.timeZone &&
-    zonedKernel(start.timeZone) !== zonedKernel(end.timeZone)
-  )
+  if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
     throw new RangeError('Timezones differ')
   const sinceSign = since ? -1n : 1n
   let rounded: bigint
@@ -835,8 +835,7 @@ class ZonedDateTimeValue {
     return (
       a.epochNanoseconds === b.epochNanoseconds &&
       a.calendar === b.calendar &&
-      (a.timeZone === b.timeZone ||
-        zonedKernel(a.timeZone) === zonedKernel(b.timeZone))
+      timeZoneEquals(a.timeZone, b.timeZone)
     )
   }
   toInstant(): InstantObject {

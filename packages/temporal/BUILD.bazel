@@ -104,6 +104,11 @@ filegroup(
     )
     for name, sources, data in [
         (
+            "timezone_identity_test",
+            ["tests/timezone-identity.test.ts"],
+            ["//conformance-tests/icu4j:temporal_timezone_identity_fixtures"],
+        ),
+        (
             "installation_test",
             ["tests/installation.test.ts"],
             ["//conformance-tests/icu4j:temporal_iso_fixtures"],
@@ -267,6 +272,8 @@ _ZONED_CORE_PATTERNS = [
     "prototype/second",
     "prototype/startOfDay",
     "prototype/subtract",
+    "prototype/since",
+    "prototype/until",
     "prototype/timeZoneId",
     "prototype/toInstant",
     "prototype/toJSON",

@@ -106,8 +106,17 @@ copy_to_bin(
         "link.test.ts",
         "link.ts",
         "packer.ts",
+        "primary-zones.test.ts",
+        "primary-zones.ts",
         "process-zdump.test.ts",
         "process-zdump.ts",
     ],
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "primary-zones",
+    data = ["//:node_modules/cldr-bcp47"],
+    entry_point = "primary-zones.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
 )

@@ -1,4 +1,3 @@
-import links from '@formatjs_generated/tz/links.js'
 import {createInstant, type InstantObject} from '#packages/temporal/instant.js'
 import {
   createPlainDate,
@@ -16,7 +15,11 @@ import {
   createZonedDateTime,
   type ZonedDateTimeObject,
 } from '#packages/temporal/zoned-date-time.js'
-import {timeZoneIdentifier, zonedKernel} from '#packages/temporal/zones.js'
+import {
+  timeZoneIdentifier,
+  zonedKernel,
+  primaryTimeZoneIdentifier,
+} from '#packages/temporal/zones.js'
 import {epochDayOf, timeOf} from '#packages/temporal/date-core.js'
 
 export interface NowObject {
@@ -39,9 +42,7 @@ export function createNow(clock: SystemClock): NowObject {
   }
   function zone(value: unknown): string {
     if (value !== undefined) return timeZoneIdentifier(value)
-    const id = timeZoneIdentifier(clock.timeZoneId()),
-      primary = links[id as keyof typeof links] ?? id
-    return primary === 'Etc/UTC' || primary === 'Etc/GMT' ? 'UTC' : primary
+    return primaryTimeZoneIdentifier(timeZoneIdentifier(clock.timeZoneId()))
   }
   function local(value: unknown): bigint {
     const name = zone(value),

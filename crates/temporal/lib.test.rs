@@ -1186,3 +1186,100 @@ fn now_uses_host_clock_and_owned_iana_with_icu_controls() {
         );
     }
 }
+
+#[test]
+fn independent_icu_named_zone_identities() {
+    use formatjs_temporal::{
+        NamedTimeZone, RoundingMode, TransitionZone, ZonedDateTime, ZonedUnit,
+        named_time_zone_identifier,
+    };
+    let zones = owned_iana_zones();
+    let named = |id: &str| {
+        let record = named_time_zone_identifier(id).unwrap();
+        let provider = if record.primary == "UTC" {
+            TransitionZone::new(0, &[], None).unwrap()
+        } else {
+            let (initial, transitions, future) = zones.get(record.primary).unwrap();
+            TransitionZone::new(*initial, transitions, *future).unwrap()
+        };
+        NamedTimeZone::new(id, provider).unwrap()
+    };
+    let mut count = 0;
+    let mut controls = Vec::new();
+    for line in include_str!(env!("FORMATJS_TEMPORAL_TZ_IDENTITIES"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let (id, expected) = line.split_once('\t').unwrap();
+        let Some(record) = named_time_zone_identifier(id) else {
+            continue;
+        };
+        assert_eq!(record.primary, expected, "{line}");
+        assert_eq!(
+            named_time_zone_identifier(&id.to_ascii_lowercase()),
+            Some(record)
+        );
+        controls.push((named(id), expected));
+        count += 1;
+    }
+    assert_eq!(count, 597);
+    let mut pairs = 0;
+    for (i, (one, expected_one)) in controls.iter().enumerate() {
+        for (two, expected_two) in &controls[..=i] {
+            assert_eq!(one == two, expected_one == expected_two);
+            pairs += 1;
+        }
+    }
+    assert_eq!(pairs, 178503);
+    for invalid in [
+        "Not/AZone",
+        "america/new_york ",
+        "AMERİCA/NEW_YORK",
+        "+00:00",
+        "Etc/Unknown",
+    ] {
+        assert!(named_time_zone_identifier(invalid).is_none());
+    }
+    let accra = named("aFRICA/aCCRA");
+    let abidjan = named("Africa/Abidjan");
+    assert_eq!(accra.identifier(), "Africa/Accra");
+    assert_ne!(accra, abidjan);
+    let epoch = Instant::from_epoch_nanoseconds(0).unwrap();
+    let first = ZonedDateTime::new(epoch, accra);
+    let second = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(NANOSECONDS_PER_DAY).unwrap(),
+        abidjan,
+    );
+    assert!(
+        first
+            .until(
+                &second,
+                ZonedUnit::Day,
+                ZonedUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .is_err()
+    );
+    assert_eq!(
+        first
+            .until(
+                &second,
+                ZonedUnit::Hour,
+                ZonedUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields()[4],
+        24
+    );
+    for (alias, primary) in [
+        ("US/Eastern", "America/New_York"),
+        ("Pacific/Truk", "Pacific/Chuuk"),
+        ("Atlantic/Jan_Mayen", "Arctic/Longyearbyen"),
+        ("Etc/UTC", "UTC"),
+    ] {
+        assert_eq!(named(alias), named(primary));
+    }
+}

@@ -602,7 +602,7 @@ Temporal also owns ISO PlainDate/PlainDateTime, PlainYearMonth/PlainMonthDay and
 zoned numeric cores. The no_std TimeZone provider supplies exact nanosecond
 offsets and transition queries. FixedOffset supplies constant zones; TransitionZone
 borrows explicit records and recurring rules. Zoned differences round against
-actual calendar spans. Production registry/alias loading and Hermes bindings
+actual calendar spans. Production registry loading and Hermes bindings
 remain pending. ICU controls cover
 Gregorian conversion, calendar arithmetic, short-date references/rounding,
 clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
@@ -611,3 +611,11 @@ The zoned core also supplies relative Duration total/round/compare operations.
 ICU controls exercise the owned IANA provider through these adapters. Native
 plain-relative operations and non-ISO calendar math remain pending. Rational-to-f64
 conversion stays in the dependency-free numeric core.
+
+Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.
+`named_time_zone_identifier` performs allocation-free ASCII-case-insensitive
+lookup; `NamedTimeZone<Z>` adds primary identity to an existing provider. The
+build-time generator consumes `@formatjs_generated/tz`, without adding Rust runtime
+dependencies. Regenerate with `bazel run -c opt //crates/temporal:identifiers`.
+Independent ICU controls verify all 597 names and 178,503 identity pairs using
+real transition providers. Production transition-data loading remains pending.

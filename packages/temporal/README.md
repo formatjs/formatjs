@@ -42,7 +42,7 @@ counts alone do not establish whole-method conformance.
 | PlainDateTime  |               518 |                  1,548/1,552 |
 | PlainYearMonth |               348 |                  1,018/1,022 |
 | PlainMonthDay  |               150 |                      394/398 |
-| ZonedDateTime  |             1,390 |                  1,800/1,804 |
+| ZonedDateTime  |             1,790 |                  1,800/1,804 |
 | Now            |               138 |                      138/138 |
 
 See [raw counts and failure areas](conformance-results.json). No new exclusions.
@@ -69,7 +69,7 @@ plain/short-date and zoned foundations. Rust's TimeZone provider visits
 all offsets; FixedOffset supplies constant zones. ICU transition records exercise
 that boundary. TransitionZone borrows explicit IANA records and recurring footer rules; Rust
 tests decode the owned JSON pack to exercise this provider. Production Rust
-registry/alias loading, all-calendar zoned math and native
+registry loading, all-calendar zoned math and native
 Hermes bindings remain pending. Gap resolution walks indexed transitions;
 multiple nearby changes need no isolated-gap assumption. The measured WASM build covers earlier matched Instant/Duration
 primitives; a complete WASM facade remains pending.
@@ -141,3 +141,16 @@ ICU Gregorian samples; four fixture dates outside Date's range remain rejected.
 The new complete intl402/Temporal diagnostic covers 2,040 files separately from
 built-ins class reports. Calendar/locale failures remain visible; no new exclusions.
 See conformance-results.json for engine-specific counts and missing prerequisites.
+
+## Timezone identity
+
+Named zones retain their case-regularized spelling. Equality uses separate primary
+IDs: US/Eastern equals America/New_York; Africa/Accra differs from Africa/Abidjan.
+Calendar-unit differences reject distinct primaries even when offsets match.
+UTC aliases compare equal to UTC, separately from fixed +00:00.
+
+Primary mappings combine pinned IANA Zone records, zone.tab country IDs and CLDR
+preferred aliases. Raw Link targets do not determine identity. All 597 available
+IDs and 178,503 identity pairs match independent ICU4J expectations in TS and Rust.
+Rust exposes allocation-free identifier lookup and NamedTimeZone providers;
+production registry/data installation remains pending.

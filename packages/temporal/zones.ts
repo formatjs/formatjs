@@ -1,3 +1,4 @@
+import primary from '@formatjs_generated/tz/primary.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import links from '@formatjs_generated/tz/links.js'
 import {
@@ -22,10 +23,10 @@ export function timeZone(name: string): TimeZoneKernel {
         canonical = entry.slice(0, entry.indexOf('|'))
       identifiers.set(canonical.toLowerCase(), canonical)
     }
-    const aliases = Object.keys(links)
+    const aliases = Object.keys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++) {
       const alias = aliases[i],
-        target = links[alias as keyof typeof links]
+        target = primary[alias as keyof typeof primary] ?? alias
       identifiers.set(
         alias.toLowerCase(),
         identifiers.get(target.toLowerCase()) ?? target
@@ -88,7 +89,7 @@ export function timeZoneIdentifier(value: unknown): string {
         id = entry.slice(0, entry.indexOf('|'))
       spellings.set(id.toLowerCase(), id)
     }
-    const aliases = Object.keys(links)
+    const aliases = Object.keys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++)
       spellings.set(aliases[i].toLowerCase(), aliases[i])
     spellings.set('utc', 'UTC')
@@ -133,4 +134,11 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
   }
   fixedKernels.set(key, result)
   return result
+}
+
+export function primaryTimeZoneIdentifier(id: string): string {
+  return primary[id as keyof typeof primary] ?? id
+}
+export function timeZoneEquals(one: string, two: string): boolean {
+  return primaryTimeZoneIdentifier(one) === primaryTimeZoneIdentifier(two)
 }

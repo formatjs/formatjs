@@ -128,7 +128,10 @@ sh_test(
 [
     js_binary(
         name = name,
-        args = ["$(rlocationpath //packages/temporal:pkg)"] if name == "size_benchmark" else [],
+        args = [
+            "$(rlocationpath //packages/temporal:pkg)",
+            "$(rlocationpath //crates/temporal:wasm)",
+        ] if name == "size_benchmark" else [],
         data = [":generated_package_json"] + bundles + [
             "//:node_modules/@bazel/runfiles",
             "//:node_modules/esbuild",
@@ -146,6 +149,9 @@ sh_test(
                 ":should-polyfill-code",
                 ":reference-bundle",
                 "//packages/temporal:pkg",
+                "//crates/temporal:wasm",
+                ":wasm-ts-code",
+                ":wasm-bridge-code",
             ],
         ),
         (

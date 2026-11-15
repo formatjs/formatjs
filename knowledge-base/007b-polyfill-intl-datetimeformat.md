@@ -691,3 +691,16 @@ fractional-second truncation. Negative nanoseconds floor before Number conversio
 fractional offsets retain Decimal addition before flooring. Numeric date fields
 also benefit from NumberFormat's exact-integer fixed-rounding path. See
 [arithmetic guards and measurements](audits/2026-10-31-datetimeformat-integer-rendering.md).
+
+## Primary timezone identities
+
+`//packages/intl-datetimeformat:tz_primary` generates
+`@formatjs_generated/tz/primary.js` from pinned IANA regional files, etcetera,
+backward, zone.tab and CLDR BCP47 timezone aliases. Zone records and zone.tab IDs
+remain primary; CLDR chooses remaining aliases. UTC/GMT aliases normalize to UTC.
+Generation fails for unmapped aliases rather than guessing a raw Link target.
+
+This identity file is separate from transitions and per-locale CLDR data.
+Temporal consumes it for equality, calendar differences and Now system IDs;
+DateTimeFormat locale payloads do not gain this table. ICU4J's independent IANA
+identity oracle verifies all 597 available names in TS and Rust.

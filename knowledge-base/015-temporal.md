@@ -188,10 +188,10 @@ full Rust/native Hermes behavior and equivalent complete WASM measurements.
 
 The real short-date conversions add 30 passing PlainDate executions, bringing
 its full diagnostic to 1304/1308. All eight raw class reports agree across Node,
-Hermes source and optimized bytecode; normal selections total 4,586 executions
-per mode. All 66 normal package/Rust/WASM checks pass; four shared packaging checks also pass; the shared primitive gate passed in
-the preceding layer. Full diagnostics
-remain failing and separate from those gates.
+Hermes source and optimized bytecode; normal selections total 4,986 executions
+per mode. All 68 normal package/Rust/WASM checks and four timezone data/ICU
+checks pass. Four shared packaging checks passed in the preceding layer. Full
+diagnostics remain failing and separate from those gates.
 
 ## ZonedDateTime layer
 
@@ -203,7 +203,7 @@ PlainDateTime expose zoned construction; Instant accepts zoned values and expose
 serializing intermediate objects. Internal Instant creation/validation avoids
 calling mutable public static methods.
 
-ZonedDateTime has 1,390 strict executions per engine mode. Full diagnostic is
+ZonedDateTime has 1,790 strict executions per engine mode. Full diagnostic is
 1,800/1,804; locale formatting failures stay visible. The bytecode selection uses a medium Bazel target timeout for its larger
 corpus; per-case timeout remains 30 seconds. No new exclusions.
 
@@ -237,7 +237,7 @@ match 10,528 independent ICU next/previous queries and 19,440 ICU calendar-span 
 BigDecimal rounding cases across all units, modes and signs. Real Rust IANA records
 also match the original 13,160 offsets and 1,340 gap/fold controls. New synthetic
 controls cover adjacent gaps and leap-only recurrences across 2100. Production
-Rust registry/alias loading, calendars and native Hermes installation stay pending.
+Rust transition registry loading, calendars and native Hermes installation stay pending.
 
 The Rust dependency page was restored from its last correct version; an earlier
 Temporal layer had overwritten it with the Test262 page.
@@ -341,20 +341,18 @@ the installation entries. Prior throughput and primitive TS/WASM profiles retain
 their declared scopes; adding an entrypoint does not justify rerunning every timed
 workload. Full WASM facade/data and native Hermes measurements remain required.
 
-The new Intl corpus exposes a concrete next fix: Node's
-ZonedDateTime/prototype/equals/canonical-not-equal.js rejects the owned merge of
-Africa/Accra and Africa/Abidjan. Identity must preserve zone.tab primary IDs,
-independently of shared transition data. Raw IANA Link targets alone are
-insufficient; country-preserving mappings also use backzone. The same mapping
-must feed Now system IDs and supportedValuesOf, rather than trusting a narrower
-host list to hide equality errors. See [ECMA-402 primary identity](https://tc39.es/ecma402/#sec-availablenamedtimezoneidentifiers).
+Primary timezone identity now combines pinned IANA Zone records, zone.tab and
+CLDR preferred IDs. Country primaries such as Accra/Abidjan remain distinct;
+genuine aliases match. Named UTC roots are recognized separately from fixed offsets.
+TS equality, calendar-unit difference guards and Now system IDs use this mapping.
+Rust exposes allocation-free lookup and NamedTimeZone provider identity; production
+transition-data loading remains pending. All 597 available names and 178,503
+pairs match independent ICU4J expectations in both languages.
 
-Bare Hermes currently reports zero timezone IDs from supportedValuesOf without
-DateTimeFormat installed. Its distinct-primary-pair test therefore passes
-vacuously. Node's corresponding two scenarios fail on Accra/Abidjan. Another 22
-Node-positive scenarios fail on Hermes because their calendar helpers construct
-DateTimeFormat. Keep the engine differences explicit and add independent primary
-identity controls in the next fix.
+Bare Hermes still enumerates zero timezone IDs without DateTimeFormat installed.
+Its canonical-pair Test262 case remains vacuous; independent ICU controls exercise
+all identities regardless of that host list. Calendar helpers requiring
+DateTimeFormat remain a separate host-integration gap.
 
 The assembled npm package has an additional identity test. Independent bundles
 of index and force installation originally created duplicate private brands.

@@ -120,14 +120,15 @@ From various CLDR full packages. Each file is the set of locales a polyfill supp
   intl-relativetimeformat.js # from cldr-core, cldr-dates-full, cldr-numbers-full
 ```
 
-### `@formatjs_generated/tz` — IANA timezone database (2 files)
+### `@formatjs_generated/tz` — IANA timezone database (3 files)
 
-Data extracted from the IANA Time Zone Database. Bazel fetches checksum-pinned `tzdata` and `tzcode` source archives, builds `zic`/`zdump` for macOS and Linux execution platforms with `rules_cc` and pinned hermetic LLVM, then runs them through a shell-free pinned Node action. The resulting `zdump` output and IANA `backward` links feed the generated package.
+Data extracted from the IANA Time Zone Database. Bazel fetches checksum-pinned `tzdata` and `tzcode` source archives, builds `zic`/`zdump` for macOS and Linux execution platforms with `rules_cc` and pinned hermetic LLVM, then runs them through a shell-free pinned Node action. TZif-derived transitions and IANA `backward` links feed the generated package. `primary.js` separately combines IANA Zone records, zone.tab and CLDR preferred IDs; country primaries survive shared Link targets. Its non-self mappings are generated Bazel outputs. Temporal consumes identity data without adding locale payload to DateTimeFormat.
 
 ```
 @formatjs_generated/tz/
   all-tz.js               # zdump-processed timezone transitions
   links.js                # IANA "backward" timezone links
+  primary.js              # IANA/CLDR primary identity mappings
 ```
 
 ### `@formatjs_generated/unicode` — Unicode-derived data (6 files)

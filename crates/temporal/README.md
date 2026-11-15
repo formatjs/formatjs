@@ -16,7 +16,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
 checked. Native plain-relative adapters, remaining calendars, production IANA
-registry/alias loading, native Hermes bindings and complete WASM facades remain
+registry loading, native Hermes bindings and complete WASM facades remain
 pending. The TS facade currently runs on Hermes; this core has no Hermes binding.
 
 ```sh
@@ -46,3 +46,18 @@ converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
 plain date/time, date and time views. Injected clock tests reuse all 13,160
 independent ICU timezone samples, including sub-millisecond nanoseconds. This
 host boundary does not install a system clock or discover a system zone itself.
+
+`named_time_zone_identifier` looks up 597 case-insensitive IANA names without
+allocation. `NamedTimeZone<Z>` attaches validated spelling/primary identity to a
+provider; callers supply matching transition data. Equality uses primary ID,
+independent of coincident offsets. Tests use real IANA providers and independently
+check every ID and 178,503 pairs against ICU4J.
+
+Regenerate the checked-in identity table after timezone/CLDR updates:
+
+```sh
+bazel run -c opt //crates/temporal:identifiers
+```
+
+Bazel derives this table from the generated TS timezone package. Runtime Rust
+remains dependency-free; production transition-data loading stays pending.

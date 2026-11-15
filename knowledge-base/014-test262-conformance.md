@@ -275,7 +275,7 @@ and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9
 
 ## Temporal development selections
 
-`packages/temporal` has eight partial classes plus Now. Strict selections total 4,586
+`packages/temporal` has eight partial classes plus Now. Strict selections total 4,986
 executions per Node/Hermes source/optimized-bytecode mode; these stay separate
 from the twelve complete Intl selections above. Current class counts and failure
 areas live in [the package record](../packages/temporal/conformance-results.json)
@@ -287,7 +287,7 @@ integration are implementation gaps, never exclusions. Negative assertions can
 pass incidentally when a method is absent; aggregate counts do not establish
 whole-method conformance.
 
-Full Hermes development targets use Bazel's large test budget. The 1,390-execution
+Full Hermes development targets use Bazel's large test budget. The 1,790-execution
 strict zoned suite and 1,072-execution Duration suite use medium budgets; per-case harness
 limit stays 30 seconds. Timed-out/truncated JSON never counts as a completed
 raw diagnostic. No new exclusions. See [implementation tracking](015-temporal.md).
@@ -297,3 +297,8 @@ force entry as the Test262 prelude. Separate manual intl402/Temporal targets cov
 all 4,080 scenarios, retaining every failure. The bare Hermes diagnostic lacks an
 installed DateTimeFormat prerequisite; this is recorded, not an allowed exclusion.
 Latest engine-specific results live in the Temporal conformance record.
+
+Zoned strict selection now covers every non-locale built-ins family, including
+complete since/until directories. Independent ICU identity fixtures check all
+597 available IDs and 178,503 pairs in both TS and Rust. Country primaries remain
+distinct even when transition records or present offsets coincide.

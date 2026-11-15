@@ -11,6 +11,7 @@ mod rounding;
 mod short_dates;
 mod time;
 mod timezone;
+mod timezone_identity;
 mod zoned;
 mod zoned_difference;
 
@@ -27,6 +28,7 @@ pub use rounding::{RoundingMode, TimeUnit};
 pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
 pub use time::{FormattedTime, PlainTime};
 pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
+pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};
 pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
 pub use zoned_difference::ZonedUnit;
 
