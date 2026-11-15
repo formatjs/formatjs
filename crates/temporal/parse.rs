@@ -200,7 +200,7 @@ pub fn plain_time(value: &str) -> Result<PlainTime, Error> {
 
 pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> {
     let index = value.find('[').unwrap_or(value.len());
-    iso_annotations(&value[index..])?;
+    annotations(&value[index..])?;
     let body = &value[..index];
     let mut input = Cursor::new(body);
     let negative = input.take(b'-');
@@ -237,6 +237,38 @@ pub(crate) fn plain_date_time_fields(value: &str) -> Result<IsoDateTime, Error> 
         second,
         nanosecond,
     })
+}
+
+fn calendar_annotation(value: &str) -> Option<&str> {
+    value.split('[').skip(1).find_map(|part| {
+        part.trim_end_matches(']')
+            .trim_start_matches('!')
+            .strip_prefix("u-ca=")
+    })
+}
+pub(crate) fn arithmetic_calendar(value: &str) -> Result<crate::calendar::Calendar, Error> {
+    let name = calendar_annotation(value).unwrap_or("iso8601");
+    crate::calendar::Calendar::ALL
+        .into_iter()
+        .find(|calendar| calendar.name().eq_ignore_ascii_case(name))
+        .or_else(|| {
+            if name.eq_ignore_ascii_case("islamicc") {
+                Some(crate::calendar::Calendar::IslamicCivil)
+            } else if name.eq_ignore_ascii_case("ethiopic-amete-alem") {
+                Some(crate::calendar::Calendar::Ethioaa)
+            } else {
+                None
+            }
+        })
+        .ok_or(Error::InvalidDateTime)
+}
+pub(crate) fn check_calendar(value: &str, expected: &str) -> Result<(), Error> {
+    if calendar_annotation(value).is_some_and(|name| !name.eq_ignore_ascii_case(expected))
+        && arithmetic_calendar(value).map_or(true, |calendar| calendar.name() != expected)
+    {
+        return Err(Error::InvalidDateTime);
+    }
+    Ok(())
 }
 
 fn iso_annotations(value: &str) -> Result<(), Error> {

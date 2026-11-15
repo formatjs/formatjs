@@ -1,6 +1,7 @@
 #![no_std]
 
 mod calendar_difference;
+mod calendar_provider;
 mod date;
 mod duration;
 mod format;
@@ -19,6 +20,7 @@ mod zoned_difference;
 
 pub use calendar_difference::DateTimeUnit;
 pub use calendar_difference::DateTimeUnit as ZonedUnit;
+pub use calendar_provider::{CalendarProvider, CalendarRef, DateFields, table_calendar};
 use core::fmt;
 use core::str::FromStr;
 pub use date::{FormattedDateTime, Overflow, PlainDate, PlainDateTime};

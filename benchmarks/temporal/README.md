@@ -673,3 +673,13 @@ Matched data-free primitives remain 3,757 TS gzip bytes versus 19,557 WASM plus
 463 JS bridge, 20,020 total. Fresh nested samples retain the basic ISO/Gregorian
 reference and the same validation/batch method. Full WASM facade/data and native
 Hermes backend measurements remain pending.
+
+## Native calendar size refresh
+
+`native-calendar-size-results.json` records fresh namespace/package sizes after
+calendar-aware Rust date/date-time/zoned integration. The TS namespace remains
+360,277 gzip bytes. Matched data-free primitives are 3,757 TS bytes versus 19,552
+WASM plus 463 bridge bytes (20,015 combined). Minification/compression uses the
+same Bazel/Node path as earlier size reports; prior throughput is separate.
+The new public Rust facades and calendar data are not exposed by that primitive
+WASM ABI. Full WASM facade/data and native Hermes Temporal bindings remain open.

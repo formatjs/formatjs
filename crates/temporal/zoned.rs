@@ -1,4 +1,7 @@
-use crate::{Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, Overflow, PlainDateTime};
+use crate::{
+    CalendarProvider, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, Overflow,
+    PlainDateTime,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Disambiguation {
@@ -44,13 +47,43 @@ impl TimeZone for FixedOffset {
 }
 
 #[derive(Clone, Debug)]
-pub struct ZonedDateTime<Z> {
+pub struct ZonedDateTime<Z, C = crate::calendar::Calendar> {
     instant: Instant,
     time_zone: Z,
+    calendar: C,
 }
 impl<Z: TimeZone> ZonedDateTime<Z> {
     pub const fn new(instant: Instant, time_zone: Z) -> Self {
-        Self { instant, time_zone }
+        Self {
+            instant,
+            time_zone,
+            calendar: crate::calendar::Calendar::Iso8601,
+        }
+    }
+    pub fn from_local(
+        fields: IsoDateTime,
+        time_zone: Z,
+        disambiguation: Disambiguation,
+    ) -> Result<Self, Error> {
+        Ok(Self::new(
+            resolve_local(fields, &time_zone, disambiguation)?,
+            time_zone,
+        ))
+    }
+}
+impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
+    pub const fn new_in_calendar(instant: Instant, time_zone: Z, calendar: C) -> Self {
+        Self {
+            instant,
+            time_zone,
+            calendar,
+        }
+    }
+    pub const fn calendar(&self) -> C {
+        self.calendar
+    }
+    pub fn calendar_id(&self) -> &'static str {
+        self.calendar.id()
     }
     pub const fn instant(&self) -> Instant {
         self.instant
@@ -58,24 +91,33 @@ impl<Z: TimeZone> ZonedDateTime<Z> {
     pub const fn time_zone(&self) -> &Z {
         &self.time_zone
     }
-    pub fn local(&self) -> Result<PlainDateTime, Error> {
-        PlainDateTime::from_epoch_nanoseconds(
+    pub fn local(&self) -> Result<PlainDateTime<C>, Error> {
+        PlainDateTime::from_epoch_nanoseconds_in(
             self.instant.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(self.instant),
+            self.calendar,
         )
     }
-    pub fn from_local(
+    pub fn from_local_in_calendar(
         fields: IsoDateTime,
         time_zone: Z,
         disambiguation: Disambiguation,
+        calendar: C,
     ) -> Result<Self, Error> {
         let instant = resolve_local(fields, &time_zone, disambiguation)?;
-        Ok(Self::new(instant, time_zone))
+        Ok(Self::new_in_calendar(instant, time_zone, calendar))
     }
 }
-impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
+impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
+    pub fn with_calendar<D: CalendarProvider>(&self, calendar: D) -> ZonedDateTime<Z, D> {
+        ZonedDateTime::new_in_calendar(self.instant, self.time_zone.clone(), calendar)
+    }
     pub fn start_of_day(&self) -> Result<Self, Error> {
         let day = self.local()?.date().epoch_day();
-        Ok(Self::new(self.day_boundary(day)?, self.time_zone.clone()))
+        Ok(Self::new_in_calendar(
+            self.day_boundary(day)?,
+            self.time_zone.clone(),
+            self.calendar,
+        ))
     }
     pub fn hours_in_day(&self) -> Result<f64, Error> {
         let day = self.local()?.date().epoch_day();
@@ -107,7 +149,11 @@ impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
             let preferred = Instant::from_epoch_nanoseconds(rounded.epoch_nanoseconds() - offset);
             if let Ok(value) = preferred {
                 if self.time_zone.offset_nanoseconds(value) == offset {
-                    return Ok(Self::new(value, self.time_zone.clone()));
+                    return Ok(Self::new_in_calendar(
+                        value,
+                        self.time_zone.clone(),
+                        self.calendar,
+                    ));
                 }
             }
             resolve_local(
@@ -116,7 +162,11 @@ impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
                 Disambiguation::Compatible,
             )?
         };
-        Ok(Self::new(instant, self.time_zone.clone()))
+        Ok(Self::new_in_calendar(
+            instant,
+            self.time_zone.clone(),
+            self.calendar,
+        ))
     }
     fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
         let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
@@ -154,7 +204,7 @@ impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
     pub fn transition(&self, direction: TransitionDirection) -> Option<Self> {
         self.time_zone
             .transition(self.instant, direction)
-            .map(|instant| Self::new(instant, self.time_zone.clone()))
+            .map(|instant| Self::new_in_calendar(instant, self.time_zone.clone(), self.calendar))
     }
     pub fn checked_add(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
@@ -172,7 +222,11 @@ impl<Z: TimeZone + Clone> ZonedDateTime<Z> {
         let result = Instant::from_epoch_nanoseconds(
             value.epoch_nanoseconds() + Duration::new(clock)?.time_nanoseconds(false)?,
         )?;
-        Ok(Self::new(result, self.time_zone.clone()))
+        Ok(Self::new_in_calendar(
+            result,
+            self.time_zone.clone(),
+            self.calendar,
+        ))
     }
     pub fn checked_subtract(&self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)

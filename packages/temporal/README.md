@@ -63,12 +63,12 @@ and calendar-day versus 24-hour arithmetic. Both cores also match 10,528 ICU
 next/previous queries and 19,440 independent calendar-span/decimal-rounding cases. Hebrew controls use the documented
 bounded ICU range; forced full temporal-polyfill adds reference-date controls.
 
-The allocation-free no_std Rust core supplies Instant, Duration, clock, ISO
-plain/short-date and zoned foundations. Rust's TimeZone provider visits
+The allocation-free no_std Rust core supplies Instant, Duration, clock,
+calendar-aware plain date/date-time and zoned types, plus ISO short dates. Rust's TimeZone provider visits
 all offsets; FixedOffset supplies constant zones. ICU transition records exercise
 that boundary. TransitionZone borrows explicit IANA records and recurring footer rules; Rust
 tests decode the owned JSON pack to exercise this provider. Production Rust
-registry loading, all-calendar zoned math and native
+registry loading, calendar-aware short dates and native
 Hermes bindings remain pending. Gap resolution walks indexed transitions;
 multiple nearby changes need no isolated-gap assumption. The measured WASM build covers earlier matched Instant/Duration
 primitives; a complete WASM facade remains pending.
@@ -209,12 +209,14 @@ calendar families. Complete Intl diagnostics retain all tests and remain failing
 Independent controls add 32,352 differences, plus public validation of 34,366
 field cases, 32,352 additions, 176 bounds and 2,021 cross-class conversions.
 Node and Hermes source/bytecode run these controls; Rust checks the same numeric
-calendar differences. Native public date classes remain ISO; native Hermes
-bindings and complete WASM facade/data remain pending.
+calendar differences through public date/date-time and zoned providers too.
+Native short-date calendars, Hermes bindings and complete WASM facade/data
+remain pending. See the [Rust API](../../crates/temporal/README.md#calendar-aware-public-types).
 
 ICU month-end controls add 5,408 year/month total windows across 13 calendars,
-checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
-windows. Total windows advance past constrained month ends before computing the
+checked through plain and UTC-zoned TS and Rust anchors. Native public
+providers also check the 1,248 table-calendar windows below. Total windows advance
+past constrained month ends before computing the
 fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.
 
 Chinese, Dangi and Umm al-Qura now use owned ICU4X calendar packs. Chinese/Dangi

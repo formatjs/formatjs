@@ -607,9 +607,8 @@ invariant UTC names. Historical positive and negative offset seconds are retaine
 Legacy native-Intl diagnostics now pass 4,020/4,080. Direct native DateTimeFormat
 brand interop, YearMonth/MonthDay style filtering and native Date clipping of
 extended plain values remain required work. Owned full Intl diagnostics passed
-4,074/4,080 per mode before the enumeration fix. The fixed file now passes in all
-strict gates; refreshed full reports remain pending. The four other failures
-reflect pinned timezone/CLDR assumptions. Native calendar classes, native
+4,076/4,080 per mode after the enumeration fix. The four failures reflect
+pinned timezone/CLDR assumptions; all raw reports stay unfiltered. Native calendar classes, native
 Hermes bindings and complete WASM facade/data remain open.
 
 Fresh locale benchmarks live in `benchmarks/temporal/locale-results.json`.
@@ -620,3 +619,30 @@ reference is 23,226 bytes plus host Intl. Date/time locale methods take
 workloads check exact output equality. Globals are restored before timing so
 the reference uses host Intl and owned methods retain captured intrinsics.
 Complete WASM facade/data remains unmeasured.
+
+## Native calendar providers
+
+Rust public PlainDate/PlainDateTime/ZonedDateTime now carry sealed calendar
+providers. The default arithmetic enum retains ISO construction; borrowed table
+providers and CalendarRef cover all 16 calendars without allocation or a formatter
+dependency. Existing ISO field access remains explicit; calendar fields, eras,
+lengths and typed field construction use the provider. Display and parser retain
+calendar annotations.
+
+RelativeAnchor now supplies its calendar to shared difference/round/total logic.
+Date/time conversions, clock rounding, zoned day boundaries and transition queries
+retain the provider. Differences reject calendar mismatches for every unit.
+Native calendar-aware short dates, production registry loading, string-zoned
+facades, native Hermes bindings and full WASM facade/data remain pending.
+Independent public-facade controls pass 50,298 field rows, 39,072 additions,
+39,072 differences, 6,656 relative windows and 176 range rejections, across all
+16 providers. Arithmetic rows use ICU; table rows retain published HKO/KASI
+corrections. UTC-zoned rows need representable Instants; separate fixed-zone
+checks cover both public plain-date limits. Zero-duration operations remain
+valid at those bounds. Native Rust and matched WASM primitive tests pass; full
+WASM facade/data and native Hermes conformance remain unproven.
+
+The matching size refresh is `benchmarks/temporal/native-calendar-size-results.json`:
+3,757 gzip TS primitive bytes versus 20,015 WASM plus bridge; namespace 360,277.
+This measures the existing data-free ABI, not the new calendar-aware public Rust
+facades or their data. Complete WASM facade measurement remains pending.

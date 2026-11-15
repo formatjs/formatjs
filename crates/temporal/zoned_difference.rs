@@ -1,7 +1,10 @@
 use crate::calendar_difference::{RelativeAnchor, difference};
-use crate::{Duration, Error, Instant, Overflow, RoundingMode, TimeZone, ZonedDateTime, ZonedUnit};
+use crate::{
+    CalendarProvider, Duration, Error, Instant, Overflow, RoundingMode, TimeZone, ZonedDateTime,
+    ZonedUnit,
+};
 
-impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
+impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     pub fn until(
         &self,
         other: &Self,
@@ -31,6 +34,9 @@ impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
         mode: RoundingMode,
         since: bool,
     ) -> Result<Duration, Error> {
+        if self.calendar_id() != other.calendar_id() {
+            return Err(Error::InvalidDateTime);
+        }
         if largest <= ZonedUnit::Day && self.time_zone() != other.time_zone() {
             return Err(Error::InvalidDateTime);
         }
@@ -46,7 +52,11 @@ impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
     }
 }
 
-impl<Z: TimeZone + Clone> RelativeAnchor for ZonedDateTime<Z> {
+impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<Z, C> {
+    type Calendar = C;
+    fn calendar(&self) -> C {
+        self.calendar()
+    }
     const ZONED: bool = true;
     fn origin(&self) -> i128 {
         self.instant().epoch_nanoseconds()

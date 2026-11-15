@@ -592,14 +592,14 @@ The core builds through a scoped WASM target for matched primitive benchmarks.
 `formatjs_temporal::Duration` now supplies Number-representable integer fields,
 ISO parsing, signed rounding, serialization, exact totals and arithmetic. Instant
 differences/addition reuse it. ICU independently checks signed rounding and
-rational-to-binary64 totals. Calendar-relative operations remain pending.
+rational-to-binary64 totals. Plain/zoned anchors below supply calendar-relative operations.
 
 `formatjs_temporal::PlainTime` adds ISO parsing, checked clock fields, wrapping
 arithmetic, signed differences, field-relative rounding and precision formatting.
 TS/Rust share grammar vectors and match 7,740 independent ICU clock cases.
 
-Temporal also owns ISO PlainDate/PlainDateTime, PlainYearMonth/PlainMonthDay and
-zoned numeric cores. The no_std TimeZone provider supplies exact nanosecond
+Temporal also owns calendar-aware PlainDate/PlainDateTime/zoned cores and ISO
+PlainYearMonth/PlainMonthDay. The no_std TimeZone provider supplies exact nanosecond
 offsets and transition queries. FixedOffset supplies constant zones; TransitionZone
 borrows explicit records and recurring rules. Zoned differences round against
 actual calendar spans. Production registry loading and Hermes bindings
@@ -608,8 +608,10 @@ Gregorian conversion, calendar arithmetic, short-date references/rounding,
 clock rounding, timezone offsets, gaps/folds and calendar versus elapsed days.
 
 The plain and zoned cores also supply relative Duration total/round/compare operations.
-ICU controls exercise the owned IANA provider through these adapters. Native
-non-ISO public calendar integration remains pending. Rational-to-f64
+ICU controls exercise the owned IANA provider through these adapters. Sealed
+CalendarProvider values retain all 16 calendars through public date/date-time
+and zoned operations; CalendarRef unifies arithmetic and borrowed table views.
+Native short-date calendar integration remains pending. Rational-to-f64
 conversion stays in the numeric core.
 
 Temporal now has a checked-in, Bazel-generated IANA spelling/primary table.
@@ -621,7 +623,7 @@ Independent ICU controls verify all 597 names and 178,503 identity pairs using
 real transition providers. Production transition-data loading remains pending.
 
 `calendar_difference.rs` owns shared calendar-unit anchors and rounding.
-`plain_relative.rs` supplies ISO PlainDate relative Duration adapters and plain
+`plain_relative.rs` supplies calendar-aware PlainDate relative Duration adapters and plain
 Date/DateTime differences; timezone providers remain behind the zoned anchor.
 `DateTimeUnit` covers all ten units, with `ZonedUnit` retained as an alias.
 PlainDateTime still accepts TimeUnit arguments. Input endpoint checks include

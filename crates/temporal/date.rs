@@ -1,5 +1,8 @@
+use crate::calendar::Calendar;
+use crate::calendar_provider::{error, overflow as calendar_overflow, resolve_fields};
 use crate::{
-    Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime, Precision, RoundingMode, TimeUnit,
+    CalendarProvider, DateFields, Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime,
+    Precision, RoundingMode, TimeUnit,
 };
 use core::{fmt, str::FromStr};
 
@@ -8,8 +11,8 @@ pub enum Overflow {
     Constrain,
     Reject,
 }
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct PlainDate(i64);
+#[derive(Clone, Copy, Debug)]
+pub struct PlainDate<C = Calendar>(i64, C);
 impl PlainDate {
     pub fn new(year: i32, month: u8, day: u8) -> Result<Self, Error> {
         let value = IsoDateTime {
@@ -28,7 +31,97 @@ impl PlainDate {
         if !(-100_000_001..=100_000_000).contains(&value) {
             return Err(Error::OutOfRange);
         }
-        Ok(Self(value))
+        Ok(Self(value, Calendar::Iso8601))
+    }
+}
+impl<C: CalendarProvider> PlainDate<C> {
+    pub fn from_epoch_day_in(value: i64, calendar: C) -> Result<Self, Error> {
+        PlainDate::from_epoch_day(value)?;
+        calendar.date(value).map_err(error)?;
+        Ok(Self(value, calendar))
+    }
+    pub fn from_calendar_fields(
+        calendar: C,
+        fields: DateFields<'_>,
+        overflow: Overflow,
+    ) -> Result<Self, Error> {
+        Self::from_epoch_day_in(resolve_fields(calendar, fields, overflow)?, calendar)
+    }
+    pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
+        let fields = crate::parse::plain_date_time_fields(value)?;
+        crate::parse::check_calendar(value, calendar.id())?;
+        PlainDate::new(fields.year, fields.month, fields.day)?.with_calendar(calendar)
+    }
+    pub const fn calendar(self) -> C {
+        self.1
+    }
+    pub fn calendar_id(self) -> &'static str {
+        self.1.id()
+    }
+    pub fn equals<D: CalendarProvider>(self, other: PlainDate<D>) -> bool {
+        self.0 == other.0 && self.calendar_id() == other.calendar_id()
+    }
+    pub fn compare<D: CalendarProvider>(self, other: PlainDate<D>) -> core::cmp::Ordering {
+        self.0.cmp(&other.0)
+    }
+    pub fn with_calendar<D: CalendarProvider>(self, calendar: D) -> Result<PlainDate<D>, Error> {
+        PlainDate::from_epoch_day_in(self.0, calendar)
+    }
+    pub fn calendar_fields(self) -> Result<crate::calendar::Date, Error> {
+        self.1.date(self.0).map_err(error)
+    }
+    pub fn era(self) -> Result<Option<crate::calendar::Era>, Error> {
+        self.1.era(self.0).map_err(error)
+    }
+    pub fn day_of_week(self) -> u8 {
+        ((self.0 + 3).rem_euclid(7) + 1) as u8
+    }
+    pub const fn days_in_week(self) -> u8 {
+        7
+    }
+    pub fn day_of_year(self) -> Result<u16, Error> {
+        Ok((self.0
+            - self
+                .1
+                .start_of_year(self.calendar_fields()?.year)
+                .map_err(error)?
+            + 1) as u16)
+    }
+    pub fn days_in_month(self) -> Result<u8, Error> {
+        let fields = self.calendar_fields()?;
+        self.1
+            .days_in_month(fields.year, fields.month)
+            .map_err(error)
+    }
+    pub fn months_in_year(self) -> Result<u8, Error> {
+        self.1
+            .months_in_year(self.calendar_fields()?.year)
+            .map_err(error)
+    }
+    pub fn days_in_year(self) -> Result<u16, Error> {
+        let year = self.calendar_fields()?.year;
+        Ok((self.1.start_of_year(year + 1).map_err(error)?
+            - self.1.start_of_year(year).map_err(error)?) as u16)
+    }
+    pub fn in_leap_year(self) -> Result<bool, Error> {
+        Ok(match self.calendar_id() {
+            "hebrew" | "chinese" | "dangi" => self.months_in_year()? == 13,
+            "islamic-civil" | "islamic-tbla" | "islamic-umalqura" => self.days_in_year()? == 355,
+            _ => self.days_in_year()? == 366,
+        })
+    }
+    pub fn week_of_year(self) -> Option<(i32, u8)> {
+        if self.calendar_id() != "iso8601" {
+            return None;
+        }
+        let thursday = self.0 + 4 - i64::from(self.day_of_week());
+        let year =
+            crate::iso::iso_from_epoch_nanoseconds_raw(i128::from(thursday) * NANOSECONDS_PER_DAY)
+                .year;
+        Some((
+            year,
+            ((thursday - crate::iso::epoch_day_from_iso(year, 1, 1)) / 7 + 1) as u8,
+        ))
     }
     pub const fn epoch_day(self) -> i64 {
         self.0
@@ -60,30 +153,24 @@ impl PlainDate {
         days: i128,
         overflow: Overflow,
     ) -> Result<Self, Error> {
-        use crate::calendar::{Calendar, DateDuration};
+        use crate::calendar::DateDuration;
         let duration = DateDuration {
             years: years.try_into().map_err(|_| Error::OutOfRange)?,
             months: months.try_into().map_err(|_| Error::OutOfRange)?,
             days: days.try_into().map_err(|_| Error::OutOfRange)?,
             ..DateDuration::default()
         };
-        let overflow = match overflow {
-            Overflow::Constrain => crate::calendar::Overflow::Constrain,
-            Overflow::Reject => crate::calendar::Overflow::Reject,
-        };
-        let day =
-            Calendar::Iso8601
-                .add(self.0, duration, overflow)
-                .map_err(|error| match error {
-                    crate::calendar::Error::InvalidDate => Error::InvalidDateTime,
-                    _ => Error::OutOfRange,
-                })?;
-        Self::from_epoch_day(day)
+        let day = self
+            .1
+            .add(self.0, duration, calendar_overflow(overflow))
+            .map_err(error)?;
+        Self::from_epoch_day_in(day, self.1)
     }
 
-    pub fn to_date_time(self, time: PlainTime) -> Result<PlainDateTime, Error> {
-        PlainDateTime::from_epoch_nanoseconds(
+    pub fn to_date_time(self, time: PlainTime) -> Result<PlainDateTime<C>, Error> {
+        PlainDateTime::from_epoch_nanoseconds_in(
             i128::from(self.0) * NANOSECONDS_PER_DAY + time.nanoseconds(),
+            self.1,
         )
     }
 }
@@ -99,30 +186,75 @@ impl FromStr for PlainDate {
     type Err = Error;
     fn from_str(value: &str) -> Result<Self, Error> {
         let fields = crate::parse::plain_date_time_fields(value)?;
-        Self::new(fields.year, fields.month, fields.day)
+        Self::new(fields.year, fields.month, fields.day)?
+            .with_calendar(crate::parse::arithmetic_calendar(value)?)
     }
 }
-impl fmt::Display for PlainDate {
+impl<C: CalendarProvider> fmt::Display for PlainDate<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (year, month, day) = self.fields();
-        if (0..=9999).contains(&year) {
-            write!(f, "{year:04}")?;
-        } else {
-            write!(f, "{year:+07}")?;
-        }
-        write!(f, "-{month:02}-{day:02}")
+        write_date(f, self.fields())?;
+        write_calendar(f, self.calendar_id())
     }
+}
+fn write_date(f: &mut fmt::Formatter<'_>, (year, month, day): (i32, u8, u8)) -> fmt::Result {
+    if (0..=9999).contains(&year) {
+        write!(f, "{year:04}")?;
+    } else {
+        write!(f, "{year:+07}")?;
+    }
+    write!(f, "-{month:02}-{day:02}")
+}
+fn write_calendar(f: &mut fmt::Formatter<'_>, calendar: &str) -> fmt::Result {
+    if calendar != "iso8601" {
+        write!(f, "[u-ca={calendar}]")?;
+    }
+    Ok(())
 }
 
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct PlainDateTime(i128);
+#[derive(Clone, Copy, Debug)]
+pub struct PlainDateTime<C = Calendar>(i128, C);
 impl PlainDateTime {
     pub fn new(fields: IsoDateTime) -> Result<Self, Error> {
         Self::from_epoch_nanoseconds(fields.to_epoch_nanoseconds()?)
     }
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
         IsoDateTime::from_epoch_nanoseconds(value)?;
-        Ok(Self(value))
+        Ok(Self(value, Calendar::Iso8601))
+    }
+}
+impl<C: CalendarProvider> PlainDateTime<C> {
+    pub fn from_epoch_nanoseconds_in(value: i128, calendar: C) -> Result<Self, Error> {
+        IsoDateTime::from_epoch_nanoseconds(value)?;
+        calendar
+            .date(value.div_euclid(NANOSECONDS_PER_DAY) as i64)
+            .map_err(error)?;
+        Ok(Self(value, calendar))
+    }
+    pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
+        let fields = crate::parse::plain_date_time_fields(value)?;
+        crate::parse::check_calendar(value, calendar.id())?;
+        Self::from_epoch_nanoseconds_in(fields.to_epoch_nanoseconds()?, calendar)
+    }
+    pub const fn calendar(self) -> C {
+        self.1
+    }
+    pub fn calendar_id(self) -> &'static str {
+        self.1.id()
+    }
+    pub fn equals<D: CalendarProvider>(self, other: PlainDateTime<D>) -> bool {
+        self.0 == other.0 && self.calendar_id() == other.calendar_id()
+    }
+    pub fn compare<D: CalendarProvider>(self, other: PlainDateTime<D>) -> core::cmp::Ordering {
+        self.0.cmp(&other.0)
+    }
+    pub fn with_calendar<D: CalendarProvider>(
+        self,
+        calendar: D,
+    ) -> Result<PlainDateTime<D>, Error> {
+        PlainDateTime::from_epoch_nanoseconds_in(self.0, calendar)
+    }
+    pub fn calendar_fields(self) -> Result<crate::calendar::Date, Error> {
+        self.date().calendar_fields()
     }
     pub const fn epoch_nanoseconds(self) -> i128 {
         self.0
@@ -130,8 +262,8 @@ impl PlainDateTime {
     pub fn fields(self) -> IsoDateTime {
         IsoDateTime::from_epoch_nanoseconds(self.0).unwrap()
     }
-    pub fn date(self) -> PlainDate {
-        PlainDate(self.0.div_euclid(NANOSECONDS_PER_DAY) as i64)
+    pub fn date(self) -> PlainDate<C> {
+        PlainDate(self.0.div_euclid(NANOSECONDS_PER_DAY) as i64, self.1)
     }
     pub fn time(self) -> PlainTime {
         PlainTime::from_nanoseconds(self.0.rem_euclid(NANOSECONDS_PER_DAY)).unwrap()
@@ -157,12 +289,18 @@ impl PlainDateTime {
     }
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
         let rounded = self.time().rounded_nanoseconds(unit, increment, mode)?;
-        Self::from_epoch_nanoseconds(i128::from(self.date().0) * NANOSECONDS_PER_DAY + rounded)
+        Self::from_epoch_nanoseconds_in(
+            i128::from(self.date().0) * NANOSECONDS_PER_DAY + rounded,
+            self.1,
+        )
     }
     pub fn round_day(self, mode: RoundingMode) -> Result<Self, Error> {
         let rounded =
             crate::rounding::round_instant(self.time().nanoseconds(), NANOSECONDS_PER_DAY, mode);
-        Self::from_epoch_nanoseconds(i128::from(self.date().0) * NANOSECONDS_PER_DAY + rounded)
+        Self::from_epoch_nanoseconds_in(
+            i128::from(self.date().0) * NANOSECONDS_PER_DAY + rounded,
+            self.1,
+        )
     }
     pub fn until(
         self,
@@ -204,7 +342,7 @@ impl PlainDateTime {
         self,
         precision: Precision,
         mode: RoundingMode,
-    ) -> Result<FormattedDateTime, Error> {
+    ) -> Result<FormattedDateTime<C>, Error> {
         let quantum = match precision {
             Precision::Auto => 1,
             Precision::Minute => 60_000_000_000,
@@ -214,7 +352,7 @@ impl PlainDateTime {
         let value = i128::from(self.date().0) * NANOSECONDS_PER_DAY
             + crate::rounding::round_instant(self.time().nanoseconds(), quantum, mode);
         Ok(FormattedDateTime {
-            value: Self::from_epoch_nanoseconds(value)?,
+            value: Self::from_epoch_nanoseconds_in(value, self.1)?,
             precision,
         })
     }
@@ -222,30 +360,57 @@ impl PlainDateTime {
 impl FromStr for PlainDateTime {
     type Err = Error;
     fn from_str(value: &str) -> Result<Self, Error> {
-        Self::new(crate::parse::plain_date_time_fields(value)?)
+        Self::new(crate::parse::plain_date_time_fields(value)?)?
+            .with_calendar(crate::parse::arithmetic_calendar(value)?)
     }
 }
-impl fmt::Display for PlainDateTime {
+impl<C: CalendarProvider> fmt::Display for PlainDateTime<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(Precision::Auto, RoundingMode::Trunc)
             .map_err(|_| fmt::Error)?
             .fmt(f)
     }
 }
-pub struct FormattedDateTime {
-    value: PlainDateTime,
+pub struct FormattedDateTime<C = Calendar> {
+    value: PlainDateTime<C>,
     precision: Precision,
 }
-impl fmt::Display for FormattedDateTime {
+impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write_date(f, self.value.date().fields())?;
         write!(
             f,
-            "{}T{}",
-            self.value.date(),
+            "T{}",
             self.value
                 .time()
                 .format(self.precision, RoundingMode::Trunc)
                 .map_err(|_| fmt::Error)?
-        )
+        )?;
+        write_calendar(f, self.value.calendar_id())
     }
 }
+
+macro_rules! date_order {
+    ($type:ident) => {
+        impl<C: CalendarProvider> PartialEq for $type<C> {
+            fn eq(&self, other: &Self) -> bool {
+                self.0 == other.0 && self.calendar_id() == other.calendar_id()
+            }
+        }
+        impl<C: CalendarProvider> Eq for $type<C> {}
+        impl<C: CalendarProvider> PartialOrd for $type<C> {
+            fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+                Some(self.cmp(other))
+            }
+        }
+        impl<C: CalendarProvider> Ord for $type<C> {
+            fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+                self.0
+                    .cmp(&other.0)
+                    .then_with(|| self.calendar_id().cmp(other.calendar_id()))
+            }
+        }
+    };
+}
+date_order!(PlainDate);
+date_order!(PlainDateTime);

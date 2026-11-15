@@ -32,6 +32,7 @@ rust_library(
     name = "temporal",
     srcs = [
         "calendar_difference.rs",
+        "calendar_provider.rs",
         "date.rs",
         "duration.rs",
         "format.rs",
@@ -55,6 +56,31 @@ rust_library(
     edition = "2024",
     visibility = ["//visibility:public"],
     deps = ["//crates/intl_datetimeformat_calendars:calendar_core"],
+)
+
+formatjs_rust_test(
+    name = "public_calendar_test",
+    size = "small",
+    srcs = ["calendar.test.rs"],
+    compile_data = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+        "//crates/intl_datetimeformat_calendars:calendar-data/chinese.json",
+        "//crates/intl_datetimeformat_calendars:calendar-data/dangi.json",
+        "//crates/intl_datetimeformat_calendars:calendar-data/islamic-umalqura.json",
+    ],
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+        "FORMATJS_TABLE_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+        "FORMATJS_CALENDAR_CHINESE": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/chinese.json)",
+        "FORMATJS_CALENDAR_DANGI": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/dangi.json)",
+        "FORMATJS_CALENDAR_ISLAMIC_UMALQURA": "$(execpath //crates/intl_datetimeformat_calendars:calendar-data/islamic-umalqura.json)",
+    },
+    deps = [
+        ":temporal",
+        "@crates//:serde_json",
+    ],
 )
 
 formatjs_rust_test(

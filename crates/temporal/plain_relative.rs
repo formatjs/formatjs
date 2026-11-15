@@ -1,27 +1,31 @@
 use crate::calendar_difference::{RelativeAnchor, difference};
 use crate::{
-    DateTimeUnit, Duration, Error, MAX_DURATION_NANOSECONDS, NANOSECONDS_PER_DAY, Overflow,
-    PlainDate, PlainDateTime, RoundingMode,
+    CalendarProvider, DateTimeUnit, Duration, Error, MAX_DURATION_NANOSECONDS, NANOSECONDS_PER_DAY,
+    Overflow, PlainDate, PlainDateTime, RoundingMode,
 };
 
-struct PlainAnchor {
-    date: PlainDate,
+struct PlainAnchor<C> {
+    date: PlainDate<C>,
     clock: i128,
 }
-impl From<PlainDate> for PlainAnchor {
-    fn from(date: PlainDate) -> Self {
+impl<C: CalendarProvider> From<PlainDate<C>> for PlainAnchor<C> {
+    fn from(date: PlainDate<C>) -> Self {
         Self { date, clock: 0 }
     }
 }
-impl From<PlainDateTime> for PlainAnchor {
-    fn from(value: PlainDateTime) -> Self {
+impl<C: CalendarProvider> From<PlainDateTime<C>> for PlainAnchor<C> {
+    fn from(value: PlainDateTime<C>) -> Self {
         Self {
             date: value.date(),
             clock: value.time().nanoseconds(),
         }
     }
 }
-impl RelativeAnchor for PlainAnchor {
+impl<C: CalendarProvider> RelativeAnchor for PlainAnchor<C> {
+    type Calendar = C;
+    fn calendar(&self) -> C {
+        self.date.calendar()
+    }
     const ZONED: bool = false;
     fn origin(&self) -> i128 {
         i128::from(self.date.epoch_day()) * NANOSECONDS_PER_DAY + self.clock
@@ -48,15 +52,18 @@ impl RelativeAnchor for PlainAnchor {
     }
 }
 
-pub(crate) fn date_time_difference(
-    start: PlainDateTime,
-    end: PlainDateTime,
+pub(crate) fn date_time_difference<C: CalendarProvider>(
+    start: PlainDateTime<C>,
+    end: PlainDateTime<C>,
     largest: DateTimeUnit,
     smallest: DateTimeUnit,
     increment: u32,
     mode: RoundingMode,
     since: bool,
 ) -> Result<Duration, Error> {
+    if start.calendar_id() != end.calendar_id() {
+        return Err(Error::InvalidDateTime);
+    }
     difference(
         &PlainAnchor::from(start),
         end.epoch_nanoseconds(),
@@ -67,7 +74,7 @@ pub(crate) fn date_time_difference(
         since,
     )
 }
-impl PlainDate {
+impl<C: CalendarProvider> PlainDate<C> {
     pub fn until(
         self,
         other: Self,
@@ -97,6 +104,9 @@ impl PlainDate {
         mode: RoundingMode,
         since: bool,
     ) -> Result<Duration, Error> {
+        if self.calendar_id() != other.calendar_id() {
+            return Err(Error::InvalidDateTime);
+        }
         if smallest > DateTimeUnit::Day {
             return Err(Error::InvalidRoundingOptions);
         }

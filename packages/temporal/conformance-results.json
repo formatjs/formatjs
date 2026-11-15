@@ -673,7 +673,7 @@
     "exclusions": []
   },
   "plainRelative": {
-    "calendar": "iso8601 in Rust; existing TS ISO/Hebrew engines retained. Remaining calendars required.",
+    "calendar": "All 16 calendars in native Rust PlainDate/PlainDateTime/ZonedDateTime through sealed arithmetic/borrowed-table providers. Short dates remain ISO; native JS bindings pending.",
     "oracle": "ICU4J 79.1 proleptic Gregorian Calendar.add and BigDecimal rounding/totals; eight anchors including BCE/year zero, leap/month ends and years -270000/+275000.",
     "engines": [
       "Node",
@@ -715,7 +715,7 @@
       "islamic-tbla",
       "persian"
     ],
-    "scope": "13 shared numeric arithmetic engines and public TS date/date-time/short-date/zoned integration. Three borrowed Rust / owned TS table engines are recorded separately. Native public date classes remain ISO.",
+    "scope": "13 shared numeric engines and public TS date/date-time/short-date/zoned integration. Native public plain date/date-time and zoned classes now use these providers; table providers are recorded separately. Native short dates remain ISO.",
     "icuFields": 34366,
     "icuAdditions": 32352,
     "icuRangeRejections": 176,
@@ -786,7 +786,7 @@
   "tableCalendars": {
     "calendars": ["chinese", "dangi", "islamic-umalqura"],
     "publicTsEngines": ["Node", "Hermes source", "Hermes optimized bytecode"],
-    "nativeRust": "Allocation-free validated borrowed packs; shared arithmetic trait. Public native date classes remain ISO.",
+    "nativeRust": "Allocation-free validated borrowed packs; shared arithmetic trait. Public native PlainDate/PlainDateTime/ZonedDateTime accept table providers; native short dates remain ISO.",
     "source": "Pinned ICU4X generated calendar packs, now indexed by day and month checkpoints every 64 years. No runtime Intl lookup.",
     "sharedNumericFields": 15932,
     "sharedNumericAdditions": 6720,
@@ -877,7 +877,7 @@
         "intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js": 2,
         "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js": 2
       },
-      "note": "Unfiltered Node/Hermes source/bytecode runs. The enumeration failure exposed aliases in supportedValuesOf candidates; shared IANA/CLDR primary generation now fixes that file, checked by all three strict gates. Refreshed full reports pending; remaining raw data-version diagnostics retained."
+      "note": "Historical unfiltered Node/Hermes source/bytecode runs. Shared IANA/CLDR primary generation fixes canonical-not-equal.js; fresh fullOwnedIntl reports confirm the remaining four data-version diagnostics."
     },
     "legacyNativeIntl": {
       "engine": "Node",
@@ -901,9 +901,56 @@
     ],
     "pending": [
       "Native Intl brand/style/extended-range integration",
-      "Native Rust calendar-aware public date classes",
+      "Native Rust calendar-aware short-date classes",
+      "Native Rust timezone registry and zoned-string facade",
       "Native Hermes Temporal bindings",
       "Complete WASM facade/data and matched full-backend measurements"
-    ]
+    ],
+    "fullOwnedIntl": {
+      "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+      "executionsPerMode": 4080,
+      "passesPerMode": 4076,
+      "failuresPerMode": 4,
+      "failuresByFile": {
+        "intl402/Temporal/ZonedDateTime/links.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js": 2
+      },
+      "note": "Fresh unfiltered reports after primary enumeration fix. Only pinned IANA primary-identity and CLDR49 zero-offset assumptions differ. No accepted implementation-failure baseline."
+    }
+  },
+  "nativeCalendarFacades": {
+    "types": ["PlainDate", "PlainDateTime", "ZonedDateTime"],
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian",
+      "chinese",
+      "dangi",
+      "islamic-umalqura"
+    ],
+    "oracleRows": {
+      "fields": 50298,
+      "additions": 39072,
+      "differences": 39072,
+      "relativeTotalWindows": 6656,
+      "rangeRejections": 176
+    },
+    "controls": "ICU4J 79.1 arithmetic and mixed ICU/HKO/KASI table fixtures. Public getters, typed field reconstruction, addition, comparison, differences, relative totals and ceil/floor/trunc rounding. No oracle rows excluded.",
+    "utcZonedScope": "Requires representable UTC Instants. Separate +/-12-hour fixed-zone controls cover both extended plain-date limits across all 16 providers.",
+    "calendarIdentity": "Differences reject mismatches for all units. compare orders ISO coordinates; equals also checks calendar ID. Representation may differ between arithmetic and CalendarRef providers.",
+    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned string/registry facade and short-date calendars remain pending.",
+    "implementation": "Sealed copyable CalendarProvider; CalendarRef unifies 13 arithmetic and three borrowed table engines. No formatter, runtime ICU or allocation dependency. Existing fields() retains ISO coordinates; calendar_fields() supplies calendar values.",
+    "test262": "Native numerical/oracle coverage only. Native Hermes Test262 backend not installed yet.",
+    "exclusions": []
   }
 }

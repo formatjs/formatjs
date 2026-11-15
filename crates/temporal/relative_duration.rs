@@ -1,7 +1,9 @@
 use crate::calendar_difference::{RelativeAnchor, difference, validate_options};
-use crate::{Duration, Error, Overflow, RoundingMode, TimeZone, ZonedDateTime, ZonedUnit};
+use crate::{
+    CalendarProvider, Duration, Error, Overflow, RoundingMode, TimeZone, ZonedDateTime, ZonedUnit,
+};
 
-impl<Z: TimeZone + Clone + PartialEq> ZonedDateTime<Z> {
+impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     pub fn total_duration(&self, duration: Duration, unit: ZonedUnit) -> Result<f64, Error> {
         if unit == ZonedUnit::Day {
             self.validate_duration_day(duration)?;

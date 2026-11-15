@@ -1,6 +1,6 @@
 use crate::{
-    Duration, Error, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, RoundingMode, TimeUnit,
-    round_duration_nanoseconds,
+    CalendarProvider, Duration, Error, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, RoundingMode,
+    TimeUnit, round_duration_nanoseconds,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
@@ -61,6 +61,8 @@ impl From<TimeUnit> for DateTimeUnit {
     }
 }
 pub(crate) trait RelativeAnchor {
+    type Calendar: CalendarProvider;
+    fn calendar(&self) -> Self::Calendar;
     const ZONED: bool;
     fn origin(&self) -> i128;
     fn date_at(&self, value: i128) -> Result<i64, Error>;
@@ -72,15 +74,21 @@ pub(crate) trait RelativeAnchor {
 fn endpoint<A: RelativeAnchor>(start: &A, fields: [i128; 10]) -> Result<i128, Error> {
     start.endpoint(fields)
 }
-fn date_until(start: i64, end: i64, largest: DateTimeUnit) -> Result<[i128; 10], Error> {
-    use crate::calendar::{Calendar, DateUnit};
+fn date_until<A: RelativeAnchor>(
+    anchor: &A,
+    start: i64,
+    end: i64,
+    largest: DateTimeUnit,
+) -> Result<[i128; 10], Error> {
+    use crate::calendar::DateUnit;
     let unit = match largest {
         DateTimeUnit::Year => DateUnit::Year,
         DateTimeUnit::Month => DateUnit::Month,
         DateTimeUnit::Week => DateUnit::Week,
         _ => DateUnit::Day,
     };
-    let value = Calendar::Iso8601
+    let value = anchor
+        .calendar()
         .until_raw(start, end, unit)
         .map_err(|_| Error::OutOfRange)?;
     Ok([
@@ -119,7 +127,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             day -= sign as i64;
             remainder += sign * NANOSECONDS_PER_DAY;
         }
-        let mut fields = date_until(begin, day, largest)?;
+        let mut fields = date_until(start, begin, day, largest)?;
         fields[4..].copy_from_slice(
             &Duration::from_time_nanoseconds(remainder, TimeUnit::Hour)?.fields()[4..],
         );
@@ -132,7 +140,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
     if i128::from(day - begin) * sign < 0 {
         day = begin;
     }
-    let mut fields = date_until(begin, day, largest)?;
+    let mut fields = date_until(start, begin, day, largest)?;
     let mut anchor;
     loop {
         anchor = match endpoint(start, fields) {
@@ -151,7 +159,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             anchor = origin;
             break;
         }
-        fields = date_until(begin, day, largest)?;
+        fields = date_until(start, begin, day, largest)?;
     }
     let time = Duration::from_time_nanoseconds(end - anchor, TimeUnit::Hour)?.fields();
     fields[4..].copy_from_slice(&time[4..]);
