@@ -27,11 +27,11 @@ bazel run -c opt //benchmarks/temporal:wasm_benchmark
 
 Independent ICU4J controls cover 25,269 Gregorian conversions, 2,349 Instant
 rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock rounds,
-840 date-arithmetic cases and 2,028 short-date cases. Tests decode the owned IANA
-pack to verify real providers against 13,160 offset/local samples, 1,340 future
-gap/fold controls and 10,528 strict transition queries. Zoned difference and
+840 date-arithmetic cases and 2,028 ISO short-date cases. Tests use the production
+IANA registry for 17,640 offset/local samples, 1,900 future gap/fold controls and
+14,058 strict transition query instants. Zoned difference and
 relative Duration tests share 19,440 calendar-span rounds, including 6,480 exact
-relative totals. Relative comparisons reuse the 1,340 future-transition controls.
+relative totals. Relative comparisons reuse the same future-transition controls.
 Separate cases cover range edges, adjacent gaps and recurring leap-only rules.
 
 The measured WASM ABI covers matched Instant/Duration primitives, excluding
@@ -42,7 +42,7 @@ and [completion plan](../../knowledge-base/015-temporal.md).
 
 `Now<SystemClock>` accepts host epoch nanoseconds, clamps Instant bounds and
 converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
-plain date/time, date and time views. Injected clock tests reuse all 13,160
+plain date/time, date and time views. Injected clock tests reuse all 17,640
 independent ICU timezone samples, including sub-millisecond nanoseconds. This
 host boundary does not install a system clock or discover a system zone itself.
 

@@ -622,7 +622,8 @@ lookup; `NamedTimeZone<Z>` adds primary identity to an existing provider. The
 build-time generator consumes `@formatjs_generated/tz`, without adding Rust runtime
 dependencies. Regenerate with `bazel run -c opt //crates/temporal:identifiers`.
 Independent ICU controls verify all 597 names and 178,503 identity pairs using
-real transition providers. Production transition-data loading remains pending.
+real transition providers. Production lookup now uses caller-owned records or
+the optional Bazel-compiled IANA pack.
 
 `calendar_difference.rs` owns shared calendar-unit anchors and rounding.
 `plain_relative.rs` supplies calendar-aware PlainDate relative Duration adapters and plain

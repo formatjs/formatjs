@@ -151,7 +151,7 @@ Primary mappings combine pinned IANA Zone records, zone.tab country IDs and CLDR
 preferred aliases. Raw Link targets do not determine identity. All 597 available
 IDs and 178,503 identity pairs match independent ICU4J expectations in TS and Rust.
 Rust exposes allocation-free identifier lookup and NamedTimeZone providers;
-production registry/data installation remains pending.
+production IANA registry lookup is available; native Hermes installation remains pending.
 
 Independent plain-relative ICU controls now run on Node, Hermes source/bytecode
 and native Rust: 51,840 rounds, 17,280 totals, 20,736 date differences and 4,224
