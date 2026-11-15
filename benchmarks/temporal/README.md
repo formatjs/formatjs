@@ -27,8 +27,8 @@ disambiguation. `zones.ts` decodes only the requested canonical zone through the
 shared timezone unpacker. No host Intl timezone lookup.
 
 The Instant facade supplies the supported Instant operations; locale formatting remains incomplete; Duration now supplies the arithmetic foundation. `calendar.ts` separately supplies numeric
-ISO/Hebrew arithmetic. Other optional TS calendars still use temporal-polyfill;
-they cannot yet serve as an independent replacement.
+13-calendar arithmetic. Public TS classes now use 13 owned arithmetic calendar engines. Chinese, Dangi
+and Umm al-Qura remain unimplemented.
 Gap resolution walks indexed transitions. Offset bounds limit the search region;
 multiple nearby gaps need no isolation assumption.
 No full Temporal conformance claim.
@@ -462,16 +462,16 @@ The earlier matched pure TS/WASM primitive profile retains its separate scope.
 bazel run -c opt //benchmarks/temporal:size_benchmark
 ```
 
-[package-size-results.json](package-size-results.json) measures the current shared-calendar-kernel layer separately from earlier throughput samples. The first
+[package-size-results.json](package-size-results.json) measures the current public-calendar layer separately from earlier throughput samples. The first
 profile bundles each entry standalone. All full entries include owned IANA data;
 detection does not. Reference uses host Intl and supports more calendars/locale
 behavior. These alternatives are not additive and do not establish full equivalence.
 
 | Standalone bundle       | Minified bytes | Gzip bytes |
 | ----------------------- | -------------: | ---------: |
-| instant-code.js         |        446,549 |     86,815 |
-| polyfill-code.js        |        447,206 |     86,974 |
-| polyfill-force-code.js  |        447,208 |     86,976 |
+| instant-code.js         |        448,594 |     87,709 |
+| polyfill-code.js        |        449,251 |     87,864 |
+| polyfill-force-code.js  |        449,253 |     87,866 |
 | should-polyfill-code.js |            696 |        361 |
 | reference-bundle.js     |         56,696 |     19,393 |
 
@@ -482,7 +482,7 @@ A consumer bundler may compress/deduplicate the combined graph differently.
 
 | Published module   | Minified bytes | Gzip bytes |
 | ------------------ | -------------: | ---------: |
-| index.js           |        446,434 |     86,744 |
+| index.js           |        448,479 |     87,635 |
 | polyfill.js        |          1,058 |        485 |
 | polyfill-force.js  |          1,060 |        486 |
 | should-polyfill.js |            587 |        302 |
@@ -492,7 +492,7 @@ plain endpoint validation adds another 17 bytes. Shared calendar math adds 529 b
 DateTimeFormat locale files do not gain this data.
 
 The current report also refreshes the matched data-free primitive sizes: TS
-3,757 gzip bytes; Rust WASM 19,561 plus 463 bytes of JS bridge, totaling 20,024.
+3,757 gzip bytes; Rust WASM 19,557 plus 463 bytes of JS bridge, totaling 20,020.
 WASM plus bridge is 5.33 times the matched TS bundle. The earlier timed WASM run
 above remains historical; current matched primitive measurements are recorded below.
 These primitives exclude the full facade and calendar/timezone data. Complete
@@ -541,8 +541,8 @@ Pinned Hermes still has no WebAssembly, so these timings cover Node only.
 [calendar-kernel-results.json](calendar-kernel-results.json) refreshes all 23
 matched facade workloads and the nested TS/WASM/reference primitive profile.
 Runs execute sequentially without competing Bazel tests. Earlier plain-relative
-results remain historical. Numeric calendar coverage is now 13 engines; public
-TS classes still support ISO/Gregorian/Hebrew, native date classes remain ISO.
+results remain historical. This earlier numeric-kernel layer covers 13 engines; its public
+TS classes supported ISO/Gregorian/Hebrew, native date classes ISO.
 
 Relative month totals: TS 11,580 ns/call, reference 8,700. Relative month rounding:
 TS 17,814 ns/call, reference 33,686. These include parsing and API coercion.
@@ -563,3 +563,34 @@ Current ordinary-input median ns/call, including WASM UTF-8 transfers:
 | Instant parse/format UTC                     | 1,686 |           649 |             3,399 |
 | Duration parse/format                        | 2,329 |           815 |            51,455 |
 | Duration parse/total microseconds            | 1,937 |           509 |             2,335 |
+
+## Public arithmetic calendars
+
+[public-calendar-results.json](public-calendar-results.json) records sequential
+23-workload facade and matched TS/WASM/reference primitive measurements after
+public integration of 13 arithmetic calendars. Existing reference equality checks
+run before timing. This workload set does not benchmark every calendar.
+Native public date classes remain ISO; complete WASM facade/data and native Hermes
+bindings remain pending. Earlier reports above remain historical.
+
+Standalone namespace: 87,709 gzip bytes, including owned
+IANA data; forced temporal-polyfill: 19,393, using host Intl.
+Matched data-free TS primitives: 3,757; WASM: 19,557 plus 463 JS bridge,
+20,020 total (5.33 times TS). Complete implementations remain unequal.
+No DateTimeFormat locale data added.
+
+Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+
+| Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
+| -------------------------------------------- | ----: | ------------: | ----------------: |
+| Instant parse/epoch string                   |   984 |           365 |             1,777 |
+| Instant parse/round microsecond/epoch string | 1,168 |           394 |             2,557 |
+| Instant parse/format UTC                     | 1,726 |           656 |             3,542 |
+| Duration parse/format                        | 2,455 |           852 |            51,689 |
+| Duration parse/total microseconds            | 1,932 |           526 |             2,405 |
+
+Facade relative-month measurements, including parsing and coercion:
+
+- Duration parse/total months relative to date: TS 10,820 ns; reference 8,761 ns.
+- Duration parse/round months relative to date/toJSON: TS 12,894 ns; reference 34,131 ns.
+- Duration compare day versus 24 hours relative to zone: TS 15,941 ns; reference 3,696 ns.

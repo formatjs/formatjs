@@ -32,7 +32,10 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 
 `@formatjs/temporal` is currently private. It uses `ecma262-abstract`,
 `ecma402-abstract/DateTimeFormat`, shared types and generated timezone data.
-It does not depend on formatter packages. See [Temporal implementation](015-temporal.md).
+It does not depend on formatter packages. Date/short-date/zoned facades share
+calendar field preparation and merge rules. Plain/zoned rounding uses private
+anchor callbacks; the numeric kernel owns 13-calendar conversion/add/difference
+math. See [Temporal implementation](015-temporal.md).
 
 **Intl Polyfills** (all depend on `ecma402-abstract` + `intl-localematcher`):
 

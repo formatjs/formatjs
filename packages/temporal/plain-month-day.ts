@@ -1,12 +1,10 @@
 import {
   getMonthDaySlot,
   setMonthDaySlot,
-  getDateSlot,
-  getDateTimeSlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
-  calendarId,
+  calendarFromObject,
   constructorCalendar,
   dateFields,
   dateProperty,
@@ -72,12 +70,8 @@ export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {
     return existing
   }
   if (object(item)) {
-    const date = getDateSlot(item),
-      datetime = getDateTimeSlot(item)
-    const calendar = calendarId(
-      (date ?? datetime) ? (date ?? datetime)!.calendar : item.calendar
-    )
-    const fields = readDateFields(item, false),
+    const calendar = calendarFromObject(item)
+    const fields = readDateFields(item, false, false, 'date', calendar),
       overflow = overflowOption(options)
     return monthDayFields(calendar, fields, overflow)
   }
@@ -104,11 +98,17 @@ class PlainMonthDayValue {
   }
   with(item: unknown, options: unknown = undefined): PlainMonthDayObject {
     const slot = read(this),
-      partial = readDateFields(partialObject(item), false, true)
+      partial = readDateFields(
+        partialObject(item),
+        false,
+        true,
+        'date',
+        slot.calendar
+      )
     return createPlainMonthDay(
       monthDayFields(
         slot.calendar,
-        mergeShortFields(slot, partial),
+        mergeShortFields(slot, partial, 'month-day'),
         overflowOption(options)
       )
     )
@@ -121,14 +121,12 @@ class PlainMonthDayValue {
   toPlainDate(item: unknown): PlainDateObject {
     const slot = read(this)
     if (!object(item)) throw new TypeError('Expected date fields')
-    const raw = item.year
-    if (raw === undefined) throw new TypeError('Year required')
-    const year = integer(raw),
+    const prepared = readDateFields(item, false, false, 'year', slot.calendar),
       fields = dateFields(slot, true)
     return createPlainDate(
       dayFromFields(
         slot.calendar,
-        {year, monthCode: fields.monthCode, day: fields.day},
+        {monthCode: fields.monthCode, day: fields.day, ...prepared},
         'constrain'
       ),
       slot.calendar

@@ -1,7 +1,7 @@
 {
   "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
   "nativeFallback": false,
-  "note": "Whole native Temporal namespace replaced in every realm. Now passes its complete corpus; focused class slices are strict. Full class diagnostics retain locale failures. Remaining calendar and integration behavior needs separate coverage.",
+  "note": "Whole native Temporal namespace replaced in every realm. Strict built-in and arithmetic-calendar slices are gates. Full built-in class diagnostics below are historical; refreshed full Intl diagnostics remain unfiltered and failing. Implementation gaps remain required work.",
   "selected": {
     "executions": 346,
     "passes": 346,
@@ -480,48 +480,48 @@
     "files": 2040,
     "node": {
       "executions": 4080,
-      "passes": 794,
-      "failures": 3286,
+      "passes": 3118,
+      "failures": 962,
       "failuresByAPI": {
-        "Duration": 14,
+        "Duration": 8,
         "Instant": 26,
-        "PlainDate": 862,
-        "PlainDateTime": 836,
-        "PlainMonthDay": 104,
+        "PlainDate": 226,
+        "PlainDateTime": 222,
+        "PlainMonthDay": 56,
         "PlainTime": 22,
-        "PlainYearMonth": 556,
-        "ZonedDateTime": 866
+        "PlainYearMonth": 160,
+        "ZonedDateTime": 242
       }
     },
     "hermes": {
       "source": {
         "executions": 4080,
-        "passes": 772,
-        "failures": 3308,
+        "passes": 3096,
+        "failures": 984,
         "failuresByAPI": {
-          "Duration": 20,
+          "Duration": 14,
           "Instant": 26,
-          "PlainDate": 866,
-          "PlainDateTime": 840,
-          "PlainMonthDay": 106,
+          "PlainDate": 230,
+          "PlainDateTime": 226,
+          "PlainMonthDay": 58,
           "PlainTime": 22,
-          "PlainYearMonth": 558,
-          "ZonedDateTime": 870
+          "PlainYearMonth": 162,
+          "ZonedDateTime": 246
         }
       },
       "optimizedBytecode": {
         "executions": 4080,
-        "passes": 772,
-        "failures": 3308,
+        "passes": 3096,
+        "failures": 984,
         "failuresByAPI": {
-          "Duration": 20,
+          "Duration": 14,
           "Instant": 26,
-          "PlainDate": 866,
-          "PlainDateTime": 840,
-          "PlainMonthDay": 106,
+          "PlainDate": 230,
+          "PlainDateTime": 226,
+          "PlainMonthDay": 58,
           "PlainTime": 22,
-          "PlainYearMonth": 558,
-          "ZonedDateTime": 870
+          "PlainYearMonth": 162,
+          "ZonedDateTime": 246
         }
       }
     },
@@ -660,7 +660,7 @@
         "hermesPass": false
       }
     ],
-    "note": "Manual failing diagnostics, not accepted failure baselines. Bare Hermes lacks DateTimeFormat and enumerates zero timezones; its distinct-primary-pair case remains vacuous. Independent ICU checks cover all 597 identities in both languages. Calendar and locale failures remain required work."
+    "note": "Manual failing diagnostics, not accepted failure baselines. Refreshed after public 13-calendar integration. Bare Hermes lacks DateTimeFormat and enumerates zero timezones; its distinct-primary-pair case remains vacuous. Independent ICU checks cover all 597 identities in both languages. Table calendars, locale integration, offset precision and zoned boundary failures remain required work."
   },
   "timezoneIdentity": {
     "availableIdentifiers": 597,
@@ -714,7 +714,7 @@
       "islamic-tbla",
       "persian"
     ],
-    "scope": "Numeric kernels only. Public TS date types remain ISO/Gregorian/Hebrew; native date types remain ISO. Table calendars and all-calendar object integration pending.",
+    "scope": "13 shared numeric engines and public TS date/date-time/short-date/zoned integration. Native date classes remain ISO. Chinese/Dangi/Umm al-Qura engines and native all-calendar integration pending.",
     "icuFields": 34366,
     "icuAdditions": 32352,
     "icuRangeRejections": 176,
@@ -728,8 +728,58 @@
       "hebrew": "Epoch days -1000000 through 1000000. Full-range proleptic invariants checked separately.",
       "persian": "Arithmetic years 1206 through 1498. Existing 33-year approximation outside official range.",
       "lengthsAndClamping": "Derived from ICU forward fields and searched year/month boundaries; avoids negative Coptic/Ethiopic month-length and reverse Indian-setting defects.",
-      "japanese": "Era names normalized to Temporal era/monthCode rules; Gregorian eras before 1873."
+      "japanese": "Era names normalized to Temporal era/monthCode rules; Gregorian eras before 1873.",
+      "differences": "Independent forward ICU fields and boundary walks with unregulated month/day comparisons. Does not assume constrained addition and differences are inverses."
     },
-    "exclusions": []
+    "exclusions": [],
+    "icuDifferences": 32352
+  },
+  "publicCalendars": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian"
+    ],
+    "strictTest262PerMode": {
+      "executions": 2344,
+      "passes": 2344,
+      "failures": 0
+    },
+    "strictScope": "Named non-ISO arithmetic-calendar construction, with/add/subtract, difference, metadata and serialization families. ISO remains covered by built-in gates. Complete Intl diagnostics stay unfiltered.",
+    "icuFields": 34366,
+    "icuAdditions": 32352,
+    "icuDifferences": 32352,
+    "icuRangeRejections": 176,
+    "icuCrossClassSamples": 2021,
+    "nativeControls": {
+      "node": "26.8.1",
+      "results": [
+        "2020-01-31 until 2020-02-29 largest month: P29D",
+        "Same dates, smallest month: P1M",
+        "2020-01-31T23:30 until 2020-03-01T00:15 largest year: P29DT45M"
+      ],
+      "note": "Older hand-written native expectations corrected against pinned native runtime and specification."
+    },
+    "exclusions": [],
+    "icuTotalWindows": 5408,
+    "nativeIsoTotalWindows": 416
+  },
+  "strictGatesPerMode": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "executions": 7330,
+    "passes": 7330,
+    "failures": 0,
+    "scope": "Union of existing strict built-in class, Now, installation and named arithmetic-calendar gates. Full diagnostics remain separate; no complete conformance claim."
   }
 }

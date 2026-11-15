@@ -3,8 +3,9 @@ import {toDurationFields} from '#packages/temporal/duration.js'
 import {roundDuration, type RoundingMode} from '#packages/temporal/rounding.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {
-  calendarId,
-  readDateFields,
+  calendarFromObject,
+  dateFieldNames,
+  dateFieldValue,
   dayFromFields,
   object,
   nsPerDay,
@@ -53,22 +54,9 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
   }
   if (!object(value))
     throw new TypeError('relativeTo must be a string or object')
-  const calendar = calendarId(value.calendar),
+  const calendar = calendarFromObject(value),
     prepared = Object.create(null) as Record<string, unknown>
-  const names = [
-    'day',
-    'hour',
-    'microsecond',
-    'millisecond',
-    'minute',
-    'month',
-    'monthCode',
-    'nanosecond',
-    'offset',
-    'second',
-    'timeZone',
-    'year',
-  ]
+  const names = dateFieldNames(calendar, true, 'date', ['offset', 'timeZone'])
   for (let i = 0; i < names.length; i++) {
     const key = names[i],
       raw = value[key]
@@ -80,7 +68,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
         throw new TypeError('Offset must be a string')
       parseOffsetNanoseconds(primitive)
       prepared[key] = primitive
-    } else prepared[key] = readDateFields({[key]: raw}, true)[key]
+    } else prepared[key] = dateFieldValue(key, raw)
   }
   if (prepared.timeZone !== undefined)
     return {zoned: toZonedDateTimeSlot({...prepared, calendar})}
@@ -188,8 +176,15 @@ export function relativeTotal(
   }
   if (a === end) return count || 0
   candidate[(unit + 's') as keyof DurationFields] = count + sign
-  const b = relativeEndpoint(relative, candidate),
-    span = (b - a) * BigInt(sign)
+  let b = relativeEndpoint(relative, candidate)
+  while ((end - b) * BigInt(sign) >= 0n) {
+    count += sign
+    a = b
+    if (a === end) return count || 0
+    candidate[(unit + 's') as keyof DurationFields] = count + sign
+    b = relativeEndpoint(relative, candidate)
+  }
+  const span = (b - a) * BigInt(sign)
   return durationTotalNumber(BigInt(count) * span + end - a, span)
 }
 

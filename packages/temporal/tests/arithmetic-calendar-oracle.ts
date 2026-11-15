@@ -19,17 +19,33 @@ export function checkArithmeticCalendarOracle(
     expected: string | number,
     context: string
   ) => void
-): {fields: number; additions: number; bounds: number; calendars: number} {
+): {
+  fields: number
+  additions: number
+  bounds: number
+  differences: number
+  calendars: number
+} {
   let fields = 0,
     additions = 0,
-    bounds = 0
+    bounds = 0,
+    differences = 0
   const calendars = new Set<string>()
   for (const line of fixture.trim().split('\n')) {
     if (line.startsWith('#')) continue
     const row = line.trim().split('\t'),
       calendar = row[1] as CalendarId,
       epoch = +row[2]
+    if (row[0] === 'T') continue // Clock-relative totals use public Temporal controls.
     calendars.add(calendar)
+    if (row[0] === 'D') {
+      const difference = calendarDateUntilRaw(calendar, epoch, +row[3], row[4])
+      const units = ['years', 'months', 'weeks', 'days'] as const
+      for (let index = 0; index < units.length; index++)
+        equal(difference[units[index]] ?? 0, +row[index + 5], line)
+      differences++
+      continue
+    }
     if (row[0] === 'F') {
       const actual = calendarFromEpochDay(calendar, epoch)
       equal(actual.year, +row[3], line)
@@ -64,6 +80,12 @@ export function checkArithmeticCalendarOracle(
           line
         )
       }
+      equal(
+        epoch - calendarStartOfYear(calendar, actual.year) + 1,
+        +row[12],
+        line
+      )
+      equal(((((epoch + 3) % 7) + 7) % 7) + 1, +row[13], line)
       fields++
     } else {
       const unit = row[3],
@@ -84,11 +106,8 @@ export function checkArithmeticCalendarOracle(
       }
       const actual = addCalendarDate(calendar, start, duration, 'constrain')
       equal(calendarToEpochDay(calendar, actual, 'reject'), +row[5], line)
-      const difference = calendarDateUntilRaw(calendar, epoch, +row[5], unit)
-      for (const name of ['years', 'months', 'weeks', 'days'] as const)
-        equal(difference[name] ?? 0, name === unit + 's' ? amount : 0, line)
       additions++
     }
   }
-  return {fields, additions, bounds, calendars: calendars.size}
+  return {fields, additions, bounds, differences, calendars: calendars.size}
 }

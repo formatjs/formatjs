@@ -316,6 +316,30 @@ export function calendarFromEpochDayRaw(
     day: remaining + 1,
   }
 }
+function addYearMonth(
+  calendar: CalendarId,
+  original: CalendarDate,
+  years: number,
+  months: number,
+  overflow: Overflow
+): {year: number; month: number} {
+  let year = yearCheck(original.year + years)
+  let month: number
+  if (calendar !== 'hebrew') {
+    const count = monthsInYear(calendar, year)
+    const serial = year * count + original.month - 1 + months
+    year = yearCheck(Math.floor(serial / count))
+    month = mod(serial, count) + 1
+  } else {
+    month = monthFromCode(calendar, year, original.monthCode, overflow)
+    const serial = integer(elapsedMonths(year) + month - 1 + months)
+    year = yearCheck(Math.floor((19 * serial + 234) / 235))
+    while (elapsedMonths(year) > serial) year--
+    while (elapsedMonths(year + 1) <= serial) year++
+    month = serial - elapsedMonths(year) + 1
+  }
+  return {year, month}
+}
 export function addCalendarDateRaw(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -335,21 +359,13 @@ export function addCalendarDateRaw(
   ].map(integer)
   if (values.some(x => x < 0) && values.some(x => x > 0))
     throw new RangeError('Mixed duration signs')
-  let year = yearCheck(original.year + values[0])
-  let month: number
-  if (calendar !== 'hebrew') {
-    const count = monthsInYear(calendar, year)
-    const serial = year * count + original.month - 1 + values[1]
-    year = yearCheck(Math.floor(serial / count))
-    month = mod(serial, count) + 1
-  } else {
-    month = monthFromCode(calendar, year, original.monthCode, overflow)
-    const serial = integer(elapsedMonths(year) + month - 1 + values[1])
-    year = yearCheck(Math.floor((19 * serial + 234) / 235))
-    while (elapsedMonths(year) > serial) year--
-    while (elapsedMonths(year + 1) <= serial) year++
-    month = serial - elapsedMonths(year) + 1
-  }
+  const {year, month} = addYearMonth(
+    calendar,
+    original,
+    values[0],
+    values[1],
+    overflow
+  )
   const epoch = calendarToEpochDayRaw(
     calendar,
     {year, month, day: original.day},
@@ -402,31 +418,48 @@ export function calendarDateUntilRaw(
   const result = {years: 0, months: 0, weeks: 0, days: 0},
     sign = Math.sign(two - one)
   if (!sign) return result
-  const endpoint = (): number =>
-    calendarToEpochDayRaw(
+  // Difference prefixes compare unregulated days and month codes, not clamped dates.
+  const surpasses = (): boolean => {
+    const year = first.year + result.years
+    const codeOrder =
+      first.monthCode === last.monthCode
+        ? 0
+        : first.monthCode > last.monthCode
+          ? 1
+          : -1
+    if (sign * (year - last.year || codeOrder || first.day - last.day) > 0)
+      return true
+    const candidate = addYearMonth(
+      calendar,
+      first,
+      result.years,
+      result.months,
+      'constrain'
+    )
+    return (
+      sign *
+        (candidate.year - last.year ||
+          candidate.month - last.month ||
+          first.day - last.day) >
+      0
+    )
+  }
+  let anchor = one
+  if (largest === 'year') {
+    result.years = last.year - first.year
+    if (surpasses()) result.years -= sign
+  }
+  if (largest === 'year' || largest === 'month') {
+    const base = addYearMonth(calendar, first, result.years, 0, 'constrain')
+    result.months =
+      calendarMonthSerial(calendar, last.year, last.month) -
+      calendarMonthSerial(calendar, base.year, base.month)
+    if (surpasses()) result.months -= sign
+    anchor = calendarToEpochDayRaw(
       calendar,
       addCalendarDateRaw(calendar, first, result, 'constrain'),
       'reject'
     )
-  let anchor = one
-  if (largest === 'year') {
-    result.years = last.year - first.year
-    anchor = endpoint()
-    if ((anchor - two) * sign > 0) {
-      result.years -= sign
-      anchor = endpoint()
-    }
-  }
-  if (largest === 'year' || largest === 'month') {
-    const current = calendarFromEpochDayRaw(calendar, anchor)
-    result.months =
-      calendarMonthSerial(calendar, last.year, last.month) -
-      calendarMonthSerial(calendar, current.year, current.month)
-    anchor = endpoint()
-    if ((anchor - two) * sign > 0) {
-      result.months -= sign
-      anchor = endpoint()
-    }
   }
   result.days = two - anchor
   if (largest === 'week') {
@@ -444,9 +477,13 @@ const japaneseEras = [
 ] as const
 export function calendarEra(
   calendar: CalendarId,
-  epoch: number
+  epoch: number,
+  extended = false
 ): {era: string; eraYear: number} | undefined {
-  const {year} = calendarFromEpochDay(calendar, epoch)
+  const {year} = (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
+    calendar,
+    epoch
+  )
   switch (calendar) {
     case 'iso8601':
       return undefined

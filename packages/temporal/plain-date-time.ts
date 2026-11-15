@@ -30,12 +30,14 @@ import {
 import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   calendarId,
+  calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
   object,
   integer,
   overflowOption,
   readDateFields,
+  mergeDateFields,
   dayFromFields,
   dateFields,
   dateProperty,
@@ -145,8 +147,8 @@ export function toPlainDateTimeSlot(
     )
   }
   if (object(item)) {
-    const calendar = calendarId(item.calendar)
-    const fields = readDateFields(item, true),
+    const calendar = calendarFromObject(item)
+    const fields = readDateFields(item, true, false, 'date', calendar),
       overflow = overflowOption(options)
     const day = dayFromFields(calendar, fields, overflow),
       clock = clockNanoseconds(fields, overflow)
@@ -257,17 +259,19 @@ class PlainDateTimeValue {
   }
   with(item: unknown, options: unknown = undefined): PlainDateTimeObject {
     const slot = read(this),
-      partial = readDateFields(partialObject(item), true, true)
+      partial = readDateFields(
+        partialObject(item),
+        true,
+        true,
+        'date',
+        slot.calendar
+      )
     const current = {
       ...dateFields(dateSlot(slot)),
       ...epochNanosecondsToISO(slot.epochNanoseconds),
     }
     Object.assign(current, dateFields(dateSlot(slot)))
-    const fields: Record<string, unknown> = {...current, ...partial}
-    if (partial.month !== undefined && partial.monthCode === undefined)
-      delete fields.monthCode
-    if (partial.monthCode !== undefined && partial.month === undefined)
-      delete fields.month
+    const fields = mergeDateFields(slot.calendar, current, partial)
     const overflow = overflowOption(options)
     return createPlainDateTime(
       BigInt(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +

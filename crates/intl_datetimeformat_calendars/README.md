@@ -89,3 +89,10 @@ Lengths and clamping derive from ICU forward fields and binary-searched month/
 year boundaries. ICU's negative-year Coptic/Ethiopic month-length calculation
 and reverse Indian field setting are unsuitable controls at those extremes.
 These oracle limits do not exclude Temporal conformance tests.
+
+Difference prefixes compare unregulated days and month codes before constraining
+the final anchor. `add` and `until` are not inverses at clamped month ends.
+Independent ICU forward-field controls now include 32,352 differences as well as
+addition. The oracle compares calendar tuples before day clamping instead of
+assuming Calendar.add can be inverted. Day-of-year and weekday fields are checked
+in both languages too.

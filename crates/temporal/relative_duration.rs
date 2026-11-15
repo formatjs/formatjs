@@ -105,7 +105,16 @@ pub(crate) fn total<A: RelativeAnchor>(
         return Ok(count as f64);
     }
     fields[unit as usize] = count + sign;
-    let b = start.endpoint(fields)?;
+    let mut b = start.endpoint(fields)?;
+    while (finish - b) * sign >= 0 {
+        count += sign;
+        a = b;
+        if a == finish {
+            return Ok(count as f64);
+        }
+        fields[unit as usize] = count + sign;
+        b = start.endpoint(fields)?;
+    }
     let span = (b - a) * sign;
     Ok(crate::duration::rational_to_f64(
         count * span + finish - a,

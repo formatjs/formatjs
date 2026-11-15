@@ -13,14 +13,40 @@ fn independent_icu_arithmetic_calendars() {
     let mut fields = 0;
     let mut additions = 0;
     let mut bounds = 0;
+    let mut difference_count = 0;
     let mut differences = Vec::new();
     for line in include_str!(env!("FORMATJS_ARITHMETIC_CALENDARS"))
         .lines()
         .filter(|line| !line.starts_with('#'))
     {
         let row: Vec<&str> = line.split('\t').collect();
+        if row[0] == "T" {
+            continue;
+        } // Clock-relative totals use Temporal facade tests.
         let cal = Calendar::from_name(row[1]).unwrap();
         let epoch = row[2].parse().unwrap();
+        if row[0] == "D" {
+            let unit = match row[4] {
+                "year" => DateUnit::Year,
+                "month" => DateUnit::Month,
+                "week" => DateUnit::Week,
+                _ => DateUnit::Day,
+            };
+            let expected = DateDuration {
+                years: row[5].parse().unwrap(),
+                months: row[6].parse().unwrap(),
+                weeks: row[7].parse().unwrap(),
+                days: row[8].parse().unwrap(),
+            };
+            assert_eq!(
+                cal.until(epoch, row[3].parse().unwrap(), unit).unwrap(),
+                expected,
+                "{line}"
+            );
+            difference_count += 1;
+            continue;
+        }
+
         if row[0] == "F" {
             let actual = cal.from_epoch_day(epoch).unwrap();
             let expected = (
@@ -88,28 +114,26 @@ fn independent_icu_arithmetic_calendars() {
                     "{line}"
                 );
             }
+            assert_eq!(
+                epoch - cal.start_of_year(actual.year).unwrap() + 1,
+                row[12].parse::<i64>().unwrap(),
+                "{line}"
+            );
+            assert_eq!(
+                (epoch + 3).rem_euclid(7) + 1,
+                row[13].parse::<i64>().unwrap(),
+                "{line}"
+            );
             fields += 1;
         } else {
             let amount = row[4].parse().unwrap();
             let mut duration = DateDuration::default();
-            let unit = match row[3] {
-                "year" => {
-                    duration.years = amount;
-                    DateUnit::Year
-                }
-                "month" => {
-                    duration.months = amount;
-                    DateUnit::Month
-                }
-                "week" => {
-                    duration.weeks = amount;
-                    DateUnit::Week
-                }
-                _ => {
-                    duration.days = amount;
-                    DateUnit::Day
-                }
-            };
+            match row[3] {
+                "year" => duration.years = amount,
+                "month" => duration.months = amount,
+                "week" => duration.weeks = amount,
+                _ => duration.days = amount,
+            }
             let actual = cal.add(epoch, duration, Overflow::Constrain);
             if row[0] == "X" {
                 assert!(actual.is_err(), "{line}");
@@ -125,7 +149,6 @@ fn independent_icu_arithmetic_calendars() {
                 cal.from_epoch_day(end),
                 actual.map(|value| cal.from_epoch_day(value))
             );
-            assert_eq!(cal.until(epoch, end, unit).unwrap(), duration, "{line}");
             additions += 1;
         }
     }
@@ -133,8 +156,13 @@ fn independent_icu_arithmetic_calendars() {
         differences.is_empty(),
         "ICU field differences: {differences:?}"
     );
-    println!("{fields} ICU field samples, {additions} additions, {bounds} bounds");
-    assert_eq!((fields, additions, bounds), (34366, 32352, 176));
+    println!(
+        "{fields} ICU field samples, {additions} additions, {bounds} bounds, {difference_count} differences"
+    );
+    assert_eq!(
+        (fields, additions, bounds, difference_count),
+        (34366, 32352, 176, 32352)
+    );
 }
 #[test]
 fn proleptic_invariants_and_overflow() {

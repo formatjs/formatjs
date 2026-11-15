@@ -93,3 +93,16 @@ PlainDate/PlainDateTime/short-date/zoned types still use ISO; all-calendar objec
 integration remains pending. Independent ICU controls validate 34,366 field
 samples and 32,352 additions across all 13 engines. See
 [calendar kernel and oracle limits](../intl_datetimeformat_calendars/README.md#numeric-calendar-kernel).
+
+Calendar differences now compare unregulated month/day fields before clamping.
+Shared plain/zoned rounding preserves the selected calendar quantum, then bubbles
+only boundaries crossed by expansion. Independent ICU rounding/totals remain
+unchanged. Pinned native Node 26.8.1 controls verify that Jan 31 to Feb 29 is P29D,
+while month rounding gives P1M; older hand-written native expectations were fixed.
+The numeric kernel also checks 32,352 independent ICU-derived differences.
+Native date classes still use ISO; public TS classes now expose 13 calendars.
+
+ICU month-end controls add 5,408 year/month total windows across 13 calendars,
+checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
+windows. Total windows advance past constrained month ends before computing the
+fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.

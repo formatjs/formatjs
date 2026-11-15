@@ -16,14 +16,14 @@ value.add({hours: 24}).toString()
 ```
 
 Eight partial classes: Instant, Duration, PlainTime, PlainDate, PlainDateTime,
-PlainYearMonth, PlainMonthDay and ZonedDateTime. TS owns ISO/Hebrew arithmetic,
-Gregorian fields and IANA timezone data, including future recurring rules.
+PlainYearMonth, PlainMonthDay and ZonedDateTime. TS owns 13 arithmetic calendars
+and IANA timezone data, including future recurring rules.
 Conversions share private slots. ZonedDateTime supports construction, parsing,
 fields, offset matching, all disambiguation modes, updates, arithmetic, rounding,
 day boundaries, differences, transition queries and serialization. Calendar days follow local time; hours follow
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
-Missing: table calendar engines, public all-calendar fields/arithmetic, locale/Intl integration and native Rust bindings. No implementation gap is an allowed conformance exclusion.
+Missing: Chinese/Dangi/Umm al-Qura table engines, locale/Intl integration and native Rust bindings. No implementation gap is an allowed conformance exclusion.
 
 ## Validation
 
@@ -165,8 +165,8 @@ existing per-case limits; no additional exclusions.
 Internal numeric kernel now covers 13 arithmetic calendars, including inverse
 conversion, month codes, eras, checked addition and differences. Native formatter
 providers and Rust Temporal share the Rust counterpart without formatter/data
-runtime dependencies. Public TS types still accept ISO, Gregorian and Hebrew;
-remaining public calendar integration is pending. Chinese, Dangi and Umm al-Qura
+runtime dependencies. Public TS types now expose these calendars through constructors, property bags,
+fields, arithmetic and conversions. Chinese, Dangi and Umm al-Qura
 need their table engines. No claim of complete calendar conformance yet.
 
 Independent ICU controls add 34,366 field cases, 32,352 additions and 176 range
@@ -175,3 +175,45 @@ Hebrew uses ICU's trusted ±1000000 epoch-day range; Persian uses years 1206–1
 Other proleptic ranges have separate conversion/addition/difference invariants.
 ICU month/year boundary searches avoid negative-year length/reverse-setting bugs.
 These oracle constraints add no Test262 exclusions.
+
+## Arithmetic calendars
+
+PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime accept
+ISO, Gregorian, Buddhist, Japanese, ROC, Coptic, Ethiopic, Amete Alem, Hebrew,
+Indian, civil/tabular Islamic and Persian. `islamicc` normalizes to
+`islamic-civil`; `ethiopic-amete-alem` normalizes to `ethioaa`.
+Positional constructor fields stay ISO; property bags use their calendar.
+
+```ts
+const last = Temporal.PlainDate.from({
+  calendar: 'coptic',
+  year: 1739,
+  monthCode: 'M13',
+  day: 6,
+})
+last.add({days: 1}).monthCode // 'M01'
+```
+
+Era/eraYear pairs may replace year; inconsistent years reject. Era aliases and
+signed/regnal years follow the [era/monthCode rules](https://tc39.es/proposal-intl-era-monthcode/).
+Changing Hebrew years retains monthCode; MonthDay updates do not reuse the old
+reference year. Branded conversions use internal calendar slots. ISO bags never
+read era fields.
+
+Unrounded differences compare month codes and days before constraining dates.
+Jan 31 to Feb 29 is 29 days; rounding that difference to months gives one month.
+Constrained addition and unrounded difference are not inverses. Shared plain/
+zoned rounding retains the chosen quantum and bubbles only expanded boundaries.
+
+An additional 2,344 strict Test262 executions per mode cover named arithmetic
+calendar families. Complete Intl diagnostics retain all tests and remain failing.
+Independent controls add 32,352 differences, plus public validation of 34,366
+field cases, 32,352 additions, 176 bounds and 2,021 cross-class conversions.
+Node and Hermes source/bytecode run these controls; Rust checks the same numeric
+calendar differences. Native public date classes remain ISO; native Hermes
+bindings and complete WASM facade/data remain pending.
+
+ICU month-end controls add 5,408 year/month total windows across 13 calendars,
+checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
+windows. Total windows advance past constrained month ends before computing the
+fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.

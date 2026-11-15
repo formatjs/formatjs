@@ -35,9 +35,11 @@ import {
   dateProperty,
   datePropertyNames,
   calendarId,
+  calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
   readDateFields,
+  mergeDateFields,
   isoDay,
   epochDayOf,
   dayFromFields,
@@ -141,8 +143,8 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
     )
   }
   if (object(item)) {
-    const calendar = calendarId(item.calendar)
-    const fields = readDateFields(item, false)
+    const calendar = calendarFromObject(item)
+    const fields = readDateFields(item, false, false, 'date', calendar)
     return {
       epochDay: dayFromFields(calendar, fields, overflowOption(options)),
       calendar,
@@ -250,12 +252,18 @@ class PlainDateValue {
   }
   with(item: unknown, options: unknown = undefined): PlainDateObject {
     const slot = read(this),
-      partial = readDateFields(partialObject(item), false, true)
-    const fields: Record<string, unknown> = {...dateFields(slot), ...partial}
-    if (partial.month !== undefined && partial.monthCode === undefined)
-      delete fields.monthCode
-    if (partial.monthCode !== undefined && partial.month === undefined)
-      delete fields.month
+      partial = readDateFields(
+        partialObject(item),
+        false,
+        true,
+        'date',
+        slot.calendar
+      )
+    const fields = mergeDateFields(
+      slot.calendar,
+      {...dateFields(slot)},
+      partial
+    )
     return createPlainDate(
       dayFromFields(slot.calendar, fields, overflowOption(options)),
       slot.calendar

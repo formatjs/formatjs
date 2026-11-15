@@ -104,6 +104,15 @@ filegroup(
     )
     for name, sources, data in [
         (
+            "public_calendar_test",
+            [
+                "tests/public-calendars.test.ts",
+                "tests/public-calendar-oracle.ts",
+                "tests/public-calendar-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
+        ),
+        (
             "arithmetic_calendar_test",
             [
                 "tests/arithmetic-calendar.test.ts",
@@ -242,6 +251,41 @@ _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 _NOW_PATTERNS = [
     _TEST262_ROOT + "/test/built-ins/Temporal/Now/**/*.js",
     _TEST262_ROOT + "/test/intl402/Temporal/Now/**/*.js",
+]
+
+# Calendar arithmetic/field families; full Intl diagnostics remain unfiltered below.
+_CALENDAR_METHODS = [
+    "add",
+    "subtract",
+    "from",
+    "with",
+    "withPlainTime",
+    "until",
+    "since",
+    "toString",
+    "daysInMonth",
+    "daysInYear",
+    "inLeapYear",
+    "monthCode",
+    "monthsInYear",
+]
+
+_CALENDAR_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/{" + ",".join(_CALENDAR_METHODS) + "}/**/*-" + calendar + ".js"
+    for calendar in [
+        "buddhist",
+        "coptic",
+        "ethioaa",
+        "ethiopic",
+        "gregory",
+        "hebrew",
+        "indian",
+        "islamic-civil",
+        "islamic-tbla",
+        "japanese",
+        "persian",
+        "roc",
+    ]
 ]
 
 _INSTALLATION_PATTERNS = [
@@ -516,6 +560,7 @@ _INSTANT_PATTERNS = [
         tags = tags + ["cpu:4"],
     )
     for name, patterns, tags in [
+        ("calendars_test262", _CALENDAR_PATTERNS, []),
         ("installation_test262", _INSTALLATION_PATTERNS, []),
         (
             "intl_test262_full",
@@ -625,7 +670,7 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") else "small",
+        size = "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
         timeout = "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [
@@ -637,7 +682,7 @@ test262_harness_bin.test262_harness_binary(
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+            "Temporal.calendars" if name.startswith("calendars") else "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
         ] + patterns,
         data = [
             "instant-payload.js",
@@ -668,6 +713,8 @@ test262_harness_bin.test262_harness_binary(
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [
+        ("calendars_hermes_test262", "source", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        ("calendars_hermes_bytecode_test262", "bytecode", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
         ("installation_hermes_test262", "source", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
         ("installation_hermes_bytecode_test262", "bytecode", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
         (
@@ -961,6 +1008,46 @@ sh_test(
     ],
     data = [
         ":arithmetic_calendar_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "public-calendar-host",
+    srcs = [
+        "tests/public-calendar-host.ts",
+        "tests/public-calendar-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/public-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "public_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        ":public-calendar-host.js",
+    ],
+    outs = ["public-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location :public-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "public_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :public_calendar_hermes_source)",
+    ],
+    data = [
+        ":public_calendar_hermes_source",
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
     ],

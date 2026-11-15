@@ -654,3 +654,9 @@ non-ISO date types remain pending. ICU controls run 34,366 field samples,
 32,352 additions and 176 range checks. The documented Hebrew/Persian oracle
 ranges and forward-only boundary checks avoid known ICU limitations without
 adding conformance exclusions.
+
+Temporal's existing RelativeAnchor now retains rounded date/time prefixes and
+bubbles only expanded boundaries. Calendar::until compares unregulated month
+codes/days before constructing its clamped remainder anchor. ICU forward-field
+controls add 32,352 independent numeric differences; they no longer assume
+constrained addition can be inverted. Native public date classes remain ISO.

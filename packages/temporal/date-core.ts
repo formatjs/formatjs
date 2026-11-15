@@ -6,6 +6,9 @@ import {
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   calendarToEpochDay,
+  arithmeticCalendars,
+  calendarEra,
+  calendarYearFromEra,
   calendarFromEpochDay,
   calendarFromEpochDayRaw,
   calendarDateUntilRaw,
@@ -33,6 +36,7 @@ import {
 } from '#packages/temporal/plain-slots.js'
 import {
   zeroDuration,
+  durationNanoseconds,
   balanceDurationTime,
   type DurationFields,
 } from '#packages/temporal/duration-core.js'
@@ -79,13 +83,20 @@ export function overflowOption(options: unknown): Overflow {
     throw new RangeError('Invalid overflow')
   return value
 }
+function calendarSlot(value: object): {calendar: string} | undefined {
+  return (
+    getZonedSlot(value) ??
+    getDateSlot(value) ??
+    getDateTimeSlot(value) ??
+    getYearMonthSlot(value) ??
+    getMonthDaySlot(value)
+  )
+}
+export function calendarFromObject(item: Record<string, unknown>): string {
+  return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
+}
 export function calendarId(value: unknown = 'iso8601'): string {
-  const slot =
-    getZonedSlot(value as object) ??
-    getDateSlot(value as object) ??
-    getDateTimeSlot(value as object) ??
-    getYearMonthSlot(value as object) ??
-    getMonthDaySlot(value as object)
+  const slot = calendarSlot(value as object)
   if (slot) return slot.calendar
   if (typeof value !== 'string')
     throw new TypeError('Calendar must be a string')
@@ -94,19 +105,64 @@ export function calendarId(value: unknown = 'iso8601'): string {
       ? value
       : parseCalendarString(value)
   ).toLowerCase()
-  if (!['iso8601', 'gregory', 'hebrew'].includes(id))
-    throw new RangeError('Unsupported calendar')
-  return id
+  return supportedCalendar(id)
 }
 export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
     throw new TypeError('Calendar must be a string')
-  if (!['iso8601', 'gregory', 'hebrew'].includes(value.toLowerCase()))
+  return supportedCalendar(value.toLowerCase())
+}
+function supportedCalendar(value: string): CalendarId {
+  const id =
+    value === 'islamicc'
+      ? 'islamic-civil'
+      : value === 'ethiopic-amete-alem'
+        ? 'ethioaa'
+        : value
+  if (!arithmeticCalendars.includes(id as CalendarId))
     throw new RangeError('Unsupported calendar')
-  return value.toLowerCase()
+  return id as CalendarId
 }
 function baseCalendar(calendar: string): CalendarId {
-  return calendar === 'gregory' ? 'iso8601' : (calendar as CalendarId)
+  return calendar as CalendarId
+}
+export function resolveCalendarYear(
+  calendar: string,
+  fields: Record<string, unknown>,
+  shape: 'date' | 'year-month' | 'month-day' = 'date'
+): number | undefined {
+  let year = fields.year as number | undefined
+  const supportsEra = calendar !== 'iso8601'
+  const needsYear =
+    shape !== 'month-day' ||
+    (supportsEra &&
+      (fields.monthCode === undefined || fields.month !== undefined))
+  if (
+    needsYear &&
+    year === undefined &&
+    !(supportsEra && fields.era !== undefined && fields.eraYear !== undefined)
+  )
+    throw new TypeError('Year required')
+  if (
+    supportsEra &&
+    (fields.era === undefined) !== (fields.eraYear === undefined)
+  )
+    throw new TypeError('era and eraYear required together')
+  if (shape !== 'year-month' && fields.day === undefined)
+    throw new TypeError('Day required')
+  if (fields.month === undefined && fields.monthCode === undefined)
+    throw new TypeError('Month or monthCode required')
+  if (supportsEra && fields.era !== undefined) {
+    const resolved = calendarYearFromEra(
+      baseCalendar(calendar),
+      fields.era as string,
+      fields.eraYear as number
+    )
+    if (year !== undefined && year !== resolved)
+      throw new RangeError('Year and era disagree')
+    year = resolved
+  }
+  return year
 }
 export function epochDayOf(value: bigint): number {
   let days = value / nsPerDay
@@ -130,12 +186,12 @@ export function dayFromFields(
   fields: Record<string, unknown>,
   overflow: Overflow
 ): number {
-  if (fields.year === undefined) throw new TypeError('Year required')
+  const year = resolveCalendarYear(calendar, fields)!
   if (fields.day === undefined) throw new TypeError('Day required')
   return calendarToEpochDay(
     baseCalendar(calendar),
     {
-      year: fields.year as number,
+      year,
       month: fields.month as number | undefined,
       monthCode: fields.monthCode as string | undefined,
       day: fields.day as number,
@@ -158,50 +214,110 @@ export function clockNanoseconds(
   }
   return value
 }
+type DateFieldShape = 'date' | 'year-month' | 'year'
+const orderedDateFields = [
+  'day',
+  'era',
+  'eraYear',
+  'hour',
+  'microsecond',
+  'millisecond',
+  'minute',
+  'month',
+  'monthCode',
+  'nanosecond',
+  'offset',
+  'second',
+  'timeZone',
+  'year',
+] as const
+export function dateFieldNames(
+  calendar: string,
+  withTime: boolean,
+  shape: DateFieldShape = 'date',
+  extra: string[] = []
+): string[] {
+  const result: string[] = []
+  for (let index = 0; index < orderedDateFields.length; index++) {
+    const key = orderedDateFields[index]
+    let include: boolean
+    if (key === 'day') include = shape === 'date'
+    else if (key === 'era' || key === 'eraYear')
+      include = calendar !== 'iso8601'
+    else if (key === 'month' || key === 'monthCode') include = shape !== 'year'
+    else if (key === 'year') include = true
+    else if (key === 'offset' || key === 'timeZone')
+      include = extra.includes(key)
+    else include = withTime
+    if (include) result[result.length] = key
+  }
+  return result
+}
+export function dateFieldValue(key: string, value: unknown): string | number {
+  if (key === 'era') return ToString(value)
+  if (key === 'monthCode') {
+    const primitive = object(value) ? ToPrimitive(value, 'string') : value
+    if (typeof primitive !== 'string')
+      throw new TypeError('monthCode must be a string')
+    if (!/^M\d{2}L?$/.test(primitive))
+      throw new RangeError('Invalid monthCode syntax')
+    return primitive
+  }
+  const result = integer(value)
+  if ((key === 'month' || key === 'day') && result <= 0)
+    throw new RangeError('Month and day must be positive')
+  return result
+}
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
   partial = false,
-  shape: 'date' | 'year-month' = 'date'
+  shape: DateFieldShape = 'date',
+  calendar = 'iso8601'
 ): Record<string, unknown> {
-  const names = withTime
-    ? [
-        'day',
-        'hour',
-        'microsecond',
-        'millisecond',
-        'minute',
-        'month',
-        'monthCode',
-        'nanosecond',
-        'second',
-        'year',
-      ]
-    : ['day', 'month', 'monthCode', 'year']
   const result = Object.create(null) as Record<string, unknown>
   let any = false
+  const names = dateFieldNames(calendar, withTime, shape)
   for (let index = 0; index < names.length; index++) {
-    const key = names[index]
-    if (shape === 'year-month' && key === 'day') continue
-    const value = item[key]
+    const key = names[index],
+      value = item[key]
     if (value !== undefined) {
-      if (key === 'monthCode') {
-        const primitive = object(value) ? ToPrimitive(value, 'string') : value
-        if (typeof primitive !== 'string')
-          throw new TypeError('monthCode must be a string')
-        if (!/^M\d{2}L?$/.test(primitive))
-          throw new RangeError('Invalid monthCode syntax')
-        result[key] = primitive
-      } else {
-        result[key] = integer(value)
-        if ((key === 'month' || key === 'day') && (result[key] as number) <= 0)
-          throw new RangeError('Month and day must be positive')
-      }
+      result[key] = dateFieldValue(key, value)
       any = true
     }
   }
   if (partial && !any) throw new TypeError('At least one field required')
   return result
+}
+export function mergeDateFields(
+  calendar: string,
+  fields: Record<string, unknown>,
+  updates: Record<string, unknown>
+): Record<string, unknown> {
+  const base = {...fields}
+  // ISODateToFields carries monthCode, not an ordinal month from the old year.
+  if (base.monthCode !== undefined) delete base.month
+  if (updates.month !== undefined) delete base.monthCode
+  if (
+    calendar !== 'iso8601' &&
+    (updates.year !== undefined ||
+      updates.era !== undefined ||
+      updates.eraYear !== undefined)
+  ) {
+    delete base.year
+    delete base.era
+    delete base.eraYear
+  }
+  if (
+    calendar === 'japanese' &&
+    (updates.day !== undefined ||
+      updates.month !== undefined ||
+      updates.monthCode !== undefined)
+  ) {
+    delete base.era
+    delete base.eraYear
+  }
+  return {...base, ...updates}
 }
 export function partialObject(item: unknown): Record<string, unknown> {
   if (
@@ -263,17 +379,9 @@ export function dateProperty(
     cal = baseCalendar(slot.calendar)
   switch (key) {
     case 'era':
-      return slot.calendar === 'gregory'
-        ? fields.year > 0
-          ? 'ce'
-          : 'bce'
-        : undefined
+      return calendarEra(cal, slot.epochDay, extended)?.era
     case 'eraYear':
-      return slot.calendar === 'gregory'
-        ? fields.year > 0
-          ? fields.year
-          : 1 - fields.year
-        : undefined
+      return calendarEra(cal, slot.epochDay, extended)?.eraYear
     case 'year':
       return fields.year
     case 'month':
@@ -302,7 +410,7 @@ export function dateProperty(
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -
             calendarStartOfYear(cal, fields.year) ===
-            366
+            (cal === 'islamic-civil' || cal === 'islamic-tbla' ? 355 : 366)
     case 'weekOfYear':
     case 'yearOfWeek': {
       if (slot.calendar !== 'iso8601') return undefined
@@ -374,22 +482,6 @@ function unroundedDifference(
   }
   return result
 }
-function relativeEndpoint(
-  start: bigint,
-  calendar: string,
-  unit: string,
-  count: number,
-  prefix: DurationFields
-): bigint {
-  const duration = {...prefix}
-  duration[`${unit}s` as keyof DurationFields] = count
-  const day = addDate(
-    {epochDay: epochDayOf(start), calendar},
-    duration,
-    'constrain'
-  )
-  return BigInt(day) * nsPerDay + timeOf(start)
-}
 export function roundedDateTimeDifference(
   start: bigint,
   end: bigint,
@@ -400,100 +492,194 @@ export function roundedDateTimeDifference(
   mode: RoundingMode,
   since: boolean
 ): DurationFields {
-  const sinceSign = since ? -1n : 1n
-  if (
-    (largest === 'day' || largest === 'week') &&
-    (smallest === 'day' || smallest === 'week')
-  ) {
-    const value = roundDuration(
-      (end - start) * sinceSign,
-      nsPerDay * BigInt(increment) * (smallest === 'week' ? 7n : 1n),
-      mode
-    )
-    const fields = zeroDuration()
-    fields.days = Number(value / nsPerDay)
-    if (largest === 'week') {
-      fields.weeks = Math.trunc(fields.days / 7)
-      fields.days %= 7
+  return roundRelativeDifference(
+    start,
+    end,
+    largest,
+    smallest,
+    increment,
+    mode,
+    since,
+    {
+      zoned: false,
+      unrounded: value => unroundedDifference(start, value, calendar, largest),
+      endpoint: fields =>
+        BigInt(
+          addDate({epochDay: epochDayOf(start), calendar}, fields, 'constrain')
+        ) *
+          nsPerDay +
+        timeOf(start),
     }
-    return fields
-  }
-  let rounded: bigint
-  if (Object.hasOwn(timeUnitNanoseconds, smallest)) {
-    const unit = smallest as TimeUnit,
-      maximum = [24, 60, 60, 1000, 1000, 1000][clockNames.indexOf(unit)]
+  )
+}
+interface DifferenceAnchor {
+  zoned: boolean
+  unrounded(end: bigint): DurationFields
+  endpoint(fields: DurationFields): bigint
+}
+const differenceUnits = [
+  'year',
+  'month',
+  'week',
+  'day',
+  'hour',
+  'minute',
+  'second',
+  'millisecond',
+  'microsecond',
+  'nanosecond',
+] as const
+export function roundRelativeDifference(
+  start: bigint,
+  end: bigint,
+  largest: string,
+  smallest: string,
+  increment: number,
+  mode: RoundingMode,
+  since: boolean,
+  anchor: DifferenceAnchor
+): DurationFields {
+  const largeIndex = differenceUnits.indexOf(
+      largest as (typeof differenceUnits)[number]
+    ),
+    smallIndex = differenceUnits.indexOf(
+      smallest as (typeof differenceUnits)[number]
+    ),
+    sinceSign = since ? -1n : 1n
+  if (smallIndex >= 4) {
+    const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
     if (increment >= maximum || maximum % increment)
       throw new RangeError('Invalid rounding increment')
-    rounded =
-      start +
-      sinceSign *
-        roundDuration(
-          (end - start) * sinceSign,
-          timeUnitNanoseconds[unit] * BigInt(increment),
-          mode
-        )
-  } else {
-    if (start === end) return zeroDuration()
-    const fields = unroundedDifference(start, end, calendar, largest)
+  }
+  if (start === end) return zeroDuration()
+  const sign = end < start ? -1 : 1,
+    physicalSign = BigInt(sign)
+  let result = anchor.unrounded(end),
+    rounded = end,
+    expanded = false
+  const irregular = smallIndex < 3 || (anchor.zoned && smallIndex === 3)
+  if (irregular) {
     const prefix = zeroDuration()
-    const dateUnits = ['year', 'month', 'week', 'day']
-    for (let index = 0; index < dateUnits.length; index++) {
-      const unit = dateUnits[index]
-      if (unit === smallest) break
-      const key = `${unit}s` as keyof DurationFields
-      prefix[key] = fields[key]
+    for (let index = largeIndex; index < smallIndex; index++) {
+      const key = `${differenceUnits[index]}s` as keyof DurationFields
+      prefix[key] = result[key]
     }
-    const count =
-      smallest === 'week'
-        ? fields.weeks + Math.trunc(fields.days / 7)
-        : fields[`${smallest}s` as keyof DurationFields]
-    const truncated = Math.trunc(count / increment) * increment
-    const a = relativeEndpoint(start, calendar, smallest, truncated, prefix)
-    const physicalSign = end < start ? -1 : 1
-    const b = relativeEndpoint(
-      start,
-      calendar,
-      smallest,
-      truncated + physicalSign * increment,
-      prefix
-    )
-    if (a === end) rounded = a
-    else {
-      const positive = BigInt(physicalSign) * sinceSign > 0n
-      let expand =
+    const key = `${smallest}s` as keyof DurationFields,
+      count =
+        smallest === 'week'
+          ? result.weeks + Math.trunc(result.days / 7)
+          : result[key]
+    let truncated = Math.trunc(count / increment) * increment
+    prefix[key] = truncated
+    let a = anchor.endpoint(prefix)
+    prefix[key] = truncated + sign * increment
+    let b = anchor.endpoint(prefix)
+    if ((end - a) * physicalSign < 0n || (b - end) * physicalSign < 0n) {
+      truncated += sign * increment
+      a = b
+      prefix[key] = truncated + sign * increment
+      b = anchor.endpoint(prefix)
+      expanded = true
+    }
+    let expand = false
+    if (a !== end) {
+      const positive = physicalSign * sinceSign > 0n
+      expand =
+        end === b ||
         mode === 'expand' ||
         (mode === 'ceil' && positive) ||
         (mode === 'floor' && !positive)
       if (mode.startsWith('half')) {
-        const distance = (end - a) * BigInt(physicalSign),
-          span = (b - a) * BigInt(physicalSign)
+        const distance = (end - a) * physicalSign,
+          span = (b - a) * physicalSign
         expand =
-          2n * distance > span ||
-          (2n * distance === span &&
+          distance * 2n > span ||
+          (distance * 2n === span &&
             (mode === 'halfExpand' ||
               (mode === 'halfCeil' && positive) ||
               (mode === 'halfFloor' && !positive) ||
               (mode === 'halfEven' &&
                 Math.abs(truncated / increment) % 2 === 1)))
       }
-      rounded = expand
-        ? relativeEndpoint(
-            start,
-            calendar,
-            smallest,
-            truncated + physicalSign * increment,
-            prefix
-          )
-        : a
+    }
+    prefix[key] = (expand ? truncated + sign * increment : truncated) || 0
+    result = prefix
+    rounded = expand ? b : a
+    expanded ||= expand
+  } else if (anchor.zoned && largeIndex < 4) {
+    const time = durationNanoseconds(result, false),
+      quantum = BigInt(increment) * timeUnitNanoseconds[smallest as TimeUnit]
+    let value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
+    if (value !== time) {
+      const date = {...result}
+      for (let index = 4; index < differenceUnits.length; index++)
+        date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
+      const origin = anchor.endpoint(date),
+        next = {...date, days: date.days + sign},
+        span = anchor.endpoint(next) - origin
+      expanded = (value - span) * physicalSign >= 0n
+      if (expanded) {
+        date.days += sign
+        value =
+          sinceSign * roundDuration((value - span) * sinceSign, quantum, mode)
+        rounded = origin + span + value
+      } else rounded = origin + value
+      result = {
+        ...date,
+        ...balanceDurationTime(value, 4),
+        years: date.years,
+        months: date.months,
+        weeks: date.weeks,
+        days: date.days,
+      }
+    }
+  } else {
+    const time = durationNanoseconds(result),
+      quantum =
+        BigInt(increment) *
+        (smallest === 'day'
+          ? nsPerDay
+          : timeUnitNanoseconds[smallest as TimeUnit])
+    const value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
+    const days = largeIndex < 4 ? Number(value / nsPerDay) : 0
+    expanded = Math.sign(days - result.days) === sign
+    rounded = end + value - time
+    result = {
+      ...result,
+      ...balanceDurationTime(
+        largeIndex < 4 ? value % nsPerDay : value,
+        Math.max(4, largeIndex)
+      ),
+      years: result.years,
+      months: result.months,
+      weeks: result.weeks,
+      days,
     }
   }
-  const result = unroundedDifference(start, rounded, calendar, largest)
+  // Keep the chosen rounding quantum; only bubble when a larger boundary was crossed.
+  if (expanded && smallest !== 'week') {
+    for (
+      let index = Math.min(smallIndex, 3) - 1;
+      index >= largeIndex;
+      index--
+    ) {
+      if (index === 2 && largest !== 'week') continue
+      const next = zeroDuration()
+      for (let keep = 0; keep < index; keep++) {
+        const key = `${differenceUnits[keep]}s` as keyof DurationFields
+        next[key] = result[key]
+      }
+      const key = `${differenceUnits[index]}s` as keyof DurationFields
+      next[key] = result[key] + sign
+      const candidate = anchor.endpoint(next)
+      if ((rounded - candidate) * physicalSign < 0n) break
+      result = next
+    }
+  }
   if (since) {
     const keys = Object.keys(result) as (keyof DurationFields)[]
-    for (let index = 0; index < keys.length; index++) {
-      const key = keys[index]
-      result[key] = -result[key] || 0
-    }
+    for (let index = 0; index < keys.length; index++)
+      result[keys[index]] = -result[keys[index]] || 0
   }
   return result
 }

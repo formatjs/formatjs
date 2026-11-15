@@ -414,6 +414,26 @@ impl Calendar {
             (serial - self.months_before_year(year as i32)? + 1) as u8,
         ))
     }
+    fn add_year_month(
+        self,
+        original: Date,
+        years: i64,
+        months: i64,
+        overflow: Overflow,
+    ) -> Result<(i32, u8), Error> {
+        let year = check_year(
+            i64::from(original.year)
+                .checked_add(years)
+                .ok_or(Error::OutOfRange)?,
+        )? as i32;
+        let month = self.month_from_code(year, original.month_code, overflow)?;
+        let serial = self
+            .months_before_year(year)?
+            .checked_add(i64::from(month) - 1)
+            .and_then(|v| v.checked_add(months))
+            .ok_or(Error::OutOfRange)?;
+        self.year_month(serial)
+    }
     fn add_raw(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
         let values = [
             duration.years,
@@ -425,18 +445,8 @@ impl Calendar {
             return Err(Error::InvalidDuration);
         }
         let original = self.from_epoch_day_raw(epoch)?;
-        let year = check_year(
-            i64::from(original.year)
-                .checked_add(duration.years)
-                .ok_or(Error::OutOfRange)?,
-        )? as i32;
-        let month = self.month_from_code(year, original.month_code, overflow)?;
-        let serial = self
-            .months_before_year(year)?
-            .checked_add(i64::from(month) - 1)
-            .and_then(|v| v.checked_add(duration.months))
-            .ok_or(Error::OutOfRange)?;
-        let (year, month) = self.year_month(serial)?;
+        let (year, month) =
+            self.add_year_month(original, duration.years, duration.months, overflow)?;
         self.to_epoch_day_raw(year, i32::from(month), i32::from(original.day), overflow)?
             .checked_add(
                 duration
@@ -465,25 +475,46 @@ impl Calendar {
         if sign == 0 {
             return Ok(result);
         }
+        let surpasses = |duration: DateDuration| -> Result<bool, Error> {
+            let first_order = (i64::from(first.year) + duration.years)
+                .cmp(&i64::from(last.year))
+                .then_with(|| first.month_code.number.cmp(&last.month_code.number))
+                .then_with(|| first.month_code.leap.cmp(&last.month_code.leap))
+                .then_with(|| first.day.cmp(&last.day));
+            let exceeds = |order: core::cmp::Ordering| {
+                if sign > 0 {
+                    order.is_gt()
+                } else {
+                    order.is_lt()
+                }
+            };
+            if exceeds(first_order) {
+                return Ok(true);
+            }
+            let (year, month) =
+                self.add_year_month(first, duration.years, duration.months, Overflow::Constrain)?;
+            Ok(exceeds(
+                year.cmp(&last.year)
+                    .then_with(|| month.cmp(&last.month))
+                    .then_with(|| first.day.cmp(&last.day)),
+            ))
+        };
         let mut anchor = one;
         if largest == DateUnit::Year {
             result.years = i64::from(last.year) - i64::from(first.year);
-            anchor = self.add_raw(one, result, Overflow::Constrain)?;
-            if (anchor - two) * sign > 0 {
+            if surpasses(result)? {
                 result.years -= sign;
-                anchor = self.add_raw(one, result, Overflow::Constrain)?;
             }
         }
         if matches!(largest, DateUnit::Year | DateUnit::Month) {
-            let current = self.from_epoch_day_raw(anchor)?;
+            let (year, month) = self.add_year_month(first, result.years, 0, Overflow::Constrain)?;
             result.months = self.months_before_year(last.year)? + i64::from(last.month)
-                - self.months_before_year(current.year)?
-                - i64::from(current.month);
-            anchor = self.add_raw(one, result, Overflow::Constrain)?;
-            if (anchor - two) * sign > 0 {
+                - self.months_before_year(year)?
+                - i64::from(month);
+            if surpasses(result)? {
                 result.months -= sign;
-                anchor = self.add_raw(one, result, Overflow::Constrain)?;
             }
+            anchor = self.add_raw(one, result, Overflow::Constrain)?;
         }
         result.days = two - anchor;
         if largest == DateUnit::Week {

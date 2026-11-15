@@ -1461,6 +1461,16 @@ fn plain_relative_test262_range_and_prefix_cases() {
             .is_err()
     );
     assert!(start.until(start, U::Day, U::Hour, 1, R::Trunc).is_err());
+    // Test262 Duration/prototype/total/rounding-window.js.
+    assert_eq!(
+        "2020-01-31"
+            .parse::<PlainDate>()
+            .unwrap()
+            .total_duration("P1MT10H".parse().unwrap(), U::Month)
+            .unwrap(),
+        1.0134408602150538
+    );
+    // Native Node controls: unrounded month-end days stay days.
     let first: PlainDateTime = "2020-01-31T23:30".parse().unwrap();
     let last: PlainDateTime = "2020-03-01T00:15".parse().unwrap();
     assert_eq!(
@@ -1468,23 +1478,30 @@ fn plain_relative_test262_range_and_prefix_cases() {
             .until(last, U::Year, U::Nanosecond, 1, R::Trunc)
             .unwrap()
             .to_string(),
-        "P1MT45M"
+        "P29DT45M"
     );
     let first: PlainDateTime = "2020-01-31T00:00".parse().unwrap();
     let last: PlainDateTime = "2020-02-29T00:00".parse().unwrap();
     assert_eq!(
         first
-            .until(last, U::Month, U::Day, 1, R::Trunc)
+            .until(last, U::Month, U::Month, 1, R::Trunc)
             .unwrap()
             .to_string(),
         "P1M"
     );
     assert_eq!(
         first
+            .until(last, U::Month, U::Day, 1, R::Trunc)
+            .unwrap()
+            .to_string(),
+        "P29D"
+    );
+    assert_eq!(
+        first
             .since(last, U::Month, U::Day, 1, R::Trunc)
             .unwrap()
             .to_string(),
-        "-P1M"
+        "-P29D"
     );
     assert_eq!(
         last.until(first, U::Month, U::Day, 1, R::Trunc)
@@ -1543,4 +1560,30 @@ fn plain_date_time_rounding_crosses_public_date_limits() {
             );
         }
     }
+}
+
+#[test]
+fn independent_icu_iso_calendar_total_windows() {
+    use formatjs_temporal::{DateTimeUnit, Duration, PlainDate};
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_ARITHMETIC_CALENDARS")).lines() {
+        let row: Vec<&str> = line.split('\t').collect();
+        if row[0] != "T" || row[1] != "iso8601" {
+            continue;
+        }
+        let date = PlainDate::from_epoch_day(row[2].parse().unwrap()).unwrap();
+        let unit: DateTimeUnit = row[3].parse().unwrap();
+        let amount: i128 = row[4].parse().unwrap();
+        let mut fields = [0; 10];
+        fields[unit as usize] = amount;
+        fields[4] = amount.signum() * 10;
+        assert_eq!(
+            date.total_duration(Duration::new(fields).unwrap(), unit)
+                .unwrap(),
+            row[5].parse::<f64>().unwrap(),
+            "{line}"
+        );
+        count += 1;
+    }
+    assert_eq!(count, 416);
 }

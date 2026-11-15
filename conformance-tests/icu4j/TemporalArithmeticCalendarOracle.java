@@ -3,6 +3,8 @@ import com.ibm.icu.util.GregorianCalendar;
 import com.ibm.icu.util.TimeZone;
 import com.ibm.icu.util.ULocale;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -46,7 +48,7 @@ public final class TemporalArithmeticCalendarOracle {
   // Forward fields avoid ICU reverse-setting defects at negative Julian days.
   private static long startOfYear(Calendar value,String id,int targetYear) {
     long epoch=value.getTimeInMillis()/86400000L;
-    long low=epoch-1600,high=epoch+1600;
+    long low=epoch-2400,high=epoch+2400;
     Calendar probe=(Calendar)value.clone();
     while(low<high) {
       long middle=low+(high-low)/2;
@@ -89,6 +91,34 @@ public final class TemporalArithmeticCalendarOracle {
     target.setTimeInMillis((first+Math.min(day,monthLength(target,id))-1)*86400000L);
     return target;
   }
+  private static int compare(int y,int m,int d,Calendar target,String id) {
+    int result=Integer.compare(y,year(target,id));
+    if(result==0) result=Integer.compare(m,target.get(Calendar.MONTH));
+    if(result==0) result=Integer.compare(d,target.get(Calendar.DATE));
+    return result;
+  }
+  private static Calendar monthTarget(Calendar start,String id,int years,int months) {
+    Calendar value=add(start,id,0,years);
+    return add(value,id,1,months);
+  }
+  private static boolean surpasses(Calendar start,Calendar end,String id,int sign,int years,int months) {
+    int day=start.get(Calendar.DATE);
+    if(sign*compare(year(start,id)+years,start.get(Calendar.MONTH),day,end,id)>0) return true;
+    Calendar target=monthTarget(start,id,years,months);
+    return sign*compare(year(target,id),target.get(Calendar.MONTH),day,end,id)>0;
+  }
+  private static int[] until(Calendar start,Calendar end,String id,int largest) {
+    int sign=Long.compare(end.getTimeInMillis(),start.getTimeInMillis());
+    int years=0,months=0,weeks=0;
+    if(largest==0) while(!surpasses(start,end,id,sign,years+sign,0)) years+=sign;
+    if(largest<=1) while(!surpasses(start,end,id,sign,years,months+sign)) months+=sign;
+    Calendar anchor=monthTarget(start,id,years,months);
+    long first=anchor.getTimeInMillis()/86400000L-anchor.get(Calendar.DATE)+1;
+    long epoch=first+Math.min(start.get(Calendar.DATE),monthLength(anchor,id))-1;
+    int days=(int)(end.getTimeInMillis()/86400000L-epoch);
+    if(largest==2) {weeks=days/7;days%=7;}
+    return new int[] {years,months,weeks,days};
+  }
   public static void main(String[] args) throws Exception {
     try (PrintWriter out=new PrintWriter(args[0],StandardCharsets.UTF_8)) {
       out.println("# ICU4J proleptic arithmetic calendar fields, year/month lengths and additions");
@@ -114,13 +144,35 @@ public final class TemporalArithmeticCalendarOracle {
           String code=id.equals("hebrew")?(rawMonth==5?"M05L":String.format("M%02d",rawMonth<5?rawMonth+1:rawMonth)):String.format("M%02d",month);
           int months=id.equals("hebrew")?(hebrewLeap?13:12):value.getActualMaximum(Calendar.MONTH)+1;
           String[] era=era(id,value,epoch,year);
-          out.println("F\t"+id+"\t"+epoch+"\t"+year+"\t"+month+"\t"+code+"\t"+value.get(Calendar.DATE)+"\t"+monthLength(value,id)+"\t"+months+"\t"+yearLength+"\t"+era[0]+"\t"+era[1]);
+          out.println("F\t"+id+"\t"+epoch+"\t"+year+"\t"+month+"\t"+code+"\t"+value.get(Calendar.DATE)+"\t"+monthLength(value,id)+"\t"+months+"\t"+yearLength+"\t"+era[0]+"\t"+era[1]+"\t"+value.get(Calendar.DAY_OF_YEAR)+"\t"+((value.get(Calendar.DAY_OF_WEEK)+5)%7+1));
           if(index++%17!=0) continue;
           for(int unit=0;unit<4;unit++) for(int amount:new int[]{-2,-1,1,2}) {
             Calendar target=add(value,id,unit,amount);
             long end=target.getTimeInMillis()/86400000L;
             out.println((end< -100000001||end>100000000?"X":"A")+"\t"+id+"\t"+epoch+"\t"+new String[]{"year","month","week","day"}[unit]+"\t"+amount+"\t"+end);
+            if(end>=-100000001&&end<=100000000) {
+              int[] difference=until(value,target,id,unit);
+              out.println("D\t"+id+"\t"+epoch+"\t"+end+"\t"+new String[]{"year","month","week","day"}[unit]+"\t"+difference[0]+"\t"+difference[1]+"\t"+difference[2]+"\t"+difference[3]);
+            }
           }
+        }
+        // Four years of month ends exercise shifted total windows.
+        value.setTimeInMillis(18262L*86400000L);
+        long first=18262L-value.get(Calendar.DATE)+1;
+        for(int sample=0;sample<52;sample++) {
+          value.setTimeInMillis(first*86400000L);
+          int length=monthLength(value,id);
+          long source=first+length-1;
+          value.setTimeInMillis(source*86400000L);
+          for(int unit=0;unit<2;unit++) for(int amount:new int[]{-3,-1,1,3}) {
+            int sign=Integer.signum(amount);
+            long a=add(value,id,unit,amount).getTimeInMillis()/86400000L;
+            long b=add(value,id,unit,amount+sign).getTimeInMillis()/86400000L;
+            BigDecimal fraction=BigDecimal.valueOf(sign*10L).divide(BigDecimal.valueOf(Math.abs(b-a)*24L),80,RoundingMode.HALF_EVEN);
+            double total=BigDecimal.valueOf(amount).add(fraction).doubleValue();
+            out.println("T\t"+id+"\t"+source+"\t"+(unit==0?"year":"month")+"\t"+amount+"\t"+Double.toString(total));
+          }
+          first+=length;
         }
       }
     }

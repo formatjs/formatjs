@@ -41,11 +41,15 @@ import {
 } from '#packages/temporal/kernel.js'
 import {
   calendarId,
+  calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
   object,
   overflowOption,
   readDateFields,
+  dateFieldNames,
+  dateFieldValue,
+  mergeDateFields,
   dayFromFields,
   clockNanoseconds,
   dateFields,
@@ -55,6 +59,7 @@ import {
   clockNames,
   nsPerDay,
   epochDayOf,
+  roundRelativeDifference,
   timeOf,
   addDate,
   dateUntil,
@@ -78,9 +83,6 @@ import {
   unitOption,
   timeUnit,
   roundInstant,
-  roundDuration,
-  timeUnitNanoseconds,
-  type TimeUnit,
   type Precision,
 } from '#packages/temporal/rounding.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
@@ -239,23 +241,10 @@ export function toZonedDateTimeSlot(
     calendar = existing.calendar
     zone = existing.timeZone
   } else if (object(item)) {
-    calendar = calendarId(item.calendar)
+    calendar = calendarFromObject(item)
     // Prepare fields in alphabetical order, including offset/timeZone.
     const prepared = Object.create(null) as Record<string, unknown>
-    const names = [
-      'day',
-      'hour',
-      'microsecond',
-      'millisecond',
-      'minute',
-      'month',
-      'monthCode',
-      'nanosecond',
-      'offset',
-      'second',
-      'timeZone',
-      'year',
-    ]
+    const names = dateFieldNames(calendar, true, 'date', ['offset', 'timeZone'])
     for (let i = 0; i < names.length; i++) {
       const key = names[i],
         raw = item[key]
@@ -264,9 +253,11 @@ export function toZonedDateTimeSlot(
           ? offsetString(raw)
           : key === 'timeZone'
             ? timeZoneIdentifier(raw)
-            : readDateFields({[key]: raw}, true)[key]
+            : raw === undefined
+              ? undefined
+              : dateFieldValue(key, raw)
     }
-    const fields = readDateFields(prepared, true)
+    const fields = readDateFields(prepared, true, false, 'date', calendar)
     zone = prepared.timeZone as string
     offset = prepared.offset as string | undefined
     const resolved = optionsObject(options),
@@ -455,76 +446,22 @@ export function differenceZonedDuration(
     throw new RangeError('Largest unit smaller than smallest unit')
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
     throw new RangeError('Timezones differ')
-  const sinceSign = since ? -1n : 1n
-  let rounded: bigint
-  if (smallIndex >= 4) {
-    const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
-    if (increment >= maximum || maximum % increment)
-      throw new RangeError('Invalid rounding increment')
-    const fields =
-      largeIndex < 4
-        ? unroundedZonedDifference(start, end.epochNanoseconds, largest)
-        : zeroDuration()
-    for (let i = 0; i < clockNames.length; i++)
-      fields[(clockNames[i] + 's') as keyof DurationFields] = 0
-    const anchor = addZonedDuration(start, fields)
-    rounded =
-      anchor +
-      sinceSign *
-        roundDuration(
-          (end.epochNanoseconds - anchor) * sinceSign,
-          BigInt(increment) * timeUnitNanoseconds[smallest as TimeUnit],
-          mode
-        )
-  } else if (start.epochNanoseconds === end.epochNanoseconds)
-    rounded = start.epochNanoseconds
-  else {
-    const fields = unroundedZonedDifference(
-        start,
-        end.epochNanoseconds,
-        largest
-      ),
-      prefix = zeroDuration()
-    for (let i = largeIndex; i < smallIndex; i++)
-      prefix[(names[i] + 's') as keyof DurationFields] =
-        fields[(names[i] + 's') as keyof DurationFields]
-    const key = (smallest + 's') as keyof DurationFields
-    const count =
-      smallest === 'week'
-        ? fields.weeks + Math.trunc(fields.days / 7)
-        : fields[key]
-    const truncated = Math.trunc(count / increment) * increment
-    prefix[key] = truncated
-    const a = addZonedDuration(start, prefix)
-    if (a === end.epochNanoseconds) rounded = a
-    else {
-      const sign = end.epochNanoseconds < start.epochNanoseconds ? -1 : 1
-      prefix[key] = truncated + sign * increment
-      const b = addZonedDuration(start, prefix),
-        positive = BigInt(sign) * sinceSign > 0n
-      let expand =
-        mode === 'expand' ||
-        (mode === 'ceil' && positive) ||
-        (mode === 'floor' && !positive)
-      if (mode.startsWith('half')) {
-        const distance = (end.epochNanoseconds - a) * BigInt(sign),
-          span = (b - a) * BigInt(sign)
-        expand =
-          2n * distance > span ||
-          (2n * distance === span &&
-            (mode === 'halfExpand' ||
-              (mode === 'halfCeil' && positive) ||
-              (mode === 'halfFloor' && !positive) ||
-              (mode === 'halfEven' &&
-                Math.abs(truncated / increment) % 2 === 1)))
+  return createDuration(
+    roundRelativeDifference(
+      start.epochNanoseconds,
+      end.epochNanoseconds,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since,
+      {
+        zoned: true,
+        unrounded: value => unroundedZonedDifference(start, value, largest),
+        endpoint: fields => addZonedDuration(start, fields),
       }
-      rounded = expand ? b : a
-    }
-  }
-  const fields = unroundedZonedDifference(start, rounded, largest),
-    keys = Object.keys(fields) as (keyof DurationFields)[]
-  if (since) for (let i = 0; i < keys.length; i++) fields[keys[i]] *= -1
-  return createDuration(fields)
+    )
+  )
 }
 
 function startOfDay(slot: ZonedSlot, day = epochDayOf(local(slot))): bigint {
@@ -673,41 +610,26 @@ class ZonedDateTimeValue {
       partial = partialObject(item),
       current = local(slot)
     const updates = Object.create(null) as Record<string, unknown>
-    const names = [
-      'day',
-      'hour',
-      'microsecond',
-      'millisecond',
-      'minute',
-      'month',
-      'monthCode',
-      'nanosecond',
-      'offset',
-      'second',
-      'year',
-    ]
+    const names = dateFieldNames(slot.calendar, true, 'date', ['offset'])
     let any = false
     for (let i = 0; i < names.length; i++) {
       const key = names[i],
         raw = partial[key]
       if (raw !== undefined) {
         updates[key] =
-          key === 'offset'
-            ? offsetString(raw)
-            : readDateFields({[key]: raw}, true)[key]
+          key === 'offset' ? offsetString(raw) : dateFieldValue(key, raw)
         any = true
       }
     }
     if (!any) throw new TypeError('At least one field required')
-    const fields: Record<string, unknown> = {
-      ...epochNanosecondsToISO(current),
-      ...dateFields({epochDay: epochDayOf(current), calendar: slot.calendar}),
-      ...updates,
-    }
-    if (updates.month !== undefined && updates.monthCode === undefined)
-      delete fields.monthCode
-    if (updates.monthCode !== undefined && updates.month === undefined)
-      delete fields.month
+    const fields = mergeDateFields(
+      slot.calendar,
+      {
+        ...epochNanosecondsToISO(current),
+        ...dateFields({epochDay: epochDayOf(current), calendar: slot.calendar}),
+      },
+      updates
+    )
     const resolved = optionsObject(options),
       ambiguous = disambiguation(resolved.disambiguation),
       behavior = option(resolved.offset, 'prefer', [

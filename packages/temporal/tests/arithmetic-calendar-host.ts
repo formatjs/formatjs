@@ -14,7 +14,8 @@ if (
   counts.calendars !== 13 ||
   counts.fields !== 34366 ||
   counts.additions !== 32352 ||
-  counts.bounds !== 176
+  counts.bounds !== 176 ||
+  counts.differences !== 32352
 )
   throw new Error(`Incomplete ICU corpus: ${JSON.stringify(counts)}`)
 print(JSON.stringify(counts))

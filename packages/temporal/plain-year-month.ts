@@ -2,12 +2,10 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
   setYearMonthSlot,
-  getDateSlot,
-  getDateTimeSlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
-  calendarId,
+  calendarFromObject,
   constructorCalendar,
   dateFields,
   dateProperty,
@@ -106,12 +104,8 @@ export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
     return existing
   }
   if (object(item)) {
-    const date = getDateSlot(item),
-      datetime = getDateTimeSlot(item)
-    const calendar = calendarId(
-      (date ?? datetime) ? (date ?? datetime)!.calendar : item.calendar
-    )
-    const fields = readDateFields(item, false, false, 'year-month'),
+    const calendar = calendarFromObject(item)
+    const fields = readDateFields(item, false, false, 'year-month', calendar),
       overflow = overflowOption(options)
     return yearMonthFields(calendar, fields, overflow)
   }
@@ -246,7 +240,13 @@ class PlainYearMonthValue {
   }
   with(item: unknown, options: unknown = undefined): PlainYearMonthObject {
     const slot = read(this),
-      partial = readDateFields(partialObject(item), false, true, 'year-month')
+      partial = readDateFields(
+        partialObject(item),
+        false,
+        true,
+        'year-month',
+        slot.calendar
+      )
     return createPlainYearMonth(
       yearMonthFields(
         slot.calendar,

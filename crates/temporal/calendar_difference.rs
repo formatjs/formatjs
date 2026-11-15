@@ -163,64 +163,45 @@ pub(crate) fn difference<A: RelativeAnchor>(
 ) -> Result<Duration, Error> {
     validate_options(largest, smallest, increment)?;
     let origin = start.origin();
-    let since_sign = if since { -1 } else { 1 };
-    if !A::ZONED
-        && largest >= DateTimeUnit::Week
-        && largest <= DateTimeUnit::Day
-        && smallest <= DateTimeUnit::Day
-    {
-        let quantum = NANOSECONDS_PER_DAY
-            * i128::from(increment)
-            * if smallest == DateTimeUnit::Week { 7 } else { 1 };
-        let rounded = crate::rounding::round_duration((end - origin) * since_sign, quantum, mode);
-        let mut fields = [0; 10];
-        fields[3] = rounded / NANOSECONDS_PER_DAY;
-        if largest == DateTimeUnit::Week {
-            fields[2] = fields[3] / 7;
-            fields[3] %= 7;
-        }
-        return Duration::new(fields);
+    if origin == end {
+        return Duration::new([0; 10]);
     }
-    let rounded = if let Some(unit) = smallest.time() {
-        let mut fields = if A::ZONED && largest <= DateTimeUnit::Day {
-            unrounded(start, end, largest)?
-        } else {
-            [0; 10]
-        };
-        fields[4..].fill(0);
-        let anchor = endpoint(start, fields)?;
-        anchor
-            + since_sign
-                * round_duration_nanoseconds(
-                    (end - anchor) * since_sign,
-                    i128::from(increment) * unit.nanoseconds(),
-                    mode,
-                )?
-    } else if origin == end {
-        origin
-    } else {
-        let fields = unrounded(start, end, largest)?;
+    let sign = (end - origin).signum();
+    let since_sign = if since { -1 } else { 1 };
+    let mut fields = unrounded(start, end, largest)?;
+    let mut expanded = false;
+    let rounded;
+    if smallest < DateTimeUnit::Day || A::ZONED && smallest == DateTimeUnit::Day {
         let mut prefix = [0; 10];
         prefix[largest as usize..smallest as usize]
             .copy_from_slice(&fields[largest as usize..smallest as usize]);
+        let index = smallest as usize;
         let count = if smallest == DateTimeUnit::Week {
             fields[2] + fields[3] / 7
         } else {
-            fields[smallest as usize]
+            fields[index]
         };
-        let truncated = count / i128::from(increment) * i128::from(increment);
-        prefix[smallest as usize] = truncated;
-        let a = endpoint(start, prefix)?;
-        if a == end {
-            a
+        let mut truncated = count / i128::from(increment) * i128::from(increment);
+        prefix[index] = truncated;
+        let mut a = endpoint(start, prefix)?;
+        prefix[index] = truncated + sign * i128::from(increment);
+        let mut b = endpoint(start, prefix)?;
+        if (end - a) * sign < 0 || (b - end) * sign < 0 {
+            truncated += sign * i128::from(increment);
+            a = b;
+            prefix[index] = truncated + sign * i128::from(increment);
+            b = endpoint(start, prefix)?;
+            expanded = true;
+        }
+        let expand = if a == end {
+            false
+        } else if b == end {
+            true
         } else {
-            let sign = (end - origin).signum();
-            prefix[smallest as usize] = truncated + sign * i128::from(increment);
-            let b = endpoint(start, prefix)?;
             let positive = sign * since_sign > 0;
             let distance = (end - a) * sign;
             let span = (b - a) * sign;
-            let expand = match mode {
+            match mode {
                 RoundingMode::Expand => true,
                 RoundingMode::Trunc => false,
                 RoundingMode::Ceil => positive,
@@ -231,11 +212,83 @@ pub(crate) fn difference<A: RelativeAnchor>(
                 RoundingMode::HalfCeil => positive,
                 RoundingMode::HalfFloor => !positive,
                 RoundingMode::HalfEven => (truncated / i128::from(increment)).abs() % 2 == 1,
-            };
-            if expand { b } else { a }
+            }
+        };
+        prefix[index] = if expand {
+            truncated + sign * i128::from(increment)
+        } else {
+            truncated
+        };
+        fields = prefix;
+        rounded = if expand { b } else { a };
+        expanded |= expand;
+    } else if A::ZONED && largest <= DateTimeUnit::Day {
+        let time = Duration::new(fields)?.time_nanoseconds(false)?;
+        let quantum = i128::from(increment) * smallest.time().unwrap().nanoseconds();
+        let mut value = since_sign * round_duration_nanoseconds(time * since_sign, quantum, mode)?;
+        if value == time {
+            rounded = end;
+        } else {
+            fields[4..].fill(0);
+            let base = endpoint(start, fields)?;
+            let mut next = fields;
+            next[3] += sign;
+            let span = endpoint(start, next)? - base;
+            expanded = (value - span) * sign >= 0;
+            if expanded {
+                fields[3] += sign;
+                value = since_sign
+                    * round_duration_nanoseconds((value - span) * since_sign, quantum, mode)?;
+                rounded = base + span + value;
+            } else {
+                rounded = base + value;
+            }
+            fields[4..].copy_from_slice(
+                &Duration::from_time_nanoseconds(value, TimeUnit::Hour)?.fields()[4..],
+            );
         }
-    };
-    let mut fields = unrounded(start, rounded, largest)?;
+    } else {
+        let time = Duration::new(fields)?.time_nanoseconds(true)?;
+        let quantum = i128::from(increment)
+            * smallest
+                .time()
+                .map_or(NANOSECONDS_PER_DAY, |unit| unit.nanoseconds());
+        let value = since_sign * crate::rounding::round_duration(time * since_sign, quantum, mode);
+        let days = if largest <= DateTimeUnit::Day {
+            value / NANOSECONDS_PER_DAY
+        } else {
+            0
+        };
+        expanded = (days - fields[3]).signum() == sign;
+        rounded = end + value - time;
+        let remainder = if largest <= DateTimeUnit::Day {
+            value % NANOSECONDS_PER_DAY
+        } else {
+            value
+        };
+        fields[3] = days;
+        fields[4..].copy_from_slice(
+            &Duration::from_time_nanoseconds(remainder, largest.time().unwrap_or(TimeUnit::Hour))?
+                .fields()[4..],
+        );
+    }
+    if expanded && smallest != DateTimeUnit::Week {
+        let mut index = (smallest as usize).min(DateTimeUnit::Day as usize);
+        while index > largest as usize {
+            index -= 1;
+            if index == DateTimeUnit::Week as usize && largest != DateTimeUnit::Week {
+                continue;
+            }
+            let mut candidate = [0; 10];
+            candidate[..index].copy_from_slice(&fields[..index]);
+            candidate[index] = fields[index] + sign;
+            let boundary = endpoint(start, candidate)?;
+            if (rounded - boundary) * sign < 0 {
+                break;
+            }
+            fields = candidate;
+        }
+    }
     if since {
         for field in &mut fields {
             *field = -*field;

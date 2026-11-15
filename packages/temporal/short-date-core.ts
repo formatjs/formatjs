@@ -3,6 +3,7 @@ import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
   daysInMonth,
+  calendarStartOfYear,
   type CalendarId,
   type Overflow,
 } from '#packages/temporal/calendar.js'
@@ -10,12 +11,14 @@ import {
   calendarAnnotation,
   dateFields,
   constructorCalendar,
+  resolveCalendarYear,
+  mergeDateFields,
 } from '#packages/temporal/date-core.js'
 import type {DateSlot} from '#packages/temporal/plain-slots.js'
 import {parseShortDateString} from '#packages/temporal/instant-string.js'
 
 export function shortCalendar(calendar: string): CalendarId {
-  return calendar === 'gregory' ? 'iso8601' : (calendar as CalendarId)
+  return calendar as CalendarId
 }
 export function isoReferenceDay(
   year: number,
@@ -40,11 +43,11 @@ export function yearMonthFields(
   fields: Record<string, unknown>,
   overflow: Overflow
 ): DateSlot {
-  if (fields.year === undefined) throw new TypeError('Year required')
+  const year = resolveCalendarYear(calendar, fields, 'year-month')!
   const epochDay = calendarToEpochDayRaw(
     shortCalendar(calendar),
     {
-      year: fields.year as number,
+      year,
       month: fields.month as number | undefined,
       monthCode: fields.monthCode as string | undefined,
       day: 1,
@@ -58,18 +61,11 @@ export function monthDayFields(
   fields: Record<string, unknown>,
   overflow: Overflow
 ): DateSlot {
-  if (fields.day === undefined) throw new TypeError('Day required')
   const cal = shortCalendar(calendar)
-  if (
-    calendar !== 'iso8601' &&
-    fields.year !== undefined &&
-    cal === 'iso8601' &&
-    ((fields.year as number) < -271821 || (fields.year as number) > 275760)
-  )
-    throw new RangeError('Calendar year out of range')
+  let year = resolveCalendarYear(calendar, fields, 'month-day')
   let day = fields.day as number,
     code = fields.monthCode as string | undefined
-  if (cal === 'iso8601') {
+  if (calendar === 'iso8601') {
     const monthDay = calendarToEpochDayRaw(
       cal,
       {
@@ -80,8 +76,8 @@ export function monthDayFields(
       },
       overflow
     )
-    const month = calendarFromEpochDayRaw(cal, monthDay).month,
-      year = (fields.year ?? 1972) as number
+    const month = calendarFromEpochDayRaw(cal, monthDay).month
+    year ??= 1972
     const maximum =
       month === 2
         ? 28 + Number(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0))
@@ -93,11 +89,16 @@ export function monthDayFields(
       calendar,
     }
   }
-  if (fields.year !== undefined) {
+  if (year !== undefined) {
+    if (
+      calendarStartOfYear(cal, year) > 100000000 ||
+      calendarStartOfYear(cal, year + 1) <= -100000001
+    )
+      throw new RangeError('Calendar year out of range')
     const epoch = calendarToEpochDayRaw(
       cal,
       {
-        year: (fields.year ?? 1972) as number,
+        year,
         month: fields.month as number | undefined,
         monthCode: code,
         day,
@@ -109,24 +110,40 @@ export function monthDayFields(
     day = normalized.day
   } else if (code === undefined)
     throw new TypeError('monthCode or year required')
-  const maximum = isoReferenceDay(1972, 12, 31),
+  const minimum = isoReferenceDay(1900, 1, 1),
+    maximum = isoReferenceDay(1972, 12, 31),
+    first = calendarFromEpochDayRaw(cal, minimum).year,
     latest = calendarFromEpochDayRaw(cal, maximum).year
-  if (day > 30) {
-    if (overflow === 'reject') throw new RangeError('Day out of range')
-    day = 30
-  }
-  for (let year = latest; year > latest - 100; year--) {
-    let epoch: number
+  let best: number | undefined,
+    maximumDay = 0
+  for (let candidate = latest; candidate >= first; candidate--) {
+    let start: number
     try {
-      epoch = calendarToEpochDayRaw(cal, {year, monthCode: code, day}, 'reject')
+      start = calendarToEpochDayRaw(
+        cal,
+        {year: candidate, monthCode: code, day: 1},
+        'reject'
+      )
     } catch (error) {
       if (!(error instanceof RangeError)) throw error
       continue
     }
-    if (epoch <= maximum) return {epochDay: epoch, calendar}
+    const month = calendarFromEpochDayRaw(cal, start).month,
+      length = daysInMonth(cal, candidate, month),
+      validDay = Math.min(day, length),
+      epoch = start + validDay - 1
+    if (epoch < minimum || epoch > maximum) continue
+    if (validDay === day) return {epochDay: epoch, calendar}
+    if (validDay > maximumDay) {
+      maximumDay = validDay
+      best = epoch
+    }
   }
+  if (overflow === 'constrain' && best !== undefined)
+    return {epochDay: best, calendar}
   throw new RangeError('Invalid month-day')
 }
+
 export function parseShortSlot(
   value: string,
   kind: 'year-month' | 'month-day'
@@ -191,15 +208,11 @@ export function formatShortDate(
 }
 export function mergeShortFields(
   slot: DateSlot,
-  partial: Record<string, unknown>
+  partial: Record<string, unknown>,
+  kind: 'year-month' | 'month-day' = 'year-month'
 ): Record<string, unknown> {
-  const result: Record<string, unknown> = {
-    ...dateFields(slot, true),
-    ...partial,
-  }
-  if (partial.month !== undefined && partial.monthCode === undefined)
-    delete result.monthCode
-  if (partial.monthCode !== undefined && partial.month === undefined)
-    delete result.month
-  return result
+  const fields: Record<string, unknown> = {...dateFields(slot, true)}
+  if (kind === 'month-day') delete fields.year
+  else delete fields.day
+  return mergeDateFields(slot.calendar, fields, partial)
 }

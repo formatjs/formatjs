@@ -22,6 +22,7 @@ it('matches independent ICU arithmetic calendars in both directions', () => {
   expect(counts.fields).toBe(34366)
   expect(counts.additions).toBe(32352)
   expect(counts.bounds).toBe(176)
+  expect(counts.differences).toBe(32352)
 }, 30_000)
 
 it('preserves proleptic conversions across the full range', () => {

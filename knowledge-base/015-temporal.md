@@ -10,10 +10,13 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
-The public entry exports partial Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime APIs. ISO/Hebrew arithmetic
-and owned IANA timezone primitives are internal. `crates/temporal` now supplies a allocation-free `no_std` Rust instant, duration, clock, ISO date/date-time and short-date core. Native Hermes Temporal installation does not exist yet. Existing Intl Rust/Hermes infrastructure
-is reusable; existing Temporal-based formatter calendars are not independent
-Temporal implementations.
+The public entry exports Instant, Duration, PlainTime, PlainDate, PlainDateTime,
+PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. Public
+TS date classes use 13 arithmetic calendars and owned IANA timezone data.
+Chinese, Dangi, Umm al-Qura, locale/Intl integration and some zoned edge semantics
+remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
+numeric calendar math is shared, while native date classes still use ISO.
+Native Hermes installation and complete WASM facade/data remain pending.
 
 ## Delivery order
 
@@ -414,10 +417,10 @@ avoiding negative Coptic/Ethiopic month-length and reverse Indian-setting bugs.
 Full-range proleptic invariants cover all engines separately. No new Test262
 exclusions. These numeric controls do not establish public calendar conformance.
 
-Public TS types still recognize ISO/Gregorian/Hebrew; native date classes still
-use ISO. Next: integrate calendar/era fields and merge semantics into all public
-date/short-date/zoned classes, add Chinese/Dangi/Umm al-Qura table engines, then
-refresh full calendar Test262 diagnostics. Locale/Intl integration, native Hermes
+The initial shared-kernel layer left public TS types at ISO/Gregorian/Hebrew;
+public integration below expands them to 13 calendars. Native date classes still
+use ISO. Chinese/Dangi/Umm al-Qura table engines and native all-calendar object
+integration remain pending. Locale/Intl integration, native Hermes
 bindings and complete WASM facade/data remain open. Size/performance measurements
 must continue identifying the incomplete primitive WASM scope.
 
@@ -428,3 +431,56 @@ is 3,126. Matched data-free TS primitives remain 3,757; WASM plus JS bridge is
 20,024. These sizes retain separate scopes and exclude complete WASM facade/data.
 Relative month totals measure TS 11,580 ns versus reference 8,700; rounding
 17,814 versus 33,686. Native Hermes bindings remain required.
+
+## Public arithmetic calendar integration
+
+Public TS date, date-time, short-date and zoned classes now expose all 13 numeric
+calendars. Constructors retain ISO positional fields; property bags use calendar
+fields. Era/eraYear pairs resolve signed arithmetic years, reject contradictions
+and normalize regnal dates leniently. Shared preparation preserves alphabetic
+getter/coercion order and never reads era fields for ISO. Branded conversions use
+private calendar slots, including ZonedDateTime to short dates.
+
+ISODateToFields supplies monthCode without stale ordinal months. Shared merges
+remove conflicting year/era groups and let MonthDay updates choose a fresh
+reference year. Fixed 13-month calendars support M13 and six-day leap epagomenal
+months; Islamic leap years use 355 days. Extended YearMonth era getters use raw
+numeric coordinates.
+
+Full Intl diagnostics exposed a false inverse-add assumption in the previous
+calendar difference checks. Difference prefixes must compare unregulated days
+and month codes before clamping. ICU controls now emit independent differences
+using forward calendar fields and boundary walks: 32,352 samples across all 13
+engines. Rust and TS share this behavior. Public controls additionally cover
+34,366 fields, 32,352 additions, 176 bounds and 2,021 cross-class conversions on
+Node and Hermes source/bytecode. Day-of-year/weekday controls now come from ICU.
+
+Plain/zoned rounding shares a callback-based TS anchor and the existing Rust
+RelativeAnchor. Rounding retains selected calendar quanta; only expansion can
+bubble into larger units. It no longer loses selected units by re-differencing clamped endpoints. Native Node 26.8.1 confirms Jan31–Feb29 P29D versus month-rounded
+P1M, plus P29DT45M for Jan31T23:30–Mar1T00:15. Three older hand-written native
+expectations were corrected against that control.
+
+Named arithmetic-calendar families add 2,344 strict Test262 executions per mode;
+ISO remains covered by existing built-in families. Full Intl diagnostics remain
+unfiltered and failing. Chinese, Dangi, Umm al-Qura, locale/Intl integration,
+native non-ISO date classes, native Hermes bindings and complete WASM facade/data
+remain required work. No conformance exclusions added.
+
+ICU month-end controls add 5,408 year/month total windows across 13 calendars,
+checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
+windows. Total windows advance past constrained month ends before computing the
+fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.
+
+The 80-target Temporal/Rust/WASM validation passes. Strict Test262 gates total
+7,330 executions per engine mode. Full Intl diagnostic remains failing at
+3,118/4,080 on Node and 3,096/4,080 on Hermes source/bytecode; remaining failures
+are implementation work, not accepted baselines.
+
+Current public-calendar measurements live in
+`benchmarks/temporal/public-calendar-results.json`. Standalone namespace is
+87,709 gzip bytes (+894); forced reference is 19,393 using host Intl. Relative
+month totals measure TS/reference 10,820/8,761 ns; rounding 12,894/34,131 ns.
+Matched data-free primitives are 3,757 TS bytes versus 20,020 WASM plus bridge
+(5.33 times TS). These primitive sizes exclude complete facade/calendar/timezone
+data and native Hermes bindings.
