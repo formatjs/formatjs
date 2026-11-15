@@ -1,3 +1,12 @@
+import {
+  isLunisolar,
+  tableLeapMonth,
+  tableYearStart,
+  tableMonthLength,
+  tableMonthSerial,
+  tableYearMonth,
+  tableDate,
+} from '#packages/temporal/calendar-table.js'
 // Numeric calendars; callers own Temporal coercion and property order.
 import {
   DateFromTime,
@@ -22,7 +31,13 @@ export const arithmeticCalendars = [
   'islamic-tbla',
   'persian',
 ] as const
-export type CalendarId = (typeof arithmeticCalendars)[number]
+export const calendarIds: readonly (
+  | (typeof arithmeticCalendars)[number]
+  | 'chinese'
+  | 'dangi'
+  | 'islamic-umalqura'
+)[] = [...arithmeticCalendars, 'chinese', 'dangi', 'islamic-umalqura']
+export type CalendarId = (typeof calendarIds)[number]
 export type Overflow = 'constrain' | 'reject'
 export interface CalendarFields {
   year: number
@@ -61,7 +76,7 @@ export function dayCheck(day: number): number {
   return day
 }
 function calendarCheck(calendar: CalendarId): void {
-  if (!arithmeticCalendars.includes(calendar))
+  if (!calendarIds.includes(calendar))
     throw new RangeError('Unsupported calendar')
 }
 function overflowCheck(overflow: Overflow): void {
@@ -100,6 +115,9 @@ function isoYear(calendar: CalendarId, year: number): number {
   return year + (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0)
 }
 function start(calendar: CalendarId, year: number): number {
+  if (isLunisolar(calendar)) return tableYearStart(calendar, year)!
+  if (calendar === 'islamic-umalqura')
+    return tableYearStart(calendar, year) ?? start('islamic-civil', year)
   if (isoLike(calendar)) return DayFromYear(isoYear(calendar, year))
   switch (calendar) {
     case 'coptic':
@@ -150,6 +168,7 @@ export function calendarStartOfYear(
 export function monthsInYear(calendar: CalendarId, year: number): number {
   calendarCheck(calendar)
   yearCheck(year)
+  if (isLunisolar(calendar)) return tableLeapMonth(calendar, year) ? 13 : 12
   return ['coptic', 'ethiopic', 'ethioaa'].includes(calendar) ||
     (calendar === 'hebrew' && hebrewLeap(year))
     ? 13
@@ -163,6 +182,12 @@ export function daysInMonth(
   const count = monthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
     throw new RangeError('Invalid calendar month')
+  if (isLunisolar(calendar)) return tableMonthLength(calendar, year, month)!
+  if (calendar === 'islamic-umalqura')
+    return (
+      tableMonthLength(calendar, year, month) ??
+      daysInMonth('islamic-civil', year, month)
+    )
   if (isoLike(calendar)) {
     return month === 12
       ? 31
@@ -190,6 +215,14 @@ export function daysInMonth(
   return 30
 }
 function monthCode(calendar: CalendarId, year: number, month: number): string {
+  if (isLunisolar(calendar)) {
+    const leap = tableLeapMonth(calendar, year)
+    return (
+      'M' +
+      String(month - Number(leap > 0 && month > leap)).padStart(2, '0') +
+      (leap > 0 && month === leap + 1 ? 'L' : '')
+    )
+  }
   const leap = calendar === 'hebrew' && hebrewLeap(year)
   if (leap && month === 6) return 'M05L'
   return 'M' + String(month - Number(leap && month > 6)).padStart(2, '0')
@@ -200,6 +233,20 @@ function monthFromCode(
   code: string,
   overflow: Overflow
 ): number {
+  if (isLunisolar(calendar)) {
+    if (!/^M(0[1-9]|1[0-2])L?$/.test(code))
+      throw new RangeError('Invalid month code')
+    const number = Number(code.slice(1, 3)),
+      leap = tableLeapMonth(calendar, year)
+    if (code.endsWith('L') && leap !== number && overflow === 'reject')
+      throw new RangeError('Leap month absent')
+    return (
+      number +
+      Number(
+        leap > 0 && (number > leap || (number === leap && code.endsWith('L')))
+      )
+    )
+  }
   if (calendar === 'hebrew' && code === 'M05L') {
     if (!hebrewLeap(year) && overflow === 'reject')
       throw new RangeError('Leap month absent')
@@ -261,6 +308,10 @@ export function calendarFromEpochDayRaw(
   calendarCheck(calendar)
   if (Math.abs(integer(epoch)) > 110000000)
     throw new RangeError('Calendar date out of range')
+  if (isLunisolar(calendar)) {
+    const value = tableDate(calendar, epoch)
+    return {...value, monthCode: monthCode(calendar, value.year, value.month)}
+  }
   const t = epoch * 86400000,
     civilYear = YearFromTime(t)
   if (isoLike(calendar)) {
@@ -287,6 +338,7 @@ export function calendarFromEpochDayRaw(
         Math.floor((4 * (jd - 1723856) + 3) / 1461) +
         (calendar === 'ethioaa' ? 5500 : 0)
       break
+    case 'islamic-umalqura':
     case 'islamic-civil':
     case 'islamic-tbla':
       year = Math.floor(
@@ -325,6 +377,13 @@ function addYearMonth(
 ): {year: number; month: number} {
   let year = yearCheck(original.year + years)
   let month: number
+  if (isLunisolar(calendar)) {
+    month = monthFromCode(calendar, year, original.monthCode, overflow)
+    return tableYearMonth(
+      calendar,
+      tableMonthSerial(calendar, year, month) + months
+    )
+  }
   if (calendar !== 'hebrew') {
     const count = monthsInYear(calendar, year)
     const serial = year * count + original.month - 1 + months
@@ -403,6 +462,7 @@ export function calendarMonthSerial(
   month: number
 ): number {
   calendarCheck(calendar)
+  if (isLunisolar(calendar)) return tableMonthSerial(calendar, year, month)
   return calendar === 'hebrew'
     ? elapsedMonths(year) + month - 1
     : year * monthsInYear(calendar, year) + month - 1
@@ -486,6 +546,8 @@ export function calendarEra(
   )
   switch (calendar) {
     case 'iso8601':
+    case 'chinese':
+    case 'dangi':
       return undefined
     case 'buddhist':
       return {era: 'be', eraYear: year}
@@ -508,6 +570,7 @@ export function calendarEra(
         era: year > 0 ? 'roc' : 'broc',
         eraYear: year > 0 ? year : 1 - year,
       }
+    case 'islamic-umalqura':
     case 'islamic-civil':
     case 'islamic-tbla':
       return {era: year > 0 ? 'ah' : 'bh', eraYear: year > 0 ? year : 1 - year}
@@ -539,6 +602,7 @@ export function calendarYearFromEra(
     indian: ['shaka'],
     persian: ['ap'],
     roc: ['roc', 'broc'],
+    'islamic-umalqura': ['ah', 'bh'],
     'islamic-civil': ['ah', 'bh'],
     'islamic-tbla': ['ah', 'bh'],
   }

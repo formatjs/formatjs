@@ -35,7 +35,8 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 It does not depend on formatter packages. Date/short-date/zoned facades share
 calendar field preparation and merge rules. Plain/zoned rounding uses private
 anchor callbacks; the numeric kernel owns 13-calendar conversion/add/difference
-math. See [Temporal implementation](015-temporal.md).
+math. Chinese/Dangi/Umm al-Qura use shared generated ICU packs below the
+formatter layer. See [Temporal implementation](015-temporal.md).
 
 **Intl Polyfills** (all depend on `ecma402-abstract` + `intl-localematcher`):
 

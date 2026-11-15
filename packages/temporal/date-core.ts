@@ -6,7 +6,7 @@ import {
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   calendarToEpochDay,
-  arithmeticCalendars,
+  calendarIds,
   calendarEra,
   calendarYearFromEra,
   calendarFromEpochDay,
@@ -119,7 +119,7 @@ function supportedCalendar(value: string): CalendarId {
       : value === 'ethiopic-amete-alem'
         ? 'ethioaa'
         : value
-  if (!arithmeticCalendars.includes(id as CalendarId))
+  if (!calendarIds.includes(id as CalendarId))
     throw new RangeError('Unsupported calendar')
   return id as CalendarId
 }
@@ -132,10 +132,10 @@ export function resolveCalendarYear(
   shape: 'date' | 'year-month' | 'month-day' = 'date'
 ): number | undefined {
   let year = fields.year as number | undefined
-  const supportsEra = calendar !== 'iso8601'
+  const supportsEra = !['iso8601', 'chinese', 'dangi'].includes(calendar)
   const needsYear =
     shape !== 'month-day' ||
-    (supportsEra &&
+    (calendar !== 'iso8601' &&
       (fields.monthCode === undefined || fields.month !== undefined))
   if (
     needsYear &&
@@ -243,7 +243,7 @@ export function dateFieldNames(
     let include: boolean
     if (key === 'day') include = shape === 'date'
     else if (key === 'era' || key === 'eraYear')
-      include = calendar !== 'iso8601'
+      include = !['iso8601', 'chinese', 'dangi'].includes(calendar)
     else if (key === 'month' || key === 'monthCode') include = shape !== 'year'
     else if (key === 'year') include = true
     else if (key === 'offset' || key === 'timeZone')
@@ -406,11 +406,15 @@ export function dateProperty(
         calendarStartOfYear(cal, fields.year)
       )
     case 'inLeapYear':
-      return cal === 'hebrew'
+      return ['hebrew', 'chinese', 'dangi'].includes(cal)
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -
             calendarStartOfYear(cal, fields.year) ===
-            (cal === 'islamic-civil' || cal === 'islamic-tbla' ? 355 : 366)
+            (cal === 'islamic-civil' ||
+            cal === 'islamic-tbla' ||
+            cal === 'islamic-umalqura'
+              ? 355
+              : 366)
     case 'weekOfYear':
     case 'yearOfWeek': {
       if (slot.calendar !== 'iso8601') return undefined

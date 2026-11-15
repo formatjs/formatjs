@@ -2,9 +2,11 @@
 #![cfg_attr(not(feature = "provider"), no_std)]
 #[path = "core.rs"]
 pub mod calendar;
+mod date_math;
 #[cfg(feature = "provider")]
 #[path = "provider.rs"]
 mod provider;
+pub mod table_calendar;
 #[cfg(feature = "provider")]
 pub use provider::Provider;
 #[cfg(feature = "provider")]

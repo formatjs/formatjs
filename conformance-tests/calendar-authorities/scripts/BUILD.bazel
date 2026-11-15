@@ -1,0 +1,22 @@
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:index.bzl", "ts_binary")
+
+ts_binary(
+    name = "hko",
+    entry_point = "hko.ts",
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [":scripts"],
+)
+
+formatjs_library(
+    name = "scripts",
+    srcs = ["hko.ts"],
+    tsconfig_types = ["node"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+    ],
+)

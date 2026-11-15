@@ -96,3 +96,25 @@ Independent ICU forward-field controls now include 32,352 differences as well as
 addition. The oracle compares calendar tuples before day clamping instead of
 assuming Calendar.add can be inverted. Day-of-year and weekday fields are checked
 in both languages too.
+
+## Borrowed table calendars
+
+`table_calendar::TableCalendar` adds Chinese, Dangi and Umm al-Qura numeric
+engines. `LunisolarData` and `UmmAlQuraData` borrow caller-owned packs. Constructors
+validate dictionary entries, encoding, month/day checkpoints and end bounds before
+use. The backend allocates nothing and embeds no tables into arithmetic-only
+consumers. Native Temporal date classes still need non-ISO integration.
+
+Both backends share checked addition and difference algorithms through private
+`NumericCalendar`. Table lookup uses checkpoints every 64 years for days and
+elapsed months. Chinese/Dangi use related Gregorian years, leap codes M01L–M12L,
+and backward constraint to the corresponding common month. Umm al-Qura keeps
+civil-calendar fallback outside its data range.
+
+Independent table controls combine ICU4J with published HKO/KASI facts. Raw ICU79
+has known Chinese astronomical and February 2017 Dangi boundary disagreements;
+the raw diagnostic stays visible. See
+[authority provenance](../../conformance-tests/calendar-authorities/README.md).
+Official month starts additionally exercise inverse conversion, month lengths
+and next-month addition directly in Rust and TS. Internal table coordinates cover
+±110000000 epoch days; public constructors retain Temporal date limits.

@@ -166,8 +166,7 @@ Internal numeric kernel now covers 13 arithmetic calendars, including inverse
 conversion, month codes, eras, checked addition and differences. Native formatter
 providers and Rust Temporal share the Rust counterpart without formatter/data
 runtime dependencies. Public TS types now expose these calendars through constructors, property bags,
-fields, arithmetic and conversions. Chinese, Dangi and Umm al-Qura
-need their table engines. No claim of complete calendar conformance yet.
+fields, arithmetic and conversions. Chinese, Dangi and Umm al-Qura now use owned table engines below. No claim of complete calendar conformance yet.
 
 Independent ICU controls add 34,366 field cases, 32,352 additions and 176 range
 rejections on Node, Hermes source and optimized bytecode, and native Rust.
@@ -217,3 +216,16 @@ ICU month-end controls add 5,408 year/month total windows across 13 calendars,
 checked through plain and UTC-zoned TS anchors. Native Rust checks all 416 ISO
 windows. Total windows advance past constrained month ends before computing the
 fraction; Jan 31 plus one month and ten hours uses the Feb 29–Mar 31 span.
+
+Chinese, Dangi and Umm al-Qura now use owned ICU4X calendar packs. Chinese/Dangi
+have no eras; their years match related Gregorian years. Leap months constrain
+backward when absent from the target year. MonthDay follows the prescribed
+1900–1972/1973–2035 reference windows and rare-leap-month rules. Umm al-Qura uses
+civil arithmetic outside its official table. These packs add calendar data;
+DateTimeFormat locale patterns remain separate.
+
+Independent table controls use ICU4J and published HKO/KASI facts: 15,932 field
+cases, 6,720 additions/differences and 1,248 total windows, plus all 2,474 HKO
+month starts. The raw ICU diagnostic stays unfiltered and failing where its
+approximate astronomy disagrees with those authorities. See
+[authority provenance](../../conformance-tests/calendar-authorities/README.md).

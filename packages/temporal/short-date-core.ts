@@ -110,33 +110,56 @@ export function monthDayFields(
     day = normalized.day
   } else if (code === undefined)
     throw new TypeError('monthCode or year required')
-  const minimum = isoReferenceDay(1900, 1, 1),
-    maximum = isoReferenceDay(1972, 12, 31),
-    first = calendarFromEpochDayRaw(cal, minimum).year,
-    latest = calendarFromEpochDayRaw(cal, maximum).year
+  const lunisolar = calendar === 'chinese' || calendar === 'dangi'
+  if (lunisolar) {
+    if (day > 30 && overflow === 'reject')
+      throw new RangeError('Day out of range')
+    day = Math.min(day, 30)
+    if (
+      code!.endsWith('L') &&
+      (code === 'M01L' ||
+        code === 'M12L' ||
+        (day === 30 &&
+          ['M02L', 'M08L', 'M09L', 'M10L', 'M11L'].includes(code!)))
+    ) {
+      if (overflow === 'reject') throw new RangeError('Invalid month-day')
+      code = code!.slice(0, -1)
+    }
+  }
   let best: number | undefined,
     maximumDay = 0
-  for (let candidate = latest; candidate >= first; candidate--) {
-    let start: number
-    try {
-      start = calendarToEpochDayRaw(
-        cal,
-        {year: candidate, monthCode: code, day: 1},
-        'reject'
-      )
-    } catch (error) {
-      if (!(error instanceof RangeError)) throw error
-      continue
-    }
-    const month = calendarFromEpochDayRaw(cal, start).month,
-      length = daysInMonth(cal, candidate, month),
-      validDay = Math.min(day, length),
-      epoch = start + validDay - 1
-    if (epoch < minimum || epoch > maximum) continue
-    if (validDay === day) return {epochDay: epoch, calendar}
-    if (validDay > maximumDay) {
-      maximumDay = validDay
-      best = epoch
+  for (let range = 0; range < 2; range++) {
+    const descending = range === 0,
+      minimum = isoReferenceDay(descending ? 1900 : 1973, 1, 1),
+      maximum = isoReferenceDay(descending ? 1972 : 2035, 12, 31),
+      first = calendarFromEpochDayRaw(cal, minimum).year,
+      latest = calendarFromEpochDayRaw(cal, maximum).year
+    for (
+      let candidate = descending ? latest : first;
+      descending ? candidate >= first : candidate <= latest;
+      candidate += descending ? -1 : 1
+    ) {
+      let start: number
+      try {
+        start = calendarToEpochDayRaw(
+          cal,
+          {year: candidate, monthCode: code, day: 1},
+          'reject'
+        )
+      } catch (error) {
+        if (!(error instanceof RangeError)) throw error
+        continue
+      }
+      const month = calendarFromEpochDayRaw(cal, start).month,
+        length = daysInMonth(cal, candidate, month),
+        validDay = Math.min(day, length),
+        epoch = start + validDay - 1
+      if (epoch < minimum || epoch > maximum) continue
+      if (validDay === day) return {epochDay: epoch, calendar}
+      if (validDay > maximumDay) {
+        maximumDay = validDay
+        best = epoch
+      }
     }
   }
   if (overflow === 'constrain' && best !== undefined)

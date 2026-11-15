@@ -538,3 +538,56 @@ filegroup(
     srcs = ["temporal-arithmetic-calendar-fixtures.js"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_table_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalTableCalendarOracle.java"],
+    main_class = "TemporalTableCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_table_calendar_files",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = [
+        "temporal-table-calendar-fixtures.tsv",
+        "temporal-table-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_table_calendar_oracle) $(@D)/temporal-table-calendar-fixtures.tsv $(@D)/temporal-table-calendar-fixtures.js $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv)",
+    tools = [":temporal_table_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-fixtures.js"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_table_calendar_raw_files",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = [
+        "temporal-table-calendar-raw-fixtures.tsv",
+        "temporal-table-calendar-raw-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_table_calendar_oracle) $(@D)/temporal-table-calendar-raw-fixtures.tsv $(@D)/temporal-table-calendar-raw-fixtures.js $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv) --raw-icu",
+    tools = [":temporal_table_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_raw_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-raw-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)

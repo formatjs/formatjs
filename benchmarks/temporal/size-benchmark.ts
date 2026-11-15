@@ -10,6 +10,7 @@ const sizes = [
   'polyfill-force-code.js',
   'should-polyfill-code.js',
   'reference-bundle.js',
+  'reference-full-bundle.js',
 ].map(file => {
   const source = readFileSync(
     runfiles.resolve(
@@ -78,9 +79,15 @@ console.log(
       node: process.version,
       v8: process.versions.v8,
       scope:
-        'Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned IANA 2026f data included except detection. Forced temporal-polyfill 1.0.7 reference uses host Intl and has broader calendar/locale support. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.',
+        'Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned ICU4X calendar and IANA 2026f timezone data included except detection. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl and has broader locale integration; basic ISO/Gregorian implementation entry measured separately. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.',
       method:
         'Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.',
+      referenceEntries: {
+        'reference-bundle.js':
+          'temporal-polyfill/implementation (ISO/Gregorian)',
+        'reference-full-bundle.js':
+          'temporal-polyfill/full/implementation (all calendars)',
+      },
       sizes,
       publishedModules,
       primitiveProfile: {

@@ -12,6 +12,7 @@ formatjs_library(
     package_name = "@formatjs/temporal",
     srcs = [
         "calendar.ts",
+        "calendar-table.ts",
         "date-bridge.ts",
         "date-core.ts",
         "date-to-temporal-instant.ts",
@@ -71,6 +72,7 @@ formatjs_library(
         "./should-polyfill.js": "./should-polyfill.js",
     },
     deps = [
+        "//:node_modules/@formatjs_generated/icu.calendar",
         "//:node_modules/@formatjs_generated/tz",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
@@ -93,6 +95,7 @@ filegroup(
         deps = [
             ":lib",
             "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@formatjs_generated/icu.calendar",
             "//:node_modules/@formatjs_generated/tz",
             "//:node_modules/@types/node",
             "//:node_modules/temporal-polyfill",
@@ -103,6 +106,18 @@ filegroup(
         ],
     )
     for name, sources, data in [
+        (
+            "table_calendar_test",
+            [
+                "tests/table-calendars.test.ts",
+                "tests/public-calendar-oracle.ts",
+                "tests/table-calendar-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+                "//conformance-tests/calendar-authorities:hko_month_starts",
+            ],
+        ),
         (
             "public_calendar_test",
             [
@@ -285,7 +300,12 @@ _CALENDAR_PATTERNS = [
         "japanese",
         "persian",
         "roc",
+        "chinese",
+        "dangi",
+        "islamic-umalqura",
     ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/{" + ",".join(_CALENDAR_METHODS) + "}/**/{chinese,dangi,chinese-dangi}-*.js",
 ]
 
 _INSTALLATION_PATTERNS = [
@@ -1050,5 +1070,59 @@ sh_test(
         ":public_calendar_hermes_source",
         "//native/hermes:hermes_runner",
         "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "table-calendar-host",
+    srcs = [
+        "tests/public-calendar-oracle.ts",
+        "tests/table-calendar-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/table-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "table_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
+        ":table-calendar-host.js",
+    ],
+    outs = ["table-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location :table-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "table_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :table_calendar_hermes_source)",
+    ],
+    data = [
+        ":table_calendar_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+formatjs_test(
+    name = "raw_icu_table_calendar_test",
+    srcs = ["tests/raw-icu-table-calendars.test.ts"],
+    data = ["//conformance-tests/icu4j:temporal_table_calendar_raw_fixtures"],
+    tags = ["manual"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
     ],
 )

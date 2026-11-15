@@ -157,7 +157,7 @@ console.log(
         'opt configuration; cdylib -Copt-level=z -Cstrip=symbols -Cpanic=abort; core dependency uses opt configuration defaults; no wasm-opt or wasm-bindgen',
       wasmMemoryBytes: wasm.memoryBytes,
       scope:
-        'Partial Instant/Duration operations, no calendar/timezone data. TS primitives versus no_std Rust WASM using the shared numeric calendar core, with JS string encoding/decoding per call; forced temporal-polyfill 1.0.7 reference has broader API and uses host Intl. No full-polyfill equivalence claim.',
+        'Partial Instant/Duration operations, no calendar/timezone data. TS primitives versus no_std Rust WASM using the shared numeric calendar core, with JS string encoding/decoding per call; forced temporal-polyfill 1.0.7 basic ISO/Gregorian implementation reference has broader API and uses host Intl. No full-polyfill equivalence claim.',
       method:
         '5000 equality-checked warmup inputs; nine rotating backend-order batches of 30000 calls; twelve fresh-child cold module loads after benchmark infrastructure startup, alternating load order; filesystem cache may be warm. Load and first operation times reported separately. Timings execute Bazel bundles; JS size additionally measures esbuild minification and gzip level 9.',
       sizes: [

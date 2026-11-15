@@ -20,7 +20,7 @@ const {
   ZonedDateTime,
 } = await import(pathToFileURL(resolve('instant-code.js')).href)
 const {Temporal: reference} = await import(
-  pathToFileURL(resolve('reference-bundle.js')).href
+  pathToFileURL(resolve('reference-full-bundle.js')).href
 )
 const zonedStrings = [
   '2020-03-07T12:00-05:00[America/New_York]',
@@ -231,6 +231,26 @@ pairs.push(
         .toJSON(),
   ]
 )
+for (const calendar of ['chinese', 'dangi', 'islamic-umalqura']) {
+  const year = calendar === 'islamic-umalqura' ? 1444 : 2023,
+    code = calendar === 'islamic-umalqura' ? 'M09' : 'M02L'
+  pairs.push([
+    `PlainDate ${calendar} from/add months/toJSON`,
+    i =>
+      PlainDate.from({calendar, year, monthCode: code, day: 20 + (i % 10)})
+        .add({months: (i % 4) + 1})
+        .toJSON(),
+    i =>
+      reference.PlainDate.from({
+        calendar,
+        year,
+        monthCode: code,
+        day: 20 + (i % 10),
+      })
+        .add({months: (i % 4) + 1})
+        .toJSON(),
+  ])
+}
 let numberSink = 0
 const yearMonths = ['2020-02', '1970-01', '-000001-12', '+275760-08']
 const monthDays = ['02-29', '--1231', '2000-02-29', '+999999-10-01']
@@ -354,6 +374,7 @@ const sizes = [
   'instant-primitives-code.js',
   'calendar-code.js',
   'reference-bundle.js',
+  'reference-full-bundle.js',
 ].map(file => {
   const source = readFileSync(resolve(file), 'utf8')
   const code = transformSync(source, {
@@ -376,7 +397,8 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 classes. Namespace also includes Now. Owned IANA 2026f data included; reference uses host Intl timezone data. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 full/implementation classes. Namespace also includes Now. Owned ICU4X calendar and IANA 2026f timezone data included; reference uses host Intl. Includes matched Chinese/Dangi/Umm al-Qura month-addition workloads. Partial API; no full-polyfill size or conformance claim.',
+      referenceEntryPoint: 'temporal-polyfill/full/implementation',
       sizes,
       throughput,
       sink: String(sink),

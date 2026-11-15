@@ -1,26 +1,30 @@
 {
   "node": "v24.14.0",
   "v8": "13.6.233.17-node.41",
-  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned IANA 2026f data included except detection. Forced temporal-polyfill 1.0.7 reference uses host Intl and has broader calendar/locale support. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Owned ICU4X calendar and IANA 2026f timezone data included except detection. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl and has broader locale integration; basic ISO/Gregorian implementation entry measured separately. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
   "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "referenceEntries": {
+    "reference-bundle.js": "temporal-polyfill/implementation (ISO/Gregorian)",
+    "reference-full-bundle.js": "temporal-polyfill/full/implementation (all calendars)"
+  },
   "sizes": [
     {
       "file": "instant-code.js",
-      "raw": 543480,
-      "minified": 448594,
-      "minifiedGzip": 87709
+      "raw": 3409618,
+      "minified": 3194545,
+      "minifiedGzip": 358888
     },
     {
       "file": "polyfill-code.js",
-      "raw": 545023,
-      "minified": 449251,
-      "minifiedGzip": 87864
+      "raw": 3411161,
+      "minified": 3195202,
+      "minifiedGzip": 359038
     },
     {
       "file": "polyfill-force-code.js",
-      "raw": 545039,
-      "minified": 449253,
-      "minifiedGzip": 87866
+      "raw": 3411177,
+      "minified": 3195204,
+      "minifiedGzip": 359040
     },
     {
       "file": "should-polyfill-code.js",
@@ -33,14 +37,20 @@
       "raw": 172962,
       "minified": 56696,
       "minifiedGzip": 19393
+    },
+    {
+      "file": "reference-full-bundle.js",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
     }
   ],
   "publishedModules": [
     {
       "file": "index.js",
-      "raw": 543312,
-      "minified": 448479,
-      "minifiedGzip": 87635
+      "raw": 3409450,
+      "minified": 3194430,
+      "minifiedGzip": 358762
     },
     {
       "file": "polyfill.js",

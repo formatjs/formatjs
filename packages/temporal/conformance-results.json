@@ -48,7 +48,8 @@
           "prototype/toLocaleString": 4
         }
       }
-    }
+    },
+    "bytecodePrelude": "Implementation compiled once per suite and loaded alongside each separately compiled case in a fresh runtime. Existing case and suite timeouts retained."
   },
   "serializationDiagnostic": {
     "executions": 456,
@@ -480,48 +481,48 @@
     "files": 2040,
     "node": {
       "executions": 4080,
-      "passes": 3118,
-      "failures": 962,
+      "passes": 3884,
+      "failures": 196,
       "failuresByAPI": {
         "Duration": 8,
         "Instant": 26,
-        "PlainDate": 226,
-        "PlainDateTime": 222,
-        "PlainMonthDay": 56,
+        "PlainDate": 24,
+        "PlainDateTime": 26,
+        "PlainMonthDay": 22,
         "PlainTime": 22,
-        "PlainYearMonth": 160,
-        "ZonedDateTime": 242
+        "PlainYearMonth": 22,
+        "ZonedDateTime": 46
       }
     },
     "hermes": {
       "source": {
         "executions": 4080,
-        "passes": 3096,
-        "failures": 984,
+        "passes": 3862,
+        "failures": 218,
         "failuresByAPI": {
           "Duration": 14,
           "Instant": 26,
-          "PlainDate": 230,
-          "PlainDateTime": 226,
-          "PlainMonthDay": 58,
+          "PlainDate": 28,
+          "PlainDateTime": 30,
+          "PlainMonthDay": 24,
           "PlainTime": 22,
-          "PlainYearMonth": 162,
-          "ZonedDateTime": 246
+          "PlainYearMonth": 24,
+          "ZonedDateTime": 50
         }
       },
       "optimizedBytecode": {
         "executions": 4080,
-        "passes": 3096,
-        "failures": 984,
+        "passes": 3862,
+        "failures": 218,
         "failuresByAPI": {
           "Duration": 14,
           "Instant": 26,
-          "PlainDate": 230,
-          "PlainDateTime": 226,
-          "PlainMonthDay": 58,
+          "PlainDate": 28,
+          "PlainDateTime": 30,
+          "PlainMonthDay": 24,
           "PlainTime": 22,
-          "PlainYearMonth": 162,
-          "ZonedDateTime": 246
+          "PlainYearMonth": 24,
+          "ZonedDateTime": 50
         }
       }
     },
@@ -660,7 +661,7 @@
         "hermesPass": false
       }
     ],
-    "note": "Manual failing diagnostics, not accepted failure baselines. Refreshed after public 13-calendar integration. Bare Hermes lacks DateTimeFormat and enumerates zero timezones; its distinct-primary-pair case remains vacuous. Independent ICU checks cover all 597 identities in both languages. Table calendars, locale integration, offset precision and zoned boundary failures remain required work."
+    "note": "Manual failing diagnostics, not accepted failure baselines. Refreshed after all 16 calendars. Bare Hermes lacks DateTimeFormat and enumerates zero timezones; its distinct-primary-pair case remains vacuous. Locale integration, offset precision and zoned boundary failures remain required work."
   },
   "timezoneIdentity": {
     "availableIdentifiers": 597,
@@ -714,7 +715,7 @@
       "islamic-tbla",
       "persian"
     ],
-    "scope": "13 shared numeric engines and public TS date/date-time/short-date/zoned integration. Native date classes remain ISO. Chinese/Dangi/Umm al-Qura engines and native all-calendar integration pending.",
+    "scope": "13 shared numeric arithmetic engines and public TS date/date-time/short-date/zoned integration. Three borrowed Rust / owned TS table engines are recorded separately. Native public date classes remain ISO.",
     "icuFields": 34366,
     "icuAdditions": 32352,
     "icuRangeRejections": 176,
@@ -752,11 +753,11 @@
       "persian"
     ],
     "strictTest262PerMode": {
-      "executions": 2344,
-      "passes": 2344,
+      "executions": 2974,
+      "passes": 2974,
       "failures": 0
     },
-    "strictScope": "Named non-ISO arithmetic-calendar construction, with/add/subtract, difference, metadata and serialization families. ISO remains covered by built-in gates. Complete Intl diagnostics stay unfiltered.",
+    "strictScope": "Current combined calendar gate covers named families across all 16 calendars and rare Chinese/Dangi MonthDay controls. Oracle counts in this object cover the arithmetic subset; table controls are recorded separately.",
     "icuFields": 34366,
     "icuAdditions": 32352,
     "icuDifferences": 32352,
@@ -777,9 +778,61 @@
   },
   "strictGatesPerMode": {
     "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
-    "executions": 7330,
-    "passes": 7330,
+    "executions": 7960,
+    "passes": 7960,
     "failures": 0,
     "scope": "Union of existing strict built-in class, Now, installation and named arithmetic-calendar gates. Full diagnostics remain separate; no complete conformance claim."
+  },
+  "tableCalendars": {
+    "calendars": ["chinese", "dangi", "islamic-umalqura"],
+    "publicTsEngines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "nativeRust": "Allocation-free validated borrowed packs; shared arithmetic trait. Public native date classes remain ISO.",
+    "source": "Pinned ICU4X generated calendar packs, now indexed by day and month checkpoints every 64 years. No runtime Intl lookup.",
+    "sharedNumericFields": 15932,
+    "sharedNumericAdditions": 6720,
+    "sharedNumericDifferences": 6720,
+    "tsCrossClassSamples": 937,
+    "tsRelativeTotalWindows": 1248,
+    "publicDateRangeEpochDays": [-100000001, 100000000],
+    "internalEpochDays": [-110000000, 110000000],
+    "hko": {
+      "annualFiles": 200,
+      "monthStarts": 2474,
+      "gregorianYears": [1901, 2100],
+      "sourceHashes": "conformance-tests/calendar-authorities/hko-source-shas.tsv",
+      "mixedOracleWholeYears": [1901, 2099],
+      "directControls": "All month starts, lengths and next-month additions in TS/Rust."
+    },
+    "kasi": {
+      "boundary": "2017-02-26 at 23:58 KST starts Dangi M02; ICU79 is one day late.",
+      "regression": "2017-06-24 starts leap month 5. Runtime ICU4X pack already matches both published facts.",
+      "source": "https://astro.kasi.re.kr/life/pageView/1"
+    },
+    "oracle": "ICU4J 79.1 forward conversion and searched boundaries; Chinese complete years 1901..2099 use published HKO fields; Dangi February 2017 uses KASI. Raw ICU comparison stays unfiltered and failing.",
+    "exclusions": [],
+    "rawIcuDiagnostic": {
+      "fields": 15932,
+      "matches": 15748,
+      "mismatches": 184,
+      "disagreementsByYear": {
+        "chinese/1917": 4,
+        "chinese/1922": 4,
+        "chinese/1953": 24,
+        "chinese/1954": 24,
+        "chinese/1955": 4,
+        "chinese/1987": 4,
+        "chinese/1998": 4,
+        "chinese/2012": 4,
+        "chinese/2018": 4,
+        "chinese/2026": 24,
+        "chinese/2027": 24,
+        "chinese/2029": 24,
+        "chinese/2030": 24,
+        "chinese/2057": 4,
+        "chinese/2070": 4,
+        "dangi/2017": 4
+      },
+      "status": "Manual failing diagnostic, unfiltered; published authority controls explain oracle discrepancies. No accepted-failure baseline."
+    }
   }
 }

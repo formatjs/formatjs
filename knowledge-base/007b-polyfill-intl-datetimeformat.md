@@ -219,7 +219,9 @@ pinned ICU4X, with its documented civil-calendar fallback outside the official
 AH 1300–1600 table. Runtime conversion does not call native Intl.
 Chinese and Dangi use separate ICU4X month tables covering the full Date range,
 including timezone shifts. Each table encodes month lengths and leap-month
-positions, with a year-start checkpoint every 64 years. Outside ICU's official
+positions, with year-start and elapsed-month checkpoints every 64 years. Temporal inverse
+lookup and month arithmetic reuse those checkpoints; formatter conversion keeps
+its existing calendar contract. Outside ICU's official
 1900–2100 data, conversion follows its proleptic calendar calculation. CLDR
 provides cyclic year names, related-year patterns, and leap-month markers.
 The CLDR generator writes one locale at a time so expanded calendar patterns do

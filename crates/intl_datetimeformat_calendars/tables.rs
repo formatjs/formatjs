@@ -63,6 +63,8 @@ pub(crate) struct LunisolarRaw {
     end_day: i64,
     checkpoints: Vec<i64>,
     dictionary: Vec<u32>,
+    #[serde(default)]
+    month_checkpoints: Vec<i64>,
     years: String,
 }
 pub(crate) struct Lunisolar {
@@ -118,10 +120,27 @@ impl Lunisolar {
             return Err(Error::InvalidLocaleData);
         }
         let mut cursor = *data.checkpoints.first().ok_or(Error::InvalidLocaleData)?;
+        let mut months = 0;
+        if !data.month_checkpoints.is_empty()
+            && data.month_checkpoints.len() != data.checkpoints.len()
+        {
+            return Err(Error::InvalidLocaleData);
+        }
         for (year, index) in years.iter().enumerate() {
             if year % 64 == 0 && data.checkpoints[year / 64] != cursor {
                 return Err(Error::InvalidLocaleData);
             }
+            if year % 64 == 0
+                && !data.month_checkpoints.is_empty()
+                && data.month_checkpoints[year / 64] != months
+            {
+                return Err(Error::InvalidLocaleData);
+            }
+            months += if data.dictionary[usize::from(*index)] >> 13 == 0 {
+                12
+            } else {
+                13
+            };
             cursor = cursor
                 .checked_add(year_length(data.dictionary[usize::from(*index)]))
                 .ok_or(Error::InvalidLocaleData)?;

@@ -12,9 +12,8 @@ name is `@formatjs/temporal`; it remains private while incomplete.
 
 The public entry exports Instant, Duration, PlainTime, PlainDate, PlainDateTime,
 PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. Public
-TS date classes use 13 arithmetic calendars and owned IANA timezone data.
-Chinese, Dangi, Umm al-Qura, locale/Intl integration and some zoned edge semantics
-remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
+TS date classes use all 16 specification calendars and owned IANA timezone data.
+Locale/Intl integration and some zoned edge semantics remain incomplete. `crates/temporal` supplies an allocation-free `no_std` core;
 numeric calendar math is shared, while native date classes still use ISO.
 Native Hermes installation and complete WASM facade/data remain pending.
 
@@ -419,8 +418,8 @@ exclusions. These numeric controls do not establish public calendar conformance.
 
 The initial shared-kernel layer left public TS types at ISO/Gregorian/Hebrew;
 public integration below expands them to 13 calendars. Native date classes still
-use ISO. Chinese/Dangi/Umm al-Qura table engines and native all-calendar object
-integration remain pending. Locale/Intl integration, native Hermes
+use ISO. That layer left Chinese/Dangi/Umm al-Qura table engines for the integration below.
+Native all-calendar object integration remains pending. Locale/Intl integration, native Hermes
 bindings and complete WASM facade/data remain open. Size/performance measurements
 must continue identifying the incomplete primitive WASM scope.
 
@@ -463,7 +462,7 @@ expectations were corrected against that control.
 
 Named arithmetic-calendar families add 2,344 strict Test262 executions per mode;
 ISO remains covered by existing built-in families. Full Intl diagnostics remain
-unfiltered and failing. Chinese, Dangi, Umm al-Qura, locale/Intl integration,
+unfiltered and failing. Table support follows below; locale/Intl integration,
 native non-ISO date classes, native Hermes bindings and complete WASM facade/data
 remain required work. No conformance exclusions added.
 
@@ -484,3 +483,56 @@ month totals measure TS/reference 10,820/8,761 ns; rounding 12,894/34,131 ns.
 Matched data-free primitives are 3,757 TS bytes versus 20,020 WASM plus bridge
 (5.33 times TS). These primitive sizes exclude complete facade/calendar/timezone
 data and native Hermes bindings.
+
+## Table calendar integration
+
+TS table calendars consume existing `@formatjs_generated/icu.calendar` packs
+without formatter dependencies. Chinese/Dangi use year patterns and day/month
+checkpoints every 64 years; Umm al-Qura uses year starts and packed month lengths,
+with civil fallback outside its official range. Lunisolar generation includes
+whole years covering internal rounding coordinates through ±110000000 epoch days.
+No locale patterns change.
+
+`crates/intl_datetimeformat_calendars::table_calendar` exposes validated borrowed
+views of those packs, without allocation, serde or embedded data in the numeric
+core. Arithmetic and table calendars share private `NumericCalendar` addition and
+difference algorithms. Callers own table storage; native Temporal date classes
+still need non-ISO object integration and Hermes bindings.
+
+Chinese/Dangi skip era fields, constrain absent leap months backward, and follow
+the normative MonthDay reference ranges and rare-leap-month restrictions.
+Calendar construction, metadata and arithmetic remain synchronous.
+
+Table controls combine 15,932 fields, 6,720 additions, 6,720 differences, 937
+cross-class samples and 1,248 relative-total windows. Node and Hermes run public
+classes; Rust checks numeric tables. Separate public/native controls compare all
+2,474 published HKO month starts. Complete Chinese years 1901–2099 use HKO fields;
+ICU4J supplies edge years, Dangi and Umm al-Qura. KASI supplies the February 2017
+Dangi boundary where ICU79 is a day late. Runtime ICU4X data already matches KASI.
+
+The raw ICU diagnostic remains unfiltered and failing. Its disagreements with
+published HKO/KASI data are oracle limitations, not runtime expectations or
+Test262 exclusions. Reproducible source hashes and a Bazel regeneration command
+live in `conformance-tests/calendar-authorities/README.md`.
+
+Hermes Test262 now loads the implementation separately before each case. Bytecode
+mode compiles the implementation once per suite, then executes it in a fresh
+runtime alongside each separately compiled case. Both implementation and test
+execute bytecode; case/suite timeouts remain unchanged. This avoids recompiling
+full calendar packs for every case. Source mode also loads separate scripts.
+
+The table-calendar layer records 26 matched facade workloads in
+`benchmarks/temporal/table-calendar-results.json`. Standalone namespace is
+358,888 gzip bytes, including full-range owned calendar and IANA packs;
+forced reference is 23,226, relying on host Intl. Matched data-free TS
+primitives remain 3,757; WASM plus bridge is 20,020. Complete facade/data
+WASM equivalence and native Hermes bindings remain pending.
+
+Current facade measurements force `temporal-polyfill/full/implementation`. Earlier
+19,393-byte reference reports used its basic ISO/Gregorian entry; historical
+reports now identify that scope explicitly. Size profiles retain both builds.
+
+Validation for the table layer passes 89 targeted tests across Temporal, Rust,
+Hermes, WASM and shared formatter paths. Strict Test262 gates execute 7,960 cases
+per engine mode. Full Intl diagnostics remain failing: Node 3,884/4,080; Hermes
+source/bytecode 3,862/4,080. Locale/offset/zoned failures remain required work.

@@ -5,6 +5,16 @@ compliance remain unproven. Runtime and tests live in
 [`packages/temporal`](../../packages/temporal/README.md); this directory owns
 benchmarks and recorded measurements.
 
+Earlier reports use the basic ISO/Gregorian reference entry. Current table-calendar
+facade comparisons force `temporal-polyfill/full/implementation`; size reports
+retain both entries. Primitive WASM comparisons retain the basic entry. The
+19,393-byte historical reference size describes that basic build. See the
+[upstream entrypoint documentation](https://github.com/fullcalendar/temporal-polyfill/blob/main/polyfill/README.md#package-entrypoints).
+
+Current runtime exposes all 16 calendars. Latest profile has 26 facade workloads.
+Historical sections retain earlier implementation stages and measurements.
+Locale integration, full WASM facade/data and native Hermes bindings remain open.
+
 ## Run
 
 ```sh
@@ -13,7 +23,7 @@ bazel run -c opt //benchmarks/temporal:benchmark
 ```
 
 The benchmark prints JSON; `results.json` records one Linux x64 run on pinned
-Node 24.14.0/V8 13.6. The reference imports `temporal-polyfill/implementation`
+Node 24.14.0/V8 13.6. The original reference imports the basic `temporal-polyfill/implementation`
 1.0.7, forcing JS even if native Temporal exists. Both run with host ICU 78.2,
 tzdb 2025c; the kernel embeds pinned IANA 2026f. Selected benchmark zone rules
 agree. Results do not compare identical data policies or API coverage.
@@ -462,18 +472,18 @@ The earlier matched pure TS/WASM primitive profile retains its separate scope.
 bazel run -c opt //benchmarks/temporal:size_benchmark
 ```
 
-[package-size-results.json](package-size-results.json) measures the current public-calendar layer separately from earlier throughput samples. The first
+[package-size-results.json](package-size-results.json) measures the current table-calendar layer separately from earlier throughput samples. The first
 profile bundles each entry standalone. All full entries include owned IANA data;
-detection does not. Reference uses host Intl and supports more calendars/locale
-behavior. These alternatives are not additive and do not establish full equivalence.
+detection does not. Full reference uses host Intl and supplies broader locale integration. These alternatives are not additive and do not establish full equivalence.
 
-| Standalone bundle       | Minified bytes | Gzip bytes |
-| ----------------------- | -------------: | ---------: |
-| instant-code.js         |        448,594 |     87,709 |
-| polyfill-code.js        |        449,251 |     87,864 |
-| polyfill-force-code.js  |        449,253 |     87,866 |
-| should-polyfill-code.js |            696 |        361 |
-| reference-bundle.js     |         56,696 |     19,393 |
+| Standalone bundle        | Minified bytes | Gzip bytes |
+| ------------------------ | -------------: | ---------: |
+| instant-code.js          |      3,194,545 |    358,888 |
+| polyfill-code.js         |      3,195,202 |    359,038 |
+| polyfill-force-code.js   |      3,195,204 |    359,040 |
+| should-polyfill-code.js  |            696 |        361 |
+| reference-bundle.js      |         56,696 |     19,393 |
+| reference-full-bundle.js |         66,195 |     23,226 |
 
 Published installation modules import the shared index, preserving constructors,
 private slots and the named Date bridge across entrypoints. These per-file gzip
@@ -482,7 +492,7 @@ A consumer bundler may compress/deduplicate the combined graph differently.
 
 | Published module   | Minified bytes | Gzip bytes |
 | ------------------ | -------------: | ---------: |
-| index.js           |        448,479 |     87,635 |
+| index.js           |      3,194,430 |    358,762 |
 | polyfill.js        |          1,058 |        485 |
 | polyfill-force.js  |          1,060 |        486 |
 | should-polyfill.js |            587 |        302 |
@@ -491,8 +501,8 @@ Primary timezone identity added 269 gzip bytes to the standalone namespace;
 plain endpoint validation adds another 17 bytes. Shared calendar math adds 529 bytes.
 DateTimeFormat locale files do not gain this data.
 
-The current report also refreshes the matched data-free primitive sizes: TS
-3,757 gzip bytes; Rust WASM 19,557 plus 463 bytes of JS bridge, totaling 20,020.
+The current report also refreshes matched data-free primitive sizes: TS
+3,757 gzip bytes; Rust WASM 19,557 plus 463 JS bridge, 20,020 total.
 WASM plus bridge is 5.33 times the matched TS bundle. The earlier timed WASM run
 above remains historical; current matched primitive measurements are recorded below.
 These primitives exclude the full facade and calendar/timezone data. Complete
@@ -554,7 +564,7 @@ JS bridge adds 463, total 20,024. These measurements exclude the complete WASM
 facade/calendar/timezone data. Pinned Hermes still lacks WebAssembly; TS source/
 bytecode passes, native Rust Temporal bindings remain pending.
 
-Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+Recorded ordinary-input median ns/call, including WASM UTF-8 transfers:
 
 | Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
 | -------------------------------------------- | ----: | ------------: | ----------------: |
@@ -579,7 +589,7 @@ Matched data-free TS primitives: 3,757; WASM: 19,557 plus 463 JS bridge,
 20,020 total (5.33 times TS). Complete implementations remain unequal.
 No DateTimeFormat locale data added.
 
-Current ordinary-input median ns/call, including WASM UTF-8 transfers:
+Recorded ordinary-input median ns/call, including WASM UTF-8 transfers:
 
 | Primitive                                    |    TS | WASM + bridge | temporal-polyfill |
 | -------------------------------------------- | ----: | ------------: | ----------------: |
@@ -594,3 +604,36 @@ Facade relative-month measurements, including parsing and coercion:
 - Duration parse/total months relative to date: TS 10,820 ns; reference 8,761 ns.
 - Duration parse/round months relative to date/toJSON: TS 12,894 ns; reference 34,131 ns.
 - Duration compare day versus 24 hours relative to zone: TS 15,941 ns; reference 3,696 ns.
+
+## Table calendars
+
+[table-calendar-results.json](table-calendar-results.json) records 26 matched
+facade workloads, adding Chinese/Dangi/Umm al-Qura property-bag construction,
+month addition and serialization. All outputs match forced temporal-polyfill
+1.0.7 full/implementation before timing. Tests and benchmarks run sequentially. Prior reports remain
+historical; these workloads do not establish full API equivalence.
+
+Standalone namespace: 358,888 gzip bytes, including owned IANA and full-range
+calendar packs. Full reference: 23,226, using host Intl. Basic ISO/Gregorian reference
+remains separately measured. This table-data increase
+is separate from DateTimeFormat locale patterns. Calendar packs include indexed
+internal rounding coordinates through ±110000000 epoch days.
+
+| Table calendar workload                           | TS ns/call | Reference ns/call |
+| ------------------------------------------------- | ---------: | ----------------: |
+| PlainDate chinese from/add months/toJSON          |     21,400 |            50,645 |
+| PlainDate dangi from/add months/toJSON            |     21,219 |            49,738 |
+| PlainDate islamic-umalqura from/add months/toJSON |      9,277 |             8,817 |
+
+Matched data-free primitives: TS 3,757 gzip bytes; Rust WASM 19,557 plus
+463 JS bridge, 20,020 total (5.33 times TS). This profile
+excludes the full facade and calendar/timezone data. Complete WASM and native
+Hermes backend measurements remain pending; Hermes has no WebAssembly.
+
+| Primitive                                    | TS ns/call | WASM + bridge ns/call | Reference ns/call |
+| -------------------------------------------- | ---------: | --------------------: | ----------------: |
+| Instant parse/epoch string                   |      1,017 |                   361 |             1,756 |
+| Instant parse/round microsecond/epoch string |      1,155 |                   392 |             2,406 |
+| Instant parse/format UTC                     |      1,776 |                   659 |             3,422 |
+| Duration parse/format                        |      2,261 |                   822 |            51,534 |
+| Duration parse/total microseconds            |      1,945 |                   508 |             2,383 |

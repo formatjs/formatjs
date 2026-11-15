@@ -27,9 +27,11 @@ rust_library(
         "arithmetic.rs",
         "compiled.rs",
         "core.rs",
+        "date_math.rs",
         "ffi.rs",
         "lib.rs",
         "provider.rs",
+        "table_calendar.rs",
         "tables.rs",
     ],
     crate_features = ["provider"],
@@ -56,9 +58,11 @@ rust_library(
         "arithmetic.rs",
         "compiled.rs",
         "core.rs",
+        "date_math.rs",
         "ffi.rs",
         "lib.rs",
         "provider.rs",
+        "table_calendar.rs",
         "tables.rs",
     ],
     compile_data = [":calendar-data/%s.json" % calendar for calendar in CALENDARS],
@@ -149,7 +153,9 @@ rust_library(
     name = "calendar_core",
     srcs = [
         "core.rs",
+        "date_math.rs",
         "lib.rs",
+        "table_calendar.rs",
     ],  # keep
     crate_name = "formatjs_intl_datetimeformat_calendars",
     crate_root = "lib.rs",
@@ -167,4 +173,30 @@ formatjs_rust_test(
     edition = "2024",
     rustc_env = {"FORMATJS_ARITHMETIC_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)"},
     deps = [":calendar_core"],  # keep
+)
+
+formatjs_rust_test(
+    name = "table_calendar_test",
+    srcs = ["table_calendar.test.rs"],
+    compile_data = [
+        "//conformance-tests/calendar-authorities:hko-month-starts.tsv",
+        ":calendar-data/chinese.json",
+        ":calendar-data/dangi.json",
+        ":calendar-data/islamic-umalqura.json",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+    ],
+    crate_name = "table_calendar_test",
+    edition = "2024",
+    rustc_env = {
+        "FORMATJS_HKO_CALENDAR": "$(execpath //conformance-tests/calendar-authorities:hko-month-starts.tsv)",
+        "FORMATJS_CALENDAR_CHINESE": "$(execpath :calendar-data/chinese.json)",
+        "FORMATJS_CALENDAR_DANGI": "$(execpath :calendar-data/dangi.json)",
+        "FORMATJS_CALENDAR_ISLAMIC_UMALQURA": "$(execpath :calendar-data/islamic-umalqura.json)",
+        "FORMATJS_TABLE_CALENDARS": "$(execpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+    },
+    deps = [
+        ":intl_datetimeformat_calendars",
+        "@crates//:serde",
+        "@crates//:serde_json",
+    ],
 )

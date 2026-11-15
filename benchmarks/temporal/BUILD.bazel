@@ -26,6 +26,7 @@ formatjs_library(
         "polyfill-entry.ts",
         "polyfill-force-entry.ts",
         "reference.ts",
+        "reference-full.ts",
         "should-polyfill-entry.ts",
         "size-benchmark.ts",
         "wasm-benchmark.ts",
@@ -72,6 +73,7 @@ formatjs_library(
         ("instant-primitives-code", "instant-primitives-entry.ts"),
         ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),
+        ("reference-full-bundle", "reference-full.ts"),
         ("wasm-ts-code", "wasm-ts-entry.ts"),
         ("wasm-bridge-code", "wasm-bridge.ts"),
     ]
@@ -148,6 +150,7 @@ sh_test(
                 ":polyfill-force-code",
                 ":should-polyfill-code",
                 ":reference-bundle",
+                ":reference-full-bundle",
                 "//packages/temporal:pkg",
                 "//crates/temporal:wasm",
                 ":wasm-ts-code",
@@ -161,6 +164,7 @@ sh_test(
                 ":kernel-all-zones",
                 ":kernel-code",
                 ":reference-bundle",
+                ":reference-full-bundle",
             ],
         ),
         (
@@ -171,6 +175,7 @@ sh_test(
                 ":instant-primitives-code",
                 ":calendar-code",
                 ":reference-bundle",
+                ":reference-full-bundle",
             ],
         ),
     ]

@@ -74,10 +74,9 @@ export function checkPublicCalendarOracle(
       equal(value.eraYear, row[11] === '-' ? undefined : +row[11], line)
       equal(value.dayOfYear, +row[12], line)
       equal(value.dayOfWeek, +row[13], line)
-      const leap =
-        calendar === 'hebrew'
-          ? +row[8] === 13
-          : +row[9] === (calendar.startsWith('islamic-') ? 355 : 366)
+      const leap = ['hebrew', 'chinese', 'dangi'].includes(calendar)
+        ? +row[8] === 13
+        : +row[9] === (calendar.startsWith('islamic-') ? 355 : 366)
       equal(value.inLeapYear, leap, line)
       equal(
         Temporal.PlainDate.from(
@@ -88,7 +87,7 @@ export function checkPublicCalendarOracle(
         line
       )
       const eraFields =
-        calendar === 'iso8601' ? {year} : {era: row[10], eraYear: +row[11]}
+        row[10] === '-' ? {year} : {era: row[10], eraYear: +row[11]}
       equal(
         Temporal.PlainDate.from(
           {calendar, ...eraFields, month, day},

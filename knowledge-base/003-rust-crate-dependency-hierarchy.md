@@ -660,3 +660,7 @@ bubbles only expanded boundaries. Calendar::until compares unregulated month
 codes/days before constructing its clamped remainder anchor. ICU forward-field
 controls add 32,352 independent numeric differences; they no longer assume
 constrained addition can be inverted. Native public date classes remain ISO.
+
+Borrowed `TableCalendar` views add Chinese, Dangi and Umm al-Qura to the same
+no_std numeric layer. Private `NumericCalendar` shares addition/difference math;
+loading, ownership and embedded packs remain outside the numeric core.

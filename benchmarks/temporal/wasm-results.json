@@ -1,4 +1,5 @@
 {
+  "referenceEntryPoint": "temporal-polyfill/implementation (basic ISO/Gregorian entry; full-calendar comparison is recorded in table-calendar-results.json)",
   "node": "v24.14.0",
   "v8": "13.6.233.17-node.41",
   "platform": "linux",
