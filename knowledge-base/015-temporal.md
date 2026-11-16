@@ -75,13 +75,27 @@ TS and both WASM delivery profiles run five numeral systems, including
 supplementary-plane digits. Hermes source/bytecode run the same ICU rows through
 the legacy adapter with native DateTimeFormat and NumberFormat primitives.
 Generator controls compare all 657 CLDR locales plus explicit root-parent cases.
-Older-host numeric-Date era conventions outside the lunar correction remain
-separate alignment work; this does not establish full legacy Intl compliance.
+Numeric Date/Instant formatting and ZonedDateTime locale methods now use the
+same calendar restoration for non-lunar calendars. Captured Gregorian fields
+identify the local ISO date in the formatter's timezone; original weekday, clock
+and timezone labels survive. Gregorian era probes compare captured positive-era
+labels and request Latin digits explicitly, avoiding English-only assumptions.
+An ISO-calendar probe can omit the era on older ICU, turning BCE years positive.
+Full legacy Intl compliance remains unproven; numeric lunar boundaries still need
+coverage.
+
+The numeric-era corpus selects 81 independent ICU rows across nine calendars,
+including full Date bounds, BCE years, the 1873 Japanese boundary and modern
+compatibility. Each TS/WASM/Hermes profile checks 936 locale/timezone combinations,
+including Date/Instant/Zoned locale formatting and equal/cross-era ranges. Locale
+fallback controls force the internal probe to Arabic. A separate host-boundary
+fault forces Coptic formatting to throw at a valid Date; Gregorian clock fields
+and a safe calendar surrogate recover the output. No new calendar data is added.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 67,740 bytes gzip; standalone measures
-336,247. Both include owned timezone data. The roughly 23 KB gzip full reference
+Published default TS consumers measure 68,089 bytes gzip; standalone measures
+336,635. Both include owned timezone data. The roughly 23 KB gzip full reference
 uses host Intl data; these profiles still have different data policies.
 
 `host-timezone.ts` prototypes captured Intl offset queries and local-time

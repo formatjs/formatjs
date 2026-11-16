@@ -212,6 +212,87 @@ js_test(
 )
 
 rolldown_bundle(
+    name = "legacy-calendar-era-oracle",
+    srcs = ["tests/legacy-calendar-era-oracle.ts"],
+    entry_point = "tests/legacy-calendar-era-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+[
+    js_test(
+        name = "legacy_calendar_era_" + mode + "_test" if mode else "legacy_calendar_era_test",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+            "$(rlocationpath :legacy-calendar-era-oracle.js)",
+        ],
+        data = [
+            ":legacy-calendar-era-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        ],
+        entry_point = "tests/legacy-calendar-era.test.mjs",
+        env = {"FORMATJS_TEMPORAL_CALENDAR_FAULT": "1"} if mode == "fault" else {"FORMATJS_TEMPORAL_ARABIC_PROBE": "1"} if mode == "arabic" else {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+    )
+    for mode in [
+        "",
+        "wasm",
+        "native",
+        "arabic",
+        "fault",
+    ]
+]
+
+rolldown_bundle(
+    name = "legacy-calendar-era-host",
+    srcs = [
+        "tests/legacy-calendar-era-host.ts",
+        "tests/legacy-calendar-era-oracle.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/legacy-calendar-era-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "legacy_calendar_era_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":legacy-calendar-era-host.js",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+    ],
+    outs = ["legacy-calendar-era-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures); cat $(location :legacy-calendar-era-host.js)) > $@",
+)
+
+sh_test(
+    name = "legacy_calendar_era_hermes_test",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :legacy_calendar_era_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":legacy_calendar_era_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
     name = "extended-calendar-host",
     srcs = [
         "tests/extended-calendar-host.ts",
@@ -595,6 +676,8 @@ sh_test(
                 "tests/public-calendar-oracle.ts",
                 "tests/public-calendar-host.ts",
                 "tests/extended-calendar-host.ts",
+                "tests/legacy-calendar-era-host.ts",
+                "tests/legacy-calendar-era-oracle.ts",
             ],
             ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
         ),

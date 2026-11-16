@@ -84,10 +84,14 @@ Safe Gregorian-cycle surrogates preserve weekday/clock; Temporal restores calend
 fields and eras. Host Intl supplies month and era labels, with compact CLDR
 Before Hijrah labels for older hosts. Japanese era names and first-year forms
 remain localized. Numeric Date inputs retain TimeClip.
+Numeric Date and Instant formatting, plus ZonedDateTime locale methods, restore
+non-Gregorian calendar fields and eras using the target timezone's local ISO date.
+Captured host formatters retain weekday, clock and timezone labels. Gregorian era
+probes handle BCE dates even when the host falls back to a non-English locale.
 
 Remaining gaps stay visible:
 
-- Legacy numeric-Date era conventions still need alignment on older hosts.
+- Legacy numeric Chinese/Dangi boundary coverage remains incomplete.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
@@ -181,8 +185,8 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 67,740 bytes gzip for default and
-336,247 for standalone. Both include compact IANA histories. The native-data WASM
-module and binary, compressed separately, measure 481,274 bytes gzip. Prior
+Published consumer bundles currently measure 68,089 bytes gzip for default and
+336,635 for standalone. Both include compact IANA histories. The native-data WASM
+module and binary, compressed separately, measure 481,677 bytes gzip. Prior
 measured Node workloads favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.

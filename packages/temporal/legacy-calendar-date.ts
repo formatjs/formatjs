@@ -11,6 +11,8 @@ import {
 import {
   correctLunisolarParts,
   joinCalendarRangeParts,
+  calendarLabelFormatter,
+  legacyISOEpochDay,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
 
@@ -36,6 +38,16 @@ const eraWidths = new WeakMap<
   'long' | 'short' | 'narrow'
 >()
 const eraLabels = new WeakMap<Intl.DateTimeFormat, Map<string, string>>()
+const clockFormatters = new WeakMap<Intl.DateTimeFormat, Intl.DateTimeFormat>()
+const clockTypes = new Set([
+  'weekday',
+  'hour',
+  'minute',
+  'second',
+  'fractionalSecond',
+  'dayPeriod',
+  'timeZoneName',
+])
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   return value.plain === true && Math.abs(value.milliseconds) > limit
@@ -102,6 +114,27 @@ function firstPart(parts: Intl.DateTimeFormatPart[], type: string): string {
   if (!value) throw new RangeError(`Unsupported host calendar pattern: ${type}`)
   return value.value
 }
+function eraOptions(
+  options: Intl.ResolvedDateTimeFormatOptions,
+  calendar: string,
+  era: 'long' | 'short' | 'narrow'
+): Intl.DateTimeFormatOptions {
+  return options.dateStyle || options.timeStyle
+    ? {
+        calendar,
+        era,
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        timeZone: 'UTC',
+      }
+    : ({
+        ...options,
+        calendar,
+        era,
+        timeZone: 'UTC',
+      } as Intl.DateTimeFormatOptions)
+}
 function eraWidth(
   source: Intl.DateTimeFormat,
   options: Intl.ResolvedDateTimeFormatOptions,
@@ -121,12 +154,10 @@ function eraWidth(
   }
   const original = firstPart(raw, 'era')
   for (const width of ['long', 'short', 'narrow'] as const) {
-    const formatter = new Constructor!(options.locale, {
-      calendar: options.calendar,
-      era: width,
-      year: 'numeric',
-      timeZone: 'UTC',
-    })
+    const formatter = new Constructor!(
+      options.locale,
+      eraOptions(options, options.calendar, width)
+    )
     if (firstPart(parts.call(formatter, surrogate), 'era') === original) {
       eraWidths.set(source, width)
       return width
@@ -181,12 +212,10 @@ function eraLabel(
       'reject'
     )
   }
-  const formatter = new Constructor!(options.locale, {
-    calendar,
-    era: width,
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
+  const formatter = new Constructor!(
+    options.locale,
+    eraOptions(options, calendar, width)
+  )
   const value = firstPart(
     parts.call(formatter, sample * dayMilliseconds),
     'era'
@@ -195,12 +224,11 @@ function eraLabel(
   return value
 }
 
-export function plainCalendarParts(
+export function legacyCalendarParts(
   value: LegacyDateTimeProjection,
   parts: Parts,
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] | undefined {
-  if (value.plain !== true) return undefined
   const options = resolved.call(value.formatter),
     calendar = options.calendar as CalendarId
   if (
@@ -209,6 +237,50 @@ export function plainCalendarParts(
     !calendarIds.includes(calendar)
   )
     return undefined
+  if (value.plain !== true) {
+    if (calendar === 'chinese' || calendar === 'dangi') return undefined
+    if (
+      !Number.isFinite(value.milliseconds) ||
+      Math.abs(value.milliseconds) > limit
+    )
+      return undefined
+    const epoch = legacyISOEpochDay(options.timeZone, value.milliseconds)
+    let raw: Intl.DateTimeFormatPart[]
+    let labels: Intl.DateTimeFormat
+    try {
+      raw = parts.call(value.formatter, value.milliseconds)
+      if (
+        !raw.some(part => ['year', 'month', 'day', 'era'].includes(part.type))
+      )
+        return raw
+      labels = calendarLabelFormatter(value.formatter, options, raw)
+    } catch (error) {
+      if (!(error instanceof RangeError) && !(error instanceof TypeError))
+        throw error
+      // Some host calendars fail at valid Date bounds; retain their clock and zone via Gregorian fields.
+      let clock = clockFormatters.get(value.formatter)
+      if (!clock) {
+        clock = new Constructor!(options.locale, {
+          ...options,
+          calendar: 'gregory',
+        } as Intl.DateTimeFormatOptions)
+        clockFormatters.set(value.formatter, clock)
+      }
+      const clockParts = parts.call(clock, value.milliseconds)
+      labels = calendarLabelFormatter(value.formatter, options, clockParts)
+      const local = epoch * dayMilliseconds
+      const surrogate =
+        local - Math.floor((local - 946684800000) / cycle) * cycle
+      raw = parts
+        .call(labels, surrogate)
+        .map(part =>
+          clockTypes.has(part.type)
+            ? (clockParts.find(item => item.type === part.type) ?? part)
+            : part
+        )
+    }
+    return restoreCalendarParts(value, raw, epoch, labels, options, parts)
+  }
   // Whole Gregorian cycles preserve weekday and clock in the plain UTC projection.
   const surrogate =
       value.milliseconds -
@@ -224,7 +296,25 @@ export function plainCalendarParts(
     return raw
   if (calendar === 'chinese' || calendar === 'dangi')
     return correctLunisolarParts(value, raw, resolved, surrogate)
-  const epoch = Math.floor(value.milliseconds / dayMilliseconds),
+  return restoreCalendarParts(
+    value,
+    raw,
+    Math.floor(value.milliseconds / dayMilliseconds),
+    value.formatter,
+    options,
+    parts
+  )
+}
+
+function restoreCalendarParts(
+  value: LegacyDateTimeProjection,
+  raw: Intl.DateTimeFormatPart[],
+  epoch: number,
+  labels: Intl.DateTimeFormat,
+  options: Intl.ResolvedDateTimeFormatOptions,
+  parts: Parts
+): Intl.DateTimeFormatPart[] {
+  const calendar = options.calendar as CalendarId,
     date = calendarFromEpochDayRaw(calendar, epoch),
     era = calendarEra(calendar, epoch, true),
     year = era?.eraYear ?? date.year,
@@ -233,7 +323,7 @@ export function plainCalendarParts(
       date.monthCode,
       monthsInYear(calendar, date.year) === 13
     ),
-    controls = parts.call(value.formatter, sample * dayMilliseconds),
+    controls = parts.call(labels, sample * dayMilliseconds),
     sampleEra = calendarEra(calendar, sample, true),
     sampleYear =
       sampleEra?.eraYear ?? calendarFromEpochDayRaw(calendar, sample).year,
@@ -276,25 +366,38 @@ export function plainCalendarParts(
         calendar,
         era.era,
         options,
-        eraWidth(value.formatter, options, raw, surrogate, parts),
+        eraWidth(
+          value.formatter,
+          options,
+          controls,
+          sample * dayMilliseconds,
+          parts
+        ),
         sample,
         parts
       )
     )
+  if (
+    raw.every(
+      part => !changes.has(part.type) || changes.get(part.type) === part.value
+    )
+  )
+    return raw
   return raw.map(part =>
     changes.has(part.type) ? {...part, value: changes.get(part.type)!} : part
   )
 }
 
-export function plainCalendarRangeParts(
+export function legacyCalendarRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
   parts: Parts,
   rangeParts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
-  if (first.plain !== true || last.plain !== true) return undefined
   const calendar = resolved.call(first.formatter).calendar
+  if (first.plain !== true && (calendar === 'chinese' || calendar === 'dangi'))
+    return undefined
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||
@@ -302,14 +405,14 @@ export function plainCalendarRangeParts(
   )
     return undefined
   const start =
-      plainCalendarParts(first, parts, resolved) ??
+      legacyCalendarParts(first, parts, resolved) ??
       correctLunisolarParts(
         first,
         parts.call(first.formatter, first.milliseconds),
         resolved
       ),
     end =
-      plainCalendarParts(last, parts, resolved) ??
+      legacyCalendarParts(last, parts, resolved) ??
       correctLunisolarParts(
         last,
         parts.call(last.formatter, last.milliseconds),

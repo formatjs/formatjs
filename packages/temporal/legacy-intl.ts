@@ -92,7 +92,7 @@ export function installLegacyDateTimeFormat(
   }
   function single(state: State, input: unknown): Projection | undefined {
     if (input === undefined)
-      return state.calendar === 'chinese' || state.calendar === 'dangi'
+      return state.calendar !== 'gregory' && state.calendar !== 'iso8601'
         ? {formatter: state.formatter, milliseconds: now()}
         : undefined
     const value = ToDateTimeFormattable(input)

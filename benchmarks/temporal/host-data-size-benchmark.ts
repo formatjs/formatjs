@@ -52,7 +52,7 @@ console.log(
       icu: process.versions.icu,
       cldr: process.versions.cldr,
       scope:
-        'Full namespaces. Default uses bounded ICU4X historical data and arithmetic for Chinese/Dangi, host Intl for Umm al-Qura, compact owned IANA timezone histories and numeric arithmetic calendars. Standalone retains full-range calendar packs with the same compact timezone histories. Legacy non-Gregorian formatting uses host labels and compact CLDR Before Hijrah labels. Full reference uses host Intl for calendar and timezone data. Size only; full compliance and host timezone migration remain open.',
+        'Full namespaces. Default uses bounded ICU4X historical data and arithmetic for Chinese/Dangi, host Intl for Umm al-Qura, compact owned IANA timezone histories and numeric arithmetic calendars. Standalone retains full-range calendar packs with the same compact timezone histories. Legacy plain and numeric non-Gregorian formatting uses host labels and compact CLDR Before Hijrah labels. Full reference uses host Intl for calendar and timezone data. Size only; full compliance and host timezone migration remain open.',
       method:
         'Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.',
       sizes,

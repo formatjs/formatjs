@@ -1,7 +1,7 @@
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
-  plainCalendarParts,
-  plainCalendarRangeParts,
+  legacyCalendarParts,
+  legacyCalendarRangeParts,
 } from '#packages/temporal/legacy-calendar-date.js'
 import {
   correctLunisolarParts,
@@ -66,7 +66,7 @@ export function legacyDateTimeParts(
   parts: Parts,
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] {
-  const calendar = plainCalendarParts(value, parts, resolved)
+  const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar
   if (!clipped(value) || !gregorian(value.formatter, resolved))
     return correctLunisolarParts(
@@ -89,7 +89,7 @@ export function legacyDateTimeFormat(
   parts: Parts,
   resolved: Resolved
 ): string {
-  const calendar = plainCalendarParts(value, parts, resolved)
+  const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar.map(part => part.value).join('')
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
     const calendar = resolved.call(value.formatter).calendar
@@ -126,7 +126,7 @@ export function legacyDateTimeRangeParts(
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
-  const extended = plainCalendarRangeParts(
+  const extended = legacyCalendarRangeParts(
     first,
     last,
     nativeParts!,
@@ -165,7 +165,7 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
-  const extended = plainCalendarRangeParts(
+  const extended = legacyCalendarRangeParts(
     first,
     last,
     nativeParts!,

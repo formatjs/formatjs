@@ -1333,3 +1333,20 @@ without new Intl construction. No fresh throughput claim.
 All 37 focused regression targets pass with four concurrent tests. Unbounded
 local concurrency hit two 30-second numeric-Date comparison timeouts; those
 cases bypass the new plain renderer. Case timeouts and exclusions are unchanged.
+
+## Legacy calendar eras and BCE probes
+
+`era-intl-size-results.json` measures default/standalone consumers at
+68,089/336,635 bytes gzip, increases of 349/388. This adds no calendar data.
+`era-intl-backend-size-results.json` records separate graphs: TS 70,411,
+native-data WASM 481,677 and hybrid WASM 514,393 bytes gzip, including the
+unchanged 443,178-byte gzip binary for WASM. Reference full remains 23,226 using
+host Intl; ours still includes owned timezone data. No new throughput claim.
+
+Numeric Date/Instant formatting and ZonedDateTime locale methods restore owned
+calendar fields and eras while retaining host clock and timezone parts. BCE
+probes use Gregorian eras, explicit Latin digits and captured era labels.
+Validation includes 81 independent ICU rows across nine calendars and 936
+locale/timezone combinations per TS/WASM/Hermes profile, plus forced Arabic
+probe fallback and host-boundary failure controls. All 43 regression targets
+pass with four concurrent tests and unchanged case timeouts/exclusions.

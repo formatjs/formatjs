@@ -15,6 +15,7 @@ const numberFormat =
   Object.getOwnPropertyDescriptor(NumberConstructor.prototype, 'format')?.get
 const dayMilliseconds = 86400000
 const probes = new Map<string, Intl.DateTimeFormat>()
+const positiveEras = new WeakMap<Intl.DateTimeFormat, string>()
 const dateTypes = new Set(['year', 'relatedYear', 'yearName', 'month', 'day'])
 interface Catalog {
   months: Map<string, number>
@@ -37,7 +38,8 @@ function probe(
   let result = probes.get(key)
   if (!result) {
     result = new Constructor!('en-US-u-nu-latn', {
-      calendar,
+      calendar: calendar === 'iso8601' ? 'gregory' : calendar,
+      numberingSystem: 'latn',
       timeZone,
       year: 'numeric',
       month: 'numeric',
@@ -53,9 +55,10 @@ function fields(
   timeZone: string,
   milliseconds: number
 ) {
+  const formatter = probe(calendar, timeZone)
   const values = new Map<string, string>(
     nativeParts!
-      .call(probe(calendar, timeZone), milliseconds)
+      .call(formatter, milliseconds)
       .map(part => [part.type, part.value])
   )
   const year = Number(
@@ -73,9 +76,20 @@ function fields(
     +month[1] > 12
   )
     throw new RangeError('Unsupported host calendar fields')
+  let bce = false
+  if (calendar === 'iso8601') {
+    let positive = positiveEras.get(formatter)
+    if (positive === undefined) {
+      positive = nativeParts!
+        .call(formatter, 0)
+        .find(part => part.type === 'era')?.value
+      if (!positive) throw new RangeError('Unsupported host Gregorian era')
+      positiveEras.set(formatter, positive)
+    }
+    bce = values.get('era') !== positive
+  }
   return {
-    year:
-      calendar === 'iso8601' && values.get('era') === 'BC' ? 1 - year : year,
+    year: bce ? 1 - year : year,
     month: Number(month[1]),
     day,
     monthCode: `M${month[1].padStart(2, '0')}${month[2] ? 'L' : ''}`,
@@ -105,7 +119,7 @@ function catalog(calendar: Calendar, code: string): Catalog {
   }
   return result
 }
-function formatter(
+export function calendarLabelFormatter(
   source: Intl.DateTimeFormat,
   options: Intl.ResolvedDateTimeFormatOptions,
   raw: Intl.DateTimeFormatPart[]
@@ -127,6 +141,14 @@ function formatter(
     utc.set(source, result)
   }
   return result
+}
+
+export function legacyISOEpochDay(
+  timeZone: string,
+  milliseconds: number
+): number {
+  const value = fields('iso8601', timeZone, milliseconds)
+  return isoDay(value.year, value.month, value.day)
 }
 function part(
   source: Intl.DateTimeFormat,
@@ -194,7 +216,7 @@ export function correctLunisolarParts(
     actual.day === expected.day
   )
     return raw
-  const labels = formatter(value.formatter, options, raw),
+  const labels = calendarLabelFormatter(value.formatter, options, raw),
     changes = new Map<string, string>()
   if (actual.day !== expected.day && raw.some(part => part.type === 'day')) {
     const data = catalog(calendar, 'M01')
