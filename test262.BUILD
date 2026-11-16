@@ -271,3 +271,12 @@ copy_to_bin(
     srcs = glob(["test/intl402/Temporal/**/*.js"]),
     visibility = ["@//packages/temporal:__pkg__"],
 )
+
+copy_to_bin(
+    name = "test262-temporal-staging-copy",
+    srcs = glob([
+        "test/staging/Temporal/**/*.js",
+        "test/staging/sm/Date/to-temporal-instant.js",
+    ]),
+    visibility = ["@//packages/temporal:__pkg__"],
+)

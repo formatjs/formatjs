@@ -50,8 +50,8 @@ the 1,900 transition windows additionally check partial field gap/fold policies.
 
 Host `Intl` is an allowed dependency for the TypeScript implementation. Default
 TS uses compact arithmetic/data for Chinese/Dangi and captured host Intl for Umm
-al-Qura. Owned IANA timezone histories use compact rule spans; host timezone
-migration is pending.
+al-Qura. Owned IANA timezone histories use compact rule spans; a host-only timezone
+entry is an optional size optimization.
 The explicit `standalone.js` entry retains full calendar packs.
 Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
@@ -1629,3 +1629,15 @@ both endpoint source fields in the existing lunar boundary corpus.
 Final size snapshot: `benchmarks/temporal/host-timezone-formatting-size-results.json`.
 TS/native-data WASM module graphs measure 72,018/482,767 bytes gzip, including the
 unchanged 443,098-byte binary for WASM. No new timing claim.
+
+## Startup and current Hermes measurements
+
+The cold-process benchmark is `//benchmarks/temporal:startup_benchmark`. It checks
+matched outputs in fresh Node processes, disables persistent compilation caches
+and records import, WASM setup, first operations and process memory separately.
+`completion-startup-results.json` records nine samples per profile. Filesystem
+caches remain warm; no network or browser-load claim is made.
+
+`completion-hermes-results.json` refreshes 43 ISO workloads for compact default TS,
+the normalized Rust bridge and the installed SDK in source and optimized HBC.
+All output/checksum checks pass. See 015a for counts and measurement limits.

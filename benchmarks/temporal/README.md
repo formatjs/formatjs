@@ -2,21 +2,48 @@
 
 Runtime and tests live in
 [`packages/temporal`](../../packages/temporal/README.md); this directory owns
-benchmarks and recorded measurements. The package remains private pending its
-[completion audit](../../knowledge-base/015a-temporal-completion-audit.md).
+benchmarks and recorded measurements. The package remains private pending release. Current
+[completion evidence](../../knowledge-base/015a-temporal-completion-audit.md) records
+conformance and delivery checks.
 
-Latest shipped-consumer measurement: default TS 68,089 bytes gzip; standalone
-336,635; forced `temporal-polyfill/full/implementation` 23,226. Default TS still
-includes owned IANA histories; the reference uses host Intl calendars/timezones.
-Host Intl is allowed for both. This size gap includes a data-policy difference,
-not just implementation code. These are bundled-consumer sizes; separately
-compressed ESM files have different totals.
+Latest namespace-consumer measurement: default TS 69,657 bytes gzip; standalone
+340,011; forced `temporal-polyfill/full/implementation` 23,083. Default TS includes
+owned IANA histories; the reference uses host Intl calendars/timezones. Host Intl
+is allowed for both. These are minified bundled consumers without installation.
+Separately compressed ESM files and installation bundles have different totals.
 
-The native-data WASM graph is 481,677 bytes gzip including JS glue and binary;
-hybrid WASM is 514,393. Full WASM and native Hermes bindings exist. Source and
-bytecode Test262 gates cover the namespace; passing tests do not close the whole
-completion audit. See `rust-zoned-replacements-size-results.json` and
-`rust-zoned-replacements-backend-size-results.json` for measurement scope.
+Native-data WASM consumer plus binary totals 479,552 bytes gzip; hybrid WASM
+515,283. The binary contributes 443,098 in either profile. Both WASM profiles
+trail TS on all 43 recorded Node ISO workload medians. See
+`completion-startup-results.json` for consumer sizes and fresh-process timings,
+and `lunar-boundary-wasm-results.json` for hot-operation timings.
+
+## Fresh-process startup
+
+```sh
+bazel run -c opt //benchmarks/temporal:startup_benchmark
+```
+
+Nine fresh Node 24 processes per profile, rotating profile order. Persistent V8
+module compile caches are disabled and checked; filesystem caches remain warm.
+Ready time includes import, WASM setup when applicable, then matched Instant,
+New York timezone and Chinese calendar operations. It excludes Node bootstrap
+and global installation. TS median is 12.11 ms; full reference 22.71; native-data
+WASM 26.16; hybrid WASM 28.99. Basic reference omits Chinese and is reported
+separately. Heap/RSS deltas and WASM linear memory are not shipping sizes.
+
+## Current Hermes throughput
+
+```sh
+bazel run -c opt //benchmarks/temporal:hermes_instant_benchmark
+```
+
+`completion-hermes-results.json` records 43 ISO workloads against the forced basic
+reference, source and optimized HBC. Compact default TS, normalized Rust bridge
+and installed SDK all verify outputs and checksum 30956984. Source/HBC median
+wins are 14/7, 25/16 and 25/14 respectively, each out of 43. Rust uses native
+bindings; pinned Hermes has no WASM runtime. These local samples do not establish
+universal performance rankings.
 
 Earlier reports use the basic ISO/Gregorian reference entry. Current table-calendar
 facade comparisons force `temporal-polyfill/full/implementation`; size reports

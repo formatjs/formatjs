@@ -1,7 +1,16 @@
 # formatjs_temporal
 
-Allocation-free `no_std` Temporal core. Implementation in progress.
-TypeScript package: [@formatjs/temporal](../../packages/temporal/README.md).
+Allocation-free `no_std` Temporal core with eight value types, `Now`, all sixteen
+calendars and IANA timezone providers. TypeScript package:
+[@formatjs/temporal](../../packages/temporal/README.md).
+
+Rust owns typed values and normalized math/parsing/formatting operations. JS owns
+ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
+ABI 9 exposes 62 Rust operations to WASM and native Hermes. The standalone SDK
+consumer installs Temporal and native Intl without a Rust toolchain.
+See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
+for current verification. Later sections retain historical implementation stages;
+their pending-work statements describe those stages.
 
 Core supplies Instant parsing, ISO conversion, all nine rounding modes, exact
 Duration parsing/formatting/totals, clock arithmetic, calendar-aware plain
@@ -38,7 +47,7 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Experimental Hermes/WASM bindings delegate normalized operations to this core. Complete native orchestration, Hermes SDK installation and Intl integration remain pending.
+checked. Hermes/WASM bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
@@ -97,7 +106,7 @@ and years -270000/+275000. TS runs the same corpus on Node and Hermes source/
 optimized bytecode. Native boundary cases also port pinned Test262 vectors for
 zero durations at date limits, normalized overflow, week prefixes and rounding
 beyond date limits. Clock carry validates the input endpoint before rounding;
-the rounded duration need not fit an actual date. Native Hermes bindings remain pending.
+the rounded duration need not fit an actual date. Native Hermes bindings expose these operations through ABI 9.
 
 ```rust
 use formatjs_temporal::{DateTimeUnit, Duration, PlainDate};

@@ -34,6 +34,7 @@ formatjs_library(
         "reference-full.ts",
         "should-polyfill-entry.ts",
         "size-benchmark.ts",
+        "startup-benchmark.ts",
         "wasm-benchmark.ts",
         "wasm-bridge.ts",
         "wasm-facade-benchmark.ts",
@@ -254,6 +255,10 @@ rolldown_bundle(
         "//crates/intl_datetimeformat:locale-data/en.json",
         "//packages/temporal:runtime_sources",
     ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "hermes-instant.ts",
     format = "iife",
     target = "es2022",
@@ -287,4 +292,22 @@ js_binary(
         "//packages/temporal:pkg",
     ],
     entry_point = "wasm-facade-benchmark.ts",
+)
+
+js_binary(
+    name = "startup_benchmark",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath startup-child.mjs)",
+    ],
+    data = [
+        "startup-child.mjs",
+        ":generated_package_json",
+        ":reference-bundle.js",
+        ":reference-full-bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "startup-benchmark.ts",
 )

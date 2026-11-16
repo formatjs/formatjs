@@ -1,7 +1,6 @@
 # @formatjs/temporal
 
-Temporal implementation in TypeScript with a Rust core. Private until the
-completion audit passes. Importing the namespace changes no globals; runtime
+Temporal implementation in TypeScript with a Rust core. Private pending release. Importing the namespace changes no globals; runtime
 arithmetic never delegates to native Temporal or another Temporal polyfill.
 
 ```ts
@@ -93,19 +92,16 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Remaining gaps stay visible:
+Rust exposes typed values and 62 normalized operations through ABI 9. JS retains
+ECMAScript coercion, brands, slots and object allocation. Backend metadata keeps
+`completeTemporalBackend: false` because this ABI is not an ECMAScript object
+runtime. The [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
+records Rust routes, independent controls and exact conformance scope.
 
-- Host/owned timezone-version formatting remains under audit.
-- Rust capability/API coverage needs its completion audit. Backend controls still
-  report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
-  allocation stay in JS.
-
-Implementation gaps are not allowed conformance exclusions.
-
-Full Intl compatibility gates cover 4,076 executions across TS, WASM and Hermes.
-Two pinned test files assume older IANA alias and CLDR zero-offset data;
-`tests/intl-compat-test262-count.json` records their reasons and sources.
-Manual `*_intl_*test262_full` diagnostics retain all 4,080 executions.
+Full Intl compatibility gates cover 4,078 executions with Node host Intl and
+4,076 with native SDK Intl. Pinned IANA alias and CLDR zero-offset assumptions
+account for the documented exclusions; manifests retain reasons and sources.
+Manual unfiltered diagnostics keep all 4,080 executions.
 
 Legacy host formatting supports extended plain Gregorian dates, times and
 year-months through both single-value and range APIs. It uses captured
@@ -174,7 +170,7 @@ data and release artifacts use Bazel.
 ```sh
 bazel test -c opt //packages/temporal:package_test
 bazel test -c opt //packages/temporal:wasm_package_test //packages/temporal:wasm_native_package_test
-bazel test -c opt //packages/temporal:locale_datetimeformat_test262
+bazel test -c opt //packages/temporal:compact_calendar_datetimeformat_test262
 bazel test -c opt //crates/temporal:temporal_test //crates/temporal:ffi_test
 ```
 
@@ -198,7 +194,8 @@ Compact-calendar validation includes every year and month in the existing full
 ICU4X packs: 1,204,680 years and 14,899,816 months. This verifies the arithmetic
 port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
-Full Temporal/Intl compliance remains incomplete.
+The pinned full Temporal-feature corpus passes with only the documented
+IANA/CLDR data exclusions; coverage details follow below.
 
 Current separately compressed module graphs measure 72,018 bytes gzip for default
 and 342,376 for standalone. Both include compact IANA histories. Native-data WASM
@@ -207,11 +204,14 @@ both WASM profiles trail TS. Full host-Intl reference bundle measures 23,226 byt
 data policies differ. Host Intl is an allowed runtime dependency.
 See benchmarks/temporal for versioned methods, scopes and results.
 
-Fresh full namespace and Intl compatibility gates pass 73,368 overlapping suite
-executions across TS, WASM and Hermes source/HBC profiles. Unique unions contain
-13,324 scenarios per profile and two documented IANA/CLDR data exclusions. Node
-class and full Intl gates use different formatter providers. A separate full
-host-Intl diagnostic passes 4,078/4,080, failing only the stale timezone-link test.
+Final coverage includes every Temporal-feature file in pinned Test262, including
+DateTimeFormat, DurationFormat and staging. Six coherent profiles cover default
+TS and native-data WASM on Node, plus TS/native SDK on Hermes source/HBC.
+Each Node profile passes 13,474 unique scenarios; each Hermes profile passes
+13,472. Only documented IANA/CLDR data-version cases are excluded. The coherent
+matrix has 98,716 overlapping suite executions; report unions verify exact
+coverage separately. No Realm exclusion applies to this pin; unsupported Hermes
+Realm hooks and oracle authority limits remain documented.
 Legacy host formatting compares host and owned offsets. When rules differ or the
 host lacks a zone, it formats owned local fields with a localized numeric offset
 label. Matching host output stays native. This adds code, no locale or timezone data.

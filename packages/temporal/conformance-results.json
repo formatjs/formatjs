@@ -1752,22 +1752,32 @@
     "date": "2026-11-16",
     "profiles": {
       "typescript": {
-        "executions": 12228,
+        "executions": 12234,
         "failures": 0,
         "trackedFailures": 0
       },
       "wasm": {
-        "executions": 12228,
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesTsSource": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesTsBytecode": {
+        "executions": 12234,
         "failures": 0,
         "trackedFailures": 0
       },
       "hermesSdkSource": {
-        "executions": 12228,
+        "executions": 12234,
         "failures": 0,
         "trackedFailures": 0
       },
       "hermesSdkBytecode": {
-        "executions": 12228,
+        "executions": 12234,
         "failures": 0,
         "trackedFailures": 0
       }
@@ -1783,12 +1793,13 @@
       "zoned": 1804,
       "calendars": 2974,
       "now": 138,
-      "installation": 26
+      "installation": 26,
+      "staging": 6
     },
-    "aggregateExecutions": 48912,
-    "targets": 44,
-    "note": "Complete class globs plus calendars, Now and installation. Calendar selections overlap class suites; counts are not unique scenarios. Full intl402/Temporal diagnostics are separate.",
-    "realmAudit": "Pinned built-ins/Temporal, Date/prototype/toTemporalInstant and intl402/Temporal files contain no createRealm calls. Node installs child realms; Hermes eshost lacks createRealm/evalScript. No Realm exclusions applied to these selections.",
+    "aggregateExecutions": 73404,
+    "targets": 72,
+    "note": "Complete namespace globs, calendars, Now, installation and three staging files across six profiles. Calendar selections overlap class suites. Each profile uses the same Temporal build and Intl provider throughout; formatter suites and unique result sets are recorded in completionAudit.",
+    "realmAudit": "Every pinned Temporal-feature file was checked for createRealm/evalScript references; none require them. Node installs child realms; Hermes eshost lacks these hooks. No Realm exclusions applied. This does not establish untested cross-Realm semantics.",
     "rawIntl": {
       "executionsPerProfile": 4080,
       "passesPerProfile": 4076,
@@ -1808,8 +1819,22 @@
     },
     "uniqueCoverage": {
       "typescript": {
-        "uniqueFiles": 6662,
-        "uniqueScenarios": 13324,
+        "uniqueFiles": 6737,
+        "uniqueScenarios": 13474,
+        "failures": 0,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+        "extraFiles": []
+      },
+      "wasm": {
+        "uniqueFiles": 6737,
+        "uniqueScenarios": 13474,
+        "failures": 0,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+        "extraFiles": []
+      },
+      "hermesTsSource": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
         "failures": 0,
         "missingFiles": [
           "intl402/Temporal/ZonedDateTime/links.js",
@@ -1817,9 +1842,9 @@
         ],
         "extraFiles": []
       },
-      "wasm": {
-        "uniqueFiles": 6662,
-        "uniqueScenarios": 13324,
+      "hermesTsBytecode": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
         "failures": 0,
         "missingFiles": [
           "intl402/Temporal/ZonedDateTime/links.js",
@@ -1828,8 +1853,8 @@
         "extraFiles": []
       },
       "hermesSdkSource": {
-        "uniqueFiles": 6662,
-        "uniqueScenarios": 13324,
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
         "failures": 0,
         "missingFiles": [
           "intl402/Temporal/ZonedDateTime/links.js",
@@ -1838,8 +1863,8 @@
         "extraFiles": []
       },
       "hermesSdkBytecode": {
-        "uniqueFiles": 6662,
-        "uniqueScenarios": 13324,
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
         "failures": 0,
         "missingFiles": [
           "intl402/Temporal/ZonedDateTime/links.js",
@@ -1848,18 +1873,17 @@
         "extraFiles": []
       }
     },
-    "uniqueCoverageScope": "Fresh post-fix union of complete class/calendar/Now/installation reports and full Intl compatibility gates, compared with all pinned source files. Only the two explicitly excluded Intl files are missing. Node TS/WASM class gates use host Intl; their full Intl gates install owned FormatJS Intl, so those unions combine formatter providers. SDK class and Intl gates use native SDK Intl. WASM uses native-data-only mode.",
-    "sourceScopeNote": "Final post-fix run: 53/53 targets pass, comprising 44 namespace, six full Intl compatibility and three numeric lunar boundary targets. 73,368 overlapping Test262 suite executions; unique counts are reported separately.",
+    "uniqueCoverageScope": "Exact union of all Temporal-feature scenarios in pinned Test262, including staging, DateTimeFormat and DurationFormat. Every profile uses consistent build flags and formatter provider. Only documented data-version exclusions are missing. WASM uses native-data-only mode.",
+    "sourceScopeNote": "92 distinct gates pass. The coherent 90-target matrix contains 98,716 overlapping suite executions; six exact unions are reported separately. SDK class gates were rechecked with native Intl installed; two additional legacy formatter gates also pass.",
     "compatibilityGates": {
       "targets": 6,
-      "executionsPerTarget": 4076,
-      "aggregateExecutions": 24456,
+      "aggregateExecutions": 24460,
       "failures": 0,
       "reports": {
-        "locale_intl_compat_test262": 4076,
-        "wasm_intl_compat_test262": 4076,
-        "locale_intl_compat_hermes_test262": 4076,
-        "locale_intl_compat_hermes_bytecode_test262": 4076,
+        "host_intl_compat_test262": 4078,
+        "wasm_host_intl_compat_test262": 4078,
+        "ts_intl_compat_hermes_source_test262": 4076,
+        "ts_intl_compat_hermes_bytecode_test262": 4076,
         "sdk_intl_compat_hermes_source_test262": 4076,
         "sdk_intl_compat_hermes_bytecode_test262": 4076
       }
@@ -1887,7 +1911,7 @@
         "missingFiles": [],
         "extraFiles": []
       },
-      "scope": "Actual default TS namespace with captured host Intl under Node 26.8.1. Only the stale CST6CDT link assertions fail. Explicit offset-zero formatting matches the pinned test on this host. No exclusions applied to this raw diagnostic."
+      "scope": "Historical raw default TS diagnostic under Node 26.8.1, restricted to the original three roots. Only stale CST6CDT link assertions fail. Explicit offset-zero formatting matches the pinned test on this host. No exclusions applied to that raw diagnostic."
     }
   },
   "rustOperationAudit": {
@@ -1926,9 +1950,11 @@
     "note": "Valid Date limits and neighboring days. Shared corpus runs on Node TS/both WASM entries and Hermes source/optimized bytecode. Owned calendar field consistency; captured Gregorian controls clocks and timezone names. Outside independent astronomical oracle bounds, not an astronomical accuracy claim."
   },
   "currentBenchmarkSnapshots": [
+    "benchmarks/temporal/completion-startup-results.json",
+    "benchmarks/temporal/completion-hermes-results.json",
+    "benchmarks/temporal/host-timezone-formatting-size-results.json",
     "benchmarks/temporal/lunar-boundary-facade-results.json",
-    "benchmarks/temporal/lunar-boundary-wasm-results.json",
-    "benchmarks/temporal/lunar-boundary-backend-size-results.json"
+    "benchmarks/temporal/lunar-boundary-wasm-results.json"
   ],
   "rustDateZonedConversion": {
     "method": "PlainDate::to_zoned_date_time",
@@ -1980,5 +2006,72 @@
     "newGeneratedData": false,
     "sizeSnapshot": "benchmarks/temporal/host-timezone-formatting-size-results.json",
     "remaining": "Final complete conformance/delivery audit, current Hermes and cold-load measurements."
+  },
+  "completionAudit": {
+    "date": "2026-11-16",
+    "runtimeCommit": "c6bb171f5ce805d2eeec139bed32977323e426a8",
+    "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+    "evidence": "packages/temporal/completion-audit-results.json",
+    "profiles": {
+      "typescript": {
+        "suiteExecutions": 16454,
+        "uniqueExecutions": 13474,
+        "uniqueFiles": 6737,
+        "passing": 13474,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"]
+      },
+      "wasm": {
+        "suiteExecutions": 16454,
+        "uniqueExecutions": 13474,
+        "uniqueFiles": 6737,
+        "passing": 13474,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"]
+      },
+      "hermesTsSource": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesTsBytecode": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesSdkSource": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesSdkBytecode": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      }
+    },
+    "distinctPassingTargets": 92,
+    "sdkClassTargetsRecheckedWithNativeIntl": 24,
+    "untrackedFailures": 0,
+    "realmExclusions": 0,
+    "note": "Node TS/WASM use host Intl; Hermes TS/SDK use full native SDK Intl in source/HBC. Two Node scenarios and four Hermes scenarios are excluded solely for pinned IANA/CLDR data assumptions. Existing raw diagnostics retain them. Test evidence does not prove every possible semantic edge or unsupported Realm infrastructure."
   }
 }

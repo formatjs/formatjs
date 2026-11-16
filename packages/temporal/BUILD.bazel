@@ -1100,6 +1100,15 @@ _INTL_COMPAT_PATTERNS = [
     _TEST262_ROOT + "/test/intl402/Temporal/**/!(links|offset-time-zones).js",
 ]
 
+_HOST_INTL_COMPAT_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/!(links).js",
+]
+
+_STAGING_PATTERNS = [
+    _TEST262_ROOT + "/test/staging/Temporal/**/*.js",
+    _TEST262_ROOT + "/test/staging/sm/Date/to-temporal-instant.js",
+]
+
 _ZONED_EDGE_PATTERNS = [
     _TEST262_ROOT + "/test/intl402/Temporal/" + name + "/**/*sub-minute-offset.js"
     for name in [
@@ -1421,6 +1430,7 @@ _INSTANT_PATTERNS = [
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
         ] + ([
@@ -1627,6 +1637,7 @@ js_test(
             "instant",
             [],
         ),
+        ("compact_calendar_datetimeformat_test262", "compact-calendar", []),
         ("wasm_legacy_datetimeformat_test262", "wasm", []),
         ("locale_datetimeformat_test262", "locale", []),
         ("wasm_locale_datetimeformat_test262", "wasm-locale", []),
@@ -1662,6 +1673,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
         "@com_github_tc39_test262//:test262-temporal-year-month-copy",
         "@com_github_tc39_test262//:test262-temporal-zoned-copy",
     ],
@@ -1703,6 +1715,7 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
             "@hermes//:hermesc",
@@ -2525,17 +2538,46 @@ sh_test(
     env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
 )
 
+formatjs_library(
+    name = "typescript_hermes_prelude_typecheck",
+    testonly = True,
+    srcs = ["tests/typescript-prelude.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [":types"],
+)
+
+rolldown_bundle(
+    name = "typescript-hermes-payload",
+    srcs = [
+        "tests/typescript-prelude.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/typescript-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
 [
     sh_test(
-        name = ("sdk_hermes_" if backend == "sdk" else "native_iso_hermes_") + suite + "_" + mode + "_test262",
+        name = ("sdk_hermes_" if backend == "sdk" else "ts_hermes_" if backend == "typescript" else "native_iso_hermes_") + suite + "_" + mode + "_test262",
         size = "medium",
         timeout = "long" if suite == "calendars" else "moderate",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
             "$(rootpath tests/hermes-host.sh)",
-            "$(rootpath //native/hermes:hermes_runner)",
-            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath native-iso-payload.js)",
+            "$(rootpath //native/hermes/tests:test262_runtime)" if backend in [
+                "sdk",
+                "typescript",
+            ] else "$(rootpath //native/hermes:hermes_runner)",
+            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath :typescript-hermes-payload.js)" if backend == "typescript" else "$(rootpath native-iso-payload.js)",
             mode,
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
@@ -2543,19 +2585,26 @@ sh_test(
             "Temporal." + backend + "." + suite,
         ] + patterns,
         data = [
-            "tests/sdk-prelude.js" if backend == "sdk" else "native-iso-payload.js",
+            "tests/sdk-prelude.js" if backend == "sdk" else ":typescript-hermes-payload.js" if backend == "typescript" else "native-iso-payload.js",
             "tests/hermes-host.sh",
             baseline,
             ":instant_hermes_harness",
-            "//native/hermes:hermes_runner",
+            "//native/hermes/tests:test262_runtime" if backend in [
+                "sdk",
+                "typescript",
+            ] else "//native/hermes:hermes_runner",
             "//tools/test262:validator",
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
             "@hermes//:hermesc",
         ],
         env = {
             "TZ": "UTC",
-        } | ({"FORMATJS_TEMPORAL_SDK": "1"} if backend == "sdk" else {
+        } | ({
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+            "FORMATJS_TEMPORAL_SDK": "1",
+        } if backend == "sdk" else {"FORMATJS_TEMPORAL_NATIVE_INTL": "1"} if backend == "typescript" else {
             "FORMATJS_TEMPORAL_RUST_ISO": "1",
         }),
     )
@@ -2603,10 +2652,12 @@ sh_test(
         ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
         ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
         ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+        ("staging", _STAGING_PATTERNS, "tests/staging-test262-count.json"),
     ]
     for backend in [
         "rustISO",
         "sdk",
+        "typescript",
     ]
     for mode in [
         "source",
@@ -2709,6 +2760,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
         "@com_github_tc39_test262//:test262-temporal-year-month-copy",
         "@com_github_tc39_test262//:test262-temporal-zoned-copy",
     ],
@@ -2759,6 +2811,7 @@ _CLASS_TEST262_SUITES = [
     ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
     ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
     ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+    ("staging", _STAGING_PATTERNS, "tests/staging-test262-count.json"),
 ]
 
 [
@@ -2830,6 +2883,8 @@ _CLASS_TEST262_SUITES = [
         tags = tags,
     )
     for name, prelude, source, baseline, patterns, tags in [
+        ("host_intl_compat_test262", "compact-calendar-realm-prelude.js", "compact-calendar-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
+        ("wasm_host_intl_compat_test262", "wasm-realm-prelude.js", "wasm-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
         ("locale_intl_compat_test262", "locale-realm-prelude.js", "locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
         ("wasm_intl_compat_test262", "wasm-locale-realm-prelude.js", "wasm-locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
         (
@@ -2970,23 +3025,23 @@ rolldown_bundle(
 
 [
     sh_test(
-        name = "sdk_" + suite + "_hermes_" + mode + "_test262",
+        name = backend + "_" + suite + "_hermes_" + mode + "_test262",
         size = "enormous" if suite.startswith("intl") else "medium",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
             "$(rootpath tests/hermes-host.sh)",
             "$(rootpath //native/hermes/tests:test262_runtime)",
-            "$(rootpath tests/sdk-prelude.js)",
+            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath :typescript-hermes-payload.js)",
             mode,
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.SDK." + suite,
+            "Temporal." + backend + "." + suite,
         ] + patterns,
         data = [
             "tests/hermes-host.sh",
-            "tests/sdk-prelude.js",
+            "tests/sdk-prelude.js" if backend == "sdk" else ":typescript-hermes-payload.js",
             ":instant_hermes_harness",
             "@com_github_tc39_test262//:test262-durationformat-copy",
             baseline,
@@ -3001,15 +3056,15 @@ rolldown_bundle(
             "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
             "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
             "@hermes//:hermesc",
         ],
         env = {
             "TZ": "UTC",
-            "FORMATJS_TEMPORAL_SDK": "1",
             "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
-        },
+        } | ({"FORMATJS_TEMPORAL_SDK": "1"} if backend == "sdk" else {}),
         tags = tags,
     )
     for mode in [
@@ -3050,6 +3105,10 @@ rolldown_bundle(
             ],
             [],
         ),
+    ]
+    for backend in [
+        "sdk",
+        "ts",
     ]
 ]
 
@@ -3161,6 +3220,7 @@ genrule(
         env = {"TZ": "UTC"},
     )
     for profile, prelude in [
+        ("compact_calendar", "compact-calendar"),
         ("legacy", "instant"),
         ("locale", "locale"),
         ("wasm_legacy", "wasm"),
@@ -3320,6 +3380,7 @@ test262_harness_bin.test262_harness_binary(
         "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
         "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
         "@com_github_tc39_test262//:test262-temporal-year-month-copy",
         "@com_github_tc39_test262//:test262-temporal-zoned-copy",
     ],
