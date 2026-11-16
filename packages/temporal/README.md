@@ -88,15 +88,24 @@ Numeric Date and Instant formatting, plus ZonedDateTime locale methods, restore
 non-Gregorian calendar fields and eras using the target timezone's local ISO date.
 Captured host formatters retain weekday, clock and timezone labels. Gregorian era
 probes handle BCE dates even when the host falls back to a non-English locale.
+Chinese/Dangi numeric inputs also recover when host ICU fails at valid Date
+bounds. Safe-year labels retain the original local date, clock and timezone;
+ranges restore both endpoints. Boundary checks verify field consistency, not
+independent astronomical accuracy outside the documented oracle ranges.
 
 Remaining gaps stay visible:
 
-- Legacy numeric Chinese/Dangi boundary coverage remains incomplete.
+- Host/owned timezone-version formatting remains under audit.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
 
 Implementation gaps are not allowed conformance exclusions.
+
+Full Intl compatibility gates cover 4,076 executions across TS, WASM and Hermes.
+Two pinned test files assume older IANA alias and CLDR zero-offset data;
+`tests/intl-compat-test262-count.json` records their reasons and sources.
+Manual `*_intl_*test262_full` diagnostics retain all 4,080 executions.
 
 Legacy host formatting supports extended plain Gregorian dates, times and
 year-months through both single-value and range APIs. It uses captured

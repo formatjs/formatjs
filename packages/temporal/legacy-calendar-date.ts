@@ -238,25 +238,34 @@ export function legacyCalendarParts(
   )
     return undefined
   if (value.plain !== true) {
-    if (calendar === 'chinese' || calendar === 'dangi') return undefined
     if (
       !Number.isFinite(value.milliseconds) ||
       Math.abs(value.milliseconds) > limit
     )
       return undefined
-    const epoch = legacyISOEpochDay(options.timeZone, value.milliseconds)
+    const lunar = calendar === 'chinese' || calendar === 'dangi'
+    let epoch = lunar
+      ? undefined
+      : legacyISOEpochDay(options.timeZone, value.milliseconds)
     let raw: Intl.DateTimeFormatPart[]
     let labels: Intl.DateTimeFormat
+    let surrogate: number | undefined
     try {
       raw = parts.call(value.formatter, value.milliseconds)
       if (
-        !raw.some(part => ['year', 'month', 'day', 'era'].includes(part.type))
+        !raw.some(part =>
+          ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'].includes(
+            part.type
+          )
+        )
       )
         return raw
+      if (lunar) return correctLunisolarParts(value, raw, resolved)
       labels = calendarLabelFormatter(value.formatter, options, raw)
     } catch (error) {
       if (!(error instanceof RangeError) && !(error instanceof TypeError))
         throw error
+      epoch ??= legacyISOEpochDay(options.timeZone, value.milliseconds)
       // Some host calendars fail at valid Date bounds; retain their clock and zone via Gregorian fields.
       let clock = clockFormatters.get(value.formatter)
       if (!clock) {
@@ -267,10 +276,13 @@ export function legacyCalendarParts(
         clockFormatters.set(value.formatter, clock)
       }
       const clockParts = parts.call(clock, value.milliseconds)
-      labels = calendarLabelFormatter(value.formatter, options, clockParts)
+      labels = calendarLabelFormatter(
+        value.formatter,
+        options,
+        lunar ? parts.call(value.formatter, reference) : clockParts
+      )
       const local = epoch * dayMilliseconds
-      const surrogate =
-        local - Math.floor((local - 946684800000) / cycle) * cycle
+      surrogate = local - Math.floor((local - 946684800000) / cycle) * cycle
       raw = parts
         .call(labels, surrogate)
         .map(part =>
@@ -279,7 +291,16 @@ export function legacyCalendarParts(
             : part
         )
     }
-    return restoreCalendarParts(value, raw, epoch, labels, options, parts)
+    // Keep the original local day when labels use a UTC surrogate.
+    if (lunar)
+      return correctLunisolarParts(
+        {...value, formatter: labels},
+        raw,
+        resolved,
+        surrogate,
+        epoch
+      )
+    return restoreCalendarParts(value, raw, epoch!, labels, options, parts)
   }
   // Whole Gregorian cycles preserve weekday and clock in the plain UTC projection.
   const surrogate =
@@ -396,8 +417,6 @@ export function legacyCalendarRangeParts(
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
   const calendar = resolved.call(first.formatter).calendar
-  if (first.plain !== true && (calendar === 'chinese' || calendar === 'dangi'))
-    return undefined
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||

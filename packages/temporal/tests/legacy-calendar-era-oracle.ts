@@ -189,3 +189,145 @@ export function checkLegacyCalendarEras(
   }
   return checks
 }
+
+export function checkLegacyLunarBoundaries(
+  Temporal: Namespace,
+  Native: typeof Intl.DateTimeFormat,
+  nativeParts: Intl.DateTimeFormat['formatToParts'] = Native.prototype
+    .formatToParts
+): number {
+  const map = (parts: Intl.DateTimeFormatPart[]) =>
+    Object.fromEntries(parts.map(part => [part.type, part.value]))
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    weekday: 'short',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'longOffset',
+  }
+  const fields = (value: InstanceType<Namespace['ZonedDateTime']>) => ({
+    relatedYear: String(value.year),
+    month:
+      String(+value.monthCode.slice(1, 3)) +
+      (value.monthCode.endsWith('L') ? 'bis' : ''),
+    day: String(value.day),
+  })
+  let checks = 0
+  // Field consistency outside the independent astronomical oracle's bounds.
+  for (const calendar of ['chinese', 'dangi']) {
+    for (const milliseconds of [
+      -8_640_000_000_000_000,
+      -8_640_000_000_000_000 + 86_400_000,
+      8_640_000_000_000_000 - 86_400_000,
+      8_640_000_000_000_000,
+    ]) {
+      for (const timeZone of ['UTC', 'Asia/Shanghai', 'Pacific/Honolulu']) {
+        const context = `${calendar} ${milliseconds} ${timeZone}`
+        const value = new Temporal.ZonedDateTime(
+          BigInt(milliseconds) * 1_000_000n,
+          timeZone,
+          calendar
+        )
+        const formatter = new Intl.DateTimeFormat('en-US-u-nu-latn', {
+          ...options,
+          calendar,
+          timeZone,
+        })
+        const control = new Native('en-US-u-nu-latn', {
+          ...options,
+          calendar: 'gregory',
+          timeZone,
+        })
+        const wanted = fields(value),
+          clock = map(nativeParts.call(control, milliseconds))
+        for (const input of [
+          milliseconds,
+          new Date(milliseconds),
+          value.toInstant(),
+        ]) {
+          let parts: Intl.DateTimeFormatPart[]
+          try {
+            parts = formatter.formatToParts(input as Date)
+          } catch (error) {
+            throw new Error(`${context}: ${String(error)}`)
+          }
+          const actual = map(parts)
+          for (const [key, expected] of Object.entries(wanted))
+            equal(actual[key], expected, `${context} ${key}`)
+          for (const key of [
+            'weekday',
+            'hour',
+            'minute',
+            'dayPeriod',
+            'timeZoneName',
+          ])
+            equal(actual[key], clock[key], `${context} ${key}`)
+          equal(
+            formatter.format(input as Date),
+            parts.map(part => part.value).join(''),
+            context
+          )
+        }
+        equal(
+          value.toLocaleString('en-US-u-nu-latn', {...options, calendar}),
+          formatter.format(milliseconds),
+          context
+        )
+        const end = Math.min(milliseconds + 86_400_000, 8_640_000_000_000_000)
+        for (const convert of [
+          (value: number) => value,
+          (value: number) => new Date(value),
+          (value: number) => Temporal.Instant.fromEpochMilliseconds(value),
+        ]) {
+          const parts = formatter.formatRangeToParts(
+            convert(milliseconds) as Date,
+            convert(end) as Date
+          )
+          equal(
+            formatter.formatRange(
+              convert(milliseconds) as Date,
+              convert(end) as Date
+            ),
+            parts.map(part => part.value).join(''),
+            context
+          )
+          if (end > milliseconds) {
+            let rejected = false
+            try {
+              formatter.formatRange(
+                convert(end) as Date,
+                convert(milliseconds) as Date
+              )
+            } catch (error) {
+              rejected = error instanceof RangeError
+            }
+            assert(rejected, `${context} reversed range`)
+          }
+          for (const [source, epoch] of [
+            ['startRange', milliseconds],
+            ['endRange', end],
+          ] as const) {
+            const actual = map(
+              parts.filter(
+                part => part.source === source || part.source === 'shared'
+              )
+            )
+            const expected = fields(
+              new Temporal.ZonedDateTime(
+                BigInt(epoch) * 1_000_000n,
+                timeZone,
+                calendar
+              )
+            )
+            for (const [key, value] of Object.entries(expected))
+              equal(actual[key], value, `${context} ${source} ${key}`)
+          }
+        }
+        checks++
+      }
+    }
+  }
+  return checks
+}

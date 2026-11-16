@@ -95,8 +95,14 @@ identify the local ISO date in the formatter's timezone; original weekday, clock
 and timezone labels survive. Gregorian era probes compare captured positive-era
 labels and request Latin digits explicitly, avoiding English-only assumptions.
 An ISO-calendar probe can omit the era on older ICU, turning BCE years positive.
-Full legacy Intl compliance remains unproven; numeric lunar boundaries still need
-coverage.
+Full legacy Intl compliance remains under audit. Numeric lunar boundaries now
+recover from host ICU failures through the same safe-year path, preserving the
+original local ISO day when labels use UTC. Safe reference patterns retain lunar
+year requests omitted from native resolved options. TS and both WASM profiles
+check 24 calendar/date/timezone combinations each, including numeric Date,
+Instant, ZonedDateTime locale methods, clocks and ranges. These verify field
+consistency beyond the independent astronomical oracle bounds; they do not extend
+those bounds. Hermes-specific boundary controls remain pending.
 
 The numeric-era corpus selects 81 independent ICU rows across nine calendars,
 including full Date bounds, BCE years, the 1873 Japanese boundary and modern

@@ -1,9 +1,22 @@
 # Temporal benchmarks
 
-TS timezone/ISO primitives look worth pursuing. Full Temporal size, speed and
-compliance remain unproven. Runtime and tests live in
+Runtime and tests live in
 [`packages/temporal`](../../packages/temporal/README.md); this directory owns
-benchmarks and recorded measurements.
+benchmarks and recorded measurements. The package remains private pending its
+[completion audit](../../knowledge-base/015a-temporal-completion-audit.md).
+
+Latest shipped-consumer measurement: default TS 68,089 bytes gzip; standalone
+336,635; forced `temporal-polyfill/full/implementation` 23,226. Default TS still
+includes owned IANA histories; the reference uses host Intl calendars/timezones.
+Host Intl is allowed for both. This size gap includes a data-policy difference,
+not just implementation code. These are bundled-consumer sizes; separately
+compressed ESM files have different totals.
+
+The native-data WASM graph is 481,677 bytes gzip including JS glue and binary;
+hybrid WASM is 514,393. Full WASM and native Hermes bindings exist. Source and
+bytecode Test262 gates cover the namespace; passing tests do not close the whole
+completion audit. See `rust-zoned-replacements-size-results.json` and
+`rust-zoned-replacements-backend-size-results.json` for measurement scope.
 
 Earlier reports use the basic ISO/Gregorian reference entry. Current table-calendar
 facade comparisons force `temporal-polyfill/full/implementation`; size reports
@@ -11,9 +24,9 @@ retain both entries. Primitive WASM comparisons retain the basic entry. The
 19,393-byte historical reference size describes that basic build. See the
 [upstream entrypoint documentation](https://github.com/fullcalendar/temporal-polyfill/blob/main/polyfill/README.md#package-entrypoints).
 
-Current runtime exposes all 16 calendars. Latest profile has 26 facade workloads.
-Historical sections retain earlier implementation stages and measurements.
-Native Intl integration, full WASM facade/data and native Hermes bindings remain open.
+Current runtime exposes all 16 calendars. Facade profiles include 26 workloads.
+Sections below retain historical implementation stages and measurements; their
+open-work statements describe those stages.
 
 ## Locale methods
 

@@ -24,6 +24,7 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
+const truncate = Math.trunc
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   return value.plain === true && Math.abs(value.milliseconds) > limit
@@ -120,12 +121,21 @@ function rangeShifts(
     : [shift(first), shift(last)]
 }
 
+function validateRange(
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection
+): void {
+  if (truncate(first.milliseconds) > truncate(last.milliseconds))
+    throw new RangeError('Invalid time range')
+}
+
 export function legacyDateTimeRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
+  validateRange(first, last)
   const extended = legacyCalendarRangeParts(
     first,
     last,
@@ -165,6 +175,7 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
+  validateRange(first, last)
   const extended = legacyCalendarRangeParts(
     first,
     last,

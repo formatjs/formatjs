@@ -231,6 +231,20 @@ js_test(
     ]
 ]
 
+# gazelle:ignore
+formatjs_library(
+    name = "legacy_calendar_oracle_typecheck",
+    testonly = True,
+    srcs = [
+        "tests/legacy-calendar-era-host.ts",
+        "tests/legacy-calendar-era-oracle.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [":types"],
+)
+
 rolldown_bundle(
     name = "legacy-calendar-era-oracle",
     srcs = ["tests/legacy-calendar-era-oracle.ts"],
@@ -357,6 +371,29 @@ sh_test(
         "@hermes//:hermesc",
     ],
 )
+
+[
+    js_test(
+        name = profile + "legacy_lunar_boundary_test",
+        size = "small",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath :legacy-calendar-era-oracle.js)",
+        ],
+        data = [
+            ":legacy-calendar-era-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+        ],
+        entry_point = "tests/legacy-lunar-boundary.test.mjs",
+        env = {"TZ": "UTC"} | ({"FORMATJS_TEMPORAL_LUNAR_WASM": mode} if mode else {}),
+    )
+    for profile, mode in [
+        ("", ""),
+        ("wasm_", "hybrid"),
+        ("wasm_native_", "native"),
+    ]
+]
 
 js_test(
     name = "legacy_lunisolar_date_test",
@@ -967,6 +1004,12 @@ _LOCALE_PATTERNS = [
     ]
 ] + [
     _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js",
+]
+
+# Pinned tests assume older IANA links and CLDR zero-offset rendering.
+# Each basename occurs once; raw full targets retain both files.
+_INTL_COMPAT_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/!(links|offset-time-zones).js",
 ]
 
 _ZONED_EDGE_PATTERNS = [
@@ -1609,6 +1652,8 @@ test262_harness_bin.test262_harness_binary(
         ),
         ("locale_hermes_test262", "source", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
         ("locale_hermes_bytecode_test262", "bytecode", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
+        ("locale_intl_compat_hermes_test262", "source", _INTL_COMPAT_PATTERNS, "tests/intl-compat-test262-count.json", []),
+        ("locale_intl_compat_hermes_bytecode_test262", "bytecode", _INTL_COMPAT_PATTERNS, "tests/intl-compat-test262-count.json", []),
         (
             "locale_intl_hermes_test262_full",
             "source",
@@ -2663,6 +2708,53 @@ _CLASS_TEST262_SUITES = [
     for suite, patterns, baseline in _CLASS_TEST262_SUITES
 ]
 
+[
+    sh_test(
+        name = name,
+        size = "enormous",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :wasm_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.Intl." + name,
+            "$(rootpath %s)" % baseline,
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath %s)" % prelude,
+        ] + patterns,
+        data = [
+            ":wasm_harness",
+            "//tools/test262:validator",
+            baseline,
+            prelude,
+            source,
+            "//crates/temporal:wasm_backend",
+        ],
+        env = {"TZ": "UTC"},
+        tags = tags,
+    )
+    for name, prelude, source, baseline, patterns, tags in [
+        ("locale_intl_compat_test262", "locale-realm-prelude.js", "locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
+        ("wasm_intl_compat_test262", "wasm-locale-realm-prelude.js", "wasm-locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
+        (
+            "wasm_intl_test262_full",
+            "wasm-locale-realm-prelude.js",
+            "wasm-locale-prelude-source.js",
+            "tests/intl-full-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+    ]
+]
+
 rolldown_bundle(
     name = "public-calendar-oracle",
     srcs = ["tests/public-calendar-oracle.ts"],
@@ -2791,7 +2883,7 @@ rolldown_bundle(
 [
     sh_test(
         name = "sdk_" + suite + "_hermes_" + mode + "_test262",
-        size = "enormous" if suite == "intl" else "medium",
+        size = "enormous" if suite.startswith("intl") else "medium",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
@@ -2837,6 +2929,12 @@ rolldown_bundle(
         "bytecode",
     ]
     for suite, baseline, patterns, tags in [
+        (
+            "intl_compat",
+            "tests/intl-compat-test262-count.json",
+            _INTL_COMPAT_PATTERNS,
+            [],
+        ),
         (
             "intl",
             "tests/intl-full-test262-count.json",

@@ -1747,5 +1747,125 @@
       "benchmarks/temporal/rust-zoned-replacements-backend-size-results.json"
     ],
     "remainingAudit": "knowledge-base/015a-temporal-completion-audit.md"
+  },
+  "fullNamespaceAudit": {
+    "date": "2026-11-16",
+    "profiles": {
+      "typescript": {
+        "executions": 12228,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "wasm": {
+        "executions": 12228,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesSdkSource": {
+        "executions": 12228,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesSdkBytecode": {
+        "executions": 12228,
+        "failures": 0,
+        "trackedFailures": 0
+      }
+    },
+    "suiteExecutions": {
+      "instant": 934,
+      "date": 1308,
+      "datetime": 1552,
+      "time": 986,
+      "yearmonth": 1022,
+      "monthday": 398,
+      "duration": 1086,
+      "zoned": 1804,
+      "calendars": 2974,
+      "now": 138,
+      "installation": 26
+    },
+    "aggregateExecutions": 48912,
+    "targets": 44,
+    "note": "Complete class globs plus calendars, Now and installation. Calendar selections overlap class suites; counts are not unique scenarios. Full intl402/Temporal diagnostics are separate.",
+    "realmAudit": "Pinned built-ins/Temporal, Date/prototype/toTemporalInstant and intl402/Temporal files contain no createRealm calls. Node installs child realms; Hermes eshost lacks createRealm/evalScript. No Realm exclusions applied to these selections.",
+    "rawIntl": {
+      "executionsPerProfile": 4080,
+      "passesPerProfile": 4076,
+      "failuresPerProfile": 4,
+      "profiles": [
+        "nodeOwnedIntl",
+        "hermesOwnedIntlSource",
+        "hermesOwnedIntlBytecode",
+        "hermesSdkIntlSource",
+        "hermesSdkIntlBytecode"
+      ],
+      "excludedFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "note": "Each file fails in default and strict scenarios. These unfiltered manual diagnostics retain every failure; compatibility selections document current IANA/CLDR data conflicts separately."
+    },
+    "uniqueCoverage": {
+      "typescript": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 4,
+        "missingFiles": [],
+        "extraFiles": []
+      },
+      "hermesSdkSource": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 4,
+        "missingFiles": [],
+        "extraFiles": []
+      },
+      "hermesSdkBytecode": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 4,
+        "missingFiles": [],
+        "extraFiles": []
+      },
+      "wasm": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 4,
+        "missingFiles": [],
+        "extraFiles": []
+      }
+    },
+    "uniqueCoverageScope": "Union of complete class/calendar/Now/installation reports and raw intl402/Temporal reports, compared against all pinned built-ins/Temporal, Date/prototype/toTemporalInstant and intl402/Temporal source files. Four failures are the documented data conflicts; no files missing or extra. WASM uses native-data-only mode. Counts precede the numeric lunar boundary fix.",
+    "sourceScopeNote": "Full namespace/Intl counts above precede the numeric lunar boundary fallback change. Final conformance refresh remains required after that change."
+  },
+  "rustOperationAudit": {
+    "declaredOperations": 62,
+    "successfulOperations": 62,
+    "publicFacadeOperations": 58,
+    "primitiveOperations": [
+      "addISODays",
+      "calendarAdd",
+      "calendarMonthSerial",
+      "calendarUntil"
+    ],
+    "profiles": ["hybridWasm", "nativeDataWasm"],
+    "primitiveCalendarCount": 16,
+    "note": "ABI observer forwards real Rust calls and counts successful return codes. Public ICU corpus and Duration operations reach 58 operations. Independent ICU fixtures exercise four lower-level normalized adapters bypassed by higher-level Rust routes. This proves runtime reachability and those oracle assertions, not every possible semantic edge."
+  },
+  "numericLunarBoundaryAudit": {
+    "profiles": ["typescript", "hybridWasm", "nativeDataWasm"],
+    "combinationsPerProfile": 24,
+    "calendars": ["chinese", "dangi"],
+    "timeZones": ["UTC", "Asia/Shanghai", "Pacific/Honolulu"],
+    "inputKinds": ["Number", "Date", "Instant", "ZonedDateTime.toLocaleString"],
+    "ranges": ["Number", "Date", "Instant"],
+    "originalFailure": {
+      "milliseconds": 8639999913600000,
+      "calendar": "chinese",
+      "timeZone": "UTC",
+      "message": "TypeError: Internal error. Icu error."
+    },
+    "note": "Valid Date limits and neighboring days. Owned calendar field consistency; captured Gregorian formatter controls clocks and timezone names. Outside independent astronomical oracle bounds, not an astronomical accuracy claim. Hermes-specific boundary coverage remains pending."
   }
 }

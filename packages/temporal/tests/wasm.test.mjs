@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import {readFileSync} from 'node:fs'
+import {readFileSync, writeFileSync} from 'node:fs'
 import {join} from 'node:path'
 import {pathToFileURL} from 'node:url'
 import {runfiles} from '@bazel/runfiles'
@@ -12,6 +12,47 @@ const dateBefore = Object.getOwnPropertyDescriptor(
   Date.prototype,
   'toTemporalInstant'
 )
+const requests = new Map()
+const exportsDescriptor = Object.getOwnPropertyDescriptor(
+  WebAssembly.Instance.prototype,
+  'exports'
+)
+const memoryBuffer = Object.getOwnPropertyDescriptor(
+  WebAssembly.Memory.prototype,
+  'buffer'
+).get
+const decode = TextDecoder.prototype.decode
+const decoder = new TextDecoder()
+const parse = JSON.parse
+const apply = Reflect.apply
+const Bytes = Uint8Array
+Object.defineProperty(WebAssembly.Instance.prototype, 'exports', {
+  ...exportsDescriptor,
+  get() {
+    const core = apply(exportsDescriptor.get, this, [])
+    if (typeof core.temporal_query !== 'function') return core
+    return {
+      ...core,
+      temporal_query(pointer, length, output) {
+        let operation
+        try {
+          const bytes = new Bytes(
+            apply(memoryBuffer, core.memory, []),
+            pointer,
+            length
+          )
+          operation = parse(apply(decode, decoder, [bytes])).op
+        } catch {
+          // Malformed requests still reach Rust.
+        }
+        const status = core.temporal_query(pointer, length, output)
+        if (status === 0 && typeof operation === 'string')
+          requests.set(operation, (requests.get(operation) ?? 0) + 1)
+        return status
+      },
+    }
+  },
+})
 const wasm = await load('wasm.js')
 const nativeData = process.env.FORMATJS_TEMPORAL_NATIVE_DATA_ONLY === '1'
 const configureWasmBackend = nativeData
@@ -24,6 +65,11 @@ const Temporal = nativeData
   ? configureWasmBackend(instance)
   : (await load('index.js')).Temporal
 const query = createWasmQuery(instance)
+Object.defineProperty(
+  WebAssembly.Instance.prototype,
+  'exports',
+  exportsDescriptor
+)
 const identity = Temporal.Instant
 const existing = Temporal.Instant.fromEpochNanoseconds(0n)
 configureWasmBackend(instance)
@@ -411,3 +457,130 @@ if (nativeData) {
     else Reflect.deleteProperty(Date.prototype, 'toTemporalInstant')
   }
 }
+
+const duration = Temporal.Duration.from('P1DT1H')
+assert.equal(duration.add('PT23H').toString(), 'P2D')
+assert.equal(duration.subtract('PT25H').toString(), 'PT0S')
+assert.equal(duration.negated().toString(), '-P1DT1H')
+assert.equal(duration.negated().abs().toString(), duration.toString())
+
+const operations = JSON.parse(query('{"op":"info"}')).operations.sort()
+const primitiveOperations = [
+  'addISODays',
+  'calendarAdd',
+  'calendarMonthSerial',
+  'calendarUntil',
+]
+const publicOperations = new Map(requests)
+assert.deepEqual(
+  operations.filter(
+    op => !primitiveOperations.includes(op) && !publicOperations.has(op)
+  ),
+  [],
+  'Public corpus must successfully execute every facade operation'
+)
+
+// Higher-level Rust routes bypass these lower-level adapter operations.
+const {configureNativeTemporal, nativeTemporal} = await load('native.js')
+configureNativeTemporal(query)
+const primitives = nativeTemporal()
+const dayRow = rows(process.argv[20]).find(
+  row =>
+    [1, 2, 3, 5].every(index => +row[index] === 0) &&
+    +row[4] !== 0 &&
+    BigInt(row[6]) >= -limit &&
+    BigInt(row[6]) <= limit
+)
+assert(dayRow, 'Independent ICU day-addition control')
+assert.equal(
+  primitives.isoToEpochNanoseconds(
+    primitives.addISODays(
+      primitives.epochNanosecondsToISO(BigInt(dayRow[0])),
+      +dayRow[4]
+    )
+  ),
+  BigInt(dayRow[6])
+)
+const calendarIds = new Set(),
+  additions = new Set(),
+  serials = new Set(),
+  untils = new Set()
+for (const path of process.argv.slice(10, 12)) {
+  for (const row of rows(path)) {
+    const [kind, calendar] = row
+    calendarIds.add(calendar)
+    if (kind === 'D' && !untils.has(calendar)) {
+      const result = primitives.calendarUntil(
+        calendar,
+        +row[2],
+        +row[3],
+        row[4]
+      )
+      for (const [index, unit] of [
+        'years',
+        'months',
+        'weeks',
+        'days',
+      ].entries())
+        assert.equal(result[unit] ?? 0, +row[index + 5], row.join('\t'))
+      untils.add(calendar)
+    }
+    if (
+      kind !== 'A' ||
+      (additions.has(calendar) && (row[3] !== 'month' || serials.has(calendar)))
+    )
+      continue
+    const fields = primitives.calendarFromEpochDay(calendar, +row[2])
+    const result = primitives.calendarAdd(
+      calendar,
+      fields,
+      {[row[3] + 's']: +row[4]},
+      'constrain'
+    )
+    assert.equal(
+      primitives.calendarToEpochDay(calendar, result, 'reject'),
+      +row[5],
+      row.join('\t')
+    )
+    additions.add(calendar)
+    if (row[3] === 'month') {
+      assert.equal(
+        primitives.calendarMonthSerial(calendar, result.year, result.month) -
+          primitives.calendarMonthSerial(calendar, fields.year, fields.month),
+        +row[4],
+        row.join('\t')
+      )
+      serials.add(calendar)
+    }
+  }
+}
+for (const covered of [additions, serials, untils])
+  assert.deepEqual(covered, calendarIds)
+assert.deepEqual(
+  [...requests.keys()].filter(op => operations.includes(op)).sort(),
+  operations,
+  'Public and primitive oracle corpora must execute every declared Rust operation'
+)
+if (process.env.TEST_UNDECLARED_OUTPUTS_DIR)
+  writeFileSync(
+    join(
+      process.env.TEST_UNDECLARED_OUTPUTS_DIR,
+      'native-operation-coverage.json'
+    ),
+    JSON.stringify(
+      {
+        nativeData,
+        publicOperations: Object.fromEntries(
+          operations
+            .filter(op => publicOperations.has(op))
+            .map(op => [op, publicOperations.get(op)])
+        ),
+        primitiveOperations,
+        operations: Object.fromEntries(
+          operations.map(op => [op, requests.get(op)])
+        ),
+      },
+      null,
+      2
+    ) + '\n'
+  )

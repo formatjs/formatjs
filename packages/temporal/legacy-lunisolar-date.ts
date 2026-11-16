@@ -186,7 +186,8 @@ export function correctLunisolarParts(
   value: LegacyDateTimeProjection,
   raw: Intl.DateTimeFormatPart[],
   resolved: Resolved,
-  surrogateMilliseconds?: number
+  surrogateMilliseconds?: number,
+  expectedEpochDay?: number
 ): Intl.DateTimeFormatPart[] {
   const options = resolved.call(value.formatter),
     calendar = options.calendar
@@ -196,14 +197,15 @@ export function correctLunisolarParts(
   )
     return raw
   const iso =
-      surrogateMilliseconds === undefined
+      surrogateMilliseconds === undefined && expectedEpochDay === undefined
         ? fields('iso8601', options.timeZone, value.milliseconds)
         : undefined,
     expected = calendarFromEpochDayRaw(
       calendar,
-      iso
-        ? isoDay(iso.year, iso.month, iso.day)
-        : Math.floor(value.milliseconds / dayMilliseconds)
+      expectedEpochDay ??
+        (iso
+          ? isoDay(iso.year, iso.month, iso.day)
+          : Math.floor(value.milliseconds / dayMilliseconds))
     ),
     actual = fields(
       calendar,

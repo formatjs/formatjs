@@ -9,17 +9,17 @@ remains private until the complete audit passes.
 
 ## Requirements
 
-| Requirement             | Current evidence                                                                                               | Remaining verification                                                                            |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Package ownership       | `packages/temporal` owns runtime, exports and tests; benchmarks import it.                                     | Recheck migration references and published package assembly.                                      |
-| Rust semantics          | Eight typed values, calendar/timezone providers, parsing, formatting, exact arithmetic and relative durations. | Finish operation-level mapping, including composed operations and observable JS responsibilities. |
-| TS conformance          | Full class globs in `_CLASS_TEST262_SUITES`; default compact-calendar gates and tracked counts.                | Consolidate a current full run, installation/Intl paths and every exclusion.                      |
-| Rust-backed conformance | WASM and Hermes SDK use the same normalized Rust contract.                                                     | Consolidate full native suites; a passing class does not prove the whole namespace.               |
-| Independent authority   | ICU calendar/offset/transition/rounding fixtures, HKO/KASI lunar controls, documented oracle bounds.           | Finish numeric lunar boundary and host/owned timezone-version integration audit.                  |
-| Hermes support          | Source/optimized-bytecode targets, SDK host clocks and timezone support, partial-Intl startup regression.      | Recheck complete SDK installation/distribution and supported conformance scopes.                  |
-| Reference benchmarks    | Forced temporal-polyfill full implementation, output equality checks and versioned snapshots.                  | Refresh representative current workloads and distinguish data policies.                           |
-| WASM versus TS          | Published consumer/module sizes include JS glue and binary; matched primitive/facade workloads exist.          | Refresh current delivery profiles and required startup/throughput evidence.                       |
-| Delivery                | Incremental PRs managed with `gh stack`.                                                                       | Verify final stack state and exact tested commits.                                                |
+| Requirement             | Current evidence                                                                                                    | Remaining verification                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Package ownership       | `packages/temporal` owns runtime, exports and tests; benchmarks import it.                                          | Recheck migration references and published package assembly.                                      |
+| Rust semantics          | Eight typed values, calendar/timezone providers, parsing, formatting, exact arithmetic and relative durations.      | Finish operation-level mapping, including composed operations and observable JS responsibilities. |
+| TS conformance          | All 6,664 pinned Temporal/Date/Intl files reached; 13,324 passing unique scenarios, four documented data conflicts. | Verify the new full Intl compatibility gates.                                                     |
+| Rust-backed conformance | Hermes SDK source/bytecode reach the same 6,664 files and unique scenario counts; WASM class gates pass.            | Finish WASM full Intl and successful operation-level execution audit.                             |
+| Independent authority   | ICU calendar/offset/transition/rounding fixtures, HKO/KASI lunar controls, documented oracle bounds.                | Finish numeric lunar boundary and host/owned timezone-version integration audit.                  |
+| Hermes support          | Source/optimized-bytecode targets, SDK host clocks and timezone support, partial-Intl startup regression.           | Recheck complete SDK installation/distribution and supported conformance scopes.                  |
+| Reference benchmarks    | Forced temporal-polyfill full implementation, output equality checks and versioned snapshots.                       | Refresh representative current workloads and distinguish data policies.                           |
+| WASM versus TS          | Published consumer/module sizes include JS glue and binary; matched primitive/facade workloads exist.               | Refresh current delivery profiles and required startup/throughput evidence.                       |
+| Delivery                | Incremental PRs managed with `gh stack`.                                                                            | Verify final stack state and exact tested commits.                                                |
 
 ## Rust source map
 
@@ -39,14 +39,89 @@ Paths above are relative to `crates/temporal`. Public fields, Rust traits and
 method composition count when they implement the required semantics; method-name
 counts alone do not establish coverage.
 
+Typed API review confirms clock/date projection through `PlainDateTime::date`
+and `time`, and zoned projection through `ZonedDateTime::local`. Short-date
+construction can reuse calendar fields and `from_calendar_fields` without
+reimplementing reference-date selection. Relative Duration operations are public
+on plain and zoned anchors.
+
+One concrete surface gap remains: a caller starting with `PlainDate` cannot
+directly request its earliest zoned instant with omitted time. The existing
+`day_boundary(day)` algorithm is crate-private; public `start_of_day` requires an
+existing zoned value. Compatible midnight resolution is a different operation.
+Expose the date conversion through this existing algorithm, with skipped-day and
+midnight-gap controls, rather than duplicating it in callers.
+
 `NativeTemporal` currently declares 62 normalized operations. The Rust FFI
 manifest contains the same 62 names, with no missing or extra entries. This
 checks contract parity; it does not prove each facade reaches the right operation.
 JS retains coercion, option/property order, brands, slots and object allocation.
 Locale rendering also involves the Intl implementation and host data.
 
+## Full namespace run
+
+The full reports below precede the numeric lunar boundary fix. Final conformance
+refresh remains required after that runtime change.
+
+The current audit passed all 44 targets: 11 suites for each of default TS, WASM,
+Hermes SDK source and Hermes SDK optimized bytecode. Each profile completed
+12,228 executions with no failures or tracked failures (48,912 aggregate).
+These are suite executions, not unique Test262 scenarios: calendar selections
+overlap the class suites.
+
+Suites cover complete Instant, PlainDate, PlainDateTime, PlainTime,
+PlainYearMonth, PlainMonthDay, Duration and ZonedDateTime globs, plus calendars,
+Now and installation. They do not cover the whole `intl402/Temporal` tree.
+
+Node's prelude installs the namespace in child realms. Hermes' eshost runtime
+does not implement `createRealm` or `evalScript`; the pinned Temporal, Date
+`toTemporalInstant` and `intl402/Temporal` files contain no `createRealm` calls.
+No Realm exclusion is needed for those selections. The result validator rejects
+duplicate file/scenario pairs, missing results, crashes and baseline mismatches.
+
+Full Intl diagnostics retain all 4,080 executions. Compatibility gates select
+4,076 and document the two excluded files in
+`packages/temporal/tests/intl-compat-test262-count.json`. These are data-version
+conflicts: IANA 2026d separated POSIX-rule zones from city links; CLDR49 specifies
+numeric zero for explicit offset zones. Raw diagnostics remain available for
+checking those assertions and detecting any additional failures.
+Five raw profiles completed all 4,080: Node owned Intl, Hermes owned Intl
+source/bytecode and Hermes SDK Intl source/bytecode. Every profile passed 4,076;
+only those two files failed, each in default and strict scenarios.
+
+Report unions were compared against every pinned source file in
+`built-ins/Temporal`, `built-ins/Date/prototype/toTemporalInstant` and
+`intl402/Temporal`. Default TS, WASM and both Hermes SDK profiles each reached exactly
+6,664 files and 13,328 unique scenarios, with no missing or extra files. Their
+only four failures are the data conflicts above (13,324 passing unique scenarios).
+WASM's pre-fix full Intl union is now verified as well. Its prelude compiles in
+native-data-only mode, excluding TS calendar and timezone tables.
+
+The 62-operation source audit found a non-test facade caller and Rust handler
+for every declared operation. Four parsing/regulation handlers precede the main
+dispatch match. This is source reachability evidence, not complete semantic
+coverage; independent oracle assertions and backend Test262 runs remain required.
+
+Runtime observation now verifies all 62 operations return successfully through
+both published WASM profiles. The public ICU corpus and Duration checks reach 58. Four lower-level adapters are bypassed by higher-level Rust routes:
+`addISODays`, `calendarAdd`, `calendarMonthSerial`, `calendarUntil`. Independent
+ICU day/calendar fixtures verify those adapters separately, across all 16
+calendars where applicable. Artifacts distinguish public and primitive coverage.
+
 ## Latest audit findings
 
+- Numeric Chinese/Dangi formatting threw `TypeError: Internal error. Icu error.`
+  at valid Date values near the upper limit. The existing safe-year fallback now
+  retains the original timezone's local day and restores lunar fields. A safe
+  pattern probe preserves related-year requests omitted from host resolved options.
+  TS and both WASM entries pass 24 boundary/calendar/timezone combinations each,
+  through Number/Date/Instant, ZonedDateTime locale methods, clocks and ranges.
+  These are field consistency checks outside independent astronomical bounds;
+  Hermes-specific boundary coverage remains pending.
+- Structural import audit found 231 production imports and no dynamic imports.
+  None import benchmark code or another Temporal implementation. Package exports,
+  WASM asset ownership and optional Hermes SDK installation remain owned by the
+  package and native targets; final assembled-consumer checks are still required.
 - Rust zoned replacements now have public `with_time_zone` and `with_time`
   methods. Independent ICU controls verify zone replacement, compatible clock
   resolution and omitted-time day boundaries. This does not close the whole
