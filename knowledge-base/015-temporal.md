@@ -43,10 +43,28 @@ Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
 range boundaries with Test262 and independent ICU oracles, including Hermes.
 
+Legacy DateTimeFormat corrects Chinese/Dangi calendar fields when host data
+differs from Temporal's verified engine. Numeric Date inputs, Temporal projections
+and locale methods share this path. Host formatters supply labels in the requested
+locale and numbering system; original weekday, clock and timezone fields survive.
+Safe host month examples supply localized month/day labels. Related years and
+sexagenary names are restored separately. Captured intrinsics avoid recursion
+after installation. Ranges whose corrected fields invalidate native collapsing
+use complete endpoint patterns with a captured host range separator.
+
+All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes
+source/bytecode through the legacy adapter, with zero tracked failures. This
+scope is now a regular gate. Independent public-package controls verify 8,708
+Chinese/Dangi authority-range field rows, including 34 older-host disagreements;
+localized label controls use independently verified matching dates. Hermes
+fault injection additionally forces stale year/month/day fields to exercise
+correction and range fallback even when native ICU data already agrees.
+Non-Gregorian legacy formatting beyond Date TimeClip remains open.
+
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 65,121 bytes gzip; standalone measures
-334,194. Both include owned timezone data. The roughly 23 KB gzip full reference
+Published default TS consumers measure 65,516 bytes gzip; standalone measures
+333,671. Both include owned timezone data. The roughly 23 KB gzip full reference
 uses host Intl data; these profiles still have different data policies.
 
 `host-timezone.ts` prototypes captured Intl offset queries and local-time
@@ -1483,15 +1501,15 @@ cases and 80 ranges across five numeral systems and both Gregorian identifiers,
 including era boundaries, equal ranges and possible surrogate-year collisions.
 Normal ICU style-field and native behavior-preservation controls also pass.
 
-The strict legacy DateTimeFormat scope now passes 128/130 executions; the two
-remaining failures compare owned lunar fields with different host calendar data.
-They remain visible implementation/data-integration work, with no exclusions.
+This layer passed 128/130 strict legacy DateTimeFormat executions. The subsequent
+lunar formatter correction above closes the two host calendar-data mismatches,
+without exclusions.
 Non-Gregorian extended host formatting remains open. The refreshed full owned
 Intl diagnostic has 4,080 executions and the same four pinned timezone/CLDR
 assumption differences; the raw exact ICU locale-string check still exposes
 host literal differences such as Russian space versus narrow no-break space.
 
-Published consumers measure 65,121/334,194 bytes gzip for default/standalone.
+This layer's consumers measured 65,121/334,194 bytes gzip for default/standalone.
 Separately compressed graphs measure TS 67,389, native-data WASM 475,835 and
 hybrid WASM 509,770 including the unchanged WASM binary. New snapshots are
 `extended-date-size-results.json` and `extended-date-backend-size-results.json`.

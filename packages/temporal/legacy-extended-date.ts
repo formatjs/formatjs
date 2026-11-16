@@ -1,4 +1,8 @@
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
+import {
+  correctLunisolarParts,
+  lunisolarRangeParts,
+} from '#packages/temporal/legacy-lunisolar-date.js'
 
 export interface LegacyDateTimeProjection {
   formatter: Intl.DateTimeFormat
@@ -58,7 +62,11 @@ export function legacyDateTimeParts(
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] {
   if (!clipped(value) || !gregorian(value.formatter, resolved))
-    return parts.call(value.formatter, value.milliseconds)
+    return correctLunisolarParts(
+      value,
+      parts.call(value.formatter, value.milliseconds),
+      resolved
+    )
   const delta = shift(value),
     rewrite = years(value, delta, resolved)
   return parts
@@ -74,8 +82,16 @@ export function legacyDateTimeFormat(
   parts: Parts,
   resolved: Resolved
 ): string {
-  if (!clipped(value) || !gregorian(value.formatter, resolved))
-    return format.call(value.formatter)(value.milliseconds)
+  if (!clipped(value) || !gregorian(value.formatter, resolved)) {
+    const calendar = resolved.call(value.formatter).calendar
+    if (calendar !== 'chinese' && calendar !== 'dangi')
+      return format.call(value.formatter)(value.milliseconds)
+    const raw = parts.call(value.formatter, value.milliseconds),
+      corrected = correctLunisolarParts(value, raw, resolved)
+    return corrected === raw
+      ? format.call(value.formatter)(value.milliseconds)
+      : corrected.map(part => part.value).join('')
+  }
   return legacyDateTimeParts(value, parts, resolved)
     .map(part => part.value)
     .join('')
@@ -101,6 +117,8 @@ export function legacyDateTimeRangeParts(
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
+  const lunar = lunisolarRangeParts(first, last, parts, resolved)
+  if (lunar) return lunar
   if (
     (!clipped(first) && !clipped(last)) ||
     !gregorian(first.formatter, resolved)
@@ -130,6 +148,8 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
+  const lunar = lunisolarRangeParts(first, last, parts, resolved)
+  if (lunar) return lunar.map(part => part.value).join('')
   if (
     (!clipped(first) && !clipped(last)) ||
     !gregorian(first.formatter, resolved)

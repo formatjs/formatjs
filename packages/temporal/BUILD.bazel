@@ -38,6 +38,7 @@ formatjs_library(
         "legacy-durationformat.ts",
         "legacy-extended-date.ts",
         "legacy-intl.ts",
+        "legacy-lunisolar-date.ts",
         "locale.ts",
         "lunisolar.ts",
         "native.ts",
@@ -176,6 +177,21 @@ js_test(
 )
 
 js_test(
+    name = "legacy_lunisolar_date_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+    ],
+    entry_point = "tests/legacy-lunisolar-date.test.mjs",
+)
+
+js_test(
     name = "legacy_extended_date_test",
     size = "medium",
     args = [
@@ -229,6 +245,18 @@ js_test(
 ]
 
 genrule(
+    name = "legacy_lunar_fault_hermes_prelude",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        "tests/legacy-lunar-fault-prelude.js",
+        ":compact-calendar-payload.js",
+    ],
+    outs = ["legacy-lunar-fault-hermes-prelude.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location tests/legacy-lunar-fault-prelude.js); printf '\\n;\\n'; cat $(location :compact-calendar-payload.js); printf '\\n;globalThis.__formatjsCheckLunarCorrection();\\n') > $@",
+)
+
+genrule(
     name = "legacy_extended_hermes_prelude",
     testonly = True,
     srcs = [
@@ -241,26 +269,25 @@ genrule(
 
 [
     sh_test(
-        name = "legacy_extended_date_hermes_" + mode + "_test262",
+        name = "legacy_" + scope + "_hermes_" + mode + "_test262",
         size = "medium",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :datetimeformat_harness)",
             "$(rootpath tests/hermes-host.sh)",
             "$(rootpath //native/hermes/tests:test262_runtime)",
-            "$(rootpath :legacy_extended_hermes_prelude)",
+            "$(rootpath :" + prelude + ")",
             mode,
             "$(rootpath @hermes//:hermesc)",
-            "$(rootpath tests/legacy-extended-date-test262-count.json)",
+            "$(rootpath " + baseline + ")",
             "$(rootpath //tools/test262:validator)",
-            "Temporal.ExtendedGregorian.Hermes." + mode,
-            _TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js",
-        ],
+            "Temporal.LegacyIntl." + scope + ".Hermes." + mode,
+        ] + patterns,
         data = [
             "tests/hermes-host.sh",
-            "tests/legacy-extended-date-test262-count.json",
+            baseline,
             ":datetimeformat_harness",
-            ":legacy_extended_hermes_prelude",
+            ":" + prelude,
             "//native/hermes/tests:test262_runtime",
             "//tools/test262:validator",
             "@hermes//:hermesc",
@@ -270,6 +297,30 @@ genrule(
             "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
         },
     )
+    for scope, baseline, patterns, prelude in [
+        (
+            "extended_date",
+            "tests/legacy-extended-date-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js"],
+            "legacy_extended_hermes_prelude",
+        ),
+        (
+            "datetimeformat",
+            "tests/datetimeformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "legacy_extended_hermes_prelude",
+        ),
+        (
+            "lunar_fault",
+            "tests/legacy-lunar-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js"],
+            "legacy_lunar_fault_hermes_prelude",
+        ),
+    ]
     for mode in [
         "source",
         "bytecode",
@@ -1247,7 +1298,10 @@ js_test(
             "//tools/test262:validator",
             prelude + "-realm-prelude.js",
             prelude + "-prelude-source.js",
-        ] + (["//crates/temporal:wasm_backend"] if prelude == "wasm-locale" else []),
+        ] + (["//crates/temporal:wasm_backend"] if prelude in [
+            "wasm",
+            "wasm-locale",
+        ] else []),
         env = {"TZ": "UTC"},
         tags = tags,
     )
@@ -1255,8 +1309,9 @@ js_test(
         (
             "legacy_datetimeformat_test262",
             "instant",
-            ["manual"],
+            [],
         ),
+        ("wasm_legacy_datetimeformat_test262", "wasm", []),
         ("locale_datetimeformat_test262", "locale", []),
         ("wasm_locale_datetimeformat_test262", "wasm-locale", []),
     ]

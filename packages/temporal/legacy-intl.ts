@@ -17,6 +17,8 @@ import {
   type LegacyDateTimeProjection as Projection,
 } from '#packages/temporal/legacy-extended-date.js'
 
+const now = Date.now
+
 export function installLegacyDateTimeFormat(
   namespace: TemporalNamespace
 ): void {
@@ -89,7 +91,10 @@ export function installLegacyDateTimeFormat(
     return result
   }
   function single(state: State, input: unknown): Projection | undefined {
-    if (input === undefined) return undefined
+    if (input === undefined)
+      return state.calendar === 'chinese' || state.calendar === 'dangi'
+        ? {formatter: state.formatter, milliseconds: now()}
+        : undefined
     const value = ToDateTimeFormattable(input)
     return isTemporalDateTimeValue(value)
       ? project(state, value)

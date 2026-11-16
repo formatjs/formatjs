@@ -96,7 +96,7 @@ console.log(
       node: process.version,
       v8: process.versions.v8,
       scope:
-        'Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Default TS uses compact ICU4X lunisolar arithmetic/data and host Intl Umm al-Qura; owned IANA 2026f timezone data remains included. Standalone retains full calendar packs. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl and has broader locale integration; basic ISO/Gregorian implementation entry measured separately. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.',
+        'Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Default TS uses compact ICU4X lunisolar arithmetic/data and host Intl Umm al-Qura; owned IANA 2026f timezone data remains included. Standalone retains full calendar packs. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl data; basic ISO/Gregorian implementation entry measured separately. Legacy lunar formatting corrects stale host calendar fields. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.',
       method:
         'Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.',
       referenceEntries: {

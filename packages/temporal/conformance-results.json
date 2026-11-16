@@ -1446,9 +1446,9 @@
     },
     "legacyDateTimeFormatDiagnostic": {
       "executions": 130,
-      "passes": 128,
-      "failures": 2,
-      "file": "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js"
+      "passes": 130,
+      "failures": 0,
+      "scope": "Now a regular strict legacy gate; see legacyLunisolarHostFormatting."
     },
     "ownedIntlDiagnostic": {
       "executions": 4080,
@@ -1460,9 +1460,36 @@
       "benchmarks/temporal/extended-date-backend-size-results.json"
     ],
     "remaining": [
-      "Host lunar consistency",
       "Non-Gregorian extended host formatting",
       "Rust completion audit"
+    ]
+  },
+  "legacyLunisolarHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendarDataChanged": false,
+    "test262ExecutionsPerProfile": 130,
+    "profiles": [
+      "Node TypeScript",
+      "Node WASM",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "independentICUFieldRows": 8708,
+    "olderHostDisagreements": 34,
+    "publishedPackageFormattingChecks": 17878,
+    "localeLabels": "Captured host Intl labels from independently verified matching calendar dates; numeric fields use ICU/HKO/KASI oracle rows.",
+    "hermesFaultInjectionExecutionsPerMode": 2,
+    "hermesFaultInjectionScope": "Stale host year/month/day fields; requires actual correction and range fallback in source and optimized bytecode.",
+    "sizeSnapshots": [
+      "benchmarks/temporal/lunar-intl-size-results.json",
+      "benchmarks/temporal/lunar-intl-backend-size-results.json"
+    ],
+    "remaining": [
+      "Non-Gregorian extended host formatting",
+      "Rust full capability audit",
+      "Updated cold-load and matched non-ISO throughput"
     ]
   },
   "durationFormatIntegration": {

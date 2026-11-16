@@ -75,11 +75,15 @@ Legacy DateTimeFormat projects each Temporal kind onto the permitted fields.
 Plain values ignore the formatter's timezone; YearMonth/MonthDay styles omit
 reference fields. Ranges require matching Temporal types. Native style components
 are inferred through captured `formatToParts` operations before host matching.
+Chinese/Dangi date fields use the same calendar arithmetic as Temporal, including
+numeric Date inputs when host ICU data differs. Captured host formatters supply
+localized labels. Corrected ranges use full endpoint patterns when native field
+collapse no longer applies.
 
 Remaining gaps stay visible:
 
 - Legacy Date TimeClip still limits extended plain values in non-Gregorian
-  calendars. Older host lunar data can disagree with Temporal's calendar packs.
+  calendars.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
@@ -173,8 +177,8 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 65,121 bytes gzip for default and
-334,194 for standalone. Both include compact IANA histories. The native-data WASM
-module and binary, compressed separately, measure 475,835 bytes gzip. Prior
+Published consumer bundles currently measure 65,516 bytes gzip for default and
+333,671 for standalone. Both include compact IANA histories. The native-data WASM
+module and binary, compressed separately, measure 478,860 bytes gzip. Prior
 measured Node workloads favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.

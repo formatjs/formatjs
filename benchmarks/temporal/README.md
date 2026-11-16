@@ -1290,5 +1290,24 @@ formatting. `extended-date-backend-size-results.json` records separate module
 graphs: 67,389 TS, 475,835 native-data WASM, 509,770 hybrid WASM, including the
 unchanged binary for WASM. No new throughput run. Validation covers 72 clipping
 Test262 executions across Node TS/WASM and Hermes source/bytecode, plus independent
-ICU Gregorian field/range controls in five numeral systems. Host lunar consistency
-and non-Gregorian clipping remain open.
+ICU Gregorian field/range controls in five numeral systems. That layer left host
+lunar consistency and non-Gregorian clipping open; the correction below closes
+the lunar mismatch.
+
+## Lunar host formatting
+
+`lunar-intl-size-results.json` and `lunar-intl-backend-size-results.json` refresh
+consumer and module sizes after correcting stale host Chinese/Dangi fields.
+The correction shares Temporal's calendar data; captured Intl supplies localized
+labels and interval separators. No locale packs are added. Previous throughput
+snapshots remain historical; this change does not measure new Intl timings.
+Published default/standalone consumers measure 65,516/333,671 bytes gzip.
+Separate graphs measure TS 67,789, native-data WASM 478,860 and hybrid WASM
+511,771, including the rebuilt 443,178-byte gzip binary for WASM. These refreshes
+also include the preceding Rust field-update layers.
+
+Validation covers 520 full legacy formatter Test262 executions across Node
+TS/WASM and Hermes source/bytecode, plus four Hermes fault-injection executions.
+The published-package oracle checks 8,708 independent ICU field rows, localized
+labels and ranges. Existing 30,620-row calendar controls remain strict. Calendar
+arithmetic/data are unchanged; non-Gregorian legacy TimeClip remains open.
