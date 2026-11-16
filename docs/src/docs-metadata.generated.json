@@ -73,7 +73,7 @@
   },
   "guides/react-native-hermes": {
     "title": "React Native Hermes",
-    "description": "This guide covers TypeScript polyfills in React Native with Hermes."
+    "description": "For React Native apps using Hermes, we recommend the native Hermes Intl SDK."
   },
   "guides/runtime-requirements": {
     "title": "Runtime Requirements",
