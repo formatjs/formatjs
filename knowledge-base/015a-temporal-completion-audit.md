@@ -14,7 +14,7 @@ remains private until the complete audit passes.
 | Package ownership       | `packages/temporal` owns runtime, exports and tests; benchmarks import it.                                        | Recheck migration references and published package assembly.                                      |
 | Rust semantics          | Eight typed values, calendar/timezone providers, parsing, formatting, exact arithmetic and relative durations.    | Finish operation-level mapping, including composed operations and observable JS responsibilities. |
 | TS conformance          | Fresh class and full Intl gates: 13,324 unique scenarios pass per provider union; two documented data exclusions. | Resolve host/owned timezone data mismatch; keep provider scopes explicit.                         |
-| Rust-backed conformance | SDK source/bytecode and native-data WASM full gates pass; all 62 Rust operations return successfully.             | Close typed PlainDate omitted-time zoned conversion gap.                                          |
+| Rust-backed conformance | SDK source/bytecode and native-data WASM full gates pass; all 62 Rust operations return successfully.             | Complete remaining public API and distribution audit.                                             |
 | Independent authority   | ICU calendar/offset/transition/rounding fixtures, HKO/KASI lunar controls, documented oracle bounds.              | Resolve confirmed host/owned timezone-version mismatch.                                           |
 | Hermes support          | Source/optimized-bytecode targets, SDK host clocks and timezone support, partial-Intl startup regression.         | Recheck complete SDK installation/distribution and supported conformance scopes.                  |
 | Reference benchmarks    | Forced temporal-polyfill full implementation, output equality checks and versioned snapshots.                     | Current Node snapshots refreshed; finish current Hermes measurements.                             |
@@ -45,12 +45,10 @@ construction can reuse calendar fields and `from_calendar_fields` without
 reimplementing reference-date selection. Relative Duration operations are public
 on plain and zoned anchors.
 
-One concrete surface gap remains: a caller starting with `PlainDate` cannot
-directly request its earliest zoned instant with omitted time. The existing
-`day_boundary(day)` algorithm is crate-private; public `start_of_day` requires an
-existing zoned value. Compatible midnight resolution is a different operation.
-Expose the date conversion through this existing algorithm, with skipped-day and
-midnight-gap controls, rather than duplicating it in callers.
+`PlainDate::to_zoned_date_time(zone, time)` now shares the existing day-boundary
+algorithm for omitted time. Explicit time uses compatible resolution; timezone
+ownership does not require Clone. ICU day-boundary controls, a completely skipped
+date, a 24-hour cross-midnight gap and Instant bounds validate this public route.
 
 `NativeTemporal` currently declares 62 normalized operations. The Rust FFI
 manifest contains the same 62 names, with no missing or extra entries. This

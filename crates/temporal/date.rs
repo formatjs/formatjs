@@ -194,6 +194,23 @@ impl<C: CalendarProvider> PlainDate<C> {
             self.1,
         )
     }
+    pub fn to_zoned_date_time<Z: crate::TimeZone>(
+        self,
+        time_zone: Z,
+        time: Option<PlainTime>,
+    ) -> Result<crate::ZonedDateTime<Z, C>, Error> {
+        let instant = match time {
+            Some(time) => crate::zoned::resolve_local(
+                self.to_date_time(time)?.fields(),
+                &time_zone,
+                crate::Disambiguation::Compatible,
+            )?,
+            None => crate::zoned::day_boundary(self.0, &time_zone)?,
+        };
+        Ok(crate::ZonedDateTime::new_in_calendar(
+            instant, time_zone, self.1,
+        ))
+    }
 }
 pub fn month_length(year: i32, month: u8) -> u8 {
     match month {

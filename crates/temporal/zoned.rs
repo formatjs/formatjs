@@ -237,37 +237,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
         ))
     }
     pub(crate) fn day_boundary(&self, day: i64) -> Result<Instant, Error> {
-        let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
-        let fields = IsoDateTime::from_epoch_nanoseconds(midnight)?;
-        let candidate = resolve_local(fields, &self.time_zone, Disambiguation::Compatible)?;
-        if candidate.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(candidate) == midnight
-        {
-            return Ok(candidate);
-        }
-        let mut cursor = candidate;
-        while cursor.epoch_nanoseconds() >= midnight - NANOSECONDS_PER_DAY {
-            let value = cursor.epoch_nanoseconds();
-            if value > -crate::MAX_EPOCH_NANOSECONDS {
-                let before = self
-                    .time_zone
-                    .offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
-                let after = self.time_zone.offset_nanoseconds(cursor);
-                if after > before && midnight >= value + before && midnight < value + after {
-                    return Ok(cursor);
-                }
-            }
-            let Some(previous) = self
-                .time_zone
-                .transition(cursor, TransitionDirection::Previous)
-            else {
-                break;
-            };
-            if previous.epoch_nanoseconds() >= value {
-                break;
-            }
-            cursor = previous;
-        }
-        Err(Error::InvalidDateTime)
+        day_boundary(day, &self.time_zone)
     }
     pub fn transition(&self, direction: TransitionDirection) -> Option<Self> {
         self.time_zone
@@ -318,6 +288,34 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
         }
     });
     Ok(())
+}
+
+pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
+    let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
+    let fields = IsoDateTime::from_epoch_nanoseconds(midnight)?;
+    let candidate = resolve_local(fields, zone, Disambiguation::Compatible)?;
+    if candidate.epoch_nanoseconds() + zone.offset_nanoseconds(candidate) == midnight {
+        return Ok(candidate);
+    }
+    let mut cursor = candidate;
+    while cursor.epoch_nanoseconds() >= midnight - NANOSECONDS_PER_DAY {
+        let value = cursor.epoch_nanoseconds();
+        if value > -crate::MAX_EPOCH_NANOSECONDS {
+            let before = zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(value - 1)?);
+            let after = zone.offset_nanoseconds(cursor);
+            if after > before && midnight >= value + before && midnight < value + after {
+                return Ok(cursor);
+            }
+        }
+        let Some(previous) = zone.transition(cursor, TransitionDirection::Previous) else {
+            break;
+        };
+        if previous.epoch_nanoseconds() >= value {
+            break;
+        }
+        cursor = previous;
+    }
+    Err(Error::InvalidDateTime)
 }
 
 pub(crate) fn resolve_local<Z: TimeZone>(

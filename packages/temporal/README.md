@@ -164,6 +164,8 @@ The [Rust crate](../../crates/temporal/README.md) supplies eight value types,
 Typed Rust partial updates cover all seven types with `with()` methods;
 calendar updates preserve month codes and era relationships. Zoned updates prefer
 the source offset by default and support explicit gap/fold and offset policies.
+Rust `PlainDate::to_zoned_date_time(zone, None)` selects the first instant of the
+civil day; supplying `Some(time)` uses compatible resolution.
 JS adapters delegate normalized operations through ABI 9. Rust builds, generated
 data and release artifacts use Bazel.
 
@@ -173,7 +175,7 @@ data and release artifacts use Bazel.
 bazel test -c opt //packages/temporal:package_test
 bazel test -c opt //packages/temporal:wasm_package_test //packages/temporal:wasm_native_package_test
 bazel test -c opt //packages/temporal:locale_datetimeformat_test262
-bazel test -c opt //crates/temporal:temporal_test //crates/temporal:c_abi_test
+bazel test -c opt //crates/temporal:temporal_test //crates/temporal:ffi_test
 ```
 
 Full class gates cover 9,090 executions per SDK source/HBC and WASM profile.

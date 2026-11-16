@@ -1,6 +1,91 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
+    use formatjs_temporal::{
+        OffsetTransition, PlainDate, PlainTime, TimeZone, TransitionDirection, TransitionZone,
+        calendar::Calendar,
+    };
+    struct OwnedZone<'a>(TransitionZone<'a>);
+    impl TimeZone for OwnedZone<'_> {
+        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
+            self.0.offset_nanoseconds(instant)
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            self.0.visit_offsets(visitor)
+        }
+        fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
+            self.0.transition(instant, direction)
+        }
+    }
+    let events = [OffsetTransition {
+        epoch_seconds: 0,
+        offset_seconds: 23 * 3600 + 1800,
+    }];
+    let zone = TransitionZone::new(-1800, &events, None).unwrap();
+    let date = PlainDate::new(1970, 1, 1)
+        .unwrap()
+        .with_calendar(Calendar::Hebrew)
+        .unwrap();
+    let start = date.to_zoned_date_time(OwnedZone(zone), None).unwrap();
+    assert_eq!(start.instant().epoch_nanoseconds(), 0);
+    assert_eq!(start.calendar_id(), "hebrew");
+    assert_eq!(start.local().unwrap().date().fields(), (1970, 1, 1));
+    assert_eq!(start.local().unwrap().time().fields(), (23, 30, 0, 0));
+    let midnight = date
+        .to_zoned_date_time(OwnedZone(zone), Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+        .unwrap();
+    assert_eq!(midnight.instant().epoch_nanoseconds(), 1_800_000_000_000);
+    assert_eq!(midnight.calendar_id(), "hebrew");
+    assert_eq!(midnight.local().unwrap().date().fields(), (1970, 1, 2));
+}
+
+#[test]
+fn date_zoned_conversion_handles_skipped_dates_and_instant_bounds() {
+    use formatjs_temporal::{FixedOffset, PlainDate, PlainTime};
+    let zones = iana_registry();
+    let skipped = PlainDate::new(2011, 12, 30)
+        .unwrap()
+        .to_zoned_date_time(zones.resolve("Pacific/Apia").unwrap(), None)
+        .unwrap();
+    assert_eq!(skipped.instant(), "2011-12-30T10:00Z".parse().unwrap());
+    assert_eq!(skipped.local().unwrap().date().fields(), (2011, 12, 31));
+    for (year, month, day, hour, offset, expected) in [
+        (-271821, 4, 19, 1, -23, -MAX_EPOCH_NANOSECONDS),
+        (275760, 9, 13, 23, 23, MAX_EPOCH_NANOSECONDS),
+    ] {
+        let date = PlainDate::new(year, month, day).unwrap();
+        let zone = FixedOffset::new(offset * 3_600_000_000_000).unwrap();
+        assert_eq!(
+            date.to_zoned_date_time(zone, Some(PlainTime::new(hour, 0, 0, 0).unwrap()))
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            expected
+        );
+    }
+    for day in [-100_000_001, 100_000_000] {
+        let date = PlainDate::from_epoch_day(day).unwrap();
+        let utc = FixedOffset::new(0).unwrap();
+        let midnight = Some(PlainTime::new(0, 0, 0, 0).unwrap());
+        if day < 0 {
+            assert!(date.to_zoned_date_time(utc, None).is_err());
+            assert!(date.to_zoned_date_time(utc, midnight).is_err());
+        } else {
+            for time in [None, midnight] {
+                assert_eq!(
+                    date.to_zoned_date_time(utc, time)
+                        .unwrap()
+                        .instant()
+                        .epoch_nanoseconds(),
+                    MAX_EPOCH_NANOSECONDS
+                );
+            }
+        }
+    }
+}
+
+#[test]
 fn zoned_replacements_preserve_calendar_and_resolve_clock_gaps_and_folds() {
     use formatjs_temporal::{FixedOffset, PlainTime, ZonedDateTime, calendar::Calendar};
     let zones = iana_registry();
@@ -1211,6 +1296,30 @@ fn independent_icu_zoned_fields_and_disambiguation() {
                     "clock replacement {line}"
                 );
                 assert_eq!(changed.calendar_id(), "hebrew");
+                let converted =
+                    formatjs_temporal::PlainDate::new(fields.year, fields.month, fields.day)
+                        .unwrap()
+                        .with_calendar(Calendar::Hebrew)
+                        .unwrap()
+                        .to_zoned_date_time(
+                            zone,
+                            Some(
+                                PlainTime::new(
+                                    fields.hour,
+                                    fields.minute,
+                                    fields.second,
+                                    fields.nanosecond,
+                                )
+                                .unwrap(),
+                            ),
+                        )
+                        .unwrap();
+                assert_eq!(
+                    converted.instant().epoch_nanoseconds(),
+                    if offset > old_offset { later } else { earlier },
+                    "date conversion {line}"
+                );
+                assert_eq!(converted.calendar_id(), "hebrew");
                 let update = ZonedFields {
                     date_time: DateTimeFields {
                         date: DateFields {
@@ -2222,6 +2331,20 @@ fn independent_icu_zoned_day_boundaries_and_rounding() {
             "omitted clock {line}"
         );
         assert_eq!(replacement.calendar_id(), "hebrew");
+        let converted = value
+            .local()
+            .unwrap()
+            .date()
+            .with_calendar(formatjs_temporal::calendar::Calendar::Hebrew)
+            .unwrap()
+            .to_zoned_date_time(zone, None)
+            .unwrap();
+        assert_eq!(
+            converted.instant().epoch_nanoseconds(),
+            nanos(2),
+            "date conversion {line}"
+        );
+        assert_eq!(converted.calendar_id(), "hebrew");
         assert_eq!(
             value.hours_in_day().unwrap(),
             (nanos(3) - nanos(2)) as f64 / 3_600_000_000_000.0,

@@ -1593,3 +1593,12 @@ Completion remains open. Older host rules format Havana one hour behind owned
 ZonedDateTime fields after the 2026 rule change. The typed Rust PlainDate API also
 needs direct omitted-time zoned conversion using existing day-boundary semantics.
 See 015a for exact evidence scopes and remaining requirements.
+
+## Rust PlainDate zoned conversion
+
+`PlainDate::to_zoned_date_time(zone, time)` now consumes a timezone provider and
+retains the calendar. Omitted time shares ZonedDateTime's civil-day boundary
+algorithm; explicit time uses compatible resolution. Providers need not implement
+Clone. A cross-midnight 24-hour gap distinguishes earliest-day conversion from
+resolving midnight and then taking that result's start of day. Controls include
+5,292 independent ICU day boundaries, Apia's skipped date and exact Instant bounds.

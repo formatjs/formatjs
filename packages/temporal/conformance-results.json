@@ -1929,5 +1929,21 @@
     "benchmarks/temporal/lunar-boundary-facade-results.json",
     "benchmarks/temporal/lunar-boundary-wasm-results.json",
     "benchmarks/temporal/lunar-boundary-backend-size-results.json"
-  ]
+  ],
+  "rustDateZonedConversion": {
+    "method": "PlainDate::to_zoned_date_time",
+    "omittedTime": "Shared civil-day boundary algorithm",
+    "explicitTime": "Compatible resolution",
+    "timeZoneCloneRequired": false,
+    "calendarRetained": true,
+    "independentICUDayBoundaryRows": 5292,
+    "independentICUGapFoldWindows": 1900,
+    "additionalControls": [
+      "24-hour cross-midnight gap with a non-Clone provider",
+      "Pacific/Apia skipped date",
+      "Exact Instant bounds and out-of-range dates"
+    ],
+    "abiVersion": 9,
+    "normalizedOperations": 62
+  }
 }

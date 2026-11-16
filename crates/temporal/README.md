@@ -14,6 +14,12 @@ provider type. `with_time(Some(time))` replaces the full clock with compatible
 resolution: earlier in folds, forward through gaps. `with_time(None)` selects
 the earliest instant of the civil day, which can differ from explicit midnight.
 
+`PlainDate::to_zoned_date_time(zone, time)` consumes any `TimeZone` provider,
+including providers without `Clone`, and retains the date's calendar. `None`
+selects the earliest civil-day instant; `Some(time)` uses compatible gap/fold
+resolution. A completely skipped date resolves to the following day's start.
+This follows [PlainDate zoned conversion](https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.tozoneddatetime).
+
 `TimeFields`, `DurationFields`, `DateTimeFields` and `ZonedFields` hold
 optional fields. Clock units constrain separately; Duration retains unbalanced
 units and validates signs. Date updates preserve month codes across leap years
