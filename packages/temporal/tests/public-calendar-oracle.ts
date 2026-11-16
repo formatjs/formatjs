@@ -3,7 +3,22 @@ import type {Temporal as TemporalNamespace} from '#packages/temporal/index.js'
 export function checkPublicCalendarOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
-  equal: (actual: unknown, expected: unknown, context: string) => void
+  equal: (actual: unknown, expected: unknown, context: string) => void,
+  counts: {
+    fields: number
+    additions: number
+    bounds: number
+    bridges: number
+    differences: number
+    windows: number
+  } = {
+    fields: 0,
+    additions: 0,
+    bounds: 0,
+    bridges: 0,
+    differences: 0,
+    windows: 0,
+  }
 ): {
   fields: number
   additions: number
@@ -12,14 +27,6 @@ export function checkPublicCalendarOracle(
   differences: number
   windows: number
 } {
-  const counts = {
-    fields: 0,
-    additions: 0,
-    bounds: 0,
-    bridges: 0,
-    differences: 0,
-    windows: 0,
-  }
   const date = (epoch: number, calendar: string) =>
     new Temporal.PlainDate(1970, 1, 1).add({days: epoch}).withCalendar(calendar)
   for (const line of fixture.trim().split('\n')) {

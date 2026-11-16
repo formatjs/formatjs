@@ -22,6 +22,7 @@ formatjs_library(
         "calendar-entry.ts",
         "facade-benchmark.ts",
         "hermes-instant.ts",
+        "host-data-size-benchmark.ts",
         "instant-entry.ts",
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
@@ -60,6 +61,24 @@ formatjs_library(
     ],
 )
 
+js_binary(
+    name = "host_data_size_benchmark",
+    args = [
+        "$(rlocationpath :instant-code.js)",
+        "$(rlocationpath //packages/temporal:host-calendar-code.js)",
+        "$(rlocationpath :reference-full-bundle.js)",
+    ],
+    data = [
+        ":generated_package_json",
+        ":instant-code.js",
+        ":reference-full-bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//packages/temporal:host-calendar-code.js",
+    ],
+    entry_point = "host-data-size-benchmark.ts",
+)
+
 rolldown_bundle(
     name = "locale-code",
     srcs = [
@@ -85,6 +104,7 @@ rolldown_bundle(
             ":srcs",
             "//packages/temporal:runtime_sources",
         ],
+        define = {"import.meta.formatjsTemporalHostCalendar": "false"},
         entry_point = entry,
         platform = "node",
         target = "es2022",

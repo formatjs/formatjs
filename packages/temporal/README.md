@@ -136,3 +136,9 @@ offsets, transitions, parsing, rounding and locale output. Authority datasets al
 check table calendars. Unfiltered diagnostics retain implementation and pinned
 IANA/CLDR differences. See the [implementation record](../../knowledge-base/015-temporal.md)
 for commands, corpus counts, data policies and remaining work.
+
+An experimental Bazel host-calendar profile replaces Chinese/Dangi/Umm al-Qura
+tables with host Intl data. Calendar arithmetic stays in TS; IANA data is still
+bundled. Its namespace measures about 90 KB gzip versus 361 KB with owned data.
+It is not a published entry: extended calendar bounds and complete host-backed
+conformance remain open. Host Intl data is allowed for the eventual TS default.

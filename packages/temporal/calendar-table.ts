@@ -2,6 +2,20 @@ import {
   fallbackLunisolar,
   fallbackUmmAlQura,
 } from '#packages/temporal/fallback-data.js'
+import {
+  hostCalendarYear,
+  hostCalendarDate,
+  hostCalendarAddMonths,
+  hostCalendarMonthDifference,
+} from '#packages/temporal/host-calendar.js'
+
+declare global {
+  interface ImportMeta {
+    readonly formatjsTemporalHostCalendar?: boolean
+  }
+}
+export const hostCalendarData: boolean =
+  import.meta.formatjsTemporalHostCalendar === true
 
 export type TableCalendarId = 'chinese' | 'dangi' | 'islamic-umalqura'
 const alphabet =
@@ -35,12 +49,18 @@ export function tableLeapMonth(
   calendar: 'chinese' | 'dangi',
   year: number
 ): number {
+  if (hostCalendarData) return hostCalendarYear(calendar, year).leap
   return pattern(calendar, year) >>> 13
 }
 export function tableYearStart(
   calendar: TableCalendarId,
   year: number
 ): number | undefined {
+  if (hostCalendarData) {
+    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1601))
+      return undefined
+    return hostCalendarYear(calendar, year).starts[0]
+  }
   if (calendar === 'islamic-umalqura') {
     const ummAlQura = fallbackUmmAlQura()
     const index = year - ummAlQura.firstYear
@@ -63,6 +83,12 @@ export function tableMonthLength(
   year: number,
   month: number
 ): number | undefined {
+  if (hostCalendarData) {
+    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1600))
+      return undefined
+    const data = hostCalendarYear(calendar, year)
+    return (data.starts[month] ?? data.end) - data.starts[month - 1]
+  }
   if (calendar === 'islamic-umalqura') {
     const ummAlQura = fallbackUmmAlQura()
     const index = year - ummAlQura.firstYear
@@ -77,6 +103,8 @@ export function tableMonthSerial(
   year: number,
   month: number
 ): number {
+  if (hostCalendarData)
+    return hostCalendarMonthDifference(calendar, 1970, 1, year, month)
   const table = data(calendar),
     index = year - table.firstYear
   pattern(calendar, year)
@@ -90,6 +118,7 @@ export function tableYearMonth(
   calendar: 'chinese' | 'dangi',
   serial: number
 ): {year: number; month: number} {
+  if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)
   const table = data(calendar),
     checkpoints = table.monthCheckpoints
   if (!Number.isSafeInteger(serial) || serial < 0)
@@ -114,6 +143,7 @@ export function tableDate(
   calendar: 'chinese' | 'dangi',
   epoch: number
 ): {year: number; month: number; day: number} {
+  if (hostCalendarData) return hostCalendarDate(calendar, epoch)
   const table = data(calendar),
     checkpoints = table.checkpoints
   if (epoch < checkpoints[0] || epoch >= table.endDay)
@@ -133,4 +163,34 @@ export function tableDate(
   while (remaining >= tableMonthLength(calendar, year, month)!)
     remaining -= tableMonthLength(calendar, year, month++)!
   return {year, month, day: remaining + 1}
+}
+
+export function tableAddMonths(
+  calendar: 'chinese' | 'dangi',
+  year: number,
+  month: number,
+  months: number
+): {year: number; month: number} {
+  return hostCalendarData
+    ? hostCalendarAddMonths(calendar, year, month, months)
+    : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)
+}
+
+export function tableMonthDifference(
+  calendar: 'chinese' | 'dangi',
+  oneYear: number,
+  oneMonth: number,
+  twoYear: number,
+  twoMonth: number
+): number {
+  return hostCalendarData
+    ? hostCalendarMonthDifference(
+        calendar,
+        oneYear,
+        oneMonth,
+        twoYear,
+        twoMonth
+      )
+    : tableMonthSerial(calendar, twoYear, twoMonth) -
+        tableMonthSerial(calendar, oneYear, oneMonth)
 }

@@ -1,0 +1,27 @@
+{
+  "node": "v24.14.0",
+  "icu": "78.2",
+  "cldr": "48.0",
+  "scope": "Full namespaces. Experimental host-calendar profile replaces Chinese/Dangi/Umm al-Qura tables with Intl, retains owned IANA timezone data and arithmetic calendars. Extended calendar boundary data and full host conformance remain open. Full reference uses host Intl for calendar and timezone data. Size only; profiles do not yet have equal verified coverage.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "sizes": [
+    {
+      "profile": "standalone",
+      "raw": 3421998,
+      "minified": 3200834,
+      "minifiedGzip": 361121
+    },
+    {
+      "profile": "hostCalendars",
+      "raw": 562709,
+      "minified": 458617,
+      "minifiedGzip": 90454
+    },
+    {
+      "profile": "referenceFull",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ]
+}

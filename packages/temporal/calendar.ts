@@ -5,7 +5,8 @@ import {
   tableYearStart,
   tableMonthLength,
   tableMonthSerial,
-  tableYearMonth,
+  tableAddMonths,
+  tableMonthDifference,
   tableDate,
 } from '#packages/temporal/calendar-table.js'
 // Numeric calendars; callers own Temporal coercion and property order.
@@ -394,10 +395,7 @@ function addYearMonth(
   let month: number
   if (isLunisolar(calendar)) {
     month = monthFromCode(calendar, year, original.monthCode, overflow)
-    return tableYearMonth(
-      calendar,
-      tableMonthSerial(calendar, year, month) + months
-    )
+    return tableAddMonths(calendar, year, month, months)
   }
   if (calendar !== 'hebrew') {
     const count = monthsInYear(calendar, year)
@@ -532,9 +530,16 @@ export function calendarDateUntilRaw(
   }
   if (largest === 'year' || largest === 'month') {
     const base = addYearMonth(calendar, first, result.years, 0, 'constrain')
-    result.months =
-      calendarMonthSerial(calendar, last.year, last.month) -
-      calendarMonthSerial(calendar, base.year, base.month)
+    result.months = isLunisolar(calendar)
+      ? tableMonthDifference(
+          calendar,
+          base.year,
+          base.month,
+          last.year,
+          last.month
+        )
+      : calendarMonthSerial(calendar, last.year, last.month) -
+        calendarMonthSerial(calendar, base.year, base.month)
     if (surpasses()) result.months -= sign
     anchor = calendarToEpochDayRaw(
       calendar,

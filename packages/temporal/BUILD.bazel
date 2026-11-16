@@ -23,6 +23,7 @@ formatjs_library(
         "duration-core.ts",
         "duration-format.ts",
         "fallback-data.ts",
+        "host-calendar.ts",
         "index.ts",
         "install.ts",
         "instant.ts",
@@ -52,7 +53,10 @@ formatjs_library(
     ],
     description = "Temporal implementation",
     entry_point_defines = {
-        entry: {"import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false"}
+        entry: {
+            "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
+            "import.meta.formatjsTemporalHostCalendar": "false",
+        }
         for entry in [
             "index.ts",
             "native.ts",
@@ -116,6 +120,84 @@ filegroup(
     name = "runtime_sources",
     srcs = [":srcs"],
     visibility = ["//benchmarks/temporal:__pkg__"],
+)
+
+rolldown_bundle(
+    name = "host-calendar-code",
+    srcs = [":srcs"],
+    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    entry_point = "index.ts",
+    format = "esm",
+    target = "es2022",
+    visibility = ["//benchmarks/temporal:__pkg__"],
+    deps = [":lib"],
+)
+
+js_test(
+    name = "host_calendar_test",
+    size = "small",
+    args = ["$(rlocationpath :host-calendar-code.js)"],
+    data = [
+        ":host-calendar-code.js",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/host-calendar.test.mjs",
+)
+
+[
+    js_test(
+        name = "host_calendar_reference_test" if reference else "host_calendar_icu_test",
+        size = "medium",
+        args = [
+            "$(rlocationpath :host-calendar-code.js)",
+            "$(rlocationpath :public-calendar-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+        ],
+        data = [
+            ":host-calendar-code.js",
+            ":public-calendar-oracle.js",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/temporal-polyfill",
+            "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+        ],
+        entry_point = "tests/host-calendar-icu.test.mjs",
+        env = {"FORMATJS_TEMPORAL_HOST_CALENDAR_REFERENCE": "1" if reference else "0"},
+        tags = [] if reference else ["manual"],
+    )
+    for reference in [
+        False,
+        True,
+    ]
+]
+
+rolldown_bundle(
+    name = "host-calendar-hermes-code",
+    srcs = [
+        "tests/host-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    entry_point = "tests/host-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "host_calendar_hermes_test",
+    size = "small",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :host-calendar-hermes-code.js)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":host-calendar-hermes-code.js",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
 )
 
 [
@@ -1943,7 +2025,10 @@ rolldown_bundle(
         "tests/wasm-prelude.ts",
         ":srcs",
     ],
-    define = {"import.meta.formatjsTemporalNativeData": "true"},
+    define = {
+        "import.meta.formatjsTemporalNativeData": "true",
+        "import.meta.formatjsTemporalHostCalendar": "false",
+    },
     entry_point = "tests/wasm-prelude.ts",
     format = "iife",
     target = "es2022",

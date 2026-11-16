@@ -1,10 +1,14 @@
 # Temporal implementation
 
+Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
+Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
+versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
+
 ## Host Intl data policy
 
 Host `Intl` is an allowed dependency for the TypeScript implementation. Prefer
 host calendar and timezone data for the default TS distribution; keep bundled
-data as an explicit standalone option. This direction is not implemented yet.
+data as an explicit standalone option. The default switch is not implemented yet.
 Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
 range boundaries with Test262 and independent ICU oracles, including Hermes.
@@ -13,10 +17,6 @@ Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
 The existing roughly 361 KB gzip TS measurement includes owned calendar and
 timezone tables; the roughly 23 KB gzip full reference uses host Intl data.
-
-Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
-Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
-versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
 
 ## Current state
 
@@ -1298,3 +1298,45 @@ failure baseline hides those differences.
 23,226 for the full host-backed reference. These are runtime consumer bundles,
 not npm archive sizes. They still include owned TS data; host-backed TS remains
 work to do. Previous throughput snapshots do not measure the new Intl adapter.
+
+## Experimental host-calendar data profile
+
+`//packages/temporal:host-calendar-code` builds the namespace with Chinese, Dangi
+and Umm al-Qura data supplied by captured host Intl methods. Arithmetic calendars
+and owned IANA data stay in TS. No public entry or default changes yet.
+`host-calendar.ts` queries month boundaries lazily and caches at most 128 years.
+Month addition and differences query the intervening years instead of requiring
+a global precomputed month serial. Umm al-Qura keeps the civil fallback outside
+AH 1300–1600. Standalone tables and native data backends remain available.
+
+`host_calendar_test` covers public leap arithmetic, civil fallback and captured
+intrinsics. `host_calendar_hermes_test` covers source and optimized bytecode with
+compiled native Intl locale data, without enabling the Rust Temporal backend.
+`host_calendar_reference_test` compares the entire independent table-calendar
+corpus against the full reference on the same Node/Intl runtime. Both have the
+same 206 failing rows, with matching values and completed bridge checks. The
+strict `host_calendar_icu_test` retains a zero-failure requirement and stays red;
+no accepted-failure baseline or corpus exclusions were added.
+
+`benchmarks/temporal/host-calendar-size-results.json` measures 361,121 bytes gzip
+for standalone TS, 90,454 for the host-calendar profile and 23,226 for the full
+reference. This removes roughly 75% of bundled TS bytes before timezone migration.
+The host profile still needs boundary data for calendar years extending beyond
+Date TimeClip, full Test262 coverage, host timezone queries and matching speed
+measurements. It is not a completed replacement for the default distribution.
+
+Matching the reference does not establish calendar compliance. The current
+[calendar requirements](https://tc39.es/proposal-intl-era-monthcode/#table-calendar-types)
+require authority data for Chinese 1900–2100 and Dangi 1900–2050, with approximation
+allowed outside those ranges. Several common host/reference failures lie inside
+those ranges. Next, generate small authority-range and extreme-boundary year packs
+from the existing pinned pipeline, retaining independent HKO/KASI/ICU checks.
+Host Intl can supply the remaining years. This avoids bundling full-range packs
+while preserving the specified data requirements; it remains unimplemented.
+
+The host-calendar layer passes 20 focused regression targets and all three
+actual TypeScript checkers. This includes standalone calendar/unit oracles, six
+full public-class Test262 selections, SDK calendar source/bytecode, WASM calendar
+and formatter gates, and both WASM package oracle profiles. These default/native
+regressions do not establish complete Test262 coverage of the experimental host
+profile. Its size snapshot was rerun after formatting and remained identical.
