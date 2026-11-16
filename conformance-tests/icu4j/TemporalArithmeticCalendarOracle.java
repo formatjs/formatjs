@@ -20,12 +20,12 @@ public final class TemporalArithmeticCalendarOracle {
     if (result instanceof GregorianCalendar) ((GregorianCalendar)result).setGregorianChange(new Date(Long.MIN_VALUE));
     return result;
   }
-  private static int year(Calendar value, String id) {
+  static int year(Calendar value, String id) {
     if (id.equals("buddhist")) return value.get(Calendar.YEAR);
     if (id.equals("roc")) return value.get(Calendar.ERA)==0 ? 1-value.get(Calendar.YEAR) : value.get(Calendar.YEAR);
     return value.get(Calendar.EXTENDED_YEAR);
   }
-  private static String[] era(String id, Calendar value, long epoch, int year) {
+  static String[] era(String id, Calendar value, long epoch, int year) {
     switch(id) {
       case "iso8601": return new String[] {"-","-"};
       case "buddhist": return new String[] {"be",""+year};
@@ -34,7 +34,7 @@ public final class TemporalArithmeticCalendarOracle {
       case "ethiopic": return new String[] {year>0 ? "am" : "aa",""+(year>0 ? year : year+5500)};
       case "indian": return new String[] {"shaka",""+year};
       case "persian": return new String[] {"ap",""+year};
-      case "islamic-civil": case "islamic-tbla": return new String[] {year>0 ? "ah":"bh",""+(year>0?year:1-year)};
+      case "islamic-civil": case "islamic-tbla": case "islamic-umalqura": return new String[] {year>0 ? "ah":"bh",""+(year>0?year:1-year)};
       case "roc": return new String[] {year>0 ? "roc":"broc",""+(year>0?year:1-year)};
       case "japanese":
         if (epoch>=-35428) {

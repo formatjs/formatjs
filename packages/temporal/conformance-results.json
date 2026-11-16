@@ -1459,10 +1459,7 @@
       "benchmarks/temporal/extended-date-size-results.json",
       "benchmarks/temporal/extended-date-backend-size-results.json"
     ],
-    "remaining": [
-      "Non-Gregorian extended host formatting",
-      "Rust completion audit"
-    ]
+    "remaining": ["Rust completion audit"]
   },
   "legacyLunisolarHostFormatting": {
     "completeTemporalBackend": false,
@@ -1487,7 +1484,6 @@
       "benchmarks/temporal/lunar-intl-backend-size-results.json"
     ],
     "remaining": [
-      "Non-Gregorian extended host formatting",
       "Rust full capability audit",
       "Updated cold-load and matched non-ISO throughput"
     ]
@@ -1613,5 +1609,59 @@
       "benchmarks/temporal/sdk-host-backend-size-results.json",
       "benchmarks/temporal/native-sdk-host-size-results.json"
     ]
+  },
+  "extendedNonGregorianHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendarArithmeticChanged": false,
+    "nonGregorianCalendars": 14,
+    "independentICU": {
+      "version": "79.1",
+      "fieldRows": 60,
+      "calendars": 10,
+      "scope": "Forward DateTime/YearMonth fields beyond Date TimeClip. Hebrew/Persian and astronomical calendar oracle limits remain unchanged."
+    },
+    "publishedPackageChecksPerProfile": 1515,
+    "profiles": [
+      "Node TypeScript",
+      "Node hybrid WASM",
+      "Node native-data WASM"
+    ],
+    "hermesChecksPerMode": 300,
+    "hermesModes": ["source", "optimized bytecode"],
+    "hermesIntl": "Native DateTimeFormat and NumberFormat; private Temporal formatting bridge disabled.",
+    "localeControls": [
+      "en",
+      "ar-EG",
+      "bn",
+      "zh-Hans-u-nu-hanidec",
+      "en-u-nu-mathsans"
+    ],
+    "fallbackEraData": {
+      "source": "CLDR 49",
+      "calendar": "islamic",
+      "era": "Before Hijrah",
+      "widths": 3,
+      "sourceLocalesVerified": 657,
+      "explicitRootParentCases": 7
+    },
+    "hotIntlConstructionRegression": "Four calendars, four dates, ten repetitions: no new Intl constructors after warming.",
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "sizeSnapshots": [
+      "benchmarks/temporal/extended-calendar-size-results.json",
+      "benchmarks/temporal/extended-calendar-backend-size-results.json"
+    ],
+    "remaining": [
+      "Older-host numeric-Date era alignment outside Chinese/Dangi",
+      "Rust full capability audit",
+      "Updated cold-load and matched non-ISO throughput"
+    ],
+    "regression": {
+      "targets": 37,
+      "passes": 37,
+      "localTestJobs": 4,
+      "caseTimeoutsChanged": false,
+      "note": "Unbounded local concurrency hit two 30-second numeric-Date comparison timeouts. Complete rerun with four concurrent tests passed; these numeric cases bypass the new plain-calendar renderer."
+    }
   }
 }

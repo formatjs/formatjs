@@ -23,6 +23,25 @@ formatjs_test(
 )
 
 ts_binary(
+    name = "era-fallbacks",
+    data = [
+        "//:node_modules/cldr-cal-islamic-full",
+        "//:node_modules/cldr-core",
+    ],
+    entry_point = "era-fallbacks.ts",
+    visibility = ["//packages/intl-datetimeformat/scripts/registry:__pkg__"],
+)
+
+js_test(
+    name = "era_fallbacks_test",
+    data = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
+        "//:node_modules/cldr-cal-islamic-full",
+    ],
+    entry_point = "era-fallbacks.test.mjs",
+)
+
+ts_binary(
     name = "cldr-raw",
     data = [
         "extract-dates.ts",

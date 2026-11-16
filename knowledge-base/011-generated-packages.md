@@ -41,6 +41,13 @@ flowchart TD
 
 ## Package Structure
 
+`@formatjs_generated/datetimeformat.calendars` contains the supported-calendar
+registry and `fallback-eras.js`. The latter retains only CLDR Before Hijrah labels
+in three widths, deduplicates inherited values and preserves explicit root-parent
+overrides. Its generator lives in `packages/intl-datetimeformat/scripts/`; Temporal
+uses it where older host Intl has no Before Hijrah era. Full formatter locale
+packs remain separately generated and loaded.
+
 Packages are organized by **data source**, not by consuming package. CLDR data is further split into sub-packages aligned with the upstream CLDR npm package groupings (`cldr-core`, `cldr-numbers-full`, `cldr-bcp47`, etc.). Package names use `.` as path delimiter.
 
 Files within each package use subdirectories named after their origin package to avoid collisions.

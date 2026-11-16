@@ -1311,3 +1311,25 @@ TS/WASM and Hermes source/bytecode, plus four Hermes fault-injection executions.
 The published-package oracle checks 8,708 independent ICU field rows, localized
 labels and ranges. Existing 30,620-row calendar controls remain strict. Calendar
 arithmetic/data are unchanged; non-Gregorian legacy TimeClip remains open.
+
+## Extended non-Gregorian host formatting
+
+`extended-calendar-size-results.json` measures default/standalone consumers at
+67,740/336,247 bytes gzip, increases of 2,224/2,576 over the lunar layer.
+Host Intl supplies labels; Temporal restores calendar fields beyond Date TimeClip.
+Only Before Hijrah labels add CLDR locale data, with inheritance deduplication.
+`extended-calendar-backend-size-results.json` records separate graphs: TS 70,018,
+native-data WASM 481,274 and hybrid WASM 514,000 bytes gzip. WASM totals include
+the unchanged 443,178-byte gzip binary. The host-Intl full reference remains
+23,226 bytes gzip. Default TS still includes owned timezone data.
+
+Validation covers 60 independent ICU boundary rows across ten calendars,
+1,515 public formatting checks per TS/WASM profile, and 300 checks per Hermes
+source/bytecode mode. All fourteen non-Gregorian calendars have range controls;
+the existing independent-oracle limits for four calendars remain explicit.
+A constructor-count regression checks warmed formatting across four calendars
+without new Intl construction. No fresh throughput claim.
+
+All 37 focused regression targets pass with four concurrent tests. Unbounded
+local concurrency hit two 30-second numeric-Date comparison timeouts; those
+cases bypass the new plain renderer. Case timeouts and exclusions are unchanged.

@@ -163,7 +163,8 @@ function monthLabel(
 export function correctLunisolarParts(
   value: LegacyDateTimeProjection,
   raw: Intl.DateTimeFormatPart[],
-  resolved: Resolved
+  resolved: Resolved,
+  surrogateMilliseconds?: number
 ): Intl.DateTimeFormatPart[] {
   const options = resolved.call(value.formatter),
     calendar = options.calendar
@@ -172,12 +173,21 @@ export function correctLunisolarParts(
     !raw.some(part => dateTypes.has(part.type))
   )
     return raw
-  const iso = fields('iso8601', options.timeZone, value.milliseconds),
+  const iso =
+      surrogateMilliseconds === undefined
+        ? fields('iso8601', options.timeZone, value.milliseconds)
+        : undefined,
     expected = calendarFromEpochDayRaw(
       calendar,
-      isoDay(iso.year, iso.month, iso.day)
+      iso
+        ? isoDay(iso.year, iso.month, iso.day)
+        : Math.floor(value.milliseconds / dayMilliseconds)
     ),
-    actual = fields(calendar, options.timeZone, value.milliseconds)
+    actual = fields(
+      calendar,
+      options.timeZone,
+      surrogateMilliseconds ?? value.milliseconds
+    )
   if (
     actual.year === expected.year &&
     actual.monthCode === expected.monthCode &&
@@ -263,14 +273,23 @@ export function lunisolarRangeParts(
     start = correctLunisolarParts(first, firstRaw, resolved),
     end = correctLunisolarParts(last, lastRaw, resolved)
   if (start === firstRaw && end === lastRaw) return raw
+  return joinCalendarRangeParts(first.formatter, start, end, parts)
+}
+
+export function joinCalendarRangeParts(
+  formatter: Intl.DateTimeFormat,
+  start: Intl.DateTimeFormatPart[],
+  end: Intl.DateTimeFormatPart[],
+  parts: RangeParts
+): Intl.DateTimeRangeFormatPart[] {
   if (
     start.map(part => part.value).join('') ===
     end.map(part => part.value).join('')
   )
     return start.map(part => ({...part, source: 'shared'}))
-  let separator = separators.get(first.formatter)
+  let separator = separators.get(formatter)
   if (separator === undefined) {
-    const sample = parts.call(first.formatter, 946718033000, 1025966286000),
+    const sample = parts.call(formatter, 946718033000, 1025966286000),
       end = sample.findIndex(part => part.source === 'endRange')
     let start = end - 1
     while (start >= 0 && sample[start].source !== 'startRange') start--
@@ -280,7 +299,7 @@ export function lunisolarRangeParts(
       .slice(start + 1, end)
       .map(part => part.value)
       .join('')
-    separators.set(first.formatter, separator)
+    separators.set(formatter, separator)
   }
   return [
     ...start.map(part => ({...part, source: 'startRange' as const})),

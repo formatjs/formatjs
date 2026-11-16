@@ -11,6 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ICU4X 2.3.0 lunisolar approximation
 Source: https://github.com/unicode-org/icu4x/blob/a14f2dad852be26bad277ae704abf27a15cbfed1/components/calendar/src/cal/east_asian_traditional/simple.rs
 
+CLDR 49 Before Hijrah era labels
+Copyright © 2001–2026 Unicode, Inc.
+Source: https://github.com/unicode-org/cldr-json/tree/49.0.0/cldr-json/cldr-cal-islamic-full
+
 UNICODE LICENSE V3
 
 COPYRIGHT AND PERMISSION NOTICE

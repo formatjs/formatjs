@@ -1,5 +1,9 @@
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
+  plainCalendarParts,
+  plainCalendarRangeParts,
+} from '#packages/temporal/legacy-calendar-date.js'
+import {
   correctLunisolarParts,
   lunisolarRangeParts,
 } from '#packages/temporal/legacy-lunisolar-date.js'
@@ -19,6 +23,7 @@ type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
+const nativeParts = globalThis.Intl?.DateTimeFormat.prototype.formatToParts
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   return value.plain === true && Math.abs(value.milliseconds) > limit
@@ -61,6 +66,8 @@ export function legacyDateTimeParts(
   parts: Parts,
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] {
+  const calendar = plainCalendarParts(value, parts, resolved)
+  if (calendar) return calendar
   if (!clipped(value) || !gregorian(value.formatter, resolved))
     return correctLunisolarParts(
       value,
@@ -82,6 +89,8 @@ export function legacyDateTimeFormat(
   parts: Parts,
   resolved: Resolved
 ): string {
+  const calendar = plainCalendarParts(value, parts, resolved)
+  if (calendar) return calendar.map(part => part.value).join('')
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
     const calendar = resolved.call(value.formatter).calendar
     if (calendar !== 'chinese' && calendar !== 'dangi')
@@ -117,6 +126,14 @@ export function legacyDateTimeRangeParts(
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
+  const extended = plainCalendarRangeParts(
+    first,
+    last,
+    nativeParts!,
+    parts,
+    resolved
+  )
+  if (extended) return extended
   const lunar = lunisolarRangeParts(first, last, parts, resolved)
   if (lunar) return lunar
   if (
@@ -148,6 +165,14 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
+  const extended = plainCalendarRangeParts(
+    first,
+    last,
+    nativeParts!,
+    parts,
+    resolved
+  )
+  if (extended) return extended.map(part => part.value).join('')
   const lunar = lunisolarRangeParts(first, last, parts, resolved)
   if (lunar) return lunar.map(part => part.value).join('')
   if (

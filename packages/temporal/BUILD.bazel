@@ -35,6 +35,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "legacy-calendar-date.ts",
         "legacy-durationformat.ts",
         "legacy-extended-date.ts",
         "legacy-intl.ts",
@@ -131,6 +132,7 @@ formatjs_library(
         "./should-polyfill.js": "./should-polyfill.js",
     },
     deps = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
         "//:node_modules/@formatjs_generated/icu.calendar",
         "//:node_modules/@formatjs_generated/tz",
         "//packages/ecma262-abstract",
@@ -174,6 +176,85 @@ js_test(
         "//packages/intl-durationformat:pkg",
     ],
     entry_point = "tests/durationformat-package.test.mjs",
+)
+
+[
+    js_test(
+        name = "legacy_extended_calendar_" + mode + "_test" if mode else "legacy_extended_calendar_test",
+        size = "medium",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_extended_calendar_fixtures)",
+        ],
+        data = [
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_extended_calendar_fixtures",
+        ],
+        entry_point = "tests/legacy-extended-calendar.test.mjs",
+        env = {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+    )
+    for mode in [
+        "",
+        "wasm",
+        "native",
+    ]
+]
+
+js_test(
+    name = "legacy_calendar_cache_test",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-calendar-cache.test.mjs",
+)
+
+rolldown_bundle(
+    name = "extended-calendar-host",
+    srcs = [
+        "tests/extended-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/extended-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "extended_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":extended-calendar-host.js",
+        "//conformance-tests/icu4j:temporal_extended_calendar_hermes_fixtures",
+    ],
+    outs = ["extended-calendar-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_extended_calendar_hermes_fixtures); cat $(location :extended-calendar-host.js)) > $@",
+)
+
+sh_test(
+    name = "extended_calendar_hermes_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :extended_calendar_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":extended_calendar_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
 )
 
 js_test(
@@ -513,6 +594,7 @@ sh_test(
                 "tests/public-calendars.test.ts",
                 "tests/public-calendar-oracle.ts",
                 "tests/public-calendar-host.ts",
+                "tests/extended-calendar-host.ts",
             ],
             ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
         ),

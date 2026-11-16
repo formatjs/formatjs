@@ -59,12 +59,29 @@ Chinese/Dangi authority-range field rows, including 34 older-host disagreements;
 localized label controls use independently verified matching dates. Hermes
 fault injection additionally forces stale year/month/day fields to exercise
 correction and range fallback even when native ICU data already agrees.
-Non-Gregorian legacy formatting beyond Date TimeClip remains open.
+Non-Gregorian plain formatting now uses safe Gregorian-cycle surrogates, then
+restores owned calendar fields, localized years, eras and month labels. This also
+avoids host calendar failures at valid extreme Date values. Plain ranges retain
+native collapsing when fields match; changed fields use complete endpoint
+patterns. Japanese labels select the actual era and preserve first-year forms.
+Only Before Hijrah labels need bundled CLDR data; the generated calendar metadata
+package supplies three widths with locale inheritance and explicit root parents.
+No full DateTimeFormat locale packs are added.
+
+New forward ICU4J boundary controls cover 60 DateTime/YearMonth rows across ten
+calendars. The existing Hebrew/Persian/astronomical oracle limits remain explicit;
+all fourteen non-Gregorian calendars have public formatting/range controls.
+TS and both WASM delivery profiles run five numeral systems, including
+supplementary-plane digits. Hermes source/bytecode run the same ICU rows through
+the legacy adapter with native DateTimeFormat and NumberFormat primitives.
+Generator controls compare all 657 CLDR locales plus explicit root-parent cases.
+Older-host numeric-Date era conventions outside the lunar correction remain
+separate alignment work; this does not establish full legacy Intl compliance.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 65,516 bytes gzip; standalone measures
-333,671. Both include owned timezone data. The roughly 23 KB gzip full reference
+Published default TS consumers measure 67,740 bytes gzip; standalone measures
+336,247. Both include owned timezone data. The roughly 23 KB gzip full reference
 uses host Intl data; these profiles still have different data policies.
 
 `host-timezone.ts` prototypes captured Intl offset queries and local-time

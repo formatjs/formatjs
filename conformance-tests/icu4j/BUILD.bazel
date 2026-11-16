@@ -294,6 +294,43 @@ java_binary(
 )
 
 java_binary(
+    name = "temporal_extended_calendar_oracle",
+    testonly = True,
+    srcs = [
+        "TemporalArithmeticCalendarOracle.java",
+        "TemporalExtendedCalendarOracle.java",
+    ],
+    main_class = "TemporalExtendedCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_extended_calendar_files",
+    testonly = True,
+    outs = [
+        "temporal-extended-calendar-fixtures.tsv",
+        "temporal-extended-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_extended_calendar_oracle) $(@D)/temporal-extended-calendar-fixtures.tsv $(@D)/temporal-extended-calendar-fixtures.js",
+    tools = [":temporal_extended_calendar_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+filegroup(
+    name = "temporal_extended_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-extended-calendar-fixtures.tsv"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+filegroup(
+    name = "temporal_extended_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-extended-calendar-fixtures.js"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+java_binary(
     name = "temporal_extended_intl_oracle",
     testonly = True,
     srcs = ["TemporalExtendedIntlOracle.java"],

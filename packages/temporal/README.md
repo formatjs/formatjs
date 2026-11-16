@@ -79,11 +79,15 @@ Chinese/Dangi date fields use the same calendar arithmetic as Temporal, includin
 numeric Date inputs when host ICU data differs. Captured host formatters supply
 localized labels. Corrected ranges use full endpoint patterns when native field
 collapse no longer applies.
+All supported non-Gregorian plain values also format beyond Date TimeClip.
+Safe Gregorian-cycle surrogates preserve weekday/clock; Temporal restores calendar
+fields and eras. Host Intl supplies month and era labels, with compact CLDR
+Before Hijrah labels for older hosts. Japanese era names and first-year forms
+remain localized. Numeric Date inputs retain TimeClip.
 
 Remaining gaps stay visible:
 
-- Legacy Date TimeClip still limits extended plain values in non-Gregorian
-  calendars.
+- Legacy numeric-Date era conventions still need alignment on older hosts.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
@@ -177,8 +181,8 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 65,516 bytes gzip for default and
-333,671 for standalone. Both include compact IANA histories. The native-data WASM
-module and binary, compressed separately, measure 478,860 bytes gzip. Prior
+Published consumer bundles currently measure 67,740 bytes gzip for default and
+336,247 for standalone. Both include compact IANA histories. The native-data WASM
+module and binary, compressed separately, measure 481,274 bytes gzip. Prior
 measured Node workloads favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.
