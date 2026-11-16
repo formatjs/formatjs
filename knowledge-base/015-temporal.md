@@ -6,9 +6,10 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 
 ## Host Intl data policy
 
-Host `Intl` is an allowed dependency for the TypeScript implementation. Prefer
-host calendar and timezone data for the default TS distribution; keep bundled
-data as an explicit standalone option. The default switch is not implemented yet.
+Host `Intl` is an allowed dependency for the TypeScript implementation. Default
+TS uses compact arithmetic/data for Chinese/Dangi and captured host Intl for Umm
+al-Qura. Owned IANA timezone data remains; host timezone migration is pending.
+The explicit `standalone.js` entry retains full calendar packs.
 Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
 range boundaries with Test262 and independent ICU oracles, including Hermes.
@@ -25,8 +26,9 @@ name is `@formatjs/temporal`; it remains private while incomplete.
 `benchmarks/temporal` owns comparisons and measurement records.
 
 The public entry exports Instant, Duration, PlainTime, PlainDate, PlainDateTime,
-PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. TS owns
-all 16 specification calendars and IANA timezone data. Native Intl integration
+PlainYearMonth, PlainMonthDay, ZonedDateTime, Now and installation entries. TS supplies
+all 16 specification calendars, with host Intl Umm al-Qura data and owned IANA
+timezone data. Native Intl integration
 and complete native distribution remain open.
 
 `crates/temporal` supplies an allocation-free `no_std` core with shared numeric
@@ -1299,44 +1301,62 @@ failure baseline hides those differences.
 not npm archive sizes. They still include owned TS data; host-backed TS remains
 work to do. Previous throughput snapshots do not measure the new Intl adapter.
 
-## Experimental host-calendar data profile
+## Compact calendar default
 
-`//packages/temporal:host-calendar-code` builds the namespace with Chinese, Dangi
-and Umm al-Qura data supplied by captured host Intl methods. Arithmetic calendars
-and owned IANA data stay in TS. No public entry or default changes yet.
-`host-calendar.ts` queries month boundaries lazily and caches at most 128 years.
-Month addition and differences query the intervening years instead of requiring
-a global precomputed month serial. Umm al-Qura keeps the civil fallback outside
-AH 1300–1600. Standalone tables and native data backends remain available.
+The default TS entry uses compact ICU4X Chinese/Dangi tables for 1900–2102 and
+an exact BigInt port of ICU4X 2.3.0's arithmetic approximation outside that range.
+The historical tables cover the specified authority ranges and extend through
+2102 so the approximation rejoins continuously. This replaces full-range packs
+without relying on older host Chinese calendar calculations or their extreme-date
+failures. Source attribution and Unicode-3.0 licensing ship in LICENSE.md.
 
-`host_calendar_test` covers public leap arithmetic, civil fallback and captured
-intrinsics. `host_calendar_hermes_test` covers source and optimized bytecode with
-compiled native Intl locale data, without enabling the Rust Temporal backend.
-`host_calendar_reference_test` compares the entire independent table-calendar
-corpus against the full reference on the same Node/Intl runtime. Both have the
-same 206 failing rows, with matching values and completed bridge checks. The
-strict `host_calendar_icu_test` retains a zero-failure requirement and stays red;
-no accepted-failure baseline or corpus exclusions were added.
+Umm al-Qura uses captured host Intl in AH 1300–1600 and the existing civil fallback
+outside that range. Year lookup caches at most 128 years. Month addition and
+differences use direct mean-lunation serials, verified against every packed month. All IANA timezone data is still bundled.
+`standalone.js` retains the previous full-table calendar engines and supports
+calendar/named-zone operations with Intl absent. Public installation targets the
+default namespace. The standalone and default entries share the native backend
+module, but their constructor brands remain separate.
 
-`benchmarks/temporal/host-calendar-size-results.json` measures 361,121 bytes gzip
-for standalone TS, 90,454 for the host-calendar profile and 23,226 for the full
-reference. This removes roughly 75% of bundled TS bytes before timezone migration.
-The host profile still needs boundary data for calendar years extending beyond
-Date TimeClip, full Test262 coverage, host timezone queries and matching speed
-measurements. It is not a completed replacement for the default distribution.
+The numeric range verifier checks all 1,204,680 years and 14,899,816 months against
+the existing full ICU4X packs, including month codes and end-of-month conversion
+within internal ±110-million-day coordinates. This checks port equivalence,
+not independent astronomical truth. The independent ICU/HKO/KASI corpus now
+passes all 30,620 rows, including 937 bridge cases, with no exclusions or accepted
+failures. Hermes runs that corpus in source and optimized bytecode with native
+Intl data available and no Rust Temporal backend enabled.
 
-Matching the reference does not establish calendar compliance. The current
-[calendar requirements](https://tc39.es/proposal-intl-era-monthcode/#table-calendar-types)
-require authority data for Chinese 1900–2100 and Dangi 1900–2050, with approximation
-allowed outside those ranges. Several common host/reference failures lie inside
-those ranges. Next, generate small authority-range and extreme-boundary year packs
-from the existing pinned pipeline, retaining independent HKO/KASI/ICU checks.
-Host Intl can supply the remaining years. This avoids bundling full-range packs
-while preserving the specified data requirements; it remains unimplemented.
+The previous host-only profile matched the reference's 206 failing rows. Those
+failures are fixed in the compact engine; the reference remains a diagnostic
+control. Older size snapshots remain historical. Current matched size and
+throughput evidence is recorded separately after the default switch.
 
-The host-calendar layer passes 20 focused regression targets and all three
-actual TypeScript checkers. This includes standalone calendar/unit oracles, six
-full public-class Test262 selections, SDK calendar source/bytecode, WASM calendar
-and formatter gates, and both WASM package oracle profiles. These default/native
-regressions do not establish complete Test262 coverage of the experimental host
-profile. Its size snapshot was rerun after formatting and remained identical.
+Eleven count-checked compact-profile Test262 scopes cover eight classes,
+calendars, Now and installation. They use the same full corpus selections and
+zero-failure baselines as the existing WASM scopes. No implementation failures
+are reclassified as host exclusions. Legacy Intl clipping/lunisolar formatting,
+DurationFormat integration and the Rust API/capability audit remain separate
+completion requirements.
+
+Final validation: 39 focused regression targets pass and all three actual
+TypeScript checker outputs are empty. The compact profile passes 12,228
+count-checked executions (9,090 class, 2,974 calendar, 138 Now, 26 installation).
+The full-range test also verifies every month serial and each year's final-month
+inverse; large three-million-month additions match standalone without scanning
+intervening years. Impossible four-billion-month additions reject immediately.
+
+Fresh snapshots: `compact-calendar-size-results.json`,
+`compact-calendar-backend-size-results.json`, and
+`wasm-compact-calendar-results.json` under benchmarks/temporal. Published consumer
+bundles measure 93,005 bytes gzip for default and 361,912 for standalone, a 74.3%
+reduction. The raw-source Rolldown profiles measure 92,044/361,121; these are a
+separate bundling path. Separately compressed runtime graphs measure TS 95,277,
+native-data WASM 474,427, and retained-fallback WASM 537,658 bytes gzip. Neither
+measurement is an npm archive size. WASM binary alone remains 441,577 bytes gzip.
+
+The 43 ISO public-operation workloads retain checksum 173601476. Both WASM modes
+lose to TS on every measured Node median; this does not establish non-ISO speed.
+Parsing medians are TS 1.636 µs, native-data WASM 3.250 µs, reference 3.008 µs.
+Field getters remain slower than the reference: TS 2.489 µs versus 0.437 µs.
+Previous Hermes throughput snapshots predate this default switch; the current
+Hermes claim is source/bytecode conformance, not refreshed throughput or startup.

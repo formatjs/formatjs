@@ -11,6 +11,11 @@ const {checkPublicCalendarOracle} = await import(
   pathToFileURL(runfiles.resolve(process.argv[3]))
 )
 const fixture = readFileSync(runfiles.resolve(process.argv[4]), 'utf8')
+const rows = fixture
+  .trim()
+  .split('\n')
+  .filter(line => !line.startsWith('#'))
+assert.equal(rows.length, 30620, 'Complete independent table-calendar corpus')
 function check(namespace) {
   const counts = {
     fields: 0,
@@ -21,8 +26,7 @@ function check(namespace) {
     windows: 0,
   }
   const failures = new Map()
-  for (const line of fixture.trim().split('\n')) {
-    if (line.startsWith('#')) continue
+  for (const line of rows) {
     try {
       checkPublicCalendarOracle(
         namespace,
@@ -48,24 +52,17 @@ console.log(JSON.stringify({owned: report(owned)}, null, 2))
 if (process.env.FORMATJS_TEMPORAL_HOST_CALENDAR_REFERENCE === '1') {
   const reference = check(Reference)
   console.log(JSON.stringify({reference: report(reference)}, null, 2))
-  assert.deepEqual(
-    [...owned.failures],
-    [...reference.failures],
-    'Host calendar must match reference on the same ICU corpus and Intl runtime'
-  )
-  assert.deepEqual(owned.counts, reference.counts)
-} else {
-  assert.equal(
-    owned.failures.size,
-    0,
-    'Host calendar ICU mismatches remain implementation or host-data gaps'
-  )
-  assert.deepEqual(owned.counts, {
-    fields: 15932,
-    additions: 6720,
-    bounds: 0,
-    bridges: 937,
-    differences: 6720,
-    windows: 1248,
-  })
 }
+assert.equal(
+  owned.failures.size,
+  0,
+  'Host calendar ICU mismatches remain implementation or host-data gaps'
+)
+assert.deepEqual(owned.counts, {
+  fields: 15932,
+  additions: 6720,
+  bounds: 0,
+  bridges: 937,
+  differences: 6720,
+  windows: 1248,
+})

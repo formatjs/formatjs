@@ -1216,3 +1216,33 @@ independent authority fixtures, published-package variants and shared bundler
 sourcemap checks. Two initial checks timed out under broad parallel load; the
 bounded-concurrency rerun passes without timeout or exclusion changes. Rust backend
 completion remains unproven; data deduplication does not close that audit.
+
+## Compact calendar default
+
+`compact-calendar-size-results.json` compares the new default with explicit
+standalone and the full host-backed reference. Published consumers measure
+93,005/361,912 bytes gzip for default/standalone, a 74.3% reduction. Raw-source
+Rolldown profiles measure 92,044/361,121; full reference measures 23,226. Default
+uses bounded ICU4X Chinese/Dangi data plus arithmetic and host Intl Umm al-Qura.
+IANA data remains owned. Both entries expose all 16 calendars.
+
+`compact-calendar-backend-size-results.json` records published ESM graphs:
+95,277 bytes gzip for TS, 474,427 for native-data WASM, 537,658 for retained-data
+WASM. `wasm-compact-calendar-results.json` measures actual published consumers:
+93,005 TS, 474,201 native-data WASM including binary. Alternatives, declarations,
+maps and notices also ship in the npm package; these are runtime measurements.
+
+Fresh V8 benchmark: 43 ISO workloads, eight inputs, 3,000 warmup, seven samples
+of 10,000 calls (transition cases use their recorded smaller counts). All output
+checks pass; checksum 173601476. Neither WASM mode beats TS on a measured median.
+Parsing medians are TS 1.636 µs, native-data WASM 3.250 µs, reference 3.008 µs.
+Reference field getters remain faster: 0.437 µs versus TS 2.489 µs. These results
+do not establish non-ISO throughput or cold TS load time. Existing Hermes speed
+snapshots predate this default; new Hermes validation covers the full independent
+calendar oracle in source and optimized bytecode.
+
+The default passes 12,228 count-checked class/calendar/Now/installation executions
+and the 30,620-row independent calendar corpus. The arithmetic port separately
+matches every year, month, serial and yearly final-month inverse across the old
+full packs: 1,204,680 years and 14,899,816 months. Full Temporal/Intl completion
+remains pending.

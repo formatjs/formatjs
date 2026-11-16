@@ -64,17 +64,19 @@ formatjs_library(
 js_binary(
     name = "host_data_size_benchmark",
     args = [
-        "$(rlocationpath :instant-code.js)",
+        "$(rlocationpath :standalone-code.js)",
         "$(rlocationpath //packages/temporal:host-calendar-code.js)",
         "$(rlocationpath :reference-full-bundle.js)",
+        "$(rlocationpath //packages/temporal:pkg)",
     ],
     data = [
         ":generated_package_json",
-        ":instant-code.js",
         ":reference-full-bundle.js",
+        ":standalone-code.js",
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/esbuild",
         "//packages/temporal:host-calendar-code.js",
+        "//packages/temporal:pkg",
     ],
     entry_point = "host-data-size-benchmark.ts",
 )
@@ -104,7 +106,7 @@ rolldown_bundle(
             ":srcs",
             "//packages/temporal:runtime_sources",
         ],
-        define = {"import.meta.formatjsTemporalHostCalendar": "false"},
+        define = {"import.meta.formatjsTemporalHostCalendar": "false" if name == "standalone-code" else "true"},
         entry_point = entry,
         platform = "node",
         target = "es2022",
@@ -120,6 +122,7 @@ rolldown_bundle(
         ("should-polyfill-code", "should-polyfill-entry.ts"),
         ("calendar-code", "calendar-entry.ts"),
         ("instant-code", "instant-entry.ts"),
+        ("standalone-code", "instant-entry.ts"),
         ("instant-primitives-code", "instant-primitives-entry.ts"),
         ("kernel-all-zones", "zones-entry.ts"),
         ("reference-bundle", "reference.ts"),

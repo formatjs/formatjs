@@ -1,10 +1,28 @@
 import assert from 'node:assert/strict'
+import {spawnSync} from 'node:child_process'
 import {join} from 'node:path'
 import {pathToFileURL} from 'node:url'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 
 const directory = runfiles.resolve(process.argv[2])
+const standalone = spawnSync(
+  process.execPath,
+  [
+    '--input-type=module',
+    '--eval',
+    `
+  import assert from 'node:assert/strict'
+  globalThis.Intl = undefined
+  const {Temporal} = await import(${JSON.stringify(pathToFileURL(join(directory, 'standalone.js')).href)})
+  assert.equal(Temporal.PlainDate.from('2023-03-22').withCalendar('chinese').monthCode, 'M02L')
+  assert.equal(Temporal.PlainDate.from('2024-03-11').withCalendar('islamic-umalqura').day, 1)
+  assert.equal(Temporal.ZonedDateTime.from('2020-03-07T12:00-05:00[America/New_York]').add({days: 1}).toString(), '2020-03-08T12:00:00-04:00[America/New_York]')
+`,
+  ],
+  {encoding: 'utf8'}
+)
+assert.equal(standalone.status, 0, standalone.stderr)
 const load = name => import(pathToFileURL(join(directory, name)).href)
 const nativeDateTimeFormat = Intl.DateTimeFormat
 const before = Object.getOwnPropertyDescriptor(globalThis, 'Temporal')

@@ -1,18 +1,27 @@
-import {DayFromYear} from '#packages/ecma262-abstract/DateOperations.js'
+import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
+import {
+  approximateLunisolarYear,
+  lunisolarMonthSerial,
+  lunisolarMonthEpoch,
+} from '#packages/temporal/lunisolar.js'
+import {
+  compactCalendarYear,
+  type CalendarYearData,
+} from '#packages/temporal/host-calendar-data.js'
 
 export type HostTableCalendar = 'chinese' | 'dangi' | 'islamic-umalqura'
-interface CalendarYear {
-  starts: number[]
-  end: number
-  leap: number
-}
 const Constructor = globalThis.Intl?.DateTimeFormat
 const parts = Constructor?.prototype.formatToParts
 const resolved = Constructor?.prototype.resolvedOptions
 const dayMilliseconds = 86400000
 const limit = 100000000
 const formatters = new Map<HostTableCalendar, Intl.DateTimeFormat>()
-const years = new Map<string, CalendarYear>()
+const years = new Map<string, CalendarYearData>()
+function remember(key: string, value: CalendarYearData): CalendarYearData {
+  if (years.size >= 128) years.delete(years.keys().next().value!)
+  years.set(key, value)
+  return value
+}
 
 function fields(calendar: HostTableCalendar, day: number) {
   if (!Number.isInteger(day) || Math.abs(day) > limit)
@@ -35,31 +44,30 @@ function fields(calendar: HostTableCalendar, day: number) {
     formatters.set(calendar, formatter)
   }
   let year = NaN,
-    month = '',
     date = NaN
   for (const part of parts.call(formatter, day * dayMilliseconds)) {
     const type: string = part.type
     if (type === 'relatedYear' || type === 'year') year = Number(part.value)
-    else if (type === 'month') month = part.value
     else if (type === 'day') date = Number(part.value)
   }
-  if (!Number.isSafeInteger(year) || !month || !(date >= 1 && date <= 30))
+  if (!Number.isSafeInteger(year) || !(date >= 1 && date <= 30))
     throw new RangeError('Unsupported host Intl calendar fields')
-  return {year, month, day: date}
+  return {year, day: date}
 }
 
 export function hostCalendarYear(
   calendar: HostTableCalendar,
   year: number
-): CalendarYear {
+): CalendarYearData {
   if (!Number.isSafeInteger(year)) throw new RangeError('Invalid calendar year')
   const key = `${calendar}:${year}`,
     cached = years.get(key)
   if (cached) return cached
-  let probe =
-    calendar === 'islamic-umalqura'
-      ? -492148 + 354 * (year - 1) + Math.floor((3 + 11 * year) / 30)
-      : DayFromYear(year)
+  if (calendar !== 'islamic-umalqura') {
+    const compact = compactCalendarYear(calendar, year)
+    return remember(key, compact ?? approximateLunisolarYear(calendar, year))
+  }
+  let probe = -492148 + 354 * (year - 1) + Math.floor((3 + 11 * year) / 30)
   if (Math.abs(probe) > limit - 800)
     throw new RangeError('Host Intl calendar year requires boundary data')
   probe += 400
@@ -70,49 +78,37 @@ export function hostCalendarYear(
     probe += 400
     value = fields(calendar, probe)
   }
-  const starts: number[] = [],
-    names: string[] = []
+  const starts: number[] = []
   let end = NaN
   for (let attempts = 0; value.year >= year; attempts++) {
     if (attempts >= 40) throw new RangeError('Unsupported host calendar year')
     const start = probe - value.day + 1
     if (value.year === year) {
       starts.push(start)
-      names.push(value.month)
     } else end = start
     probe = start - 1
     value = fields(calendar, probe)
   }
   starts.reverse()
-  names.reverse()
-  if (starts.length !== 12 && starts.length !== 13)
+  if (starts.length !== 12)
     throw new RangeError('Unsupported host calendar year')
-  let leap = 0
-  if (starts.length === 13) {
-    for (let index = 1; index < names.length; index++) {
-      // ICU numeric Chinese/Dangi months mark the repeated month with "bis".
-      if (/bis$/i.test(names[index]) || names[index] === names[index - 1]) {
-        leap = index
-        break
-      }
-    }
-    if (!leap) throw new RangeError('Unsupported host leap month')
-  }
-  const result = {starts, end, leap}
-  if (years.size >= 128) years.delete(years.keys().next().value!)
-  years.set(key, result)
-  return result
+  return remember(key, {starts, end, leap: 0})
 }
 
 export function hostCalendarDate(
   calendar: HostTableCalendar,
   epoch: number
 ): {year: number; month: number; day: number} {
-  const value = fields(calendar, epoch),
-    data = hostCalendarYear(calendar, value.year)
+  let year =
+    calendar === 'islamic-umalqura'
+      ? fields(calendar, epoch).year
+      : YearFromTime(epoch * dayMilliseconds)
+  let data = hostCalendarYear(calendar, year)
+  if (epoch < data.starts[0]) data = hostCalendarYear(calendar, --year)
+  else if (epoch >= data.end) data = hostCalendarYear(calendar, ++year)
   let month = data.starts.length
   while (data.starts[month - 1] > epoch) month--
-  return {year: value.year, month, day: value.day}
+  return {year, month, day: epoch - data.starts[month - 1] + 1}
 }
 
 export function hostCalendarAddMonths(
@@ -122,13 +118,16 @@ export function hostCalendarAddMonths(
   delta: number
 ): {year: number; month: number} {
   if (!Number.isSafeInteger(delta)) throw new RangeError('Invalid month count')
-  month += delta
-  while (month < 1) month += hostCalendarYear(calendar, --year).starts.length
+  const target =
+    lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +
+    delta
+  year = YearFromTime(lunisolarMonthEpoch(target) * dayMilliseconds)
   for (;;) {
-    const count = hostCalendarYear(calendar, year).starts.length
-    if (month <= count) return {year, month}
-    month -= count
-    year++
+    const data = hostCalendarYear(calendar, year),
+      index = target - lunisolarMonthSerial(data.starts[0])
+    if (index < 0) year--
+    else if (index >= data.starts.length) year++
+    else return {year, month: index + 1}
   }
 }
 
@@ -139,16 +138,12 @@ export function hostCalendarMonthDifference(
   twoYear: number,
   twoMonth: number
 ): number {
-  if (oneYear > twoYear)
-    return -hostCalendarMonthDifference(
-      calendar,
-      twoYear,
-      twoMonth,
-      oneYear,
-      oneMonth
+  return (
+    lunisolarMonthSerial(
+      hostCalendarYear(calendar, twoYear).starts[twoMonth - 1]
+    ) -
+    lunisolarMonthSerial(
+      hostCalendarYear(calendar, oneYear).starts[oneMonth - 1]
     )
-  let months = twoMonth - oneMonth
-  for (let year = oneYear; year < twoYear; year++)
-    months += hostCalendarYear(calendar, year).starts.length
-  return months
+  )
 }

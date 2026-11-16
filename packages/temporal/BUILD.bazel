@@ -24,6 +24,7 @@ formatjs_library(
         "duration-format.ts",
         "fallback-data.ts",
         "host-calendar.ts",
+        "host-calendar-data.ts",
         "index.ts",
         "install.ts",
         "instant.ts",
@@ -32,6 +33,7 @@ formatjs_library(
         "kernel.ts",
         "legacy-intl.ts",
         "locale.ts",
+        "lunisolar.ts",
         "native.ts",
         "now.ts",
         "plain-date.ts",
@@ -46,6 +48,7 @@ formatjs_library(
         "rounding.ts",
         "short-date-core.ts",
         "should-polyfill.ts",
+        "standalone.ts",
         "wasm.ts",
         "wasm-native.ts",
         "zoned-date-time.ts",
@@ -55,10 +58,16 @@ formatjs_library(
     entry_point_defines = {
         entry: {
             "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
-            "import.meta.formatjsTemporalHostCalendar": "false",
+            "import.meta.formatjsTemporalHostCalendar": "true" if entry in [
+                "index.ts",
+                "polyfill.ts",
+                "polyfill-force.ts",
+                "wasm.ts",
+            ] else "false",
         }
         for entry in [
             "index.ts",
+            "standalone.ts",
             "native.ts",
             "wasm.ts",
             "wasm-native.ts",
@@ -69,12 +78,14 @@ formatjs_library(
     },
     entry_point_external_paths = {
         "index.ts": {"#packages/temporal/native.js": "./native.js"},
+        "standalone.ts": {"#packages/temporal/native.js": "./native.js"},
         "wasm.ts": {"#packages/temporal/native.js": "./native.js"},
         "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
         "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
     },
     entry_points = [
         "index.ts",
+        "standalone.ts",
         "native.ts",
         "wasm.ts",
         "wasm-native.ts",
@@ -86,7 +97,7 @@ formatjs_library(
         ":wasm_asset",
         ":wasm_notices",
     ],
-    license = "MIT",
+    license = "MIT AND Unicode-3.0",
     package_types = "index.d.ts",
     private = True,
     side_effects = [
@@ -100,6 +111,7 @@ formatjs_library(
     visibility = ["//visibility:public"],
     exports = {
         ".": "./index.js",
+        "./standalone.js": "./standalone.js",
         "./wasm.js": "./wasm.js",
         "./wasm-native.js": "./wasm-native.js",
         "./temporal-backend.wasm": "./temporal-backend.wasm",
@@ -144,6 +156,46 @@ js_test(
     entry_point = "tests/host-calendar.test.mjs",
 )
 
+js_test(
+    name = "host_calendar_boundary_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :host-calendar-code.js)",
+        "$(rlocationpath :pkg)",
+    ],
+    data = [
+        ":host-calendar-code.js",
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/host-calendar-boundary.test.mjs",
+)
+
+rolldown_bundle(
+    name = "compact-calendar-numeric",
+    srcs = [
+        "tests/compact-calendar-numeric.ts",
+        ":srcs",
+    ],
+    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    entry_point = "tests/compact-calendar-numeric.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_test(
+    name = "compact_calendar_range_test",
+    size = "large",
+    args = ["$(rlocationpath :compact-calendar-numeric.js)"],
+    data = [
+        ":compact-calendar-numeric.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/icu.calendar",
+    ],
+    entry_point = "tests/compact-calendar-range.test.mjs",
+)
+
 [
     js_test(
         name = "host_calendar_reference_test" if reference else "host_calendar_icu_test",
@@ -162,7 +214,7 @@ js_test(
         ],
         entry_point = "tests/host-calendar-icu.test.mjs",
         env = {"FORMATJS_TEMPORAL_HOST_CALENDAR_REFERENCE": "1" if reference else "0"},
-        tags = [] if reference else ["manual"],
+        tags = [],
     )
     for reference in [
         False,
@@ -2119,6 +2171,52 @@ test262_harness_bin.test262_harness_binary(
     node_toolchain = "//tools/test262:node-runtime",
 )
 
+_CLASS_TEST262_SUITES = [
+    (
+        "instant",
+        [_INSTANT_ROOT + "/**/*.js"],
+        "tests/instant-full-test262-count.json",
+    ),
+    (
+        "date",
+        [_DATE_ROOT + "/**/*.js"],
+        "tests/plain-date-full-test262-count.json",
+    ),
+    (
+        "datetime",
+        [_DATETIME_ROOT + "/**/*.js"],
+        "tests/plain-date-time-full-test262-count.json",
+    ),
+    (
+        "time",
+        [_TIME_ROOT + "/**/*.js"],
+        "tests/plain-time-full-test262-count.json",
+    ),
+    (
+        "yearmonth",
+        [_YEARMONTH_ROOT + "/**/*.js"],
+        "tests/year-month-full-test262-count.json",
+    ),
+    (
+        "monthday",
+        [_MONTHDAY_ROOT + "/**/*.js"],
+        "tests/month-day-full-test262-count.json",
+    ),
+    (
+        "duration",
+        [_DURATION_ROOT + "/**/*.js"],
+        "tests/duration-full-test262-count.json",
+    ),
+    (
+        "zoned",
+        [_ZONED_ROOT + "/**/*.js"],
+        "tests/zoned-full-test262-count.json",
+    ),
+    ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
+    ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
+    ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+]
+
 [
     sh_test(
         name = "wasm_" + suite + "_test262",
@@ -2151,51 +2249,7 @@ test262_harness_bin.test262_harness_binary(
         ],
         env = {"TZ": "UTC"},
     )
-    for suite, patterns, baseline in [
-        (
-            "instant",
-            [_INSTANT_ROOT + "/**/*.js"],
-            "tests/instant-full-test262-count.json",
-        ),
-        (
-            "date",
-            [_DATE_ROOT + "/**/*.js"],
-            "tests/plain-date-full-test262-count.json",
-        ),
-        (
-            "datetime",
-            [_DATETIME_ROOT + "/**/*.js"],
-            "tests/plain-date-time-full-test262-count.json",
-        ),
-        (
-            "time",
-            [_TIME_ROOT + "/**/*.js"],
-            "tests/plain-time-full-test262-count.json",
-        ),
-        (
-            "yearmonth",
-            [_YEARMONTH_ROOT + "/**/*.js"],
-            "tests/year-month-full-test262-count.json",
-        ),
-        (
-            "monthday",
-            [_MONTHDAY_ROOT + "/**/*.js"],
-            "tests/month-day-full-test262-count.json",
-        ),
-        (
-            "duration",
-            [_DURATION_ROOT + "/**/*.js"],
-            "tests/duration-full-test262-count.json",
-        ),
-        (
-            "zoned",
-            [_ZONED_ROOT + "/**/*.js"],
-            "tests/zoned-full-test262-count.json",
-        ),
-        ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
-        ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
-        ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
-    ]
+    for suite, patterns, baseline in _CLASS_TEST262_SUITES
 ]
 
 rolldown_bundle(
@@ -2456,4 +2510,132 @@ js_test(
     },
     node_toolchain = "//tools/test262:node-runtime",
     tags = ["manual"],
+)
+
+rolldown_bundle(
+    name = "compact-calendar-payload",
+    srcs = [
+        "tests/instant-prelude.ts",
+        ":srcs",
+    ],
+    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    entry_point = "tests/instant-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_run_binary(
+    name = "compact-calendar-realm-prelude",
+    srcs = ["compact-calendar-payload.js"],
+    outs = [
+        "compact-calendar-prelude-source.js",
+        "compact-calendar-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath compact-calendar-payload.js)",
+        "--out",
+        "$(rootpath compact-calendar-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath compact-calendar-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "compact_calendar_harness",
+    data = [
+        "compact-calendar-prelude-source.js",
+        "compact-calendar-realm-prelude.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+[
+    sh_test(
+        name = "compact_calendar_" + suite + "_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :compact_calendar_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.CompactCalendar." + suite,
+            "$(rootpath %s)" % baseline,
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath compact-calendar-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            ":compact_calendar_harness",
+            "//tools/test262:validator",
+            baseline,
+            "compact-calendar-prelude-source.js",
+            "compact-calendar-realm-prelude.js",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for suite, patterns, baseline in _CLASS_TEST262_SUITES
+]
+
+rolldown_bundle(
+    name = "compact-calendar-table-host",
+    srcs = [
+        "tests/public-calendar-oracle.ts",
+        "tests/table-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    entry_point = "tests/table-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "compact_calendar_hermes_icu_source",
+    testonly = True,
+    srcs = [
+        ":compact-calendar-table-host.js",
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
+    ],
+    outs = ["compact-calendar-table-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location :compact-calendar-table-host.js) > $@",
+)
+
+sh_test(
+    name = "compact_calendar_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :compact_calendar_hermes_icu_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":compact_calendar_hermes_icu_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
 )

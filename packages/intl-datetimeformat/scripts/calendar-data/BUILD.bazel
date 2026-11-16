@@ -19,6 +19,31 @@ rust_binary(
     deps = ["@crates//:icu"],
 )
 
+rust_binary(
+    name = "host_lunisolar",
+    srcs = ["host_lunisolar.rs"],
+    crate_name = "host_lunisolar",
+    crate_root = "host_lunisolar.rs",
+    edition = "2024",
+    deps = ["@crates//:icu"],
+)
+
+[
+    generate_package_file(
+        name = "host_" + calendar + "_data",
+        src = "host-" + calendar + ".ts",
+        args = [
+            "--calendar",
+            calendar,
+        ],
+        tool = ":host_lunisolar",
+    )
+    for calendar in [
+        "chinese",
+        "dangi",
+    ]
+]
+
 [
     generate_package_file(
         name = calendar + "_data",
@@ -47,6 +72,8 @@ formatjs_generated_package(
     srcs = [
         ":chinese_data",
         ":dangi_data",
+        ":host_chinese_data",
+        ":host_dangi_data",
         ":umm_al_qura_data",
     ],
 )

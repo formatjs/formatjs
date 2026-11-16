@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Temporal implementation",
-  "license": "MIT",
+  "license": "MIT AND Unicode-3.0",
   "type": "module",
   "sideEffects": [
     "./polyfill.js",
@@ -15,6 +15,7 @@
     "./polyfill-force.js": "./polyfill-force.js",
     "./polyfill.js": "./polyfill.js",
     "./should-polyfill.js": "./should-polyfill.js",
+    "./standalone.js": "./standalone.js",
     "./temporal-backend.wasm": "./temporal-backend.wasm",
     "./wasm-native.js": "./wasm-native.js",
     "./wasm.js": "./wasm.js"

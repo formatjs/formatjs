@@ -3,6 +3,7 @@
   "entry": [
     "native/hermes/temporal.ts",
     "packages/temporal/index.ts",
+    "packages/temporal/standalone.ts",
     "packages/temporal/wasm.ts",
     "packages/temporal/wasm-native.ts",
     "packages/temporal/tests/wasm-prelude.ts",

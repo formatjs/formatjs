@@ -101,6 +101,10 @@ formatjs_library(
     author = "Long Ho <holevietlong@gmail.com>",
     bugs = "https://github.com/formatjs/formatjs/issues",
     description = "Intl.DateTimeFormat polyfill",
+    entry_point_defines = {
+        entry: {"import.meta.formatjsTemporalHostCalendar": "false"}
+        for entry in ENTRY_POINTS
+    },
     entry_points = ENTRY_POINTS,
     extra_npm_srcs = [
         "add-all-tz.d.ts",

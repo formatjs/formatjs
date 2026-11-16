@@ -770,3 +770,9 @@ namespaces. This covers formatting, parts, ranges, styles, calendar compatibilit
 and extra plain dates beyond Date TimeClip. The test-only `-temporal` locale
 prelude includes ar/ar-EG for the non-Latin numeral boundary case. Runtime locale
 loading remains unchanged. See [Temporal implementation](015-temporal.md).
+
+Temporal's default namespace now uses compact Chinese/Dangi calendar engines.
+DateTimeFormat's public builds explicitly select the standalone calendar path,
+so their calendar calculations do not call host Intl recursively. The shared
+`icu.calendar` generated package adds bounded historical modules for Temporal;
+per-locale DateTimeFormat data is unchanged.

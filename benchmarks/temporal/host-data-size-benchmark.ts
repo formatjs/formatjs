@@ -1,7 +1,7 @@
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
 import {gzipSync} from 'node:zlib'
-import {transformSync} from 'esbuild'
+import {buildSync, transformSync} from 'esbuild'
 
 const sizes = ['standalone', 'hostCalendars', 'referenceFull'].map(
   (profile, index) => {
@@ -23,6 +23,28 @@ const sizes = ['standalone', 'hostCalendars', 'referenceFull'].map(
     }
   }
 )
+const publishedDirectory = runfiles.resolve(process.argv[5])
+const publishedConsumers = ['index.js', 'standalone.js'].map(file => {
+  const code = buildSync({
+    stdin: {
+      contents: `export * from './${file}';`,
+      resolveDir: publishedDirectory,
+      sourcefile: 'measurement-entry.js',
+      loader: 'js',
+    },
+    bundle: true,
+    write: false,
+    format: 'esm',
+    target: 'es2022',
+    minify: true,
+    legalComments: 'none',
+  }).outputFiles[0].contents
+  return {
+    file,
+    minified: code.length,
+    minifiedGzip: gzipSync(code, {level: 9}).length,
+  }
+})
 console.log(
   JSON.stringify(
     {
@@ -30,10 +52,11 @@ console.log(
       icu: process.versions.icu,
       cldr: process.versions.cldr,
       scope:
-        'Full namespaces. Experimental host-calendar profile replaces Chinese/Dangi/Umm al-Qura tables with Intl, retains owned IANA timezone data and arithmetic calendars. Extended calendar boundary data and full host conformance remain open. Full reference uses host Intl for calendar and timezone data. Size only; profiles do not yet have equal verified coverage.',
+        'Full namespaces. Default compact-calendar profile uses bounded ICU4X historical data and arithmetic for Chinese/Dangi, host Intl for Umm al-Qura, owned IANA timezone data and numeric arithmetic calendars. Standalone retains full-range calendar packs. Full reference uses host Intl for calendar and timezone data. Size only; full compliance and host timezone migration remain open.',
       method:
         'Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.',
       sizes,
+      publishedConsumers,
     },
     null,
     2

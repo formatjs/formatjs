@@ -17,7 +17,9 @@ value.add({hours: 24}).toString()
 ```
 
 Exports `Temporal`, its eight constructors, `Now` and `toTemporalInstant`.
-Calendar arithmetic supports 16 calendar IDs. IANA timezone data includes
+Calendar arithmetic supports 16 calendar IDs. Chinese/Dangi use compact ICU4X
+historical data and an arithmetic approximation outside 1900–2102. Umm al-Qura
+uses captured host Intl data for AH 1300–1600, then the civil fallback. IANA timezone data includes
 historical transitions and recurring future rules; future lookup has no 2100
 cutoff. Timezone aliases retain their spelling separately from primary identity.
 Timezone law changes require a data update.
@@ -40,6 +42,17 @@ legacy constructor chaining, captured option values and ordinary Date/Number
 formatting remain supported. Importing the namespace alone does not install this
 adapter.
 Construct formatters after installation; pre-existing instances retain native behavior.
+
+For calendar and named-timezone operations without host Intl data, use the
+full-table namespace:
+
+```ts
+import {Temporal} from '@formatjs/temporal/standalone.js'
+```
+
+Both entries include owned IANA timezone data. They expose separate namespaces;
+installation entries install the default namespace. Chinese/Dangi arithmetic is
+adapted from ICU4X under Unicode-3.0; see LICENSE.md.
 
 ## Locale formatting
 
@@ -137,8 +150,13 @@ check table calendars. Unfiltered diagnostics retain implementation and pinned
 IANA/CLDR differences. See the [implementation record](../../knowledge-base/015-temporal.md)
 for commands, corpus counts, data policies and remaining work.
 
-An experimental Bazel host-calendar profile replaces Chinese/Dangi/Umm al-Qura
-tables with host Intl data. Calendar arithmetic stays in TS; IANA data is still
-bundled. Its namespace measures about 90 KB gzip versus 361 KB with owned data.
-It is not a published entry: extended calendar bounds and complete host-backed
-conformance remain open. Host Intl data is allowed for the eventual TS default.
+Compact-calendar validation includes every year and month in the existing full
+ICU4X packs: 1,204,680 years and 14,899,816 months. This verifies the arithmetic
+port across internal rounding bounds; it is not an independent calendar oracle.
+Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
+Full Temporal/Intl compliance remains incomplete.
+
+Published consumer bundles currently measure 93,005 bytes gzip for default and
+361,912 for standalone. Both include IANA data. WASM with native data measures
+474,201 bytes including its binary; measured Node workloads still favor TS.
+See benchmarks/temporal for versioned methods, scopes and results.

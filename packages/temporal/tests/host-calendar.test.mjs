@@ -29,6 +29,23 @@ for (const calendar of ['chinese', 'dangi']) {
   )
 }
 
+const originalParts = Intl.DateTimeFormat.prototype.formatToParts
+const originalResolved = Intl.DateTimeFormat.prototype.resolvedOptions
+try {
+  Intl.DateTimeFormat.prototype.formatToParts = () => {
+    throw new Error('poisoned Intl')
+  }
+  Intl.DateTimeFormat.prototype.resolvedOptions = () => {
+    throw new Error('poisoned Intl')
+  }
+  assert.equal(
+    Temporal.PlainDate.from('2025-03-01').withCalendar('islamic-umalqura').day,
+    1
+  )
+} finally {
+  Intl.DateTimeFormat.prototype.formatToParts = originalParts
+  Intl.DateTimeFormat.prototype.resolvedOptions = originalResolved
+}
 const ummAlQura =
   Temporal.PlainDate.from('2024-03-11').withCalendar('islamic-umalqura')
 assert.deepEqual([ummAlQura.year, ummAlQura.month, ummAlQura.day], [1445, 9, 1])
@@ -45,18 +62,6 @@ for (const year of [1200, 1700]) {
   )
 }
 
-const originalParts = Intl.DateTimeFormat.prototype.formatToParts
-try {
-  Intl.DateTimeFormat.prototype.formatToParts = () => {
-    throw new Error('poisoned Intl')
-  }
-  assert.equal(
-    Temporal.PlainDate.from('2028-01-26').withCalendar('chinese').day,
-    1
-  )
-} finally {
-  Intl.DateTimeFormat.prototype.formatToParts = originalParts
-}
 console.log(
   'Host calendar conversion, leap arithmetic, civil fallback and captured intrinsics pass'
 )
