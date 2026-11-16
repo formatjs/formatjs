@@ -378,10 +378,12 @@ ts_run_binary(
             "-en",
             ["en"],
         ),
-        # Locale metadata in pinned intl402/Temporal requires these languages.
+        # Locale metadata in Temporal and DateTimeFormat Temporal tests.
         (
             "-temporal",
             [
+                "ar",
+                "ar-EG",
                 "de",
                 "en",
                 "ja",

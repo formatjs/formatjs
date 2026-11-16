@@ -761,3 +761,12 @@ timezone and default short zone name without reading extra public options or mov
 the locale-data snapshot past late style getters. Public DateTimeFormat continues
 to reject ZonedDateTime. SDK regressions compare 768 independent ICU4J cases in
 source and optimized Hermes bytecode; full Intl diagnostics remain unfiltered.
+
+### Temporal formatter conformance scope
+
+The Temporal package separately runs every DateTimeFormat test with the Temporal
+feature (65 files, 130 executions) using owned TS, WASM and native Hermes SDK
+namespaces. This covers formatting, parts, ranges, styles, calendar compatibility
+and extra plain dates beyond Date TimeClip. The test-only `-temporal` locale
+prelude includes ar/ar-EG for the non-Latin numeral boundary case. Runtime locale
+loading remains unchanged. See [Temporal implementation](015-temporal.md).

@@ -6,6 +6,7 @@ import {
 } from '#packages/temporal/index.js'
 import {createDateToTemporalInstant} from '#packages/temporal/date-bridge.js'
 import {needsTemporal} from '#packages/temporal/detect.js'
+import {installLegacyDateTimeFormat} from '#packages/temporal/legacy-intl.js'
 
 export function installTemporal(force = false): void {
   const target = globalThis as typeof globalThis & {
@@ -20,6 +21,8 @@ export function installTemporal(force = false): void {
       configurable: true,
       enumerable: false,
     })
+  if (replace || target.Temporal === Temporal)
+    installLegacyDateTimeFormat(target.Temporal)
   const Formatter = globalThis.Intl?.DateTimeFormat as
     | (typeof Intl.DateTimeFormat & {
         __addTemporalNamespace?: (namespace: TemporalNamespace) => void

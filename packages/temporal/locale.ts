@@ -1,5 +1,8 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
+
+const dateUTC = Date.UTC
 
 interface DateTimeConstructor extends Intl.DateTimeFormatConstructor {
   __formatTemporal?: (
@@ -15,6 +18,7 @@ let temporalFormat = dateTimeConstructor?.__formatTemporal
 let formatDate =
   dateTimeConstructor &&
   Object.getOwnPropertyDescriptor(dateTimeConstructor.prototype, 'format')?.get
+let partsDate = dateTimeConstructor?.prototype.formatToParts
 let resolvedDate = dateTimeConstructor?.prototype.resolvedOptions
 let durationConstructor = (
   globalThis.Intl as
@@ -37,6 +41,7 @@ export function configureLocaleFormatting(): void {
     dateTimeConstructor &&
     Object.getOwnPropertyDescriptor(dateTimeConstructor.prototype, 'format')
       ?.get
+  partsDate = dateTimeConstructor?.prototype.formatToParts
   resolvedDate = dateTimeConstructor?.prototype.resolvedOptions
   durationConstructor = (
     globalThis.Intl as
@@ -71,30 +76,57 @@ export function localeDateTime(
 ): string {
   if (!dateTimeConstructor || !formatDate || !resolvedDate) return fallback()
   if (temporalFormat) return temporalFormat(value, locales, options)
-  // Native legacy Intl cannot inspect polyfill slots. Keep the adaptation here.
-  const source = options === undefined ? Object.create(null) : Object(options)
-  if (options === null) throw new TypeError('Invalid options')
+  const {formatter, milliseconds} = legacyDateTimeProjection(
+    dateTimeConstructor,
+    value,
+    locales,
+    options
+  )
+  return formatDate.call(formatter)(milliseconds)
+}
+
+export interface LegacyDateTimeIntrinsics {
+  resolvedOptions: typeof Intl.DateTimeFormat.prototype.resolvedOptions
+  formatToParts: typeof Intl.DateTimeFormat.prototype.formatToParts
+}
+
+export function legacyDateTimeProjection(
+  Constructor: Intl.DateTimeFormatConstructor,
+  value: TemporalDateTimeValue & {timeZone?: string},
+  locales: unknown,
+  options: unknown,
+  localeMethod = true,
+  intrinsics: LegacyDateTimeIntrinsics = {
+    resolvedOptions: resolvedDate!,
+    formatToParts: partsDate!,
+  }
+): {formatter: Intl.DateTimeFormat; milliseconds: number} {
+  let source: Record<string, unknown> | undefined
   const snapshot: Record<string, unknown> = Object.create(null)
   const proxy = new Proxy(Object.create(null), {
     get(_target, key) {
-      if (typeof key !== 'string') return Reflect.get(source, key)
-      if (!Object.prototype.hasOwnProperty.call(snapshot, key))
-        snapshot[key] = Reflect.get(source, key)
-      if (key === 'timeZone') {
-        if (value.kind === 'ZonedDateTime') {
-          if (snapshot[key] !== undefined)
-            throw new TypeError('timeZone option conflicts with ZonedDateTime')
-          return value.timeZone
-        }
+      if (!source) {
+        if (options === null) throw new TypeError('Invalid options')
+        source = options === undefined ? Object.create(null) : Object(options)
       }
-      return snapshot[key]
+      if (typeof key !== 'string') return Reflect.get(source!, key)
+      if (!Object.prototype.hasOwnProperty.call(snapshot, key)) {
+        const raw = Reflect.get(source!, key)
+        if (
+          key === 'timeZone' &&
+          value.kind === 'ZonedDateTime' &&
+          raw !== undefined
+        )
+          throw new TypeError('timeZone option conflicts with ZonedDateTime')
+        snapshot[key] = legacyDateTimeOption(key, raw)
+      }
+      return key === 'timeZone' && value.kind === 'ZonedDateTime'
+        ? value.timeZone
+        : snapshot[key]
     },
   })
-  const first = new dateTimeConstructor(
-    locales as string | string[] | undefined,
-    proxy
-  )
-  const resolved = resolvedDate.call(first)
+  const first = new Constructor(locales as string | string[] | undefined, proxy)
+  const resolved = intrinsics.resolvedOptions.call(first)
   if (
     value.calendar !== undefined &&
     value.calendar !== resolved.calendar &&
@@ -140,16 +172,41 @@ export function localeDateTime(
   const dateStyle = snapshot.dateStyle,
     timeStyle = snapshot.timeStyle
   if (
-    (value.kind === 'PlainTime' && dateStyle !== undefined) ||
-    (!instant &&
-      value.kind !== 'PlainDateTime' &&
-      value.kind !== 'PlainTime' &&
-      timeStyle !== undefined)
+    localeMethod &&
+    ((value.kind === 'PlainTime' && dateStyle !== undefined) ||
+      (!instant &&
+        value.kind !== 'PlainDateTime' &&
+        value.kind !== 'PlainTime' &&
+        timeStyle !== undefined))
   )
     throw new TypeError('DateTimeFormat style conflicts with required type')
   if (dateStyle !== undefined || timeStyle !== undefined) {
-    selected.dateStyle = dateStyle
-    selected.timeStyle = timeStyle
+    const plainDate =
+      value.kind === 'PlainDate' ||
+      value.kind === 'PlainYearMonth' ||
+      value.kind === 'PlainMonthDay'
+    if (
+      (plainDate && dateStyle === undefined) ||
+      (value.kind === 'PlainTime' && timeStyle === undefined)
+    )
+      throw new TypeError(
+        'DateTimeFormat styles do not overlap the Temporal type'
+      )
+    const styleFields = legacyStyleFields(
+      Constructor,
+      resolved,
+      dateStyle,
+      timeStyle,
+      intrinsics.formatToParts
+    )
+    if (Object.keys(styleFields).some(key => !allowed.includes(key))) {
+      for (const key of allowed) selected[key] = styleFields[key]
+      if (styleFields.hour !== undefined && allowed.includes('hour'))
+        selected.hourCycle = resolved.hourCycle
+    } else {
+      selected.dateStyle = dateStyle
+      selected.timeStyle = timeStyle
+    }
   } else {
     for (const key of allowed) selected[key] = snapshot[key]
     if (required.every(key => snapshot[key] === undefined)) {
@@ -173,8 +230,96 @@ export function localeDateTime(
         selected.timeZoneName = 'short'
     }
   }
-  const formatter = new dateTimeConstructor(resolved.locale, selected)
+  const formatter = new Constructor(resolved.locale, selected)
   const ns = value.epochNanoseconds
   const ms = ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
-  return formatDate.call(formatter)(Number(ms))
+  return {formatter, milliseconds: Number(ms)}
+}
+
+function legacyStyleFields(
+  Constructor: Intl.DateTimeFormatConstructor,
+  resolved: Intl.ResolvedDateTimeFormatOptions,
+  dateStyle: unknown,
+  timeStyle: unknown,
+  formatToParts: typeof Intl.DateTimeFormat.prototype.formatToParts
+): Record<string, unknown> {
+  const controls = {
+    calendar: resolved.calendar,
+    numberingSystem: resolved.numberingSystem,
+    timeZone: 'UTC',
+    hourCycle: resolved.hourCycle,
+  }
+  const style = new Constructor(resolved.locale, {
+    ...controls,
+    dateStyle,
+    timeStyle,
+  } as Intl.DateTimeFormatOptions)
+  const probes = [
+    dateUTC(2006, 10, 22, 7, 8, 9),
+    dateUTC(1991, 1, 3, 17, 18, 19),
+  ]
+  const field = (type: string): string =>
+    type === 'relatedYear' || type === 'yearName' ? 'year' : type
+  const parts = probes.map(probe => formatToParts.call(style, probe))
+  const defaults: Record<string, string> = {
+    weekday: 'long',
+    era: 'short',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short',
+  }
+  const seed: Record<string, unknown> = Object.create(null)
+  for (const part of parts[0]) {
+    const key = field(part.type)
+    if (defaults[key] !== undefined) seed[key] = defaults[key]
+  }
+  const text = (values: Intl.DateTimeFormatPart[], key: string): string =>
+    values
+      .filter(part => field(part.type) === key)
+      .map(part => part.value)
+      .join('')
+  const result: Record<string, unknown> = {...seed}
+  for (const key of Object.keys(seed)) {
+    const widths =
+      key === 'year' ||
+      key === 'day' ||
+      key === 'hour' ||
+      key === 'minute' ||
+      key === 'second'
+        ? ['numeric', '2-digit']
+        : key === 'month'
+          ? ['numeric', '2-digit', 'long', 'short', 'narrow']
+          : key === 'timeZoneName'
+            ? ['short', 'long']
+            : ['long', 'short', 'narrow']
+    for (const width of widths) {
+      const candidate = new Constructor(resolved.locale, {
+        ...controls,
+        ...seed,
+        [key]: width,
+      } as Intl.DateTimeFormatOptions)
+      if (
+        probes.every(
+          (probe, index) =>
+            text(formatToParts.call(candidate, probe), key) ===
+            text(parts[index], key)
+        )
+      ) {
+        result[key] = width
+        break
+      }
+    }
+  }
+  return result
+}
+
+export function legacyDateTimeOption(key: string, value: unknown): unknown {
+  if (value === undefined) return undefined
+  if (key === 'hour12') return !!value
+  if (key === 'fractionalSecondDigits') return +(value as number)
+  return ToString(value)
 }

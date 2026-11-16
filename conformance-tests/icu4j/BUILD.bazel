@@ -785,3 +785,20 @@ genrule(
     tools = [":temporal_locale_oracle"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "temporal_short_style_oracle",
+    testonly = True,
+    srcs = ["TemporalShortStyleOracle.java"],
+    main_class = "TemporalShortStyleOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_style_fixtures",
+    testonly = True,
+    outs = ["temporal-short-style-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_style_oracle) $@",
+    tools = [":temporal_short_style_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
+)

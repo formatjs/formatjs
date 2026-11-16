@@ -29,6 +29,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "legacy-intl.ts",
         "locale.ts",
         "native.ts",
         "now.ts",
@@ -842,6 +843,121 @@ _INSTANT_PATTERNS = [
     ]
 ]
 
+[
+    test262_harness_bin.test262_harness_test(
+        name = name,
+        size = "large",
+        args = [
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--featuresExclude",
+            "Temporal",
+        ] + ([
+            "--prelude",
+            "$(rootpath instant-realm-prelude.js)",
+        ] if adapted else []) + [
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+        ],
+        data = [
+            "@com_github_tc39_test262//:test262-datetimeformat-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+        ] + ([
+            "instant-prelude-source.js",
+            "instant-realm-prelude.js",
+        ] if adapted else []),
+        env = {"TZ": "UTC"},
+        node_toolchain = "//tools/test262:node-runtime",
+        tags = [
+            "cpu:4",
+            "manual",
+        ],
+    )
+    for name, adapted in [
+        ("legacy_datetimeformat_non_temporal_test262", True),
+        ("native_datetimeformat_non_temporal_test262", False),
+    ]
+]
+
+test262_harness_bin.test262_harness_binary(
+    name = "datetimeformat_harness",
+    data = [
+        "@com_github_tc39_test262//:test262-datetimeformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_intl_host_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :datetimeformat_harness)",
+        "$(rlocationpath instant-realm-prelude.js)",
+        _TEST262_ROOT,
+    ],
+    data = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+        ":datetimeformat_harness",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-host.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+[
+    sh_test(
+        name = name,
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal." + name,
+            "$(rootpath tests/datetimeformat-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+        ],
+        data = [
+            "tests/datetimeformat-test262-count.json",
+            ":datetimeformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if prelude == "wasm-locale" else []),
+        env = {"TZ": "UTC"},
+        tags = tags,
+    )
+    for name, prelude, tags in [
+        (
+            "legacy_datetimeformat_test262",
+            "instant",
+            ["manual"],
+        ),
+        ("locale_datetimeformat_test262", "locale", []),
+        ("wasm_locale_datetimeformat_test262", "wasm-locale", []),
+    ]
+]
+
 filegroup(
     name = "plain_time_string_fixtures",
     testonly = True,
@@ -915,7 +1031,7 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
             "@hermes//:hermesc",
-        ],
+        ] + (["@com_github_tc39_test262//:test262-datetimeformat-copy"] if "datetimeformat" in name else []),
         env = {"TZ": "UTC"},
         exec_properties = {
             "EstimatedCPU": "4",
@@ -925,6 +1041,28 @@ test262_harness_bin.test262_harness_binary(
     )
     for name, mode, patterns, baseline, tags in [
         ("calendars_hermes_test262", "source", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        (
+            "locale_datetimeformat_hermes_test262",
+            "source",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "tests/datetimeformat-test262-count.json",
+            [],
+        ),
+        (
+            "locale_datetimeformat_hermes_bytecode_test262",
+            "bytecode",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "tests/datetimeformat-test262-count.json",
+            [],
+        ),
         ("locale_hermes_test262", "source", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
         ("locale_hermes_bytecode_test262", "bytecode", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
         (
@@ -1848,6 +1986,32 @@ js_run_binary(
     tool = "//tools/test262:prelude",
 )
 
+js_run_binary(
+    name = "wasm-locale-realm-prelude",
+    srcs = [
+        "locale-payload.js",
+        "wasm-module-prelude.js",
+        "wasm-payload.js",
+    ],
+    outs = [
+        "wasm-locale-prelude-source.js",
+        "wasm-locale-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath locale-payload.js)",
+        "--input",
+        "$(rootpath wasm-module-prelude.js)",
+        "--input",
+        "$(rootpath wasm-payload.js)",
+        "--out",
+        "$(rootpath wasm-locale-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath wasm-locale-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
 test262_harness_bin.test262_harness_binary(
     name = "wasm_harness",
     data = [
@@ -2097,6 +2261,7 @@ rolldown_bundle(
             baseline,
             "//native/hermes/tests:test262_runtime",
             "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-datetimeformat-copy",
             "@com_github_tc39_test262//:test262-harness-copy",
             "@com_github_tc39_test262//:test262-temporal-duration-copy",
             "@com_github_tc39_test262//:test262-temporal-instant-copy",
@@ -2126,6 +2291,16 @@ rolldown_bundle(
             "tests/intl-full-test262-count.json",
             [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
             ["manual"],
+        ),
+        (
+            "datetimeformat",
+            "tests/datetimeformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            [],
         ),
         ("locale", "tests/locale-test262-count.json", _LOCALE_PATTERNS, []),
     ]
@@ -2158,4 +2333,42 @@ sh_test(
         "//native/hermes/tests:test262_runtime",
         "@hermes//:hermesc",
     ],
+)
+
+js_test(
+    name = "legacy_intl_style_icu_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_short_style_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_short_style_fixtures",
+    ],
+    entry_point = "tests/legacy-intl-icu.test.mjs",
+    env = {"TZ": "UTC"},
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_intl_icu_locale_data_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_short_style_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_short_style_fixtures",
+    ],
+    entry_point = "tests/legacy-intl-icu.test.mjs",
+    env = {
+        "TZ": "UTC",
+        "FORMATJS_TEMPORAL_ICU_STRICT_LOCALE_DATA": "1",
+    },
+    node_toolchain = "//tools/test262:node-runtime",
+    tags = ["manual"],
 )

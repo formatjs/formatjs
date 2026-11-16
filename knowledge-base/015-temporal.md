@@ -1,5 +1,19 @@
 # Temporal implementation
 
+## Host Intl data policy
+
+Host `Intl` is an allowed dependency for the TypeScript implementation. Prefer
+host calendar and timezone data for the default TS distribution; keep bundled
+data as an explicit standalone option. This direction is not implemented yet.
+Capture host intrinsics before installing Temporal's Intl adapters to avoid
+recursion. Validate host-backed calendar conversion, timezone transitions and
+range boundaries with Test262 and independent ICU oracles, including Hermes.
+
+Compare host-backed TS against `temporal-polyfill/full/implementation` using the
+same host and supported calendars. Report standalone data costs separately.
+The existing roughly 361 KB gzip TS measurement includes owned calendar and
+timezone tables; the roughly 23 KB gzip full reference uses host Intl data.
+
 Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
@@ -1238,3 +1252,49 @@ Consumer gzip is 469,793 bytes for native-data WASM versus TS 360,710 and retain
 WASM 806,221. WASM loses all 43 V8 hot workloads to TS. The stripped native SDK app
 adds 3,570,640 raw /492,729 gzip bytes over identical Intl/Hermes. See the native-data
 benchmark snapshots for methods, all timings and runtime-size scope.
+
+## Legacy Intl constructor integration and formatter scope
+
+Temporal installation now adapts legacy Intl.DateTimeFormat when no private
+Temporal record bridge exists. The adapter retains the native prototype and
+constructs real native formatter instances. Captured native bound functions map
+to private projection state, preserving legacy constructor unwrapping without
+reading the legacy symbol twice. Constructor options are converted once in native
+access order. Plain formatting uses UTC; kind-specific styles and component
+records omit unrelated fields. Existing owned TS and native SDK bridges bypass
+this adapter.
+
+The completion audit found a separate upstream scope: 65 DateTimeFormat files
+carry the Temporal feature, outside intl402/Temporal. New count-checked targets
+require all 130 executions and zero failures on owned TS/Node, WASM, Hermes TS
+source/HBC and native SDK source/HBC. The test prelude now includes ar/ar-EG data.
+No Realm or implementation exclusions added. Native-host and adapted diagnostics
+also compare 362 non-Temporal DateTimeFormat executions; their 20 pre-existing
+failure cases match, including preserved prototype-realm and chaining behavior.
+
+Legacy-host diagnostics still expose Date TimeClip at extended plain bounds and
+host lunisolar data differences. Their expected failures remain empty. Full goal
+completion also requires the remaining Rust/API audit; these new formatter gates
+do not establish full legacy-host compliance.
+
+The Intl feature inventory also finds six DurationFormat files (12 executions).
+Owned TS DurationFormat currently captures only the Temporal namespace present at
+module evaluation; it exposes no late namespace hook. Native SDK has a hook.
+Direct native DurationFormat on an owned Duration with a poisoned `days` getter
+reproduces a public-property read. Add this scope next; fix registration and
+string/ordinary-input conversion without relying on native Temporal parsing.
+
+The legacy Intl layer passes 104 focused regression targets, all three actual
+TypeScript checkers, SDK assembly and the standalone Hermes SDK consumer smoke
+test. The short-style ICU oracle checks 384 cases across eight locales, two
+short-date kinds, four styles and six epochs. ICU independently chooses component
+widths; host Intl supplies its locale names and literals. A separate strict raw
+ICU-string diagnostic retains the Russian spacing differences between pinned
+Node ICU 78.3/CLDR 48 and ICU4J 79/CLDR 49. No string normalization or accepted
+failure baseline hides those differences.
+
+`benchmarks/temporal/legacy-intl-size-results.json` records this layer's size:
+361,031 bytes gzip for the bundled TS namespace, 365,058 for forced installation,
+23,226 for the full host-backed reference. These are runtime consumer bundles,
+not npm archive sizes. They still include owned TS data; host-backed TS remains
+work to do. Previous throughput snapshots do not measure the new Intl adapter.
