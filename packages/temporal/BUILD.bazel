@@ -207,6 +207,18 @@ filegroup(
             ["//conformance-tests/icu4j:temporal_zoned_difference_fixtures"],
         ),
         (
+            "string_oracle_test",
+            [
+                "tests/string-oracle.test.ts",
+                "tests/string-oracle.ts",
+                "tests/native-string-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            ],
+        ),
+        (
             "zoned_difference_test",
             [
                 "tests/zoned-differences.test.ts",
@@ -1316,6 +1328,57 @@ rolldown_bundle(
 )
 
 rolldown_bundle(
+    name = "native-string-host",
+    srcs = [
+        "tests/native-string-host.ts",
+        "tests/string-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-string-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_string_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        ":native-string-host.js",
+    ],
+    outs = ["native-string-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location :native-string-host.js) > $@",
+)
+
+sh_test(
+    name = "native_string_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_string_hermes_source)",
+    ],
+    data = [
+        ":native_string_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "string-oracle",
+    srcs = ["tests/string-oracle.ts"],
+    entry_point = "tests/string-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
     name = "native-zoned-host",
     srcs = [
         "tests/native-zoned-host.ts",
@@ -1844,6 +1907,7 @@ js_test(
         "$(rlocationpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
         "$(rlocationpath :zoned-arithmetic-oracle.js)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
+        "$(rlocationpath :string-oracle.js)",
     ],
     data = [
         ":duration-oracle.js",
@@ -1851,6 +1915,7 @@ js_test(
         ":plain-arithmetic-oracle.js",
         ":plain-time-oracle.js",
         ":public-calendar-oracle.js",
+        ":string-oracle.js",
         ":timezone-oracle.js",
         ":zoned-arithmetic-oracle.js",
         "//:node_modules/@bazel/runfiles",

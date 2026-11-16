@@ -1,4 +1,8 @@
-import type {ZonedSlot} from '#packages/temporal/plain-slots.js'
+import type {
+  DateSlot,
+  DateTimeSlot,
+  ZonedSlot,
+} from '#packages/temporal/plain-slots.js'
 import type {RelativeTo} from '#packages/temporal/relative-duration.js'
 import type {
   CalendarId,
@@ -26,6 +30,25 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  parsePlainDate(value: string): DateSlot
+  parsePlainDateTime(value: string): DateTimeSlot
+  parsePlainYearMonth(value: string): DateSlot
+  parsePlainMonthDay(value: string): DateSlot
+  parseZonedFields(value: string): {
+    fields: Required<ISODateTime> & {calendar: string}
+    timeZone: string
+    offset: string | undefined
+  }
+  resolveZonedDateTime(
+    value: bigint,
+    identifier: string,
+    calendar: string,
+    offset: string | undefined,
+    behavior: string,
+    disambiguation: Disambiguation,
+    matchMinute: boolean,
+    dateOnly: boolean
+  ): bigint
   addZonedDateTime(
     slot: ZonedSlot,
     fields: DurationFields,
@@ -219,9 +242,7 @@ export function configureNativeTemporal(query: NativeQuery): void {
     const source = stringify(input)
     // Escaped code units violate Temporal's ASCII grammar; reject before UTF-8 decoding.
     if (
-      (op === 'parseInstant' ||
-        op === 'parsePlainTime' ||
-        op === 'parseDuration') &&
+      apply(indexOf, op, ['parse']) === 0 &&
       apply(indexOf, source, ['\\u']) >= 0
     )
       throw new BadRange('Invalid Temporal string')
@@ -312,6 +333,46 @@ export function configureNativeTemporal(query: NativeQuery): void {
     return result
   }
   native = {
+    parsePlainDate: value => call('parsePlainDate', {text: value}),
+    parsePlainDateTime: value => {
+      const result = call('parsePlainDateTime', {text: value})
+      return {
+        epochNanoseconds: ToBigInt(result.epochNanoseconds),
+        calendar: result.calendar,
+      }
+    },
+    parsePlainYearMonth: value => call('parsePlainYearMonth', {text: value}),
+    parsePlainMonthDay: value => call('parsePlainMonthDay', {text: value}),
+    parseZonedFields: value => {
+      const result = call('parseZonedFields', {text: value})
+      return {
+        fields: result.fields,
+        timeZone: result.timeZone,
+        offset: result.offset ?? undefined,
+      }
+    },
+    resolveZonedDateTime: (
+      value,
+      identifier,
+      calendar,
+      offset,
+      behavior,
+      disambiguation,
+      matchMinute,
+      dateOnly
+    ) =>
+      ToBigInt(
+        call('resolveZonedDateTime', {
+          nanoseconds: text(value),
+          identifier,
+          calendar,
+          offset,
+          behavior,
+          disambiguation,
+          matchMinute,
+          dateOnly,
+        })
+      ),
     addZonedDateTime: (slot, fields, subtract, overflow) =>
       ToBigInt(
         call('addZonedDateTime', {

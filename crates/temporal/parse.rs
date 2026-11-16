@@ -82,6 +82,16 @@ impl<'a> Cursor<'a> {
     }
 }
 
+#[cfg(feature = "ffi")]
+pub(crate) fn offset_nanoseconds(value: &str) -> Result<i128, Error> {
+    let mut input = Cursor::new(value);
+    let offset = input.offset(true)?;
+    if input.position != value.len() {
+        return Err(Error::InvalidSyntax);
+    }
+    Ok(offset)
+}
+
 pub fn instant(value: &str) -> Result<Instant, Error> {
     let mut input = Cursor::new(value);
     let negative = input.take(b'-');

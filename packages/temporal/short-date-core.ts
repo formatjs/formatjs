@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   calendarFromEpochDayRaw,
@@ -171,6 +172,11 @@ export function parseShortSlot(
   value: string,
   kind: 'year-month' | 'month-day'
 ): DateSlot {
+  const native = nativeTemporal()
+  if (native)
+    return kind === 'year-month'
+      ? native.parsePlainYearMonth(value)
+      : native.parsePlainMonthDay(value)
   const parsed = parseShortDateString(value, kind),
     calendar = constructorCalendar(parsed.calendar)
   if (

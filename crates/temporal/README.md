@@ -572,3 +572,42 @@ hour rounding drops from 47.68 to 9.81 microseconds (reference 27.18). Reference
 comparisons vary. WASM loses all five to TS here. Consumer gzip: TS 361,109 bytes;
 WASM JS +binary 783,358, including retained fallback packs. See the zoned-arithmetic
 snapshots and `benchmarks/temporal/README.md` for methods and startup costs.
+
+## Native string parsers
+
+Hermes/WASM now delegate PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay
+strings to typed Rust parsers with all 16 calendars. Zoned grammar runs in Rust
+before JS option reads; typed Rust offset/disambiguation resolution runs afterwards.
+This preserves invalid-string rejection before option getters. Date-only civil
+boundaries and historical minute-versus-exact offset matching retain their rules.
+Six operations bring the normalized bridge to 53; WASM ABI 8 requires the matching
+asset. JS retains coercion, option access, brands/slots and object allocation.
+Selected native errors propagate without a TS retry.
+
+Native missing offsets normalize to an own undefined property, keeping inherited
+Object.prototype.offset getters out of parsing. Escaped UTF-16 code-unit guards
+cover all parser operations before UTF-8 transport. Option-order, invalid-string,
+lone-surrogate and inherited-offset controls run on each actual namespace.
+
+Independent ICU controls verify 25,269 cases for each plain parser and 17,640 zoned
+rows in exact-offset and UTC-offset forms, including years 2101, 2400, 2500, 10000
+and 275000. Source/HBC Hermes, published WASM and pure TS use the same verifier.
+Per-operation faults require each native parser and zoned resolution. Direct ABI
+controls cover minimum YearMonth, ignored ISO MonthDay reference years, leap-day
+rejection and historical offset precision.
+
+Date formatting, short-date arithmetic, native Now host integration, real Hermes
+SDK installation and native Intl integration remain required. These remain partial
+native-backend results.
+
+Validation: 61 regression targets pass, including all eight full native class
+suites (9,090 executions per Hermes source/HBC and WASM mode), default TS full
+Date/DateTime/Duration/Zoned suites, independent ICU controls, package checks and
+Rust core/ten ABI tests. No new exclusions. Backend remains hybrid.
+
+Matched Hermes bytecode benchmarks improve all five parser workloads against TS.
+YearMonth parsing +getter drops from 21.89 to 10.60 microseconds; zoned parsing
+from 66.37 to 38.83 (reference 52.36). Reference comparisons vary by type. WASM
+loses all five to TS here. Consumer gzip: TS 361,230 bytes; WASM JS +binary 794,070,
+including retained fallback packs. See the string-parser snapshots and
+`benchmarks/temporal/README.md` for methods, reference results and startup scope.

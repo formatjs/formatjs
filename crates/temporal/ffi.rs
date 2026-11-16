@@ -6,7 +6,8 @@ use crate::{
 };
 use crate::{
     DateTimeUnit, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainDate,
-    PlainDateTime, PlainTime, Precision, ResolvedTimeZone, RoundingMode, TimeUnit, ZonedDateTime,
+    PlainDateTime, PlainMonthDay, PlainTime, PlainYearMonth, Precision, ResolvedTimeZone,
+    RoundingMode, TimeUnit, ZonedDateTime,
 };
 use serde_json::{Value, json};
 use std::{
@@ -383,6 +384,121 @@ fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
                     .epoch_nanoseconds()
                     .to_string()
             ))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
+fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    if op == "resolveZonedDateTime" {
+        let local = decimal(request, "nanoseconds")?;
+        let fields = IsoDateTime::from_epoch_nanoseconds(local)?;
+        let calendar =
+            calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+        let zone = time_zones().resolve(
+            request["identifier"]
+                .as_str()
+                .ok_or(Error::InvalidTimeZone)?,
+        )?;
+        let disambiguation = match request["disambiguation"].as_str() {
+            Some("compatible") => Disambiguation::Compatible,
+            Some("earlier") => Disambiguation::Earlier,
+            Some("later") => Disambiguation::Later,
+            Some("reject") => Disambiguation::Reject,
+            _ => return Err(Error::InvalidDateTime),
+        };
+        let offset_option = match request["behavior"].as_str() {
+            Some("prefer") => crate::OffsetOption::Prefer,
+            Some("use") => crate::OffsetOption::Use,
+            Some("ignore") => crate::OffsetOption::Ignore,
+            Some("reject") => crate::OffsetOption::Reject,
+            _ => return Err(Error::InvalidDateTime),
+        };
+        let offset = match request.get("offset").and_then(Value::as_str) {
+            None => crate::OffsetInput::Wall,
+            Some(value) if value.eq_ignore_ascii_case("z") => crate::OffsetInput::Utc,
+            Some(value) => {
+                let offset = crate::parse::offset_nanoseconds(value)?;
+                match request["matchMinute"].as_bool() {
+                    Some(true) => crate::OffsetInput::Minute(offset),
+                    Some(false) => crate::OffsetInput::Exact(offset),
+                    None => return Err(Error::InvalidDateTime),
+                }
+            }
+        };
+        let result = match request["dateOnly"].as_bool() {
+            Some(true) => {
+                ZonedDateTime::new_in_calendar(Instant::from_epoch_nanoseconds(0)?, zone, calendar)
+                    .day_boundary(
+                        local
+                            .div_euclid(NANOSECONDS_PER_DAY)
+                            .try_into()
+                            .map_err(|_| Error::OutOfRange)?,
+                    )?
+            }
+            Some(false) => ZonedDateTime::from_local_with_offset(
+                fields,
+                zone,
+                calendar,
+                offset,
+                crate::ZonedParseOptions {
+                    disambiguation,
+                    offset: offset_option,
+                },
+            )?
+            .instant(),
+            None => return Err(Error::InvalidDateTime),
+        };
+        return Ok(json!(result.epoch_nanoseconds().to_string()));
+    }
+    let text = request["text"].as_str().ok_or(Error::InvalidSyntax)?;
+    if op == "parseZonedFields" {
+        let parsed = crate::parse::zoned_fields(text)?;
+        parsed.fields.to_epoch_nanoseconds()?;
+        let mut fields = record(parsed.fields);
+        fields["calendar"] = json!(crate::parse::calendar_annotation(text).unwrap_or("iso8601"));
+        let offset = match parsed.offset {
+            crate::OffsetInput::Wall => None,
+            crate::OffsetInput::Utc => Some("Z".to_string()),
+            crate::OffsetInput::Minute(value) | crate::OffsetInput::Exact(value) => {
+                let absolute = value.abs();
+                let sign = if value < 0 { "-" } else { "+" };
+                let base = std::format!(
+                    "{sign}{:02}:{:02}",
+                    absolute / 3_600_000_000_000,
+                    absolute / 60_000_000_000 % 60
+                );
+                Some(if matches!(parsed.offset, crate::OffsetInput::Minute(_)) {
+                    base
+                } else {
+                    std::format!(
+                        "{base}:{:02}.{:09}",
+                        absolute / 1_000_000_000 % 60,
+                        absolute % 1_000_000_000
+                    )
+                })
+            }
+        };
+        return Ok(json!({"fields":fields,"timeZone":parsed.zone,"offset":offset}));
+    }
+    let calendar = calendars()?.for_string(text)?;
+    match op {
+        "parsePlainDate" => {
+            let result = PlainDate::parse_in(text, calendar)?;
+            Ok(json!({"epochDay":result.epoch_day(),"calendar":result.calendar_id()}))
+        }
+        "parsePlainDateTime" => {
+            let result = PlainDateTime::parse_in(text, calendar)?;
+            Ok(
+                json!({"epochNanoseconds":result.epoch_nanoseconds().to_string(),"calendar":result.calendar_id()}),
+            )
+        }
+        "parsePlainYearMonth" => {
+            let result = PlainYearMonth::parse_in(text, calendar)?;
+            Ok(json!({"epochDay":result.epoch_day(),"calendar":result.calendar_id()}))
+        }
+        "parsePlainMonthDay" => {
+            let result = PlainMonthDay::parse_in(text, calendar)?;
+            Ok(json!({"epochDay":result.epoch_day(),"calendar":result.calendar_id()}))
         }
         _ => Err(Error::InvalidSyntax),
     }
@@ -880,12 +996,18 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned","calls":CALLS.load(Ordering::Relaxed),"operations":["addZonedDateTime","differenceZonedDateTime","roundZonedDateTime","startOfZonedDay","hoursInZonedDay","addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings","calls":CALLS.load(Ordering::Relaxed),"operations":["parsePlainDate","parsePlainDateTime","parsePlainYearMonth","parsePlainMonthDay","parseZonedFields","resolveZonedDateTime","addZonedDateTime","differenceZonedDateTime","roundZonedDateTime","startOfZonedDay","hoursInZonedDay","addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "addZonedDateTime"
+        "parsePlainDate"
+            | "parsePlainDateTime"
+            | "parsePlainYearMonth"
+            | "parsePlainMonthDay"
+            | "parseZonedFields"
+            | "resolveZonedDateTime"
+            | "addZonedDateTime"
             | "differenceZonedDateTime"
             | "roundZonedDateTime"
             | "startOfZonedDay"
@@ -956,6 +1078,18 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let days = integer(request.get("days"), None)?;
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
+            }
+            _ if matches!(
+                op,
+                "parsePlainDate"
+                    | "parsePlainDateTime"
+                    | "parsePlainYearMonth"
+                    | "parsePlainMonthDay"
+                    | "parseZonedFields"
+                    | "resolveZonedDateTime"
+            ) =>
+            {
+                string_operation(op, &request)
             }
             _ if op.ends_with("ZonedDateTime") || op.ends_with("ZonedDay") => {
                 zoned_operation(op, &request)

@@ -10,6 +10,7 @@
     "packages/temporal/tests/native-duration-host.ts",
     "packages/temporal/tests/native-plain-host.ts",
     "packages/temporal/tests/native-zoned-host.ts",
+    "packages/temporal/tests/native-string-host.ts",
     "packages/temporal/tests/native-iso-prelude.ts",
     "packages/babel-plugin-formatjs/index.ts",
     "packages/bigdecimal/index.ts",

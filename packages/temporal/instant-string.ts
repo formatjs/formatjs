@@ -143,6 +143,16 @@ export function parsePlainDateTimeString(
   value: string,
   dateOnly = false
 ): {epochNanoseconds: bigint; calendar: string} {
+  const native = nativeTemporal()
+  if (native) {
+    if (!dateOnly) return native.parsePlainDateTime(value)
+    const result = native.parsePlainDate(value)
+    return {
+      epochNanoseconds:
+        BigInt(result.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+      calendar: result.calendar,
+    }
+  }
   const fields = parseISODateParts(value)
   return {
     epochNanoseconds: isoToEpochNanoseconds(
@@ -321,6 +331,8 @@ export function parseZonedDateTimeString(value: string): {
   timeZone: string
   offset: string | undefined
 } {
+  const native = nativeTemporal()
+  if (native) return native.parseZonedFields(value)
   const index = value.indexOf('[')
   if (index < 0) throw new RangeError('Timezone annotation required')
   const body = value.slice(0, index),

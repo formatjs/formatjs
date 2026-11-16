@@ -309,6 +309,22 @@ export function toZonedDateTimeSlot(
     ])
   overflowOption(resolved)
   if (existing) return existing
+  const native = nativeTemporal()
+  if (native)
+    return {
+      epochNanoseconds: native.resolveZonedDateTime(
+        value!,
+        zone,
+        calendar,
+        offset,
+        behavior,
+        ambiguous,
+        matchMinute,
+        dateOnly
+      ),
+      timeZone: zone,
+      calendar,
+    }
   if (dateOnly)
     return {
       epochNanoseconds: startOfDay(

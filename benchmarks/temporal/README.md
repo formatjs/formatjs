@@ -985,3 +985,45 @@ Compile/instantiate: 1.81/1.59 ms; first native/calendar/timezone/Duration calls
 2.79/9.95/1.28/1.86 ms. JS/TS already warm; these exclude cold JS loading.
 Date parsing/formatting, short-date operations, SDK installation/distribution and
 native Intl integration remain open. Full-backend artifact sizes remain unproven.
+
+## Native string parsers
+
+`hermes-string-parser-results.json`, `wasm-string-parser-results.json` and
+`string-parser-backend-size-results.json` extend the same commands to 35 workloads.
+Four new cases parse eight distinct strings and read Date.day, DateTime.nanosecond,
+YearMonth.month or MonthDay.day. Existing zoned parsing now uses Rust grammar and
+resolution. These measure public operations including getters, rather than isolated
+scanners. Parity checks, warmup/sample counts, transition overrides and Intl
+providers match the zoned-arithmetic profile. ISO throughput only; all 16 native
+calendar packs and owned IANA data remain included. Final runs execute sequentially
+after the full 61-target regression passes.
+
+Hermes bytecode medians, TS / Rust / reference (Rust process), microseconds:
+
+- Date parse +day: 10.90 /8.08 /6.97.
+- DateTime parse +nanosecond: 16.88 /11.33 /14.70.
+- YearMonth parse +month: 21.89 /10.60 /4.11.
+- MonthDay parse +day: 11.68 /7.08 /4.82.
+- Zoned parse +epoch: 66.37 /38.83 /52.36.
+
+V8 medians, TS / WASM / reference, microseconds:
+
+- Date parse +day: 1.60 /7.83 /2.57.
+- DateTime parse +nanosecond: 2.03 /9.18 /4.77.
+- YearMonth parse +month: 2.57 /11.89 /0.80.
+- MonthDay parse +day: 1.47 /7.74 /1.05.
+- Zoned parse +epoch: 5.73 /41.09 /6.83.
+
+All five Hermes workloads improve against TS. Rust DateTime/zoned parsing beats
+the reference in this run; reference plain Date/YearMonth/MonthDay parsing remains
+faster. WASM loses all five against TS. These partial-backend, one-host profiles
+do not establish a default-backend choice.
+
+Binary: 3,382,920 raw /430,091 gzip bytes. Consumer bundles: TS 361,230 gzip;
+WASM JS 363,979 +binary 430,091 =794,070. Separate ESM: TS 363,338 versus WASM
+794,233. Native packs still duplicate retained TS fallback data. Compile and
+instantiate: 1.75/1.40 ms; first native/calendar/timezone/Duration calls:
+2.89/10.00/1.74/2.06 ms. JS/TS already warm; these exclude cold JS loading.
+Date formatting, short-date arithmetic, native Now host integration, SDK
+installation/distribution and native Intl integration remain open. Full-backend
+artifact comparisons remain unproven.

@@ -1284,5 +1284,74 @@
       "native Intl brand/styles/range integration",
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
+  },
+  "nativeStringParserBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 8,
+    "nativeOperations": 53,
+    "operations": [
+      "parsePlainDate",
+      "parsePlainDateTime",
+      "parsePlainYearMonth",
+      "parsePlainMonthDay",
+      "parseZonedFields",
+      "resolveZonedDateTime"
+    ],
+    "scope": "Typed Rust Date/DateTime/YearMonth/MonthDay parsing. Zoned grammar runs in Rust before JS option reads, then typed Rust offset/disambiguation resolution. All16 calendar providers supported; JS retains coercion, option order, slots/brands and allocation. Date formatting, short-date arithmetic, Now host/SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "plainDate": 25269,
+      "plainDateTime": 25269,
+      "plainYearMonth": 25269,
+      "plainMonthDay": 25269,
+      "zonedRows": 17640,
+      "zonedFormsPerRow": ["exact offset", "UTC offset"],
+      "futureYears": [2101, 2400, 2500, 10000, 275000]
+    },
+    "backendSelection": "Per-operation fault injection requires each parser and zoned resolution. No native errors retry TS.",
+    "boundaryControls": [
+      "invalid strings reject before options; valid option access order preserved",
+      "all parser operations guard escaped UTF16 before UTF8 transport",
+      "missing native offsets normalize to own undefined properties, ignoring inherited getters",
+      "minimum YearMonth and ignored ISO MonthDay reference years",
+      "historical minute-only versus exact offset matching"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804
+    },
+    "regressionTargets": 61,
+    "rustABITests": 10,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "date formatting and short-date arithmetic bindings",
+      "native Now host integration and Hermes SDK installation/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
   }
 }

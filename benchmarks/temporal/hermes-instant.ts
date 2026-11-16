@@ -28,6 +28,12 @@ const strings = Array.from(
   {length: 8},
   (_, index) => `2020-02-${String(21 + index)}T23:59:59.123456789+05:45`
 )
+const dateStrings = strings.map(value => value.slice(0, 10))
+const dateTimeStrings = strings.map(value => value.slice(0, -6))
+const yearMonthStrings = strings.map(
+  (_, index) => `2020-${String(index + 2).padStart(2, '0')}`
+)
+const monthDayStrings = strings.map(value => value.slice(5, 10))
 const owned = strings.map(value => Temporal.Instant.from(value))
 const other = strings.map(value => reference.Instant.from(value))
 const clocks = strings.map((_, index) => `23:59:${51 + index}.12345678${index}`)
@@ -218,6 +224,36 @@ const cases = [
           roundingMode: 'halfExpand',
         })
         .toString(),
+  },
+  {
+    name: 'dateParse',
+    owned: (index: number) =>
+      Temporal.PlainDate.from(dateStrings[index]).day.toString(),
+    reference: (index: number) =>
+      reference.PlainDate.from(dateStrings[index]).day.toString(),
+  },
+  {
+    name: 'dateTimeParse',
+    owned: (index: number) =>
+      Temporal.PlainDateTime.from(dateTimeStrings[index]).nanosecond.toString(),
+    reference: (index: number) =>
+      reference.PlainDateTime.from(
+        dateTimeStrings[index]
+      ).nanosecond.toString(),
+  },
+  {
+    name: 'yearMonthParse',
+    owned: (index: number) =>
+      Temporal.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+    reference: (index: number) =>
+      reference.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+  },
+  {
+    name: 'monthDayParse',
+    owned: (index: number) =>
+      Temporal.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
+    reference: (index: number) =>
+      reference.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
   },
   {
     name: 'dateFromFields',
@@ -488,11 +524,11 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic JSON bridge optional, all16 calendars and IANA records bundled, date parsing/formatting and remaining short-date orchestration TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic and string parser JSON bridge optional, all16 calendars and IANA records bundled, date formatting and remaining short-date arithmetic TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
     backend: query
-      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned'
+      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings'
       : 'typescript',
     iterations,
     samples,

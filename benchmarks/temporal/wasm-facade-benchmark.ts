@@ -19,6 +19,12 @@ const strings = Array.from(
   {length: 8},
   (_, index) => `2020-02-${21 + index}T23:59:59.123456789+05:45`
 )
+const dateStrings = strings.map(value => value.slice(0, 10))
+const dateTimeStrings = strings.map(value => value.slice(0, -6))
+const yearMonthStrings = strings.map(
+  (_, index) => `2020-${String(index + 2).padStart(2, '0')}`
+)
+const monthDayStrings = strings.map(value => value.slice(5, 10))
 let checksum = 0
 function measure(namespace: typeof reference): unknown[] {
   const values = strings.map(value => namespace.Instant.from(value))
@@ -215,6 +221,38 @@ function measure(namespace: typeof reference): unknown[] {
             roundingMode: 'halfExpand',
           })
           .toString(),
+    },
+    {
+      name: 'dateParse',
+      run: (index: number) =>
+        namespace.PlainDate.from(dateStrings[index]).day.toString(),
+      check: (index: number) =>
+        reference.PlainDate.from(dateStrings[index]).day.toString(),
+    },
+    {
+      name: 'dateTimeParse',
+      run: (index: number) =>
+        namespace.PlainDateTime.from(
+          dateTimeStrings[index]
+        ).nanosecond.toString(),
+      check: (index: number) =>
+        reference.PlainDateTime.from(
+          dateTimeStrings[index]
+        ).nanosecond.toString(),
+    },
+    {
+      name: 'yearMonthParse',
+      run: (index: number) =>
+        namespace.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+      check: (index: number) =>
+        reference.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+    },
+    {
+      name: 'monthDayParse',
+      run: (index: number) =>
+        namespace.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
+      check: (index: number) =>
+        reference.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
     },
     {
       name: 'dateFromFields',
@@ -554,7 +592,7 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math and plain/zoned arithmetic with16 native calendars and all IANA records; date parsing/formatting, remaining short-date orchestration and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned arithmetic and string parsing with16 native calendars and all IANA records; date formatting, remaining short-date arithmetic and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
         'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,

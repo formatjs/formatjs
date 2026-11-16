@@ -336,3 +336,53 @@ fn zoned_arithmetic_uses_alias_identity_dst_days_and_strict_day_boundaries() {
         assert_eq!(request(input), Err(1));
     }
 }
+
+#[test]
+fn string_parsers_preserve_short_date_bounds_and_offset_precision() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    let date = request(json!({"op":"parsePlainDate","text":"-271821-04-19T23:59:59"})).unwrap();
+    assert_eq!(date["epochDay"].as_i64(), Some(-100000001));
+    assert_eq!(
+        request(json!({"op":"parsePlainDateTime","text":"1970-01-01T00:00+05:45"})).unwrap()["epochNanoseconds"],
+        json!("0")
+    );
+    assert_eq!(
+        request(json!({"op":"parsePlainYearMonth","text":"-271821-04"})).unwrap()["epochDay"]
+            .as_i64(),
+        Some(-100000019)
+    );
+    assert_eq!(
+        request(json!({"op":"parsePlainMonthDay","text":"-999999-02-28"})).unwrap()["epochDay"]
+            .as_i64(),
+        Some(788)
+    );
+    assert_eq!(
+        request(json!({"op":"parseZonedFields","text":"1900-01-01T00:00+00:09[Europe/Paris]"}))
+            .unwrap()["offset"],
+        json!("+00:09")
+    );
+    assert_eq!(
+        request(json!({"op":"parseZonedFields","text":"1900-01-01T00:00+00:09:00[Europe/Paris]"}))
+            .unwrap()["offset"],
+        json!("+00:09:00.000000000")
+    );
+    assert_eq!(
+        request(json!({"op":"parseZonedFields","text":"1970-01-01T00:00[UTC]"})).unwrap()["offset"],
+        Value::Null
+    );
+    let mut resolve = json!({"op":"resolveZonedDateTime","nanoseconds":"-2208988800000000000","identifier":"Europe/Paris","calendar":"iso8601","offset":"+00:09","behavior":"reject","disambiguation":"compatible","matchMinute":true,"dateOnly":false});
+    assert_eq!(request(resolve.clone()), Ok(json!("-2208989361000000000")));
+    resolve["matchMinute"] = json!(false);
+    assert_eq!(request(resolve.clone()), Err(1));
+    resolve["behavior"] = json!("use");
+    assert_eq!(request(resolve.clone()), Ok(json!("-2208989340000000000")));
+    for (op, text) in [
+        ("parsePlainDate", "2021-02-29"),
+        ("parsePlainDateTime", "2020-01-01T00:00Z"),
+        ("parsePlainYearMonth", "2020-01[u-ca=hebrew]"),
+        ("parsePlainMonthDay", "2021-02-29"),
+        ("parseZonedFields", "2020-01-01T00:00[foo=bar]"),
+    ] {
+        assert_eq!(request(json!({"op":op,"text":text})), Err(1));
+    }
+}
