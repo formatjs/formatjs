@@ -1565,3 +1565,31 @@ Separately compressed graphs measure TS 67,389, native-data WASM 475,835 and
 hybrid WASM 509,770 including the unchanged WASM binary. New snapshots are
 `extended-date-size-results.json` and `extended-date-backend-size-results.json`.
 No new throughput claim.
+
+## Numeric lunar boundary and full-corpus refresh
+
+Numeric Chinese/Dangi formatting now survives host ICU failures near valid Date
+limits. Safe-year label patterns retain relatedYear/yearName; correction preserves
+the original local day, clock and timezone. Reversed ranges reject before fallback.
+Shared controls cover 24 boundary/calendar/timezone combinations on TS, both WASM
+entries and Hermes source/HBC. Hermes retains 936 independent ICU-era checks per
+mode; extreme lunar checks assert field consistency, not independent astronomy.
+
+Final post-fix run passes 53 targets: 44 complete namespace, six full Intl
+compatibility and three numeric boundary gates. The 73,368 Test262 suite executions
+overlap; each profile's union has 13,324 scenarios with two documented data
+exclusions. Node class and Intl gates use different formatter providers. A separate
+host-Intl raw diagnostic passes 4,078/4,080; only the stale CST6CDT alias assertion
+fails. All 62 normalized Rust operations succeed under both WASM profiles: 58
+through public methods, four lower-level adapters checked against ICU fixtures.
+
+The three `benchmarks/temporal/lunar-boundary-*-results.json` snapshots refresh
+current Node throughput and sizes. Separate module graphs measure 70,443 bytes
+gzip for TS and 481,746 for native-data WASM including binary. The full reference
+bundle uses host Intl and measures 23,226. Both WASM profiles trail TS on all 43
+measured ISO medians. Host Intl is allowed; shipping owned timezone data is optional.
+
+Completion remains open. Older host rules format Havana one hour behind owned
+ZonedDateTime fields after the 2026 rule change. The typed Rust PlainDate API also
+needs direct omitted-time zoned conversion using existing day-boundary semantics.
+See 015a for exact evidence scopes and remaining requirements.

@@ -198,8 +198,17 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 68,089 bytes gzip for default and
-336,635 for standalone. Both include compact IANA histories. The native-data WASM
-module and binary, compressed separately, measure 481,677 bytes gzip. Prior
-measured Node workloads favor TS.
+Current separately compressed module graphs measure 70,443 bytes gzip for default
+and 338,952 for standalone. Both include compact IANA histories. Native-data WASM
+glue plus binary measures 481,746 bytes gzip. On 43 measured ISO workload medians,
+both WASM profiles trail TS. Full host-Intl reference bundle measures 23,226 bytes;
+data policies differ. Host Intl is an allowed runtime dependency.
 See benchmarks/temporal for versioned methods, scopes and results.
+
+Fresh full namespace and Intl compatibility gates pass 73,368 overlapping suite
+executions across TS, WASM and Hermes source/HBC profiles. Unique unions contain
+13,324 scenarios per profile and two documented IANA/CLDR data exclusions. Node
+class and full Intl gates use different formatter providers. A separate full
+host-Intl diagnostic passes 4,078/4,080, failing only the stale timezone-link test.
+Current host timezone data can differ from owned rules; reconciling locale output
+with owned ZonedDateTime fields remains open.

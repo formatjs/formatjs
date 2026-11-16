@@ -1,7 +1,7 @@
 {
   "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
   "nativeFallback": false,
-  "note": "Whole native Temporal namespace replaced in every realm. Strict built-in, calendar, timezone and owned locale slices are gates. Per-class full reports below are historical; localeFormatting records newer Intl diagnostics and remaining gaps. No complete conformance claim.",
+  "note": "Whole native Temporal namespace replaced. Historical per-class diagnostics remain below; fullNamespaceAudit records the current post-fix full namespace/Intl results and exact provider scopes. No complete conformance claim.",
   "selected": {
     "executions": 346,
     "passes": 346,
@@ -1804,40 +1804,91 @@
         "intl402/Temporal/ZonedDateTime/links.js",
         "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
       ],
-      "note": "Each file fails in default and strict scenarios. These unfiltered manual diagnostics retain every failure; compatibility selections document current IANA/CLDR data conflicts separately."
+      "note": "Historical unfiltered diagnostics: each excluded file fails in default and strict scenarios under owned/native SDK Intl. Final compatibility gates re-executed after the runtime fix; the separate current host-Intl diagnostic has only the link failure."
     },
     "uniqueCoverage": {
       "typescript": {
-        "uniqueFiles": 6664,
-        "uniqueScenarios": 13328,
-        "failures": 4,
-        "missingFiles": [],
-        "extraFiles": []
-      },
-      "hermesSdkSource": {
-        "uniqueFiles": 6664,
-        "uniqueScenarios": 13328,
-        "failures": 4,
-        "missingFiles": [],
-        "extraFiles": []
-      },
-      "hermesSdkBytecode": {
-        "uniqueFiles": 6664,
-        "uniqueScenarios": 13328,
-        "failures": 4,
-        "missingFiles": [],
+        "uniqueFiles": 6662,
+        "uniqueScenarios": 13324,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
         "extraFiles": []
       },
       "wasm": {
-        "uniqueFiles": 6664,
-        "uniqueScenarios": 13328,
-        "failures": 4,
-        "missingFiles": [],
+        "uniqueFiles": 6662,
+        "uniqueScenarios": 13324,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      },
+      "hermesSdkSource": {
+        "uniqueFiles": 6662,
+        "uniqueScenarios": 13324,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      },
+      "hermesSdkBytecode": {
+        "uniqueFiles": 6662,
+        "uniqueScenarios": 13324,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
         "extraFiles": []
       }
     },
-    "uniqueCoverageScope": "Union of complete class/calendar/Now/installation reports and raw intl402/Temporal reports, compared against all pinned built-ins/Temporal, Date/prototype/toTemporalInstant and intl402/Temporal source files. Four failures are the documented data conflicts; no files missing or extra. WASM uses native-data-only mode. Counts precede the numeric lunar boundary fix.",
-    "sourceScopeNote": "Full namespace/Intl counts above precede the numeric lunar boundary fallback change. Final conformance refresh remains required after that change."
+    "uniqueCoverageScope": "Fresh post-fix union of complete class/calendar/Now/installation reports and full Intl compatibility gates, compared with all pinned source files. Only the two explicitly excluded Intl files are missing. Node TS/WASM class gates use host Intl; their full Intl gates install owned FormatJS Intl, so those unions combine formatter providers. SDK class and Intl gates use native SDK Intl. WASM uses native-data-only mode.",
+    "sourceScopeNote": "Final post-fix run: 53/53 targets pass, comprising 44 namespace, six full Intl compatibility and three numeric lunar boundary targets. 73,368 overlapping Test262 suite executions; unique counts are reported separately.",
+    "compatibilityGates": {
+      "targets": 6,
+      "executionsPerTarget": 4076,
+      "aggregateExecutions": 24456,
+      "failures": 0,
+      "reports": {
+        "locale_intl_compat_test262": 4076,
+        "wasm_intl_compat_test262": 4076,
+        "locale_intl_compat_hermes_test262": 4076,
+        "locale_intl_compat_hermes_bytecode_test262": 4076,
+        "sdk_intl_compat_hermes_source_test262": 4076,
+        "sdk_intl_compat_hermes_bytecode_test262": 4076
+      }
+    },
+    "hostIntlDiagnostic": {
+      "executions": 4080,
+      "passes": 4078,
+      "failures": 2,
+      "failedCases": [
+        {
+          "file": "intl402/Temporal/ZonedDateTime/links.js",
+          "scenario": "strict mode",
+          "message": "link=CST6CDT, zone=America/Chicago Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true"
+        },
+        {
+          "file": "intl402/Temporal/ZonedDateTime/links.js",
+          "scenario": "default",
+          "message": "link=CST6CDT, zone=America/Chicago Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true"
+        }
+      ],
+      "uniqueCoverageWithHostClassGates": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 2,
+        "missingFiles": [],
+        "extraFiles": []
+      },
+      "scope": "Actual default TS namespace with captured host Intl under Node 26.8.1. Only the stale CST6CDT link assertions fail. Explicit offset-zero formatting matches the pinned test on this host. No exclusions applied to this raw diagnostic."
+    }
   },
   "rustOperationAudit": {
     "declaredOperations": 62,
@@ -1854,7 +1905,13 @@
     "note": "ABI observer forwards real Rust calls and counts successful return codes. Public ICU corpus and Duration operations reach 58 operations. Independent ICU fixtures exercise four lower-level normalized adapters bypassed by higher-level Rust routes. This proves runtime reachability and those oracle assertions, not every possible semantic edge."
   },
   "numericLunarBoundaryAudit": {
-    "profiles": ["typescript", "hybridWasm", "nativeDataWasm"],
+    "profiles": [
+      "typescript",
+      "hybridWasm",
+      "nativeDataWasm",
+      "hermesLegacyAdapterSource",
+      "hermesLegacyAdapterBytecode"
+    ],
     "combinationsPerProfile": 24,
     "calendars": ["chinese", "dangi"],
     "timeZones": ["UTC", "Asia/Shanghai", "Pacific/Honolulu"],
@@ -1866,6 +1923,11 @@
       "timeZone": "UTC",
       "message": "TypeError: Internal error. Icu error."
     },
-    "note": "Valid Date limits and neighboring days. Owned calendar field consistency; captured Gregorian formatter controls clocks and timezone names. Outside independent astronomical oracle bounds, not an astronomical accuracy claim. Hermes-specific boundary coverage remains pending."
-  }
+    "note": "Valid Date limits and neighboring days. Shared corpus runs on Node TS/both WASM entries and Hermes source/optimized bytecode. Owned calendar field consistency; captured Gregorian controls clocks and timezone names. Outside independent astronomical oracle bounds, not an astronomical accuracy claim."
+  },
+  "currentBenchmarkSnapshots": [
+    "benchmarks/temporal/lunar-boundary-facade-results.json",
+    "benchmarks/temporal/lunar-boundary-wasm-results.json",
+    "benchmarks/temporal/lunar-boundary-backend-size-results.json"
+  ]
 }

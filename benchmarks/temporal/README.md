@@ -1378,3 +1378,26 @@ covers partial, empty and absent Intl through installation. Sixteen focused gate
 pass, including 1,804 ZonedDateTime Test262 executions per TS/WASM/Hermes SDK
 source/bytecode profile. Independent ICU cases cover 17,640 offsets, 1,900 gap/fold
 windows and 5,292 day boundaries through the new Rust methods.
+
+## Lunar boundary audit refresh
+
+`lunar-boundary-facade-results.json` refreshes 26 Node workloads against forced
+`temporal-polyfill/full/implementation` 1.0.7, including Chinese/Dangi/Umm al-Qura
+month addition. TS wins 16 measured medians; reference wins ten. Output parity passes.
+`lunar-boundary-wasm-results.json` refreshes 43 ISO workloads against the basic
+reference: TS wins 21 medians, reference 22; neither WASM profile beats TS.
+The checksum remains 173601476. These sequential single-machine samples exclude
+JS cold startup; no new Hermes timing claim.
+
+`lunar-boundary-backend-size-results.json` records separately compressed module
+graphs: TS 70,443, standalone 338,952, native-data WASM 481,746 and hybrid WASM
+514,425 bytes gzip. WASM totals include the unchanged 443,178-byte gzip binary.
+Full reference bundle remains 23,226 and uses host Intl; default TS includes owned
+IANA data. The matched WASM benchmark consumer bundles measure 68,138 TS and
+481,452 native-data WASM including binary. Consumer bundles and module sums are
+alternative delivery modes. Published module payload is not whole npm archive size.
+
+The runtime fix recovers Chinese/Dangi formatting at valid Date bounds and rejects
+reversed fallback ranges. Shared boundary controls pass on TS, both WASM entries
+and Hermes source/HBC. All 53 final conformance/boundary gates pass. This does not
+close the remaining host timezone data mismatch or Rust public conversion audit.
