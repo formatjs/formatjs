@@ -1,5 +1,5 @@
-load("@bazel_lib//lib:copy_file.bzl", "copy_file")
 load("@rules_python//python:defs.bzl", "py_library", "py_test")
+load("//tools/python:pyo3_extension.bzl", "copy_python_extension")
 load("//tools/python:wheel.bzl", "formatjs_python_wheel")
 
 py_library(
@@ -13,11 +13,10 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
-copy_file(
+copy_python_extension(
     name = "native_for_test",
     src = "//crates/icu_messageformat_python:icu_messageformat",
-    out = "icu_messageformat/_native.abi3.so",
-    allow_symlink = True,
+    module_name = "icu_messageformat._native",
 )
 
 py_test(

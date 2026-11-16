@@ -7,6 +7,7 @@ _PLATFORMS = {
     "//tools/python:linux_arm64": "manylinux_2_28_aarch64",
     "//tools/python:macos_x86_64": "macosx_11_0_x86_64",
     "//tools/python:macos_arm64": "macosx_11_0_arm64",
+    "//tools/python:windows_x86_64": "win_amd64",
 }
 
 def formatjs_python_wheel(

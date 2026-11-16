@@ -2,6 +2,9 @@
 
 Python bindings for FormatJS's high-level Rust internationalization runtime.
 
+Prebuilt wheels support CPython 3.12+ on Windows x64, Linux x64/arm64
+(manylinux 2.28), and macOS x64/arm64.
+
 ```sh
 python -m pip install py_intl
 ```
