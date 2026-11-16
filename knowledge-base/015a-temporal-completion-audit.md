@@ -204,3 +204,33 @@ changes. The pinned reference normalizes spellings heuristically and uses host
 identities. Removing ours loses validation/identity or search guarantees; a
 smaller equivalent encoding needs separate validation. The remaining core gap
 is not proven minimal either. No production change or new exclusion in this audit.
+
+## temporal_rs benchmark follow-up
+
+`temporal_rs` 0.2.6 is benchmarked through an isolated dependency workspace and
+Bazel repository; production crate/npm dependencies do not change. Default host
+features are disabled; ICU4X calendar 2.3.0 is pinned to match our calendar generator.
+Native comparison covers all eight types, 25 workloads, five non-ISO calendars,
+four inputs and nine alternating samples with preflight/timed checksum controls.
+Calendar fields compare our aggregate API with three upstream public getters.
+Parsed operands and registries are constructed outside timing.
+
+Upstream wins 22/25 local native medians. Our Instant parse/round paths win;
+formatting is effectively tied. Upstream Chinese/Dangi month addition is about
+26 times faster, Hebrew month addition about 3.1 times faster. This is meaningful
+counterevidence to keeping custom calendar math for speed. Raw samples and methods:
+`benchmarks/temporal/temporal-rs-native-results.json`.
+
+Identical minimal WASM ABI/bridge comparisons verify ordinary and boundary
+outputs against forced temporal-polyfill, plus invalid-input controls. Upstream
+Instant cases are 8–19% slower, Duration cases 31–32% faster. Primitive gzip:
+ours 19,470, upstream 24,653. Both have zero WASM imports. Upstream uses Writeable
+for Instant and allocating String output for Duration; ours uses buffer output.
+See `benchmarks/temporal/temporal-rs-wasm-results.json`.
+
+These are primitive binary sizes, not complete backends: calendar/named-zone data,
+full operation reachability, JS facade, Intl and embedding costs are excluded.
+Native UTC/fixed-offset parsing is covered; named-zone/DST provider performance
+is unmeasured. No new full Test262/independent ICU claim for upstream. Earlier
+owned implementation conformance records remain unchanged. A full temporal_rs
+adapter/provider/conformance experiment is still needed to choose replacement.

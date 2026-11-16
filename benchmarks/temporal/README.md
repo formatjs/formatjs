@@ -59,6 +59,54 @@ assumptions. Exact metadata compaction is a valid follow-up; deleting validation
 or weakening transition sampling is not an equivalent size reduction. No runtime
 behavior changed during this audit.
 
+## temporal_rs comparison
+
+```sh
+bazel run -c opt //benchmarks/temporal/rust:native_benchmark
+bazel run -c opt //benchmarks/temporal:temporal_rs_benchmark
+```
+
+Pinned [temporal_rs 0.2.6](https://docs.rs/crate/temporal_rs/0.2.6), default features
+disabled; ICU4X calendar 2.3.0 matches our generator. Benchmark-only Cargo workspace,
+lockfile and Bazel repository keep production dependencies unchanged. Cargo
+resolved dependencies using Bazel's pinned tools; Bazel compiles all artifacts.
+
+`temporal-rs-native-results.json` records 25 native API workloads spanning all
+eight types and five non-ISO calendars. Four inputs per case, checked outputs/
+checksums, 256 warmup calls, nine alternating samples of 16,384 calls. Parsed
+operands, calendar construction and registry validation happen outside timing.
+Both engines allocate/hash strings for serialization. Calendar field workloads
+use our aggregate API versus three public getters upstream. Tiny workloads
+include checksum/harness overhead; no empty-loop subtraction or significance claim.
+
+Upstream wins 22/25 recorded medians. Instant formatting is effectively tied;
+our Instant parser is 3.05 times faster and microsecond rounding 2.21 times faster.
+Chinese/Dangi fields are about 18 times faster upstream; month addition about
+26 times faster. Hebrew month addition is about 3.1 times faster upstream. These
+are local workload results, not a universal ranking. UTC/fixed-offset parsing
+is covered; named timezone/DST providers and full independent conformance are not.
+
+`temporal-rs-wasm-results.json` uses the same 256-byte UTF-8 input/output ABI and
+JS bridge for both engines, with no WASM imports. All ordinary/boundary outputs
+match forced temporal-polyfill's basic implementation; invalid-input controls
+exercise both WASM modules. Nine rotating samples include encoding, parsing,
+operation, formatting, decoding and checksum. Upstream uses allocation-free
+Writeable for Instant, public String output for Duration; our module writes to
+its buffer without an allocator. Both use identical Bazel opt settings and
+wrapper opt-level=z, strip=symbols, panic=abort.
+
+Primitive WASM raw/gzip sizes: ours 43,366/19,470 bytes; upstream 60,876/24,653.
+Upstream is 8–19% slower across six Instant cases, 31–32% faster across two
+Duration cases. Both initially reserve 1,114,112 linear-memory bytes. TS primitive
+module is 3,783 gzip bytes; basic reference is 19,393, with broader exports/API.
+These sizes exclude calendars, named timezone data and a JS Temporal facade.
+They cannot be compared with the 443,098-byte full native-data backend binary.
+No cold startup or complete replacement size is established.
+
+These results support testing a temporal_rs adapter before expanding custom Rust
+math. They do not demonstrate a full JS/Hermes replacement: coercion, brands,
+Intl integration, provider wiring and complete conformance still need validation.
+
 ## Fresh-process startup
 
 ```sh

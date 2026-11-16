@@ -36,6 +36,7 @@ formatjs_library(
         "size-audit.ts",
         "size-benchmark.ts",
         "startup-benchmark.ts",
+        "temporal-rs-benchmark.ts",
         "wasm-benchmark.ts",
         "wasm-bridge.ts",
         "wasm-facade-benchmark.ts",
@@ -157,6 +158,21 @@ rolldown_bundle(
         ("wasm-bridge-code", "wasm-bridge.ts"),
     ]
 ]
+
+js_binary(
+    name = "temporal_rs_benchmark",
+    data = [
+        "wasm-inputs.ts",
+        ":generated_package_json",
+        ":reference-bundle",
+        ":wasm-ts-code",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//benchmarks/temporal/rust:wasm",
+        "//crates/temporal:wasm",
+    ],
+    entry_point = "temporal-rs-benchmark.ts",
+)
 
 js_binary(
     name = "wasm_benchmark",
