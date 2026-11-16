@@ -3,8 +3,10 @@ load("@bazel_lib//lib:copy_to_bin.bzl", "copy_to_bin")
 
 # gazelle:ignore
 load("//packages/intl-datetimeformat:calendar_registry.bzl", "CALENDARS")
+load("//tools:compile.bzl", "formatjs_library")
 load("//tools:index.bzl", "ts_binary")
 load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 
 exports_files(["packer.ts"])
 
@@ -56,6 +58,33 @@ ts_binary(
     ],
     entry_point = "process-zdump.ts",
     visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+ts_binary(
+    name = "temporal-timezones",
+    data = [
+        "//:node_modules/minimist",
+        "//:root_package_json",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+    entry_point = "temporal-timezones.ts",
+    visibility = ["//packages/intl-datetimeformat:__pkg__"],
+)
+
+formatjs_library(
+    name = "temporal_timezones_check",
+    srcs = ["temporal-timezones.ts"],
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@types/minimist",
+        "//:node_modules/@types/node",
+        "//:node_modules/minimist",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+    ],
 )
 
 formatjs_test(

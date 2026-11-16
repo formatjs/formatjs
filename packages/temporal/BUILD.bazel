@@ -15,6 +15,7 @@ formatjs_library(
         "accessors.ts",
         "calendar.ts",
         "calendar-table.ts",
+        "compact-timezone.ts",
         "date-bridge.ts",
         "date-core.ts",
         "date-to-temporal-instant.ts",
@@ -25,6 +26,7 @@ formatjs_library(
         "fallback-data.ts",
         "host-calendar.ts",
         "host-calendar-data.ts",
+        "host-timezone.ts",
         "index.ts",
         "install.ts",
         "instant.ts",
@@ -272,6 +274,27 @@ sh_test(
         ],
     )
     for name, sources, data in [
+        (
+            "host_timezone_test",
+            ["tests/host-timezone.test.ts"],
+            [],
+        ),
+        (
+            "compact_timezone_test",
+            ["tests/compact-timezone.test.ts"],
+            [],
+        ),
+        (
+            "host_timezone_reference_test",
+            [
+                "tests/host-timezone-icu.test.ts",
+                "tests/host-timezone-oracle.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            ],
+        ),
         (
             "table_calendar_test",
             [
@@ -2635,6 +2658,91 @@ sh_test(
     ],
     data = [
         ":compact_calendar_hermes_icu_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+formatjs_test(
+    name = "host_timezone_reference_node26_test",
+    srcs = [
+        "tests/host-timezone-icu.test.ts",
+        "tests/host-timezone-oracle.ts",
+    ],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
+)
+
+formatjs_test(
+    name = "host_timezone_icu_test",
+    srcs = [
+        "tests/host-timezone-icu.test.ts",
+        "tests/host-timezone-oracle.ts",
+    ],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+    ],
+    env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"},
+    tags = ["manual"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
+)
+
+rolldown_bundle(
+    name = "host-timezone-host",
+    srcs = [
+        "tests/host-timezone-host.ts",
+        "tests/host-timezone-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/host-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "host_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":host-timezone-host.js",
+    ],
+    outs = ["host-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :host-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "host_timezone_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :host_timezone_hermes_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":host_timezone_hermes_source",
         "//native/hermes/tests:test262_runtime",
         "@hermes//:hermesc",
     ],

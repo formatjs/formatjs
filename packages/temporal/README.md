@@ -54,6 +54,11 @@ Both entries include owned IANA timezone data. They expose separate namespaces;
 installation entries install the default namespace. Chinese/Dangi arithmetic is
 adapted from ICU4X under Unicode-3.0; see LICENSE.md.
 
+Host Intl is an allowed data dependency. An internal timezone prototype now
+validates offsets and gap/fold resolution against ICU on Hermes and against
+`temporal-polyfill` on Node 24/26. It does not yet replace owned timezone data:
+`Intl.DateTimeFormat` exposes offsets, but no transition enumeration API.
+
 ## Locale formatting
 
 All eight classes expose `toLocaleString(locales?, options?)`. Date/time classes

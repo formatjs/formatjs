@@ -484,7 +484,19 @@ formatjs_generated_package(
         ":tz_all_tz",
         ":tz_links",
         ":tz_primary",
+        ":tz_temporal_compact",
     ],
+)
+
+generate_package_file(
+    name = "tz_temporal_compact",
+    src = "temporal-compact.ts",
+    args = [
+        "--input",
+        "$(rootpath :tz_all_json)",
+    ],
+    data = [":tz_all_json"],
+    tool = "//packages/intl-datetimeformat/scripts:temporal-timezones",
 )
 
 # Raw packs use the same pinned IANA and golden-zone selection as JS.

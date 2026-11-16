@@ -16,8 +16,30 @@ range boundaries with Test262 and independent ICU oracles, including Hermes.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-The existing roughly 361 KB gzip TS measurement includes owned calendar and
-timezone tables; the roughly 23 KB gzip full reference uses host Intl data.
+Published default TS consumers measure 93,005 bytes gzip; standalone measures
+361,912. Both include owned timezone data. The roughly 23 KB gzip full reference
+uses host Intl data; these profiles still have different data policies.
+
+`host-timezone.ts` prototypes captured Intl offset queries and local-time
+resolution, including nanoseconds, historical second offsets and instant bounds.
+It is not wired into the default namespace: Intl has no transition enumeration
+API, and an arbitrary search horizon cannot prove the nearest transition.
+Strict Hermes/ICU checks cover 597 supported names, 17,640 future offsets and
+1,900 gap/fold windows in source and optimized bytecode. Node 24/26 reference
+tests compare the same corpus against `temporal-polyfill` on the same host.
+The manual `host_timezone_icu_test` retains strict independent diagnostics:
+Node 24 tzdb 2025c has 290 failing assertions; Node 26 tzdb 2026c has 40, matching
+the reference, against ICU tzdb 2026e. Reference parity is not ICU compliance.
+
+The generated `tz/temporal-compact.js` prototype represents finite offset events
+as fixed timestamps plus recurring-rule year spans. It preserves the final
+explicit timestamp and existing future rules. Generator reconstruction and
+runtime tests verify all 19,793 retained events across 457 concrete zones,
+including neighboring nanoseconds and full-range transition probes. Abbreviations
+and DST flags are omitted; this representation is only for Temporal, never
+DateTimeFormat zone-name formatting. The generated TS file measures 33,160 bytes
+gzip before bundling; this is not a shipped consumer measurement. Default data
+selection remains unchanged pending integration and full conformance gates.
 
 ## Current state
 
