@@ -1,8 +1,10 @@
 use crate::calendar::Calendar;
-use crate::calendar_provider::{error, overflow as calendar_overflow, resolve_fields};
+use crate::calendar_provider::{
+    error, merge_fields, overflow as calendar_overflow, resolve_fields,
+};
 use crate::{
     CalendarName, CalendarProvider, DateFields, Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY,
-    PlainTime, Precision, RoundingMode, TimeUnit,
+    PlainTime, Precision, RoundingMode, TimeFields, TimeUnit,
 };
 use core::{fmt, str::FromStr};
 
@@ -10,6 +12,12 @@ use core::{fmt, str::FromStr};
 pub enum Overflow {
     Constrain,
     Reject,
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+pub struct DateTimeFields<'a> {
+    pub date: DateFields<'a>,
+    pub time: TimeFields,
 }
 #[derive(Clone, Copy, Debug)]
 pub struct PlainDate<C = Calendar>(i64, C);
@@ -35,6 +43,9 @@ impl PlainDate {
     }
 }
 impl<C: CalendarProvider> PlainDate<C> {
+    pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
+        Self::from_calendar_fields(self.1, merge_fields(self.1, self.0, fields)?, overflow)
+    }
     pub fn from_epoch_day_in(value: i64, calendar: C) -> Result<Self, Error> {
         PlainDate::from_epoch_day(value)?;
         calendar.date(value).map_err(error)?;
@@ -253,6 +264,40 @@ impl PlainDateTime {
     }
 }
 impl<C: CalendarProvider> PlainDateTime<C> {
+    pub fn from_calendar_fields(
+        calendar: C,
+        fields: DateTimeFields<'_>,
+        overflow: Overflow,
+    ) -> Result<Self, Error> {
+        let date = PlainDate::from_calendar_fields(calendar, fields.date, overflow)?;
+        let time = if fields.time.is_empty() {
+            PlainTime::from_nanoseconds(0)?
+        } else {
+            PlainTime::from_fields(fields.time, overflow)?
+        };
+        date.to_date_time(time)
+    }
+    pub fn with_fields(
+        self,
+        fields: DateTimeFields<'_>,
+        overflow: Overflow,
+    ) -> Result<Self, Error> {
+        let has_date = fields.date.has_fields(self.calendar_id());
+        if !has_date && fields.time.is_empty() {
+            return Err(Error::InvalidDateTime);
+        }
+        let date = if has_date {
+            self.date().with_fields(fields.date, overflow)?
+        } else {
+            self.date()
+        };
+        let time = if fields.time.is_empty() {
+            self.time()
+        } else {
+            self.time().with_fields(fields.time, overflow)?
+        };
+        date.to_date_time(time)
+    }
     pub fn from_epoch_nanoseconds_in(value: i128, calendar: C) -> Result<Self, Error> {
         IsoDateTime::from_epoch_nanoseconds(value)?;
         calendar

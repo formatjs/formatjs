@@ -7,6 +7,13 @@ Core supplies Instant parsing, ISO conversion, all nine rounding modes, exact
 Duration parsing/formatting/totals, clock arithmetic, calendar-aware plain
 date/date-time, short-date and zoned types. Rational totals round once to binary64.
 
+`with_fields` updates PlainTime, Duration, PlainDate and PlainDateTime without
+mutating the source. `TimeFields`, `DurationFields` and `DateTimeFields` hold
+optional fields. Clock units constrain separately; Duration retains unbalanced
+units and validates signs. Date updates preserve month codes across leap years
+and replace related era fields together. PlainDateTime also accepts calendar
+fields through `from_calendar_fields`, defaulting omitted time fields to zero.
+
 `ZonedDateTime<Z, C>` keeps an Instant with timezone and calendar providers. `FixedOffset`
 supplies constant zones; `TransitionZone` borrows sorted explicit records plus
 optional recurring TZif rules. Queries skip events changing only abbreviation or

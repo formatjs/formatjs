@@ -267,6 +267,65 @@ pub struct DateFields<'a> {
     pub era_year: Option<i32>,
 }
 
+impl DateFields<'_> {
+    pub(crate) fn has_fields(self, calendar: &str) -> bool {
+        self.year.is_some()
+            || self.month.is_some()
+            || self.month_code.is_some()
+            || self.day.is_some()
+            || (!matches!(calendar, "iso8601" | "chinese" | "dangi")
+                && (self.era.is_some() || self.era_year.is_some()))
+    }
+}
+
+pub(crate) fn merge_fields<'a, C: CalendarProvider>(
+    calendar: C,
+    epoch: i64,
+    mut updates: DateFields<'a>,
+) -> Result<DateFields<'a>, crate::Error> {
+    if matches!(calendar.id(), "iso8601" | "chinese" | "dangi") {
+        updates.era = None;
+        updates.era_year = None;
+    }
+    if !updates.has_fields(calendar.id()) {
+        return Err(crate::Error::InvalidDateTime);
+    }
+    let date = calendar.date(epoch).map_err(error)?;
+    let era = calendar.era(epoch).map_err(error)?;
+    let mut base = DateFields {
+        year: Some(date.year),
+        month_code: Some(date.month_code),
+        day: Some(date.day.into()),
+        era: era.map(|value| value.name),
+        era_year: era.map(|value| value.year),
+        ..DateFields::default()
+    };
+    if updates.month.is_some() {
+        base.month_code = None
+    }
+    if calendar.id() != "iso8601"
+        && (updates.year.is_some() || updates.era.is_some() || updates.era_year.is_some())
+    {
+        base.year = None;
+        base.era = None;
+        base.era_year = None;
+    }
+    if calendar.id() == "japanese"
+        && (updates.day.is_some() || updates.month.is_some() || updates.month_code.is_some())
+    {
+        base.era = None;
+        base.era_year = None;
+    }
+    Ok(DateFields {
+        year: updates.year.or(base.year),
+        month: updates.month,
+        month_code: updates.month_code.or(base.month_code),
+        day: updates.day.or(base.day),
+        era: updates.era.or(base.era),
+        era_year: updates.era_year.or(base.era_year),
+    })
+}
+
 pub(crate) fn error(error: crate::calendar::Error) -> crate::Error {
     match error {
         crate::calendar::Error::OutOfRange => crate::Error::OutOfRange,

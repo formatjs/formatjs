@@ -1,6 +1,294 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn partial_dates_and_datetimes_constrain_without_carrying_clock_units() {
+    use formatjs_temporal::{
+        DateFields, DateTimeFields, Overflow, PlainDate, PlainDateTime, TimeFields,
+        calendar::Calendar,
+    };
+    let january = PlainDate::new(2024, 1, 31).unwrap();
+    let february = DateFields {
+        month: Some(2),
+        ..DateFields::default()
+    };
+    assert_eq!(
+        january
+            .with_fields(february, Overflow::Constrain)
+            .unwrap()
+            .fields(),
+        (2024, 2, 29)
+    );
+    assert!(january.with_fields(february, Overflow::Reject).is_err());
+    for fields in [
+        DateFields::default(),
+        DateFields {
+            day: Some(0),
+            ..DateFields::default()
+        },
+        DateFields {
+            era: Some("ce"),
+            ..DateFields::default()
+        },
+    ] {
+        assert!(january.with_fields(fields, Overflow::Constrain).is_err());
+    }
+    assert!(
+        PlainDate::from_epoch_day(-100_000_001)
+            .unwrap()
+            .with_fields(
+                DateFields {
+                    day: Some(1),
+                    ..DateFields::default()
+                },
+                Overflow::Constrain
+            )
+            .is_err()
+    );
+    let original = "2024-01-31T12:34:56.123456789"
+        .parse::<PlainDateTime>()
+        .unwrap();
+    let update = DateTimeFields {
+        date: february,
+        time: TimeFields {
+            hour: Some(99),
+            millisecond: Some(7),
+            ..TimeFields::default()
+        },
+    };
+    assert_eq!(
+        original
+            .with_fields(update, Overflow::Constrain)
+            .unwrap()
+            .to_string(),
+        "2024-02-29T23:34:56.007456789"
+    );
+    assert!(original.with_fields(update, Overflow::Reject).is_err());
+    assert!(
+        original
+            .with_fields(DateTimeFields::default(), Overflow::Constrain)
+            .is_err()
+    );
+    assert_eq!(
+        original
+            .with_fields(
+                DateTimeFields {
+                    time: TimeFields {
+                        minute: Some(1),
+                        ..TimeFields::default()
+                    },
+                    ..DateTimeFields::default()
+                },
+                Overflow::Reject
+            )
+            .unwrap()
+            .to_string(),
+        "2024-01-31T12:01:56.123456789"
+    );
+    assert_eq!(
+        original
+            .with_fields(
+                DateTimeFields {
+                    date: DateFields {
+                        day: Some(1),
+                        ..DateFields::default()
+                    },
+                    ..DateTimeFields::default()
+                },
+                Overflow::Reject
+            )
+            .unwrap()
+            .to_string(),
+        "2024-01-01T12:34:56.123456789"
+    );
+    let midnight = PlainDateTime::from_calendar_fields(
+        Calendar::Iso8601,
+        DateTimeFields {
+            date: DateFields {
+                year: Some(2024),
+                month: Some(2),
+                day: Some(29),
+                ..DateFields::default()
+            },
+            ..DateTimeFields::default()
+        },
+        Overflow::Reject,
+    )
+    .unwrap();
+    assert_eq!(midnight.to_string(), "2024-02-29T00:00:00");
+    assert!(
+        midnight
+            .with_fields(
+                DateTimeFields {
+                    date: DateFields {
+                        year: Some(275760),
+                        month: Some(9),
+                        day: Some(14),
+                        ..DateFields::default()
+                    },
+                    ..DateTimeFields::default()
+                },
+                Overflow::Reject
+            )
+            .is_err()
+    );
+}
+
+#[test]
+fn partial_clock_fields_preserve_fractional_units_and_regulate_before_combining() {
+    use formatjs_temporal::{Error, Overflow, PlainTime, TimeFields};
+    let original = PlainTime::new(12, 34, 56, 789_123_456).unwrap();
+    let changed = original
+        .with_fields(
+            TimeFields {
+                millisecond: Some(5),
+                nanosecond: Some(7),
+                ..TimeFields::default()
+            },
+            Overflow::Reject,
+        )
+        .unwrap();
+    assert_eq!(changed.to_string(), "12:34:56.005123007");
+    assert_eq!(original.to_string(), "12:34:56.789123456");
+    let fields = TimeFields {
+        hour: Some(i128::MAX),
+        minute: Some(i128::MIN),
+        second: Some(60),
+        millisecond: Some(1000),
+        microsecond: Some(-1),
+        nanosecond: Some(i128::MAX),
+    };
+    assert_eq!(
+        original
+            .with_fields(fields, Overflow::Constrain)
+            .unwrap()
+            .to_string(),
+        "23:00:59.999000999"
+    );
+    assert_eq!(
+        original.with_fields(fields, Overflow::Reject),
+        Err(Error::InvalidDateTime)
+    );
+    assert_eq!(
+        original.with_fields(TimeFields::default(), Overflow::Constrain),
+        Err(Error::InvalidDateTime)
+    );
+    assert_eq!(
+        PlainTime::from_fields(
+            TimeFields {
+                minute: Some(90),
+                ..TimeFields::default()
+            },
+            Overflow::Constrain
+        )
+        .unwrap()
+        .to_string(),
+        "00:59:00"
+    );
+}
+
+#[test]
+fn clock_field_updates_match_independent_icu_epoch_times() {
+    use formatjs_temporal::{Overflow, PlainTime, TimeFields};
+    let original = PlainTime::new(23, 59, 58, 999_888_777).unwrap();
+    let mut count = 0;
+    for line in include_str!(env!("FORMATJS_TEMPORAL_ISO"))
+        .lines()
+        .filter(|line| !line.starts_with('#'))
+    {
+        let fields: Vec<i128> = line
+            .split('\t')
+            .map(|value| value.parse().unwrap())
+            .collect();
+        let value = original
+            .with_fields(
+                TimeFields {
+                    hour: Some(fields[4]),
+                    minute: Some(fields[5]),
+                    second: Some(fields[6]),
+                    millisecond: Some(fields[7]),
+                    ..TimeFields::default()
+                },
+                Overflow::Reject,
+            )
+            .unwrap();
+        assert_eq!(
+            value.nanoseconds(),
+            fields[0].rem_euclid(86_400_000) * 1_000_000 + 888_777,
+            "{line}"
+        );
+        count += 1;
+    }
+    assert_eq!(count, 25269);
+}
+
+#[test]
+fn partial_duration_fields_keep_unbalanced_units_and_validate_new_sign_and_bounds() {
+    use formatjs_temporal::{Duration, DurationFields, Error};
+    let original = Duration::from_fields(DurationFields {
+        hours: Some(25),
+        milliseconds: Some(1001),
+        ..DurationFields::default()
+    })
+    .unwrap();
+    assert_eq!(
+        original
+            .with_fields(DurationFields {
+                minutes: Some(90),
+                ..DurationFields::default()
+            })
+            .unwrap()
+            .to_string(),
+        "PT25H90M1.001S"
+    );
+    assert_eq!(original.to_string(), "PT25H1.001S");
+    assert_eq!(
+        original.with_fields(DurationFields {
+            hours: Some(-1),
+            ..DurationFields::default()
+        }),
+        Err(Error::InvalidDuration)
+    );
+    assert_eq!(
+        original
+            .with_fields(DurationFields {
+                hours: Some(-1),
+                milliseconds: Some(0),
+                ..DurationFields::default()
+            })
+            .unwrap()
+            .to_string(),
+        "-PT1H"
+    );
+    assert_eq!(
+        original.with_fields(DurationFields {
+            years: Some(1 << 32),
+            ..DurationFields::default()
+        }),
+        Err(Error::InvalidDuration)
+    );
+    assert_eq!(
+        original.with_fields(DurationFields::default()),
+        Err(Error::InvalidDuration)
+    );
+    assert_eq!(
+        Duration::from_fields(DurationFields {
+            seconds: Some(1 << 53),
+            ..DurationFields::default()
+        }),
+        Err(Error::InvalidDuration)
+    );
+    assert_eq!(
+        Duration::from_fields(DurationFields {
+            nanoseconds: Some(0),
+            ..DurationFields::default()
+        })
+        .unwrap()
+        .sign(),
+        0
+    );
+}
+
+#[test]
 fn calendar_annotations_retain_iso_reference_fields() {
     use formatjs_temporal::{
         CalendarName, PlainDate, PlainDateTime, PlainMonthDay, PlainYearMonth, Precision,

@@ -4,6 +4,22 @@ Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
 
+## Typed Rust field updates
+
+PlainTime, Duration, PlainDate and PlainDateTime expose `with_fields` with optional
+typed fields. Clock regulation is shared with the existing `regulatePlainTime`
+binding; ABI 9 and its operation set stay unchanged. Duration updates retain
+unbalanced fields and validate the complete resulting duration. Calendar merging
+preserves month codes, clears dependent era/year fields and ignores unsupported
+eras for ISO/Chinese/Dangi. PlainDateTime accepts full calendar fields with omitted
+time fields defaulting to midnight. JS still owns observable coercion and field
+access order. Short-date and zoned partial updates still need typed API coverage.
+
+Independent ICU field rows exercise updates through arithmetic and borrowed
+calendar providers; 25,269 ICU epoch samples verify partial clock regulation.
+Boundary cases cover leap-month fallback, Japanese era changes, mixed duration
+signs, large fields, date bounds and preservation of omitted fractional units.
+
 ## Host Intl data policy
 
 Host `Intl` is an allowed dependency for the TypeScript implementation. Default

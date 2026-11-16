@@ -136,6 +136,8 @@ offset; it does not infer an IANA location from that offset.
 
 The [Rust crate](../../crates/temporal/README.md) supplies eight value types,
 `Now`, calendar providers, caller-owned IANA registries and optional compiled data.
+Typed Rust partial updates cover PlainTime, Duration, PlainDate and PlainDateTime;
+calendar updates preserve month codes and era relationships.
 JS adapters delegate normalized operations through ABI 9. Rust builds, generated
 data and release artifacts use Bazel.
 

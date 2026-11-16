@@ -1,10 +1,84 @@
 use crate::rounding::{round_duration, round_instant};
-use crate::{Duration, Error, NANOSECONDS_PER_DAY, Precision, RoundingMode, TimeUnit};
+use crate::{Duration, Error, NANOSECONDS_PER_DAY, Overflow, Precision, RoundingMode, TimeUnit};
 use core::{fmt, str::FromStr};
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct PlainTime(i128);
+
+/// Supplied clock fields; omitted fields retain their original values.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct TimeFields {
+    pub hour: Option<i128>,
+    pub minute: Option<i128>,
+    pub second: Option<i128>,
+    pub millisecond: Option<i128>,
+    pub microsecond: Option<i128>,
+    pub nanosecond: Option<i128>,
+}
+
+impl TimeFields {
+    pub(crate) fn is_empty(self) -> bool {
+        [
+            self.hour,
+            self.minute,
+            self.second,
+            self.millisecond,
+            self.microsecond,
+            self.nanosecond,
+        ]
+        .iter()
+        .all(Option::is_none)
+    }
+}
+
 impl PlainTime {
+    pub fn from_fields(fields: TimeFields, overflow: Overflow) -> Result<Self, Error> {
+        Self(0).with_fields(fields, overflow)
+    }
+    pub fn with_fields(self, fields: TimeFields, overflow: Overflow) -> Result<Self, Error> {
+        let updates = [
+            fields.hour,
+            fields.minute,
+            fields.second,
+            fields.millisecond,
+            fields.microsecond,
+            fields.nanosecond,
+        ];
+        if fields.is_empty() {
+            return Err(Error::InvalidDateTime);
+        }
+        let (hour, minute, second, fraction) = self.fields();
+        let original = [
+            i128::from(hour),
+            i128::from(minute),
+            i128::from(second),
+            i128::from(fraction / 1_000_000),
+            i128::from(fraction / 1000 % 1000),
+            i128::from(fraction % 1000),
+        ];
+        let mut total = 0;
+        for (index, (maximum, factor)) in [
+            (23, 3_600_000_000_000),
+            (59, 60_000_000_000),
+            (59, 1_000_000_000),
+            (999, 1_000_000),
+            (999, 1000),
+            (999, 1),
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let mut value = updates[index].unwrap_or(original[index]);
+            if overflow == Overflow::Constrain {
+                value = value.clamp(0, maximum);
+            }
+            if !(0..=maximum).contains(&value) {
+                return Err(Error::InvalidDateTime);
+            }
+            total += value * factor;
+        }
+        Ok(Self(total))
+    }
     pub fn new(hour: u8, minute: u8, second: u8, nanosecond: u32) -> Result<Self, Error> {
         if hour > 23 || minute > 59 || second > 59 || nanosecond >= 1_000_000_000 {
             return Err(Error::InvalidDateTime);

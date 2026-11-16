@@ -7,7 +7,7 @@ use crate::{
 use crate::{
     DateTimeUnit, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, PlainDate,
     PlainDateTime, PlainMonthDay, PlainTime, PlainYearMonth, Precision, ResolvedTimeZone,
-    RoundingMode, TimeUnit, ZonedDateTime,
+    RoundingMode, TimeFields, TimeUnit, ZonedDateTime,
 };
 use serde_json::{Value, json};
 use std::{
@@ -837,13 +837,13 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
             .as_bool()
             .ok_or(Error::InvalidDateTime)?;
         let mut values = [0; 6];
-        for (index, (key, maximum)) in [
-            ("hour", 23.),
-            ("minute", 59.),
-            ("second", 59.),
-            ("millisecond", 999.),
-            ("microsecond", 999.),
-            ("nanosecond", 999.),
+        for (index, key) in [
+            "hour",
+            "minute",
+            "second",
+            "millisecond",
+            "microsecond",
+            "nanosecond",
         ]
         .iter()
         .enumerate()
@@ -854,22 +854,23 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
             if !value.is_finite() || value.fract() != 0. {
                 return Err(Error::InvalidDateTime);
             }
-            let value = if constrain {
-                value.clamp(0., *maximum)
-            } else {
-                value
-            };
-            if value < 0. || value > *maximum {
-                return Err(Error::InvalidDateTime);
-            }
-            values[index] = value as u32;
+            values[index] = value as i128;
         }
         return Ok(json!(
-            PlainTime::new(
-                values[0] as u8,
-                values[1] as u8,
-                values[2] as u8,
-                values[3] * 1_000_000 + values[4] * 1000 + values[5]
+            PlainTime::from_fields(
+                TimeFields {
+                    hour: Some(values[0]),
+                    minute: Some(values[1]),
+                    second: Some(values[2]),
+                    millisecond: Some(values[3]),
+                    microsecond: Some(values[4]),
+                    nanosecond: Some(values[5])
+                },
+                if constrain {
+                    crate::Overflow::Constrain
+                } else {
+                    crate::Overflow::Reject
+                },
             )?
             .nanoseconds()
             .to_string()

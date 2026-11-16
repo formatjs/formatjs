@@ -16,7 +16,50 @@ const FACTORS: [i128; 7] = [
 /// Fields follow years through nanoseconds; storage follows Number-representable integers.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Duration([i128; 10]);
+
+/// Partial duration fields, preserving unbalanced units.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct DurationFields {
+    pub years: Option<i128>,
+    pub months: Option<i128>,
+    pub weeks: Option<i128>,
+    pub days: Option<i128>,
+    pub hours: Option<i128>,
+    pub minutes: Option<i128>,
+    pub seconds: Option<i128>,
+    pub milliseconds: Option<i128>,
+    pub microseconds: Option<i128>,
+    pub nanoseconds: Option<i128>,
+}
+
 impl Duration {
+    pub fn from_fields(fields: DurationFields) -> Result<Self, Error> {
+        Self([0; 10]).with_fields(fields)
+    }
+    pub fn with_fields(self, fields: DurationFields) -> Result<Self, Error> {
+        let updates = [
+            fields.years,
+            fields.months,
+            fields.weeks,
+            fields.days,
+            fields.hours,
+            fields.minutes,
+            fields.seconds,
+            fields.milliseconds,
+            fields.microseconds,
+            fields.nanoseconds,
+        ];
+        if updates.iter().all(Option::is_none) {
+            return Err(Error::InvalidDuration);
+        }
+        let mut result = self.0;
+        for (index, update) in updates.into_iter().enumerate() {
+            if let Some(value) = update {
+                result[index] = value;
+            }
+        }
+        Self::new(result)
+    }
     pub fn new(mut fields: [i128; 10]) -> Result<Self, Error> {
         let mut sign = 0;
         for value in &mut fields {

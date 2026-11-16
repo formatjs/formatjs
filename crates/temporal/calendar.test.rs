@@ -42,6 +42,31 @@ fn check_oracle<C: CalendarProvider>(
         .map(|instant| ZonedDateTime::new_in_calendar(instant, zero_zone(), calendar));
     match row[0] {
         "F" => {
+            let first = match PlainDate::from_calendar_fields(
+                calendar,
+                DateFields {
+                    year: Some(row[3].parse().unwrap()),
+                    month: Some(1),
+                    day: Some(1),
+                    ..DateFields::default()
+                },
+                Overflow::Reject,
+            ) {
+                Ok(value) => value,
+                Err(formatjs_temporal::Error::OutOfRange) => date,
+                Err(error) => panic!("first day {row:?}: {error:?}"),
+            };
+            let updated = first
+                .with_fields(
+                    DateFields {
+                        month: Some(row[4].parse().unwrap()),
+                        day: Some(row[6].parse().unwrap()),
+                        ..DateFields::default()
+                    },
+                    Overflow::Reject,
+                )
+                .unwrap();
+            assert_eq!(updated.epoch_day(), epoch, "field update {row:?}");
             let parsed = TemporalContext::new(registry, TimeZoneRegistry::empty())
                 .parse_date(&date.to_string())
                 .unwrap();
@@ -328,6 +353,120 @@ fn check_oracle<C: CalendarProvider>(
         }
         _ => panic!("Unknown row {row:?}"),
     }
+}
+
+#[test]
+fn partial_dates_preserve_month_codes_and_replace_era_groups() {
+    let hebrew = PlainDate::from_calendar_fields(
+        Calendar::Hebrew,
+        date_fields(5784, month_code("M06"), 29),
+        Overflow::Reject,
+    )
+    .unwrap();
+    let common = hebrew
+        .with_fields(
+            DateFields {
+                year: Some(5785),
+                ..DateFields::default()
+            },
+            Overflow::Reject,
+        )
+        .unwrap();
+    let fields = common.calendar_fields().unwrap();
+    assert_eq!(
+        (fields.year, fields.month, fields.month_code, fields.day),
+        (5785, 6, month_code("M06"), 29)
+    );
+    let datetime = hebrew
+        .to_date_time(PlainTime::new(12, 34, 56, 123_456_789).unwrap())
+        .unwrap();
+    let updated = datetime
+        .with_fields(
+            formatjs_temporal::DateTimeFields {
+                date: DateFields {
+                    year: Some(5785),
+                    ..DateFields::default()
+                },
+                ..formatjs_temporal::DateTimeFields::default()
+            },
+            Overflow::Reject,
+        )
+        .unwrap();
+    assert!(updated.date().equals(common));
+    assert_eq!(updated.time(), datetime.time());
+    assert_eq!(updated.calendar_id(), "hebrew");
+    let leap = PlainDate::from_calendar_fields(
+        Calendar::Hebrew,
+        date_fields(5784, month_code("M05L"), 30),
+        Overflow::Reject,
+    )
+    .unwrap();
+    let update = DateFields {
+        year: Some(5785),
+        ..DateFields::default()
+    };
+    assert!(leap.with_fields(update, Overflow::Reject).is_err());
+    let fields = leap
+        .with_fields(update, Overflow::Constrain)
+        .unwrap()
+        .calendar_fields()
+        .unwrap();
+    assert_eq!((fields.month_code, fields.day), (month_code("M06"), 29));
+
+    let heisei = PlainDate::new(2019, 4, 30)
+        .unwrap()
+        .with_calendar(Calendar::Japanese)
+        .unwrap();
+    let reiwa = heisei
+        .with_fields(
+            DateFields {
+                month: Some(5),
+                day: Some(1),
+                ..DateFields::default()
+            },
+            Overflow::Reject,
+        )
+        .unwrap();
+    let era = reiwa.era().unwrap().unwrap();
+    assert_eq!((era.name, era.year), ("reiwa", 1));
+    assert_eq!(
+        heisei
+            .with_fields(
+                DateFields {
+                    year: Some(2020),
+                    ..DateFields::default()
+                },
+                Overflow::Reject
+            )
+            .unwrap()
+            .fields(),
+        (2020, 4, 30)
+    );
+    assert!(
+        heisei
+            .with_fields(
+                DateFields {
+                    era_year: Some(1),
+                    ..DateFields::default()
+                },
+                Overflow::Reject
+            )
+            .is_err()
+    );
+    assert_eq!(
+        heisei
+            .with_fields(
+                DateFields {
+                    era: Some("heisei"),
+                    era_year: Some(1),
+                    ..DateFields::default()
+                },
+                Overflow::Reject
+            )
+            .unwrap()
+            .fields(),
+        (1989, 4, 30)
+    );
 }
 
 #[test]
