@@ -60,6 +60,10 @@ formatjs_library(
     entry_point_defines = {
         entry: {
             "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
+            "import.meta.formatjsTemporalCompactTimeZones": "false" if entry in [
+                "native.ts",
+                "wasm-native.ts",
+            ] else "true",
             "import.meta.formatjsTemporalHostCalendar": "true" if entry in [
                 "index.ts",
                 "polyfill.ts",
@@ -139,7 +143,10 @@ filegroup(
 rolldown_bundle(
     name = "host-calendar-code",
     srcs = [":srcs"],
-    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "index.ts",
     format = "esm",
     target = "es2022",
@@ -179,7 +186,10 @@ rolldown_bundle(
         "tests/compact-calendar-numeric.ts",
         ":srcs",
     ],
-    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "tests/compact-calendar-numeric.ts",
     format = "esm",
     target = "es2022",
@@ -230,7 +240,10 @@ rolldown_bundle(
         "tests/host-calendar-host.ts",
         ":srcs",
     ],
-    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "tests/host-calendar-host.ts",
     format = "iife",
     target = "es2022",
@@ -2102,6 +2115,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalNativeData": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "false",
         "import.meta.formatjsTemporalHostCalendar": "false",
     },
     entry_point = "tests/wasm-prelude.ts",
@@ -2541,7 +2555,10 @@ rolldown_bundle(
         "tests/instant-prelude.ts",
         ":srcs",
     ],
-    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "tests/instant-prelude.ts",
     format = "iife",
     target = "es2022",
@@ -2628,7 +2645,10 @@ rolldown_bundle(
         "tests/table-calendar-host.ts",
         ":srcs",
     ],
-    define = {"import.meta.formatjsTemporalHostCalendar": "true"},
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
     entry_point = "tests/table-calendar-host.ts",
     format = "iife",
     target = "es2022",
@@ -2703,6 +2723,53 @@ formatjs_test(
         "//:node_modules/@types/node",
         "//:node_modules/temporal-polyfill",
         "//:node_modules/vitest",
+    ],
+)
+
+rolldown_bundle(
+    name = "compact-timezone-host",
+    srcs = [
+        "tests/compact-timezone-host.ts",
+        "tests/timezone-oracle.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+        "import.meta.formatjsTemporalHostCalendar": "true",
+    },
+    entry_point = "tests/compact-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "compact_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":compact-timezone-host.js",
+    ],
+    outs = ["compact-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_transition_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :compact-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "compact_timezone_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :compact_timezone_hermes_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":compact_timezone_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
     ],
 )
 

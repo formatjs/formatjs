@@ -102,7 +102,10 @@ formatjs_library(
     bugs = "https://github.com/formatjs/formatjs/issues",
     description = "Intl.DateTimeFormat polyfill",
     entry_point_defines = {
-        entry: {"import.meta.formatjsTemporalHostCalendar": "false"}
+        entry: {
+            "import.meta.formatjsTemporalHostCalendar": "false",
+            "import.meta.formatjsTemporalCompactTimeZones": "false",
+        }
         for entry in ENTRY_POINTS
     },
     entry_points = ENTRY_POINTS,

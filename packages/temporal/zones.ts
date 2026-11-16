@@ -1,11 +1,14 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
-import {fallbackTimeZones} from '#packages/temporal/fallback-data.js'
+import {
+  fallbackTimeZoneIdentifiers,
+  fallbackTimeZonePrimary,
+  fallbackTimeZoneData,
+} from '#packages/temporal/fallback-data.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import {
   parseTimeZoneString,
   parseOffsetNanoseconds,
 } from '#packages/temporal/instant-string.js'
-import {UnpackTimeZoneData} from '#packages/ecma402-abstract/DateTimeFormat/UnpackTimeZoneData.js'
 import {
   createTimeZone,
   isoToEpochNanoseconds,
@@ -15,12 +18,11 @@ import {
 let identifiers: Map<string, string> | undefined
 const cache = new Map<string, ReturnType<typeof createTimeZone>>()
 function typescriptTimeZone(name: string): TimeZoneKernel {
-  const {primary, links, packed} = fallbackTimeZones()
   if (!identifiers) {
+    const {primary, links, names} = fallbackTimeZoneIdentifiers()
     identifiers = new Map()
-    for (let i = 0; i < packed.zones.length; i++) {
-      const entry = packed.zones[i],
-        canonical = entry.slice(0, entry.indexOf('|'))
+    for (let i = 0; i < names.length; i++) {
+      const canonical = names[i]
       identifiers.set(canonical.toLowerCase(), canonical)
     }
     const aliases = Object.keys({...links, ...primary})
@@ -40,10 +42,7 @@ function typescriptTimeZone(name: string): TimeZoneKernel {
   name = canonical
   let zone = cache.get(name)
   if (!zone) {
-    const entry = packed.zones.find(value => value.startsWith(name + '|'))
-    if (!entry) throw new RangeError('Unknown canonical zone')
-    const data = UnpackTimeZoneData({...packed, zones: [entry]})
-    cache.set(name, (zone = createTimeZone(data[name])))
+    cache.set(name, (zone = createTimeZone(fallbackTimeZoneData(name))))
   }
   return zone
 }
@@ -126,11 +125,10 @@ export function timeZoneIdentifier(value: unknown): string {
     )
   }
   if (!spellings) {
-    const {primary, links, packed} = fallbackTimeZones()
+    const {primary, links, names} = fallbackTimeZoneIdentifiers()
     spellings = new Map()
-    for (let i = 0; i < packed.zones.length; i++) {
-      const entry = packed.zones[i],
-        id = entry.slice(0, entry.indexOf('|'))
+    for (let i = 0; i < names.length; i++) {
+      const id = names[i]
       spellings.set(id.toLowerCase(), id)
     }
     const aliases = Object.keys({...links, ...primary})
@@ -184,7 +182,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
 export function primaryTimeZoneIdentifier(id: string): string {
   const native = nativeTemporal()
   if (native) return native.timeZoneIdentity(id).primary
-  const {primary} = fallbackTimeZones()
+  const primary = fallbackTimeZonePrimary()
   return primary[id as keyof typeof primary] ?? id
 }
 export function timeZoneEquals(one: string, two: string): boolean {

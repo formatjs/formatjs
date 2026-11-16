@@ -1426,6 +1426,43 @@
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
   },
+  "compactTimezoneDefault": {
+    "completeTemporalBackend": false,
+    "data": "Owned finite offset events encoded as fixed timestamps and recurring-rule year spans, with unchanged future rules. Standalone uses the same timezone representation; DateTimeFormat retains abbreviation/DST data.",
+    "concreteZones": 457,
+    "retainedFiniteEvents": 19793,
+    "test262": {
+      "fullClassExecutions": 9090,
+      "additionalOverlappingCalendarExecutions": 2974,
+      "nowExecutions": 138,
+      "installationExecutions": 26,
+      "failures": 0,
+      "newExclusions": []
+    },
+    "hermesICUPerMode": {
+      "modes": ["source", "optimized bytecode"],
+      "identities": 597,
+      "identityPairs": 178503,
+      "offsets": 17640,
+      "gapsAndFolds": 1900,
+      "transitionRows": 14058,
+      "failures": 0
+    },
+    "publishedConsumerGzip": {
+      "typescript": 64645,
+      "standalone": 333124,
+      "nativeDataWasmIncludingBinary": 473973
+    },
+    "benchmarkSnapshots": [
+      "benchmarks/temporal/compact-timezone-size-results.json",
+      "benchmarks/temporal/compact-timezone-backend-size-results.json",
+      "benchmarks/temporal/wasm-compact-timezone-results.json"
+    ],
+    "remaining": [
+      "Temporal Intl integration and Rust completion audit",
+      "cold TS load, current Hermes throughput and non-ISO throughput measurements"
+    ]
+  },
   "hermesSDKHost": {
     "completeTemporalBackend": false,
     "wasmABIVersion": 9,

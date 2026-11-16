@@ -8,7 +8,8 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 
 Host `Intl` is an allowed dependency for the TypeScript implementation. Default
 TS uses compact arithmetic/data for Chinese/Dangi and captured host Intl for Umm
-al-Qura. Owned IANA timezone data remains; host timezone migration is pending.
+al-Qura. Owned IANA timezone histories use compact rule spans; host timezone
+migration is pending.
 The explicit `standalone.js` entry retains full calendar packs.
 Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
@@ -16,8 +17,8 @@ range boundaries with Test262 and independent ICU oracles, including Hermes.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 93,005 bytes gzip; standalone measures
-361,912. Both include owned timezone data. The roughly 23 KB gzip full reference
+Published default TS consumers measure 64,645 bytes gzip; standalone measures
+333,124. Both include owned timezone data. The roughly 23 KB gzip full reference
 uses host Intl data; these profiles still have different data policies.
 
 `host-timezone.ts` prototypes captured Intl offset queries and local-time
@@ -31,15 +32,20 @@ The manual `host_timezone_icu_test` retains strict independent diagnostics:
 Node 24 tzdb 2025c has 290 failing assertions; Node 26 tzdb 2026c has 40, matching
 the reference, against ICU tzdb 2026e. Reference parity is not ICU compliance.
 
-The generated `tz/temporal-compact.js` prototype represents finite offset events
+The generated `tz/temporal-compact.js` represents finite offset events
 as fixed timestamps plus recurring-rule year spans. It preserves the final
 explicit timestamp and existing future rules. Generator reconstruction and
 runtime tests verify all 19,793 retained events across 457 concrete zones,
 including neighboring nanoseconds and full-range transition probes. Abbreviations
 and DST flags are omitted; this representation is only for Temporal, never
 DateTimeFormat zone-name formatting. The generated TS file measures 33,160 bytes
-gzip before bundling; this is not a shipped consumer measurement. Default data
-selection remains unchanged pending integration and full conformance gates.
+gzip before bundling; this is not a shipped consumer measurement. Default and
+standalone namespaces decode this representation lazily per zone. DateTimeFormat
+bundles set `formatjsTemporalCompactTimeZones` false to share their existing
+abbreviation/DST data. Native-data-only profiles exclude both TS representations.
+Hermes validates the compact default against the complete independent timezone
+corpus in source and optimized bytecode, including 14,058 strict transition rows
+and 178,503 identity pairs.
 
 ## Current state
 
@@ -1382,3 +1388,26 @@ Parsing medians are TS 1.636 µs, native-data WASM 3.250 µs, reference 3.008 µ
 Field getters remain slower than the reference: TS 2.489 µs versus 0.437 µs.
 Previous Hermes throughput snapshots predate this default switch; the current
 Hermes claim is source/bytecode conformance, not refreshed throughput or startup.
+
+## Compact timezone default
+
+Default and standalone now use `tz/temporal-compact.js`; the numeric kernel and
+future-rule interpretation are unchanged. Identifier/primary metadata is loaded
+separately from history decoding. Decoding stays lazy per concrete zone.
+DateTimeFormat sets the compact-timezone flag false to reuse its existing data;
+native-only builds discard both TS representations. No host offset/future-rule
+mixing is introduced.
+
+The 12,228 count-checked default executions pass. Independent Hermes timezone
+checks cover the complete offset, transition, ambiguity and identity corpora in
+source and optimized bytecode. Published package tests include the no-Intl
+standalone and both WASM profiles; DateTimeFormat timezone/formatter controls pass.
+
+Current consumer bundles measure 64,645 bytes gzip for default and 333,124 for
+standalone. Default drops 30.5% from the prior 93,005-byte profile. The full
+host-backed reference remains 23,226 bytes; data policies still differ. Native-data
+WASM measures 473,973 bytes including its unchanged 441,577-byte gzip binary.
+Fresh 43-workload Node measurements retain checksum 173601476; neither WASM
+profile beats TS on a measured median. See the compact-timezone snapshots under
+benchmarks/temporal for module graphs, all timings and limits. Remaining Intl,
+Rust API and cold-load audits still prevent a full completion claim.

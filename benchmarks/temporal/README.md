@@ -1246,3 +1246,29 @@ and the 30,620-row independent calendar corpus. The arithmetic port separately
 matches every year, month, serial and yearly final-month inverse across the old
 full packs: 1,204,680 years and 14,899,816 months. Full Temporal/Intl completion
 remains pending.
+
+## Compact timezone histories
+
+`compact-timezone-size-results.json` measures published default/standalone
+consumers at 64,645/333,124 bytes gzip. Default drops 30.5% from the previous
+93,005-byte calendar profile. Raw-source profiles measure 63,681/332,340; full
+host-backed reference remains 23,226. These remain different timezone-data
+policies: TS owns exact finite histories and future rules; reference uses Intl.
+DateTimeFormat retains its abbreviation/DST data and does not add this pack.
+
+`compact-timezone-backend-size-results.json` records separately compressed
+module graphs: 66,933 bytes for TS, 474,202 for native-data WASM, 509,314 for
+hybrid WASM. `wasm-compact-timezone-results.json` records bundled consumers:
+64,645 TS and 473,973 native-data WASM, including the same 441,577-byte gzip
+binary. Neither WASM mode wins any of the 43 measured ISO workload medians;
+reference wins 20. All output checks pass; checksum 173601476. Parse medians:
+TS 1.701 µs, native-data WASM 2.893 µs, reference 2.509 µs. Date-field getters
+remain slower than reference: TS 2.514 µs versus 0.435 µs.
+
+The default passes all 12,228 count-checked class/calendar/Now/installation
+executions. Independent Hermes source and optimized-bytecode checks each cover
+597 names, 178,503 identity pairs, 17,640 offsets, 1,900 gap/fold windows and
+14,058 strict transition rows. Generator/runtime reconstruction preserves all
+19,793 retained finite events across 457 concrete zones, including final
+cutoffs and future rules. These checks do not complete the remaining Intl/Rust
+audit or establish cold TS load time, Hermes throughput or non-ISO throughput.

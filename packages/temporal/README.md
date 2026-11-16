@@ -50,7 +50,8 @@ full-table namespace:
 import {Temporal} from '@formatjs/temporal/standalone.js'
 ```
 
-Both entries include owned IANA timezone data. They expose separate namespaces;
+Both entries include compact owned IANA timezone histories with exact finite
+transitions and future rules. They expose separate namespaces;
 installation entries install the default namespace. Chinese/Dangi arithmetic is
 adapted from ICU4X under Unicode-3.0; see LICENSE.md.
 
@@ -161,7 +162,7 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 93,005 bytes gzip for default and
-361,912 for standalone. Both include IANA data. WASM with native data measures
-474,201 bytes including its binary; measured Node workloads still favor TS.
+Published consumer bundles currently measure 64,645 bytes gzip for default and
+333,124 for standalone. Both include compact IANA histories. WASM with native
+data measures 473,973 bytes including its binary; measured Node workloads still favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.

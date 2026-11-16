@@ -22,6 +22,7 @@ rolldown_bundle(
     srcs = ["temporal.ts"],
     define = {
         "import.meta.formatjsTemporalNativeData": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "false",
         "import.meta.formatjsTemporalHostCalendar": "false",
     },
     entry_point = "temporal.ts",
