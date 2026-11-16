@@ -465,7 +465,11 @@ and crate responsibilities.
 ### Native Python Packages (`tools/python`)
 
 `pyo3_extension()` builds a `cp312-abi3` extension with `rules_rs`, then places
-the shared library at its Python import path. `formatjs_python_wheel()` combines
+the shared library at its Python import path (`_native.pyd` on Windows,
+`_native.abi3.so` elsewhere). Windows links the target Python toolchain's stable
+`python3.lib` through `current_py_cc_headers_abi3`; it must not link a versioned
+`python312.dll`. The copy rule selects the DLL without shipping its import library
+or debug symbols. `formatjs_python_wheel()` combines
 that extension with a Python facade and emits a target-platform wheel through
 `rules_python`.
 
@@ -478,8 +482,12 @@ The published Python packages mirror the four non-CLI Rust layers:
 names match.
 
 `.github/workflows/python-release.yml` cross-compiles `cp312-abi3` wheels from
-one Linux runner for macOS arm64/x86_64 and manylinux 2.28 arm64/x86_64. The
-Linux platforms select hermetic LLVM's glibc 2.28 ABI; the macOS platforms use
+one Linux runner for Windows x86_64, macOS arm64/x86_64, and manylinux 2.28
+arm64/x86_64. Windows wheels use `win_amd64` and MSVC ABI. Native Windows
+smoke jobs install each release wheel and run binding tests on CPython 3.12 and
+3.15 before publication. `py_intl` also exercises code generation from the
+assembled wheel. Python packaging PRs run the same pipeline for `py_intl`
+without publishing. Linux platforms select hermetic LLVM's glibc 2.28 ABI; the macOS platforms use
 its hermetic Apple SDK. Release Please owns independent Python versions through
 its Python strategy; generic extra-file updaters change the wheel versions in
 `BUILD.bazel`. Published releases use PyPI trusted publishing through a

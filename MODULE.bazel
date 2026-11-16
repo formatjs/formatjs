@@ -264,6 +264,14 @@ crate.annotation(
     crate = "pyo3-ffi",
     repositories = ["crates"],
 )
+
+# The config suppresses PyO3's link lines; rename its Windows import library.
+crate.annotation_select(
+    crate = "pyo3-ffi",
+    repositories = ["crates"],
+    rustc_flags = ["-lpythonXY:python3"],
+    triples = ["x86_64-pc-windows-msvc"],
+)
 crate.annotation(
     crate = "stacker",
     patch_args = ["-p1"],
