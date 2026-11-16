@@ -1426,6 +1426,30 @@
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
   },
+  "durationFormatIntegration": {
+    "completeTemporalBackend": false,
+    "temporalFiles": 6,
+    "executionsPerProfile": 12,
+    "profiles": [
+      "Node legacy host",
+      "Node owned formatter",
+      "WASM legacy host",
+      "WASM owned formatter",
+      "Hermes TypeScript source",
+      "Hermes TypeScript optimized bytecode",
+      "Hermes SDK source",
+      "Hermes SDK optimized bytecode"
+    ],
+    "failures": 0,
+    "newExclusions": [],
+    "ownedFormatterFullExecutions": 220,
+    "hostNonTemporalPreservationExecutions": 208,
+    "newHostFailures": 0,
+    "hermesRegistrationControls": "Owned TS and native SDK, source and optimized bytecode; repeated registration after parser accessors and all duration field getters are poisoned.",
+    "publishedNamespaces": "Default and standalone, independently bundled DurationFormat and existing host instances; captured parsers/getters survive public overrides and repeated registration.",
+    "independentOracle": "Existing ICU scalar/plain/zoned duration arithmetic controls pass on Node and Hermes source/bytecode; this is not an ICU localized-duration rendering oracle.",
+    "sizeSnapshot": "benchmarks/temporal/durationformat-integration-size-results.json"
+  },
   "compactTimezoneDefault": {
     "completeTemporalBackend": false,
     "data": "Owned finite offset events encoded as fixed timestamps and recurring-rule year spans, with unchanged future rules. Standalone uses the same timezone representation; DateTimeFormat retains abbreviation/DST data.",

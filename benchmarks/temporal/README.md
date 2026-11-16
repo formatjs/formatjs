@@ -1272,3 +1272,12 @@ executions. Independent Hermes source and optimized-bytecode checks each cover
 19,793 retained finite events across 457 concrete zones, including final
 cutoffs and future rules. These checks do not complete the remaining Intl/Rust
 audit or establish cold TS load time, Hermes throughput or non-ISO throughput.
+
+## DurationFormat integration
+
+`durationformat-integration-size-results.json` refreshes installer/module sizes
+after late Temporal registration and legacy host adaptation. Separate TS and
+standalone graphs remain 66,933/335,404 bytes gzip. Native-data WASM glue plus its
+unchanged 441,577-byte gzip binary measures 475,345, up from 474,202. These are
+separately compressed modules, not consumer bundles. No new throughput run;
+the compact-timezone timing snapshot remains the prior numeric-path measurement.

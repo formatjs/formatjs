@@ -10,6 +10,21 @@ Polyfill for `Intl.DurationFormat` — formats durations (hours, minutes, second
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
 
+## Temporal registration
+
+Shared `DurationFormat/ToTemporalDurationRecord.ts` captures constructors,
+`Duration.from` and private-slot getters. The formatter captures an existing
+global namespace and exposes `__addTemporalNamespace` for late installation and
+isolated namespaces. Registration is idempotent per constructor and checks for
+duplicates before reading mutable `from`/prototype properties. Each bundled
+formatter registers through its own hook, preserving independent namespace brands.
+Ordinary duration-like inputs retain the specified property-read order.
+
+Temporal's installer calls this hook and adapts legacy host DurationFormat when
+needed. The adapter preserves native prototype identity and method descriptor flags and validates
+the receiver through captured `resolvedOptions` before converting input. Native
+Hermes already has a registration hook and keeps its direct Rust formatter path.
+
 ## CLDR Data Pipeline
 
 ### Sources
@@ -80,15 +95,13 @@ Numbering-system resolution includes systems supported by the active
 checked lazily and refreshed when that constructor is replaced. Time-separator
 data includes every numbering-system symbol record supplied by CLDR.
 
-### Temporal integration
+### Temporal inputs
 
-When a Temporal implementation is available before this package is loaded,
-`format` and `formatToParts` accept ISO duration strings through `Temporal.Duration.from`.
-Temporal durations are read with captured intrinsic getters, so later changes to
-`Temporal.Duration.prototype` do not affect formatting. Ordinary duration-like
+After registration, `format` and `formatToParts` accept ISO duration strings and
+Temporal durations through captured parsers and intrinsic getters. Ordinary duration-like
 objects keep the ECMA-402 property-read order.
 
-Without Temporal, duration-like objects remain supported; duration strings throw
+Without a registered Temporal namespace, duration-like objects remain supported; duration strings throw
 `RangeError`. This integration follows the Temporal proposal's Intl changes.
 
 ## Native port

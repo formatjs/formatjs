@@ -59,6 +59,7 @@ copy_to_bin(
     srcs = [":test262-durationformat"],
     visibility = [
         "@//packages/intl-durationformat:__pkg__",
+        "@//packages/temporal:__pkg__",
         "@//tools/test262:__pkg__",
     ],
 )

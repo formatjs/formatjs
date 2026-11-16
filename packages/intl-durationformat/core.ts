@@ -13,7 +13,11 @@ import {invariant} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
 import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
-import {ToTemporalDurationRecord} from '#packages/intl-durationformat/abstract/ToTemporalDurationRecord.js'
+import {
+  ToTemporalDurationRecord,
+  registerTemporalDurationNamespace,
+  type TemporalDurationNamespace,
+} from '#packages/ecma402-abstract/DurationFormat/ToTemporalDurationRecord.js'
 import {getInternalSlots} from '#packages/intl-durationformat/get_internal_slots.js'
 import {TIME_SEPARATORS} from '@formatjs_generated/cldr.number/time-separators.js'
 import type {
@@ -165,6 +169,9 @@ const TABLE_3 = [
  * Implements the Intl.DurationFormat API from the TC39 proposal
  */
 export class DurationFormat implements DurationFormatType {
+  static __addTemporalNamespace(namespace: TemporalDurationNamespace): void {
+    registerTemporalDurationNamespace(namespace)
+  }
   constructor(locales?: string | string[], options?: DurationFormatOptions) {
     // Ensure constructor is called with 'new' keyword
     // test262/test/intl402/ListFormat/constructor/constructor/newtarget-undefined.js

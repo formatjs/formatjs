@@ -33,6 +33,7 @@ formatjs_library(
         "instant-format.ts",
         "instant-string.ts",
         "kernel.ts",
+        "legacy-durationformat.ts",
         "legacy-intl.ts",
         "locale.ts",
         "lunisolar.ts",
@@ -130,6 +131,7 @@ formatjs_library(
         "//:node_modules/@formatjs_generated/tz",
         "//packages/ecma262-abstract",
         "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",
     ],
 )
@@ -138,6 +140,35 @@ filegroup(
     name = "runtime_sources",
     srcs = [":srcs"],
     visibility = ["//benchmarks/temporal:__pkg__"],
+)
+
+formatjs_test(
+    name = "durationformat_test",
+    srcs = ["tests/durationformat.test.ts"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+        "//packages/intl-durationformat:lib",
+    ],
+)
+
+js_test(
+    name = "durationformat_package_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //packages/intl-durationformat:pkg)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/intl-durationformat:pkg",
+    ],
+    entry_point = "tests/durationformat-package.test.mjs",
 )
 
 rolldown_bundle(
@@ -2434,6 +2465,7 @@ rolldown_bundle(
             "tests/hermes-host.sh",
             "tests/sdk-prelude.js",
             ":instant_hermes_harness",
+            "@com_github_tc39_test262//:test262-durationformat-copy",
             baseline,
             "//native/hermes/tests:test262_runtime",
             "//tools/test262:validator",
@@ -2479,6 +2511,167 @@ rolldown_bundle(
             [],
         ),
         ("locale", "tests/locale-test262-count.json", _LOCALE_PATTERNS, []),
+        (
+            "durationformat",
+            "tests/durationformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+            ],
+            [],
+        ),
+    ]
+]
+
+test262_harness_bin.test262_harness_binary(
+    name = "durationformat_harness",
+    data = [
+        "@com_github_tc39_test262//:test262-durationformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_durationformat_host_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :durationformat_harness)",
+        "$(rlocationpath instant-realm-prelude.js)",
+        _TEST262_ROOT,
+        "DurationFormat",
+        "208",
+    ],
+    data = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+        ":durationformat_harness",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-host.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+genrule(
+    name = "durationformat_registration_source",
+    testonly = True,
+    srcs = [
+        ":locale-payload.js",
+        "tests/durationformat-registration.js",
+    ],
+    outs = ["durationformat-registration.js"],
+    cmd = "(cat $(location :locale-payload.js); printf '\\n;\\n'; cat $(location tests/durationformat-registration.js)) > $@",
+)
+
+[
+    sh_test(
+        name = profile + "_durationformat_registration_test",
+        size = "small",
+        srcs = ["tests/oracle-host.sh"],
+        args = [
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath " + source + ")",
+        ] + ([
+            "--native-pluralrules",
+            "--native-listformat",
+            "--native-displaynames",
+            "--native-segmenter",
+            "--native-collator",
+            "--native-numberformat",
+            "--native-relativetimeformat",
+            "--native-datetimeformat",
+            "--native-durationformat",
+            "--native-temporal=UTC",
+        ] if profile == "sdk" else []),
+        data = [
+            source,
+            "//native/hermes/tests:test262_runtime",
+            "@hermes//:hermesc",
+        ],
+    )
+    for profile, source in [
+        ("ts", ":durationformat_registration_source"),
+        ("sdk", "tests/durationformat-registration.js"),
+    ]
+]
+
+[
+    sh_test(
+        name = profile + "_durationformat_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :durationformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.DurationFormat." + profile,
+            "$(rootpath tests/durationformat-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+        ],
+        data = [
+            "tests/durationformat-test262-count.json",
+            ":durationformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if prelude.startswith("wasm") else []),
+        env = {"TZ": "UTC"},
+    )
+    for profile, prelude in [
+        ("legacy", "instant"),
+        ("locale", "locale"),
+        ("wasm_legacy", "wasm"),
+        ("wasm_locale", "wasm-locale"),
+    ]
+]
+
+[
+    sh_test(
+        name = "durationformat_hermes_" + mode + "_test262",
+        size = "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :durationformat_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath :locale-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath tests/durationformat-test262-count.json)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.DurationFormat.Hermes." + mode,
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+        ],
+        data = [
+            "tests/durationformat-test262-count.json",
+            "tests/hermes-host.sh",
+            ":durationformat_harness",
+            ":locale-payload.js",
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@hermes//:hermesc",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for mode in [
+        "source",
+        "bytecode",
     ]
 ]
 

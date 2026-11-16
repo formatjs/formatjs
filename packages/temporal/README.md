@@ -80,13 +80,16 @@ Remaining gaps stay visible:
 
 - Legacy Date TimeClip still limits extended plain values. Older host calendar
   data can disagree with Temporal's calendar packs.
-- Direct DurationFormat brand capture after late Temporal installation needs
-  the separate Temporal-feature conformance audit.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
 
 Implementation gaps are not allowed conformance exclusions.
+
+DurationFormat supports late Temporal installation, branded durations and ISO
+duration strings. Installation registers captured getters and parsers with
+FormatJS/native Hermes formatters and adapts legacy host formatters. Isolated
+namespaces can use `DurationFormat.__addTemporalNamespace(Temporal)` explicitly.
 
 ## WASM with native data
 
@@ -163,6 +166,7 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 Full Temporal/Intl compliance remains incomplete.
 
 Published consumer bundles currently measure 64,645 bytes gzip for default and
-333,124 for standalone. Both include compact IANA histories. WASM with native
-data measures 473,973 bytes including its binary; measured Node workloads still favor TS.
+333,124 for standalone. Both include compact IANA histories. The native-data WASM
+module and binary, compressed separately, measure 475,345 bytes gzip. Prior
+measured Node workloads favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.

@@ -82,11 +82,12 @@
     getters: ((this: object) => number)[]
   }[] = []
   function addTemporalNamespace(namespace: any): void {
-    const constructor = namespace?.Duration,
-      from = constructor?.from
-    if (typeof from !== 'function') return
+    const constructor = namespace?.Duration
+    if (!constructor) return
     for (let index = 0; index < temporalReaders.length; index++)
       if (temporalReaders[index].constructor === constructor) return
+    const from = constructor.from
+    if (typeof from !== 'function') return
     const getters: ((this: object) => number)[] = []
     for (let index = 0; index < fields.length; index++) {
       const getter = getDescriptor(constructor.prototype, fields[index])?.get

@@ -31,7 +31,8 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 | `@formatjs/icu-messageformat-parser` | ecma402-abstract, icu-skeleton-parser |
 
 `@formatjs/temporal` is currently private. It uses `ecma262-abstract`,
-`ecma402-abstract/DateTimeFormat`, shared types and generated timezone data.
+`ecma402-abstract/DateTimeFormat`, `ecma402-abstract/DurationFormat`, shared types
+and generated timezone data.
 It does not depend on formatter packages. Date/short-date/zoned facades share
 calendar field preparation and merge rules. Plain/zoned rounding uses private
 anchor callbacks; the numeric kernel owns 13-calendar conversion/add/difference

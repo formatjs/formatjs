@@ -1308,11 +1308,8 @@ completion also requires the remaining Rust/API audit; these new formatter gates
 do not establish full legacy-host compliance.
 
 The Intl feature inventory also finds six DurationFormat files (12 executions).
-Owned TS DurationFormat currently captures only the Temporal namespace present at
-module evaluation; it exposes no late namespace hook. Native SDK has a hook.
-Direct native DurationFormat on an owned Duration with a poisoned `days` getter
-reproduces a public-property read. Add this scope next; fix registration and
-string/ordinary-input conversion without relying on native Temporal parsing.
+Late registration and legacy-host adaptation now close this scope; see the
+DurationFormat integration evidence below. Native SDK keeps its existing hook.
 
 The legacy Intl layer passes 104 focused regression targets, all three actual
 TypeScript checkers, SDK assembly and the standalone Hermes SDK consumer smoke
@@ -1362,9 +1359,9 @@ throughput evidence is recorded separately after the default switch.
 Eleven count-checked compact-profile Test262 scopes cover eight classes,
 calendars, Now and installation. They use the same full corpus selections and
 zero-failure baselines as the existing WASM scopes. No implementation failures
-are reclassified as host exclusions. Legacy Intl clipping/lunisolar formatting,
-DurationFormat integration and the Rust API/capability audit remain separate
-completion requirements.
+are reclassified as host exclusions. Legacy Intl clipping/lunisolar formatting
+and the Rust API/capability audit remain separate completion requirements.
+DurationFormat integration now has the additional gates below.
 
 Final validation: 39 focused regression targets pass and all three actual
 TypeScript checker outputs are empty. The compact profile passes 12,228
@@ -1411,3 +1408,32 @@ Fresh 43-workload Node measurements retain checksum 173601476; neither WASM
 profile beats TS on a measured median. See the compact-timezone snapshots under
 benchmarks/temporal for module graphs, all timings and limits. Remaining Intl,
 Rust API and cold-load audits still prevent a full completion claim.
+
+## DurationFormat integration
+
+Shared duration conversion now accepts late namespace registration and captures
+parsers/private-slot getters per constructor. Owned DurationFormat exposes a
+registration hook; Temporal installation also adapts legacy host format methods.
+Receiver validation precedes input conversion. Ordinary records keep their
+specified property-read order. Native Hermes retains its direct formatter and
+now checks registration identity before reading mutable parser properties.
+
+All six Temporal DurationFormat files pass twelve executions per profile across
+four Node profiles (host/owned formatter, TS/WASM) and Hermes TS/SDK in source and
+optimized bytecode: 96 executions, no exclusions. Separate source/bytecode tests
+verify repeated registration after poisoning parser accessors and prototype
+getters. Published-package tests use independently bundled default/standalone
+namespaces, owned/native formatters and pre-existing formatter instances.
+
+The owned formatter's full 220-execution suite passes. Comparing 208 non-Temporal
+host executions before/after installation adds no failures; four existing native
+diagnostics remain. Existing independent ICU scalar/plain/zoned duration controls
+pass on Node and Hermes source/bytecode. Those are arithmetic controls, not a new
+ICU localized-duration rendering oracle. Full Duration and installation gates,
+package boundaries and actual TypeScript checkers pass.
+
+The TS namespace module graph remains 66,933 bytes gzip. Native-data WASM glue
+and its unchanged binary measure 475,345 bytes gzip when compressed separately;
+the prior compact-timezone graph was 474,202. Installer/formatter paths changed;
+no fresh hot-operation performance claim. Size evidence is recorded in
+`benchmarks/temporal/durationformat-integration-size-results.json`.

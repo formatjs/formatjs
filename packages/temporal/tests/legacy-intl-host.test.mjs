@@ -5,6 +5,8 @@ import {runfiles} from '@bazel/runfiles'
 const harness = runfiles.resolve(process.argv[2])
 const prelude = runfiles.resolve(process.argv[3])
 const root = process.argv[4]
+const formatter = process.argv[5] || 'DateTimeFormat'
+const expectedExecutions = Number(process.argv[6] || 362)
 function run(adapted) {
   const result = spawnSync(
     harness,
@@ -21,7 +23,7 @@ function run(adapted) {
       '--featuresExclude',
       'Temporal',
       ...(adapted ? ['--prelude', prelude] : []),
-      root + '/test/intl402/DateTimeFormat/**/*.js',
+      root + '/test/intl402/' + formatter + '/**/*.js',
     ],
     {
       encoding: 'utf8',
@@ -33,7 +35,11 @@ function run(adapted) {
   if (result.error) throw result.error
   assert([0, 1].includes(result.status), result.stderr)
   const rows = JSON.parse(result.stdout)
-  assert.equal(rows.length, 362, 'Complete non-Temporal formatter selection')
+  assert.equal(
+    rows.length,
+    expectedExecutions,
+    'Complete non-Temporal formatter selection'
+  )
   const cases = new Map(
     rows.map(row => [row.file + ':' + row.scenario, row.result])
   )
