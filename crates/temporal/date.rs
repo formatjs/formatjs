@@ -1,8 +1,8 @@
 use crate::calendar::Calendar;
 use crate::calendar_provider::{error, overflow as calendar_overflow, resolve_fields};
 use crate::{
-    CalendarProvider, DateFields, Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY, PlainTime,
-    Precision, RoundingMode, TimeUnit,
+    CalendarName, CalendarProvider, DateFields, Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY,
+    PlainTime, Precision, RoundingMode, TimeUnit,
 };
 use core::{fmt, str::FromStr};
 
@@ -54,6 +54,12 @@ impl<C: CalendarProvider> PlainDate<C> {
     }
     pub const fn calendar(self) -> C {
         self.1
+    }
+    pub fn format(self, calendar_name: CalendarName) -> FormattedDate<C> {
+        FormattedDate {
+            value: self,
+            calendar_name,
+        }
     }
     pub fn calendar_id(self) -> &'static str {
         self.1.id()
@@ -192,8 +198,17 @@ impl FromStr for PlainDate {
 }
 impl<C: CalendarProvider> fmt::Display for PlainDate<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write_date(f, self.fields())?;
-        write_calendar(f, self.calendar_id())
+        self.format(CalendarName::Auto).fmt(f)
+    }
+}
+pub struct FormattedDate<C = Calendar> {
+    value: PlainDate<C>,
+    calendar_name: CalendarName,
+}
+impl<C: CalendarProvider> fmt::Display for FormattedDate<C> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write_date(f, self.value.fields())?;
+        write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
 pub(crate) fn write_date(
@@ -207,9 +222,21 @@ pub(crate) fn write_date(
     }
     write!(f, "-{month:02}-{day:02}")
 }
-fn write_calendar(f: &mut fmt::Formatter<'_>, calendar: &str) -> fmt::Result {
-    if calendar != "iso8601" {
-        write!(f, "[u-ca={calendar}]")?;
+pub(crate) fn write_calendar(
+    f: &mut fmt::Formatter<'_>,
+    calendar: &str,
+    show: CalendarName,
+) -> fmt::Result {
+    if show != CalendarName::Never && (show != CalendarName::Auto || calendar != "iso8601") {
+        write!(
+            f,
+            "[{}u-ca={calendar}]",
+            if show == CalendarName::Critical {
+                "!"
+            } else {
+                ""
+            }
+        )?;
     }
     Ok(())
 }
@@ -357,6 +384,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
         Ok(FormattedDateTime {
             value: Self::from_epoch_nanoseconds_in(value, self.1)?,
             precision,
+            calendar_name: CalendarName::Auto,
         })
     }
 }
@@ -377,6 +405,13 @@ impl<C: CalendarProvider> fmt::Display for PlainDateTime<C> {
 pub struct FormattedDateTime<C = Calendar> {
     value: PlainDateTime<C>,
     precision: Precision,
+    calendar_name: CalendarName,
+}
+impl<C: CalendarProvider> FormattedDateTime<C> {
+    pub fn with_calendar_name(mut self, calendar_name: CalendarName) -> Self {
+        self.calendar_name = calendar_name;
+        self
+    }
 }
 impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -389,7 +424,7 @@ impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
                 .format(self.precision, RoundingMode::Trunc)
                 .map_err(|_| fmt::Error)?
         )?;
-        write_calendar(f, self.value.calendar_id())
+        write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
 

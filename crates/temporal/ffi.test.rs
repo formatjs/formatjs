@@ -386,3 +386,25 @@ fn string_parsers_preserve_short_date_bounds_and_offset_precision() {
         assert_eq!(request(json!({"op":op,"text":text})), Err(1));
     }
 }
+
+#[test]
+fn date_output_validates_options_and_constrains_before_narrowing() {
+    let request = |value: Value| query(value.to_string().as_bytes());
+    let value = request(json!({"op":"parsePlainYearMonth","text":"2020-02"})).unwrap();
+    let day = request(json!({"op":"yearMonthToDate","value":value,"day":1e100})).unwrap();
+    assert_eq!(
+        request(
+            json!({"op":"formatPlainDate","value":{"epochDay":day,"calendar":"iso8601"},"calendarName":"critical"})
+        ),
+        Ok(json!("2020-02-29[!u-ca=iso8601]"))
+    );
+    for input in [
+        json!({"op":"yearMonthToDate","value":value,"day":0}),
+        json!({"op":"yearMonthToDate","value":value,"day":1.5}),
+        json!({"op":"formatPlainYearMonth","value":value,"calendarName":"invalid"}),
+        json!({"op":"formatPlainDateTime","nanoseconds":"0","calendar":"iso8601","calendarName":"auto","precision":10,"mode":"trunc"}),
+        json!({"op":"differencePlainYearMonth","value":value,"other":value,"largest":"month","smallest":"year","increment":1,"mode":"trunc","since":false}),
+    ] {
+        assert_eq!(request(input), Err(1));
+    }
+}

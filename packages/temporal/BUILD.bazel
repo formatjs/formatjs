@@ -244,7 +244,11 @@ filegroup(
         ),
         (
             "short_date_test",
-            ["tests/short-dates.test.ts"],
+            [
+                "tests/short-dates.test.ts",
+                "tests/date-output-oracle.ts",
+                "tests/native-date-output-host.ts",
+            ],
             ["//conformance-tests/icu4j:temporal_short_date_fixtures"],
         ),
         (
@@ -1328,6 +1332,56 @@ rolldown_bundle(
 )
 
 rolldown_bundle(
+    name = "native-date-output-host",
+    srcs = [
+        "tests/date-output-oracle.ts",
+        "tests/native-date-output-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-date-output-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_date_output_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_short_date_hermes_fixtures",
+        ":native-date-output-host.js",
+    ],
+    outs = ["native-date-output-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_short_date_hermes_fixtures) $(location :native-date-output-host.js) > $@",
+)
+
+sh_test(
+    name = "native_date_output_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_date_output_hermes_source)",
+    ],
+    data = [
+        ":native_date_output_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "date-output-oracle",
+    srcs = ["tests/date-output-oracle.ts"],
+    entry_point = "tests/date-output-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
     name = "native-string-host",
     srcs = [
         "tests/native-string-host.ts",
@@ -1908,8 +1962,11 @@ js_test(
         "$(rlocationpath :zoned-arithmetic-oracle.js)",
         "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
         "$(rlocationpath :string-oracle.js)",
+        "$(rlocationpath :date-output-oracle.js)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
     ],
     data = [
+        ":date-output-oracle.js",
         ":duration-oracle.js",
         ":pkg",
         ":plain-arithmetic-oracle.js",
@@ -1925,6 +1982,7 @@ js_test(
         "//conformance-tests/icu4j:temporal_iso_fixtures",
         "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
         "//conformance-tests/icu4j:temporal_rounding_fixtures",
+        "//conformance-tests/icu4j:temporal_short_date_fixtures",
         "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
         "//conformance-tests/icu4j:temporal_time_carry_fixtures",
         "//conformance-tests/icu4j:temporal_timezone_fixtures",

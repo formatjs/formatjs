@@ -33,7 +33,7 @@ pub use calendar_registry::CalendarRegistry;
 pub use context::TemporalContext;
 use core::fmt;
 use core::str::FromStr;
-pub use date::{FormattedDateTime, Overflow, PlainDate, PlainDateTime};
+pub use date::{FormattedDate, FormattedDateTime, Overflow, PlainDate, PlainDateTime};
 pub use duration::{
     Duration, FormattedDuration, MAX_DURATION_NANOSECONDS, round_duration_nanoseconds,
 };
@@ -42,7 +42,9 @@ pub use formatjs_intl_datetimeformat_calendars::calendar;
 pub use iso::IsoDateTime;
 pub use now::{Now, SystemClock};
 pub use rounding::{RoundingMode, TimeUnit};
-pub use short_dates::{PlainMonthDay, PlainYearMonth, YearMonthUnit};
+pub use short_dates::{
+    FormattedMonthDay, FormattedYearMonth, PlainMonthDay, PlainYearMonth, YearMonthUnit,
+};
 pub use time::{FormattedTime, PlainTime};
 pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
 pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};

@@ -35,6 +35,7 @@ import {
   calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
+  calendarNameOption,
   object,
   integer,
   overflowOption,
@@ -255,9 +256,19 @@ function format(
   annotation: unknown = undefined,
   value = slot.epochNanoseconds
 ): string {
+  const show = calendarNameOption(annotation),
+    native = nativeTemporal()
+  if (native)
+    return native.formatPlainDateTime(
+      value,
+      slot.calendar,
+      precision,
+      'trunc',
+      show
+    )
   return (
     formatInstant(value, precision).slice(0, -1) +
-    calendarAnnotation(slot.calendar, annotation)
+    calendarAnnotation(slot.calendar, show)
   )
 }
 class PlainDateTimeValue {
@@ -399,8 +410,8 @@ class PlainDateTimeValue {
   toString(options: unknown = undefined): string {
     const slot = read(this),
       resolved = optionsObject(options)
-    const annotation = resolved.calendarName
-    const suffix = calendarAnnotation(slot.calendar, annotation)
+    const show = calendarNameOption(resolved.calendarName)
+    const suffix = calendarAnnotation(slot.calendar, show)
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits),
       mode = roundingMode(resolved.roundingMode, 'trunc'),
       raw = unitOption(resolved.smallestUnit)
@@ -418,6 +429,15 @@ class PlainDateTimeValue {
               : raw === 'nanosecond'
                 ? 9
                 : digits
+    const native = nativeTemporal()
+    if (native)
+      return native.formatPlainDateTime(
+        slot.epochNanoseconds,
+        slot.calendar,
+        precision,
+        mode,
+        show
+      )
     const quantum =
       precision === 'auto'
         ? 1n

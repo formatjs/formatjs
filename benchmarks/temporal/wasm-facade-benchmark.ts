@@ -58,6 +58,8 @@ function measure(namespace: typeof reference): unknown[] {
   const expectedYearMonths = expectedDates.map((value, index) =>
     value.toPlainYearMonth().add({months: index})
   )
+  const monthDays = dates.map(value => value.toPlainMonthDay())
+  const referenceMonthDays = expectedDates.map(value => value.toPlainMonthDay())
   const dateFields = (value: InstanceType<typeof reference.PlainDate>) =>
     [
       value.year,
@@ -340,6 +342,81 @@ function measure(namespace: typeof reference): unknown[] {
           .toString(),
     },
     {
+      name: 'dateFormat',
+      run: (index: number) => dates[index].toString({calendarName: 'critical'}),
+      check: (index: number) =>
+        expectedDates[index].toString({calendarName: 'critical'}),
+    },
+    {
+      name: 'dateTimeFormat',
+      run: (index: number) =>
+        dateTimes[index].toString({
+          calendarName: 'always',
+          smallestUnit: 'second',
+          roundingMode: 'ceil',
+        }),
+      check: (index: number) =>
+        referenceDateTimes[index].toString({
+          calendarName: 'always',
+          smallestUnit: 'second',
+          roundingMode: 'ceil',
+        }),
+    },
+    {
+      name: 'yearMonthFormat',
+      run: (index: number) =>
+        yearMonths[index].toString({calendarName: 'critical'}),
+      check: (index: number) =>
+        expectedYearMonths[index].toString({calendarName: 'critical'}),
+    },
+    {
+      name: 'monthDayFormat',
+      run: (index: number) =>
+        monthDays[index].toString({calendarName: 'always'}),
+      check: (index: number) =>
+        referenceMonthDays[index].toString({calendarName: 'always'}),
+    },
+    {
+      name: 'zonedFormat',
+      run: (index: number) =>
+        zonedValues[index].toString({
+          calendarName: 'critical',
+          timeZoneName: 'critical',
+          smallestUnit: 'second',
+        }),
+      check: (index: number) =>
+        referenceZonedValues[index].toString({
+          calendarName: 'critical',
+          timeZoneName: 'critical',
+          smallestUnit: 'second',
+        }),
+    },
+    {
+      name: 'yearMonthUntil',
+      run: (index: number) =>
+        yearMonths[index]
+          .until(yearMonths[(index + 1) & 7], {largestUnit: 'year'})
+          .toString(),
+      check: (index: number) =>
+        expectedYearMonths[index]
+          .until(expectedYearMonths[(index + 1) & 7], {largestUnit: 'year'})
+          .toString(),
+    },
+    {
+      name: 'yearMonthToDate',
+      run: (index: number) =>
+        yearMonths[index].toPlainDate({day: 31}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].toPlainDate({day: 31}).toString(),
+    },
+    {
+      name: 'monthDayToDate',
+      run: (index: number) =>
+        monthDays[index].toPlainDate({year: 2024 + index}).toString(),
+      check: (index: number) =>
+        referenceMonthDays[index].toPlainDate({year: 2024 + index}).toString(),
+    },
+    {
       name: 'yearMonthAdd',
       run: (index: number) =>
         yearMonths[index].add({years: 1, months: 3}).toString(),
@@ -592,7 +669,7 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned arithmetic and string parsing with16 native calendars and all IANA records; date formatting, remaining short-date arithmetic and fallback data remain TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics, host/Intl integration and fallback data remain JS/TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
         'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,

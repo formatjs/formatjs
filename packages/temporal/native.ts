@@ -30,6 +30,41 @@ const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
 export interface NativeTemporal {
+  addPlainYearMonth(
+    slot: DateSlot,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): number
+  differencePlainYearMonth(
+    start: DateSlot,
+    end: DateSlot,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  yearMonthToDate(slot: DateSlot, day: number): number
+  monthDayToDate(slot: DateSlot, year: number): number
+  formatPlainDate(slot: DateSlot, calendarName: string): string
+  formatPlainDateTime(
+    value: bigint,
+    calendar: string,
+    precision: Precision,
+    mode: RoundingMode,
+    calendarName: string
+  ): string
+  formatPlainYearMonth(slot: DateSlot, calendarName: string): string
+  formatPlainMonthDay(slot: DateSlot, calendarName: string): string
+  formatZonedDateTime(
+    slot: ZonedSlot,
+    precision: Precision,
+    mode: RoundingMode,
+    calendarName: string,
+    offset: boolean,
+    timeZoneName: string
+  ): string
   parsePlainDate(value: string): DateSlot
   parsePlainDateTime(value: string): DateTimeSlot
   parsePlainYearMonth(value: string): DateSlot
@@ -310,6 +345,12 @@ export function configureNativeTemporal(query: NativeQuery): void {
     fields.day = value.day
     return fields
   }
+  function shortFields(slot: DateSlot): Record<string, unknown> {
+    const result = create(null)
+    result.epochDay = slot.epochDay
+    result.calendar = slot.calendar
+    return result
+  }
   function zonedFields(slot: ZonedSlot): Record<string, unknown> {
     const result = create(null)
     result.nanoseconds = text(slot.epochNanoseconds)
@@ -333,6 +374,65 @@ export function configureNativeTemporal(query: NativeQuery): void {
     return result
   }
   native = {
+    addPlainYearMonth: (slot, fields, subtract, overflow) =>
+      call('addPlainYearMonth', {
+        value: shortFields(slot),
+        duration: durationFields(fields),
+        subtract,
+        overflow,
+      }),
+    differencePlainYearMonth: (
+      start,
+      end,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainYearMonth', {
+        value: shortFields(start),
+        other: shortFields(end),
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    yearMonthToDate: (slot, day) =>
+      call('yearMonthToDate', {value: shortFields(slot), day}),
+    monthDayToDate: (slot, year) =>
+      call('monthDayToDate', {value: shortFields(slot), year}),
+    formatPlainDate: (slot, calendarName) =>
+      call('formatPlainDate', {value: shortFields(slot), calendarName}),
+    formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
+      call('formatPlainDateTime', {
+        nanoseconds: text(value),
+        calendar,
+        precision,
+        mode,
+        calendarName,
+      }),
+    formatPlainYearMonth: (slot, calendarName) =>
+      call('formatPlainYearMonth', {value: shortFields(slot), calendarName}),
+    formatPlainMonthDay: (slot, calendarName) =>
+      call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+    formatZonedDateTime: (
+      slot,
+      precision,
+      mode,
+      calendarName,
+      offset,
+      timeZoneName
+    ) =>
+      call('formatZonedDateTime', {
+        value: zonedFields(slot),
+        precision,
+        mode,
+        calendarName,
+        offset,
+        timeZoneName,
+      }),
     parsePlainDate: value => call('parsePlainDate', {text: value}),
     parsePlainDateTime: value => {
       const result = call('parsePlainDateTime', {text: value})

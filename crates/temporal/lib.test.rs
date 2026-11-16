@@ -1,6 +1,71 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn calendar_annotations_retain_iso_reference_fields() {
+    use formatjs_temporal::{
+        CalendarName, PlainDate, PlainDateTime, PlainMonthDay, PlainYearMonth, Precision,
+        RoundingMode,
+    };
+    let date = "2020-02-29".parse::<PlainDate>().unwrap();
+    let time = "2020-02-29T23:59:59.999".parse::<PlainDateTime>().unwrap();
+    let year_month = PlainYearMonth::new(2020, 2, 29).unwrap();
+    let month_day = PlainMonthDay::new(2, 29, 2000).unwrap();
+    for (mode, suffix, full) in [
+        (CalendarName::Auto, "", false),
+        (CalendarName::Never, "", false),
+        (CalendarName::Always, "[u-ca=iso8601]", true),
+        (CalendarName::Critical, "[!u-ca=iso8601]", true),
+    ] {
+        assert_eq!(date.format(mode).to_string(), format!("2020-02-29{suffix}"));
+        assert_eq!(
+            time.format(Precision::Digits(0), RoundingMode::Ceil)
+                .unwrap()
+                .with_calendar_name(mode)
+                .to_string(),
+            format!("2020-03-01T00:00:00{suffix}")
+        );
+        assert_eq!(
+            year_month.format(mode).to_string(),
+            format!("{}{suffix}", if full { "2020-02-29" } else { "2020-02" })
+        );
+        assert_eq!(
+            month_day.format(mode).to_string(),
+            format!("{}{suffix}", if full { "2000-02-29" } else { "02-29" })
+        );
+    }
+}
+
+#[test]
+fn unrounded_year_month_difference_needs_no_out_of_range_anchor() {
+    use formatjs_temporal::{PlainYearMonth, RoundingMode, YearMonthUnit};
+    let start = PlainYearMonth::new(1970, 1, 1).unwrap();
+    let end = PlainYearMonth::new(275760, 9, 30).unwrap();
+    for largest in [YearMonthUnit::Year, YearMonthUnit::Month] {
+        let until = start
+            .until(end, largest, YearMonthUnit::Month, 1, RoundingMode::Trunc)
+            .unwrap();
+        assert_eq!(until.fields()[0] * 12 + until.fields()[1], 3285488);
+        assert_eq!(
+            start
+                .since(end, largest, YearMonthUnit::Month, 1, RoundingMode::Trunc)
+                .unwrap(),
+            until.negated()
+        );
+        assert!(
+            start
+                .until(
+                    PlainYearMonth::new(-271821, 4, 19).unwrap(),
+                    largest,
+                    YearMonthUnit::Month,
+                    1,
+                    RoundingMode::Trunc
+                )
+                .is_err()
+        );
+    }
+}
+
+#[test]
 fn independent_icu_short_dates() {
     use formatjs_temporal::{Duration, Overflow, PlainMonthDay, PlainYearMonth, YearMonthUnit};
     let mut count = 0;

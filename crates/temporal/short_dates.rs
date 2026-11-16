@@ -5,8 +5,8 @@ use crate::calendar_provider::{
 use crate::date::month_length;
 use crate::iso::{epoch_day_from_iso, iso_from_epoch_nanoseconds_raw};
 use crate::{
-    CalendarProvider, DateFields, DateTimeUnit, Duration, Error, NANOSECONDS_PER_DAY, Overflow,
-    PlainDate, RoundingMode,
+    CalendarName, CalendarProvider, DateFields, DateTimeUnit, Duration, Error, NANOSECONDS_PER_DAY,
+    Overflow, PlainDate, RoundingMode,
 };
 use core::{cmp::Ordering, fmt, str::FromStr};
 
@@ -87,6 +87,12 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     }
     pub const fn calendar(self) -> C {
         self.calendar
+    }
+    pub fn format(self, calendar_name: CalendarName) -> FormattedYearMonth<C> {
+        FormattedYearMonth {
+            value: self,
+            calendar_name,
+        }
     }
     pub fn calendar_id(self) -> &'static str {
         self.calendar.id()
@@ -213,6 +219,21 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         }
         let start = PlainDate::from_epoch_day_in(self.first_day()?, self.calendar)?;
         let end = PlainDate::from_epoch_day_in(other.first_day()?, other.calendar)?;
+        if smallest == YearMonthUnit::Month && increment == 1 {
+            let unit = match largest {
+                YearMonthUnit::Year => crate::calendar::DateUnit::Year,
+                YearMonthUnit::Month => crate::calendar::DateUnit::Month,
+            };
+            let fields = self
+                .calendar
+                .until_raw(start.epoch_day(), end.epoch_day(), unit)
+                .map_err(error)?;
+            let mut values = [0; 10];
+            values[0] = i128::from(fields.years);
+            values[1] = i128::from(fields.months);
+            let result = Duration::new(values)?;
+            return Ok(if since { result.negated() } else { result });
+        }
         if since {
             start.since(end, largest.into(), smallest.into(), increment, mode)
         } else {
@@ -245,13 +266,27 @@ impl<C: CalendarProvider> Ord for PlainYearMonth<C> {
 }
 impl<C: CalendarProvider> fmt::Display for PlainYearMonth<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (year, month, day) = self.fields();
+        self.format(CalendarName::Auto).fmt(f)
+    }
+}
+pub struct FormattedYearMonth<C = Calendar> {
+    value: PlainYearMonth<C>,
+    calendar_name: CalendarName,
+}
+impl<C: CalendarProvider> fmt::Display for FormattedYearMonth<C> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let (year, month, day) = self.value.fields();
         write_year(f, year)?;
         write!(f, "-{month:02}")?;
-        if self.calendar_id() != "iso8601" {
-            write!(f, "-{day:02}[u-ca={}]", self.calendar_id())?;
+        if self.value.calendar_id() != "iso8601"
+            || matches!(
+                self.calendar_name,
+                CalendarName::Always | CalendarName::Critical
+            )
+        {
+            write!(f, "-{day:02}")?;
         }
-        Ok(())
+        crate::date::write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
 
@@ -421,6 +456,12 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
     pub const fn calendar(self) -> C {
         self.calendar
     }
+    pub fn format(self, calendar_name: CalendarName) -> FormattedMonthDay<C> {
+        FormattedMonthDay {
+            value: self,
+            calendar_name,
+        }
+    }
     pub fn calendar_id(self) -> &'static str {
         self.calendar.id()
     }
@@ -484,18 +525,30 @@ impl<C: CalendarProvider> PartialEq for PlainMonthDay<C> {
 impl<C: CalendarProvider> Eq for PlainMonthDay<C> {}
 impl<C: CalendarProvider> fmt::Display for PlainMonthDay<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (month, day, year) = self.fields();
-        if self.calendar_id() != "iso8601" {
+        self.format(CalendarName::Auto).fmt(f)
+    }
+}
+pub struct FormattedMonthDay<C = Calendar> {
+    value: PlainMonthDay<C>,
+    calendar_name: CalendarName,
+}
+impl<C: CalendarProvider> fmt::Display for FormattedMonthDay<C> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let (month, day, year) = self.value.fields();
+        if self.value.calendar_id() != "iso8601"
+            || matches!(
+                self.calendar_name,
+                CalendarName::Always | CalendarName::Critical
+            )
+        {
             write_year(f, year)?;
             write!(f, "-")?;
         }
         write!(f, "{month:02}-{day:02}")?;
-        if self.calendar_id() != "iso8601" {
-            write!(f, "[u-ca={}]", self.calendar_id())?;
-        }
-        Ok(())
+        crate::date::write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
+
 fn check_year_month(epoch: i64) -> Result<(), Error> {
     if !(-110_000_000..=110_000_000).contains(&epoch) {
         return Err(Error::OutOfRange);

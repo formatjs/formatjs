@@ -17,14 +17,16 @@ public final class TemporalShortDateOracle {
   public static void main(String[] args) throws Exception {
     calendar.setGregorianChange(new Date(Long.MIN_VALUE));
     try (PrintWriter out = new PrintWriter(args[0],StandardCharsets.UTF_8)) {
-      out.println("# ICU4J 79.1 Gregorian and BigDecimal; kind-specific arithmetic, reference-date, metadata and rounding cases");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      if (javascript) out.println("var __temporalShortDateOracle = [");
+      else out.println("# ICU4J 79.1 Gregorian and BigDecimal; kind-specific arithmetic, reference-date, metadata and rounding cases");
       for (int year : new int[] {-271821,-100000,-400,-1,0,1,1900,1972,2000,2020,275760}) for (int month=1;month<=12;month++) {
         if ((year == -271821 && month < 4) || (year == 275760 && month > 9)) continue;
         long origin=firstDay(year,month); int length=calendar.getActualMaximum(Calendar.DATE);
         for (int reference : new int[] {1,length}) for (int[] duration : new int[][] {{0,0},{1,1},{-1,-1},{4,13},{-4,-13}}) {
           firstDay(year,month); calendar.add(Calendar.YEAR,duration[0]); calendar.add(Calendar.MONTH,duration[1]);
           long target=Math.floorDiv(calendar.getTimeInMillis(),86400000L);
-          out.println("ym\t"+year+"\t"+month+"\t"+reference+"\t"+duration[0]+"\t"+duration[1]+"\t"+calendar.get(Calendar.EXTENDED_YEAR)+"\t"+(calendar.get(Calendar.MONTH)+1)+"\t"+calendar.getActualMaximum(Calendar.DATE)+"\t"+calendar.getActualMaximum(Calendar.DAY_OF_YEAR)+"\t"+(origin >= -100000001 && origin <= 100000000 && target >= -100000001 && target <= 100000000));
+          row(out, javascript, "ym\t"+year+"\t"+month+"\t"+reference+"\t"+duration[0]+"\t"+duration[1]+"\t"+calendar.get(Calendar.EXTENDED_YEAR)+"\t"+(calendar.get(Calendar.MONTH)+1)+"\t"+calendar.getActualMaximum(Calendar.DATE)+"\t"+calendar.getActualMaximum(Calendar.DAY_OF_YEAR)+"\t"+(origin >= -100000001 && origin <= 100000000 && target >= -100000001 && target <= 100000000));
         }
       }
       for (int month=1;month<=12;month++) {
@@ -32,7 +34,7 @@ public final class TemporalShortDateOracle {
         for (int day : new int[] {1,length}) for (int reference : new int[] {1972,2000}) for (int year : new int[] {-271821,-1,0,1900,1972,2000,275760}) {
           firstDay(year,month);int targetDay=Math.min(day,calendar.getActualMaximum(Calendar.DATE)); calendar.set(Calendar.DATE,targetDay);
           long target=Math.floorDiv(calendar.getTimeInMillis(),86400000L);
-          out.println("md\t"+month+"\t"+day+"\t"+reference+"\t"+year+"\t"+targetDay+"\t"+(target >= -100000001 && target <= 100000000));
+          row(out, javascript, "md\t"+month+"\t"+day+"\t"+reference+"\t"+year+"\t"+targetDay+"\t"+(target >= -100000001 && target <= 100000000));
         }
       }
       String[] modes={"ceil","floor","expand","trunc","halfCeil","halfFloor","halfExpand","halfTrunc","halfEven"};
@@ -48,10 +50,14 @@ public final class TemporalShortDateOracle {
               int[] rounding={BigDecimal.ROUND_CEILING,BigDecimal.ROUND_FLOOR,BigDecimal.ROUND_UP,BigDecimal.ROUND_DOWN,value<0?BigDecimal.ROUND_HALF_DOWN:BigDecimal.ROUND_HALF_UP,value<0?BigDecimal.ROUND_HALF_UP:BigDecimal.ROUND_HALF_DOWN,BigDecimal.ROUND_HALF_UP,BigDecimal.ROUND_HALF_DOWN,BigDecimal.ROUND_HALF_EVEN};
               expected[operation]=new BigDecimal(value).divide(new BigDecimal(span),0,rounding[mode]).longValueExact()*quantum;
             }
-            out.println("round\t"+pair[0]+"\t"+pair[1]+"\t"+pair[2]+"\t"+pair[3]+"\t"+unit+"\t"+increment+"\t"+modes[mode]+"\t"+expected[0]+"\t"+expected[1]);
+            row(out, javascript, "round\t"+pair[0]+"\t"+pair[1]+"\t"+pair[2]+"\t"+pair[3]+"\t"+unit+"\t"+increment+"\t"+modes[mode]+"\t"+expected[0]+"\t"+expected[1]);
           }
         }
       }
+      if (javascript) out.println("];");
     }
+  }
+  private static void row(PrintWriter out, boolean javascript, String value) {
+    out.println(javascript ? "\"" + value.replace("\t", "\\t") + "\"," : value);
   }
 }

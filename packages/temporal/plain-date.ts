@@ -40,6 +40,7 @@ import {
   calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
+  calendarNameOption,
   readDateFields,
   mergeDateFields,
   isoDay,
@@ -244,10 +245,13 @@ function difference(
 }
 
 function format(slot: DateSlot, calendarName: unknown = undefined): string {
+  const show = calendarNameOption(calendarName),
+    native = nativeTemporal()
+  if (native) return native.formatPlainDate(slot, show)
   return (
     formatInstant(BigInt(slot.epochDay) * nsPerDay + nsPerDay / 2n).split(
       'T'
-    )[0] + calendarAnnotation(slot.calendar, calendarName)
+    )[0] + calendarAnnotation(slot.calendar, show)
   )
 }
 class PlainDateValue {

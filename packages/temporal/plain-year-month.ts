@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
@@ -124,7 +125,18 @@ function add(
   options: unknown,
   sign: number
 ): PlainYearMonthObject {
-  const fields = toDurationFields(duration)
+  const fields = toDurationFields(duration),
+    native = nativeTemporal()
+  if (native)
+    return createPlainYearMonth({
+      epochDay: native.addPlainYearMonth(
+        slot,
+        fields,
+        sign < 0,
+        overflowOption(options)
+      ),
+      calendar: slot.calendar,
+    })
   const keys = Object.keys(fields) as (keyof typeof fields)[]
   for (let index = 0; index < keys.length; index++) fields[keys[index]] *= sign
   const overflow = overflowOption(options)
@@ -173,6 +185,19 @@ function difference(
     (largest === 'month' && smallest === 'year')
   )
     throw new RangeError('Invalid year-month units')
+  const native = nativeTemporal()
+  if (native)
+    return createDuration(
+      native.differencePlainYearMonth(
+        slot,
+        end,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since
+      )
+    )
   if (slot.epochDay === end.epochDay)
     return createDuration({
       years: 0,
@@ -285,6 +310,9 @@ class PlainYearMonthValue {
     if (raw === undefined) throw new TypeError('Day required')
     const day = integer(raw)
     if (day <= 0) throw new RangeError('Day must be positive')
+    const native = nativeTemporal()
+    if (native)
+      return createPlainDate(native.yearMonthToDate(slot, day), slot.calendar)
     return createPlainDate(
       dayFromFields(
         slot.calendar,

@@ -1353,5 +1353,77 @@
       "native Intl brand/styles/range integration",
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
+  },
+  "nativeDateOutputBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 9,
+    "nativeOperations": 62,
+    "operations": [
+      "addPlainYearMonth",
+      "differencePlainYearMonth",
+      "yearMonthToDate",
+      "monthDayToDate",
+      "formatPlainDate",
+      "formatPlainDateTime",
+      "formatPlainYearMonth",
+      "formatPlainMonthDay",
+      "formatZonedDateTime"
+    ],
+    "scope": "Typed Rust date formatting and short-date arithmetic/conversion across all16 calendar providers. JS retains coercion, option order, slots/brands and allocation. Native Now host/SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "shortDateRows": 2028,
+      "yearMonthAddRows": 1260,
+      "monthDayToDateRows": 336,
+      "yearMonthDifferenceRoundingRows": 432,
+      "yearMonthAddDirections": ["add", "subtract negative duration"]
+    },
+    "backendSelection": "Per-operation fault injection requires all nine new operations. Selected native errors propagate without TS retry.",
+    "boundaryControls": [
+      "all calendar annotation modes retain reference fields",
+      "midnight rounding carry, aliases and critical zone annotations",
+      "calendarName coercion once before remaining formatter options",
+      "maximum YearMonth difference avoids unnecessary rounding anchor; minimum first-day bounds retained",
+      "huge finite day constrains before narrowing, on TS and Rust"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "defaultTypeScriptYearMonthExecutions": 1022,
+      "defaultTypeScriptMonthDayExecutions": 398
+    },
+    "regressionTargets": 65,
+    "rustCoreTests": 32,
+    "rustABITests": 11,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native Now host integration and Hermes SDK installation/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
   }
 }

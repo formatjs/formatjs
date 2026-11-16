@@ -1027,3 +1027,54 @@ instantiate: 1.75/1.40 ms; first native/calendar/timezone/Duration calls:
 Date formatting, short-date arithmetic, native Now host integration, SDK
 installation/distribution and native Intl integration remain open. Full-backend
 artifact comparisons remain unproven.
+
+## Native date output and short-date bindings
+
+`hermes-date-output-results.json`, `wasm-date-output-results.json` and
+`date-output-backend-size-results.json` record 43 matched public workloads.
+Eight new cases cover five date formatters, YearMonth difference and both
+short-date conversions. Existing YearMonth addition now uses Rust too.
+All eight varying inputs pass output parity before timing. Throughput uses ISO;
+all16 owned calendar packs and IANA records remain bundled. Reference:
+`temporal-polyfill` 1.0.7 basic, with the registered native en/number locale pack
+and owned IANA data on Hermes. Host Node Intl serves the V8 reference.
+
+Hermes optimized bytecode medians, microseconds/call. Separate TS/native processes;
+1,000 warmup calls and five batches of 5,000. Source results remain in the snapshot.
+
+| Operation       |    TS | Rust bridge | Reference |
+| --------------- | ----: | ----------: | --------: |
+| dateFormat      |  9.58 |        3.13 |      1.37 |
+| dateTimeFormat  | 20.91 |        5.31 |      7.19 |
+| yearMonthFormat |  3.35 |        3.17 |      1.47 |
+| monthDayFormat  |  3.28 |        3.13 |      1.40 |
+| zonedFormat     | 33.17 |        7.32 |     13.60 |
+| yearMonthUntil  | 54.94 |       26.40 |     13.62 |
+| yearMonthToDate | 17.01 |        5.96 |      8.33 |
+| monthDayToDate  | 16.54 |       11.15 |      8.13 |
+
+V8 medians, microseconds/call. Same-process TS, WASM, reference order; 3,000 warmup
+calls and seven batches of 10,000. Transition cases retain 128 warmup/512 calls
+on both engines. Benchmarks ran serially after regression tests on one host.
+
+| Operation       |   TS | WASM bridge | Reference |
+| --------------- | ---: | ----------: | --------: |
+| dateFormat      | 1.00 |        3.67 |      0.27 |
+| dateTimeFormat  | 1.12 |        4.99 |      2.24 |
+| yearMonthFormat | 0.41 |        3.71 |      0.27 |
+| monthDayFormat  | 0.37 |        3.55 |      0.27 |
+| zonedFormat     | 2.24 |        6.85 |      2.50 |
+| yearMonthUntil  | 5.64 |       24.28 |     24.65 |
+| yearMonthToDate | 2.66 |        7.10 |      2.37 |
+| monthDayToDate  | 2.47 |       12.26 |      2.09 |
+
+Rust improves all eight new Hermes cases versus TS; the reference wins five.
+WASM loses all eight against TS on V8. One-host partial-backend measurements do
+not establish a default-backend choice.
+
+Binary: 3,416,379 raw /441,577 gzip bytes. Consumer gzip: TS 361,460; WASM JS
+364,395 +binary 441,577 =805,972. Separate ESM: TS 363,734 versus WASM 806,115.
+WASM retains duplicate native packs and TS fallback data. Compile/instantiate:
+1.77/1.60 ms. Hot timings exclude startup; first-use measurements remain in the
+snapshot, after JS/TS warmup. Native Now host integration, Hermes SDK distribution,
+native Intl integration and full-backend artifact comparisons remain required.

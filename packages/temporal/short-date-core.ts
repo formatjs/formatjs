@@ -1,5 +1,4 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
@@ -10,6 +9,7 @@ import {
 } from '#packages/temporal/calendar.js'
 import {
   calendarAnnotation,
+  calendarNameOption,
   dateFields,
   constructorCalendar,
   resolveCalendarYear,
@@ -217,7 +217,12 @@ export function formatShortDate(
   kind: 'year-month' | 'month-day',
   calendarName: unknown = undefined
 ): string {
-  const option = calendarName === undefined ? 'auto' : ToString(calendarName)
+  const option = calendarNameOption(calendarName),
+    native = nativeTemporal()
+  if (native)
+    return kind === 'year-month'
+      ? native.formatPlainYearMonth(slot, option)
+      : native.formatPlainMonthDay(slot, option)
   const annotation = calendarAnnotation(slot.calendar, option)
   const fields = calendarFromEpochDayRaw('iso8601', slot.epochDay)
   const year =

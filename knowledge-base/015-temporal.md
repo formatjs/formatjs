@@ -18,9 +18,9 @@ and complete native distribution remain open.
 `crates/temporal` supplies an allocation-free `no_std` core with shared numeric
 calendar math. Experimental Hermes/WASM backends delegate ISO conversion,
 Instant/Time/Duration operations, all 16 calendar engines, IANA queries, plain and
-zoned arithmetic, rounding and string parsing to Rust. Zoned grammar runs before
+zoned/short-date arithmetic, rounding, string parsing and date formatting to Rust. Zoned grammar runs before
 JS option reads; typed resolution follows. JS retains coercion, option order,
-brands/slots, allocation, date formatting and remaining short-date arithmetic.
+brands/slots and allocation.
 Complete Hermes SDK installation and full native facade/data delivery remain pending.
 
 ## Delivery order
@@ -1116,3 +1116,39 @@ from 66.37 to 38.83 (reference 52.36). Reference comparisons vary by type. WASM
 loses all five to TS here. Consumer gzip: TS 361,230 bytes; WASM JS +binary 794,070,
 including retained fallback packs. See the string-parser snapshots and
 `benchmarks/temporal/README.md` for methods, reference results and startup scope.
+
+## Native date output and short-date operations
+
+Hermes/WASM now delegate Date, DateTime, YearMonth, MonthDay and ZonedDateTime
+formatting to typed Rust. YearMonth add/subtract/difference and both short-date
+`toPlainDate` conversions use Rust too. Nine operations bring the bridge to 62;
+WASM ABI 9 requires the matching asset. JS retains coercion, property access,
+option order, brands/slots and allocation. Native errors propagate without retry.
+
+Rust formatting supports all four calendar annotation modes, reference fields,
+rounding carry, zone aliases, offset suppression and critical zone annotations.
+Unrounded YearMonth differences avoid an unnecessary out-of-range next anchor at
+`+275760-09`. Short-date conversion constrains large positive days before narrowing;
+the TS calendar fallback now accepts these finite integers too.
+
+The shared verifier runs 2,028 independent ICU short-date rows on TS, Hermes
+source/optimized bytecode and published WASM. It checks signed addition/subtraction,
+leap-day conversion, all nine difference rounding modes and bounds. Explicit
+controls cover formatting annotations, retained reference fields, midnight carry,
+aliases and option coercion order. Fault injection requires all nine native
+operations; direct Rust API/ABI tests cover formatting, boundaries and validation.
+
+Native Now host integration, Hermes SDK installation/distribution, native Intl
+integration and equivalent full-backend artifact comparisons remain open.
+
+Validation: 65 regression targets pass, including all eight full class suites
+(9,090 executions per Hermes source/HBC and WASM mode), overlapping calendar gates,
+default TS Date/DateTime/Duration/Zoned/YearMonth/MonthDay suites, ICU controls and package checks.
+Direct Rust validation passes 32 core and 11 ABI tests. No new exclusions.
+
+Matched Hermes bytecode benchmarks improve all eight new workloads against TS.
+Zoned formatting falls from 33.17 to 7.32 microseconds (reference 13.60). Reference
+wins five of eight cases. WASM loses all eight against TS on V8. Consumer gzip:
+TS 361,460 bytes; WASM JS +binary 805,972, including retained fallback packs.
+See the date-output snapshots and `benchmarks/temporal/README.md` for all timings,
+reference comparisons and startup/size scope. Backend remains hybrid.

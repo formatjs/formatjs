@@ -61,6 +61,8 @@ const yearMonths = dates.map((value, index) =>
 const referenceYearMonths = referenceDates.map((value, index) =>
   value.toPlainYearMonth().add({months: index})
 )
+const monthDays = dates.map(value => value.toPlainMonthDay())
+const referenceMonthDays = referenceDates.map(value => value.toPlainMonthDay())
 const dateFields = (
   value:
     | InstanceType<typeof Temporal.PlainDate>
@@ -341,6 +343,81 @@ const cases = [
         .toString(),
   },
   {
+    name: 'dateFormat',
+    owned: (index: number) => dates[index].toString({calendarName: 'critical'}),
+    reference: (index: number) =>
+      referenceDates[index].toString({calendarName: 'critical'}),
+  },
+  {
+    name: 'dateTimeFormat',
+    owned: (index: number) =>
+      dateTimes[index].toString({
+        calendarName: 'always',
+        smallestUnit: 'second',
+        roundingMode: 'ceil',
+      }),
+    reference: (index: number) =>
+      referenceDateTimes[index].toString({
+        calendarName: 'always',
+        smallestUnit: 'second',
+        roundingMode: 'ceil',
+      }),
+  },
+  {
+    name: 'yearMonthFormat',
+    owned: (index: number) =>
+      yearMonths[index].toString({calendarName: 'critical'}),
+    reference: (index: number) =>
+      referenceYearMonths[index].toString({calendarName: 'critical'}),
+  },
+  {
+    name: 'monthDayFormat',
+    owned: (index: number) =>
+      monthDays[index].toString({calendarName: 'always'}),
+    reference: (index: number) =>
+      referenceMonthDays[index].toString({calendarName: 'always'}),
+  },
+  {
+    name: 'zonedFormat',
+    owned: (index: number) =>
+      zonedValues[index].toString({
+        calendarName: 'critical',
+        timeZoneName: 'critical',
+        smallestUnit: 'second',
+      }),
+    reference: (index: number) =>
+      referenceZonedValues[index].toString({
+        calendarName: 'critical',
+        timeZoneName: 'critical',
+        smallestUnit: 'second',
+      }),
+  },
+  {
+    name: 'yearMonthUntil',
+    owned: (index: number) =>
+      yearMonths[index]
+        .until(yearMonths[(index + 1) & 7], {largestUnit: 'year'})
+        .toString(),
+    reference: (index: number) =>
+      referenceYearMonths[index]
+        .until(referenceYearMonths[(index + 1) & 7], {largestUnit: 'year'})
+        .toString(),
+  },
+  {
+    name: 'yearMonthToDate',
+    owned: (index: number) =>
+      yearMonths[index].toPlainDate({day: 31}).toString(),
+    reference: (index: number) =>
+      referenceYearMonths[index].toPlainDate({day: 31}).toString(),
+  },
+  {
+    name: 'monthDayToDate',
+    owned: (index: number) =>
+      monthDays[index].toPlainDate({year: 2024 + index}).toString(),
+    reference: (index: number) =>
+      referenceMonthDays[index].toPlainDate({year: 2024 + index}).toString(),
+  },
+  {
     name: 'yearMonthAdd',
     owned: (index: number) =>
       yearMonths[index].add({years: 1, months: 3}).toString(),
@@ -524,11 +601,11 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic and string parser JSON bridge optional, all16 calendars and IANA records bundled, date formatting and remaining short-date arithmetic TS. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic and string parser/date formatter/short-date JSON bridge optional, all16 calendars and IANA records bundled. JS retains object semantics, host and Intl integration. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
     backend: query
-      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings'
+      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format'
       : 'typescript',
     iterations,
     samples,

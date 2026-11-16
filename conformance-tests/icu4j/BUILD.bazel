@@ -767,3 +767,12 @@ genrule(
     tools = [":temporal_zoned_rounding_oracle"],
     visibility = ["//visibility:public"],
 )
+
+genrule(
+    name = "temporal_short_date_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-short-date-fixtures.js"],
+    cmd = "$(execpath :temporal_short_date_oracle) $@ --js",
+    tools = [":temporal_short_date_oracle"],
+    visibility = ["//visibility:public"],
+)

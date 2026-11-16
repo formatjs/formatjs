@@ -1,3 +1,4 @@
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
   getMonthDaySlot,
@@ -15,6 +16,7 @@ import {
   object,
   overflowOption,
   dayFromFields,
+  resolveCalendarYear,
 } from '#packages/temporal/date-core.js'
 import {
   createPlainDate,
@@ -126,6 +128,19 @@ class PlainMonthDayValue {
     if (!object(item)) throw new TypeError('Expected date fields')
     const prepared = readDateFields(item, false, false, 'year', slot.calendar),
       fields = dateFields(slot, true)
+    const native = nativeTemporal()
+    if (native)
+      return createPlainDate(
+        native.monthDayToDate(
+          slot,
+          resolveCalendarYear(slot.calendar, {
+            monthCode: fields.monthCode,
+            day: fields.day,
+            ...prepared,
+          })!
+        ),
+        slot.calendar
+      )
     return createPlainDate(
       dayFromFields(
         slot.calendar,

@@ -1,10 +1,10 @@
+import {checkDateOutputOracle} from '#packages/temporal/tests/date-output-oracle.js'
 import {it, expect} from 'vitest'
 import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal as fullReference} from 'temporal-polyfill/full/implementation'
 import {Temporal} from '#packages/temporal/index.js'
-import type {RoundingMode} from '#packages/temporal/rounding.js'
 
 it('does not observe array iteration while preparing builtin calendar fields', () => {
   const original = Array.prototype[Symbol.iterator]
@@ -33,70 +33,16 @@ it('does not observe array iteration while preparing builtin calendar fields', (
   expect(rounded!.toJSON()).toBe('P216M')
 })
 
-it('matches independent ICU arithmetic, metadata, reference years and calendar-span rounding', () => {
-  const path = runfiles.resolve(
-    `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-short-date-fixtures.tsv`
+it('matches independent ICU short dates and serialization controls', () => {
+  const fixture = readFileSync(
+    runfiles.resolve(
+      `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-short-date-fixtures.tsv`
+    ),
+    'utf8'
   )
-  let count = 0
-  for (const line of readFileSync(path, 'utf8').trim().split('\n')) {
-    if (line.startsWith('#')) continue
-    const fields = line.split('\t'),
-      values = fields.map(Number)
-    if (fields[0] === 'ym') {
-      const start = new Temporal.PlainYearMonth(
-        values[1],
-        values[2],
-        'iso8601',
-        values[3]
-      )
-      const run = () => start.add({years: values[4], months: values[5]})
-      if (fields[10] === 'false') expect(run, line).toThrow(RangeError)
-      else {
-        const actual = run()
-        expect(
-          [actual.year, actual.month, actual.daysInMonth, actual.daysInYear],
-          line
-        ).toEqual(values.slice(6, 10))
-        expect(
-          actual.equals(new Temporal.PlainYearMonth(values[6], values[7])),
-          line
-        ).toBe(true)
-      }
-    } else if (fields[0] === 'md') {
-      const start = new Temporal.PlainMonthDay(
-        values[1],
-        values[2],
-        'iso8601',
-        values[3]
-      )
-      const run = () => start.toPlainDate({year: values[4]})
-      if (fields[6] === 'false') expect(run, line).toThrow(RangeError)
-      else {
-        const actual = run()
-        expect([actual.year, actual.month, actual.day], line).toEqual([
-          values[4],
-          values[1],
-          values[5],
-        ])
-      }
-    } else {
-      const start = new Temporal.PlainYearMonth(values[1], values[2]),
-        end = new Temporal.PlainYearMonth(values[3], values[4])
-      const options = {
-        largestUnit: fields[5],
-        smallestUnit: fields[5],
-        roundingIncrement: values[6],
-        roundingMode: fields[7] as RoundingMode,
-      }
-      const until = start.until(end, options),
-        since = start.since(end, options)
-      expect(until.years * 12 + until.months, line).toBe(values[8])
-      expect(since.years * 12 + since.months, line).toBe(values[9])
-    }
-    count++
-  }
-  expect(count).toBeGreaterThan(2000)
-  console.log(`${count} independent ICU short-date cases`)
+  checkDateOutputOracle(Temporal, fixture, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
 })
 
 it('preserves reference fields, normalizes parsed strings and ignores public date overrides', () => {

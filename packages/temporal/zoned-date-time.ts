@@ -46,6 +46,7 @@ import {
   calendarFromObject,
   constructorCalendar,
   calendarAnnotation,
+  calendarNameOption,
   object,
   overflowOption,
   readDateFields,
@@ -557,7 +558,8 @@ function offsetText(slot: ZonedSlot): string {
 }
 function format(slot: ZonedSlot, options?: unknown): string {
   const resolved = optionsObject(options),
-    suffix = calendarAnnotation(slot.calendar, resolved.calendarName)
+    show = calendarNameOption(resolved.calendarName),
+    suffix = calendarAnnotation(slot.calendar, show)
   const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
   const offset = option(resolved.offset, 'auto', ['auto', 'never'])
   const mode = roundingMode(resolved.roundingMode, 'trunc'),
@@ -581,6 +583,16 @@ function format(slot: ZonedSlot, options?: unknown): string {
             : unit === 'nanosecond'
               ? 9
               : digits
+  const native = nativeTemporal()
+  if (native)
+    return native.formatZonedDateTime(
+      slot,
+      precision,
+      mode,
+      show,
+      offset !== 'never',
+      zoneName
+    )
   const quantum =
     precision === 'auto'
       ? 1n

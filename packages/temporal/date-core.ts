@@ -343,10 +343,16 @@ export function addDate(
   const result = addCalendarDate(calendar, dateFields(slot), duration, overflow)
   return calendarToEpochDay(calendar, result, 'reject')
 }
-export function calendarAnnotation(calendar: string, value: unknown): string {
+export function calendarNameOption(
+  value: unknown
+): 'auto' | 'always' | 'never' | 'critical' {
   const option = value === undefined ? 'auto' : ToString(value)
   if (!['auto', 'always', 'never', 'critical'].includes(option))
     throw new RangeError('Invalid calendarName')
+  return option as 'auto' | 'always' | 'never' | 'critical'
+}
+export function calendarAnnotation(calendar: string, value: unknown): string {
+  const option = calendarNameOption(value)
   return option === 'never' || (option === 'auto' && calendar === 'iso8601')
     ? ''
     : `[${option === 'critical' ? '!' : ''}u-ca=${calendar}]`

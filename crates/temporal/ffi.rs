@@ -388,6 +388,137 @@ fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+fn calendar_name(request: &Value) -> Result<crate::CalendarName, Error> {
+    match request["calendarName"].as_str() {
+        Some("auto") => Ok(crate::CalendarName::Auto),
+        Some("always") => Ok(crate::CalendarName::Always),
+        Some("never") => Ok(crate::CalendarName::Never),
+        Some("critical") => Ok(crate::CalendarName::Critical),
+        _ => Err(Error::InvalidDateTime),
+    }
+}
+fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
+    if op == "formatZonedDateTime" {
+        let value = zoned_value(&request["value"])?;
+        let options = crate::ZonedFormatOptions {
+            precision: precision(request)?,
+            rounding_mode: mode(request)?,
+            calendar_name: calendar_name(request)?,
+            offset: request["offset"].as_bool().ok_or(Error::InvalidDateTime)?,
+            time_zone_name: match request["timeZoneName"].as_str() {
+                Some("auto") => crate::TimeZoneName::Auto,
+                Some("never") => crate::TimeZoneName::Never,
+                Some("critical") => crate::TimeZoneName::Critical,
+                _ => return Err(Error::InvalidDateTime),
+            },
+        };
+        return Ok(json!(value.format(options)?.to_string()));
+    }
+    if op == "formatPlainDateTime" {
+        let calendar =
+            calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+        let value =
+            PlainDateTime::from_epoch_nanoseconds_in(decimal(request, "nanoseconds")?, calendar)?;
+        return Ok(json!(
+            value
+                .format(precision(request)?, mode(request)?)?
+                .with_calendar_name(calendar_name(request)?)
+                .to_string()
+        ));
+    }
+    let record = &request["value"];
+    let calendar =
+        calendars()?.resolve(record["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let epoch = integer(record.get("epochDay"), None)?;
+    let overflow = || -> Result<crate::Overflow, Error> {
+        Ok(match calendar_overflow(request)? {
+            Overflow::Constrain => crate::Overflow::Constrain,
+            Overflow::Reject => crate::Overflow::Reject,
+        })
+    };
+    match op {
+        "formatPlainDate" => Ok(json!(
+            PlainDate::from_epoch_day_in(epoch, calendar)?
+                .format(calendar_name(request)?)
+                .to_string()
+        )),
+        "formatPlainYearMonth" => Ok(json!(
+            PlainYearMonth::from_epoch_day_in(epoch, calendar)?
+                .format(calendar_name(request)?)
+                .to_string()
+        )),
+        "formatPlainMonthDay" => Ok(json!(
+            PlainMonthDay::from_epoch_day_in(epoch, calendar)?
+                .format(calendar_name(request)?)
+                .to_string()
+        )),
+        "addPlainYearMonth" => {
+            let value = PlainYearMonth::from_epoch_day_in(epoch, calendar)?;
+            let duration = duration(request)?;
+            let result = match request["subtract"].as_bool() {
+                Some(false) => value.checked_add(duration, overflow()?)?,
+                Some(true) => value.checked_subtract(duration, overflow()?)?,
+                None => return Err(Error::InvalidDuration),
+            };
+            Ok(json!(result.epoch_day()))
+        }
+        "differencePlainYearMonth" => {
+            let value = PlainYearMonth::from_epoch_day_in(epoch, calendar)?;
+            let other = &request["other"];
+            let other_calendar =
+                calendars()?.resolve(other["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+            let other = PlainYearMonth::from_epoch_day_in(
+                integer(other.get("epochDay"), None)?,
+                other_calendar,
+            )?;
+            let unit = |key: &str| -> Result<crate::YearMonthUnit, Error> {
+                match request[key].as_str() {
+                    Some("year") => Ok(crate::YearMonthUnit::Year),
+                    Some("month") => Ok(crate::YearMonthUnit::Month),
+                    _ => Err(Error::InvalidRoundingOptions),
+                }
+            };
+            let (largest, smallest, increment, mode) = (
+                unit("largest")?,
+                unit("smallest")?,
+                integer(request.get("increment"), None)?
+                    .try_into()
+                    .map_err(|_| Error::InvalidRoundingOptions)?,
+                mode(request)?,
+            );
+            let result = match request["since"].as_bool() {
+                Some(false) => value.until(other, largest, smallest, increment, mode)?,
+                Some(true) => value.since(other, largest, smallest, increment, mode)?,
+                None => return Err(Error::InvalidRoundingOptions),
+            };
+            Ok(duration_record(result))
+        }
+        "yearMonthToDate" => {
+            let value = PlainYearMonth::from_epoch_day_in(epoch, calendar)?;
+            let day = request["day"].as_f64().ok_or(Error::InvalidDateTime)?;
+            if !day.is_finite() || day.fract() != 0.0 || day < 1.0 {
+                return Err(Error::InvalidDateTime);
+            }
+            Ok(json!(
+                value
+                    .to_plain_date(day.min(255.0) as u8, crate::Overflow::Constrain)?
+                    .epoch_day()
+            ))
+        }
+        "monthDayToDate" => {
+            let value = PlainMonthDay::from_epoch_day_in(epoch, calendar)?;
+            let year = integer(request.get("year"), None)?
+                .try_into()
+                .map_err(|_| Error::OutOfRange)?;
+            Ok(json!(
+                value
+                    .to_plain_date(year, crate::Overflow::Constrain)?
+                    .epoch_day()
+            ))
+        }
+        _ => Err(Error::InvalidSyntax),
+    }
+}
 fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "resolveZonedDateTime" {
         let local = decimal(request, "nanoseconds")?;
@@ -996,12 +1127,21 @@ fn execute(request: Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings","calls":CALLS.load(Ordering::Relaxed),"operations":["parsePlainDate","parsePlainDateTime","parsePlainYearMonth","parsePlainMonthDay","parseZonedFields","resolveZonedDateTime","addZonedDateTime","differenceZonedDateTime","roundZonedDateTime","startOfZonedDay","hoursInZonedDay","addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format","calls":CALLS.load(Ordering::Relaxed),"operations":["addPlainYearMonth","differencePlainYearMonth","yearMonthToDate","monthDayToDate","formatPlainDate","formatPlainDateTime","formatPlainYearMonth","formatPlainMonthDay","formatZonedDateTime","parsePlainDate","parsePlainDateTime","parsePlainYearMonth","parsePlainMonthDay","parseZonedFields","resolveZonedDateTime","addZonedDateTime","differenceZonedDateTime","roundZonedDateTime","startOfZonedDay","hoursInZonedDay","addPlainDate","addPlainDateTime","differencePlainDate","differencePlainDateTime","roundPlainDateTime","transformDuration","parseDuration","validateDuration","formatDuration","addDuration","compareDuration","totalDuration","roundDuration","timeZoneIdentity","timeZoneOffset","timeZonePossibleInstants","timeZoneResolve","timeZoneTransition","calendarStartOfYear","calendarMonthsInYear","calendarDaysInMonth","calendarToEpochDay","calendarFromEpochDay","calendarAdd","calendarUntil","calendarMonthSerial","calendarEra","calendarYearFromEra","isoToEpochNanoseconds","epochNanosecondsToISO","addISODays","parsePlainTime","regulatePlainTime","formatPlainTime","addPlainTime","roundPlainTime","differencePlainTime","parseInstant","formatInstant","addInstant","roundInstant","differenceInstant"],"completeTemporalBackend":false}),
         );
     }
     if !matches!(
         op,
-        "parsePlainDate"
+        "addPlainYearMonth"
+            | "differencePlainYearMonth"
+            | "yearMonthToDate"
+            | "monthDayToDate"
+            | "formatPlainDate"
+            | "formatPlainDateTime"
+            | "formatPlainYearMonth"
+            | "formatPlainMonthDay"
+            | "formatZonedDateTime"
+            | "parsePlainDate"
             | "parsePlainDateTime"
             | "parsePlainYearMonth"
             | "parsePlainMonthDay"
@@ -1078,6 +1218,21 @@ fn execute(request: Value) -> Result<Value, i32> {
                 let days = integer(request.get("days"), None)?;
                 let value = origin + i128::from(days) * NANOSECONDS_PER_DAY;
                 Ok(record(IsoDateTime::from_epoch_nanoseconds(value)?))
+            }
+            _ if matches!(
+                op,
+                "addPlainYearMonth"
+                    | "differencePlainYearMonth"
+                    | "yearMonthToDate"
+                    | "monthDayToDate"
+                    | "formatPlainDate"
+                    | "formatPlainDateTime"
+                    | "formatPlainYearMonth"
+                    | "formatPlainMonthDay"
+                    | "formatZonedDateTime"
+            ) =>
+            {
+                date_output_operation(op, &request)
             }
             _ if matches!(
                 op,

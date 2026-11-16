@@ -90,7 +90,7 @@ function regulate(
   max: number,
   overflow: Overflow
 ): number {
-  integer(value)
+  if (!Number.isInteger(value)) throw new RangeError('Expected finite integer')
   if (overflow === 'reject' && (value < min || value > max))
     throw new RangeError('Calendar field out of range')
   return Math.min(Math.max(value, min), max)
