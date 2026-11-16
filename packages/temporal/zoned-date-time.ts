@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -910,24 +911,17 @@ Object.defineProperties(ZonedDateTimeValue.prototype, {
   constructor: {value: ZonedDateTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.ZonedDateTime', configurable: true},
 })
-for (const name of [...datePropertyNames, ...clockNames]) {
-  const descriptor = Object.getOwnPropertyDescriptor(
-    {
-      get [name]() {
-        const slot = read(this),
-          value = local(slot)
-        return (clockNames as readonly string[]).includes(name)
-          ? epochNanosecondsToISO(value)[name as (typeof clockNames)[number]]
-          : dateProperty(
-              {epochDay: epochDayOf(value), calendar: slot.calendar},
-              name
-            )
-      },
-    },
-    name
-  )!
-  Object.defineProperty(ZonedDateTimeValue.prototype, name, {
-    ...descriptor,
-    enumerable: false,
-  })
-}
+defineGetters(
+  ZonedDateTimeValue.prototype,
+  [...datePropertyNames, ...clockNames],
+  (receiver, name) => {
+    const slot = read(receiver),
+      value = local(slot)
+    return (clockNames as readonly string[]).includes(name)
+      ? epochNanosecondsToISO(value)[name as (typeof clockNames)[number]]
+      : dateProperty(
+          {epochDay: epochDayOf(value), calendar: slot.calendar},
+          name
+        )
+  }
+)

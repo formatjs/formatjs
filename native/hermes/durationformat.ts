@@ -76,15 +76,26 @@
     'nanoseconds',
   ]
   const readOrder = [3, 4, 8, 7, 5, 1, 9, 6, 2, 0]
-  const temporalDuration = root.Temporal?.Duration,
-    durationFrom = temporalDuration?.from
-  const temporalGetters: ((this: object) => number)[] = []
-  if (temporalDuration)
-    for (let index = 0; index < fields.length; index++)
-      temporalGetters[index] = getDescriptor(
-        temporalDuration.prototype,
-        fields[index]
-      )!.get!
+  const temporalReaders: {
+    constructor: any
+    from: Function
+    getters: ((this: object) => number)[]
+  }[] = []
+  function addTemporalNamespace(namespace: any): void {
+    const constructor = namespace?.Duration,
+      from = constructor?.from
+    if (typeof from !== 'function') return
+    for (let index = 0; index < temporalReaders.length; index++)
+      if (temporalReaders[index].constructor === constructor) return
+    const getters: ((this: object) => number)[] = []
+    for (let index = 0; index < fields.length; index++) {
+      const getter = getDescriptor(constructor.prototype, fields[index])?.get
+      if (typeof getter !== 'function') return
+      getters[index] = getter
+    }
+    temporalReaders[temporalReaders.length] = {constructor, from, getters}
+  }
+  addTemporalNamespace(root.Temporal)
   function check(status: number): void {
     if (status === 0) return
     if (status === 4) throw new BadReceiver('Invalid Intl.DurationFormat value')
@@ -188,14 +199,21 @@
     return value
   }
   function numbers(input: any): {values: number[]; defined: number} {
-    if (typeof input === 'string' && durationFrom)
-      input = apply(durationFrom, temporalDuration, [input])
+    if (typeof input === 'string' && temporalReaders.length) {
+      const reader = temporalReaders[temporalReaders.length - 1]
+      input = apply(reader.from, reader.constructor, [input])
+    }
     const values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     if (
       input !== null &&
       (typeof input === 'object' || typeof input === 'function')
     ) {
-      if (temporalGetters.length) {
+      for (
+        let readerIndex = 0;
+        readerIndex < temporalReaders.length;
+        readerIndex++
+      ) {
+        const temporalGetters = temporalReaders[readerIndex].getters
         let branded = false
         try {
           values[0] = apply(temporalGetters[0], input, [])
@@ -358,6 +376,7 @@
     property(prototype, names[index], methods[names[index]])
   property(prototype, Symbol.toStringTag, 'Intl.DurationFormat', false, false)
   property(DurationFormat, 'polyfilled', true)
+  property(DurationFormat, '__addTemporalNamespace', addTemporalNamespace)
   const available = create(null)
   available.get = methods.getAvailableLocales
   available.configurable = true

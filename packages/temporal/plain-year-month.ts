@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -382,28 +383,19 @@ Object.defineProperties(PlainYearMonthValue.prototype, {
   constructor: {value: PlainYearMonth, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.PlainYearMonth', configurable: true},
 })
-for (const name of [
-  'calendarId',
-  'era',
-  'eraYear',
-  'year',
-  'month',
-  'monthCode',
-  'daysInMonth',
-  'daysInYear',
-  'monthsInYear',
-  'inLeapYear',
-]) {
-  const descriptor = Object.getOwnPropertyDescriptor(
-    {
-      get [name]() {
-        return dateProperty(read(this), name, true)
-      },
-    },
-    name
-  )!
-  Object.defineProperty(PlainYearMonthValue.prototype, name, {
-    ...descriptor,
-    enumerable: false,
-  })
-}
+defineGetters(
+  PlainYearMonthValue.prototype,
+  [
+    'calendarId',
+    'era',
+    'eraYear',
+    'year',
+    'month',
+    'monthCode',
+    'daysInMonth',
+    'daysInYear',
+    'monthsInYear',
+    'inLeapYear',
+  ],
+  (receiver, name) => dateProperty(read(receiver), name, true)
+)

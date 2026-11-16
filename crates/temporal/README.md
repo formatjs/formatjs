@@ -647,3 +647,36 @@ wins five of eight cases. WASM loses all eight against TS on V8. Consumer gzip:
 TS 361,460 bytes; WASM JS +binary 805,972, including retained fallback packs.
 See the date-output snapshots and `benchmarks/temporal/README.md` for all timings,
 reference comparisons and startup/size scope. Backend remains hybrid.
+
+## Hermes SDK host integration
+
+The optional SDK adapter now exposes `formatjs::installTemporal(runtime, host)`.
+Install Intl first. The host supplies its current IANA timezone identifier and may
+supply decimal epoch nanoseconds; the default uses the C++ system wall clock with
+millisecond precision. Providers stay isolated per runtime and live until runtime
+teardown. Repeated installation does nothing. The SDK uses the existing unified
+Rust archive. CMake consumers opt in with `formatjs_temporal(target)` after
+`formatjs_intl(target)`; Bazel consumers link `:temporal` alongside `:intl`.
+
+A shared accessor factory fixes getter captures when Hermes block scoping is off.
+The default-runtime C++ test independently exercises these getters, non-UTC Now,
+clock bounds, captured intrinsics and provider lifetime. Test262 still enables
+block scoping for test-language features. DateTimeFormat and DurationFormat accept
+late Temporal registration, including existing formatter instances, private brands
+and duration strings. Public field/format overrides do not replace private reads.
+
+Validation: 91 regression targets pass. Direct SDK class gates add 9,090 executions
+per source/HBC mode, plus calendar/Now/installation gates, to the prior TS, WASM and
+experimental bridge coverage. SDK Now matches 17,640 independent ICU offset rows,
+including post-2100 rules. Native formatter regressions compare 9,440 DateTimeFormat
+and 3,663 DurationFormat cases per mode with TS. The extracted SDK's independent
+Linux consumer passes both source/HBC setup paths without a Rust toolchain.
+No new exclusions. Native Intl Temporal conformance and completion audit remain open.
+
+Actual SDK hot-operation benchmarks vary: zoned formatting measures 9.17
+microseconds against TS 33.06 and reference 13.47; repeated calendar getters are
+slower than both. WASM consumer gzip: 361,482 bytes
+for TS versus 805,994 for WASM JS +binary, including
+fallback packs. The stripped native app adds 6,865,280 raw
+/838,100 gzip bytes over the identical Intl/Hermes baseline.
+See SDK-host snapshots and `benchmarks/temporal/README.md` for methods and limits.

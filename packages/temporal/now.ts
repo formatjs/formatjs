@@ -81,6 +81,7 @@ export function createNow(clock: SystemClock): NowObject {
 }
 
 const HostDate = Date,
+  toBigInt = BigInt,
   hostNow = Date.now,
   hostOffset = Function.prototype.call.bind(Date.prototype.getTimezoneOffset),
   HostDateTimeFormat = globalThis.Intl?.DateTimeFormat,
@@ -88,8 +89,8 @@ const HostDate = Date,
     HostDateTimeFormat &&
     Function.prototype.call.bind(HostDateTimeFormat.prototype.resolvedOptions)
 
-export const Now: NowObject = createNow({
-  epochNanoseconds: () => BigInt(hostNow()) * 1_000_000n,
+let systemClock: SystemClock = {
+  epochNanoseconds: () => toBigInt(hostNow()) * 1_000_000n,
   timeZoneId() {
     if (HostDateTimeFormat && hostResolvedOptions)
       return hostResolvedOptions(new HostDateTimeFormat()).timeZone
@@ -104,4 +105,13 @@ export const Now: NowObject = createNow({
       String(absolute % 60).padStart(2, '0')
     )
   },
+}
+
+export function configureSystemClock(clock: SystemClock): void {
+  systemClock = clock
+}
+
+export const Now: NowObject = createNow({
+  epochNanoseconds: () => systemClock.epochNanoseconds(),
+  timeZoneId: () => systemClock.timeZoneId(),
 })

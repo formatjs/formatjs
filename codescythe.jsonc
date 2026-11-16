@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/perplexityai/codescythe/main/codescythe.schema.json",
   "entry": [
+    "native/hermes/temporal.ts",
     "packages/temporal/index.ts",
     "packages/temporal/wasm.ts",
     "packages/temporal/tests/wasm-prelude.ts",
@@ -141,6 +142,7 @@
     "benchmarks/**/*.ts",
   ],
   "project": [
+    "native/hermes/temporal.ts",
     "packages/**/*.{ts,tsx}",
     "tools/**/*.ts",
     "docs/**/*.{ts,tsx}",

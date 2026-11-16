@@ -12,6 +12,7 @@ formatjs_library(
     name = "temporal",
     package_name = "@formatjs/temporal",
     srcs = [
+        "accessors.ts",
         "calendar.ts",
         "calendar-table.ts",
         "date-bridge.ts",
@@ -1695,7 +1696,7 @@ sh_test(
 
 [
     sh_test(
-        name = "native_iso_hermes_" + suite + "_" + mode + "_test262",
+        name = ("sdk_hermes_" if backend == "sdk" else "native_iso_hermes_") + suite + "_" + mode + "_test262",
         size = "medium",
         timeout = "long" if suite == "calendars" else "moderate",
         srcs = ["tests/hermes-test262.sh"],
@@ -1703,15 +1704,15 @@ sh_test(
             "$(rootpath :instant_hermes_harness)",
             "$(rootpath tests/hermes-host.sh)",
             "$(rootpath //native/hermes:hermes_runner)",
-            "$(rootpath native-iso-payload.js)",
+            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath native-iso-payload.js)",
             mode,
             "$(rootpath @hermes//:hermesc)",
             "$(rootpath %s)" % baseline,
             "$(rootpath //tools/test262:validator)",
-            "Temporal.rustISO." + suite,
+            "Temporal." + backend + "." + suite,
         ] + patterns,
         data = [
-            "native-iso-payload.js",
+            "tests/sdk-prelude.js" if backend == "sdk" else "native-iso-payload.js",
             "tests/hermes-host.sh",
             baseline,
             ":instant_hermes_harness",
@@ -1723,8 +1724,9 @@ sh_test(
         ],
         env = {
             "TZ": "UTC",
+        } | ({"FORMATJS_TEMPORAL_SDK": "1"} if backend == "sdk" else {
             "FORMATJS_TEMPORAL_RUST_ISO": "1",
-        },
+        }),
     )
     for suite, patterns, baseline in [
         (
@@ -1770,6 +1772,10 @@ sh_test(
         ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
         ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
         ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+    ]
+    for backend in [
+        "rustISO",
+        "sdk",
     ]
     for mode in [
         "source",

@@ -1078,3 +1078,74 @@ WASM retains duplicate native packs and TS fallback data. Compile/instantiate:
 1.77/1.60 ms. Hot timings exclude startup; first-use measurements remain in the
 snapshot, after JS/TS warmup. Native Now host integration, Hermes SDK distribution,
 native Intl integration and full-backend artifact comparisons remain required.
+
+## SDK host providers and default Hermes
+
+`hermes-sdk-host-results.json`, `wasm-sdk-host-results.json`,
+`sdk-host-backend-size-results.json` and `native-sdk-host-size-results.json`
+record the current 43-workload comparison and delivered bytes. All six Hermes
+profiles pass exact output parity for eight varying inputs and share one checksum.
+The new SDK profile uses the actual installed namespace without the runner-only
+query callback. Reference: `temporal-polyfill` 1.0.7 basic. Throughput uses ISO;
+all16 calendar packs and owned IANA records remain included.
+
+Hermes optimized-workload medians, microseconds/call. Each profile uses a separate
+process, 1,000 warmup calls and five batches of 5,000. SDK facade setup evaluates
+embedded source in both workload modes; only the benchmark workload is precompiled.
+Unused imported TS initialization is outside hot timing. These are hot-operation
+results, not SDK startup/heap measurements. Reference values below come from the
+SDK process. Native en/number locale and owned timezone packs serve the reference.
+
+| Operation       |    TS | Rust bridge |   SDK | Reference |
+| --------------- | ----: | ----------: | ----: | --------: |
+| parse           |  9.12 |        3.40 |  4.15 |     17.34 |
+| format          |  8.89 |        7.95 |  8.87 |      9.50 |
+| dateFields      | 22.57 |       41.30 | 50.37 |      1.97 |
+| dateTimeFormat  | 20.85 |        5.17 |  6.79 |      7.04 |
+| zonedFormat     | 33.06 |        7.31 |  9.17 |     13.47 |
+| yearMonthUntil  | 55.36 |       26.48 | 31.62 |     13.44 |
+| yearMonthToDate | 17.01 |        5.95 |  7.54 |      8.08 |
+| monthDayToDate  | 16.43 |       11.18 | 14.83 |      7.89 |
+
+SDK results vary. DateTime/zoned formatting beats TS and the reference here;
+repeated calendar getters lose to both because each property crosses JSON.
+Source and full 43-workload results remain in the snapshot. The experimental
+bridge and SDK also differ in facade compilation, so report them separately.
+
+V8 medians, microseconds/call. Same-process TS/WASM/reference order, 3,000 warmup
+calls and seven batches of 10,000. Transition cases retain 128 warmup/512 calls
+on both engines. Host Node Intl serves the V8 reference.
+
+| Operation       |   TS |  WASM | Reference |
+| --------------- | ---: | ----: | --------: |
+| parse           | 1.67 |  3.13 |      2.92 |
+| format          | 0.67 |  7.13 |      1.50 |
+| dateFields      | 2.52 | 44.89 |      0.45 |
+| dateTimeFormat  | 1.15 |  5.15 |      2.29 |
+| zonedFormat     | 2.30 |  7.09 |      2.53 |
+| yearMonthUntil  | 5.76 | 24.50 |     24.74 |
+| yearMonthToDate | 3.65 |  7.64 |      2.34 |
+| monthDayToDate  | 2.59 | 12.44 |      2.46 |
+
+WASM consumer gzip: TS 361,482 bytes versus
+JS 364,417 +binary 441,577
+=805,994. Separate ESM: TS
+363,765 versus WASM
+806,146. Binary raw:
+3,416,379. WASM retains TS fallback algorithms/data.
+
+The independent SDK consumer builds fully stripped Linux executables with an
+identical Hermes/all-twelve-Intl baseline and default compiled locale selection.
+Temporal adds 6,865,280 raw /838,100 gzip bytes.
+Both complete binaries are large because they include the default Intl locale
+data: baseline 462,449,568 raw
+/84,348,084 gzip; with Temporal
+469,314,848 raw
+/85,186,184 gzip. Locale selection changes
+that baseline. This is an incremental app-size profile, separate from standalone
+JS modules and the multi-architecture SDK download. `readelf` verifies no symbol
+or debug tables. Commands and exact scope remain in the snapshot.
+
+Final benchmark commands ran serially after regression/native-size checks on one
+host. No default-backend recommendation follows from these partial profiles.
+Native Intl Temporal conformance and the full completion audit remain open.

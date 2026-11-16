@@ -5,7 +5,79 @@ load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:index.bzl", "ts_run_binary")
-load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+
+ts_project(
+    name = "temporal_typecheck",
+    srcs = ["temporal.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = ["//packages/temporal:types"],
+)
+
+rolldown_bundle(
+    name = "temporal_bundle",
+    srcs = ["temporal.ts"],
+    entry_point = "temporal.ts",
+    format = "iife",
+    global_name = "FormatJSTemporalInstaller",
+    target = "es2022",
+    deps = ["//packages/temporal:lib"],
+)
+
+genrule(
+    name = "temporal_wrapper_source",
+    srcs = [":temporal_bundle.js"],
+    outs = ["temporal.inc"],
+    cmd = "printf 'R\"FJSTEMPORAL(' > $@; cat $< >> $@; printf ')FJSTEMPORAL\"' >> $@",
+    visibility = ["//native/hermes/package:__pkg__"],
+)
+
+cc_library(
+    name = "temporal",
+    srcs = [
+        "temporal.cpp",
+        ":temporal_wrapper_source",
+    ],
+    hdrs = ["temporal.h"],
+    copts = [
+        "-std=c++17",
+        "-fexceptions",
+    ],
+    include_prefix = "formatjs/hermes",
+    includes = ["."],
+    strip_include_prefix = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":bridge",
+        "//crates/intl_hermes",
+        "//crates/temporal:headers",
+        "@hermes//:headers",
+    ],
+)
+
+cc_test(
+    name = "temporal_test",
+    size = "small",
+    srcs = ["temporal.test.cpp"],
+    args = [
+        "$(rootpath //crates/intl_datetimeformat:locale-data/en.json)",
+        "$(rootpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+    ],
+    copts = ["-std=c++17"],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//crates/intl_datetimeformat:locale-data/en.json",
+    ],
+    deps = [
+        ":canonical_locales",
+        ":datetimeformat",
+        ":temporal",
+        "@hermes//:hermes_vm",
+    ],
+)
 
 cc_library(
     name = "bridge",
@@ -51,6 +123,8 @@ ts_project(
 exports_files(
     [
         "version.txt",
+        "temporal.cpp",
+        "temporal.h",
         "intl.cpp",
         "intl.h",
         "bridge.h",
@@ -274,6 +348,7 @@ cc_binary(
         ":relativetimeformat",
         ":segmenter",
         ":supported_values",
+        ":temporal",
         "//crates/temporal:headers",
     ],
 )

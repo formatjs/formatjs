@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
@@ -404,17 +405,6 @@ Object.defineProperties(PlainDateValue.prototype, {
   constructor: {value: PlainDate, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.PlainDate', configurable: true},
 })
-for (const name of datePropertyNames) {
-  const descriptor = Object.getOwnPropertyDescriptor(
-    {
-      get [name]() {
-        return dateProperty(read(this), name)
-      },
-    },
-    name
-  )!
-  Object.defineProperty(PlainDateValue.prototype, name, {
-    ...descriptor,
-    enumerable: false,
-  })
-}
+defineGetters(PlainDateValue.prototype, datePropertyNames, (receiver, name) =>
+  dateProperty(read(receiver), name)
+)

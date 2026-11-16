@@ -1,7 +1,7 @@
 import en from '../../crates/intl_datetimeformat/locale-data/en.json' with {type: 'json'}
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {zonedInputs} from './zoned-inputs.ts'
-import {Temporal} from '#packages/temporal/index.js'
+import {Temporal as ownedTemporal} from '#packages/temporal/index.js'
 import {
   configureNativeTemporal,
   type NativeQuery,
@@ -12,7 +12,11 @@ declare function print(value: string): void
 declare const performance: {now(): number}
 const host = globalThis as typeof globalThis & {
   __formatjsTemporalISOQuery?: NativeQuery
+  __formatjsTemporalSDK?: boolean
+  Temporal?: typeof ownedTemporal
 }
+const sdk = host.__formatjsTemporalSDK === true
+const Temporal = sdk ? host.Temporal! : ownedTemporal
 const query = host.__formatjsTemporalISOQuery
 if (query) {
   configureNativeTemporal(query)
@@ -601,12 +605,14 @@ const results = cases.map(test => {
 print(
   JSON.stringify({
     scope:
-      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic and string parser/date formatter/short-date JSON bridge optional, all16 calendars and IANA records bundled. JS retains object semantics, host and Intl integration. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Not complete native Temporal or WASM comparison.',
+      'Public Instant/PlainTime/ISO-date/PlainDateTime/zoned/Duration workloads; Rust ISO/Instant/PlainTime/calendar/timezone/Duration/plain/zoned arithmetic and string parser/date formatter/short-date JSON bridge optional, all16 calendars and IANA records bundled. JS retains object semantics, host and Intl integration. Reference temporal-polyfill 1.0.7 basic implementation. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Zoned cases include gaps/folds/half-hour and skipped-day changes. Transition cases use512 iterations and128 warmup. Optional SDK profile uses the actual installed namespace. Partial backend, not a complete native Temporal or WASM comparison.',
     intlProvider:
       'FormatJS native DateTimeFormat with registered en locale and owned IANA data',
-    backend: query
-      ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format'
-      : 'typescript',
+    backend: sdk
+      ? 'hermes-sdk'
+      : query
+        ? 'rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format'
+        : 'typescript',
     iterations,
     samples,
     warmup,

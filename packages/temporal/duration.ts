@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDuration} from '#packages/temporal/locale.js'
 import {formatDuration} from '#packages/temporal/duration-format.js'
@@ -357,17 +358,11 @@ export const Duration: DurationConstructor = new Proxy(DurationValue, {
     return value
   },
 }) as unknown as DurationConstructor
-for (const field of durationFieldNames) {
-  const accessor = {
-    get [field](): number {
-      return read(this)[field]
-    },
-  }
-  Object.defineProperty(DurationValue.prototype, field, {
-    get: Object.getOwnPropertyDescriptor(accessor, field)!.get,
-    configurable: true,
-  })
-}
+defineGetters(
+  DurationValue.prototype,
+  durationFieldNames,
+  (receiver, field) => read(receiver)[field]
+)
 Object.defineProperties(DurationValue.prototype, {
   constructor: {value: Duration, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Duration', configurable: true},

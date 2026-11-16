@@ -67,8 +67,10 @@
   }
   const slots = new WeakMap<object, Slot>()
   const callbacks = create(null)
-  const temporal = root.Temporal
   const readers: {kind: string; read: Function}[] = []
+  const namespaces = new WeakSet<object>()
+  const hasNamespace = WeakSet.prototype.has,
+    addNamespace = WeakSet.prototype.add
   const kinds = [
     'PlainDate',
     'PlainYearMonth',
@@ -78,7 +80,13 @@
     'Instant',
     'ZonedDateTime',
   ]
-  if (temporal) {
+  function addTemporalNamespace(temporal: any): void {
+    if (
+      temporal === null ||
+      (typeof temporal !== 'object' && typeof temporal !== 'function') ||
+      apply(hasNamespace, namespaces, [temporal])
+    )
+      return
     for (let index = 0; index < kinds.length; index++) {
       const kind = kinds[index]
       const prototype = temporal[kind]?.prototype
@@ -95,7 +103,9 @@
           : reader?.value
       if (typeof read === 'function') readers[readers.length] = {kind, read}
     }
+    apply(addNamespace, namespaces, [temporal])
   }
+  addTemporalNamespace(root.Temporal)
   const plainOptions = create(null)
   plainOptions.calendarName = 'always'
   function property(
@@ -603,6 +613,7 @@
   available.configurable = true
   define(DateTimeFormat, 'availableLocales', available)
   property(DateTimeFormat, 'calendarData', create(null))
+  property(DateTimeFormat, '__addTemporalNamespace', addTemporalNamespace)
   property(DateTimeFormat, 'polyfilled', true)
   property(DateTimeFormat, 'relevantExtensionKeys', ['nu', 'ca', 'hc'])
   property(DateTimeFormat, 'length', 0, false)

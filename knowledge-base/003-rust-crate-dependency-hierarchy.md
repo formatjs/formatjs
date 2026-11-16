@@ -692,3 +692,9 @@ records too. Checked table constructors validate packs once when creating a
 context. Runtime views remain borrowed/no_std/allocation-free, without serde or
 formatter dependencies. Context string factories select all 16 calendars. Native
 ICU calendar tests now use this registry rather than a test-only JSON loader.
+
+The experimental Temporal SDK adapter links the same `intl_hermes` archive and its
+Bazel-only Temporal ABI exports. It embeds the TS facade, preserving coercion and
+brands while Rust owns numeric/calendar/timezone operations. Per-runtime host
+providers supply Now's clock and timezone. The prebuilt SDK includes this optional
+adapter; the published Cargo SDK source graph still excludes private Temporal.

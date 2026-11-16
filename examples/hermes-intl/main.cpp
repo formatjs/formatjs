@@ -1,4 +1,5 @@
 #include <formatjs/hermes/intl.h>
+#include <formatjs/hermes/temporal.h>
 #include <formatjs/hermes/canonical_locales.h>
 #include <formatjs/hermes/intl_locale.h>
 #include <formatjs/hermes/intl_listformat.h>
@@ -271,6 +272,26 @@ int main(int argc, char **argv) {
         equal(new Intl.DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'}).format(0), '1970');
         equal(new Intl.DurationFormat('en', {style: 'digital'}).format({hours: 1, minutes: 2, seconds: 3}), '1:02:03');
       )JS"), "formatjs:all-intl-sdk-smoke");
+      formatjs::installTemporal(*installationRuntime, {
+          [] { return "Asia/Kathmandu"; },
+          [] { return "1583649000000000000"; },
+      });
+      formatjs::installTemporal(*installationRuntime, {});
+      installationRuntime->evaluateJavaScript(std::make_shared<facebook::jsi::StringBuffer>(R"JS(
+        equal(Temporal.Now.timeZoneId(), 'Asia/Kathmandu');
+        equal(Temporal.Now.plainDateTimeISO().toString(), '2020-03-08T12:15:00');
+        equal(Temporal.PlainDate.from('2020-02-29').day, 29);
+        equal(new Temporal.Duration(1, 2, 3, 4, 5).hours, 5);
+        equal(new Intl.DateTimeFormat('en', {year:'numeric',timeZone:'UTC'}).format(Temporal.PlainDate.from('2020-02-29')), '2020');
+        equal(new Intl.DurationFormat('en', {style:'digital'}).format('PT1H2M3S'), '1:02:03');
+        const duration = Temporal.Duration.from('PT1H2M3S');
+        Object.defineProperty(duration, 'hours', {get() { throw new Error('Public duration field observed'); }});
+        equal(new Intl.DurationFormat('en', {style:'digital'}).format(duration), '1:02:03');
+        const date = Temporal.PlainDate.from('2020-02-29');
+        date.toString = function () { throw new Error('Public date formatter observed'); };
+        equal(new Intl.DateTimeFormat('en', {year:'numeric',timeZone:'UTC'}).format(date), '2020');
+        if (Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery')) throw new Error('Runner-only Temporal dependency');
+      )JS"), "formatjs:temporal-sdk-smoke");
       std::cout << "Hermes SDK all-Intl " << (precompiled ? "bytecode" : "source") << " passed\n";
     }
 

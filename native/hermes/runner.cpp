@@ -10,6 +10,7 @@
 #include <formatjs/hermes/intl_datetimeformat.h>
 #include <formatjs/hermes/intl_durationformat.h>
 #include <formatjs/hermes/supported_values.h>
+#include <formatjs/hermes/temporal.h>
 
 #include <hermes/hermes.h>
 #include "bridge.h"
@@ -91,6 +92,13 @@ int main(int argc, char **argv) {
     formatjs::installCanonicalLocales(rt);
     while (firstScript < argc) {
       const std::string flag(argv[firstScript]);
+      if (flag.rfind("--native-temporal=", 0) == 0) {
+        const auto zone = flag.substr(18);
+        formatjs::installTemporal(rt, {[zone] { return zone; }, {}});
+        rt.global().setProperty(rt, "__formatjsTemporalSDK", true);
+        ++firstScript;
+        continue;
+      }
       if (flag == "--native-durationformat") {
         formatjs::installDurationFormat(rt);
         ++firstScript;

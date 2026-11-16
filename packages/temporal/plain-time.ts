@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -391,18 +392,8 @@ Object.defineProperties(PlainTimeValue.prototype, {
   constructor: {value: PlainTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.PlainTime', configurable: true},
 })
-for (let index = 0; index < names.length; index++) {
-  const name = names[index]
-  const descriptor = Object.getOwnPropertyDescriptor(
-    {
-      get [name]() {
-        return fields(read(this))[index]
-      },
-    },
-    name
-  )!
-  Object.defineProperty(PlainTimeValue.prototype, name, {
-    ...descriptor,
-    enumerable: false,
-  })
-}
+defineGetters(
+  PlainTimeValue.prototype,
+  names,
+  (receiver, _name, index) => fields(read(receiver))[index]
+)

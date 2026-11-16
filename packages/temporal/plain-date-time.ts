@@ -1,3 +1,4 @@
+import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
@@ -500,24 +501,17 @@ Object.defineProperties(PlainDateTimeValue.prototype, {
   constructor: {value: PlainDateTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.PlainDateTime', configurable: true},
 })
-for (const name of [...datePropertyNames, ...clockNames]) {
-  const descriptor = Object.getOwnPropertyDescriptor(
-    {
-      get [name]() {
-        const slot = read(this),
-          index = (clockNames as readonly string[]).indexOf(name)
-        return index < 0
-          ? dateProperty(dateSlot(slot), name)
-          : Number(
-              (timeOf(slot.epochNanoseconds) / clockFactors[index]) %
-                BigInt(clockBounds[index] + 1)
-            )
-      },
-    },
-    name
-  )!
-  Object.defineProperty(PlainDateTimeValue.prototype, name, {
-    ...descriptor,
-    enumerable: false,
-  })
-}
+defineGetters(
+  PlainDateTimeValue.prototype,
+  [...datePropertyNames, ...clockNames],
+  (receiver, name) => {
+    const slot = read(receiver),
+      index = (clockNames as readonly string[]).indexOf(name)
+    return index < 0
+      ? dateProperty(dateSlot(slot), name)
+      : Number(
+          (timeOf(slot.epochNanoseconds) / clockFactors[index]) %
+            BigInt(clockBounds[index] + 1)
+        )
+  }
+)

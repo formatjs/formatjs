@@ -1425,5 +1425,66 @@
       "native Intl brand/styles/range integration",
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
+  },
+  "hermesSDKHost": {
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 9,
+    "nativeOperations": 62,
+    "installer": "formatjs::installTemporal(runtime, TemporalHost)",
+    "distribution": "Optional Bazel/CMake SDK adapter, same unified Rust archive. Standalone extracted SDK consumer validated on Linux; desktop archive includes Linux and both macOS Rust architectures. Cargo SDK source graph remains separate.",
+    "systemClock": "Required current IANA timezone callback; optional decimal nanoseconds callback. Default C++ system wall clock has millisecond precision. Callback state is isolated per runtime and retained until runtime teardown.",
+    "defaultHermesRuntime": "Unflagged C++ installer test verifies non-UTC Now, getter captures, repeated install, existing formatter instances, callback lifetime, captured intrinsics and bounds. Full Test262 hosts still enable ES6 block scoping for test-language features.",
+    "backendSelection": "Direct SDK suites use actual installed namespace and reject runner-only __formatjsTemporalISOQuery dependency.",
+    "test262": {
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "defaultTypeScriptYearMonthExecutions": 1022,
+      "defaultTypeScriptMonthDayExecutions": 398
+    },
+    "sdkTest262Modes": ["Hermes source", "Hermes optimized bytecode"],
+    "icuNowOffsetRows": 17640,
+    "nativeFormatterRegression": {
+      "dateTimeFormat": {
+        "casesPerMode": 9440,
+        "assertionsPerMode": 40264
+      },
+      "durationFormat": {
+        "casesPerMode": 3663,
+        "assertionsPerMode": 38602
+      },
+      "reference": "TypeScript implementation, separate from independent ICU controls"
+    },
+    "standaloneConsumer": "Source/HBC Intl setup, then actual SDK Temporal installer: non-UTC Now, private Date/Duration brands despite public overrides, duration strings and repeated installation. No Rust toolchain needed by consumer.",
+    "regressionTargets": 91,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native Intl Temporal corpus, including styles, ranges and extreme civil dates",
+      "current specification and completion audit",
+      "equivalent full-backend artifact/performance assessment"
+    ],
+    "customClockPrecision": "Decimal nanoseconds remain exact through host callbacks; tested beyond binary64 integer precision.",
+    "benchmarkSnapshots": [
+      "benchmarks/temporal/hermes-sdk-host-results.json",
+      "benchmarks/temporal/wasm-sdk-host-results.json",
+      "benchmarks/temporal/sdk-host-backend-size-results.json",
+      "benchmarks/temporal/native-sdk-host-size-results.json"
+    ]
   }
 }

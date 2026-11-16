@@ -26,6 +26,16 @@ export function installTemporal(force = false): void {
       })
     | undefined
   Formatter?.__addTemporalNamespace?.(target.Temporal)
+  const DurationFormatter = (
+    globalThis.Intl as
+      | (typeof Intl & {
+          DurationFormat?: {
+            __addTemporalNamespace?: (namespace: TemporalNamespace) => void
+          }
+        })
+      | undefined
+  )?.DurationFormat
+  DurationFormatter?.__addTemporalNamespace?.(target.Temporal)
   configureLocaleFormatting()
   if (replace || typeof date.toTemporalInstant !== 'function') {
     const Constructor = target.Temporal.Instant
