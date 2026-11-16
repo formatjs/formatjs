@@ -1401,3 +1401,11 @@ The runtime fix recovers Chinese/Dangi formatting at valid Date bounds and rejec
 reversed fallback ranges. Shared boundary controls pass on TS, both WASM entries
 and Hermes source/HBC. All 53 final conformance/boundary gates pass. This does not
 close the remaining host timezone data mismatch or Rust public conversion audit.
+
+## Rust PlainDate zoned conversion
+
+`rust-date-zoned-backend-size-results.json` refreshes size after extracting the
+shared day-boundary algorithm for the typed Rust API. TS and standalone module
+graphs remain 70,443/338,952 bytes gzip. Native-data WASM totals 481,666; hybrid
+514,345, including the 443,098-byte gzip binary. No new throughput claim.
+Twelve focused regression targets pass, including 7,216 zoned Test262 executions.

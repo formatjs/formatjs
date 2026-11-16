@@ -1602,3 +1602,8 @@ algorithm; explicit time uses compatible resolution. Providers need not implemen
 Clone. A cross-midnight 24-hour gap distinguishes earliest-day conversion from
 resolving midnight and then taking that result's start of day. Controls include
 5,292 independent ICU day boundaries, Apia's skipped date and exact Instant bounds.
+
+All twelve focused Rust/WASM/Hermes regression targets pass, including 7,216 zoned
+Test262 executions across four profiles. `rust-date-zoned-backend-size-results.json`
+refreshes sizes: TS remains 70,443 bytes gzip; native-data WASM totals 481,666,
+including its 443,098-byte binary. This is a size refresh, not a new timing run.

@@ -202,7 +202,7 @@ Full Temporal/Intl compliance remains incomplete.
 
 Current separately compressed module graphs measure 70,443 bytes gzip for default
 and 338,952 for standalone. Both include compact IANA histories. Native-data WASM
-glue plus binary measures 481,746 bytes gzip. On 43 measured ISO workload medians,
+glue plus binary measures 481,666 bytes gzip. On 43 measured ISO workload medians,
 both WASM profiles trail TS. Full host-Intl reference bundle measures 23,226 bytes;
 data policies differ. Host Intl is an allowed runtime dependency.
 See benchmarks/temporal for versioned methods, scopes and results.

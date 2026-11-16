@@ -1944,6 +1944,10 @@
       "Exact Instant bounds and out-of-range dates"
     ],
     "abiVersion": 9,
-    "normalizedOperations": 62
+    "normalizedOperations": 62,
+    "regressionTargets": 12,
+    "test262ExecutionsAcrossFourProfiles": 7216,
+    "failures": 0,
+    "sizeSnapshot": "benchmarks/temporal/rust-date-zoned-backend-size-results.json"
   }
 }
