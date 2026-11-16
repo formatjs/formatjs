@@ -23,7 +23,7 @@ type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
-const nativeParts = globalThis.Intl?.DateTimeFormat.prototype.formatToParts
+const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   return value.plain === true && Math.abs(value.milliseconds) > limit

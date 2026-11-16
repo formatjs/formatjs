@@ -1,6 +1,6 @@
 use crate::{
     CalendarProvider, DateTimeFields, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY,
-    OffsetInput, OffsetOption, Overflow, PlainDateTime, ZonedParseOptions,
+    OffsetInput, OffsetOption, Overflow, PlainDateTime, PlainTime, ZonedParseOptions,
 };
 
 #[derive(Clone, Copy, Debug, Default)]
@@ -114,6 +114,9 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     pub const fn time_zone(&self) -> &Z {
         &self.time_zone
     }
+    pub fn with_time_zone<T: TimeZone>(&self, time_zone: T) -> ZonedDateTime<T, C> {
+        ZonedDateTime::new_in_calendar(self.instant, time_zone, self.calendar)
+    }
     pub fn local(&self) -> Result<PlainDateTime<C>, Error> {
         PlainDateTime::from_epoch_nanoseconds_in(
             self.instant.epoch_nanoseconds() + self.time_zone.offset_nanoseconds(self.instant),
@@ -164,6 +167,17 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
     pub fn with_calendar<D: CalendarProvider>(&self, calendar: D) -> ZonedDateTime<Z, D> {
         ZonedDateTime::new_in_calendar(self.instant, self.time_zone.clone(), calendar)
+    }
+    pub fn with_time(&self, time: Option<PlainTime>) -> Result<Self, Error> {
+        match time {
+            None => self.start_of_day(),
+            Some(time) => Self::from_local_in_calendar(
+                self.local()?.with_time(time)?.fields(),
+                self.time_zone.clone(),
+                Disambiguation::Compatible,
+                self.calendar,
+            ),
+        }
     }
     pub fn start_of_day(&self) -> Result<Self, Error> {
         let day = self.local()?.date().epoch_day();

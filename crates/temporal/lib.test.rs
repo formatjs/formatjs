@@ -1,6 +1,79 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn zoned_replacements_preserve_calendar_and_resolve_clock_gaps_and_folds() {
+    use formatjs_temporal::{FixedOffset, PlainTime, ZonedDateTime, calendar::Calendar};
+    let zones = iana_registry();
+    let original = ZonedDateTime::new(
+        "2020-02-28T23:30:45.123456789Z".parse().unwrap(),
+        zones.resolve("America/New_York").unwrap(),
+    )
+    .with_calendar(Calendar::Hebrew);
+    let shifted = original.with_time_zone(FixedOffset::new(14 * 3_600_000_000_000).unwrap());
+    assert_eq!(shifted.instant(), original.instant());
+    assert_eq!(shifted.calendar_id(), "hebrew");
+    assert_eq!(shifted.local().unwrap().date().fields(), (2020, 2, 29));
+    assert_eq!(
+        shifted.local().unwrap().time().nanoseconds(),
+        48_645_123_456_789
+    );
+    assert_eq!(original.local().unwrap().date().fields(), (2020, 2, 28));
+    for (input, hour, expected) in [
+        ("2020-11-01T06:45Z", 1, "2020-11-01T05:30:00.000000123Z"),
+        ("2020-03-08T12:00Z", 2, "2020-03-08T07:30:00.000000123Z"),
+    ] {
+        let value = ZonedDateTime::new(
+            input.parse().unwrap(),
+            zones.resolve("America/New_York").unwrap(),
+        )
+        .with_calendar(Calendar::Hebrew);
+        let changed = value
+            .with_time(Some(PlainTime::new(hour, 30, 0, 123).unwrap()))
+            .unwrap();
+        assert_eq!(changed.instant(), expected.parse().unwrap());
+        assert_eq!(changed.calendar_id(), "hebrew");
+        assert_eq!(value.instant(), input.parse().unwrap());
+    }
+}
+
+#[test]
+fn omitted_zoned_time_uses_first_instant_instead_of_shifted_midnight() {
+    use formatjs_temporal::{OffsetTransition, PlainTime, TransitionZone, ZonedDateTime};
+    let events = [OffsetTransition {
+        epoch_seconds: 0,
+        offset_seconds: 3600,
+    }];
+    let zone = TransitionZone::new(-3600, &events, None).unwrap();
+    let value = ZonedDateTime::new("1970-01-01T12:00Z".parse().unwrap(), zone);
+    assert_eq!(
+        value.with_time(None).unwrap().instant().epoch_nanoseconds(),
+        0
+    );
+    assert_eq!(
+        value
+            .with_time(Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        3_600_000_000_000
+    );
+    for instant in [-MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS] {
+        let original = ZonedDateTime::new(Instant::from_epoch_nanoseconds(instant).unwrap(), zone);
+        let shifted = original.with_time_zone(formatjs_temporal::FixedOffset::new(0).unwrap());
+        assert_eq!(shifted.instant().epoch_nanoseconds(), instant);
+    }
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        formatjs_temporal::FixedOffset::new(0).unwrap(),
+    );
+    assert!(
+        maximum
+            .with_time(Some(PlainTime::new(23, 59, 59, 999_999_999).unwrap()))
+            .is_err()
+    );
+}
+
+#[test]
 fn short_date_updates_drop_reference_fields_and_preserve_extended_bounds() {
     use formatjs_temporal::{DateFields, Overflow, PlainMonthDay, PlainYearMonth};
     let year_month = PlainYearMonth::new(2024, 2, 29).unwrap();
@@ -1046,8 +1119,8 @@ fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
 #[test]
 fn independent_icu_zoned_fields_and_disambiguation() {
     use formatjs_temporal::{
-        DateFields, DateTimeFields, Disambiguation, OffsetOption, TimeFields, TimeZone,
-        ZonedDateTime, ZonedFields, ZonedWithOptions,
+        DateFields, DateTimeFields, Disambiguation, FixedOffset, OffsetOption, PlainTime,
+        TimeFields, TimeZone, ZonedDateTime, ZonedFields, ZonedWithOptions, calendar::Calendar,
     };
     let zones = iana_registry();
     let mut count = 0;
@@ -1067,6 +1140,16 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         let instant = Instant::from_epoch_nanoseconds(value).unwrap();
         assert_eq!(zone.offset_nanoseconds(instant), offset, "{line}");
         let zoned = ZonedDateTime::new(instant, zone);
+        let replaced = ZonedDateTime::new(instant, FixedOffset::new(0).unwrap())
+            .with_calendar(Calendar::Hebrew)
+            .with_time_zone(zone);
+        assert_eq!(replaced.instant(), instant, "zone replacement {line}");
+        assert_eq!(replaced.calendar_id(), "hebrew");
+        assert_eq!(
+            replaced.local().unwrap().epoch_nanoseconds(),
+            value + offset,
+            "zone replacement {line}"
+        );
         let updated = zoned
             .with_fields(
                 ZonedFields {
@@ -1098,6 +1181,36 @@ fn independent_icu_zoned_fields_and_disambiguation() {
                 let fields = IsoDateTime::from_epoch_nanoseconds(local).unwrap();
                 let earlier = local - offset.max(old_offset);
                 let later = local - offset.min(old_offset);
+                let source = [later, earlier]
+                    .into_iter()
+                    .map(|instant| {
+                        ZonedDateTime::new(Instant::from_epoch_nanoseconds(instant).unwrap(), zone)
+                            .with_calendar(Calendar::Hebrew)
+                    })
+                    .find(|candidate| {
+                        candidate.local().unwrap().date().fields()
+                            == (fields.year, fields.month, fields.day)
+                    })
+                    .unwrap_or_else(|| {
+                        panic!("No replacement source on target civil date: {line}")
+                    });
+                let changed = source
+                    .with_time(Some(
+                        PlainTime::new(
+                            fields.hour,
+                            fields.minute,
+                            fields.second,
+                            fields.nanosecond,
+                        )
+                        .unwrap(),
+                    ))
+                    .unwrap();
+                assert_eq!(
+                    changed.instant().epoch_nanoseconds(),
+                    if offset > old_offset { later } else { earlier },
+                    "clock replacement {line}"
+                );
+                assert_eq!(changed.calendar_id(), "hebrew");
                 let update = ZonedFields {
                     date_time: DateTimeFields {
                         date: DateFields {
@@ -2099,6 +2212,16 @@ fn independent_icu_zoned_day_boundaries_and_rounding() {
             nanos(2),
             "{line}"
         );
+        let replacement = value
+            .with_calendar(formatjs_temporal::calendar::Calendar::Hebrew)
+            .with_time(None)
+            .unwrap();
+        assert_eq!(
+            replacement.instant().epoch_nanoseconds(),
+            nanos(2),
+            "omitted clock {line}"
+        );
+        assert_eq!(replacement.calendar_id(), "hebrew");
         assert_eq!(
             value.hours_in_day().unwrap(),
             (nanos(3) - nanos(2)) as f64 / 3_600_000_000_000.0,

@@ -1350,3 +1350,18 @@ Validation includes 81 independent ICU rows across nine calendars and 936
 locale/timezone combinations per TS/WASM/Hermes profile, plus forced Arabic
 probe fallback and host-boundary failure controls. All 43 regression targets
 pass with four concurrent tests and unchanged case timeouts/exclusions.
+
+## Rust zoned replacements and partial Intl startup
+
+`rust-zoned-replacements-size-results.json` refreshes default/standalone consumers
+at 68,089/336,635 bytes gzip. `rust-zoned-replacements-backend-size-results.json`
+records separate TS/native-data WASM/hybrid graphs at 70,411/481,677/514,393.
+The WASM binary still measures 443,178 bytes gzip. All compressed totals match
+the previous snapshot. No new throughput claim.
+
+Rust adds typed clock/timezone replacements. A missing optional-constructor guard
+also blocked Hermes SDK startup with partial Intl; the import regression now
+covers partial, empty and absent Intl through installation. Sixteen focused gates
+pass, including 1,804 ZonedDateTime Test262 executions per TS/WASM/Hermes SDK
+source/bytecode profile. Independent ICU cases cover 17,640 offsets, 1,900 gap/fold
+windows and 5,292 day boundaries through the new Rust methods.

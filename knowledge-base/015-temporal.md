@@ -4,6 +4,20 @@ Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
 
+## Typed Rust zoned replacements
+
+`ZonedDateTime::with_time_zone` preserves Instant/calendar and can change the
+provider type without cloning the source provider. `with_time(Some(time))`
+replaces all clock fields with compatible gap/fold resolution, ignoring the
+source offset hint. `with_time(None)` reuses the earliest civil-day boundary.
+Independent ICU controls exercise 17,640 offset samples, 1,900 transition windows
+and 5,292 day boundaries through these public methods. A two-hour gap across
+midnight distinguishes omitted time from explicit midnight; boundary cases check
+range rejection and exact nanoseconds. Existing native bindings already expose
+`timeZoneResolve` and `startOfZonedDay`; ABI 9 and its 62 operations stay unchanged.
+
+The current completion ledger is [015a](015a-temporal-completion-audit.md).
+
 ## Typed Rust field updates
 
 PlainTime, Duration, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and

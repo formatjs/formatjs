@@ -1711,5 +1711,41 @@
       "localTestJobs": 4,
       "caseTimeoutsChanged": false
     }
+  },
+  "rustZonedReplacements": {
+    "completeTemporalBackend": false,
+    "abiVersion": 9,
+    "nativeContractOperations": 62,
+    "nativeContractMissingOperations": [],
+    "rustMethods": [
+      "ZonedDateTime::with_time_zone",
+      "ZonedDateTime::with_time"
+    ],
+    "independentICU": {
+      "offsetLocalSamples": 17640,
+      "gapFoldWindows": 1900,
+      "dayBoundaryRows": 5292,
+      "scope": "Local ISO nanoseconds, compatible resolution, first civil-day instants and retained Hebrew calendar identity."
+    },
+    "test262ExecutionsPerProfile": 1804,
+    "profiles": [
+      "default TypeScript",
+      "WASM",
+      "Hermes SDK source",
+      "Hermes SDK optimized bytecode"
+    ],
+    "regressionTargets": 16,
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "partialIntlRegression": {
+      "modes": ["Intl without DateTimeFormat", "empty Intl", "absent Intl"],
+      "scope": "Published namespace import, ISO arithmetic, global installation and Date conversion.",
+      "cause": "DateTimeFormat.prototype captured without guarding a missing DateTimeFormat constructor."
+    },
+    "sizeSnapshots": [
+      "benchmarks/temporal/rust-zoned-replacements-size-results.json",
+      "benchmarks/temporal/rust-zoned-replacements-backend-size-results.json"
+    ],
+    "remainingAudit": "knowledge-base/015a-temporal-completion-audit.md"
   }
 }

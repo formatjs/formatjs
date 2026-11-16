@@ -136,6 +136,10 @@ Runtime payload and whole npm archive size are different scopes.
 
 ## Hermes
 
+Import and installation accept absent or partial Intl namespaces, including
+an Intl object without DateTimeFormat. ISO math and Date conversion remain usable.
+Locale formatting still needs the corresponding formatter.
+
 The TS implementation runs on Hermes source and optimized bytecode. Pinned Hermes
 has no WebAssembly runtime. Use the [native SDK](../../native/hermes/package/README.md)
 for Rust-backed Temporal and Intl, or the TS path with needed Intl polyfills.

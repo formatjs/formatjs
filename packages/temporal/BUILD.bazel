@@ -211,6 +211,26 @@ js_test(
     entry_point = "tests/legacy-calendar-cache.test.mjs",
 )
 
+[
+    js_test(
+        name = "partial_intl_" + mode + "_test" if mode else "partial_intl_test",
+        args = [
+            "$(rlocationpath :pkg)",
+            mode,
+        ],
+        data = [
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+        ],
+        entry_point = "tests/partial-intl.test.mjs",
+    )
+    for mode in [
+        "",
+        "empty",
+        "absent",
+    ]
+]
+
 rolldown_bundle(
     name = "legacy-calendar-era-oracle",
     srcs = ["tests/legacy-calendar-era-oracle.ts"],

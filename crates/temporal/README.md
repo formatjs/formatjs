@@ -9,6 +9,11 @@ date/date-time, short-date and zoned types. Rational totals round once to binary
 
 `with_fields` updates PlainTime, Duration, PlainDate, PlainDateTime, PlainYearMonth,
 PlainMonthDay and ZonedDateTime without mutating the source.
+Zoned `with_time_zone` keeps the Instant and calendar while accepting a new
+provider type. `with_time(Some(time))` replaces the full clock with compatible
+resolution: earlier in folds, forward through gaps. `with_time(None)` selects
+the earliest instant of the civil day, which can differ from explicit midnight.
+
 `TimeFields`, `DurationFields`, `DateTimeFields` and `ZonedFields` hold
 optional fields. Clock units constrain separately; Duration retains unbalanced
 units and validates signs. Date updates preserve month codes across leap years
