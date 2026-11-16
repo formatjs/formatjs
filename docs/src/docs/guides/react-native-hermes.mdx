@@ -1,9 +1,12 @@
-This guide covers TypeScript polyfills in React Native with Hermes.
+For React Native apps using Hermes, we recommend the native Hermes Intl SDK.
 
-For Rust-backed native extensions, SDK archives, and custom locale builds, see
-[Hermes Intl SDK](/docs/guides/hermes-intl). The
-[Android example](https://github.com/formatjs/hermes-intl) installs all twelve APIs
-and tests their rendered output.
+[Install the SDK](/docs/guides/hermes-intl) for twelve Rust-backed Intl APIs.
+Install it before application JavaScript runs, then use `react-intl` normally.
+The [Android example](https://github.com/formatjs/hermes-intl) shows the native
+integration and tests rendered output.
+
+The remaining sections cover TypeScript polyfills as a fallback when you cannot
+add native code or rebuild your app.
 
 ## Hermes Intl support
 

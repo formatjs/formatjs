@@ -117,5 +117,6 @@ for resource loading and individual installers.
 ## Using react-intl
 
 Install native Intl before your JavaScript entry point imports `react-intl`.
-Use `IntlProvider` and messages normally. To use TypeScript polyfills instead,
-follow [React Native + Hermes](/docs/guides/react-native-hermes).
+Use `IntlProvider` and messages normally. We recommend this native SDK for Hermes
+apps. If you cannot add native code or rebuild your app, use the
+[TypeScript polyfill fallback](/docs/guides/react-native-hermes).

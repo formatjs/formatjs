@@ -3,6 +3,9 @@
 `native/hermes/package` owns SDK assembly, CMake integration, and contrib glue.
 `formatjs/hermes-intl` is the Android example, not another packaging implementation.
 Public installation docs live at `docs/src/docs/guides/hermes-intl.mdx`.
+Recommend this native SDK for Hermes apps. TypeScript polyfills remain a fallback
+when consumers cannot add native code or rebuild their app. The documentation
+banner links to native setup from Intl polyfills, React Intl, and runtime guides.
 
 - `:sdk`: Linux x86_64 GNU + macOS arm64/x86_64 Rust archives.
 - `:android_sdk`: arm64 + x86_64 Android archives, NDK 27.1.12297006.
