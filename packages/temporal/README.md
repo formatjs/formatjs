@@ -23,8 +23,33 @@ fields, offset matching, all disambiguation modes, updates, arithmetic, rounding
 day boundaries, differences, transition queries and serialization. Calendar days follow local time; hours follow
 elapsed time. Alias spelling survives separately from primary-zone equality.
 
-Remaining work includes native Intl adaptation, complete Rust bindings and WASM
-facade/data. No implementation gap is an allowed conformance exclusion.
+Rust owns calendar/timezone tables in the Hermes SDK and native-data WASM entry.
+JS still owns ECMAScript coercion, observable property access, brands and allocation.
+Completion audit and remaining native orchestration coverage stay open.
+No implementation gap is an allowed conformance exclusion.
+
+## WASM with native data
+
+```ts
+import {
+  configureTemporalWasm,
+  installTemporalWasm,
+} from '@formatjs/temporal/wasm-native.js'
+
+const {instance} = await WebAssembly.instantiateStreaming(
+  fetch('/temporal-backend.wasm')
+)
+const Temporal = configureTemporalWasm(instance)
+// Optional global installation, including Date.prototype.toTemporalInstant:
+installTemporalWasm(instance, true)
+```
+
+This entry bundles its own namespace/backend state and omits duplicate TS calendar
+and IANA tables. Load the matching `temporal-backend.wasm`; invalid modules reject
+before installation. Native errors propagate without a TS data retry. Importing
+alone changes no globals. Keep this namespace separate from the default TS entry.
+The existing `index.js` plus `wasm.js` pair keeps shared brands and TS fallback data.
+Hermes uses the native SDK adapter; its engine exposes no WebAssembly runtime.
 
 ## Validation
 
@@ -703,3 +728,12 @@ executions per source/HBC mode: 4,076 pass, four fail. They retain the POSIX-pri
 identity and fixed-zero-name differences described above; the diagnostic baseline
 still expects zero failures. No implementation failures enter accepted baselines.
 The default-Hermes C++ SDK test separately verifies the extra minimum PlainDate.
+
+Native-data validation: 96 regression targets pass, with full class gates and the
+same independent ICU/calendar authority cases on both WASM package variants.
+The rebuilt standalone SDK consumer passes source/HBC installation, native Chinese
+fields, extended PlainDate locale formatting and fixed-zero names. No new exclusions.
+Consumer gzip is 469,793 bytes for native-data WASM versus TS 360,710 and retained-data
+WASM 806,221. WASM loses all 43 V8 hot workloads to TS. The stripped native SDK app
+adds 3,570,640 raw /492,729 gzip bytes over identical Intl/Hermes. See the native-data
+benchmark snapshots for methods, all timings and runtime-size scope.

@@ -14,6 +14,9 @@
     ".": "./index.js",
     "./polyfill-force.js": "./polyfill-force.js",
     "./polyfill.js": "./polyfill.js",
-    "./should-polyfill.js": "./should-polyfill.js"
+    "./should-polyfill.js": "./should-polyfill.js",
+    "./temporal-backend.wasm": "./temporal-backend.wasm",
+    "./wasm-native.js": "./wasm-native.js",
+    "./wasm.js": "./wasm.js"
   }
 }

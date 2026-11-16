@@ -1149,3 +1149,70 @@ or debug tables. Commands and exact scope remain in the snapshot.
 Final benchmark commands ran serially after regression/native-size checks on one
 host. No default-backend recommendation follows from these partial profiles.
 Native Intl Temporal conformance and the full completion audit remain open.
+
+## Native data ownership
+
+`wasm-native-data-results.json` compares the default TS entry, retained-data WASM,
+the new `wasm-native.js` entry and temporal-polyfill 1.0.7 basic. All four profiles
+pass parity on 43 ISO workloads with eight inputs. V8 uses 3,000 warmup calls and
+seven batches of 10,000; transition cases use 128/512. Profiles run in that order
+in one process, after regression work. Both WASM profiles share a warmed Rust
+instance. Existing first-native timings describe the retained-data profile only.
+
+Consumer gzip: TS 360,710 bytes; retained-data WASM 806,221;
+native-data WASM 469,793 (28,216 JS +441,577 binary). Removing duplicate TS tables
+saves 336,428 bytes, 41.7%. The native-data payload remains 30.2% larger than TS.
+Separate-module totals are 362,975 /805,356 /470,013 bytes respectively. These are
+alternative runtime graphs; the npm archive also contains the other entries,
+source maps, declarations and WASM asset. No source maps count as runtime imports.
+
+V8 medians, microseconds/call:
+
+| Operation      |   TS | Native-data WASM | Reference |
+| -------------- | ---: | ---------------: | --------: |
+| parse          | 1.71 |             3.55 |      3.15 |
+| dateFields     | 2.47 |            45.22 |      0.45 |
+| dateTimeFormat | 1.09 |             4.90 |      2.25 |
+| zonedFormat    | 2.24 |             6.89 |      2.47 |
+| yearMonthUntil | 5.82 |            24.40 |     24.77 |
+| monthDayToDate | 2.66 |            12.25 |      2.26 |
+
+Both WASM profiles lose all 43 workloads to TS here. Keep TS as default.
+Native-data builds remove duplicate data; shared JS orchestration and the JSON
+boundary remain. Rust binary and ABI9 are unchanged. This is not proof of a
+complete Rust backend or native-entry cold startup/heap usage.
+
+`hermes-native-data-results.json` refreshes all six Hermes profiles after the data
+change; all checksums equal 30,956,984. Each process uses 1,000 warmup calls and
+five batches of 5,000. SDK facade setup evaluates source even for HBC workloads;
+unused imported TS initialization stays outside hot timing. These are hot-operation
+measurements, not SDK startup/heap results. Source/full results stay in the snapshot.
+
+Hermes HBC medians, microseconds/call; reference from SDK process:
+
+| Operation      |    TS |   SDK | Reference |
+| -------------- | ----: | ----: | --------: |
+| parse          |  9.14 |  3.91 |     17.07 |
+| dateFields     | 22.18 | 48.98 |      1.95 |
+| dateTimeFormat | 18.25 |  6.32 |      6.90 |
+| zonedFormat    | 30.40 |  8.67 |     13.18 |
+| yearMonthUntil | 55.48 | 30.81 |     13.20 |
+| monthDayToDate | 16.57 | 14.03 |      7.79 |
+
+`dateTimeFormat` and `zonedFormat` measure Temporal serialization. They do not
+measure Intl locale formatting. Data removal alone supplies no hot-speed claim.
+
+`native-sdk-data-size-results.json` measures rebuilt, fully stripped Linux SDK
+consumers. Both install all twelve Intl APIs with identical compiled locale data.
+Temporal adds 3,570,640 raw /492,729 gzip bytes, versus the earlier
+6,865,280 /838,100 profile. This is incremental native app size, with Hermes/Intl
+already present; standalone JS/WASM sizes have a different runtime baseline.
+The extracted SDK passes source/HBC installation, native Chinese fields, minimum
+PlainDate locale formatting and fixed-zero names without a Rust toolchain.
+`native-data-backend-size-results.json` records the separate published-module graphs.
+
+Validation: 96 regression targets pass, including SDK/WASM full class gates,
+independent authority fixtures, published-package variants and shared bundler
+sourcemap checks. Two initial checks timed out under broad parallel load; the
+bounded-concurrency rerun passes without timeout or exclusion changes. Rust backend
+completion remains unproven; data deduplication does not close that audit.

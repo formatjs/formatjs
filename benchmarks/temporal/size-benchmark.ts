@@ -39,6 +39,7 @@ const publishedModules = [
   'should-polyfill.js',
   'native.js',
   'wasm.js',
+  'wasm-native.js',
 ].map(file => {
   const source = readFileSync(join(publishedDirectory, file), 'utf8')
   const minified = transformSync(source, {
@@ -107,8 +108,18 @@ console.log(
       publishedModules,
       publishedGraphs: {
         scope:
-          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting; all16 native calendar tables and IANA records plus retained TS algorithms/data included. Source maps, declarations and notices are not runtime imports.',
+          'Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting; all16 native calendar tables and IANA records included. Hybrid WASM retains TS data; nativeDataWasm omits duplicate TS tables. JS orchestration remains in both. Source maps, declarations and notices are not runtime imports.',
         typescript: namespaceGraph,
+        nativeDataWasm: {
+          ...graph(['wasm-native.js']),
+          binary: {
+            raw: namespaceWasm.length,
+            gzip: gzipSync(namespaceWasm, {level: 9}).length,
+          },
+          combinedGzip:
+            graph(['wasm-native.js']).minifiedGzip +
+            gzipSync(namespaceWasm, {level: 9}).length,
+        },
         wasm: {
           ...wasmGraph,
           binary: {

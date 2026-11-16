@@ -1209,3 +1209,32 @@ executions per source/HBC mode: 4,076 pass, four fail. They retain the POSIX-pri
 identity and fixed-zero-name differences described above; the diagnostic baseline
 still expects zero failures. No implementation failures enter accepted baselines.
 The default-Hermes C++ SDK test separately verifies the extra minimum PlainDate.
+
+## Native facade data ownership
+
+`fallback-data.ts` owns the six generated TS calendar/timezone imports. SDK and
+`wasm-native.js` builds set `import.meta.formatjsTemporalNativeData` and eliminate
+those imports. Fallback data access throws instead of retrying against missing
+JS tables. Default TS entries explicitly set the flag false. Algorithms and
+observable ECMAScript semantics remain shared; this is data ownership, not proof
+that every native orchestration requirement is complete.
+
+`configureTemporalWasm(instance)` returns the dedicated native-data namespace;
+`installTemporalWasm(instance, force)` installs it through the existing global/Date
+bridge flow. This entry has separate backend/brand state from the index/wasm pair.
+WASM Test262 payloads now use the native-data build. Published-package tests run
+both WASM entries against the existing independent ICU/calendar authority fixtures.
+The native entry's sourcemap must contain no generated TS calendar/timezone module.
+
+`formatjs_library(entry_point_defines=...)` selects constants per published entry.
+The shared bundler now passes constants through Rolldown `transform.define`; the
+old top-level option was ignored. No Temporal ABI or Rust table changes.
+
+Native-data validation: 96 regression targets pass, with full class gates and the
+same independent ICU/calendar authority cases on both WASM package variants.
+The rebuilt standalone SDK consumer passes source/HBC installation, native Chinese
+fields, extended PlainDate locale formatting and fixed-zero names. No new exclusions.
+Consumer gzip is 469,793 bytes for native-data WASM versus TS 360,710 and retained-data
+WASM 806,221. WASM loses all 43 V8 hot workloads to TS. The stripped native SDK app
+adds 3,570,640 raw /492,729 gzip bytes over identical Intl/Hermes. See the native-data
+benchmark snapshots for methods, all timings and runtime-size scope.

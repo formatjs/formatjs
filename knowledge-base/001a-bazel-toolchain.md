@@ -644,3 +644,11 @@ so the Temporal std/serde JSON backend can use the same pinned dependency graph.
 `//packages/temporal:wasm_asset` copies it into the npm package. Use cquery for its
 actual transitioned artifact path. The earlier no_std primitive WASM target stays
 separate and cannot represent full facade/data size.
+
+### Constants for individual package entries
+
+`formatjs_library(entry_point_defines={"entry.ts": {"constant": "value"}})` passes
+constants to that entry's Rolldown bundle. `rolldown_bundle(define=...)` uses the
+same path. Values are JavaScript expressions. The runner supplies Rolldown's
+`transform.define` option; a top-level `define` is ignored by the pinned version.
+Temporal uses this to exclude duplicate TS data from its native-data WASM facade.

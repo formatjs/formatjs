@@ -3,7 +3,8 @@
 Independent Bazel module consuming an extracted FormatJS Intl SDK. No Rust
 compiler required. Tests run all twelve APIs through real Hermes, including
 source/bytecode installation, repeat installation, and native state lifetime.
-The optional Temporal installer also checks a non-UTC host clock and late native
+The optional Temporal installer checks a non-UTC host clock, native lunisolar
+tables, extended plain-date locale formatting, fixed-offset names and late native
 Intl registration.
 
 Build or download a desktop archive using the [SDK guide](../../native/hermes/package/README.md),

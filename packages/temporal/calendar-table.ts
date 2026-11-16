@@ -1,6 +1,7 @@
-import {chinese} from '@formatjs_generated/icu.calendar/chinese.js'
-import {dangi} from '@formatjs_generated/icu.calendar/dangi.js'
-import {ummAlQura} from '@formatjs_generated/icu.calendar/umm-al-qura.js'
+import {
+  fallbackLunisolar,
+  fallbackUmmAlQura,
+} from '#packages/temporal/fallback-data.js'
 
 export type TableCalendarId = 'chinese' | 'dangi' | 'islamic-umalqura'
 const alphabet =
@@ -9,7 +10,7 @@ export function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {
   return calendar === 'chinese' || calendar === 'dangi'
 }
 function data(calendar: 'chinese' | 'dangi') {
-  return calendar === 'chinese' ? chinese : dangi
+  return fallbackLunisolar(calendar)
 }
 function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   const table = data(calendar),
@@ -41,6 +42,7 @@ export function tableYearStart(
   year: number
 ): number | undefined {
   if (calendar === 'islamic-umalqura') {
+    const ummAlQura = fallbackUmmAlQura()
     const index = year - ummAlQura.firstYear
     return index >= 0 && index < ummAlQura.startDays.length
       ? ummAlQura.startDays[index]
@@ -62,6 +64,7 @@ export function tableMonthLength(
   month: number
 ): number | undefined {
   if (calendar === 'islamic-umalqura') {
+    const ummAlQura = fallbackUmmAlQura()
     const index = year - ummAlQura.firstYear
     return index >= 0 && index < ummAlQura.monthLengths.length
       ? 29 + ((ummAlQura.monthLengths[index] >>> (month - 1)) & 1)

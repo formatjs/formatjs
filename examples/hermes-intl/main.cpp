@@ -281,6 +281,9 @@ int main(int argc, char **argv) {
         equal(Temporal.Now.timeZoneId(), 'Asia/Kathmandu');
         equal(Temporal.Now.plainDateTimeISO().toString(), '2020-03-08T12:15:00');
         equal(Temporal.PlainDate.from('2020-02-29').day, 29);
+        equal(Temporal.PlainDate.from('-271821-04-19').toLocaleString('en', {year:'numeric'}), '271822');
+        equal(Temporal.PlainDate.from('2020-01-25[u-ca=chinese]').day, 1);
+        equal(new Temporal.ZonedDateTime(0n, '+00:00').toLocaleString('en').includes('GMT+0'), true);
         equal(new Temporal.Duration(1, 2, 3, 4, 5).hours, 5);
         equal(new Intl.DateTimeFormat('en', {year:'numeric',timeZone:'UTC'}).format(Temporal.PlainDate.from('2020-02-29')), '2020');
         equal(new Intl.DurationFormat('en', {style:'digital'}).format('PT1H2M3S'), '1:02:03');

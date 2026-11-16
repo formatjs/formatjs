@@ -621,6 +621,10 @@ checksum += Temporal.Duration.from('P1M1DT2H')
   .toString().length
 const firstDurationOperationMilliseconds = performance.now() - start
 const wasm = measure(Temporal)
+const nativeDataTemporal = (await load('wasm-native.js')).configureTemporalWasm(
+  instance
+)
+const nativeDataWasm = measure(nativeDataTemporal)
 const referenceResults = measure(reference)
 const minify = (file: string) => {
   const source = readFileSync(join(directory, file), 'utf8')
@@ -636,10 +640,12 @@ const minify = (file: string) => {
     gzip: gzipSync(code, {level: 9}).length,
   }
 }
-const bundle = (wasm: boolean) => {
+const bundle = (wasm: boolean, nativeData = false) => {
   const code = buildSync({
     stdin: {
-      contents: `export * from './index.js';${wasm ? "export {configureWasmBackend} from './wasm.js';" : ''}`,
+      contents: nativeData
+        ? "export * from './wasm-native.js';"
+        : `export * from './index.js';${wasm ? "export {configureWasmBackend} from './wasm.js';" : ''}`,
       resolveDir: directory,
       sourcefile: 'measurement-entry.js',
       loader: 'js',
@@ -653,10 +659,13 @@ const bundle = (wasm: boolean) => {
   }).outputFiles[0].contents
   return {minified: code.byteLength, gzip: gzipSync(code, {level: 9}).length}
 }
-const modules = ['index.js', 'native.js', 'wasm.js'].map(minify)
+const modules = ['index.js', 'native.js', 'wasm.js', 'wasm-native.js'].map(
+  minify
+)
 const binary = {raw: bytes.byteLength, gzip: gzipSync(bytes, {level: 9}).length}
 const tsBundle = bundle(false),
-  wasmBundle = bundle(true)
+  wasmBundle = bundle(true),
+  nativeDataBundle = bundle(true, true)
 const separateTS = modules[0].gzip + modules[1].gzip
 console.log(
   JSON.stringify(
@@ -669,15 +678,16 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics, host/Intl integration and fallback data remain JS/TS. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace, all16 owned calendars and IANA data. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid profile retains them. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
       method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
       iterations,
       samples,
       warmup,
       checksum,
       typescript,
       wasm,
+      nativeDataWasm,
       reference: referenceResults,
       compileMilliseconds,
       instantiateMilliseconds,
@@ -695,10 +705,13 @@ console.log(
           typescript: tsBundle,
           wasmJS: wasmBundle,
           wasmCombinedGzip: wasmBundle.gzip + binary.gzip,
+          nativeDataWasmJS: nativeDataBundle,
+          nativeDataWasmCombinedGzip: nativeDataBundle.gzip + binary.gzip,
         },
         separateModules: {
           typescriptGzip: separateTS,
           wasmCombinedGzip: separateTS + modules[2].gzip + binary.gzip,
+          nativeDataWasmCombinedGzip: modules[3].gzip + binary.gzip,
         },
       },
     },

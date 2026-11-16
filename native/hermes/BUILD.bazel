@@ -20,6 +20,7 @@ ts_project(
 rolldown_bundle(
     name = "temporal_bundle",
     srcs = ["temporal.ts"],
+    define = {"import.meta.formatjsTemporalNativeData": "true"},
     entry_point = "temporal.ts",
     format = "iife",
     global_name = "FormatJSTemporalInstaller",

@@ -4,6 +4,7 @@
     "native/hermes/temporal.ts",
     "packages/temporal/index.ts",
     "packages/temporal/wasm.ts",
+    "packages/temporal/wasm-native.ts",
     "packages/temporal/tests/wasm-prelude.ts",
     "packages/temporal/tests/wasm-unavailable-host.ts",
     "packages/temporal/tests/native-iso-host.ts",

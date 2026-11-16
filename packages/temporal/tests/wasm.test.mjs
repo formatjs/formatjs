@@ -8,10 +8,21 @@ const resolve = value => runfiles.resolve(value)
 const directory = resolve(process.argv[2])
 const load = name => import(pathToFileURL(join(directory, name)).href)
 const globalBefore = Object.getOwnPropertyDescriptor(globalThis, 'Temporal')
-const {Temporal} = await load('index.js')
-const {configureWasmBackend, createWasmQuery} = await load('wasm.js')
+const dateBefore = Object.getOwnPropertyDescriptor(
+  Date.prototype,
+  'toTemporalInstant'
+)
+const wasm = await load('wasm.js')
+const nativeData = process.env.FORMATJS_TEMPORAL_NATIVE_DATA_ONLY === '1'
+const configureWasmBackend = nativeData
+  ? (await load('wasm-native.js')).configureTemporalWasm
+  : wasm.configureWasmBackend
+const {createWasmQuery} = wasm
 const module = new WebAssembly.Module(readFileSync(resolve(process.argv[3])))
 const instance = new WebAssembly.Instance(module, {})
+const Temporal = nativeData
+  ? configureWasmBackend(instance)
+  : (await load('index.js')).Temporal
 const query = createWasmQuery(instance)
 const identity = Temporal.Instant
 const existing = Temporal.Instant.fromEpochNanoseconds(0n)
@@ -363,3 +374,40 @@ console.log(
     ),
   })
 )
+
+if (nativeData) {
+  const map = JSON.parse(
+    readFileSync(join(directory, 'wasm-native.js.map'), 'utf8')
+  )
+  assert(
+    map.sources.length > 0,
+    'Native facade sourcemap must identify its modules'
+  )
+  assert(
+    !map.sources.some(source =>
+      /@formatjs_generated[+/](?:icu\.calendar|tz)/.test(source)
+    ),
+    'Native facade must not ship TypeScript calendar or timezone tables'
+  )
+  const {installTemporalWasm} = await load('wasm-native.js')
+  try {
+    assert.throws(
+      () => installTemporalWasm(new WebAssembly.Instance(oldABI, {}), true),
+      TypeError
+    )
+    assert.deepEqual(
+      Object.getOwnPropertyDescriptor(globalThis, 'Temporal'),
+      globalBefore
+    )
+    installTemporalWasm(instance, true)
+    assert.equal(globalThis.Temporal, Temporal)
+    assert(new Date(1).toTemporalInstant() instanceof Temporal.Instant)
+  } finally {
+    if (globalBefore)
+      Object.defineProperty(globalThis, 'Temporal', globalBefore)
+    else Reflect.deleteProperty(globalThis, 'Temporal')
+    if (dateBefore)
+      Object.defineProperty(Date.prototype, 'toTemporalInstant', dateBefore)
+    else Reflect.deleteProperty(Date.prototype, 'toTemporalInstant')
+  }
+}

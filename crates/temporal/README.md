@@ -680,3 +680,14 @@ for TS versus 805,994 for WASM JS +binary, including
 fallback packs. The stripped native app adds 6,865,280 raw
 /838,100 gzip bytes over the identical Intl/Hermes baseline.
 See SDK-host snapshots and `benchmarks/temporal/README.md` for methods and limits.
+
+## Native facade data ownership
+
+The Hermes SDK and npm `wasm-native.js` entry now use Rust's calendar/timezone
+records without duplicate TS tables. The default TS namespace and existing
+index/wasm pair retain their own data. Rust ABI9 and its binary are unchanged;
+JS still supplies observable ECMAScript semantics and shared orchestration.
+Published native-data WASM passes the same independent calendar/timezone/Duration
+oracles as the retained-data profile. See the native-data benchmark snapshots:
+consumer gzip falls from 806,221 to 469,793 bytes, versus TS 360,710. Both WASM
+profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.

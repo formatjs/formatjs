@@ -18,6 +18,7 @@ def _formatjs_package(
         deps,
         external_packages,
         entry_point_external_paths,
+        entry_point_defines,
         npm_package_name,
         package_json,
         extra_npm_srcs,
@@ -49,6 +50,7 @@ def _formatjs_package(
             entry_point = entry,
             external = external_packages,
             external_paths = entry_point_external_paths.get(entry, {}),
+            define = entry_point_defines.get(entry, {}),
             format = "esm",
             output = "%s.js" % entry.replace(".ts", ""),
             target = "es2020",
@@ -143,6 +145,7 @@ def formatjs_library(
         deps = [],
         entry_points = ["index.ts"],
         entry_point_external_paths = {},
+        entry_point_defines = {},
         types = False,
         tsconfig = None,
         tsconfig_types = [],
@@ -188,6 +191,7 @@ def formatjs_library(
     For internal packages (no package.json): oxc per-file transpilation.
 
     entry_point_external_paths keeps selected published entry imports shared.
+    entry_point_defines supplies build-time constants for individual entries.
 
     Generates:
     - copy_to_bin(name = "srcs") for sandbox compatibility
@@ -394,6 +398,7 @@ def formatjs_library(
             deps = all_deps,
             external_packages = external_packages,
             entry_point_external_paths = entry_point_external_paths,
+            entry_point_defines = entry_point_defines,
             npm_package_name = npm_package_name,
             package_json = package_json_label,
             extra_npm_srcs = extra_npm_srcs,

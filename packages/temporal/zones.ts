@@ -1,12 +1,10 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
-import primary from '@formatjs_generated/tz/primary.js'
+import {fallbackTimeZones} from '#packages/temporal/fallback-data.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
-import links from '@formatjs_generated/tz/links.js'
 import {
   parseTimeZoneString,
   parseOffsetNanoseconds,
 } from '#packages/temporal/instant-string.js'
-import packed from '@formatjs_generated/tz/all-tz.js'
 import {UnpackTimeZoneData} from '#packages/ecma402-abstract/DateTimeFormat/UnpackTimeZoneData.js'
 import {
   createTimeZone,
@@ -17,6 +15,7 @@ import {
 let identifiers: Map<string, string> | undefined
 const cache = new Map<string, ReturnType<typeof createTimeZone>>()
 function typescriptTimeZone(name: string): TimeZoneKernel {
+  const {primary, links, packed} = fallbackTimeZones()
   if (!identifiers) {
     identifiers = new Map()
     for (let i = 0; i < packed.zones.length; i++) {
@@ -127,6 +126,7 @@ export function timeZoneIdentifier(value: unknown): string {
     )
   }
   if (!spellings) {
+    const {primary, links, packed} = fallbackTimeZones()
     spellings = new Map()
     for (let i = 0; i < packed.zones.length; i++) {
       const entry = packed.zones[i],
@@ -184,6 +184,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
 export function primaryTimeZoneIdentifier(id: string): string {
   const native = nativeTemporal()
   if (native) return native.timeZoneIdentity(id).primary
+  const {primary} = fallbackTimeZones()
   return primary[id as keyof typeof primary] ?? id
 }
 export function timeZoneEquals(one: string, two: string): boolean {
