@@ -200,3 +200,7 @@ independent message sets, maps visible IDs back to source metadata for row
 badges, and resolves repository/revision links with `resolveSourceLocationHref`.
 Four captures cover desktop metadata, source filtering, a switched project, and
 narrow RTL. Browser interactions verify filter reset and unsaved-draft blocking.
+
+The Linux namespace CI job preloads libcap 2.27 from kernel.org into a Bazel
+`--distdir`. Its BCR mirrors can time out or return empty files; Bazel still
+checks the registry's pinned integrity before using the upstream archive.
