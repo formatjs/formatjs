@@ -278,11 +278,22 @@ impl DateFields<'_> {
     }
 }
 
+#[derive(Clone, Copy)]
+pub(crate) enum DateFieldShape {
+    Date,
+    YearMonth,
+    MonthDay,
+}
+
 pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     calendar: C,
     epoch: i64,
     mut updates: DateFields<'a>,
+    shape: DateFieldShape,
 ) -> Result<DateFields<'a>, crate::Error> {
+    if matches!(shape, DateFieldShape::YearMonth) {
+        updates.day = None;
+    }
     if matches!(calendar.id(), "iso8601" | "chinese" | "dangi") {
         updates.era = None;
         updates.era_year = None;
@@ -290,14 +301,12 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     if !updates.has_fields(calendar.id()) {
         return Err(crate::Error::InvalidDateTime);
     }
-    let date = calendar.date(epoch).map_err(error)?;
-    let era = calendar.era(epoch).map_err(error)?;
+    // YearMonth reference days can lie outside PlainDate's range.
+    let date = calendar.date_extended(epoch).map_err(error)?;
     let mut base = DateFields {
-        year: Some(date.year),
+        year: (!matches!(shape, DateFieldShape::MonthDay)).then_some(date.year),
         month_code: Some(date.month_code),
-        day: Some(date.day.into()),
-        era: era.map(|value| value.name),
-        era_year: era.map(|value| value.year),
+        day: (!matches!(shape, DateFieldShape::YearMonth)).then_some(date.day.into()),
         ..DateFields::default()
     };
     if updates.month.is_some() {
@@ -307,22 +316,14 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
         && (updates.year.is_some() || updates.era.is_some() || updates.era_year.is_some())
     {
         base.year = None;
-        base.era = None;
-        base.era_year = None;
-    }
-    if calendar.id() == "japanese"
-        && (updates.day.is_some() || updates.month.is_some() || updates.month_code.is_some())
-    {
-        base.era = None;
-        base.era_year = None;
     }
     Ok(DateFields {
         year: updates.year.or(base.year),
         month: updates.month,
         month_code: updates.month_code.or(base.month_code),
         day: updates.day.or(base.day),
-        era: updates.era.or(base.era),
-        era_year: updates.era_year.or(base.era_year),
+        era: updates.era,
+        era_year: updates.era_year,
     })
 }
 

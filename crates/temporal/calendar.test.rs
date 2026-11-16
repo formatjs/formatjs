@@ -173,13 +173,22 @@ fn check_oracle<C: CalendarProvider>(
             );
             let normalized =
                 PlainYearMonth::from_calendar_fields(calendar, fields, Overflow::Reject);
+            let updated = year_month.with_fields(
+                DateFields {
+                    month: Some(i32::from(expected.1)),
+                    ..DateFields::default()
+                },
+                Overflow::Reject,
+            );
             let first = epoch - i64::from(expected.3) + 1;
             if first < PlainYearMonth::new(-271821, 4, 1).unwrap().epoch_day() {
                 assert!(normalized.is_err(), "{row:?}");
+                assert!(updated.is_err(), "{row:?}");
                 assert!(PlainYearMonth::parse_in(&year_month.to_string(), calendar).is_err());
             } else {
                 let normalized = normalized.unwrap();
                 assert_eq!(normalized.epoch_day(), first, "{row:?}");
+                assert_eq!(updated.unwrap().epoch_day(), first, "updated {row:?}");
                 assert!(
                     normalized.equals(
                         PlainYearMonth::parse_in(&year_month.to_string(), calendar).unwrap()
@@ -395,6 +404,28 @@ fn partial_dates_preserve_month_codes_and_replace_era_groups() {
     assert!(updated.date().equals(common));
     assert_eq!(updated.time(), datetime.time());
     assert_eq!(updated.calendar_id(), "hebrew");
+    let zoned = ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(datetime.epoch_nanoseconds()).unwrap(),
+        zero_zone(),
+        Calendar::Hebrew,
+    );
+    let updated = zoned
+        .with_fields(
+            formatjs_temporal::ZonedFields {
+                date_time: formatjs_temporal::DateTimeFields {
+                    date: DateFields {
+                        year: Some(5785),
+                        ..DateFields::default()
+                    },
+                    ..formatjs_temporal::DateTimeFields::default()
+                },
+                ..formatjs_temporal::ZonedFields::default()
+            },
+            formatjs_temporal::ZonedWithOptions::default(),
+        )
+        .unwrap();
+    assert!(updated.local().unwrap().date().equals(common));
+    assert_eq!(updated.local().unwrap().time(), datetime.time());
     let leap = PlainDate::from_calendar_fields(
         Calendar::Hebrew,
         date_fields(5784, month_code("M05L"), 30),
@@ -828,38 +859,45 @@ fn public_short_dates_match_independent_icu_catalog_and_rounding() {
             } else {
                 Overflow::Constrain
             };
-            let actual = PlainMonthDay::from_calendar_fields(calendar, fields, overflow);
-            if row[4] == "X" {
-                assert!(actual.is_err(), "{line}: {actual:?}");
-            } else {
-                let actual = actual.unwrap_or_else(|error| panic!("{line}: {error:?}"));
-                assert_eq!(actual.epoch_day(), row[4].parse::<i64>().unwrap(), "{line}");
-                assert_eq!(actual.calendar_id(), row[0]);
-                assert!(
-                    actual.equals(PlainMonthDay::parse_in(&actual.to_string(), calendar).unwrap())
-                );
-                let reference = actual.calendar_fields().unwrap();
-                let date = actual
-                    .to_plain_date(reference.year, Overflow::Reject)
-                    .unwrap();
-                assert_eq!(date.epoch_day(), actual.epoch_day(), "{line}");
-                let year_fields = match date.era().unwrap() {
-                    Some(era) => DateFields {
-                        era: Some(era.name),
-                        era_year: Some(era.year),
-                        ..DateFields::default()
-                    },
-                    None => DateFields {
-                        year: Some(reference.year),
-                        ..DateFields::default()
-                    },
-                };
-                assert!(
-                    actual
-                        .to_plain_date_fields(year_fields, Overflow::Reject)
-                        .unwrap()
-                        .equals(date)
-                );
+            let source = PlainMonthDay::from_epoch_day_in(0, calendar).unwrap();
+            for actual in [
+                PlainMonthDay::from_calendar_fields(calendar, fields, overflow),
+                source.with_fields(fields, overflow),
+            ] {
+                if row[4] == "X" {
+                    assert!(actual.is_err(), "{line}: {actual:?}");
+                } else {
+                    let actual = actual.unwrap_or_else(|error| panic!("{line}: {error:?}"));
+                    assert_eq!(actual.epoch_day(), row[4].parse::<i64>().unwrap(), "{line}");
+                    assert_eq!(actual.calendar_id(), row[0]);
+                    assert!(
+                        actual.equals(
+                            PlainMonthDay::parse_in(&actual.to_string(), calendar).unwrap()
+                        )
+                    );
+                    let reference = actual.calendar_fields().unwrap();
+                    let date = actual
+                        .to_plain_date(reference.year, Overflow::Reject)
+                        .unwrap();
+                    assert_eq!(date.epoch_day(), actual.epoch_day(), "{line}");
+                    let year_fields = match date.era().unwrap() {
+                        Some(era) => DateFields {
+                            era: Some(era.name),
+                            era_year: Some(era.year),
+                            ..DateFields::default()
+                        },
+                        None => DateFields {
+                            year: Some(reference.year),
+                            ..DateFields::default()
+                        },
+                    };
+                    assert!(
+                        actual
+                            .to_plain_date_fields(year_fields, Overflow::Reject)
+                            .unwrap()
+                            .equals(date)
+                    );
+                }
             }
             count += 1;
         }

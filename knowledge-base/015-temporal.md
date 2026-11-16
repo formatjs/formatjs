@@ -6,19 +6,31 @@ versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stac
 
 ## Typed Rust field updates
 
-PlainTime, Duration, PlainDate and PlainDateTime expose `with_fields` with optional
-typed fields. Clock regulation is shared with the existing `regulatePlainTime`
+PlainTime, Duration, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and
+ZonedDateTime expose `with_fields` with optional typed fields. Clock regulation
+is shared with the existing `regulatePlainTime`
 binding; ABI 9 and its operation set stay unchanged. Duration updates retain
 unbalanced fields and validate the complete resulting duration. Calendar merging
 preserves month codes, clears dependent era/year fields and ignores unsupported
 eras for ISO/Chinese/Dangi. PlainDateTime accepts full calendar fields with omitted
 time fields defaulting to midnight. JS still owns observable coercion and field
-access order. Short-date and zoned partial updates still need typed API coverage.
+access order. YearMonth ignores supplied days, normalizes its reference day and
+supports extended reference dates. MonthDay merges without its reference year.
+Calendar merges start with year/monthCode/day selected for the value type,
+without derived era fields, following
+[ISODateToFields](https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields).
+ZonedFields includes an optional nanosecond offset hint. ZonedWithOptions defaults
+to constrain/compatible/prefer; parsing retains its separate reject default.
+Zoned updates reuse exact-offset resolution, preserving the original fold offset
+when possible and supporting prefer/use/ignore/reject policies.
 
 Independent ICU field rows exercise updates through arithmetic and borrowed
 calendar providers; 25,269 ICU epoch samples verify partial clock regulation.
 Boundary cases cover leap-month fallback, Japanese era changes, mixed duration
 signs, large fields, date bounds and preservation of omitted fractional units.
+The all-calendar short-date corpus exercises updates for its 4,992 MonthDay rows.
+All 17,640 independent ICU offset samples exercise zoned fractional updates;
+the 1,900 transition windows additionally check partial field gap/fold policies.
 
 ## Host Intl data policy
 

@@ -1,7 +1,30 @@
 use crate::{
-    CalendarProvider, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY, Overflow,
-    PlainDateTime,
+    CalendarProvider, DateTimeFields, Duration, Error, Instant, IsoDateTime, NANOSECONDS_PER_DAY,
+    OffsetInput, OffsetOption, Overflow, PlainDateTime, ZonedParseOptions,
 };
+
+#[derive(Clone, Copy, Debug, Default)]
+pub struct ZonedFields<'a> {
+    pub date_time: DateTimeFields<'a>,
+    /// Offset hint in nanoseconds; defaults to the source offset.
+    pub offset: Option<i128>,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ZonedWithOptions {
+    pub disambiguation: Disambiguation,
+    pub offset: OffsetOption,
+    pub overflow: Overflow,
+}
+impl Default for ZonedWithOptions {
+    fn default() -> Self {
+        Self {
+            disambiguation: Disambiguation::Compatible,
+            offset: OffsetOption::Prefer,
+            overflow: Overflow::Constrain,
+        }
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Disambiguation {
@@ -108,6 +131,37 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
+    pub fn with_fields(
+        &self,
+        fields: ZonedFields<'_>,
+        options: ZonedWithOptions,
+    ) -> Result<Self, Error> {
+        let has_date_time = fields.date_time.date.has_fields(self.calendar_id())
+            || !fields.date_time.time.is_empty();
+        if !has_date_time && fields.offset.is_none() {
+            return Err(Error::InvalidDateTime);
+        }
+        let current = self.local()?;
+        let local = if has_date_time {
+            current.with_fields(fields.date_time, options.overflow)?
+        } else {
+            current
+        };
+        Self::from_local_with_offset(
+            local.fields(),
+            self.time_zone.clone(),
+            self.calendar,
+            OffsetInput::Exact(
+                fields
+                    .offset
+                    .unwrap_or_else(|| self.time_zone.offset_nanoseconds(self.instant)),
+            ),
+            ZonedParseOptions {
+                disambiguation: options.disambiguation,
+                offset: options.offset,
+            },
+        )
+    }
     pub fn with_calendar<D: CalendarProvider>(&self, calendar: D) -> ZonedDateTime<Z, D> {
         ZonedDateTime::new_in_calendar(self.instant, self.time_zone.clone(), calendar)
     }

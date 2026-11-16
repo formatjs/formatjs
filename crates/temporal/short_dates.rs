@@ -1,6 +1,7 @@
 use crate::calendar::{Calendar, Date, DateDuration};
 use crate::calendar_provider::{
-    error, overflow as calendar_overflow, resolve_year, resolve_year_month,
+    DateFieldShape, error, merge_fields, overflow as calendar_overflow, resolve_year,
+    resolve_year_month,
 };
 use crate::date::month_length;
 use crate::iso::{epoch_day_from_iso, iso_from_epoch_nanoseconds_raw};
@@ -44,6 +45,18 @@ impl PlainYearMonth {
     }
 }
 impl<C: CalendarProvider> PlainYearMonth<C> {
+    pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
+        Self::from_calendar_fields(
+            self.calendar,
+            merge_fields(
+                self.calendar,
+                self.epoch_day,
+                fields,
+                DateFieldShape::YearMonth,
+            )?,
+            overflow,
+        )
+    }
     pub fn from_epoch_day_in(epoch_day: i64, calendar: C) -> Result<Self, Error> {
         check_year_month(epoch_day)?;
         calendar.date_extended(epoch_day).map_err(error)?;
@@ -304,6 +317,18 @@ impl PlainMonthDay {
     }
 }
 impl<C: CalendarProvider> PlainMonthDay<C> {
+    pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
+        Self::from_calendar_fields(
+            self.calendar,
+            merge_fields(
+                self.calendar,
+                self.epoch_day,
+                fields,
+                DateFieldShape::MonthDay,
+            )?,
+            overflow,
+        )
+    }
     pub fn from_epoch_day_in(epoch_day: i64, calendar: C) -> Result<Self, Error> {
         PlainDate::from_epoch_day_in(epoch_day, calendar)?;
         Ok(Self {

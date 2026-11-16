@@ -52,7 +52,10 @@ pub use time::{FormattedTime, PlainTime, TimeFields};
 pub use timezone::{FutureRule, OffsetTransition, TransitionRule, TransitionZone};
 pub use timezone_identity::{NamedTimeZone, NamedTimeZoneIdentifier, named_time_zone_identifier};
 pub use timezone_registry::{ResolvedTimeZone, TimeZoneRecord, TimeZoneRegistry};
-pub use zoned::{Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime};
+pub use zoned::{
+    Disambiguation, FixedOffset, TimeZone, TransitionDirection, ZonedDateTime, ZonedFields,
+    ZonedWithOptions,
+};
 pub use zoned_string::{
     CalendarName, FormattedZonedDateTime, OffsetInput, OffsetOption, TimeZoneName,
     ZonedFormatOptions, ZonedParseOptions,

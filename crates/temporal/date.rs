@@ -1,6 +1,6 @@
 use crate::calendar::Calendar;
 use crate::calendar_provider::{
-    error, merge_fields, overflow as calendar_overflow, resolve_fields,
+    DateFieldShape, error, merge_fields, overflow as calendar_overflow, resolve_fields,
 };
 use crate::{
     CalendarName, CalendarProvider, DateFields, Duration, Error, IsoDateTime, NANOSECONDS_PER_DAY,
@@ -44,7 +44,11 @@ impl PlainDate {
 }
 impl<C: CalendarProvider> PlainDate<C> {
     pub fn with_fields(self, fields: DateFields<'_>, overflow: Overflow) -> Result<Self, Error> {
-        Self::from_calendar_fields(self.1, merge_fields(self.1, self.0, fields)?, overflow)
+        Self::from_calendar_fields(
+            self.1,
+            merge_fields(self.1, self.0, fields, DateFieldShape::Date)?,
+            overflow,
+        )
     }
     pub fn from_epoch_day_in(value: i64, calendar: C) -> Result<Self, Error> {
         PlainDate::from_epoch_day(value)?;

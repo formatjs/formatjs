@@ -1,6 +1,82 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn short_date_updates_drop_reference_fields_and_preserve_extended_bounds() {
+    use formatjs_temporal::{DateFields, Overflow, PlainMonthDay, PlainYearMonth};
+    let year_month = PlainYearMonth::new(2024, 2, 29).unwrap();
+    let changed = year_month
+        .with_fields(
+            DateFields {
+                month: Some(3),
+                day: Some(0),
+                ..DateFields::default()
+            },
+            Overflow::Reject,
+        )
+        .unwrap();
+    assert_eq!(changed.fields(), (2024, 3, 1));
+    assert!(
+        year_month
+            .with_fields(
+                DateFields {
+                    day: Some(1),
+                    ..DateFields::default()
+                },
+                Overflow::Constrain
+            )
+            .is_err()
+    );
+    for (year, month, reference) in [(-271821, 4, 1), (275760, 9, 30)] {
+        assert_eq!(
+            PlainYearMonth::new(year, month, reference)
+                .unwrap()
+                .with_fields(
+                    DateFields {
+                        year: Some(year),
+                        ..DateFields::default()
+                    },
+                    Overflow::Reject
+                )
+                .unwrap()
+                .fields(),
+            (year, month, 1)
+        );
+    }
+    let month_day = PlainMonthDay::new(2, 28, 1973).unwrap();
+    assert_eq!(
+        month_day
+            .with_fields(
+                DateFields {
+                    day: Some(29),
+                    ..DateFields::default()
+                },
+                Overflow::Reject
+            )
+            .unwrap()
+            .fields(),
+        (2, 29, 1972)
+    );
+    let nonleap = DateFields {
+        year: Some(2023),
+        day: Some(29),
+        ..DateFields::default()
+    };
+    assert!(month_day.with_fields(nonleap, Overflow::Reject).is_err());
+    assert_eq!(
+        month_day
+            .with_fields(nonleap, Overflow::Constrain)
+            .unwrap()
+            .fields(),
+        (2, 28, 1972)
+    );
+    assert!(
+        month_day
+            .with_fields(DateFields::default(), Overflow::Constrain)
+            .is_err()
+    );
+}
+
+#[test]
 fn partial_dates_and_datetimes_constrain_without_carrying_clock_units() {
     use formatjs_temporal::{
         DateFields, DateTimeFields, Overflow, PlainDate, PlainDateTime, TimeFields,
@@ -969,7 +1045,10 @@ fn duration_precision_preserves_unbalanced_units_and_rounds_signed_time() {
 
 #[test]
 fn independent_icu_zoned_fields_and_disambiguation() {
-    use formatjs_temporal::{Disambiguation, TimeZone, ZonedDateTime};
+    use formatjs_temporal::{
+        DateFields, DateTimeFields, Disambiguation, OffsetOption, TimeFields, TimeZone,
+        ZonedDateTime, ZonedFields, ZonedWithOptions,
+    };
     let zones = iana_registry();
     let mut count = 0;
     let mut transitions = 0;
@@ -988,6 +1067,26 @@ fn independent_icu_zoned_fields_and_disambiguation() {
         let instant = Instant::from_epoch_nanoseconds(value).unwrap();
         assert_eq!(zone.offset_nanoseconds(instant), offset, "{line}");
         let zoned = ZonedDateTime::new(instant, zone);
+        let updated = zoned
+            .with_fields(
+                ZonedFields {
+                    date_time: DateTimeFields {
+                        time: TimeFields {
+                            nanosecond: Some(777),
+                            ..TimeFields::default()
+                        },
+                        ..DateTimeFields::default()
+                    },
+                    ..ZonedFields::default()
+                },
+                ZonedWithOptions::default(),
+            )
+            .unwrap();
+        assert_eq!(
+            updated.instant().epoch_nanoseconds(),
+            value + 777,
+            "partial clock {line}"
+        );
         assert_eq!(
             zoned.local().unwrap().epoch_nanoseconds(),
             value + offset,
@@ -999,6 +1098,63 @@ fn independent_icu_zoned_fields_and_disambiguation() {
                 let fields = IsoDateTime::from_epoch_nanoseconds(local).unwrap();
                 let earlier = local - offset.max(old_offset);
                 let later = local - offset.min(old_offset);
+                let update = ZonedFields {
+                    date_time: DateTimeFields {
+                        date: DateFields {
+                            year: Some(fields.year),
+                            month: Some(i32::from(fields.month)),
+                            day: Some(i32::from(fields.day)),
+                            ..DateFields::default()
+                        },
+                        time: TimeFields {
+                            hour: Some(fields.hour.into()),
+                            minute: Some(fields.minute.into()),
+                            second: Some(fields.second.into()),
+                            millisecond: Some((fields.nanosecond / 1_000_000).into()),
+                            microsecond: Some((fields.nanosecond / 1000 % 1000).into()),
+                            nanosecond: Some((fields.nanosecond % 1000).into()),
+                        },
+                    },
+                    ..ZonedFields::default()
+                };
+                for (mode, expected) in [
+                    (Disambiguation::Earlier, earlier),
+                    (Disambiguation::Later, later),
+                    (
+                        Disambiguation::Compatible,
+                        if offset > old_offset { later } else { earlier },
+                    ),
+                ] {
+                    assert_eq!(
+                        zoned
+                            .with_fields(
+                                update,
+                                ZonedWithOptions {
+                                    offset: OffsetOption::Ignore,
+                                    disambiguation: mode,
+                                    ..ZonedWithOptions::default()
+                                }
+                            )
+                            .unwrap()
+                            .instant()
+                            .epoch_nanoseconds(),
+                        expected,
+                        "partial local {line}"
+                    );
+                }
+                assert!(
+                    zoned
+                        .with_fields(
+                            update,
+                            ZonedWithOptions {
+                                offset: OffsetOption::Ignore,
+                                disambiguation: Disambiguation::Reject,
+                                ..ZonedWithOptions::default()
+                            }
+                        )
+                        .is_err(),
+                    "partial local {line}"
+                );
                 assert_eq!(
                     ZonedDateTime::from_local(fields, zone, Disambiguation::Earlier)
                         .unwrap()

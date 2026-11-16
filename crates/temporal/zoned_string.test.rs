@@ -16,6 +16,156 @@ fn parse(
 ) -> Result<ZonedDateTime<formatjs_temporal::ResolvedTimeZone<'static>>, formatjs_temporal::Error> {
     ZonedDateTime::parse(text, TimeZoneRegistry::compiled(), options)
 }
+
+#[test]
+fn zoned_updates_preserve_fold_offsets_and_match_supplied_offsets_exactly() {
+    use formatjs_temporal::{
+        DateTimeFields, NANOSECONDS_PER_DAY, TimeFields, ZonedFields, ZonedWithOptions,
+    };
+    let later = parse(
+        "2020-11-01T01:30:00-05:00[America/New_York]",
+        ZonedParseOptions::default(),
+    )
+    .unwrap();
+    let earlier = parse(
+        "2020-11-01T01:30:00-04:00[America/New_York]",
+        ZonedParseOptions::default(),
+    )
+    .unwrap();
+    let minute = ZonedFields {
+        date_time: DateTimeFields {
+            time: TimeFields {
+                minute: Some(31),
+                ..TimeFields::default()
+            },
+            ..DateTimeFields::default()
+        },
+        ..ZonedFields::default()
+    };
+    for (source, expected) in [
+        (&earlier, "2020-11-01T05:31:00Z"),
+        (&later, "2020-11-01T06:31:00Z"),
+    ] {
+        assert_eq!(
+            source
+                .with_fields(minute, ZonedWithOptions::default())
+                .unwrap()
+                .instant(),
+            expected.parse::<Instant>().unwrap()
+        );
+    }
+    assert_eq!(
+        later
+            .with_fields(
+                ZonedFields {
+                    offset: Some(-4 * 3_600_000_000_000),
+                    ..ZonedFields::default()
+                },
+                ZonedWithOptions::default()
+            )
+            .unwrap()
+            .instant(),
+        earlier.instant()
+    );
+    let wrong = ZonedFields {
+        offset: Some(-3 * 3_600_000_000_000),
+        ..ZonedFields::default()
+    };
+    for (offset, expected) in [
+        (OffsetOption::Prefer, "2020-11-01T05:30:00Z"),
+        (OffsetOption::Use, "2020-11-01T04:30:00Z"),
+        (OffsetOption::Ignore, "2020-11-01T05:30:00Z"),
+    ] {
+        assert_eq!(
+            later
+                .with_fields(
+                    wrong,
+                    ZonedWithOptions {
+                        offset,
+                        ..ZonedWithOptions::default()
+                    }
+                )
+                .unwrap()
+                .instant(),
+            expected.parse::<Instant>().unwrap()
+        );
+    }
+    assert!(
+        later
+            .with_fields(
+                wrong,
+                ZonedWithOptions {
+                    offset: OffsetOption::Reject,
+                    ..ZonedWithOptions::default()
+                }
+            )
+            .is_err()
+    );
+    assert!(
+        later
+            .with_fields(ZonedFields::default(), ZonedWithOptions::default())
+            .is_err()
+    );
+    for offset in [
+        NANOSECONDS_PER_DAY,
+        -NANOSECONDS_PER_DAY,
+        i128::MAX,
+        i128::MIN,
+    ] {
+        assert!(
+            later
+                .with_fields(
+                    ZonedFields {
+                        offset: Some(offset),
+                        ..ZonedFields::default()
+                    },
+                    ZonedWithOptions {
+                        offset: OffsetOption::Ignore,
+                        ..ZonedWithOptions::default()
+                    }
+                )
+                .is_err()
+        );
+    }
+    let historical = parse(
+        "1900-01-01T12:00:00+00:09:21[Europe/Paris]",
+        ZonedParseOptions::default(),
+    )
+    .unwrap();
+    assert!(
+        historical
+            .with_fields(
+                ZonedFields {
+                    offset: Some(9 * 60_000_000_000),
+                    ..ZonedFields::default()
+                },
+                ZonedWithOptions {
+                    offset: OffsetOption::Reject,
+                    ..ZonedWithOptions::default()
+                }
+            )
+            .is_err()
+    );
+    let maximum = parse("+275760-09-13T00:00Z[UTC]", ZonedParseOptions::default()).unwrap();
+    assert!(
+        maximum
+            .with_fields(
+                ZonedFields {
+                    date_time: DateTimeFields {
+                        time: TimeFields {
+                            nanosecond: Some(1),
+                            ..TimeFields::default()
+                        },
+                        ..DateTimeFields::default()
+                    },
+                    ..ZonedFields::default()
+                },
+                ZonedWithOptions::default()
+            )
+            .is_err()
+    );
+}
+
 #[test]
 fn independent_icu_zoned_string_parsing_and_formatting() {
     let mut count = 0;
