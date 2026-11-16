@@ -1,6 +1,10 @@
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
+import {
+  legacyDateTimeFormat,
+  type LegacyDateTimeProjection,
+} from '#packages/temporal/legacy-extended-date.js'
 
 const dateUTC = Date.UTC
 
@@ -76,13 +80,13 @@ export function localeDateTime(
 ): string {
   if (!dateTimeConstructor || !formatDate || !resolvedDate) return fallback()
   if (temporalFormat) return temporalFormat(value, locales, options)
-  const {formatter, milliseconds} = legacyDateTimeProjection(
+  const projection = legacyDateTimeProjection(
     dateTimeConstructor,
     value,
     locales,
     options
   )
-  return formatDate.call(formatter)(milliseconds)
+  return legacyDateTimeFormat(projection, formatDate, partsDate!, resolvedDate)
 }
 
 export interface LegacyDateTimeIntrinsics {
@@ -100,7 +104,7 @@ export function legacyDateTimeProjection(
     resolvedOptions: resolvedDate!,
     formatToParts: partsDate!,
   }
-): {formatter: Intl.DateTimeFormat; milliseconds: number} {
+): LegacyDateTimeProjection {
   let source: Record<string, unknown> | undefined
   const snapshot: Record<string, unknown> = Object.create(null)
   const proxy = new Proxy(Object.create(null), {
@@ -233,7 +237,7 @@ export function legacyDateTimeProjection(
   const formatter = new Constructor(resolved.locale, selected)
   const ns = value.epochNanoseconds
   const ms = ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
-  return {formatter, milliseconds: Number(ms)}
+  return {formatter, milliseconds: Number(ms), plain: !instant}
 }
 
 function legacyStyleFields(

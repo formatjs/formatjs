@@ -1426,6 +1426,45 @@
       "equivalent full-backend performance and shipped artifact comparisons"
     ]
   },
+  "extendedGregorianHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendars": ["iso8601", "gregory"],
+    "test262ExecutionsPerProfile": 18,
+    "profiles": [
+      "Node TypeScript",
+      "Node WASM",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "failures": 0,
+    "newExclusions": [],
+    "independentICU": {
+      "version": "79.1",
+      "singleCases": 360,
+      "ranges": 80,
+      "locales": ["en", "ar-EG", "ja", "bn", "zh-Hans-u-nu-hanidec"]
+    },
+    "legacyDateTimeFormatDiagnostic": {
+      "executions": 130,
+      "passes": 128,
+      "failures": 2,
+      "file": "intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js"
+    },
+    "ownedIntlDiagnostic": {
+      "executions": 4080,
+      "failures": 4,
+      "scope": "Refreshed before the legacy-only fix; pinned CST6CDT and CLDR zero-offset assumptions remain. No implementation-failure baseline accepted."
+    },
+    "sizeSnapshots": [
+      "benchmarks/temporal/extended-date-size-results.json",
+      "benchmarks/temporal/extended-date-backend-size-results.json"
+    ],
+    "remaining": [
+      "Host lunar consistency",
+      "Non-Gregorian extended host formatting",
+      "Rust completion audit"
+    ]
+  },
   "durationFormatIntegration": {
     "completeTemporalBackend": false,
     "temporalFiles": 6,

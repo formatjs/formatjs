@@ -17,8 +17,8 @@ range boundaries with Test262 and independent ICU oracles, including Hermes.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 64,645 bytes gzip; standalone measures
-333,124. Both include owned timezone data. The roughly 23 KB gzip full reference
+Published default TS consumers measure 65,121 bytes gzip; standalone measures
+334,194. Both include owned timezone data. The roughly 23 KB gzip full reference
 uses host Intl data; these profiles still have different data policies.
 
 `host-timezone.ts` prototypes captured Intl offset queries and local-time
@@ -1437,3 +1437,34 @@ and its unchanged binary measure 475,345 bytes gzip when compressed separately;
 the prior compact-timezone graph was 474,202. Installer/formatter paths changed;
 no fresh hot-operation performance claim. Size evidence is recorded in
 `benchmarks/temporal/durationformat-integration-size-results.json`.
+
+## Extended Gregorian host formatting
+
+Legacy Gregorian/ISO plain formatting now handles civil dates beyond Date's
+clipping boundary. A 400-year cycle preserves month, day, weekday and clock
+fields; captured NumberFormat restores full localized years. Two-digit years
+are unchanged. Range endpoints share a shift when it fits without crossing an
+era, preserving interval field sharing; otherwise widely separated boundary
+endpoints shift independently. Ordinary Date/Number inputs still clip.
+
+All 18 clipping-specific Test262 executions pass on Node TS/WASM and Hermes
+source/optimized bytecode. The Hermes fixture removes only the private direct
+Temporal formatter bridge to exercise the legacy adapter with native formatter
+primitives. Independent ICU4J 79.1 proleptic Gregorian fields cover 360 single
+cases and 80 ranges across five numeral systems and both Gregorian identifiers,
+including era boundaries, equal ranges and possible surrogate-year collisions.
+Normal ICU style-field and native behavior-preservation controls also pass.
+
+The strict legacy DateTimeFormat scope now passes 128/130 executions; the two
+remaining failures compare owned lunar fields with different host calendar data.
+They remain visible implementation/data-integration work, with no exclusions.
+Non-Gregorian extended host formatting remains open. The refreshed full owned
+Intl diagnostic has 4,080 executions and the same four pinned timezone/CLDR
+assumption differences; the raw exact ICU locale-string check still exposes
+host literal differences such as Russian space versus narrow no-break space.
+
+Published consumers measure 65,121/334,194 bytes gzip for default/standalone.
+Separately compressed graphs measure TS 67,389, native-data WASM 475,835 and
+hybrid WASM 509,770 including the unchanged WASM binary. New snapshots are
+`extended-date-size-results.json` and `extended-date-backend-size-results.json`.
+No new throughput claim.

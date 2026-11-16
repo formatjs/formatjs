@@ -293,6 +293,23 @@ java_binary(
     deps = [":icu4j79"],
 )
 
+java_binary(
+    name = "temporal_extended_intl_oracle",
+    testonly = True,
+    srcs = ["TemporalExtendedIntlOracle.java"],
+    main_class = "TemporalExtendedIntlOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_extended_intl_fixtures",
+    testonly = True,
+    outs = ["temporal-extended-intl-fixtures.tsv"],
+    cmd = "$(execpath :temporal_extended_intl_oracle) $@",
+    tools = [":temporal_extended_intl_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
 genrule(
     name = "temporal_timezone_fixtures",
     testonly = True,

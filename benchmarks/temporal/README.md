@@ -1281,3 +1281,14 @@ standalone graphs remain 66,933/335,404 bytes gzip. Native-data WASM glue plus i
 unchanged 441,577-byte gzip binary measures 475,345, up from 474,202. These are
 separately compressed modules, not consumer bundles. No new throughput run;
 the compact-timezone timing snapshot remains the prior numeric-path measurement.
+
+## Extended Gregorian host formatting
+
+`extended-date-size-results.json` measures published default/standalone consumers
+at 65,121/334,194 bytes gzip after adding extended Gregorian single/range
+formatting. `extended-date-backend-size-results.json` records separate module
+graphs: 67,389 TS, 475,835 native-data WASM, 509,770 hybrid WASM, including the
+unchanged binary for WASM. No new throughput run. Validation covers 72 clipping
+Test262 executions across Node TS/WASM and Hermes source/bytecode, plus independent
+ICU Gregorian field/range controls in five numeral systems. Host lunar consistency
+and non-Gregorian clipping remain open.

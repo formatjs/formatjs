@@ -9,6 +9,13 @@ import {
   legacyDateTimeOption,
 } from '#packages/temporal/locale.js'
 import type {TemporalNamespace} from '#packages/temporal/index.js'
+import {
+  legacyDateTimeFormat,
+  legacyDateTimeParts,
+  legacyDateTimeRangeFormat,
+  legacyDateTimeRangeParts,
+  type LegacyDateTimeProjection as Projection,
+} from '#packages/temporal/legacy-extended-date.js'
 
 export function installLegacyDateTimeFormat(
   namespace: TemporalNamespace
@@ -30,7 +37,6 @@ export function installLegacyDateTimeFormat(
     resolvedOptions: nativeResolved,
     formatToParts: nativeParts,
   }
-  type Projection = {formatter: Intl.DateTimeFormat; milliseconds: number}
   interface State {
     formatter: Intl.DateTimeFormat
     locale: string
@@ -65,6 +71,7 @@ export function installLegacyDateTimeFormat(
       const ns = value.epochNanoseconds
       return {
         formatter: cached,
+        plain: value.kind !== 'Instant',
         milliseconds: Number(
           ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
         ),
@@ -92,7 +99,7 @@ export function installLegacyDateTimeFormat(
     state: State,
     start: unknown,
     end: unknown
-  ): [Intl.DateTimeFormat, number, number] {
+  ): [Projection, Projection] {
     if (start === undefined || end === undefined)
       throw new TypeError('DateTimeFormat range requires two values')
     const first = ToDateTimeFormattable(start)
@@ -100,14 +107,15 @@ export function installLegacyDateTimeFormat(
     const firstTemporal = isTemporalDateTimeValue(first)
     const lastTemporal = isTemporalDateTimeValue(last)
     if (!firstTemporal && !lastTemporal)
-      return [state.formatter, first.toNumber(), last.toNumber()]
+      return [
+        {formatter: state.formatter, milliseconds: first.toNumber()},
+        {formatter: state.formatter, milliseconds: last.toNumber()},
+      ]
     if (!firstTemporal || !lastTemporal || first.kind !== last.kind)
       throw new TypeError(
         'DateTimeFormat range requires matching Temporal types'
       )
-    const a = project(state, first),
-      b = project(state, last)
-    return [a.formatter, a.milliseconds, b.milliseconds]
+    return [project(state, first), project(state, last)]
   }
   function create(
     locales: unknown,
@@ -155,7 +163,12 @@ export function installLegacyDateTimeFormat(
         state.bound = (input?: unknown): string => {
           const value = single(state, input)
           return value
-            ? nativeFormat.call(value.formatter)(value.milliseconds)
+            ? legacyDateTimeFormat(
+                value,
+                nativeFormat,
+                nativeParts,
+                nativeResolved
+              )
             : nativeFormat.call(state.formatter)()
         }
         Object.defineProperty(state.bound, 'name', {value: ''})
@@ -167,14 +180,20 @@ export function installLegacyDateTimeFormat(
       if (!state) return Reflect.apply(nativeParts, this, [input])
       const value = single(state, input)
       return value
-        ? nativeParts.call(value.formatter, value.milliseconds)
+        ? legacyDateTimeParts(value, nativeParts, nativeResolved)
         : nativeParts.call(state.formatter)
     }
     formatRange(start: unknown, end: unknown): string {
       const state = states.get(this)
       if (!state) return Reflect.apply(nativeRange, this, [start, end])
-      const [formatter, first, last] = range(state, start, end)
-      return nativeRange.call(formatter, first, last)
+      const [first, last] = range(state, start, end)
+      return legacyDateTimeRangeFormat(
+        first,
+        last,
+        nativeRange,
+        nativeRangeParts,
+        nativeResolved
+      )
     }
     formatRangeToParts(
       start: unknown,
@@ -182,8 +201,13 @@ export function installLegacyDateTimeFormat(
     ): Intl.DateTimeRangeFormatPart[] {
       const state = states.get(this)
       if (!state) return Reflect.apply(nativeRangeParts, this, [start, end])
-      const [formatter, first, last] = range(state, start, end)
-      return nativeRangeParts.call(formatter, first, last)
+      const [first, last] = range(state, start, end)
+      return legacyDateTimeRangeParts(
+        first,
+        last,
+        nativeRangeParts,
+        nativeResolved
+      )
     }
     resolvedOptions(): Intl.ResolvedDateTimeFormatOptions {
       return Reflect.apply(nativeResolved, this, [])
@@ -223,7 +247,12 @@ export function installLegacyDateTimeFormat(
           true,
           intrinsics
         )
-        return nativeFormat.call(result.formatter)(result.milliseconds)
+        return legacyDateTimeFormat(
+          result,
+          nativeFormat,
+          nativeParts,
+          nativeResolved
+        )
       },
     },
   })

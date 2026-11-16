@@ -78,13 +78,18 @@ are inferred through captured `formatToParts` operations before host matching.
 
 Remaining gaps stay visible:
 
-- Legacy Date TimeClip still limits extended plain values. Older host calendar
-  data can disagree with Temporal's calendar packs.
+- Legacy Date TimeClip still limits extended plain values in non-Gregorian
+  calendars. Older host lunar data can disagree with Temporal's calendar packs.
 - Rust capability/API coverage needs its completion audit. Backend controls still
   report `completeTemporalBackend: false`; ECMAScript coercion, brands and object
   allocation stay in JS.
 
 Implementation gaps are not allowed conformance exclusions.
+
+Legacy host formatting supports extended plain Gregorian dates, times and
+year-months through both single-value and range APIs. It uses captured
+NumberFormat for localized year digits. Ordinary Date/Number inputs retain
+their clipping rules.
 
 DurationFormat supports late Temporal installation, branded durations and ISO
 duration strings. Installation registers captured getters and parsers with
@@ -165,8 +170,8 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Published consumer bundles currently measure 64,645 bytes gzip for default and
-333,124 for standalone. Both include compact IANA histories. The native-data WASM
-module and binary, compressed separately, measure 475,345 bytes gzip. Prior
+Published consumer bundles currently measure 65,121 bytes gzip for default and
+334,194 for standalone. Both include compact IANA histories. The native-data WASM
+module and binary, compressed separately, measure 475,835 bytes gzip. Prior
 measured Node workloads favor TS.
 See benchmarks/temporal for versioned methods, scopes and results.

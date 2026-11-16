@@ -7,6 +7,8 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load(":tests/hermes-test.bzl", "sh_test")
 
+_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
 # gazelle:ignore
 formatjs_library(
     name = "temporal",
@@ -34,6 +36,7 @@ formatjs_library(
         "instant-string.ts",
         "kernel.ts",
         "legacy-durationformat.ts",
+        "legacy-extended-date.ts",
         "legacy-intl.ts",
         "locale.ts",
         "lunisolar.ts",
@@ -171,6 +174,107 @@ js_test(
     ],
     entry_point = "tests/durationformat-package.test.mjs",
 )
+
+js_test(
+    name = "legacy_extended_date_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_extended_intl_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_extended_intl_fixtures",
+    ],
+    entry_point = "tests/legacy-extended-date.test.mjs",
+)
+
+[
+    sh_test(
+        name = profile + "_extended_date_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.ExtendedGregorian." + profile,
+            "$(rootpath tests/legacy-extended-date-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js",
+        ],
+        data = [
+            "tests/legacy-extended-date-test262-count.json",
+            ":datetimeformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if profile == "wasm_legacy" else []),
+        env = {"TZ": "UTC"},
+    )
+    for profile, prelude in [
+        ("legacy", "instant"),
+        ("wasm_legacy", "wasm"),
+    ]
+]
+
+genrule(
+    name = "legacy_extended_hermes_prelude",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":compact-calendar-payload.js",
+    ],
+    outs = ["legacy-extended-hermes-prelude.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location :compact-calendar-payload.js)) > $@",
+)
+
+[
+    sh_test(
+        name = "legacy_extended_date_hermes_" + mode + "_test262",
+        size = "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath :legacy_extended_hermes_prelude)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath tests/legacy-extended-date-test262-count.json)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.ExtendedGregorian.Hermes." + mode,
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js",
+        ],
+        data = [
+            "tests/hermes-host.sh",
+            "tests/legacy-extended-date-test262-count.json",
+            ":datetimeformat_harness",
+            ":legacy_extended_hermes_prelude",
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+        },
+    )
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+]
 
 rolldown_bundle(
     name = "host-calendar-code",
@@ -598,8 +702,6 @@ js_run_binary(
     ],
     tool = "//tools/test262:prelude",
 )
-
-_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 # offset-time-zones.js hardcodes the pre-CLDR49 bare GMT zero form.
 # Current LDML and ICU79 require numeric zero; full diagnostics retain this file.
