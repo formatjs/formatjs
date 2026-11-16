@@ -166,3 +166,33 @@ reference 22.58, native-data WASM 26.09, hybrid 26.11. Previous owned-data TS wa
 12.11 ms. New snapshot does not refresh earlier hot-operation rankings.
 See `benchmarks/temporal/host-intl-default-startup-results.json` and the provider
 search limits in [implementation record](015-temporal.md#default-installed-intl-timezone-provider).
+
+## Remaining size justification audit
+
+Runtime audited: `6d55edf0f473aac8b6fce314f7a7f7d345452972` (PR #8015).
+`bazel run -c opt //benchmarks/temporal:size_audit` reproduces the published
+38,639-byte TS and 23,083-byte reference consumers exactly. TypeScript AST
+rewrites remove selected code/data before consumer tree shaking and minification;
+rewrite coverage is asserted. Results: `benchmarks/temporal/size-audit-results.json`.
+Altered builds are intentionally incomplete, not conformance claims.
+
+Independent removal savings: timezone metadata 6,317 gzip bytes; all locale
+formatting 5,838; lunar/Umm al-Qura engines 2,139; native dispatch 324. Calendar
+formatting corrections alone account for 3,678 within the locale paths. Removing
+all four groups together leaves 24,065 bytes (14,574 saved), only 982 above the
+full reference. Savings are non-additive; runtime capabilities differ after removal.
+
+Verdict: measured payload has concrete purposes, with existing independent and
+regression evidence for lunar/calendar repairs. Default does not accidentally
+include full standalone calendar packs, owned timezone offset histories, WASM
+binary, or full formatter/locale data packages. Backend dispatch is a small cost
+for the supported optional backend model. Locale methods are standard behavior
+in both implementations; their entire cost cannot be called extra functionality.
+
+Timezone metadata remains the largest compression candidate, not proof that
+6,317 bytes are irreducible. It keeps exact IANA spellings, aliases and primary
+identity independent of host naming, plus intervals guarding closely spaced
+changes. The pinned reference normalizes spellings heuristically and uses host
+identities. Removing ours loses validation/identity or search guarantees; a
+smaller equivalent encoding needs separate validation. The remaining core gap
+is not proven minimal either. No production change or new exclusion in this audit.

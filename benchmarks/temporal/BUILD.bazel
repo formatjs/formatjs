@@ -33,6 +33,7 @@ formatjs_library(
         "reference.ts",
         "reference-full.ts",
         "should-polyfill-entry.ts",
+        "size-audit.ts",
         "size-benchmark.ts",
         "startup-benchmark.ts",
         "wasm-benchmark.ts",
@@ -54,12 +55,32 @@ formatjs_library(
         "//:node_modules/@types/node",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
+        "//:node_modules/typescript",
         "//packages/intl-datetimeformat:lib",
         "//packages/intl-datetimeformat:types",
         "//packages/intl-durationformat:lib",
         "//packages/intl-durationformat:types",
         "//packages/temporal:types",
     ],
+)
+
+js_binary(
+    name = "size_audit",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath :reference-full-bundle.js)",
+        "$(rlocationpath host-intl-default-startup-results.json)",
+    ],
+    data = [
+        "host-intl-default-startup-results.json",
+        ":generated_package_json",
+        ":reference-full-bundle.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+        "//:node_modules/typescript",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "size-audit.ts",
 )
 
 js_binary(

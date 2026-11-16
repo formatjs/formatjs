@@ -18,6 +18,47 @@ Native-data WASM consumer plus binary totals 479,583 bytes gzip; hybrid
 `host-intl-default-startup-results.json` for current consumer sizes/startup.
 Earlier hot-operation snapshots retain their original data policies.
 
+## Remaining size audit
+
+```sh
+bazel run -c opt //benchmarks/temporal:size_audit
+```
+
+`size-audit-results.json` measures diagnostic AST feature removals from the same
+published consumer. Baseline/reference must exactly reproduce the startup
+snapshot (38,639/23,083 gzip bytes). Every requested rewrite is checked. Altered
+builds deliberately lose behavior; these are not replacement implementations.
+
+| Removal                                                          | Gzip bytes saved |
+| ---------------------------------------------------------------- | ---------------: |
+| Timezone names, links, primary identities and search intervals   |            6,317 |
+| All locale formatting                                            |            5,838 |
+| Calendar formatting corrections only, within locale formatting   |            3,678 |
+| Chinese/Dangi/Umm al-Qura engines                                |            2,139 |
+| Native backend dispatch                                          |              324 |
+| Metadata, locale formatting, lunar engines and dispatch together |           14,574 |
+
+Savings overlap; gzip effects are not additive. Combined altered consumer is
+24,065 bytes, versus the reference's full 23,083. This locates the payload; it
+does not prove every retained byte is necessary. Locale formatting is required
+in both implementations, so its entire removal cost is not an extra feature
+premium over the reference.
+
+Calendar repairs cover host data differences, valid dates beyond Date TimeClip,
+non-Gregorian numeric fields and locale output consistency. Verified lunar
+arithmetic/data protects calendar boundaries and data joins. Existing independent
+oracles and regression controls justify those behaviors. Native dispatch costs
+only 324 bytes and permits shared TS/WASM/Hermes namespace integration; WASM
+binary and backend encoder/decoder are not included in this default consumer.
+
+Timezone metadata is the largest representation to revisit. Ours uses generated
+exact spellings/aliases and primary identities plus close-transition sampling
+intervals. The pinned reference uses Intl identities and a compact spelling
+heuristic. Emptying our metadata breaks named zones and transition-search
+assumptions. Exact metadata compaction is a valid follow-up; deleting validation
+or weakening transition sampling is not an equivalent size reduction. No runtime
+behavior changed during this audit.
+
 ## Fresh-process startup
 
 ```sh
