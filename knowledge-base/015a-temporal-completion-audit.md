@@ -13,9 +13,9 @@ remains private until the complete audit passes.
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | Package ownership       | `packages/temporal` owns runtime, exports and tests; benchmarks import it.                                        | Recheck migration references and published package assembly.                                      |
 | Rust semantics          | Eight typed values, calendar/timezone providers, parsing, formatting, exact arithmetic and relative durations.    | Finish operation-level mapping, including composed operations and observable JS responsibilities. |
-| TS conformance          | Fresh class and full Intl gates: 13,324 unique scenarios pass per provider union; two documented data exclusions. | Resolve host/owned timezone data mismatch; keep provider scopes explicit.                         |
+| TS conformance          | Fresh class and full Intl gates: 13,324 unique scenarios pass per provider union; two documented data exclusions. | Refresh the final complete matrix; keep provider scopes explicit.                                 |
 | Rust-backed conformance | SDK source/bytecode and native-data WASM full gates pass; all 62 Rust operations return successfully.             | Complete remaining public API and distribution audit.                                             |
-| Independent authority   | ICU calendar/offset/transition/rounding fixtures, HKO/KASI lunar controls, documented oracle bounds.              | Resolve confirmed host/owned timezone-version mismatch.                                           |
+| Independent authority   | ICU calendar/offset/transition/rounding fixtures, HKO/KASI lunar controls, documented oracle bounds.              | Retain oracle bounds and verify final delivery profiles.                                          |
 | Hermes support          | Source/optimized-bytecode targets, SDK host clocks and timezone support, partial-Intl startup regression.         | Recheck complete SDK installation/distribution and supported conformance scopes.                  |
 | Reference benchmarks    | Forced temporal-polyfill full implementation, output equality checks and versioned snapshots.                     | Current Node snapshots refreshed; finish current Hermes measurements.                             |
 | WASM versus TS          | Published consumer/module sizes include JS glue and binary; matched primitive/facade workloads exist.             | Current Node sizes/throughput refreshed; cold TS load and Hermes timing remain.                   |
@@ -139,7 +139,7 @@ calendars where applicable. Artifacts distinguish public and primitive coverage.
 - Host Intl is allowed. A host-only timezone migration is optional; exact owned
   transition data remains a valid implementation choice.
 
-## Current measurements and remaining mismatch
+## Recorded measurements and host integration
 
 `lunar-boundary-facade-results.json` records 26 Node workloads against forced
 `temporal-polyfill/full/implementation` 1.0.7, including Chinese/Dangi/Umm al-Qura
@@ -158,5 +158,27 @@ the reference uses host Intl. Native-data WASM consumer bundle plus binary is
 Actual host-Intl probes under Node 24/26 expose a data-version mismatch:
 `2026-11-16T12:00Z[America/Havana]` has owned hour 08 but locale formatting returns
 07 using the older host rules. At 04:30Z the local date also differs. Full pinned
-Test262 does not cover this current rule change. This remains a correctness task;
-passing the corpus does not close the host/owned integration audit.
+Test262 does not cover this current rule change. The host adapter now formats the owned local epoch in UTC when offsets disagree,
+using native locale patterns and localized numeric offset names. Unknown host
+identifiers follow the same path. Matching offsets retain native output.
+
+## Host formatting correction
+
+The shared corpus checks eight independent ICU offset rows across four zones,
+four locales and five option/style combinations, plus historical second offsets,
+negative fractional milliseconds and Date clipping boundaries: 171 cases per phase.
+Run both before and after installation on normal/stale Node TS and both WASM
+entries, and Hermes source/HBC. The stale-host fixture also rejects newer zone
+identifiers and numeric offset-zone syntax. Native controls determine locale
+patterns and timezone-name digit policy; no new locale data is generated.
+
+A broader native-behavior check exposed an earlier incorrect range guard. Current
+ECMA-402 and Temporal integration allow reversed endpoints. Removing the guard
+restores eight non-Temporal Test262 executions; lunar boundary controls now check
+both endpoint orders and source fields instead of expecting rejection.
+
+`host-timezone-formatting-size-results.json` records final module graphs: TS
+72,018, standalone 342,376, native-data WASM 482,767 and hybrid WASM 515,920 bytes
+gzip. The binary remains 443,098. This is a size refresh; previous timing snapshots
+remain historical. Cold TS load, current Hermes timing and final distribution/API
+checks remain open.

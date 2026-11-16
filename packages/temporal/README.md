@@ -200,9 +200,9 @@ port across internal rounding bounds; it is not an independent calendar oracle.
 Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/bytecode.
 Full Temporal/Intl compliance remains incomplete.
 
-Current separately compressed module graphs measure 70,443 bytes gzip for default
-and 338,952 for standalone. Both include compact IANA histories. Native-data WASM
-glue plus binary measures 481,666 bytes gzip. On 43 measured ISO workload medians,
+Current separately compressed module graphs measure 72,018 bytes gzip for default
+and 342,376 for standalone. Both include compact IANA histories. Native-data WASM
+glue plus binary measures 482,767 bytes gzip. On 43 measured ISO workload medians,
 both WASM profiles trail TS. Full host-Intl reference bundle measures 23,226 bytes;
 data policies differ. Host Intl is an allowed runtime dependency.
 See benchmarks/temporal for versioned methods, scopes and results.
@@ -212,5 +212,8 @@ executions across TS, WASM and Hermes source/HBC profiles. Unique unions contain
 13,324 scenarios per profile and two documented IANA/CLDR data exclusions. Node
 class and full Intl gates use different formatter providers. A separate full
 host-Intl diagnostic passes 4,078/4,080, failing only the stale timezone-link test.
-Current host timezone data can differ from owned rules; reconciling locale output
-with owned ZonedDateTime fields remains open.
+Legacy host formatting compares host and owned offsets. When rules differ or the
+host lacks a zone, it formats owned local fields with a localized numeric offset
+label. Matching host output stays native. This adds code, no locale or timezone data.
+Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
+retain their input order.

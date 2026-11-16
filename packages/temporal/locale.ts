@@ -2,6 +2,10 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
 import {
+  legacyHostTimeZone,
+  legacyZonedProjection,
+} from '#packages/temporal/legacy-zoned-date.js'
+import {
   legacyDateTimeFormat,
   type LegacyDateTimeProjection,
 } from '#packages/temporal/legacy-extended-date.js'
@@ -12,7 +16,8 @@ interface DateTimeConstructor extends Intl.DateTimeFormatConstructor {
   __formatTemporal?: (
     value: TemporalDateTimeValue & {timeZone?: string},
     locales?: unknown,
-    options?: unknown
+    options?: unknown,
+    localNanoseconds?: () => bigint
   ) => string
 }
 let dateTimeConstructor = globalThis.Intl?.DateTimeFormat as
@@ -76,15 +81,20 @@ export function localeDateTime(
   value: TemporalDateTimeValue & {timeZone?: string},
   locales: unknown,
   options: unknown,
-  fallback: () => string
+  fallback: () => string,
+  localNanoseconds?: () => bigint
 ): string {
   if (!dateTimeConstructor || !formatDate || !resolvedDate) return fallback()
-  if (temporalFormat) return temporalFormat(value, locales, options)
+  if (temporalFormat)
+    return temporalFormat(value, locales, options, localNanoseconds)
   const projection = legacyDateTimeProjection(
     dateTimeConstructor,
     value,
     locales,
-    options
+    options,
+    true,
+    undefined,
+    localNanoseconds
   )
   return legacyDateTimeFormat(projection, formatDate, partsDate!, resolvedDate)
 }
@@ -103,8 +113,13 @@ export function legacyDateTimeProjection(
   intrinsics: LegacyDateTimeIntrinsics = {
     resolvedOptions: resolvedDate!,
     formatToParts: partsDate!,
-  }
+  },
+  localNanoseconds?: () => bigint
 ): LegacyDateTimeProjection {
+  const zoned = value.kind === 'ZonedDateTime' && localNanoseconds !== undefined
+  const host = zoned
+    ? legacyHostTimeZone(Constructor, value.timeZone!, intrinsics.formatToParts)
+    : undefined
   let source: Record<string, unknown> | undefined
   const snapshot: Record<string, unknown> = Object.create(null)
   const proxy = new Proxy(Object.create(null), {
@@ -125,7 +140,9 @@ export function legacyDateTimeProjection(
         snapshot[key] = legacyDateTimeOption(key, raw)
       }
       return key === 'timeZone' && value.kind === 'ZonedDateTime'
-        ? value.timeZone
+        ? zoned && !host
+          ? 'UTC'
+          : value.timeZone
         : snapshot[key]
     },
   })
@@ -236,6 +253,18 @@ export function legacyDateTimeProjection(
   }
   const formatter = new Constructor(resolved.locale, selected)
   const ns = value.epochNanoseconds
+  if (zoned) {
+    const local = localNanoseconds!()
+    if (!host || host(ns) !== local - ns)
+      return legacyZonedProjection(
+        Constructor,
+        resolved,
+        selected,
+        local,
+        local - ns,
+        intrinsics.formatToParts
+      )
+  }
   const ms = ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
   return {formatter, milliseconds: Number(ms), plain: !instant}
 }

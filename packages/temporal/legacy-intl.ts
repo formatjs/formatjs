@@ -242,7 +242,8 @@ export function installLegacyDateTimeFormat(
       value(
         value: TemporalDateTimeValue,
         locales?: unknown,
-        options?: unknown
+        options?: unknown,
+        localNanoseconds?: () => bigint
       ): string {
         const result = legacyDateTimeProjection(
           Native!,
@@ -250,7 +251,8 @@ export function installLegacyDateTimeFormat(
           locales,
           options,
           true,
-          intrinsics
+          intrinsics,
+          localNanoseconds
         )
         return legacyDateTimeFormat(
           result,

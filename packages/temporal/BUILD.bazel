@@ -40,6 +40,7 @@ formatjs_library(
         "legacy-extended-date.ts",
         "legacy-intl.ts",
         "legacy-lunisolar-date.ts",
+        "legacy-zoned-date.ts",
         "locale.ts",
         "lunisolar.ts",
         "native.ts",
@@ -238,6 +239,8 @@ formatjs_library(
     srcs = [
         "tests/legacy-calendar-era-host.ts",
         "tests/legacy-calendar-era-oracle.ts",
+        "tests/legacy-timezone-host.ts",
+        "tests/legacy-timezone-oracle.ts",
     ],
     declaration = True,
     no_emit = True,
@@ -394,6 +397,91 @@ sh_test(
         ("wasm_native_", "native"),
     ]
 ]
+
+[
+    js_test(
+        name = profile + "legacy_timezone_" + ("stale_" if stale else "") + "test",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+            "$(rlocationpath :legacy-timezone-oracle.js)",
+            "$(rlocationpath tests/legacy-timezone-prelude.js)",
+        ],
+        data = [
+            "tests/legacy-timezone-prelude.js",
+            ":legacy-timezone-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        ],
+        entry_point = "tests/legacy-timezone.test.mjs",
+        env = ({"FORMATJS_TEMPORAL_TIMEZONE_WASM": mode} if mode else {}) | ({"FORMATJS_TEMPORAL_STALE_TIMEZONE": "1"} if stale else {}),
+    )
+    for profile, mode in [
+        ("", ""),
+        ("wasm_", "hybrid"),
+        ("wasm_native_", "native"),
+    ]
+    for stale in [
+        False,
+        True,
+    ]
+]
+
+rolldown_bundle(
+    name = "legacy-timezone-oracle",
+    srcs = ["tests/legacy-timezone-oracle.ts"],
+    entry_point = "tests/legacy-timezone-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "legacy-timezone-host",
+    srcs = [
+        "tests/legacy-timezone-host.ts",
+        "tests/legacy-timezone-oracle.ts",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/legacy-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "legacy_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        "tests/legacy-timezone-prelude.js",
+        ":legacy-timezone-host.js",
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+    ],
+    outs = ["legacy-timezone-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location tests/legacy-timezone-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures); cat $(location :legacy-timezone-host.js)) > $@",
+)
+
+sh_test(
+    name = "legacy_timezone_hermes_test",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :legacy_timezone_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":legacy_timezone_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
 
 js_test(
     name = "legacy_lunisolar_date_test",

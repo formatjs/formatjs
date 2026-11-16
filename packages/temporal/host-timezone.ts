@@ -23,22 +23,31 @@ function check(instant: bigint): bigint {
 const clamp = (instant: bigint): bigint =>
   instant < -limit ? -limit : instant > limit ? limit : instant
 
-// Intl exposes offsets, not transition enumeration.
-export function createHostTimeZone(timeZone: string): HostTimeZone {
+export function createHostTimeZoneOffset(
+  timeZone: string,
+  intrinsics: {
+    Constructor?: Intl.DateTimeFormatConstructor
+    parts?: typeof Intl.DateTimeFormat.prototype.formatToParts
+  } = {Constructor, parts}
+): HostTimeZone['offsetNanoseconds'] {
+  const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
     throw new RangeError(
       'Temporal requires Intl.DateTimeFormat timezone support'
     )
-  const formatter = new Constructor('en-US-u-nu-latn', {
-    timeZone,
-    calendar: 'iso8601',
-    numberingSystem: 'latn',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: false,
-  })
+  const formatter = new Constructor(
+    'en-US-u-nu-latn',
+    Object.assign(Object.create(null), {
+      timeZone,
+      calendar: 'iso8601',
+      numberingSystem: 'latn',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+    })
+  )
   const offsets = new Map<number, bigint>()
   const offsetNanoseconds = (instant: bigint): bigint => {
     check(instant)
@@ -90,6 +99,13 @@ export function createHostTimeZone(timeZone: string): HostTimeZone {
     offsets.set(key, offset)
     return offset
   }
+  return offsetNanoseconds
+}
+
+// Intl exposes offsets, not transition enumeration.
+/** @internal Host Intl control for timezone conformance tests. */
+export function createHostTimeZone(timeZone: string): HostTimeZone {
+  const offsetNanoseconds = createHostTimeZoneOffset(timeZone)
   const sampleOffsets = (local: bigint): bigint[] => [
     ...new Set([
       offsetNanoseconds(clamp(local - day)),

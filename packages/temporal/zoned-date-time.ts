@@ -861,7 +861,8 @@ class ZonedDateTimeValue {
       {kind: 'ZonedDateTime', ...slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      () => localeStringIntrinsic.call(this),
+      () => local(slot)
     )
   }
   toJSON(): string {

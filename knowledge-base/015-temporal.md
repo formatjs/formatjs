@@ -1607,3 +1607,25 @@ All twelve focused Rust/WASM/Hermes regression targets pass, including 7,216 zon
 Test262 executions across four profiles. `rust-date-zoned-backend-size-results.json`
 refreshes sizes: TS remains 70,443 bytes gzip; native-data WASM totals 481,666,
 including its 443,098-byte binary. This is a size refresh, not a new timing run.
+
+## Host timezone formatting consistency
+
+Legacy ZonedDateTime locale formatting now compares captured host offsets with
+owned local fields. Stale rules or absent host identifiers use a UTC projection
+of owned local time and localized numeric offset labels. Matching host offsets
+retain native output. A shared offset-reader leaf avoids bundling the unused host
+resolution prototype. No generated timezone or locale data changes.
+
+Controls cover eight independent ICU rows, four locales, five option/style
+patterns, historical second offsets, negative fractional milliseconds and local
+dates beyond Date TimeClip. All 171 cases run before/after installation through
+normal/stale TS and both WASM entries, plus Hermes source/HBC. Host GMT patterns
+retain locale signs, separators and the host's numbering policy.
+
+The broader non-Temporal native-behavior check also found the preceding reverse
+range guard was incorrect: ECMA-402 permits reversed endpoints. Remove it; verify
+both endpoint source fields in the existing lunar boundary corpus.
+
+Final size snapshot: `benchmarks/temporal/host-timezone-formatting-size-results.json`.
+TS/native-data WASM module graphs measure 72,018/482,767 bytes gzip, including the
+unchanged 443,098-byte binary for WASM. No new timing claim.

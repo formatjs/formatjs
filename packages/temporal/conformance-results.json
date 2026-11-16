@@ -1949,5 +1949,36 @@
     "test262ExecutionsAcrossFourProfiles": 7216,
     "failures": 0,
     "sizeSnapshot": "benchmarks/temporal/rust-date-zoned-backend-size-results.json"
+  },
+  "hostTimezoneFormatting": {
+    "casesPerPhase": 171,
+    "phases": ["before installation", "after installation"],
+    "profiles": [
+      "Node TS normal host",
+      "Node TS simulated stale host",
+      "Node hybrid WASM normal host",
+      "Node hybrid WASM simulated stale host",
+      "Node native-data WASM normal host",
+      "Node native-data WASM simulated stale host",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "independentICUOffsetRows": 8,
+    "locales": ["en", "ar-EG", "fr", "en-u-nu-mathsans"],
+    "additionalControls": [
+      "Historical second offsets and negative fractional milliseconds",
+      "Owned local dates beyond Date TimeClip",
+      "Host rejects newer identifiers and numeric offset zone syntax"
+    ],
+    "publicHavanaProbe": {
+      "node": "24.14.0",
+      "inputs": ["2026-11-16T12:00Z", "2026-11-16T04:30Z", "2027-01-16T12:00Z"],
+      "ownedAndFormattedHours": ["08", "00", "08"],
+      "nativeHostHours": ["07", "23", "07"]
+    },
+    "rangeCorrection": "Removed earlier range-order guard. Current ECMA-402 and Temporal integration permit reversed endpoints. Lunar boundary checks now validate both source orders.",
+    "newGeneratedData": false,
+    "sizeSnapshot": "benchmarks/temporal/host-timezone-formatting-size-results.json",
+    "remaining": "Final complete conformance/delivery audit, current Hermes and cold-load measurements."
   }
 }

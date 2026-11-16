@@ -8,10 +8,13 @@ import {
   lunisolarRangeParts,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 
+export const legacyTimeZoneName: unique symbol = Symbol()
+
 export interface LegacyDateTimeProjection {
   formatter: Intl.DateTimeFormat
   milliseconds: number
   plain?: boolean
+  [legacyTimeZoneName]?: string
 }
 const limit = 8640000000000000
 const cycle = 146097 * 86400000
@@ -24,7 +27,6 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
-const truncate = Math.trunc
 
 function clipped(value: LegacyDateTimeProjection): boolean {
   return value.plain === true && Math.abs(value.milliseconds) > limit
@@ -67,6 +69,16 @@ export function legacyDateTimeParts(
   parts: Parts,
   resolved: Resolved
 ): Intl.DateTimeFormatPart[] {
+  if (value[legacyTimeZoneName] !== undefined)
+    return legacyDateTimeParts(
+      {...value, [legacyTimeZoneName]: undefined},
+      parts,
+      resolved
+    ).map(part =>
+      part.type === 'timeZoneName'
+        ? {...part, value: value[legacyTimeZoneName]!}
+        : part
+    )
   const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar
   if (!clipped(value) || !gregorian(value.formatter, resolved))
@@ -90,6 +102,10 @@ export function legacyDateTimeFormat(
   parts: Parts,
   resolved: Resolved
 ): string {
+  if (value[legacyTimeZoneName] !== undefined)
+    return legacyDateTimeParts(value, parts, resolved)
+      .map(part => part.value)
+      .join('')
   const calendar = legacyCalendarParts(value, parts, resolved)
   if (calendar) return calendar.map(part => part.value).join('')
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
@@ -121,21 +137,12 @@ function rangeShifts(
     : [shift(first), shift(last)]
 }
 
-function validateRange(
-  first: LegacyDateTimeProjection,
-  last: LegacyDateTimeProjection
-): void {
-  if (truncate(first.milliseconds) > truncate(last.milliseconds))
-    throw new RangeError('Invalid time range')
-}
-
 export function legacyDateTimeRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] {
-  validateRange(first, last)
   const extended = legacyCalendarRangeParts(
     first,
     last,
@@ -175,7 +182,6 @@ export function legacyDateTimeRangeFormat(
   parts: RangeParts,
   resolved: Resolved
 ): string {
-  validateRange(first, last)
   const extended = legacyCalendarRangeParts(
     first,
     last,

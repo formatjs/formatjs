@@ -1409,3 +1409,12 @@ shared day-boundary algorithm for the typed Rust API. TS and standalone module
 graphs remain 70,443/338,952 bytes gzip. Native-data WASM totals 481,666; hybrid
 514,345, including the 443,098-byte gzip binary. No new throughput claim.
 Twelve focused regression targets pass, including 7,216 zoned Test262 executions.
+
+## Host timezone formatting
+
+`host-timezone-formatting-size-results.json` measures the legacy host correction
+for stale timezone rules and missing identifiers, including localized numeric
+offset fallback. Separate graphs: TS 72,018, standalone 342,376, native-data WASM
+482,767, hybrid WASM 515,920 bytes gzip. TS adds 1,575 bytes over the Rust date
+conversion snapshot. The binary remains 443,098; no generated data changes.
+Full host-backed reference bundle remains 23,226. Earlier timing runs are unchanged.

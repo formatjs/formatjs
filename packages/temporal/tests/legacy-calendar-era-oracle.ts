@@ -293,36 +293,41 @@ export function checkLegacyLunarBoundaries(
             parts.map(part => part.value).join(''),
             context
           )
-          if (end > milliseconds) {
-            let rejected = false
-            try {
-              formatter.formatRange(
-                convert(end) as Date,
-                convert(milliseconds) as Date
-              )
-            } catch (error) {
-              rejected = error instanceof RangeError
-            }
-            assert(rejected, `${context} reversed range`)
-          }
-          for (const [source, epoch] of [
-            ['startRange', milliseconds],
-            ['endRange', end],
+          const reverse = formatter.formatRangeToParts(
+            convert(end) as Date,
+            convert(milliseconds) as Date
+          )
+          equal(
+            formatter.formatRange(
+              convert(end) as Date,
+              convert(milliseconds) as Date
+            ),
+            reverse.map(part => part.value).join(''),
+            `${context} reversed range`
+          )
+          for (const [range, first, last] of [
+            [parts, milliseconds, end],
+            [reverse, end, milliseconds],
           ] as const) {
-            const actual = map(
-              parts.filter(
-                part => part.source === source || part.source === 'shared'
+            for (const [source, epoch] of [
+              ['startRange', first],
+              ['endRange', last],
+            ] as const) {
+              const actual = map(
+                range.filter(
+                  part => part.source === source || part.source === 'shared'
+                )
               )
-            )
-            const expected = fields(
-              new Temporal.ZonedDateTime(
-                BigInt(epoch) * 1_000_000n,
-                timeZone,
-                calendar
+              const expected = fields(
+                new Temporal.ZonedDateTime(
+                  BigInt(epoch) * 1_000_000n,
+                  timeZone,
+                  calendar
+                )
               )
-            )
-            for (const [key, value] of Object.entries(expected))
-              equal(actual[key], value, `${context} ${source} ${key}`)
+              for (const [key, value] of Object.entries(expected))
+                equal(actual[key], value, `${context} ${source} ${key}`)
+            }
           }
         }
         checks++
