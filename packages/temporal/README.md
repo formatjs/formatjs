@@ -18,10 +18,11 @@ value.add({hours: 24}).toString()
 Exports `Temporal`, its eight constructors, `Now` and `toTemporalInstant`.
 Calendar arithmetic supports 16 calendar IDs. Chinese/Dangi use compact ICU4X
 historical data and an arithmetic approximation outside 1900–2102. Umm al-Qura
-uses captured host Intl data for AH 1300–1600, then the civil fallback. IANA timezone data includes
-historical transitions and recurring future rules; future lookup has no 2100
-cutoff. Timezone aliases retain their spelling separately from primary identity.
-Timezone law changes require a data update.
+uses captured host Intl data for AH 1300–1600, then the civil fallback. Named
+timezones use captured installed `Intl.DateTimeFormat`, including its timezone
+data version. UTC and numeric offsets work without Intl. Timezone aliases retain
+their spelling separately from primary identity. Update host or installed
+polyfill data when timezone laws change.
 
 ## Installation
 
@@ -49,15 +50,21 @@ full-table namespace:
 import {Temporal} from '@formatjs/temporal/standalone.js'
 ```
 
-Both entries include compact owned IANA timezone histories with exact finite
-transitions and future rules. They expose separate namespaces;
+`standalone.js` includes compact owned IANA timezone histories with exact finite
+transitions and recurring future rules, without a 2100 cutoff. Default ships
+identifiers and transition-search intervals, not offset histories. Entries expose separate namespaces;
 installation entries install the default namespace. Chinese/Dangi arithmetic is
 adapted from ICU4X under Unicode-3.0; see LICENSE.md.
 
-Host Intl is an allowed data dependency. An internal timezone prototype now
-validates offsets and gap/fold resolution against ICU on Hermes and against
-`temporal-polyfill` on Node 24/26. It does not yet replace owned timezone data:
-`Intl.DateTimeFormat` exposes offsets, but no transition enumeration API.
+Default accepts native Intl or installed FormatJS polyfills; no formatter package
+is imported, so no circular runtime dependency. Install Intl before importing
+Temporal, which captures its intrinsics. ICU oracles verify offsets, gap/fold
+resolution and transitions on Hermes. Node also compares host-data results with
+`temporal-polyfill`. Intl exposes no transition enumeration: default searches
+offset changes from 1800 through three years beyond the later of now and input.
+Previous-transition searches probe nearby future years before historical data.
+Generated intervals account for closely spaced IANA transitions and recurring
+rules. Use standalone when owned timezone history/rules must determine results.
 
 ## Locale formatting
 
@@ -197,12 +204,15 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Current separately compressed module graphs measure 72,018 bytes gzip for default
-and 342,376 for standalone. Both include compact IANA histories. Native-data WASM
-glue plus binary measures 482,767 bytes gzip. On 43 measured ISO workload medians,
-both WASM profiles trail TS. Full host-Intl reference bundle measures 23,226 bytes;
-data policies differ. Host Intl is an allowed runtime dependency.
-See benchmarks/temporal for versioned methods, scopes and results.
+Matched bundled namespace consumers measure 38,639 bytes gzip for default TS,
+339,338 for standalone and 23,083 for forced full `temporal-polyfill`.
+Default dropped 44.5% from 69,657 by using installed Intl timezone data.
+Native-data WASM glue plus binary measures 479,583 bytes; hybrid 484,339.
+Nine-process Node startup medians: TS 20.84 ms; full reference 22.58 ms.
+Previous owned-data TS snapshot was 12.11 ms: smaller payload costs more startup
+in this sample. See `benchmarks/temporal/host-intl-default-startup-results.json`
+for methods, raw samples and memory. Earlier hot-operation measurements describe
+previous data policies; they are not refreshed throughput claims.
 
 Final coverage includes every Temporal-feature file in pinned Test262, including
 DateTimeFormat, DurationFormat and staging. Six coherent profiles cover default
@@ -212,8 +222,9 @@ Each Node profile passes 13,474 unique scenarios; each Hermes profile passes
 matrix has 98,716 overlapping suite executions; report unions verify exact
 coverage separately. No Realm exclusion applies to this pin; unsupported Hermes
 Realm hooks and oracle authority limits remain documented.
-Legacy host formatting compares host and owned offsets. When rules differ or the
-host lacks a zone, it formats owned local fields with a localized numeric offset
-label. Matching host output stays native. This adds code, no locale or timezone data.
+For standalone and Rust namespaces, legacy host formatting compares host and
+owned offsets. Stale or missing host rules use owned local fields with a localized
+numeric offset label. Default TS follows installed Intl timezone data. Matching
+host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.

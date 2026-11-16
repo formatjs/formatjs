@@ -1,3 +1,4 @@
+import names from '@formatjs_generated/tz/temporal-names.js'
 import {chinese} from '@formatjs_generated/icu.calendar/chinese.js'
 import {dangi} from '@formatjs_generated/icu.calendar/dangi.js'
 import {ummAlQura} from '@formatjs_generated/icu.calendar/umm-al-qura.js'
@@ -13,10 +14,12 @@ import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-t
 
 declare global {
   interface ImportMeta {
+    readonly formatjsTemporalHostTimeZones?: boolean
     readonly formatjsTemporalNativeData?: boolean
     readonly formatjsTemporalCompactTimeZones?: boolean
   }
 }
+const hostTimeZones = import.meta.formatjsTemporalHostTimeZones === true
 const nativeDataOnly = import.meta.formatjsTemporalNativeData === true
 const compactTimeZones = import.meta.formatjsTemporalCompactTimeZones !== false
 function unavailable(): never {
@@ -39,16 +42,18 @@ export function fallbackUmmAlQura(): typeof ummAlQura {
 export function fallbackTimeZoneIdentifiers(): {
   primary: typeof primary
   links: typeof links
-  names: string[]
+  names: readonly string[]
 } {
   return nativeDataOnly
     ? unavailable()
     : {
         primary,
         links,
-        names: compactTimeZones
-          ? compactTimeZoneNames()
-          : packed.zones.map(entry => entry.slice(0, entry.indexOf('|'))),
+        names: hostTimeZones
+          ? names
+          : compactTimeZones
+            ? compactTimeZoneNames()
+            : packed.zones.map(entry => entry.slice(0, entry.indexOf('|'))),
       }
 }
 export function fallbackTimeZonePrimary(): typeof primary {

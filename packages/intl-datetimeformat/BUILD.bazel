@@ -488,6 +488,7 @@ formatjs_generated_package(
         ":tz_links",
         ":tz_primary",
         ":tz_temporal_compact",
+        ":tz_temporal_names",
     ],
 )
 
@@ -846,4 +847,16 @@ formatjs_test(
         "//packages/temporal:lib",
         "//packages/temporal:types",
     ],
+)
+
+generate_package_file(
+    name = "tz_temporal_names",
+    src = "temporal-names.ts",
+    args = [
+        "--input",
+        "$(rootpath :tz_all_json)",
+        "--namesOnly",
+    ],
+    data = [":tz_all_json"],
+    tool = "//packages/intl-datetimeformat/scripts:temporal-timezones",
 )

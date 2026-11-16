@@ -50,9 +50,13 @@ the 1,900 transition windows additionally check partial field gap/fold policies.
 
 Host `Intl` is an allowed dependency for the TypeScript implementation. Default
 TS uses compact arithmetic/data for Chinese/Dangi and captured host Intl for Umm
-al-Qura. Owned IANA timezone histories use compact rule spans; a host-only timezone
-entry is an optional size optimization.
-The explicit `standalone.js` entry retains full calendar packs.
+al-Qura and named timezone operations. Default ships generated IANA identifiers
+and conservative transition-search intervals, without offset histories. Installed
+Intl may be native or a FormatJS polyfill; load it before Temporal captures its
+intrinsics. No formatter package import or circular dependency is introduced.
+The explicit `standalone.js` entry retains full calendar packs and owned IANA
+histories/future rules. Both Rust WASM profiles and the Hermes SDK retain owned
+timezone data. Earlier measurements below describe their historical data policy.
 Capture host intrinsics before installing Temporal's Intl adapters to avoid
 recursion. Validate host-backed calendar conversion, timezone transitions and
 range boundaries with Test262 and independent ICU oracles, including Hermes.
@@ -114,14 +118,16 @@ and a safe calendar surrogate recover the output. No new calendar data is added.
 
 Compare host-backed TS against `temporal-polyfill/full/implementation` using the
 same host and supported calendars. Report standalone data costs separately.
-Published default TS consumers measure 68,089 bytes gzip; standalone measures
-336,635. Both include owned timezone data. The roughly 23 KB gzip full reference
-uses host Intl data; these profiles still have different data policies.
+Earlier default TS consumers measured 68,089 bytes gzip; standalone measured
+336,635. Both included owned timezone data. The roughly 23 KB gzip full reference
+used host Intl data; those profiles had different data policies. Current default
+and measurements appear in the installed Intl follow-up below.
 
-`host-timezone.ts` prototypes captured Intl offset queries and local-time
+`host-timezone.ts` originally prototyped captured Intl offset queries and local-time
 resolution, including nanoseconds, historical second offsets and instant bounds.
-It is not wired into the default namespace: Intl has no transition enumeration
-API, and an arbitrary search horizon cannot prove the nearest transition.
+That prototype was not wired into the default namespace: Intl has no transition
+enumeration API, and an arbitrary search horizon cannot prove the nearest
+transition. Current default uses the documented bounded search policy below.
 Strict Hermes/ICU checks cover 597 supported names, 17,640 future offsets and
 1,900 gap/fold windows in source and optimized bytecode. Node 24/26 reference
 tests compare the same corpus against `temporal-polyfill` on the same host.
@@ -1641,3 +1647,43 @@ caches remain warm; no network or browser-load claim is made.
 `completion-hermes-results.json` refreshes 43 ISO workloads for compact default TS,
 the normalized Rust bridge and the installed SDK in source and optimized HBC.
 All output/checksum checks pass. See 015a for counts and measurement limits.
+
+## Default installed Intl timezone provider
+
+Default TS now queries captured installed DateTimeFormat for named timezone
+offsets, gap/fold resolution and next/previous transitions. Native Intl or
+FormatJS polyfills are accepted; install them before importing Temporal. UTC and
+numeric offsets stay data-free. No formatter package import or runtime cycle.
+Standalone, Rust WASM and Hermes SDK retain owned IANA histories/future rules.
+Verified compact Chinese/Dangi arithmetic stays: raw host delegation exposed
+pinned data mismatches and did not remove its fallback engine.
+
+A separate generated `tz/temporal-names.js` contains identifiers and per-zone
+sampling intervals, without offsets or transition histories. Generator chooses
+at most half the minimum finite offset-transition spacing, capped at 60 days,
+and includes a full Gregorian future-rule cycle after the finite record.
+Abbreviation-only events do not shorten intervals. Existing DateTimeFormat data
+outputs are unchanged; no locale data grows. Refresh intervals with IANA data.
+Host data versions can still differ from generator data.
+
+Intl provides no transition enumeration. Runtime samples offsets, then binary
+searches changed intervals to the exact second. Searches start at 1800; next
+search ends three years beyond the later of now/input. Far-future previous
+searches probe nearby years before resuming finite history. This assumes future
+rules recur annually or settle at a fixed offset. It is a search policy, not an
+Intl guarantee; standalone retains exact owned finite events and future rules.
+Nanosecond strictness and instant bounds remain covered.
+
+All 52 affected gates pass. Exact report unions retain Node 13,474 and Hermes
+source/HBC 13,472 passing scenarios each, with unchanged data-version exclusions.
+Independent Hermes ICU controls check 17,640 offsets and 1,900 gap/fold windows,
+including next/previous transitions. Owned 171-case stale/missing-host formatting
+controls explicitly use standalone; default separately follows installed Intl.
+See `packages/temporal/host-intl-default-audit-results.json` for report hashes.
+
+`host-intl-default-startup-results.json` records nine fresh Node processes per
+profile. Default gzip falls 69,657 to 38,639 bytes (44.5%); standalone 339,338;
+full reference 23,083. Native-data WASM totals 479,583, hybrid 484,339, including
+443,098 binary bytes. Ready medians: TS 20.84 ms versus full reference 22.58;
+previous owned-data TS 12.11. Payload shrinks; startup work increases in this
+sample. Earlier throughput snapshots are historical, not remeasured claims.

@@ -1,3 +1,6 @@
+import {steps} from '@formatjs_generated/tz/temporal-names.js'
+import links from '@formatjs_generated/tz/links.js'
+import primary from '@formatjs_generated/tz/primary.js'
 import {
   isoToEpochNanoseconds,
   type ISODateTime,
@@ -9,9 +12,11 @@ import {DateFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 export type HostTimeZone = Pick<
   TimeZoneKernel,
   'offsetNanoseconds' | 'possibleInstants' | 'resolve'
->
+> &
+  Partial<Pick<TimeZoneKernel, 'transition'>>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const parts = Constructor?.prototype.formatToParts
+const nowMilliseconds = Date.now
 const second = 1000000000n
 const day = 86400n * second
 const limit = 100000000n * day
@@ -60,7 +65,9 @@ export function createHostTimeZoneOffset(
       hour = -1,
       minute = -1,
       seconds = -1
-    for (const part of parts.call(formatter, key * 1000)) {
+    const fields = parts.call(formatter, key * 1000)
+    for (let index = 0; index < fields.length; index++) {
+      const part = fields[index]
       if (part.type === 'day') date = Number(part.value)
       else if (part.type === 'hour') hour = Number(part.value)
       else if (part.type === 'minute') minute = Number(part.value)
@@ -102,17 +109,17 @@ export function createHostTimeZoneOffset(
   return offsetNanoseconds
 }
 
-// Intl exposes offsets, not transition enumeration.
-/** @internal Host Intl control for timezone conformance tests. */
-export function createHostTimeZone(timeZone: string): HostTimeZone {
+export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   const offsetNanoseconds = createHostTimeZoneOffset(timeZone)
-  const sampleOffsets = (local: bigint): bigint[] => [
-    ...new Set([
-      offsetNanoseconds(clamp(local - day)),
-      offsetNanoseconds(clamp(local)),
-      offsetNanoseconds(clamp(local + day)),
-    ]),
-  ]
+  const sampleOffsets = (local: bigint): bigint[] => {
+    const result: bigint[] = []
+    const samples = [clamp(local - day), clamp(local), clamp(local + day)]
+    for (let index = 0; index < samples.length; index++) {
+      const offset = offsetNanoseconds(samples[index])
+      if (!result.includes(offset)) result.push(offset)
+    }
+    return result
+  }
   const candidatesFor = (local: bigint): bigint[] => {
     const candidates = sampleOffsets(local)
       .map(offset => local - offset)
@@ -144,5 +151,77 @@ export function createHostTimeZone(timeZone: string): HostTimeZone {
     if (after <= before) throw new RangeError('No matching instant')
     return check(local - (disambiguation === 'earlier' ? after : before))
   }
-  return {offsetNanoseconds, possibleInstants, resolve}
+  const canonical =
+    (links as Record<string, string>)[timeZone] ??
+    (primary as Record<string, string>)[timeZone] ??
+    timeZone
+  const step = BigInt(steps[timeZone] ?? steps[canonical] ?? 60 * 86400)
+  const transitions: {
+    direction: string
+    first: bigint
+    last: bigint
+    value: bigint | null
+  }[] = []
+  const transition = (
+    instant: bigint,
+    direction: 'next' | 'previous'
+  ): bigint | null => {
+    check(instant)
+    const known = transitions.find(
+      row =>
+        row.direction === direction &&
+        instant >= row.first &&
+        instant <= row.last
+    )
+    if (known) return known.value
+    const next = direction === 'next'
+    const floorSecond = (value: bigint) =>
+      value / second - (value < 0n && value % second ? 1n : 0n)
+    const earliest = -5364662400n // IANA transitions begin after 1800.
+    const horizon = 3n * 366n * 86400n
+    const now = floorSecond(BigInt(nowMilliseconds()) * 1000000n)
+    const original = floorSecond(next ? instant : instant - 1n)
+    let cursor = next ? (original < earliest ? earliest : original) : original
+    const end = next ? (original > now ? original : now) + horizon : earliest
+    const boundary = next
+      ? end > limit / second
+        ? limit / second
+        : end
+      : earliest
+    let value: bigint | null = null
+    let initial = cursor
+    while (next ? cursor < boundary : cursor > boundary) {
+      let probe = cursor + (next ? step : -step)
+      if (next ? probe > boundary : probe < boundary) probe = boundary
+      const offset = offsetNanoseconds(cursor * second)
+      if (offsetNanoseconds(probe * second) !== offset) {
+        let left = next ? cursor : probe
+        let right = next ? probe : cursor
+        const before = offsetNanoseconds(left * second)
+        while (right - left > 1n) {
+          const middle = (left + right) >> 1n
+          if (offsetNanoseconds(middle * second) === before) left = middle
+          else right = middle
+        }
+        value = right * second
+        break
+      }
+      cursor = probe
+      // Future host rules repeat annually or settle at a fixed offset. Search
+      // nearby years first, then resume the finite historical record.
+      if (!next && initial > now + horizon && initial - cursor >= horizon) {
+        cursor = now + horizon
+        initial = cursor
+      }
+    }
+    if (transitions.length >= 64) transitions.shift()
+    transitions.push({
+      direction,
+      first: next ? instant : value === null ? -limit : value + 1n,
+      last: next ? (value === null ? instant : value - 1n) : instant,
+      value,
+    })
+    return value
+  }
+  return {offsetNanoseconds, possibleInstants, resolve, transition}
 }

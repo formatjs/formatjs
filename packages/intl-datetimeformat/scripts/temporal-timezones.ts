@@ -11,6 +11,7 @@ import type {
 interface Args extends minimist.ParsedArgs {
   input: string
   out: string
+  namesOnly?: boolean
 }
 interface Event {
   timestamp: number
@@ -47,6 +48,51 @@ function patterns(event: Event): TimeZoneTransitionRule[] {
 }
 
 async function main(args: Args) {
+  if (args.namesOnly) {
+    const source = JSON.parse(
+      await readFile(args.input, 'utf8')
+    ) as PackedTimeZoneData
+    const unpacked = UnpackTimeZoneData(source)
+    const names = Object.keys(unpacked).sort()
+    const steps: Record<string, number> = {}
+    for (const name of names) {
+      const data = unpacked[name],
+        events: number[] = []
+      for (let index = 1; index < data.length; index++)
+        if (data[index][2] !== data[index - 1][2]) events.push(data[index][0])
+      const future = data.future
+      if (
+        future?.start &&
+        future.end &&
+        future.daylightOffset !== undefined &&
+        future.daylightOffset !== future.standardOffset
+      ) {
+        const firstYear = events.length
+          ? new Date(events[events.length - 1] * 1000).getUTCFullYear() + 1
+          : 2000
+        for (let year = firstYear; year <= firstYear + 401; year++) {
+          events.push(
+            TimeZoneRuleTransition(year, future.start) - future.standardOffset
+          )
+          events.push(
+            TimeZoneRuleTransition(year, future.end) - future.daylightOffset
+          )
+        }
+      }
+      events.sort((one, two) => one - two)
+      let step = 60 * 86400
+      for (let index = 1; index < events.length; index++) {
+        const gap = events[index] - events[index - 1]
+        if (gap > 0) step = Math.min(step, Math.max(1, Math.floor(gap / 2)))
+      }
+      if (step < 60 * 86400) steps[name] = step
+    }
+    await writeFile(
+      args.out,
+      `// Generated IANA identifiers and conservative offset-transition sampling intervals.\nexport default ${JSON.stringify(names)} as const\nexport const steps: Readonly<Record<string, number>> = ${JSON.stringify(steps)}\n`
+    )
+    return
+  }
   const source = UnpackTimeZoneData(
       JSON.parse(await readFile(args.input, 'utf8')) as PackedTimeZoneData
     ),

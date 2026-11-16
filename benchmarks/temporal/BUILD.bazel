@@ -109,6 +109,7 @@ rolldown_bundle(
         ],
         define = {
             "import.meta.formatjsTemporalHostCalendar": "false" if name == "standalone-code" else "true",
+            "import.meta.formatjsTemporalHostTimeZones": "false" if name == "standalone-code" else "true",
             "import.meta.formatjsTemporalCompactTimeZones": "true",
         },
         entry_point = entry,
@@ -257,6 +258,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "hermes-instant.ts",

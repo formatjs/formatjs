@@ -32,8 +32,10 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 
 `@formatjs/temporal` is currently private. It uses `ecma262-abstract`,
 `ecma402-abstract/DateTimeFormat`, `ecma402-abstract/DurationFormat`, shared types
-and generated timezone data.
-It does not depend on formatter packages. Date/short-date/zoned facades share
+and generated timezone identifiers/search intervals. Default captures installed
+Intl for named timezone offsets; standalone and Rust retain owned IANA histories.
+It does not import formatter packages; applications may install their polyfills
+first without a circular runtime dependency. Date/short-date/zoned facades share
 calendar field preparation and merge rules. Plain/zoned rounding uses private
 anchor callbacks; the numeric kernel owns 13-calendar conversion/add/difference
 math. Chinese/Dangi/Umm al-Qura use shared generated ICU packs below the

@@ -1,0 +1,285 @@
+{
+  "date": "2026-11-16",
+  "baseCommit": "b22ad55b68782c3b466a5642400c31fbda6e14df",
+  "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+  "provider": "Default TS uses captured installed Intl; standalone and Rust retain owned timezone data.",
+  "affectedGates": 52,
+  "profiles": {
+    "typescript": {
+      "suiteExecutions": 16454,
+      "uniqueExecutions": 13474,
+      "uniqueFiles": 6737,
+      "passing": 13474,
+      "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+      "reports": [
+        {
+          "target": "compact_calendar_instant_test262",
+          "executions": 934,
+          "sha256": "31c01f76f0b269a9d909ca81de9e484290e4fc17b0b230d646dc9e49327f33cb"
+        },
+        {
+          "target": "compact_calendar_date_test262",
+          "executions": 1308,
+          "sha256": "72455e8d9787f644f51bacdc9ee04529a343fa1bdb47d277faba78dec5625186"
+        },
+        {
+          "target": "compact_calendar_datetime_test262",
+          "executions": 1552,
+          "sha256": "5cca0836c5926b71a987baf86d5e112d17fce6ddee3a252a36f4540d820b113e"
+        },
+        {
+          "target": "compact_calendar_time_test262",
+          "executions": 986,
+          "sha256": "92f8c11277293cd3ea6744a821c8f2563dca6fc710cae62eb89a016d87dd2e48"
+        },
+        {
+          "target": "compact_calendar_yearmonth_test262",
+          "executions": 1022,
+          "sha256": "f248d2d04fe568635babed8a8e82b25b2e3d18e8e7aa13ff3070bea5746b5dda"
+        },
+        {
+          "target": "compact_calendar_monthday_test262",
+          "executions": 398,
+          "sha256": "13d86696ad7579197f9db0867f3a770c4f9b9d4a45006e621df864eadb9b2fe6"
+        },
+        {
+          "target": "compact_calendar_duration_test262",
+          "executions": 1086,
+          "sha256": "56cca0088d6417293642829173e82c8d1f5b6627a270c6e818b3d2f527b6a4db"
+        },
+        {
+          "target": "compact_calendar_zoned_test262",
+          "executions": 1804,
+          "sha256": "fcfb4b1115c1add56180f096e28c151b3ddc9762e0b03fbab17d6ea0bf3332a8"
+        },
+        {
+          "target": "compact_calendar_calendars_test262",
+          "executions": 2974,
+          "sha256": "661ca73a8034d615a83cd1c0ea3869f79928816248cbd6c78b76c82bd8f7cf9a"
+        },
+        {
+          "target": "compact_calendar_now_test262",
+          "executions": 138,
+          "sha256": "1b75ef32603eda1889f435335e581b3e30bf94eca4329fb0ed06282315174959"
+        },
+        {
+          "target": "compact_calendar_installation_test262",
+          "executions": 26,
+          "sha256": "fdd34912b1c25db1a3cf37ef69a4b6f85a8c2108df8e590d1cb2df3218b0b58c"
+        },
+        {
+          "target": "compact_calendar_staging_test262",
+          "executions": 6,
+          "sha256": "2ce6d2f8e03c5914a9015515290e408236829e779f2240cfaa8aeccc881e2943"
+        },
+        {
+          "target": "host_intl_compat_test262",
+          "executions": 4078,
+          "sha256": "1180674047421d419a7b484f340547b563ecaa9b8a2654748fcc8046f4dc8e65"
+        },
+        {
+          "target": "compact_calendar_datetimeformat_test262",
+          "executions": 130,
+          "sha256": "de99e88283a2d556f24bc386337f3a3de51445661e3a99b90cb76f0051f73c51"
+        },
+        {
+          "target": "compact_calendar_durationformat_test262",
+          "executions": 12,
+          "sha256": "c96c26a8983b972eb954e6266b4db8d92da4320b6b8ca51355138c7abf6f6245"
+        }
+      ]
+    },
+    "hermes_ts_source": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "ts_hermes_instant_source_test262",
+          "executions": 934,
+          "sha256": "375c0755e8d58491457c8701ba265fa7419e445b67ccc2ef9e8f90448a06568b"
+        },
+        {
+          "target": "ts_hermes_date_source_test262",
+          "executions": 1308,
+          "sha256": "4448e102177a93fa361a05ea4660aaa9d4c21563362d002e9a550e1cdc08d965"
+        },
+        {
+          "target": "ts_hermes_datetime_source_test262",
+          "executions": 1552,
+          "sha256": "844a1acae813bfad6d6d7755b26fdd5327042e973ed6622830c6dde09e6e6f41"
+        },
+        {
+          "target": "ts_hermes_time_source_test262",
+          "executions": 986,
+          "sha256": "80e4fd721fd6585b0a933f50c9b12a7a5e1326ddd8f7165bfb93d7490be3dcce"
+        },
+        {
+          "target": "ts_hermes_yearmonth_source_test262",
+          "executions": 1022,
+          "sha256": "331a582c65ddc9cfb9af9b6fd57cc618ecedd6c492dfd589b779533995fd575f"
+        },
+        {
+          "target": "ts_hermes_monthday_source_test262",
+          "executions": 398,
+          "sha256": "7d15b339707474751ebe8db5f76aa59f27632dc58264bbf6cf99375d3211e2ac"
+        },
+        {
+          "target": "ts_hermes_duration_source_test262",
+          "executions": 1086,
+          "sha256": "d8869f79816b69594602a7f26abf9dfae203aea69ca4440bff4d8cd91797501c"
+        },
+        {
+          "target": "ts_hermes_zoned_source_test262",
+          "executions": 1804,
+          "sha256": "4cd8dbe4fc80f143f0f1cc6cc31a827acb78124f914a921115d827241eb5054f"
+        },
+        {
+          "target": "ts_hermes_calendars_source_test262",
+          "executions": 2974,
+          "sha256": "ba128361f64bca40ddb51d68ddc21fd3d6612e52a159850f421c8c9dde1447e6"
+        },
+        {
+          "target": "ts_hermes_now_source_test262",
+          "executions": 138,
+          "sha256": "69e106a098e434360e6462aa08757865d7353d47cf6ac02b591bd32c9d3450d6"
+        },
+        {
+          "target": "ts_hermes_installation_source_test262",
+          "executions": 26,
+          "sha256": "c79166beb48cc533bb213f75a3dc3e6f45bb45b3025b5b3cbba28d466179571c"
+        },
+        {
+          "target": "ts_hermes_staging_source_test262",
+          "executions": 6,
+          "sha256": "b7783c10c5ceb72a57c8f4837a5fe07d7c1975b09b5db2ba115f6531d978df17"
+        },
+        {
+          "target": "ts_intl_compat_hermes_source_test262",
+          "executions": 4076,
+          "sha256": "a74782385de6ce1b2f71fb2bb90661a63df4edb831d64339359aa05c5d2fa35b"
+        },
+        {
+          "target": "ts_datetimeformat_hermes_source_test262",
+          "executions": 130,
+          "sha256": "e83f29ae75939e6e865c26038de1b196f471d4ebed3517eb0cc42a22374e6898"
+        },
+        {
+          "target": "ts_durationformat_hermes_source_test262",
+          "executions": 12,
+          "sha256": "28b913eba05f7960296e5e3c62a98473dd3a512055a55ffe5b6f528f3a3010f0"
+        }
+      ]
+    },
+    "hermes_ts_bytecode": {
+      "suiteExecutions": 16452,
+      "uniqueExecutions": 13472,
+      "uniqueFiles": 6736,
+      "passing": 13472,
+      "missingFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "reports": [
+        {
+          "target": "ts_hermes_instant_bytecode_test262",
+          "executions": 934,
+          "sha256": "6445499752125208559f4c04e5dbbb0026a73c9e83e50947c66478c289fdf183"
+        },
+        {
+          "target": "ts_hermes_date_bytecode_test262",
+          "executions": 1308,
+          "sha256": "c581a4dc6bc5a62f99200e9f6a5c1428873cd6796af4605bbbecf443882dbd85"
+        },
+        {
+          "target": "ts_hermes_datetime_bytecode_test262",
+          "executions": 1552,
+          "sha256": "7ac22c349692fd8be19932485e60825c44ae45f2b067ca119e919dc20d4eabec"
+        },
+        {
+          "target": "ts_hermes_time_bytecode_test262",
+          "executions": 986,
+          "sha256": "3d01ae28e983a5e649e783ffeeb174a11de2e22bea4e7a75791f1a972bf75a3e"
+        },
+        {
+          "target": "ts_hermes_yearmonth_bytecode_test262",
+          "executions": 1022,
+          "sha256": "bb2b9a78133ef11aefff7cc59a66b317458b22879b4f5d326c2908cb3d3e4716"
+        },
+        {
+          "target": "ts_hermes_monthday_bytecode_test262",
+          "executions": 398,
+          "sha256": "4360268a59408b3c839d03750e572dca6cdf4c70d835173cd9907002bd66284d"
+        },
+        {
+          "target": "ts_hermes_duration_bytecode_test262",
+          "executions": 1086,
+          "sha256": "b36c8284bee3b021072f3bc2a2e3d9c472fcaa906b43ea40d074e0814459f3d8"
+        },
+        {
+          "target": "ts_hermes_zoned_bytecode_test262",
+          "executions": 1804,
+          "sha256": "96ef780b6b37014b4b62c641b619f2b9787064ca10762a85bcdba5629c27efa1"
+        },
+        {
+          "target": "ts_hermes_calendars_bytecode_test262",
+          "executions": 2974,
+          "sha256": "2ddf69bbfe47b958210cf6e8003a02408e0eaf2762f0b3a7e9035d058e08d86f"
+        },
+        {
+          "target": "ts_hermes_now_bytecode_test262",
+          "executions": 138,
+          "sha256": "33249aaf3827ebc16378b61a319804b3daa476cfb2ee25b3d68014d8eabd7656"
+        },
+        {
+          "target": "ts_hermes_installation_bytecode_test262",
+          "executions": 26,
+          "sha256": "14adeb1c7f3c140bb2769e7ef008ec688dee6f91ff94b1908edfc14e3f4efeba"
+        },
+        {
+          "target": "ts_hermes_staging_bytecode_test262",
+          "executions": 6,
+          "sha256": "0397c5f0e9f77364311337a40b6d04f517463640b61c819c1e4331cd3108aab4"
+        },
+        {
+          "target": "ts_intl_compat_hermes_bytecode_test262",
+          "executions": 4076,
+          "sha256": "f3780417adfc125289e5ce4cae085ed7e18bfbd4eaa8451a1eeb0e334a5af6a9"
+        },
+        {
+          "target": "ts_datetimeformat_hermes_bytecode_test262",
+          "executions": 130,
+          "sha256": "428aaf78f8cfd7ad29a8053a47df6db2281f38497a1fd01ff881bc55636e3feb"
+        },
+        {
+          "target": "ts_durationformat_hermes_bytecode_test262",
+          "executions": 12,
+          "sha256": "2c638ecb246a7a3c38df205dc2cbf925c28b6a5e807126b517f5b01f1fd93cb4"
+        }
+      ]
+    }
+  },
+  "newExclusions": [],
+  "independentHermesICU": {
+    "offsets": 17640,
+    "transitionWindows": 1900,
+    "checks": [
+      "offsets",
+      "gap/fold disambiguation",
+      "strict next/previous transition boundaries"
+    ]
+  },
+  "startupAndSize": "benchmarks/temporal/host-intl-default-startup-results.json",
+  "searchPolicy": {
+    "earliestYear": 1800,
+    "nextHorizonYears": 3,
+    "maximumStepDays": 60,
+    "futureAssumption": "annual recurrence or fixed offset",
+    "intervalSource": "Pinned IANA finite events and complete Gregorian future-rule cycle; host data can differ."
+  }
+}

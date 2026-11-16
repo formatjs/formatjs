@@ -38,6 +38,22 @@ export function checkHostTimezoneOracle(
       instant === previous.instant + 1000000n &&
       offset !== previous.offset
     ) {
+      if (
+        zone.transition &&
+        zone.offsetNanoseconds(previous.instant) === previous.offset &&
+        zone.offsetNanoseconds(instant) === offset
+      ) {
+        equal(
+          zone.transition(instant - 1n, 'next'),
+          instant,
+          line + ' next transition'
+        )
+        equal(
+          zone.transition(instant + 1n, 'previous'),
+          instant,
+          line + ' previous transition'
+        )
+      }
       const local = instant + (offset + previous.offset) / 2n + 123n,
         fields = epochNanosecondsToISO(local),
         candidates = [local - offset, local - previous.offset].sort(

@@ -8,9 +8,29 @@ if (process.env.FORMATJS_TEMPORAL_STALE_TIMEZONE)
   await import(pathToFileURL(runfiles.resolve(process.argv[5])))
 const directory = runfiles.resolve(process.argv[2])
 const load = name => import(pathToFileURL(join(directory, name)))
-let {Temporal} = await load('index.js')
 const mode = process.env.FORMATJS_TEMPORAL_TIMEZONE_WASM
-let install = () => load('polyfill-force.js')
+let {Temporal} = await load(mode ? 'index.js' : 'standalone.js')
+let install = async () => {
+  await load('polyfill-force.js')
+  Intl.DateTimeFormat.__addTemporalNamespace(Temporal)
+}
+if (!mode) {
+  const {Temporal: Host} = await load('index.js')
+  const instant = Host.Instant.from('2026-11-16T12:00Z')
+  const formatter = new Intl.DateTimeFormat('en', {
+    timeZone: 'America/Havana',
+    hour: 'numeric',
+    hourCycle: 'h23',
+  })
+  assert.equal(
+    instant.toZonedDateTimeISO('America/Havana').hour,
+    Number(
+      formatter
+        .formatToParts(Number(instant.epochMilliseconds))
+        .find(part => part.type === 'hour').value
+    )
+  )
+}
 if (mode) {
   const instance = new WebAssembly.Instance(
     new WebAssembly.Module(

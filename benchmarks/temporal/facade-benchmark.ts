@@ -397,7 +397,7 @@ console.log(
       platform: process.platform,
       arch: process.arch,
       scope:
-        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 full/implementation classes. Namespace also includes Now. Owned ICU4X calendar and IANA 2026f timezone data included; reference uses host Intl. Includes matched Chinese/Dangi/Umm al-Qura month-addition workloads. Partial API; no full-polyfill size or conformance claim.',
+        'Instant, Duration, PlainTime, PlainDate, PlainDateTime, PlainYearMonth, PlainMonthDay and ZonedDateTime paths, parsing, arithmetic, totals and serialization, versus forced temporal-polyfill 1.0.7 full/implementation classes. Namespace also includes Now. Compact ICU4X calendar data included; default and reference use installed Intl timezone data. Includes matched Chinese/Dangi/Umm al-Qura month-addition workloads. Throughput only; size and conformance recorded separately.',
       referenceEntryPoint: 'temporal-polyfill/full/implementation',
       sizes,
       throughput,

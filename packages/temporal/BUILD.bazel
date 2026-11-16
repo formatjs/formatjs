@@ -66,6 +66,12 @@ formatjs_library(
     description = "Temporal implementation",
     entry_point_defines = {
         entry: {
+            "import.meta.formatjsTemporalHostTimeZones": "true" if entry in [
+                "index.ts",
+                "polyfill.ts",
+                "polyfill-force.ts",
+                "wasm.ts",
+            ] else "false",
             "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
             "import.meta.formatjsTemporalCompactTimeZones": "false" if entry in [
                 "native.ts",
@@ -292,6 +298,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/legacy-calendar-era-host.ts",
@@ -337,6 +344,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/extended-calendar-host.ts",
@@ -445,6 +453,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "false",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/legacy-timezone-host.ts",
@@ -639,6 +648,7 @@ rolldown_bundle(
     srcs = [":srcs"],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "index.ts",
@@ -682,6 +692,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/compact-calendar-numeric.ts",
@@ -736,6 +747,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/host-calendar-host.ts",
@@ -2556,6 +2568,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/typescript-prelude.ts",
@@ -3339,6 +3352,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/instant-prelude.ts",
@@ -3430,6 +3444,7 @@ rolldown_bundle(
     ],
     define = {
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
         "import.meta.formatjsTemporalCompactTimeZones": "true",
     },
     entry_point = "tests/table-calendar-host.ts",
@@ -3519,6 +3534,7 @@ rolldown_bundle(
     define = {
         "import.meta.formatjsTemporalCompactTimeZones": "true",
         "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
     },
     entry_point = "tests/compact-timezone-host.ts",
     format = "iife",

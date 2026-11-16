@@ -1,3 +1,4 @@
+import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   fallbackTimeZoneIdentifiers,
@@ -18,6 +19,13 @@ import {
 let identifiers: Map<string, string> | undefined
 const cache = new Map<string, ReturnType<typeof createTimeZone>>()
 function typescriptTimeZone(name: string): TimeZoneKernel {
+  if (import.meta.formatjsTemporalHostTimeZones === true) {
+    if (name === 'UTC' || name === 'Etc/UTC' || name === 'Etc/GMT')
+      return zonedKernel('UTC')
+    let zone = cache.get(name)
+    if (!zone) cache.set(name, (zone = createHostTimeZone(name)))
+    return zone
+  }
   if (!identifiers) {
     const {primary, links, names} = fallbackTimeZoneIdentifiers()
     identifiers = new Map()
@@ -138,6 +146,7 @@ export function timeZoneIdentifier(value: unknown): string {
   }
   const id = spellings.get(name.toLowerCase())
   if (!id) throw new RangeError('Unknown timezone')
+  if (import.meta.formatjsTemporalHostTimeZones === true) typescriptTimeZone(id)
   return id
 }
 const fixedKernels = new Map<string, TimeZoneKernel>()

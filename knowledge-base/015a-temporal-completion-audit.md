@@ -101,14 +101,16 @@ which does not itself implement an ECMAScript object runtime. Typed Rust semanti
 
 ## Host data and independent controls
 
-Host Intl is allowed. Default TS retains compact owned IANA histories, compact
-Chinese/Dangi arithmetic and host Umm al-Qura data. Standalone owns calendar packs;
-native-data WASM omits duplicate TS packs. A host-only timezone entry is an
-optional size optimization.
+Host Intl is allowed. Default TS now captures installed Intl for named timezones
+and Umm al-Qura, retaining verified compact Chinese/Dangi arithmetic/data.
+Standalone owns calendar packs and IANA histories; Rust WASM and SDK keep owned
+timezone data. Native-data WASM omits duplicate TS packs. See the host Intl default
+follow-up below for fresh validation and measurements.
 
 Legacy formatting corrects stale/missing host zone rules using owned local fields
 and localized numeric offset labels. Matching host output stays native. Shared
-171-case controls run before/after installation on normal/stale TS, both WASM
+171-case owned-data controls run before/after installation on normal/stale
+standalone TS, both WASM
 entries and Hermes source/HBC. They include independent ICU rows, historical
 seconds and clipping boundaries. Reversed ranges preserve endpoint order.
 
@@ -126,9 +128,9 @@ operations; excludes Node bootstrap and global installation. Medians: TS 12.11 m
 full reference 22.71, native-data WASM 26.16, hybrid 28.99. Basic reference omits
 Chinese and stays separate. Memory figures are process measurements, not payload.
 
-Matched namespace consumers measure 69,657 bytes gzip for TS, 23,083 for full
+The pre-migration completion snapshot measured 69,657 bytes gzip for TS, 23,083 for full
 reference, 479,552 for native-data WASM including binary, 515,283 for hybrid.
-Reference uses host timezone data; TS owns IANA histories. Separate module graphs
+In that snapshot, TS owned IANA histories. Separate module graphs
 and installation bundles have different totals. WASM binary contributes 443,098.
 
 `completion-hermes-results.json`: 43 ISO workloads, identical checked outputs and
@@ -143,3 +145,24 @@ headers, adapters and JS setup. Its standalone Linux consumer passes source/HBC
 installation, native state lifetime and public Temporal/Intl checks without Rust
 tools. macOS archives are cross-built; macOS execution is not claimed. Archive
 hash and component sizes are recorded separately from Temporal runtime payloads.
+
+## Host Intl default follow-up
+
+Default TS now uses installed Intl timezone data; standalone/Rust retain owned
+histories. No formatter package dependency or cycle. Load Intl polyfills/data
+before Temporal captures intrinsics. Verified lunar engine remains unchanged.
+
+All 52 affected gates pass, with exact report unions unchanged: Node 13,474;
+Hermes source/HBC 13,472 each. No exclusions added. Strict Hermes ICU checks
+17,640 offsets and 1,900 gap/fold windows plus transition boundaries; Node also
+compares host behavior with forced temporal-polyfill. Standalone retains owned
+stale/missing-host formatting controls. Evidence and report hashes:
+`packages/temporal/host-intl-default-audit-results.json`.
+
+New consumer/startup snapshot: TS 38,639 gzip bytes (44.5% below 69,657), standalone
+339,338, full reference 23,083. Native-data WASM 479,583; hybrid 484,339, each
+including 443,098 binary bytes. Nine-process ready medians: TS 20.84 ms, full
+reference 22.58, native-data WASM 26.09, hybrid 26.11. Previous owned-data TS was
+12.11 ms. New snapshot does not refresh earlier hot-operation rankings.
+See `benchmarks/temporal/host-intl-default-startup-results.json` and the provider
+search limits in [implementation record](015-temporal.md#default-installed-intl-timezone-provider).

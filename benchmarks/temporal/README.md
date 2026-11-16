@@ -6,17 +6,17 @@ benchmarks and recorded measurements. The package remains private pending releas
 [completion evidence](../../knowledge-base/015a-temporal-completion-audit.md) records
 conformance and delivery checks.
 
-Latest namespace-consumer measurement: default TS 69,657 bytes gzip; standalone
-340,011; forced `temporal-polyfill/full/implementation` 23,083. Default TS includes
-owned IANA histories; the reference uses host Intl calendars/timezones. Host Intl
-is allowed for both. These are minified bundled consumers without installation.
-Separately compressed ESM files and installation bundles have different totals.
+Latest namespace-consumer measurement: default TS 38,639 bytes gzip; standalone
+339,338; forced `temporal-polyfill/full/implementation` 23,083. Default TS
+and reference use installed Intl timezone data. Default retains compact verified
+Chinese/Dangi data/arithmetic; standalone owns full calendar packs and IANA
+histories. Minified bundled consumers exclude installation. Default drops 44.5%
+from the previous owned-timezone 69,657-byte consumer.
 
-Native-data WASM consumer plus binary totals 479,552 bytes gzip; hybrid WASM
-515,283. The binary contributes 443,098 in either profile. Both WASM profiles
-trail TS on all 43 recorded Node ISO workload medians. See
-`completion-startup-results.json` for consumer sizes and fresh-process timings,
-and `lunar-boundary-wasm-results.json` for hot-operation timings.
+Native-data WASM consumer plus binary totals 479,583 bytes gzip; hybrid
+484,339. Binary contributes 443,098. Both retain Rust timezone data. See
+`host-intl-default-startup-results.json` for current consumer sizes/startup.
+Earlier hot-operation snapshots retain their original data policies.
 
 ## Fresh-process startup
 
@@ -28,11 +28,12 @@ Nine fresh Node 24 processes per profile, rotating profile order. Persistent V8
 module compile caches are disabled and checked; filesystem caches remain warm.
 Ready time includes import, WASM setup when applicable, then matched Instant,
 New York timezone and Chinese calendar operations. It excludes Node bootstrap
-and global installation. TS median is 12.11 ms; full reference 22.71; native-data
-WASM 26.16; hybrid WASM 28.99. Basic reference omits Chinese and is reported
+and global installation. TS median is 20.84 ms; full reference 22.58; native-data
+WASM 26.09; hybrid WASM 26.11. Prior owned-timezone TS measured 12.11 ms; this
+smaller payload incurs more startup work in the recorded sample. Basic reference omits Chinese and is reported
 separately. Heap/RSS deltas and WASM linear memory are not shipping sizes.
 
-## Current Hermes throughput
+## Prior owned-timezone Hermes throughput
 
 ```sh
 bazel run -c opt //benchmarks/temporal:hermes_instant_benchmark

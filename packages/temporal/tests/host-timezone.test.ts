@@ -114,3 +114,17 @@ it('extracts offsets when the host falls back to an Arabic locale', async () => 
     vi.resetModules()
   }
 })
+
+it('finds transitions strictly before or after nanosecond boundaries', () => {
+  const zone = createHostTimeZone('America/New_York')
+  const spring = isoToEpochNanoseconds({year: 2020, month: 3, day: 8, hour: 7})
+  const fall = isoToEpochNanoseconds({year: 2020, month: 11, day: 1, hour: 6})
+  expect(zone.transition(spring - 1n, 'next')).toBe(spring)
+  expect(zone.transition(spring, 'next')).toBe(fall)
+  expect(zone.transition(fall + 1n, 'previous')).toBe(fall)
+  expect(zone.transition(fall, 'previous')).toBe(spring)
+  const far = isoToEpochNanoseconds({year: 2400, month: 3, day: 12, hour: 7})
+  expect(zone.transition(far + 1n, 'previous')).toBe(far)
+  expect(zone.transition(-8640000000000000000000n, 'previous')).toBe(null)
+  expect(zone.transition(8640000000000000000000n, 'next')).toBe(null)
+})
