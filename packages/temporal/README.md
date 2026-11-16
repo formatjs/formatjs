@@ -680,3 +680,26 @@ for TS versus 805,994 for WASM JS +binary, including
 fallback packs. The stripped native app adds 6,865,280 raw
 /838,100 gzip bytes over the identical Intl/Hermes baseline.
 See SDK-host snapshots and `benchmarks/temporal/README.md` for methods and limits.
+
+## Native Temporal locale bridge
+
+The Hermes DateTimeFormat adapter exposes the same private `__formatTemporal`
+record bridge as TS. Temporal `toLocaleString` passes exact decimal nanoseconds,
+kind and calendar to Rust; numeric Date inputs still use TimeClip. This preserves
+`-271821-04-19`, which PlainDate accepts before the minimum Date instant.
+YearMonth/MonthDay date styles omit reference day/year fields. Zoned defaults
+include a short timezone name, reject an explicit `timeZone` option and preserve
+the value's timezone. Public DateTimeFormat still rejects ZonedDateTime values.
+
+Construction keeps locale resolution, timezone coercion, component reads, data
+snapshot and late style reads in their existing order. The private construction
+context never becomes a public constructor argument. SDK locale validation uses
+768 independent ICU4J style/skeleton cases across four locales, seven Temporal
+kinds and four timezone choices, on Hermes source and optimized bytecode.
+
+SDK locale gates reuse the existing 306-case strict locale suite and its single
+CLDR49 zero-name exclusion. The two full SDK Intl diagnostic gates run all 4,080
+executions per source/HBC mode: 4,076 pass, four fail. They retain the POSIX-primary
+identity and fixed-zero-name differences described above; the diagnostic baseline
+still expects zero failures. No implementation failures enter accepted baselines.
+The default-Hermes C++ SDK test separately verifies the extra minimum PlainDate.

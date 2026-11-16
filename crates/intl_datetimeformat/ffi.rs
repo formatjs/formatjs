@@ -426,6 +426,13 @@ pub unsafe extern "C" fn formatjs_datetime_capture(
         Ok(())
     })
 }
+#[derive(Deserialize)]
+struct CreateOptions {
+    #[serde(flatten)]
+    options: Options,
+    #[serde(default, rename = "zonedLocale")]
+    zoned_locale: bool,
+}
 /// A valid finalization attempt consumes construction state, even when options fail.
 /// # Safety
 /// Construction live and exclusive, already captured; late options readable; out writable.
@@ -446,7 +453,7 @@ pub unsafe extern "C" fn formatjs_datetime_create(
         return 2;
     }
     guarded(|| {
-        let options: Options = unsafe { request(data, len)? };
+        let options: CreateOptions = unsafe { request(data, len)? };
         let handle = unsafe { &mut *handle };
         if !matches!(handle.phase, Phase::Captured { .. }) {
             return Err(2);
@@ -456,7 +463,10 @@ pub unsafe extern "C" fn formatjs_datetime_create(
         else {
             return Err(2);
         };
-        let configuration = snapshot.select(&options).map_err(status)?;
+        let configuration = snapshot
+            .select(&options.options)
+            .map_err(status)?
+            .with_zoned_locale(options.zoned_locale);
         let value = handle
             .construction
             .take()

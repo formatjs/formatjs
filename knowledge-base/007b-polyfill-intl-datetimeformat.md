@@ -750,3 +750,14 @@ poisoning, full plain ranges and 768 ICU4J style/skeleton/offset cases. Its Engl
 German, French and Japanese locale data is test-only. The Temporal conformance
 prelude loads de/en/ja, the languages declared by pinned intl402/Temporal metadata,
 instead of every Intl test locale. Published locale data gains no fields.
+
+### Native Temporal locale records
+
+Hermes exposes the private `__formatTemporal` bridge used by `@formatjs/temporal`.
+It passes kind, calendar and decimal epoch nanoseconds into Rust's structured epoch
+input, preserving extra plain-date bounds and short-date style filtering. Numeric
+Date inputs retain TimeClip. A private construction context supplies ZonedDateTime's
+timezone and default short zone name without reading extra public options or moving
+the locale-data snapshot past late style getters. Public DateTimeFormat continues
+to reject ZonedDateTime. SDK regressions compare 768 independent ICU4J cases in
+source and optimized Hermes bytecode; full Intl diagnostics remain unfiltered.

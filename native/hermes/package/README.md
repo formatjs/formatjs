@@ -101,7 +101,11 @@ formatjs_temporal(appmodules)
 The existing unified Rust archive supplies the ABI; no second Rust archive is
 needed. Intl-only consumers do not compile the Temporal adapter or embed its JS.
 
-Temporal remains incomplete. Native Intl conformance and full-backend artifact
+Temporal locale formatting uses exact nanoseconds and kind-specific Rust patterns,
+including extended plain dates and YearMonth/MonthDay styles. The SDK locale bridge
+matches 768 independent ICU cases in Hermes source and bytecode. Full Intl Test262
+diagnostics retain four executions with pinned IANA/CLDR expectation differences.
+Temporal remains incomplete; the completion audit and full-backend artifact
 comparisons remain tracked in the repository's Temporal implementation notes.
 
 ### iOS and macOS

@@ -12,7 +12,8 @@ public final class TemporalLocaleOracle {
   public static void main(String[] args) throws Exception {
     long[] samples = {-2208988800123L, 123L, 1580725840321L, 1725453296789L};
     try (PrintWriter out = new PrintWriter(args[0], StandardCharsets.UTF_8)) {
-      out.println("# ICU4J locale styles and skeletons; Gregorian calendar, proleptic fields");
+      boolean javascript = args.length > 1 && args[1].equals("--js");
+      out.println(javascript ? "var __temporalLocaleOracle = [" : "# ICU4J locale styles and skeletons; Gregorian calendar, proleptic fields");
       for (String name : new String[] {"en", "de", "fr", "ja"}) {
         ULocale locale = ULocale.forLanguageTag(name).setKeywordValue("calendar", "gregorian");
         for (long epoch : samples) for (String zone : new String[] {"UTC", "America/New_York", "Europe/Paris", "Europe/Dublin"}) {
@@ -70,11 +71,13 @@ public final class TemporalLocaleOracle {
               String expected = format.format(new Date(epoch));
               boolean missingMetaZone = kind.equals("Instant") && variant == 0 && !zone.equals("UTC")
                   && com.ibm.icu.text.TimeZoneNames.getInstance(locale).getMetaZoneID(zone, epoch) == null;
-              out.println(kind + "\t" + name + "\t" + zone + "\t" + epoch + "\t" + options + "\t" + expected + "\t" + missingMetaZone);
+              String row = kind + "\t" + name + "\t" + zone + "\t" + epoch + "\t" + options + "\t" + expected + "\t" + missingMetaZone;
+              out.println(javascript ? "\"" + row.replace("\\", "\\\\").replace("\"", "\\\"").replace("\t", "\\t") + "\"," : row);
             }
           }
         }
       }
+      if (javascript) out.println("];");
     }
   }
 }

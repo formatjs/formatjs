@@ -65,6 +65,7 @@ int main(int argc, char **argv) {
       check(Temporal.Now.plainTimeISO().toString() === '01:30:00');
       check(new Temporal.Duration(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).hours === 5);
       check(Temporal.PlainDate.from('2020-02-29').day === 29);
+      check(Temporal.PlainDate.from('-271821-04-19').toLocaleString('en', {year:'numeric'}) === '271822');
       check(beforeTemporalFormatter.format(Temporal.PlainDate.from('2020-02-29')) === '02/29/2020');
       check(Temporal.PlainTime.from('12:34:56.123456789').nanosecond === 789);
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);

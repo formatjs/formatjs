@@ -2050,3 +2050,89 @@ rolldown_bundle(
     target = "es2022",
     deps = [":lib"],
 )
+
+[
+    sh_test(
+        name = "sdk_" + suite + "_hermes_" + mode + "_test262",
+        size = "enormous" if suite == "intl" else "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath tests/sdk-prelude.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath %s)" % baseline,
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.SDK." + suite,
+        ] + patterns,
+        data = [
+            "tests/hermes-host.sh",
+            "tests/sdk-prelude.js",
+            ":instant_hermes_harness",
+            baseline,
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+            "FORMATJS_TEMPORAL_SDK": "1",
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+        },
+        tags = tags,
+    )
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+    for suite, baseline, patterns, tags in [
+        (
+            "intl",
+            "tests/intl-full-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+        ("locale", "tests/locale-test262-count.json", _LOCALE_PATTERNS, []),
+    ]
+]
+
+genrule(
+    name = "sdk_locale_oracle_source",
+    testonly = True,
+    srcs = [
+        "tests/sdk-locale-oracle.js",
+        "//conformance-tests/icu4j:temporal_locale_hermes_fixtures",
+    ],
+    outs = ["sdk-locale-oracle.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_locale_hermes_fixtures) $(location tests/sdk-locale-oracle.js) > $@",
+)
+
+sh_test(
+    name = "sdk_locale_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :sdk_locale_oracle_source)",
+        "--native-datetimeformat",
+        "--native-temporal=UTC",
+    ],
+    data = [
+        ":sdk_locale_oracle_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)

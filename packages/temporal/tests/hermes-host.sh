@@ -8,7 +8,12 @@ for arg in "$@"; do
   esac
 done
 sdk=()
-if [[ "${FORMATJS_TEMPORAL_SDK:-}" == 1 ]]; then sdk=(--native-temporal=UTC); fi
+if [[ "${FORMATJS_TEMPORAL_NATIVE_INTL:-}" == 1 ]]; then
+  sdk=(--native-pluralrules --native-listformat --native-displaynames
+    --native-segmenter --native-collator --native-numberformat
+    --native-relativetimeformat --native-datetimeformat --native-durationformat)
+fi
+if [[ "${FORMATJS_TEMPORAL_SDK:-}" == 1 ]]; then sdk+=(--native-temporal=UTC); fi
 if [[ -n "${FORMATJS_TEMPORAL_HERMES_COMPILER:-}" ]]; then
   directory="$(mktemp -d)"
   trap 'rm -rf "$directory"' EXIT
