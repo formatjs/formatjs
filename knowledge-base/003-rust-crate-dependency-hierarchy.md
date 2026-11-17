@@ -103,8 +103,7 @@ formatjs_cli (v0.1.14)
 │   ├── icu 2.1 (Unicode ICU)
 │   ├── regex 1.11
 │   ├── serde + serde_json
-│   ├── once_cell, indexmap
-│   └── [WASM only] wasm-bindgen 0.2, serde-wasm-bindgen 0.6
+│   └── once_cell, indexmap
 ├── formatjs_icu_skeleton_parser (v0.1.1)
 ├── clap 4.5 (CLI argument parsing)
 ├── oxc 0.120 + oxc_parser + oxc_ast + oxc_allocator + oxc_span (JS/TS parsing)
@@ -171,7 +170,6 @@ formatters; it does not advertise unsupported candidate values.
 - `printer.rs` — AST-to-string serialization
 - `manipulator.rs` — AST transforms (hoist_selectors, structural equality)
 - `date_time_pattern_generator.rs` — CLDR datetime pattern generation
-- `lib_wasm.rs` — WebAssembly bindings via wasm-bindgen
 
 Structural comparison accepts shared date/time arguments and compares their
 roles without regard to order. Translations must retain both roles. TypeScript's
@@ -180,7 +178,6 @@ roles without regard to order. Translations must retain both roles. TypeScript's
 **Build targets:**
 
 - **Native library** — Standard Rust library for use by formatjs_cli
-- **WASM binary** — Compiled to `wasm32-unknown-unknown`, produces `.wasm` + JS glue via `rust_wasm_bindgen`
 - **Benchmark** — Criterion-based (`bazel run -c opt //crates/icu_messageformat_parser:parser_bench -- --bench`)
 
 **Generated files** (from TypeScript tooling):
