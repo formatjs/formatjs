@@ -281,9 +281,9 @@ sentences are not translator-friendly.`
     .addOption(
       new Option(
         '--message-syntax <syntax>',
-        'Message grammar used by --structural-equality.'
+        'Message grammar or native resource format (android or apple-printf).'
       )
-        .choices(['icu', 'java-printf', 'apple-printf'])
+        .choices(['icu', 'java-printf', 'apple-printf', 'android'])
         .default('icu')
     )
     .option(

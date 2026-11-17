@@ -1,3 +1,4 @@
+pub mod android_resources;
 mod apple_printf;
 pub mod apple_resources;
 pub mod compile;

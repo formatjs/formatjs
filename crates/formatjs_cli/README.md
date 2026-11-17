@@ -485,3 +485,38 @@ Plural rules use `NSStringPluralRuleType`, `NSStringFormatValueTypeKey`, and req
 `other`. Existing Apple printf type, position, length, and plural-ownership checks apply.
 Parsing preserves source descriptions; verification never rewrites resource files.
 Binary plists and non-plural stringsdict rules are unsupported.
+
+### Android resource verification
+
+```sh
+formatjs verify 'app/src/main/res/**/*.xml' \
+  --message-syntax android --source-locale en \
+  --structural-equality --missing-keys --extra-keys
+```
+
+Both Rust and npm CLIs use the same Rust Android resource parser. It reads UTF-8
+`<resources>` XML containing strings, string arrays and plurals. Resources are
+grouped by their `res` directory, regardless of XML filename. `values` supplies
+`--source-locale`; localized folders support `values-fr`, `values-pt-rBR` and
+`values-b+sr+Latn`. Legacy `iw`, `in` and `ji` normalize to `he`, `id` and `yi`.
+Additional configuration qualifiers such as `values-fr-night` are rejected;
+verify separate configurations independently. Files from separate source sets
+are separate catalogs, without Android overlay resolution.
+
+XML entities (including declared internal entities) decode before Android quotes,
+backslash escapes and whitespace handling. Quoted apostrophes, `\'`, U+2019 and
+numeric non-breaking spaces are accepted. Undeclared entities, malformed XML,
+unescaped apostrophes and invalid Unicode escapes fail. External entities are
+never fetched. Verification does not rewrite XML or enforce typography, brand
+spelling, CDATA spelling or exact entity-reference spelling.
+
+`--structural-equality` uses Java printf argument compatibility on decoded item
+text, checks array lengths and formatting-mode changes, and validates source and
+target printf syntax. `formatted="false"` skips printf checks; item attributes
+override their resource. Plurals require distinct supported quantities and
+`other`; target-only quantities compare against the source `other` item.
+Locale-specific category equality is not required. `translatable="false"`
+resources are excluded, and unrelated Android resource types are ignored.
+
+This is a string-resource verifier, not a replacement for AAPT2 resource linking.
+See [Android string resource rules](https://developer.android.com/guide/topics/resources/string-resource#FormattingAndStyling).
