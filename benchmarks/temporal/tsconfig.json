@@ -9,16 +9,7 @@
   "extends": "../../tsconfig.json",
   "references": [
     {
-      "path": "../../packages/ecma262-abstract/tsconfig.json"
-    },
-    {
-      "path": "../../packages/ecma402-abstract/DateTimeFormat/tsconfig.json"
-    },
-    {
-      "path": "../../packages/ecma402-abstract/types/tsconfig.json"
-    },
-    {
-      "path": "../../packages/intl-datetimeformat/tsconfig.json"
+      "path": "../../packages/temporal/tsconfig.json"
     }
   ]
 }
