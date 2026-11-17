@@ -33,6 +33,7 @@ import {
 } from '#packages/temporal/plain-date.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
@@ -126,7 +127,10 @@ function add(
   options: unknown,
   sign: number
 ): PlainYearMonthObject {
-  const fields = toDurationFields(duration),
+  const fields =
+      import.meta.formatjsTemporalNativeData === true
+        ? toNativeDurationFields(duration)
+        : toDurationFields(duration),
     native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainYearMonth(

@@ -22,6 +22,11 @@ filegroup(
     visibility = ["//crates:__pkg__"],
 )
 
+config_setting(
+    name = "wasm_profile_names",
+    define_values = {"temporal_wasm_profile": "true"},
+)
+
 # gazelle:ignore
 rust_shared_library(
     name = "wasm_backend_core",
@@ -31,9 +36,11 @@ rust_shared_library(
     edition = "2024",
     rustc_flags = [
         "-Copt-level=z",
-        "-Cstrip=symbols",
         "-Cpanic=abort",
-    ],
+    ] + select({
+        ":wasm_profile_names": ["-Cstrip=debuginfo"],
+        "//conditions:default": ["-Cstrip=symbols"],
+    }),
     target_compatible_with = ["@platforms//cpu:wasm32"],
     deps = [":with_ffi"],
 )

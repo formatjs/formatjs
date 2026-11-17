@@ -298,13 +298,28 @@ fn calendar_epoch(
         )
         .map_err(crate::calendar_provider::error)
 }
-fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Error> {
-    let value = integer(value, None)?;
-    if overflow == Overflow::Constrain {
-        Ok(value.clamp(i64::from(i32::MIN), i64::from(i32::MAX)) as i32)
-    } else {
-        value.try_into().map_err(|_| Error::OutOfRange)
+// Clamp finite Number fields before narrowing to Rust integers.
+pub(crate) fn calendar_field_number(value: f64, constrain: bool) -> Result<i32, Error> {
+    if !value.is_finite() || value.fract() != 0.0 {
+        return Err(Error::InvalidDateTime);
     }
+    let value = if constrain {
+        value.clamp(i32::MIN as f64, i32::MAX as f64)
+    } else {
+        value
+    };
+    if value < i32::MIN as f64 || value > i32::MAX as f64 {
+        return Err(Error::OutOfRange);
+    }
+    Ok(value as i32)
+}
+fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Error> {
+    calendar_field_number(
+        value
+            .and_then(Value::as_f64)
+            .ok_or(Error::InvalidDateTime)?,
+        overflow == Overflow::Constrain,
+    )
 }
 pub(crate) const DATE_PROPERTIES: &[&str] = &[
     "dayOfWeek",
@@ -430,17 +445,11 @@ fn prepared_date_fields<'a>(
         let Some(value) = fields.get(key) else {
             return Ok(None);
         };
-        let mut value = value.as_f64().ok_or(Error::InvalidDateTime)?;
-        if !value.is_finite() || value.fract() != 0.0 {
-            return Err(Error::InvalidDateTime);
-        }
-        if clamp && constrain {
-            value = value.clamp(i32::MIN as f64, i32::MAX as f64);
-        }
-        if value < i32::MIN as f64 || value > i32::MAX as f64 {
-            return Err(Error::OutOfRange);
-        }
-        Ok(Some(value as i32))
+        calendar_field_number(
+            value.as_f64().ok_or(Error::InvalidDateTime)?,
+            clamp && constrain,
+        )
+        .map(Some)
     };
     let code = fields
         .get("monthCode")
@@ -718,21 +727,27 @@ pub(crate) fn complete_result(
     Ok((result, Some(properties)))
 }
 
+pub(crate) fn calendar_properties(
+    calendar: CalendarRef<'_>,
+    request: &Value,
+) -> Result<CalendarSnapshot, Error> {
+    let epoch = integer(request.get("epoch"), None)?;
+    let extended = request["extended"].as_bool().unwrap_or(false);
+    if epoch.abs() > 110_000_000 || !extended && !(-100_000_001..=100_000_000).contains(&epoch) {
+        return Err(Error::OutOfRange);
+    }
+    let mut result = calendar_snapshot(calendar, epoch)?;
+    if request.get("nanoseconds").is_some() {
+        add_clock(&mut result, decimal(request, "nanoseconds")?);
+    }
+    Ok(result)
+}
+
 fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let registry = calendars()?;
     let calendar = registry.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     if op == "calendarProperties" {
-        let epoch = integer(request.get("epoch"), None)?;
-        let extended = request["extended"].as_bool().unwrap_or(false);
-        if epoch.abs() > 110_000_000 || !extended && !(-100_000_001..=100_000_000).contains(&epoch)
-        {
-            return Err(Error::OutOfRange);
-        }
-        let mut result = calendar_snapshot(calendar, epoch)?;
-        if request.get("nanoseconds").is_some() {
-            add_clock(&mut result, decimal(request, "nanoseconds")?);
-        }
-        return Ok(result.into_json());
+        return calendar_properties(calendar, request).map(CalendarSnapshot::into_json);
     }
     let number = |key| integer(request.get(key), None);
     let year =
@@ -1614,6 +1629,21 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
             Ok(json!(result.epoch_nanoseconds().to_string()))
         }
         "roundInstant" => {
+            if let Some(unit) = request.get("unit") {
+                let unit = unit
+                    .as_str()
+                    .ok_or(Error::InvalidRoundingOptions)?
+                    .parse()?;
+                let increment = integer(request.get("increment"), None)?
+                    .try_into()
+                    .map_err(|_| Error::InvalidRoundingOptions)?;
+                return Ok(json!(
+                    value
+                        .round(unit, increment, mode(request)?)?
+                        .epoch_nanoseconds()
+                        .to_string()
+                ));
+            }
             let quantum = decimal(request, "quantum")?;
             if quantum <= 0 || quantum > NANOSECONDS_PER_DAY || NANOSECONDS_PER_DAY % quantum != 0 {
                 return Err(Error::InvalidRoundingOptions);

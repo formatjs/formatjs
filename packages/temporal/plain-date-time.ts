@@ -62,6 +62,7 @@ import {
 import {
   createDuration,
   toDurationFields,
+  toNativeDurationFields,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {durationNanoseconds} from '#packages/temporal/duration-core.js'
@@ -194,7 +195,10 @@ function add(
   options: unknown,
   sign: number
 ): PlainDateTimeObject {
-  const fields = toDurationFields(duration)
+  const fields =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeDurationFields(duration)
+      : toDurationFields(duration)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainDateTime(

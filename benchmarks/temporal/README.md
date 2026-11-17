@@ -1763,3 +1763,88 @@ Snapshots preserve exact offsets; `.toString()` retains minute rounding.
 Oracle fault injection follows fused snapshot operations, preserving backend
 error propagation. Signed nanosecond bounds, malformed/trailing records and
 recovery remain covered.
+
+## CPU profile follow-up (2026-11-17)
+
+`profile-results.json` contains baseline V8 self-time attribution, with optimized
+Rust names retained. Instant addition spends about 70% in JS (coercion, validation,
+bindings and object creation), versus 13% in WASM. Date parsing spends about 65%
+in JS and 13% in GC. Zoned updates spend 61% in Rust. Baseline field construction and
+DateTime operations allocated/hashed dynamic records. These profiles include
+setup/warmup; inspector bookkeeping is excluded. Runtime helpers have their own
+bucket. Percentages are attribution, not additive layer benchmarks.
+
+To inspect a CPU profile:
+
+```sh
+FORMATJS_TEMPORAL_BENCHMARK_PROFILE=nativeDataWasm \
+FORMATJS_TEMPORAL_BENCHMARK_FILTER=zonedWith \
+FORMATJS_TEMPORAL_PROFILE=nativeDataWasm \
+FORMATJS_TEMPORAL_PROFILE_OUTPUT=/tmp/temporal-zoned.cpuprofile \
+bazel run -c opt --define=temporal_wasm_profile=true //benchmarks/temporal:wasm_facade_benchmark
+```
+
+Profile mode uses at least 50,000 iterations per sample. Load the resulting file
+in DevTools. Named builds change payload size; use ordinary stripped builds for
+shipping measurements and disable profiling for throughput.
+
+ABI 12 removes duplicate Instant validation, repeated ISO field-list allocation,
+redundant snapshot cache entries and hot dynamic records. Rust returns complete
+compact ISO date results; date field updates reuse public Rust methods. Typed
+bindings also cover date/short-date formatting. Rust Instant formatting writes a
+bounded ASCII buffer rather than formatting each field through generic machinery.
+Non-Instant duration paths keep JS validation before observable options getters.
+
+The old shared-process harness showed JIT-tiering variance on tiny operations.
+`profile-hillclimb-results.json` now uses a fresh process per retained profile,
+20,000 warmup calls and nine samples of 50,000 calls, with the same eight inputs
+and parity checks. Transition counts are 1,000 warmup and nine samples of 5,000.
+TS and unchanged references came from the immediately preceding isolated run;
+native-data WASM was retimed after the Rust numeric correction. Hybrid throughput
+is omitted; startup/size still cover both WASM profiles. Default fast diagnostics
+retain the historical 3,000/7x10,000 counts.
+
+Use `FORMATJS_TEMPORAL_BENCHMARK_PROFILE` to select `typescript`, `wasm`,
+`nativeDataWasm`, `reference` or `officialReference`. Counts are configurable with
+`FORMATJS_TEMPORAL_BENCHMARK_ITERATIONS`, `FORMATJS_TEMPORAL_BENCHMARK_WARMUP`,
+`FORMATJS_TEMPORAL_BENCHMARK_SAMPLES`, `FORMATJS_TEMPORAL_TRANSITION_ITERATIONS`
+and `FORMATJS_TEMPORAL_TRANSITION_WARMUP`. Keep them identical across profiles.
+
+Current microseconds per public workload:
+
+| Workload            |    TS | Native-data WASM | temporal-polyfill basic | @js-temporal/polyfill |
+| ------------------- | ----: | ---------------: | ----------------------: | --------------------: |
+| parse               | 1.555 |            0.875 |                   1.965 |                 4.338 |
+| format              | 0.628 |            0.486 |                   1.322 |                 6.242 |
+| add                 | 2.225 |            1.235 |                   1.474 |                 5.687 |
+| round               | 0.548 |            0.797 |                   0.648 |                 4.171 |
+| dateParse           | 1.655 |            1.322 |                   1.736 |                 1.885 |
+| dateFromFields      | 1.419 |            1.771 |                   1.009 |                 3.371 |
+| dateWith            | 3.725 |            2.185 |                   1.595 |                 4.166 |
+| dateAdd             | 6.143 |            3.306 |                   2.143 |                 5.027 |
+| yearMonthWith       | 3.735 |            2.350 |                   1.169 |                 2.927 |
+| monthDayWith        | 4.156 |            2.299 |                   1.455 |                 3.802 |
+| dateTimeRoundFormat | 1.699 |           10.403 |                   3.663 |                 4.194 |
+| zonedTransition     | 0.417 |            4.367 |                   6.742 |               417.477 |
+
+WASM has lower medians in 15/48 against TS, 16/48 against basic reference,
+28/48 against official reference. Close medians remain noisy; this is an
+ongoing hillclimb, not an all-workload win. Parsing/updates improved, while general
+DateTime, timezone, duration and difference routes still dominate remaining work.
+
+`profile-startup-results.json` uses nine fresh processes per profile. Node
+namespace gzip: TS 39,691; native-data WASM 497,987
+(31,487 JS + 466,500 binary). This adds
+4,929 bytes over the previous ABI 11 Node snapshot. Shared ISO/timezone
+readiness medians: TS 19.39 ms; WASM
+24.99 ms. Data scopes still differ: default TS uses
+captured Intl; WASM owns calendars/timezones. Browser consumer sizes are recorded
+separately in the throughput file.
+
+`ts-regression-guard.json` compares the current pure TS consumer with commit
+872fdaee. Both have 141,410 minified bytes and identical scope-normalized ASTs;
+2,560 bindings were normalized. Local minified names change gzip by two bytes.
+No TS algorithms or data were changed. New shared spec controls caught a Rust
+normalization bug for very large finite calendar fields; fixed before this WASM
+snapshot. Required-field errors, non-finite values and `reject` remain checked.
+The controls do not count as independent ICU rows. Existing exclusions are unchanged.

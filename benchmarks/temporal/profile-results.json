@@ -1,0 +1,614 @@
+{
+  "baselineCommit": "872fdaee31e355e3a9da89ee2f838af56543353c",
+  "node": "v24.14.0",
+  "cpu": "Intel Xeon Platinum 8488C",
+  "samplingIntervalMicroseconds": 100,
+  "iterationsPerSample": 50000,
+  "samples": 7,
+  "profile": "nativeDataWasm",
+  "method": "V8 CPU self time weighted by timeDeltas, aggregated by function name and source. Inspector bookkeeping and root/idle/program samples excluded. Includes setup, parity and warmup; these are attribution profiles, not throughput measurements. Optimized core, size-optimized export shim; WASM function names retained without changing optimization. JS group includes coercion, bindings, decoding and object creation. HarnessOther includes runtime helpers and benchmark consumption. Seven separate processes, one operation each.",
+  "operations": {
+    "add": {
+      "sampledMilliseconds": 1072.349,
+      "selfPercent": {
+        "javascript": 70.34,
+        "harnessOther": 13.15,
+        "rustWasm": 12.7,
+        "gc": 3.82
+      },
+      "top": [
+        {
+          "name": "toDurationFields",
+          "percent": 17.83,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "partialDuration",
+          "percent": 17.33,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "run",
+          "percent": 10.99,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "createInstant",
+          "percent": 8.25,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "add",
+          "percent": 7.57,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "invoke.addInstant",
+          "percent": 5.62,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "durationNanoseconds",
+          "percent": 4.27,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 3.82,
+          "source": ""
+        },
+        {
+          "name": "validateDuration",
+          "percent": 3.69,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::duration::Duration>::new",
+          "percent": 2.63,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "begin",
+          "percent": 1.81,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal::binary::typed::duration",
+          "percent": 1.75,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "__floattidf",
+          "percent": 1.74,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "__fixdfti",
+          "percent": 1.47,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "formatjs_temporal::binary::typed::run",
+          "percent": 1.27,
+          "source": "temporal-backend.wasm"
+        }
+      ]
+    },
+    "dateParse": {
+      "sampledMilliseconds": 1584.023,
+      "selfPercent": {
+        "javascript": 64.51,
+        "harnessOther": 6.64,
+        "rustWasm": 16.06,
+        "gc": 12.78
+      },
+      "top": [
+        {
+          "name": "decode",
+          "percent": 19.49,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "nativeDateSnapshot",
+          "percent": 14.94,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 12.78,
+          "source": ""
+        },
+        {
+          "name": "createPlainDate",
+          "percent": 9.01,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "invoke",
+          "percent": 7.98,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "refresh",
+          "percent": 5.21,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal::binary::encode",
+          "percent": 2.35,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "get buffer",
+          "percent": 2.28,
+          "source": ""
+        },
+        {
+          "name": "formatjs_temporal::binary::typed::run",
+          "percent": 1.96,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "run",
+          "percent": 1.87,
+          "source": "wasm-facade-benchmark.ts"
+        },
+        {
+          "name": "buffer",
+          "percent": 1.69,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "core::ptr::drop_glue::<serde_json::value::Value>",
+          "percent": 1.56,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "formatjs_temporal::ffi::calendar_snapshot",
+          "percent": 1.31,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "encodeInto",
+          "percent": 1.12,
+          "source": ""
+        },
+        {
+          "name": "call",
+          "percent": 0.89,
+          "source": "wasm-native.js"
+        }
+      ]
+    },
+    "zonedWith": {
+      "sampledMilliseconds": 7767.421,
+      "selfPercent": {
+        "javascript": 30.75,
+        "harnessOther": 5.87,
+        "rustWasm": 61.14,
+        "gc": 2.24
+      },
+      "top": [
+        {
+          "name": "decode",
+          "percent": 7.33,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 6.36,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::timezone::TransitionZone as formatjs_temporal::zoned::TimeZone>::visit_offsets::{closure#0}",
+          "percent": 5.43,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::timezone::TransitionRule>::event",
+          "percent": 5.08,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "invoke",
+          "percent": 4.26,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::binary::Reader>::value",
+          "percent": 3.67,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "formatjs_temporal::timezone_identity::named_time_zone_identifier",
+          "percent": 2.73,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::timezone::TransitionZone as formatjs_temporal::zoned::TimeZone>::offset_nanoseconds",
+          "percent": 2.5,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 2.24,
+          "source": ""
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.06,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "refresh",
+          "percent": 2.02,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::insert_full",
+          "percent": 2.0,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<indexmap::inner::Core<alloc::string::String, serde_json::value::Value>>::get_index_of::<str>",
+          "percent": 1.87,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "formatjs_intl_datetimeformat_calendars::calendar::iso_fields",
+          "percent": 1.77,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::timezone_registry::TimeZoneRegistry>::resolve",
+          "percent": 1.75,
+          "source": "temporal-backend.wasm"
+        }
+      ]
+    },
+    "round": {
+      "sampledMilliseconds": 1332.447,
+      "selfPercent": {
+        "javascript": 48.63,
+        "harnessOther": 13.0,
+        "rustWasm": 35.47,
+        "gc": 2.91
+      },
+      "top": [
+        {
+          "name": "invoke",
+          "percent": 9.24,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 8.57,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "createInstant",
+          "percent": 6.71,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "refresh",
+          "percent": 6.28,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "text",
+          "percent": 5.13,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::binary::Reader>::value",
+          "percent": 3.47,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 2.91,
+          "source": ""
+        },
+        {
+          "name": "get buffer",
+          "percent": 2.83,
+          "source": ""
+        },
+        {
+          "name": "encodeInto",
+          "percent": 2.79,
+          "source": ""
+        },
+        {
+          "name": "buffer",
+          "percent": 2.73,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.52,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "formatjs_temporal::binary::run",
+          "percent": 2.48,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "roundInstant",
+          "percent": 2.28,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<i128>::from_ascii_radix",
+          "percent": 1.87,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::insert_full",
+          "percent": 1.82,
+          "source": "temporal-backend.wasm"
+        }
+      ]
+    },
+    "dateFromFields": {
+      "sampledMilliseconds": 4491.464,
+      "selfPercent": {
+        "javascript": 34.47,
+        "harnessOther": 2.88,
+        "rustWasm": 58.58,
+        "gc": 4.07
+      },
+      "top": [
+        {
+          "name": "decode",
+          "percent": 6.59,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "invoke",
+          "percent": 6.57,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::insert_full",
+          "percent": 5.5,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::ffi::CalendarSnapshot>::into_json",
+          "percent": 4.82,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "write",
+          "percent": 4.33,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 4.07,
+          "source": ""
+        },
+        {
+          "name": "<std::hash::random::RandomState as core::hash::BuildHasher>::hash_one::<&alloc::string::String>",
+          "percent": 3.58,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "refresh",
+          "percent": 3.56,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::get_index_of::<str>",
+          "percent": 3.54,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::binary::Reader>::value",
+          "percent": 3.17,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<core::hash::sip::Hasher<core::hash::sip::Sip13Rounds> as core::hash::Hasher>::write",
+          "percent": 3.11,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<indexmap::inner::Core<alloc::string::String, serde_json::value::Value>>::get_index_of::<str>",
+          "percent": 2.98,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::get_index_of::<str>",
+          "percent": 2.62,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "createPlainDate",
+          "percent": 2.5,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<std::hash::random::RandomState as core::hash::BuildHasher>::hash_one::<&str>",
+          "percent": 2.38,
+          "source": "temporal-backend.wasm"
+        }
+      ]
+    },
+    "dateTimeRoundFormat": {
+      "sampledMilliseconds": 3854.699,
+      "selfPercent": {
+        "javascript": 41.84,
+        "harnessOther": 7.23,
+        "rustWasm": 47.22,
+        "gc": 3.71
+      },
+      "top": [
+        {
+          "name": "decode",
+          "percent": 11.46,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "invoke",
+          "percent": 8.03,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 5.41,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::binary::Reader>::value",
+          "percent": 4.28,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 3.71,
+          "source": ""
+        },
+        {
+          "name": "refresh",
+          "percent": 3.62,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "createPlainDateTime",
+          "percent": 2.77,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal::binary::run",
+          "percent": 2.23,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<indexmap::map::IndexMap<alloc::string::String, serde_json::value::Value>>::insert_full",
+          "percent": 2.23,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "text",
+          "percent": 2.21,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<std::hash::random::RandomState as core::hash::BuildHasher>::hash_one::<&alloc::string::String>",
+          "percent": 2.19,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "get buffer",
+          "percent": 2.1,
+          "source": ""
+        },
+        {
+          "name": "<indexmap::inner::Core<alloc::string::String, serde_json::value::Value>>::get_index_of::<str>",
+          "percent": 2.04,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.02,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "buffer",
+          "percent": 1.59,
+          "source": "wasm-native.js"
+        }
+      ]
+    },
+    "zonedTransition": {
+      "sampledMilliseconds": 1671.052,
+      "selfPercent": {
+        "javascript": 34.04,
+        "harnessOther": 10.98,
+        "rustWasm": 52.36,
+        "gc": 2.62
+      },
+      "top": [
+        {
+          "name": "<formatjs_temporal::timezone::TransitionRule>::event",
+          "percent": 8.34,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "invoke",
+          "percent": 7.77,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "write",
+          "percent": 4.62,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "refresh",
+          "percent": 4.32,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "formatjs_temporal::timezone_identity::named_time_zone_identifier",
+          "percent": 4.02,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "createZonedDateTime",
+          "percent": 3.8,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "text",
+          "percent": 3.35,
+          "source": "wasm-native.js"
+        },
+        {
+          "name": "<formatjs_temporal::binary::Reader>::value",
+          "percent": 2.98,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "<formatjs_temporal::timezone_registry::TimeZoneRegistry>::resolve",
+          "percent": 2.87,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "get buffer",
+          "percent": 2.79,
+          "source": ""
+        },
+        {
+          "name": "<formatjs_temporal::timezone::TransitionZone as formatjs_temporal::zoned::TimeZone>::transition",
+          "percent": 2.76,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "(garbage collector)",
+          "percent": 2.62,
+          "source": ""
+        },
+        {
+          "name": "__multi3",
+          "percent": 2.27,
+          "source": "temporal-backend.wasm"
+        },
+        {
+          "name": "encodeInto",
+          "percent": 2.19,
+          "source": ""
+        },
+        {
+          "name": "<formatjs_temporal::timezone::TransitionZone as formatjs_temporal::zoned::TimeZone>::offset_nanoseconds",
+          "percent": 2.17,
+          "source": "temporal-backend.wasm"
+        }
+      ]
+    }
+  }
+}

@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations through ABI 11. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 12. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -175,7 +175,7 @@ calendar updates preserve month codes and era relationships. Zoned updates prefe
 the source offset by default and support explicit gap/fold and offset policies.
 Rust `PlainDate::to_zoned_date_time(zone, None)` selects the first instant of the
 civil day; supplying `Some(time)` uses compatible resolution.
-JS adapters delegate normalized operations through ABI 11. Rust builds, generated
+JS adapters delegate normalized operations through the matching Rust backend. Rust builds, generated
 data and release artifacts use Bazel.
 
 ## Validation
@@ -237,3 +237,11 @@ numeric offset label. Default TS follows installed Intl timezone data. Matching
 host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
+
+WASM ABI 12 specializes hot parsing, arithmetic, field updates and formatting.
+Keep the JS adapter and binary paired. Observable coercion/error order stays in
+the bindings; Rust validates and computes complete results. Finite month/day overflow
+fields above the safe-integer range still constrain correctly; `reject`, non-finite
+values and missing-field error types remain covered across TS, WASM and Hermes.
+See the [CPU profile follow-up](../../benchmarks/temporal/README.md#cpu-profile-follow-up-2026-11-17)
+for measured wins, remaining slow workloads, startup and size.

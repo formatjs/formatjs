@@ -57,6 +57,7 @@ import {
 } from '#packages/temporal/date-core.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
@@ -152,6 +153,11 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   if (object(item)) {
     const calendar = calendarFromObject(item)
     const fields = readDateFields(item, false, false, 'date', calendar)
+    if (
+      import.meta.formatjsTemporalNativeData === true &&
+      calendar === 'iso8601'
+    )
+      return nativeTemporal()!.createISODate(fields, overflowOption(options))
     return {
       epochDay: dayFromFields(calendar, fields, overflowOption(options)),
       calendar,
@@ -177,7 +183,10 @@ function add(
   options: unknown,
   sign: number
 ): PlainDateObject {
-  const fields = toDurationFields(duration)
+  const fields =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeDurationFields(duration)
+      : toDurationFields(duration)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainDate(

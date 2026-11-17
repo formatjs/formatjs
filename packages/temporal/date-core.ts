@@ -193,6 +193,11 @@ export function nativeDateSnapshot(
     (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
   )
     throw new RangeError('Calendar date out of range')
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    slot.properties?.owner === owner
+  )
+    return slot.properties
   const existing = dateSnapshots.get(slot)
   if (existing?.owner === owner) return existing.value
   const value =
@@ -305,6 +310,19 @@ export function dateFieldValue(key: string, value: unknown): string | number {
     throw new RangeError('Month and day must be positive')
   return result
 }
+const nativeISODateFields = ['day', 'month', 'monthCode', 'year']
+const nativeISODateTimeFields = [
+  'day',
+  'hour',
+  'microsecond',
+  'millisecond',
+  'minute',
+  'month',
+  'monthCode',
+  'nanosecond',
+  'second',
+  'year',
+]
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -314,7 +332,14 @@ export function readDateFields(
 ): Record<string, unknown> {
   const result = Object.create(null) as Record<string, unknown>
   let any = false
-  const names = dateFieldNames(calendar, withTime, shape)
+  const names =
+    import.meta.formatjsTemporalNativeData === true &&
+    calendar === 'iso8601' &&
+    shape === 'date'
+      ? withTime
+        ? nativeISODateTimeFields
+        : nativeISODateFields
+      : dateFieldNames(calendar, withTime, shape)
   for (let index = 0; index < names.length; index++) {
     const key = names[index],
       value = item[key]

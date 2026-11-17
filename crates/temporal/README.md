@@ -16,7 +16,7 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-ABI 11 exposes 69 Rust operations to WASM and native Hermes. The standalone SDK
+WASM ABI 12 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
@@ -739,7 +739,7 @@ See SDK-host snapshots and `benchmarks/temporal/README.md` for methods and limit
 
 The Hermes SDK and npm `wasm-native.js` entry now use Rust's calendar/timezone
 records without duplicate TS tables. The default TS namespace and existing
-index/wasm pair retain their own data. Rust ABI9 and its binary are unchanged;
+index/wasm pair retain their own data. That earlier ownership change kept ABI9;
 JS still supplies observable ECMAScript semantics and shared orchestration.
 Published native-data WASM passes the same independent calendar/timezone/Duration
 oracles as the retained-data profile. See the native-data benchmark snapshots:
@@ -748,10 +748,14 @@ profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
 
 ## Typed WASM operations
 
-ABI 11 uses typed inputs for seven hot routes, signed 128-bit Instant transfers,
-streamed formatting, and complete fixed calendar/clock/zone snapshots. SDK JSON
-controls keep their prior shapes. Historical `.offset` getters retain seconds;
-string serialization still rounds offsets as required. JS keeps observable
-coercions and required-field error types. Matching binary/adapter versions are
-required. See the [hillclimb measurements](../../benchmarks/temporal/README.md#typed-wasm-hillclimb-2026-11-17)
-for latency, startup, size and discarded experiments.
+ABI 12 provides typed variants for fifteen hot operations, signed 128-bit Instant
+transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
+formatting writes one bounded stack buffer. Non-ISO records and deferred getter
+errors retain their general representation. SDK JSON responses keep their shapes.
+Finite month/day fields constrain before narrowing to Rust integer widths;
+non-finite values and `reject` still fail. Shared public controls cover TS, WASM
+and Hermes in addition to independent ICU rows.
+
+JS keeps observable coercions and required-field error types. Matching WASM
+binary/adapter versions are required. See the [profile measurements](../../benchmarks/temporal/README.md#cpu-profile-follow-up-2026-11-17)
+for latency, startup, size and remaining work.

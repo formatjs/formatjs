@@ -7,6 +7,7 @@ import {
 import {timeZoneIdentifier} from '#packages/temporal/zones.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
@@ -207,7 +208,10 @@ class InstantValue implements InstantObject {
   }
   add(other: unknown): InstantObject {
     const value = read(this),
-      fields = toDurationFields(other)
+      fields =
+        import.meta.formatjsTemporalNativeData === true
+          ? toNativeDurationFields(other, false)
+          : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
@@ -219,7 +223,10 @@ class InstantValue implements InstantObject {
   }
   subtract(other: unknown): InstantObject {
     const value = read(this),
-      fields = toDurationFields(other)
+      fields =
+        import.meta.formatjsTemporalNativeData === true
+          ? toNativeDurationFields(other, false)
+          : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()

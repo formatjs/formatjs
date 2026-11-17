@@ -1,5 +1,120 @@
 import type {Temporal as TemporalNamespace} from '#packages/temporal/index.js'
 
+// Spec controls; independent ICU row counts below stay unchanged.
+function checkLargeCalendarFields(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  for (const value of [2 ** 53, 1e100, Number.MAX_VALUE]) {
+    const cases = [
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainDate.from(
+            {year: 2000, month: value, day: value},
+            {overflow}
+          ).toString(),
+        '2000-12-31',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainDate.from(
+            {year: 2000, month: 2, day: value},
+            {overflow}
+          ).toString(),
+        '2000-02-29',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainDate.from('1900-02-15')
+            .with({day: value}, {overflow})
+            .toString(),
+        '1900-02-28',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainDateTime.from(
+            {year: 2000, month: value, day: value},
+            {overflow}
+          ).toString(),
+        '2000-12-31T00:00:00',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainDateTime.from('2000-02-15T12:34:56.123456789')
+            .with({day: value}, {overflow})
+            .toString(),
+        '2000-02-29T12:34:56.123456789',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainYearMonth.from(
+            {year: 2000, month: value},
+            {overflow}
+          ).toString(),
+        '2000-12',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainYearMonth.from('2000-02')
+            .with({month: value}, {overflow})
+            .toString(),
+        '2000-12',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainMonthDay.from(
+            {month: value, day: value},
+            {overflow}
+          ).toString(),
+        '12-31',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.PlainMonthDay.from('02-15')
+            .with({day: value}, {overflow})
+            .toString(),
+        '02-29',
+      ],
+      [
+        (overflow: 'constrain' | 'reject') =>
+          Temporal.ZonedDateTime.from(
+            {year: 2000, month: value, day: value, timeZone: 'UTC'},
+            {overflow}
+          ).toString(),
+        '2000-12-31T00:00:00+00:00[UTC]',
+      ],
+    ] as const
+    for (let index = 0; index < cases.length; index++) {
+      const [run, expected] = cases[index]
+      equal(
+        run('constrain'),
+        expected,
+        `large calendar field ${value}/${index}`
+      )
+      let error: unknown
+      try {
+        run('reject')
+      } catch (caught) {
+        error = caught
+      }
+      equal(
+        error instanceof RangeError,
+        true,
+        `reject large field ${value}/${index}`
+      )
+    }
+  }
+  for (const value of [Infinity, -Infinity, NaN, 0, -1]) {
+    let error: unknown
+    try {
+      Temporal.PlainDate.from({year: 2000, month: value, day: 1})
+    } catch (caught) {
+      error = caught
+    }
+    equal(error instanceof RangeError, true, `invalid month ${value}`)
+  }
+}
+
 export function checkPublicCalendarOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
@@ -27,6 +142,7 @@ export function checkPublicCalendarOracle(
   differences: number
   windows: number
 } {
+  checkLargeCalendarFields(Temporal, equal)
   const date = (epoch: number, calendar: string) =>
     new Temporal.PlainDate(1970, 1, 1).add({days: epoch}).withCalendar(calendar)
   for (const line of fixture.trim().split('\n')) {

@@ -267,3 +267,14 @@ PR CI targets. Raw matched performance/startup/size evidence is in
 `hillclimb-experiments.json`. Native-data namespace payload is 493,058 gzip bytes
 (5,288 more than ABI 10); Instant parse/format improve about 4.1x. TS remains
 default; WASM has lower sampled medians in 5/48 workloads against TS.
+
+## Profile-guided performance follow-up
+
+WASM ABI 12 keeps the conformance requirements above. Extra overflow controls
+exercise finite calendar fields up to Number.MAX_VALUE through all date-like
+constructors/updates, with reject and non-finite controls. They exposed and fixed
+premature safe-integer narrowing in Rust bindings; default TS already passed.
+A poisoned Array iterator control also guards duration coercion. Existing ICU row
+counts and Test262 exclusions are unchanged. See 015's CPU-profile follow-up and
+`benchmarks/temporal/profile-*.json` for the ongoing performance work; it is not a
+claim that WASM beats TS on every workload.

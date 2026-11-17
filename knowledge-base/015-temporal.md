@@ -1806,3 +1806,43 @@ workloads), `hillclimb-startup-results.json` (nine fresh processes/profile), and
 pass, including every failed PR CI target. WASM wins 5/48 against TS,
 20/48 against official reference. Native-data namespace consumer:
 493,058 gzip bytes; shared ISO/timezone readiness 24.44 ms.
+
+## CPU-profiled WASM follow-up (2026-11-17)
+
+V8 CPU profiles identify JS duration coercion/validation, recursive result decoding,
+Rust dynamic maps and generic formatting as separate costs. The optimized profiling
+build retains WASM names with `--define=temporal_wasm_profile=true`; production
+still strips names. `benchmarks/temporal/profile-results.json` records weighted
+self samples from the ABI 11 baseline. Inspector bookkeeping is excluded; setup,
+warmup, runtime helpers and GC remain explicit. Profile-mode timings are not
+throughput claims.
+
+ABI 12 has typed variants for fifteen existing operations. ISO field construction
+and date/short-date updates call the typed public Rust methods directly; non-ISO
+paths remain supported. Complete ISO date records use a fixed layout. Getters
+reuse their owner-stamped snapshots without a redundant WeakMap entry. JS retains
+coercion/read order; non-Instant duration paths still validate before options
+getters. Rust remains the arithmetic authority. Instant formatting writes ASCII
+to a bounded stack buffer before one output write.
+
+Extra spec controls caught a Rust generic-adapter failure absent from the pinned
+Test262 selection: finite month/day fields above Number.MAX_SAFE_INTEGER were
+rejected before [overflow correction](https://tc39.es/proposal-temporal/#sec-temporal-regulateisodate). TS already handled them. Shared Rust numeric
+conversion now clamps before narrowing and still rejects non-finite or fractional
+numbers. The controls run alongside public ICU oracles on TS, both WASM profiles
+and Hermes; they do not inflate independent ICU row counts. A separate poisoned
+Array iterator regression prevents new observable iteration during duration reads.
+No new Test262 exclusions.
+
+Pure TS executable code remains equivalent to the baseline after local identifier
+renaming. `benchmarks/temporal/ts-regression-guard.json` records consumer hashes and
+scope-normalized AST hashes, including all 2,560 lexical bindings. No TS math or
+data changes were used to improve the WASM comparison.
+
+The ongoing hillclimb uses isolated warmed processes for TS, native-data WASM and
+both pinned references. `profile-hillclimb-results.json` retains all 48 public
+workloads; `profile-startup-results.json` retains nine fresh startup processes per
+profile. TS/references are unchanged from the preceding isolated run; WASM was
+retimed after the numeric fix. Hybrid throughput is omitted in this snapshot;
+shipping-size/startup controls still include it. Median wins do not establish
+stable wins for close workloads. WASM remains slower overall; this goal is open.

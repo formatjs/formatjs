@@ -57,7 +57,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 11 ||
+    core.temporal_abi_version() !== 12 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -123,6 +123,35 @@ const writeNumber = Function.prototype.call.bind(View.prototype.setFloat64)
 const putText = Function.prototype.call.bind(encodeInto!)
 const getText = Function.prototype.call.bind(decodeText!)
 const arrayIndex = Function.prototype.call.bind(Array.prototype.indexOf)
+function decodeISODate(output: DataView, bytes: Uint8Array, start: number) {
+  const month = bytes[start + 8]
+  const date = {
+    year: read32(output, start + 4, true) | 0,
+    month,
+    day: bytes[start + 9],
+    monthCode: wasmStrings[(month - 1) * 2],
+  }
+  const daysInYear = apply(getUint16, output, [start + 12, true])
+  return {
+    epochDay: read32(output, start, true) | 0,
+    calendar: 'iso8601',
+    properties: {
+      date,
+      values: {
+        dayOfWeek: bytes[start + 10],
+        daysInWeek: 7,
+        dayOfYear: apply(getUint16, output, [start + 14, true]),
+        daysInMonth: bytes[start + 11],
+        monthsInYear: 12,
+        daysInYear,
+        inLeapYear: daysInYear === 366,
+        weekOfYear: bytes[start + 16],
+        yearOfWeek: read32(output, start + 17, true) | 0,
+      },
+      errors: [],
+    },
+  }
+}
 const stringCodes: Record<string, number> = objectCreate(null)
 for (let index = 0; index < wasmStrings.length; index++)
   stringCodes[wasmStrings[index]] = index
@@ -320,6 +349,9 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       text(properties.calendar as string)
     } else write(properties)
     const result = core.temporal_exchange(offset) >>> 0
+    return decodeResult(result)
+  }
+  function decodeResult(result: number): any {
     if (!result) throw new BadType('Temporal WASM bridge failed')
     const header = new View(buffer(), result, 8)
     const status = apply(read, header, [0, true]) as number
@@ -358,6 +390,11 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
         const code = apply(getUint16, output, [cursor, true]) as number
         cursor += 2
         return wasmStrings[code]
+      }
+      if (tag === 11) {
+        const start = cursor
+        cursor += 21
+        return decodeISODate(output, bytes, start)
       }
       if (tag === 9) {
         const date = {
@@ -409,7 +446,10 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
   let fastBytes: Uint8Array
   let fastPointer = -1,
     fastCapacity = 0
-  let parseBytes: Uint8Array, zoneBytes: Uint8Array
+  let parseBytes: Uint8Array,
+    zoneBytes: Uint8Array,
+    calendarBytes: Uint8Array,
+    formatCalendarBytes: Uint8Array
   function fastMemory(): void {
     const memory = buffer()
     if (memory !== fastBuffer) {
@@ -435,6 +475,8 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       fastCapacity = capacity
       parseBytes = new Bytes(fastBuffer!, pointer + 6, capacity - 6)
       zoneBytes = new Bytes(fastBuffer!, pointer + 33, capacity - 33)
+      calendarBytes = new Bytes(fastBuffer!, pointer + 96, capacity - 96)
+      formatCalendarBytes = new Bytes(fastBuffer!, pointer + 15, capacity - 15)
     }
     fastBytes[pointer] = code
     fastBytes[pointer + 1] = 10
@@ -473,6 +515,69 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     'halfTrunc',
     'halfEven',
   ]
+  const calendarNames = ['auto', 'always', 'never', 'critical']
+  invoke.formatDate = (operation, slot, calendarName) => {
+    const pointer = begin(
+      operationCodes[operation],
+      15 + slot.calendar.length * 3
+    )
+    writeNumber(fastView, pointer + 2, slot.epochDay, true)
+    fastBytes[pointer + 10] = arrayIndex(calendarNames, calendarName)
+    const encoded = putText(encoder, slot.calendar, formatCalendarBytes)
+    write32(fastView, pointer + 11, encoded.written, true)
+    const result = exchange(15 + encoded.written)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
+  }
+  function writeISOFields(
+    pointer: number,
+    fields: Record<string, unknown>,
+    overflow: string
+  ): void {
+    writeNumber(fastView, pointer, fields.year, true)
+    writeNumber(fastView, pointer + 8, fields.month, true)
+    writeNumber(fastView, pointer + 16, fields.day, true)
+    const code = fields.monthCode as string | undefined
+    fastBytes[pointer + 24] =
+      code === undefined
+        ? 0
+        : (apply(codeUnit, code, [1]) - 48) * 10 +
+          apply(codeUnit, code, [2]) -
+          48
+    fastBytes[pointer + 25] = code === undefined ? 0 : code.length === 4 ? 3 : 1
+    fastBytes[pointer + 26] = overflow === 'reject' ? 1 : 0
+  }
+  invoke.withISODate = (operation, slot, fields, overflow) => {
+    const pointer = begin(operationCodes[operation], 37)
+    writeNumber(fastView, pointer + 2, slot.epochDay, true)
+    writeISOFields(pointer + 10, fields, overflow)
+    const result = exchange(37)
+    if (fastBytes[result] !== 11)
+      throw new BadType('Invalid Temporal WASM response')
+    return decodeISODate(fastView, fastBytes, result + 1)
+  }
+  invoke.createISODate = (fields, overflow) => {
+    const pointer = begin(operationCodes.calendarToEpochDay, 29)
+    writeISOFields(pointer + 2, fields, overflow)
+    const result = exchange(29)
+    if (fastBytes[result] !== 11)
+      throw new BadType('Invalid Temporal WASM response')
+    return decodeISODate(fastView, fastBytes, result + 1)
+  }
+  invoke.parseDate = (value, operation) => {
+    validateText(value)
+    const pointer = begin(operationCodes[operation], 6 + value.length * 3)
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    const result = exchange(6 + encoded.written)
+    return fastBytes[result] === 11
+      ? decodeISODate(fastView, fastBytes, result + 1)
+      : decodeResult(result - 8)
+  }
   invoke.parseInstant = value => {
     validateText(value)
     const pointer = begin(operationCodes.parseInstant, 6 + value.length * 3)
@@ -495,6 +600,41 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     writeNumber(fastView, pointer + 90, fields.nanoseconds, true)
     fastBytes[pointer + 98] = subtract ? 1 : 0
     return readInteger(exchange(99))
+  }
+  invoke.addPlainDate = (epochDay, calendar, fields, subtract, overflow) => {
+    const pointer = begin(operationCodes.addPlainDate, 96 + calendar.length * 3)
+    writeNumber(fastView, pointer + 2, epochDay, true)
+    for (let i = 0; i < durationPropertyNames.length; i++)
+      writeNumber(
+        fastView,
+        pointer + 10 + i * 8,
+        fields[durationPropertyNames[i] as keyof typeof fields],
+        true
+      )
+    fastBytes[pointer + 90] = subtract ? 1 : 0
+    fastBytes[pointer + 91] = overflow === 'reject' ? 1 : 0
+    const encoded = putText(encoder, calendar, calendarBytes)
+    write32(fastView, pointer + 92, encoded.written, true)
+    const result = exchange(96 + encoded.written)
+    return fastBytes[result] === 11
+      ? decodeISODate(fastView, fastBytes, result + 1)
+      : decodeResult(result - 8)
+  }
+  const units = [
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+  ]
+  invoke.roundInstantUnit = (value, unit, increment, mode) => {
+    const pointer = begin(operationCodes.roundInstant, 24)
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] = arrayIndex(units, unit)
+    write32(fastView, pointer + 19, increment, true)
+    fastBytes[pointer + 23] = arrayIndex(modes, mode)
+    return readInteger(exchange(24))
   }
   invoke.formatInstant = (
     value,

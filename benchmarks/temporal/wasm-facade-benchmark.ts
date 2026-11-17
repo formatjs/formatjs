@@ -1,5 +1,7 @@
 import {zonedInputs} from './zoned-inputs.ts'
-import {readFileSync} from 'node:fs'
+import {readFileSync, writeFileSync} from 'node:fs'
+import {Session} from 'node:inspector/promises'
+import {createHash} from 'node:crypto'
 import {join} from 'node:path'
 import {cpus} from 'node:os'
 import {pathToFileURL} from 'node:url'
@@ -16,9 +18,38 @@ const directory = runfiles.resolve(process.argv[2])
 const load = (name: string) => import(pathToFileURL(join(directory, name)).href)
 const {Temporal} = await load('index.js')
 const {configureWasmBackend, createWasmQuery} = await load('wasm.js')
-const iterations = 10000,
-  samples = 7,
-  warmup = 3000
+function benchmarkCount(name: string, fallback: number): number {
+  const value = Number(process.env[name] ?? fallback)
+  if (!Number.isSafeInteger(value) || value < 1)
+    throw new RangeError('Invalid benchmark count: ' + name)
+  return value
+}
+const iterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_ITERATIONS',
+  10000
+)
+const samples = benchmarkCount('FORMATJS_TEMPORAL_BENCHMARK_SAMPLES', 7)
+const warmup = benchmarkCount('FORMATJS_TEMPORAL_BENCHMARK_WARMUP', 3000)
+const transitionIterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_TRANSITION_ITERATIONS',
+  512
+)
+const transitionWarmup = benchmarkCount(
+  'FORMATJS_TEMPORAL_TRANSITION_WARMUP',
+  128
+)
+const selectedProfile = process.env.FORMATJS_TEMPORAL_BENCHMARK_PROFILE
+if (
+  selectedProfile &&
+  ![
+    'typescript',
+    'wasm',
+    'nativeDataWasm',
+    'reference',
+    'officialReference',
+  ].includes(selectedProfile)
+)
+  throw new RangeError('Invalid benchmark profile: ' + selectedProfile)
 const strings = Array.from(
   {length: 8},
   (_, index) => `2020-02-${21 + index}T23:59:59.123456789+05:45`
@@ -30,6 +61,7 @@ const yearMonthStrings = strings.map(
 )
 const monthDayStrings = strings.map(value => value.slice(5, 10))
 let checksum = 0
+let profiling = false
 function measure(namespace: typeof reference): unknown[] {
   const values = strings.map(value => namespace.Instant.from(value))
   const expected = strings.map(value => reference.Instant.from(value))
@@ -526,8 +558,8 @@ function measure(namespace: typeof reference): unknown[] {
     },
     {
       name: 'zonedTransition',
-      iterations: 512,
-      warmup: 128,
+      iterations: transitionIterations,
+      warmup: transitionWarmup,
       run: (index: number) =>
         zonedValues[index]
           .getTimeZoneTransition('next')
@@ -601,7 +633,9 @@ function measure(namespace: typeof reference): unknown[] {
   return cases
     .filter(test => !selected || selected.includes(test.name))
     .map(test => {
-      const caseIterations = test.iterations ?? iterations
+      const caseIterations = profiling
+        ? Math.max(test.iterations ?? iterations, 50000)
+        : (test.iterations ?? iterations)
       const caseWarmup = test.warmup ?? warmup
       for (let index = 0; index < 8; index++)
         if (test.run(index) !== test.check(index))
@@ -625,7 +659,29 @@ function measure(namespace: typeof reference): unknown[] {
       }
     })
 }
-const typescript = measure(Temporal)
+async function measureProfile(namespace: typeof reference, name: string) {
+  if (selectedProfile && selectedProfile !== name) return []
+  if (process.env.FORMATJS_TEMPORAL_PROFILE !== name) return measure(namespace)
+  const session = new Session()
+  session.connect()
+  await session.post('Profiler.enable')
+  await session.post('Profiler.setSamplingInterval', {interval: 100})
+  await session.post('Profiler.start')
+  profiling = true
+  try {
+    return measure(namespace)
+  } finally {
+    profiling = false
+    const {profile} = await session.post('Profiler.stop')
+    writeFileSync(
+      process.env.FORMATJS_TEMPORAL_PROFILE_OUTPUT ??
+        '/tmp/temporal.cpuprofile',
+      JSON.stringify(profile)
+    )
+    session.disconnect()
+  }
+}
+const typescript = await measureProfile(Temporal, 'typescript')
 const bytes = readFileSync(join(directory, 'temporal-backend.wasm'))
 let start = performance.now()
 const module = new WebAssembly.Module(bytes)
@@ -657,14 +713,18 @@ checksum += Temporal.Duration.from('P1M1DT2H')
   .total({relativeTo: '2020-01-31', unit: 'hour'})
   .toString().length
 const firstDurationOperationMilliseconds = performance.now() - start
-const wasm = measure(Temporal)
+const wasm = await measureProfile(Temporal, 'wasm')
 const nativeDataTemporal = (await load('wasm-native.js')).configureTemporalWasm(
   instance
 )
-const nativeDataWasm = measure(nativeDataTemporal)
-const referenceResults = measure(reference)
-const officialReferenceResults = measure(
-  officialReference as unknown as typeof reference
+const nativeDataWasm = await measureProfile(
+  nativeDataTemporal,
+  'nativeDataWasm'
+)
+const referenceResults = await measureProfile(reference, 'reference')
+const officialReferenceResults = await measureProfile(
+  officialReference as unknown as typeof reference,
+  'officialReference'
 )
 const officialCode = buildSync({
   stdin: {
@@ -713,7 +773,13 @@ const bundle = (wasm: boolean, nativeData = false) => {
     minify: true,
     legalComments: 'none',
   }).outputFiles[0].contents
-  return {minified: code.byteLength, gzip: gzipSync(code, {level: 9}).length}
+  if (!wasm && process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT)
+    writeFileSync(process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT, code)
+  return {
+    minified: code.byteLength,
+    gzip: gzipSync(code, {level: 9}).length,
+    sha256: createHash('sha256').update(code).digest('hex'),
+  }
 }
 const modules = ['index.js', 'native.js', 'wasm.js', 'wasm-native.js'].map(
   minify
@@ -734,13 +800,13 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace. Default TS uses compact ICU4X lunisolar data/arithmetic, host Intl Umm al-Qura and named timezones. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid retains compact TS calendars. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. References temporal-polyfill1.0.7 basic and @js-temporal/polyfill0.5.1. Binary WASM operations return complete records with cached derived fields; JS retains observable object/coercion/option semantics.',
-      method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Actual published Temporal namespace. Default TS uses compact ICU4X lunisolar data/arithmetic, host Intl Umm al-Qura and named timezones. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid retains compact TS calendars. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use explicit per-case counts. References temporal-polyfill1.0.7 basic and @js-temporal/polyfill0.5.1. Binary WASM operations return complete records with cached derived fields; JS retains observable object/coercion/option semantics.',
+      method: `Eight inputs, parity checked, ${warmup} warmup +${samples} samples x${iterations} calls; ${selectedProfile ? 'selected profile ' + selectedProfile : 'TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1'} in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.`,
       references: {
         'temporal-polyfill': '1.0.7',
         '@js-temporal/polyfill': '0.5.1',
       },
+      selectedProfile: selectedProfile ?? 'all',
       iterations,
       samples,
       warmup,

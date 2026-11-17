@@ -152,3 +152,57 @@ fn typed_dates_balance_leap_days_and_recover_after_invalid_records() {
     assert_eq!(call(&invalid_duration).0, 1);
     assert_eq!(call(&add), expected);
 }
+
+#[test]
+fn typed_rounding_preserves_modes_and_recovers_after_invalid_requests() {
+    use formatjs_temporal::{Instant, RoundingMode, TimeUnit};
+    let modes = [
+        RoundingMode::Ceil,
+        RoundingMode::Floor,
+        RoundingMode::Expand,
+        RoundingMode::Trunc,
+        RoundingMode::HalfCeil,
+        RoundingMode::HalfFloor,
+        RoundingMode::HalfExpand,
+        RoundingMode::HalfTrunc,
+        RoundingMode::HalfEven,
+    ];
+    let request = |value: i128, mode: u8| {
+        let mut bytes = vec![opcode("roundInstant"), 10];
+        bytes.extend_from_slice(&value.to_le_bytes());
+        bytes.push(3);
+        bytes.extend_from_slice(&125u32.to_le_bytes());
+        bytes.push(mode);
+        bytes
+    };
+    for value in [-187_500_000, -62_500_000, -1, 0, 62_500_000, 187_500_000] {
+        for (index, mode) in modes.iter().enumerate() {
+            let expected = Instant::from_epoch_nanoseconds(value)
+                .unwrap()
+                .round(TimeUnit::Millisecond, 125, *mode)
+                .unwrap()
+                .epoch_nanoseconds();
+            let mut output = vec![10];
+            output.extend_from_slice(&expected.to_le_bytes());
+            assert_eq!(call(&request(value, index as u8)), (0, output));
+        }
+    }
+    let valid = request(-1, 0);
+    let expected = call(&valid);
+    let mut invalid_unit = valid.clone();
+    invalid_unit[18] = 6;
+    let mut invalid_mode = valid.clone();
+    invalid_mode[23] = 9;
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    for invalid in [invalid_unit, invalid_mode, trailing, valid[..23].to_vec()] {
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), expected);
+    }
+    for increment in [0u32, 7, 1_000_000_001] {
+        let mut invalid = valid.clone();
+        invalid[19..23].copy_from_slice(&increment.to_le_bytes());
+        assert_eq!(call(&invalid).0, 1);
+        assert_eq!(call(&valid), expected);
+    }
+}

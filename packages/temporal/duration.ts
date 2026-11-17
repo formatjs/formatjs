@@ -70,6 +70,44 @@ export function toDurationFields(value: unknown): DurationFields {
   if (typeof value === 'string') return parseDurationString(value)
   return validateDuration({...zeroDuration(), ...partialDuration(value)})
 }
+/** @internal Keep validation before observable options reads; Instant has no options. */
+export function toNativeDurationFields(
+  value: unknown,
+  validate = true
+): DurationFields {
+  const existing = getSlot(value as object)
+  if (existing) return existing
+  if (typeof value === 'string') return parseDurationString(value)
+  if (
+    value === null ||
+    (typeof value !== 'object' && typeof value !== 'function')
+  )
+    throw new TypeError('Duration fields must be an object')
+  const fields = zeroDuration()
+  let found = false
+  for (let index = 0; index < nativeDurationFields.length; index++) {
+    const field = nativeDurationFields[index]
+    const number = (value as Record<string, unknown>)[field]
+    if (number !== undefined) {
+      fields[field] = integralDurationNumber(number)
+      found = true
+    }
+  }
+  if (!found) throw new TypeError('Duration fields required')
+  return validate ? validateDuration(fields) : fields
+}
+const nativeDurationFields = [
+  'days',
+  'hours',
+  'microseconds',
+  'milliseconds',
+  'minutes',
+  'months',
+  'nanoseconds',
+  'seconds',
+  'weeks',
+  'years',
+] as const
 export function createDuration(fields: DurationFields): DurationObject {
   const value = Object.create(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))

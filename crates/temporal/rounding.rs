@@ -66,6 +66,9 @@ impl FromStr for RoundingMode {
     }
 }
 pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i128 {
+    if quantum == 1 {
+        return value;
+    }
     let lower = value.div_euclid(quantum);
     let remainder = value.rem_euclid(quantum);
     if remainder == 0 {

@@ -17,6 +17,7 @@ import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   createDuration,
   toDurationFields,
+  toNativeDurationFields,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
@@ -236,7 +237,10 @@ function difference(
   )
 }
 function add(value: bigint, other: unknown, sign: bigint): PlainTimeObject {
-  const duration = toDurationFields(other)
+  const duration =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeDurationFields(other)
+      : toDurationFields(other)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return create(native!.addPlainTime(value, duration, sign < 0n))

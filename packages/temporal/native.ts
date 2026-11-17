@@ -21,9 +21,30 @@ import type {DurationFields} from '#packages/temporal/duration-core.js'
 
 export interface NativeCall {
   (operation: string, properties: Record<string, unknown>): any
+  parseDate?(
+    value: string,
+    operation: 'parsePlainDate' | 'parsePlainYearMonth' | 'parsePlainMonthDay'
+  ): DateSlot
+  withISODate?(
+    operation: 'withPlainDate' | 'withPlainYearMonth' | 'withPlainMonthDay',
+    slot: DateSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow
+  ): DateSlot
+  formatDate?(
+    operation:
+      | 'formatPlainDate'
+      | 'formatPlainYearMonth'
+      | 'formatPlainMonthDay',
+    slot: DateSlot,
+    calendarName: string
+  ): string
+  createISODate?: NativeTemporal['createISODate']
   parseInstant?: NativeTemporal['parseInstant']
   formatInstant?: NativeTemporal['formatInstant']
   addInstant?: NativeTemporal['addInstant']
+  addPlainDate?: NativeTemporal['addPlainDate']
+  roundInstantUnit?: NativeTemporal['roundInstantUnit']
 }
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
@@ -43,6 +64,7 @@ export interface NativeDateSnapshot {
   owner?: NativeTemporal
 }
 export interface NativeTemporal {
+  createISODate(fields: Record<string, unknown>, overflow: Overflow): DateSlot
   withDate(
     slot: DateSlot,
     fields: Record<string, unknown>,
@@ -295,6 +317,12 @@ export interface NativeTemporal {
     identifier?: string
   ): string
   addInstant(value: bigint, duration: DurationFields, subtract: boolean): bigint
+  roundInstantUnit(
+    value: bigint,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
   roundInstant(value: bigint, quantum: bigint, mode: RoundingMode): bigint
   differenceInstant(
     value: bigint,
@@ -314,6 +342,9 @@ export function configureNativeTemporal(
   query: NativeQuery,
   invoke?: NativeCall
 ): void {
+  const formatDate = invoke?.formatDate
+  const addPlainDate = invoke?.addPlainDate
+  const parseDate = invoke?.parseDate
   const text = (value: bigint) => apply(bigintText, value, [])
   function call(op: string, properties: Record<string, unknown>): any {
     if (invoke) return invoke(op, properties)
@@ -461,18 +492,29 @@ export function configureNativeTemporal(
   native = {
     withDate: (slot, fields, overflow, shape = 'date') =>
       dateResult(
-        call(
-          shape === 'date'
-            ? 'withPlainDate'
-            : shape === 'year-month'
-              ? 'withPlainYearMonth'
-              : 'withPlainMonthDay',
-          {
-            value: shortFields(slot),
-            fields: withFields(slot.calendar, fields, shape),
-            overflow,
-          }
-        ),
+        slot.calendar === 'iso8601' && invoke?.withISODate
+          ? invoke.withISODate(
+              shape === 'date'
+                ? 'withPlainDate'
+                : shape === 'year-month'
+                  ? 'withPlainYearMonth'
+                  : 'withPlainMonthDay',
+              slot,
+              fields,
+              overflow
+            )
+          : call(
+              shape === 'date'
+                ? 'withPlainDate'
+                : shape === 'year-month'
+                  ? 'withPlainYearMonth'
+                  : 'withPlainMonthDay',
+              {
+                value: shortFields(slot),
+                fields: withFields(slot.calendar, fields, shape),
+                overflow,
+              }
+            ),
         slot.calendar
       ),
     withDateTime: (slot, fields, overflow) =>
@@ -545,7 +587,9 @@ export function configureNativeTemporal(
         slot.calendar
       ),
     formatPlainDate: (slot, calendarName) =>
-      call('formatPlainDate', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainDate', slot, calendarName)
+        : call('formatPlainDate', {value: shortFields(slot), calendarName}),
     formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
       call('formatPlainDateTime', {
         nanoseconds: text(value),
@@ -555,9 +599,16 @@ export function configureNativeTemporal(
         calendarName,
       }),
     formatPlainYearMonth: (slot, calendarName) =>
-      call('formatPlainYearMonth', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainYearMonth', slot, calendarName)
+        : call('formatPlainYearMonth', {
+            value: shortFields(slot),
+            calendarName,
+          }),
     formatPlainMonthDay: (slot, calendarName) =>
-      call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+      formatDate
+        ? formatDate('formatPlainMonthDay', slot, calendarName)
+        : call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
     formatZonedDateTime: (
       slot,
       precision,
@@ -574,13 +625,44 @@ export function configureNativeTemporal(
         offset,
         timeZoneName,
       }),
-    parsePlainDate: value => dateResult(call('parsePlainDate', {text: value})),
+    createISODate: (fields, overflow) => {
+      if (fields.year === undefined) throw new BadType('Year required')
+      if (fields.day === undefined) throw new BadType('Day required')
+      if (fields.month === undefined && fields.monthCode === undefined)
+        throw new BadType('Month or monthCode required')
+      return dateResult(
+        invoke?.createISODate
+          ? invoke.createISODate(fields, overflow)
+          : {
+              epochDay: call('calendarToEpochDay', {
+                calendar: 'iso8601',
+                fields,
+                overflow,
+              }),
+              calendar: 'iso8601',
+            }
+      )
+    },
+    parsePlainDate: value =>
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainDate')
+          : call('parsePlainDate', {text: value})
+      ),
     parsePlainDateTime: value =>
       timeResult(call('parsePlainDateTime', {text: value})),
     parsePlainYearMonth: value =>
-      dateResult(call('parsePlainYearMonth', {text: value})),
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainYearMonth')
+          : call('parsePlainYearMonth', {text: value})
+      ),
     parsePlainMonthDay: value =>
-      dateResult(call('parsePlainMonthDay', {text: value})),
+      dateResult(
+        parseDate
+          ? parseDate(value, 'parsePlainMonthDay')
+          : call('parsePlainMonthDay', {text: value})
+      ),
     parseZonedFields: value => {
       const result = call('parseZonedFields', {text: value})
       return {
@@ -663,13 +745,15 @@ export function configureNativeTemporal(
       call('hoursInZonedDay', {value: zonedFields(slot)}),
     addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
       dateResult(
-        call('addPlainDate', {
-          epochDay,
-          calendar,
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        }),
+        addPlainDate
+          ? addPlainDate(epochDay, calendar, fields, subtract, overflow)
+          : call('addPlainDate', {
+              epochDay,
+              calendar,
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
         calendar
       ),
     addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
@@ -893,6 +977,17 @@ export function configureNativeTemporal(
       invoke?.addInstant ??
       ((value, fields, subtract) =>
         addition('addInstant', value, fields, subtract)),
+    roundInstantUnit:
+      invoke?.roundInstantUnit ??
+      ((value, unit, increment, mode) =>
+        ToBigInt(
+          call('roundInstant', {
+            nanoseconds: text(value),
+            unit,
+            increment,
+            mode,
+          })
+        )),
     roundInstant: (value, quantum, mode) =>
       ToBigInt(
         call('roundInstant', {

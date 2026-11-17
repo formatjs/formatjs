@@ -1,0 +1,20 @@
+{
+  "baselineCommit": "872fdaee31e355e3a9da89ee2f838af56543353c",
+  "baseline": {
+    "minified": 141410,
+    "gzip": 39750,
+    "sha256": "de6cf7e448b31c96985b730bbd966900be42365838cc14b8afd969dfa2c6b06e"
+  },
+  "current": {
+    "minified": 141410,
+    "gzip": 39748,
+    "sha256": "09d00f0d468fa60358d07384aa7395d9764ef2a48c33b4d75f1f8ea77daaf7cf"
+  },
+  "identical": false,
+  "alphaEquivalent": true,
+  "normalizedAST": {
+    "baseline": "4735c1fad6282a7746ac702610f6fdb233447a08c83f4468cc34ab840e17eef0",
+    "current": "4735c1fad6282a7746ac702610f6fdb233447a08c83f4468cc34ab840e17eef0",
+    "bindingCounts": [2560, 2560]
+  }
+}

@@ -335,6 +335,20 @@ try {
   for (const [object, key, descriptor] of changes)
     Object.defineProperty(object, key, descriptor)
 }
+const arrayIterator = Array.prototype[Symbol.iterator]
+let durationWithPoisonedIterator
+try {
+  Array.prototype[Symbol.iterator] = function () {
+    throw new Error('Temporal duration fields must not use array iteration')
+  }
+  durationWithPoisonedIterator = Temporal.Instant.fromEpochNanoseconds(0n).add({
+    hours: 1,
+    nanoseconds: 1,
+  }).epochNanoseconds
+} finally {
+  Array.prototype[Symbol.iterator] = arrayIterator
+}
+assert.equal(durationWithPoisonedIterator, 3_600_000_000_001n)
 const core = instance.exports
 assert.equal(core.temporal_alloc(-1), 0)
 const slot = core.temporal_alloc(8)

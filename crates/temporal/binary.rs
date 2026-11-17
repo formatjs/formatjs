@@ -477,6 +477,26 @@ fn encode_date(
     calendar: &str,
     snapshot: crate::ffi::CalendarSnapshot,
 ) {
+    if calendar == "iso8601" && snapshot.errors == 0 {
+        if let Some(date) = snapshot.date {
+            // ISO date: epoch/year, month/day/weekday/month length, year/day lengths, week/year.
+            output.push(11);
+            output.extend_from_slice(&(epoch as i32).to_le_bytes());
+            output.extend_from_slice(&date.year.to_le_bytes());
+            output.extend_from_slice(&[date.month, date.day]);
+            for index in [0, 3] {
+                output.push(snapshot.values[index].as_u64().unwrap() as u8);
+            }
+            for index in [5, 2] {
+                output.extend_from_slice(
+                    &(snapshot.values[index].as_u64().unwrap() as u16).to_le_bytes(),
+                );
+            }
+            output.push(snapshot.values[7].as_u64().unwrap() as u8);
+            output.extend_from_slice(&(snapshot.values[8].as_i64().unwrap() as i32).to_le_bytes());
+            return;
+        }
+    }
     output.push(6);
     output.extend_from_slice(&3u32.to_le_bytes());
     output.extend_from_slice(&string_code("epochDay").unwrap().to_le_bytes());
@@ -525,6 +545,21 @@ fn run(bytes: &[u8], output: &mut Vec<u8>) -> Result<(), i32> {
     }
     request.insert("op".into(), Value::String((*operation).into()));
     let request = Value::Object(request);
+    if *operation == "calendarProperties" {
+        crate::ffi::record_call();
+        let calendar = crate::ffi::calendars()
+            .and_then(|registry| {
+                registry.resolve(
+                    request["calendar"]
+                        .as_str()
+                        .ok_or(crate::Error::InvalidCalendar)?,
+                )
+            })
+            .map_err(|_| 1)?;
+        let result = crate::ffi::calendar_properties(calendar, &request).map_err(|_| 1)?;
+        encode_snapshot(output, result);
+        return Ok(());
+    }
     let result = execute(&request)?;
     let (result, snapshot) = complete_result(operation, &request, result).map_err(|_| 1)?;
     if let Some(snapshot) = snapshot {

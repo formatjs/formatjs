@@ -46,21 +46,58 @@ impl fmt::Display for Instant {
             .fmt(f)
     }
 }
+struct IsoString {
+    bytes: [u8; 64],
+    len: usize,
+}
+impl IsoString {
+    fn new() -> Self {
+        Self {
+            bytes: [0; 64],
+            len: 0,
+        }
+    }
+    fn push(&mut self, byte: u8) {
+        self.bytes[self.len] = byte;
+        self.len += 1;
+    }
+    fn pair(&mut self, value: u32) {
+        self.push(b'0' + (value / 10) as u8);
+        self.push(b'0' + (value % 10) as u8);
+    }
+    fn number(&mut self, mut value: u32, width: usize) {
+        let end = self.len + width;
+        for byte in self.bytes[self.len..end].iter_mut().rev() {
+            *byte = b'0' + (value % 10) as u8;
+            value /= 10;
+        }
+        self.len = end;
+    }
+    fn as_str(&self) -> Result<&str, fmt::Error> {
+        core::str::from_utf8(&self.bytes[..self.len]).map_err(|_| fmt::Error)
+    }
+}
 impl fmt::Display for FormattedInstant {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fields = self.fields;
+        let mut output = IsoString::new();
         if (0..=9999).contains(&fields.year) {
-            write!(f, "{:04}", fields.year)?;
+            output.number(fields.year as u32, 4);
         } else {
-            write!(f, "{:+07}", fields.year)?;
+            output.push(if fields.year < 0 { b'-' } else { b'+' });
+            output.number(fields.year.unsigned_abs(), 6);
         }
-        write!(
-            f,
-            "-{:02}-{:02}T{:02}:{:02}",
-            fields.month, fields.day, fields.hour, fields.minute
-        )?;
+        output.push(b'-');
+        output.pair(u32::from(fields.month));
+        output.push(b'-');
+        output.pair(u32::from(fields.day));
+        output.push(b'T');
+        output.pair(u32::from(fields.hour));
+        output.push(b':');
+        output.pair(u32::from(fields.minute));
         if self.precision != Precision::Minute {
-            write!(f, ":{:02}", fields.second)?;
+            output.push(b':');
+            output.pair(u32::from(fields.second));
             let (value, digits) = match self.precision {
                 Precision::Auto => {
                     let (mut value, mut digits) = (fields.nanosecond, 9usize);
@@ -77,13 +114,22 @@ impl fmt::Display for FormattedInstant {
                 Precision::Minute => unreachable!(),
             };
             if digits > 0 {
-                write!(f, ".{value:0digits$}")?;
+                output.push(b'.');
+                output.number(value, digits);
             }
         }
         match self.offset {
-            None => f.write_str("Z"),
-            Some(offset) => write_offset(f, i128::from(offset)),
+            None => output.push(b'Z'),
+            Some(offset) => {
+                let minutes = offset_minutes(i128::from(offset));
+                output.push(if minutes < 0 { b'-' } else { b'+' });
+                let absolute = minutes.unsigned_abs() as u32;
+                output.pair(absolute / 60);
+                output.push(b':');
+                output.pair(absolute % 60);
+            }
         }
+        f.write_str(output.as_str()?)
     }
 }
 
