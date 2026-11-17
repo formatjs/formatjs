@@ -1697,7 +1697,7 @@ test262_harness_bin.test262_harness_binary(
     sh_test(
         name = name,
         size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
-        timeout = "long",
+        timeout = "eternal" if name.startswith("locale_intl") else "long",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",

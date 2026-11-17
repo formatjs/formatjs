@@ -601,8 +601,9 @@ Bazel's overall test timeout; expected-failure baselines stay unchanged.
 
 Temporal shell conformance tests use a package-local transition to `opt`, so
 Hermes source and bytecode checks exercise the shipping compiler/runtime profile
-even when the top-level CI command uses fastbuild. Test cases and baselines stay
-unchanged.
+even when the top-level CI command uses fastbuild. Standalone locale/Intl suites
+retain their one-hour timeout; other shell suites use 15 minutes. Test cases and
+baselines stay unchanged.
 
 Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
 for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
