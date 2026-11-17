@@ -1,0 +1,103 @@
+# Temporal for Rust
+
+An allocation-free `no_std` Temporal core for Rust, with calendar arithmetic and IANA time zones.
+
+`formatjs_temporal` supplies eight typed date/time values, calendar/timezone
+providers, and `Now`.
+The [TypeScript package](/docs/polyfills/temporal) supplies the JavaScript API and
+optional WASM integration.
+
+## Installation
+
+```toml
+[dependencies]
+formatjs_temporal = { version = "1", features = ["compiled_data"] }
+```
+
+The published crate includes generated calendar/time-zone data and a Cargo build
+script. Applications do not need Bazel or a separate data-generation step.
+
+## Parse a zoned date and time
+
+```rust
+use formatjs_temporal::{TemporalContext, ZonedParseOptions};
+
+fn main() -> Result<(), formatjs_temporal::Error> {
+    let context = TemporalContext::compiled()?;
+    let meeting = context.parse_zoned(
+        "2020-03-07T12:00-05:00[America/New_York]",
+        ZonedParseOptions::default(),
+    )?;
+
+    println!("{}", meeting.instant());
+    // 2020-03-07T17:00:00Z
+    Ok(())
+}
+```
+
+Create a context once and reuse its validated registries. Values retain their
+calendar and timezone providers.
+
+## Choose how to supply data
+
+| Feature               | Included data                                                          |
+| --------------------- | ---------------------------------------------------------------------- |
+| Default features      | Arithmetic calendars; UTC and fixed offsets need no tables             |
+| `compiled_calendars`  | Chinese, Dangi, and Umm al-Qura tables                                 |
+| `compiled_time_zones` | Pinned IANA histories and recurring future rules                       |
+| `compiled_data`       | Both calendar and timezone tables                                      |
+| `ffi`                 | Optional JSON bridge used by JavaScript backends; enables `serde_json` |
+
+Without compiled data, construct a context from the data you need:
+
+```rust
+use formatjs_temporal::{CalendarRegistry, TemporalContext, TimeZoneRegistry};
+
+let context = TemporalContext::new(
+    CalendarRegistry::arithmetic(),
+    TimeZoneRegistry::empty(),
+);
+let date = context.parse_date("2026-11-17")?;
+```
+
+For runtime-loaded data, decode it into caller-owned typed records, then use
+`CalendarRegistry::new(&tables)` and `TimeZoneRegistry::new(&records)`.
+`TableCalendar` validates lunisolar and Umm al-Qura tables; `TransitionZone`
+accepts explicit transitions and optional future rules. Registries borrow this
+storage, which must outlive the context and values using it. Time-zone records
+must be sorted by primary identifier, without duplicates.
+
+Missing data returns `MissingCalendarData` or `MissingTimeZoneData`; an unknown
+zone does not silently become UTC. There is no built-in JSON/filesystem loader
+or shared `formatjs_intl_data` loader integration. Applications own decoding and
+I/O. Compiled time-zone rules continue beyond 2100; update data when laws change.
+
+## Dependencies
+
+The only direct FormatJS dependency is
+`formatjs_intl_datetimeformat_calendars`, with default features disabled. Temporal
+uses its numeric calendar core without pulling in the DateTimeFormat formatter,
+locale data, or the application-level `formatjs_intl` runtime. `serde_json` is
+optional and used by `ffi`.
+
+## JavaScript, WASM, and Hermes
+
+Rust owns typed values and normalized date/time operations. The JavaScript facade
+owns ECMAScript coercion, property access order, object allocation, and brands.
+Use [the TypeScript guide](/docs/polyfills/temporal) for the public Temporal API
+or the [Hermes SDK](/docs/guides/hermes-intl#temporal) for native embedding.
+
+Rust APIs are idiomatic typed APIs rather than a JavaScript object runtime.
+`Now` takes a clock and timezone provider from the embedding application.
+
+## Verification
+
+Rust tests compare calendar math, parsing, rounding, offsets, transitions, and
+relative arithmetic with independent ICU controls. WASM and Hermes adapters also
+run the pinned Temporal-feature Test262 corpus through the JavaScript facade.
+Documented IANA/CLDR exclusions and calendar authority ranges are recorded in the
+[completion audit](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015a-temporal-completion-audit.md).
+
+- [API reference](https://docs.rs/formatjs_temporal)
+- [crates.io package](https://crates.io/crates/formatjs_temporal)
+- [Benchmarks and measurement scope](https://github.com/formatjs/formatjs/tree/main/benchmarks/temporal)

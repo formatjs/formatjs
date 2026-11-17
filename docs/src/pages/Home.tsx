@@ -1,6 +1,7 @@
 import * as React from 'react'
 import HomeHeader from '../components/home/HomeHeader'
 import HeroSection from '../components/home/HeroSection'
+import RecentUpdatesSection from '../components/home/RecentUpdatesSection'
 import PluralShowcase from '../components/home/PluralShowcase'
 import WorkflowSection from '../components/home/WorkflowSection'
 import LibrariesSection from '../components/home/LibrariesSection'
@@ -46,6 +47,7 @@ export default function Home(): React.ReactNode {
     >
       <HomeHeader />
       <main>
+        <RecentUpdatesSection />
         <HeroSection />
         <PluralShowcase />
         <WorkflowSection />

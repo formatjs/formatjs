@@ -59,6 +59,13 @@ build.
 
 ## Generated Documentation
 
+### Recent updates
+
+`RecentUpdatesSection.tsx` shows dated release announcements immediately below
+the homepage header, before the interactive hero. Keep newest entries first and
+link to public guides. Temporal 1.0 links to `polyfills/temporal` and
+`rust/temporal`; both also appear in the documentation sidebar.
+
 ### Homepage company logos
 
 `TrustedBySection.tsx` lists known FormatJS users. Anthropic, Perplexity, and
