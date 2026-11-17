@@ -1994,3 +1994,40 @@ record. Pure TS executable AST still matches the baseline. Native namespace is
 509,609 gzip bytes (+3,577), versus TS 39,692 using host Intl. ISO/timezone startup
 is 17.01 versus 19.39 ms. Rust profile self time now concentrates on recurring
 rule events and historical-offset scans; these are next targets. Goal open.
+
+### Bounded timezone offset candidates
+
+The Rust TimeZone provider adds default `visit_offsets_at(local, visitor)`;
+custom providers retain full-history visitation. TransitionZone validates every
+offset strictly within one day. Every valid candidate instant or transition producing a containing gap/fold
+therefore lies within local plus/minus one day.
+Two binary searches select that explicit-history window, including its entering
+offset. Recurring standard/daylight offsets are included when the window reaches
+the footer; timestamp bounds and the explicit/footer join remain covered.
+NamedTimeZone/ResolvedTimeZone forward the method. `visit_offsets` is unchanged.
+Both possible-instant enumeration and gap resolution use the optional local
+visitor. Deduplication remains bounded stack storage with lossless overflow.
+
+Monthly future events use Gregorian month lengths instead of converting the next
+month. Day/Julian events still compute Jan 1. Future offsets extract only the year
+from floor-divided signed seconds; all valid Instant seconds fit i64. Adjacent-year
+windows and event/tie order remain unchanged. ABI 17, 69 normalized operations,
+29 typed routes and complete Rust snapshots stay unchanged. No new data/cache,
+dependency or TS source change.
+
+A public-resolution differential control compares bounded lookup with a provider
+using the full-history default across dense transitions, near-day offsets, gaps,
+folds, footer joins, signed nanoseconds and timestamp bounds. Literal February
+last-weekday controls distinguish common and leap years. Independent ICU and
+Test262 remain conformance authorities.
+
+All 63 focused targets pass against byte-identical final formatted Rust sources.
+`benchmarks/temporal/bounded-zone-*.json` retain trials, separate profiles, all 48
+isolated workloads, longer Instant rounding controls and nine-process startup.
+Parsing falls from 9.907 to 7.235 microseconds; TS is 3.905. Current medians win
+23/48 against TS, with all 25 slower cases inventoried. Longer Instant rounding
+still loses (0.653 versus TS 0.601). Pure TS/native JS bundles are byte-identical
+to the prior checkpoint. Native namespace is 507,887 gzip bytes, down 1,722;
+raw WASM grows 318 bytes. ISO/timezone startup is 16.96 versus TS 19.48 ms.
+Zoned rounding's generic decoder/writer remains a measured next target.
+All-workload goal stays open.

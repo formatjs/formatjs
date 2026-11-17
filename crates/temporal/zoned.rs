@@ -44,6 +44,11 @@ pub enum TransitionDirection {
 pub trait TimeZone {
     fn offset_nanoseconds(&self, instant: Instant) -> i128;
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128));
+    /// Include candidate offsets and both sides of any containing gap/fold.
+    /// Extra offsets are allowed; the default scans the full history.
+    fn visit_offsets_at(&self, _local_nanoseconds: i128, visitor: &mut dyn FnMut(i128)) {
+        self.visit_offsets(visitor);
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
@@ -276,7 +281,7 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
     visitor: &mut dyn FnMut(Instant),
 ) -> Result<(), Error> {
     let local = fields.to_epoch_nanoseconds()?;
-    zone.visit_offsets(&mut |offset| {
+    zone.visit_offsets_at(local, &mut |offset| {
         if offset <= -NANOSECONDS_PER_DAY || offset >= NANOSECONDS_PER_DAY {
             return;
         }
@@ -346,7 +351,7 @@ pub(crate) fn resolve_local<Z: TimeZone>(
     let local = fields.to_epoch_nanoseconds()?;
     let mut minimum = i128::MAX;
     let mut maximum = i128::MIN;
-    zone.visit_offsets(&mut |offset| {
+    zone.visit_offsets_at(local, &mut |offset| {
         minimum = minimum.min(offset);
         maximum = maximum.max(offset);
     });

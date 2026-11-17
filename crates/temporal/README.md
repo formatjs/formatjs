@@ -16,13 +16,20 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-WASM ABI 14 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
+WASM ABI 17 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
 and diagnostic interface. Both share the Rust operation dispatcher.
-Timezone candidate enumeration skips repeated historical offsets using a bounded
-stack cache; histories with more offsets still visit every distinct value.
+Timezone candidate enumeration deduplicates offsets in a bounded stack buffer;
+histories with more offsets still visit every distinct value.
+`TimeZone::visit_offsets_at(local_nanoseconds, visitor)` defaults to full-history
+visitation, preserving existing custom providers. TransitionZone narrows candidates
+to the local timestamp plus/minus one day, including boundary state and recurring
+rule offsets. NamedTimeZone and ResolvedTimeZone forward this optional optimization.
+Validated offsets are strictly smaller than one day, so this window includes all
+candidate instants and both sides of any containing gap/fold. No data or cache is
+added. `visit_offsets` retains full-history behavior.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.

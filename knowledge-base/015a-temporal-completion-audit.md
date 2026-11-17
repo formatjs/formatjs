@@ -338,3 +338,28 @@ Native namespace payload is 509,609 gzip bytes (+3,577); TS 39,692 with host Int
 Nine-process ISO/timezone startup is 17.01 ms native versus 19.39 ms TS. The fresh
 CPU profile identifies recurring-rule construction and repeated offset scans as
 remaining Rust costs. Full conformance remains a CI gate.
+
+### Bounded Rust timezone resolution
+
+TimeZone::visit_offsets_at defaults to full-history visitation; compiled transition
+providers narrow to local plus/minus one day. Offset bounds prove candidate/gap/fold
+coverage; entering state and relevant footer offsets remain included. Monthly
+future events avoid redundant ISO conversions; direct year extraction uses exact
+floor-divided i64 seconds. Adjacent-year/tie behavior, complete snapshots, ABI 17
+and 29 typed routes remain unchanged. No new cache/data/dependency or TS source edit.
+
+All 63 focused Rust/TS/WASM/Test262/ICU/Hermes targets pass against final formatted
+Rust sources. New differential controls compare public local resolution against
+the full-history default across dense transitions, deduplication overflow, gaps,
+folds, extreme offsets, footer joins, signed nanoseconds and timestamp bounds.
+Literal short/leap-February last-weekday controls cover recurrence month length.
+No new exclusions. Final timings/startup/size and slower-workload inventory live
+in benchmarks/temporal/bounded-zone-*.json. All-workload goal remains open.
+
+Isolated parsing improves from 9.907 to 7.235 microseconds, versus TS 3.905.
+Current medians win 23/48; all 25 slower cases are recorded. Longer Instant
+rounding loses at 0.653 versus TS 0.601. Native namespace is 507,887 gzip bytes
+(down 1,722; raw WASM grows 318). ISO/timezone readiness is 16.96 versus TS
+19.48 ms. Pure TS/native JS bundles match the prior checkpoint byte-for-byte;
+TS AST/negative-control checks pass. Fresh profiles retain generic zoned rounding
+transport as a next target. This is partial progress, not goal completion.

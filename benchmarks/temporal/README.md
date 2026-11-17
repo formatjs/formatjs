@@ -2096,3 +2096,73 @@ All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass. New controls cove
 signed bounds, fields, optional/exact offsets, alias spellings, malformed request
 recovery, complete ISO/Gregorian getters, poisoned Array iteration and option
 getter order. No new exclusions, operation-result cache or dependency.
+
+### Bounded timezone resolution
+
+The preceding profile attributed about 12% of zoned-parse self time to repeated
+historical-offset scans and another 12% to recurring-rule events. Rust now exposes
+`TimeZone::visit_offsets_at(local, visitor)` with a full-history default for custom
+providers. TransitionZone validates offsets strictly inside one day, so every valid
+candidate instant or transition producing a containing gap/fold is within local
+plus/minus one day. Two binary searches select that history window and its entering
+offset; footer standard/daylight offsets remain included when relevant. Named and
+resolved providers forward the optional method. Full-history visitation is unchanged.
+No data, cache or dependency is added.
+
+Monthly recurring events use Gregorian month length instead of converting the
+next month. Jan 1 conversion remains only for Day/Julian rules. Future offset
+queries extract the year from signed floor-divided seconds, which fit i64 for
+every valid Instant; adjacent-year windows and event/tie order stay unchanged.
+Complete Rust results, ABI 17 and all 29 typed routes remain intact.
+
+`bounded-zone-experiments.json` records three incremental shared-process trials.
+Parse medians were 7.70 microseconds after bounded lookup, 7.26 after simpler
+monthly events and 7.16 after direct year extraction. TS controls stayed near
+3.90–3.99 microseconds. Small incremental changes are not stable-win evidence;
+production claims use the separate isolated checkpoint.
+
+All 63 focused Rust/TS/WASM/Test262/ICU/Hermes targets pass. A public-resolution
+matrix compares bounded lookup against a provider using the full-history default,
+including dense transitions, more offsets than the stack deduplication buffer,
+near-day offsets, gaps/folds, footer joins, signed nanoseconds and timestamp bounds.
+Literal February last-weekday controls distinguish common/leap years. Validated
+Rust sources still match after formatting. No TS source changes or new exclusions.
+
+`bounded-zone-hillclimb-results.json` refreshes all 48 TS/native-data WASM workloads
+in fresh sequential processes, with the unchanged eight inputs/parity and 20,000
+warmup plus nine samples of 50,000 calls. Transitions retain 1,000 warmup and nine
+samples of 5,000. Pinned reference results are explicitly retained from the prior
+checkpoint. TS and native JS consumer hashes match that checkpoint byte-for-byte.
+
+| Workload        | Previous WASM µs | Current WASM µs | Current TS µs |
+| --------------- | ---------------: | --------------: | ------------: |
+| zonedParse      |            9.907 |           7.235 |         3.905 |
+| zonedRound      |           13.535 |          11.415 |         2.860 |
+| zonedWith       |           21.515 |          19.352 |         9.508 |
+| zonedAddDay     |           17.915 |          15.134 |         6.364 |
+| zonedDayStart   |           12.949 |          10.416 |         2.108 |
+| zonedTransition |            1.512 |           1.377 |         0.490 |
+
+Parsing improves 27% this phase; TS still wins by 1.85x. Current medians win 23/48
+against TS, 25/48 against temporal-polyfill and 36/48 against @js-temporal/polyfill.
+All 25 slower workloads/ratios are explicit in bounded-zone-experiments.json.
+Instant.round loses the full checkpoint (0.625 versus TS 0.599 microseconds) and
+its longer control (0.653 versus 0.601). The latter retains eight varying inputs,
+100,000 warmup and nine samples of 500,000 calls in separate processes; see
+bounded-zone-round-controls.json. Close wins remain unstable. Goal stays open.
+
+Fresh separate parse/round CPU profiles are in bounded-zone-profile-results.json.
+Parse Rust self samples fall to 54.34% of the profile; rule events are 7.93%, local
+offset visitation 2.52%. Self sample categories are not independently timed layers.
+Zoned rounding still spends 12.18% in generic JS decoding and 4.96% writing, with
+Rust dynamic record reading/indexing also visible. Typed zoned result transport
+remains a next target. Profile timings/sizes are not production claims.
+
+Nine-process startup in bounded-zone-startup-results.json measures native
+ISO/timezone readiness at 16.96 ms versus TS 19.48 ms; full native calendars
+27.65 ms. Native Node namespace is 507,887 gzip bytes: JS 33,607 plus WASM 474,280,
+down 1,722 gzip bytes from the previous checkpoint. Raw WASM grows 318 bytes;
+no timezone/calendar data was added. TS namespace stays 39,692 gzip bytes.
+Browser export-all consumers are separate: native 510,943 bytes gzip, TS 39,749.
+TS and native bindings remain byte-identical to the prior checkpoint; the default
+TS AST also matches the independent baseline and rejects the negative control.

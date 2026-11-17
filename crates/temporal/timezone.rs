@@ -35,7 +35,6 @@ impl TransitionRule {
         valid && seconds >= -604_799 && seconds <= 604_799
     }
     fn event(self, year: i32) -> i64 {
-        let start = crate::iso::epoch_day_from_iso(year, 1, 1);
         let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
         let (day, seconds) = match self {
             Self::Month {
@@ -48,19 +47,23 @@ impl TransitionRule {
                 let mut day = first
                     + (i64::from(weekday) - (first + 4).rem_euclid(7)).rem_euclid(7)
                     + 7 * i64::from(week - 1);
-                let next = if month == 12 {
-                    crate::iso::epoch_day_from_iso(year + 1, 1, 1)
-                } else {
-                    crate::iso::epoch_day_from_iso(year, month + 1, 1)
+                let length = match month {
+                    2 => 28 + i64::from(leap),
+                    4 | 6 | 9 | 11 => 30,
+                    _ => 31,
                 };
-                if day >= next {
+                if day >= first + length {
                     day -= 7;
                 }
                 (day, seconds)
             }
-            Self::Day { day, seconds } => (start + i64::from(day), seconds),
+            Self::Day { day, seconds } => (
+                crate::iso::epoch_day_from_iso(year, 1, 1) + i64::from(day),
+                seconds,
+            ),
             Self::Julian { day, seconds } => (
-                start + i64::from(day) - 1 + i64::from(leap && day >= 60),
+                crate::iso::epoch_day_from_iso(year, 1, 1) + i64::from(day) - 1
+                    + i64::from(leap && day >= 60),
                 seconds,
             ),
         };
@@ -137,18 +140,19 @@ impl FutureRule {
         let Some((offset, _, _)) = self.daylight else {
             return self.standard;
         };
-        let year = instant.to_iso().year;
-        let seconds = instant.epoch_nanoseconds().div_euclid(1_000_000_000);
-        let mut latest = i128::MIN;
+        // Valid Instant seconds fit i64; no clock fields are needed here.
+        let seconds = instant.epoch_nanoseconds().div_euclid(1_000_000_000) as i64;
+        let year = crate::calendar::iso_fields(seconds.div_euclid(86_400)).0;
+        let mut latest = i64::MIN;
         let mut dst = false;
         for y in year - 1..=year + 1 {
             let (begin, end) = self.events(y).unwrap();
-            if i128::from(begin) <= seconds && i128::from(begin) >= latest {
-                latest = i128::from(begin);
+            if begin <= seconds && begin >= latest {
+                latest = begin;
                 dst = true;
             }
-            if i128::from(end) <= seconds && i128::from(end) > latest {
-                latest = i128::from(end);
+            if end <= seconds && end > latest {
+                latest = end;
                 dst = false;
             }
         }
@@ -222,28 +226,35 @@ impl TimeZone for TransitionZone<'_> {
         }) * 1_000_000_000
     }
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
-        // IANA histories repeat a few offsets across hundreds of transitions.
-        let mut seen = [0i32; 16];
-        let mut count = 0;
-        let mut visit = |offset: i32| {
-            if !seen[..count].contains(&offset) {
-                visitor(i128::from(offset) * 1_000_000_000);
-                if count < seen.len() {
-                    seen[count] = offset;
-                    count += 1;
-                }
-            }
+        visit_distinct_offsets(self.initial, self.transitions, self.future, visitor);
+    }
+    fn visit_offsets_at(&self, local: i128, visitor: &mut dyn FnMut(i128)) {
+        let seconds = local.div_euclid(1_000_000_000);
+        let limit = MAX_EPOCH_NANOSECONDS / 1_000_000_000;
+        let lower = (seconds - 86_400).max(-limit);
+        let upper = (seconds + 86_400).min(limit);
+        if lower > upper {
+            self.visit_offsets(visitor);
+            return;
+        }
+        // Every valid offset is strictly less than one day in magnitude.
+        let first = self
+            .transitions
+            .partition_point(|event| i128::from(event.epoch_seconds) <= lower);
+        let last = self
+            .transitions
+            .partition_point(|event| i128::from(event.epoch_seconds) <= upper);
+        let initial = if first == 0 {
+            self.initial
+        } else {
+            self.transitions[first - 1].offset_seconds
         };
-        visit(self.initial);
-        for event in self.transitions {
-            visit(event.offset_seconds);
-        }
-        if let Some(future) = self.future {
-            visit(future.standard);
-            if let Some((offset, _, _)) = future.daylight {
-                visit(offset);
-            }
-        }
+        let future = if upper > i128::from(self.cutoff()) {
+            self.future
+        } else {
+            None
+        };
+        visit_distinct_offsets(initial, &self.transitions[first..last], future, visitor);
     }
 
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
@@ -350,5 +361,35 @@ impl TimeZone for TransitionZone<'_> {
             }
         }
         recurring.or(best)
+    }
+}
+
+fn visit_distinct_offsets(
+    initial: i32,
+    transitions: &[OffsetTransition],
+    future: Option<FutureRule>,
+    visitor: &mut dyn FnMut(i128),
+) {
+    // IANA histories repeat a few offsets across hundreds of transitions.
+    let mut seen = [0i32; 16];
+    let mut count = 0;
+    let mut visit = |offset: i32| {
+        if !seen[..count].contains(&offset) {
+            visitor(i128::from(offset) * 1_000_000_000);
+            if count < seen.len() {
+                seen[count] = offset;
+                count += 1;
+            }
+        }
+    };
+    visit(initial);
+    for event in transitions {
+        visit(event.offset_seconds);
+    }
+    if let Some(future) = future {
+        visit(future.standard);
+        if let Some((offset, _, _)) = future.daylight {
+            visit(offset);
+        }
     }
 }

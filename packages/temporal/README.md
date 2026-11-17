@@ -281,11 +281,14 @@ compact binary records, including offset seconds/fractions and hoursInDay.
 Non-ISO calendars and deferred getter errors retain complete general snapshots.
 SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
 
-Current ABI 17 isolated checkpoint cuts zoned parsing from 27.26 to 9.91 µs;
-TS remains 3.97 µs. WASM wins 24/48 medians, with 24 workloads still slower.
-Complete results remain eager; the parse workload reads only epochNanoseconds.
-Twelve focused Rust/WASM/Test262/ICU/Hermes/type targets pass; pure TS executable
-AST matches baseline. Native Node namespace is 509,609 bytes gzip versus TS
-39,692 with host Intl. Native ISO/timezone startup is 17.01 ms versus TS 19.39 ms.
-See [typed zoned parsing](../../benchmarks/temporal/README.md#typed-zoned-parsing)
-for all workloads, size/startup scope and profile evidence. Goal remains open.
+Current ABI 17 isolated checkpoint measures zoned parsing at 7.24 µs, down from
+9.91 µs after typed parsing; TS is 3.91 µs. Rust now limits local offset candidates
+to the proven one-day window and avoids redundant recurring-rule conversions.
+Complete results remain eager; no new cache/data/dependency. WASM wins 23/48
+medians, with 25 workloads still slower, including Instant.round in longer controls.
+All 63 focused Rust/TS/WASM/Test262/ICU/Hermes targets pass; pure TS and native JS
+bundles match the prior checkpoint byte-for-byte. Native Node namespace is
+507,887 bytes gzip versus TS 39,692 with host Intl. Native ISO/timezone startup
+is 16.96 ms versus TS 19.48 ms.
+See [bounded timezone resolution](../../benchmarks/temporal/README.md#bounded-timezone-resolution)
+for every workload, size/startup scope and fresh profiles. Goal remains open.

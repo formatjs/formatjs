@@ -2428,6 +2428,109 @@ fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
 }
 
 #[test]
+fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
+    use formatjs_temporal::{
+        Disambiguation, FutureRule, OffsetTransition, TimeZone, TransitionDirection,
+        TransitionRule, TransitionZone, ZonedDateTime,
+    };
+    #[derive(Clone, Copy)]
+    struct FullHistory<'a>(TransitionZone<'a>);
+    impl TimeZone for FullHistory<'_> {
+        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
+            self.0.offset_nanoseconds(instant)
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            self.0.visit_offsets(visitor);
+        }
+        fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
+            self.0.transition(instant, direction)
+        }
+    }
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day { day: 0, seconds: 0 },
+            TransitionRule::Day {
+                day: 0,
+                seconds: 7200,
+            },
+        )),
+    )
+    .unwrap();
+    let limit = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    let mut events = vec![OffsetTransition {
+        epoch_seconds: -limit,
+        offset_seconds: -86399,
+    }];
+    events.extend((0..40).map(|index| OffsetTransition {
+        epoch_seconds: -86401 + index * 4400,
+        offset_seconds: if index % 2 == 0 {
+            index as i32 * 1000
+        } else {
+            -(index as i32) * 1000
+        },
+    }));
+    events.push(OffsetTransition {
+        epoch_seconds: limit,
+        offset_seconds: 86399,
+    });
+    let join = [OffsetTransition {
+        epoch_seconds: -1,
+        offset_seconds: 3600,
+    }];
+    for (zone, boundaries) in [
+        (
+            TransitionZone::new(86399, &events, None).unwrap(),
+            events.as_slice(),
+        ),
+        (
+            TransitionZone::new(0, &[], Some(rule)).unwrap(),
+            join.as_slice(),
+        ),
+        (
+            TransitionZone::new(0, &join, Some(rule)).unwrap(),
+            join.as_slice(),
+        ),
+    ] {
+        let mut locals = vec![0, -MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS];
+        for text in [
+            "2024-01-01T00:00Z",
+            "2024-01-01T01:00Z",
+            "2400-01-01T00:00Z",
+        ] {
+            let at = text.parse::<Instant>().unwrap().epoch_nanoseconds();
+            locals.extend([at - 1, at, at + 1]);
+        }
+        for event in boundaries {
+            let at = i128::from(event.epoch_seconds) * 1_000_000_000;
+            for offset in [-86399, event.offset_seconds, 0, 86399] {
+                for delta in [-1, 0, 1] {
+                    locals.push(at + i128::from(offset) * 1_000_000_000 + delta);
+                }
+            }
+        }
+        for local in locals {
+            let Ok(fields) = IsoDateTime::from_epoch_nanoseconds(local) else {
+                continue;
+            };
+            for mode in [
+                Disambiguation::Compatible,
+                Disambiguation::Earlier,
+                Disambiguation::Later,
+                Disambiguation::Reject,
+            ] {
+                let fast =
+                    ZonedDateTime::from_local(fields, zone, mode).map(|value| value.instant());
+                let full = ZonedDateTime::from_local(fields, FullHistory(zone), mode)
+                    .map(|value| value.instant());
+                assert_eq!(fast, full, "{local} {mode:?} {zone:?}");
+            }
+        }
+    }
+}
+
+#[test]
 fn instant_rounding_keeps_wide_results_at_signed_64_bit_boundaries() {
     use formatjs_temporal::{RoundingMode, TimeUnit};
     let base = 9_223_372_036_854_775_800i128;
@@ -2505,4 +2608,37 @@ fn recurring_transitions_preserve_january_boundary_and_explicit_join() {
     );
     assert_eq!(joined.offset_nanoseconds(midnight), 3_600_000_000_000);
     assert_eq!(joined.offset_nanoseconds(end), 0);
+}
+
+#[test]
+fn recurring_last_weekday_handles_short_and_leap_february() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Month {
+                month: 2,
+                week: 5,
+                weekday: 4,
+                seconds: 0,
+            },
+            TransitionRule::Day {
+                day: 200,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    for text in ["2023-02-23T00:00Z", "2024-02-29T00:00Z"] {
+        let instant: Instant = text.parse().unwrap();
+        let before = Instant::from_epoch_nanoseconds(instant.epoch_nanoseconds() - 1).unwrap();
+        assert_eq!(zone.offset_nanoseconds(before), 0, "{text}");
+        assert_eq!(
+            zone.offset_nanoseconds(instant),
+            3_600_000_000_000,
+            "{text}"
+        );
+    }
 }
