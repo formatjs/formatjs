@@ -598,7 +598,10 @@ alias(
         entry_point = "test262%s-main.ts" % suffix,
         format = "iife",
         target = "es2020",
-        visibility = ["//tools/test262:__pkg__"],
+        visibility = [
+            "//packages/intl-supportedvaluesof:__pkg__",
+            "//tools/test262:__pkg__",
+        ],
         deps = [
             "//:node_modules/@formatjs/bigdecimal",
             "//:node_modules/@formatjs/intl-localematcher",
