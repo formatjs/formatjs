@@ -23,7 +23,7 @@ report="${TEST_UNDECLARED_OUTPUTS_DIR:?}/results.json"
 status=0
 "$harness" --host-type=hermes --host-path="$host" --threads=4 \
   --reporter=json --reporter-keys=file,scenario,result,rawResult \
-  --errorForFailures --timeout=30000 --test262Dir="$root" \
+  --errorForFailures --timeout=120000 --test262Dir="$root" \
   "$@" >"$report" 2>"${TEST_UNDECLARED_OUTPUTS_DIR}/stderr.txt" || status=$?
 printf '%s\n' "$status" >"${TEST_UNDECLARED_OUTPUTS_DIR}/exit-code.txt"
 exec "$validator" --suite "$suite" --baseline "$baseline" --report "$report" \

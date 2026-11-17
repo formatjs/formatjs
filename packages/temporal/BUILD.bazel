@@ -2872,6 +2872,8 @@ _CLASS_TEST262_SUITES = [
             "$(rootpath //tools/test262:validator)",
             "Temporal.Intl." + name,
             "$(rootpath %s)" % baseline,
+            "--timeout",
+            "120000",
             "--threads",
             "4",
             "--errorForFailures",

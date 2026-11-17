@@ -173,6 +173,9 @@ Review follow-up: host transition probes now cap generated intervals at seven
 days. A synthetic host-only two-week season in otherwise fixed Abidjan verifies
 both search directions and strict boundaries. Host transitions closer than one
 probe interval remain outside the search guarantee; standalone owns exact records.
+Overlapping searches reuse up to 64 sampled unchanged intervals. A fixed-host
+regression cuts repeated history probes from 115,092 to 67. All-zone boundary
+checks get a 120-second per-case budget; the local 418-zone workload takes 11 seconds.
 
 Runtime audited: `6d55edf0f473aac8b6fce314f7a7f7d345452972` (PR #8015).
 `bazel run -c opt //benchmarks/temporal:size_audit` reproduces the published

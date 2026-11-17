@@ -165,6 +165,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     last: bigint
     value: bigint | null
   }[] = []
+  const unchanged: {first: bigint; last: bigint; offset: bigint}[] = []
   const transition = (
     instant: bigint,
     direction: 'next' | 'previous'
@@ -194,7 +195,16 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     let value: bigint | null = null
     let initial = cursor
     while (next ? cursor < boundary : cursor > boundary) {
-      let probe = cursor + (next ? step : -step)
+      const observed = unchanged.find(row =>
+        next
+          ? row.first <= cursor && cursor < row.last
+          : row.first < cursor && cursor <= row.last
+      )
+      let probe = observed
+        ? next
+          ? observed.last
+          : observed.first
+        : cursor + (next ? step : -step)
       if (next ? probe > boundary : probe < boundary) probe = boundary
       const offset = offsetNanoseconds(cursor * second)
       if (offsetNanoseconds(probe * second) !== offset) {
@@ -209,6 +219,18 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         value = right * second
         break
       }
+      let first = next ? cursor : probe
+      let last = next ? probe : cursor
+      for (let index = unchanged.length - 1; index >= 0; index--) {
+        const row = unchanged[index]
+        if (row.offset === offset && row.first <= last && first <= row.last) {
+          if (row.first < first) first = row.first
+          if (row.last > last) last = row.last
+          unchanged.splice(index, 1)
+        }
+      }
+      if (unchanged.length >= 64) unchanged.shift()
+      unchanged.push({first, last, offset})
       cursor = probe
       // Future host rules repeat annually or settle at a fixed offset. Search
       // nearby years first, then resume the finite historical record.

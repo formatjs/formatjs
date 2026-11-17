@@ -169,3 +169,45 @@ it('finds host-only transitions inside a generated fixed-zone probe interval', a
     vi.resetModules()
   }
 })
+
+it('reuses observed fixed-offset history across overlapping transition searches', async () => {
+  const Original = Intl.DateTimeFormat
+  let probes = 0
+  vi.resetModules()
+  try {
+    Intl.DateTimeFormat = class extends Original {
+      constructor(
+        locales?: Intl.LocalesArgument,
+        options?: Intl.DateTimeFormatOptions
+      ) {
+        super(locales, {...options, timeZone: 'UTC'})
+      }
+      formatToParts(value?: number | Date) {
+        probes++
+        return super.formatToParts(value)
+      }
+    } as typeof Original
+    const {createHostTimeZone: create} =
+      await import('#packages/temporal/host-timezone.js')
+    const zone = create('Africa/Abidjan')
+    expect(
+      zone.transition(
+        isoToEpochNanoseconds({year: 2000, month: 1, day: 1}),
+        'previous'
+      )
+    ).toBe(null)
+    const initial = probes
+    for (let month = 2; month <= 12; month++) {
+      expect(
+        zone.transition(
+          isoToEpochNanoseconds({year: 2000, month, day: 1}),
+          'previous'
+        )
+      ).toBe(null)
+    }
+    expect(probes - initial).toBeLessThan(128)
+  } finally {
+    Intl.DateTimeFormat = Original
+    vi.resetModules()
+  }
+})
