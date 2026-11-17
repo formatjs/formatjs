@@ -57,7 +57,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 13 ||
+    core.temporal_abi_version() !== 14 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -114,6 +114,8 @@ const getFloat64 = View.prototype.getFloat64
 const codeUnit = String.prototype.charCodeAt
 const textIndex = String.prototype.indexOf
 const encodeInto = Encoder?.prototype.encodeInto
+const ToNumber = Number
+const readNumber = Function.prototype.call.bind(View.prototype.getFloat64)
 const read16 = Function.prototype.call.bind(View.prototype.getUint16)
 const read32 = Function.prototype.call.bind(View.prototype.getUint32)
 const write32 = Function.prototype.call.bind(View.prototype.setUint32)
@@ -620,6 +622,121 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
         errors: [],
       },
     }
+  }
+  function clockResult(pointer: number) {
+    if (fastBytes[pointer] !== 13)
+      throw new BadType('Invalid Temporal WASM response')
+    return {
+      nanoseconds: readNumber(fastView, pointer + 1, true),
+      bigintNanoseconds: undefined,
+      fields: [
+        fastBytes[pointer + 9],
+        fastBytes[pointer + 10],
+        fastBytes[pointer + 11],
+        read16(fastView, pointer + 12, true),
+        read16(fastView, pointer + 14, true),
+        read16(fastView, pointer + 16, true),
+      ],
+    }
+  }
+  invoke.differencePlainTime = (
+    one,
+    other,
+    largest,
+    smallest,
+    increment,
+    mode
+  ) => {
+    const pointer = begin(operationCodes.differencePlainTime, 25)
+    writeNumber(fastView, pointer + 2, ToNumber(one), true)
+    writeNumber(fastView, pointer + 10, ToNumber(other), true)
+    fastBytes[pointer + 18] = arrayIndex(units, largest)
+    fastBytes[pointer + 19] = arrayIndex(units, smallest)
+    write32(fastView, pointer + 20, increment, true)
+    fastBytes[pointer + 24] = arrayIndex(modes, mode)
+    const result = exchange(25)
+    if (fastBytes[result] !== 14)
+      throw new BadType('Invalid Temporal WASM response')
+    return {
+      years: readNumber(fastView, result + 1, true),
+      months: readNumber(fastView, result + 9, true),
+      weeks: readNumber(fastView, result + 17, true),
+      days: readNumber(fastView, result + 25, true),
+      hours: readNumber(fastView, result + 33, true),
+      minutes: readNumber(fastView, result + 41, true),
+      seconds: readNumber(fastView, result + 49, true),
+      milliseconds: readNumber(fastView, result + 57, true),
+      microseconds: readNumber(fastView, result + 65, true),
+      nanoseconds: readNumber(fastView, result + 73, true),
+    }
+  }
+  invoke.formatDuration = (fields, precision, mode) => {
+    const pointer = begin(operationCodes.formatDuration, 84)
+    for (let index = 0; index < durationPropertyNames.length; index++)
+      writeNumber(
+        fastView,
+        pointer + 2 + index * 8,
+        fields[durationPropertyNames[index] as keyof typeof fields],
+        true
+      )
+    fastBytes[pointer + 82] = precision === 'auto' ? 255 : precision
+    fastBytes[pointer + 83] = arrayIndex(modes, mode)
+    const result = exchange(84)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
+  }
+  invoke.parsePlainTimeResult = value => {
+    validateText(value)
+    const pointer = begin(operationCodes.parsePlainTime, 6 + value.length * 3)
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    return clockResult(exchange(6 + encoded.written))
+  }
+  invoke.regulatePlainTimeResult = (values, constrain) => {
+    const pointer = begin(operationCodes.regulatePlainTime, 51)
+    for (let index = 0; index < 6; index++)
+      writeNumber(fastView, pointer + 2 + index * 8, values[index], true)
+    fastBytes[pointer + 50] = constrain ? 1 : 0
+    return clockResult(exchange(51))
+  }
+  invoke.addPlainTimeResult = (value, fields, subtract) => {
+    const pointer = begin(operationCodes.addPlainTime, 91)
+    writeNumber(fastView, pointer + 2, ToNumber(value), true)
+    for (let index = 0; index < durationPropertyNames.length; index++)
+      writeNumber(
+        fastView,
+        pointer + 10 + index * 8,
+        fields[durationPropertyNames[index] as keyof typeof fields],
+        true
+      )
+    fastBytes[pointer + 90] = subtract ? 1 : 0
+    return clockResult(exchange(91))
+  }
+  invoke.roundPlainTimeResult = (value, unit, increment, mode) => {
+    const pointer = begin(operationCodes.roundPlainTime, 16)
+    writeNumber(fastView, pointer + 2, ToNumber(value), true)
+    fastBytes[pointer + 10] = arrayIndex(units, unit)
+    write32(fastView, pointer + 11, increment, true)
+    fastBytes[pointer + 15] = arrayIndex(modes, mode)
+    return clockResult(exchange(16))
+  }
+  invoke.formatPlainTime = (value, precision, mode) => {
+    const pointer = begin(operationCodes.formatPlainTime, 12)
+    writeNumber(fastView, pointer + 2, ToNumber(value), true)
+    fastBytes[pointer + 10] =
+      precision === 'auto' ? 255 : precision === 'minute' ? 254 : precision
+    fastBytes[pointer + 11] = arrayIndex(modes, mode)
+    const result = exchange(12)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
   }
   invoke.parsePlainDateTime = value => {
     validateText(value)

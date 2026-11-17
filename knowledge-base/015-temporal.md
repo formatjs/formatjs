@@ -1873,3 +1873,32 @@ DateTime Test262 passed after the decoder fixes. The pure TS AST still matches t
 872fdaee baseline after local identifier renaming. Current medians win 16/48 against
 TS, 20/48 against temporal-polyfill and 31/48 against @js-temporal/polyfill. The goal
 remains open; DateTime parsing is nearly tied and round+format remains slower.
+
+### Typed clocks and native slot representation
+
+ABI 14 has typed variants for 26 existing operations. Complete clock records use
+18 bytes, including exact Number nanoseconds and six Rust-computed fields. Native
+clock slots use one WeakMap; getTimeSlot converts lazily to BigInt for existing
+DateTime/Zoned/Intl callers. Pure TS retains direct BigInt slots. Clock fields have
+no calendar/timezone data dependency. A u64 Rust storage trial was discarded after
+isolated ABBA measurements; i128 APIs/storage remain. Bounded clock conversions
+and quotient/remainder operands narrow safely; rounding results and fallback stay
+wide. Signed-boundary controls cover ties and results crossing i64 limits.
+
+Rust Duration::new rounds fields to Number-representable integers before sign,
+calendar-unit and magnitude validation. Returned duration fields can therefore be
+wrapped directly. Current trusted construction is used for native Time.until;
+user-input construction keeps its validation. Typed duration formatting also
+avoids generic maps. SDK JSON responses remain stable unless clockSnapshot is
+requested. The adapter supports older SDK responses, including balancing the
+legacy 24-hour rounding carry. Public regression controls cover captured WeakMap
+lookups and results surviving WASM memory growth. No new exclusions.
+
+The current isolated run refreshes TS/WASM and retains explicitly unchanged
+pinned references. See benchmarks/temporal/time-*.json for throughput, startup,
+size, profiles and retained/rejected experiments. All five clock workloads beat
+TS; overall performance remains incomplete. The checked-in Bazel AST audit
+normalizes local bindings and strips parser metadata while retaining executable
+structure/global/property/literal semantics. It catches an unintended retained
+intrinsic capture; existing captures retain their timing. The final TS audit
+matches the 872fdaee baseline.

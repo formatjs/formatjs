@@ -408,3 +408,23 @@ fn date_output_validates_options_and_constrains_before_narrowing() {
         assert_eq!(request(input), Err(1));
     }
 }
+
+#[test]
+fn complete_clock_requests_keep_legacy_rounding_responses_unchanged() {
+    let legacy = json!({"op":"roundPlainTime","nanoseconds":"86399999999999","unit":"hour","increment":1,"mode":"ceil"});
+    assert_eq!(
+        query(legacy.to_string().as_bytes()),
+        Ok(json!("86400000000000"))
+    );
+    let mut complete = legacy;
+    complete["clockSnapshot"] = json!(true);
+    assert_eq!(
+        query(complete.to_string().as_bytes()),
+        Ok(json!({"nanoseconds":"0","fields":[0,0,0,0,0,0]}))
+    );
+    let request = json!({"op":"parsePlainTime","text":"23:59:59.999999999","clockSnapshot":true});
+    assert_eq!(
+        query(request.to_string().as_bytes()),
+        Ok(json!({"nanoseconds":"86399999999999","fields":[23,59,59,999,999,999]}))
+    );
+}

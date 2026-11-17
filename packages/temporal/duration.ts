@@ -70,7 +70,7 @@ export function toDurationFields(value: unknown): DurationFields {
   if (typeof value === 'string') return parseDurationString(value)
   return validateDuration({...zeroDuration(), ...partialDuration(value)})
 }
-/** @internal Keep validation before observable options reads; Instant has no options. */
+/** @internal Validate before options getters; no-options operations defer to Rust. */
 export function toNativeDurationFields(
   value: unknown,
   validate = true
@@ -108,6 +108,12 @@ const nativeDurationFields = [
   'weeks',
   'years',
 ] as const
+// Rust duration fields are Number-rounded and validated before transfer.
+export function createNativeDuration(fields: DurationFields): DurationObject {
+  const value = Object.create(DurationValue.prototype) as DurationObject
+  setSlot(value, fields)
+  return value
+}
 export function createDuration(fields: DurationFields): DurationObject {
   const value = Object.create(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))

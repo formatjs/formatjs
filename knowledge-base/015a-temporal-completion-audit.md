@@ -285,3 +285,14 @@ Hermes source/bytecode gates pass. New public inherited-setter/getter controls
 caught decoder regressions and now pass in both WASM profiles. TS executable AST
 remains equivalent to the recorded baseline. No new exclusions; performance goal
 still open at 16/48 median wins against TS. Full owned-Intl WASM gate remains in CI.
+
+### ABI 14 clock follow-up
+
+Typed clock/duration transport, exact-number native slots and lazy BigInt interop
+retain the conformance requirements above. 63 focused targets pass; final controls
+add memory-growth ownership, captured WeakMap access and legacy SDK midnight
+rounding. Signed rounding boundaries preserve wide results. Pure TS executable
+structure still matches baseline through the checked-in Bazel audit, with a
+negative control proving changed intrinsic captures are rejected. No new
+exclusions. All five PlainTime benchmarks beat TS in the current isolated run;
+the all-workload objective remains open. See time-*.json in benchmarks/temporal.

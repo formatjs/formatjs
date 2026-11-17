@@ -160,6 +160,19 @@ for (const name of ['era', 'eraYear']) {
     else delete Object.prototype[name]
   }
 }
+const clockForInterop = Temporal.PlainTime.from('23:59:59.999999999')
+const dateTimeForInterop = Temporal.PlainDateTime.from('2000-02-29T12:00')
+const originalWeakMapGet = WeakMap.prototype.get
+let combinedClock
+try {
+  WeakMap.prototype.get = () => {
+    throw new Error('Temporal must use captured slot lookups')
+  }
+  combinedClock = dateTimeForInterop.withPlainTime(clockForInterop)
+} finally {
+  WeakMap.prototype.get = originalWeakMapGet
+}
+assert.equal(combinedClock.toString(), '2000-02-29T23:59:59.999999999')
 const rows = path =>
   readFileSync(resolve(path), 'utf8')
     .trim()
@@ -303,6 +316,7 @@ assert.throws(
 )
 assert.equal(Temporal.PlainTime.from('12:00').toJSON(), '12:00:00')
 
+const clockBeforeGrowth = Temporal.PlainTime.from('23:59:59.999999999')
 const beforeGrowth = query.memoryBytes
 assert.equal(
   Temporal.Instant.from('1970-01-01T00:00Z[foo=' + 'a'.repeat(2_000_000) + ']')
@@ -312,6 +326,18 @@ assert.equal(
 assert(
   query.memoryBytes > beforeGrowth,
   'Exercise memory growth during request and response allocation'
+)
+assert.deepEqual(
+  [
+    clockBeforeGrowth.hour,
+    clockBeforeGrowth.minute,
+    clockBeforeGrowth.second,
+    clockBeforeGrowth.millisecond,
+    clockBeforeGrowth.microsecond,
+    clockBeforeGrowth.nanosecond,
+  ],
+  [23, 59, 59, 999, 999, 999],
+  'Clock results survive later WASM calls and memory growth'
 )
 const invalid = JSON.stringify({op: 'parseInstant', text: 'x'.repeat(250_000)})
 for (let index = 0; index < 32; index++) assert.equal(query(invalid), 1)

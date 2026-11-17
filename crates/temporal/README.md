@@ -16,7 +16,7 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-WASM ABI 13 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
+WASM ABI 14 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
@@ -748,7 +748,7 @@ profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
 
 ## Typed WASM operations
 
-ABI 13 provides typed variants for nineteen hot operations, signed 128-bit Instant
+ABI 14 provides typed variants for twenty-six hot operations, signed 128-bit Instant
 transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
 formatting writes one bounded stack buffer. Non-ISO records and deferred getter
 errors retain their general representation. SDK JSON responses keep their shapes.
@@ -771,3 +771,11 @@ typed WASM routes. ISO DateTime records contain 48 bytes, including signed i128
 nanoseconds, complete date properties and six clock fields. Other calendars retain
 their deferred getter errors. Instant and PlainDateTime share the bounded ASCII
 formatter; rounding still uses their public Rust methods.
+
+ABI 14 clock records use 18 bytes for exact nanoseconds and six fields. Clock
+storage stays i128; a measured u64 storage experiment had no stable overall gain
+and was discarded. Validated clock transport/field calculations use native-width
+integers. Shared rounding narrows only quotient/remainder operands when safe;
+results remain i128 and larger operands keep their original path. Boundary tests
+cover signed ties and results crossing i64 limits. Duration fields are rounded to
+Number-representable integers and validated in Rust before binding construction.

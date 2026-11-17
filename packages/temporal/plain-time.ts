@@ -1,9 +1,14 @@
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
-import {nativeTemporal} from '#packages/temporal/native.js'
+import {
+  nativeTemporal,
+  type NativeTimeResult,
+} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getTimeSlot as getSlot,
+  getNativeTimeSlot,
+  setNativeTimeSlot,
   setTimeSlot as setSlot,
   getDateTimeSlot,
   getZonedDateTimeSlot,
@@ -16,6 +21,7 @@ import {parsePlainTimeString} from '#packages/temporal/instant-string.js'
 import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   createDuration,
+  createNativeDuration,
   toDurationFields,
   toNativeDurationFields,
   type DurationObject,
@@ -163,9 +169,50 @@ function toTime(value: unknown, options?: unknown): bigint {
   overflow(options)
   return result
 }
-function create(value: bigint): PlainTimeObject {
+function nativeTime(value: object): NativeTimeResult {
+  const result = getNativeTimeSlot(value)
+  if (!result) throw new TypeError('Invalid PlainTime receiver')
+  return result
+}
+function nativeTimeFromValue(value: bigint): NativeTimeResult {
+  return nativeTemporal()!.roundPlainTimeResult(
+    ((value % day) + day) % day,
+    'nanosecond',
+    1,
+    'trunc'
+  )
+}
+function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
+  const existing = getNativeTimeSlot(value as object)
+  if (existing !== undefined) {
+    overflow(options)
+    return existing
+  }
+  const datetime =
+    getDateTimeSlot(value as object) ?? getZonedDateTimeSlot(value as object)
+  if (datetime) {
+    overflow(options)
+    return nativeTimeFromValue(datetime.epochNanoseconds)
+  }
+  if (object(value)) {
+    const values = timeFields(value)
+    return nativeTemporal()!.regulatePlainTimeResult(values, overflow(options))
+  }
+  if (typeof value !== 'string')
+    throw new TypeError('Expected time string or object')
+  const result = nativeTemporal()!.parsePlainTimeResult(value)
+  overflow(options)
+  return result
+}
+function create(value: bigint | NativeTimeResult): PlainTimeObject {
+  if (import.meta.formatjsTemporalNativeData === true) {
+    const data = typeof value === 'bigint' ? nativeTimeFromValue(value) : value
+    const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
+    setNativeTimeSlot(result, data)
+    return result
+  }
   const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
-  setSlot(result, ((value % day) + day) % day)
+  setSlot(result, (((value as bigint) % day) + day) % day)
   return result
 }
 export function createPlainTime(value: bigint): PlainTimeObject {
@@ -194,12 +241,15 @@ export function roundTime(
   )
 }
 function difference(
-  value: bigint,
+  value: bigint | number,
   other: unknown,
   options: unknown,
   since: boolean
 ): DurationObject {
-  const end = toTime(other)
+  const end =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeTime(other).nanoseconds
+      : toTime(other)
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit
   const largestString = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -214,11 +264,22 @@ function difference(
     throw new RangeError('Largest unit smaller than smallest unit')
   validateIncrement(smallest, increment)
   const native = nativeTemporal()
-  if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(
+  if (import.meta.formatjsTemporalNativeData === true)
+    return createNativeDuration(
       native!.differencePlainTime(
-        since ? end : value,
-        since ? value : end,
+        (since ? end : value) as bigint,
+        (since ? value : end) as bigint,
+        names[largeIndex],
+        smallest,
+        increment,
+        mode
+      )
+    )
+  if (native)
+    return createDuration(
+      native.differencePlainTime(
+        (since ? end : value) as bigint,
+        (since ? value : end) as bigint,
         names[largeIndex],
         smallest,
         increment,
@@ -228,7 +289,7 @@ function difference(
   return createDuration(
     balanceDurationTime(
       roundDuration(
-        (end - value) * (since ? -1n : 1n),
+        ((end as bigint) - (value as bigint)) * (since ? -1n : 1n),
         factors[smallIndex] * BigInt(increment),
         mode
       ),
@@ -236,18 +297,24 @@ function difference(
     )
   )
 }
-function add(value: bigint, other: unknown, sign: bigint): PlainTimeObject {
+function add(
+  value: bigint | number,
+  other: unknown,
+  sign: bigint
+): PlainTimeObject {
   const duration =
     import.meta.formatjsTemporalNativeData === true
-      ? toNativeDurationFields(other)
+      ? toNativeDurationFields(other, false)
       : toDurationFields(other)
   const native = nativeTemporal()
-  if (import.meta.formatjsTemporalNativeData === true || native)
-    return create(native!.addPlainTime(value, duration, sign < 0n))
-  return create(value + sign * durationNanoseconds(duration, false))
+  if (import.meta.formatjsTemporalNativeData === true)
+    return create(native!.addPlainTimeResult(value, duration, sign < 0n))
+  if (native)
+    return create(native.addPlainTime(value as bigint, duration, sign < 0n))
+  return create((value as bigint) + sign * durationNanoseconds(duration, false))
 }
 function format(
-  value: bigint,
+  value: bigint | number,
   precision: Precision = 'auto',
   mode: RoundingMode = 'trunc'
 ): string {
@@ -261,7 +328,9 @@ function format(
         ? factors[1]
         : 10n ** BigInt(9 - precision)
   return formatInstant(
-    quantum === 1n ? value : roundInstant(value, quantum, mode) % day,
+    quantum === 1n
+      ? (value as bigint)
+      : roundInstant(value as bigint, quantum, mode) % day,
     precision
   ).slice(11, -1)
 }
@@ -284,15 +353,25 @@ class PlainTimeValue implements PlainTimeObject {
   declare readonly microsecond: number
   declare readonly nanosecond: number
   static from(item: unknown, options: unknown = undefined): PlainTimeObject {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return create(toNativeTime(item, options))
     return create(toTime(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    if (import.meta.formatjsTemporalNativeData === true) {
+      const left = toNativeTime(one).nanoseconds,
+        right = toNativeTime(two).nanoseconds
+      return left < right ? -1 : left > right ? 1 : 0
+    }
     const left = toTime(one),
       right = toTime(two)
     return left < right ? -1 : left > right ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainTimeObject {
-    const value = read(this)
+    const value =
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this)
     if (
       !object(item) ||
       getSlot(item) !== undefined ||
@@ -305,26 +384,66 @@ class PlainTimeValue implements PlainTimeObject {
       throw new TypeError('Expected partial time object')
     if (item.calendar !== undefined || item.timeZone !== undefined)
       throw new TypeError('Unexpected calendar or timeZone')
-    const values = timeFields(item, fields(value))
+    const values = timeFields(
+      item,
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).fields
+        : fields(value as bigint)
+    )
+    if (import.meta.formatjsTemporalNativeData === true)
+      return create(
+        nativeTemporal()!.regulatePlainTimeResult(values, overflow(options))
+      )
     return create(regulate(values, overflow(options)))
   }
   add(duration: unknown): PlainTimeObject {
-    return add(read(this), duration, 1n)
+    return add(
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this),
+      duration,
+      1n
+    )
   }
   subtract(duration: unknown): PlainTimeObject {
-    return add(read(this), duration, -1n)
+    return add(
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this),
+      duration,
+      -1n
+    )
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
-    return difference(read(this), other, options, false)
+    return difference(
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this),
+      other,
+      options,
+      false
+    )
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
-    return difference(read(this), other, options, true)
+    return difference(
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this),
+      other,
+      options,
+      true
+    )
   }
   equals(other: unknown): boolean {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return nativeTime(this).nanoseconds === toNativeTime(other).nanoseconds
     return read(this) === toTime(other)
   }
   round(roundTo: unknown): PlainTimeObject {
-    const value = read(this)
+    const value =
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this)
     if (roundTo === undefined) throw new TypeError('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
@@ -333,10 +452,17 @@ class PlainTimeValue implements PlainTimeObject {
     const increment = roundingIncrement(resolved.roundingIncrement)
     const mode = roundingMode(resolved.roundingMode, 'halfExpand')
     const unit = timeUnit(unitOption(resolved.smallestUnit))
-    return create(roundTime(value, unit, increment, mode))
+    if (import.meta.formatjsTemporalNativeData === true)
+      return create(
+        nativeTemporal()!.roundPlainTimeResult(value, unit, increment, mode)
+      )
+    return create(roundTime(value as bigint, unit, increment, mode))
   }
   toString(options: unknown = undefined): string {
-    const value = read(this),
+    const value =
+        import.meta.formatjsTemporalNativeData === true
+          ? nativeTime(this).nanoseconds
+          : read(this),
       resolved = optionsObject(options)
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
     const mode = roundingMode(resolved.roundingMode, 'trunc')
@@ -370,7 +496,11 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   toJSON(): string {
-    return format(read(this))
+    return format(
+      import.meta.formatjsTemporalNativeData === true
+        ? nativeTime(this).nanoseconds
+        : read(this)
+    )
   }
   valueOf(): never {
     throw new TypeError('Cannot convert Temporal.PlainTime to primitive')
@@ -384,6 +514,18 @@ Object.defineProperty(PlainTimeValue, 'name', {
 })
 export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
   construct(target, args, newTarget) {
+    if (import.meta.formatjsTemporalNativeData === true) {
+      const values = names.map((_, index) =>
+        args[index] === undefined ? 0 : integer(args[index])
+      )
+      const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
+      const prototype = Reflect.get(newTarget, 'prototype')
+      const result = Object.create(
+        object(prototype) ? prototype : target.prototype
+      )
+      setNativeTimeSlot(result, value)
+      return result
+    }
     const values = names.map((_, index) =>
       args[index] === undefined ? 0 : integer(args[index])
     )
@@ -400,8 +542,8 @@ Object.defineProperties(PlainTimeValue.prototype, {
   constructor: {value: PlainTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.PlainTime', configurable: true},
 })
-defineGetters(
-  PlainTimeValue.prototype,
-  names,
-  (receiver, _name, index) => fields(read(receiver))[index]
+defineGetters(PlainTimeValue.prototype, names, (receiver, _name, index) =>
+  import.meta.formatjsTemporalNativeData === true
+    ? nativeTime(receiver as object).fields[index]
+    : fields(read(receiver))[index]
 )

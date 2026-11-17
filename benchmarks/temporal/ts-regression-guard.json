@@ -8,13 +8,25 @@
   "current": {
     "minified": 141410,
     "gzip": 39748,
-    "sha256": "87cbe5ec19abfb66248f5931c566a7d1afdb4c7b4dc6e38884fcb67668ba8d16"
+    "sha256": "95a47d764c9024bf1654916d83275a46d18e3bcfdb755e0717d1de4d927f47e4"
   },
   "identical": false,
   "alphaEquivalent": true,
   "normalizedAST": {
-    "baseline": "4735c1fad6282a7746ac702610f6fdb233447a08c83f4468cc34ab840e17eef0",
-    "current": "4735c1fad6282a7746ac702610f6fdb233447a08c83f4468cc34ab840e17eef0",
+    "baseline": "1e64a05ea1d52b16ba97fef398d725037cb122c482e4212edf04226135a82cb8",
+    "current": "1e64a05ea1d52b16ba97fef398d725037cb122c482e4212edf04226135a82cb8",
     "bindingCounts": [2560, 2560]
+  },
+  "normalization": "Local binding names canonicalized by lexical position; Babel parser metadata, comments and source locations stripped. All executable structure, globals, property names and literal values retained.",
+  "normalizationTool": "benchmarks/temporal/ts-regression-guard.mjs",
+  "normalizationVersion": 2,
+  "negativeControl": {
+    "description": "Unintended retained Number.prototype.toString capture changes global prototype reads.",
+    "rejected": true,
+    "normalizedAST": {
+      "baseline": "1e64a05ea1d52b16ba97fef398d725037cb122c482e4212edf04226135a82cb8",
+      "current": "4f8a67a33024f54653313b386db37631b48eb069fe226277f9656186e1bd55b9",
+      "bindingCounts": [2560, 2560]
+    }
   }
 }

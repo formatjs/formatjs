@@ -1,7 +1,7 @@
 use super::Reader;
 use crate::{
     CalendarName, CalendarProvider, Duration, Error, Instant, Overflow, PlainDate, PlainDateTime,
-    PlainMonthDay, PlainYearMonth, Precision, RoundingMode, TimeUnit,
+    PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit,
 };
 use core::fmt::{self, Write};
 use std::vec::Vec;
@@ -19,6 +19,13 @@ const MODES: [RoundingMode; 9] = [
 ];
 enum Request<'a> {
     Parse(&'a str),
+    ParseTime(&'a str),
+    DifferenceTime(f64, f64, TimeUnit, TimeUnit, u32, RoundingMode),
+    FormatDuration([f64; 10], Precision, RoundingMode),
+    RegulateTime([f64; 6], Overflow),
+    AddTime(f64, [f64; 10], bool),
+    RoundTime(f64, TimeUnit, u32, RoundingMode),
+    FormatTime(f64, Precision, RoundingMode),
     ParseDateTime(&'a str),
     AddDateTime(i128, [f64; 10], bool, Overflow, &'a str),
     RoundDateTime(i128, Option<TimeUnit>, u32, RoundingMode, &'a str),
@@ -66,6 +73,90 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
         "parseInstant" => {
             let len = reader.length()?;
             Request::Parse(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
+        }
+        "differencePlainTime" => {
+            let one = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let other = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let units = [
+                TimeUnit::Hour,
+                TimeUnit::Minute,
+                TimeUnit::Second,
+                TimeUnit::Millisecond,
+                TimeUnit::Microsecond,
+                TimeUnit::Nanosecond,
+            ];
+            let largest = *units.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let smallest = *units.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let increment = u32::from_le_bytes(reader.take(4)?.try_into().map_err(|_| 2)?);
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            Request::DifferenceTime(one, other, largest, smallest, increment, mode)
+        }
+        "formatDuration" => {
+            let mut fields = [0.0; 10];
+            for field in &mut fields {
+                *field = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            let precision = match reader.byte()? {
+                255 => Precision::Auto,
+                254 => Precision::Minute,
+                value => Precision::Digits(value),
+            };
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            Request::FormatDuration(fields, precision, mode)
+        }
+        "parsePlainTime" => {
+            let len = reader.length()?;
+            Request::ParseTime(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
+        }
+        "regulatePlainTime" => {
+            let mut fields = [0.0; 6];
+            for field in &mut fields {
+                *field = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            let overflow = match reader.byte()? {
+                0 => Overflow::Reject,
+                1 => Overflow::Constrain,
+                _ => return Err(2),
+            };
+            Request::RegulateTime(fields, overflow)
+        }
+        "addPlainTime" => {
+            let ns = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let mut fields = [0.0; 10];
+            for field in &mut fields {
+                *field = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            let subtract = match reader.byte()? {
+                0 => false,
+                1 => true,
+                _ => return Err(2),
+            };
+            Request::AddTime(ns, fields, subtract)
+        }
+        "roundPlainTime" => {
+            let ns = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let units = [
+                TimeUnit::Hour,
+                TimeUnit::Minute,
+                TimeUnit::Second,
+                TimeUnit::Millisecond,
+                TimeUnit::Microsecond,
+                TimeUnit::Nanosecond,
+            ];
+            let unit = *units.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let increment = u32::from_le_bytes(reader.take(4)?.try_into().map_err(|_| 2)?);
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            Request::RoundTime(ns, unit, increment, mode)
+        }
+        "formatPlainTime" => {
+            let ns = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let precision = match reader.byte()? {
+                255 => Precision::Auto,
+                254 => Precision::Minute,
+                value => Precision::Digits(value),
+            };
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            Request::FormatTime(ns, precision, mode)
         }
         "parsePlainDateTime" => {
             let len = reader.length()?;
@@ -290,8 +381,62 @@ fn iso_fields(
         ..Default::default()
     })
 }
+fn time(value: f64) -> Result<PlainTime, Error> {
+    if !value.is_finite()
+        || value.fract() != 0.0
+        || !(0.0..crate::NANOSECONDS_PER_DAY as f64).contains(&value)
+    {
+        return Err(Error::InvalidDateTime);
+    }
+    PlainTime::from_nanoseconds(i128::from(value as u64))
+}
+fn encode_time(output: &mut Vec<u8>, value: PlainTime) {
+    let (hour, minute, second, fraction) = value.fields();
+    output.push(13);
+    output.extend_from_slice(&(value.nanoseconds() as u64 as f64).to_le_bytes());
+    output.extend_from_slice(&[hour, minute, second]);
+    for field in [
+        fraction / 1_000_000,
+        fraction / 1000 % 1000,
+        fraction % 1000,
+    ] {
+        output.extend_from_slice(&(field as u16).to_le_bytes());
+    }
+}
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::DifferenceTime(one, other, largest, smallest, increment, mode) => {
+            let value = time(one)?.until(time(other)?, largest, smallest, increment, mode)?;
+            output.push(14);
+            for field in value.fields() {
+                output.extend_from_slice(&(field as f64).to_le_bytes());
+            }
+        }
+        Request::FormatDuration(fields, precision, mode) => {
+            write_text(output, duration(fields)?.format(precision, mode)?)?
+        }
+        Request::ParseTime(text) => encode_time(output, text.parse::<PlainTime>()?),
+        Request::RegulateTime(fields, overflow) => {
+            encode_time(output, crate::ffi::regulate_time_fields(fields, overflow)?)
+        }
+        Request::AddTime(ns, fields, subtract) => {
+            let value = time(ns)?;
+            let duration = duration(fields)?;
+            encode_time(
+                output,
+                if subtract {
+                    value.checked_subtract(duration)?
+                } else {
+                    value.checked_add(duration)?
+                },
+            );
+        }
+        Request::RoundTime(ns, unit, increment, mode) => {
+            encode_time(output, time(ns)?.round(unit, increment, mode)?)
+        }
+        Request::FormatTime(ns, precision, mode) => {
+            write_text(output, time(ns)?.format(precision, mode)?)?
+        }
         Request::AddDateTime(ns, fields, subtract, overflow, calendar) => {
             let calendar = crate::ffi::resolve_calendar(calendar)?;
             let value = PlainDateTime::from_epoch_nanoseconds_in(ns, calendar)?;

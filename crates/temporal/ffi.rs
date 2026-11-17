@@ -1351,22 +1351,52 @@ fn duration_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+pub(crate) fn regulate_time_fields(
+    values: [f64; 6],
+    overflow: crate::Overflow,
+) -> Result<PlainTime, Error> {
+    let mut fields = [0i128; 6];
+    for (target, value) in fields.iter_mut().zip(values) {
+        if !value.is_finite() || value.fract() != 0.0 {
+            return Err(Error::InvalidDateTime);
+        }
+        *target = value as i128;
+    }
+    PlainTime::from_fields(
+        TimeFields {
+            hour: Some(fields[0]),
+            minute: Some(fields[1]),
+            second: Some(fields[2]),
+            millisecond: Some(fields[3]),
+            microsecond: Some(fields[4]),
+            nanosecond: Some(fields[5]),
+        },
+        overflow,
+    )
+}
+fn time_result(value: PlainTime, request: &Value) -> Value {
+    if request["clockSnapshot"].as_bool() == Some(true) {
+        let (hour, minute, second, fraction) = value.fields();
+        json!({"nanoseconds":value.nanoseconds().to_string(),"fields":[hour as u32, minute as u32, second as u32, fraction / 1_000_000, fraction / 1000 % 1000, fraction % 1000]})
+    } else {
+        json!(value.nanoseconds().to_string())
+    }
+}
 fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parsePlainTime" {
-        return Ok(json!(
+        return Ok(time_result(
             request["text"]
                 .as_str()
                 .ok_or(Error::InvalidSyntax)?
-                .parse::<PlainTime>()?
-                .nanoseconds()
-                .to_string()
+                .parse::<PlainTime>()?,
+            request,
         ));
     }
     if op == "regulatePlainTime" {
         let constrain = request["constrain"]
             .as_bool()
             .ok_or(Error::InvalidDateTime)?;
-        let mut values = [0; 6];
+        let mut values = [0.0; 6];
         for (index, key) in [
             "hour",
             "minute",
@@ -1378,32 +1408,20 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
         .iter()
         .enumerate()
         {
-            let value = request["fields"][key]
+            values[index] = request["fields"][key]
                 .as_f64()
                 .ok_or(Error::InvalidDateTime)?;
-            if !value.is_finite() || value.fract() != 0. {
-                return Err(Error::InvalidDateTime);
-            }
-            values[index] = value as i128;
         }
-        return Ok(json!(
-            PlainTime::from_fields(
-                TimeFields {
-                    hour: Some(values[0]),
-                    minute: Some(values[1]),
-                    second: Some(values[2]),
-                    millisecond: Some(values[3]),
-                    microsecond: Some(values[4]),
-                    nanosecond: Some(values[5])
-                },
+        return Ok(time_result(
+            regulate_time_fields(
+                values,
                 if constrain {
                     crate::Overflow::Constrain
                 } else {
                     crate::Overflow::Reject
                 },
-            )?
-            .nanoseconds()
-            .to_string()
+            )?,
+            request,
         ));
     }
     let value = PlainTime::from_nanoseconds(decimal(request, "nanoseconds")?)?;
@@ -1420,7 +1438,7 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
                 Some(true) => value.checked_subtract(duration)?,
                 None => return Err(Error::InvalidDuration),
             };
-            Ok(json!(result.nanoseconds().to_string()))
+            Ok(time_result(result, request))
         }
         "roundPlainTime" => {
             let unit = request["unit"]
@@ -1430,12 +1448,17 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
             let increment = integer(request.get("increment"), None)?
                 .try_into()
                 .map_err(|_| Error::InvalidRoundingOptions)?;
+            let mode = mode(request)?;
+            if request["clockSnapshot"].as_bool() == Some(true) {
+                return Ok(time_result(value.round(unit, increment, mode)?, request));
+            }
             Ok(json!(
                 value
-                    .rounded_nanoseconds(unit, increment, mode(request)?)?
+                    .rounded_nanoseconds(unit, increment, mode)?
                     .to_string()
             ))
         }
+
         "differencePlainTime" => {
             let other = PlainTime::from_nanoseconds(decimal(request, "other")?)?;
             let largest = request["largest"]

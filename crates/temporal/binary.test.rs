@@ -243,3 +243,43 @@ fn typed_date_time_records_preserve_fractional_seconds_and_recover_after_errors(
         assert_eq!(call(&request).0, 0);
     }
 }
+
+#[test]
+fn typed_clocks_preserve_last_nanosecond_wrap_midnight_and_recover() {
+    let mut request = vec![opcode("parsePlainTime"), 10];
+    text(&mut request, "23:59:59.999999999");
+    let (status, result) = call(&request);
+    assert_eq!(status, 0);
+    assert_eq!(result.len(), 18);
+    assert_eq!(result[0], 13);
+    assert_eq!(
+        f64::from_le_bytes(result[1..9].try_into().unwrap()),
+        86_399_999_999_999.0
+    );
+    assert_eq!(&result[9..12], &[23, 59, 59]);
+    for offset in [12, 14, 16] {
+        assert_eq!(
+            u16::from_le_bytes(result[offset..offset + 2].try_into().unwrap()),
+            999
+        );
+    }
+    let mut rounding = vec![opcode("roundPlainTime"), 10];
+    rounding.extend_from_slice(&86_399_999_999_999.0f64.to_le_bytes());
+    rounding.push(0);
+    rounding.extend_from_slice(&1u32.to_le_bytes());
+    rounding.push(0);
+    let (status, result) = call(&rounding);
+    assert_eq!(status, 0);
+    assert_eq!(result, [vec![13], vec![0; 17]].concat());
+    let valid = rounding.clone();
+    for value in [f64::NAN, f64::INFINITY, -1.0, 86_400_000_000_000.0, 0.5] {
+        rounding[2..10].copy_from_slice(&value.to_le_bytes());
+        assert_eq!(call(&rounding).0, 1);
+        assert_eq!(call(&valid).0, 0);
+    }
+    assert_eq!(call(&valid[..15]).0, 2);
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    assert_eq!(call(&trailing).0, 2);
+    assert_eq!(call(&valid).0, 0);
+}

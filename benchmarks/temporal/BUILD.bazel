@@ -381,3 +381,13 @@ js_binary(
     ],
     entry_point = "wasm-cost-benchmark.ts",
 )
+
+js_binary(
+    name = "ts_regression_guard",
+    data = [
+        "ts-regression-guard.mjs",
+        ":generated_package_json",
+        "//:node_modules/@babel/core",
+    ],
+    entry_point = "ts-regression-guard.mjs",
+)

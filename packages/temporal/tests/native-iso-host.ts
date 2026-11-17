@@ -13,6 +13,7 @@ import {
 import {checkPublicCalendarOracle} from '#packages/temporal/tests/public-calendar-oracle.js'
 import {
   configureNativeTemporal,
+  nativeTemporal,
   type NativeQuery,
 } from '#packages/temporal/native.js'
 import {installTemporal} from '#packages/temporal/install.js'
@@ -38,6 +39,23 @@ installTemporal(true)
 function check(value: boolean, context: string): void {
   if (!value) throw new Error(context)
 }
+configureNativeTemporal(source => {
+  const request = JSON.parse(source)
+  delete request.clockSnapshot
+  return query(JSON.stringify(request))
+})
+const legacyClock = nativeTemporal()!.roundPlainTimeResult(
+  86399999999999n,
+  'hour',
+  1,
+  'ceil'
+)
+check(
+  legacyClock.nanoseconds === 0 &&
+    legacyClock.fields.every(value => value === 0),
+  'Legacy clock responses must balance midnight'
+)
+configureNativeTemporal(query)
 let count = 0
 for (const row of __temporalISOOracle) {
   const [milliseconds, year, month, day, hour, minute, second, millisecond] =

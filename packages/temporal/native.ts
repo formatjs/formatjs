@@ -19,6 +19,12 @@ import type {
 } from '#packages/temporal/rounding.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
 
+export interface NativeTimeResult {
+  // Clock values are below 2**47; Number is exact.
+  nanoseconds: number
+  fields: number[]
+  bigintNanoseconds?: bigint
+}
 export interface NativeCall {
   (operation: string, properties: Record<string, unknown>): any
   parseDate?(
@@ -41,6 +47,13 @@ export interface NativeCall {
   ): string
   addPlainDateTime?: NativeTemporal['addPlainDateTime']
   roundPlainDateTime?: NativeTemporal['roundPlainDateTime']
+  parsePlainTimeResult?: NativeTemporal['parsePlainTimeResult']
+  regulatePlainTimeResult?: NativeTemporal['regulatePlainTimeResult']
+  addPlainTimeResult?: NativeTemporal['addPlainTimeResult']
+  roundPlainTimeResult?: NativeTemporal['roundPlainTimeResult']
+  formatPlainTime?: NativeTemporal['formatPlainTime']
+  differencePlainTime?: NativeTemporal['differencePlainTime']
+  formatDuration?: NativeTemporal['formatDuration']
   parsePlainDateTime?: NativeTemporal['parsePlainDateTime']
   formatPlainDateTime?: NativeTemporal['formatPlainDateTime']
   createISODate?: NativeTemporal['createISODate']
@@ -59,6 +72,8 @@ const indexOf = String.prototype.indexOf
 const apply = Reflect.apply
 const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
+const ToNumber = Number
+const numberText = /* @__PURE__ */ (() => Number.prototype.toString)()
 const BadRange = RangeError
 const BadType = TypeError
 export interface NativeDateSnapshot {
@@ -68,6 +83,23 @@ export interface NativeDateSnapshot {
   owner?: NativeTemporal
 }
 export interface NativeTemporal {
+  parsePlainTimeResult(value: string): NativeTimeResult
+  regulatePlainTimeResult(
+    values: number[],
+    constrain: boolean
+  ): NativeTimeResult
+  addPlainTimeResult(
+    value: bigint | number,
+    fields: DurationFields,
+    subtract: boolean
+  ): NativeTimeResult
+  roundPlainTimeResult(
+    value: bigint | number,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): NativeTimeResult
+
   createISODate(fields: Record<string, unknown>, overflow: Overflow): DateSlot
   withDate(
     slot: DateSlot,
@@ -289,7 +321,7 @@ export interface NativeTemporal {
   parsePlainTime(value: string): bigint
   regulatePlainTime(values: number[], constrain: boolean): bigint
   formatPlainTime(
-    value: bigint,
+    value: bigint | number,
     precision: Precision,
     mode: RoundingMode
   ): string
@@ -305,8 +337,8 @@ export interface NativeTemporal {
     mode: RoundingMode
   ): bigint
   differencePlainTime(
-    value: bigint,
-    other: bigint,
+    value: bigint | number,
+    other: bigint | number,
     largest: TimeUnit,
     smallest: TimeUnit,
     increment: number,
@@ -354,6 +386,8 @@ export function configureNativeTemporal(
   const roundDateTime = invoke?.roundPlainDateTime
   const formatDateTime = invoke?.formatPlainDateTime
   const text = (value: bigint) => apply(bigintText, value, [])
+  const clockText = (value: bigint | number) =>
+    typeof value === 'number' ? apply(numberText, value, []) : text(value)
   function call(op: string, properties: Record<string, unknown>): any {
     if (invoke) return invoke(op, properties)
     const input = create(null)
@@ -436,6 +470,31 @@ export function configureNativeTemporal(
         subtract,
       })
     )
+  }
+  function clockResult(value: any): NativeTimeResult {
+    if (typeof value === 'string') {
+      const nanoseconds =
+        ((ToBigInt(value) % 86400000000000n) + 86400000000000n) %
+        86400000000000n
+      const fields = request('epochNanosecondsToISO', undefined, nanoseconds)
+      return {
+        nanoseconds: ToNumber(nanoseconds),
+        fields: [
+          fields.hour,
+          fields.minute,
+          fields.second,
+          fields.millisecond,
+          fields.microsecond,
+          fields.nanosecond,
+        ],
+        bigintNanoseconds: nanoseconds,
+      }
+    }
+    return {
+      nanoseconds: ToNumber(value.nanoseconds),
+      fields: value.fields,
+      bigintNanoseconds: undefined,
+    }
   }
   function durationFields(
     fields: DurationFields
@@ -843,11 +902,13 @@ export function configureNativeTemporal(
       call('validateDuration', {duration: durationFields(fields)})
     },
     formatDuration: (fields, precision, mode) =>
-      call('formatDuration', {
-        duration: durationFields(fields),
-        precision,
-        mode,
-      }),
+      invoke?.formatDuration
+        ? invoke.formatDuration(fields, precision, mode)
+        : call('formatDuration', {
+            duration: durationFields(fields),
+            precision,
+            mode,
+          }),
     addDuration: (one, two, subtract) =>
       call('addDuration', {
         duration: durationFields(one),
@@ -945,6 +1006,49 @@ export function configureNativeTemporal(
       request('epochNanosecondsToISO', undefined, value),
     addISODays: (fields, days) =>
       request('addISODays', fields, undefined, days),
+    parsePlainTimeResult: value =>
+      invoke?.parsePlainTimeResult
+        ? invoke.parsePlainTimeResult(value)
+        : clockResult(
+            call('parsePlainTime', {text: value, clockSnapshot: true})
+          ),
+    regulatePlainTimeResult: (values, constrain) => {
+      if (invoke?.regulatePlainTimeResult)
+        return invoke.regulatePlainTimeResult(values, constrain)
+      const fields = create(null)
+      fields.hour = values[0]
+      fields.minute = values[1]
+      fields.second = values[2]
+      fields.millisecond = values[3]
+      fields.microsecond = values[4]
+      fields.nanosecond = values[5]
+      return clockResult(
+        call('regulatePlainTime', {fields, constrain, clockSnapshot: true})
+      )
+    },
+    addPlainTimeResult: (value, fields, subtract) =>
+      invoke?.addPlainTimeResult
+        ? invoke.addPlainTimeResult(value, fields, subtract)
+        : clockResult(
+            call('addPlainTime', {
+              nanoseconds: clockText(value),
+              duration: durationFields(fields),
+              subtract,
+              clockSnapshot: true,
+            })
+          ),
+    roundPlainTimeResult: (value, unit, increment, mode) =>
+      invoke?.roundPlainTimeResult
+        ? invoke.roundPlainTimeResult(value, unit, increment, mode)
+        : clockResult(
+            call('roundPlainTime', {
+              nanoseconds: clockText(value),
+              unit,
+              increment,
+              mode,
+              clockSnapshot: true,
+            })
+          ),
     parsePlainTime: value => ToBigInt(call('parsePlainTime', {text: value})),
     regulatePlainTime: (values, constrain) => {
       const fields = create(null)
@@ -957,7 +1061,13 @@ export function configureNativeTemporal(
       return ToBigInt(call('regulatePlainTime', {fields, constrain}))
     },
     formatPlainTime: (value, precision, mode) =>
-      call('formatPlainTime', {nanoseconds: text(value), precision, mode}),
+      invoke?.formatPlainTime
+        ? invoke.formatPlainTime(value, precision, mode)
+        : call('formatPlainTime', {
+            nanoseconds: clockText(value),
+            precision,
+            mode,
+          }),
     addPlainTime: (value, fields, subtract) =>
       addition('addPlainTime', value, fields, subtract),
     roundPlainTime: (value, unit, increment, mode) =>
@@ -970,14 +1080,23 @@ export function configureNativeTemporal(
         })
       ),
     differencePlainTime: (value, other, largest, smallest, increment, mode) =>
-      call('differencePlainTime', {
-        nanoseconds: text(value),
-        other: text(other),
-        largest,
-        smallest,
-        increment,
-        mode,
-      }),
+      invoke?.differencePlainTime
+        ? invoke.differencePlainTime(
+            value,
+            other,
+            largest,
+            smallest,
+            increment,
+            mode
+          )
+        : call('differencePlainTime', {
+            nanoseconds: clockText(value),
+            other: clockText(other),
+            largest,
+            smallest,
+            increment,
+            mode,
+          }),
     parseInstant:
       invoke?.parseInstant ??
       (value => ToBigInt(call('parseInstant', {text: value}))),

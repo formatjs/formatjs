@@ -86,15 +86,27 @@ impl IsoString {
         output.push(b'-');
         output.pair(u32::from(fields.day));
         output.push(b'T');
-        output.pair(u32::from(fields.hour));
-        output.push(b':');
-        output.pair(u32::from(fields.minute));
+        output.append_time(
+            (fields.hour, fields.minute, fields.second, fields.nanosecond),
+            precision,
+        );
+        output
+    }
+    pub(crate) fn time(fields: (u8, u8, u8, u32), precision: Precision) -> Self {
+        let mut output = Self::new();
+        output.append_time(fields, precision);
+        output
+    }
+    fn append_time(&mut self, fields: (u8, u8, u8, u32), precision: Precision) {
+        self.pair(u32::from(fields.0));
+        self.push(b':');
+        self.pair(u32::from(fields.1));
         if precision != Precision::Minute {
-            output.push(b':');
-            output.pair(u32::from(fields.second));
+            self.push(b':');
+            self.pair(u32::from(fields.2));
             let (value, digits) = match precision {
                 Precision::Auto => {
-                    let (mut value, mut digits) = (fields.nanosecond, 9usize);
+                    let (mut value, mut digits) = (fields.3, 9usize);
                     while digits > 0 && value % 10 == 0 {
                         value /= 10;
                         digits -= 1;
@@ -102,17 +114,16 @@ impl IsoString {
                     (value, digits)
                 }
                 Precision::Digits(digits) => (
-                    fields.nanosecond / 10u32.pow(u32::from(9 - digits)),
+                    fields.3 / 10u32.pow(u32::from(9 - digits)),
                     usize::from(digits),
                 ),
                 Precision::Minute => unreachable!(),
             };
             if digits > 0 {
-                output.push(b'.');
-                output.number(value, digits);
+                self.push(b'.');
+                self.number(value, digits);
             }
         }
-        output
     }
     pub(crate) fn as_str(&self) -> Result<&str, fmt::Error> {
         core::str::from_utf8(&self.bytes[..self.len]).map_err(|_| fmt::Error)

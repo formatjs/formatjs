@@ -1891,3 +1891,68 @@ Node namespace payload: 498,611 bytes gzip including WASM. ISO/timezone readines
 sizes remain separate. `ts-regression-guard.json` confirms the unchanged executable
 TS AST after local identifier renaming. Rust/core, DateTime/Instant Test262,
 WASM package/ICU and native Hermes source/bytecode checks pass; no new exclusions.
+
+### Typed clocks and numeric slots
+
+ABI 14 adds typed clock parsing, regulation, arithmetic, rounding, differences and
+duration formatting. Complete clock records use 18 bytes; duration records use
+81 bytes. Rust computes all fields. Native clocks store exact Number nanoseconds
+and six fields in one WeakMap; other Temporal types receive BigInt lazily. Clock
+values are below 2**47 ns, so transport remains exact. Public slots stay private.
+
+`time-profile-results.json` shows the earlier Time.until path spending about 15%
+in duration construction, plus substantial generic encoding/decoding and map work.
+Rust already rounds duration fields to Number-representable integers and validates
+them; the binding now constructs that returned value directly. Typed formatting
+avoids another dynamic-record round trip. Rust Instant/DateTime/Time share the
+bounded ASCII formatter. Native-width operations apply only after clock range
+validation; shared rounding keeps i128 results and a wide-operand fallback.
+
+The u64 PlainTime storage experiment had no stable overall gain in isolated ABBA
+runs and was discarded. Private storage/public nanosecond APIs remain i128.
+`time-storage-experiments.json` retains the evidence; `time-experiments.json`
+records the other trials. Short shared-process numbers are diagnostic only.
+
+`time-hillclimb-results.json` refreshes both TS and native-data WASM in separate
+processes: eight inputs/parity, 20,000 warmup and nine samples of 50,000 calls
+(transitions retain their smaller counts). Unchanged pinned reference timings
+come from the previous isolated run. Times below are microseconds per call.
+
+| Operation           | Earlier WASM | Current WASM | Current TS |
+| ------------------- | -----------: | -----------: | ---------: |
+| timeParse           |        2.581 |        0.838 |      1.311 |
+| timeFormat          |        2.832 |        0.377 |      0.770 |
+| timeAdd             |        6.602 |        1.280 |      2.622 |
+| timeRoundFormat     |        6.548 |        1.127 |      1.471 |
+| timeUntil           |       13.934 |        2.382 |      2.785 |
+| round               |        0.821 |        0.793 |      0.467 |
+| dateTimeRoundFormat |        2.583 |        2.575 |      1.600 |
+
+All five PlainTime workloads beat TS in this run. Overall WASM wins
+22/48 against TS, 24/48 against temporal-polyfill 1.0.7 and 35/48 against
+@js-temporal/polyfill 0.5.1. Remaining workloads still slower; the goal stays open.
+Close medians need further evidence. Earlier sections retain checkpoint data.
+
+`time-startup-results.json` records nine fresh processes per profile. Node
+namespace gzip payload: 500,093 bytes including WASM, versus TS 39,690 bytes.
+ISO/timezone readiness: WASM 16.66 ms, TS 19.37 ms.
+Full calendar readiness: WASM 27.32 ms. Owned calendar/timezone data remain in
+Rust; TS uses host Intl. Browser export-all consumer sizes are separate.
+
+63 focused Rust/TS/WASM/ICU/Hermes targets pass. Final controls cover clock
+ownership after WASM memory growth, captured slot lookups, SDK legacy midnight
+carry and lazy BigInt interoperability. No new conformance exclusions. Full
+owned-Intl WASM coverage remains in CI.
+
+The executable TS AST still matches baseline after local binding renaming. The
+checked-in guard strips parser metadata (including raw/source-position fields),
+retains globals/properties/literal values, and rejects an unintended intrinsic
+capture as a negative control. Existing captures keep their original timing.
+`ts-regression-guard.json` records hashes and the control. Save both consumer
+bundles with `FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT` when running the harness, then:
+
+```sh
+bazel run -c opt //benchmarks/temporal:ts_regression_guard -- /tmp/baseline.js /tmp/current.js
+```
+
+Babel is an existing development dependency, used only by this audit target.

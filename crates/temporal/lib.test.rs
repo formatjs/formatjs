@@ -2426,3 +2426,37 @@ fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
             .collect::<Vec<i128>>()
     );
 }
+
+#[test]
+fn instant_rounding_keeps_wide_results_at_signed_64_bit_boundaries() {
+    use formatjs_temporal::{RoundingMode, TimeUnit};
+    let base = 9_223_372_036_854_775_800i128;
+    for (value, expected) in [
+        (base + 7, [base, base + 10, base + 10]),
+        (base + 8, [base, base + 10, base + 10]),
+        (-base - 8, [-base - 10, -base, -base - 10]),
+        (-base - 9, [-base - 10, -base, -base - 10]),
+        (base + 5, [base, base + 10, base]),
+        (base + 15, [base + 10, base + 20, base + 20]),
+        (-base - 5, [-base - 10, -base, -base]),
+        (-base - 15, [-base - 20, -base - 10, -base - 20]),
+    ] {
+        for (mode, expected) in [
+            RoundingMode::Floor,
+            RoundingMode::Ceil,
+            RoundingMode::HalfEven,
+        ]
+        .into_iter()
+        .zip(expected)
+        {
+            assert_eq!(
+                Instant::from_epoch_nanoseconds(value)
+                    .unwrap()
+                    .round(TimeUnit::Nanosecond, 10, mode)
+                    .unwrap()
+                    .epoch_nanoseconds(),
+                expected
+            );
+        }
+    }
+}
