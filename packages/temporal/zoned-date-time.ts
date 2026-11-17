@@ -341,9 +341,17 @@ export function toZonedDateTimeSlot(
     const parsed = parseZonedDateTimeString(item)
     dateOnly = !/[Tt ]/.test(item.slice(0, item.indexOf('[')))
     calendar = constructorCalendar(parsed.fields.calendar)
-    zone = timeZoneIdentifier(parsed.timeZone)
+    zone =
+      import.meta.formatjsTemporalNativeData === true &&
+      parsed.validatedTimeZone !== undefined
+        ? parsed.validatedTimeZone
+        : timeZoneIdentifier(parsed.timeZone)
     offset = parsed.offset
-    value = isoToEpochNanoseconds(parsed.fields)
+    value =
+      import.meta.formatjsTemporalNativeData === true &&
+      parsed.localNanoseconds !== undefined
+        ? parsed.localNanoseconds
+        : isoToEpochNanoseconds(parsed.fields)
     matchMinute = offset !== undefined && /^[+-]\d{2}(?::?\d{2})?$/.test(offset)
   }
   const resolved = optionsObject(options),

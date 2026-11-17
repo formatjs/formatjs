@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 16 ||
+    core.temporal_abi_version() !== 17 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -403,6 +403,18 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
         cursor += 2
         return wasmStrings[code]
       }
+      if (tag === 16) {
+        const ns =
+          readUnsigned(output, cursor, true) +
+          (readSigned(output, cursor + 8, true) << 64n)
+        cursor += 16
+        return {
+          epochNanoseconds: ns,
+          calendar: undefined,
+          timeZone: undefined,
+          properties: decode(),
+        }
+      }
       if (tag === 11) {
         const start = cursor
         cursor += 21
@@ -528,6 +540,8 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     'halfTrunc',
     'halfEven',
   ]
+  const disambiguations = ['compatible', 'earlier', 'later', 'reject']
+  const offsetOptions = ['prefer', 'use', 'ignore', 'reject']
   const calendarNames = ['auto', 'always', 'never', 'critical']
   invoke.formatDate = (operation, slot, calendarName) => {
     const pointer = begin(
@@ -876,6 +890,118 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     )
     write32(fastView, pointer + 24, encoded.written, true)
     return dateTimeResult(exchange(28 + encoded.written))
+  }
+  invoke.parseZonedFields = value => {
+    validateText(value)
+    const pointer = begin(operationCodes.parseZonedFields, 6 + value.length * 3)
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    const result = exchange(6 + encoded.written)
+    if (fastBytes[result] !== 18)
+      throw new BadType('Invalid Temporal WASM response')
+    const localNanoseconds =
+      readUnsigned(fastView, result + 1, true) +
+      (readSigned(fastView, result + 9, true) << 64n)
+    const fields = {
+      year: read32(fastView, result + 17, true) | 0,
+      month: fastBytes[result + 21],
+      day: fastBytes[result + 22],
+      hour: fastBytes[result + 23],
+      minute: fastBytes[result + 24],
+      second: fastBytes[result + 25],
+      millisecond: read16(fastView, result + 26, true),
+      microsecond: read16(fastView, result + 28, true),
+      nanosecond: read16(fastView, result + 30, true),
+      calendar: '',
+    }
+    const hasOffset = fastBytes[result + 32] !== 0
+    let cursor = result + 33
+    const texts: string[] = []
+    for (let i = 0; i < 4; i++) {
+      const length = read32(fastView, cursor, true)
+      cursor += 4
+      texts[i] = getText(decoder, new Bytes(fastBuffer!, cursor, length))
+      cursor += length
+    }
+    fields.calendar = texts[0]
+    return {
+      fields,
+      timeZone: texts[1],
+      offset: hasOffset ? texts[2] : undefined,
+      localNanoseconds,
+      validatedTimeZone: texts[3] || undefined,
+    }
+  }
+  function zonedResult(result: number, calendar: string, timeZone: string) {
+    if (fastBytes[result] !== 17) {
+      const value = decodeResult(result - 8)
+      value.calendar = calendar
+      value.timeZone = timeZone
+      return value
+    }
+    const ns =
+      readUnsigned(fastView, result + 1, true) +
+      (readSigned(fastView, result + 9, true) << 64n)
+    const offsetNanoseconds = readNumber(fastView, result + 17, true)
+    const hoursInDay = readNumber(fastView, result + 25, true)
+    const length = read32(fastView, result + 33, true)
+    const offset = getText(decoder, new Bytes(fastBuffer!, result + 37, length))
+    const local = dateTimeResult(result + 37 + length)
+    return {
+      epochNanoseconds: ns,
+      calendar,
+      timeZone,
+      properties: {
+        date: local.properties!.date,
+        values: {
+          ...local.properties!.values,
+          localNanoseconds: local.epochNanoseconds,
+          offsetNanoseconds,
+          offset,
+          hoursInDay,
+        },
+        errors: [],
+      },
+    }
+  }
+  invoke.resolveZonedDateTime = (
+    value,
+    identifier,
+    calendar,
+    offset,
+    behavior,
+    disambiguation,
+    matchMinute,
+    dateOnly
+  ) => {
+    const pointer = begin(
+      operationCodes.resolveZonedDateTime,
+      33 + (identifier.length + calendar.length + (offset?.length ?? 0)) * 3
+    )
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] = arrayIndex(disambiguations, disambiguation)
+    fastBytes[pointer + 19] = arrayIndex(offsetOptions, behavior)
+    fastBytes[pointer + 20] =
+      (dateOnly ? 1 : 0) |
+      (matchMinute ? 2 : 0) |
+      (offset === undefined ? 0 : 4)
+    let cursor = pointer + 21
+    const texts = [identifier, calendar, offset ?? '']
+    for (let i = 0; i < texts.length; i++) {
+      const text = texts[i]
+      const encoded = putText(
+        encoder,
+        text,
+        new Bytes(
+          fastBuffer!,
+          cursor + 4,
+          fastCapacity - (cursor - pointer) - 4
+        )
+      )
+      write32(fastView, cursor, encoded.written, true)
+      cursor += 4 + encoded.written
+    }
+    return zonedResult(exchange(cursor - pointer), calendar, identifier)
   }
   invoke.timeZoneTransition = (identifier, value, direction) => {
     const pointer = begin(

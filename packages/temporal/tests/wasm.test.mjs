@@ -431,6 +431,7 @@ try {
 }
 const arrayIterator = Array.prototype[Symbol.iterator]
 let durationWithPoisonedIterator
+let zonedWithPoisonedIterator
 try {
   Array.prototype[Symbol.iterator] = function () {
     throw new Error('Temporal duration fields must not use array iteration')
@@ -439,10 +440,14 @@ try {
     hours: 1,
     nanoseconds: 1,
   }).epochNanoseconds
+  zonedWithPoisonedIterator = Temporal.ZonedDateTime.from(
+    '1970-01-01T00:00:00.123456789[+05:45]'
+  ).epochNanoseconds
 } finally {
   Array.prototype[Symbol.iterator] = arrayIterator
 }
 assert.equal(durationWithPoisonedIterator, 3_600_000_000_001n)
+assert.equal(zonedWithPoisonedIterator, -20_699_876_543_211n)
 const core = instance.exports
 assert.equal(core.temporal_alloc(-1), 0)
 const slot = core.temporal_alloc(8)
@@ -707,6 +712,101 @@ for (const [source, fields, expected] of [
     'Complete results cover calendar, clock and zone getters'
   )
   assert.equal(result.toString(), expected)
+}
+
+for (const calendar of ['iso8601', 'gregory']) {
+  const result = Temporal.ZonedDateTime.from(
+    '1970-01-01T00:00:00.123456789[utc][u-ca=' + calendar + ']'
+  )
+  const before = countRequests()
+  assert.deepEqual(
+    [
+      result.epochNanoseconds,
+      result.timeZoneId,
+      result.calendarId,
+      result.year,
+      result.month,
+      result.monthCode,
+      result.day,
+      result.hour,
+      result.minute,
+      result.second,
+      result.millisecond,
+      result.microsecond,
+      result.nanosecond,
+      result.dayOfWeek,
+      result.dayOfYear,
+      result.daysInWeek,
+      result.daysInMonth,
+      result.daysInYear,
+      result.monthsInYear,
+      result.inLeapYear,
+      result.offset,
+      result.offsetNanoseconds,
+      result.hoursInDay,
+      result.era,
+      result.eraYear,
+    ],
+    [
+      123456789n,
+      'UTC',
+      calendar,
+      1970,
+      1,
+      'M01',
+      1,
+      0,
+      0,
+      0,
+      123,
+      456,
+      789,
+      4,
+      1,
+      7,
+      31,
+      365,
+      12,
+      false,
+      '+00:00',
+      0,
+      24,
+      calendar === 'gregory' ? 'ce' : undefined,
+      calendar === 'gregory' ? 1970 : undefined,
+    ]
+  )
+  assert.equal(
+    countRequests(),
+    before,
+    'Parsed results contain all Rust fields'
+  )
+}
+assert.equal(
+  Temporal.ZonedDateTime.from('1970-01-01T00:00[us/eastern]').timeZoneId,
+  'US/Eastern'
+)
+for (const input of [
+  '1970-01-01T00:00[UTC][u-ca=invalid]',
+  '1970-01-01T00:00[Invalid/Zone]',
+  '1970-01-01T00:00[UTC]',
+]) {
+  const reads = []
+  const options = new Proxy(
+    {},
+    {
+      get(_target, key) {
+        reads.push(key)
+        return undefined
+      },
+    }
+  )
+  if (input.includes('invalid') || input.includes('Invalid')) {
+    assert.throws(() => Temporal.ZonedDateTime.from(input, options), RangeError)
+    assert.deepEqual(reads, [])
+  } else {
+    Temporal.ZonedDateTime.from(input, options)
+    assert.deepEqual(reads, ['disambiguation', 'offset', 'overflow'])
+  }
 }
 
 const historical = Temporal.ZonedDateTime.from({

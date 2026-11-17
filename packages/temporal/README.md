@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 16. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 17. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 16 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 17 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -271,3 +271,21 @@ transition candidates using one set of yearly events for before/after offsets.
 January 1 retains separate rule-year windows; the first second after explicit
 history retains its join check. No cache, new dependency or data-policy change.
 Signed/full-range values, null transitions and malformed requests stay covered.
+
+ABI 17 adds typed zoned parsing and resolution. Rust parsing returns the local
+nanosecond value and normalized spelling for valid timezone identifiers. JS still
+validates calendars/zones before reading options; failed identity validation stays
+at its original observable point. Resolution reuses its typed Rust ZonedDateTime
+instead of rebuilding it through dynamic records. Complete ISO zoned results use
+compact binary records, including offset seconds/fractions and hoursInDay.
+Non-ISO calendars and deferred getter errors retain complete general snapshots.
+SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
+
+Current ABI 17 isolated checkpoint cuts zoned parsing from 27.26 to 9.91 µs;
+TS remains 3.97 µs. WASM wins 24/48 medians, with 24 workloads still slower.
+Complete results remain eager; the parse workload reads only epochNanoseconds.
+Twelve focused Rust/WASM/Test262/ICU/Hermes/type targets pass; pure TS executable
+AST matches baseline. Native Node namespace is 509,609 bytes gzip versus TS
+39,692 with host Intl. Native ISO/timezone startup is 17.01 ms versus TS 19.39 ms.
+See [typed zoned parsing](../../benchmarks/temporal/README.md#typed-zoned-parsing)
+for all workloads, size/startup scope and profile evidence. Goal remains open.

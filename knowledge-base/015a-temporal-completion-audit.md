@@ -320,3 +320,21 @@ pass; targets are recorded in benchmarks/temporal/zoned-experiments.json. Broade
 conformance remains a CI gate. Default TS AST and its negative control pass.
 No new exclusions. Isolated transition time falls from 4.535 to 1.515 microseconds;
 TS remains faster at 0.459. Overall sampled WASM wins 23/48 versus TS; goal open.
+
+### ABI 17 zoned parsing follow-up
+
+Typed parsing/resolution and compact complete ISO zoned results reduce isolated
+parse time from 27.256 to 9.907 microseconds; TS remains 3.969. All 48 workloads
+are retained in zoned-parse-hillclimb-results.json; all 24 slower workloads/ratios
+are explicit in zoned-parse-experiments.json. Current medians win 24/48 versus TS;
+close results are not stable-win proof. Complete Rust fields are retained despite
+the epoch-only parse consumer. Goal remains open.
+
+Twelve focused Rust/WASM/Test262/ICU/Hermes/type targets pass, including new raw
+codec bounds/error recovery, complete ISO/Gregorian getter reuse, aliases,
+poisoned Array iteration and calendar/zone/options ordering. No new exclusions.
+Pure TS executable AST still matches the baseline; negative control is rejected.
+Native namespace payload is 509,609 gzip bytes (+3,577); TS 39,692 with host Intl.
+Nine-process ISO/timezone startup is 17.01 ms native versus 19.39 ms TS. The fresh
+CPU profile identifies recurring-rule construction and repeated offset scans as
+remaining Rust costs. Full conformance remains a CI gate.

@@ -338,6 +338,8 @@ export function parseZonedDateTimeString(value: string): {
   fields: ParsedDateFields
   timeZone: string
   offset: string | undefined
+  localNanoseconds?: bigint
+  validatedTimeZone?: string
 } {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)

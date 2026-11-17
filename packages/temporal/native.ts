@@ -63,6 +63,8 @@ export interface NativeCall {
   addPlainDate?: NativeTemporal['addPlainDate']
   roundInstantUnit?: NativeTemporal['roundInstantUnit']
   timeZoneTransition?: NativeTemporal['timeZoneTransition']
+  resolveZonedDateTime?: NativeTemporal['resolveZonedDateTime']
+  parseZonedFields?: NativeTemporal['parseZonedFields']
 }
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
@@ -79,7 +81,7 @@ const BadRange = RangeError
 const BadType = TypeError
 export interface NativeDateSnapshot {
   date: CalendarDate | null
-  values: Record<string, string | number | boolean | undefined>
+  values: Record<string, string | number | boolean | bigint | undefined>
   errors: string[]
   owner?: NativeTemporal
 }
@@ -170,6 +172,8 @@ export interface NativeTemporal {
     fields: Required<ISODateTime> & {calendar: string}
     timeZone: string
     offset: string | undefined
+    localNanoseconds?: bigint
+    validatedTimeZone?: string
   }
   resolveZonedDateTime(
     value: bigint,
@@ -738,11 +742,14 @@ export function configureNativeTemporal(
           : call('parsePlainMonthDay', {text: value})
       ),
     parseZonedFields: value => {
+      if (invoke?.parseZonedFields) return invoke.parseZonedFields(value)
       const result = call('parseZonedFields', {text: value})
       return {
         fields: result.fields,
         timeZone: result.timeZone,
         offset: result.offset ?? undefined,
+        localNanoseconds: undefined,
+        validatedTimeZone: undefined,
       }
     },
     resolveZonedDateTime: (
@@ -756,16 +763,27 @@ export function configureNativeTemporal(
       dateOnly
     ) =>
       timeResult(
-        call('resolveZonedDateTime', {
-          nanoseconds: text(value),
-          identifier,
-          calendar,
-          offset,
-          behavior,
-          disambiguation,
-          matchMinute,
-          dateOnly,
-        }),
+        invoke?.resolveZonedDateTime
+          ? invoke.resolveZonedDateTime(
+              value,
+              identifier,
+              calendar,
+              offset,
+              behavior,
+              disambiguation,
+              matchMinute,
+              dateOnly
+            )
+          : call('resolveZonedDateTime', {
+              nanoseconds: text(value),
+              identifier,
+              calendar,
+              offset,
+              behavior,
+              disambiguation,
+              matchMinute,
+              dateOnly,
+            }),
         calendar,
         identifier
       ),

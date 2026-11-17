@@ -629,6 +629,11 @@ fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     } else {
         zoned_value(record)?
     };
+    zoned_value_snapshot(value)
+}
+pub(crate) fn zoned_value_snapshot(
+    value: ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>,
+) -> Result<CalendarSnapshot, Error> {
     let offset = value.time_zone().offset_nanoseconds(value.instant());
     let local = value.instant().epoch_nanoseconds() + offset;
     let mut properties = partial_calendar_snapshot(
@@ -1049,6 +1054,30 @@ fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+pub(crate) fn parsed_offset_text(offset: crate::OffsetInput) -> Option<std::string::String> {
+    match offset {
+        crate::OffsetInput::Wall => None,
+        crate::OffsetInput::Utc => Some("Z".to_string()),
+        crate::OffsetInput::Minute(value) | crate::OffsetInput::Exact(value) => {
+            let absolute = value.abs();
+            let sign = if value < 0 { "-" } else { "+" };
+            let base = std::format!(
+                "{sign}{:02}:{:02}",
+                absolute / 3_600_000_000_000,
+                absolute / 60_000_000_000 % 60
+            );
+            Some(if matches!(offset, crate::OffsetInput::Minute(_)) {
+                base
+            } else {
+                std::format!(
+                    "{base}:{:02}.{:09}",
+                    absolute / 1_000_000_000 % 60,
+                    absolute % 1_000_000_000
+                )
+            })
+        }
+    }
+}
 fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "resolveZonedDateTime" {
         let local = decimal(request, "nanoseconds")?;
@@ -1117,28 +1146,7 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
         parsed.fields.to_epoch_nanoseconds()?;
         let mut fields = record(parsed.fields);
         fields["calendar"] = json!(crate::parse::calendar_annotation(text).unwrap_or("iso8601"));
-        let offset = match parsed.offset {
-            crate::OffsetInput::Wall => None,
-            crate::OffsetInput::Utc => Some("Z".to_string()),
-            crate::OffsetInput::Minute(value) | crate::OffsetInput::Exact(value) => {
-                let absolute = value.abs();
-                let sign = if value < 0 { "-" } else { "+" };
-                let base = std::format!(
-                    "{sign}{:02}:{:02}",
-                    absolute / 3_600_000_000_000,
-                    absolute / 60_000_000_000 % 60
-                );
-                Some(if matches!(parsed.offset, crate::OffsetInput::Minute(_)) {
-                    base
-                } else {
-                    std::format!(
-                        "{base}:{:02}.{:09}",
-                        absolute / 1_000_000_000 % 60,
-                        absolute % 1_000_000_000
-                    )
-                })
-            }
-        };
+        let offset = parsed_offset_text(parsed.offset);
         return Ok(json!({"fields":fields,"timeZone":parsed.zone,"offset":offset}));
     }
     let calendar = calendar_for_string(text)?;

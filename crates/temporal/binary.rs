@@ -541,6 +541,28 @@ fn encode_date_time(
     output.extend_from_slice(&string_code("properties").unwrap().to_le_bytes());
     encode_snapshot(output, snapshot);
 }
+fn encode_zoned(
+    output: &mut Vec<u8>,
+    ns: i128,
+    calendar: &str,
+    snapshot: crate::ffi::CalendarSnapshot,
+) {
+    if calendar == "iso8601" && snapshot.errors == 0 && snapshot.date.is_some() {
+        output.push(17);
+        output.extend_from_slice(&ns.to_le_bytes());
+        let offset = snapshot.values[18].as_i64().unwrap();
+        output.extend_from_slice(&(offset as f64).to_le_bytes());
+        output.extend_from_slice(&snapshot.values[20].as_f64().unwrap().to_le_bytes());
+        let text = snapshot.values[19].as_str().unwrap();
+        output.extend_from_slice(&(text.len() as u32).to_le_bytes());
+        output.extend_from_slice(text.as_bytes());
+        encode_date_time(output, ns + i128::from(offset), calendar, snapshot);
+    } else {
+        output.push(16);
+        output.extend_from_slice(&ns.to_le_bytes());
+        encode_snapshot(output, snapshot);
+    }
+}
 fn encode_snapshot(output: &mut Vec<u8>, snapshot: crate::ffi::CalendarSnapshot) {
     output.push(9);
     if let Some(date) = snapshot.date {

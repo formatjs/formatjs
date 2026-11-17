@@ -461,7 +461,7 @@ export function dateProperty(
       slot.calendar !== 'iso8601'
     )
       return undefined
-    return value!.values[key]
+    return value!.values[key] as string | number | boolean | undefined
   }
   const fields = dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)

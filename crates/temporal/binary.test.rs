@@ -357,3 +357,181 @@ fn typed_zone_transitions_preserve_boundaries_nulls_and_errors() {
     assert_eq!(call(&request("UTC", 8_640_000_000_000_000_000_001, 0)).0, 1);
     assert_eq!(call(&request("UTC", 0, 0)), (0, vec![0]));
 }
+
+#[test]
+fn typed_zoned_parsing_preserves_fields_identity_and_optional_offsets() {
+    let request = |value: &str| {
+        let mut bytes = vec![opcode("parseZonedFields"), 10];
+        text(&mut bytes, value);
+        bytes
+    };
+    for (input, local, zone, identity, offset, calendar) in [
+        (
+            "1970-01-01T00:00[utc]",
+            0i128,
+            "utc",
+            "UTC",
+            None,
+            "iso8601",
+        ),
+        (
+            "1969-12-31T23:59:59.123456789-05:00[us/eastern][u-ca=gregory]",
+            -876_543_211,
+            "us/eastern",
+            "US/Eastern",
+            Some("-05:00"),
+            "gregory",
+        ),
+        (
+            "1970-01-01T00:00+05:41:16.123456789[Asia/Kathmandu]",
+            0,
+            "Asia/Kathmandu",
+            "Asia/Kathmandu",
+            Some("+05:41:16.123456789"),
+            "iso8601",
+        ),
+        (
+            "-271821-04-20T00:00Z[UTC]",
+            -8_640_000_000_000_000_000_000,
+            "UTC",
+            "UTC",
+            Some("Z"),
+            "iso8601",
+        ),
+        (
+            "+275760-09-13T00:00Z[UTC]",
+            8_640_000_000_000_000_000_000,
+            "UTC",
+            "UTC",
+            Some("Z"),
+            "iso8601",
+        ),
+        (
+            "1970-01-01T00:00[Invalid/Zone]",
+            0,
+            "Invalid/Zone",
+            "",
+            None,
+            "iso8601",
+        ),
+    ] {
+        let (status, result) = call(&request(input));
+        assert_eq!(status, 0, "{input}");
+        assert_eq!(result[0], 18);
+        assert_eq!(
+            i128::from_le_bytes(result[1..17].try_into().unwrap()),
+            local
+        );
+        let fields = formatjs_temporal::IsoDateTime::from_epoch_nanoseconds(local).unwrap();
+        assert_eq!(
+            i32::from_le_bytes(result[17..21].try_into().unwrap()),
+            fields.year
+        );
+        assert_eq!(
+            &result[21..26],
+            &[
+                fields.month,
+                fields.day,
+                fields.hour,
+                fields.minute,
+                fields.second
+            ]
+        );
+        for (index, expected) in [
+            fields.nanosecond / 1_000_000,
+            fields.nanosecond / 1000 % 1000,
+            fields.nanosecond % 1000,
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let start = 26 + index * 2;
+            assert_eq!(
+                u16::from_le_bytes(result[start..start + 2].try_into().unwrap()),
+                expected as u16
+            );
+        }
+        assert_eq!(result[32], u8::from(offset.is_some()));
+        let mut cursor = 33;
+        for expected in [calendar, zone, offset.unwrap_or(""), identity] {
+            let length =
+                u32::from_le_bytes(result[cursor..cursor + 4].try_into().unwrap()) as usize;
+            cursor += 4;
+            assert_eq!(&result[cursor..cursor + length], expected.as_bytes());
+            cursor += length;
+        }
+        assert_eq!(cursor, result.len());
+    }
+    let valid = request("1970-01-01T00:00[UTC]");
+    let before = call(&valid);
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    let mut invalid_utf8 = valid.clone();
+    invalid_utf8[6] = 255;
+    for invalid in [trailing, invalid_utf8, valid[..valid.len() - 1].to_vec()] {
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), before);
+    }
+    assert_eq!(call(&request("invalid")).0, 1);
+    assert_eq!(call(&valid), before);
+}
+
+#[test]
+fn typed_zoned_resolution_preserves_offsets_and_recovers_from_bad_modes() {
+    let request = |zone: &str, offset: &str, flags: u8| {
+        let mut bytes = vec![opcode("resolveZonedDateTime"), 10];
+        bytes.extend_from_slice(&0i128.to_le_bytes());
+        bytes.extend_from_slice(&[0, 3, flags]);
+        for value in [zone, "iso8601", offset] {
+            text(&mut bytes, value);
+        }
+        bytes
+    };
+    for (zone, offset, flags, expected, expected_offset) in [
+        ("UTC", "", 0, 0i128, 0i64),
+        (
+            "+05:45",
+            "+05:45",
+            4,
+            -20_700_000_000_000,
+            20_700_000_000_000,
+        ),
+        ("UTC", "Z", 4, 0, 0),
+        ("UTC", "", 1, 0, 0),
+    ] {
+        let (status, result) = call(&request(zone, offset, flags));
+        assert_eq!(status, 0);
+        assert_eq!(result[0], 17);
+        assert_eq!(
+            i128::from_le_bytes(result[1..17].try_into().unwrap()),
+            expected
+        );
+        assert_eq!(
+            f64::from_le_bytes(result[17..25].try_into().unwrap()),
+            expected_offset as f64
+        );
+        assert_eq!(f64::from_le_bytes(result[25..33].try_into().unwrap()), 24.0);
+        let length = u32::from_le_bytes(result[33..37].try_into().unwrap()) as usize;
+        assert_eq!(result[37 + length], 12);
+        assert_eq!(
+            i128::from_le_bytes(result[38 + length..54 + length].try_into().unwrap()),
+            0
+        );
+        assert_eq!(result.len(), 85 + length);
+    }
+    let valid = request("UTC", "", 0);
+    let before = call(&valid);
+    for (index, value) in [(18, 4), (19, 4), (20, 8)] {
+        let mut invalid = valid.clone();
+        invalid[index] = value;
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), before);
+    }
+    assert_eq!(call(&request("UTC", "+01:00", 0)).0, 2);
+    assert_eq!(call(&request("UTC", "", 4)).0, 1);
+    assert_eq!(call(&request("Invalid/Zone", "", 0)).0, 1);
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    assert_eq!(call(&trailing).0, 2);
+    assert_eq!(call(&valid), before);
+}

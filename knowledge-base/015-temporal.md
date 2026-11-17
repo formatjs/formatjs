@@ -1962,3 +1962,35 @@ full calendar readiness 27.29 ms. No new exclusions.
 All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;
 validation targets are recorded in zoned-experiments.json. Broader conformance
 remains a CI gate. No new exclusions.
+
+### Typed zoned parsing and resolution
+
+ABI 17 specializes two more existing operations, for 29 typed routes among the
+unchanged 69 normalized operations. Parsed fields include Rust-computed local
+nanoseconds and successful timezone identity metadata. Invalid calendar/zone
+validation still precedes JS option getters. Invalid zone metadata is omitted,
+so the original JS validation/error ordering remains authoritative. Calendar
+annotations stay raw until JS validates them. Alias spellings remain preserved.
+
+Typed resolution passes the already-created Rust ZonedDateTime into the shared
+snapshot builder. ISO results carry signed instant/local nanoseconds, complete
+calendar/clock fields, exact offset text/nanoseconds and hoursInDay. Non-ISO or
+partially invalid snapshots retain their general encoding and deferred errors.
+SDK JSON responses keep their existing shape; the shared offset formatter is
+unchanged. No operation-result cache or data-policy change.
+
+Boundary controls exercise full-range signed values, fractional/historical
+offsets, optional versus supplied-empty offsets, invalid modes/UTF8/trailing
+bytes and recovery. Public controls check complete ISO/Gregorian getters without
+extra calls, alias spelling, poisoned Array iteration and option getter order.
+Twelve focused Rust/WASM Test262/ICU/Hermes/type targets pass; no new exclusions.
+
+`benchmarks/temporal/zoned-parse-*.json` retain incremental trials, all 48 isolated
+TS/WASM timings, nine-process startup/size and the fresh named-WASM profile.
+Parsing falls from 27.256 to 9.907 microseconds; TS is 3.969. Complete Rust results
+stay eager while the public parse workload consumes only epochNanoseconds.
+WASM wins 24/48 medians; slower operations are explicitly listed in the experiment
+record. Pure TS executable AST still matches the baseline. Native namespace is
+509,609 gzip bytes (+3,577), versus TS 39,692 using host Intl. ISO/timezone startup
+is 17.01 versus 19.39 ms. Rust profile self time now concentrates on recurring
+rule events and historical-offset scans; these are next targets. Goal open.

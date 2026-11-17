@@ -2038,3 +2038,61 @@ No new conformance exclusions.
 All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;
 validation targets are recorded in zoned-experiments.json. Broader conformance
 remains a CI gate. No new exclusions.
+
+### Typed zoned parsing
+
+ABI 17 specializes zoned parsing and resolution, bringing typed routes to 29.
+Rust parsing returns the local nanoseconds and valid timezone identifier spelling;
+JS retains calendar/zone validation and option getter order. Resolution builds
+its complete snapshot from the existing Rust ZonedDateTime instead of dynamic
+records and another reconstruction. Compact ISO transport includes all date,
+clock, exact offset and day-length fields. Non-ISO/deferred-error results retain
+the general complete snapshot. SDK JSON stays unchanged.
+
+`zoned-parse-experiments.json` retains the four incremental trials: typed resolution,
+compact snapshots, typed parsing and successful identity metadata. Shared-process
+parse medians were 22.78, 21.28, 12.47 and 10.12 microseconds. The last trial also
+slowed its TS controls; use the isolated checkpoint for throughput claims.
+
+`zoned-parse-hillclimb-results.json` refreshes all 48 TS/WASM workloads in separate
+processes, eight varying inputs/parity, 20,000 warmup and nine samples of 50,000
+calls. Transitions retain 1,000 warmup and nine samples of 5,000. Pinned reference
+results are explicitly retained from the preceding checkpoint.
+
+| Workload        | Previous WASM µs | Current WASM µs | Current TS µs |
+| --------------- | ---------------: | --------------: | ------------: |
+| zonedParse      |           27.256 |           9.907 |         3.969 |
+| zonedRound      |           12.929 |          13.535 |         2.812 |
+| zonedWith       |           20.961 |          21.515 |         9.359 |
+| zonedTransition |            1.515 |           1.512 |         0.446 |
+
+Zoned parsing improves 64%, while TS parsing stays near 3.98 microseconds. WASM
+still loses that workload by 2.50x. Current medians win 24/48 versus TS, 25/48
+versus temporal-polyfill 1.0.7 and 35/48 versus @js-temporal/polyfill 0.5.1. This
+is not stable-win proof: timeRoundFormat loses this checkpoint, and earlier
+longer Instant rounding controls disagreed with its apparent win. All 24 slower
+workloads and their ratios are listed in zoned-parse-experiments.json. Goal open.
+
+The parse benchmark reads only epochNanoseconds. TS stores three slots, computes
+calendar/day-length fields lazily and benefits from warmed host Intl offset
+caches. WASM still returns complete Rust fields eagerly. Both run the unchanged
+public workload; the result-demand difference remains part of the cost.
+
+`zoned-parse-profile-results.json` records a fresh named-WASM CPU profile after
+these changes. Rust is 65.13% of weighted self samples; recurring-rule event
+construction and historical-offset visitation are 11.66% and 11.63% respectively.
+JS facade self samples are 21.46%, GC 4.34%; setup/runtime helpers remain explicit.
+These profiles guide the next iteration, not production throughput claims.
+
+`zoned-parse-startup-results.json` records nine fresh processes/profile. Native
+Node namespace payload is 509,609 bytes gzip (+3,577): JS 33,607 and WASM 476,002.
+TS is 39,692 with host Intl; native retains owned calendar/timezone data. Native
+ISO/timezone readiness is 17.01 ms versus TS 19.39 ms; full calendars 27.74 ms.
+Browser export-all consumers are separate: native 512,665 bytes gzip, TS 39,749.
+The pure TS executable AST still matches the baseline after lexical renaming;
+the intrinsic-capture negative control remains rejected.
+
+All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass. New controls cover
+signed bounds, fields, optional/exact offsets, alias spellings, malformed request
+recovery, complete ISO/Gregorian getters, poisoned Array iteration and option
+getter order. No new exclusions, operation-result cache or dependency.
