@@ -40,6 +40,14 @@ export function arithmeticCalendar(
     calendar,
     dateFromTime(t) {
       const epochDay = Math.floor(t / 86400000)
+      // Keep one day of padding around Date's range for timezone offsets.
+      if (
+        !Number.isFinite(t) ||
+        epochDay < -100000001 ||
+        epochDay > 100000000
+      ) {
+        throw new RangeError('Calendar date out of range')
+      }
       const date = ArithmeticCalendarFromEpochDay(calendar, epochDay)
       if (hebrew) {
         // CLDR reserves month 6 for Adar I and a separate name for leap-year Adar II.
