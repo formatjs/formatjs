@@ -105,6 +105,9 @@ Pre-commit hooks run sequentially:
 6. `gazelle` — regenerate BUILD files
 7. `bazel-lock-regen` — bazel mod deps
 
+`lint-codescythe` generates ignored package tsconfigs before analysis, so project
+references resolve in clean CI checkouts.
+
 All hook `bazel run` commands use `-c opt`, including the CI Lefthook entrypoint
 and commitlint, so Gazelle does not invalidate analysis by changing modes.
 The Rust formatter resolves the pinned toolchain directly without compiling
