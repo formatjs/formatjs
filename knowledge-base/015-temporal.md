@@ -1902,3 +1902,37 @@ normalizes local bindings and strips parser metadata while retaining executable
 structure/global/property/literal semantics. It catches an unintended retained
 intrinsic capture; existing captures retain their timing. The final TS audit
 matches the 872fdaee baseline.
+
+### Compact Instant transport
+
+ABI 15 keeps the 69 normalized operations and adds compact signed integer results:
+tag 15 plus i64 (9 bytes), or tag 10 plus i128 (17 bytes). Typed parse/add/round
+use this representation. An optional scalar i64 rounding export returns BigInt
+without refreshing WASM memory or decoding response records. i64::MIN requests
+the checked buffer route for errors, wide results and the reserved value itself.
+Capability probing supports engines without JS/WASM i64 interop. Rust validates
+and rounds through its public Instant API; all public timestamp/result limits
+remain wide. Failed scalar attempts do not increment successful-call statistics.
+
+Native-only Instant construction wraps validated Rust outputs or existing private
+branded values without duplicate range checks. Numeric user inputs retain checks;
+JS coercion and option access ordering remain unchanged. The default TS executable
+AST must still match the independent baseline. No new Test262 exclusions.
+
+`benchmarks/temporal/instant-profile-results.json` records the prior rounding
+profile. JS construction, GC and transport dominate Rust arithmetic. Alternating
+pointer/direct/direct/pointer measurements support direct scalar results;
+`instant-experiments.json` records intermediate trials and rejected native-width
+increment validation. Short shared-process wins do not establish isolated wins.
+
+The final isolated 48-workload snapshot records WASM wins in 24/48 against TS,
+25/48 against the basic reference and 36/48 against the official reference. Rounding wins this snapshot but
+loses longer isolated controls; it is not a stable win. Native namespace gzip is
+500,581 bytes (+488); TS is unchanged at 39,690. Nine-process ISO/timezone readiness
+is 16.85 ms versus TS 19.39 ms, with full native calendars at 27.47 ms. See
+instant-hillclimb-results.json and instant-startup-results.json. The unchanged
+executable TS AST passes the Bazel guard and its intrinsic-capture negative control.
+
+All 63 focused Rust/TS/WASM/ICU/Hermes targets pass after the Instant changes,
+including public types, scalar fallback and signed/full-range controls. Full
+owned-Intl WASM conformance remains a CI gate. No new exclusions.

@@ -9,6 +9,12 @@ interface BackendExports {
   memory: WebAssembly.Memory
   temporal_input(capacity: number): number
   temporal_exchange(length: number): number
+  temporal_round_instant?(
+    value: bigint,
+    unit: number,
+    increment: number,
+    mode: number
+  ): bigint
   temporal_abi_version(): number
   temporal_alloc(length: number): number
   temporal_free(pointer: number, length: number): void
@@ -57,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 14 ||
+    core.temporal_abi_version() !== 15 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -115,6 +121,7 @@ const codeUnit = String.prototype.charCodeAt
 const textIndex = String.prototype.indexOf
 const encodeInto = Encoder?.prototype.encodeInto
 const ToNumber = Number
+const asSigned64 = BigInt.asIntN
 const readNumber = Function.prototype.call.bind(View.prototype.getFloat64)
 const read16 = Function.prototype.call.bind(View.prototype.getUint16)
 const read32 = Function.prototype.call.bind(View.prototype.getUint32)
@@ -502,8 +509,9 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     return result + 8
   }
   function readInteger(pointer: number): bigint {
-    if (fastBytes[pointer++] !== 10)
-      throw new BadType('Invalid Temporal WASM response')
+    const tag = fastBytes[pointer++]
+    if (tag === 15) return readSigned(fastView, pointer, true)
+    if (tag !== 10) throw new BadType('Invalid Temporal WASM response')
     return (
       readUnsigned(fastView, pointer, true) +
       (readSigned(fastView, pointer + 8, true) << 64n)
@@ -869,7 +877,25 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     write32(fastView, pointer + 24, encoded.written, true)
     return dateTimeResult(exchange(28 + encoded.written))
   }
+  const scalarRound = (() => {
+    const round = core.temporal_round_instant
+    if (!round) return undefined
+    try {
+      return round(0n, 5, 1, 3) === 0n ? round : undefined
+    } catch {
+      return undefined
+    }
+  })()
   invoke.roundInstantUnit = (value, unit, increment, mode) => {
+    if (scalarRound && asSigned64(64, value) === value) {
+      const result = scalarRound(
+        value,
+        arrayIndex(units, unit),
+        increment,
+        arrayIndex(modes, mode)
+      )
+      if (result !== -9223372036854775808n) return result
+    }
     const pointer = begin(operationCodes.roundInstant, 24)
     integer(pointer + 2, value)
     fastBytes[pointer + 18] = arrayIndex(units, unit)

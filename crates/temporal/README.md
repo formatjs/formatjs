@@ -748,7 +748,7 @@ profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
 
 ## Typed WASM operations
 
-ABI 14 provides typed variants for twenty-six hot operations, signed 128-bit Instant
+ABI 15 provides typed variants for twenty-six hot operations, signed 128-bit Instant
 transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
 formatting writes one bounded stack buffer. Non-ISO records and deferred getter
 errors retain their general representation. SDK JSON responses keep their shapes.
@@ -779,3 +779,11 @@ integers. Shared rounding narrows only quotient/remainder operands when safe;
 results remain i128 and larger operands keep their original path. Boundary tests
 cover signed ties and results crossing i64 limits. Duration fields are rounded to
 Number-representable integers and validated in Rust before binding construction.
+
+ABI 15 returns Instant integers in 9 bytes when signed 64-bit values fit, otherwise
+17 bytes for the full signed 128-bit value. Checked scalar rounding can return a
+BigInt directly. Its reserved sentinel requests the full-width buffer path for
+errors, wide results and the sentinel value itself. Engines without scalar i64
+interop use buffers throughout. Both routes call the public Rust rounding method.
+Native Instant factories wrap validated Rust results directly; numeric user
+constructors retain range checks. JS option/coercion order stays unchanged.

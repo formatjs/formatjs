@@ -334,8 +334,13 @@ impl Write for Text<'_> {
     }
 }
 fn write_integer(output: &mut Vec<u8>, value: i128) {
-    output.push(10);
-    output.extend_from_slice(&value.to_le_bytes());
+    if let Ok(value) = i64::try_from(value) {
+        output.push(15);
+        output.extend_from_slice(&value.to_le_bytes());
+    } else {
+        output.push(10);
+        output.extend_from_slice(&value.to_le_bytes());
+    }
 }
 fn duration(fields: [f64; 10]) -> Result<Duration, Error> {
     let mut integers = [0; 10];
@@ -641,4 +646,31 @@ pub(super) fn run<'a>(
         crate::ffi::record_call();
         execute(request, output).map_err(|_| 1)
     }))
+}
+
+pub(super) fn round_instant_i64(
+    value: i64,
+    unit: u32,
+    increment: u32,
+    mode: u32,
+) -> Result<i64, i32> {
+    let units = [
+        TimeUnit::Hour,
+        TimeUnit::Minute,
+        TimeUnit::Second,
+        TimeUnit::Millisecond,
+        TimeUnit::Microsecond,
+        TimeUnit::Nanosecond,
+    ];
+    let unit = *units.get(unit as usize).ok_or(2)?;
+    let mode = *MODES.get(mode as usize).ok_or(2)?;
+    let result = Instant::from_epoch_nanoseconds(i128::from(value))
+        .and_then(|value| value.round(unit, increment, mode))
+        .map_err(|_| 1)?;
+    let result = i64::try_from(result.epoch_nanoseconds()).map_err(|_| 1)?;
+    if result == i64::MIN {
+        return Err(1);
+    }
+    crate::ffi::record_call();
+    Ok(result)
 }

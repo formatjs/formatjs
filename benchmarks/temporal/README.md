@@ -1956,3 +1956,49 @@ bazel run -c opt //benchmarks/temporal:ts_regression_guard -- /tmp/baseline.js /
 ```
 
 Babel is an existing development dependency, used only by this audit target.
+
+### Compact Instant transport
+
+The ABI 14 rounding profile spends 25.9% of self time in Instant construction,
+13.5% in GC and 11.0% in Rust. ABI 15 removes duplicate JS range checks when
+wrapping validated Rust results/private branded values. Numeric user constructors
+keep validation. Compact integer results use 9 bytes for signed i64, otherwise
+17 bytes for i128. Optional scalar rounding returns BigInt directly; i64::MIN
+requests checked buffered fallback for errors, wide results and the reserved value.
+Engines without scalar i64 interop use the same buffer path. Rust performs all
+rounding/validation through its public Instant API; JS keeps observable coercions.
+
+Pointer/direct/direct/pointer isolated trials reduce scalar-result median time
+from 655–667 ns to 576–586 ns. Native-width increment validation showed no stable
+gain and was discarded. `instant-experiments.json` retains both trials and shorter
+diagnostic stages; `instant-profile-results.json` retains the baseline profile.
+
+`instant-hillclimb-results.json` refreshes TS/native-data WASM in separate processes,
+eight varying inputs/parity, 20,000 warmup and nine samples of 50,000 calls
+(transitions keep their smaller counts). Unchanged pinned reference timings come
+from `time-hillclimb-results.json`. Times below are microseconds per call.
+
+| Operation           | Earlier WASM | Current WASM | Current TS |
+| ------------------- | -----------: | -----------: | ---------: |
+| parse               |        0.885 |        0.939 |      1.562 |
+| format              |        0.515 |        0.514 |      0.649 |
+| add                 |        1.237 |        1.244 |      2.226 |
+| round               |        0.793 |        0.416 |      0.563 |
+| dateTimeRoundFormat |        2.575 |        2.617 |      1.640 |
+
+This run records 24/48 WASM wins against TS, 25/48 against temporal-polyfill 1.0.7
+and 36/48 against @js-temporal/polyfill 0.5.1. Longer isolated rounding controls
+still lose to TS (576–588 ns versus 517–535 ns); the apparent rounding win above
+is unstable. The all-workload goal remains open. Earlier sections retain checkpoints.
+
+`instant-startup-results.json` measures nine fresh processes/profile: Node namespace
+payload is 500,581 bytes gzip including WASM, 488 above the previous checkpoint;
+TS remains 39,690. Native ISO/timezone readiness is 16.85 ms versus TS 19.39 ms;
+full calendar readiness is 27.47 ms. Browser export-all payload is measured
+separately (503,581 bytes gzip). Default TS uses host Intl; WASM owns timezone and
+calendar data. The Bazel AST guard confirms unchanged executable TS structure and
+retains the negative control. No new exclusions.
+
+All 63 focused Rust/TS/WASM/ICU/Hermes targets pass after the Instant changes,
+including public types, scalar fallback and signed/full-range controls. Full
+owned-Intl WASM conformance remains a CI gate. No new exclusions.

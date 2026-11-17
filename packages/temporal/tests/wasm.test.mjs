@@ -14,6 +14,7 @@ const dateBefore = Object.getOwnPropertyDescriptor(
 )
 const requests = new Map()
 let wireOperations = []
+let scalarArgumentsSupported = true
 const exportsDescriptor = Object.getOwnPropertyDescriptor(
   WebAssembly.Instance.prototype,
   'exports'
@@ -38,6 +39,14 @@ Object.defineProperty(WebAssembly.Instance.prototype, 'exports', {
       temporal_input(capacity) {
         inputInfo = core.temporal_input(capacity)
         return inputInfo
+      },
+      temporal_round_instant(...args) {
+        if (!scalarArgumentsSupported)
+          throw new TypeError('i64 WebAssembly arguments unavailable')
+        const result = core.temporal_round_instant(...args)
+        if (result !== -9223372036854775808n)
+          requests.set('roundInstant', (requests.get('roundInstant') ?? 0) + 1)
+        return result
       },
       temporal_exchange(length) {
         const buffer = apply(memoryBuffer, core.memory, [])
@@ -94,6 +103,11 @@ Object.defineProperty(
 )
 const firstCall = wasm.createWasmCall(instance)
 const secondCall = wasm.createWasmCall(instance)
+scalarArgumentsSupported = false
+const bufferedRound = wasm.createWasmCall(instance)
+scalarArgumentsSupported = true
+assert.equal(bufferedRound.roundInstantUnit(1n, 'nanosecond', 1, 'trunc'), 1n)
+
 assert.equal(firstCall('parseInstant', {text: '1970-01-01T00:00Z'}), '0')
 assert.throws(
   () => secondCall('parseInstant', {text: 'x'.repeat(250000)}),
@@ -173,6 +187,23 @@ try {
   WeakMap.prototype.get = originalWeakMapGet
 }
 assert.equal(combinedClock.toString(), '2000-02-29T23:59:59.999999999')
+const signedBoundary = 9223372036854775800n
+for (const [value, expected] of [
+  [signedBoundary + 7n, signedBoundary + 10n],
+  [signedBoundary + 8n, signedBoundary + 10n],
+  [-signedBoundary - 8n, -signedBoundary],
+  [-signedBoundary - 9n, -signedBoundary],
+  [8640000000000000000000n, 8640000000000000000000n],
+  [-8640000000000000000000n, -8640000000000000000000n],
+])
+  assert.equal(
+    Temporal.Instant.fromEpochNanoseconds(value).round({
+      smallestUnit: 'nanosecond',
+      roundingIncrement: 10,
+      roundingMode: 'ceil',
+    }).epochNanoseconds,
+    expected
+  )
 const rows = path =>
   readFileSync(resolve(path), 'utf8')
     .trim()

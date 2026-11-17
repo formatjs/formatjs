@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 14. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 15. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -210,16 +210,16 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Matched Node namespace consumers measure 39,693 bytes gzip for default TS,
+Matched Node namespace consumers measure 39,690 bytes gzip for default TS,
 23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
-Native-data WASM totals 493,058 bytes, including 462,516 binary bytes.
-It owns calendar and IANA data; the JS implementations use host Intl data.
-Nine-process shared ISO/timezone startup medians: TS 19.37 ms, native-data WASM
-24.44 ms, full reference 19.22 ms, official reference 26.71 ms.
-WASM wins 20 of 48 sampled hot workloads against the official reference,
-5 against our TS. Typed records improve Instant/date paths; cached getters
-benefit, while many construction/arithmetic workloads still trail TS.
-See [current benchmarks](../../benchmarks/temporal/README.md#typed-wasm-hillclimb-2026-11-17)
+Native-data WASM totals 500,581 bytes, including 467,656 binary bytes.
+It owns calendar and IANA data; JS references use host Intl data.
+Nine-process ISO/timezone startup medians: TS 19.39 ms, native-data WASM
+16.85 ms, full reference 19.32 ms, official reference 26.67 ms.
+Current WASM medians win 24/48 workloads against TS, 25/48 against the basic
+reference and 36/48 against the official reference. Rounding wins this snapshot
+but loses longer controls; remaining slower workloads keep the goal open.
+See [current benchmarks](../../benchmarks/temporal/README.md#compact-instant-transport)
 for samples, bundle scopes and the official reference's ICU 78.2 Chinese
 calendar incompatibility.
 
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 14 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 15 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -257,3 +257,11 @@ record; other Temporal types receive BigInt lazily. All clock values are below
 2**47 nanoseconds, so transport remains exact. Pure TS keeps its existing slots.
 Existing SDK JSON responses stay stable; optional clock snapshots preserve older
 SDK behavior, including midnight rounding carry.
+
+ABI 15 returns Instant integers in 9 bytes when signed 64-bit values fit, otherwise
+17 bytes for the full signed 128-bit value. Checked scalar rounding can return a
+BigInt directly. Its reserved sentinel requests the full-width buffer path for
+errors, wide results and the sentinel value itself. Engines without scalar i64
+interop use buffers throughout. Both routes call the public Rust rounding method.
+Native Instant factories wrap validated Rust results directly; numeric user
+constructors retain range checks. JS option/coercion order stays unchanged.

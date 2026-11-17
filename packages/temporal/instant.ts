@@ -95,6 +95,14 @@ function read(value: unknown): bigint {
   if (result === undefined) throw new TypeError('Invalid Instant receiver')
   return result
 }
+const NativeInstant = function (this: InstantObject, value: bigint) {
+  setSlot(this, value)
+}
+function createNativeInstant(value: bigint): InstantObject {
+  return new (NativeInstant as unknown as new (value: bigint) => InstantObject)(
+    value
+  )
+}
 export function createInstant(value: bigint): InstantObject {
   const result = Object.create(InstantValue.prototype) as InstantObject
   setSlot(result, validateInstant(value))
@@ -107,6 +115,8 @@ function toInstant(item: unknown): bigint {
   const primitive = ToPrimitive(item, 'string')
   if (typeof primitive !== 'string')
     throw new TypeError('Expected Instant or instant string')
+  if (import.meta.formatjsTemporalNativeData === true)
+    return parseInstantString(primitive)
   return validateInstant(parseInstantString(primitive))
 }
 function difference(
@@ -173,6 +183,8 @@ class InstantValue implements InstantObject {
     return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(toInstant(item))
     return createInstant(toInstant(item))
   }
   static fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject {
@@ -215,9 +227,11 @@ class InstantValue implements InstantObject {
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(native!.addInstant(value, fields, false))
     return createInstant(
-      import.meta.formatjsTemporalNativeData === true || native
-        ? native!.addInstant(value, fields, false)
+      native
+        ? native.addInstant(value, fields, false)
         : value + durationNanoseconds(fields, false)
     )
   }
@@ -230,13 +244,17 @@ class InstantValue implements InstantObject {
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(native!.addInstant(value, fields, true))
     return createInstant(
-      import.meta.formatjsTemporalNativeData === true || native
-        ? native!.addInstant(value, fields, true)
+      native
+        ? native.addInstant(value, fields, true)
         : value - durationNanoseconds(fields, false)
     )
   }
   round(roundTo: unknown): InstantObject {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(roundInstantOptions(read(this), roundTo))
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
   toString(options: unknown = undefined): string {
@@ -335,3 +353,6 @@ Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},
 })
+
+if (import.meta.formatjsTemporalNativeData === true)
+  NativeInstant.prototype = InstantValue.prototype

@@ -38,6 +38,13 @@ fn parse_request(value: &str) -> Vec<u8> {
     text(&mut request, value);
     request
 }
+fn integer_record(value: i128) -> Vec<u8> {
+    if let Ok(value) = i64::try_from(value) {
+        [vec![15], value.to_le_bytes().to_vec()].concat()
+    } else {
+        [vec![10], value.to_le_bytes().to_vec()].concat()
+    }
+}
 fn call(bytes: &[u8]) -> (u32, Vec<u8>) {
     unsafe {
         let info = binary::input(bytes.len()) as *const usize;
@@ -110,8 +117,7 @@ fn typed_instant_records_preserve_signed_nanoseconds_and_reject_trailing_bytes()
     ] {
         let mut request = vec![opcode("parseInstant"), 10];
         text(&mut request, input);
-        let mut expected = vec![10];
-        expected.extend_from_slice(&nanoseconds.to_le_bytes());
+        let expected = integer_record(nanoseconds);
         assert_eq!(call(&request), (0, expected.clone()));
         let mut trailing = request.clone();
         trailing.push(0);
@@ -182,8 +188,7 @@ fn typed_rounding_preserves_modes_and_recovers_after_invalid_requests() {
                 .round(TimeUnit::Millisecond, 125, *mode)
                 .unwrap()
                 .epoch_nanoseconds();
-            let mut output = vec![10];
-            output.extend_from_slice(&expected.to_le_bytes());
+            let output = integer_record(expected);
             assert_eq!(call(&request(value, index as u8)), (0, output));
         }
     }
@@ -282,4 +287,32 @@ fn typed_clocks_preserve_last_nanosecond_wrap_midnight_and_recover() {
     trailing.push(0);
     assert_eq!(call(&trailing).0, 2);
     assert_eq!(call(&valid).0, 0);
+}
+
+#[test]
+fn scalar_rounding_requests_fallback_for_wide_results_and_errors() {
+    use formatjs_temporal::{Instant, RoundingMode, TimeUnit};
+    let scalar = binary::round_instant_i64;
+    assert_eq!(scalar(i64::MIN, 5, 1, 3), i64::MIN);
+    for value in [i64::MIN, i64::MIN + 3, -1, 0, 1, i64::MAX - 2, i64::MAX] {
+        for (mode, kind) in [
+            (0, RoundingMode::Ceil),
+            (1, RoundingMode::Floor),
+            (8, RoundingMode::HalfEven),
+        ] {
+            let expected = Instant::from_epoch_nanoseconds(i128::from(value))
+                .unwrap()
+                .round(TimeUnit::Nanosecond, 10, kind)
+                .unwrap()
+                .epoch_nanoseconds();
+            assert_eq!(
+                scalar(value, 5, 10, mode),
+                i64::try_from(expected).unwrap_or(i64::MIN)
+            );
+        }
+    }
+    for (unit, increment, mode) in [(6, 1, 0), (5, 1, 9), (5, 0, 0), (5, 7, 0)] {
+        assert_eq!(scalar(1, unit, increment, mode), i64::MIN);
+        assert_eq!(scalar(1, 5, 1, 0), 1);
+    }
 }

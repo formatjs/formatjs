@@ -296,3 +296,16 @@ structure still matches baseline through the checked-in Bazel audit, with a
 negative control proving changed intrinsic captures are rejected. No new
 exclusions. All five PlainTime benchmarks beat TS in the current isolated run;
 the all-workload objective remains open. See time-*.json in benchmarks/temporal.
+
+### ABI 15 Instant follow-up
+
+Compact integer responses and checked scalar rounding keep public Rust validation
+and full-width buffer fallback. Controls cover signed 64-bit crossings, reserved
+sentinel results, full Temporal bounds, invalid requests and engines without i64
+interop. Native factories wrap validated Rust results/private branded values;
+numeric user constructors retain checks and JS option order is unchanged.
+All 63 focused Rust/TS/WASM/ICU/Hermes targets pass. The executable TS AST still
+matches baseline; its intrinsic-capture negative control still fails as intended.
+No new exclusions. Current isolated WASM medians win 24/48 against TS; longer
+rounding controls disagree with that workload's apparent win. The objective stays
+open. See instant-*.json and the benchmark README for measurements and limits.

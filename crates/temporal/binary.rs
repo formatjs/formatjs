@@ -628,3 +628,11 @@ pub fn exchange(length: usize) -> *const u8 {
         buffers.output.as_ptr()
     })
 }
+
+/// Returns i64::MIN when the caller must use the full-width checked exchange.
+pub fn round_instant_i64(value: i64, unit: u32, increment: u32, mode: u32) -> i64 {
+    catch_unwind(|| typed::round_instant_i64(value, unit, increment, mode))
+        .ok()
+        .and_then(Result::ok)
+        .unwrap_or(i64::MIN)
+}
