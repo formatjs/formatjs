@@ -128,3 +128,44 @@ it('finds transitions strictly before or after nanosecond boundaries', () => {
   expect(zone.transition(-8640000000000000000000n, 'previous')).toBe(null)
   expect(zone.transition(8640000000000000000000n, 'next')).toBe(null)
 })
+
+it('finds host-only transitions inside a generated fixed-zone probe interval', async () => {
+  const Original = Intl.DateTimeFormat
+  const first = Date.UTC(2024, 0, 8),
+    last = Date.UTC(2024, 0, 22)
+  vi.resetModules()
+  try {
+    Intl.DateTimeFormat = class extends Original {
+      constructor(
+        locales?: Intl.LocalesArgument,
+        options?: Intl.DateTimeFormatOptions
+      ) {
+        super(locales, {...options, timeZone: 'UTC'})
+      }
+      formatToParts(value?: number | Date) {
+        const milliseconds = Number(value)
+        return super.formatToParts(
+          milliseconds +
+            (milliseconds >= first && milliseconds < last ? 3600000 : 0)
+        )
+      }
+    } as typeof Original
+    const {createHostTimeZone: create} =
+      await import('#packages/temporal/host-timezone.js')
+    // Abidjan has no generated modern transitions. Host adds a two-week season.
+    const zone = create('Africa/Abidjan')
+    const before = BigInt(Date.UTC(2024, 0, 1)) * 1000000n
+    const after = BigInt(Date.UTC(2024, 1, 1)) * 1000000n
+    expect(zone.transition(before, 'next')).toBe(BigInt(first) * 1000000n)
+    expect(zone.transition(after, 'previous')).toBe(BigInt(last) * 1000000n)
+    expect(zone.transition(BigInt(first) * 1000000n, 'next')).toBe(
+      BigInt(last) * 1000000n
+    )
+    expect(zone.transition(BigInt(last) * 1000000n, 'previous')).toBe(
+      BigInt(first) * 1000000n
+    )
+  } finally {
+    Intl.DateTimeFormat = Original
+    vi.resetModules()
+  }
+})

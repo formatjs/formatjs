@@ -169,6 +169,11 @@ search limits in [implementation record](015-temporal.md#default-installed-intl-
 
 ## Remaining size justification audit
 
+Review follow-up: host transition probes now cap generated intervals at seven
+days. A synthetic host-only two-week season in otherwise fixed Abidjan verifies
+both search directions and strict boundaries. Host transitions closer than one
+probe interval remain outside the search guarantee; standalone owns exact records.
+
 Runtime audited: `6d55edf0f473aac8b6fce314f7a7f7d345452972` (PR #8015).
 `bazel run -c opt //benchmarks/temporal:size_audit` reproduces the published
 38,639-byte TS and 23,083-byte reference consumers exactly. TypeScript AST

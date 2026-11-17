@@ -64,7 +64,9 @@ resolution and transitions on Hermes. Node also compares host-data results with
 offset changes from 1800 through three years beyond the later of now and input.
 Previous-transition searches probe nearby future years before historical data.
 Generated intervals account for closely spaced IANA transitions and recurring
-rules. Use standalone when owned timezone history/rules must determine results.
+rules, capped at seven days because host tzdata may differ. Two host transitions
+within one probe interval can still be missed; Intl provides no exhaustive search.
+Use standalone when owned timezone history/rules must determine results.
 
 ## Locale formatting
 

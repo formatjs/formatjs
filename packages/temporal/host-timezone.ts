@@ -155,7 +155,10 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     (links as Record<string, string>)[timeZone] ??
     (primary as Record<string, string>)[timeZone] ??
     timeZone
-  const step = BigInt(steps[timeZone] ?? steps[canonical] ?? 60 * 86400)
+  // Host tzdata can contain transitions absent from our generated metadata.
+  const step = BigInt(
+    Math.min(steps[timeZone] ?? steps[canonical] ?? 7 * 86400, 7 * 86400)
+  )
   const transitions: {
     direction: string
     first: bigint
