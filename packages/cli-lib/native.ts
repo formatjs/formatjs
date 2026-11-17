@@ -109,6 +109,13 @@ export interface NativeBinding {
     extraKeys: boolean,
     structuralEquality: boolean
   ): string
+  verifyAndroidResources(
+    resources: {filename: string; content: Buffer}[],
+    sourceLocale: string | undefined,
+    missingKeys: boolean,
+    extraKeys: boolean,
+    structuralEquality: boolean
+  ): string
   verifyXcstrings(
     catalogsJson: string,
     sourceLocale: string | undefined,
@@ -277,6 +284,30 @@ export function verifyAppleResourcesWithNative(
   }
   return JSON.parse(
     native.verifyAppleResources(
+      resources,
+      sourceLocale,
+      missingKeys,
+      extraKeys,
+      structuralEquality
+    )
+  )
+}
+
+export function verifyAndroidResourcesWithNative(
+  resources: {filename: string; content: Buffer}[],
+  sourceLocale: string | undefined,
+  missingKeys: boolean,
+  extraKeys: boolean,
+  structuralEquality: boolean
+): NativeVerificationIssue[] {
+  const native = loadNative()
+  if (typeof native.verifyAndroidResources !== 'function') {
+    throw new Error(
+      'Installed FormatJS native package does not support Android resource verification; update @formatjs/cli and its native package.'
+    )
+  }
+  return JSON.parse(
+    native.verifyAndroidResources(
       resources,
       sourceLocale,
       missingKeys,

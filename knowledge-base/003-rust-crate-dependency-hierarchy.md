@@ -56,7 +56,7 @@ It compares resolved argument indices and conversion requirement sets. The Rust
 `verify --message-syntax java-printf --structural-equality` command and npm CLI
 share this implementation through `formatjs_cli_napi::verify_java_printf`.
 ICU verification remains the default. Java printf catalogs contain string leaves;
-Android XML extraction and plural/array item splitting happen before verification.
+Android XML extraction and plural/array item splitting happen in `formatjs_cli::android_resources` for `--message-syntax android`; `java-printf` continues to accept JSON string catalogs.
 
 ## Apple resource verification
 
@@ -697,3 +697,12 @@ Bazel-only Temporal ABI exports. It embeds the TS facade, preserving coercion an
 brands while Rust owns numeric/calendar/timezone operations. Per-runtime host
 providers supply Now's clock and timezone. The prebuilt SDK includes this optional
 adapter; the published Cargo SDK source graph still excludes private Temporal.
+
+## Android resource verification
+
+`formatjs_cli::android_resources` parses native resource XML with roxmltree and
+then applies Android quoting/escaping before Java printf verification.
+`verify_resources` groups files by resource directory and locale, validates array
+shape and plural fallback compatibility, and reports missing/extra keys. Rust
+and npm use the same code through `verify_android_resources` in the N-API crate.
+Brand/entity spelling preservation and locale typography remain caller policy.

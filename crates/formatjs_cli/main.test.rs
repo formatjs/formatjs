@@ -55,3 +55,45 @@ fn java_printf_verify_cli_reports_source_and_translation_errors() {
             .contains("en: message: Invalid Java printf syntax")
     );
 }
+
+#[test]
+fn android_resources_verify_cli_uses_resource_directory_locales() {
+    let directory = tempfile::tempdir().unwrap();
+    for (locale, message) in [("values", "%1$s %2$d"), ("values-fr", "%2$d %1$s")] {
+        let folder = directory.path().join(locale);
+        std::fs::create_dir(&folder).unwrap();
+        std::fs::write(
+            folder.join("strings.xml"),
+            format!("<resources><string name=\"s\">{message}</string></resources>"),
+        )
+        .unwrap();
+    }
+    let run = || {
+        std::process::Command::new(std::env::var("FORMATJS_TEST_CLI").unwrap())
+            .args([
+                "verify",
+                "--message-syntax",
+                "android",
+                "--source-locale",
+                "en",
+                "--structural-equality",
+            ])
+            .arg(directory.path().join("**/*.xml"))
+            .output()
+            .unwrap()
+    };
+    let output = run();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    std::fs::write(
+        directory.path().join("values-fr/strings.xml"),
+        "<resources><string name=\"s\">%1$d %2$d</string></resources>",
+    )
+    .unwrap();
+    let output = run();
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("Incompatible argument 1"));
+}

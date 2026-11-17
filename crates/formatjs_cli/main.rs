@@ -78,6 +78,7 @@ enum MessageSyntaxType {
     Icu,
     JavaPrintf,
     ApplePrintf,
+    Android,
 }
 
 impl From<MessageSyntaxType> for verify::MessageSyntax {
@@ -86,6 +87,7 @@ impl From<MessageSyntaxType> for verify::MessageSyntax {
             MessageSyntaxType::Icu => Self::Icu,
             MessageSyntaxType::JavaPrintf => Self::JavaPrintf,
             MessageSyntaxType::ApplePrintf => Self::ApplePrintf,
+            MessageSyntaxType::Android => Self::Android,
         }
     }
 }
@@ -260,7 +262,7 @@ enum Commands {
         #[arg(long)]
         structural_equality: bool,
 
-        /// Message grammar used by --structural-equality.
+        /// Message grammar or native resource format (android or apple-printf).
         #[arg(long, value_enum, default_value = "icu")]
         message_syntax: MessageSyntaxType,
 
