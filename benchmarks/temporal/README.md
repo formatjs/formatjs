@@ -1693,3 +1693,73 @@ package/ICU oracle checks, strict types and Rust tests. Each WASM/SDK profile
 executes 12,234 Test262 scenarios, with unchanged exclusion manifests. Rust unit
 checks include repeated-offset elimination, histories with forty distinct offsets,
 malformed binary requests, nanosecond precision and recovery after errors.
+
+## Typed WASM hillclimb (2026-11-17)
+
+`hillclimb-results.json` reruns the same 48 public workloads after ABI 11.
+`hillclimb-startup-results.json` repeats nine fresh processes per profile.
+Environment, output parity, warmup and sampling match the ABI 10 baseline above;
+correctness tests finish before timing. `hillclimb-experiments.json` records local
+iterations, including discarded experiments. No Hermes/browser speed claim.
+
+Microseconds/call; baseline is commit `b4967794b9b3085564ce36ca7e792919005435e0`:
+
+| Workload              | ABI 10 WASM | ABI 11 WASM | Our TS | temporal-polyfill basic | @js-temporal/polyfill |
+| --------------------- | ----------: | ----------: | -----: | ----------------------: | --------------------: |
+| parse                 |       2.596 |       0.627 |  1.573 |                   2.898 |                 4.565 |
+| format                |       3.029 |       0.746 |  0.665 |                   1.518 |                 6.420 |
+| add                   |       7.334 |       2.878 |  2.276 |                   1.412 |                 5.723 |
+| dateParse             |       9.442 |       3.144 |  1.598 |                   2.606 |                 1.774 |
+| dateFields            |       0.614 |       0.613 |  2.462 |                   0.453 |                 1.969 |
+| dateAdd               |      16.045 |       8.706 |  5.929 |                   2.178 |                 5.246 |
+| dateWith              |      12.753 |       8.687 |  3.664 |                   1.809 |                 4.148 |
+| zonedWith             |      26.594 |      21.207 |  9.543 |                   6.273 |                43.178 |
+| zonedAddDay           |      23.847 |      18.321 |  6.213 |                   3.375 |                22.601 |
+| zonedRound            |      18.851 |      13.113 |  2.936 |                   2.875 |                30.561 |
+| zonedHoursInDay       |       0.058 |       0.059 |  2.732 |                   2.184 |                44.975 |
+| durationRoundRelative |      23.869 |      24.160 | 24.270 |                  52.720 |                64.556 |
+
+WASM has the lower sampled median in 5/48 workloads against our TS,
+14/48 against basic reference, 20/48 against official reference.
+Cached getters still move work into construction; parse/add/with rows include
+construction of the resulting value. TS remains the default.
+
+Seven hot routes bypass dynamic request maps. Instant inputs/results use signed
+128-bit nanoseconds; formatting streams text into the reused output buffer.
+Date parsers/addition use typed inputs. Calendar/clock/zone results use fixed
+Rust snapshots, shared with SDK JSON serialization. Other operations retain the
+generic request codec. No added data or dependencies.
+
+Borrowed Rust-only Instant decoding helped, but JS objects/decimal transfer
+still dominated. Typed inputs removed that cost; fixed snapshots removed the
+next allocation layer. Binding generic JS DataView calls showed no useful gain.
+Fixed-shape JS snapshot decoding slowed date parse/add and was discarded.
+
+Matched Node namespace consumers, gzip level 9; common ISO/timezone readiness:
+
+| Consumer          | JS gzip bytes | WASM gzip bytes | Total bytes | Readiness ms |
+| ----------------- | ------------: | --------------: | ----------: | -----------: |
+| typescript        |        39,693 |               0 |      39,693 |        19.37 |
+| nativeDataWasm    |        30,542 |         462,516 |     493,058 |        24.44 |
+| hybridWasm        |        45,724 |         462,516 |     508,240 |        25.41 |
+| referenceFull     |        23,083 |               0 |      23,083 |        19.22 |
+| referenceBasic    |        19,275 |               0 |      19,275 |        18.82 |
+| officialReference |        44,522 |               0 |      44,522 |        26.71 |
+
+Native-data consumer changes from 487,770 to 493,058 gzip bytes: 982 added JS
+bytes and 4,306 binary bytes (1.1% total). No sampled WASM route regresses by
+more than both 10% and 0.1 microseconds in this run.
+WASM still owns calendar/IANA data; TS and references use host Intl. Browser
+full-entry consumers use a different bundle scope: native-data JS plus binary
+is 495,973 gzip bytes. Whole archive size is separate.
+The official reference's Chinese startup incompatibility described above remains
+recorded; only shared ISO/timezone readiness is compared.
+
+All 62 final targets pass: the previous 55 gates, three Hermes native oracle
+checks, SDK Intl compatibility in source/bytecode, and both WASM Intl profiles.
+The wider suites caught historical offset strings rounded to minutes and a
+non-ISO MonthDay TypeError mismatch; both are fixed without new exclusions.
+Snapshots preserve exact offsets; `.toString()` retains minute rounding.
+Oracle fault injection follows fused snapshot operations, preserving backend
+error propagation. Signed nanosecond bounds, malformed/trailing records and
+recovery remain covered.

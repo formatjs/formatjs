@@ -251,3 +251,19 @@ snapshots and five date-like partial-update routes (69 operations total).
 WASM now uses binary records and reusable buffers; native SDK JSON controls
 retain scalar result shapes. Current implementation and benchmark evidence lives
 in [015-temporal.md](015-temporal.md#whole-wasm-operations-and-binary-results-2026-11-17).
+
+## ABI 11 performance follow-up (2026-11-17)
+
+Seven hot routes use typed requests; Instant results use signed 128-bit values
+or streamed text. Calendar/clock/zone snapshots share fixed Rust storage instead
+of temporary JSON maps. All 69 operations remain available; SDK JSON result
+shapes and conformance exclusions stay unchanged. See the
+[hillclimb record](015-temporal.md#typed-wasm-hillclimb-2026-11-17).
+
+Final follow-up passes 62 focused targets, including all six previously failing
+PR CI targets. Raw matched performance/startup/size evidence is in
+`benchmarks/temporal/hillclimb-results.json` and
+`hillclimb-startup-results.json`; kept/discarded iterations are in
+`hillclimb-experiments.json`. Native-data namespace payload is 493,058 gzip bytes
+(5,288 more than ABI 10); Instant parse/format improve about 4.1x. TS remains
+default; WASM has lower sampled medians in 5/48 workloads against TS.

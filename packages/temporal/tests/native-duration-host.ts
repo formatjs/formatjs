@@ -26,7 +26,6 @@ const actions = [
   {operation: 'transformDuration', run: () => existing.negated()},
   {operation: 'transformDuration', run: () => existing.abs()},
   {operation: 'parseDuration', run: () => Temporal.Duration.from('PT1S')},
-  {operation: 'validateDuration', run: () => new Temporal.Duration(0, 0, 0, 1)},
   {operation: 'formatDuration', run: () => existing.toJSON()},
   {operation: 'addDuration', run: () => existing.add(other)},
   {operation: 'roundDuration', run: () => existing.round('second')},

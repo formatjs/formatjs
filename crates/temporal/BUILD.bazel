@@ -349,6 +349,7 @@ rust_library(
     name = "with_ffi",
     srcs = [
         "binary.rs",
+        "binary_typed.rs",
         "calendar_difference.rs",
         "calendar_provider.rs",
         "calendar_registry.rs",

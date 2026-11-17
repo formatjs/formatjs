@@ -226,7 +226,7 @@ fn compiled_calendars() -> Result<CalendarRegistry<'static>, Error> {
         Ok(CalendarRegistry::arithmetic())
     }
 }
-fn calendars() -> Result<CalendarRegistry<'static>, Error> {
+pub(crate) fn calendars() -> Result<CalendarRegistry<'static>, Error> {
     CALENDARS
         .get_or_init(compiled_calendars)
         .as_ref()
@@ -306,20 +306,70 @@ fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Erro
         value.try_into().map_err(|_| Error::OutOfRange)
     }
 }
-fn calendar_properties(calendar: CalendarRef<'_>, epoch: i64) -> Result<Value, Error> {
+pub(crate) const DATE_PROPERTIES: &[&str] = &[
+    "dayOfWeek",
+    "daysInWeek",
+    "dayOfYear",
+    "daysInMonth",
+    "monthsInYear",
+    "daysInYear",
+    "inLeapYear",
+    "weekOfYear",
+    "yearOfWeek",
+    "era",
+    "eraYear",
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond",
+    "localNanoseconds",
+    "offsetNanoseconds",
+    "offset",
+    "hoursInDay",
+];
+
+pub(crate) struct CalendarSnapshot {
+    pub date: Option<Date>,
+    pub values: [Value; 21],
+    pub errors: u32,
+}
+impl CalendarSnapshot {
+    fn into_json(self) -> Value {
+        let mut values = serde_json::Map::new();
+        let mut errors = std::vec::Vec::new();
+        if self.date.is_none() {
+            errors.extend(["year", "month", "monthCode", "day"]);
+        }
+        for (index, (key, value)) in DATE_PROPERTIES.iter().zip(self.values).enumerate() {
+            if !value.is_null() {
+                values.insert((*key).into(), value);
+            }
+            if self.errors & (1 << index) != 0 {
+                errors.push(*key);
+            }
+        }
+        json!({"date":self.date.map(calendar_record),"values":values,"errors":errors})
+    }
+}
+pub(crate) fn calendar_snapshot(
+    calendar: CalendarRef<'_>,
+    epoch: i64,
+) -> Result<CalendarSnapshot, Error> {
     let date = calendar
         .date_extended(epoch)
         .map_err(crate::calendar_provider::error)?;
-    let mut values = serde_json::Map::new();
-    let mut errors = std::vec::Vec::<&str>::new();
+    let mut values = [const { Value::Null }; 21];
+    let mut errors = 0u32;
     macro_rules! field {
-        ($name:literal, $result:expr) => {
+        ($index:literal, $result:expr) => {
             match $result {
                 Ok(value) => {
-                    values.insert($name.into(), json!(value));
+                    values[$index] = json!(value);
                 }
                 Err(_) => {
-                    errors.push($name);
+                    errors |= 1 << $index;
                 }
             }
         };
@@ -331,12 +381,12 @@ fn calendar_properties(calendar: CalendarRef<'_>, epoch: i64) -> Result<Value, E
             .map(|last| last - first)
     });
     let months = calendar.months_in_year(date.year);
-    field!("daysInMonth", calendar.days_in_month(date.year, date.month));
-    field!("monthsInYear", months);
-    field!("daysInYear", days);
-    field!("dayOfYear", start.map(|first| epoch - first + 1));
+    field!(3, calendar.days_in_month(date.year, date.month));
+    field!(4, months);
+    field!(5, days);
+    field!(2, start.map(|first| epoch - first + 1));
     field!(
-        "inLeapYear",
+        6,
         match calendar.id() {
             "hebrew" | "chinese" | "dangi" => months.map(|value| value == 13),
             "islamic-civil" | "islamic-tbla" | "islamic-umalqura" => days.map(|value| value == 355),
@@ -344,31 +394,32 @@ fn calendar_properties(calendar: CalendarRef<'_>, epoch: i64) -> Result<Value, E
         }
     );
     let weekday = (epoch + 3).rem_euclid(7) + 1;
-    values.insert("dayOfWeek".into(), json!(weekday));
-    values.insert("daysInWeek".into(), json!(7));
+    values[0] = json!(weekday);
+    values[1] = json!(7);
     if calendar.id() == "iso8601" {
         let thursday = epoch + 4 - weekday;
         let year =
             crate::iso::iso_from_epoch_nanoseconds_raw(i128::from(thursday) * NANOSECONDS_PER_DAY)
                 .year;
-        values.insert("yearOfWeek".into(), json!(year));
-        values.insert(
-            "weekOfYear".into(),
-            json!((thursday - crate::iso::epoch_day_from_iso(year, 1, 1)) / 7 + 1),
-        );
+        values[8] = json!(year);
+        values[7] = json!((thursday - crate::iso::epoch_day_from_iso(year, 1, 1)) / 7 + 1);
     }
     match calendar.era_extended(epoch) {
         Ok(Some(era)) => {
-            values.insert("era".into(), json!(era.name));
-            values.insert("eraYear".into(), json!(era.year));
+            values[9] = json!(era.name);
+            values[10] = json!(era.year);
         }
         Ok(None) => {}
         Err(_) => {
-            errors.push("era");
-            errors.push("eraYear");
+            errors |= 1 << 9;
+            errors |= 1 << 10;
         }
     }
-    Ok(json!({"date":calendar_record(date),"values":values,"errors":errors}))
+    Ok(CalendarSnapshot {
+        date: Some(date),
+        values,
+        errors,
+    })
 }
 
 fn prepared_date_fields<'a>(
@@ -525,23 +576,27 @@ fn with_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }))
 }
 
-fn add_clock(snapshot: &mut Value, nanoseconds: i128) {
+fn add_clock(snapshot: &mut CalendarSnapshot, nanoseconds: i128) {
     let fields = crate::iso::iso_from_epoch_nanoseconds_raw(nanoseconds);
-    let values = snapshot["values"].as_object_mut().unwrap();
-    let Value::Object(clock) = record(fields) else {
-        unreachable!()
-    };
-    for (key, value) in clock {
-        if key != "year" && key != "month" && key != "day" {
-            values.insert(key, value);
-        }
+    for (target, value) in snapshot.values[11..17].iter_mut().zip([
+        u32::from(fields.hour),
+        u32::from(fields.minute),
+        u32::from(fields.second),
+        fields.nanosecond / 1_000_000,
+        fields.nanosecond / 1000 % 1000,
+        fields.nanosecond % 1000,
+    ]) {
+        *target = Value::from(value);
     }
 }
-fn partial_calendar_properties(calendar: CalendarRef<'_>, epoch: i64) -> Value {
-    calendar_properties(calendar, epoch).unwrap_or_else(|_| json!({"date":null,"values":{},"errors":[
-        "year","month","monthCode","day","dayOfWeek","daysInWeek","dayOfYear","daysInMonth","monthsInYear","daysInYear","inLeapYear","weekOfYear","yearOfWeek","era","eraYear"]}))
+fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -> CalendarSnapshot {
+    calendar_snapshot(calendar, epoch).unwrap_or_else(|_| CalendarSnapshot {
+        date: None,
+        values: [const { Value::Null }; 21],
+        errors: (1 << 11) - 1,
+    })
 }
-fn zoned_properties(record: &Value) -> Result<Value, Error> {
+fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     let value = if record.get("epochNanoseconds").is_some() {
         ZonedDateTime::new_in_calendar(
             instant(record, "epochNanoseconds")?,
@@ -553,7 +608,7 @@ fn zoned_properties(record: &Value) -> Result<Value, Error> {
     };
     let offset = value.time_zone().offset_nanoseconds(value.instant());
     let local = value.instant().epoch_nanoseconds() + offset;
-    let mut properties = partial_calendar_properties(
+    let mut properties = partial_calendar_snapshot(
         value.calendar(),
         local.div_euclid(NANOSECONDS_PER_DAY) as i64,
     );
@@ -561,22 +616,39 @@ fn zoned_properties(record: &Value) -> Result<Value, Error> {
     struct Offset(i128);
     impl core::fmt::Display for Offset {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-            crate::format::write_offset(f, self.0)
+            let absolute = self.0.abs();
+            let seconds = absolute / 1_000_000_000;
+            write!(
+                f,
+                "{}{:02}:{:02}",
+                if self.0 < 0 { '-' } else { '+' },
+                seconds / 3600,
+                seconds / 60 % 60
+            )?;
+            let mut fraction = absolute % 1_000_000_000;
+            if seconds % 60 != 0 || fraction != 0 {
+                write!(f, ":{:02}", seconds % 60)?;
+                if fraction != 0 {
+                    let mut digits = 9usize;
+                    while fraction % 10 == 0 {
+                        fraction /= 10;
+                        digits -= 1;
+                    }
+                    write!(f, ".{fraction:0digits$}")?;
+                }
+            }
+            Ok(())
         }
     }
-    let values = properties["values"].as_object_mut().unwrap();
-    values.insert("localNanoseconds".into(), json!(local.to_string()));
-    values.insert("offsetNanoseconds".into(), json!(offset as i64));
-    values.insert("offset".into(), json!(Offset(offset).to_string()));
+    properties.values[17] = json!(local.to_string());
+    properties.values[18] = json!(offset as i64);
+    properties.values[19] = json!(Offset(offset).to_string());
     match value.hours_in_day() {
         Ok(hours) => {
-            values.insert("hoursInDay".into(), json!(hours));
+            properties.values[20] = json!(hours);
         }
         Err(_) => {
-            properties["errors"]
-                .as_array_mut()
-                .unwrap()
-                .push(json!("hoursInDay"));
+            properties.errors |= 1 << 20;
         }
     }
     Ok(properties)
@@ -585,7 +657,7 @@ pub(crate) fn complete_result(
     op: &str,
     request: &Value,
     mut result: Value,
-) -> Result<Value, Error> {
+) -> Result<(Value, Option<CalendarSnapshot>), Error> {
     match op {
         "parsePlainDateTime" | "addPlainDateTime" | "roundPlainDateTime" | "withPlainDateTime" => {
             if !result.is_object() {
@@ -595,13 +667,9 @@ pub(crate) fn complete_result(
                 calendars()?.resolve(result["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
             let ns = decimal(&result, "epochNanoseconds")?;
             let mut properties =
-                partial_calendar_properties(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
+                partial_calendar_snapshot(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
             add_clock(&mut properties, ns);
-            result
-                .as_object_mut()
-                .unwrap()
-                .insert("properties".into(), properties);
-            return Ok(result);
+            return Ok((result, Some(properties)));
         }
         "resolveZonedDateTime"
         | "addZonedDateTime"
@@ -616,12 +684,9 @@ pub(crate) fn complete_result(
                     &request["value"]["identifier"],
                 )
             };
-            let mut slot = json!({"epochNanoseconds":result,"calendar":calendar,"timeZone":zone});
-            let properties = zoned_properties(&slot)?;
-            slot.as_object_mut()
-                .unwrap()
-                .insert("properties".into(), properties);
-            return Ok(slot);
+            let slot = json!({"epochNanoseconds":result,"calendar":calendar,"timeZone":zone});
+            let properties = zoned_snapshot(&slot)?;
+            return Ok((slot, Some(properties)));
         }
         _ => {}
     }
@@ -644,17 +709,13 @@ pub(crate) fn complete_result(
             integer(Some(&result), None)?,
             false,
         ),
-        _ => return Ok(result),
+        _ => return Ok((result, None)),
     };
-    let properties = partial_calendar_properties(calendars()?.resolve(calendar)?, epoch);
+    let properties = partial_calendar_snapshot(calendars()?.resolve(calendar)?, epoch);
     if !record {
         result = json!({"epochDay":epoch,"calendar":calendar});
     }
-    result
-        .as_object_mut()
-        .ok_or(Error::InvalidDateTime)?
-        .insert("properties".into(), properties);
-    Ok(result)
+    Ok((result, Some(properties)))
 }
 
 fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
@@ -667,11 +728,11 @@ fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
         {
             return Err(Error::OutOfRange);
         }
-        let mut result = calendar_properties(calendar, epoch)?;
+        let mut result = calendar_snapshot(calendar, epoch)?;
         if request.get("nanoseconds").is_some() {
             add_clock(&mut result, decimal(request, "nanoseconds")?);
         }
-        return Ok(result);
+        return Ok(result.into_json());
     }
     let number = |key| integer(request.get(key), None);
     let year =
@@ -1479,6 +1540,39 @@ fn plain_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+pub(crate) fn format_instant(
+    value: Instant,
+    precision: Precision,
+    rounding: RoundingMode,
+    offset: Option<i128>,
+    identifier: Option<&str>,
+) -> Result<crate::FormattedInstant, Error> {
+    let quantum = match precision {
+        Precision::Auto => 1,
+        Precision::Minute => 60_000_000_000,
+        Precision::Digits(digits) if digits <= 9 => 10i128.pow(u32::from(9 - digits)),
+        _ => return Err(Error::InvalidRoundingOptions),
+    };
+    let value = Instant::from_epoch_nanoseconds(crate::rounding::round_instant(
+        value.epoch_nanoseconds(),
+        quantum,
+        rounding,
+    ))?;
+    let offset = if let Some(identifier) = identifier {
+        Some(
+            time_zones()
+                .resolve(identifier)?
+                .offset_nanoseconds(value)
+                .try_into()
+                .map_err(|_| Error::OutOfRange)?,
+        )
+    } else {
+        offset
+            .map(|value| value.try_into().map_err(|_| Error::OutOfRange))
+            .transpose()?
+    };
+    value.format(precision, RoundingMode::Trunc, offset)
+}
 fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parseInstant" {
         return Ok(json!(
@@ -1499,40 +1593,17 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
             } else {
                 RoundingMode::Trunc
             };
-            let quantum = match precision {
-                Precision::Auto => 1,
-                Precision::Minute => 60_000_000_000,
-                Precision::Digits(digits) if digits <= 9 => 10i128.pow(u32::from(9 - digits)),
-                _ => return Err(Error::InvalidRoundingOptions),
-            };
-            let value = Instant::from_epoch_nanoseconds(crate::rounding::round_instant(
-                value.epoch_nanoseconds(),
-                quantum,
-                rounding,
-            ))?;
-            let offset = if let Some(identifier) = request["identifier"].as_str() {
-                Some(
-                    time_zones()
-                        .resolve(identifier)?
-                        .offset_nanoseconds(value)
-                        .try_into()
-                        .map_err(|_| Error::OutOfRange)?,
-                )
-            } else if request.get("offset").is_some() {
-                Some(
-                    decimal(request, "offset")?
-                        .try_into()
-                        .map_err(|_| Error::OutOfRange)?,
-                )
+            let identifier = request["identifier"].as_str();
+            let offset = if identifier.is_none() && request.get("offset").is_some() {
+                Some(decimal(request, "offset")?)
             } else {
                 None
             };
             Ok(json!(
-                value
-                    .format(precision, RoundingMode::Trunc, offset)?
-                    .to_string()
+                format_instant(value, precision, rounding, offset, identifier)?.to_string()
             ))
         }
+
         "addInstant" => {
             let duration = duration(request)?;
             let result = match request["subtract"].as_bool() {
@@ -1591,6 +1662,9 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
         }
         _ => Err(Error::InvalidSyntax),
     }
+}
+pub(crate) fn record_call() {
+    CALLS.fetch_add(1, Ordering::Relaxed);
 }
 pub(crate) fn execute(request: &Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
@@ -1673,10 +1747,10 @@ pub(crate) fn execute(request: &Value) -> Result<Value, i32> {
     ) {
         return Err(2);
     }
-    CALLS.fetch_add(1, Ordering::Relaxed);
+    record_call();
     let result = (|| -> Result<Value, Error> {
         match op {
-            "zonedProperties" => zoned_properties(&request["value"]),
+            "zonedProperties" => zoned_snapshot(&request["value"]).map(CalendarSnapshot::into_json),
             _ if op.starts_with("with") => with_operation(op, request),
             "isoToEpochNanoseconds" => Ok(Value::String(
                 fields(&request["fields"])?

@@ -288,10 +288,15 @@ assert.equal(
 
 const changes = [
   [TextEncoder.prototype, 'encode'],
+  [TextEncoder.prototype, 'encodeInto'],
   [TextDecoder.prototype, 'decode'],
   [Object.getPrototypeOf(Uint8Array.prototype), 'set'],
   [Object.getPrototypeOf(Uint8Array.prototype), 'length'],
   [DataView.prototype, 'getUint32'],
+  [DataView.prototype, 'getBigInt64'],
+  [DataView.prototype, 'getBigUint64'],
+  [DataView.prototype, 'setBigInt64'],
+  [DataView.prototype, 'setFloat64'],
   [WebAssembly.Memory.prototype, 'buffer'],
 ].map(([object, key]) => [
   object,
@@ -320,6 +325,11 @@ try {
   assert.equal(
     Temporal.Instant.from('1970-01-01T00:00Z').toJSON(),
     '1970-01-01T00:00:00Z'
+  )
+  assert.equal(
+    Temporal.Instant.from('1970-01-01T00:00Z').add({nanoseconds: 1})
+      .epochNanoseconds,
+    1n
   )
 } finally {
   for (const [object, key, descriptor] of changes)
@@ -590,6 +600,30 @@ for (const [source, fields, expected] of [
   )
   assert.equal(result.toString(), expected)
 }
+
+const historical = Temporal.ZonedDateTime.from({
+  year: 1971,
+  month: 1,
+  day: 1,
+  hour: 12,
+  timeZone: 'Africa/Monrovia',
+})
+assert.equal(historical.offset, '-00:44:30')
+assert.equal(historical.offsetNanoseconds, -2670000000000)
+assert(historical.toString().includes('-00:45[Africa/Monrovia]'))
+assert.equal(
+  Temporal.ZonedDateTime.from('1900-01-01T12:00[Asia/Kathmandu]').offset,
+  '+05:41:16'
+)
+const gregorianMonthDay = Temporal.PlainMonthDay.from({
+  year: 2021,
+  month: 1,
+  day: 15,
+  calendar: 'gregory',
+})
+assert.throws(() => gregorianMonthDay.with({month: 12}), TypeError)
+assert.equal(gregorianMonthDay.with({monthCode: 'M12'}).monthCode, 'M12')
+assert.equal(gregorianMonthDay.with({month: 12, year: 2021}).monthCode, 'M12')
 
 const eraDate = Temporal.PlainDate.from('2024-02-28[u-ca=gregory]')
 assert.throws(() => eraDate.with({eraYear: 2025}), TypeError)

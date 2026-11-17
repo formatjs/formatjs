@@ -1,5 +1,5 @@
 //! Reusable WASM records. JSON remains available for the native SDK/control interface.
-use crate::ffi::{OPERATIONS, complete_result, execute};
+use crate::ffi::{DATE_PROPERTIES, OPERATIONS, complete_result, execute};
 use serde_json::{Map, Number, Value};
 use std::{
     boxed::Box,
@@ -8,6 +8,9 @@ use std::{
     string::String,
     vec::Vec,
 };
+
+#[path = "binary_typed.rs"]
+mod typed;
 
 pub const STRINGS: &[&str] = &[
     "M01",
@@ -298,29 +301,6 @@ fn string_code(value: &str) -> Option<u16> {
         _ => return None,
     })
 }
-const DATE_PROPERTIES: &[&str] = &[
-    "dayOfWeek",
-    "daysInWeek",
-    "dayOfYear",
-    "daysInMonth",
-    "monthsInYear",
-    "daysInYear",
-    "inLeapYear",
-    "weekOfYear",
-    "yearOfWeek",
-    "era",
-    "eraYear",
-    "hour",
-    "minute",
-    "second",
-    "millisecond",
-    "microsecond",
-    "nanosecond",
-    "localNanoseconds",
-    "offsetNanoseconds",
-    "offset",
-    "hoursInDay",
-];
 
 #[derive(Default)]
 struct Buffers {
@@ -349,6 +329,7 @@ pub fn input(capacity: usize) -> *mut u8 {
         buffers.info.as_mut_ptr().cast()
     })
 }
+#[derive(Clone, Copy)]
 struct Reader<'a> {
     bytes: &'a [u8],
     offset: usize,
@@ -490,9 +471,52 @@ fn encode(output: &mut Vec<u8>, value: &Value) {
         }
     }
 }
-fn run(bytes: &[u8]) -> Result<Value, i32> {
+fn encode_date(
+    output: &mut Vec<u8>,
+    epoch: i64,
+    calendar: &str,
+    snapshot: crate::ffi::CalendarSnapshot,
+) {
+    output.push(6);
+    output.extend_from_slice(&3u32.to_le_bytes());
+    output.extend_from_slice(&string_code("epochDay").unwrap().to_le_bytes());
+    encode(output, &Value::from(epoch));
+    output.extend_from_slice(&string_code("calendar").unwrap().to_le_bytes());
+    encode(output, &Value::from(calendar));
+    output.extend_from_slice(&string_code("properties").unwrap().to_le_bytes());
+    encode_snapshot(output, snapshot);
+}
+fn encode_snapshot(output: &mut Vec<u8>, snapshot: crate::ffi::CalendarSnapshot) {
+    output.push(9);
+    if let Some(date) = snapshot.date {
+        for value in [
+            Value::from(date.year),
+            Value::from(date.month),
+            Value::from(date.day),
+        ] {
+            encode(output, &value);
+        }
+        let code = date.month_code;
+        // Month codes occupy the first 26 interned strings, in month/leap order.
+        output.push(8);
+        output.extend_from_slice(
+            &(u16::from(code.number - 1) * 2 + u16::from(code.leap)).to_le_bytes(),
+        );
+    } else {
+        output.extend_from_slice(&[0; 4]);
+    }
+    output.extend_from_slice(&snapshot.errors.to_le_bytes());
+    for value in &snapshot.values {
+        encode(output, value);
+    }
+}
+
+fn run(bytes: &[u8], output: &mut Vec<u8>) -> Result<(), i32> {
     let mut reader = Reader { bytes, offset: 0 };
     let operation = OPERATIONS.get(usize::from(reader.byte()?)).ok_or(2)?;
+    if let Some(result) = typed::run(operation, reader, output) {
+        return result;
+    }
     let Value::Object(mut request) = reader.value(0)? else {
         return Err(2);
     };
@@ -502,7 +526,21 @@ fn run(bytes: &[u8]) -> Result<Value, i32> {
     request.insert("op".into(), Value::String((*operation).into()));
     let request = Value::Object(request);
     let result = execute(&request)?;
-    complete_result(operation, &request, result).map_err(|_| 1)
+    let (result, snapshot) = complete_result(operation, &request, result).map_err(|_| 1)?;
+    if let Some(snapshot) = snapshot {
+        let values = result.as_object().ok_or(2)?;
+        output.push(6);
+        output.extend_from_slice(&((values.len() + 1) as u32).to_le_bytes());
+        for (key, value) in values {
+            output.extend_from_slice(&string_code(key).ok_or(2)?.to_le_bytes());
+            encode(output, value);
+        }
+        output.extend_from_slice(&string_code("properties").unwrap().to_le_bytes());
+        encode_snapshot(output, snapshot);
+    } else {
+        encode(output, &result);
+    }
+    Ok(())
 }
 /// Returned header is [status: u32, payload length: u32], followed by one record.
 /// Storage belongs to the module and remains valid until its next exchange.
@@ -511,16 +549,16 @@ pub fn exchange(length: usize) -> *const u8 {
         let Ok(mut buffers) = cell.try_borrow_mut() else {
             return core::ptr::null();
         };
+        let Buffers { input, output, .. } = &mut *buffers;
+        output.clear();
+        output.extend_from_slice(&[0; 8]);
         let result = catch_unwind(AssertUnwindSafe(|| {
-            run(buffers.input.get(..length).ok_or(2)?)
+            run(input.get(..length).ok_or(2)?, output)
         }))
         .unwrap_or(Err(3));
-        buffers.output.clear();
-        buffers.output.extend_from_slice(&[0; 8]);
-        match result {
-            Ok(value) => encode(&mut buffers.output, &value),
-            Err(status) => buffers.output[..4]
-                .copy_from_slice(&u32::try_from(status).unwrap_or(3).to_le_bytes()),
+        if let Err(status) = result {
+            output.truncate(8);
+            output[..4].copy_from_slice(&u32::try_from(status).unwrap_or(3).to_le_bytes());
         }
         let len = (buffers.output.len() - 8) as u32;
         buffers.output[4..8].copy_from_slice(&len.to_le_bytes());

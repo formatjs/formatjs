@@ -1,4 +1,4 @@
-// ABI 10 operation order. Append entries; keep Rust OPERATIONS in sync.
+// Operation order. Append entries; keep Rust OPERATIONS in sync.
 export const wasmOperations = [
   'addPlainYearMonth',
   'differencePlainYearMonth',
@@ -71,7 +71,7 @@ export const wasmOperations = [
   'withZonedDateTime',
 ] as const
 
-// ABI 10 string/key identifiers. Append entries; keep Rust STRINGS in sync.
+// String/key identifiers. Append entries; keep Rust STRINGS in sync.
 export const wasmStrings = [
   'M01',
   'M01L',

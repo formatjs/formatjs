@@ -57,7 +57,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 10 ||
+    core.temporal_abi_version() !== 11 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -114,9 +114,30 @@ const getFloat64 = View.prototype.getFloat64
 const codeUnit = String.prototype.charCodeAt
 const textIndex = String.prototype.indexOf
 const encodeInto = Encoder?.prototype.encodeInto
+const read32 = Function.prototype.call.bind(View.prototype.getUint32)
+const write32 = Function.prototype.call.bind(View.prototype.setUint32)
+const readSigned = Function.prototype.call.bind(View.prototype.getBigInt64)
+const readUnsigned = Function.prototype.call.bind(View.prototype.getBigUint64)
+const writeSigned = Function.prototype.call.bind(View.prototype.setBigInt64)
+const writeNumber = Function.prototype.call.bind(View.prototype.setFloat64)
+const putText = Function.prototype.call.bind(encodeInto!)
+const getText = Function.prototype.call.bind(decodeText!)
+const arrayIndex = Function.prototype.call.bind(Array.prototype.indexOf)
 const stringCodes: Record<string, number> = objectCreate(null)
 for (let index = 0; index < wasmStrings.length; index++)
   stringCodes[wasmStrings[index]] = index
+const durationPropertyNames = [
+  'years',
+  'months',
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
+  'microseconds',
+  'nanoseconds',
+]
 const datePropertyNames = [
   'dayOfWeek',
   'daysInWeek',
@@ -249,29 +270,55 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       apply(setUint32, view, [countOffset, count, true])
     } else throw new BadType('Invalid Temporal WASM record')
   }
-  return (operation, properties) => {
+  function validateText(value: string): void {
+    if (apply(textIndex, value, ['\\u']) >= 0)
+      throw new BadRange('Invalid Temporal string')
+    for (let i = 0; i < value.length; i++) {
+      const first = apply(codeUnit, value, [i]) as number
+      if (first >= 0xd800 && first <= 0xdbff) {
+        const second = apply(codeUnit, value, [++i]) as number
+        if (!(second >= 0xdc00 && second <= 0xdfff))
+          throw new BadRange('Invalid Temporal string')
+      } else if (first >= 0xdc00 && first <= 0xdfff)
+        throw new BadRange('Invalid Temporal string')
+    }
+  }
+  const invoke: NativeCall = (operation, properties) => {
     const code = operationCodes[operation]
     if (code === undefined) throw new BadType('Invalid Temporal WASM operation')
-    if (apply(textIndex, operation, ['parse']) === 0) {
-      const value = properties.text
-      if (typeof value === 'string') {
-        if (apply(textIndex, value, ['\\u']) >= 0)
-          throw new BadRange('Invalid Temporal string')
-        for (let i = 0; i < value.length; i++) {
-          const first = apply(codeUnit, value, [i]) as number
-          if (first >= 0xd800 && first <= 0xdbff) {
-            const second = apply(codeUnit, value, [++i]) as number
-            if (!(second >= 0xdc00 && second <= 0xdfff))
-              throw new BadRange('Invalid Temporal string')
-          } else if (first >= 0xdc00 && first <= 0xdfff)
-            throw new BadRange('Invalid Temporal string')
-        }
-      }
-    }
+    if (
+      apply(textIndex, operation, ['parse']) === 0 &&
+      typeof properties.text === 'string'
+    )
+      validateText(properties.text)
     refresh()
     offset = 0
     byte(code)
-    write(properties)
+    if (
+      operation === 'parsePlainDate' ||
+      operation === 'parsePlainYearMonth' ||
+      operation === 'parsePlainMonthDay'
+    ) {
+      byte(10)
+      text(properties.text as string)
+    } else if (operation === 'addPlainDate') {
+      byte(10)
+      reserve(88)
+      apply(setFloat64, view, [offset, properties.epochDay, true])
+      offset += 8
+      const fields = properties.duration as Record<string, number>
+      for (let i = 0; i < durationPropertyNames.length; i++) {
+        apply(setFloat64, view, [
+          offset,
+          fields[durationPropertyNames[i]],
+          true,
+        ])
+        offset += 8
+      }
+      byte(properties.subtract ? 1 : 0)
+      byte(properties.overflow === 'reject' ? 1 : 0)
+      text(properties.calendar as string)
+    } else write(properties)
     const result = core.temporal_exchange(offset) >>> 0
     if (!result) throw new BadType('Temporal WASM bridge failed')
     const header = new View(buffer(), result, 8)
@@ -351,6 +398,142 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     }
     return decode()
   }
+  if (
+    typeof View.prototype.getBigInt64 !== 'function' ||
+    typeof View.prototype.setBigInt64 !== 'function' ||
+    typeof View.prototype.getBigUint64 !== 'function'
+  )
+    return invoke
+  let fastBuffer: ArrayBuffer | undefined
+  let fastView: DataView
+  let fastBytes: Uint8Array
+  let fastPointer = -1,
+    fastCapacity = 0
+  let parseBytes: Uint8Array, zoneBytes: Uint8Array
+  function fastMemory(): void {
+    const memory = buffer()
+    if (memory !== fastBuffer) {
+      fastBuffer = memory
+      fastView = new View(memory)
+      fastBytes = new Bytes(memory)
+      fastPointer = -1
+    }
+  }
+  function begin(code: number, size: number): number {
+    fastMemory()
+    let pointer = read32(fastView, info, true),
+      capacity = read32(fastView, info + 4, true)
+    if (size > capacity) {
+      if (!core.temporal_input(Math.max(size, capacity * 2)))
+        throw new BadRange('Temporal WASM allocation failed')
+      fastMemory()
+      pointer = read32(fastView, info, true)
+      capacity = read32(fastView, info + 4, true)
+    }
+    if (pointer !== fastPointer || capacity !== fastCapacity) {
+      fastPointer = pointer
+      fastCapacity = capacity
+      parseBytes = new Bytes(fastBuffer!, pointer + 6, capacity - 6)
+      zoneBytes = new Bytes(fastBuffer!, pointer + 33, capacity - 33)
+    }
+    fastBytes[pointer] = code
+    fastBytes[pointer + 1] = 10
+    return pointer
+  }
+  function integer(pointer: number, value: bigint): void {
+    writeSigned(fastView, pointer, value, true)
+    writeSigned(fastView, pointer + 8, value >> 64n, true)
+  }
+  function exchange(length: number): number {
+    const result = core.temporal_exchange(length) >>> 0
+    if (!result) throw new BadType('Temporal WASM bridge failed')
+    fastMemory()
+    const status = read32(fastView, result, true)
+    if (status === 1) throw new BadRange('Invalid Temporal value or range')
+    if (status !== 0)
+      throw new BadType('Temporal WASM bridge failed: ' + status)
+    return result + 8
+  }
+  function readInteger(pointer: number): bigint {
+    if (fastBytes[pointer++] !== 10)
+      throw new BadType('Invalid Temporal WASM response')
+    return (
+      readUnsigned(fastView, pointer, true) +
+      (readSigned(fastView, pointer + 8, true) << 64n)
+    )
+  }
+  const modes = [
+    'ceil',
+    'floor',
+    'expand',
+    'trunc',
+    'halfCeil',
+    'halfFloor',
+    'halfExpand',
+    'halfTrunc',
+    'halfEven',
+  ]
+  invoke.parseInstant = value => {
+    validateText(value)
+    const pointer = begin(operationCodes.parseInstant, 6 + value.length * 3)
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    return readInteger(exchange(6 + encoded.written))
+  }
+  invoke.addInstant = (value, fields, subtract) => {
+    const pointer = begin(operationCodes.addInstant, 99)
+    integer(pointer + 2, value)
+    writeNumber(fastView, pointer + 18, fields.years, true)
+    writeNumber(fastView, pointer + 26, fields.months, true)
+    writeNumber(fastView, pointer + 34, fields.weeks, true)
+    writeNumber(fastView, pointer + 42, fields.days, true)
+    writeNumber(fastView, pointer + 50, fields.hours, true)
+    writeNumber(fastView, pointer + 58, fields.minutes, true)
+    writeNumber(fastView, pointer + 66, fields.seconds, true)
+    writeNumber(fastView, pointer + 74, fields.milliseconds, true)
+    writeNumber(fastView, pointer + 82, fields.microseconds, true)
+    writeNumber(fastView, pointer + 90, fields.nanoseconds, true)
+    fastBytes[pointer + 98] = subtract ? 1 : 0
+    return readInteger(exchange(99))
+  }
+  invoke.formatInstant = (
+    value,
+    precision,
+    offset,
+    mode = 'trunc',
+    identifier
+  ) => {
+    if (
+      identifier === undefined &&
+      offset !== undefined &&
+      (offset <= -86400000000000n || offset >= 86400000000000n)
+    )
+      throw new BadRange('Invalid Temporal offset')
+    const pointer = begin(
+      operationCodes.formatInstant,
+      33 + (identifier?.length ?? 0) * 3
+    )
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] =
+      precision === 'auto' ? 255 : precision === 'minute' ? 254 : precision
+    fastBytes[pointer + 19] = arrayIndex(modes, mode)
+    fastBytes[pointer + 20] =
+      (offset === undefined ? 0 : 1) | (identifier === undefined ? 0 : 2)
+    writeSigned(fastView, pointer + 21, offset ?? 0n, true)
+    const length =
+      identifier === undefined
+        ? 0
+        : putText(encoder, identifier, zoneBytes).written
+    write32(fastView, pointer + 29, length, true)
+    const result = exchange(33 + length)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
+  }
+  return invoke
 }
 
 export {wasmOperations, wasmStrings}

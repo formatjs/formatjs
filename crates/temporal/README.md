@@ -16,7 +16,7 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-ABI 10 exposes 69 Rust operations to WASM and native Hermes. The standalone SDK
+ABI 11 exposes 69 Rust operations to WASM and native Hermes. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
@@ -745,3 +745,13 @@ Published native-data WASM passes the same independent calendar/timezone/Duratio
 oracles as the retained-data profile. See the native-data benchmark snapshots:
 consumer gzip falls from 806,221 to 469,793 bytes, versus TS 360,710. Both WASM
 profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
+
+## Typed WASM operations
+
+ABI 11 uses typed inputs for seven hot routes, signed 128-bit Instant transfers,
+streamed formatting, and complete fixed calendar/clock/zone snapshots. SDK JSON
+controls keep their prior shapes. Historical `.offset` getters retain seconds;
+string serialization still rounds offsets as required. JS keeps observable
+coercions and required-field error types. Matching binary/adapter versions are
+required. See the [hillclimb measurements](../../benchmarks/temporal/README.md#typed-wasm-hillclimb-2026-11-17)
+for latency, startup, size and discarded experiments.

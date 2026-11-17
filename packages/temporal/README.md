@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations through ABI 10. JS retains
+Rust exposes typed values and 69 normalized operations through ABI 11. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -175,7 +175,7 @@ calendar updates preserve month codes and era relationships. Zoned updates prefe
 the source offset by default and support explicit gap/fold and offset policies.
 Rust `PlainDate::to_zoned_date_time(zone, None)` selects the first instant of the
 civil day; supplying `Some(time)` uses compatible resolution.
-JS adapters delegate normalized operations through ABI 10. Rust builds, generated
+JS adapters delegate normalized operations through ABI 11. Rust builds, generated
 data and release artifacts use Bazel.
 
 ## Validation
@@ -212,14 +212,15 @@ IANA/CLDR data exclusions; coverage details follow below.
 
 Matched Node namespace consumers measure 39,693 bytes gzip for default TS,
 23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
-Native-data WASM totals 487,770 bytes, including 458,210 binary bytes.
+Native-data WASM totals 493,058 bytes, including 462,516 binary bytes.
 It owns calendar and IANA data; the JS implementations use host Intl data.
-Nine-process shared ISO/timezone startup medians: TS 19.50 ms, native-data WASM
-24.23 ms, full reference 19.37 ms, official reference 26.75 ms.
-WASM wins 18 of 48 hot workloads against the official reference, four against
-our TS. Cached getters benefit; parse/arithmetic often remain slower.
-See [current benchmarks](../../benchmarks/temporal/README.md#binary-rust-operations-2026-11-17)
-for raw samples, bundle scopes and the official reference's ICU 78.2 Chinese
+Nine-process shared ISO/timezone startup medians: TS 19.37 ms, native-data WASM
+24.44 ms, full reference 19.22 ms, official reference 26.71 ms.
+WASM wins 20 of 48 sampled hot workloads against the official reference,
+5 against our TS. Typed records improve Instant/date paths; cached getters
+benefit, while many construction/arithmetic workloads still trail TS.
+See [current benchmarks](../../benchmarks/temporal/README.md#typed-wasm-hillclimb-2026-11-17)
+for samples, bundle scopes and the official reference's ICU 78.2 Chinese
 calendar incompatibility.
 
 Final coverage includes every Temporal-feature file in pinned Test262, including

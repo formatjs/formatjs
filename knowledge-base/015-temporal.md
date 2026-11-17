@@ -1766,3 +1766,43 @@ ISO/timezone readiness medians: 19.50/24.23/26.75 ms respectively. Eager snapsho
 move work into constructors/arithmetic; warm getters are not an end-to-end win.
 Official 0.5.1 Chinese month addition throws `Unexpected leap month suffix: Mo1`
 on pinned ICU 78.2; its optional calendar startup sample is explicitly disabled.
+
+## Typed WASM hillclimb (2026-11-17)
+
+ABI 11 keeps the same 69 operations and adds fixed requests for Instant
+parse/add/format, the three date-only parsers, and PlainDate addition. Instant
+nanoseconds cross as signed 128-bit little-endian integers; duration components
+remain validated numeric fields. Instant formatting writes directly into the
+reused output buffer. JS retains observable coercion, option and brand checks.
+Runtimes without DataView BigInt methods retain the generic Instant adapter.
+The JSON SDK/control protocol keeps its prior result shapes.
+
+Calendar, clock and zone snapshots now use a fixed Rust array plus error mask.
+The SDK serializes that shared calculation when explicitly requested; WASM
+encodes the fields directly. Constructors/arithmetic still return complete
+snapshots, including individual deferred getter errors. No calendar or timezone
+data changes. ABI 10 binaries must be replaced with the matching ABI 11 binary.
+
+The hillclimb first bypassed Rust's dynamic Instant request maps, then removed
+JS request objects and decimal BigInt transfers. Fixed snapshots removed the
+next allocation bottleneck; typed date requests followed. Bound generic JS
+intrinsics showed no useful gain. A fixed-shape JS snapshot decoder regressed
+parse/add and was discarded. These are local Node/V8 observations; Hermes
+source/bytecode conformance remains a separate correctness requirement.
+
+Wider PR CI caught two regressions outside the initial 55 focused gates:
+cached `.offset` strings incorrectly reused the minute-rounded formatter, and
+non-ISO MonthDay `.with({month})` returned RangeError instead of TypeError.
+Snapshots now preserve offset seconds/fractions; string serialization still
+uses its required minute rounding. The JS adapter checks missing monthCode/year
+before the Rust request. Public package regressions and the unchanged Intl
+Test262 selections cover both. Three historical oracle fault-injection checks
+now target fused snapshot routes instead of removed redundant getter/validation
+calls. No exclusions were added.
+
+Final hillclimb evidence: `benchmarks/temporal/hillclimb-results.json` (48 matched
+workloads), `hillclimb-startup-results.json` (nine fresh processes/profile), and
+`hillclimb-experiments.json` (kept/discarded iterations). All 62 final targets
+pass, including every failed PR CI target. WASM wins 5/48 against TS,
+20/48 against official reference. Native-data namespace consumer:
+493,058 gzip bytes; shared ISO/timezone readiness 24.44 ms.

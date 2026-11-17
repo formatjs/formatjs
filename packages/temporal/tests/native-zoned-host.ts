@@ -34,7 +34,7 @@ const actions = values.flatMap((value, index) => [
   {operation: 'roundZonedDateTime', run: () => value.round('day')},
   {operation: 'roundZonedDateTime', run: () => value.round('hour')},
   {operation: 'startOfZonedDay', run: () => value.startOfDay()},
-  {operation: 'hoursInZonedDay', run: () => value.hoursInDay},
+  {operation: 'zonedProperties', run: () => value.hoursInDay},
 ])
 configureNativeTemporal(query)
 for (const action of actions) action.run()

@@ -63,7 +63,14 @@ fn reusable_records_preserve_nanoseconds_and_recover_after_errors() {
     let mut expected = vec![4];
     text(&mut expected, "1582308899123456789");
     assert_eq!(call(&request), (0, expected.clone()));
+    let mut trailing = request.clone();
+    trailing.push(0);
+    let mut duplicate = request.clone();
+    duplicate[2] = 2;
+    duplicate.extend_from_slice(&request[6..]);
     for invalid in [
+        trailing,
+        duplicate,
         vec![],
         vec![255],
         request[..request.len() - 1].to_vec(),
@@ -88,4 +95,60 @@ fn allocation_failure_and_invalid_lengths_leave_storage_usable() {
         );
     }
     assert_eq!(call(&request), before);
+}
+
+#[test]
+fn typed_instant_records_preserve_signed_nanoseconds_and_reject_trailing_bytes() {
+    for (input, nanoseconds) in [
+        ("1969-12-31T23:59:59.123456789Z", -876_543_211i128),
+        (
+            "2020-02-21T23:59:59.123456789+05:45",
+            1_582_308_899_123_456_789,
+        ),
+        ("+275760-09-13T00:00Z", 8_640_000_000_000_000_000_000),
+        ("-271821-04-20T00:00Z", -8_640_000_000_000_000_000_000),
+    ] {
+        let mut request = vec![opcode("parseInstant"), 10];
+        text(&mut request, input);
+        let mut expected = vec![10];
+        expected.extend_from_slice(&nanoseconds.to_le_bytes());
+        assert_eq!(call(&request), (0, expected.clone()));
+        let mut trailing = request.clone();
+        trailing.push(0);
+        assert_eq!(call(&trailing).0, 2);
+        assert_eq!(call(&request[..request.len() - 1]).0, 2);
+        assert_eq!(call(&request), (0, expected));
+    }
+}
+
+#[test]
+fn typed_dates_balance_leap_days_and_recover_after_invalid_records() {
+    let parse = |value: &str| {
+        let mut request = vec![opcode("parsePlainDate"), 10];
+        text(&mut request, value);
+        request
+    };
+    let origin = parse("2020-02-21");
+    let expected = call(&parse("2020-03-21"));
+    assert_eq!(expected.0, 0);
+    let mut add = vec![opcode("addPlainDate"), 10];
+    add.extend_from_slice(&18313f64.to_le_bytes());
+    for field in [0f64, 0., 0., 29., 0., 0., 0., 0., 0., 0.] {
+        add.extend_from_slice(&field.to_le_bytes());
+    }
+    add.extend_from_slice(&[0, 0]);
+    text(&mut add, "iso8601");
+    assert_eq!(call(&add), expected);
+    let mut invalid_flag = add.clone();
+    invalid_flag[90] = 2;
+    let mut trailing = origin.clone();
+    trailing.push(0);
+    for invalid in [invalid_flag, trailing, origin[..origin.len() - 1].to_vec()] {
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&add), expected);
+    }
+    let mut invalid_duration = add.clone();
+    invalid_duration[10..18].copy_from_slice(&f64::INFINITY.to_le_bytes());
+    assert_eq!(call(&invalid_duration).0, 1);
+    assert_eq!(call(&add), expected);
 }

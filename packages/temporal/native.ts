@@ -19,10 +19,12 @@ import type {
 } from '#packages/temporal/rounding.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
 
-export type NativeCall = (
-  operation: string,
-  properties: Record<string, unknown>
-) => any
+export interface NativeCall {
+  (operation: string, properties: Record<string, unknown>): any
+  parseInstant?: NativeTemporal['parseInstant']
+  formatInstant?: NativeTemporal['formatInstant']
+  addInstant?: NativeTemporal['addInstant']
+}
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
 const stringify = JSON.stringify
@@ -334,7 +336,8 @@ export function configureNativeTemporal(
   }
   function withFields(
     calendar: string,
-    fields: Record<string, unknown>
+    fields: Record<string, unknown>,
+    shape?: string
   ): Record<string, unknown> {
     if (
       calendar !== 'iso8601' &&
@@ -343,6 +346,15 @@ export function configureNativeTemporal(
       (fields.era === undefined) !== (fields.eraYear === undefined)
     )
       throw new BadType('era and eraYear required together')
+    if (
+      shape === 'month-day' &&
+      calendar !== 'iso8601' &&
+      fields.month !== undefined &&
+      fields.monthCode === undefined &&
+      fields.year === undefined &&
+      fields.eraYear === undefined
+    )
+      throw new BadType('monthCode or year required')
     return fields
   }
   function isoFields(fields: ISODateTime): Record<string, number> {
@@ -457,7 +469,7 @@ export function configureNativeTemporal(
               : 'withPlainMonthDay',
           {
             value: shortFields(slot),
-            fields: withFields(slot.calendar, fields),
+            fields: withFields(slot.calendar, fields, shape),
             overflow,
           }
         ),
@@ -864,17 +876,23 @@ export function configureNativeTemporal(
         increment,
         mode,
       }),
-    parseInstant: value => ToBigInt(call('parseInstant', {text: value})),
-    formatInstant: (value, precision, offset, mode, identifier) =>
-      call('formatInstant', {
-        nanoseconds: text(value),
-        precision,
-        offset: offset === undefined ? undefined : text(offset),
-        mode,
-        identifier,
-      }),
-    addInstant: (value, fields, subtract) =>
-      addition('addInstant', value, fields, subtract),
+    parseInstant:
+      invoke?.parseInstant ??
+      (value => ToBigInt(call('parseInstant', {text: value}))),
+    formatInstant:
+      invoke?.formatInstant ??
+      ((value, precision, offset, mode, identifier) =>
+        call('formatInstant', {
+          nanoseconds: text(value),
+          precision,
+          offset: offset === undefined ? undefined : text(offset),
+          mode,
+          identifier,
+        })),
+    addInstant:
+      invoke?.addInstant ??
+      ((value, fields, subtract) =>
+        addition('addInstant', value, fields, subtract)),
     roundInstant: (value, quantum, mode) =>
       ToBigInt(
         call('roundInstant', {
