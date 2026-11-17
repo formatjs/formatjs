@@ -26,6 +26,7 @@ formatjs_library(
         "instant-entry.ts",
         "instant-primitives-entry.ts",
         "kernel-entry.ts",
+        "legacy-date-benchmark.ts",
         "locale-benchmark.ts",
         "locale-entry.ts",
         "polyfill-entry.ts",
@@ -63,6 +64,17 @@ formatjs_library(
         "//packages/intl-durationformat:types",
         "//packages/temporal:types",
     ],
+)
+
+js_binary(
+    name = "legacy_date_benchmark",
+    args = ["$(rlocationpath //packages/temporal:pkg)"],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "legacy-date-benchmark.ts",
 )
 
 js_binary(

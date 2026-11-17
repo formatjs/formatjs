@@ -1,5 +1,26 @@
 # Temporal benchmarks
 
+## Plain Date callers after installation
+
+Run `bazel run -c opt //benchmarks/temporal:legacy_date_benchmark`.
+`legacy-date-results.json` compares native Intl with ordinary Date formatting
+after importing the published `polyfill.js`. Existing formatters and formatters
+constructed after installation are separate profiles. Gregorian UTC/New York,
+French Paris and Hebrew New York use eight varying 2024 Dates and 24-hour clocks.
+Strings and full parts must match captured native methods before timing.
+
+Nine fresh processes per profile rotate execution order, with 1,024 warmup calls
+and 8,192 measured calls per case. `format` includes bound getter access;
+`formatToParts` includes the same joining/checksum overhead for every profile.
+Installation and constructor time are excluded. No startup, heap, range or
+Hermes claim. These measurements expose costs to callers that never pass Temporal
+values; they do not establish acceptable overhead or optimize those paths.
+
+Recorded V8 medians: existing formatters remain within 3% of native. New Gregorian
+formatters take 5.1–6.3 times native `format` time and 2.6–2.7 times native
+`formatToParts` time. Hebrew takes 15.2 and 6.2 times respectively. This is a real
+installation cost for ordinary Date callers, measured on one host.
+
 Runtime and tests live in
 [`packages/temporal`](../../packages/temporal/README.md); this directory owns
 benchmarks and recorded measurements. The package remains private pending release. Current

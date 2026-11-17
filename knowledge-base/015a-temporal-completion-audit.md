@@ -207,6 +207,15 @@ is not proven minimal either. No production change or new exclusion in this audi
 
 ## temporal_rs benchmark follow-up
 
+Review follow-up: `benchmarks/temporal/legacy-date-results.json` measures ordinary
+Date callers before/after importing published `polyfill.js`, separating existing
+and newly constructed formatters. Exact strings/parts pass for eight 2024 Dates
+across four 24-hour locale/calendar/zone profiles. Nine fresh processes per mode
+exclude startup/construction. Existing formatters stay within 3% of native; new
+Gregorian format/parts take 5.1–6.3/2.6–2.7 times native time, Hebrew 15.2/6.2.
+No optimization, range, heap or Hermes performance claim. This exposes an open
+cost for non-Temporal callers, rather than establishing acceptable overhead.
+
 `temporal_rs` 0.2.6 is benchmarked through an isolated dependency workspace and
 Bazel repository; production crate/npm dependencies do not change. Default host
 features are disabled; ICU4X calendar 2.3.0 is pinned to match our calendar generator.

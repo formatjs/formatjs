@@ -6,6 +6,7 @@
     },
     "types": ["node"]
   },
+  "exclude": ["./rust/**/*"],
   "extends": "../../tsconfig.json",
   "references": [
     {
