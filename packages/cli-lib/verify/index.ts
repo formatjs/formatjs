@@ -15,7 +15,6 @@ export interface VerifyOpts {
   missingKeys: boolean
   extraKeys: boolean
   structuralEquality: boolean
-  preserveEntities?: boolean
   messageSyntax?: 'icu' | 'java-printf' | 'apple-printf' | 'android'
   ignore?: string[]
   /**
@@ -33,15 +32,10 @@ export async function verify(
     extraKeys = false,
     structuralEquality = false,
     messageSyntax = 'icu',
-    preserveEntities = false,
   }: VerifyOpts
 ): Promise<void> {
   debug('Checking translation files:')
   files.forEach(fn => debug(fn))
-
-  if (preserveEntities && messageSyntax !== 'android') {
-    throw new Error('--preserve-entities requires --message-syntax android')
-  }
 
   if (messageSyntax === 'apple-printf' || messageSyntax === 'android') {
     const resources = await Promise.all(
@@ -50,23 +44,17 @@ export async function verify(
         content: await readFile(filename),
       }))
     )
-    const issues =
+    const verifyResources =
       messageSyntax === 'android'
-        ? verifyAndroidResourcesWithNative(
-            resources,
-            sourceLocale,
-            missingKeys,
-            extraKeys,
-            structuralEquality,
-            preserveEntities
-          )
-        : verifyAppleResourcesWithNative(
-            resources,
-            sourceLocale,
-            missingKeys,
-            extraKeys,
-            structuralEquality
-          )
+        ? verifyAndroidResourcesWithNative
+        : verifyAppleResourcesWithNative
+    const issues = verifyResources(
+      resources,
+      sourceLocale,
+      missingKeys,
+      extraKeys,
+      structuralEquality
+    )
     for (const issue of issues) {
       writeStderr(`${issue.locale}: ${issue.messageId}: ${issue.error}\n`)
     }

@@ -278,10 +278,6 @@ sentences are not translator-friendly.`
       `Whether to check for structural equality of messages between source and target locale.
       This makes sure translations are formattable and are not missing any tokens.`
     )
-    .option(
-      '--preserve-entities',
-      'Preserve custom XML entity references and counts in each Android item.'
-    )
     .addOption(
       new Option(
         '--message-syntax <syntax>',

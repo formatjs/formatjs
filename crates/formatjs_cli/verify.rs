@@ -14,16 +14,6 @@ pub enum MessageSyntax {
     Android,
 }
 
-#[derive(Clone, Copy, Debug)]
-pub struct VerificationOptions {
-    pub missing_keys: bool,
-    pub extra_keys: bool,
-    pub structural_equality: bool,
-    pub follow_links: bool,
-    pub message_syntax: MessageSyntax,
-    pub preserve_entities: bool,
-}
-
 /// Run a series of checks on translation files to validate correctness and consistency.
 ///
 /// This command loads translation files and runs various validation checks comparing
@@ -105,39 +95,6 @@ pub fn verify_with_syntax(
     follow_links: bool,
     message_syntax: MessageSyntax,
 ) -> Result<()> {
-    verify_with_options(
-        translation_files,
-        source_locale,
-        ignore,
-        VerificationOptions {
-            missing_keys,
-            extra_keys,
-            structural_equality,
-            follow_links,
-            message_syntax,
-            preserve_entities: false,
-        },
-    )
-}
-
-pub fn verify_with_options(
-    translation_files: &[PathBuf],
-    source_locale: Option<&str>,
-    ignore: &[String],
-    options: VerificationOptions,
-) -> Result<()> {
-    let VerificationOptions {
-        missing_keys,
-        extra_keys,
-        structural_equality,
-        follow_links,
-        message_syntax,
-        preserve_entities,
-    } = options;
-    anyhow::ensure!(
-        !preserve_entities || matches!(message_syntax, MessageSyntax::Android),
-        "--preserve-entities requires --message-syntax android"
-    );
     // Ensure source locale is provided
 
     // Expand glob patterns to actual file paths
@@ -187,7 +144,6 @@ pub fn verify_with_options(
                     missing_keys,
                     extra_keys,
                     structural_equality,
-                    preserve_entities,
                 },
             )?
         } else {

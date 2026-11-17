@@ -706,7 +706,8 @@ then applies Android quoting/escaping before Java printf verification.
 shape and plural fallback compatibility, and reports missing/extra keys. Rust
 and npm use the same code through `verify_android_resources` in the N-API crate.
 Locale typography and brand rules remain caller policy.
-Optional `--preserve-entities` compares custom XML entity names and counts per
+Android `--structural-equality` compares custom XML entity names and counts per
 item using source spellings after XML validation, excluding literal CDATA,
 comments, predefined entities and numeric references. Rust and npm share the
-check; npm uses a dedicated N-API capability to reject outdated native bindings.
+check through the existing Android resource verifier, including formatted=false
+items; basic XML validation remains permissive.

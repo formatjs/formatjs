@@ -51,7 +51,7 @@ describe.each([
       await rm(directory, {recursive: true, force: true})
     }
   })
-  test('optionally preserves custom references and rejects the flag in other modes', async () => {
+  test('preserves custom references when checking structural equality', async () => {
     const directory = await mkdtemp(join(tmpdir(), 'formatjs-entities-'))
     const resource = (text: string) =>
       `<!DOCTYPE resources [<!ENTITY brand "Example"><!ENTITY otherBrand "Other">]><resources><string name="s" formatted="false">${text}</string></resources>`
@@ -64,15 +64,15 @@ describe.each([
       )
       const target = join(directory, 'values-fr/strings.xml')
       await writeFile(target, resource('Example Other Example'))
-      const run = (preserve: boolean, syntax = 'android') =>
+      const run = (structural: boolean) =>
         execFile(binary!, [
           'verify',
           join(directory, '**/*.xml'),
           '--source-locale',
           'en',
           '--message-syntax',
-          syntax,
-          ...(preserve ? ['--preserve-entities'] : []),
+          'android',
+          ...(structural ? ['--structural-equality'] : []),
         ])
       await expect(run(false)).resolves.toBeTruthy()
       await expect(run(true)).rejects.toThrow(/entity references changed/)
@@ -80,9 +80,6 @@ describe.each([
       await expect(run(true)).resolves.toBeTruthy()
       await writeFile(target, resource('&otherBrand; &brand;'))
       await expect(run(true)).rejects.toThrow(/entity references changed/)
-      await expect(run(true, 'icu')).rejects.toThrow(
-        /requires --message-syntax android/
-      )
     } finally {
       await rm(directory, {recursive: true, force: true})
     }

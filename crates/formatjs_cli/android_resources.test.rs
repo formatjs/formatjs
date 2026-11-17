@@ -66,7 +66,6 @@ fn options() -> VerificationOptions {
         missing_keys: true,
         extra_keys: true,
         structural_equality: true,
-        preserve_entities: false,
     }
 }
 
@@ -228,7 +227,7 @@ fn entity_xml(body: &str) -> Vec<u8> {
 fn entity_issues(
     source: &str,
     target: &str,
-    preserve: bool,
+    structural: bool,
 ) -> Vec<formatjs_cli::android_resources::VerificationIssue> {
     let files = BTreeMap::from([
         ("res/values/strings.xml".into(), entity_xml(source)),
@@ -238,7 +237,7 @@ fn entity_issues(
         &files,
         "en",
         VerificationOptions {
-            preserve_entities: preserve,
+            structural_equality: structural,
             ..VerificationOptions::default()
         },
     )
@@ -246,7 +245,7 @@ fn entity_issues(
 }
 
 #[test]
-fn android_entity_preservation_is_opt_in_and_counts_symbolic_references() {
+fn android_structural_equality_preserves_entity_names_and_counts() {
     let source = r#"<string name="s">&brand; and &brand;</string>"#;
     for target in [
         r#"<string name="s">Example and Example</string>"#,

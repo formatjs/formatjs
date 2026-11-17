@@ -262,10 +262,6 @@ enum Commands {
         #[arg(long)]
         structural_equality: bool,
 
-        /// Preserve custom XML entity references and counts in each Android item.
-        #[arg(long)]
-        preserve_entities: bool,
-
         /// Message grammar or native resource format (android or apple-printf).
         #[arg(long, value_enum, default_value = "icu")]
         message_syntax: MessageSyntaxType,
@@ -362,22 +358,18 @@ fn main() -> Result<()> {
             missing_keys,
             extra_keys,
             structural_equality,
-            preserve_entities,
             message_syntax,
             follow_links,
         } => {
-            verify::verify_with_options(
+            verify::verify_with_syntax(
                 translation_files,
                 source_locale.as_deref(),
                 ignore,
-                verify::VerificationOptions {
-                    missing_keys: *missing_keys,
-                    extra_keys: *extra_keys,
-                    structural_equality: *structural_equality,
-                    follow_links: *follow_links,
-                    message_syntax: (*message_syntax).into(),
-                    preserve_entities: *preserve_entities,
-                },
+                *missing_keys,
+                *extra_keys,
+                *structural_equality,
+                *follow_links,
+                (*message_syntax).into(),
             )?;
         }
     }

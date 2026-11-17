@@ -11,7 +11,6 @@ pub struct VerificationOptions {
     pub missing_keys: bool,
     pub extra_keys: bool,
     pub structural_equality: bool,
-    pub preserve_entities: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -395,10 +394,10 @@ pub fn verify_resources(
                         error: error.into(),
                     });
                 }
-                if !options.structural_equality && !options.preserve_entities {
+                if !options.structural_equality {
                     continue;
                 }
-                if let Some(resource) = target.get(key).filter(|_| options.structural_equality) {
+                if let Some(resource) = target.get(key) {
                     // Validate every present item, including unmatched targets and sources.
                     for (suffix, item) in items(resource) {
                         issues.extend(verify_item(
@@ -413,7 +412,7 @@ pub fn verify_resources(
                     continue;
                 };
                 if let (Resource::Array(before), Resource::Array(after)) = (before, after) {
-                    if options.structural_equality && before.len() != after.len() {
+                    if before.len() != after.len() {
                         issues.push(VerificationIssue {
                             locale: language.clone(),
                             message_id: message_id.clone(),
@@ -432,8 +431,7 @@ pub fn verify_resources(
                     });
                     if let Some(source_item) = source_item {
                         let item_id = format!("{message_id}/{suffix}");
-                        if options.preserve_entities && source_item.entities != target_item.entities
-                        {
+                        if source_item.entities != target_item.entities {
                             issues.push(VerificationIssue {
                                 locale: language.clone(),
                                 message_id: item_id.clone(),
@@ -443,14 +441,7 @@ pub fn verify_resources(
                                 ),
                             });
                         }
-                        if options.structural_equality {
-                            issues.extend(verify_item(
-                                source_item,
-                                target_item,
-                                language,
-                                &item_id,
-                            )?);
-                        }
+                        issues.extend(verify_item(source_item, target_item, language, &item_id)?);
                     }
                 }
             }

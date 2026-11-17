@@ -507,8 +507,8 @@ XML entities (including declared internal entities) decode before Android quotes
 backslash escapes and whitespace handling. Quoted apostrophes, `\'`, U+2019 and
 numeric non-breaking spaces are accepted. Undeclared entities, malformed XML,
 unescaped apostrophes and invalid Unicode escapes fail. External entities are
-never fetched. Verification never rewrites XML. By default it does not enforce typography, brand
-spelling, CDATA spelling or exact entity-reference spelling.
+never fetched. Verification never rewrites XML or enforces typography, brand spelling or CDATA
+spelling. Structural equality also preserves custom entity references.
 
 `--structural-equality` uses Java printf argument compatibility on decoded item
 text, checks array lengths and formatting-mode changes, and validates source and
@@ -523,24 +523,25 @@ See [Android string resource rules](https://developer.android.com/guide/topics/r
 
 #### Preserve custom entity references
 
-Add `--preserve-entities` in Android mode to compare custom XML entity names and
+In Android mode, `--structural-equality` compares custom XML entity names and
 occurrence counts in each corresponding string, array item or plural item:
 
 ```sh
 formatjs verify 'app/src/main/res/**/*.xml' \
   --message-syntax android --source-locale en \
-  --structural-equality --preserve-entities --missing-keys
+  --structural-equality --missing-keys
 ```
 
 `&brand;` cannot become literal text or another entity, and repeated references
 cannot be dropped or duplicated. Reordering within an item is allowed; moving
 references between array/plural items fails. Target-only plural categories use
 the source `other` item. Checks include inline attributes and apply even with
-`formatted="false"`, independently of `--structural-equality`. Missing resources
-still require `--missing-keys`; array-length checks require `--structural-equality`.
+`formatted="false"`, which only skips printf checks. Missing resources still
+require `--missing-keys`.
 
 Predefined XML entities (`amp`, `lt`, `gt`, `apos`, `quot`), numeric references,
 comments, processing instructions and CDATA contents are excluded. For example,
 `&amp;brand;` and `<![CDATA[&brand;]]>` are literal text, not references to `brand`.
 Entity definitions remain validated XML, but their replacement values are not
-compared. The flag is opt-in and rejected for other message syntaxes.
+compared. Basic XML verification without `--structural-equality` still accepts
+equivalent expanded text.
