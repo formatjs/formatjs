@@ -9,6 +9,18 @@
   "extends": "../../tsconfig.json",
   "references": [
     {
+      "path": "../../packages/intl-datetimeformat/tsconfig.json"
+    },
+    {
+      "path": "../../packages/intl-datetimeformat/tsconfig.json"
+    },
+    {
+      "path": "../../packages/intl-durationformat/tsconfig.json"
+    },
+    {
+      "path": "../../packages/intl-durationformat/tsconfig.json"
+    },
+    {
       "path": "../../packages/temporal/tsconfig.json"
     }
   ]
