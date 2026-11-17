@@ -44,6 +44,11 @@ pnpm add @formatjs/intl-supportedvaluesof
 
 ## Usage
 
+Timezone enumeration uses pinned IANA/CLDR primary IDs, including country-specific
+IDs such as `Africa/Accra`. It omits aliases such as `America/Yellowknife`.
+The installed DateTimeFormat must accept each returned ID; its resolved spelling
+may differ on older hosts.
+
 ### Simple
 
 ```tsx

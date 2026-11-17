@@ -6,12 +6,7 @@ import type {
   TimeZoneFutureRule,
 } from '#packages/ecma402-abstract/types/date-time.js'
 
-export interface PackedData {
-  zones: string[]
-  abbrvs: string
-  offsets: string
-  future?: Record<string, TimeZoneFutureRule>
-}
+export type {PackedTimeZoneData as PackedData} from '#packages/ecma402-abstract/types/date-time.js'
 
 export interface UnpackedData {
   zones: Record<string, ZoneData[]>
@@ -83,6 +78,10 @@ export type TimeZoneNameData = Record<
     short?: [string, string]
     shortGeneric?: string
     longGeneric?: string
+    longStandard?: string
+    longDaylight?: string
+    shortStandard?: string
+    shortDaylight?: string
   }
 >
 

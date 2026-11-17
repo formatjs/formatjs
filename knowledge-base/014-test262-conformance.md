@@ -272,3 +272,39 @@ test verifies the CLDR output and that joining `formatToParts()` reproduces it.
 These executions remain visible in the raw failure counts. ECMA-402 11.2.3 makes
 locale data implementation-defined ([source line 222](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L222))
 and recommends CLDR ([line 854](https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L854)).
+
+## Temporal development selections
+
+`packages/temporal` has eight partial classes plus Now. Strict selections total 4,986
+executions per Node/Hermes source/optimized-bytecode mode; these stay separate
+from the twelve complete Intl selections above. Current class counts and failure
+areas live in [the package record](../packages/temporal/conformance-results.json)
+and [package README](../packages/temporal/README.md).
+
+Full diagnostics agree across all three modes but remain failing. Duration
+passes 1,082/1,086 and ZonedDateTime 1,800/1,804. The 138-execution complete Now built-ins/intl402 corpus passes. Locale failures remain visible. Remaining calendars and Intl/Date
+integration are implementation gaps, never exclusions. Negative assertions can
+pass incidentally when a method is absent; aggregate counts do not establish
+whole-method conformance.
+
+Full Hermes development targets use Bazel's large test budget. The 1,790-execution
+strict zoned suite and 1,072-execution Duration suite use medium budgets; per-case harness
+limit stays 30 seconds. Timed-out/truncated JSON never counts as a completed
+raw diagnostic. No new exclusions. See [implementation tracking](015-temporal.md).
+
+Temporal installation adds 26 namespace/Date executions per mode, using the real
+force entry as the Test262 prelude. Separate manual intl402/Temporal targets cover
+all 4,080 scenarios, retaining every failure. The bare Hermes diagnostic lacks an
+installed DateTimeFormat prerequisite; this is recorded, not an allowed exclusion.
+Latest engine-specific results live in the Temporal conformance record.
+
+Zoned strict selection now covers every non-locale built-ins family, including
+complete since/until directories. Independent ICU identity fixtures check all
+597 available IDs and 178,503 pairs in both TS and Rust. Country primaries remain
+distinct even when transition records or present offsets coincide.
+
+Native Rust plain-relative tests additionally port pinned Duration vectors for
+zero values at date limits, ±1 ns nudged to 10^9 days, minimum-date rounding,
+large clock/calendar endpoint overflow and week-prefix preservation. These ports
+supplement independent ICU controls; they do not claim a native Test262 harness.
+The TS range fix remains subject to the full existing strict selections.

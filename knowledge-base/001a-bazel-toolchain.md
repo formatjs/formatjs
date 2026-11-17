@@ -599,6 +599,17 @@ uses 120 seconds because `prototype/format/units.js` formats every sanctioned
 unit pair while the complete polyfill stack is installed. This is separate from
 Bazel's overall test timeout; expected-failure baselines stay unchanged.
 
+Temporal shell conformance tests use a package-local transition to `opt`, so
+Hermes source and bytecode checks exercise the shipping compiler/runtime profile
+even when the top-level CI command uses fastbuild. Standalone locale/Intl suites
+retain their one-hour timeout; other shell suites use 15 minutes. Test cases and
+baselines stay unchanged.
+
+The standalone Intl source suite runs in eight Bazel shards to fit BuildBuddy's
+one-hour free-tier runner limit. A stable hash assigns each scenario once. Every
+shard checks the full discovery count before validating its report against its
+share of the existing baseline.
+
 Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
 for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
 ordinary repository build defaults remain separate. Benchmark SDK changes using
@@ -618,3 +629,32 @@ current workflow. Every checkout uses that tag, including publication's version
 check. Optional `apple_run_id` reuses an SDK workflow artifact only after its
 source commit matches the checkout; the publish job needs Actions read access
 for this download. Use `dry_run` before publishing a repaired release.
+
+Temporal's installation entries share its published index to preserve private
+brands across imports. `formatjs_library(entry_point_external_paths = {...})`
+opts individual entries into external import mappings; `rolldown_bundle`
+forwards `external_paths` and rewrites emitted imports with Rolldown `paths`.
+Default bundling stays unchanged. The mapping is shell-quoted JSON and applies
+to JS and declaration output. Assembled-package tests must verify identity;
+source-only tests can hide independently bundled copies of the same classes.
+
+Rolldown temporary tsconfigs use unique directories, cleaned after output. Sandbox
+processes can share PIDs, so PID-only files in shared /tmp collide across parallel
+actions and can silently leave workspace imports unresolved in emitted bundles.
+
+## Temporal WASM dependencies
+
+The workspace `crate.from_cargo` platform list includes `wasm32-unknown-unknown`
+so the Temporal std/serde JSON backend can use the same pinned dependency graph.
+`//crates/temporal:wasm_backend` transitions an optimized shared-library target;
+`//packages/temporal:wasm_asset` copies it into the npm package. Use cquery for its
+actual transitioned artifact path. The earlier no_std primitive WASM target stays
+separate and cannot represent full facade/data size.
+
+### Constants for individual package entries
+
+`formatjs_library(entry_point_defines={"entry.ts": {"constant": "value"}})` passes
+constants to that entry's Rolldown bundle. `rolldown_bundle(define=...)` uses the
+same path. Values are JavaScript expressions. The runner supplies Rolldown's
+`transform.define` option; a top-level `define` is ignored by the pinned version.
+Temporal uses this to exclude duplicate TS data from its native-data WASM facade.

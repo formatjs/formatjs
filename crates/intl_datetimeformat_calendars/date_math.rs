@@ -1,0 +1,139 @@
+use crate::calendar::{
+    Calendar, Date, DateDuration, DateUnit, Error, MonthCode, Overflow, check_year,
+};
+
+pub(crate) trait NumericCalendar: Copy {
+    fn from_epoch_day_raw(self, epoch: i64) -> Result<Date, Error>;
+    fn to_epoch_day_raw(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, Error>;
+    fn month_from_code(self, year: i32, code: MonthCode, overflow: Overflow) -> Result<u8, Error>;
+    fn months_before_year(self, year: i32) -> Result<i64, Error>;
+    fn year_month(self, serial: i64) -> Result<(i32, u8), Error>;
+    fn add_year_month(
+        self,
+        original: Date,
+        years: i64,
+        months: i64,
+        overflow: Overflow,
+    ) -> Result<(i32, u8), Error> {
+        let year = check_year(
+            i64::from(original.year)
+                .checked_add(years)
+                .ok_or(Error::OutOfRange)?,
+        )? as i32;
+        let month = self.month_from_code(year, original.month_code, overflow)?;
+        let serial = self
+            .months_before_year(year)?
+            .checked_add(i64::from(month) - 1)
+            .and_then(|v| v.checked_add(months))
+            .ok_or(Error::OutOfRange)?;
+        self.year_month(serial)
+    }
+    fn add_raw(self, epoch: i64, duration: DateDuration, overflow: Overflow) -> Result<i64, Error> {
+        let values = [
+            duration.years,
+            duration.months,
+            duration.weeks,
+            duration.days,
+        ];
+        if values.iter().any(|v| *v < 0) && values.iter().any(|v| *v > 0) {
+            return Err(Error::InvalidDuration);
+        }
+        let original = self.from_epoch_day_raw(epoch)?;
+        let (year, month) =
+            self.add_year_month(original, duration.years, duration.months, overflow)?;
+        self.to_epoch_day_raw(year, i32::from(month), i32::from(original.day), overflow)?
+            .checked_add(
+                duration
+                    .weeks
+                    .checked_mul(7)
+                    .and_then(|v| v.checked_add(duration.days))
+                    .ok_or(Error::OutOfRange)?,
+            )
+            .ok_or(Error::OutOfRange)
+    }
+    fn until_raw(self, one: i64, two: i64, largest: DateUnit) -> Result<DateDuration, Error> {
+        let first = self.from_epoch_day_raw(one)?;
+        let last = self.from_epoch_day_raw(two)?;
+        let sign = (two - one).signum();
+        let mut result = DateDuration::default();
+        if sign == 0 {
+            return Ok(result);
+        }
+        let surpasses = |duration: DateDuration| -> Result<bool, Error> {
+            let first_order = (i64::from(first.year) + duration.years)
+                .cmp(&i64::from(last.year))
+                .then_with(|| first.month_code.number.cmp(&last.month_code.number))
+                .then_with(|| first.month_code.leap.cmp(&last.month_code.leap))
+                .then_with(|| first.day.cmp(&last.day));
+            let exceeds = |order: core::cmp::Ordering| {
+                if sign > 0 {
+                    order.is_gt()
+                } else {
+                    order.is_lt()
+                }
+            };
+            if exceeds(first_order) {
+                return Ok(true);
+            }
+            let (year, month) =
+                self.add_year_month(first, duration.years, duration.months, Overflow::Constrain)?;
+            Ok(exceeds(
+                year.cmp(&last.year)
+                    .then_with(|| month.cmp(&last.month))
+                    .then_with(|| first.day.cmp(&last.day)),
+            ))
+        };
+        let mut anchor = one;
+        if largest == DateUnit::Year {
+            result.years = i64::from(last.year) - i64::from(first.year);
+            if surpasses(result)? {
+                result.years -= sign;
+            }
+        }
+        if matches!(largest, DateUnit::Year | DateUnit::Month) {
+            let (year, month) = self.add_year_month(first, result.years, 0, Overflow::Constrain)?;
+            result.months = self.months_before_year(last.year)? + i64::from(last.month)
+                - self.months_before_year(year)?
+                - i64::from(month);
+            if surpasses(result)? {
+                result.months -= sign;
+            }
+            anchor = self.add_raw(one, result, Overflow::Constrain)?;
+        }
+        result.days = two - anchor;
+        if largest == DateUnit::Week {
+            result.weeks = result.days / 7;
+            result.days %= 7;
+        }
+        Ok(result)
+    }
+}
+impl NumericCalendar for Calendar {
+    fn from_epoch_day_raw(self, epoch: i64) -> Result<Date, Error> {
+        Calendar::from_epoch_day_raw(self, epoch)
+    }
+    fn to_epoch_day_raw(
+        self,
+        year: i32,
+        month: i32,
+        day: i32,
+        overflow: Overflow,
+    ) -> Result<i64, Error> {
+        Calendar::to_epoch_day_raw(self, year, month, day, overflow)
+    }
+    fn month_from_code(self, year: i32, code: MonthCode, overflow: Overflow) -> Result<u8, Error> {
+        Calendar::month_from_code(self, year, code, overflow)
+    }
+    fn months_before_year(self, year: i32) -> Result<i64, Error> {
+        Calendar::months_before_year(self, year)
+    }
+    fn year_month(self, serial: i64) -> Result<(i32, u8), Error> {
+        Calendar::year_month(self, serial)
+    }
+}

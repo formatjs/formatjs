@@ -67,8 +67,10 @@
   }
   const slots = new WeakMap<object, Slot>()
   const callbacks = create(null)
-  const temporal = root.Temporal
   const readers: {kind: string; read: Function}[] = []
+  const namespaces = new WeakSet<object>()
+  const hasNamespace = WeakSet.prototype.has,
+    addNamespace = WeakSet.prototype.add
   const kinds = [
     'PlainDate',
     'PlainYearMonth',
@@ -78,7 +80,13 @@
     'Instant',
     'ZonedDateTime',
   ]
-  if (temporal) {
+  function addTemporalNamespace(temporal: any): void {
+    if (
+      temporal === null ||
+      (typeof temporal !== 'object' && typeof temporal !== 'function') ||
+      apply(hasNamespace, namespaces, [temporal])
+    )
+      return
     for (let index = 0; index < kinds.length; index++) {
       const kind = kinds[index]
       const prototype = temporal[kind]?.prototype
@@ -95,7 +103,9 @@
           : reader?.value
       if (typeof read === 'function') readers[readers.length] = {kind, read}
     }
+    apply(addNamespace, namespaces, [temporal])
   }
+  addTemporalNamespace(root.Temporal)
   const plainOptions = create(null)
   plainOptions.calendarName = 'always'
   function property(
@@ -348,7 +358,7 @@
     'hour12',
     'hourCycle',
   ]
-  const lateNames = ['formatMatcher', 'dateStyle', 'timeStyle']
+  const createNames = ['formatMatcher', 'dateStyle', 'timeStyle', 'zonedLocale']
   const styles = ['full', 'long', 'medium', 'short']
   function DateTimeFormat(
     this: any,
@@ -357,6 +367,20 @@
   ): any {
     if (!new.target && !apply(hasInstance, DateTimeFormat, [this]))
       return new (DateTimeFormat as any)(locales, optionsInput)
+    return initialize(this, locales, optionsInput)
+  }
+  type TemporalValue = {
+    kind: string
+    calendar?: string
+    epochNanoseconds: bigint
+    timeZone?: string
+  }
+  function initialize(
+    receiver: any,
+    locales: unknown,
+    optionsInput: unknown,
+    temporal?: TemporalValue
+  ): any {
     const construction = handle(nativeBegin())
     try {
       const requested = tags(apply(canonicalize, intl, [locales]) as string[])
@@ -392,7 +416,12 @@
             '}'
         )
       )
-      const zone = opts.timeZone
+      let zone = opts.timeZone
+      if (temporal?.kind === 'ZonedDateTime') {
+        if (zone !== undefined)
+          throw new BadReceiver('timeZone option conflicts with ZonedDateTime')
+        zone = temporal.timeZone
+      }
       checked(
         nativeZone(
           construction,
@@ -437,14 +466,53 @@
       )
       late.dateStyle = option(opts, 'dateStyle', styles)
       late.timeStyle = option(opts, 'timeStyle', styles)
-      const model = handle(nativeCreate(construction, record(late, lateNames)))
-      const previous = apply(getSlot, slots, [this]) as Slot | undefined
+      if (temporal) {
+        if (temporal.kind === 'PlainTime' && late.dateStyle !== undefined)
+          throw new BadReceiver('dateStyle is not valid for PlainTime')
+        if (
+          (temporal.kind === 'PlainDate' ||
+            temporal.kind === 'PlainYearMonth' ||
+            temporal.kind === 'PlainMonthDay') &&
+          late.timeStyle !== undefined
+        )
+          throw new BadReceiver('timeStyle is not valid for plain dates')
+        if (temporal.kind === 'ZonedDateTime') late.zonedLocale = true
+      }
+      const model = handle(
+        nativeCreate(construction, record(late, createNames))
+      )
+      const previous = apply(getSlot, slots, [receiver]) as Slot | undefined
       if (previous) previous.handle = model
-      else apply(setSlot, slots, [this, {handle: model, callbacks}])
-      return this
+      else apply(setSlot, slots, [receiver, {handle: model, callbacks}])
+      return receiver
     } finally {
       nativeReleaseConstruction(construction)
     }
+  }
+  function formatTemporal(
+    value: TemporalValue,
+    locales: unknown,
+    optionsInput: unknown
+  ): string {
+    const formatter = initialize(
+      create(prototype),
+      locales,
+      optionsInput,
+      value
+    )
+    const input = create(null)
+    input.type = 'epoch'
+    input.kind = value.kind === 'ZonedDateTime' ? 'Instant' : value.kind
+    input.value = `${value.epochNanoseconds}`
+    input.calendar = value.calendar
+    return decoded(
+      nativeQuery(
+        slot(formatter).handle,
+        '{"op":"format","value":' +
+          record(input, ['type', 'kind', 'value', 'calendar']) +
+          '}'
+      )
+    ) as string
   }
   const prototype = DateTimeFormat.prototype
   const methods = {
@@ -603,6 +671,8 @@
   available.configurable = true
   define(DateTimeFormat, 'availableLocales', available)
   property(DateTimeFormat, 'calendarData', create(null))
+  property(DateTimeFormat, '__addTemporalNamespace', addTemporalNamespace)
+  property(DateTimeFormat, '__formatTemporal', formatTemporal)
   property(DateTimeFormat, 'polyfilled', true)
   property(DateTimeFormat, 'relevantExtensionKeys', ['nu', 'ca', 'hc'])
   property(DateTimeFormat, 'length', 0, false)

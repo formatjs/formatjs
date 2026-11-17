@@ -155,9 +155,11 @@ fn accepted(key: Key, value: &str, observation: &Observation) -> bool {
         // Steps 2.b.i–ii.1: a calendar alias resolves to its canonical name, so it
         // does not match its candidate spelling and cannot enter the result.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L104-L109
-        Key::Calendar | Key::Collation | Key::TimeZone | Key::Unit => {
+        Key::Calendar | Key::Collation | Key::Unit => {
             observation.resolved.as_deref() == Some(value)
         }
+        // Candidates are already primary IDs; older formatters may resolve aliases.
+        Key::TimeZone => true,
         // Step 4 / AvailableCanonicalCurrencies: match the TS runtime's currency
         // name probe, excluding codes that only fall back to their own spelling.
         // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/intl.html#L112-L113

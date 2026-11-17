@@ -1,0 +1,148 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "scope": "Owned namespace with Now and standalone Date bridge, conditional global installation, force installation and detection. Default TS uses compact ICU4X lunisolar arithmetic/data and host Intl Umm al-Qura; owned IANA 2026f timezone data remains included. Standalone retains full calendar packs. Forced temporal-polyfill 1.0.7 full/implementation reference uses host Intl and has broader locale integration; basic ISO/Gregorian implementation entry measured separately. Size only; prior throughput and primitive WASM profiles remain separate. Bundles are alternatives, not additive.",
+  "method": "Bazel Rolldown bundles, esbuild es2022 minification, gzip level 9; byte lengths include newline.",
+  "referenceEntries": {
+    "reference-bundle.js": "temporal-polyfill/implementation (ISO/Gregorian)",
+    "reference-full-bundle.js": "temporal-polyfill/full/implementation (all calendars)"
+  },
+  "sizes": [
+    {
+      "file": "instant-code.js",
+      "raw": 471348,
+      "minified": 256999,
+      "minifiedGzip": 63775
+    },
+    {
+      "file": "polyfill-code.js",
+      "raw": 499161,
+      "minified": 272268,
+      "minifiedGzip": 67754
+    },
+    {
+      "file": "polyfill-force-code.js",
+      "raw": 499177,
+      "minified": 272270,
+      "minifiedGzip": 67757
+    },
+    {
+      "file": "should-polyfill-code.js",
+      "raw": 1283,
+      "minified": 696,
+      "minifiedGzip": 361
+    },
+    {
+      "file": "reference-bundle.js",
+      "raw": 172962,
+      "minified": 56696,
+      "minifiedGzip": 19393
+    },
+    {
+      "file": "reference-full-bundle.js",
+      "raw": 199745,
+      "minified": 66195,
+      "minifiedGzip": 23226
+    }
+  ],
+  "publishedModules": [
+    {
+      "file": "index.js",
+      "raw": 479325,
+      "minified": 260651,
+      "minifiedGzip": 64863
+    },
+    {
+      "file": "standalone.js",
+      "raw": 3330634,
+      "minified": 2998907,
+      "minifiedGzip": 333334
+    },
+    {
+      "file": "polyfill.js",
+      "raw": 35746,
+      "minified": 19778,
+      "minifiedGzip": 5928
+    },
+    {
+      "file": "polyfill-force.js",
+      "raw": 35762,
+      "minified": 19780,
+      "minifiedGzip": 5930
+    },
+    {
+      "file": "should-polyfill.js",
+      "raw": 1117,
+      "minified": 587,
+      "minifiedGzip": 302
+    },
+    {
+      "file": "native.js",
+      "raw": 12913,
+      "minified": 7377,
+      "minifiedGzip": 2070
+    },
+    {
+      "file": "wasm.js",
+      "raw": 3242,
+      "minified": 1732,
+      "minifiedGzip": 804
+    },
+    {
+      "file": "wasm-native.js",
+      "raw": 220069,
+      "minified": 115415,
+      "minifiedGzip": 32625
+    }
+  ],
+  "publishedGraphs": {
+    "scope": "Required ESM files compressed separately. Consumer bundling can remove unused code. WASM backend delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting; all16 native calendar tables and IANA records included. Hybrid WASM retains compact TS calendar and owned timezone data; nativeDataWasm omits duplicate TS tables. JS orchestration remains in both. Source maps, declarations and notices are not runtime imports.",
+    "typescript": {
+      "files": ["index.js", "native.js"],
+      "minifiedGzip": 66933
+    },
+    "standalone": {
+      "files": ["standalone.js", "native.js"],
+      "minifiedGzip": 335404
+    },
+    "nativeDataWasm": {
+      "files": ["wasm-native.js"],
+      "minifiedGzip": 32625,
+      "binary": {
+        "raw": 3416379,
+        "gzip": 441577
+      },
+      "combinedGzip": 474202
+    },
+    "wasm": {
+      "files": ["index.js", "native.js", "wasm.js"],
+      "minifiedGzip": 67737,
+      "binary": {
+        "raw": 3416379,
+        "gzip": 441577
+      },
+      "combinedGzip": 509314
+    }
+  },
+  "primitiveProfile": {
+    "scope": "Matched data-free Instant/Duration primitives only, not full facades or calendars/timezones. Prior throughput measurements remain separate.",
+    "js": [
+      {
+        "file": "wasm-ts-code.js",
+        "raw": 17917,
+        "minified": 9578,
+        "minifiedGzip": 3783
+      },
+      {
+        "file": "wasm-bridge-code.js",
+        "raw": 1412,
+        "minified": 799,
+        "minifiedGzip": 463
+      }
+    ],
+    "wasm": {
+      "raw": 43358,
+      "gzip": 19494
+    }
+  }
+}

@@ -940,6 +940,14 @@ name = "formatjs_java_printf_parser"
 version = "0.2.0"
 
 [[package]]
+name = "formatjs_temporal"
+version = "0.0.0"
+dependencies = [
+ "formatjs_intl_datetimeformat_calendars",
+ "serde_json",
+]
+
+[[package]]
 name = "futures"
 version = "0.3.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"

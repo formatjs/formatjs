@@ -1,0 +1,24 @@
+[package]
+name = "formatjs_temporal"
+version = "0.0.0"
+publish = false
+edition = "2024"
+description = "Temporal calendar, date, time and timezone primitives"
+license = "BSD-3-Clause"
+repository = "https://github.com/formatjs/formatjs"
+
+[lib]
+path = "lib.rs"
+
+[features]
+ffi = ["dep:serde_json"]
+compiled_calendars = []
+compiled_data = ["compiled_calendars", "compiled_time_zones"]
+compiled_time_zones = []
+
+[dependencies]
+serde_json = { workspace = true, optional = true }
+formatjs_intl_datetimeformat_calendars = { path = "../intl_datetimeformat_calendars", version = "0.2.3", default-features = false }
+
+[dev-dependencies]
+serde_json = { workspace = true }

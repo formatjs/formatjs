@@ -2,7 +2,10 @@
 
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 
-def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], external = [], format = "esm", target = "es2020", global_name = None, config = None, platform = None, define = None, code_splitting = False, dts = False, visibility = None, **kwargs):
+def _shell_quote(value):
+    return "'" + value.replace("'", "'\\''") + "'"
+
+def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], external = [], external_paths = {}, format = "esm", target = "es2020", global_name = None, config = None, platform = None, define = None, code_splitting = False, dts = False, visibility = None, **kwargs):
     """Bundle JS/TS with rolldown.
 
     Drop-in replacement for the esbuild() macro. Bundles an entry point into
@@ -15,6 +18,7 @@ def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], exte
         output: output .js file name
         deps: dependencies
         external: list of external package names
+        external_paths: external module specifiers mapped to emitted import paths
         format: output format (esm, cjs, iife)
         target: JS target (es2020, esnext, etc.)
         global_name: global variable name for iife format
@@ -40,6 +44,9 @@ def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], exte
 
     for ext in external:
         args += ["--external", ext]
+
+    if external_paths:
+        args += ["--externalPaths", _shell_quote(json.encode(external_paths))]
 
     if global_name:
         args += ["--globalName", global_name]
@@ -77,6 +84,8 @@ def rolldown_bundle(name, entry_point, srcs = [], output = None, deps = [], exte
 
         for ext in external:
             dir_args += ["--external", ext]
+        if external_paths:
+            dir_args += ["--externalPaths", _shell_quote(json.encode(external_paths))]
         if global_name:
             dir_args += ["--globalName", global_name]
         if platform:

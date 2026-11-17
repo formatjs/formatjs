@@ -315,6 +315,9 @@ importers:
       '@formatjs/svelte-intl':
         specifier: workspace:*
         version: link:packages/svelte-intl
+      '@formatjs/temporal':
+        specifier: workspace:*
+        version: link:packages/temporal
       '@formatjs/ts-transformer':
         specifier: workspace:*
         version: link:packages/ts-transformer
@@ -1151,6 +1154,8 @@ importers:
       svelte:
         specifier: '5'
         version: 5.57.3
+
+  packages/temporal: {}
 
   packages/ts-transformer:
     dependencies:

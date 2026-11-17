@@ -236,6 +236,7 @@ crate.from_cargo(
         "aarch64-pc-windows-msvc",
         "aarch64-unknown-linux-gnu",
         "aarch64-unknown-linux-musl",
+        "wasm32-unknown-unknown",
         "x86_64-apple-darwin",
         "x86_64-apple-ios",
         "x86_64-linux-android",
@@ -279,6 +280,30 @@ crate.annotation(
     version = "0.1.25",
 )
 use_repo(crate, "crates")
+
+# Benchmark-only Temporal implementation; production dependency graph stays separate.
+crate.from_cargo(
+    name = "temporal_benchmark_crates",
+    cargo_lock = "//benchmarks/temporal/rust:Cargo.lock",
+    cargo_toml = "//benchmarks/temporal/rust:Cargo.toml",
+    platform_triples = [
+        "aarch64-apple-darwin",
+        "aarch64-apple-ios",
+        "aarch64-apple-ios-sim",
+        "aarch64-linux-android",
+        "aarch64-pc-windows-msvc",
+        "aarch64-unknown-linux-gnu",
+        "aarch64-unknown-linux-musl",
+        "wasm32-unknown-unknown",
+        "x86_64-apple-darwin",
+        "x86_64-apple-ios",
+        "x86_64-linux-android",
+        "x86_64-pc-windows-msvc",
+        "x86_64-unknown-linux-gnu",
+        "x86_64-unknown-linux-musl",
+    ],
+)
+use_repo(crate, "temporal_benchmark_crates")
 
 # Pinned relative-time oracle; production formatters do not depend on this crate.
 crate.annotation(

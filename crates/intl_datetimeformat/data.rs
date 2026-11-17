@@ -68,6 +68,14 @@ pub struct TimeZoneNames {
     pub short_generic: Option<String>,
     #[serde(rename = "longGeneric", skip_serializing_if = "Option::is_none")]
     pub long_generic: Option<String>,
+    #[serde(rename = "longStandard", skip_serializing_if = "Option::is_none")]
+    pub long_standard: Option<String>,
+    #[serde(rename = "longDaylight", skip_serializing_if = "Option::is_none")]
+    pub long_daylight: Option<String>,
+    #[serde(rename = "shortStandard", skip_serializing_if = "Option::is_none")]
+    pub short_standard: Option<String>,
+    #[serde(rename = "shortDaylight", skip_serializing_if = "Option::is_none")]
+    pub short_daylight: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

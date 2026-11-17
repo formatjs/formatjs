@@ -15,36 +15,50 @@ export interface TemporalDateTimeValue {
 
 // Intrinsic calls check internal slots across realms without reading user properties.
 // https://tc39.es/proposal-temporal/#sec-temporal-istemporalobject
+export type TemporalDateTimeNamespace = Record<
+  TemporalDateTimeKind,
+  {prototype: object}
+>
+const readers: {
+  kind: TemporalDateTimeKind
+  read: (this: unknown, options?: object) => string | bigint
+}[] = []
+const registered = new WeakSet<object>()
+
+export function registerTemporalDateTimeNamespace(
+  temporal: TemporalDateTimeNamespace
+): void {
+  if (registered.has(temporal)) return
+  const additions = (
+    [
+      'PlainDate',
+      'PlainYearMonth',
+      'PlainMonthDay',
+      'PlainTime',
+      'PlainDateTime',
+      'Instant',
+      'ZonedDateTime',
+    ] as const
+  ).map(kind => ({
+    kind,
+    read:
+      kind === 'Instant' || kind === 'ZonedDateTime'
+        ? Object.getOwnPropertyDescriptor(
+            temporal[kind].prototype,
+            'epochNanoseconds'
+          )!.get!
+        : (Object.getOwnPropertyDescriptor(
+            temporal[kind].prototype,
+            'toString'
+          )!.value as (this: unknown, options?: object) => string),
+  }))
+  readers.push(...additions)
+  registered.add(temporal)
+}
 const temporal = (
-  globalThis as typeof globalThis & {
-    Temporal?: Record<TemporalDateTimeKind, {prototype: object}>
-  }
+  globalThis as typeof globalThis & {Temporal?: TemporalDateTimeNamespace}
 ).Temporal
-const readers = temporal
-  ? (
-      [
-        'PlainDate',
-        'PlainYearMonth',
-        'PlainMonthDay',
-        'PlainTime',
-        'PlainDateTime',
-        'Instant',
-        'ZonedDateTime',
-      ] as const
-    ).map(kind => ({
-      kind,
-      read:
-        kind === 'Instant' || kind === 'ZonedDateTime'
-          ? Object.getOwnPropertyDescriptor(
-              temporal[kind].prototype,
-              'epochNanoseconds'
-            )!.get!
-          : (Object.getOwnPropertyDescriptor(
-              temporal[kind].prototype,
-              'toString'
-            )!.value as (this: unknown, options: object) => string),
-    }))
-  : []
+if (temporal) registerTemporalDateTimeNamespace(temporal)
 const stringOptions = Object.assign(Object.create(null), {
   calendarName: 'always',
 })

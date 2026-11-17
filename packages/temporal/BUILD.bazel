@@ -1,0 +1,3635 @@
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary", "js_test")
+load("@bazel_lib//lib:copy_file.bzl", "copy_file")
+load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load(":tests/hermes-test.bzl", "sh_test")
+
+js_test(
+    name = "hermes_sharding_test",
+    size = "small",
+    args = ["$(rootpath :instant_hermes_harness)"],
+    data = [
+        "tests/hermes-shard.cjs",
+        ":instant_hermes_harness",
+    ],
+    entry_point = "tests/hermes-shard.test.cjs",
+)
+
+_TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
+
+# gazelle:ignore
+formatjs_library(
+    name = "temporal",
+    package_name = "@formatjs/temporal",
+    srcs = [
+        "accessors.ts",
+        "calendar.ts",
+        "calendar-table.ts",
+        "compact-timezone.ts",
+        "date-bridge.ts",
+        "date-core.ts",
+        "date-to-temporal-instant.ts",
+        "detect.ts",
+        "duration.ts",
+        "duration-core.ts",
+        "duration-format.ts",
+        "fallback-data.ts",
+        "host-calendar.ts",
+        "host-calendar-data.ts",
+        "host-timezone.ts",
+        "index.ts",
+        "install.ts",
+        "instant.ts",
+        "instant-format.ts",
+        "instant-string.ts",
+        "kernel.ts",
+        "legacy-calendar-date.ts",
+        "legacy-durationformat.ts",
+        "legacy-extended-date.ts",
+        "legacy-intl.ts",
+        "legacy-lunisolar-date.ts",
+        "legacy-zoned-date.ts",
+        "locale.ts",
+        "lunisolar.ts",
+        "native.ts",
+        "now.ts",
+        "plain-date.ts",
+        "plain-date-time.ts",
+        "plain-month-day.ts",
+        "plain-slots.ts",
+        "plain-time.ts",
+        "plain-year-month.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "relative-duration.ts",
+        "rounding.ts",
+        "short-date-core.ts",
+        "should-polyfill.ts",
+        "standalone.ts",
+        "wasm.ts",
+        "wasm-native.ts",
+        "zoned-date-time.ts",
+        "zones.ts",
+    ],
+    description = "Temporal implementation",
+    entry_point_defines = {
+        entry: {
+            "import.meta.formatjsTemporalHostTimeZones": "true" if entry in [
+                "index.ts",
+                "polyfill.ts",
+                "polyfill-force.ts",
+                "wasm.ts",
+            ] else "false",
+            "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
+            "import.meta.formatjsTemporalCompactTimeZones": "false" if entry in [
+                "native.ts",
+                "wasm-native.ts",
+            ] else "true",
+            "import.meta.formatjsTemporalHostCalendar": "true" if entry in [
+                "index.ts",
+                "polyfill.ts",
+                "polyfill-force.ts",
+                "wasm.ts",
+            ] else "false",
+        }
+        for entry in [
+            "index.ts",
+            "standalone.ts",
+            "native.ts",
+            "wasm.ts",
+            "wasm-native.ts",
+            "polyfill.ts",
+            "polyfill-force.ts",
+            "should-polyfill.ts",
+        ]
+    },
+    entry_point_external_paths = {
+        "index.ts": {"#packages/temporal/native.js": "./native.js"},
+        "standalone.ts": {"#packages/temporal/native.js": "./native.js"},
+        "wasm.ts": {"#packages/temporal/native.js": "./native.js"},
+        "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
+        "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
+    },
+    entry_points = [
+        "index.ts",
+        "standalone.ts",
+        "native.ts",
+        "wasm.ts",
+        "wasm-native.ts",
+        "polyfill.ts",
+        "polyfill-force.ts",
+        "should-polyfill.ts",
+    ],
+    extra_npm_srcs = [
+        ":wasm_asset",
+        ":wasm_notices",
+    ],
+    license = "MIT AND Unicode-3.0",
+    package_types = "index.d.ts",
+    private = True,
+    side_effects = [
+        "./polyfill.js",
+        "./polyfill-force.js",
+    ],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    type = "module",
+    types = True,
+    version = "0.0.0",
+    visibility = ["//visibility:public"],
+    exports = {
+        ".": "./index.js",
+        "./standalone.js": "./standalone.js",
+        "./wasm.js": "./wasm.js",
+        "./wasm-native.js": "./wasm-native.js",
+        "./temporal-backend.wasm": "./temporal-backend.wasm",
+        "./polyfill.js": "./polyfill.js",
+        "./polyfill-force.js": "./polyfill-force.js",
+        "./should-polyfill.js": "./should-polyfill.js",
+    },
+    deps = [
+        "//:node_modules/@formatjs_generated/datetimeformat.calendars",
+        "//:node_modules/@formatjs_generated/icu.calendar",
+        "//:node_modules/@formatjs_generated/tz",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/DurationFormat",
+        "//packages/ecma402-abstract/types",
+    ],
+)
+
+filegroup(
+    name = "runtime_sources",
+    srcs = [":srcs"],
+    visibility = ["//benchmarks/temporal:__pkg__"],
+)
+
+formatjs_test(
+    name = "durationformat_test",
+    srcs = ["tests/durationformat.test.ts"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+        "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
+    ],
+)
+
+js_test(
+    name = "durationformat_package_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //packages/intl-durationformat:pkg)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs/bigdecimal",
+        "//:node_modules/@formatjs/intl-localematcher",
+        "//packages/intl-durationformat:pkg",
+    ],
+    entry_point = "tests/durationformat-package.test.mjs",
+)
+
+[
+    js_test(
+        name = "legacy_extended_calendar_" + mode + "_test" if mode else "legacy_extended_calendar_test",
+        size = "medium",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_extended_calendar_fixtures)",
+        ],
+        data = [
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_extended_calendar_fixtures",
+        ],
+        entry_point = "tests/legacy-extended-calendar.test.mjs",
+        env = {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+    )
+    for mode in [
+        "",
+        "wasm",
+        "native",
+    ]
+]
+
+js_test(
+    name = "legacy_calendar_cache_test",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-calendar-cache.test.mjs",
+)
+
+[
+    js_test(
+        name = "partial_intl_" + mode + "_test" if mode else "partial_intl_test",
+        args = [
+            "$(rlocationpath :pkg)",
+            mode,
+        ],
+        data = [
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+        ],
+        entry_point = "tests/partial-intl.test.mjs",
+    )
+    for mode in [
+        "",
+        "empty",
+        "absent",
+    ]
+]
+
+# gazelle:ignore
+formatjs_library(
+    name = "legacy_calendar_oracle_typecheck",
+    testonly = True,
+    srcs = [
+        "tests/legacy-calendar-era-host.ts",
+        "tests/legacy-calendar-era-oracle.ts",
+        "tests/legacy-timezone-host.ts",
+        "tests/legacy-timezone-oracle.ts",
+    ],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [":types"],
+)
+
+rolldown_bundle(
+    name = "legacy-calendar-era-oracle",
+    srcs = ["tests/legacy-calendar-era-oracle.ts"],
+    entry_point = "tests/legacy-calendar-era-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+[
+    js_test(
+        name = "legacy_calendar_era_" + mode + "_test" if mode else "legacy_calendar_era_test",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+            "$(rlocationpath :legacy-calendar-era-oracle.js)",
+        ],
+        data = [
+            ":legacy-calendar-era-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+        ],
+        entry_point = "tests/legacy-calendar-era.test.mjs",
+        env = {"FORMATJS_TEMPORAL_CALENDAR_FAULT": "1"} if mode == "fault" else {"FORMATJS_TEMPORAL_ARABIC_PROBE": "1"} if mode == "arabic" else {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+    )
+    for mode in [
+        "",
+        "wasm",
+        "native",
+        "arabic",
+        "fault",
+    ]
+]
+
+rolldown_bundle(
+    name = "legacy-calendar-era-host",
+    srcs = [
+        "tests/legacy-calendar-era-host.ts",
+        "tests/legacy-calendar-era-oracle.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/legacy-calendar-era-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "legacy_calendar_era_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":legacy-calendar-era-host.js",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+    ],
+    outs = ["legacy-calendar-era-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures); cat $(location :legacy-calendar-era-host.js)) > $@",
+)
+
+sh_test(
+    name = "legacy_calendar_era_hermes_test",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :legacy_calendar_era_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":legacy_calendar_era_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "extended-calendar-host",
+    srcs = [
+        "tests/extended-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/extended-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "extended_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":extended-calendar-host.js",
+        "//conformance-tests/icu4j:temporal_extended_calendar_hermes_fixtures",
+    ],
+    outs = ["extended-calendar-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_extended_calendar_hermes_fixtures); cat $(location :extended-calendar-host.js)) > $@",
+)
+
+sh_test(
+    name = "extended_calendar_hermes_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :extended_calendar_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":extended_calendar_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+[
+    js_test(
+        name = profile + "legacy_lunar_boundary_test",
+        size = "small",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath :legacy-calendar-era-oracle.js)",
+        ],
+        data = [
+            ":legacy-calendar-era-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+        ],
+        entry_point = "tests/legacy-lunar-boundary.test.mjs",
+        env = {"TZ": "UTC"} | ({"FORMATJS_TEMPORAL_LUNAR_WASM": mode} if mode else {}),
+    )
+    for profile, mode in [
+        ("", ""),
+        ("wasm_", "hybrid"),
+        ("wasm_native_", "native"),
+    ]
+]
+
+[
+    js_test(
+        name = profile + "legacy_timezone_" + ("stale_" if stale else "") + "test",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+            "$(rlocationpath :legacy-timezone-oracle.js)",
+            "$(rlocationpath tests/legacy-timezone-prelude.js)",
+        ],
+        data = [
+            "tests/legacy-timezone-prelude.js",
+            ":legacy-timezone-oracle.js",
+            ":pkg",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        ],
+        entry_point = "tests/legacy-timezone.test.mjs",
+        env = ({"FORMATJS_TEMPORAL_TIMEZONE_WASM": mode} if mode else {}) | ({"FORMATJS_TEMPORAL_STALE_TIMEZONE": "1"} if stale else {}),
+    )
+    for profile, mode in [
+        ("", ""),
+        ("wasm_", "hybrid"),
+        ("wasm_native_", "native"),
+    ]
+    for stale in [
+        False,
+        True,
+    ]
+]
+
+rolldown_bundle(
+    name = "legacy-timezone-oracle",
+    srcs = ["tests/legacy-timezone-oracle.ts"],
+    entry_point = "tests/legacy-timezone-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "legacy-timezone-host",
+    srcs = [
+        "tests/legacy-timezone-host.ts",
+        "tests/legacy-timezone-oracle.ts",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "false",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/legacy-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "legacy_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        "tests/legacy-timezone-prelude.js",
+        ":legacy-timezone-host.js",
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+    ],
+    outs = ["legacy-timezone-hermes.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location tests/legacy-timezone-prelude.js); printf '\\n;\\n'; cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures); cat $(location :legacy-timezone-host.js)) > $@",
+)
+
+sh_test(
+    name = "legacy_timezone_hermes_test",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :legacy_timezone_hermes_source)",
+        "--native-datetimeformat",
+        "--native-numberformat",
+    ],
+    data = [
+        ":legacy_timezone_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+js_test(
+    name = "legacy_lunisolar_date_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+    ],
+    entry_point = "tests/legacy-lunisolar-date.test.mjs",
+)
+
+js_test(
+    name = "legacy_extended_date_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_extended_intl_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_extended_intl_fixtures",
+    ],
+    entry_point = "tests/legacy-extended-date.test.mjs",
+)
+
+[
+    sh_test(
+        name = profile + "_extended_date_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.ExtendedGregorian." + profile,
+            "$(rootpath tests/legacy-extended-date-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js",
+        ],
+        data = [
+            "tests/legacy-extended-date-test262-count.json",
+            ":datetimeformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if profile == "wasm_legacy" else []),
+        env = {"TZ": "UTC"},
+    )
+    for profile, prelude in [
+        ("legacy", "instant"),
+        ("wasm_legacy", "wasm"),
+    ]
+]
+
+genrule(
+    name = "legacy_lunar_fault_hermes_prelude",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        "tests/legacy-lunar-fault-prelude.js",
+        ":compact-calendar-payload.js",
+    ],
+    outs = ["legacy-lunar-fault-hermes-prelude.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location tests/legacy-lunar-fault-prelude.js); printf '\\n;\\n'; cat $(location :compact-calendar-payload.js); printf '\\n;globalThis.__formatjsCheckLunarCorrection();\\n') > $@",
+)
+
+genrule(
+    name = "legacy_extended_hermes_prelude",
+    testonly = True,
+    srcs = [
+        "tests/legacy-datetimeformat-prelude.js",
+        ":compact-calendar-payload.js",
+    ],
+    outs = ["legacy-extended-hermes-prelude.js"],
+    cmd = "(cat $(location tests/legacy-datetimeformat-prelude.js); printf '\\n;\\n'; cat $(location :compact-calendar-payload.js)) > $@",
+)
+
+[
+    sh_test(
+        name = "legacy_" + scope + "_hermes_" + mode + "_test262",
+        size = "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath :" + prelude + ")",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath " + baseline + ")",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.LegacyIntl." + scope + ".Hermes." + mode,
+        ] + patterns,
+        data = [
+            "tests/hermes-host.sh",
+            baseline,
+            ":datetimeformat_harness",
+            ":" + prelude,
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+        },
+    )
+    for scope, baseline, patterns, prelude in [
+        (
+            "extended_date",
+            "tests/legacy-extended-date-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/**/temporal-objects-no-time-clip*.js"],
+            "legacy_extended_hermes_prelude",
+        ),
+        (
+            "datetimeformat",
+            "tests/datetimeformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "legacy_extended_hermes_prelude",
+        ),
+        (
+            "lunar_fault",
+            "tests/legacy-lunar-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/DateTimeFormat/prototype/formatToParts/compare-to-temporal-lunisolar.js"],
+            "legacy_lunar_fault_hermes_prelude",
+        ),
+    ]
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+]
+
+rolldown_bundle(
+    name = "host-calendar-code",
+    srcs = [":srcs"],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "index.ts",
+    format = "esm",
+    target = "es2022",
+    visibility = ["//benchmarks/temporal:__pkg__"],
+    deps = [":lib"],
+)
+
+js_test(
+    name = "host_calendar_test",
+    size = "small",
+    args = ["$(rlocationpath :host-calendar-code.js)"],
+    data = [
+        ":host-calendar-code.js",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/host-calendar.test.mjs",
+)
+
+js_test(
+    name = "host_calendar_boundary_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :host-calendar-code.js)",
+        "$(rlocationpath :pkg)",
+    ],
+    data = [
+        ":host-calendar-code.js",
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/host-calendar-boundary.test.mjs",
+)
+
+rolldown_bundle(
+    name = "compact-calendar-numeric",
+    srcs = [
+        "tests/compact-calendar-numeric.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/compact-calendar-numeric.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_test(
+    name = "compact_calendar_range_test",
+    size = "large",
+    args = ["$(rlocationpath :compact-calendar-numeric.js)"],
+    data = [
+        ":compact-calendar-numeric.js",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/icu.calendar",
+    ],
+    entry_point = "tests/compact-calendar-range.test.mjs",
+)
+
+[
+    js_test(
+        name = "host_calendar_reference_test" if reference else "host_calendar_icu_test",
+        size = "medium",
+        args = [
+            "$(rlocationpath :host-calendar-code.js)",
+            "$(rlocationpath :public-calendar-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+        ],
+        data = [
+            ":host-calendar-code.js",
+            ":public-calendar-oracle.js",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/temporal-polyfill",
+            "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+        ],
+        entry_point = "tests/host-calendar-icu.test.mjs",
+        env = {"FORMATJS_TEMPORAL_HOST_CALENDAR_REFERENCE": "1" if reference else "0"},
+        tags = [],
+    )
+    for reference in [
+        False,
+        True,
+    ]
+]
+
+rolldown_bundle(
+    name = "host-calendar-hermes-code",
+    srcs = [
+        "tests/host-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/host-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "host_calendar_hermes_test",
+    size = "small",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :host-calendar-hermes-code.js)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":host-calendar-hermes-code.js",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+[
+    formatjs_test(
+        name = name,
+        srcs = sources,
+        data = data,
+        tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+        deps = [
+            ":lib",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@formatjs_generated/icu.calendar",
+            "//:node_modules/@formatjs_generated/tz",
+            "//:node_modules/@types/node",
+            "//:node_modules/temporal-polyfill",
+            "//:node_modules/vitest",
+            "//packages/ecma262-abstract",
+            "//packages/ecma402-abstract/DateTimeFormat",
+            "//packages/ecma402-abstract/types",
+        ],
+    )
+    for name, sources, data in [
+        (
+            "host_timezone_test",
+            ["tests/host-timezone.test.ts"],
+            [],
+        ),
+        (
+            "compact_timezone_test",
+            ["tests/compact-timezone.test.ts"],
+            [],
+        ),
+        (
+            "host_timezone_reference_test",
+            [
+                "tests/host-timezone-icu.test.ts",
+                "tests/host-timezone-oracle.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            ],
+        ),
+        (
+            "table_calendar_test",
+            [
+                "tests/table-calendars.test.ts",
+                "tests/public-calendar-oracle.ts",
+                "tests/table-calendar-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+                "//conformance-tests/calendar-authorities:hko_month_starts",
+            ],
+        ),
+        (
+            "public_calendar_test",
+            [
+                "tests/public-calendars.test.ts",
+                "tests/public-calendar-oracle.ts",
+                "tests/public-calendar-host.ts",
+                "tests/extended-calendar-host.ts",
+                "tests/legacy-calendar-era-host.ts",
+                "tests/legacy-calendar-era-oracle.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
+        ),
+        (
+            "arithmetic_calendar_test",
+            [
+                "tests/arithmetic-calendar.test.ts",
+                "tests/arithmetic-calendar-oracle.ts",
+                "tests/arithmetic-calendar-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures"],
+        ),
+        (
+            "plain_relative_test",
+            [
+                "tests/plain-relative.test.ts",
+                "tests/plain-relative-oracle.ts",
+                "tests/plain-relative-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_plain_relative_fixtures"],
+        ),
+        (
+            "timezone_oracle_test",
+            [
+                "tests/timezone-oracle.test.ts",
+                "tests/timezone-oracle.ts",
+                "tests/native-timezone-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+                "//conformance-tests/icu4j:temporal_transition_fixtures",
+            ],
+        ),
+        (
+            "timezone_identity_test",
+            ["tests/timezone-identity.test.ts"],
+            ["//conformance-tests/icu4j:temporal_timezone_identity_fixtures"],
+        ),
+        (
+            "installation_test",
+            ["tests/installation.test.ts"],
+            ["//conformance-tests/icu4j:temporal_iso_fixtures"],
+        ),
+        (
+            "now_test",
+            ["tests/now.test.ts"],
+            ["//conformance-tests/icu4j:temporal_timezone_fixtures"],
+        ),
+        (
+            "duration_oracle_test",
+            [
+                "tests/duration-oracle.test.ts",
+                "tests/duration-oracle.ts",
+                "tests/native-duration-host.ts",
+                "tests/plain-relative-oracle.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+                "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
+                "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
+            ],
+        ),
+        (
+            "relative_duration_test",
+            ["tests/relative-duration.test.ts"],
+            ["//conformance-tests/icu4j:temporal_zoned_difference_fixtures"],
+        ),
+        (
+            "string_oracle_test",
+            [
+                "tests/string-oracle.test.ts",
+                "tests/string-oracle.ts",
+                "tests/native-string-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            ],
+        ),
+        (
+            "zoned_difference_test",
+            [
+                "tests/zoned-differences.test.ts",
+                "tests/zoned-arithmetic-oracle.ts",
+                "tests/native-zoned-host.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
+                "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
+            ],
+        ),
+        (
+            "transition_test",
+            ["tests/transitions.test.ts"],
+            ["//conformance-tests/icu4j:temporal_transition_fixtures"],
+        ),
+        (
+            "zoned_test",
+            ["tests/zoned.test.ts"],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            ],
+        ),
+        (
+            "short_date_test",
+            [
+                "tests/short-dates.test.ts",
+                "tests/date-output-oracle.ts",
+                "tests/native-date-output-host.ts",
+            ],
+            ["//conformance-tests/icu4j:temporal_short_date_fixtures"],
+        ),
+        (
+            "plain_date_time_test",
+            [
+                "tests/plain-date-time.test.ts",
+                "tests/plain-arithmetic-oracle.ts",
+                "tests/native-plain-host.ts",
+                "tests/plain-relative-oracle.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
+                "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
+        ),
+        (
+            "plain_time_test",
+            [
+                "tests/plain-time.test.ts",
+                "tests/plain-time-oracle.ts",
+                "tests/plain-time-strings.json",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+                "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
+        ),
+        (
+            "kernel_test",
+            [
+                "tests/kernel.test.ts",
+                "tests/icu.test.ts",
+                "tests/iso.test.ts",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_timezone_fixtures",
+                "//conformance-tests/icu4j:temporal_iso_fixtures",
+            ],
+        ),
+        (
+            "calendar_test",
+            ["tests/calendar.test.ts"],
+            ["//conformance-tests/icu4j:temporal_calendar_fixtures"],
+        ),
+        (
+            "instant_test",
+            [
+                "tests/instant.test.ts",
+                "tests/rounding.test.ts",
+                "tests/duration.test.ts",
+                "tests/instant-strings.json",
+            ],
+            [
+                "//conformance-tests/icu4j:temporal_rounding_fixtures",
+                "//conformance-tests/icu4j:temporal_duration_fixtures",
+            ],
+        ),
+    ]
+]
+
+rolldown_bundle(
+    name = "instant-payload",
+    srcs = [
+        "tests/instant-prelude.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/instant-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_run_binary(
+    name = "instant-realm-prelude",
+    srcs = ["instant-payload.js"],
+    outs = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath instant-payload.js)",
+        "--out",
+        "$(rootpath instant-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath instant-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+_LOCALE_PRELUDES = [
+    "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    "//packages/intl-locale:test262-polyfill.js",
+    "//packages/intl-pluralrules:test262-polyfill.js",
+    "//packages/intl-numberformat:test262-polyfill.js",
+    "//packages/intl-listformat:test262-polyfill.js",
+    "//packages/intl-datetimeformat:test262-temporal-polyfill.js",
+    "//packages/intl-durationformat:test262-polyfill.js",
+    "//packages/intl-supportedvaluesof:test262-polyfill.js",
+    ":instant-payload.js",
+]
+
+genrule(
+    name = "locale-payload",
+    srcs = _LOCALE_PRELUDES,
+    outs = ["locale-payload.js"],
+    # Separate source-map comments and IIFEs across bundle boundaries.
+    cmd = "(\n" + "\n".join(["cat $(location %s)\nprintf '\\n;\\n'" % label for label in _LOCALE_PRELUDES]) + "\n) > $@",
+)
+
+js_run_binary(
+    name = "locale-realm-prelude",
+    srcs = ["locale-payload.js"],
+    outs = [
+        "locale-prelude-source.js",
+        "locale-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath locale-payload.js)",
+        "--out",
+        "$(rootpath locale-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath locale-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+# offset-time-zones.js hardcodes the pre-CLDR49 bare GMT zero form.
+# Current LDML and ICU79 require numeric zero; full diagnostics retain this file.
+_LOCALE_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/" + kind + "/prototype/toLocaleString/**/*.js"
+    for kind in [
+        "Instant",
+        "Duration",
+        "PlainDate",
+        "PlainTime",
+        "PlainDateTime",
+        "PlainYearMonth",
+        "PlainMonthDay",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/" + kind + "/prototype/toLocaleString/**/" + ("!(offset-time-zones).js" if kind == "ZonedDateTime" else "*.js")
+    for kind in [
+        "Instant",
+        "Duration",
+        "PlainDate",
+        "PlainTime",
+        "PlainDateTime",
+        "PlainYearMonth",
+        "PlainMonthDay",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js",
+]
+
+# Pinned tests assume older IANA links and CLDR zero-offset rendering.
+# Each basename occurs once; raw full targets retain both files.
+_INTL_COMPAT_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/!(links|offset-time-zones).js",
+]
+
+_HOST_INTL_COMPAT_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/!(links).js",
+]
+
+_STAGING_PATTERNS = [
+    _TEST262_ROOT + "/test/staging/Temporal/**/*.js",
+    _TEST262_ROOT + "/test/staging/sm/Date/to-temporal-instant.js",
+]
+
+_ZONED_EDGE_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/" + name + "/**/*sub-minute-offset.js"
+    for name in [
+        "Duration",
+        "ZonedDateTime",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/" + name + "/dst-month-day-boundary.js"
+    for name in [
+        "until",
+        "since",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/ZonedDateTime/prototype/round/same-date-starts-twice.js",
+]
+
+_NOW_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/Now/**/*.js",
+    _TEST262_ROOT + "/test/intl402/Temporal/Now/**/*.js",
+]
+
+# Calendar arithmetic/field families; full Intl diagnostics remain unfiltered below.
+_CALENDAR_METHODS = [
+    "add",
+    "subtract",
+    "from",
+    "with",
+    "withPlainTime",
+    "until",
+    "since",
+    "toString",
+    "daysInMonth",
+    "daysInYear",
+    "inLeapYear",
+    "monthCode",
+    "monthsInYear",
+]
+
+_CALENDAR_PATTERNS = [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/{" + ",".join(_CALENDAR_METHODS) + "}/**/*-" + calendar + ".js"
+    for calendar in [
+        "buddhist",
+        "coptic",
+        "ethioaa",
+        "ethiopic",
+        "gregory",
+        "hebrew",
+        "indian",
+        "islamic-civil",
+        "islamic-tbla",
+        "japanese",
+        "persian",
+        "roc",
+        "chinese",
+        "dangi",
+        "islamic-umalqura",
+    ]
+] + [
+    _TEST262_ROOT + "/test/intl402/Temporal/**/{" + ",".join(_CALENDAR_METHODS) + "}/**/{chinese,dangi,chinese-dangi}-*.js",
+]
+
+_INSTALLATION_PATTERNS = [
+    _TEST262_ROOT + "/test/built-ins/Temporal/*.js",
+    _TEST262_ROOT + "/test/built-ins/Temporal/toStringTag/**/*.js",
+    _TEST262_ROOT + "/test/built-ins/Date/prototype/toTemporalInstant/**/*.js",
+]
+
+_INSTANT_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Instant"
+
+_ZONED_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/ZonedDateTime"
+
+_ZONED_CORE_PATTERNS = [
+    _ZONED_ROOT + "/*.js",
+    _ZONED_ROOT + "/prototype/*.js",
+] + [_ZONED_ROOT + "/" + family + "/**/*.js" for family in [
+    "compare",
+    "from",
+    "prototype/add",
+    "prototype/calendarId",
+    "prototype/day",
+    "prototype/dayOfWeek",
+    "prototype/dayOfYear",
+    "prototype/daysInMonth",
+    "prototype/daysInWeek",
+    "prototype/daysInYear",
+    "prototype/epochMilliseconds",
+    "prototype/epochNanoseconds",
+    "prototype/equals",
+    "prototype/era",
+    "prototype/eraYear",
+    "prototype/hour",
+    "prototype/hoursInDay",
+    "prototype/getTimeZoneTransition",
+    "prototype/inLeapYear",
+    "prototype/microsecond",
+    "prototype/millisecond",
+    "prototype/minute",
+    "prototype/month",
+    "prototype/monthCode",
+    "prototype/monthsInYear",
+    "prototype/nanosecond",
+    "prototype/offset",
+    "prototype/offsetNanoseconds",
+    "prototype/round",
+    "prototype/second",
+    "prototype/startOfDay",
+    "prototype/subtract",
+    "prototype/since",
+    "prototype/until",
+    "prototype/timeZoneId",
+    "prototype/toInstant",
+    "prototype/toJSON",
+    "prototype/toPlainDate",
+    "prototype/toPlainDateTime",
+    "prototype/toPlainTime",
+    "prototype/toString",
+    "prototype/toStringTag",
+    "prototype/valueOf",
+    "prototype/weekOfYear",
+    "prototype/with",
+    "prototype/withCalendar",
+    "prototype/withPlainTime",
+    "prototype/withTimeZone",
+    "prototype/year",
+    "prototype/yearOfWeek",
+]]
+
+_YEARMONTH_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainYearMonth"
+
+_MONTHDAY_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainMonthDay"
+
+_DATE_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDate"
+
+_DATETIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainDateTime"
+
+_TIME_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/PlainTime"
+
+_DURATION_ROOT = _TEST262_ROOT + "/test/built-ins/Temporal/Duration"
+
+_YEARMONTH_CORE_PATTERNS = [
+    _YEARMONTH_ROOT + "/*.js",
+    _YEARMONTH_ROOT + "/prototype/*.js",
+] + [_YEARMONTH_ROOT + "/prototype/" + name + "/**/*.js" for name in [
+    "calendarId",
+    "era",
+    "eraYear",
+    "year",
+    "month",
+    "monthCode",
+    "daysInYear",
+    "daysInMonth",
+    "monthsInYear",
+    "inLeapYear",
+    "add",
+    "subtract",
+    "toPlainDate",
+    "toString",
+    "toJSON",
+    "valueOf",
+]]
+
+_MONTHDAY_CORE_PATTERNS = [
+    _MONTHDAY_ROOT + "/*.js",
+    _MONTHDAY_ROOT + "/prototype/*.js",
+] + [_MONTHDAY_ROOT + "/prototype/" + name + "/**/*.js" for name in [
+    "calendarId",
+    "monthCode",
+    "day",
+    "toPlainDate",
+    "toString",
+    "toJSON",
+    "valueOf",
+]]
+
+_DATE_CORE_DIRECTORIES = ["prototype/" + name for name in [
+    "calendarId",
+    "era",
+    "eraYear",
+    "year",
+    "month",
+    "monthCode",
+    "day",
+    "dayOfWeek",
+    "dayOfYear",
+    "weekOfYear",
+    "yearOfWeek",
+    "daysInWeek",
+    "daysInMonth",
+    "daysInYear",
+    "monthsInYear",
+    "inLeapYear",
+    "add",
+    "subtract",
+    "toJSON",
+    "valueOf",
+]]
+
+_DATE_CORE_PATTERNS = [
+    _DATE_ROOT + "/*.js",
+    _DATE_ROOT + "/prototype/*.js",
+] + [_DATE_ROOT + "/" + directory + "/**/*.js" for directory in _DATE_CORE_DIRECTORIES + ["prototype/toString"]]
+
+_DATETIME_CORE_PATTERNS = [
+    _DATETIME_ROOT + "/*.js",
+    _DATETIME_ROOT + "/prototype/*.js",
+] + [_DATETIME_ROOT + "/" + directory + "/**/*.js" for directory in _DATE_CORE_DIRECTORIES + ["prototype/" + name for name in [
+    "hour",
+    "minute",
+    "second",
+    "millisecond",
+    "microsecond",
+    "nanosecond",
+    "round",
+    "toPlainDate",
+    "toPlainTime",
+]]]
+
+_TIME_CORE_PATTERNS = [
+    _TIME_ROOT + "/*.js",
+    _TIME_ROOT + "/prototype/*.js",
+] + [
+    _TIME_ROOT + "/" + directory + "/**/*.js"
+    for directory in [
+        "prototype/hour",
+        "prototype/minute",
+        "prototype/second",
+        "prototype/millisecond",
+        "prototype/microsecond",
+        "prototype/nanosecond",
+        "prototype/add",
+        "prototype/subtract",
+        "prototype/toJSON",
+        "prototype/valueOf",
+    ]
+]
+
+_DURATION_CORE_PATTERNS = [
+    _DURATION_ROOT + "/*.js",
+    _DURATION_ROOT + "/prototype/*.js",
+] + [_DURATION_ROOT + "/" + directory + "/**/*.js" for directory in [
+    "from",
+    "compare",
+    "prototype/round",
+    "prototype/total",
+    "prototype/toString",
+    "prototype/toStringTag",
+    "prototype/years",
+    "prototype/months",
+    "prototype/weeks",
+    "prototype/days",
+    "prototype/hours",
+    "prototype/minutes",
+    "prototype/seconds",
+    "prototype/milliseconds",
+    "prototype/microseconds",
+    "prototype/nanoseconds",
+    "prototype/sign",
+    "prototype/blank",
+    "prototype/with",
+    "prototype/abs",
+    "prototype/negated",
+    "prototype/add",
+    "prototype/subtract",
+    "prototype/toJSON",
+    "prototype/valueOf",
+]]
+
+_DURATION_PATTERNS = _DURATION_CORE_PATTERNS
+
+_INSTANT_PATTERNS = [
+    _INSTANT_ROOT + "/*.js",
+    _INSTANT_ROOT + "/prototype/*.js",
+] + [_INSTANT_ROOT + "/" + directory + "/**/*.js" for directory in [
+    "fromEpochMilliseconds",
+    "fromEpochNanoseconds",
+    "prototype/epochMilliseconds",
+    "prototype/epochNanoseconds",
+    "prototype/valueOf",
+    "prototype/toJSON",
+    "prototype/add",
+    "prototype/subtract",
+    "prototype/round",
+    "prototype/toStringTag",
+]] + [_INSTANT_ROOT + "/from/" + pattern for pattern in [
+    "argument-string*.js",
+    "instant-string*.js",
+    "leap-second.js",
+    "no-fractional-minutes-hours.js",
+    "year-zero.js",
+]]
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = name,
+        size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "small" if name == "instant_test262" else "large",
+        args = [
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath locale-realm-prelude.js)" if name.startswith("locale_") else "$(rootpath instant-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            "instant-prelude-source.js",
+            "instant-realm-prelude.js",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-installation-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-now-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+        ] + ([
+            "locale-prelude-source.js",
+            "locale-realm-prelude.js",
+        ] if name.startswith("locale_") else []),
+        env = {"TZ": "UTC"},
+        exec_properties = {
+            "EstimatedCPU": "4",
+            "EstimatedMemory": "2GB",
+        },
+        node_toolchain = "//tools/test262:node-runtime",
+        tags = tags + ["cpu:4"],
+    )
+    for name, patterns, tags in [
+        ("calendars_test262", _CALENDAR_PATTERNS, []),
+        ("locale_test262", _LOCALE_PATTERNS, []),
+        (
+            "locale_intl_test262_full",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+        ("zoned_edges_test262", _ZONED_EDGE_PATTERNS, []),
+        ("installation_test262", _INSTALLATION_PATTERNS, []),
+        (
+            "intl_test262_full",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+        ("now_test262", _NOW_PATTERNS, []),
+        ("zoned_test262", _ZONED_CORE_PATTERNS, []),
+        (
+            "zoned_test262_full",
+            [_TEST262_ROOT + "/test/built-ins/Temporal/ZonedDateTime/**/*.js"],
+            ["manual"],
+        ),
+        ("year_month_test262", _YEARMONTH_CORE_PATTERNS, []),
+        ("month_day_test262", _MONTHDAY_CORE_PATTERNS, []),
+        (
+            "year_month_test262_full",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "month_day_test262_full",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        ("plain_date_test262", _DATE_CORE_PATTERNS, []),
+        ("plain_date_time_test262", _DATETIME_CORE_PATTERNS, []),
+        (
+            "plain_date_test262_full",
+            [_DATE_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "plain_date_time_test262_full",
+            [_DATETIME_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        ("plain_time_test262", _TIME_CORE_PATTERNS, []),
+        (
+            "plain_time_test262_full",
+            [_TIME_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        ("instant_test262", _INSTANT_PATTERNS, []),
+        ("duration_test262", _DURATION_CORE_PATTERNS, []),
+        (
+            "duration_methods_test262",
+            _DURATION_PATTERNS,
+            ["manual"],
+        ),
+        (
+            "duration_test262_full",
+            [_DURATION_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "instant_serialization_test262",
+            _INSTANT_PATTERNS + [
+                _INSTANT_ROOT + "/prototype/toString/**/*.js",
+            ],
+            ["manual"],
+        ),
+        (
+            "instant_test262_full",
+            [_INSTANT_ROOT + "/**/*.js"],
+            ["manual"],
+        ),
+    ]
+]
+
+[
+    test262_harness_bin.test262_harness_test(
+        name = name,
+        size = "large",
+        args = [
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--featuresExclude",
+            "Temporal",
+        ] + ([
+            "--prelude",
+            "$(rootpath instant-realm-prelude.js)",
+        ] if adapted else []) + [
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+        ],
+        data = [
+            "@com_github_tc39_test262//:test262-datetimeformat-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+        ] + ([
+            "instant-prelude-source.js",
+            "instant-realm-prelude.js",
+        ] if adapted else []),
+        env = {"TZ": "UTC"},
+        node_toolchain = "//tools/test262:node-runtime",
+        tags = [
+            "cpu:4",
+            "manual",
+        ],
+    )
+    for name, adapted in [
+        ("legacy_datetimeformat_non_temporal_test262", True),
+        ("native_datetimeformat_non_temporal_test262", False),
+    ]
+]
+
+test262_harness_bin.test262_harness_binary(
+    name = "datetimeformat_harness",
+    data = [
+        "@com_github_tc39_test262//:test262-datetimeformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_intl_host_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :datetimeformat_harness)",
+        "$(rlocationpath instant-realm-prelude.js)",
+        _TEST262_ROOT,
+    ],
+    data = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+        ":datetimeformat_harness",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-host.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+[
+    sh_test(
+        name = name,
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :datetimeformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal." + name,
+            "$(rootpath tests/datetimeformat-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+        ],
+        data = [
+            "tests/datetimeformat-test262-count.json",
+            ":datetimeformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if prelude in [
+            "wasm",
+            "wasm-locale",
+        ] else []),
+        env = {"TZ": "UTC"},
+        tags = tags,
+    )
+    for name, prelude, tags in [
+        (
+            "legacy_datetimeformat_test262",
+            "instant",
+            [],
+        ),
+        ("compact_calendar_datetimeformat_test262", "compact-calendar", []),
+        ("wasm_legacy_datetimeformat_test262", "wasm", []),
+        ("locale_datetimeformat_test262", "locale", []),
+        ("wasm_locale_datetimeformat_test262", "wasm-locale", []),
+    ]
+]
+
+filegroup(
+    name = "plain_time_string_fixtures",
+    testonly = True,
+    srcs = ["tests/plain-time-strings.json"],
+    visibility = ["//crates/temporal:__pkg__"],
+)
+
+filegroup(
+    name = "instant_string_fixtures",
+    testonly = True,
+    srcs = ["tests/instant-strings.json"],
+    visibility = ["//crates/temporal:__pkg__"],
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "instant_hermes_harness",
+    testonly = True,
+    data = [
+        "instant-payload.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+    tags = ["manual"],
+)
+
+[
+    sh_test(
+        name = name,
+        size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
+        timeout = "eternal" if name.startswith("locale_intl") else "long",
+        srcs = ["tests/hermes-sharded-test262.sh" if name == "locale_intl_compat_hermes_test262" else "tests/hermes-test262.sh"],
+        args = ([
+            "$(rootpath tests/hermes-test262.sh)",
+            "$(rootpath tests/hermes-shard.cjs)",
+        ] if name == "locale_intl_compat_hermes_test262" else []) + [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes:hermes_runner)",
+            "$(rootpath locale-payload.js)" if name.startswith("locale_") else "$(rootpath instant-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath %s)" % baseline,
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.locale" if name.startswith("locale_") else "Temporal.calendars" if name.startswith("calendars") else "Temporal/Intl" if name.startswith("intl_") else "Temporal.installation" if name.startswith("installation") else "Temporal.Now" if name.startswith("now") else "Temporal.ZonedDateTime" if name.startswith("zoned") else "Temporal.PlainYearMonth" if name.startswith("year_month") else "Temporal.PlainMonthDay" if name.startswith("month_day") else "Temporal.PlainDateTime" if name.startswith("plain_date_time") else "Temporal.PlainDate" if name.startswith("plain_date") else "Temporal.PlainTime" if name.startswith("plain_time") else "Temporal.Duration" if name.startswith("duration") else "Temporal.Instant",
+        ] + patterns,
+        data = [
+            "locale-payload.js" if name.startswith("locale_") else "instant-payload.js",
+            "tests/hermes-host.sh",
+            baseline,
+            ":instant_hermes_harness",
+            "//native/hermes:hermes_runner",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-installation-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-now-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+            "@hermes//:hermesc",
+        ] + (["@com_github_tc39_test262//:test262-datetimeformat-copy"] if "datetimeformat" in name else []) + ([
+            "tests/hermes-test262.sh",
+            "tests/hermes-shard.cjs",
+        ] if name == "locale_intl_compat_hermes_test262" else []),
+        env = {"TZ": "UTC"},
+        exec_properties = {
+            "EstimatedCPU": "4",
+            "EstimatedMemory": "2GB",
+        },
+        shard_count = 8 if name == "locale_intl_compat_hermes_test262" else 0,
+        tags = tags + ["cpu:4"],
+    )
+    for name, mode, patterns, baseline, tags in [
+        ("calendars_hermes_test262", "source", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        (
+            "locale_datetimeformat_hermes_test262",
+            "source",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "tests/datetimeformat-test262-count.json",
+            [],
+        ),
+        (
+            "locale_datetimeformat_hermes_bytecode_test262",
+            "bytecode",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            "tests/datetimeformat-test262-count.json",
+            [],
+        ),
+        ("locale_hermes_test262", "source", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
+        ("locale_hermes_bytecode_test262", "bytecode", _LOCALE_PATTERNS, "tests/locale-test262-count.json", []),
+        ("locale_intl_compat_hermes_test262", "source", _INTL_COMPAT_PATTERNS, "tests/intl-compat-test262-count.json", []),
+        ("locale_intl_compat_hermes_bytecode_test262", "bytecode", _INTL_COMPAT_PATTERNS, "tests/intl-compat-test262-count.json", []),
+        (
+            "locale_intl_hermes_test262_full",
+            "source",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "locale_intl_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        ("zoned_edges_hermes_test262", "source", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
+        ("zoned_edges_hermes_bytecode_test262", "bytecode", _ZONED_EDGE_PATTERNS, "tests/zoned-edges-test262-count.json", []),
+        ("calendars_hermes_bytecode_test262", "bytecode", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json", []),
+        ("installation_hermes_test262", "source", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
+        ("installation_hermes_bytecode_test262", "bytecode", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json", []),
+        (
+            "intl_hermes_test262_full",
+            "source",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "intl_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            "tests/intl-full-test262-count.json",
+            ["manual"],
+        ),
+        ("now_hermes_test262", "source", _NOW_PATTERNS, "tests/now-test262-count.json", []),
+        ("now_hermes_bytecode_test262", "bytecode", _NOW_PATTERNS, "tests/now-test262-count.json", []),
+        ("zoned_hermes_test262_strict", "source", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
+        ("zoned_hermes_bytecode_test262_strict", "bytecode", _ZONED_CORE_PATTERNS, "tests/zoned-test262-count.json", []),
+        (
+            "zoned_hermes_test262_full",
+            "source",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "zoned_hermes_bytecode_test262_full",
+            "bytecode",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+            ["manual"],
+        ),
+        ("year_month_hermes_test262_strict", "source", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
+        ("year_month_hermes_bytecode_test262_strict", "bytecode", _YEARMONTH_CORE_PATTERNS, "tests/year-month-test262-count.json", []),
+        ("month_day_hermes_test262_strict", "source", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json", []),
+        ("month_day_hermes_bytecode_test262_strict", "bytecode", _MONTHDAY_CORE_PATTERNS, "tests/month-day-test262-count.json", []),
+        (
+            "year_month_hermes_test262_full",
+            "source",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "year_month_hermes_bytecode_test262_full",
+            "bytecode",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "month_day_hermes_test262_full",
+            "source",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "month_day_hermes_bytecode_test262_full",
+            "bytecode",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+            ["manual"],
+        ),
+        ("plain_date_hermes_test262_strict", "source", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
+        ("plain_date_hermes_bytecode_test262_strict", "bytecode", _DATE_CORE_PATTERNS, "tests/plain-date-test262-count.json", []),
+        ("plain_date_time_hermes_test262_strict", "source", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json", []),
+        ("plain_date_time_hermes_bytecode_test262_strict", "bytecode", _DATETIME_CORE_PATTERNS, "tests/plain-date-time-test262-count.json", []),
+        (
+            "plain_date_hermes_test262_full",
+            "source",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_time_hermes_test262_full",
+            "source",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_date_time_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+            ["manual"],
+        ),
+        ("plain_time_hermes_test262_strict", "source", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
+        ("plain_time_hermes_bytecode_test262_strict", "bytecode", _TIME_CORE_PATTERNS, "tests/plain-time-test262-count.json", []),
+        (
+            "plain_time_hermes_test262_full",
+            "source",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "plain_time_hermes_bytecode_test262_full",
+            "bytecode",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+            ["manual"],
+        ),
+        ("duration_hermes_test262_strict", "source", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
+        ("duration_hermes_bytecode_test262_strict", "bytecode", _DURATION_CORE_PATTERNS, "tests/duration-test262-count.json", []),
+        (
+            "duration_hermes_test262_full",
+            "source",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "duration_hermes_bytecode_test262_full",
+            "bytecode",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+            ["manual"],
+        ),
+        ("instant_hermes_test262_strict", "source", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json", []),
+        ("instant_hermes_bytecode_test262_strict", "bytecode", _INSTANT_PATTERNS, "tests/hermes-test262-baseline.json", []),
+        (
+            "instant_hermes_test262_full",
+            "source",
+            [_INSTANT_ROOT + "/**/*.js"],
+            "tests/instant-full-test262-count.json",
+            ["manual"],
+        ),
+        (
+            "instant_hermes_bytecode_test262_full",
+            "bytecode",
+            [_INSTANT_ROOT + "/**/*.js"],
+            "tests/instant-full-test262-count.json",
+            ["manual"],
+        ),
+    ]
+]
+
+rolldown_bundle(
+    name = "now-host",
+    srcs = [
+        "tests/now-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/now-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "now_hermes_host_test",
+    size = "small",
+    srcs = ["tests/now-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :now-host.js)",
+    ],
+    data = [
+        "now-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "installation-host",
+    srcs = [
+        "tests/installation-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/installation-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "installation_hermes_host_test",
+    size = "small",
+    srcs = ["tests/now-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :installation-host.js)",
+    ],
+    data = [
+        "installation-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+js_test(
+    name = "package_test",
+    size = "small",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/temporal-polyfill",
+    ],
+    entry_point = "tests/package.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+rolldown_bundle(
+    name = "plain-relative-host",
+    srcs = [
+        "tests/plain-relative-host.ts",
+        "tests/plain-relative-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/plain-relative-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "plain_relative_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures",
+        ":plain-relative-host.js",
+    ],
+    outs = ["plain-relative-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures) $(location :plain-relative-host.js) > $@",
+)
+
+sh_test(
+    name = "plain_relative_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :plain_relative_hermes_source)",
+    ],
+    data = [
+        ":plain_relative_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "arithmetic-calendar-host",
+    srcs = [
+        "tests/arithmetic-calendar-host.ts",
+        "tests/arithmetic-calendar-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/arithmetic-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "arithmetic_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        ":arithmetic-calendar-host.js",
+    ],
+    outs = ["arithmetic-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location :arithmetic-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "arithmetic_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :arithmetic_calendar_hermes_source)",
+    ],
+    data = [
+        ":arithmetic_calendar_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "public-calendar-host",
+    srcs = [
+        "tests/public-calendar-host.ts",
+        "tests/public-calendar-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/public-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "public_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        ":public-calendar-host.js",
+    ],
+    outs = ["public-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location :public-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "public_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :public_calendar_hermes_source)",
+    ],
+    data = [
+        ":public_calendar_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "table-calendar-host",
+    srcs = [
+        "tests/public-calendar-oracle.ts",
+        "tests/table-calendar-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/table-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "table_calendar_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
+        ":table-calendar-host.js",
+    ],
+    outs = ["table-calendar-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location :table-calendar-host.js) > $@",
+)
+
+sh_test(
+    name = "table_calendar_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :table_calendar_hermes_source)",
+    ],
+    data = [
+        ":table_calendar_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+formatjs_test(
+    name = "raw_icu_table_calendar_test",
+    srcs = ["tests/raw-icu-table-calendars.test.ts"],
+    data = ["//conformance-tests/icu4j:temporal_table_calendar_raw_fixtures"],
+    tags = ["manual"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
+
+rolldown_bundle(
+    name = "native-iso-payload",
+    srcs = [
+        "tests/native-iso-prelude.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-iso-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-date-output-host",
+    srcs = [
+        "tests/date-output-oracle.ts",
+        "tests/native-date-output-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-date-output-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_date_output_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_short_date_hermes_fixtures",
+        ":native-date-output-host.js",
+    ],
+    outs = ["native-date-output-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_short_date_hermes_fixtures) $(location :native-date-output-host.js) > $@",
+)
+
+sh_test(
+    name = "native_date_output_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_date_output_hermes_source)",
+    ],
+    data = [
+        ":native_date_output_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "date-output-oracle",
+    srcs = ["tests/date-output-oracle.ts"],
+    entry_point = "tests/date-output-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-string-host",
+    srcs = [
+        "tests/native-string-host.ts",
+        "tests/string-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-string-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_string_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        ":native-string-host.js",
+    ],
+    outs = ["native-string-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location :native-string-host.js) > $@",
+)
+
+sh_test(
+    name = "native_string_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_string_hermes_source)",
+    ],
+    data = [
+        ":native_string_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "string-oracle",
+    srcs = ["tests/string-oracle.ts"],
+    entry_point = "tests/string-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-zoned-host",
+    srcs = [
+        "tests/native-zoned-host.ts",
+        "tests/zoned-arithmetic-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-zoned-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_zoned_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_zoned_difference_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_zoned_rounding_hermes_fixtures",
+        ":native-zoned-host.js",
+    ],
+    outs = ["native-zoned-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_zoned_difference_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_zoned_rounding_hermes_fixtures) $(location :native-zoned-host.js) > $@",
+)
+
+sh_test(
+    name = "native_zoned_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_zoned_hermes_source)",
+    ],
+    data = [
+        ":native_zoned_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "zoned-arithmetic-oracle",
+    srcs = ["tests/zoned-arithmetic-oracle.ts"],
+    entry_point = "tests/zoned-arithmetic-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-plain-host",
+    srcs = [
+        "tests/native-plain-host.ts",
+        "tests/plain-arithmetic-oracle.ts",
+        "tests/plain-relative-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-plain-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_plain_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_date_arithmetic_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_time_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures",
+        ":native-plain-host.js",
+    ],
+    outs = ["native-plain-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_date_arithmetic_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures) $(location :native-plain-host.js) > $@",
+)
+
+sh_test(
+    name = "native_plain_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_plain_hermes_source)",
+    ],
+    data = [
+        ":native_plain_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "plain-arithmetic-oracle",
+    srcs = ["tests/plain-arithmetic-oracle.ts"],
+    entry_point = "tests/plain-arithmetic-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-duration-host",
+    srcs = [
+        "tests/duration-oracle.ts",
+        "tests/native-duration-host.ts",
+        "tests/plain-relative-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-duration-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_duration_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_zoned_difference_hermes_fixtures",
+        ":native-duration-host.js",
+    ],
+    outs = ["native-duration-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_plain_relative_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_zoned_difference_hermes_fixtures) $(location :native-duration-host.js) > $@",
+)
+
+sh_test(
+    name = "native_duration_hermes_oracle_test",
+    size = "large",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_duration_hermes_source)",
+    ],
+    data = [
+        ":native_duration_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "duration-oracle",
+    srcs = [
+        "tests/duration-oracle.ts",
+        "tests/plain-relative-oracle.ts",
+    ],
+    entry_point = "tests/duration-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-timezone-host",
+    srcs = [
+        "tests/native-timezone-host.ts",
+        "tests/timezone-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":native-timezone-host.js",
+    ],
+    outs = ["native-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_transition_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :native-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "native_timezone_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_timezone_hermes_source)",
+    ],
+    data = [
+        ":native_timezone_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+rolldown_bundle(
+    name = "timezone-oracle",
+    srcs = ["tests/timezone-oracle.ts"],
+    entry_point = "tests/timezone-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+rolldown_bundle(
+    name = "native-iso-host",
+    srcs = [
+        "tests/native-iso-host.ts",
+        "tests/plain-time-oracle.ts",
+        "tests/public-calendar-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/native-iso-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "native_iso_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_iso_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_rounding_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_duration_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_time_hermes_fixtures",
+        ":native-iso-host.js",
+    ],
+    outs = ["native-iso-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_arithmetic_calendar_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_iso_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_rounding_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_duration_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_time_hermes_fixtures) $(location :native-iso-host.js) > $@",
+)
+
+sh_test(
+    name = "native_iso_hermes_oracle_test",
+    size = "medium",
+    timeout = "long",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :native_iso_hermes_source)",
+    ],
+    data = [
+        ":native_iso_hermes_source",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+    env = {"FORMATJS_TEMPORAL_RUST_ISO": "1"},
+)
+
+formatjs_library(
+    name = "typescript_hermes_prelude_typecheck",
+    testonly = True,
+    srcs = ["tests/typescript-prelude.ts"],
+    declaration = True,
+    no_emit = True,
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [":types"],
+)
+
+rolldown_bundle(
+    name = "typescript-hermes-payload",
+    srcs = [
+        "tests/typescript-prelude.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/typescript-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+[
+    sh_test(
+        name = ("sdk_hermes_" if backend == "sdk" else "ts_hermes_" if backend == "typescript" else "native_iso_hermes_") + suite + "_" + mode + "_test262",
+        size = "medium",
+        timeout = "long" if suite == "calendars" else "moderate",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)" if backend in [
+                "sdk",
+                "typescript",
+            ] else "$(rootpath //native/hermes:hermes_runner)",
+            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath :typescript-hermes-payload.js)" if backend == "typescript" else "$(rootpath native-iso-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath %s)" % baseline,
+            "$(rootpath //tools/test262:validator)",
+            "Temporal." + backend + "." + suite,
+        ] + patterns,
+        data = [
+            "tests/sdk-prelude.js" if backend == "sdk" else ":typescript-hermes-payload.js" if backend == "typescript" else "native-iso-payload.js",
+            "tests/hermes-host.sh",
+            baseline,
+            ":instant_hermes_harness",
+            "//native/hermes/tests:test262_runtime" if backend in [
+                "sdk",
+                "typescript",
+            ] else "//native/hermes:hermes_runner",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+        } | ({
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+            "FORMATJS_TEMPORAL_SDK": "1",
+        } if backend == "sdk" else {"FORMATJS_TEMPORAL_NATIVE_INTL": "1"} if backend == "typescript" else {
+            "FORMATJS_TEMPORAL_RUST_ISO": "1",
+        }),
+    )
+    for suite, patterns, baseline in [
+        (
+            "instant",
+            [_INSTANT_ROOT + "/**/*.js"],
+            "tests/instant-full-test262-count.json",
+        ),
+        (
+            "date",
+            [_DATE_ROOT + "/**/*.js"],
+            "tests/plain-date-full-test262-count.json",
+        ),
+        (
+            "datetime",
+            [_DATETIME_ROOT + "/**/*.js"],
+            "tests/plain-date-time-full-test262-count.json",
+        ),
+        (
+            "time",
+            [_TIME_ROOT + "/**/*.js"],
+            "tests/plain-time-full-test262-count.json",
+        ),
+        (
+            "yearmonth",
+            [_YEARMONTH_ROOT + "/**/*.js"],
+            "tests/year-month-full-test262-count.json",
+        ),
+        (
+            "monthday",
+            [_MONTHDAY_ROOT + "/**/*.js"],
+            "tests/month-day-full-test262-count.json",
+        ),
+        (
+            "duration",
+            [_DURATION_ROOT + "/**/*.js"],
+            "tests/duration-full-test262-count.json",
+        ),
+        (
+            "zoned",
+            [_ZONED_ROOT + "/**/*.js"],
+            "tests/zoned-full-test262-count.json",
+        ),
+        ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
+        ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
+        ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+        ("staging", _STAGING_PATTERNS, "tests/staging-test262-count.json"),
+    ]
+    for backend in [
+        "rustISO",
+        "sdk",
+        "typescript",
+    ]
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+]
+
+rolldown_bundle(
+    name = "wasm-payload",
+    srcs = [
+        "tests/wasm-prelude.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalNativeData": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "false",
+        "import.meta.formatjsTemporalHostCalendar": "false",
+    },
+    entry_point = "tests/wasm-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_run_binary(
+    name = "wasm-module-prelude",
+    srcs = ["//crates/temporal:wasm_backend"],
+    outs = ["wasm-module-prelude.js"],
+    args = [
+        "--wasm",
+        "$(rootpath //crates/temporal:wasm_backend)",
+        "--out",
+        "$(rootpath wasm-module-prelude.js)",
+    ],
+    tool = "//packages/temporal/scripts:wasm-prelude",
+)
+
+js_run_binary(
+    name = "wasm-realm-prelude",
+    srcs = [
+        "wasm-module-prelude.js",
+        "wasm-payload.js",
+    ],
+    outs = [
+        "wasm-prelude-source.js",
+        "wasm-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath wasm-module-prelude.js)",
+        "--input",
+        "$(rootpath wasm-payload.js)",
+        "--out",
+        "$(rootpath wasm-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath wasm-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+js_run_binary(
+    name = "wasm-locale-realm-prelude",
+    srcs = [
+        "locale-payload.js",
+        "wasm-module-prelude.js",
+        "wasm-payload.js",
+    ],
+    outs = [
+        "wasm-locale-prelude-source.js",
+        "wasm-locale-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath locale-payload.js)",
+        "--input",
+        "$(rootpath wasm-module-prelude.js)",
+        "--input",
+        "$(rootpath wasm-payload.js)",
+        "--out",
+        "$(rootpath wasm-locale-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath wasm-locale-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "wasm_harness",
+    data = [
+        "wasm-prelude-source.js",
+        "wasm-realm-prelude.js",
+        "//crates/temporal:wasm_backend",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+_CLASS_TEST262_SUITES = [
+    (
+        "instant",
+        [_INSTANT_ROOT + "/**/*.js"],
+        "tests/instant-full-test262-count.json",
+    ),
+    (
+        "date",
+        [_DATE_ROOT + "/**/*.js"],
+        "tests/plain-date-full-test262-count.json",
+    ),
+    (
+        "datetime",
+        [_DATETIME_ROOT + "/**/*.js"],
+        "tests/plain-date-time-full-test262-count.json",
+    ),
+    (
+        "time",
+        [_TIME_ROOT + "/**/*.js"],
+        "tests/plain-time-full-test262-count.json",
+    ),
+    (
+        "yearmonth",
+        [_YEARMONTH_ROOT + "/**/*.js"],
+        "tests/year-month-full-test262-count.json",
+    ),
+    (
+        "monthday",
+        [_MONTHDAY_ROOT + "/**/*.js"],
+        "tests/month-day-full-test262-count.json",
+    ),
+    (
+        "duration",
+        [_DURATION_ROOT + "/**/*.js"],
+        "tests/duration-full-test262-count.json",
+    ),
+    (
+        "zoned",
+        [_ZONED_ROOT + "/**/*.js"],
+        "tests/zoned-full-test262-count.json",
+    ),
+    ("calendars", _CALENDAR_PATTERNS, "tests/calendars-test262-count.json"),
+    ("now", _NOW_PATTERNS, "tests/now-test262-count.json"),
+    ("installation", _INSTALLATION_PATTERNS, "tests/installation-test262-count.json"),
+    ("staging", _STAGING_PATTERNS, "tests/staging-test262-count.json"),
+]
+
+[
+    sh_test(
+        name = "wasm_" + suite + "_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :wasm_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.WASM." + suite,
+            "$(rootpath %s)" % baseline,
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath wasm-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            ":wasm_harness",
+            "//tools/test262:validator",
+            baseline,
+            "wasm-prelude-source.js",
+            "wasm-realm-prelude.js",
+            "//crates/temporal:wasm_backend",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for suite, patterns, baseline in _CLASS_TEST262_SUITES
+]
+
+[
+    sh_test(
+        name = name,
+        size = "enormous",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :wasm_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.Intl." + name,
+            "$(rootpath %s)" % baseline,
+            "--timeout",
+            "120000",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath %s)" % prelude,
+        ] + patterns,
+        data = [
+            ":wasm_harness",
+            "//tools/test262:validator",
+            baseline,
+            prelude,
+            source,
+            "//crates/temporal:wasm_backend",
+        ],
+        env = {"TZ": "UTC"},
+        tags = tags,
+    )
+    for name, prelude, source, baseline, patterns, tags in [
+        ("host_intl_compat_test262", "compact-calendar-realm-prelude.js", "compact-calendar-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
+        ("wasm_host_intl_compat_test262", "wasm-realm-prelude.js", "wasm-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
+        ("locale_intl_compat_test262", "locale-realm-prelude.js", "locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
+        ("wasm_intl_compat_test262", "wasm-locale-realm-prelude.js", "wasm-locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
+        (
+            "wasm_intl_test262_full",
+            "wasm-locale-realm-prelude.js",
+            "wasm-locale-prelude-source.js",
+            "tests/intl-full-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+    ]
+]
+
+rolldown_bundle(
+    name = "public-calendar-oracle",
+    srcs = ["tests/public-calendar-oracle.ts"],
+    entry_point = "tests/public-calendar-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+[
+    js_test(
+        name = "wasm_native_package_test" if native_data else "wasm_package_test",
+        size = "medium",
+        timeout = "long",
+        args = [
+            "$(rlocationpath :pkg)",
+            "$(rlocationpath //crates/temporal:wasm_backend)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_iso_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_time_carry_fixtures)",
+            "$(rlocationpath :plain-time-oracle.js)",
+            "$(rlocationpath :public-calendar-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
+            "$(rlocationpath :timezone-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_transition_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_identity_fixtures)",
+            "$(rlocationpath :duration-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_plain_relative_fixtures)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
+            "$(rlocationpath :plain-arithmetic-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
+            "$(rlocationpath :zoned-arithmetic-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
+            "$(rlocationpath :string-oracle.js)",
+            "$(rlocationpath :date-output-oracle.js)",
+            "$(rlocationpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
+        ],
+        data = [
+            ":date-output-oracle.js",
+            ":duration-oracle.js",
+            ":pkg",
+            ":plain-arithmetic-oracle.js",
+            ":plain-time-oracle.js",
+            ":public-calendar-oracle.js",
+            ":string-oracle.js",
+            ":timezone-oracle.js",
+            ":zoned-arithmetic-oracle.js",
+            "//:node_modules/@bazel/runfiles",
+            "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
+            "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
+            "//conformance-tests/icu4j:temporal_duration_fixtures",
+            "//conformance-tests/icu4j:temporal_iso_fixtures",
+            "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
+            "//conformance-tests/icu4j:temporal_rounding_fixtures",
+            "//conformance-tests/icu4j:temporal_short_date_fixtures",
+            "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
+            "//conformance-tests/icu4j:temporal_time_carry_fixtures",
+            "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+            "//conformance-tests/icu4j:temporal_transition_fixtures",
+            "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
+            "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
+            "//crates/temporal:wasm_backend",
+        ],
+        entry_point = "tests/wasm.test.mjs",
+        env = {"TZ": "UTC"} | ({"FORMATJS_TEMPORAL_NATIVE_DATA_ONLY": "1"} if native_data else {}),
+    )
+    for native_data in [
+        False,
+        True,
+    ]
+]
+
+copy_file(
+    name = "wasm_asset",
+    src = "//crates/temporal:wasm_backend",
+    out = "temporal-backend.wasm",
+)
+
+rolldown_bundle(
+    name = "wasm-unavailable-host",
+    srcs = [
+        "tests/wasm-unavailable-host.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/wasm-unavailable-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+sh_test(
+    name = "wasm_unavailable_hermes_test",
+    size = "small",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes:hermes_runner)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :wasm-unavailable-host.js)",
+    ],
+    data = [
+        ":wasm-unavailable-host.js",
+        "//native/hermes:hermes_runner",
+        "@hermes//:hermesc",
+    ],
+)
+
+copy_file(
+    name = "wasm_notices",
+    src = "//native/hermes/package:THIRD_PARTY_NOTICES.html",
+    out = "WASM_NOTICES.html",
+)
+
+rolldown_bundle(
+    name = "plain-time-oracle",
+    srcs = ["tests/plain-time-oracle.ts"],
+    entry_point = "tests/plain-time-oracle.ts",
+    format = "esm",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+[
+    sh_test(
+        name = backend + "_" + suite + "_hermes_" + mode + "_test262",
+        size = "enormous" if suite.startswith("intl") else "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :instant_hermes_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath tests/sdk-prelude.js)" if backend == "sdk" else "$(rootpath :typescript-hermes-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath %s)" % baseline,
+            "$(rootpath //tools/test262:validator)",
+            "Temporal." + backend + "." + suite,
+        ] + patterns,
+        data = [
+            "tests/hermes-host.sh",
+            "tests/sdk-prelude.js" if backend == "sdk" else ":typescript-hermes-payload.js",
+            ":instant_hermes_harness",
+            "@com_github_tc39_test262//:test262-durationformat-copy",
+            baseline,
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@com_github_tc39_test262//:test262-datetimeformat-copy",
+            "@com_github_tc39_test262//:test262-harness-copy",
+            "@com_github_tc39_test262//:test262-temporal-duration-copy",
+            "@com_github_tc39_test262//:test262-temporal-instant-copy",
+            "@com_github_tc39_test262//:test262-temporal-intl-copy",
+            "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+            "@com_github_tc39_test262//:test262-temporal-staging-copy",
+            "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+            "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+            "@hermes//:hermesc",
+        ],
+        env = {
+            "TZ": "UTC",
+            "FORMATJS_TEMPORAL_NATIVE_INTL": "1",
+        } | ({"FORMATJS_TEMPORAL_SDK": "1"} if backend == "sdk" else {}),
+        tags = tags,
+    )
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+    for suite, baseline, patterns, tags in [
+        (
+            "intl_compat",
+            "tests/intl-compat-test262-count.json",
+            _INTL_COMPAT_PATTERNS,
+            [],
+        ),
+        (
+            "intl",
+            "tests/intl-full-test262-count.json",
+            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
+            ["manual"],
+        ),
+        (
+            "datetimeformat",
+            "tests/datetimeformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DateTimeFormat/**/*.js",
+            ],
+            [],
+        ),
+        ("locale", "tests/locale-test262-count.json", _LOCALE_PATTERNS, []),
+        (
+            "durationformat",
+            "tests/durationformat-test262-count.json",
+            [
+                "--featuresInclude",
+                "Temporal",
+                _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+            ],
+            [],
+        ),
+    ]
+    for backend in [
+        "sdk",
+        "ts",
+    ]
+]
+
+test262_harness_bin.test262_harness_binary(
+    name = "durationformat_harness",
+    data = [
+        "@com_github_tc39_test262//:test262-durationformat-copy",
+        "@com_github_tc39_test262//:test262-harness-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_durationformat_host_test",
+    size = "medium",
+    args = [
+        "$(rlocationpath :durationformat_harness)",
+        "$(rlocationpath instant-realm-prelude.js)",
+        _TEST262_ROOT,
+        "DurationFormat",
+        "208",
+    ],
+    data = [
+        "instant-prelude-source.js",
+        "instant-realm-prelude.js",
+        ":durationformat_harness",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-host.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+genrule(
+    name = "durationformat_registration_source",
+    testonly = True,
+    srcs = [
+        ":locale-payload.js",
+        "tests/durationformat-registration.js",
+    ],
+    outs = ["durationformat-registration.js"],
+    cmd = "(cat $(location :locale-payload.js); printf '\\n;\\n'; cat $(location tests/durationformat-registration.js)) > $@",
+)
+
+[
+    sh_test(
+        name = profile + "_durationformat_registration_test",
+        size = "small",
+        srcs = ["tests/oracle-host.sh"],
+        args = [
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath " + source + ")",
+        ] + ([
+            "--native-pluralrules",
+            "--native-listformat",
+            "--native-displaynames",
+            "--native-segmenter",
+            "--native-collator",
+            "--native-numberformat",
+            "--native-relativetimeformat",
+            "--native-datetimeformat",
+            "--native-durationformat",
+            "--native-temporal=UTC",
+        ] if profile == "sdk" else []),
+        data = [
+            source,
+            "//native/hermes/tests:test262_runtime",
+            "@hermes//:hermesc",
+        ],
+    )
+    for profile, source in [
+        ("ts", ":durationformat_registration_source"),
+        ("sdk", "tests/durationformat-registration.js"),
+    ]
+]
+
+[
+    sh_test(
+        name = profile + "_durationformat_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :durationformat_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.DurationFormat." + profile,
+            "$(rootpath tests/durationformat-test262-count.json)",
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath " + prelude + "-realm-prelude.js)",
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+        ],
+        data = [
+            "tests/durationformat-test262-count.json",
+            ":durationformat_harness",
+            "//tools/test262:validator",
+            prelude + "-realm-prelude.js",
+            prelude + "-prelude-source.js",
+        ] + (["//crates/temporal:wasm_backend"] if prelude.startswith("wasm") else []),
+        env = {"TZ": "UTC"},
+    )
+    for profile, prelude in [
+        ("compact_calendar", "compact-calendar"),
+        ("legacy", "instant"),
+        ("locale", "locale"),
+        ("wasm_legacy", "wasm"),
+        ("wasm_locale", "wasm-locale"),
+    ]
+]
+
+[
+    sh_test(
+        name = "durationformat_hermes_" + mode + "_test262",
+        size = "medium",
+        srcs = ["tests/hermes-test262.sh"],
+        args = [
+            "$(rootpath :durationformat_harness)",
+            "$(rootpath tests/hermes-host.sh)",
+            "$(rootpath //native/hermes/tests:test262_runtime)",
+            "$(rootpath :locale-payload.js)",
+            mode,
+            "$(rootpath @hermes//:hermesc)",
+            "$(rootpath tests/durationformat-test262-count.json)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.DurationFormat.Hermes." + mode,
+            "--featuresInclude",
+            "Temporal",
+            _TEST262_ROOT + "/test/intl402/DurationFormat/**/*.js",
+        ],
+        data = [
+            "tests/durationformat-test262-count.json",
+            "tests/hermes-host.sh",
+            ":durationformat_harness",
+            ":locale-payload.js",
+            "//native/hermes/tests:test262_runtime",
+            "//tools/test262:validator",
+            "@hermes//:hermesc",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for mode in [
+        "source",
+        "bytecode",
+    ]
+]
+
+genrule(
+    name = "sdk_locale_oracle_source",
+    testonly = True,
+    srcs = [
+        "tests/sdk-locale-oracle.js",
+        "//conformance-tests/icu4j:temporal_locale_hermes_fixtures",
+    ],
+    outs = ["sdk-locale-oracle.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_locale_hermes_fixtures) $(location tests/sdk-locale-oracle.js) > $@",
+)
+
+sh_test(
+    name = "sdk_locale_hermes_oracle_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :sdk_locale_oracle_source)",
+        "--native-datetimeformat",
+        "--native-temporal=UTC",
+    ],
+    data = [
+        ":sdk_locale_oracle_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+js_test(
+    name = "legacy_intl_style_icu_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_short_style_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_short_style_fixtures",
+    ],
+    entry_point = "tests/legacy-intl-icu.test.mjs",
+    env = {"TZ": "UTC"},
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+js_test(
+    name = "legacy_intl_icu_locale_data_test",
+    size = "small",
+    args = [
+        "$(rlocationpath :pkg)",
+        "$(rlocationpath //conformance-tests/icu4j:temporal_short_style_fixtures)",
+    ],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+        "//conformance-tests/icu4j:temporal_short_style_fixtures",
+    ],
+    entry_point = "tests/legacy-intl-icu.test.mjs",
+    env = {
+        "TZ": "UTC",
+        "FORMATJS_TEMPORAL_ICU_STRICT_LOCALE_DATA": "1",
+    },
+    node_toolchain = "//tools/test262:node-runtime",
+    tags = ["manual"],
+)
+
+rolldown_bundle(
+    name = "compact-calendar-payload",
+    srcs = [
+        "tests/instant-prelude.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/instant-prelude.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+js_run_binary(
+    name = "compact-calendar-realm-prelude",
+    srcs = ["compact-calendar-payload.js"],
+    outs = [
+        "compact-calendar-prelude-source.js",
+        "compact-calendar-realm-prelude.js",
+    ],
+    args = [
+        "--input",
+        "$(rootpath compact-calendar-payload.js)",
+        "--out",
+        "$(rootpath compact-calendar-realm-prelude.js)",
+        "--sourceOut",
+        "$(rootpath compact-calendar-prelude-source.js)",
+    ],
+    tool = "//tools/test262:prelude",
+)
+
+test262_harness_bin.test262_harness_binary(
+    name = "compact_calendar_harness",
+    data = [
+        "compact-calendar-prelude-source.js",
+        "compact-calendar-realm-prelude.js",
+        "@com_github_tc39_test262//:test262-harness-copy",
+        "@com_github_tc39_test262//:test262-temporal-duration-copy",
+        "@com_github_tc39_test262//:test262-temporal-installation-copy",
+        "@com_github_tc39_test262//:test262-temporal-instant-copy",
+        "@com_github_tc39_test262//:test262-temporal-intl-copy",
+        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
+        "@com_github_tc39_test262//:test262-temporal-now-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
+        "@com_github_tc39_test262//:test262-temporal-staging-copy",
+        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
+        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+)
+
+[
+    sh_test(
+        name = "compact_calendar_" + suite + "_test262",
+        size = "medium",
+        srcs = ["//tools/test262:run.sh"],
+        args = [
+            "$(rootpath :compact_calendar_harness)",
+            "$(rootpath //tools/test262:validator)",
+            "Temporal.CompactCalendar." + suite,
+            "$(rootpath %s)" % baseline,
+            "--threads",
+            "4",
+            "--errorForFailures",
+            "--reporter",
+            "json",
+            "--reporter-keys",
+            "file,scenario,result,rawResult",
+            "--test262Dir",
+            _TEST262_ROOT,
+            "--prelude",
+            "$(rootpath compact-calendar-realm-prelude.js)",
+        ] + patterns,
+        data = [
+            ":compact_calendar_harness",
+            "//tools/test262:validator",
+            baseline,
+            "compact-calendar-prelude-source.js",
+            "compact-calendar-realm-prelude.js",
+        ],
+        env = {"TZ": "UTC"},
+    )
+    for suite, patterns, baseline in _CLASS_TEST262_SUITES
+]
+
+rolldown_bundle(
+    name = "compact-calendar-table-host",
+    srcs = [
+        "tests/public-calendar-oracle.ts",
+        "tests/table-calendar-host.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+    },
+    entry_point = "tests/table-calendar-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "compact_calendar_hermes_icu_source",
+    testonly = True,
+    srcs = [
+        ":compact-calendar-table-host.js",
+        "//conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures",
+    ],
+    outs = ["compact-calendar-table-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_table_calendar_hermes_fixtures) $(location :compact-calendar-table-host.js) > $@",
+)
+
+sh_test(
+    name = "compact_calendar_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :compact_calendar_hermes_icu_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":compact_calendar_hermes_icu_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+formatjs_test(
+    name = "host_timezone_reference_node26_test",
+    srcs = [
+        "tests/host-timezone-icu.test.ts",
+        "tests/host-timezone-oracle.ts",
+    ],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+    ],
+    node_toolchain = "//tools/test262:node-runtime",
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
+)
+
+formatjs_test(
+    name = "host_timezone_icu_test",
+    srcs = [
+        "tests/host-timezone-icu.test.ts",
+        "tests/host-timezone-oracle.ts",
+    ],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+    ],
+    env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"},
+    tags = ["manual"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
+)
+
+rolldown_bundle(
+    name = "compact-timezone-host",
+    srcs = [
+        "tests/compact-timezone-host.ts",
+        "tests/timezone-oracle.ts",
+        ":srcs",
+    ],
+    define = {
+        "import.meta.formatjsTemporalCompactTimeZones": "true",
+        "import.meta.formatjsTemporalHostCalendar": "true",
+        "import.meta.formatjsTemporalHostTimeZones": "true",
+    },
+    entry_point = "tests/compact-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "compact_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_transition_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":compact-timezone-host.js",
+    ],
+    outs = ["compact-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_transition_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :compact-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "compact_timezone_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :compact_timezone_hermes_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":compact_timezone_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)
+
+rolldown_bundle(
+    name = "host-timezone-host",
+    srcs = [
+        "tests/host-timezone-host.ts",
+        "tests/host-timezone-oracle.ts",
+        ":srcs",
+    ],
+    entry_point = "tests/host-timezone-host.ts",
+    format = "iife",
+    target = "es2022",
+    deps = [":lib"],
+)
+
+genrule(
+    name = "host_timezone_hermes_source",
+    testonly = True,
+    srcs = [
+        "//conformance-tests/icu4j:temporal_timezone_hermes_fixtures",
+        "//conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures",
+        ":host-timezone-host.js",
+    ],
+    outs = ["host-timezone-hermes.js"],
+    cmd = "cat $(location //conformance-tests/icu4j:temporal_timezone_hermes_fixtures) $(location //conformance-tests/icu4j:temporal_timezone_identity_hermes_fixtures) $(location :host-timezone-host.js) > $@",
+)
+
+sh_test(
+    name = "host_timezone_hermes_icu_test",
+    size = "medium",
+    srcs = ["tests/oracle-host.sh"],
+    args = [
+        "$(rootpath //native/hermes/tests:test262_runtime)",
+        "$(rootpath @hermes//:hermesc)",
+        "$(rootpath :host_timezone_hermes_source)",
+        "--native-datetimeformat",
+    ],
+    data = [
+        ":host_timezone_hermes_source",
+        "//native/hermes/tests:test262_runtime",
+        "@hermes//:hermesc",
+    ],
+)

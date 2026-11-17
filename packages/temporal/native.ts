@@ -1,0 +1,753 @@
+import type {
+  DateSlot,
+  DateTimeSlot,
+  ZonedSlot,
+} from '#packages/temporal/plain-slots.js'
+import type {RelativeTo} from '#packages/temporal/relative-duration.js'
+import type {
+  CalendarId,
+  CalendarFields,
+  CalendarDate,
+  DateDuration,
+  Overflow,
+} from '#packages/temporal/calendar.js'
+import type {ISODateTime, Disambiguation} from '#packages/temporal/kernel.js'
+import type {
+  Precision,
+  RoundingMode,
+  TimeUnit,
+} from '#packages/temporal/rounding.js'
+import type {DurationFields} from '#packages/temporal/duration-core.js'
+
+export type NativeQuery = (request: string) => string | number
+const parse = JSON.parse
+const stringify = JSON.stringify
+const create = Object.create
+const keys = Object.keys
+const indexOf = String.prototype.indexOf
+const apply = Reflect.apply
+const bigintText = BigInt.prototype.toString
+const ToBigInt = BigInt
+const BadRange = RangeError
+export interface NativeTemporal {
+  addPlainYearMonth(
+    slot: DateSlot,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): number
+  differencePlainYearMonth(
+    start: DateSlot,
+    end: DateSlot,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  yearMonthToDate(slot: DateSlot, day: number): number
+  monthDayToDate(slot: DateSlot, year: number): number
+  formatPlainDate(slot: DateSlot, calendarName: string): string
+  formatPlainDateTime(
+    value: bigint,
+    calendar: string,
+    precision: Precision,
+    mode: RoundingMode,
+    calendarName: string
+  ): string
+  formatPlainYearMonth(slot: DateSlot, calendarName: string): string
+  formatPlainMonthDay(slot: DateSlot, calendarName: string): string
+  formatZonedDateTime(
+    slot: ZonedSlot,
+    precision: Precision,
+    mode: RoundingMode,
+    calendarName: string,
+    offset: boolean,
+    timeZoneName: string
+  ): string
+  parsePlainDate(value: string): DateSlot
+  parsePlainDateTime(value: string): DateTimeSlot
+  parsePlainYearMonth(value: string): DateSlot
+  parsePlainMonthDay(value: string): DateSlot
+  parseZonedFields(value: string): {
+    fields: Required<ISODateTime> & {calendar: string}
+    timeZone: string
+    offset: string | undefined
+  }
+  resolveZonedDateTime(
+    value: bigint,
+    identifier: string,
+    calendar: string,
+    offset: string | undefined,
+    behavior: string,
+    disambiguation: Disambiguation,
+    matchMinute: boolean,
+    dateOnly: boolean
+  ): bigint
+  addZonedDateTime(
+    slot: ZonedSlot,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): bigint
+  differenceZonedDateTime(
+    start: ZonedSlot,
+    end: ZonedSlot,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  roundZonedDateTime(
+    slot: ZonedSlot,
+    unit: string,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
+  startOfZonedDay(slot: ZonedSlot, day?: number): bigint
+  hoursInZonedDay(slot: ZonedSlot): number
+  addPlainDate(
+    epochDay: number,
+    calendar: string,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): number
+  addPlainDateTime(
+    value: bigint,
+    calendar: string,
+    fields: DurationFields,
+    subtract: boolean,
+    overflow: Overflow
+  ): bigint
+  differencePlainDate(
+    start: number,
+    end: number,
+    calendar: string,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  differencePlainDateTime(
+    start: bigint,
+    end: bigint,
+    calendar: string,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    since: boolean
+  ): DurationFields
+  roundPlainDateTime(
+    value: bigint,
+    calendar: string,
+    unit: string,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
+  transformDuration(fields: DurationFields, absolute: boolean): DurationFields
+  parseDuration(value: string): DurationFields
+  validateDuration(fields: DurationFields): void
+  formatDuration(
+    fields: DurationFields,
+    precision: number | 'auto',
+    mode: RoundingMode
+  ): string
+  addDuration(
+    one: DurationFields,
+    two: DurationFields,
+    subtract: boolean
+  ): DurationFields
+  compareDuration(
+    one: DurationFields,
+    two: DurationFields,
+    relative?: RelativeTo
+  ): -1 | 0 | 1
+  totalDuration(
+    fields: DurationFields,
+    unit: string,
+    relative?: RelativeTo
+  ): number
+  roundDuration(
+    fields: DurationFields,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: RoundingMode,
+    relative?: RelativeTo
+  ): DurationFields
+  timeZoneIdentity(identifier: string): {identifier: string; primary: string}
+  timeZoneOffset(identifier: string, value: bigint): bigint
+  timeZonePossibleInstants(identifier: string, fields: ISODateTime): bigint[]
+  timeZoneResolve(
+    identifier: string,
+    fields: ISODateTime,
+    disambiguation: Disambiguation
+  ): bigint
+  timeZoneTransition(
+    identifier: string,
+    value: bigint,
+    direction: 'next' | 'previous'
+  ): bigint | null
+  calendarStartOfYear(calendar: CalendarId, year: number): number
+  calendarMonthsInYear(calendar: CalendarId, year: number): number
+  calendarDaysInMonth(calendar: CalendarId, year: number, month: number): number
+  calendarToEpochDay(
+    calendar: CalendarId,
+    fields: CalendarFields,
+    overflow: Overflow
+  ): number
+  calendarFromEpochDay(calendar: CalendarId, epoch: number): CalendarDate
+  calendarAdd(
+    calendar: CalendarId,
+    fields: CalendarFields,
+    duration: DateDuration,
+    overflow: Overflow
+  ): CalendarDate
+  calendarUntil(
+    calendar: CalendarId,
+    one: number,
+    two: number,
+    largest: string
+  ): DateDuration
+  calendarMonthSerial(calendar: CalendarId, year: number, month: number): number
+  calendarEra(
+    calendar: CalendarId,
+    epoch: number
+  ): {era: string; eraYear: number} | undefined
+  calendarYearFromEra(calendar: CalendarId, era: string, year: number): number
+  isoToEpochNanoseconds(fields: ISODateTime): bigint
+  epochNanosecondsToISO(value: bigint): Required<ISODateTime>
+  addISODays(fields: ISODateTime, days: number): Required<ISODateTime>
+  parsePlainTime(value: string): bigint
+  regulatePlainTime(values: number[], constrain: boolean): bigint
+  formatPlainTime(
+    value: bigint,
+    precision: Precision,
+    mode: RoundingMode
+  ): string
+  addPlainTime(
+    value: bigint,
+    duration: DurationFields,
+    subtract: boolean
+  ): bigint
+  roundPlainTime(
+    value: bigint,
+    unit: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): bigint
+  differencePlainTime(
+    value: bigint,
+    other: bigint,
+    largest: TimeUnit,
+    smallest: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): DurationFields
+  parseInstant(value: string): bigint
+  formatInstant(value: bigint, precision: Precision, offset?: bigint): string
+  addInstant(value: bigint, duration: DurationFields, subtract: boolean): bigint
+  roundInstant(value: bigint, quantum: bigint, mode: RoundingMode): bigint
+  differenceInstant(
+    value: bigint,
+    other: bigint,
+    largest: TimeUnit,
+    smallest: TimeUnit,
+    increment: number,
+    mode: RoundingMode
+  ): DurationFields
+}
+let native: NativeTemporal | undefined
+export function nativeTemporal(): NativeTemporal | undefined {
+  return native
+}
+/** @internal Experimental Hermes backend installation. */
+export function configureNativeTemporal(query: NativeQuery): void {
+  const text = (value: bigint) => apply(bigintText, value, [])
+  function call(op: string, properties: Record<string, unknown>): any {
+    const input = create(null)
+    input.op = op
+    const names = keys(properties)
+    for (let index = 0; index < names.length; index++)
+      input[names[index]] = properties[names[index]]
+    const source = stringify(input)
+    // Escaped code units violate Temporal's ASCII grammar; reject before UTF-8 decoding.
+    if (
+      apply(indexOf, op, ['parse']) === 0 &&
+      apply(indexOf, source, ['\\u']) >= 0
+    )
+      throw new BadRange('Invalid Temporal string')
+    const result = query(source)
+    if (typeof result === 'number')
+      throw new BadRange('Invalid Temporal value or range')
+    return parse(result)
+  }
+  function isoFields(fields: ISODateTime): Record<string, number> {
+    const copy = create(null)
+    copy.year = fields.year
+    copy.month = fields.month
+    copy.day = fields.day
+    copy.hour = fields.hour ?? 0
+    copy.minute = fields.minute ?? 0
+    copy.second = fields.second ?? 0
+    copy.millisecond = fields.millisecond ?? 0
+    copy.microsecond = fields.microsecond ?? 0
+    copy.nanosecond = fields.nanosecond ?? 0
+    return copy
+  }
+  function request(
+    op: string,
+    fields?: ISODateTime,
+    value?: bigint,
+    days?: number
+  ): any {
+    const record = create(null)
+    record.op = op
+    if (fields) {
+      record.fields = isoFields(fields)
+    }
+    if (value !== undefined) record.nanoseconds = apply(bigintText, value, [])
+    if (days !== undefined) record.days = days
+    return call(op, record)
+  }
+  function addition(
+    op: string,
+    value: bigint,
+    fields: DurationFields,
+    subtract: boolean
+  ): bigint {
+    return ToBigInt(
+      call(op, {
+        nanoseconds: text(value),
+        duration: durationFields(fields),
+        subtract,
+      })
+    )
+  }
+  function durationFields(fields: DurationFields): Record<string, string> {
+    const duration = create(null)
+    const names = keys(fields)
+    for (let index = 0; index < names.length; index++)
+      duration[names[index]] = text(
+        ToBigInt(fields[names[index] as keyof DurationFields])
+      )
+    return duration
+  }
+  function dateFields(value: CalendarFields): Record<string, unknown> {
+    const fields = create(null)
+    fields.year = value.year
+    if (value.month !== undefined) fields.month = value.month
+    if (value.monthCode !== undefined) fields.monthCode = value.monthCode
+    fields.day = value.day
+    return fields
+  }
+  function shortFields(slot: DateSlot): Record<string, unknown> {
+    const result = create(null)
+    result.epochDay = slot.epochDay
+    result.calendar = slot.calendar
+    return result
+  }
+  function zonedFields(slot: ZonedSlot): Record<string, unknown> {
+    const result = create(null)
+    result.nanoseconds = text(slot.epochNanoseconds)
+    result.calendar = slot.calendar
+    result.identifier = slot.timeZone
+    return result
+  }
+  function relativeFields(
+    relative?: RelativeTo
+  ): Record<string, unknown> | undefined {
+    if (!relative) return undefined
+    if ('zoned' in relative) {
+      const result = zonedFields(relative.zoned)
+      result.kind = 'zoned'
+      return result
+    }
+    const result = create(null)
+    result.kind = 'date'
+    result.epochDay = relative.date.epochDay
+    result.calendar = relative.date.calendar
+    return result
+  }
+  native = {
+    addPlainYearMonth: (slot, fields, subtract, overflow) =>
+      call('addPlainYearMonth', {
+        value: shortFields(slot),
+        duration: durationFields(fields),
+        subtract,
+        overflow,
+      }),
+    differencePlainYearMonth: (
+      start,
+      end,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainYearMonth', {
+        value: shortFields(start),
+        other: shortFields(end),
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    yearMonthToDate: (slot, day) =>
+      call('yearMonthToDate', {value: shortFields(slot), day}),
+    monthDayToDate: (slot, year) =>
+      call('monthDayToDate', {value: shortFields(slot), year}),
+    formatPlainDate: (slot, calendarName) =>
+      call('formatPlainDate', {value: shortFields(slot), calendarName}),
+    formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
+      call('formatPlainDateTime', {
+        nanoseconds: text(value),
+        calendar,
+        precision,
+        mode,
+        calendarName,
+      }),
+    formatPlainYearMonth: (slot, calendarName) =>
+      call('formatPlainYearMonth', {value: shortFields(slot), calendarName}),
+    formatPlainMonthDay: (slot, calendarName) =>
+      call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+    formatZonedDateTime: (
+      slot,
+      precision,
+      mode,
+      calendarName,
+      offset,
+      timeZoneName
+    ) =>
+      call('formatZonedDateTime', {
+        value: zonedFields(slot),
+        precision,
+        mode,
+        calendarName,
+        offset,
+        timeZoneName,
+      }),
+    parsePlainDate: value => call('parsePlainDate', {text: value}),
+    parsePlainDateTime: value => {
+      const result = call('parsePlainDateTime', {text: value})
+      return {
+        epochNanoseconds: ToBigInt(result.epochNanoseconds),
+        calendar: result.calendar,
+      }
+    },
+    parsePlainYearMonth: value => call('parsePlainYearMonth', {text: value}),
+    parsePlainMonthDay: value => call('parsePlainMonthDay', {text: value}),
+    parseZonedFields: value => {
+      const result = call('parseZonedFields', {text: value})
+      return {
+        fields: result.fields,
+        timeZone: result.timeZone,
+        offset: result.offset ?? undefined,
+      }
+    },
+    resolveZonedDateTime: (
+      value,
+      identifier,
+      calendar,
+      offset,
+      behavior,
+      disambiguation,
+      matchMinute,
+      dateOnly
+    ) =>
+      ToBigInt(
+        call('resolveZonedDateTime', {
+          nanoseconds: text(value),
+          identifier,
+          calendar,
+          offset,
+          behavior,
+          disambiguation,
+          matchMinute,
+          dateOnly,
+        })
+      ),
+    addZonedDateTime: (slot, fields, subtract, overflow) =>
+      ToBigInt(
+        call('addZonedDateTime', {
+          value: zonedFields(slot),
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        })
+      ),
+    differenceZonedDateTime: (
+      start,
+      end,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differenceZonedDateTime', {
+        value: zonedFields(start),
+        other: zonedFields(end),
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    roundZonedDateTime: (slot, unit, increment, mode) =>
+      ToBigInt(
+        call('roundZonedDateTime', {
+          value: zonedFields(slot),
+          unit,
+          increment,
+          mode,
+        })
+      ),
+    startOfZonedDay: (slot, day) =>
+      ToBigInt(call('startOfZonedDay', {value: zonedFields(slot), day})),
+    hoursInZonedDay: slot =>
+      call('hoursInZonedDay', {value: zonedFields(slot)}),
+    addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
+      call('addPlainDate', {
+        epochDay,
+        calendar,
+        duration: durationFields(fields),
+        subtract,
+        overflow,
+      }),
+    addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
+      ToBigInt(
+        call('addPlainDateTime', {
+          nanoseconds: text(value),
+          calendar,
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        })
+      ),
+    differencePlainDate: (
+      start,
+      end,
+      calendar,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainDate', {
+        epochDay: start,
+        other: end,
+        calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    differencePlainDateTime: (
+      start,
+      end,
+      calendar,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    ) =>
+      call('differencePlainDateTime', {
+        nanoseconds: text(start),
+        other: text(end),
+        calendar,
+        largest,
+        smallest,
+        increment,
+        mode,
+        since,
+      }),
+    roundPlainDateTime: (value, calendar, unit, increment, mode) =>
+      ToBigInt(
+        call('roundPlainDateTime', {
+          nanoseconds: text(value),
+          calendar,
+          unit,
+          increment,
+          mode,
+        })
+      ),
+    transformDuration: (fields, absolute) =>
+      call('transformDuration', {duration: durationFields(fields), absolute}),
+    parseDuration: value => call('parseDuration', {text: value}),
+    validateDuration: fields => {
+      call('validateDuration', {duration: durationFields(fields)})
+    },
+    formatDuration: (fields, precision, mode) =>
+      call('formatDuration', {
+        duration: durationFields(fields),
+        precision,
+        mode,
+      }),
+    addDuration: (one, two, subtract) =>
+      call('addDuration', {
+        duration: durationFields(one),
+        other: durationFields(two),
+        subtract,
+      }),
+    compareDuration: (one, two, relative) =>
+      call('compareDuration', {
+        duration: durationFields(one),
+        other: durationFields(two),
+        relative: relativeFields(relative),
+      }),
+    totalDuration: (fields, unit, relative) =>
+      call('totalDuration', {
+        duration: durationFields(fields),
+        unit,
+        relative: relativeFields(relative),
+      }),
+    roundDuration: (fields, largest, smallest, increment, mode, relative) =>
+      call('roundDuration', {
+        duration: durationFields(fields),
+        largest,
+        smallest,
+        increment,
+        mode,
+        relative: relativeFields(relative),
+      }),
+    timeZoneIdentity: identifier => call('timeZoneIdentity', {identifier}),
+    timeZoneOffset: (identifier, value) =>
+      ToBigInt(call('timeZoneOffset', {identifier, nanoseconds: text(value)})),
+    timeZonePossibleInstants: (identifier, fields) => {
+      const values = call('timeZonePossibleInstants', {
+        identifier,
+        fields: isoFields(fields),
+      })
+      const result: bigint[] = []
+      for (let index = 0; index < values.length; index++)
+        result.push(ToBigInt(values[index]))
+      return result
+    },
+    timeZoneResolve: (identifier, fields, disambiguation) =>
+      ToBigInt(
+        call('timeZoneResolve', {
+          identifier,
+          fields: isoFields(fields),
+          disambiguation,
+        })
+      ),
+    timeZoneTransition: (identifier, value, direction) => {
+      const result = call('timeZoneTransition', {
+        identifier,
+        nanoseconds: text(value),
+        direction,
+      })
+      return result === null ? null : ToBigInt(result)
+    },
+    calendarStartOfYear: (calendar, year) =>
+      call('calendarStartOfYear', {calendar, year}),
+    calendarMonthsInYear: (calendar, year) =>
+      call('calendarMonthsInYear', {calendar, year}),
+    calendarDaysInMonth: (calendar, year, month) =>
+      call('calendarDaysInMonth', {calendar, year, month}),
+    calendarToEpochDay: (calendar, fields, overflow) =>
+      call('calendarToEpochDay', {
+        calendar,
+        fields: dateFields(fields),
+        overflow,
+      }),
+    calendarFromEpochDay: (calendar, epoch) =>
+      call('calendarFromEpochDay', {calendar, epoch}),
+    calendarAdd: (calendar, fields, values, overflow) => {
+      const duration = create(null)
+      duration.years = values.years ?? 0
+      duration.months = values.months ?? 0
+      duration.weeks = values.weeks ?? 0
+      duration.days = values.days ?? 0
+      return call('calendarAdd', {
+        calendar,
+        fields: dateFields(fields),
+        duration,
+        overflow,
+      })
+    },
+    calendarUntil: (calendar, one, two, largest) =>
+      call('calendarUntil', {calendar, one, two, largest}),
+    calendarMonthSerial: (calendar, year, month) =>
+      call('calendarMonthSerial', {calendar, year, month}),
+    calendarEra: (calendar, epoch) =>
+      call('calendarEra', {calendar, epoch}) ?? undefined,
+    calendarYearFromEra: (calendar, era, year) =>
+      call('calendarYearFromEra', {calendar, era, year}),
+    isoToEpochNanoseconds: fields =>
+      ToBigInt(request('isoToEpochNanoseconds', fields)),
+    epochNanosecondsToISO: value =>
+      request('epochNanosecondsToISO', undefined, value),
+    addISODays: (fields, days) =>
+      request('addISODays', fields, undefined, days),
+    parsePlainTime: value => ToBigInt(call('parsePlainTime', {text: value})),
+    regulatePlainTime: (values, constrain) => {
+      const fields = create(null)
+      fields.hour = values[0]
+      fields.minute = values[1]
+      fields.second = values[2]
+      fields.millisecond = values[3]
+      fields.microsecond = values[4]
+      fields.nanosecond = values[5]
+      return ToBigInt(call('regulatePlainTime', {fields, constrain}))
+    },
+    formatPlainTime: (value, precision, mode) =>
+      call('formatPlainTime', {nanoseconds: text(value), precision, mode}),
+    addPlainTime: (value, fields, subtract) =>
+      addition('addPlainTime', value, fields, subtract),
+    roundPlainTime: (value, unit, increment, mode) =>
+      ToBigInt(
+        call('roundPlainTime', {
+          nanoseconds: text(value),
+          unit,
+          increment,
+          mode,
+        })
+      ),
+    differencePlainTime: (value, other, largest, smallest, increment, mode) =>
+      call('differencePlainTime', {
+        nanoseconds: text(value),
+        other: text(other),
+        largest,
+        smallest,
+        increment,
+        mode,
+      }),
+    parseInstant: value => ToBigInt(call('parseInstant', {text: value})),
+    formatInstant: (value, precision, offset) =>
+      call('formatInstant', {
+        nanoseconds: text(value),
+        precision,
+        offset: offset === undefined ? undefined : text(offset),
+      }),
+    addInstant: (value, fields, subtract) =>
+      addition('addInstant', value, fields, subtract),
+    roundInstant: (value, quantum, mode) =>
+      ToBigInt(
+        call('roundInstant', {
+          nanoseconds: text(value),
+          quantum: text(quantum),
+          mode,
+        })
+      ),
+    differenceInstant: (value, other, largest, smallest, increment, mode) =>
+      call('differenceInstant', {
+        nanoseconds: text(value),
+        other: text(other),
+        largest,
+        smallest,
+        increment,
+        mode,
+      }),
+  }
+}

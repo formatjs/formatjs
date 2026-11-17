@@ -4,6 +4,23 @@ load("//packages/intl-numberformat:locales.generated.bzl", "ALL_LOCALES")
 
 exports_files(["locale-format-fixtures.tsv"])
 
+java_binary(
+    name = "historical_timezone_oracle",
+    testonly = True,
+    srcs = ["HistoricalTimeZoneOracle.java"],
+    main_class = "HistoricalTimeZoneOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "historical_timezone_fixtures",
+    testonly = True,
+    outs = ["historical-timezone-fixtures.tsv"],
+    cmd = "$(execpath :historical_timezone_oracle) $@",
+    tools = [":historical_timezone_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_test(
     name = "intl_relativetimeformat_conformance_test",
     size = "small",
@@ -276,6 +293,60 @@ java_binary(
     deps = [":icu4j79"],
 )
 
+java_binary(
+    name = "temporal_extended_calendar_oracle",
+    testonly = True,
+    srcs = [
+        "TemporalArithmeticCalendarOracle.java",
+        "TemporalExtendedCalendarOracle.java",
+    ],
+    main_class = "TemporalExtendedCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_extended_calendar_files",
+    testonly = True,
+    outs = [
+        "temporal-extended-calendar-fixtures.tsv",
+        "temporal-extended-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_extended_calendar_oracle) $(@D)/temporal-extended-calendar-fixtures.tsv $(@D)/temporal-extended-calendar-fixtures.js",
+    tools = [":temporal_extended_calendar_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+filegroup(
+    name = "temporal_extended_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-extended-calendar-fixtures.tsv"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+filegroup(
+    name = "temporal_extended_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-extended-calendar-fixtures.js"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
+java_binary(
+    name = "temporal_extended_intl_oracle",
+    testonly = True,
+    srcs = ["TemporalExtendedIntlOracle.java"],
+    main_class = "TemporalExtendedIntlOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_extended_intl_fixtures",
+    testonly = True,
+    outs = ["temporal-extended-intl-fixtures.tsv"],
+    cmd = "$(execpath :temporal_extended_intl_oracle) $@",
+    tools = [":temporal_extended_intl_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
+)
+
 genrule(
     name = "temporal_timezone_fixtures",
     testonly = True,
@@ -301,4 +372,487 @@ genrule(
     cmd = "$(execpath :intl_datetimeformat_oracle) $@ --range-boundaries",
     tools = [":intl_datetimeformat_oracle"],
     visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalCalendarOracle.java"],
+    main_class = "TemporalCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_calendar_fixtures",
+    testonly = True,
+    outs = ["temporal-calendar-fixtures.tsv"],
+    cmd = "$(execpath :temporal_calendar_oracle) $@",
+    tools = [":temporal_calendar_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_short_date_oracle",
+    testonly = True,
+    srcs = ["TemporalShortDateOracle.java"],
+    main_class = "TemporalShortDateOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_date_fixtures",
+    testonly = True,
+    outs = ["temporal-short-date-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_date_oracle) $@",
+    tools = [":temporal_short_date_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_date_arithmetic_oracle",
+    testonly = True,
+    srcs = ["TemporalDateArithmeticOracle.java"],
+    main_class = "TemporalDateArithmeticOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_date_arithmetic_fixtures",
+    testonly = True,
+    outs = ["temporal-date-arithmetic-fixtures.tsv"],
+    cmd = "$(execpath :temporal_date_arithmetic_oracle) $@",
+    tools = [":temporal_date_arithmetic_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_date_arithmetic_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-date-arithmetic-fixtures.js"],
+    cmd = "$(execpath :temporal_date_arithmetic_oracle) $@ --js",
+    tools = [":temporal_date_arithmetic_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_time_oracle",
+    testonly = True,
+    srcs = ["TemporalTimeOracle.java"],
+    main_class = "TemporalTimeOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_time_fixtures",
+    testonly = True,
+    outs = ["temporal-time-fixtures.tsv"],
+    cmd = "$(execpath :temporal_time_oracle) $@",
+    tools = [":temporal_time_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_iso_oracle",
+    testonly = True,
+    srcs = ["TemporalISOOracle.java"],
+    main_class = "TemporalISOOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_iso_fixtures",
+    testonly = True,
+    outs = ["temporal-iso-fixtures.tsv"],
+    cmd = "$(execpath :temporal_iso_oracle) $@",
+    tools = [":temporal_iso_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_rounding_oracle",
+    testonly = True,
+    srcs = ["TemporalRoundingOracle.java"],
+    main_class = "TemporalRoundingOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_rounding_fixtures",
+    testonly = True,
+    outs = ["temporal-rounding-fixtures.tsv"],
+    cmd = "$(execpath :temporal_rounding_oracle) $@",
+    tools = [":temporal_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_duration_oracle",
+    testonly = True,
+    srcs = ["TemporalDurationOracle.java"],
+    main_class = "TemporalDurationOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_duration_fixtures",
+    testonly = True,
+    outs = ["temporal-duration-fixtures.tsv"],
+    cmd = "$(execpath :temporal_duration_oracle) $@",
+    tools = [":temporal_duration_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_transition_oracle",
+    testonly = True,
+    srcs = ["TemporalTransitionOracle.java"],
+    main_class = "TemporalTransitionOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_transition_fixtures",
+    testonly = True,
+    outs = ["temporal-transition-fixtures.tsv"],
+    cmd = "$(execpath :temporal_transition_oracle) $@",
+    tools = [":temporal_transition_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_zoned_difference_oracle",
+    testonly = True,
+    srcs = ["TemporalZonedDifferenceOracle.java"],
+    main_class = "TemporalZonedDifferenceOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_zoned_difference_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-difference-fixtures.tsv"],
+    cmd = "$(execpath :temporal_zoned_difference_oracle) $@",
+    tools = [":temporal_zoned_difference_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_timezone_identity_oracle",
+    testonly = True,
+    srcs = ["TemporalTimeZoneIdentityOracle.java"],
+    main_class = "TemporalTimeZoneIdentityOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_timezone_identity_fixtures",
+    testonly = True,
+    outs = ["temporal-timezone-identity-fixtures.tsv"],
+    cmd = "$(execpath :temporal_timezone_identity_oracle) $@",
+    tools = [":temporal_timezone_identity_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_plain_relative_oracle",
+    testonly = True,
+    srcs = ["TemporalPlainRelativeOracle.java"],
+    main_class = "TemporalPlainRelativeOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_plain_relative_fixture_files",
+    testonly = True,
+    outs = [
+        "temporal-plain-relative-fixtures.tsv",
+        "temporal-plain-relative-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_plain_relative_oracle) $(@D)/temporal-plain-relative-fixtures.tsv $(@D)/temporal-plain-relative-fixtures.js",
+    tools = [":temporal_plain_relative_oracle"],
+)
+
+filegroup(
+    name = "temporal_plain_relative_fixtures",
+    testonly = True,
+    srcs = ["temporal-plain-relative-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_plain_relative_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-plain-relative-fixtures.js"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_arithmetic_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalArithmeticCalendarOracle.java"],
+    main_class = "TemporalArithmeticCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_arithmetic_calendar_files",
+    testonly = True,
+    outs = [
+        "temporal-arithmetic-calendar-fixtures.tsv",
+        "temporal-arithmetic-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_arithmetic_calendar_oracle) $(@D)/temporal-arithmetic-calendar-fixtures.tsv $(@D)/temporal-arithmetic-calendar-fixtures.js",
+    tools = [":temporal_arithmetic_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_arithmetic_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-arithmetic-calendar-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_arithmetic_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-arithmetic-calendar-fixtures.js"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_table_calendar_oracle",
+    testonly = True,
+    srcs = ["TemporalTableCalendarOracle.java"],
+    main_class = "TemporalTableCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_table_calendar_files",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = [
+        "temporal-table-calendar-fixtures.tsv",
+        "temporal-table-calendar-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_table_calendar_oracle) $(@D)/temporal-table-calendar-fixtures.tsv $(@D)/temporal-table-calendar-fixtures.js $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv)",
+    tools = [":temporal_table_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_hermes_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-fixtures.js"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_table_calendar_raw_files",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = [
+        "temporal-table-calendar-raw-fixtures.tsv",
+        "temporal-table-calendar-raw-fixtures.js",
+    ],
+    cmd = "$(execpath :temporal_table_calendar_oracle) $(@D)/temporal-table-calendar-raw-fixtures.tsv $(@D)/temporal-table-calendar-raw-fixtures.js $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv) --raw-icu",
+    tools = [":temporal_table_calendar_oracle"],
+)
+
+filegroup(
+    name = "temporal_table_calendar_raw_fixtures",
+    testonly = True,
+    srcs = ["temporal-table-calendar-raw-fixtures.tsv"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_zoned_rounding_oracle",
+    testonly = True,
+    srcs = ["TemporalZonedRoundingOracle.java"],
+    main_class = "TemporalZonedRoundingOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_zoned_rounding_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-rounding-fixtures.tsv"],
+    cmd = "$(execpath :temporal_zoned_rounding_oracle) $@",
+    tools = [":temporal_zoned_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_locale_oracle",
+    testonly = True,
+    srcs = ["TemporalLocaleOracle.java"],
+    main_class = "TemporalLocaleOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_locale_fixtures",
+    testonly = True,
+    outs = ["temporal-locale-fixtures.tsv"],
+    cmd = "$(execpath :temporal_locale_oracle) $@",
+    tools = [":temporal_locale_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_short_calendar_oracle",
+    testonly = True,
+    srcs = [
+        "TemporalArithmeticCalendarOracle.java",
+        "TemporalShortCalendarOracle.java",
+        "TemporalTableCalendarOracle.java",
+    ],
+    main_class = "TemporalShortCalendarOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_calendar_fixtures",
+    testonly = True,
+    srcs = ["//conformance-tests/calendar-authorities:hko-month-starts.tsv"],
+    outs = ["temporal-short-calendar-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_calendar_oracle) $@ $(location //conformance-tests/calendar-authorities:hko-month-starts.tsv)",
+    tools = [":temporal_short_calendar_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_zoned_string_oracle",
+    testonly = True,
+    srcs = ["TemporalZonedStringOracle.java"],
+    main_class = "TemporalZonedStringOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_zoned_string_fixtures",
+    testonly = True,
+    srcs = [":temporal_timezone_fixtures"],
+    outs = ["temporal-zoned-string-fixtures.tsv"],
+    cmd = "$(execpath :temporal_zoned_string_oracle) $@ $(location :temporal_timezone_fixtures)",
+    tools = [":temporal_zoned_string_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_iso_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-iso-fixtures.js"],
+    cmd = "$(execpath :temporal_iso_oracle) $@ --js",
+    tools = [":temporal_iso_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_rounding_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-rounding-fixtures.js"],
+    cmd = "$(execpath :temporal_rounding_oracle) $@ --js",
+    tools = [":temporal_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_duration_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-duration-fixtures.js"],
+    cmd = "$(execpath :temporal_duration_oracle) $@ --js",
+    tools = [":temporal_duration_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+[
+    genrule(
+        name = name,
+        testonly = True,
+        outs = [output],
+        cmd = "$(execpath :temporal_time_oracle) $@ " + mode,
+        tools = [":temporal_time_oracle"],
+        visibility = ["//visibility:public"],
+    )
+    for name, output, mode in [
+        ("temporal_time_hermes_fixtures", "temporal-time-fixtures.js", "--js"),
+        ("temporal_time_carry_fixtures", "temporal-time-carry-fixtures.tsv", "--carry"),
+    ]
+]
+
+[
+    genrule(
+        name = "temporal_" + family + "_hermes_fixtures",
+        testonly = True,
+        outs = ["temporal-" + family.replace("_", "-") + "-fixtures.js"],
+        cmd = "$(execpath :temporal_" + family + "_oracle) $@ --js",
+        tools = [":temporal_" + family + "_oracle"],
+        visibility = ["//visibility:public"],
+    )
+    for family in [
+        "timezone",
+        "transition",
+        "timezone_identity",
+    ]
+]
+
+genrule(
+    name = "temporal_zoned_difference_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-difference-fixtures.js"],
+    cmd = "$(execpath :temporal_zoned_difference_oracle) $@ --js",
+    tools = [":temporal_zoned_difference_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_zoned_rounding_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-zoned-rounding-fixtures.js"],
+    cmd = "$(execpath :temporal_zoned_rounding_oracle) $@ --js",
+    tools = [":temporal_zoned_rounding_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_short_date_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-short-date-fixtures.js"],
+    cmd = "$(execpath :temporal_short_date_oracle) $@ --js",
+    tools = [":temporal_short_date_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "temporal_locale_hermes_fixtures",
+    testonly = True,
+    outs = ["temporal-locale-fixtures.js"],
+    cmd = "$(execpath :temporal_locale_oracle) $@ --js",
+    tools = [":temporal_locale_oracle"],
+    visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "temporal_short_style_oracle",
+    testonly = True,
+    srcs = ["TemporalShortStyleOracle.java"],
+    main_class = "TemporalShortStyleOracle",
+    deps = [":icu4j79"],
+)
+
+genrule(
+    name = "temporal_short_style_fixtures",
+    testonly = True,
+    outs = ["temporal-short-style-fixtures.tsv"],
+    cmd = "$(execpath :temporal_short_style_oracle) $@",
+    tools = [":temporal_short_style_oracle"],
+    visibility = ["//packages/temporal:__pkg__"],
 )

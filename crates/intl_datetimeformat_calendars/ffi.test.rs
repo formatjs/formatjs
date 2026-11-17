@@ -92,3 +92,35 @@ fn optional_abi_keeps_patterns_and_arithmetic_independent_and_failed_loads_atomi
         formatjs_datetime_destroy(handle);
     }
 }
+
+#[test]
+fn arithmetic_providers_preserve_existing_calendar_date_bounds() {
+    use formatjs_intl_datetimeformat::calendar::CalendarProvider;
+    use formatjs_intl_datetimeformat_calendars::Provider;
+    for name in [
+        "buddhist",
+        "japanese",
+        "roc",
+        "coptic",
+        "ethiopic",
+        "ethioaa",
+        "hebrew",
+        "indian",
+        "islamic-civil",
+        "islamic-tbla",
+        "persian",
+    ] {
+        let provider = Provider::arithmetic(name).unwrap();
+        for time in [
+            -100_000_001_i64 * 86_400_000,
+            -100_000_000 * 86_400_000,
+            100_000_000 * 86_400_000,
+            100_000_001 * 86_400_000 - 1,
+        ] {
+            assert!(provider.date_from_time(time).is_ok(), "{name} {time}");
+        }
+        for time in [-100_000_001_i64 * 86_400_000 - 1, 100_000_001 * 86_400_000] {
+            assert!(provider.date_from_time(time).is_err(), "{name} {time}");
+        }
+    }
+}

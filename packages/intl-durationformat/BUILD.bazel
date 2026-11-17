@@ -19,7 +19,6 @@ formatjs_library(
     package_name = "@formatjs/intl-durationformat",
     srcs = [
         "abstract/PartitionDurationFormatPattern.ts",
-        "abstract/ToTemporalDurationRecord.ts",
         "constants.ts",
         "core.ts",
         "get_internal_slots.ts",
@@ -89,7 +88,10 @@ rolldown_bundle(
     entry_point = "polyfill-force.ts",
     format = "iife",
     target = "es2020",
-    visibility = ["//tools/test262:__pkg__"],
+    visibility = [
+        "//packages/temporal:__pkg__",
+        "//tools/test262:__pkg__",
+    ],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
         "//:node_modules/@formatjs/intl-localematcher",

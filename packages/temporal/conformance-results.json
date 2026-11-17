@@ -1,0 +1,2132 @@
+{
+  "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+  "nativeFallback": false,
+  "note": "Whole native Temporal namespace replaced. Historical per-class diagnostics remain below; fullNamespaceAudit records the current post-fix full namespace/Intl results and exact provider scopes. No complete conformance claim.",
+  "selected": {
+    "executions": 346,
+    "passes": 346,
+    "failures": 0
+  },
+  "full": {
+    "executions": 934,
+    "passes": 930,
+    "failures": 4,
+    "failuresByArea": {
+      "prototype/toLocaleString": 4
+    }
+  },
+  "hermes": {
+    "overlayCommit": "338ff13ff1e996934ae615952d174f8c621844d9",
+    "nativeTemporalFallback": false,
+    "selected": {
+      "source": {
+        "executions": 346,
+        "passes": 346,
+        "failures": 0
+      },
+      "optimizedBytecode": {
+        "executions": 346,
+        "passes": 346,
+        "failures": 0
+      }
+    },
+    "exclusions": [],
+    "fullDiagnostic": {
+      "source": {
+        "executions": 934,
+        "passes": 930,
+        "failures": 4,
+        "failuresByArea": {
+          "prototype/toLocaleString": 4
+        }
+      },
+      "optimizedBytecode": {
+        "executions": 934,
+        "passes": 930,
+        "failures": 4,
+        "failuresByArea": {
+          "prototype/toLocaleString": 4
+        }
+      }
+    },
+    "bytecodePrelude": "Implementation compiled once per suite and loaded alongside each separately compiled case in a fresh runtime. Existing case and suite timeouts retained."
+  },
+  "serializationDiagnostic": {
+    "executions": 456,
+    "passes": 456,
+    "failures": 0,
+    "failuresByArea": {},
+    "note": "Derived from the full Instant report: strict selection plus complete toString family."
+  },
+  "duration": {
+    "selected": {
+      "executions": 1072,
+      "passes": 1072,
+      "failures": 0
+    },
+    "methodsDiagnostic": {
+      "executions": 1072,
+      "passes": 1072,
+      "failures": 0,
+      "note": "Manual target aliases the complete non-locale strict selection."
+    },
+    "fullDiagnostic": {
+      "executions": 1086,
+      "passes": 1082,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 1072,
+          "passes": 1072,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 1072,
+          "passes": 1072,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1086,
+          "passes": 1082,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1086,
+          "passes": 1082,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      }
+    },
+    "note": "Non-locale families pass, including relative total/round/compare. Owned DurationFormat integration is covered by localeFormatting. Native bindings remain pending.",
+    "icuRelativeRoundingCases": 19440,
+    "icuRelativeTotalCases": 6480,
+    "icuRelativeComparisonCases": 1340
+  },
+  "plainTime": {
+    "selected": {
+      "executions": 234,
+      "passes": 234,
+      "failures": 0
+    },
+    "selection": "Complete constructor/prototype-root/getter/add/subtract/toJSON/valueOf directories; remaining methods retained in full diagnostics.",
+    "full": {
+      "executions": 986,
+      "passes": 982,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 986,
+          "passes": 982,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 986,
+          "passes": 982,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 234,
+          "passes": 234,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 234,
+          "passes": 234,
+          "failures": 0
+        }
+      }
+    },
+    "exclusions": [],
+    "icuClockRoundingCases": 7740
+  },
+  "plainDate": {
+    "selected": {
+      "executions": 364,
+      "passes": 364,
+      "failures": 0
+    },
+    "full": {
+      "executions": 1308,
+      "passes": 1304,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 364,
+          "passes": 364,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 364,
+          "passes": 364,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1308,
+          "passes": 1304,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1308,
+          "passes": 1304,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      }
+    },
+    "exclusions": [],
+    "icuArithmeticCases": 840
+  },
+  "plainDateTime": {
+    "selected": {
+      "executions": 518,
+      "passes": 518,
+      "failures": 0
+    },
+    "full": {
+      "executions": 1552,
+      "passes": 1548,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "selected": {
+        "source": {
+          "executions": 518,
+          "passes": 518,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 518,
+          "passes": 518,
+          "failures": 0
+        }
+      },
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1552,
+          "passes": 1548,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1552,
+          "passes": 1548,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      }
+    },
+    "exclusions": [],
+    "icuArithmeticCases": 840
+  },
+  "plainYearMonth": {
+    "full": {
+      "executions": 1022,
+      "passes": 1018,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1022,
+          "passes": 1018,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1022,
+          "passes": 1018,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 348,
+          "passes": 348,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 348,
+          "passes": 348,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 348,
+      "passes": 348,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuShortDateCases": 2028
+  },
+  "plainMonthDay": {
+    "full": {
+      "executions": 398,
+      "passes": 394,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 398,
+          "passes": 394,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 398,
+          "passes": 394,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 150,
+          "passes": 150,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 150,
+          "passes": 150,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 150,
+      "passes": 150,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuShortDateCases": 2028
+  },
+  "zonedDateTime": {
+    "full": {
+      "executions": 1804,
+      "passes": 1800,
+      "failures": 4,
+      "failuresByArea": {
+        "prototype/toLocaleString": 4
+      }
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 1804,
+          "passes": 1800,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        },
+        "optimizedBytecode": {
+          "executions": 1804,
+          "passes": 1800,
+          "failures": 4,
+          "failuresByArea": {
+            "prototype/toLocaleString": 4
+          }
+        }
+      },
+      "selected": {
+        "source": {
+          "executions": 1790,
+          "passes": 1790,
+          "failures": 0
+        },
+        "optimizedBytecode": {
+          "executions": 1790,
+          "passes": 1790,
+          "failures": 0
+        }
+      }
+    },
+    "selected": {
+      "executions": 1790,
+      "passes": 1790,
+      "failures": 0
+    },
+    "exclusions": [],
+    "icuOffsetSamples": 13160,
+    "icuTransitionCases": 1340,
+    "icuTransitionQueries": 10528,
+    "icuZonedDifferenceCases": 19440
+  },
+  "now": {
+    "full": {
+      "executions": 138,
+      "passes": 138,
+      "failures": 0,
+      "failuresByArea": {}
+    },
+    "selected": {
+      "executions": 138,
+      "passes": 138,
+      "failures": 0,
+      "failuresByArea": {}
+    },
+    "hermes": {
+      "fullDiagnostic": {
+        "source": {
+          "executions": 138,
+          "passes": 138,
+          "failures": 0,
+          "failuresByArea": {}
+        },
+        "optimizedBytecode": {
+          "executions": 138,
+          "passes": 138,
+          "failures": 0,
+          "failuresByArea": {}
+        }
+      },
+      "systemZoneHostChecks": ["UTC", "America/New_York", "Asia/Kathmandu"]
+    },
+    "builtInsExecutions": 132,
+    "intl402Executions": 6,
+    "exclusions": [],
+    "icuClockOffsetSamples": 13160,
+    "hostClock": "Captured Date.now; millisecond precision. Native Rust accepts host epoch nanoseconds.",
+    "systemTimeZone": "Captured Intl.DateTimeFormat named ID, normalized to owned IANA primary ID; current Date offset on hosts without DateTimeFormat.",
+    "rust": "no_std Now<SystemClock> converts through supplied TimeZone providers; production native clock/zone installation pending."
+  },
+  "installation": {
+    "node": {
+      "executions": 26,
+      "passes": 26,
+      "failures": 0,
+      "failuresByAPI": {}
+    },
+    "hermes": {
+      "source": {
+        "executions": 26,
+        "passes": 26,
+        "failures": 0,
+        "failuresByAPI": {}
+      },
+      "optimizedBytecode": {
+        "executions": 26,
+        "passes": 26,
+        "failures": 0,
+        "failuresByAPI": {}
+      }
+    },
+    "icuGregorianDateCases": 25265,
+    "icuOutOfRangeDateCases": 4,
+    "exclusions": [],
+    "packageIdentity": "Assembled JS test requires root/global constructors and Date bridge to share private brands; native/reference namespaces survive conditional installation."
+  },
+  "intl402Diagnostic": {
+    "files": 2040,
+    "node": {
+      "executions": 4080,
+      "passes": 3906,
+      "failures": 174,
+      "failuresByAPI": {
+        "Duration": 2,
+        "Instant": 26,
+        "PlainDate": 24,
+        "PlainDateTime": 26,
+        "PlainMonthDay": 22,
+        "PlainTime": 22,
+        "PlainYearMonth": 22,
+        "ZonedDateTime": 30
+      }
+    },
+    "hermes": {
+      "source": {
+        "executions": 4080,
+        "passes": 3884,
+        "failures": 196,
+        "failuresByAPI": {
+          "Duration": 8,
+          "Instant": 26,
+          "PlainDate": 28,
+          "PlainDateTime": 30,
+          "PlainMonthDay": 24,
+          "PlainTime": 22,
+          "PlainYearMonth": 24,
+          "ZonedDateTime": 34
+        }
+      },
+      "optimizedBytecode": {
+        "executions": 4080,
+        "passes": 3884,
+        "failures": 196,
+        "failuresByAPI": {
+          "Duration": 8,
+          "Instant": 26,
+          "PlainDate": 28,
+          "PlainDateTime": 30,
+          "PlainMonthDay": 24,
+          "PlainTime": 22,
+          "PlainYearMonth": 24,
+          "ZonedDateTime": 34
+        }
+      }
+    },
+    "exclusions": [],
+    "engineDifferences": [
+      {
+        "file": "intl402/Temporal/Duration/compare/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/compare/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/round/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/round/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/total/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/Duration/prototype/total/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDate/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainMonthDay/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainMonthDay/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainYearMonth/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/PlainYearMonth/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/from/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/from/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "default",
+        "nodePass": true,
+        "hermesPass": false
+      },
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/withCalendar/calendar-intl-objects.js",
+        "scenario": "strict mode",
+        "nodePass": true,
+        "hermesPass": false
+      }
+    ],
+    "note": "Historical bare-Intl reports after timezone-edge fixes. See localeFormatting for newer owned/legacy Intl diagnostics. links.js assumes pre-2026d CST6CDT identity. No exclusions in full diagnostics."
+  },
+  "timezoneIdentity": {
+    "availableIdentifiers": 597,
+    "icuIdentityPairsPerLanguage": 178503,
+    "languages": ["TypeScript", "Rust"],
+    "data": "Pinned IANA Zone records and zone.tab plus CLDR preferred aliases; UTC/GMT normalization. Rust table generated by Bazel.",
+    "oracle": "ICU4J 79.1 TimeZone.getIanaID; only current available IANA IDs intersected, exact availability count asserted.",
+    "rust": "Allocation-free case-insensitive identity lookup and NamedTimeZone with real IANA TransitionZone providers in tests. Production transition registry loading pending.",
+    "exclusions": []
+  },
+  "plainRelative": {
+    "calendar": "All 16 calendars in native Rust PlainDate/PlainDateTime/ZonedDateTime through sealed arithmetic/borrowed-table providers. Short dates remain ISO; native JS bindings pending.",
+    "oracle": "ICU4J 79.1 proleptic Gregorian Calendar.add and BigDecimal rounding/totals; eight anchors including BCE/year zero, leap/month ends and years -270000/+275000.",
+    "engines": [
+      "Node",
+      "Hermes source",
+      "Hermes optimized bytecode",
+      "native Rust"
+    ],
+    "icuRounds": 51840,
+    "icuTotals": 17280,
+    "icuDateDifferences": 20736,
+    "icuComparisons": 4224,
+    "rust": "PlainDate total_duration/round_duration/compare_durations and until/since; PlainDateTime calendar-unit until/since. DateTimeUnit retains ZonedUnit alias and TimeUnit argument conversions.",
+    "range": "Input endpoint includes clock carry and must fit plain-date bounds. Zero values keep date-limit early returns; rounded durations may extend beyond date limits.",
+    "nativeTest262Ports": [
+      "Duration/prototype/round/relativeto-date-limits.js",
+      "Duration/prototype/total/relativeto-date-limits.js",
+      "Duration/prototype/round/out-of-range-nudged-epochns.js",
+      "Duration/prototype/round/relativeto-rounding-near-minimum-date.js",
+      "Duration/prototype/round/relativeto-plaindate-large-time-component-out-of-range.js",
+      "Duration/prototype/total/relativeto-plaindate-large-time-component-out-of-range.js",
+      "Duration/compare/relativeto-plaindate-add24hourdaystonormalizedtimeduration-out-of-range.js"
+    ],
+    "exclusions": [],
+    "note": "Native numerical ports and independent oracles supplement TS Test262; complete native Hermes conformance/bindings still required."
+  },
+  "arithmeticCalendars": {
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian"
+    ],
+    "scope": "13 shared numeric engines and public TS date/date-time/short-date/zoned integration. Native public plain date/date-time and zoned classes now use these providers; table providers are recorded separately. Native short dates remain ISO.",
+    "icuFields": 34366,
+    "icuAdditions": 32352,
+    "icuRangeRejections": 176,
+    "modes": [
+      "native Rust",
+      "Node",
+      "Hermes source",
+      "Hermes optimized bytecode"
+    ],
+    "oracleLimits": {
+      "hebrew": "Epoch days -1000000 through 1000000. Full-range proleptic invariants checked separately.",
+      "persian": "Arithmetic years 1206 through 1498. Existing 33-year approximation outside official range.",
+      "lengthsAndClamping": "Derived from ICU forward fields and searched year/month boundaries; avoids negative Coptic/Ethiopic month-length and reverse Indian-setting defects.",
+      "japanese": "Era names normalized to Temporal era/monthCode rules; Gregorian eras before 1873.",
+      "differences": "Independent forward ICU fields and boundary walks with unregulated month/day comparisons. Does not assume constrained addition and differences are inverses."
+    },
+    "exclusions": [],
+    "icuDifferences": 32352
+  },
+  "publicCalendars": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian"
+    ],
+    "strictTest262PerMode": {
+      "executions": 2974,
+      "passes": 2974,
+      "failures": 0
+    },
+    "strictScope": "Current combined calendar gate covers named families across all 16 calendars and rare Chinese/Dangi MonthDay controls. Oracle counts in this object cover the arithmetic subset; table controls are recorded separately.",
+    "icuFields": 34366,
+    "icuAdditions": 32352,
+    "icuDifferences": 32352,
+    "icuRangeRejections": 176,
+    "icuCrossClassSamples": 2021,
+    "nativeControls": {
+      "node": "26.8.1",
+      "results": [
+        "2020-01-31 until 2020-02-29 largest month: P29D",
+        "Same dates, smallest month: P1M",
+        "2020-01-31T23:30 until 2020-03-01T00:15 largest year: P29DT45M"
+      ],
+      "note": "Older hand-written native expectations corrected against pinned native runtime and specification."
+    },
+    "exclusions": [],
+    "icuTotalWindows": 5408,
+    "nativeIsoTotalWindows": 416
+  },
+  "strictGatesPerMode": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "executions": 8288,
+    "passes": 8288,
+    "failures": 0,
+    "scope": "Distinct union of strict built-in classes, Now, installation, named-calendar, historical timezone-edge and owned locale/enumeration gates. Full diagnostics remain separate; no complete conformance claim."
+  },
+  "tableCalendars": {
+    "calendars": ["chinese", "dangi", "islamic-umalqura"],
+    "publicTsEngines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "nativeRust": "Allocation-free validated borrowed packs; shared arithmetic trait. Public native PlainDate/PlainDateTime/ZonedDateTime accept table providers; native short dates remain ISO.",
+    "source": "Pinned ICU4X generated calendar packs, now indexed by day and month checkpoints every 64 years. No runtime Intl lookup.",
+    "sharedNumericFields": 15932,
+    "sharedNumericAdditions": 6720,
+    "sharedNumericDifferences": 6720,
+    "tsCrossClassSamples": 937,
+    "tsRelativeTotalWindows": 1248,
+    "publicDateRangeEpochDays": [-100000001, 100000000],
+    "internalEpochDays": [-110000000, 110000000],
+    "hko": {
+      "annualFiles": 200,
+      "monthStarts": 2474,
+      "gregorianYears": [1901, 2100],
+      "sourceHashes": "conformance-tests/calendar-authorities/hko-source-shas.tsv",
+      "mixedOracleWholeYears": [1901, 2099],
+      "directControls": "All month starts, lengths and next-month additions in TS/Rust."
+    },
+    "kasi": {
+      "boundary": "2017-02-26 at 23:58 KST starts Dangi M02; ICU79 is one day late.",
+      "regression": "2017-06-24 starts leap month 5. Runtime ICU4X pack already matches both published facts.",
+      "source": "https://astro.kasi.re.kr/life/pageView/1"
+    },
+    "oracle": "ICU4J 79.1 forward conversion and searched boundaries; Chinese complete years 1901..2099 use published HKO fields; Dangi February 2017 uses KASI. Raw ICU comparison stays unfiltered and failing.",
+    "exclusions": [],
+    "rawIcuDiagnostic": {
+      "fields": 15932,
+      "matches": 15748,
+      "mismatches": 184,
+      "disagreementsByYear": {
+        "chinese/1917": 4,
+        "chinese/1922": 4,
+        "chinese/1953": 24,
+        "chinese/1954": 24,
+        "chinese/1955": 4,
+        "chinese/1987": 4,
+        "chinese/1998": 4,
+        "chinese/2012": 4,
+        "chinese/2018": 4,
+        "chinese/2026": 24,
+        "chinese/2027": 24,
+        "chinese/2029": 24,
+        "chinese/2030": 24,
+        "chinese/2057": 4,
+        "chinese/2070": 4,
+        "dangi/2017": 4
+      },
+      "status": "Manual failing diagnostic, unfiltered; published authority controls explain oracle discrepancies. No accepted-failure baseline."
+    }
+  },
+  "zonedEdges": {
+    "strictTest262PerMode": 22,
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "icuCivilBoundaryRoundsPerLanguage": 5292,
+    "languages": ["TypeScript", "Rust"],
+    "offsetPrecision": "TS string syntax distinguishes minute matching from exact seconds/fractions; bags exact. Rust zoned-string facade still pending.",
+    "calendarDifference": "TS/Rust compare wall clocks before gap-compatible calendar anchor resolution.",
+    "nativeRust": "ZonedDateTime start_of_day, hours_in_day, round day/clock units; original offset preferred for clock rounding.",
+    "exclusions": [],
+    "timezoneIdentityDiagnostic": {
+      "file": "intl402/Temporal/ZonedDateTime/links.js",
+      "executionsPerMode": 2,
+      "iana": "2026f",
+      "icu": "79.1",
+      "reason": "TZDB 2026d restored four POSIX IDs as Zones. Current ECMA-402 requires Zone primaries; TG2 2026-10-08 agreed to future alias policy. Keep raw ICU controls and failing Test262 diagnostic.",
+      "spec": "https://tc39.es/ecma402/#sec-use-of-iana-time-zone-database",
+      "issue": "https://github.com/tc39/ecma402/issues/1103"
+    }
+  },
+  "localeFormatting": {
+    "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+    "strictTest262PerMode": {
+      "executions": 306,
+      "passes": 306,
+      "failures": 0
+    },
+    "scope": "Eight public toLocaleString methods with owned Intl prerequisites, plus distinct enumerated timezone primary identities. No native Temporal fallback.",
+    "icu": {
+      "casesPerLanguage": 768,
+      "languages": ["TypeScript", "Rust"],
+      "locales": ["en", "de", "fr", "ja"],
+      "source": "ICU4J 79.1 proleptic Gregorian styles and requested-width skeletons with locale zone-append patterns. Exact string comparison; no row exclusions or normalization."
+    },
+    "fullOwnedIntlBeforeEnumerationFix": {
+      "executionsPerMode": 4080,
+      "passesPerMode": 4074,
+      "failuresPerMode": 6,
+      "failuresByFile": {
+        "intl402/Temporal/ZonedDateTime/links.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/equals/canonical-not-equal.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js": 2
+      },
+      "note": "Historical unfiltered Node/Hermes source/bytecode runs. Shared IANA/CLDR primary generation fixes canonical-not-equal.js; fresh fullOwnedIntl reports confirm the remaining four data-version diagnostics."
+    },
+    "legacyNativeIntl": {
+      "engine": "Node",
+      "executions": 4080,
+      "passes": 4020,
+      "failures": 60,
+      "failuresByArea": {
+        "direct DateTimeFormat brand interop": 54,
+        "YearMonth/MonthDay full style filtering": 4,
+        "pinned timezone identity assumption": 2
+      },
+      "note": "Extended plain dates also hit native Date clipping outside these Test262 cases. These implementation gaps remain required work."
+    },
+    "exclusions": [
+      {
+        "file": "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js",
+        "executions": 2,
+        "reason": "Pinned assertion requires pre-CLDR49 bare GMT at zero. CLDR49 and ICU79 render explicit numeric zero. Full Intl diagnostics retain the file; owned regression tests cover all its fixed-offset cases.",
+        "source": "https://www.unicode.org/reports/tr35/49/tr35-dates.html#Time_Zone_Names"
+      }
+    ],
+    "pending": [
+      "Native Intl brand/style/extended-range integration",
+      "Native Rust calendar-aware short-date classes",
+      "Native Rust timezone registry and zoned-string facade",
+      "Native Hermes Temporal bindings",
+      "Complete WASM facade/data and matched full-backend measurements"
+    ],
+    "fullOwnedIntl": {
+      "engines": ["Node", "Hermes source", "Hermes optimized bytecode"],
+      "executionsPerMode": 4080,
+      "passesPerMode": 4076,
+      "failuresPerMode": 4,
+      "failuresByFile": {
+        "intl402/Temporal/ZonedDateTime/links.js": 2,
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js": 2
+      },
+      "note": "Fresh unfiltered reports after primary enumeration fix. Only pinned IANA primary-identity and CLDR49 zero-offset assumptions differ. No accepted implementation-failure baseline."
+    }
+  },
+  "nativeCalendarFacades": {
+    "types": [
+      "PlainDate",
+      "PlainDateTime",
+      "ZonedDateTime",
+      "PlainYearMonth",
+      "PlainMonthDay"
+    ],
+    "calendars": [
+      "iso8601",
+      "gregory",
+      "buddhist",
+      "japanese",
+      "roc",
+      "coptic",
+      "ethiopic",
+      "ethioaa",
+      "hebrew",
+      "indian",
+      "islamic-civil",
+      "islamic-tbla",
+      "persian",
+      "chinese",
+      "dangi",
+      "islamic-umalqura"
+    ],
+    "oracleRows": {
+      "fields": 50298,
+      "additions": 39072,
+      "differences": 39072,
+      "relativeTotalWindows": 6656,
+      "rangeRejections": 176
+    },
+    "controls": "ICU4J 79.1 arithmetic and mixed ICU/HKO/KASI table fixtures. Public getters, typed field reconstruction, addition, comparison, differences, relative totals and ceil/floor/trunc rounding. No oracle rows excluded.",
+    "utcZonedScope": "Requires representable UTC Instants. Separate +/-12-hour fixed-zone controls cover both extended plain-date limits across all 16 providers.",
+    "calendarIdentity": "Differences reject mismatches for all units. compare orders ISO coordinates; equals also checks calendar ID. Representation may differ between arithmetic and CalendarRef providers.",
+    "parser": "Arithmetic calendar annotations, normalized aliases and explicit borrowed-provider parse_in. Native zoned strings now use the production registry. Short-date parsing canonicalizes calendar reference dates.",
+    "implementation": "Sealed copyable CalendarProvider; CalendarRef unifies 13 arithmetic and three borrowed table engines. No formatter, runtime ICU or allocation dependency. Existing fields() retains ISO coordinates; calendar_fields() supplies calendar values.",
+    "test262": "Native numerical/oracle coverage only. Native Hermes Test262 backend not installed yet.",
+    "exclusions": []
+  },
+  "nativeCalendarShortDates": {
+    "calendars": 16,
+    "monthDayOracleCases": 4992,
+    "yearMonthRoundingOracleCases": 5184,
+    "yearMonthRoundingOperations": ["until", "since"],
+    "controls": "ICU4J 79.1 forward month catalog and calendar-span BigDecimal rounding, with existing HKO/KASI corrections. YearMonth integration also uses existing field/add/difference fixtures.",
+    "bounds": "YearMonth reference fields use ISO year/month bounds; required calendar month starts enforce PlainDate bounds. MonthDay conversion retains monthCode across years.",
+    "wasm": "No new exports; existing primitive size measurements do not cover these public facades/data.",
+    "test262": "Native numerical coverage; native Hermes Test262 remains pending.",
+    "exclusions": []
+  },
+  "nativeTimeZoneRegistry": {
+    "records": 448,
+    "identifiers": 597,
+    "utc": "Intrinsic, including UTC aliases; available without loaded records.",
+    "offsets": "Minute identifiers normalize separately; negative zero becomes +00:00. Named UTC and offset zero retain distinct identity.",
+    "oracleRows": {
+      "futureOffsets": 17640,
+      "gapFoldControls": 1900,
+      "transitionQueryInstants": 14058,
+      "identityPairs": 178503
+    },
+    "controls": "Existing ICU4J corpora now use production registry, including aliases. Transition query instants check both directions and adjacent nanoseconds. All recognized IANA names must resolve; ICU-only legacy names absent from the pinned identifier table must reject. Primary record coverage equals independent ICU identity profile.",
+    "data": "Caller-owned borrowed records or Bazel-generated static all-zone pack via compiled_time_zones. Checked const constructors validate transitions and footer rules. No runtime allocation, JSON, serde or formatter dependency. Default core/WASM excludes the pack.",
+    "remaining": [
+      "Hermes native installation and Test262",
+      "Complete WASM facade/data and matched benchmarks"
+    ]
+  },
+  "nativeZonedStrings": {
+    "oracleRows": {
+      "parsingAndDefaultFormatting": 23610,
+      "roundingAndFormatOptions": 5940
+    },
+    "controls": "ICU4J 79.1 offsets, java.time fields and BigDecimal rounding. Historical 1850/1900/1945/1970/2000 plus post-2100 samples; all nine modes and public instant limits. Every recognized IANA row checks production lookup; ICU-only legacy IDs reject.",
+    "offsets": "UTC, wall, exact and minute-precision hints; reject/prefer/use/ignore; exact matching for explicit seconds, historical rounding for minute strings.",
+    "annotations": "ISO grammar, calendar aliases/critical/duplicate rules, explicit borrowed calendar providers across all 16 calendars. Default FromStr uses the 13 arithmetic calendars and optional compiled timezone pack.",
+    "formatting": "Rounds instant before querying offset; precision, offset visibility, zone critical/visibility and calendar annotations.",
+    "test262": "Pinned native numerical/string regression vectors; native Hermes backend still absent.",
+    "exclusions": [],
+    "sizeSnapshot": "benchmarks/temporal/zoned-string-size-results.json",
+    "sizeScope": "Existing data-free primitive ABI only: TS3757 gzip bytes, WASM19531 plus463 bridge. New zoned facade and calendar/timezone data are not exported by this ABI."
+  },
+  "nativeCalendarRegistry": {
+    "calendars": 16,
+    "arithmeticEngines": 13,
+    "compiledTablePacks": ["chinese", "dangi", "islamic-umalqura"],
+    "runtime": "Borrowed validated providers; checked pack constructors run at registry/context creation, no per-lookup validation, allocation, JSON, serde or formatter dependency.",
+    "contextFactories": [
+      "parse_date",
+      "parse_date_time",
+      "parse_year_month",
+      "parse_month_day",
+      "parse_zoned"
+    ],
+    "controls": "Production registry replaces manual test JSON loading. All 50,298 ICU/HKO/KASI field rows additionally verify context parsing; existing arithmetic/difference/relative/short-date corpora retain full scope. All 16 calendars checked through every context factory.",
+    "errors": "Unknown calendar, invalid provider data and recognized-but-unloaded data remain distinct. Missing tables never fall back to ISO.",
+    "build": "with_calendars or with_compiled_data; generated static Rust descriptors stay in Bazel outputs. Default core and primitive WASM exclude packs.",
+    "remaining": [
+      "Hermes native C ABI/JSI installation and Test262",
+      "Complete WASM facade/data and matched benchmarks"
+    ],
+    "exclusions": []
+  },
+  "nativeCalendarBridge": {
+    "backend": "rust-iso-instant-time-calendars",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 3,
+    "calendars": 16,
+    "nativeOperations": 24,
+    "scope": "Rust ISO, Instant, PlainTime and calendar engines; JS object semantics and date/relative/zoned orchestration, timezone algorithms/data and locale adaptation retained. Full class gates prove this hybrid configuration, not full native Temporal or complete Intl support.",
+    "test262": {
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "newExclusions": [],
+      "newTrackedFailures": 0,
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      }
+    },
+    "icuPublicCalendarControlsPerMode": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fieldAndInverseSamples": 50298,
+      "additions": 39072,
+      "differences": 39072,
+      "bounds": 176,
+      "crossClassBridges": 2958,
+      "relativeDurationWindows": 6656,
+      "note": "Each relative Duration window checks plain and UTC-zoned anchors. Independent pinned ICU expectations; numeric agreement alone is not the oracle."
+    },
+    "remaining": [
+      "native timezone bindings/data",
+      "remaining native class operations and relative orchestration",
+      "Hermes SDK installer/distribution",
+      "Intl native brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
+  },
+  "nativeTimezoneBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 4,
+    "nativeOperations": 29,
+    "scope": "Rust ISO, Instant, PlainTime, all16 calendar engines and owned IANA queries. Date/relative/zoned orchestration and remaining class algorithms stay JS. Experimental runner, not complete SDK installer or full native Intl integration.",
+    "icuPublicTimezoneControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "identities": 597,
+      "identityPairs": 178503,
+      "futureOffsets": 17640,
+      "gapFoldWindows": 1900,
+      "strictTransitionRows": 14058,
+      "futureYears": [2101, 2400, 2500, 10000, 275000],
+      "note": "Strict transitions verify both directions, advancing queries and nanosecond neighbors. Gap/fold windows verify earlier/later/compatible/reject, calendar versus elapsed days and Duration ordering."
+    },
+    "backendSelection": "Cached named/fixed kernels and existing public objects switch at operation time. Per-operation native fault injection proves there is no stale TS provider or fallback after native errors.",
+    "remaining": [
+      "remaining native class/relative/zoned orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "newExclusions": [],
+      "trackedFailures": 0,
+      "note": "Calendar Hermes gates use long timeout after 300-second parallel-run timeout; both pass rerun. Full 50-target regression pass includes those gates.",
+      "cacheFastPathValidation": "Subsequent cached-name fast path passes nine focused targets: full ZonedDateTime on default TS, Hermes source/HBC and WASM, plus independent timezone/alias controls and published package checks."
+    }
+  },
+  "nativeDurationBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 5,
+    "nativeOperations": 37,
+    "scope": "Duration parsing, validation, transform, formatting, arithmetic, comparison, total and round use Rust after JS coercion. Plain/zoned relative anchors normalized in JS; all16 native calendars and IANA rules included. Remaining date/zoned orchestration and SDK/Intl integration incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "scalarBigDecimalRows": 5430,
+      "plainRounds": 51840,
+      "plainTotals": 17280,
+      "plainComparisons": 4224,
+      "zonedRounds": 19440,
+      "zonedTotals": 6480,
+      "note": "Existing public calendar controls additionally verify relative windows across all16 calendars. Actual namespace passed to shared oracle helpers."
+    },
+    "backendSelection": "Objects and relative anchors created before native activation still use Rust. Per-operation fault injection independently checks parse/validate/transform/format/add/compare/total/round, including plain and zoned anchors.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26
+    },
+    "regression": "51 focused and broad targets pass, including all full native class suites, default TS full Duration1086, ICU controls, package checks and Rust core/ABI tests.",
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "remaining native class/relative/zoned orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
+  },
+  "nativePlainArithmeticBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 6,
+    "nativeOperations": 42,
+    "operations": [
+      "addPlainDate",
+      "addPlainDateTime",
+      "differencePlainDate",
+      "differencePlainDateTime",
+      "roundPlainDateTime"
+    ],
+    "scope": "PlainDate/PlainDateTime add/subtract and until/since; PlainDateTime clock/day rounding. Typed Rust engines use all16 calendar providers. JS retains coercion, property order, slots/brands and allocation. Date parsing/formatting, short-date/zoned orchestration and real SDK/Intl installation remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "arithmeticRows": 840,
+      "clockRounds": 7740,
+      "dayRounds": 126,
+      "plainDateRelativeRows": 20736,
+      "plainDateTimeRelativeRows": 51840,
+      "note": "Arithmetic rows verify add and subtract, exact nanosecond clock fields, calendar metadata and rejected endpoints. Existing all16-calendar controls also pass."
+    },
+    "backendSelection": "Per-operation fault injection requires each native operation using operands created before backend activation; unrelated native operations stay real.",
+    "boundaryControls": "PlainDate minimum epoch day -100000001 supports zero addition and day differences without constructing an invalid PlainDateTime midnight. Direct ABI cases cover negative nanosecond carry and invalid units/increments/calendar IDs.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086
+    },
+    "regressionTargets": 55,
+    "rustABITests": 8,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native date parsing/formatting and remaining short-date/zoned/Now orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and size comparisons"
+    ]
+  },
+  "nativeZonedArithmeticBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 7,
+    "nativeOperations": 47,
+    "operations": [
+      "addZonedDateTime",
+      "differenceZonedDateTime",
+      "roundZonedDateTime",
+      "startOfZonedDay",
+      "hoursInZonedDay"
+    ],
+    "scope": "Typed Rust zoned add/subtract, until/since, clock/day rounding, civil day boundaries and hoursInDay. JS retains coercion, option access order, brands/slots, allocation and date parsing/formatting. Short-date operations, SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "zonedDifferenceRows": 19440,
+      "civilDayRows": 5292,
+      "note": "Differences verify until and since; civil rows verify earliest boundary, exact hoursInDay and all nine day-rounding modes through gaps, folds and repeated dates. Existing timezone controls verify future calendar-versus-elapsed additions and all16-calendar controls pass."
+    },
+    "backendSelection": "Per-operation faults require each zoned operation for operands created before activation, including US/Eastern year2400 and Lord Howe. Unrelated native operations remain real.",
+    "boundaryControls": "Direct ABI checks alias primary identity, 23-hour days, explicit civil boundaries, cross-zone elapsed differences and rejected cross-zone calendar differences/invalid increments/range.",
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804
+    },
+    "regressionTargets": 59,
+    "rustABITests": 9,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native date parsing/formatting and short-date/Now orchestration",
+      "Hermes SDK installer/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
+  },
+  "nativeStringParserBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 8,
+    "nativeOperations": 53,
+    "operations": [
+      "parsePlainDate",
+      "parsePlainDateTime",
+      "parsePlainYearMonth",
+      "parsePlainMonthDay",
+      "parseZonedFields",
+      "resolveZonedDateTime"
+    ],
+    "scope": "Typed Rust Date/DateTime/YearMonth/MonthDay parsing. Zoned grammar runs in Rust before JS option reads, then typed Rust offset/disambiguation resolution. All16 calendar providers supported; JS retains coercion, option order, slots/brands and allocation. Date formatting, short-date arithmetic, Now host/SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "plainDate": 25269,
+      "plainDateTime": 25269,
+      "plainYearMonth": 25269,
+      "plainMonthDay": 25269,
+      "zonedRows": 17640,
+      "zonedFormsPerRow": ["exact offset", "UTC offset"],
+      "futureYears": [2101, 2400, 2500, 10000, 275000]
+    },
+    "backendSelection": "Per-operation fault injection requires each parser and zoned resolution. No native errors retry TS.",
+    "boundaryControls": [
+      "invalid strings reject before options; valid option access order preserved",
+      "all parser operations guard escaped UTF16 before UTF8 transport",
+      "missing native offsets normalize to own undefined properties, ignoring inherited getters",
+      "minimum YearMonth and ignored ISO MonthDay reference years",
+      "historical minute-only versus exact offset matching"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804
+    },
+    "regressionTargets": 61,
+    "rustABITests": 10,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "date formatting and short-date arithmetic bindings",
+      "native Now host integration and Hermes SDK installation/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
+  },
+  "nativeDateOutputBridge": {
+    "backend": "rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format",
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 9,
+    "nativeOperations": 62,
+    "operations": [
+      "addPlainYearMonth",
+      "differencePlainYearMonth",
+      "yearMonthToDate",
+      "monthDayToDate",
+      "formatPlainDate",
+      "formatPlainDateTime",
+      "formatPlainYearMonth",
+      "formatPlainMonthDay",
+      "formatZonedDateTime"
+    ],
+    "scope": "Typed Rust date formatting and short-date arithmetic/conversion across all16 calendar providers. JS retains coercion, option order, slots/brands and allocation. Native Now host/SDK installation and native Intl integration remain incomplete.",
+    "icuControlsPerMode": {
+      "modes": [
+        "TypeScript",
+        "Hermes source",
+        "Hermes optimized bytecode",
+        "published WASM"
+      ],
+      "shortDateRows": 2028,
+      "yearMonthAddRows": 1260,
+      "monthDayToDateRows": 336,
+      "yearMonthDifferenceRoundingRows": 432,
+      "yearMonthAddDirections": ["add", "subtract negative duration"]
+    },
+    "backendSelection": "Per-operation fault injection requires all nine new operations. Selected native errors propagate without TS retry.",
+    "boundaryControls": [
+      "all calendar annotation modes retain reference fields",
+      "midnight rounding carry, aliases and critical zone annotations",
+      "calendarName coercion once before remaining formatter options",
+      "maximum YearMonth difference avoids unnecessary rounding anchor; minimum first-day bounds retained",
+      "huge finite day constrains before narrowing, on TS and Rust"
+    ],
+    "test262": {
+      "modes": ["Hermes source", "Hermes optimized bytecode", "published WASM"],
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "defaultTypeScriptYearMonthExecutions": 1022,
+      "defaultTypeScriptMonthDayExecutions": 398
+    },
+    "regressionTargets": 65,
+    "rustCoreTests": 32,
+    "rustABITests": 11,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native Now host integration and Hermes SDK installation/distribution",
+      "native Intl brand/styles/range integration",
+      "equivalent full-backend performance and shipped artifact comparisons"
+    ]
+  },
+  "extendedGregorianHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendars": ["iso8601", "gregory"],
+    "test262ExecutionsPerProfile": 18,
+    "profiles": [
+      "Node TypeScript",
+      "Node WASM",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "failures": 0,
+    "newExclusions": [],
+    "independentICU": {
+      "version": "79.1",
+      "singleCases": 360,
+      "ranges": 80,
+      "locales": ["en", "ar-EG", "ja", "bn", "zh-Hans-u-nu-hanidec"]
+    },
+    "legacyDateTimeFormatDiagnostic": {
+      "executions": 130,
+      "passes": 130,
+      "failures": 0,
+      "scope": "Now a regular strict legacy gate; see legacyLunisolarHostFormatting."
+    },
+    "ownedIntlDiagnostic": {
+      "executions": 4080,
+      "failures": 4,
+      "scope": "Refreshed before the legacy-only fix; pinned CST6CDT and CLDR zero-offset assumptions remain. No implementation-failure baseline accepted."
+    },
+    "sizeSnapshots": [
+      "benchmarks/temporal/extended-date-size-results.json",
+      "benchmarks/temporal/extended-date-backend-size-results.json"
+    ],
+    "remaining": ["Rust completion audit"]
+  },
+  "legacyLunisolarHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendarDataChanged": false,
+    "test262ExecutionsPerProfile": 130,
+    "profiles": [
+      "Node TypeScript",
+      "Node WASM",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "independentICUFieldRows": 8708,
+    "olderHostDisagreements": 34,
+    "publishedPackageFormattingChecks": 17878,
+    "localeLabels": "Captured host Intl labels from independently verified matching calendar dates; numeric fields use ICU/HKO/KASI oracle rows.",
+    "hermesFaultInjectionExecutionsPerMode": 2,
+    "hermesFaultInjectionScope": "Stale host year/month/day fields; requires actual correction and range fallback in source and optimized bytecode.",
+    "sizeSnapshots": [
+      "benchmarks/temporal/lunar-intl-size-results.json",
+      "benchmarks/temporal/lunar-intl-backend-size-results.json"
+    ],
+    "remaining": [
+      "Rust full capability audit",
+      "Updated cold-load and matched non-ISO throughput"
+    ]
+  },
+  "durationFormatIntegration": {
+    "completeTemporalBackend": false,
+    "temporalFiles": 6,
+    "executionsPerProfile": 12,
+    "profiles": [
+      "Node legacy host",
+      "Node owned formatter",
+      "WASM legacy host",
+      "WASM owned formatter",
+      "Hermes TypeScript source",
+      "Hermes TypeScript optimized bytecode",
+      "Hermes SDK source",
+      "Hermes SDK optimized bytecode"
+    ],
+    "failures": 0,
+    "newExclusions": [],
+    "ownedFormatterFullExecutions": 220,
+    "hostNonTemporalPreservationExecutions": 208,
+    "newHostFailures": 0,
+    "hermesRegistrationControls": "Owned TS and native SDK, source and optimized bytecode; repeated registration after parser accessors and all duration field getters are poisoned.",
+    "publishedNamespaces": "Default and standalone, independently bundled DurationFormat and existing host instances; captured parsers/getters survive public overrides and repeated registration.",
+    "independentOracle": "Existing ICU scalar/plain/zoned duration arithmetic controls pass on Node and Hermes source/bytecode; this is not an ICU localized-duration rendering oracle.",
+    "sizeSnapshot": "benchmarks/temporal/durationformat-integration-size-results.json"
+  },
+  "compactTimezoneDefault": {
+    "completeTemporalBackend": false,
+    "data": "Owned finite offset events encoded as fixed timestamps and recurring-rule year spans, with unchanged future rules. Standalone uses the same timezone representation; DateTimeFormat retains abbreviation/DST data.",
+    "concreteZones": 457,
+    "retainedFiniteEvents": 19793,
+    "test262": {
+      "fullClassExecutions": 9090,
+      "additionalOverlappingCalendarExecutions": 2974,
+      "nowExecutions": 138,
+      "installationExecutions": 26,
+      "failures": 0,
+      "newExclusions": []
+    },
+    "hermesICUPerMode": {
+      "modes": ["source", "optimized bytecode"],
+      "identities": 597,
+      "identityPairs": 178503,
+      "offsets": 17640,
+      "gapsAndFolds": 1900,
+      "transitionRows": 14058,
+      "failures": 0
+    },
+    "publishedConsumerGzip": {
+      "typescript": 64645,
+      "standalone": 333124,
+      "nativeDataWasmIncludingBinary": 473973
+    },
+    "benchmarkSnapshots": [
+      "benchmarks/temporal/compact-timezone-size-results.json",
+      "benchmarks/temporal/compact-timezone-backend-size-results.json",
+      "benchmarks/temporal/wasm-compact-timezone-results.json"
+    ],
+    "remaining": [
+      "Temporal Intl integration and Rust completion audit",
+      "cold TS load, current Hermes throughput and non-ISO throughput measurements"
+    ]
+  },
+  "hermesSDKHost": {
+    "completeTemporalBackend": false,
+    "wasmABIVersion": 9,
+    "nativeOperations": 62,
+    "installer": "formatjs::installTemporal(runtime, TemporalHost)",
+    "distribution": "Optional Bazel/CMake SDK adapter, same unified Rust archive. Standalone extracted SDK consumer validated on Linux; desktop archive includes Linux and both macOS Rust architectures. Cargo SDK source graph remains separate.",
+    "systemClock": "Required current IANA timezone callback; optional decimal nanoseconds callback. Default C++ system wall clock has millisecond precision. Callback state is isolated per runtime and retained until runtime teardown.",
+    "defaultHermesRuntime": "Unflagged C++ installer test verifies non-UTC Now, getter captures, repeated install, existing formatter instances, callback lifetime, captured intrinsics and bounds. Full Test262 hosts still enable ES6 block scoping for test-language features.",
+    "backendSelection": "Direct SDK suites use actual installed namespace and reject runner-only __formatjsTemporalISOQuery dependency.",
+    "test262": {
+      "fullClassesPerMode": {
+        "instant": 934,
+        "date": 1308,
+        "datetime": 1552,
+        "time": 986,
+        "yearmonth": 1022,
+        "monthday": 398,
+        "duration": 1086,
+        "zoned": 1804
+      },
+      "fullClassExecutionsPerMode": 9090,
+      "additionalOverlappingCalendarGatePerMode": 2974,
+      "nowPerMode": 138,
+      "installationPerMode": 26,
+      "defaultTypeScriptDateExecutions": 1308,
+      "defaultTypeScriptDateTimeExecutions": 1552,
+      "defaultTypeScriptDurationExecutions": 1086,
+      "defaultTypeScriptZonedExecutions": 1804,
+      "defaultTypeScriptYearMonthExecutions": 1022,
+      "defaultTypeScriptMonthDayExecutions": 398
+    },
+    "sdkTest262Modes": ["Hermes source", "Hermes optimized bytecode"],
+    "icuNowOffsetRows": 17640,
+    "nativeFormatterRegression": {
+      "dateTimeFormat": {
+        "casesPerMode": 9440,
+        "assertionsPerMode": 40264
+      },
+      "durationFormat": {
+        "casesPerMode": 3663,
+        "assertionsPerMode": 38602
+      },
+      "reference": "TypeScript implementation, separate from independent ICU controls"
+    },
+    "standaloneConsumer": "Source/HBC Intl setup, then actual SDK Temporal installer: non-UTC Now, private Date/Duration brands despite public overrides, duration strings and repeated installation. No Rust toolchain needed by consumer.",
+    "regressionTargets": 91,
+    "newExclusions": [],
+    "trackedFailures": 0,
+    "remaining": [
+      "native Intl Temporal corpus, including styles, ranges and extreme civil dates",
+      "current specification and completion audit",
+      "equivalent full-backend artifact/performance assessment"
+    ],
+    "customClockPrecision": "Decimal nanoseconds remain exact through host callbacks; tested beyond binary64 integer precision.",
+    "benchmarkSnapshots": [
+      "benchmarks/temporal/hermes-sdk-host-results.json",
+      "benchmarks/temporal/wasm-sdk-host-results.json",
+      "benchmarks/temporal/sdk-host-backend-size-results.json",
+      "benchmarks/temporal/native-sdk-host-size-results.json"
+    ]
+  },
+  "extendedNonGregorianHostFormatting": {
+    "completeTemporalBackend": false,
+    "calendarArithmeticChanged": false,
+    "nonGregorianCalendars": 14,
+    "independentICU": {
+      "version": "79.1",
+      "fieldRows": 60,
+      "calendars": 10,
+      "scope": "Forward DateTime/YearMonth fields beyond Date TimeClip. Hebrew/Persian and astronomical calendar oracle limits remain unchanged."
+    },
+    "publishedPackageChecksPerProfile": 1515,
+    "profiles": [
+      "Node TypeScript",
+      "Node hybrid WASM",
+      "Node native-data WASM"
+    ],
+    "hermesChecksPerMode": 300,
+    "hermesModes": ["source", "optimized bytecode"],
+    "hermesIntl": "Native DateTimeFormat and NumberFormat; private Temporal formatting bridge disabled.",
+    "localeControls": [
+      "en",
+      "ar-EG",
+      "bn",
+      "zh-Hans-u-nu-hanidec",
+      "en-u-nu-mathsans"
+    ],
+    "fallbackEraData": {
+      "source": "CLDR 49",
+      "calendar": "islamic",
+      "era": "Before Hijrah",
+      "widths": 3,
+      "sourceLocalesVerified": 657,
+      "explicitRootParentCases": 7
+    },
+    "hotIntlConstructionRegression": "Four calendars, four dates, ten repetitions: no new Intl constructors after warming.",
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "sizeSnapshots": [
+      "benchmarks/temporal/extended-calendar-size-results.json",
+      "benchmarks/temporal/extended-calendar-backend-size-results.json"
+    ],
+    "remaining": [
+      "Legacy numeric Chinese/Dangi boundary audit",
+      "Rust full capability audit",
+      "Updated cold-load and matched non-ISO throughput"
+    ],
+    "regression": {
+      "targets": 37,
+      "passes": 37,
+      "localTestJobs": 4,
+      "caseTimeoutsChanged": false,
+      "note": "Unbounded local concurrency hit two 30-second numeric-Date comparison timeouts. Complete rerun with four concurrent tests passed; these numeric cases bypass the new plain-calendar renderer."
+    }
+  },
+  "legacyCalendarEraFormatting": {
+    "completeTemporalBackend": false,
+    "calendarArithmeticChanged": false,
+    "newCalendarData": false,
+    "independentICU": {
+      "version": "79.1",
+      "fieldRows": 81,
+      "calendars": 9,
+      "scope": "Existing forward arithmetic-calendar fields at Date bounds, BCE dates, 1873 Japanese era boundary and modern controls."
+    },
+    "checksPerProfile": 936,
+    "locales": ["en", "ar-EG", "ja", "en-u-nu-mathsans"],
+    "timeZones": ["UTC", "Asia/Kathmandu", "America/New_York"],
+    "profiles": [
+      "Node TypeScript",
+      "Node hybrid WASM",
+      "Node native-data WASM",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "publicBehavior": [
+      "Numeric Date and Date object",
+      "Instant formatting",
+      "ZonedDateTime locale formatting",
+      "Preserved native Gregorian clock and timezone parts",
+      "Equal and cross-era ranges"
+    ],
+    "localeFallbackControl": "Internal Gregorian probes forced to Arabic; explicit Latin digits and captured era labels preserve BCE signs.",
+    "hostBoundaryFaultControl": "Coptic formatToParts forced to throw at valid Date bounds; Gregorian clock parts and safe calendar surrogates recover output. Actual fault injection required.",
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "sizeSnapshots": [
+      "benchmarks/temporal/era-intl-size-results.json",
+      "benchmarks/temporal/era-intl-backend-size-results.json"
+    ],
+    "remaining": [
+      "Legacy numeric Chinese/Dangi boundary audit",
+      "Host/owned timezone data-version integration audit",
+      "Rust full capability audit",
+      "Updated cold-load and matched non-ISO throughput"
+    ],
+    "regression": {
+      "targets": 43,
+      "passes": 43,
+      "localTestJobs": 4,
+      "caseTimeoutsChanged": false
+    }
+  },
+  "rustZonedReplacements": {
+    "completeTemporalBackend": false,
+    "abiVersion": 9,
+    "nativeContractOperations": 62,
+    "nativeContractMissingOperations": [],
+    "rustMethods": [
+      "ZonedDateTime::with_time_zone",
+      "ZonedDateTime::with_time"
+    ],
+    "independentICU": {
+      "offsetLocalSamples": 17640,
+      "gapFoldWindows": 1900,
+      "dayBoundaryRows": 5292,
+      "scope": "Local ISO nanoseconds, compatible resolution, first civil-day instants and retained Hebrew calendar identity."
+    },
+    "test262ExecutionsPerProfile": 1804,
+    "profiles": [
+      "default TypeScript",
+      "WASM",
+      "Hermes SDK source",
+      "Hermes SDK optimized bytecode"
+    ],
+    "regressionTargets": 16,
+    "trackedFailures": 0,
+    "newExclusions": [],
+    "partialIntlRegression": {
+      "modes": ["Intl without DateTimeFormat", "empty Intl", "absent Intl"],
+      "scope": "Published namespace import, ISO arithmetic, global installation and Date conversion.",
+      "cause": "DateTimeFormat.prototype captured without guarding a missing DateTimeFormat constructor."
+    },
+    "sizeSnapshots": [
+      "benchmarks/temporal/rust-zoned-replacements-size-results.json",
+      "benchmarks/temporal/rust-zoned-replacements-backend-size-results.json"
+    ],
+    "remainingAudit": "knowledge-base/015a-temporal-completion-audit.md"
+  },
+  "fullNamespaceAudit": {
+    "date": "2026-11-16",
+    "profiles": {
+      "typescript": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "wasm": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesTsSource": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesTsBytecode": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesSdkSource": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      },
+      "hermesSdkBytecode": {
+        "executions": 12234,
+        "failures": 0,
+        "trackedFailures": 0
+      }
+    },
+    "suiteExecutions": {
+      "instant": 934,
+      "date": 1308,
+      "datetime": 1552,
+      "time": 986,
+      "yearmonth": 1022,
+      "monthday": 398,
+      "duration": 1086,
+      "zoned": 1804,
+      "calendars": 2974,
+      "now": 138,
+      "installation": 26,
+      "staging": 6
+    },
+    "aggregateExecutions": 73404,
+    "targets": 72,
+    "note": "Complete namespace globs, calendars, Now, installation and three staging files across six profiles. Calendar selections overlap class suites. Each profile uses the same Temporal build and Intl provider throughout; formatter suites and unique result sets are recorded in completionAudit.",
+    "realmAudit": "Every pinned Temporal-feature file was checked for createRealm/evalScript references; none require them. Node installs child realms; Hermes eshost lacks these hooks. No Realm exclusions applied. This does not establish untested cross-Realm semantics.",
+    "rawIntl": {
+      "executionsPerProfile": 4080,
+      "passesPerProfile": 4076,
+      "failuresPerProfile": 4,
+      "profiles": [
+        "nodeOwnedIntl",
+        "hermesOwnedIntlSource",
+        "hermesOwnedIntlBytecode",
+        "hermesSdkIntlSource",
+        "hermesSdkIntlBytecode"
+      ],
+      "excludedFiles": [
+        "intl402/Temporal/ZonedDateTime/links.js",
+        "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+      ],
+      "note": "Historical unfiltered diagnostics: each excluded file fails in default and strict scenarios under owned/native SDK Intl. Final compatibility gates re-executed after the runtime fix; the separate current host-Intl diagnostic has only the link failure."
+    },
+    "uniqueCoverage": {
+      "typescript": {
+        "uniqueFiles": 6737,
+        "uniqueScenarios": 13474,
+        "failures": 0,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+        "extraFiles": []
+      },
+      "wasm": {
+        "uniqueFiles": 6737,
+        "uniqueScenarios": 13474,
+        "failures": 0,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"],
+        "extraFiles": []
+      },
+      "hermesTsSource": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      },
+      "hermesTsBytecode": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      },
+      "hermesSdkSource": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      },
+      "hermesSdkBytecode": {
+        "uniqueFiles": 6736,
+        "uniqueScenarios": 13472,
+        "failures": 0,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ],
+        "extraFiles": []
+      }
+    },
+    "uniqueCoverageScope": "Exact union of all Temporal-feature scenarios in pinned Test262, including staging, DateTimeFormat and DurationFormat. Every profile uses consistent build flags and formatter provider. Only documented data-version exclusions are missing. WASM uses native-data-only mode.",
+    "sourceScopeNote": "92 distinct gates pass. The coherent 90-target matrix contains 98,716 overlapping suite executions; six exact unions are reported separately. SDK class gates were rechecked with native Intl installed; two additional legacy formatter gates also pass.",
+    "compatibilityGates": {
+      "targets": 6,
+      "aggregateExecutions": 24460,
+      "failures": 0,
+      "reports": {
+        "host_intl_compat_test262": 4078,
+        "wasm_host_intl_compat_test262": 4078,
+        "ts_intl_compat_hermes_source_test262": 4076,
+        "ts_intl_compat_hermes_bytecode_test262": 4076,
+        "sdk_intl_compat_hermes_source_test262": 4076,
+        "sdk_intl_compat_hermes_bytecode_test262": 4076
+      }
+    },
+    "hostIntlDiagnostic": {
+      "executions": 4080,
+      "passes": 4078,
+      "failures": 2,
+      "failedCases": [
+        {
+          "file": "intl402/Temporal/ZonedDateTime/links.js",
+          "scenario": "strict mode",
+          "message": "link=CST6CDT, zone=America/Chicago Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true"
+        },
+        {
+          "file": "intl402/Temporal/ZonedDateTime/links.js",
+          "scenario": "default",
+          "message": "link=CST6CDT, zone=America/Chicago Expected SameValue(\u00abfalse\u00bb, \u00abtrue\u00bb) to be true"
+        }
+      ],
+      "uniqueCoverageWithHostClassGates": {
+        "uniqueFiles": 6664,
+        "uniqueScenarios": 13328,
+        "failures": 2,
+        "missingFiles": [],
+        "extraFiles": []
+      },
+      "scope": "Historical raw default TS diagnostic under Node 26.8.1, restricted to the original three roots. Only stale CST6CDT link assertions fail. Explicit offset-zero formatting matches the pinned test on this host. No exclusions applied to that raw diagnostic."
+    }
+  },
+  "rustOperationAudit": {
+    "declaredOperations": 62,
+    "successfulOperations": 62,
+    "publicFacadeOperations": 58,
+    "primitiveOperations": [
+      "addISODays",
+      "calendarAdd",
+      "calendarMonthSerial",
+      "calendarUntil"
+    ],
+    "profiles": ["hybridWasm", "nativeDataWasm"],
+    "primitiveCalendarCount": 16,
+    "note": "ABI observer forwards real Rust calls and counts successful return codes. Public ICU corpus and Duration operations reach 58 operations. Independent ICU fixtures exercise four lower-level normalized adapters bypassed by higher-level Rust routes. This proves runtime reachability and those oracle assertions, not every possible semantic edge."
+  },
+  "numericLunarBoundaryAudit": {
+    "profiles": [
+      "typescript",
+      "hybridWasm",
+      "nativeDataWasm",
+      "hermesLegacyAdapterSource",
+      "hermesLegacyAdapterBytecode"
+    ],
+    "combinationsPerProfile": 24,
+    "calendars": ["chinese", "dangi"],
+    "timeZones": ["UTC", "Asia/Shanghai", "Pacific/Honolulu"],
+    "inputKinds": ["Number", "Date", "Instant", "ZonedDateTime.toLocaleString"],
+    "ranges": ["Number", "Date", "Instant"],
+    "originalFailure": {
+      "milliseconds": 8639999913600000,
+      "calendar": "chinese",
+      "timeZone": "UTC",
+      "message": "TypeError: Internal error. Icu error."
+    },
+    "note": "Valid Date limits and neighboring days. Shared corpus runs on Node TS/both WASM entries and Hermes source/optimized bytecode. Owned calendar field consistency; captured Gregorian controls clocks and timezone names. Outside independent astronomical oracle bounds, not an astronomical accuracy claim."
+  },
+  "currentBenchmarkSnapshots": [
+    "benchmarks/temporal/completion-startup-results.json",
+    "benchmarks/temporal/completion-hermes-results.json",
+    "benchmarks/temporal/host-timezone-formatting-size-results.json",
+    "benchmarks/temporal/lunar-boundary-facade-results.json",
+    "benchmarks/temporal/lunar-boundary-wasm-results.json"
+  ],
+  "rustDateZonedConversion": {
+    "method": "PlainDate::to_zoned_date_time",
+    "omittedTime": "Shared civil-day boundary algorithm",
+    "explicitTime": "Compatible resolution",
+    "timeZoneCloneRequired": false,
+    "calendarRetained": true,
+    "independentICUDayBoundaryRows": 5292,
+    "independentICUGapFoldWindows": 1900,
+    "additionalControls": [
+      "24-hour cross-midnight gap with a non-Clone provider",
+      "Pacific/Apia skipped date",
+      "Exact Instant bounds and out-of-range dates"
+    ],
+    "abiVersion": 9,
+    "normalizedOperations": 62,
+    "regressionTargets": 12,
+    "test262ExecutionsAcrossFourProfiles": 7216,
+    "failures": 0,
+    "sizeSnapshot": "benchmarks/temporal/rust-date-zoned-backend-size-results.json"
+  },
+  "hostTimezoneFormatting": {
+    "casesPerPhase": 171,
+    "phases": ["before installation", "after installation"],
+    "profiles": [
+      "Node TS normal host",
+      "Node TS simulated stale host",
+      "Node hybrid WASM normal host",
+      "Node hybrid WASM simulated stale host",
+      "Node native-data WASM normal host",
+      "Node native-data WASM simulated stale host",
+      "Hermes legacy adapter source",
+      "Hermes legacy adapter optimized bytecode"
+    ],
+    "independentICUOffsetRows": 8,
+    "locales": ["en", "ar-EG", "fr", "en-u-nu-mathsans"],
+    "additionalControls": [
+      "Historical second offsets and negative fractional milliseconds",
+      "Owned local dates beyond Date TimeClip",
+      "Host rejects newer identifiers and numeric offset zone syntax"
+    ],
+    "publicHavanaProbe": {
+      "node": "24.14.0",
+      "inputs": ["2026-11-16T12:00Z", "2026-11-16T04:30Z", "2027-01-16T12:00Z"],
+      "ownedAndFormattedHours": ["08", "00", "08"],
+      "nativeHostHours": ["07", "23", "07"]
+    },
+    "rangeCorrection": "Removed earlier range-order guard. Current ECMA-402 and Temporal integration permit reversed endpoints. Lunar boundary checks now validate both source orders.",
+    "newGeneratedData": false,
+    "sizeSnapshot": "benchmarks/temporal/host-timezone-formatting-size-results.json",
+    "remaining": "Final complete conformance/delivery audit, current Hermes and cold-load measurements."
+  },
+  "completionAudit": {
+    "date": "2026-11-16",
+    "runtimeCommit": "c6bb171f5ce805d2eeec139bed32977323e426a8",
+    "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+    "evidence": "packages/temporal/completion-audit-results.json",
+    "profiles": {
+      "typescript": {
+        "suiteExecutions": 16454,
+        "uniqueExecutions": 13474,
+        "uniqueFiles": 6737,
+        "passing": 13474,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"]
+      },
+      "wasm": {
+        "suiteExecutions": 16454,
+        "uniqueExecutions": 13474,
+        "uniqueFiles": 6737,
+        "passing": 13474,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"]
+      },
+      "hermesTsSource": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesTsBytecode": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesSdkSource": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermesSdkBytecode": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      }
+    },
+    "distinctPassingTargets": 92,
+    "sdkClassTargetsRecheckedWithNativeIntl": 24,
+    "untrackedFailures": 0,
+    "realmExclusions": 0,
+    "note": "Node TS/WASM use host Intl; Hermes TS/SDK use full native SDK Intl in source/HBC. Two Node scenarios and four Hermes scenarios are excluded solely for pinned IANA/CLDR data assumptions. Existing raw diagnostics retain them. Test evidence does not prove every possible semantic edge or unsupported Realm infrastructure."
+  },
+  "hostIntlDefaultAudit": {
+    "date": "2026-11-16",
+    "baseCommit": "b22ad55b68782c3b466a5642400c31fbda6e14df",
+    "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+    "provider": "Default TS uses captured installed Intl; standalone and Rust retain owned timezone data.",
+    "affectedGates": 52,
+    "newExclusions": [],
+    "independentHermesICU": {
+      "offsets": 17640,
+      "transitionWindows": 1900,
+      "checks": [
+        "offsets",
+        "gap/fold disambiguation",
+        "strict next/previous transition boundaries"
+      ]
+    },
+    "startupAndSize": "benchmarks/temporal/host-intl-default-startup-results.json",
+    "searchPolicy": {
+      "earliestYear": 1800,
+      "nextHorizonYears": 3,
+      "maximumStepDays": 60,
+      "futureAssumption": "annual recurrence or fixed offset",
+      "intervalSource": "Pinned IANA finite events and complete Gregorian future-rule cycle; host data can differ."
+    },
+    "evidence": "packages/temporal/host-intl-default-audit-results.json",
+    "profiles": {
+      "typescript": {
+        "suiteExecutions": 16454,
+        "uniqueExecutions": 13474,
+        "uniqueFiles": 6737,
+        "passing": 13474,
+        "missingFiles": ["intl402/Temporal/ZonedDateTime/links.js"]
+      },
+      "hermes_ts_source": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      },
+      "hermes_ts_bytecode": {
+        "suiteExecutions": 16452,
+        "uniqueExecutions": 13472,
+        "uniqueFiles": 6736,
+        "passing": 13472,
+        "missingFiles": [
+          "intl402/Temporal/ZonedDateTime/links.js",
+          "intl402/Temporal/ZonedDateTime/prototype/toLocaleString/offset-time-zones.js"
+        ]
+      }
+    }
+  }
+}

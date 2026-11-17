@@ -64,6 +64,50 @@ React Native's synchronous TurboModule calls this installer. See the
 [Android example](https://github.com/formatjs/hermes-intl) for the complete app,
 rendered-screen assertions, and screenshot comparison.
 
+### Temporal
+
+The SDK also provides experimental Rust-backed Temporal. Install Intl first, then
+Temporal, before application scripts:
+
+```cpp
+#include <formatjs/hermes/intl.h>
+#include <formatjs/hermes/temporal.h>
+
+formatjs::installIntl(runtime);
+formatjs::installTemporal(runtime, {
+    [] { return "America/New_York"; },
+    {},
+});
+```
+
+Replace the fixed example with your platform's current IANA timezone identifier.
+The callback runs for each operation using the default timezone, so device timezone
+changes take effect. Temporal's clock defaults to system wall time with millisecond
+precision. The optional second callback returns decimal epoch nanoseconds, useful
+for deterministic hosts. Both callbacks run on the JavaScript thread.
+
+Repeated installation on one runtime does nothing. Providers remain alive until
+runtime teardown; separate runtimes keep separate providers. The installer replaces
+global Temporal and installs `Date.prototype.toTemporalInstant`. Existing native
+DateTimeFormat/DurationFormat instances accept the newly installed namespace.
+Bazel consumers link the SDK's `:temporal` target alongside `:intl`. CMake consumers
+opt in after the existing helper:
+
+```cmake
+formatjs_intl(appmodules)
+formatjs_temporal(appmodules)
+```
+
+The existing unified Rust archive supplies the ABI; no second Rust archive is
+needed. Intl-only consumers do not compile the Temporal adapter or embed its JS.
+
+Temporal locale formatting uses exact nanoseconds and kind-specific Rust patterns,
+including extended plain dates and YearMonth/MonthDay styles. The SDK locale bridge
+matches 768 independent ICU cases in Hermes source and bytecode. Full Intl Test262
+diagnostics retain four executions with pinned IANA/CLDR expectation differences.
+Temporal remains incomplete; the completion audit and full-backend artifact
+comparisons remain tracked in the repository's Temporal implementation notes.
+
 ### iOS and macOS
 
 Extract the Apple archive. Use the same CMake helper and installer with your
@@ -213,3 +257,7 @@ that tag. Leave `dry_run` enabled to validate without uploading release assets.
 run. Its source commit must match the selected tag. Leave it empty to validate
 the newly built Apple archive. Publishing waits for the Linux build and either
 the Apple link checks or the verified reused archive.
+
+The Temporal SDK facade omits TS calendar and IANA tables. Its Rust archive owns
+those records; failed native operations propagate without a TS data retry. The
+standalone npm `wasm-native.js` entry uses the same data ownership on WASM hosts.
