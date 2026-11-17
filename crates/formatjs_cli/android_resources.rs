@@ -18,6 +18,119 @@ pub struct Item {
     pub text: String,
     pub formatted: bool,
     pub entities: BTreeMap<String, usize>,
+    pub markup: Vec<Markup>,
+    pub reference: Option<String>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Markup {
+    pub name: String,
+    pub attributes: BTreeMap<String, String>,
+    pub children: Vec<Markup>,
+}
+
+fn is_xliff(node: Node<'_, '_>) -> bool {
+    node.tag_name()
+        .namespace()
+        .is_some_and(|ns| ns.starts_with("urn:oasis:names:tc:xliff:document:"))
+}
+
+fn expanded_name(namespace: Option<&str>, name: &str) -> String {
+    match namespace {
+        Some(namespace) => format!("{{{namespace}}}{name}"),
+        None => name.to_owned(),
+    }
+}
+
+fn markup(node: Node<'_, '_>) -> Vec<Markup> {
+    let mut spans = Vec::new();
+    for child in node.children().filter(Node::is_element) {
+        let children = markup(child);
+        if is_xliff(child) {
+            spans.extend(children);
+        } else {
+            spans.push(Markup {
+                name: expanded_name(child.tag_name().namespace(), child.tag_name().name()),
+                attributes: child
+                    .attributes()
+                    .map(|attribute| {
+                        (
+                            expanded_name(attribute.namespace(), attribute.name()),
+                            attribute.value().to_owned(),
+                        )
+                    })
+                    .collect(),
+                children,
+            });
+        }
+    }
+    // Translation may reorder siblings, but must preserve multiplicity and nesting.
+    spans.sort();
+    spans
+}
+
+fn reference(node: Node<'_, '_>, spans: &[Markup]) -> Option<String> {
+    // AAPT tries references on XML-decoded text before Android unescaping, and
+    // treats styled strings as text even when their contents look like aliases.
+    if !spans.is_empty() {
+        return None;
+    }
+    let raw: String = node
+        .descendants()
+        .filter(Node::is_text)
+        .filter_map(|text| text.text())
+        .collect();
+    let raw = raw.trim();
+    if raw == "@null" || raw == "@empty" {
+        return Some(raw.to_owned());
+    }
+    let (kind, name) = raw.split_at_checked(1)?;
+    if !matches!(kind, "@" | "?")
+        || name.is_empty()
+        || name
+            .chars()
+            .any(|c| c.is_whitespace() || matches!(c, '"' | '\\' | '\''))
+    {
+        return None;
+    }
+    let (marker, name) = if kind == "@" && (name.starts_with('+') || name.starts_with('*')) {
+        name.split_at(1)
+    } else {
+        ("", name)
+    };
+    let (package, name) = name
+        .split_once(':')
+        .map_or((None, name), |(package, name)| (Some(package), name));
+    if name.contains(':') || package.is_some_and(str::is_empty) {
+        return None;
+    }
+    let (resource_type, entry) = name.split_once('/').unwrap_or(("", name));
+    if entry.is_empty() || entry.contains('/') {
+        return None;
+    }
+    let resource_type = if kind == "?" {
+        if !matches!(resource_type, "" | "attr") {
+            return None;
+        }
+        "attr"
+    } else {
+        if resource_type.is_empty() || (marker == "+" && resource_type != "id") {
+            return None;
+        }
+        resource_type
+    };
+    // AAPT resolves package prefixes through Android resource namespaces.
+    let package = package
+        .map(|package| match node.lookup_namespace_uri(Some(package)) {
+            Some("http://schemas.android.com/apk/res-auto") => "",
+            Some(namespace) => namespace
+                .strip_prefix("http://schemas.android.com/apk/res/")
+                .unwrap_or(package),
+            None => package,
+        })
+        .filter(|package| !package.is_empty());
+    let package = package.map_or(String::new(), |package| format!("{package}:"));
+    Some(format!("{kind}{marker}{package}{resource_type}/{entry}"))
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -92,10 +205,7 @@ impl Text {
             if child.is_text() {
                 self.append(child.text().unwrap_or_default())?;
             } else if child.is_element() {
-                let xliff = child
-                    .tag_name()
-                    .namespace()
-                    .is_some_and(|ns| ns.starts_with("urn:oasis:names:tc:xliff:document:"));
+                let xliff = is_xliff(child);
                 // Styled spans reset AAPT's quote/space state; xliff:g is metadata.
                 if !xliff {
                     self.quoted = false;
@@ -153,7 +263,11 @@ fn item(node: Node<'_, '_>, inherited: bool) -> Result<Item> {
     if text.space && text.units.last() == Some(&(b' ' as u16)) {
         text.units.pop();
     }
+    let markup = markup(node);
+    let reference = reference(node, &markup);
     Ok(Item {
+        markup,
+        reference,
         text: String::from_utf16(&text.units).context("Invalid Android UTF-16 escape")?,
         formatted: formatted(node, inherited)?,
         entities: entities(node),
@@ -438,6 +552,26 @@ pub fn verify_resources(
                                 error: format!(
                                     "Android entity references changed: expected {:?}, found {:?}",
                                     source_item.entities, target_item.entities
+                                ),
+                            });
+                        }
+                        if source_item.markup != target_item.markup {
+                            issues.push(VerificationIssue {
+                                locale: language.clone(),
+                                message_id: item_id.clone(),
+                                error: format!(
+                                    "Android markup changed: expected {:?}, found {:?}",
+                                    source_item.markup, target_item.markup
+                                ),
+                            });
+                        }
+                        if source_item.reference != target_item.reference {
+                            issues.push(VerificationIssue {
+                                locale: language.clone(),
+                                message_id: item_id.clone(),
+                                error: format!(
+                                    "Android resource reference changed: expected {:?}, found {:?}",
+                                    source_item.reference, target_item.reference
                                 ),
                             });
                         }

@@ -711,3 +711,12 @@ item using source spellings after XML validation, excluding literal CDATA,
 comments, predefined entities and numeric references. Rust and npm share the
 check through the existing Android resource verifier, including formatted=false
 items; basic XML validation remains permissive.
+
+Structural equality also compares canonical inline-markup forests (sorted siblings,
+nesting and expanded attribute names/values, excluding XLIFF wrappers) and
+whole-value resource-reference identity. Reference detection uses XML-decoded raw
+text before Android unescaping and skips styled items. Theme attribute shorthand
+and Android package namespace prefixes are normalized; resource lookup/linking
+and escaped HTML parsing remain outside
+this verifier. Both checks run per item, including formatted=false and source
+other fallback for target-only plural categories.
