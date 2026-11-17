@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.12.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.11.1...formatjs_cli_v1.12.0) (2026-11-17)
+
+
+### Features
+
+* **formatjs_cli:** preserve Android entities in structural equality ([#8030](https://github.com/formatjs/formatjs/issues/8030)) ([bd69221](https://github.com/formatjs/formatjs/commit/bd692214ef6c565db67cc65efed4e92d5ae99884))
+* **formatjs_cli:** verify Android markup and resource references ([#8031](https://github.com/formatjs/formatjs/issues/8031)) ([a3c1096](https://github.com/formatjs/formatjs/commit/a3c10961cd699ea321775e1ca1808d0a2416f285))
+* **formatjs_cli:** verify native Android string resources ([#8028](https://github.com/formatjs/formatjs/issues/8028)) ([f621d2f](https://github.com/formatjs/formatjs/commit/f621d2fa45ee3b1c7c2c6d8f4760840b2d74a441))
+
 ## [1.11.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.11.0...formatjs_cli_v1.11.1) (2026-11-17)
 
 
