@@ -106,6 +106,42 @@ pub fn verify_android_resources(
     extra_keys: bool,
     structural_equality: bool,
 ) -> napi::Result<String> {
+    verify_android_resources_impl(
+        resources,
+        source_locale,
+        missing_keys,
+        extra_keys,
+        structural_equality,
+        false,
+    )
+}
+
+#[napi]
+pub fn verify_android_resources_with_entities(
+    resources: Vec<AndroidResourceInput>,
+    source_locale: Option<String>,
+    missing_keys: bool,
+    extra_keys: bool,
+    structural_equality: bool,
+) -> napi::Result<String> {
+    verify_android_resources_impl(
+        resources,
+        source_locale,
+        missing_keys,
+        extra_keys,
+        structural_equality,
+        true,
+    )
+}
+
+fn verify_android_resources_impl(
+    resources: Vec<AndroidResourceInput>,
+    source_locale: Option<String>,
+    missing_keys: bool,
+    extra_keys: bool,
+    structural_equality: bool,
+    preserve_entities: bool,
+) -> napi::Result<String> {
     let files = resources
         .into_iter()
         .map(|resource| {
@@ -124,6 +160,7 @@ pub fn verify_android_resources(
             missing_keys,
             extra_keys,
             structural_equality,
+            preserve_entities,
         },
     )
     .map_err(|error| Error::from_reason(format!("{error:#}")))?;

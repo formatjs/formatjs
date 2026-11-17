@@ -705,4 +705,8 @@ then applies Android quoting/escaping before Java printf verification.
 `verify_resources` groups files by resource directory and locale, validates array
 shape and plural fallback compatibility, and reports missing/extra keys. Rust
 and npm use the same code through `verify_android_resources` in the N-API crate.
-Brand/entity spelling preservation and locale typography remain caller policy.
+Locale typography and brand rules remain caller policy.
+Optional `--preserve-entities` compares custom XML entity names and counts per
+item using source spellings after XML validation, excluding literal CDATA,
+comments, predefined entities and numeric references. Rust and npm share the
+check; npm uses a dedicated N-API capability to reject outdated native bindings.

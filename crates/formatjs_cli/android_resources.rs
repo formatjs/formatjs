@@ -11,12 +11,14 @@ pub struct VerificationOptions {
     pub missing_keys: bool,
     pub extra_keys: bool,
     pub structural_equality: bool,
+    pub preserve_entities: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Item {
     pub text: String,
     pub formatted: bool,
+    pub entities: BTreeMap<String, usize>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -120,6 +122,32 @@ fn formatted(node: Node<'_, '_>, inherited: bool) -> Result<bool> {
     }
 }
 
+// Scan reference spellings only after XML parsing. DOM text has already expanded
+// entities, so it cannot distinguish &brand; from equivalent literal text.
+fn entities(node: Node<'_, '_>) -> BTreeMap<String, usize> {
+    let raw = &node.document().input_text()[node.range()];
+    let mut references = BTreeMap::new();
+    let mut remaining = raw;
+    while !remaining.is_empty() {
+        let opaque = [("<![CDATA[", "]]>"), ("<!--", "-->"), ("<?", "?>")]
+            .into_iter()
+            .find(|(start, _)| remaining.starts_with(start));
+        if let Some((_, end)) = opaque {
+            remaining = &remaining[remaining.find(end).unwrap() + end.len()..];
+        } else if let Some(reference) = remaining.strip_prefix('&') {
+            let end = reference.find(';').unwrap();
+            let name = &reference[..end];
+            if !name.starts_with('#') && !matches!(name, "amp" | "lt" | "gt" | "apos" | "quot") {
+                *references.entry(name.to_owned()).or_default() += 1;
+            }
+            remaining = &reference[end + 1..];
+        } else {
+            remaining = &remaining[remaining.chars().next().unwrap().len_utf8()..];
+        }
+    }
+    references
+}
+
 fn item(node: Node<'_, '_>, inherited: bool) -> Result<Item> {
     let mut text = Text::default();
     text.element(node)?;
@@ -129,6 +157,7 @@ fn item(node: Node<'_, '_>, inherited: bool) -> Result<Item> {
     Ok(Item {
         text: String::from_utf16(&text.units).context("Invalid Android UTF-16 escape")?,
         formatted: formatted(node, inherited)?,
+        entities: entities(node),
     })
 }
 
@@ -366,10 +395,10 @@ pub fn verify_resources(
                         error: error.into(),
                     });
                 }
-                if !options.structural_equality {
+                if !options.structural_equality && !options.preserve_entities {
                     continue;
                 }
-                if let Some(resource) = target.get(key) {
+                if let Some(resource) = target.get(key).filter(|_| options.structural_equality) {
                     // Validate every present item, including unmatched targets and sources.
                     for (suffix, item) in items(resource) {
                         issues.extend(verify_item(
@@ -384,7 +413,7 @@ pub fn verify_resources(
                     continue;
                 };
                 if let (Resource::Array(before), Resource::Array(after)) = (before, after) {
-                    if before.len() != after.len() {
+                    if options.structural_equality && before.len() != after.len() {
                         issues.push(VerificationIssue {
                             locale: language.clone(),
                             message_id: message_id.clone(),
@@ -402,12 +431,26 @@ pub fn verify_resources(
                         }
                     });
                     if let Some(source_item) = source_item {
-                        issues.extend(verify_item(
-                            source_item,
-                            target_item,
-                            language,
-                            &format!("{message_id}/{suffix}"),
-                        )?);
+                        let item_id = format!("{message_id}/{suffix}");
+                        if options.preserve_entities && source_item.entities != target_item.entities
+                        {
+                            issues.push(VerificationIssue {
+                                locale: language.clone(),
+                                message_id: item_id.clone(),
+                                error: format!(
+                                    "Android entity references changed: expected {:?}, found {:?}",
+                                    source_item.entities, target_item.entities
+                                ),
+                            });
+                        }
+                        if options.structural_equality {
+                            issues.extend(verify_item(
+                                source_item,
+                                target_item,
+                                language,
+                                &item_id,
+                            )?);
+                        }
                     }
                 }
             }

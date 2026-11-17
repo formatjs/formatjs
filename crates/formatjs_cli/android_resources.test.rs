@@ -66,6 +66,7 @@ fn options() -> VerificationOptions {
         missing_keys: true,
         extra_keys: true,
         structural_equality: true,
+        preserve_entities: false,
     }
 }
 
@@ -218,4 +219,108 @@ fn android_preserves_quoted_whitespace_and_excludes_nontranslatable_keys() {
             .unwrap()
             .is_empty()
     );
+}
+
+fn entity_xml(body: &str) -> Vec<u8> {
+    format!(r#"<!DOCTYPE resources [<!ENTITY brand "Example"><!ENTITY otherBrand "Example">]><resources>{body}</resources>"#).into_bytes()
+}
+
+fn entity_issues(
+    source: &str,
+    target: &str,
+    preserve: bool,
+) -> Vec<formatjs_cli::android_resources::VerificationIssue> {
+    let files = BTreeMap::from([
+        ("res/values/strings.xml".into(), entity_xml(source)),
+        ("res/values-fr/strings.xml".into(), entity_xml(target)),
+    ]);
+    verify_resources(
+        &files,
+        "en",
+        VerificationOptions {
+            preserve_entities: preserve,
+            ..VerificationOptions::default()
+        },
+    )
+    .unwrap()
+}
+
+#[test]
+fn android_entity_preservation_is_opt_in_and_counts_symbolic_references() {
+    let source = r#"<string name="s">&brand; and &brand;</string>"#;
+    for target in [
+        r#"<string name="s">Example and Example</string>"#,
+        r#"<string name="s">&brand;</string>"#,
+        r#"<string name="s">&brand; &brand; &brand;</string>"#,
+        r#"<string name="s">&otherBrand; &otherBrand;</string>"#,
+    ] {
+        assert!(entity_issues(source, target, false).is_empty());
+        let issues = entity_issues(source, target, true);
+        assert_eq!(issues.len(), 1, "{target}");
+        assert!(issues[0].error.contains("entity references changed"));
+        assert!(issues[0].message_id.contains("string/s"));
+        assert_eq!(issues[0].locale, "fr");
+    }
+    assert!(
+        entity_issues(
+            r#"<string name="s">&brand; &otherBrand; &brand;</string>"#,
+            r#"<string name="s">&otherBrand; &brand; &brand;</string>"#,
+            true
+        )
+        .is_empty()
+    );
+}
+
+#[test]
+fn android_entities_are_compared_per_array_and_plural_item_with_other_fallback() {
+    let source =
+        r#"<string-array name="a"><item>&brand;</item><item>&otherBrand;</item></string-array>"#;
+    let target =
+        r#"<string-array name="a"><item>&otherBrand;</item><item>&brand;</item></string-array>"#;
+    let issues = entity_issues(source, target, true);
+    assert_eq!(issues.len(), 2);
+    assert!(
+        issues
+            .iter()
+            .any(|issue| issue.message_id.ends_with("array/a/0"))
+    );
+    assert!(
+        issues
+            .iter()
+            .any(|issue| issue.message_id.ends_with("array/a/1"))
+    );
+    let source = r#"<plurals name="p"><item quantity="one">&brand;</item><item quantity="other">&otherBrand;</item></plurals>"#;
+    let target = r#"<plurals name="p"><item quantity="one">&brand;</item><item quantity="many">&otherBrand;</item><item quantity="other">&otherBrand;</item></plurals>"#;
+    assert!(entity_issues(source, target, true).is_empty());
+    let target = target.replace(
+        "quantity=\"many\">&otherBrand;",
+        "quantity=\"many\">&brand;",
+    );
+    let issues = entity_issues(source, &target, true);
+    assert_eq!(issues.len(), 1);
+    assert!(issues[0].message_id.ends_with("plurals/p/many"));
+}
+
+#[test]
+fn android_entity_spelling_check_ignores_cdata_comments_and_predefined_references() {
+    let source = r#"<string name="s"><![CDATA[&brand;]]><!-- &brand; -->&amp;brand; &apos; &quot; &#160; &#xA0;</string>"#;
+    let target =
+        r#"<string name="s">"&amp;brand; &amp;brand; &apos; &quot; &#xA0; &#160;"</string>"#;
+    // Quote apostrophes in both values to satisfy Android syntax independently.
+    let source = source.replace("&apos;", "\\&apos;");
+    let target = target.replace("&apos;", "\\&apos;");
+    assert!(entity_issues(&source, &target, true).is_empty());
+    let source = r#"<string name="s" formatted="false">100% &brand;</string>"#;
+    assert_eq!(
+        entity_issues(
+            source,
+            r#"<string name="s" formatted="false">100% Example</string>"#,
+            true
+        )
+        .len(),
+        1
+    );
+    let source = r#"<string name="s"><annotation value="&brand;">text</annotation></string>"#;
+    let target = r#"<string name="s"><annotation value="&otherBrand;">text</annotation></string>"#;
+    assert_eq!(entity_issues(source, target, true).len(), 1);
 }
