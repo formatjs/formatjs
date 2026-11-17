@@ -13,7 +13,7 @@ path = "placeholder.rs"
 temporal_rs = { version = "=0.2.6", default-features = false }
 timezone_provider = { version = "=0.2.6", default-features = false }
 # Match the ICU4X calendar data used by FormatJS generators.
-icu_calendar = { version = "=2.3.0", default-features = false, features = [
+icu_calendar = { version = "=2.4.0", default-features = false, features = [
   "compiled_data",
 ] }
 writeable = "=0.6.4"
