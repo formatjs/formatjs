@@ -941,7 +941,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_temporal"
-version = "0.0.0"
+version = "1.0.0"
 dependencies = [
  "formatjs_intl_datetimeformat_calendars",
  "serde_json",

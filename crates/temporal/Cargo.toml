@@ -1,11 +1,13 @@
 [package]
 name = "formatjs_temporal"
-version = "0.0.0"
-publish = false
+version = "1.0.0"
+publish = true
 edition = "2024"
 description = "Temporal calendar, date, time and timezone primitives"
 license = "BSD-3-Clause"
 repository = "https://github.com/formatjs/formatjs"
+readme = "README.md"
+exclude = ["*.test.rs", "wasm*.rs", "BUILD.bazel", "scripts/**", "*.bzl", "*.h"]
 
 [lib]
 path = "lib.rs"

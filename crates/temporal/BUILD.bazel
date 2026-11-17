@@ -6,6 +6,22 @@ load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
 load(":wasm.bzl", "temporal_wasm")
 
+filegroup(
+    name = "cargo_sources",
+    srcs = glob(
+        [
+            "*.rs",
+            "Cargo.toml",
+            "README.md",
+        ],
+        exclude = [
+            "*.test.rs",
+            "wasm*.rs",
+        ],
+    ),
+    visibility = ["//crates:__pkg__"],
+)
+
 # gazelle:ignore
 rust_shared_library(
     name = "wasm_backend_core",
@@ -169,6 +185,7 @@ ts_run_binary(
     ],
     tool = "//crates/temporal/scripts:timezones",
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 rust_library(
@@ -235,6 +252,7 @@ ts_run_binary(
     ],
     tool = "//crates/temporal/scripts:calendars",
     use_execroot_entry_point = False,
+    visibility = ["//crates:__pkg__"],
 )
 
 rust_library(

@@ -1,6 +1,6 @@
 # @formatjs/temporal
 
-Temporal implementation in TypeScript with a Rust core. Private pending release. Importing the namespace changes no globals; runtime
+Temporal implementation in TypeScript with a Rust core. Importing the namespace changes no globals; runtime
 arithmetic never delegates to native Temporal or another Temporal polyfill.
 
 ```ts
