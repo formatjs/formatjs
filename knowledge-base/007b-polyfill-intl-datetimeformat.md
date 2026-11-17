@@ -270,6 +270,18 @@ grammatical context.
 An explicit `hourCycle: "h24"` formats midnight as `24` for both single dates
 and ranges. Use `h23` for midnight `00`; `hour12: false` selects `h23`.
 
+## Future timezone validation
+
+`bazel test -c opt //packages/intl-datetimeformat:timezone_icu_test` compares
+TS and Rust total offsets with ICU4J-generated seasonal and transition-boundary
+samples beyond 2100. ICU fixtures use their own compiled timezone rules; they do
+not derive expectations from FormatJS data. The oracle and IANA pins can differ,
+so investigate newly introduced rule differences before updating expectations.
+
+The unpublished [Temporal kernel experiment](../benchmarks/temporal/README.md)
+adds ICU-derived gap/fold checks and records timezone bundle-size comparisons.
+It reuses shared ISO/timezone primitives, not a complete Temporal implementation.
+
 ## Benchmarks
 
 Run `bazel run //packages/intl-datetimeformat:benchmark` from the repository.

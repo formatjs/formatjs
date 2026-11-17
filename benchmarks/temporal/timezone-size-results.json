@@ -1,0 +1,52 @@
+{
+  "beforeCommit": "9870106e6ded6d40b0ff2a80101501cd3cdb0d6a",
+  "afterCommit": "ce654ff506913b50136f29bcfe2ee8becf5ad1bf",
+  "tzdb": "2026f",
+  "compression": "Python gzip level 9, mtime=0; shipped artifacts without additional minification",
+  "artifacts": {
+    "add-all-tz.js": {
+      "before": {
+        "bytes": 1374488,
+        "gzip": 196256
+      },
+      "after": {
+        "bytes": 390424,
+        "gzip": 62690
+      },
+      "identical": false
+    },
+    "add-golden-tz.js": {
+      "before": {
+        "bytes": 802600,
+        "gzip": 123721
+      },
+      "after": {
+        "bytes": 242516,
+        "gzip": 44578
+      },
+      "identical": false
+    },
+    "en.js": {
+      "before": {
+        "bytes": 277188,
+        "gzip": 32109
+      },
+      "after": {
+        "bytes": 277188,
+        "gzip": 32109
+      },
+      "identical": true
+    },
+    "polyfill.iife.js": {
+      "before": {
+        "bytes": 187134,
+        "gzip": 45840
+      },
+      "after": {
+        "bytes": 189062,
+        "gzip": 46427
+      },
+      "identical": false
+    }
+  }
+}

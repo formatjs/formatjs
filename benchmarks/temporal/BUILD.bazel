@@ -1,0 +1,99 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
+load("//tools:compile.bzl", "formatjs_library")
+load("//tools:package_json.bzl", "generate_package_json")
+load("//tools:rolldown.bzl", "rolldown_bundle")
+load("//tools:test.bzl", "formatjs_test")
+load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+
+# gazelle:ignore
+
+generate_package_json(
+    package_name = "temporal-kernel-experiment",
+    private = True,
+    type = "module",
+    version = "0.0.0",
+)
+
+formatjs_library(
+    name = "temporal",
+    srcs = [
+        "benchmark.ts",
+        "kernel.ts",
+        "reference.ts",
+        "zones.ts",
+    ],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    tsconfig_types = ["node"],
+    deps = [
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/esbuild",
+        "//:node_modules/temporal-polyfill",
+        "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract/DateTimeFormat",
+        "//packages/ecma402-abstract/types",
+        "//packages/intl-datetimeformat:types",
+    ],
+)
+
+formatjs_test(
+    name = "kernel_test",
+    srcs = [
+        "icu.test.ts",
+        "kernel.test.ts",
+    ],
+    data = [
+        "//conformance-tests/icu4j:temporal_timezone_fixtures",
+        "//packages/intl-datetimeformat:timezone_kernel_sources",
+    ],
+    deps = [
+        ":temporal",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/temporal-polyfill",
+        "//:node_modules/vitest",
+    ],
+)
+
+[
+    rolldown_bundle(
+        name = name,
+        srcs = [
+            entry,
+            ":srcs",
+            ":temporal",
+            "//packages/intl-datetimeformat:timezone_kernel_sources",
+        ],
+        entry_point = entry,
+        platform = "node",
+        target = "es2022",
+        deps = [
+            "//:node_modules/@formatjs_generated/tz",
+            "//:node_modules/temporal-polyfill",
+            "//packages/ecma262-abstract",
+            "//packages/ecma402-abstract/DateTimeFormat",
+            "//packages/ecma402-abstract/types",
+            "//packages/intl-datetimeformat:types",
+        ],
+    )
+    for name, entry in [
+        ("kernel-code", "kernel.ts"),
+        ("kernel-all-zones", "zones.ts"),
+        ("reference-bundle", "reference.ts"),
+    ]
+]
+
+js_binary(
+    name = "benchmark",
+    data = [
+        ":generated_package_json",
+        ":kernel-all-zones",
+        ":kernel-code",
+        ":reference-bundle",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/esbuild",
+    ],
+    entry_point = "benchmark.ts",
+)

@@ -43,7 +43,9 @@ pre-commit:
         - '**/*.{ts,tsx}'
         - 'codescythe.jsonc'
         - 'package.json'
-      run: JS_BINARY__CHDIR="$PWD" bazel run -c opt //:codescythe -- --directory . --config codescythe.jsonc
+      run: |
+        bazel run -c opt //:generate_package_tsconfigs
+        JS_BINARY__CHDIR="$PWD" bazel run -c opt //:codescythe -- --directory . --config codescythe.jsonc
     gazelle:
       run: bazel run -c opt //:gazelle
       stage_fixed: true
