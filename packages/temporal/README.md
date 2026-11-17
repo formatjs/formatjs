@@ -212,7 +212,7 @@ IANA/CLDR data exclusions; coverage details follow below.
 
 Matched Node namespace consumers measure 39,692 bytes gzip for default TS,
 23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
-Native-data WASM totals 506,031 bytes, including 473,021 binary bytes.
+Native-data WASM totals 506,032 bytes, including 473,022 binary bytes.
 It owns calendar and IANA data; JS references use host Intl data.
 Nine-process ISO/timezone startup medians: TS 19.27 ms, native-data WASM
 16.61 ms, full reference 19.25 ms, official reference 26.78 ms.

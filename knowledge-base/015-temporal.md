@@ -1956,7 +1956,7 @@ isolated full-workload timings and nine-process startup/size. Transition median
 falls from 4.535 to 1.515 microseconds; TS is 0.459. Overall sampled WASM wins:
 23/48 against TS, 25/48 basic reference, 35/48 official reference. Close medians
 vary; the goal remains open. Default TS executable AST matches baseline. Node
-namespace gzip rises 5,450 bytes to 506,031; ISO/timezone readiness is 16.61 ms,
+namespace gzip rises 5,451 bytes to 506,032; ISO/timezone readiness is 16.61 ms,
 full calendar readiness 27.29 ms. No new exclusions.
 
 All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;

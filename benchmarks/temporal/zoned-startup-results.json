@@ -1045,7 +1045,7 @@
       "bundleBytes": 169339,
       "bundleGzipBytes": 47932,
       "binaryBytes": 3500828,
-      "binaryGzipBytes": 473021,
+      "binaryGzipBytes": 473022,
       "medians": {
         "importMilliseconds": 5.907730999999998,
         "compileMilliseconds": 2.3582719999999995,
@@ -1251,7 +1251,7 @@
       "bundleBytes": 120596,
       "bundleGzipBytes": 33010,
       "binaryBytes": 3500828,
-      "binaryGzipBytes": 473021,
+      "binaryGzipBytes": 473022,
       "medians": {
         "importMilliseconds": 4.919316000000002,
         "compileMilliseconds": 2.1604750000000053,
@@ -1450,5 +1450,6 @@
         }
       ]
     }
-  ]
+  ],
+  "sizeMeasurement": "Binary gzip refreshed from final formatted package (+1 byte); startup samples retained from the measured run."
 }

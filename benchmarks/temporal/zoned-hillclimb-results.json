@@ -2397,7 +2397,7 @@
     ],
     "binary": {
       "raw": 3500828,
-      "gzip": 473021
+      "gzip": 473022
     },
     "consumer": {
       "typescript": {
@@ -2410,18 +2410,18 @@
         "gzip": 47991,
         "sha256": "2919901bd383cac5b02957f7b0c666c06dcca6cfb47837452da806560884db37"
       },
-      "wasmCombinedGzip": 521012,
+      "wasmCombinedGzip": 521013,
       "nativeDataWasmJS": {
         "minified": 130568,
         "gzip": 36016,
         "sha256": "179dd64d65770313ab2fcaef40a79cd31dbb1fdde80041305ba390dba2f1ac85"
       },
-      "nativeDataWasmCombinedGzip": 509037
+      "nativeDataWasmCombinedGzip": 509038
     },
     "separateModules": {
       "typescriptGzip": 43012,
-      "wasmCombinedGzip": 521605,
-      "nativeDataWasmCombinedGzip": 509260
+      "wasmCombinedGzip": 521606,
+      "nativeDataWasmCombinedGzip": 509261
     }
   },
   "profileChecksums": {
@@ -2430,5 +2430,6 @@
     "officialReference": 327469044,
     "nativeDataWasm": 327469044
   },
-  "baselineCommit": "f7cde5d3d4765bf63ed3d74076587422a35bc2e1"
+  "baselineCommit": "f7cde5d3d4765bf63ed3d74076587422a35bc2e1",
+  "sizeMeasurement": "Final post-format package audit refreshed stripped WASM gzip by one byte. JS consumer hashes are unchanged. Throughput samples retain their measured run."
 }

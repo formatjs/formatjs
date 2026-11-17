@@ -2028,8 +2028,8 @@ lose to TS; the all-workload goal stays open. Zoned parsing remains 27.26 versus
 TS 3.98 microseconds and is the next large boundary-work target.
 
 `zoned-startup-results.json` records nine fresh processes/profile. Native Node
-namespace payload is 506,031 bytes gzip, +5,450 versus the Instant checkpoint;
-473,021 bytes are WASM. TS is 39,692; local name changes account for two bytes,
+namespace payload is 506,032 bytes gzip, +5,451 versus the Instant checkpoint;
+473,022 bytes are WASM. TS is 39,692; local name changes account for two bytes,
 and its executable AST still matches baseline. Native ISO/timezone readiness is
 16.61 ms versus TS 19.27 ms; full native calendars 27.29 ms. Browser export-all
 size is separate. Native owns calendar/timezone data; default TS uses host Intl.
