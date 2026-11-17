@@ -1,10 +1,10 @@
 load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@npm//:test262-harness/package_json.bzl", test262_harness_bin = "bin")
-load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//tools:compile.bzl", "formatjs_library")
 load("//tools:rolldown.bzl", "rolldown_bundle")
 load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
+load(":tests/hermes-test.bzl", "sh_test")
 
 # gazelle:ignore
 formatjs_library(

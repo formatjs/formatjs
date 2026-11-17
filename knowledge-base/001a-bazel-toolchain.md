@@ -599,6 +599,11 @@ uses 120 seconds because `prototype/format/units.js` formats every sanctioned
 unit pair while the complete polyfill stack is installed. This is separate from
 Bazel's overall test timeout; expected-failure baselines stay unchanged.
 
+Temporal shell conformance tests use a package-local transition to `opt`, so
+Hermes source and bytecode checks exercise the shipping compiler/runtime profile
+even when the top-level CI command uses fastbuild. Test cases and baselines stay
+unchanged.
+
 Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
 for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
 ordinary repository build defaults remain separate. Benchmark SDK changes using
