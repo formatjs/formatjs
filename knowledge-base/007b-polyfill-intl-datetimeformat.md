@@ -4,6 +4,12 @@
 
 ## Purpose
 
+Historical timezone names retain direct CLDR standard/daylight overrides, including
+London's British Summer Time before 1970. Only metazone-derived names use the
+1970 cutoff. Localized GMT fallback preserves offset seconds in TS and Rust.
+The shared 64-row ICU oracle covers London, New York, Paris and Kathmandu across
+1900, 1960 and 2000 through ordinary numeric Date inputs.
+
 Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton support. The most complex polyfill in the repo (950+ line BUILD.bazel).
 
 ## Dependencies

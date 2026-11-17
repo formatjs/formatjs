@@ -83,6 +83,10 @@ export type TimeZoneNameData = Record<
     short?: [string, string]
     shortGeneric?: string
     longGeneric?: string
+    longStandard?: string
+    longDaylight?: string
+    shortStandard?: string
+    shortDaylight?: string
   }
 >
 

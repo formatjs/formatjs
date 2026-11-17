@@ -164,6 +164,24 @@ formatjs_test(
     ],
 )
 
+# gazelle:exclude tests/historical-timezone.test.ts
+formatjs_test(
+    name = "historical_timezone_test",
+    srcs = [
+        "tests/historical-timezone.test.ts",
+        ":tests-locale-data-en",
+    ],
+    data = ["//conformance-tests/icu4j:historical_timezone_fixtures"],
+    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+    deps = [
+        ":lib",
+        "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@types/node",
+        "//:node_modules/vitest",
+    ],
+)
+
 formatjs_test(
     name = "intl-datetimeformat_test",
     srcs = [

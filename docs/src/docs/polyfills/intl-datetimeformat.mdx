@@ -96,6 +96,9 @@ new DateTimeFormat('en', {dateStyle: 'long', timeStyle: 'short'})
 
 #### ✅ Extended timeZoneName Options
 
+Historical timezone formatting preserves direct CLDR names before 1970 and
+includes offset seconds when falling back to localized GMT names.
+
 All 6 `timeZoneName` values are supported:
 
 - **`'short'`** - Short standard format (e.g., "EST", "PST")

@@ -103,6 +103,40 @@ fn formatter(registry: &Registry, early: Value, components: Value) -> Handle {
     assert_eq!(construction.capture(components), 0);
     construction.finish(json!({})).ok().unwrap()
 }
+
+#[test]
+fn historical_zone_names_and_offset_seconds_match_icu() {
+    let registry = Registry::new();
+    assert_eq!(
+        registry.load(2, include_str!(env!("FORMATJS_HISTORICAL_TIMEZONES"))),
+        0
+    );
+    let mut count = 0;
+    for row in include_str!(env!("FORMATJS_HISTORICAL_TIMEZONE_ORACLE")).lines() {
+        let fields: Vec<_> = row.split('\t').collect();
+        let [zone, epoch, width, expected] = fields.as_slice() else {
+            panic!("Invalid ICU row: {row}")
+        };
+        let construction = Construction::begin(&registry);
+        assert_eq!(construction.resolve(json!({"timeZoneName": width})), 0);
+        assert_eq!(construction.zone(json!(zone)), 0);
+        assert_eq!(construction.capture(json!({"timeZoneName": width})), 0);
+        let handle = construction.finish(json!({})).ok().unwrap();
+        let output = handle
+            .query(json!({"op":"parts","value":{"type":"number","value":epoch}}))
+            .unwrap();
+        let parts: Value = serde_json::from_str(&output).unwrap();
+        let name = parts
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|part| part["type"] == "timeZoneName")
+            .unwrap();
+        assert_eq!(name["value"], *expected, "ICU row: {row}");
+        count += 1;
+    }
+    assert_eq!(count, 64);
+}
 #[test]
 fn staged_abi_orders_phases_and_preserves_initial_timezone_names() {
     let registry = Registry::new();
