@@ -7,6 +7,17 @@ load("//tools:test.bzl", "formatjs_test")
 load("//tools:tsconfig.bzl", "ESNEXT_TSCONFIG", "packages_tsconfig")
 load(":tests/hermes-test.bzl", "sh_test")
 
+js_test(
+    name = "hermes_sharding_test",
+    size = "small",
+    args = ["$(rootpath :instant_hermes_harness)"],
+    data = [
+        "tests/hermes-shard.cjs",
+        ":instant_hermes_harness",
+    ],
+    entry_point = "tests/hermes-shard.test.cjs",
+)
+
 _TEST262_ROOT = "../+http_archive+com_github_tc39_test262"
 
 # gazelle:ignore
@@ -1698,8 +1709,11 @@ test262_harness_bin.test262_harness_binary(
         name = name,
         size = "enormous" if name.startswith("locale_intl") else "medium" if name.startswith("locale_") else "large" if "full" in name else "medium" if name.startswith("zoned") or name.startswith("duration") or name.startswith("calendars") else "small",
         timeout = "eternal" if name.startswith("locale_intl") else "long",
-        srcs = ["tests/hermes-test262.sh"],
-        args = [
+        srcs = ["tests/hermes-sharded-test262.sh" if name == "locale_intl_compat_hermes_test262" else "tests/hermes-test262.sh"],
+        args = ([
+            "$(rootpath tests/hermes-test262.sh)",
+            "$(rootpath tests/hermes-shard.cjs)",
+        ] if name == "locale_intl_compat_hermes_test262" else []) + [
             "$(rootpath :instant_hermes_harness)",
             "$(rootpath tests/hermes-host.sh)",
             "$(rootpath //native/hermes:hermes_runner)",
@@ -1731,12 +1745,16 @@ test262_harness_bin.test262_harness_binary(
             "@com_github_tc39_test262//:test262-temporal-year-month-copy",
             "@com_github_tc39_test262//:test262-temporal-zoned-copy",
             "@hermes//:hermesc",
-        ] + (["@com_github_tc39_test262//:test262-datetimeformat-copy"] if "datetimeformat" in name else []),
+        ] + (["@com_github_tc39_test262//:test262-datetimeformat-copy"] if "datetimeformat" in name else []) + ([
+            "tests/hermes-test262.sh",
+            "tests/hermes-shard.cjs",
+        ] if name == "locale_intl_compat_hermes_test262" else []),
         env = {"TZ": "UTC"},
         exec_properties = {
             "EstimatedCPU": "4",
             "EstimatedMemory": "2GB",
         },
+        shard_count = 8 if name == "locale_intl_compat_hermes_test262" else 0,
         tags = tags + ["cpu:4"],
     )
     for name, mode, patterns, baseline, tags in [

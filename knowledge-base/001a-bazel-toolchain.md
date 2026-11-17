@@ -605,6 +605,11 @@ even when the top-level CI command uses fastbuild. Standalone locale/Intl suites
 retain their one-hour timeout; other shell suites use 15 minutes. Test cases and
 baselines stay unchanged.
 
+The standalone Intl source suite runs in eight Bazel shards to fit BuildBuddy's
+one-hour free-tier runner limit. A stable hash assigns each scenario once. Every
+shard checks the full discovery count before validating its report against its
+share of the existing baseline.
+
 Hermes SDK release archive transitions set `@rules_rust//rust/settings:lto=thin`
 for both Linux and macOS. Keep this optimization scoped to the SDK archive graph;
 ordinary repository build defaults remain separate. Benchmark SDK changes using
