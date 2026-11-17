@@ -1852,3 +1852,24 @@ still initializes and validates table data. The fresh-process startup experiment
 in `benchmarks/temporal/lazy-calendar-startup-results.json` reduces native-data
 WASM ISO/timezone readiness from 25.0 ms to 16.3 ms (TS: 19.5 ms). Full calendar
 readiness remains about 27 ms; table work is deferred, not removed.
+
+### Direct DateTime bindings
+
+ABI 13 adds typed PlainDateTime parse, add/subtract, round and format requests.
+Complete ISO results use 48 bytes: signed i128 nanoseconds, the complete date
+record, and six clock fields. Non-ISO snapshots retain the general representation
+and deferred getter errors. JS still owns observable coercion and options order;
+Rust public methods validate all arithmetic and formatting. SDK JSON shapes stay
+unchanged. Instant and PlainDateTime reuse one bounded ASCII formatter.
+
+`benchmarks/temporal/date-time-hillclimb-results.json` retimes all 48 WASM workloads
+with the prior isolated warmup/sample counts. TS and pinned references come from
+the earlier unchanged controls; these are explicitly identified in the report.
+
+Final decoder controls reproduce and prevent inherited clock setters and absent
+ISO era getters. Compact snapshots initialize own fields directly. Eleven focused
+Rust/type/WASM/Test262/Hermes targets passed, then both WASM package/ICU suites and
+DateTime Test262 passed after the decoder fixes. The pure TS AST still matches the
+872fdaee baseline after local identifier renaming. Current medians win 16/48 against
+TS, 20/48 against temporal-polyfill and 31/48 against @js-temporal/polyfill. The goal
+remains open; DateTime parsing is nearly tied and round+format remains slower.

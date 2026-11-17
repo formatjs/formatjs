@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 12. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 13. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -238,10 +238,15 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 12 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 13 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
 values and missing-field error types remain covered across TS, WASM and Hermes.
 See the [CPU profile follow-up](../../benchmarks/temporal/README.md#cpu-profile-follow-up-2026-11-17)
 for measured wins, remaining slow workloads, startup and size.
+
+ABI 13 adds direct PlainDateTime parsing, addition/subtraction, rounding and
+formatting. Complete ISO DateTime results carry signed nanoseconds, calendar
+properties and all six clock fields in one record. Non-ISO calendars and deferred
+getter errors keep the general representation. SDK JSON result shapes stay stable.

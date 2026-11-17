@@ -278,3 +278,10 @@ A poisoned Array iterator control also guards duration coercion. Existing ICU ro
 counts and Test262 exclusions are unchanged. See 015's CPU-profile follow-up and
 `benchmarks/temporal/profile-*.json` for the ongoing performance work; it is not a
 claim that WASM beats TS on every workload.
+
+ABI 13 follow-up adds complete typed DateTime results and shared Rust ASCII
+formatting. Rust/core, public types, DateTime/Instant Test262, WASM package/ICU and
+Hermes source/bytecode gates pass. New public inherited-setter/getter controls
+caught decoder regressions and now pass in both WASM profiles. TS executable AST
+remains equivalent to the recorded baseline. No new exclusions; performance goal
+still open at 16/48 median wins against TS. Full owned-Intl WASM gate remains in CI.

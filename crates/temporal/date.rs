@@ -481,15 +481,8 @@ impl<C: CalendarProvider> FormattedDateTime<C> {
 }
 impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write_date(f, self.value.date().fields())?;
-        write!(
-            f,
-            "T{}",
-            self.value
-                .time()
-                .format(self.precision, RoundingMode::Trunc)
-                .map_err(|_| fmt::Error)?
-        )?;
+        let output = crate::format::IsoString::date_time(self.value.fields(), self.precision);
+        f.write_str(output.as_str()?)?;
         write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }

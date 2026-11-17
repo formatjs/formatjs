@@ -46,7 +46,7 @@ impl fmt::Display for Instant {
             .fmt(f)
     }
 }
-struct IsoString {
+pub(crate) struct IsoString {
     bytes: [u8; 64],
     len: usize,
 }
@@ -73,13 +73,7 @@ impl IsoString {
         }
         self.len = end;
     }
-    fn as_str(&self) -> Result<&str, fmt::Error> {
-        core::str::from_utf8(&self.bytes[..self.len]).map_err(|_| fmt::Error)
-    }
-}
-impl fmt::Display for FormattedInstant {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let fields = self.fields;
+    pub(crate) fn date_time(fields: IsoDateTime, precision: Precision) -> Self {
         let mut output = IsoString::new();
         if (0..=9999).contains(&fields.year) {
             output.number(fields.year as u32, 4);
@@ -95,10 +89,10 @@ impl fmt::Display for FormattedInstant {
         output.pair(u32::from(fields.hour));
         output.push(b':');
         output.pair(u32::from(fields.minute));
-        if self.precision != Precision::Minute {
+        if precision != Precision::Minute {
             output.push(b':');
             output.pair(u32::from(fields.second));
-            let (value, digits) = match self.precision {
+            let (value, digits) = match precision {
                 Precision::Auto => {
                     let (mut value, mut digits) = (fields.nanosecond, 9usize);
                     while digits > 0 && value % 10 == 0 {
@@ -118,6 +112,15 @@ impl fmt::Display for FormattedInstant {
                 output.number(value, digits);
             }
         }
+        output
+    }
+    pub(crate) fn as_str(&self) -> Result<&str, fmt::Error> {
+        core::str::from_utf8(&self.bytes[..self.len]).map_err(|_| fmt::Error)
+    }
+}
+impl fmt::Display for FormattedInstant {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut output = IsoString::date_time(self.fields, self.precision);
         match self.offset {
             None => output.push(b'Z'),
             Some(offset) => {

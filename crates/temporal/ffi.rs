@@ -613,6 +613,12 @@ fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -> CalendarS
         errors: (1 << 11) - 1,
     })
 }
+pub(crate) fn date_time_snapshot(calendar: CalendarRef<'_>, ns: i128) -> CalendarSnapshot {
+    let mut properties =
+        partial_calendar_snapshot(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
+    add_clock(&mut properties, ns);
+    properties
+}
 fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     let value = if record.get("epochNanoseconds").is_some() {
         ZonedDateTime::new_in_calendar(
@@ -683,9 +689,7 @@ pub(crate) fn complete_result(
             let calendar =
                 resolve_calendar(result["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
             let ns = decimal(&result, "epochNanoseconds")?;
-            let mut properties =
-                partial_calendar_snapshot(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
-            add_clock(&mut properties, ns);
+            let properties = date_time_snapshot(calendar, ns);
             return Ok((result, Some(properties)));
         }
         "resolveZonedDateTime"

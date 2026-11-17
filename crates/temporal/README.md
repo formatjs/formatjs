@@ -16,7 +16,7 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-WASM ABI 12 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
+WASM ABI 13 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
@@ -748,7 +748,7 @@ profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
 
 ## Typed WASM operations
 
-ABI 12 provides typed variants for fifteen hot operations, signed 128-bit Instant
+ABI 13 provides typed variants for nineteen hot operations, signed 128-bit Instant
 transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
 formatting writes one bounded stack buffer. Non-ISO records and deferred getter
 errors retain their general representation. SDK JSON responses keep their shapes.
@@ -765,3 +765,9 @@ still initializes and validates table data. The fresh-process startup experiment
 in `benchmarks/temporal/lazy-calendar-startup-results.json` reduces native-data
 WASM ISO/timezone readiness from 25.0 ms to 16.3 ms (TS: 19.5 ms). Full calendar
 readiness remains about 27 ms; table work is deferred, not removed.
+
+PlainDateTime parsing, arithmetic and rounding return complete snapshots through
+typed WASM routes. ISO DateTime records contain 48 bytes, including signed i128
+nanoseconds, complete date properties and six clock fields. Other calendars retain
+their deferred getter errors. Instant and PlainDateTime share the bounded ASCII
+formatter; rounding still uses their public Rust methods.

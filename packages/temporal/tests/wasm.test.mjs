@@ -123,6 +123,43 @@ assert.deepEqual(
   Object.getOwnPropertyDescriptor(globalThis, 'Temporal'),
   globalBefore
 )
+const inheritedHour = Object.getOwnPropertyDescriptor(Object.prototype, 'hour')
+let dateTimeWithInheritedSetter
+try {
+  Object.defineProperty(Object.prototype, 'hour', {
+    configurable: true,
+    set() {
+      throw new Error('Temporal must not invoke inherited clock setters')
+    },
+  })
+  dateTimeWithInheritedSetter = Temporal.PlainDateTime.from(
+    '2000-02-29T12:34:56.123456789'
+  )
+} finally {
+  if (inheritedHour)
+    Object.defineProperty(Object.prototype, 'hour', inheritedHour)
+  else delete Object.prototype.hour
+}
+assert.equal(dateTimeWithInheritedSetter.hour, 12)
+for (const name of ['era', 'eraYear']) {
+  const inherited = Object.getOwnPropertyDescriptor(Object.prototype, name)
+  try {
+    Object.defineProperty(Object.prototype, name, {
+      configurable: true,
+      get() {
+        throw new Error('Temporal must not read inherited era fields')
+      },
+    })
+    assert.equal(Temporal.PlainDate.from('2000-02-29')[name], undefined)
+    assert.equal(
+      Temporal.PlainDateTime.from('2000-02-29T12:34:56')[name],
+      undefined
+    )
+  } finally {
+    if (inherited) Object.defineProperty(Object.prototype, name, inherited)
+    else delete Object.prototype[name]
+  }
+}
 const rows = path =>
   readFileSync(resolve(path), 'utf8')
     .trim()

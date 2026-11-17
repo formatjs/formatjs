@@ -506,6 +506,41 @@ fn encode_date(
     output.extend_from_slice(&string_code("properties").unwrap().to_le_bytes());
     encode_snapshot(output, snapshot);
 }
+fn encode_date_time(
+    output: &mut Vec<u8>,
+    ns: i128,
+    calendar: &str,
+    snapshot: crate::ffi::CalendarSnapshot,
+) {
+    if calendar == "iso8601" && snapshot.errors == 0 && snapshot.date.is_some() {
+        let fields = crate::iso::iso_from_epoch_nanoseconds_raw(ns);
+        output.push(12);
+        output.extend_from_slice(&ns.to_le_bytes());
+        encode_date(
+            output,
+            ns.div_euclid(crate::NANOSECONDS_PER_DAY) as i64,
+            calendar,
+            snapshot,
+        );
+        output.extend_from_slice(&[fields.hour, fields.minute, fields.second]);
+        for value in [
+            fields.nanosecond / 1_000_000,
+            fields.nanosecond / 1000 % 1000,
+            fields.nanosecond % 1000,
+        ] {
+            output.extend_from_slice(&(value as u16).to_le_bytes());
+        }
+        return;
+    }
+    output.push(6);
+    output.extend_from_slice(&3u32.to_le_bytes());
+    output.extend_from_slice(&string_code("epochNanoseconds").unwrap().to_le_bytes());
+    encode(output, &Value::from(std::string::ToString::to_string(&ns)));
+    output.extend_from_slice(&string_code("calendar").unwrap().to_le_bytes());
+    encode(output, &Value::from(calendar));
+    output.extend_from_slice(&string_code("properties").unwrap().to_le_bytes());
+    encode_snapshot(output, snapshot);
+}
 fn encode_snapshot(output: &mut Vec<u8>, snapshot: crate::ffi::CalendarSnapshot) {
     output.push(9);
     if let Some(date) = snapshot.date {

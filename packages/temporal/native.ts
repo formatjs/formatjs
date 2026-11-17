@@ -39,6 +39,10 @@ export interface NativeCall {
     slot: DateSlot,
     calendarName: string
   ): string
+  addPlainDateTime?: NativeTemporal['addPlainDateTime']
+  roundPlainDateTime?: NativeTemporal['roundPlainDateTime']
+  parsePlainDateTime?: NativeTemporal['parsePlainDateTime']
+  formatPlainDateTime?: NativeTemporal['formatPlainDateTime']
   createISODate?: NativeTemporal['createISODate']
   parseInstant?: NativeTemporal['parseInstant']
   formatInstant?: NativeTemporal['formatInstant']
@@ -345,6 +349,10 @@ export function configureNativeTemporal(
   const formatDate = invoke?.formatDate
   const addPlainDate = invoke?.addPlainDate
   const parseDate = invoke?.parseDate
+  const parseDateTime = invoke?.parsePlainDateTime
+  const addDateTime = invoke?.addPlainDateTime
+  const roundDateTime = invoke?.roundPlainDateTime
+  const formatDateTime = invoke?.formatPlainDateTime
   const text = (value: bigint) => apply(bigintText, value, [])
   function call(op: string, properties: Record<string, unknown>): any {
     if (invoke) return invoke(op, properties)
@@ -591,13 +599,15 @@ export function configureNativeTemporal(
         ? formatDate('formatPlainDate', slot, calendarName)
         : call('formatPlainDate', {value: shortFields(slot), calendarName}),
     formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
-      call('formatPlainDateTime', {
-        nanoseconds: text(value),
-        calendar,
-        precision,
-        mode,
-        calendarName,
-      }),
+      formatDateTime
+        ? formatDateTime(value, calendar, precision, mode, calendarName)
+        : call('formatPlainDateTime', {
+            nanoseconds: text(value),
+            calendar,
+            precision,
+            mode,
+            calendarName,
+          }),
     formatPlainYearMonth: (slot, calendarName) =>
       formatDate
         ? formatDate('formatPlainYearMonth', slot, calendarName)
@@ -650,7 +660,11 @@ export function configureNativeTemporal(
           : call('parsePlainDate', {text: value})
       ),
     parsePlainDateTime: value =>
-      timeResult(call('parsePlainDateTime', {text: value})),
+      timeResult(
+        parseDateTime
+          ? parseDateTime(value)
+          : call('parsePlainDateTime', {text: value})
+      ),
     parsePlainYearMonth: value =>
       dateResult(
         parseDate
@@ -758,13 +772,15 @@ export function configureNativeTemporal(
       ),
     addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
       timeResult(
-        call('addPlainDateTime', {
-          nanoseconds: text(value),
-          calendar,
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        }),
+        addDateTime
+          ? addDateTime(value, calendar, fields, subtract, overflow)
+          : call('addPlainDateTime', {
+              nanoseconds: text(value),
+              calendar,
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
         calendar
       ),
     differencePlainDate: (
@@ -809,13 +825,15 @@ export function configureNativeTemporal(
       }),
     roundPlainDateTime: (value, calendar, unit, increment, mode) =>
       timeResult(
-        call('roundPlainDateTime', {
-          nanoseconds: text(value),
-          calendar,
-          unit,
-          increment,
-          mode,
-        }),
+        roundDateTime
+          ? roundDateTime(value, calendar, unit, increment, mode)
+          : call('roundPlainDateTime', {
+              nanoseconds: text(value),
+              calendar,
+              unit,
+              increment,
+              mode,
+            }),
         calendar
       ),
     transformDuration: (fields, absolute) =>

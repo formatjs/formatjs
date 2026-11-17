@@ -1858,3 +1858,36 @@ ISO/timezone readiness falls from 25.0 ms to 16.3 ms, versus TS 19.5 ms. First
 Chinese use rises from 2.0 ms to 10.7 ms. Full calendar readiness stays about 27 ms.
 No data or correctness checks removed. Earlier figures above remain checkpoint
 measurements before this change; this experiment measures startup separately.
+
+### Direct DateTime bindings
+
+ABI 13 adds typed DateTime parse/add/round/format routes. Complete ISO results
+contain 48 bytes, including signed nanoseconds, calendar properties and six clock
+fields. Non-ISO snapshots preserve deferred errors. Instant and DateTime share a
+bounded ASCII formatter. Fixed snapshot literals avoid inherited clock setters
+and era getters; public regression controls reproduced both failures before fixes.
+
+`date-time-hillclimb-results.json` retimes all 48 WASM workloads with 20,000 warmup
+and nine samples of 50,000 calls (transitions retain their smaller count). TS and
+pinned reference controls come from the prior isolated run; their executable code
+is unchanged. Close medians remain noisy. Times below are microseconds per call.
+
+| Operation           | Earlier WASM | Current WASM |    TS |
+| ------------------- | -----------: | -----------: | ----: |
+| dateTimeParse       |        6.745 |        2.642 | 2.596 |
+| dateTimeAdd         |       13.694 |        3.848 | 5.942 |
+| dateTimeRoundFormat |       10.403 |        2.583 | 1.699 |
+| dateTimeFormat      |        3.833 |        0.914 | 1.111 |
+| dateTimeWith        |       11.387 |        8.528 | 6.290 |
+| dateTimeUntil       |       15.816 |       15.602 | 6.199 |
+
+Current WASM wins 16/48 against TS, 20/48 against temporal-polyfill 1.0.7,
+and 31/48 against @js-temporal/polyfill 0.5.1. Remaining workloads still slower;
+the all-workload goal stays open. Earlier sections retain their checkpoint data.
+
+`date-time-startup-results.json` records nine fresh processes per profile. Current
+Node namespace payload: 498,611 bytes gzip including WASM. ISO/timezone readiness
+16.40 ms; full calendar readiness 27.04 ms. Browser export-all consumer
+sizes remain separate. `ts-regression-guard.json` confirms the unchanged executable
+TS AST after local identifier renaming. Rust/core, DateTime/Instant Test262,
+WASM package/ICU and native Hermes source/bytecode checks pass; no new exclusions.

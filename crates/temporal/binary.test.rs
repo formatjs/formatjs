@@ -206,3 +206,40 @@ fn typed_rounding_preserves_modes_and_recovers_after_invalid_requests() {
         assert_eq!(call(&valid), expected);
     }
 }
+
+#[test]
+fn typed_date_time_records_preserve_fractional_seconds_and_recover_after_errors() {
+    for (source, clock) in [
+        (
+            "1969-12-31T23:59:59.999999999",
+            (23, 59, 59, 999u16, 999u16, 999u16),
+        ),
+        ("2000-02-29T12:34:56.123456789", (12, 34, 56, 123, 456, 789)),
+        ("+010000-01-01T00:00:00.000001002", (0, 0, 0, 0, 1, 2)),
+    ] {
+        let mut request = vec![opcode("parsePlainDateTime"), 10];
+        text(&mut request, source);
+        let (status, result) = call(&request);
+        assert_eq!(status, 0);
+        assert_eq!(result.len(), 48);
+        assert_eq!(result[0], 12);
+        let expected: formatjs_temporal::PlainDateTime = source.parse().unwrap();
+        assert_eq!(
+            i128::from_le_bytes(result[1..17].try_into().unwrap()),
+            expected.epoch_nanoseconds()
+        );
+        assert_eq!(result[17], 11);
+        assert_eq!(&result[39..42], &[clock.0, clock.1, clock.2]);
+        for (offset, value) in [(42, clock.3), (44, clock.4), (46, clock.5)] {
+            assert_eq!(
+                u16::from_le_bytes(result[offset..offset + 2].try_into().unwrap()),
+                value
+            );
+        }
+        assert_eq!(call(&request[..request.len() - 1]).0, 2);
+        request.push(0);
+        assert_eq!(call(&request).0, 2);
+        request.pop();
+        assert_eq!(call(&request).0, 0);
+    }
+}

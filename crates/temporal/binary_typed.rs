@@ -1,7 +1,7 @@
 use super::Reader;
 use crate::{
-    CalendarName, CalendarProvider, Duration, Error, Instant, Overflow, PlainDate, PlainMonthDay,
-    PlainYearMonth, Precision, RoundingMode, TimeUnit,
+    CalendarName, CalendarProvider, Duration, Error, Instant, Overflow, PlainDate, PlainDateTime,
+    PlainMonthDay, PlainYearMonth, Precision, RoundingMode, TimeUnit,
 };
 use core::fmt::{self, Write};
 use std::vec::Vec;
@@ -19,6 +19,10 @@ const MODES: [RoundingMode; 9] = [
 ];
 enum Request<'a> {
     Parse(&'a str),
+    ParseDateTime(&'a str),
+    AddDateTime(i128, [f64; 10], bool, Overflow, &'a str),
+    RoundDateTime(i128, Option<TimeUnit>, u32, RoundingMode, &'a str),
+    FormatDateTime(i128, Precision, RoundingMode, CalendarName, &'a str),
     FormatDate(&'a str, f64, CalendarName, &'a str),
     ParseDate(&'a str, &'a str),
     CreateISODate([f64; 3], Option<crate::calendar::MonthCode>, Overflow),
@@ -63,6 +67,29 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
             let len = reader.length()?;
             Request::Parse(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
         }
+        "parsePlainDateTime" => {
+            let len = reader.length()?;
+            Request::ParseDateTime(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
+        }
+        "formatPlainDateTime" => {
+            let value = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let precision = match reader.byte()? {
+                255 => Precision::Auto,
+                254 => Precision::Minute,
+                value => Precision::Digits(value),
+            };
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let names = [
+                CalendarName::Auto,
+                CalendarName::Always,
+                CalendarName::Never,
+                CalendarName::Critical,
+            ];
+            let name = *names.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let len = reader.length()?;
+            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            Request::FormatDateTime(value, precision, mode, name, calendar)
+        }
         "parsePlainDate" | "parsePlainYearMonth" | "parsePlainMonthDay" => {
             let len = reader.length()?;
             Request::ParseDate(
@@ -91,6 +118,44 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
             let len = reader.length()?;
             let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
             Request::FormatDate(operation, epoch, name, calendar)
+        }
+        "addPlainDateTime" => {
+            let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let mut fields = [0.0; 10];
+            for value in &mut fields {
+                *value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            let subtract = match reader.byte()? {
+                0 => false,
+                1 => true,
+                _ => return Err(2),
+            };
+            let overflow = match reader.byte()? {
+                0 => Overflow::Constrain,
+                1 => Overflow::Reject,
+                _ => return Err(2),
+            };
+            let len = reader.length()?;
+            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            Request::AddDateTime(ns, fields, subtract, overflow, calendar)
+        }
+        "roundPlainDateTime" => {
+            let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let units = [
+                Some(TimeUnit::Hour),
+                Some(TimeUnit::Minute),
+                Some(TimeUnit::Second),
+                Some(TimeUnit::Millisecond),
+                Some(TimeUnit::Microsecond),
+                Some(TimeUnit::Nanosecond),
+                None,
+            ];
+            let unit = *units.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let increment = u32::from_le_bytes(reader.take(4)?.try_into().map_err(|_| 2)?);
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let len = reader.length()?;
+            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            Request::RoundDateTime(ns, unit, increment, mode, calendar)
         }
         "addPlainDate" => {
             let epoch = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
@@ -227,6 +292,60 @@ fn iso_fields(
 }
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::AddDateTime(ns, fields, subtract, overflow, calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let value = PlainDateTime::from_epoch_nanoseconds_in(ns, calendar)?;
+            let duration = duration(fields)?;
+            let result = if subtract {
+                value.checked_subtract(duration, overflow)?
+            } else {
+                value.checked_add(duration, overflow)?
+            };
+            let ns = result.epoch_nanoseconds();
+            super::encode_date_time(
+                output,
+                ns,
+                calendar.id(),
+                crate::ffi::date_time_snapshot(calendar, ns),
+            );
+        }
+        Request::RoundDateTime(ns, unit, increment, mode, calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let value = PlainDateTime::from_epoch_nanoseconds_in(ns, calendar)?;
+            let result = if let Some(unit) = unit {
+                value.round(unit, increment, mode)?
+            } else {
+                if increment != 1 {
+                    return Err(Error::InvalidRoundingOptions);
+                }
+                value.round_day(mode)?
+            };
+            let ns = result.epoch_nanoseconds();
+            super::encode_date_time(
+                output,
+                ns,
+                calendar.id(),
+                crate::ffi::date_time_snapshot(calendar, ns),
+            );
+        }
+        Request::ParseDateTime(text) => {
+            let calendar = crate::ffi::calendar_for_string(text)?;
+            let ns = PlainDateTime::parse_in(text, calendar)?.epoch_nanoseconds();
+            super::encode_date_time(
+                output,
+                ns,
+                calendar.id(),
+                crate::ffi::date_time_snapshot(calendar, ns),
+            );
+        }
+        Request::FormatDateTime(ns, precision, mode, name, calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let value = PlainDateTime::from_epoch_nanoseconds_in(ns, calendar)?;
+            write_text(
+                output,
+                value.format(precision, mode)?.with_calendar_name(name),
+            )?;
+        }
         Request::FormatDate(operation, epoch, name, calendar) => {
             if !epoch.is_finite()
                 || epoch.fract() != 0.0

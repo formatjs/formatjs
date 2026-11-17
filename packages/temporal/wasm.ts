@@ -57,7 +57,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 12 ||
+    core.temporal_abi_version() !== 13 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -114,6 +114,7 @@ const getFloat64 = View.prototype.getFloat64
 const codeUnit = String.prototype.charCodeAt
 const textIndex = String.prototype.indexOf
 const encodeInto = Encoder?.prototype.encodeInto
+const read16 = Function.prototype.call.bind(View.prototype.getUint16)
 const read32 = Function.prototype.call.bind(View.prototype.getUint32)
 const write32 = Function.prototype.call.bind(View.prototype.setUint32)
 const readSigned = Function.prototype.call.bind(View.prototype.getBigInt64)
@@ -138,6 +139,8 @@ function decodeISODate(output: DataView, bytes: Uint8Array, start: number) {
     properties: {
       date,
       values: {
+        era: undefined,
+        eraYear: undefined,
         dayOfWeek: bytes[start + 10],
         daysInWeek: 7,
         dayOfYear: apply(getUint16, output, [start + 14, true]),
@@ -578,6 +581,87 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       ? decodeISODate(fastView, fastBytes, result + 1)
       : decodeResult(result - 8)
   }
+  function dateTimeResult(result: number) {
+    if (fastBytes[result] !== 12) return decodeResult(result - 8)
+    const ns =
+      readUnsigned(fastView, result + 1, true) +
+      (readSigned(fastView, result + 9, true) << 64n)
+    const month = fastBytes[result + 26]
+    const daysInYear = read16(fastView, result + 30, true)
+    return {
+      epochNanoseconds: ns,
+      calendar: 'iso8601',
+      properties: {
+        date: {
+          year: read32(fastView, result + 22, true) | 0,
+          month,
+          day: fastBytes[result + 27],
+          monthCode: wasmStrings[(month - 1) * 2],
+        },
+        values: {
+          era: undefined,
+          eraYear: undefined,
+          dayOfWeek: fastBytes[result + 28],
+          daysInWeek: 7,
+          dayOfYear: read16(fastView, result + 32, true),
+          daysInMonth: fastBytes[result + 29],
+          monthsInYear: 12,
+          daysInYear,
+          inLeapYear: daysInYear === 366,
+          weekOfYear: fastBytes[result + 34],
+          yearOfWeek: read32(fastView, result + 35, true) | 0,
+          hour: fastBytes[result + 39],
+          minute: fastBytes[result + 40],
+          second: fastBytes[result + 41],
+          millisecond: read16(fastView, result + 42, true),
+          microsecond: read16(fastView, result + 44, true),
+          nanosecond: read16(fastView, result + 46, true),
+        },
+        errors: [],
+      },
+    }
+  }
+  invoke.parsePlainDateTime = value => {
+    validateText(value)
+    const pointer = begin(
+      operationCodes.parsePlainDateTime,
+      6 + value.length * 3
+    )
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    const result = exchange(6 + encoded.written)
+    return dateTimeResult(result)
+  }
+  invoke.formatPlainDateTime = (
+    value,
+    calendar,
+    precision,
+    mode,
+    calendarName
+  ) => {
+    const pointer = begin(
+      operationCodes.formatPlainDateTime,
+      25 + calendar.length * 3
+    )
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] =
+      precision === 'auto' ? 255 : precision === 'minute' ? 254 : precision
+    fastBytes[pointer + 19] = arrayIndex(modes, mode)
+    fastBytes[pointer + 20] = arrayIndex(calendarNames, calendarName)
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(fastBuffer!, pointer + 25, fastCapacity - 25)
+    )
+    write32(fastView, pointer + 21, encoded.written, true)
+    const result = exchange(25 + encoded.written)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
+  }
   invoke.parseInstant = value => {
     validateText(value)
     const pointer = begin(operationCodes.parseInstant, 6 + value.length * 3)
@@ -628,6 +712,46 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     'microsecond',
     'nanosecond',
   ]
+  invoke.addPlainDateTime = (value, calendar, fields, subtract, overflow) => {
+    const pointer = begin(
+      operationCodes.addPlainDateTime,
+      104 + calendar.length * 3
+    )
+    integer(pointer + 2, value)
+    for (let i = 0; i < durationPropertyNames.length; i++)
+      writeNumber(
+        fastView,
+        pointer + 18 + i * 8,
+        fields[durationPropertyNames[i] as keyof typeof fields],
+        true
+      )
+    fastBytes[pointer + 98] = subtract ? 1 : 0
+    fastBytes[pointer + 99] = overflow === 'reject' ? 1 : 0
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(fastBuffer!, pointer + 104, fastCapacity - 104)
+    )
+    write32(fastView, pointer + 100, encoded.written, true)
+    return dateTimeResult(exchange(104 + encoded.written))
+  }
+  invoke.roundPlainDateTime = (value, calendar, unit, increment, mode) => {
+    const pointer = begin(
+      operationCodes.roundPlainDateTime,
+      28 + calendar.length * 3
+    )
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] = unit === 'day' ? 6 : arrayIndex(units, unit)
+    write32(fastView, pointer + 19, increment, true)
+    fastBytes[pointer + 23] = arrayIndex(modes, mode)
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(fastBuffer!, pointer + 28, fastCapacity - 28)
+    )
+    write32(fastView, pointer + 24, encoded.written, true)
+    return dateTimeResult(exchange(28 + encoded.written))
+  }
   invoke.roundInstantUnit = (value, unit, increment, mode) => {
     const pointer = begin(operationCodes.roundInstant, 24)
     integer(pointer + 2, value)
