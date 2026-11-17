@@ -241,7 +241,21 @@ impl RenderData {
                         ZoneWidth::Long => names.long.as_ref(),
                         _ => None,
                     });
-                    let value = if let Some(generic) = generic {
+                    let specific =
+                        self.locale
+                            .metadata
+                            .time_zone_name
+                            .get(zone)
+                            .and_then(|names| match (width, in_dst) {
+                                (ZoneWidth::Long, false) => names.long_standard.as_ref(),
+                                (ZoneWidth::Long, true) => names.long_daylight.as_ref(),
+                                (ZoneWidth::Short, false) => names.short_standard.as_ref(),
+                                (ZoneWidth::Short, true) => names.short_daylight.as_ref(),
+                                _ => None,
+                            });
+                    let value = if let Some(specific) = specific {
+                        specific.clone()
+                    } else if let Some(generic) = generic {
                         generic.clone()
                     } else {
                         match names {

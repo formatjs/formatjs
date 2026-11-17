@@ -299,7 +299,16 @@ export function FormatDateTimePattern(
         epochNanoseconds >= 0n || timeZone === 'UTC'
           ? timeZoneName[timeZone]
           : undefined
-      if (f === 'shortGeneric' || f === 'longGeneric') {
+      const zoneNames = timeZoneName[timeZone]
+      const specific =
+        f === 'long'
+          ? zoneNames?.[tm.inDST ? 'longDaylight' : 'longStandard']
+          : f === 'short'
+            ? zoneNames?.[tm.inDST ? 'shortDaylight' : 'shortStandard']
+            : undefined
+      if (specific) {
+        fv = specific
+      } else if (f === 'shortGeneric' || f === 'longGeneric') {
         fv =
           timeZoneData?.[f] ||
           offsetToGmtString(

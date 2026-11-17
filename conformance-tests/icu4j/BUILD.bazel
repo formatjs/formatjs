@@ -4,6 +4,23 @@ load("//packages/intl-numberformat:locales.generated.bzl", "ALL_LOCALES")
 
 exports_files(["locale-format-fixtures.tsv"])
 
+java_binary(
+    name = "historical_timezone_oracle",
+    testonly = True,
+    srcs = ["HistoricalTimeZoneOracle.java"],
+    main_class = "HistoricalTimeZoneOracle",
+    deps = [":icu4j"],
+)
+
+genrule(
+    name = "historical_timezone_fixtures",
+    testonly = True,
+    outs = ["historical-timezone-fixtures.tsv"],
+    cmd = "$(execpath :historical_timezone_oracle) $@",
+    tools = [":historical_timezone_oracle"],
+    visibility = ["//visibility:public"],
+)
+
 java_test(
     name = "intl_relativetimeformat_conformance_test",
     size = "small",
