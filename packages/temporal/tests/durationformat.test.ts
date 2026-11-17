@@ -65,12 +65,14 @@ it('keeps ordinary property reads ordered and rejects receivers before reading i
   ])
   reads.length = 0
   for (const method of ['format', 'formatToParts'] as const)
-    expect(() => formatter[method].call(null, duration)).toThrow(TypeError)
+    expect(() => Reflect.apply(formatter[method], null, [duration])).toThrow(
+      TypeError
+    )
   expect(reads).toEqual([])
 })
 
 it('adapts existing host formatters without changing their prototype or descriptors', () => {
-  const Native = (Intl as typeof Intl & {DurationFormat: typeof DurationFormat})
+  const Native = (Intl as unknown as {DurationFormat: typeof DurationFormat})
       .DurationFormat,
     prototype = Native.prototype,
     descriptors = Object.getOwnPropertyDescriptors(prototype),
@@ -110,7 +112,9 @@ it('adapts existing host formatters without changing their prototype or descript
           },
         }
       )
-      expect(() => prototype[method].call(null, input)).toThrow(TypeError)
+      expect(() => Reflect.apply(prototype[method], null, [input])).toThrow(
+        TypeError
+      )
       expect(
         () => new (prototype[method] as unknown as new () => object)()
       ).toThrow(TypeError)

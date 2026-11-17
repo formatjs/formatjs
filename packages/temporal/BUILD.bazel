@@ -151,6 +151,7 @@ formatjs_test(
         "//:node_modules/temporal-polyfill",
         "//:node_modules/vitest",
         "//packages/intl-durationformat:lib",
+        "//packages/intl-durationformat:types",
     ],
 )
 
