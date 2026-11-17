@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.1](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.11.0...formatjs_cli_v1.11.1) (2026-11-17)
+
+
+### Bug Fixes
+
+* **deps:** update oxc to 0.158 ([#8013](https://github.com/formatjs/formatjs/issues/8013)) ([974671e](https://github.com/formatjs/formatjs/commit/974671e26756f03036b53e64660652a955468dcf))
+* **deps:** update ruff to v0.17.4 ([#7924](https://github.com/formatjs/formatjs/issues/7924)) ([895b6d8](https://github.com/formatjs/formatjs/commit/895b6d8f1bb6f3a3632e03d3570539d55c0d4bbe))
+
 ## [1.11.0](https://github.com/formatjs/formatjs/compare/formatjs_cli_v1.10.2...formatjs_cli_v1.11.0) (2026-11-12)
 
 

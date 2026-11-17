@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.0.1...@formatjs/intl-supportedvaluesof@3.1.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
 ## [3.0.1](https://github.com/formatjs/formatjs/compare/@formatjs/intl-supportedvaluesof@3.0.0...@formatjs/intl-supportedvaluesof@3.0.1) (2026-11-08)
 
 
