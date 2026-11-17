@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [10.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.4...@formatjs/intl-numberformat@10.1.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/intl-numberformat:** keep trailing zeros ([#7934](https://github.com/formatjs/formatjs/issues/7934)) ([70a4b89](https://github.com/formatjs/formatjs/commit/70a4b89d0fdf8a67d23bed1d4e12010292343d29))
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
+
+### Bug Fixes
+
+* **@formatjs/intl-numberformat:** preserve style and signs in compact notation ([#7940](https://github.com/formatjs/formatjs/issues/7940)) ([a904e24](https://github.com/formatjs/formatjs/commit/a904e2404aa186db1a3ccabd1e69cfc675fb457a))
+* **@formatjs/intl-numberformat:** support legacy construction ([#7936](https://github.com/formatjs/formatjs/issues/7936)) ([584304a](https://github.com/formatjs/formatjs/commit/584304ac4e4e09927be78c34f425b7164e6d1e9a))
+
 ## [10.0.4](https://github.com/formatjs/formatjs/compare/@formatjs/intl-numberformat@10.0.3...@formatjs/intl-numberformat@10.0.4) (2026-11-09)
 
 

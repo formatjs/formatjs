@@ -28,7 +28,7 @@ def main():
         shutil.copyfile(source, target)
     for manifest in sorted((out / 'crates').glob('*/Cargo.toml')):
         package = tomllib.loads(manifest.read_text())['package']
-        if not package['name'].startswith('formatjs_intl_'):
+        if not package['name'].startswith('formatjs_intl_') and package['name'] != 'formatjs_temporal':
             continue
         if package.get('publish') is not True:
             raise ValueError(f'{manifest}: publishing is disabled')

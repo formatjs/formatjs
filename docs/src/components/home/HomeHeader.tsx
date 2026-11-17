@@ -10,7 +10,8 @@ import {SearchBar} from '../SearchBar'
 
 const navLinks = [
   {label: 'Docs', href: '/docs/getting-started/installation'},
-  {label: 'Libraries', href: '#libraries'},
+  {label: 'Updates', href: '/#updates'},
+  {label: 'Libraries', href: '/#libraries'},
   {label: 'ICU syntax', href: '/docs/core-concepts/icu-syntax'},
   {label: 'GitHub', href: 'https://github.com/formatjs/formatjs'},
 ]

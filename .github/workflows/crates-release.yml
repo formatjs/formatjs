@@ -42,6 +42,7 @@ on:
           - formatjs_intl_relativetimeformat
           - formatjs_intl_segmenter
           - formatjs_intl_supportedvaluesof
+          - formatjs_temporal
 
 concurrency:
   group: ${{ github.workflow }}
@@ -100,6 +101,7 @@ jobs:
             formatjs_intl_supportedvaluesof
           )
           all_crates=(
+            formatjs_temporal
             formatjs_apple_printf_parser
             formatjs_java_printf_parser
             formatjs_icu_skeleton_parser
@@ -145,6 +147,9 @@ jobs:
                 formatjs_intl_v*|crates/formatjs_intl_v*)
                   crates=(formatjs_intl)
                   ;;
+                formatjs_temporal_v*|temporal_v*|crates/temporal_v*)
+                  crates=(formatjs_temporal)
+                  ;;
                 formatjs_intl_*_v*|intl_*_v*|crates/intl_*_v*)
                   crate="${RELEASE_TAG##*/}"
                   crate="${crate%_v*}"
@@ -184,11 +189,14 @@ jobs:
           fi
 
           has_intl=false
+          has_temporal=false
           for crate in "${crates[@]}"; do
             if contains_crate "$crate" "${intl_crates[@]}"; then has_intl=true; fi
+            if [ "$crate" = formatjs_temporal ]; then has_intl=true; has_temporal=true; fi
           done
           {
             echo "has_intl=$has_intl"
+            echo "has_temporal=$has_temporal"
             echo "has_crates=true"
             echo "dry_run=$dry_run"
             echo "names<<EOF"
@@ -222,6 +230,14 @@ jobs:
           if [ "${{ steps.crates.outputs.has_intl }}" = true ]; then
             targets+=(//tools/cargo:release_package_test)
           fi
+          if [ "${{ steps.crates.outputs.has_temporal }}" = true ]; then
+            targets+=(
+              //crates/temporal:temporal_test
+              //crates/temporal:public_calendar_test
+              //crates/temporal:context_test
+              //crates/temporal:ffi_test
+            )
+          fi
 
           if [ -n "${{ secrets.BUILDBUDDY_ORG_API_KEY }}" ]; then
             bazel test \
@@ -232,7 +248,7 @@ jobs:
             bazel test "${targets[@]}"
           fi
 
-      - name: Assemble Intl Cargo Packages
+      - name: Assemble Cargo Packages
         if: ${{ steps.crates.outputs.has_intl == 'true' }}
         env:
           BUILDBUDDY_ORG_API_KEY: ${{ secrets.BUILDBUDDY_ORG_API_KEY }}

@@ -155,6 +155,10 @@
     "title": "Intl Supportedvaluesof",
     "description": "A polyfill/ponyfill for Intl.supportedValuesOf."
   },
+  "polyfills/temporal": {
+    "title": "Temporal",
+    "description": "@formatjs/temporal brings Temporal dates, times, calendars, and time zones to TypeScript, Node.js, and Hermes."
+  },
   "python": {
     "title": "Python",
     "description": "---"
@@ -222,6 +226,10 @@
   "rust/intl": {
     "title": "Intl",
     "description": "---"
+  },
+  "rust/temporal": {
+    "title": "Temporal",
+    "description": "An allocation-free no_std Temporal core for Rust, with calendar arithmetic and IANA time zones."
   },
   "skills": {
     "title": "Skills",

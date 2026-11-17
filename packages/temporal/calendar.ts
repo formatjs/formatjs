@@ -9,30 +9,21 @@ import {
   tableMonthDifference,
   tableDate,
 } from '#packages/temporal/calendar-table.js'
-// Numeric calendars; callers own Temporal coercion and property order.
-import {
-  DateFromTime,
-  DayFromYear,
-  DaysInYear,
-  MonthFromTime,
-  YearFromTime,
-} from '#packages/ecma262-abstract/DateOperations.js'
 
-export const arithmeticCalendars = [
-  'iso8601',
-  'gregory',
-  'buddhist',
-  'japanese',
-  'roc',
-  'coptic',
-  'ethiopic',
-  'ethioaa',
-  'hebrew',
-  'indian',
-  'islamic-civil',
-  'islamic-tbla',
-  'persian',
-] as const
+import {
+  arithmeticCalendars,
+  ArithmeticCalendarStartOfYear,
+  ArithmeticCalendarMonthsInYear,
+  ArithmeticCalendarDaysInMonth,
+  ArithmeticCalendarMonthCode,
+  ArithmeticCalendarFromEpochDay,
+  ArithmeticCalendarEra,
+  HebrewLeapYear as hebrewLeap,
+  HebrewElapsedMonths as elapsedMonths,
+  JapaneseEras as japaneseEras,
+} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
+export {arithmeticCalendars} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
+
 export const calendarIds: readonly (
   | (typeof arithmeticCalendars)[number]
   | 'chinese'
@@ -59,7 +50,6 @@ export interface DateDuration {
   weeks?: number
   days?: number
 }
-const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 const mod = (value: number, divisor: number): number =>
   value - Math.floor(value / divisor) * divisor
 function integer(value: number): number {
@@ -96,68 +86,14 @@ function regulate(
     throw new RangeError('Calendar field out of range')
   return Math.min(Math.max(value, min), max)
 }
-function hebrewLeap(year: number): boolean {
-  return mod(7 * year + 1, 19) < 7
-}
-function elapsedMonths(year: number): number {
-  return Math.floor((235 * year - 234) / 19)
-}
-// Same postponement arithmetic as crates/intl_datetimeformat_calendars/core.rs.
-function hebrewDelay(year: number): number {
-  const months = elapsedMonths(year)
-  const day = 29 * months + Math.floor((12084 + 13753 * months) / 25920)
-  return day + Number(mod(3 * (day + 1), 7) < 3)
-}
-function isoLike(calendar: CalendarId): boolean {
-  return ['iso8601', 'gregory', 'buddhist', 'japanese', 'roc'].includes(
-    calendar
-  )
-}
-function isoYear(calendar: CalendarId, year: number): number {
-  return year + (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0)
-}
 function start(calendar: CalendarId, year: number): number {
   if (isLunisolar(calendar)) return tableYearStart(calendar, year)!
   if (calendar === 'islamic-umalqura')
-    return tableYearStart(calendar, year) ?? start('islamic-civil', year)
-  if (isoLike(calendar)) return DayFromYear(isoYear(calendar, year))
-  switch (calendar) {
-    case 'coptic':
-      return 1824665 - 2440588 + 365 * year + Math.floor(year / 4)
-    case 'ethiopic':
-      return 1723856 - 2440588 + 365 * year + Math.floor(year / 4)
-    case 'ethioaa': {
-      const value = year - 5500
-      return 1723856 - 2440588 + 365 * value + Math.floor(value / 4)
-    }
-    case 'indian': {
-      const value = year + 78
-      return DayFromYear(value) + 80
-    }
-    case 'islamic-civil':
-    case 'islamic-tbla':
-      return (
-        1948440 -
-        2440588 -
-        Number(calendar === 'islamic-tbla') +
-        354 * (year - 1) +
-        Math.floor((3 + 11 * year) / 30)
-      )
-    case 'persian':
-      return (
-        1948320 - 2440588 + 365 * (year - 1) + Math.floor((8 * year + 21) / 33)
-      )
-  }
-  const present = hebrewDelay(year)
-  return (
-    -2092590 +
-    present +
-    (hebrewDelay(year + 1) - present === 356
-      ? 2
-      : present - hebrewDelay(year - 1) === 382
-        ? 1
-        : 0)
-  )
+    return (
+      tableYearStart(calendar, year) ??
+      ArithmeticCalendarStartOfYear('islamic-civil', year)
+    )
+  return ArithmeticCalendarStartOfYear(calendar, year)
 }
 export function calendarStartOfYear(
   calendar: CalendarId,
@@ -175,10 +111,9 @@ export function monthsInYear(calendar: CalendarId, year: number): number {
   const native = nativeTemporal()
   if (native) return native.calendarMonthsInYear(calendar, year)
   if (isLunisolar(calendar)) return tableLeapMonth(calendar, year) ? 13 : 12
-  return ['coptic', 'ethiopic', 'ethioaa'].includes(calendar) ||
-    (calendar === 'hebrew' && hebrewLeap(year))
-    ? 13
-    : 12
+  return calendar === 'islamic-umalqura'
+    ? 12
+    : ArithmeticCalendarMonthsInYear(calendar, year)
 }
 export function daysInMonth(
   calendar: CalendarId,
@@ -196,31 +131,7 @@ export function daysInMonth(
       tableMonthLength(calendar, year, month) ??
       daysInMonth('islamic-civil', year, month)
     )
-  if (isoLike(calendar)) {
-    return month === 12
-      ? 31
-      : monthStarts[month] -
-          monthStarts[month - 1] +
-          Number(month === 2 && DaysInYear(isoYear(calendar, year)) === 366)
-  }
-  const length = start(calendar, year + 1) - start(calendar, year)
-  if (['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
-    return month === 13 ? length - 360 : 30
-  if (calendar === 'indian')
-    return month === 1
-      ? 30 + Number(DaysInYear(year + 78) === 366)
-      : month <= 6
-        ? 31
-        : 30
-  if (calendar === 'islamic-civil' || calendar === 'islamic-tbla')
-    return month % 2 === 1 || (month === 12 && length === 355) ? 30 : 29
-  if (calendar === 'persian')
-    return month <= 6 ? 31 : month < 12 ? 30 : length - 336
-  const code = month + Number(!hebrewLeap(year) && month >= 6)
-  if ([4, 7, 9, 11, 13].includes(code)) return 29
-  if (code === 2) return length % 10 === 5 ? 30 : 29
-  if (code === 3) return length % 10 === 3 ? 29 : 30
-  return 30
+  return ArithmeticCalendarDaysInMonth(calendar, year, month)
 }
 function monthCode(calendar: CalendarId, year: number, month: number): string {
   if (isLunisolar(calendar)) {
@@ -231,9 +142,11 @@ function monthCode(calendar: CalendarId, year: number, month: number): string {
       (leap > 0 && month === leap + 1 ? 'L' : '')
     )
   }
-  const leap = calendar === 'hebrew' && hebrewLeap(year)
-  if (leap && month === 6) return 'M05L'
-  return 'M' + String(month - Number(leap && month > 6)).padStart(2, '0')
+  return ArithmeticCalendarMonthCode(
+    calendar === 'islamic-umalqura' ? 'islamic-civil' : calendar,
+    year,
+    month
+  )
 }
 function monthFromCode(
   calendar: CalendarId,
@@ -328,49 +241,10 @@ export function calendarFromEpochDayRaw(
     const value = tableDate(calendar, epoch)
     return {...value, monthCode: monthCode(calendar, value.year, value.month)}
   }
-  const t = epoch * 86400000,
-    civilYear = YearFromTime(t)
-  if (isoLike(calendar)) {
-    const year =
-        civilYear -
-        (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0),
-      month = MonthFromTime(t) + 1
-    return {
-      year,
-      month,
-      monthCode: monthCode(calendar, year, month),
-      day: DateFromTime(t),
-    }
-  }
+  if (calendar !== 'islamic-umalqura')
+    return ArithmeticCalendarFromEpochDay(calendar, epoch)
   const jd = epoch + 2440588
-  let year: number
-  switch (calendar) {
-    case 'coptic':
-      year = Math.floor((4 * (jd - 1824665) + 3) / 1461)
-      break
-    case 'ethiopic':
-    case 'ethioaa':
-      year =
-        Math.floor((4 * (jd - 1723856) + 3) / 1461) +
-        (calendar === 'ethioaa' ? 5500 : 0)
-      break
-    case 'islamic-umalqura':
-    case 'islamic-civil':
-    case 'islamic-tbla':
-      year = Math.floor(
-        (30 * (jd - 1948440 + Number(calendar === 'islamic-tbla')) + 10646) /
-          10631
-      )
-      break
-    case 'persian':
-      year = 1 + Math.floor((33 * (jd - 1948320) + 3) / 12053)
-      break
-    case 'indian':
-      year = civilYear - 78
-      break
-    default:
-      year = Math.floor(((epoch + 2092590) * 492480) / 179876755) + 1
-  }
+  let year = Math.floor((30 * (jd - 1948440) + 10646) / 10631)
   while (start(calendar, year) > epoch) year--
   while (start(calendar, year + 1) <= epoch) year++
   let month = 1,
@@ -554,13 +428,6 @@ export function calendarDateUntilRaw(
   }
   return result
 }
-const japaneseEras = [
-  [18017, 'reiwa', 2018],
-  [6947, 'heisei', 1988],
-  [-15713, 'showa', 1925],
-  [-20974, 'taisho', 1911],
-  [-35428, 'meiji', 1867],
-] as const
 export function calendarEra(
   calendar: CalendarId,
   epoch: number,
@@ -575,41 +442,12 @@ export function calendarEra(
     calendar,
     epoch
   )
-  switch (calendar) {
-    case 'iso8601':
-    case 'chinese':
-    case 'dangi':
-      return undefined
-    case 'buddhist':
-      return {era: 'be', eraYear: year}
-    case 'coptic':
-    case 'hebrew':
-      return {era: 'am', eraYear: year}
-    case 'ethiopic':
-      return {
-        era: year > 0 ? 'am' : 'aa',
-        eraYear: year > 0 ? year : year + 5500,
-      }
-    case 'ethioaa':
-      return {era: 'aa', eraYear: year}
-    case 'indian':
-      return {era: 'shaka', eraYear: year}
-    case 'persian':
-      return {era: 'ap', eraYear: year}
-    case 'roc':
-      return {
-        era: year > 0 ? 'roc' : 'broc',
-        eraYear: year > 0 ? year : 1 - year,
-      }
-    case 'islamic-umalqura':
-    case 'islamic-civil':
-    case 'islamic-tbla':
-      return {era: year > 0 ? 'ah' : 'bh', eraYear: year > 0 ? year : 1 - year}
-    case 'japanese':
-      for (const [start, era, offset] of japaneseEras)
-        if (epoch >= start) return {era, eraYear: year - offset}
-  }
-  return {era: year > 0 ? 'ce' : 'bce', eraYear: year > 0 ? year : 1 - year}
+  if (calendar === 'chinese' || calendar === 'dangi') return undefined
+  return ArithmeticCalendarEra(
+    calendar === 'islamic-umalqura' ? 'islamic-civil' : calendar,
+    epoch,
+    year
+  )
 }
 export function calendarYearFromEra(
   calendar: CalendarId,

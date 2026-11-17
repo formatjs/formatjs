@@ -28,6 +28,17 @@ const calendars = [
 ]
 
 describe('CalendarDateFromTime', () => {
+  test.each(
+    data.filter(({calendar}) => calendar !== 'chinese' && calendar !== 'dangi')
+  )('$calendar preserves civil-date bounds with timezone padding', provider => {
+    const bound = 8640000000000000
+    const day = 86400000
+    expect(() => provider.dateFromTime(-bound - day - 1)).toThrow(RangeError)
+    expect(() => provider.dateFromTime(bound + day)).toThrow(RangeError)
+    expect(() => provider.dateFromTime(-bound - day)).not.toThrow()
+    expect(() => provider.dateFromTime(bound + day - 1)).not.toThrow()
+  })
+
   test('calendar conversion does not require native DateTimeFormat', () => {
     const date = (globalThis as any).Temporal.PlainDate.from('2024-03-11')
     const expected = calendars.map(calendar => {

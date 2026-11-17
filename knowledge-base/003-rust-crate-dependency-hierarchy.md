@@ -578,7 +578,9 @@ read-only. Crate releases use Release Please and the existing release workflow.
 
 ## Temporal core
 
-`formatjs_temporal` (`crates/temporal`) is private, allocation-free and `no_std`.
+`formatjs_temporal` (`crates/temporal`) is published, allocation-free and `no_std`.
+Its Cargo package includes generated calendars/timezones through `compiled_data`;
+`//crates:intl_release` assembles those files and the Cargo build script.
 It owns checked Instant values, ISO conversion, instant string parsing, rounding
 and serialization with caller-supplied offsets.
 Rust/TS share parser vectors; independent ICU4J Gregorian fixtures validate both

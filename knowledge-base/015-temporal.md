@@ -153,7 +153,14 @@ and 178,503 identity pairs.
 ## Current state
 
 `packages/temporal` owns the TypeScript implementation and tests. Its workspace
-name is `@formatjs/temporal`; it remains private while incomplete.
+name is `@formatjs/temporal`; its first public npm release is 1.0.0.
+Release Please tracks its Bazel version and package manifest. Subsequent npm
+releases use the repository's `release.yml` trusted publisher.
+
+Rust crate `formatjs_temporal` starts at 1.0.0. `//crates:intl_release` bundles
+its generated calendars/timezones and a Cargo build script, so published features
+work without Bazel. Release Please tracks `crates/temporal`; `crates-release.yml`
+publishes through crates.io trusted publishing.
 `benchmarks/temporal` owns comparisons and measurement records.
 
 The public entry exports Instant, Duration, PlainTime, PlainDate, PlainDateTime,
@@ -468,7 +475,7 @@ reset enumerability even when replacing ordinary user-assigned properties.
 
 Namespace detection and package detection differ: a missing Date method requests
 loading the package, without replacing an otherwise available namespace. Presence
-checks never certify calendar/Intl conformance. The package remains private.
+checks never certify calendar/Intl conformance.
 
 The Date bridge calls captured intrinsic Date.getTime, then exact BigInt scaling.
 It does not coerce the receiver or call public getters/factories. Invalid Dates

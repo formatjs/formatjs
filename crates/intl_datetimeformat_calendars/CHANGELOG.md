@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v0.2.3...formatjs_intl_datetimeformat_calendars_v0.3.0) (2026-11-17)
+
+
+### Features
+
+* **@formatjs/temporal:** add Temporal for TypeScript, Rust and Hermes ([#8016](https://github.com/formatjs/formatjs/issues/8016)) ([8d5f2a4](https://github.com/formatjs/formatjs/commit/8d5f2a4064cd0bb6e9310b9d91f4daf4f1399582))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_datetimeformat bumped from 1.0.2 to 1.1.0
+
 ## [0.2.3](https://github.com/formatjs/formatjs/compare/formatjs_intl_datetimeformat_calendars_v0.2.2...formatjs_intl_datetimeformat_calendars_v0.2.3) (2026-11-08)
 
 

@@ -4,6 +4,16 @@ Allocation-free `no_std` Temporal core with eight value types, `Now`, all sixtee
 calendars and IANA timezone providers. TypeScript package:
 [@formatjs/temporal](../../packages/temporal/README.md).
 
+```toml
+[dependencies]
+formatjs_temporal = { version = "1.0.0", features = ["compiled_data"] }
+```
+
+Default features need no bundled data. `compiled_data` includes all calendars and
+IANA timezones; `compiled_calendars` and `compiled_time_zones` enable each separately.
+Published crates contain generated data and a Cargo build script; Bazel is only
+needed when building this repository.
+
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
 ABI 9 exposes 62 Rust operations to WASM and native Hermes. The standalone SDK
