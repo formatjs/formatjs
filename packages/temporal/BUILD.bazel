@@ -205,7 +205,7 @@ test262_harness_bin.test262_harness_binary(
 [
     sh_test(
         name = name,
-        size = "small",
+        size = "large",
         srcs = ["tests/hermes-test262.sh"],
         args = [
             "$(rootpath :instant_hermes_harness)",
