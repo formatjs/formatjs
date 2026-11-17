@@ -48,10 +48,11 @@ formatting methods accept `Temporal.PlainDate`, `PlainDateTime`, `PlainTime`,
 wall-clock fields; `Instant` uses the formatter's timezone. Range endpoints must
 have the same Temporal type. `ZonedDateTime` is rejected, as required by the spec.
 
-For runtimes without native Temporal, install `temporal-polyfill` and load it first:
+For runtimes without native Temporal, install
+[`@formatjs/temporal`](/docs/polyfills/temporal) and load it first:
 
 ```js
-import 'temporal-polyfill/full/global'
+import '@formatjs/temporal/polyfill.js'
 import '@formatjs/intl-datetimeformat/polyfill-force'
 import '@formatjs/intl-datetimeformat/locale-data/en'
 ```

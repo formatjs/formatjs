@@ -158,6 +158,7 @@ formatjs_library(
         "//:node_modules/@formatjs_generated/icu.calendar",
         "//:node_modules/@formatjs_generated/tz",
         "//packages/ecma262-abstract",
+        "//packages/ecma402-abstract/Calendar",
         "//packages/ecma402-abstract/DateTimeFormat",
         "//packages/ecma402-abstract/DurationFormat",
         "//packages/ecma402-abstract/types",

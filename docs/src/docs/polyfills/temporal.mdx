@@ -1,0 +1,144 @@
+# Temporal
+
+`@formatjs/temporal` brings Temporal dates, times, calendars, and time zones to TypeScript, Node.js, and Hermes.
+
+Use all eight Temporal value types and all 16 calendars, with an optional Rust
+backend.
+
+The [Rust crate](/docs/rust/temporal) provides the same date/time primitives for
+native applications.
+
+## Installation
+
+```sh
+npm install @formatjs/temporal
+```
+
+Import the namespace without changing globals:
+
+```ts
+import {Temporal} from '@formatjs/temporal'
+
+const meeting = Temporal.ZonedDateTime.from(
+  '2020-03-07T12:00-05:00[America/New_York]'
+)
+
+meeting.add({days: 1}).toString()
+// '2020-03-08T12:00:00-04:00[America/New_York]'
+
+meeting.add({hours: 24}).toString()
+// '2020-03-08T13:00:00-04:00[America/New_York]'
+```
+
+A calendar day can differ from 24 hours when the time-zone offset changes.
+
+To install `globalThis.Temporal` and `Date.prototype.toTemporalInstant`, import:
+
+```ts
+import '@formatjs/temporal/polyfill.js'
+```
+
+This preserves an existing Temporal implementation. Use
+`@formatjs/temporal/polyfill-force.js` to replace it unconditionally.
+
+## Choose an entry point
+
+| Entry                                  | Use it for                                                    |
+| -------------------------------------- | ------------------------------------------------------------- |
+| `@formatjs/temporal`                   | An isolated namespace using installed Intl data               |
+| `@formatjs/temporal/polyfill.js`       | Conditional global installation                               |
+| `@formatjs/temporal/polyfill-force.js` | Unconditional global installation                             |
+| `@formatjs/temporal/standalone.js`     | An isolated namespace with bundled calendar and IANA data     |
+| `@formatjs/temporal/wasm-native.js`    | An isolated namespace backed by the optional Rust WASM module |
+
+The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
+`PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
+
+## Calendars and time-zone data
+
+The default entry captures the installed `Intl.DateTimeFormat` for named
+time-zone offsets and Umm al-Qura data. It works with native Intl or installed
+FormatJS polyfills. Load Intl polyfills and their data **before importing
+Temporal**. UTC and numeric offsets work without Intl.
+
+For owned time-zone histories and recurring future rules, use:
+
+```ts
+import {Temporal} from '@formatjs/temporal/standalone.js'
+
+Temporal.ZonedDateTime.from('2150-07-01T12:00[America/New_York]')
+```
+
+Standalone includes calendar tables and IANA transitions with future rules;
+its time-zone data does not stop at 2100. Update the package when timezone laws
+change. The default entry instead follows the installed Intl data version.
+
+Default transition queries search host offsets. Intl has no transition
+enumeration API, so closely spaced changes can escape that search. Use standalone
+when transition histories must be determined by the bundled data.
+
+Chinese and Dangi use compact ICU4X data with an arithmetic approximation outside
+1900–2102 in the default entry. Default Umm al-Qura uses host data for AH 1300–1600,
+then a civil-calendar fallback. These data policies are distinct from
+independently verified calendar authority ranges.
+
+## Locale formatting
+
+```ts
+import '@formatjs/temporal/polyfill.js'
+
+Temporal.PlainDate.from('2026-11-17').toLocaleString('en', {
+  dateStyle: 'long',
+})
+// 'November 17, 2026'
+```
+
+Date/time locale methods use the installed DateTimeFormat; Duration uses
+DurationFormat. Without the corresponding formatter, locale methods return an
+ISO representation. See [DateTimeFormat](/docs/polyfills/intl-datetimeformat) and
+[DurationFormat](/docs/polyfills/intl-durationformat) for data loading.
+
+Global installation registers Temporal with FormatJS formatters and adapts legacy
+host formatters. Create formatters after installation. For an isolated namespace,
+register explicitly with `DateTimeFormat.__addTemporalNamespace(Temporal)` when
+using the FormatJS DateTimeFormat class.
+
+## Hermes
+
+The TypeScript implementation runs on Hermes as source and optimized bytecode.
+Install the required Intl APIs and data first, or use the standalone namespace
+for calendar and named-timezone operations without host Intl data.
+
+For Rust-backed Temporal, use the [native Hermes SDK](/docs/guides/hermes-intl#temporal).
+Native integration requires rebuilding your app. The tested Hermes runtime has
+no WebAssembly runtime, so use TypeScript or the native SDK there.
+
+## Optional WASM backend
+
+```ts
+import {configureTemporalWasm} from '@formatjs/temporal/wasm-native.js'
+
+const {instance} = await WebAssembly.instantiateStreaming(
+  fetch('/temporal-backend.wasm')
+)
+const Temporal = configureTemporalWasm(instance)
+```
+
+Serve the package's `temporal-backend.wasm` asset as `application/wasm`.
+This entry includes Rust calendar/time-zone data without duplicate TypeScript
+tables. Keep its namespace separate from the default entry. WASM is optional;
+TypeScript remains the default. See the
+[versioned benchmarks](https://github.com/formatjs/formatjs/tree/main/benchmarks/temporal)
+for size and performance comparisons.
+
+## Conformance and verification
+
+The pinned Temporal-feature Test262 corpus passes on Node.js and Hermes
+source/bytecode, including Intl integration. Exclusions cover documented
+IANA/CLDR data-version differences; no implementation failures are excluded.
+Independent ICU controls verify calendar arithmetic, offsets, transitions,
+rounding, and locale output. These checks do not establish astronomical accuracy
+beyond the documented calendar authority ranges.
+
+See the [coverage and exclusion audit](https://github.com/formatjs/formatjs/blob/main/knowledge-base/015a-temporal-completion-audit.md)
+for exact profiles, counts, data policies, and limitations.

@@ -218,8 +218,9 @@ Minute/second-only formats keep their requested fields.
 With all calendar modules and locale patterns loaded, negotiation advertises `gregory`, `iso8601`, `buddhist`, `coptic`,
 `ethiopic`, `ethioaa`, `roc`, `indian`, `islamic-civil`, `islamic-tbla`, `islamic-umalqura`, `persian`,
 `japanese`, `hebrew`, `chinese`, and `dangi`. Gregorian and ISO share arithmetic;
-ISO patterns come from CLDR XML, and other calendars use CLDR calendar packages. Arithmetic conversion uses the public
-`temporal-polyfill/fns` APIs.
+ISO patterns come from CLDR XML, and other calendars use CLDR calendar packages. Arithmetic conversion uses owned numeric helpers in
+`ecma402-abstract/Calendar/Arithmetic.ts`, shared with Temporal. Formatter runtime
+packages do not import `temporal-polyfill` or the Temporal facade.
 Umm al-Qura uses `@formatjs_generated/icu.calendar` month lengths generated from
 pinned ICU4X, with its documented civil-calendar fallback outside the official
 AH 1300–1600 table. Runtime conversion does not call native Intl.
