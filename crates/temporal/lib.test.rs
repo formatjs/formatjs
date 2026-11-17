@@ -2460,3 +2460,49 @@ fn instant_rounding_keeps_wide_results_at_signed_64_bit_boundaries() {
         }
     }
 }
+
+#[test]
+fn recurring_transitions_preserve_january_boundary_and_explicit_join() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionRule, TransitionZone,
+    };
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day { day: 0, seconds: 0 },
+            TransitionRule::Day {
+                day: 0,
+                seconds: 7200,
+            },
+        )),
+    )
+    .unwrap();
+    let midnight: Instant = "2024-01-01T00:00Z".parse().unwrap();
+    let end: Instant = "2024-01-01T01:00Z".parse().unwrap();
+    let before = Instant::from_epoch_nanoseconds(midnight.epoch_nanoseconds() - 1).unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    assert_eq!(
+        zone.transition(before, TransitionDirection::Next),
+        Some(midnight)
+    );
+    assert_eq!(
+        zone.transition(midnight, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(
+        zone.transition(end, TransitionDirection::Previous),
+        Some(midnight)
+    );
+    let transitions = [OffsetTransition {
+        epoch_seconds: (midnight.epoch_nanoseconds() / 1_000_000_000) as i64 - 1,
+        offset_seconds: 3600,
+    }];
+    let joined = TransitionZone::new(0, &transitions, Some(rule)).unwrap();
+    assert_eq!(
+        joined.transition(before, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(joined.offset_nanoseconds(midnight), 3_600_000_000_000);
+    assert_eq!(joined.offset_nanoseconds(end), 0);
+}

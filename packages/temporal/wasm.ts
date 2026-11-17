@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 15 ||
+    core.temporal_abi_version() !== 16 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -876,6 +876,23 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     )
     write32(fastView, pointer + 24, encoded.written, true)
     return dateTimeResult(exchange(28 + encoded.written))
+  }
+  invoke.timeZoneTransition = (identifier, value, direction) => {
+    const pointer = begin(
+      operationCodes.timeZoneTransition,
+      23 + identifier.length * 3
+    )
+    integer(pointer + 2, value)
+    fastBytes[pointer + 18] =
+      direction === 'next' ? 0 : direction === 'previous' ? 1 : 255
+    const encoded = putText(
+      encoder,
+      identifier,
+      new Bytes(fastBuffer!, pointer + 23, fastCapacity - 23)
+    )
+    write32(fastView, pointer + 19, encoded.written, true)
+    const result = exchange(23 + encoded.written)
+    return fastBytes[result] === 0 ? null : readInteger(result)
   }
   const scalarRound = (() => {
     const round = core.temporal_round_instant

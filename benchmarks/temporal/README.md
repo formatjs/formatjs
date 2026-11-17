@@ -2002,3 +2002,39 @@ retains the negative control. No new exclusions.
 All 63 focused Rust/TS/WASM/ICU/Hermes targets pass after the Instant changes,
 including public types, scalar fallback and signed/full-range controls. Full
 owned-Intl WASM conformance remains a CI gate. No new exclusions.
+
+### Typed timezone transitions
+
+ABI 15 profiles attribute 58% of zoned parsing and 51% of transition self time to
+Rust, with roughly 34% in JS for both. Transition queries still encoded dynamic
+maps/decimal BigInts; recurring-rule checks recomputed the same yearly events for
+before/after offsets. ABI 16 adds a typed transition request and integer/null
+result. Rust evaluates both states from one set of events. January 1 keeps its
+separate rule-year windows; the first second after explicit history keeps its
+join check. Core stays no_std; no cache, dependency or timezone-data change.
+
+`zoned-profile-results.json` retains the sampled attribution. Short diagnostic
+trials in `zoned-experiments.json` reduce transition time to 2.20 microseconds
+with typed transport, then 1.83 with paired checks. The full isolated checkpoint
+in `zoned-hillclimb-results.json` records 1.515 microseconds versus the preceding
+4.535; TS is 0.459. Eight varying inputs/parity, 20,000 warmup and nine samples of
+50,000 calls remain unchanged; transitions retain 1,000 warmup and nine samples
+of 5,000. Unchanged pinned reference times come from instant-hillclimb-results.json.
+
+Current medians win 23/48 against TS, 25/48 against temporal-polyfill 1.0.7 and
+35/48 against @js-temporal/polyfill 0.5.1. Close workloads vary between checkpoints;
+this count is not a stability claim. Transitions and many other operations still
+lose to TS; the all-workload goal stays open. Zoned parsing remains 27.26 versus
+TS 3.98 microseconds and is the next large boundary-work target.
+
+`zoned-startup-results.json` records nine fresh processes/profile. Native Node
+namespace payload is 506,031 bytes gzip, +5,450 versus the Instant checkpoint;
+473,021 bytes are WASM. TS is 39,692; local name changes account for two bytes,
+and its executable AST still matches baseline. Native ISO/timezone readiness is
+16.61 ms versus TS 19.27 ms; full native calendars 27.29 ms. Browser export-all
+size is separate. Native owns calendar/timezone data; default TS uses host Intl.
+No new conformance exclusions.
+
+All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;
+validation targets are recorded in zoned-experiments.json. Broader conformance
+remains a CI gate. No new exclusions.

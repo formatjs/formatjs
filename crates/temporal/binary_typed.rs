@@ -1,7 +1,8 @@
 use super::Reader;
 use crate::{
     CalendarName, CalendarProvider, Duration, Error, Instant, Overflow, PlainDate, PlainDateTime,
-    PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit,
+    PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit, TimeZone,
+    TransitionDirection,
 };
 use core::fmt::{self, Write};
 use std::vec::Vec;
@@ -19,6 +20,7 @@ const MODES: [RoundingMode; 9] = [
 ];
 enum Request<'a> {
     Parse(&'a str),
+    ZoneTransition(i128, TransitionDirection, &'a str),
     ParseTime(&'a str),
     DifferenceTime(f64, f64, TimeUnit, TimeUnit, u32, RoundingMode),
     FormatDuration([f64; 10], Precision, RoundingMode),
@@ -70,6 +72,17 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "timeZoneTransition" => {
+            let value = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let direction = match reader.byte()? {
+                0 => TransitionDirection::Next,
+                1 => TransitionDirection::Previous,
+                _ => return Err(2),
+            };
+            let len = reader.length()?;
+            let identifier = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            Request::ZoneTransition(value, direction, identifier)
+        }
         "parseInstant" => {
             let len = reader.length()?;
             Request::Parse(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
@@ -519,6 +532,14 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
                     PlainMonthDay::from_epoch_day_in(epoch, calendar)?.format(name),
                 )?,
                 _ => return Err(Error::InvalidSyntax),
+            }
+        }
+        Request::ZoneTransition(value, direction, identifier) => {
+            let zone = crate::ffi::time_zones().resolve(identifier)?;
+            let value = Instant::from_epoch_nanoseconds(value)?;
+            match zone.transition(value, direction) {
+                Some(value) => write_integer(output, value.epoch_nanoseconds()),
+                None => output.push(0),
             }
         }
         Request::Parse(text) => write_integer(output, text.parse::<Instant>()?.epoch_nanoseconds()),

@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 15. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 16. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -210,16 +210,16 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Matched Node namespace consumers measure 39,690 bytes gzip for default TS,
+Matched Node namespace consumers measure 39,692 bytes gzip for default TS,
 23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
-Native-data WASM totals 500,581 bytes, including 467,656 binary bytes.
+Native-data WASM totals 506,031 bytes, including 473,021 binary bytes.
 It owns calendar and IANA data; JS references use host Intl data.
-Nine-process ISO/timezone startup medians: TS 19.39 ms, native-data WASM
-16.85 ms, full reference 19.32 ms, official reference 26.67 ms.
-Current WASM medians win 24/48 workloads against TS, 25/48 against the basic
-reference and 36/48 against the official reference. Rounding wins this snapshot
+Nine-process ISO/timezone startup medians: TS 19.27 ms, native-data WASM
+16.61 ms, full reference 19.25 ms, official reference 26.78 ms.
+Current WASM medians win 23/48 workloads against TS, 25/48 against the basic
+reference and 35/48 against the official reference. Rounding wins this snapshot
 but loses longer controls; remaining slower workloads keep the goal open.
-See [current benchmarks](../../benchmarks/temporal/README.md#compact-instant-transport)
+See [current benchmarks](../../benchmarks/temporal/README.md#typed-timezone-transitions)
 for samples, bundle scopes and the official reference's ICU 78.2 Chinese
 calendar incompatibility.
 
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 15 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 16 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -265,3 +265,9 @@ errors, wide results and the sentinel value itself. Engines without scalar i64
 interop use buffers throughout. Both routes call the public Rust rounding method.
 Native Instant factories wrap validated Rust results directly; numeric user
 constructors retain range checks. JS option/coercion order stays unchanged.
+
+ABI 16 adds typed timezone-transition requests/results. Rust checks recurring
+transition candidates using one set of yearly events for before/after offsets.
+January 1 retains separate rule-year windows; the first second after explicit
+history retains its join check. No cache, new dependency or data-policy change.
+Signed/full-range values, null transitions and malformed requests stay covered.

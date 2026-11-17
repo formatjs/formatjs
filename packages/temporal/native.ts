@@ -62,6 +62,7 @@ export interface NativeCall {
   addInstant?: NativeTemporal['addInstant']
   addPlainDate?: NativeTemporal['addPlainDate']
   roundInstantUnit?: NativeTemporal['roundInstantUnit']
+  timeZoneTransition?: NativeTemporal['timeZoneTransition']
 }
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
@@ -957,14 +958,16 @@ export function configureNativeTemporal(
           disambiguation,
         })
       ),
-    timeZoneTransition: (identifier, value, direction) => {
-      const result = call('timeZoneTransition', {
-        identifier,
-        nanoseconds: text(value),
-        direction,
-      })
-      return result === null ? null : ToBigInt(result)
-    },
+    timeZoneTransition:
+      invoke?.timeZoneTransition ??
+      ((identifier, value, direction) => {
+        const result = call('timeZoneTransition', {
+          identifier,
+          nanoseconds: text(value),
+          direction,
+        })
+        return result === null ? null : ToBigInt(result)
+      }),
     calendarStartOfYear: (calendar, year) =>
       call('calendarStartOfYear', {calendar, year}),
     calendarMonthsInYear: (calendar, year) =>

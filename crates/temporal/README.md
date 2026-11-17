@@ -748,7 +748,7 @@ profiles lose all 43 V8 hot workloads to TS. Completion audit remains open.
 
 ## Typed WASM operations
 
-ABI 15 provides typed variants for twenty-six hot operations, signed 128-bit Instant
+ABI 16 provides typed variants for twenty-seven hot operations, signed 128-bit Instant
 transfers, compact complete ISO date snapshots and streamed formatting. Rust ISO
 formatting writes one bounded stack buffer. Non-ISO records and deferred getter
 errors retain their general representation. SDK JSON responses keep their shapes.
@@ -787,3 +787,9 @@ errors, wide results and the sentinel value itself. Engines without scalar i64
 interop use buffers throughout. Both routes call the public Rust rounding method.
 Native Instant factories wrap validated Rust results directly; numeric user
 constructors retain range checks. JS option/coercion order stays unchanged.
+
+ABI 16 adds typed timezone-transition requests/results. Rust checks recurring
+transition candidates using one set of yearly events for before/after offsets.
+January 1 retains separate rule-year windows; the first second after explicit
+history retains its join check. No cache, new dependency or data-policy change.
+Signed/full-range values, null transitions and malformed requests stay covered.

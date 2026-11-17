@@ -309,3 +309,14 @@ matches baseline; its intrinsic-capture negative control still fails as intended
 No new exclusions. Current isolated WASM medians win 24/48 against TS; longer
 rounding controls disagree with that workload's apparent win. The objective stays
 open. See instant-*.json and the benchmark README for measurements and limits.
+
+### ABI 16 timezone-transition follow-up
+
+Typed transition requests/results and paired recurring-rule state calculations
+retain full-range and strict-boundary semantics. Controls cover January 1's
+rule-year windows, the explicit/footer join, fixed/UTC zones, null transitions
+and malformed requests. Twelve focused Rust/WASM Test262/ICU/Hermes/type targets
+pass; targets are recorded in benchmarks/temporal/zoned-experiments.json. Broader
+conformance remains a CI gate. Default TS AST and its negative control pass.
+No new exclusions. Isolated transition time falls from 4.535 to 1.515 microseconds;
+TS remains faster at 0.459. Overall sampled WASM wins 23/48 versus TS; goal open.

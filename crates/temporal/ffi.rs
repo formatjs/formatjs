@@ -242,7 +242,7 @@ pub(crate) fn resolve_calendar(identifier: &str) -> Result<CalendarRef<'static>,
 pub(crate) fn calendar_for_string(text: &str) -> Result<CalendarRef<'static>, Error> {
     resolve_calendar(crate::parse::calendar_annotation(text).unwrap_or("iso8601"))
 }
-fn time_zones() -> TimeZoneRegistry<'static> {
+pub(crate) fn time_zones() -> TimeZoneRegistry<'static> {
     #[cfg(feature = "compiled_time_zones")]
     {
         TimeZoneRegistry::compiled()

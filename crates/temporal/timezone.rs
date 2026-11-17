@@ -95,6 +95,44 @@ impl FutureRule {
             end.event(year) - i64::from(offset),
         ))
     }
+    fn changes_at(self, instant: Instant, before: Instant) -> bool {
+        let Some((offset, _, _)) = self.daylight else {
+            return false;
+        };
+        if offset == self.standard {
+            return false;
+        }
+        let seconds = (instant.epoch_nanoseconds() / 1_000_000_000) as i64;
+        let (year, month, day) = crate::calendar::iso_fields(seconds.div_euclid(86_400));
+        // January 1 can put the two instants in different rule-year windows.
+        if month == 1 && day == 1 && seconds.rem_euclid(86_400) == 0 {
+            return self.offset(instant) != self.offset(before);
+        }
+        let mut previous = i64::MIN;
+        let mut current = i64::MIN;
+        let mut was_dst = false;
+        let mut is_dst = false;
+        for y in year - 1..=year + 1 {
+            let (begin, end) = self.events(y).unwrap();
+            if begin < seconds && begin >= previous {
+                previous = begin;
+                was_dst = true;
+            }
+            if end < seconds && end > previous {
+                previous = end;
+                was_dst = false;
+            }
+            if begin <= seconds && begin >= current {
+                current = begin;
+                is_dst = true;
+            }
+            if end <= seconds && end > current {
+                current = end;
+                is_dst = false;
+            }
+        }
+        was_dst != is_dst
+    }
     fn offset(self, instant: Instant) -> i32 {
         let Some((offset, _, _)) = self.daylight else {
             return self.standard;
@@ -288,7 +326,11 @@ impl TimeZone for TransitionZone<'_> {
                     continue;
                 };
                 if (if next { raw > value } else { raw < value })
-                    && self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before)
+                    && (if event > self.cutoff() + 1 {
+                        future.changes_at(candidate, before)
+                    } else {
+                        self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before)
+                    })
                     && recurring.is_none_or(|old: Instant| {
                         if next {
                             raw < old.epoch_nanoseconds()

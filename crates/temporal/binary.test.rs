@@ -316,3 +316,44 @@ fn scalar_rounding_requests_fallback_for_wide_results_and_errors() {
         assert_eq!(scalar(1, 5, 1, 0), 1);
     }
 }
+
+#[test]
+fn typed_zone_transitions_preserve_boundaries_nulls_and_errors() {
+    use formatjs_temporal::{Instant, TimeZone, TimeZoneRegistry, TransitionDirection};
+    let request = |identifier: &str, value: i128, direction: u8| {
+        let mut bytes = vec![opcode("timeZoneTransition"), 10];
+        bytes.extend_from_slice(&value.to_le_bytes());
+        bytes.push(direction);
+        text(&mut bytes, identifier);
+        bytes
+    };
+    for identifier in ["America/New_York", "Europe/Paris", "UTC", "+05:45"] {
+        let zone = TimeZoneRegistry::compiled().resolve(identifier).unwrap();
+        for text in [
+            "2024-03-10T06:59:59.999999999Z",
+            "2024-03-10T07:00Z",
+            "2024-03-10T07:00:00.000000001Z",
+            "2400-01-01T00:00Z",
+            "-271821-04-20T00:00Z",
+            "+275760-09-13T00:00Z",
+        ] {
+            let instant: Instant = text.parse().unwrap();
+            for (code, direction) in [
+                (0, TransitionDirection::Next),
+                (1, TransitionDirection::Previous),
+            ] {
+                let expected = zone
+                    .transition(instant, direction)
+                    .map_or(vec![0], |value| integer_record(value.epoch_nanoseconds()));
+                let mut bytes = request(identifier, instant.epoch_nanoseconds(), code);
+                assert_eq!(call(&bytes), (0, expected));
+                bytes.push(0);
+                assert_eq!(call(&bytes).0, 2);
+            }
+        }
+    }
+    assert_eq!(call(&request("UTC", 0, 2)).0, 2);
+    assert_eq!(call(&request("Invalid/Zone", 0, 0)).0, 1);
+    assert_eq!(call(&request("UTC", 8_640_000_000_000_000_000_001, 0)).0, 1);
+    assert_eq!(call(&request("UTC", 0, 0)), (0, vec![0]));
+}

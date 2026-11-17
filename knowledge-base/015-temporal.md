@@ -1936,3 +1936,29 @@ executable TS AST passes the Bazel guard and its intrinsic-capture negative cont
 All 63 focused Rust/TS/WASM/ICU/Hermes targets pass after the Instant changes,
 including public types, scalar fallback and signed/full-range controls. Full
 owned-Intl WASM conformance remains a CI gate. No new exclusions.
+
+### Typed timezone transitions
+
+ABI 16 keeps the 69 normalized operations and adds the 27th typed route. A request
+carries signed i128 nanoseconds, direction and UTF-8 identifier; results are null
+or compact/wide signed integers. The adapter avoids maps and decimal conversion.
+SDK JSON fallback stays available. Public JS option/coercion order is unchanged.
+
+FutureRule transition validation computes before/after states from one set of
+recurring events. January 1 retains distinct rule-year windows. The first footer
+second still compares with the explicit offset before it. Core remains no_std;
+no cache, dependency or generated-data change. Public controls cover those joins,
+strict nanosecond boundaries, both directions, UTC/fixed zones, full timestamp
+limits, nulls and recovery after malformed requests.
+
+See benchmarks/temporal/zoned-*.json for baseline profiles, diagnostic trials,
+isolated full-workload timings and nine-process startup/size. Transition median
+falls from 4.535 to 1.515 microseconds; TS is 0.459. Overall sampled WASM wins:
+23/48 against TS, 25/48 basic reference, 35/48 official reference. Close medians
+vary; the goal remains open. Default TS executable AST matches baseline. Node
+namespace gzip rises 5,450 bytes to 506,031; ISO/timezone readiness is 16.61 ms,
+full calendar readiness 27.29 ms. No new exclusions.
+
+All 12 focused Rust/WASM Test262/ICU/Hermes/type targets pass for ABI 16;
+validation targets are recorded in zoned-experiments.json. Broader conformance
+remains a CI gate. No new exclusions.
