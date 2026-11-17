@@ -980,3 +980,22 @@ comments, processing instructions and CDATA contents are excluded. For example,
 Entity definitions remain validated XML, but their replacement values are not
 compared. Basic XML verification without `--structural-equality` still accepts
 equivalent expanded text.
+
+#### Preserve native markup and resource references
+
+Android `--structural-equality` also compares inline element names, attributes,
+counts and nesting in each corresponding item. Sibling reordering is allowed;
+XLIFF wrappers are metadata and do not affect this comparison. XML namespace
+prefix spelling and attribute order do not matter. Escaped HTML and CDATA remain
+text; their HTML contents are not parsed. Text-to-span positions are not compared.
+
+Whole-value resource references such as `@string/name`, `@android:string/ok` and
+`?attr/name` must keep their targets. `@null` and `@empty` are also preserved.
+Theme shorthand `?name` is equivalent to `?attr/name`; package prefixes resolve
+through Android resource namespace declarations. Detection uses XML-decoded
+text before Android unescaping: `\@string/name` and `"@string/name"` are literal
+text, so neither can replace an actual reference. Native styled spans also force
+text interpretation, as in AAPT2. Resource lookup and linking remain AAPT2's job.
+
+These checks apply to strings, array items and plural items, including
+`formatted="false"`. Target-only plural quantities compare against source `other`.

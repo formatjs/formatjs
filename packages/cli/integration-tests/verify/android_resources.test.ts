@@ -84,4 +84,50 @@ describe.each([
       await rm(directory, {recursive: true, force: true})
     }
   })
+  test('preserves native markup and resource references under structural equality', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'formatjs-structure-'))
+    const resource = (text: string) =>
+      `<resources><string name="s" formatted="false">${text}</string></resources>`
+    try {
+      await mkdir(join(directory, 'values'))
+      await mkdir(join(directory, 'values-fr'))
+      const source = join(directory, 'values/strings.xml')
+      const target = join(directory, 'values-fr/strings.xml')
+      const run = (structural = true) =>
+        execFile(binary!, [
+          'verify',
+          join(directory, '**/*.xml'),
+          '--source-locale',
+          'en',
+          '--message-syntax',
+          'android',
+          ...(structural ? ['--structural-equality'] : []),
+        ])
+      await writeFile(
+        source,
+        resource('<b><i>100%</i></b><font color="red">Hi</font>')
+      )
+      await writeFile(
+        target,
+        resource('<font color="red">Salut</font><b><i>100%</i></b>')
+      )
+      await expect(run()).resolves.toBeTruthy()
+      await writeFile(
+        target,
+        resource('<font color="blue">Salut</font><i><b>100%</b></i>')
+      )
+      await expect(run(false)).resolves.toBeTruthy()
+      await expect(run()).rejects.toThrow(/markup changed/)
+      await writeFile(source, resource('@string/name'))
+      await writeFile(target, resource('"@string/name"'))
+      await expect(run(false)).resolves.toBeTruthy()
+      await expect(run()).rejects.toThrow(/resource reference changed/)
+      await writeFile(target, resource('@string/other'))
+      await expect(run()).rejects.toThrow(/resource reference changed/)
+      await writeFile(target, resource('&#64;string/name'))
+      await expect(run()).resolves.toBeTruthy()
+    } finally {
+      await rm(directory, {recursive: true, force: true})
+    }
+  })
 })

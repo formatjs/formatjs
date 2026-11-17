@@ -323,3 +323,177 @@ fn android_entity_spelling_check_ignores_cdata_comments_and_predefined_reference
     let target = r#"<string name="s"><annotation value="&otherBrand;">text</annotation></string>"#;
     assert_eq!(entity_issues(source, target, true).len(), 1);
 }
+
+#[test]
+fn android_markup_preserves_tags_attributes_counts_and_nesting() {
+    let source = r##"<string name="s" formatted="false"><b><i>100%</i></b><font color="#fff" size="12">Hello</font></string>"##;
+    let target = r##"<string name="s" formatted="false"><font size="12" color="#fff">Bonjour</font><b><i>100%</i></b></string>"##;
+    assert!(entity_issues(source, target, true).is_empty());
+    for invalid in [
+        target.replace("<b><i>100%</i></b>", "<b>100%</b>"),
+        target.replace("<b><i>100%</i></b>", "<i><b>100%</b></i>"),
+        target.replace("#fff", "#000"),
+        target.replace(" size=\"12\"", ""),
+        target.replace("<i>100%</i>", "<i>100%</i><i>100%</i>"),
+    ] {
+        assert!(entity_issues(source, &invalid, false).is_empty());
+        let issues = entity_issues(source, &invalid, true);
+        assert_eq!(issues.len(), 1, "{invalid}: {issues:?}");
+        assert!(issues[0].error.contains("markup changed"));
+        assert_eq!(issues[0].locale, "fr");
+        assert!(issues[0].message_id.ends_with("string/s/"));
+    }
+}
+
+#[test]
+fn android_markup_ignores_xliff_wrappers_and_xml_prefix_spelling() {
+    let source = r#"<string name="s" xmlns:x="urn:oasis:names:tc:xliff:document:1.2" xmlns:a="urn:test"><b a:role="title"><x:g id="person">%1$s</x:g></b><i>Hi</i></string>"#;
+    let target = r#"<string name="s" xmlns:y="urn:oasis:names:tc:xliff:document:1.2" xmlns:z="urn:test"><y:g id="salutation"><i>Salut</i></y:g><b z:role="title">%1$s</b></string>"#;
+    assert!(entity_issues(source, target, true).is_empty());
+    for invalid in [
+        target.replace("urn:test", "urn:other"),
+        target.replace("<i>Salut</i>", "<g>Salut</g>"),
+        target.replace("z:role=\"title\"", "z:role=\"body\""),
+    ] {
+        let issues = entity_issues(source, &invalid, true);
+        assert_eq!(issues.len(), 1);
+        assert!(issues[0].error.contains("markup changed"));
+    }
+    // Escaped HTML and CDATA are text, not native styling spans.
+    assert!(
+        entity_issues(
+            r#"<string name="s">&lt;b&gt;Hi&lt;/b&gt;</string>"#,
+            r#"<string name="s"><![CDATA[<i>Salut</i>]]></string>"#,
+            true,
+        )
+        .is_empty()
+    );
+}
+
+#[test]
+fn android_resource_references_preserve_targets_and_literal_distinction() {
+    for reference in [
+        "@string/name",
+        "@android:string/ok",
+        "@com.example:string/name",
+        "@*com.example:string/name",
+        "@+id/name",
+        "@null",
+        "@empty",
+        "?attr/name",
+        "?android:attr/name",
+    ] {
+        let source = format!(r#"<string name="s" formatted="false"> {reference} </string>"#);
+        assert!(entity_issues(&source, &source, true).is_empty());
+        for literal in [
+            format!("\\{reference}"),
+            format!("\"{reference}\""),
+            "translated".into(),
+        ] {
+            let target = format!(r#"<string name="s" formatted="false">{literal}</string>"#);
+            assert!(entity_issues(&source, &target, false).is_empty());
+            for (before, after) in [(&source, &target), (&target, &source)] {
+                let issues = entity_issues(before, after, true);
+                assert_eq!(issues.len(), 1, "{before}: {after}: {issues:?}");
+                assert!(issues[0].error.contains("resource reference changed"));
+            }
+        }
+    }
+    for (source, target) in [
+        ("@string/name", "@string/other"),
+        ("@android:string/name", "@string/name"),
+        ("?attr/name", "@attr/name"),
+        ("@null", "@empty"),
+    ] {
+        let source = format!(r#"<string name="s">{source}</string>"#);
+        let target = format!(r#"<string name="s">{target}</string>"#);
+        let issues = entity_issues(&source, &target, true);
+        assert_eq!(issues.len(), 1);
+        assert!(issues[0].error.contains("resource reference changed"));
+    }
+}
+
+#[test]
+fn android_resource_reference_detection_precedes_android_unescaping() {
+    for (source, target) in [
+        ("?name", "?attr/name"),
+        ("?android:name", "?android:attr/name"),
+        ("&#64;string/name", "@string/name"),
+        ("<![CDATA[@string/name]]>", "@string/name"),
+        ("@string/<!-- comment -->name", "@string/name"),
+        (r#"\@string/name"#, r#""@string/name""#),
+        (r#"\u0040string/name"#, r#"\@string/name"#),
+        ("<b>@string/name</b>", "<b>Salut</b>"),
+        ("email@example.com", "adresse@example.fr"),
+        ("@string/name suffix", "translated"),
+        ("ordinary", "短文"),
+    ] {
+        let source = format!(r#"<string name="s">{source}</string>"#);
+        let target = format!(r#"<string name="s">{target}</string>"#);
+        assert!(
+            entity_issues(&source, &target, true).is_empty(),
+            "{source}: {target}"
+        );
+    }
+    let source = r#"<string name="s">\u0040string/name</string>"#;
+    let target = r#"<string name="s">@string/name</string>"#;
+    let issues = entity_issues(source, target, true);
+    assert_eq!(issues.len(), 1);
+    assert!(issues[0].error.contains("resource reference changed"));
+}
+
+#[test]
+fn android_markup_and_references_are_compared_per_array_and_plural_item() {
+    let source = r#"<string-array name="a"><item><b>One</b></item><item>@string/name</item></string-array><plurals name="p"><item quantity="other"><i>%1$d</i></item></plurals>"#;
+    let target = r#"<string-array name="a"><item>Un</item><item>@string/other</item></string-array><plurals name="p"><item quantity="many"><b>%1$d</b></item><item quantity="other"><i>%1$d</i></item></plurals>"#;
+    let issues = entity_issues(source, target, true);
+    assert_eq!(issues.len(), 3);
+    for (suffix, error) in [
+        ("array/a/0", "markup changed"),
+        ("array/a/1", "resource reference changed"),
+        ("plurals/p/many", "markup changed"),
+    ] {
+        assert!(
+            issues
+                .iter()
+                .any(|issue| issue.message_id.ends_with(suffix) && issue.error.contains(error)),
+            "{issues:?}"
+        );
+    }
+}
+
+#[test]
+fn android_resource_references_resolve_package_namespace_prefixes() {
+    for (source, target) in [
+        (
+            r#"<string name="s" xmlns:a="http://schemas.android.com/apk/res/android">@a:string/ok</string>"#,
+            r#"<string name="s">@android:string/ok</string>"#,
+        ),
+        (
+            r#"<string name="s" xmlns:a="http://schemas.android.com/apk/res-auto">@a:string/name</string>"#,
+            r#"<string name="s">@string/name</string>"#,
+        ),
+        (
+            r#"<string name="s" xmlns:a="http://schemas.android.com/apk/res/com.example">@*a:string/name</string>"#,
+            r#"<string name="s">@*com.example:string/name</string>"#,
+        ),
+        (
+            r#"<string name="s" xmlns:a="http://schemas.android.com/apk/res/android">?a:name</string>"#,
+            r#"<string name="s">?android:attr/name</string>"#,
+        ),
+        (
+            r#"<string name="s" xmlns:x="urn:oasis:names:tc:xliff:document:1.2"><x:g id="alias">@string/name</x:g></string>"#,
+            r#"<string name="s">@string/name</string>"#,
+        ),
+    ] {
+        assert!(
+            entity_issues(source, target, true).is_empty(),
+            "{source}: {target}"
+        );
+    }
+    let source = r#"<string name="s" xmlns:a="http://schemas.android.com/apk/res/android">@a:string/ok</string>"#;
+    let target = source.replace("/res/android", "/res/com.example");
+    let issues = entity_issues(source, &target, true);
+    assert_eq!(issues.len(), 1);
+    assert!(issues[0].error.contains("resource reference changed"));
+}
