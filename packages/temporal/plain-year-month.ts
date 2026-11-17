@@ -128,16 +128,10 @@ function add(
 ): PlainYearMonthObject {
   const fields = toDurationFields(duration),
     native = nativeTemporal()
-  if (native)
-    return createPlainYearMonth({
-      epochDay: native.addPlainYearMonth(
-        slot,
-        fields,
-        sign < 0,
-        overflowOption(options)
-      ),
-      calendar: slot.calendar,
-    })
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return createPlainYearMonth(
+      native!.addPlainYearMonth(slot, fields, sign < 0, overflowOption(options))
+    )
   const keys = Object.keys(fields) as (keyof typeof fields)[]
   for (let index = 0; index < keys.length; index++) fields[keys[index]] *= sign
   const overflow = overflowOption(options)
@@ -187,9 +181,9 @@ function difference(
   )
     throw new RangeError('Invalid year-month units')
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
-      native.differencePlainYearMonth(
+      native!.differencePlainYearMonth(
         slot,
         end,
         largest,
@@ -276,6 +270,13 @@ class PlainYearMonthValue {
         'year-month',
         slot.calendar
       )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(slot, true)
+      return createPlainYearMonth(
+        native!.withDate(slot, partial, overflowOption(options), 'year-month')
+      )
+    }
     return createPlainYearMonth(
       yearMonthFields(
         slot.calendar,
@@ -312,8 +313,8 @@ class PlainYearMonthValue {
     const day = integer(raw)
     if (day <= 0) throw new RangeError('Day must be positive')
     const native = nativeTemporal()
-    if (native)
-      return createPlainDate(native.yearMonthToDate(slot, day), slot.calendar)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return createPlainDate(native!.yearMonthToDate(slot, day), slot.calendar)
     return createPlainDate(
       dayFromFields(
         slot.calendar,

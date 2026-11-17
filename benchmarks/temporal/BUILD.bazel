@@ -40,6 +40,7 @@ formatjs_library(
         "temporal-rs-benchmark.ts",
         "wasm-benchmark.ts",
         "wasm-bridge.ts",
+        "wasm-cost-benchmark.ts",
         "wasm-facade-benchmark.ts",
         "wasm-inputs.ts",
         "wasm-test.ts",
@@ -54,6 +55,7 @@ formatjs_library(
     deps = [
         "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs_generated/tz",
+        "//:node_modules/@js-temporal/polyfill",
         "//:node_modules/@types/node",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
@@ -338,6 +340,7 @@ js_binary(
         "zoned-inputs.ts",
         ":generated_package_json",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@js-temporal/polyfill",
         "//:node_modules/esbuild",
         "//:node_modules/temporal-polyfill",
         "//packages/temporal:pkg",
@@ -357,8 +360,24 @@ js_binary(
         ":reference-bundle.js",
         ":reference-full-bundle.js",
         "//:node_modules/@bazel/runfiles",
+        "//:node_modules/@js-temporal/polyfill",
         "//:node_modules/esbuild",
         "//packages/temporal:pkg",
     ],
     entry_point = "startup-benchmark.ts",
+)
+
+js_binary(
+    name = "wasm_cost_benchmark",
+    args = [
+        "$(rlocationpath //packages/temporal:pkg)",
+        "$(rlocationpath //benchmarks/temporal/rust:wasm_cost)",
+    ],
+    data = [
+        ":generated_package_json",
+        "//:node_modules/@bazel/runfiles",
+        "//benchmarks/temporal/rust:wasm_cost",
+        "//packages/temporal:pkg",
+    ],
+    entry_point = "wasm-cost-benchmark.ts",
 )

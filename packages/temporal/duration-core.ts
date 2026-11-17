@@ -67,11 +67,6 @@ export function validateDuration(fields: DurationFields): DurationFields {
       throw new RangeError('Invalid duration fields')
     fields[key] = value || 0
   }
-  const native = nativeTemporal()
-  if (native) {
-    native.validateDuration(fields)
-    return fields
-  }
   if (
     Math.abs(fields.years) >= 4294967296 ||
     Math.abs(fields.months) >= 4294967296 ||
@@ -111,7 +106,8 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
 }
 export function parseDurationString(value: string): DurationFields {
   const native = nativeTemporal()
-  if (native) return native.parseDuration(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.parseDuration(value)
   const match =
     /^([+-])?P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)([.,]\d{1,9})?H)?(?:(\d+)([.,]\d{1,9})?M)?(?:(\d+)([.,]\d{1,9})?S)?)?$/i.exec(
       value

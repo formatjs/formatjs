@@ -54,3 +54,26 @@ temporal_wasm(
     out = "temporal-rs-core.wasm",
     visibility = ["//visibility:public"],
 )
+
+# gazelle:ignore
+rust_shared_library(
+    name = "wasm_cost_core",
+    srcs = ["wasm-cost.rs"],
+    crate_name = "temporal_wasm_cost_control",
+    crate_root = "wasm-cost.rs",
+    edition = "2024",
+    rustc_flags = [
+        "-Copt-level=z",
+        "-Cstrip=symbols",
+        "-Cpanic=abort",
+    ],
+    target_compatible_with = ["@platforms//cpu:wasm32"],
+    deps = ["//crates/temporal"],
+)
+
+temporal_wasm(
+    name = "wasm_cost",
+    src = ":wasm_cost_core",
+    out = "temporal-cost-control.wasm",
+    visibility = ["//visibility:public"],
+)

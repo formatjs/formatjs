@@ -16,8 +16,13 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-ABI 9 exposes 62 Rust operations to WASM and native Hermes. The standalone SDK
+ABI 10 exposes 69 Rust operations to WASM and native Hermes. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
+WASM uses reusable binary buffers and complete date-like result snapshots;
+calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
+and diagnostic interface. Both share the Rust operation dispatcher.
+Timezone candidate enumeration skips repeated historical offsets using a bounded
+stack cache; histories with more offsets still visit every distinct value.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.

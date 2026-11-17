@@ -1,3 +1,4 @@
+import {nativeDateSnapshot} from '#packages/temporal/date-core.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -123,18 +124,35 @@ function read(item: unknown): DateTimeSlot {
   return slot
 }
 export function createPlainDateTime(
-  value: bigint,
+  input: bigint | DateTimeSlot,
   calendar: string
 ): PlainDateTimeObject {
+  const value = typeof input === 'bigint' ? input : input.epochNanoseconds
   checkDateTime(value)
   const result = Object.create(
     PlainDateTimeValue.prototype
   ) as PlainDateTimeObject
-  setDateTimeSlot(result, {epochNanoseconds: value, calendar})
+  setDateTimeSlot(
+    result,
+    typeof input === 'bigint' ? {epochNanoseconds: value, calendar} : input
+  )
   return result
 }
-function dateSlot(slot: DateTimeSlot): {epochDay: number; calendar: string} {
-  return {epochDay: epochDayOf(slot.epochNanoseconds), calendar: slot.calendar}
+const dateSlots = new WeakMap<
+  DateTimeSlot,
+  {epochDay: number; calendar: string; properties?: DateTimeSlot['properties']}
+>()
+function dateSlot(slot: DateTimeSlot) {
+  let value = dateSlots.get(slot)
+  if (!value) {
+    value = {
+      epochDay: epochDayOf(slot.epochNanoseconds),
+      calendar: slot.calendar,
+      properties: slot.properties,
+    }
+    dateSlots.set(slot, value)
+  }
+  return value
 }
 export function toPlainDateTimeSlot(
   item: unknown,
@@ -178,9 +196,9 @@ function add(
 ): PlainDateTimeObject {
   const fields = toDurationFields(duration)
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainDateTime(
-      native.addPlainDateTime(
+      native!.addPlainDateTime(
         slot.epochNanoseconds,
         slot.calendar,
         fields,
@@ -225,9 +243,9 @@ function difference(
   if (names.indexOf(largest) > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
-      native.differencePlainDateTime(
+      native!.differencePlainDateTime(
         slot.epochNanoseconds,
         end.epochNanoseconds,
         slot.calendar,
@@ -259,8 +277,8 @@ function format(
 ): string {
   const show = calendarNameOption(annotation),
     native = nativeTemporal()
-  if (native)
-    return native.formatPlainDateTime(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatPlainDateTime(
       value,
       slot.calendar,
       precision,
@@ -292,7 +310,7 @@ class PlainDateTimeValue {
     options: unknown = undefined
   ): PlainDateTimeObject {
     const slot = toPlainDateTimeSlot(item, options)
-    return createPlainDateTime(slot.epochNanoseconds, slot.calendar)
+    return createPlainDateTime(slot, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toPlainDateTimeSlot(one).epochNanoseconds,
@@ -308,6 +326,14 @@ class PlainDateTimeValue {
         'date',
         slot.calendar
       )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(dateSlot(slot))
+      return createPlainDateTime(
+        native!.withDateTime(slot, partial, overflowOption(options)),
+        slot.calendar
+      )
+    }
     const current = {
       ...dateFields(dateSlot(slot)),
       ...epochNanosecondsToISO(slot.epochNanoseconds),
@@ -386,9 +412,9 @@ class PlainDateTimeValue {
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createPlainDateTime(
-        native.roundPlainDateTime(
+        native!.roundPlainDateTime(
           slot.epochNanoseconds,
           slot.calendar,
           unit === 'day' ? 'day' : timeUnit(unit),
@@ -431,8 +457,8 @@ class PlainDateTimeValue {
                 ? 9
                 : digits
     const native = nativeTemporal()
-    if (native)
-      return native.formatPlainDateTime(
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatPlainDateTime(
         slot.epochNanoseconds,
         slot.calendar,
         precision,
@@ -507,6 +533,12 @@ defineGetters(
   (receiver, name) => {
     const slot = read(receiver),
       index = (clockNames as readonly string[]).indexOf(name)
+    const snapshot = nativeDateSnapshot(
+      dateSlot(slot),
+      false,
+      slot.epochNanoseconds
+    )
+    if (snapshot && index >= 0) return snapshot.values[name]
     return index < 0
       ? dateProperty(dateSlot(slot), name)
       : Number(

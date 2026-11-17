@@ -13,6 +13,7 @@ const dateBefore = Object.getOwnPropertyDescriptor(
   'toTemporalInstant'
 )
 const requests = new Map()
+let wireOperations = []
 const exportsDescriptor = Object.getOwnPropertyDescriptor(
   WebAssembly.Instance.prototype,
   'exports'
@@ -31,8 +32,28 @@ Object.defineProperty(WebAssembly.Instance.prototype, 'exports', {
   get() {
     const core = apply(exportsDescriptor.get, this, [])
     if (typeof core.temporal_query !== 'function') return core
+    let inputInfo = 0
     return {
       ...core,
+      temporal_input(capacity) {
+        inputInfo = core.temporal_input(capacity)
+        return inputInfo
+      },
+      temporal_exchange(length) {
+        const buffer = apply(memoryBuffer, core.memory, [])
+        const pointer = new Uint32Array(buffer, inputInfo, 2)[0]
+        const operation = wireOperations[new Bytes(buffer, pointer, 1)[0]]
+        const result = core.temporal_exchange(length)
+        if (
+          new Uint32Array(
+            apply(memoryBuffer, core.memory, []),
+            result,
+            2
+          )[0] === 0
+        )
+          requests.set(operation, (requests.get(operation) ?? 0) + 1)
+        return result
+      },
       temporal_query(pointer, length, output) {
         let operation
         try {
@@ -54,6 +75,7 @@ Object.defineProperty(WebAssembly.Instance.prototype, 'exports', {
   },
 })
 const wasm = await load('wasm.js')
+wireOperations = wasm.wasmOperations
 const nativeData = process.env.FORMATJS_TEMPORAL_NATIVE_DATA_ONLY === '1'
 const configureWasmBackend = nativeData
   ? (await load('wasm-native.js')).configureTemporalWasm
@@ -69,6 +91,22 @@ Object.defineProperty(
   WebAssembly.Instance.prototype,
   'exports',
   exportsDescriptor
+)
+const firstCall = wasm.createWasmCall(instance)
+const secondCall = wasm.createWasmCall(instance)
+assert.equal(firstCall('parseInstant', {text: '1970-01-01T00:00Z'}), '0')
+assert.throws(
+  () => secondCall('parseInstant', {text: 'x'.repeat(250000)}),
+  RangeError
+)
+assert.equal(
+  firstCall('parseInstant', {text: '1970-01-01T00:00Z'}),
+  '0',
+  'Adapters share the current buffer descriptor after another adapter grows storage'
+)
+assert.deepEqual(
+  JSON.parse(query('{"op":"info"}')).binaryStrings,
+  wasm.wasmStrings
 )
 const identity = Temporal.Instant
 const existing = Temporal.Instant.fromEpochNanoseconds(0n)
@@ -458,6 +496,112 @@ if (nativeData) {
   }
 }
 
+const countRequests = () =>
+  [...requests.values()].reduce((sum, value) => sum + value, 0)
+const preparedDate = Temporal.PlainDate.from('2024-02-28')
+const afterDateParse = countRequests()
+assert.deepEqual(
+  [
+    preparedDate.year,
+    preparedDate.month,
+    preparedDate.monthCode,
+    preparedDate.day,
+    preparedDate.daysInMonth,
+    preparedDate.monthsInYear,
+    preparedDate.daysInYear,
+    preparedDate.dayOfYear,
+  ],
+  [2024, 2, 'M02', 28, 29, 12, 366, 59]
+)
+assert.equal(
+  countRequests(),
+  afterDateParse,
+  'Date getters reuse the complete Rust parse result'
+)
+const addedDate = preparedDate.add({days: 1})
+assert.equal(
+  countRequests(),
+  afterDateParse + 1,
+  'Date addition executes one Rust operation'
+)
+const afterDateAdd = countRequests()
+assert.deepEqual(
+  [addedDate.year, addedDate.month, addedDate.day, addedDate.daysInYear],
+  [2024, 2, 29, 366]
+)
+assert.equal(
+  countRequests(),
+  afterDateAdd,
+  'Date getters reuse the complete Rust addition result'
+)
+assert.deepEqual(
+  JSON.parse(query('{"op":"info"}')).operations,
+  wireOperations,
+  'Binary operation identifiers match the Rust dispatcher'
+)
+
+for (const [source, fields, expected] of [
+  [Temporal.PlainDate.from('2024-02-28'), {day: 29}, '2024-02-29'],
+  [Temporal.PlainYearMonth.from('2024-02'), {month: 3}, '2024-03'],
+  [Temporal.PlainMonthDay.from('02-28'), {day: 29}, '02-29'],
+  [
+    Temporal.PlainDateTime.from('2024-02-28T12:30'),
+    {day: 29, hour: 20},
+    '2024-02-29T20:30:00',
+  ],
+  [
+    Temporal.ZonedDateTime.from('2024-03-09T12:30-05:00[America/New_York]'),
+    {day: 10},
+    '2024-03-10T12:30:00-04:00[America/New_York]',
+  ],
+]) {
+  const before = countRequests(),
+    beforeOperations = new Map(requests),
+    result = source.with(fields)
+  assert.equal(
+    countRequests(),
+    before + 1,
+    'with-fields is one complete Rust operation: ' +
+      source[Symbol.toStringTag] +
+      ' ' +
+      JSON.stringify(
+        [...requests]
+          .map(([op, count]) => [op, count - (beforeOperations.get(op) || 0)])
+          .filter(([, count]) => count)
+      )
+  )
+  const beforeGetters = countRequests()
+  assert.equal(result.monthCode, expected.startsWith('2024-03') ? 'M03' : 'M02')
+  if (
+    result instanceof Temporal.PlainDateTime ||
+    result instanceof Temporal.ZonedDateTime
+  ) {
+    assert.equal(result.minute, 30)
+    assert.equal(result.second, 0)
+  }
+  if (result instanceof Temporal.ZonedDateTime) {
+    assert.equal(result.offset, '-04:00')
+    assert.equal(result.hoursInDay, 23)
+  }
+  assert.equal(
+    countRequests(),
+    beforeGetters,
+    'Complete results cover calendar, clock and zone getters'
+  )
+  assert.equal(result.toString(), expected)
+}
+
+const eraDate = Temporal.PlainDate.from('2024-02-28[u-ca=gregory]')
+assert.throws(() => eraDate.with({eraYear: 2025}), TypeError)
+assert.throws(
+  () => eraDate.with({era: 'ce', month: 2, monthCode: 'M03'}),
+  TypeError
+)
+assert.throws(
+  () => eraDate.with({era: 'ce', eraYear: 2025, month: 2, monthCode: 'M03'}),
+  RangeError
+)
+
 const duration = Temporal.Duration.from('P1DT1H')
 assert.equal(duration.add('PT23H').toString(), 'P2D')
 assert.equal(duration.subtract('PT25H').toString(), 'PT0S')
@@ -466,6 +610,12 @@ assert.equal(duration.negated().abs().toString(), duration.toString())
 
 const operations = JSON.parse(query('{"op":"info"}')).operations.sort()
 const primitiveOperations = [
+  'timeZonePossibleInstants',
+  'hoursInZonedDay',
+  'timeZoneOffset',
+  'calendarEra',
+  'calendarMonthsInYear',
+  'validateDuration',
   'addISODays',
   'calendarAdd',
   'calendarMonthSerial',
@@ -484,6 +634,50 @@ assert.deepEqual(
 const {configureNativeTemporal, nativeTemporal} = await load('native.js')
 configureNativeTemporal(query)
 const primitives = nativeTemporal()
+const springDay = Temporal.ZonedDateTime.from(
+  '2024-03-10T00:00-05:00[America/New_York]'
+)
+const springSlot = {
+  epochNanoseconds: springDay.epochNanoseconds,
+  calendar: 'iso8601',
+  timeZone: 'America/New_York',
+}
+assert.equal(
+  primitives.timeZonePossibleInstants('America/New_York', {
+    year: 2024,
+    month: 3,
+    day: 10,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+    nanosecond: 0,
+  }).length,
+  1
+)
+assert.equal(primitives.hoursInZonedDay(springSlot), 23)
+assert.equal(
+  primitives.timeZoneOffset('America/New_York', springDay.epochNanoseconds),
+  -18000000000000n
+)
+assert.deepEqual(primitives.calendarEra('gregory', 0), {
+  era: 'ce',
+  eraYear: 1970,
+})
+assert.equal(primitives.calendarMonthsInYear('hebrew', 5784), 13)
+primitives.validateDuration({
+  years: 0,
+  months: 0,
+  weeks: 0,
+  days: 0,
+  hours: 1,
+  minutes: 0,
+  seconds: 0,
+  milliseconds: 0,
+  microseconds: 0,
+  nanoseconds: 0,
+})
 const dayRow = rows(process.argv[20]).find(
   row =>
     [1, 2, 3, 5].every(index => +row[index] === 0) &&

@@ -243,3 +243,11 @@ Native UTC/fixed-offset parsing is covered; named-zone/DST provider performance
 is unmeasured. No new full Test262/independent ICU claim for upstream. Earlier
 owned implementation conformance records remain unchanged. A full temporal_rs
 adapter/provider/conformance experiment is still needed to choose replacement.
+
+## ABI 10 follow-up (2026-11-17)
+
+The historical evidence above covers ABI 9. ABI 10 adds complete calendar/zoned
+snapshots and five date-like partial-update routes (69 operations total).
+WASM now uses binary records and reusable buffers; native SDK JSON controls
+retain scalar result shapes. Current implementation and benchmark evidence lives
+in [015-temporal.md](015-temporal.md#whole-wasm-operations-and-binary-results-2026-11-17).

@@ -111,6 +111,13 @@ class PlainMonthDayValue {
         'date',
         slot.calendar
       )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(slot, true)
+      return createPlainMonthDay(
+        native!.withDate(slot, partial, overflowOption(options), 'month-day')
+      )
+    }
     return createPlainMonthDay(
       monthDayFields(
         slot.calendar,
@@ -130,9 +137,9 @@ class PlainMonthDayValue {
     const prepared = readDateFields(item, false, false, 'year', slot.calendar),
       fields = dateFields(slot, true)
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createPlainDate(
-        native.monthDayToDate(
+        native!.monthDayToDate(
           slot,
           resolveCalendarYear(slot.calendar, {
             monthCode: fields.monthCode,

@@ -31,6 +31,7 @@ import {
   type Precision,
 } from '#packages/temporal/rounding.js'
 import {resolveTimeZone} from '#packages/temporal/zones.js'
+import {parseTimeZoneString} from '#packages/temporal/instant-string.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 
@@ -40,8 +41,8 @@ function instantString(
   offset?: bigint
 ): string {
   const native = nativeTemporal()
-  return native
-    ? native.formatInstant(value, precision, offset)
+  return import.meta.formatjsTemporalNativeData === true || native
+    ? native!.formatInstant(value, precision, offset)
     : formatInstant(value, precision, offset)
 }
 
@@ -141,9 +142,9 @@ function difference(
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeError('Invalid duration rounding increment')
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
-      native.differenceInstant(
+      native!.differenceInstant(
         since ? end : value,
         since ? value : end,
         names[largeIndex],
@@ -211,8 +212,8 @@ class InstantValue implements InstantObject {
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
     return createInstant(
-      native
-        ? native.addInstant(value, fields, false)
+      import.meta.formatjsTemporalNativeData === true || native
+        ? native!.addInstant(value, fields, false)
         : value + durationNanoseconds(fields, false)
     )
   }
@@ -223,8 +224,8 @@ class InstantValue implements InstantObject {
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
     return createInstant(
-      native
-        ? native.addInstant(value, fields, true)
+      import.meta.formatjsTemporalNativeData === true || native
+        ? native!.addInstant(value, fields, true)
         : value - durationNanoseconds(fields, false)
     )
   }
@@ -240,8 +241,20 @@ class InstantValue implements InstantObject {
     const zoneOption = resolved.timeZone
     if (unit !== undefined && timeUnit(unit) === 'hour')
       throw new RangeError('Cannot serialize with hour precision')
+    const native = nativeTemporal()
+    let identifier: string | undefined
+    if (native && zoneOption !== undefined) {
+      const zoned = getZonedSlot(zoneOption as object)
+      if (!zoned && typeof zoneOption !== 'string')
+        throw new TypeError('Timezone must be a string')
+      identifier = zoned?.timeZone ?? parseTimeZoneString(zoneOption as string)
+    }
     const zone =
-      zoneOption === undefined ? undefined : resolveTimeZone(zoneOption)
+      import.meta.formatjsTemporalNativeData !== true &&
+      !native &&
+      zoneOption !== undefined
+        ? resolveTimeZone(zoneOption)
+        : undefined
     const precision: Precision =
       unit === 'minute'
         ? 'minute'
@@ -260,10 +273,15 @@ class InstantValue implements InstantObject {
         : precision === 'minute'
           ? timeUnitNanoseconds.minute
           : 10n ** BigInt(9 - precision)
-    const native = nativeTemporal()
-    const rounded = native
-      ? native.roundInstant(value, quantum, mode)
-      : roundInstant(value, quantum, mode)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatInstant(
+        value,
+        precision,
+        undefined,
+        mode,
+        identifier
+      )
+    const rounded = roundInstant(value, quantum, mode)
     return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
   toLocaleString(

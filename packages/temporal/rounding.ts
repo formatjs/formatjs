@@ -134,11 +134,11 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   if (BigInt(increment) > maximum || maximum % BigInt(increment) !== 0n)
     throw new RangeError('Rounding increment must divide a day')
   const native = nativeTemporal()
-  return (native ? native.roundInstant : roundInstant)(
-    value,
-    BigInt(increment) * timeUnitNanoseconds[unit],
-    mode
-  )
+  return (
+    import.meta.formatjsTemporalNativeData === true || native
+      ? native!.roundInstant
+      : roundInstant
+  )(value, BigInt(increment) * timeUnitNanoseconds[unit], mode)
 }
 
 export function roundDuration(

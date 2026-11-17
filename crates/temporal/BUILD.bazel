@@ -348,6 +348,7 @@ formatjs_rust_test(
 rust_library(
     name = "with_ffi",
     srcs = [
+        "binary.rs",
         "calendar_difference.rs",
         "calendar_provider.rs",
         "calendar_registry.rs",
@@ -421,4 +422,15 @@ formatjs_rust_test(
         ":with_ffi",
         "@crates//:serde_json",
     ],  # keep
+)
+
+formatjs_rust_test(
+    name = "binary_test",
+    size = "small",
+    srcs = ["binary.test.rs"],
+    edition = "2024",
+    deps = [
+        ":with_ffi",
+        "@crates//:serde_json",
+    ],
 )

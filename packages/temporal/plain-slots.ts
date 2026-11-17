@@ -1,9 +1,12 @@
+import type {NativeDateSnapshot} from '#packages/temporal/native.js'
 import {zonedKernel} from '#packages/temporal/zones.js'
 export interface DateSlot {
+  readonly properties?: NativeDateSnapshot
   readonly epochDay: number
   readonly calendar: string
 }
 export interface DateTimeSlot {
+  readonly properties?: NativeDateSnapshot
   readonly epochNanoseconds: bigint
   readonly calendar: string
 }

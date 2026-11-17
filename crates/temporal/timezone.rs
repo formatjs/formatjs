@@ -184,17 +184,30 @@ impl TimeZone for TransitionZone<'_> {
         }) * 1_000_000_000
     }
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
-        visitor(i128::from(self.initial) * 1_000_000_000);
+        // IANA histories repeat a few offsets across hundreds of transitions.
+        let mut seen = [0i32; 16];
+        let mut count = 0;
+        let mut visit = |offset: i32| {
+            if !seen[..count].contains(&offset) {
+                visitor(i128::from(offset) * 1_000_000_000);
+                if count < seen.len() {
+                    seen[count] = offset;
+                    count += 1;
+                }
+            }
+        };
+        visit(self.initial);
         for event in self.transitions {
-            visitor(i128::from(event.offset_seconds) * 1_000_000_000);
+            visit(event.offset_seconds);
         }
         if let Some(future) = self.future {
-            visitor(i128::from(future.standard) * 1_000_000_000);
+            visit(future.standard);
             if let Some((offset, _, _)) = future.daylight {
-                visitor(i128::from(offset) * 1_000_000_000);
+                visit(offset);
             }
         }
     }
+
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         let next = direction == TransitionDirection::Next;
         let value = instant.epoch_nanoseconds();

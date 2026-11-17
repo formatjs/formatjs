@@ -1556,3 +1556,140 @@ offset fallback. Separate graphs: TS 72,018, standalone 342,376, native-data WAS
 482,767, hybrid WASM 515,920 bytes gzip. TS adds 1,575 bytes over the Rust date
 conversion snapshot. The binary remains 443,098; no generated data changes.
 Full host-backed reference bundle remains 23,226. Earlier timing runs are unchanged.
+
+## WASM bridge cost diagnosis (before binary records, 2026-11-17)
+
+Run `bazel run -c opt //benchmarks/temporal:wasm_cost_benchmark`;
+append `-- --reverse` to reverse WASM/replay timing order. The optional
+`-- --assert-competitive` flag checks whether the legacy JSON path exceeds the threshold when
+running the eight-getter workload (twice TS time). It is a diagnostic, not a CI
+performance gate.
+
+`wasm-cost-results.json` and `wasm-cost-reverse-results.json` record Node 24.14.0,
+V8 13.6 on Xeon Platinum 8488C. Eight varying ISO inputs, 2,000 warmup calls,
+seven batches of 4,000. Public outputs match TS before timing; raw/preallocated
+and numeric controls match production bridge responses. Both historical runs have checksum 757365000. The separate pre-change 43-workload baseline loses every median to TS. Snapshots predate cached results and binary records; rerunning this diagnostic now exercises the retained JSON control path with current facade caching.
+
+Microseconds/call, forward run:
+
+| Public workload         |   TS |  WASM | Recorded-response replay | Logical backend queries |
+| ----------------------- | ---: | ----: | -----------------------: | ----------------------: |
+| Instant parse           | 2.20 |  3.37 |                     1.33 |                       1 |
+| Instant format          | 0.96 |  7.39 |                     2.21 |                       2 |
+| Instant add             | 2.54 | 16.52 |                     7.79 |                       2 |
+| PlainDate year          | 0.33 |  4.06 |                     1.09 |                       1 |
+| Eight PlainDate getters | 2.64 | 47.05 |                    12.81 |                      13 |
+
+The eight getters issue eight identical `calendarFromEpochDay` requests, one
+`calendarDaysInMonth`, one `calendarMonthsInYear` and three
+`calendarStartOfYear` requests. Formatting rounds at quantum one before its
+format query. Addition validates ten decimal-string duration fields, then sends
+the same fields again for arithmetic. `native.ts` builds normalized objects and
+JSON; `wasm.ts` encodes/copies input, allocates input plus output descriptor,
+decodes the response and frees three allocations. A successful logical query
+uses six JS/WASM exported-function calls. Rust also parses/serializes dynamic
+`serde_json::Value` records and allocates the result. Repeated calls multiply
+these costs; replay preserves JS normalization/JSON and replaces Rust with an
+exact recorded-response Map lookup, so it is a control rather than a candidate
+production backend.
+
+For one `calendarFromEpochDay` request, the production string bridge takes
+2.83 microseconds. Preallocated input/output-descriptor storage, without input
+encoding/copy or output decoding, takes 1.91; Rust JSON, calculation, output
+allocation and output freeing remain. A benchmark-only numeric ABI calling the
+production Rust calendar provider takes 0.36 including JS reconstruction of the
+same JSON response, or 0.074 for the call plus reading four numeric fields.
+Reverse-order results are 2.87 /1.87 /0.39 /0.076. These independently timed
+layers are not additive. The numeric control is ISO-only; it omits textual
+calendar lookup, general dispatch, dynamic records and generic error handling.
+It does not establish full facade speed or an ABI ready to ship.
+
+Bazel aquery confirms the actual wasm32 `with_ffi` library uses
+`--codegen=opt-level=3`; the final export shim uses `-Copt-level=z`. This is an
+optimized build. No compiler-option experiment establishes zero effect from
+size optimization, but it cannot explain the observed JS replay overhead.
+
+Priorities: reduce duplicate getter queries, use typed numeric records/reused
+buffers, and combine normalization/validation/arithmetic or rounding/formatting
+where observable JS semantics permit. Removing JS correctness checks is not a
+performance plan. Keep TS as default until a complete facade demonstrates a win;
+these ISO results do not predict other engines or heavier calendar workloads.
+
+## Binary Rust operations (2026-11-17)
+
+`binary-operation-results.json` compares 48 matched public workloads with
+`temporal-polyfill` 1.0.7 basic and `@js-temporal/polyfill` 0.5.1. Run
+`bazel run -c opt //benchmarks/temporal:wasm_facade_benchmark`.
+Eight varying inputs, output parity checked before timing, 3,000 warmup calls,
+seven batches of 10,000; transition workloads use 128/512. Node 24.14.0,
+V8 13.6, ICU 78.2, Xeon Platinum 8488C. Profiles run sequentially in one process;
+these are workload samples, not a cross-engine ranking.
+
+Microseconds/call; WASM uses the native-data entry:
+
+| Workload              | Our TS |   WASM | temporal-polyfill basic | @js-temporal/polyfill |
+| --------------------- | -----: | -----: | ----------------------: | --------------------: |
+| parse                 |  1.584 |  2.596 |                   2.947 |                 4.552 |
+| format                |  0.695 |  3.029 |                   1.485 |                 6.326 |
+| add                   |  2.265 |  7.334 |                   1.463 |                 5.864 |
+| dateParse             |  1.659 |  9.442 |                   2.315 |                 1.779 |
+| dateFields            |  2.644 |  0.614 |                   0.452 |                 1.962 |
+| dateAdd               |  5.845 | 16.045 |                   2.244 |                 5.016 |
+| dateWith              |  3.790 | 12.753 |                   1.536 |                 4.148 |
+| zonedWith             |  9.565 | 26.594 |                   6.402 |                43.324 |
+| zonedAddDay           |  6.274 | 23.847 |                   3.588 |                22.781 |
+| zonedRound            |  3.038 | 18.851 |                   2.865 |                30.852 |
+| zonedHoursInDay       |  2.849 |  0.058 |                   2.193 |                45.082 |
+| durationRoundRelative | 24.049 | 23.869 |                  53.696 |                65.126 |
+
+WASM wins 4/48 sampled workloads against our TS, 13/48 against basic reference,
+18/48 against official reference. Eight cached PlainDate getters fall from the
+pre-change 45.653 microseconds to 0.614; Instant formatting from 6.998 to 3.029,
+addition from 16.431 to 7.334. Construction and snapshot calculation are measured
+separately by `dateParse`; cached getter speed includes that cost earlier in the
+object's lifetime. Full snapshots add eager work to parse/arithmetic. Rust still
+allocates dynamic normalized records internally.
+
+ABI 10 replaces text transfer with reusable binary buffers. Date-like results
+carry calendar/clock/zone snapshots; result getters make no extra WASM calls.
+Date addition and the five date-like partial-update routes execute one Rust
+operation. Instant formatting fuses rounding and offset lookup. Rust timezone
+resolution remembers sixteen common historical offsets instead of retrying the
+same offsets at every transition; larger histories retain every distinct offset.
+This reduces zoned `.with()` from 76.913 microseconds in the initial full-result
+experiment to 26.594. TS remains the default.
+
+`binary-operation-startup-results.json` records nine fresh processes per profile,
+rotating profile order with persistent V8 compile cache disabled. Run
+`bazel run -c opt //benchmarks/temporal:startup_benchmark` after throughput finishes.
+The common readiness metric stops after import/setup, first Instant operation
+and New York conversion; optional Chinese work follows it. No Node bootstrap in
+this metric. Matching Node-target es2022 namespace consumers, gzip level 9:
+
+| Consumer          | JS gzip bytes | WASM gzip bytes | Total bytes | Common readiness ms |
+| ----------------- | ------------: | --------------: | ----------: | ------------------: |
+| typescript        |        39,693 |               0 |      39,693 |               19.50 |
+| nativeDataWasm    |        29,560 |         458,210 |     487,770 |               24.23 |
+| hybridWasm        |        44,730 |         458,210 |     502,940 |               25.06 |
+| referenceFull     |        23,083 |               0 |      23,083 |               19.37 |
+| referenceBasic    |        19,275 |               0 |      19,275 |               18.87 |
+| officialReference |        44,522 |               0 |      44,522 |               26.75 |
+
+WASM owns sixteen calendars and IANA histories/future rules; TS and references
+use host Intl data. The throughput snapshot also reports browser-target bundles
+that re-export complete entries, including installers. Those payloads differ
+from the Node namespace consumers above; native-data WASM totals 490,724 bytes
+there, including 32,514 bytes of JS. Whole npm archive size is a separate measure.
+
+Official 0.5.1 throws `RangeError: Unexpected leap month suffix: Mo1` for the
+Chinese month-addition startup sample on ICU 78.2. Its optional calendar sample
+is disabled and recorded explicitly; its ISO/timezone readiness remains matched.
+Full-calendar readiness comparisons exclude both officialReference and the
+calendar-free basic reference. Throughput workloads here are ISO/timezone cases.
+
+All 55 focused correctness targets pass: default TS class gates, twelve WASM
+Test262 suites, twelve native SDK suites in both Hermes source/bytecode modes,
+package/ICU oracle checks, strict types and Rust tests. Each WASM/SDK profile
+executes 12,234 Test262 scenarios, with unchanged exclusion manifests. Rust unit
+checks include repeated-offset elimination, histories with forty distinct offsets,
+malformed binary requests, nanosecond precision and recovery after errors.

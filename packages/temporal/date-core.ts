@@ -1,3 +1,8 @@
+import {
+  nativeTemporal,
+  type NativeTemporal,
+  type NativeDateSnapshot,
+} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {
@@ -20,10 +25,7 @@ import {
   type Overflow,
   type CalendarDate,
 } from '#packages/temporal/calendar.js'
-import {
-  isoToEpochNanoseconds,
-  epochNanosecondsToISO,
-} from '#packages/temporal/kernel.js'
+import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
 import {optionsObject} from '#packages/temporal/rounding.js'
 import {
   getDateSlot,
@@ -175,7 +177,42 @@ export function timeOf(value: bigint): bigint {
 export function isoDay(year: number, month: number, day: number): number {
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
+const dateSnapshots = new WeakMap<
+  DateSlot,
+  {owner: NativeTemporal; value: NativeDateSnapshot}
+>()
+export function nativeDateSnapshot(
+  slot: DateSlot,
+  extended = false,
+  nanoseconds?: bigint
+): NativeDateSnapshot | undefined {
+  const owner = nativeTemporal()
+  if (!owner) return undefined
+  if (
+    Math.abs(slot.epochDay) > 110000000 ||
+    (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
+  )
+    throw new RangeError('Calendar date out of range')
+  const existing = dateSnapshots.get(slot)
+  if (existing?.owner === owner) return existing.value
+  const value =
+    slot.properties?.owner === owner
+      ? slot.properties
+      : owner.calendarProperties(
+          baseCalendar(slot.calendar),
+          slot.epochDay,
+          extended,
+          nanoseconds
+        )
+  dateSnapshots.set(slot, {owner, value})
+  return value
+}
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
+  const value = nativeDateSnapshot(slot, extended)
+  if (import.meta.formatjsTemporalNativeData === true || value) {
+    if (!value!.date) throw new RangeError('Calendar date out of range')
+    return value!.date
+  }
   return (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
     baseCalendar(slot.calendar),
     slot.epochDay
@@ -381,6 +418,26 @@ export function dateProperty(
   extended = false
 ): string | number | boolean | undefined {
   if (key === 'calendarId') return slot.calendar
+  const value = nativeDateSnapshot(slot, extended)
+  if (import.meta.formatjsTemporalNativeData === true || value) {
+    if (value!.errors.includes(key))
+      throw new RangeError('Calendar field out of range')
+    if (
+      key === 'year' ||
+      key === 'month' ||
+      key === 'monthCode' ||
+      key === 'day'
+    ) {
+      if (!value!.date) throw new RangeError('Calendar date out of range')
+      return value!.date[key]
+    }
+    if (
+      (key === 'weekOfYear' || key === 'yearOfWeek') &&
+      slot.calendar !== 'iso8601'
+    )
+      return undefined
+    return value!.values[key]
+  }
   const fields = dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)
   switch (key) {
@@ -435,7 +492,9 @@ export function dateProperty(
   return undefined
 }
 export function checkDateTime(value: bigint): bigint {
-  epochNanosecondsToISO(value)
+  const bound = 8640000086400000000000n
+  if (value <= -bound || value >= bound)
+    throw new RangeError('Local date out of range')
   return value
 }
 

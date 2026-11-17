@@ -4,7 +4,7 @@ use formatjs_temporal::ffi::{
 
 #[unsafe(no_mangle)]
 pub extern "C" fn temporal_abi_version() -> u32 {
-    9
+    10
 }
 
 #[unsafe(no_mangle)]
@@ -33,4 +33,14 @@ pub unsafe extern "C" fn temporal_query(
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn temporal_free(data: *mut u8, length: usize) {
     unsafe { formatjs_temporal_bytes_free(TemporalBytes { data, len: length }) }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn temporal_input(capacity: usize) -> *mut u8 {
+    formatjs_temporal::binary::input(capacity)
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn temporal_exchange(length: usize) -> *const u8 {
+    formatjs_temporal::binary::exchange(length)
 }

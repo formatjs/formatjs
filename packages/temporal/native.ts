@@ -19,6 +19,10 @@ import type {
 } from '#packages/temporal/rounding.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
 
+export type NativeCall = (
+  operation: string,
+  properties: Record<string, unknown>
+) => any
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
 const stringify = JSON.stringify
@@ -29,13 +33,45 @@ const apply = Reflect.apply
 const bigintText = BigInt.prototype.toString
 const ToBigInt = BigInt
 const BadRange = RangeError
+const BadType = TypeError
+export interface NativeDateSnapshot {
+  date: CalendarDate | null
+  values: Record<string, string | number | boolean | undefined>
+  errors: string[]
+  owner?: NativeTemporal
+}
 export interface NativeTemporal {
+  withDate(
+    slot: DateSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow,
+    shape?: 'date' | 'year-month' | 'month-day'
+  ): DateSlot
+  withDateTime(
+    slot: DateTimeSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow
+  ): DateTimeSlot
+  withZoned(
+    slot: ZonedSlot,
+    fields: Record<string, unknown>,
+    overflow: Overflow,
+    disambiguation: Disambiguation,
+    behavior: string
+  ): ZonedSlot
+  calendarProperties(
+    calendar: string,
+    epoch: number,
+    extended: boolean,
+    nanoseconds?: bigint
+  ): NativeDateSnapshot
+  zonedProperties(slot: ZonedSlot): NativeDateSnapshot
   addPlainYearMonth(
     slot: DateSlot,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): number
+  ): DateSlot
   differencePlainYearMonth(
     start: DateSlot,
     end: DateSlot,
@@ -45,8 +81,8 @@ export interface NativeTemporal {
     mode: RoundingMode,
     since: boolean
   ): DurationFields
-  yearMonthToDate(slot: DateSlot, day: number): number
-  monthDayToDate(slot: DateSlot, year: number): number
+  yearMonthToDate(slot: DateSlot, day: number): DateSlot
+  monthDayToDate(slot: DateSlot, year: number): DateSlot
   formatPlainDate(slot: DateSlot, calendarName: string): string
   formatPlainDateTime(
     value: bigint,
@@ -83,13 +119,13 @@ export interface NativeTemporal {
     disambiguation: Disambiguation,
     matchMinute: boolean,
     dateOnly: boolean
-  ): bigint
+  ): ZonedSlot
   addZonedDateTime(
     slot: ZonedSlot,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): bigint
+  ): ZonedSlot
   differenceZonedDateTime(
     start: ZonedSlot,
     end: ZonedSlot,
@@ -104,8 +140,8 @@ export interface NativeTemporal {
     unit: string,
     increment: number,
     mode: RoundingMode
-  ): bigint
-  startOfZonedDay(slot: ZonedSlot, day?: number): bigint
+  ): ZonedSlot
+  startOfZonedDay(slot: ZonedSlot, day?: number): ZonedSlot
   hoursInZonedDay(slot: ZonedSlot): number
   addPlainDate(
     epochDay: number,
@@ -113,14 +149,14 @@ export interface NativeTemporal {
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): number
+  ): DateSlot
   addPlainDateTime(
     value: bigint,
     calendar: string,
     fields: DurationFields,
     subtract: boolean,
     overflow: Overflow
-  ): bigint
+  ): DateTimeSlot
   differencePlainDate(
     start: number,
     end: number,
@@ -147,7 +183,7 @@ export interface NativeTemporal {
     unit: string,
     increment: number,
     mode: RoundingMode
-  ): bigint
+  ): DateTimeSlot
   transformDuration(fields: DurationFields, absolute: boolean): DurationFields
   parseDuration(value: string): DurationFields
   validateDuration(fields: DurationFields): void
@@ -249,7 +285,13 @@ export interface NativeTemporal {
     mode: RoundingMode
   ): DurationFields
   parseInstant(value: string): bigint
-  formatInstant(value: bigint, precision: Precision, offset?: bigint): string
+  formatInstant(
+    value: bigint,
+    precision: Precision,
+    offset?: bigint,
+    mode?: RoundingMode,
+    identifier?: string
+  ): string
   addInstant(value: bigint, duration: DurationFields, subtract: boolean): bigint
   roundInstant(value: bigint, quantum: bigint, mode: RoundingMode): bigint
   differenceInstant(
@@ -266,9 +308,13 @@ export function nativeTemporal(): NativeTemporal | undefined {
   return native
 }
 /** @internal Experimental Hermes backend installation. */
-export function configureNativeTemporal(query: NativeQuery): void {
+export function configureNativeTemporal(
+  query: NativeQuery,
+  invoke?: NativeCall
+): void {
   const text = (value: bigint) => apply(bigintText, value, [])
   function call(op: string, properties: Record<string, unknown>): any {
+    if (invoke) return invoke(op, properties)
     const input = create(null)
     input.op = op
     const names = keys(properties)
@@ -285,6 +331,19 @@ export function configureNativeTemporal(query: NativeQuery): void {
     if (typeof result === 'number')
       throw new BadRange('Invalid Temporal value or range')
     return parse(result)
+  }
+  function withFields(
+    calendar: string,
+    fields: Record<string, unknown>
+  ): Record<string, unknown> {
+    if (
+      calendar !== 'iso8601' &&
+      calendar !== 'chinese' &&
+      calendar !== 'dangi' &&
+      (fields.era === undefined) !== (fields.eraYear === undefined)
+    )
+      throw new BadType('era and eraYear required together')
+    return fields
   }
   function isoFields(fields: ISODateTime): Record<string, number> {
     const copy = create(null)
@@ -306,7 +365,6 @@ export function configureNativeTemporal(query: NativeQuery): void {
     days?: number
   ): any {
     const record = create(null)
-    record.op = op
     if (fields) {
       record.fields = isoFields(fields)
     }
@@ -328,7 +386,10 @@ export function configureNativeTemporal(query: NativeQuery): void {
       })
     )
   }
-  function durationFields(fields: DurationFields): Record<string, string> {
+  function durationFields(
+    fields: DurationFields
+  ): DurationFields | Record<string, string> {
+    if (invoke) return fields
     const duration = create(null)
     const names = keys(fields)
     for (let index = 0; index < names.length; index++)
@@ -373,14 +434,76 @@ export function configureNativeTemporal(query: NativeQuery): void {
     result.calendar = relative.date.calendar
     return result
   }
+  function dateResult(value: any, calendar?: string): DateSlot {
+    if (typeof value === 'number') return {epochDay: value, calendar: calendar!}
+    if (value.properties) value.properties.owner = native
+    return value
+  }
+  function timeResult(value: any, calendar?: string, timeZone?: string): any {
+    if (typeof value === 'string')
+      return {epochNanoseconds: ToBigInt(value), calendar, timeZone}
+    value.epochNanoseconds = ToBigInt(value.epochNanoseconds)
+    if (value.properties) value.properties.owner = native
+    return value
+  }
   native = {
-    addPlainYearMonth: (slot, fields, subtract, overflow) =>
-      call('addPlainYearMonth', {
-        value: shortFields(slot),
-        duration: durationFields(fields),
-        subtract,
-        overflow,
+    withDate: (slot, fields, overflow, shape = 'date') =>
+      dateResult(
+        call(
+          shape === 'date'
+            ? 'withPlainDate'
+            : shape === 'year-month'
+              ? 'withPlainYearMonth'
+              : 'withPlainMonthDay',
+          {
+            value: shortFields(slot),
+            fields: withFields(slot.calendar, fields),
+            overflow,
+          }
+        ),
+        slot.calendar
+      ),
+    withDateTime: (slot, fields, overflow) =>
+      timeResult(
+        call('withPlainDateTime', {
+          nanoseconds: text(slot.epochNanoseconds),
+          calendar: slot.calendar,
+          fields: withFields(slot.calendar, fields),
+          overflow,
+        }),
+        slot.calendar
+      ),
+    withZoned: (slot, fields, overflow, disambiguation, behavior) =>
+      timeResult(
+        call('withZonedDateTime', {
+          value: zonedFields(slot),
+          fields: withFields(slot.calendar, fields),
+          overflow,
+          disambiguation,
+          behavior,
+        }),
+        slot.calendar,
+        slot.timeZone
+      ),
+    calendarProperties: (calendar, epoch, extended, nanoseconds) =>
+      call('calendarProperties', {
+        calendar,
+        epoch,
+        extended,
+        nanoseconds: nanoseconds === undefined ? undefined : text(nanoseconds),
       }),
+    zonedProperties: slot =>
+      call('zonedProperties', {value: zonedFields(slot)}),
+    addPlainYearMonth: (slot, fields, subtract, overflow) =>
+      dateResult(
+        call('addPlainYearMonth', {
+          value: shortFields(slot),
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        }),
+        slot.calendar
+      ),
     differencePlainYearMonth: (
       start,
       end,
@@ -400,9 +523,15 @@ export function configureNativeTemporal(query: NativeQuery): void {
         since,
       }),
     yearMonthToDate: (slot, day) =>
-      call('yearMonthToDate', {value: shortFields(slot), day}),
+      dateResult(
+        call('yearMonthToDate', {value: shortFields(slot), day}),
+        slot.calendar
+      ),
     monthDayToDate: (slot, year) =>
-      call('monthDayToDate', {value: shortFields(slot), year}),
+      dateResult(
+        call('monthDayToDate', {value: shortFields(slot), year}),
+        slot.calendar
+      ),
     formatPlainDate: (slot, calendarName) =>
       call('formatPlainDate', {value: shortFields(slot), calendarName}),
     formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
@@ -433,16 +562,13 @@ export function configureNativeTemporal(query: NativeQuery): void {
         offset,
         timeZoneName,
       }),
-    parsePlainDate: value => call('parsePlainDate', {text: value}),
-    parsePlainDateTime: value => {
-      const result = call('parsePlainDateTime', {text: value})
-      return {
-        epochNanoseconds: ToBigInt(result.epochNanoseconds),
-        calendar: result.calendar,
-      }
-    },
-    parsePlainYearMonth: value => call('parsePlainYearMonth', {text: value}),
-    parsePlainMonthDay: value => call('parsePlainMonthDay', {text: value}),
+    parsePlainDate: value => dateResult(call('parsePlainDate', {text: value})),
+    parsePlainDateTime: value =>
+      timeResult(call('parsePlainDateTime', {text: value})),
+    parsePlainYearMonth: value =>
+      dateResult(call('parsePlainYearMonth', {text: value})),
+    parsePlainMonthDay: value =>
+      dateResult(call('parsePlainMonthDay', {text: value})),
     parseZonedFields: value => {
       const result = call('parseZonedFields', {text: value})
       return {
@@ -461,7 +587,7 @@ export function configureNativeTemporal(query: NativeQuery): void {
       matchMinute,
       dateOnly
     ) =>
-      ToBigInt(
+      timeResult(
         call('resolveZonedDateTime', {
           nanoseconds: text(value),
           identifier,
@@ -471,16 +597,20 @@ export function configureNativeTemporal(query: NativeQuery): void {
           disambiguation,
           matchMinute,
           dateOnly,
-        })
+        }),
+        calendar,
+        identifier
       ),
     addZonedDateTime: (slot, fields, subtract, overflow) =>
-      ToBigInt(
+      timeResult(
         call('addZonedDateTime', {
           value: zonedFields(slot),
           duration: durationFields(fields),
           subtract,
           overflow,
-        })
+        }),
+        slot.calendar,
+        slot.timeZone
       ),
     differenceZonedDateTime: (
       start,
@@ -501,35 +631,45 @@ export function configureNativeTemporal(query: NativeQuery): void {
         since,
       }),
     roundZonedDateTime: (slot, unit, increment, mode) =>
-      ToBigInt(
+      timeResult(
         call('roundZonedDateTime', {
           value: zonedFields(slot),
           unit,
           increment,
           mode,
-        })
+        }),
+        slot.calendar,
+        slot.timeZone
       ),
     startOfZonedDay: (slot, day) =>
-      ToBigInt(call('startOfZonedDay', {value: zonedFields(slot), day})),
+      timeResult(
+        call('startOfZonedDay', {value: zonedFields(slot), day}),
+        slot.calendar,
+        slot.timeZone
+      ),
     hoursInZonedDay: slot =>
       call('hoursInZonedDay', {value: zonedFields(slot)}),
     addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
-      call('addPlainDate', {
-        epochDay,
-        calendar,
-        duration: durationFields(fields),
-        subtract,
-        overflow,
-      }),
+      dateResult(
+        call('addPlainDate', {
+          epochDay,
+          calendar,
+          duration: durationFields(fields),
+          subtract,
+          overflow,
+        }),
+        calendar
+      ),
     addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
-      ToBigInt(
+      timeResult(
         call('addPlainDateTime', {
           nanoseconds: text(value),
           calendar,
           duration: durationFields(fields),
           subtract,
           overflow,
-        })
+        }),
+        calendar
       ),
     differencePlainDate: (
       start,
@@ -572,14 +712,15 @@ export function configureNativeTemporal(query: NativeQuery): void {
         since,
       }),
     roundPlainDateTime: (value, calendar, unit, increment, mode) =>
-      ToBigInt(
+      timeResult(
         call('roundPlainDateTime', {
           nanoseconds: text(value),
           calendar,
           unit,
           increment,
           mode,
-        })
+        }),
+        calendar
       ),
     transformDuration: (fields, absolute) =>
       call('transformDuration', {duration: durationFields(fields), absolute}),
@@ -724,11 +865,13 @@ export function configureNativeTemporal(query: NativeQuery): void {
         mode,
       }),
     parseInstant: value => ToBigInt(call('parseInstant', {text: value})),
-    formatInstant: (value, precision, offset) =>
+    formatInstant: (value, precision, offset, mode, identifier) =>
       call('formatInstant', {
         nanoseconds: text(value),
         precision,
         offset: offset === undefined ? undefined : text(offset),
+        mode,
+        identifier,
       }),
     addInstant: (value, fields, subtract) =>
       addition('addInstant', value, fields, subtract),

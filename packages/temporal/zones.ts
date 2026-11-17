@@ -61,26 +61,26 @@ function withNativeZone(
   return {
     offsetNanoseconds: value => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneOffset(identifier, value)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneOffset(identifier, value)
         : fallback().offsetNanoseconds(value)
     },
     possibleInstants: fields => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZonePossibleInstants(identifier, fields)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZonePossibleInstants(identifier, fields)
         : fallback().possibleInstants(fields)
     },
     resolve: (fields, disambiguation = 'compatible') => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneResolve(identifier, fields, disambiguation)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneResolve(identifier, fields, disambiguation)
         : fallback().resolve(fields, disambiguation)
     },
     transition: (value, direction) => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneTransition(identifier, value, direction)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneTransition(identifier, value, direction)
         : fallback().transition(value, direction)
     },
   }
@@ -121,7 +121,8 @@ export function timeZoneIdentifier(value: unknown): string {
     throw new TypeError('Timezone must be a string')
   const name = parseTimeZoneString(value)
   const native = nativeTemporal()
-  if (native) return native.timeZoneIdentity(name).identifier
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.timeZoneIdentity(name).identifier
   if (/^[+-]/.test(name)) {
     const offset = parseOffsetNanoseconds(name, true)
     const minutes = Number((offset < 0n ? -offset : offset) / 60_000_000_000n)
@@ -190,7 +191,8 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
 
 export function primaryTimeZoneIdentifier(id: string): string {
   const native = nativeTemporal()
-  if (native) return native.timeZoneIdentity(id).primary
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.timeZoneIdentity(id).primary
   const primary = fallbackTimeZonePrimary()
   return primary[id as keyof typeof primary] ?? id
 }

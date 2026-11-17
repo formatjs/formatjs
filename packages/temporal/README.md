@@ -101,8 +101,12 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 62 normalized operations through ABI 9. JS retains
-ECMAScript coercion, brands, slots and object allocation. Backend metadata keeps
+Rust exposes typed values and 69 normalized operations through ABI 10. JS retains
+ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
+records through reusable module-owned buffers. Rust returns calendar, clock and
+zone properties with date-like results; getters reuse those immutable results.
+Date arithmetic and partial updates execute whole Rust operations. Instant
+formatting combines rounding, offset lookup and formatting in one call. Backend metadata keeps
 `completeTemporalBackend: false` because this ABI is not an ECMAScript object
 runtime. The [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 records Rust routes, independent controls and exact conformance scope.
@@ -171,7 +175,7 @@ calendar updates preserve month codes and era relationships. Zoned updates prefe
 the source offset by default and support explicit gap/fold and offset policies.
 Rust `PlainDate::to_zoned_date_time(zone, None)` selects the first instant of the
 civil day; supplying `Some(time)` uses compatible resolution.
-JS adapters delegate normalized operations through ABI 9. Rust builds, generated
+JS adapters delegate normalized operations through ABI 10. Rust builds, generated
 data and release artifacts use Bazel.
 
 ## Validation
@@ -206,15 +210,17 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Matched bundled namespace consumers measure 38,639 bytes gzip for default TS,
-339,338 for standalone and 23,083 for forced full `temporal-polyfill`.
-Default dropped 44.5% from 69,657 by using installed Intl timezone data.
-Native-data WASM glue plus binary measures 479,583 bytes; hybrid 484,339.
-Nine-process Node startup medians: TS 20.84 ms; full reference 22.58 ms.
-Previous owned-data TS snapshot was 12.11 ms: smaller payload costs more startup
-in this sample. See `benchmarks/temporal/host-intl-default-startup-results.json`
-for methods, raw samples and memory. Earlier hot-operation measurements describe
-previous data policies; they are not refreshed throughput claims.
+Matched Node namespace consumers measure 39,693 bytes gzip for default TS,
+23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
+Native-data WASM totals 487,770 bytes, including 458,210 binary bytes.
+It owns calendar and IANA data; the JS implementations use host Intl data.
+Nine-process shared ISO/timezone startup medians: TS 19.50 ms, native-data WASM
+24.23 ms, full reference 19.37 ms, official reference 26.75 ms.
+WASM wins 18 of 48 hot workloads against the official reference, four against
+our TS. Cached getters benefit; parse/arithmetic often remain slower.
+See [current benchmarks](../../benchmarks/temporal/README.md#binary-rust-operations-2026-11-17)
+for raw samples, bundle scopes and the official reference's ICU 78.2 Chinese
+calendar incompatibility.
 
 Final coverage includes every Temporal-feature file in pinned Test262, including
 DateTimeFormat, DurationFormat and staging. Six coherent profiles cover default

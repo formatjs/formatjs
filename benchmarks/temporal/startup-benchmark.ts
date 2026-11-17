@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict'
-import {mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs'
+import {
+  closeSync,
+  mkdtempSync,
+  openSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import {tmpdir, cpus} from 'node:os'
 import {join} from 'node:path'
 import {performance} from 'node:perf_hooks'
@@ -22,6 +29,7 @@ interface Sample {
   output: {iso: string; zoned: string; chinese: string | null}
   processMilliseconds: number
   readyMilliseconds: number
+  isoTimezoneReadyMilliseconds: number
 }
 const directory = runfiles.resolve(process.argv[2])
 const child = runfiles.resolve(process.argv[3])
@@ -47,6 +55,13 @@ const specifications = [
     backend: 'typescript',
     calendar: true,
     source: `export {Temporal} from ${JSON.stringify(join(directory, 'standalone.js'))}`,
+  },
+  {
+    name: 'officialReference',
+    backend: 'typescript',
+    // ICU 78.2: 0.5.1 throws 'Unexpected leap month suffix: Mo1'.
+    calendar: false,
+    source: `export {Temporal} from '@js-temporal/polyfill'`,
   },
   {
     name: 'referenceFull',
@@ -102,6 +117,8 @@ try {
   for (let round = 0; round < sampleCount; round++) {
     for (let step = 0; step < profiles.length; step++) {
       const profile = profiles[(step + round) % profiles.length]
+      const stderrPath = join(temporary, 'stderr.txt')
+      const stderrFile = openSync(stderrPath, 'w')
       const start = performance.now()
       const result = spawnSync(
         process.execPath,
@@ -115,15 +132,26 @@ try {
         ],
         {
           encoding: 'utf8',
+          stdio: ['ignore', 'pipe', stderrFile],
           timeout: 120000,
           env: {...process.env, NODE_DISABLE_COMPILE_CACHE: '1'},
         }
       )
       const processMilliseconds = performance.now() - start
-      if (result.error || result.status !== 0)
+      closeSync(stderrFile)
+      const stderr = readFileSync(stderrPath, 'utf8')
+      if (result.error || result.status !== 0) {
         throw new Error(
-          `${profile.name} startup failed: ${result.error?.message || result.stderr.slice(-2000)}`
+          `${profile.name} startup failed: ${
+            result.error?.message ||
+            stderr
+              .split('\n')
+              .filter(line => line.length < 1000)
+              .slice(-12)
+              .join('\n')
+          }`
         )
+      }
       const sample: Sample = {...JSON.parse(result.stdout), processMilliseconds}
       assert.equal(sample.output.iso, '2020-02-28T18:14:59.123456789Z')
       assert.equal(
@@ -147,6 +175,7 @@ try {
     'firstCalendarMilliseconds',
     'processMilliseconds',
     'readyMilliseconds',
+    'isoTimezoneReadyMilliseconds',
     'linearMemoryBytes',
     'retainedHeapDeltaBytes',
     'residentDeltaBytes',
@@ -169,6 +198,10 @@ try {
         name,
         backend,
         calendar,
+        calendarUnavailableReason:
+          name === 'officialReference'
+            ? '0.5.1 on ICU 78.2: Chinese month addition throws RangeError: Unexpected leap month suffix: Mo1'
+            : undefined,
         bundleBytes,
         bundleGzipBytes,
         binaryBytes: backend === 'typescript' ? 0 : binary.byteLength,
@@ -188,9 +221,9 @@ try {
         cpu: cpus()[0]?.model,
         sampleCount,
         method:
-          'Fresh Node process per sample, rotating profile order; persistent V8 module compile cache disabled and checked, filesystem cache warm. Minified es2022 ESM consumer bundles. Import excludes Node bootstrap. WASM file read precedes compile timing; configure includes contract validation. First Instant/timezone/calendar operations measured separately, in that order. Ready time includes import, WASM file read/setup and these first operations; excludes Node bootstrap. End-to-end process time includes Node startup, GC and shutdown. Explicit GC before/after; heap/RSS deltas are process measurements, not shipping size or browser estimates. WASM linear memory reported separately.',
+          'Fresh Node process per sample, rotating profile order; persistent V8 module compile cache disabled and checked, filesystem cache warm. Minified es2022 ESM consumer bundles. Import excludes Node bootstrap. WASM file read precedes compile timing; configure includes contract validation. First Instant/timezone/calendar operations measured separately, in that order. ISO/timezone ready time stops before the optional Chinese workload and is comparable across all profiles. Ready time includes import, WASM file read/setup and these first operations; excludes Node bootstrap. End-to-end process time includes Node startup, GC and shutdown. Explicit GC before/after; heap/RSS deltas are process measurements, not shipping size or browser estimates. WASM linear memory reported separately.',
         scope:
-          'Namespace imports without global installation. Forced temporal-polyfill 1.0.7 full and basic implementations; full calendar comparison excludes basic. TS default uses captured installed Intl for named timezones and Umm al-Qura, with compact owned Chinese/Dangi arithmetic/data. Standalone owns calendar packs and IANA histories. Both WASM profiles use Rust timezone data; native-data WASM drops duplicate TS packs while hybrid retains compact TS calendars. All matched outputs asserted. Diagnostic one-sample mode does not establish representative timings.',
+          'Namespace imports without global installation. Official @js-temporal/polyfill 0.5.1 plus forced temporal-polyfill 1.0.7 full and basic implementations; full calendar comparison excludes basic and officialReference (documented ICU 78.2 incompatibility). TS default uses captured installed Intl for named timezones and Umm al-Qura, with compact owned Chinese/Dangi arithmetic/data. Standalone owns calendar packs and IANA histories. Both WASM profiles use Rust timezone data; native-data WASM drops duplicate TS packs while hybrid retains compact TS calendars. All matched outputs asserted. Diagnostic one-sample mode does not establish representative timings.',
         results,
       },
       null,

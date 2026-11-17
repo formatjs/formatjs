@@ -41,6 +41,7 @@ const firstInstantMilliseconds = performance.now() - start
 start = performance.now()
 const zoned = instant.toZonedDateTimeISO('America/New_York').toString()
 const firstTimezoneMilliseconds = performance.now() - start
+const isoTimezoneReadyMilliseconds = performance.now() - begin
 let chinese = null,
   firstCalendarMilliseconds = null
 if (calendar === 'true') {
@@ -66,6 +67,7 @@ console.log(
     firstCalendarMilliseconds,
     linearMemoryBytes,
     readyMilliseconds,
+    isoTimezoneReadyMilliseconds,
     retainedHeapDeltaBytes: after.heapUsed - before.heapUsed,
     residentDeltaBytes: after.rss - before.rss,
     output: {iso, zoned, chinese},

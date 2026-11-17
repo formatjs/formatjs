@@ -82,7 +82,8 @@ function addDurations(
 ): DurationObject {
   const two = toDurationFields(other)
   const native = nativeTemporal()
-  if (native) return createDuration(native.addDuration(one, two, sign < 0))
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return createDuration(native!.addDuration(one, two, sign < 0))
   const largest = Math.min(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
     throw new RangeError('Calendar units cannot be added without a calendar')
@@ -110,7 +111,8 @@ class DurationValue {
     if (durationFieldNames.every(field => left[field] === right[field]))
       return 0
     const native = nativeTemporal()
-    if (native) return native.compareDuration(left, right, relative)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.compareDuration(left, right, relative)
     if (relative) {
       const sameDate =
         left.years === right.years &&
@@ -154,7 +156,8 @@ class DurationValue {
   negated(): DurationObject {
     const fields = read(this)
     const native = nativeTemporal()
-    if (native) return createDuration(native.transformDuration(fields, false))
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return createDuration(native!.transformDuration(fields, false))
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
@@ -165,7 +168,8 @@ class DurationValue {
   abs(): DurationObject {
     const fields = read(this)
     const native = nativeTemporal()
-    if (native) return createDuration(native.transformDuration(fields, true))
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return createDuration(native!.transformDuration(fields, true))
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
@@ -228,9 +232,9 @@ class DurationValue {
         relativeRound(fields, relative, largest, smallest, increment, mode)
       )
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createDuration(
-        native.roundDuration(fields, largest, smallest, increment, mode)
+        native!.roundDuration(fields, largest, smallest, increment, mode)
       )
     if (fields.years || fields.months || fields.weeks || largeIndex < 3)
       throw new RangeError('Calendar rounding requires relativeTo')
@@ -261,7 +265,8 @@ class DurationValue {
     if (unit === undefined) throw new RangeError('unit is required')
     if (relative) return relativeTotal(fields, relative, unit)
     const native = nativeTemporal()
-    if (native) return native.totalDuration(fields, unit)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.totalDuration(fields, unit)
     const factors: Record<string, bigint> = {
       day: 86_400_000_000_000n,
       hour: 3_600_000_000_000n,
@@ -302,7 +307,8 @@ class DurationValue {
               ? 9
               : digits
     const native = nativeTemporal()
-    if (native) return native.formatDuration(fields, precision, mode)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatDuration(fields, precision, mode)
     if (precision === 'auto' || precision === 9)
       return formatDuration(fields, precision)
     const rounded = roundDuration(

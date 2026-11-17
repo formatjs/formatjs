@@ -71,6 +71,7 @@ formatjs_library(
         "standalone.ts",
         "wasm.ts",
         "wasm-native.ts",
+        "wasm-wire.ts",
         "zoned-date-time.ts",
         "zones.ts",
     ],

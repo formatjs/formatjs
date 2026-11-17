@@ -1,5 +1,9 @@
 import {defineGetters} from '#packages/temporal/accessors.js'
-import {nativeTemporal} from '#packages/temporal/native.js'
+import {
+  nativeTemporal,
+  type NativeTemporal,
+  type NativeDateSnapshot,
+} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
@@ -141,22 +145,62 @@ function read(value: unknown): ZonedSlot {
   if (!slot) throw new TypeError('Invalid ZonedDateTime receiver')
   return slot
 }
+const zonedSnapshots = new WeakMap<
+  ZonedSlot,
+  {
+    owner: NativeTemporal
+    value: NativeDateSnapshot
+    local: bigint
+    date: {epochDay: number; calendar: string; properties: NativeDateSnapshot}
+  }
+>()
+function zonedSnapshot(slot: ZonedSlot) {
+  const owner = nativeTemporal()
+  if (!owner) return undefined
+  let entry = zonedSnapshots.get(slot)
+  if (entry?.owner === owner) return entry
+  const value =
+    slot.properties?.owner === owner
+      ? slot.properties
+      : owner.zonedProperties(slot)
+  value.owner = owner
+  const local = BigInt(value.values.localNanoseconds as string)
+  entry = {
+    owner,
+    value,
+    local,
+    date: {
+      epochDay: epochDayOf(local),
+      calendar: slot.calendar,
+      properties: value,
+    },
+  }
+  zonedSnapshots.set(slot, entry)
+  return entry
+}
 function local(slot: ZonedSlot): bigint {
+  const cached = zonedSnapshot(slot)
+  if (cached) return cached.local
   return (
     slot.epochNanoseconds +
     zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
   )
 }
 export function createZonedDateTime(
-  epochNanoseconds: bigint,
+  input: bigint | ZonedSlot,
   timeZone: string,
   calendar: string
 ): ZonedDateTimeObject {
+  const epochNanoseconds =
+    typeof input === 'bigint' ? input : input.epochNanoseconds
   validateInstant(epochNanoseconds)
   const result = Object.create(
     ZonedDateTimeValue.prototype
   ) as ZonedDateTimeObject
-  setZonedSlot(result, {epochNanoseconds, timeZone, calendar})
+  setZonedSlot(
+    result,
+    typeof input === 'bigint' ? {epochNanoseconds, timeZone, calendar} : input
+  )
   return result
 }
 function option<T extends string>(
@@ -312,21 +356,17 @@ export function toZonedDateTimeSlot(
   overflowOption(resolved)
   if (existing) return existing
   const native = nativeTemporal()
-  if (native)
-    return {
-      epochNanoseconds: native.resolveZonedDateTime(
-        value!,
-        zone,
-        calendar,
-        offset,
-        behavior,
-        ambiguous,
-        matchMinute,
-        dateOnly
-      ),
-      timeZone: zone,
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.resolveZonedDateTime(
+      value!,
+      zone,
       calendar,
-    }
+      offset,
+      behavior,
+      ambiguous,
+      matchMinute,
+      dateOnly
+    )
   if (dateOnly)
     return {
       epochNanoseconds: startOfDay(
@@ -357,9 +397,9 @@ function add(
 ): ZonedDateTimeObject {
   const fields = toDurationFields(duration)
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createZonedDateTime(
-      native.addZonedDateTime(slot, fields, sign < 0, overflowOption(options)),
+      native!.addZonedDateTime(slot, fields, sign < 0, overflowOption(options)),
       slot.timeZone,
       slot.calendar
     )
@@ -480,9 +520,9 @@ export function differenceZonedDuration(
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
     throw new RangeError('Timezones differ')
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
-      native.differenceZonedDateTime(
+      native!.differenceZonedDateTime(
         start,
         end,
         largest,
@@ -512,7 +552,8 @@ export function differenceZonedDuration(
 
 function startOfDay(slot: ZonedSlot, day?: number): bigint {
   const native = nativeTemporal()
-  if (native) return native.startOfZonedDay(slot, day)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.startOfZonedDay(slot, day).epochNanoseconds
   day ??= epochDayOf(local(slot))
   const kernel = zonedKernel(slot.timeZone),
     midnight = BigInt(day) * nsPerDay
@@ -537,6 +578,8 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
 }
 
 function offsetText(slot: ZonedSlot): string {
+  const cached = zonedSnapshot(slot)
+  if (cached) return cached.value.values.offset as string
   const offset = zonedKernel(slot.timeZone).offsetNanoseconds(
     slot.epochNanoseconds
   )
@@ -585,8 +628,8 @@ function format(slot: ZonedSlot, options?: unknown): string {
               ? 9
               : digits
   const native = nativeTemporal()
-  if (native)
-    return native.formatZonedDateTime(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatZonedDateTime(
       slot,
       precision,
       mode,
@@ -626,11 +669,7 @@ class ZonedDateTimeValue {
     options: unknown = undefined
   ): ZonedDateTimeObject {
     const slot = toZonedDateTimeSlot(item, options)
-    return createZonedDateTime(
-      slot.epochNanoseconds,
-      slot.timeZone,
-      slot.calendar
-    )
+    return createZonedDateTime(slot, slot.timeZone, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toZonedDateTimeSlot(one).epochNanoseconds,
@@ -650,7 +689,9 @@ class ZonedDateTimeValue {
     return read(this).timeZone
   }
   get offsetNanoseconds(): number {
-    const slot = read(this)
+    const slot = read(this),
+      cached = zonedSnapshot(slot)
+    if (cached) return cached.value.values.offsetNanoseconds as number
     return Number(
       zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
     )
@@ -659,9 +700,16 @@ class ZonedDateTimeValue {
     return offsetText(read(this))
   }
   get hoursInDay(): number {
-    const slot = read(this)
+    const slot = read(this),
+      cached = zonedSnapshot(slot)
+    if (cached) {
+      if (cached.value.errors.includes('hoursInDay'))
+        throw new RangeError('Day boundary out of range')
+      return cached.value.values.hoursInDay as number
+    }
     const native = nativeTemporal()
-    if (native) return native.hoursInZonedDay(slot)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.hoursInZonedDay(slot)
     return (
       Number(startOfDay(slot, epochDayOf(local(slot)) + 1) - startOfDay(slot)) /
       3_600_000_000_000
@@ -684,6 +732,24 @@ class ZonedDateTimeValue {
       }
     }
     if (!any) throw new TypeError('At least one field required')
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(zonedSnapshot(slot)!.date)
+      const resolved = optionsObject(options),
+        ambiguous = disambiguation(resolved.disambiguation),
+        behavior = option(resolved.offset, 'prefer', [
+          'prefer',
+          'use',
+          'ignore',
+          'reject',
+        ]),
+        overflow = overflowOption(resolved)
+      return createZonedDateTime(
+        native!.withZoned(slot, updates, overflow, ambiguous, behavior),
+        slot.timeZone,
+        slot.calendar
+      )
+    }
     const fields = mergeDateFields(
       slot.calendar,
       {
@@ -725,9 +791,9 @@ class ZonedDateTimeValue {
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createZonedDateTime(
-        native.roundZonedDateTime(
+        native!.roundZonedDateTime(
           slot,
           unit === 'day' ? 'day' : timeUnit(unit),
           increment,
@@ -824,7 +890,14 @@ class ZonedDateTimeValue {
   }
   startOfDay(): ZonedDateTimeObject {
     const slot = read(this)
-    return createZonedDateTime(startOfDay(slot), slot.timeZone, slot.calendar)
+    const native = nativeTemporal()
+    return createZonedDateTime(
+      import.meta.formatjsTemporalNativeData === true || native
+        ? native!.startOfZonedDay(slot)
+        : startOfDay(slot),
+      slot.timeZone,
+      slot.calendar
+    )
   }
   equals(other: unknown): boolean {
     const a = read(this),
@@ -917,7 +990,13 @@ defineGetters(
   [...datePropertyNames, ...clockNames],
   (receiver, name) => {
     const slot = read(receiver),
-      value = local(slot)
+      cached = zonedSnapshot(slot)
+    if (cached) {
+      if ((clockNames as readonly string[]).includes(name))
+        return cached.value.values[name]
+      return dateProperty(cached.date, name)
+    }
+    const value = local(slot)
     return (clockNames as readonly string[]).includes(name)
       ? epochNanosecondsToISO(value)[name as (typeof clockNames)[number]]
       : dateProperty(

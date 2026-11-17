@@ -2393,3 +2393,36 @@ fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
         }
     }
 }
+
+#[test]
+fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
+    use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
+    let events: Vec<_> = (0..400)
+        .map(|index| OffsetTransition {
+            epoch_seconds: index,
+            offset_seconds: if index % 2 == 0 { 3600 } else { 0 },
+        })
+        .collect();
+    let zone = TransitionZone::new(0, &events, None).unwrap();
+    let mut offsets = Vec::new();
+    zone.visit_offsets(&mut |value| offsets.push(value));
+    assert_eq!(offsets, [0, 3_600_000_000_000]);
+
+    let many: Vec<_> = (0..40)
+        .map(|index| OffsetTransition {
+            epoch_seconds: index,
+            offset_seconds: index as i32,
+        })
+        .collect();
+    let zone = TransitionZone::new(0, &many, None).unwrap();
+    offsets.clear();
+    zone.visit_offsets(&mut |value| offsets.push(value));
+    offsets.sort();
+    offsets.dedup();
+    assert_eq!(
+        offsets,
+        (0..40)
+            .map(|value| value * 1_000_000_000)
+            .collect::<Vec<i128>>()
+    );
+}

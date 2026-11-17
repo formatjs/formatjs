@@ -8,6 +8,10 @@ import {runfiles} from '@bazel/runfiles'
 import {buildSync, transformSync} from 'esbuild'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 
+// Keep the reference's incompatible Intl declarations out of our global types.
+const officialPackage: string = '@js-temporal/polyfill'
+const {Temporal: officialReference} = await import(officialPackage)
+
 const directory = runfiles.resolve(process.argv[2])
 const load = (name: string) => import(pathToFileURL(join(directory, name)).href)
 const {Temporal} = await load('index.js')
@@ -275,6 +279,36 @@ function measure(namespace: typeof reference): unknown[] {
       name: 'dateFields',
       run: (index: number) => dateFields(dates[index]),
       check: (index: number) => dateFields(expectedDates[index]),
+    },
+    {
+      name: 'dateWith',
+      run: (index: number) => dates[index].with({day: 19}).toString(),
+      check: (index: number) => expectedDates[index].with({day: 19}).toString(),
+    },
+    {
+      name: 'dateTimeWith',
+      run: (index: number) =>
+        dateTimes[index].with({day: 19, hour: 12}).toString(),
+      check: (index: number) =>
+        referenceDateTimes[index].with({day: 19, hour: 12}).toString(),
+    },
+    {
+      name: 'yearMonthWith',
+      run: (index: number) => yearMonths[index].with({month: 5}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].with({month: 5}).toString(),
+    },
+    {
+      name: 'monthDayWith',
+      run: (index: number) => monthDays[index].with({day: 19}).toString(),
+      check: (index: number) =>
+        referenceMonthDays[index].with({day: 19}).toString(),
+    },
+    {
+      name: 'zonedWith',
+      run: (index: number) => zonedValues[index].with({hour: 12}).toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].with({hour: 12}).toString(),
     },
     {
       name: 'dateAdd',
@@ -563,30 +597,33 @@ function measure(namespace: typeof reference): unknown[] {
           .toString(),
     },
   ]
-  return cases.map(test => {
-    const caseIterations = test.iterations ?? iterations
-    const caseWarmup = test.warmup ?? warmup
-    for (let index = 0; index < 8; index++)
-      if (test.run(index) !== test.check(index))
-        throw new Error('Benchmark parity: ' + test.name)
-    for (let index = 0; index < caseWarmup; index++)
-      checksum += test.run(index & 7).length
-    const elapsed = []
-    for (let sample = 0; sample < samples; sample++) {
-      const start = performance.now()
-      for (let index = 0; index < caseIterations; index++)
+  const selected = process.env.FORMATJS_TEMPORAL_BENCHMARK_FILTER?.split(',')
+  return cases
+    .filter(test => !selected || selected.includes(test.name))
+    .map(test => {
+      const caseIterations = test.iterations ?? iterations
+      const caseWarmup = test.warmup ?? warmup
+      for (let index = 0; index < 8; index++)
+        if (test.run(index) !== test.check(index))
+          throw new Error('Benchmark parity: ' + test.name)
+      for (let index = 0; index < caseWarmup; index++)
         checksum += test.run(index & 7).length
-      elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
-    }
-    elapsed.sort((a, b) => a - b)
-    return {
-      operation: test.name,
-      iterations: caseIterations,
-      warmup: caseWarmup,
-      medianNanoseconds: elapsed[Math.floor(samples / 2)],
-      samplesNanoseconds: elapsed,
-    }
-  })
+      const elapsed = []
+      for (let sample = 0; sample < samples; sample++) {
+        const start = performance.now()
+        for (let index = 0; index < caseIterations; index++)
+          checksum += test.run(index & 7).length
+        elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
+      }
+      elapsed.sort((a, b) => a - b)
+      return {
+        operation: test.name,
+        iterations: caseIterations,
+        warmup: caseWarmup,
+        medianNanoseconds: elapsed[Math.floor(samples / 2)],
+        samplesNanoseconds: elapsed,
+      }
+    })
 }
 const typescript = measure(Temporal)
 const bytes = readFileSync(join(directory, 'temporal-backend.wasm'))
@@ -626,6 +663,25 @@ const nativeDataTemporal = (await load('wasm-native.js')).configureTemporalWasm(
 )
 const nativeDataWasm = measure(nativeDataTemporal)
 const referenceResults = measure(reference)
+const officialReferenceResults = measure(
+  officialReference as unknown as typeof reference
+)
+const officialCode = buildSync({
+  stdin: {
+    contents: "export {Temporal} from '@js-temporal/polyfill'",
+    resolveDir: directory,
+  },
+  bundle: true,
+  write: false,
+  format: 'esm',
+  target: 'es2022',
+  minify: true,
+  legalComments: 'none',
+}).outputFiles[0].contents
+const officialSize = {
+  minified: officialCode.byteLength,
+  gzip: gzipSync(officialCode, {level: 9}).length,
+}
 const minify = (file: string) => {
   const source = readFileSync(join(directory, file), 'utf8')
   const code = transformSync(source, {
@@ -678,9 +734,13 @@ console.log(
       memoryScope:
         'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace. Default TS uses compact ICU4X lunisolar data/arithmetic, host Intl Umm al-Qura and named timezones. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid retains compact TS calendars. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. Reference temporal-polyfill1.0.7 basic. Partial WASM backend, not full Rust namespace.',
+        'Actual published Temporal namespace. Default TS uses compact ICU4X lunisolar data/arithmetic, host Intl Umm al-Qura and named timezones. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid retains compact TS calendars. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use512 iterations and128 warmup. References temporal-polyfill1.0.7 basic and @js-temporal/polyfill0.5.1. Binary WASM operations return complete records with cached derived fields; JS retains observable object/coercion/option semantics.',
       method:
-        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then reference in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+        'Eight inputs, parity checked, 3000 warmup +7 samples x10000 calls; TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1 in one process. First native/calendar/timezone calls measured separately after warmed JS/TS; calendar call includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.',
+      references: {
+        'temporal-polyfill': '1.0.7',
+        '@js-temporal/polyfill': '0.5.1',
+      },
       iterations,
       samples,
       warmup,
@@ -689,6 +749,7 @@ console.log(
       wasm,
       nativeDataWasm,
       reference: referenceResults,
+      officialReference: officialReferenceResults,
       compileMilliseconds,
       instantiateMilliseconds,
       firstNativeOperationMilliseconds,
@@ -699,6 +760,7 @@ console.log(
       finalMemoryBytes: query.memoryBytes,
       native: JSON.parse(query('{"op":"info"}')),
       size: {
+        officialReference: officialSize,
         modules,
         binary,
         consumer: {

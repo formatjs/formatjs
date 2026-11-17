@@ -107,7 +107,8 @@ function overflow(options: unknown): boolean {
 }
 function regulate(values: number[], constrain: boolean): bigint {
   const native = nativeTemporal()
-  if (native) return native.regulatePlainTime(values, constrain)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.regulatePlainTime(values, constrain)
   let result = 0n
   for (let index = 0; index < 6; index++) {
     let value = values[index]
@@ -182,7 +183,8 @@ export function roundTime(
 ): bigint {
   validateIncrement(unit, increment)
   const native = nativeTemporal()
-  if (native) return native.roundPlainTime(value, unit, increment, mode)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.roundPlainTime(value, unit, increment, mode)
   const index = names.indexOf(unit)
   const parent = index === 0 ? day : factors[index - 1]
   const base = (value / parent) * parent
@@ -211,9 +213,9 @@ function difference(
     throw new RangeError('Largest unit smaller than smallest unit')
   validateIncrement(smallest, increment)
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
-      native.differencePlainTime(
+      native!.differencePlainTime(
         since ? end : value,
         since ? value : end,
         names[largeIndex],
@@ -236,7 +238,8 @@ function difference(
 function add(value: bigint, other: unknown, sign: bigint): PlainTimeObject {
   const duration = toDurationFields(other)
   const native = nativeTemporal()
-  if (native) return create(native.addPlainTime(value, duration, sign < 0n))
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return create(native!.addPlainTime(value, duration, sign < 0n))
   return create(value + sign * durationNanoseconds(duration, false))
 }
 function format(
@@ -245,7 +248,8 @@ function format(
   mode: RoundingMode = 'trunc'
 ): string {
   const native = nativeTemporal()
-  if (native) return native.formatPlainTime(value, precision, mode)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatPlainTime(value, precision, mode)
   const quantum =
     precision === 'auto'
       ? 1n

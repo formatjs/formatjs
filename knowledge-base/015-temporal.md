@@ -1694,3 +1694,75 @@ full reference 23,083. Native-data WASM totals 479,583, hybrid 484,339, includin
 443,098 binary bytes. Ready medians: TS 20.84 ms versus full reference 22.58;
 previous owned-data TS 12.11. Payload shrinks; startup work increases in this
 sample. Earlier throughput snapshots are historical, not remeasured claims.
+
+## WASM bridge cost diagnosis (before binary records, 2026-11-17)
+
+`//benchmarks/temporal:wasm_cost_benchmark` isolates matched public ISO calls,
+counts normalized requests, replays exact recorded Rust responses, and compares
+production JSON transfer with preallocated storage and a benchmark-only numeric
+calendar ABI. Forward/reverse snapshots and methodology live in
+`benchmarks/temporal/README.md` under "WASM bridge cost diagnosis".
+
+Eight PlainDate getters cost TS 2.64 microseconds versus WASM 47.05. They send
+13 logical queries (eight identical date conversions), each requiring six
+exported-function crossings plus JSON/UTF-8 and allocation work. Replay still
+costs 12.81 microseconds because JS normalization/serialization remains. Instant
+formatting sends separate round/format requests; addition sends ten duration
+fields twice for validation then addition.
+
+One calendar conversion costs 2.83 microseconds through the string bridge,
+1.91 with preallocated input/descriptor and no text transfer, 0.36 through a
+numeric ABI including equivalent JSON reconstruction in JS, or 0.074 for the
+numeric call and field reads. Numeric control uses the production ISO calendar
+provider but omits textual dispatch/general ABI validation; it is not a full
+polyfill alternative. Reverse timing order preserves the conclusion. The actual
+wasm32 Rust core is already built at opt-level 3; the final export shim uses z.
+
+The measured pre-change slowdown comes from fine-grained normalized JSON calls and repeated
+work around small calculations. Prioritize fewer queries, typed records/reused
+buffers and fused backend operations, preserving observable coercion/error
+ordering. Existing claims cover Node/V8 ISO workloads, not all calendars or
+engines. TS stays default; the diagnostic snapshots predate the binary-record implementation below.
+
+## Whole WASM operations and binary results (2026-11-17)
+
+ABI 10 adds module-owned reusable input/output buffers. Each normal request
+uses one exchange export; buffer growth reserves separately. Operation/key IDs,
+packed calendar snapshots and numeric duration fields avoid JSON text transfer.
+Rust still uses dynamic normalized records internally. JSON controls remain for
+the native SDK and independent diagnostics.
+
+Rust returns immutable calendar/clock/zone snapshots with parsed or computed
+date-like values. Getters reuse those snapshots; backend replacement invalidates
+cached owners. Optional derived-field failures remain lazy getter errors.
+Instant rounding/offset/formatting and date-like partial updates execute whole
+Rust operations. JS retains observable field reads, coercion, options, brands,
+object creation and cheap boundary checks. Native-data builds prune TS fallback
+arithmetic; default/hybrid retain it. Backend metadata continues to report
+`completeTemporalBackend: false`.
+
+Package regressions assert one exchange per date add/partial update, zero
+additional getter exchanges, shared-instance buffer growth recovery, matching
+operation dictionaries and TypeError precedence for incomplete era fields.
+Rust tests cover malformed/truncated requests, invalid operations, range errors
+and recovery. Existing ICU oracle corpora and Test262 exclusions remain unchanged.
+The facade/startup harnesses also compare pinned `@js-temporal/polyfill` 0.5.1
+(dev-only), alongside `temporal-polyfill` 1.0.7.
+
+Full-result benchmarks also exposed repeated timezone candidates: each historical
+transition retried its offset, even when centuries reused the same two values.
+`TransitionZone::visit_offsets` now remembers sixteen offsets on the stack;
+additional values still reach the visitor. No heap cache or new data is needed.
+Rust regression controls cover 400 repeated transitions and forty distinct
+offsets. Existing ICU gap/fold and day-boundary controls verify behavior.
+
+Final evidence: `benchmarks/temporal/binary-operation-results.json` (48 workloads)
+and `binary-operation-startup-results.json` (nine fresh processes per profile).
+All 55 focused targets pass. WASM and SDK Hermes source/bytecode each execute
+12,234 Test262 scenarios; exclusion manifests are unchanged. WASM wins 4/48
+against TS, 18/48 against official reference. Node namespace gzip: TS 39,693;
+native-data WASM 487,770 (29,560 JS, 458,210 binary); official 44,522. Shared
+ISO/timezone readiness medians: 19.50/24.23/26.75 ms respectively. Eager snapshots
+move work into constructors/arithmetic; warm getters are not an end-to-end win.
+Official 0.5.1 Chinese month addition throws `Unexpected leap month suffix: Mo1`
+on pinned ICU 78.2; its optional calendar startup sample is explicitly disabled.

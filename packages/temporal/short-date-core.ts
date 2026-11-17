@@ -29,16 +29,16 @@ export function isoReferenceDay(
   return calendarToEpochDayRaw('iso8601', {year, month, day}, 'reject')
 }
 export function checkYearMonth(epochDay: number): number {
-  const {year, month} = calendarFromEpochDayRaw('iso8601', epochDay)
+  // Inclusive ISO months at Temporal's year-month limits.
   if (
-    year < -271821 ||
-    year > 275760 ||
-    (year === -271821 && month < 4) ||
-    (year === 275760 && month > 9)
+    !Number.isInteger(epochDay) ||
+    epochDay < -100000019 ||
+    epochDay > 100000017
   )
     throw new RangeError('Year-month out of range')
   return epochDay
 }
+
 export function yearMonthFields(
   calendar: string,
   fields: Record<string, unknown>,
@@ -173,10 +173,10 @@ export function parseShortSlot(
   kind: 'year-month' | 'month-day'
 ): DateSlot {
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return kind === 'year-month'
-      ? native.parsePlainYearMonth(value)
-      : native.parsePlainMonthDay(value)
+      ? native!.parsePlainYearMonth(value)
+      : native!.parsePlainMonthDay(value)
   const parsed = parseShortDateString(value, kind),
     calendar = constructorCalendar(parsed.calendar)
   if (
@@ -219,10 +219,10 @@ export function formatShortDate(
 ): string {
   const option = calendarNameOption(calendarName),
     native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return kind === 'year-month'
-      ? native.formatPlainYearMonth(slot, option)
-      : native.formatPlainMonthDay(slot, option)
+      ? native!.formatPlainYearMonth(slot, option)
+      : native!.formatPlainMonthDay(slot, option)
   const annotation = calendarAnnotation(slot.calendar, option)
   const fields = calendarFromEpochDayRaw('iso8601', slot.epochDay)
   const year =

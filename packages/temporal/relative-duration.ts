@@ -123,7 +123,8 @@ export function relativeTotal(
   unit: string
 ): number {
   const native = nativeTemporal()
-  if (native) return native.totalDuration(fields, unit, relative)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.totalDuration(fields, unit, relative)
   const factors: Record<string, bigint> = {
     week: 7n * nsPerDay,
     day: nsPerDay,
@@ -200,8 +201,8 @@ export function relativeRound(
   mode: RoundingMode
 ): DurationFields {
   const native = nativeTemporal()
-  if (native)
-    return native.roundDuration(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.roundDuration(
       fields,
       largest,
       smallest,
