@@ -114,3 +114,9 @@ Contrib setup uses `prepareSupportedValuesOf` before Locale captures its
 enumerator. Its private callback observes formatter loaders after the remaining
 constructors are installed, before application code can retain those methods.
 Regular installer overloads continue observing already-installed formatters.
+
+The isolated Test262 suite installs our English DateTimeFormat prelude before
+supportedValuesOf. Older native formatters otherwise canonicalize accepted primary
+IDs to legacy aliases. Standalone host compatibility remains covered by unit tests.
+The 50-case suite retains two existing DisplayNames currency failures; the two
+stale calendar failures are removed. No new exclusions.

@@ -219,7 +219,11 @@ test262_test(
         "@com_github_tc39_test262//:test262-harness-copy",
         "@com_github_tc39_test262//:test262-supportedvaluesof-copy",
     ],
-    prelude = "test262-polyfill.js",
+    # Older host DateTimeFormat resolves primary names to legacy aliases.
+    prelude = [
+        "//packages/intl-datetimeformat:test262-en-polyfill.js",
+        "test262-polyfill.js",
+    ],
     suite = "intl402/Intl/supportedValuesOf",
 )
 

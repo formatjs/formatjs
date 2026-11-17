@@ -296,7 +296,7 @@ export function FormatDateTimePattern(
         (internalSlots.timeZone || getDefaultTimeZone())
       // ICU metazone name data starts at 1970; UTC names are invariant.
       const timeZoneData =
-        epochNanoseconds >= 0n || timeZone === 'UTC'
+        epochNanoseconds >= BigInt(0) || timeZone === 'UTC'
           ? timeZoneName[timeZone]
           : undefined
       const zoneNames = timeZoneName[timeZone]

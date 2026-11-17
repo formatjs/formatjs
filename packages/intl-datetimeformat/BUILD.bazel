@@ -630,6 +630,7 @@ alias(
         format = "iife",
         target = "es2020",
         visibility = [
+            "//packages/intl-supportedvaluesof:__pkg__",
             "//packages/temporal:__pkg__",
             "//tools/test262:__pkg__",
         ],
