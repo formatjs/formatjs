@@ -1846,3 +1846,9 @@ profile. TS/references are unchanged from the preceding isolated run; WASM was
 retimed after the numeric fix. Hybrid throughput is omitted in this snapshot;
 shipping-size/startup controls still include it. Median wins do not establish
 stable wins for close workloads. WASM remains slower overall; this goal is open.
+
+ISO calendar resolution bypasses the compiled table registry. First non-ISO use
+still initializes and validates table data. The fresh-process startup experiment
+in `benchmarks/temporal/lazy-calendar-startup-results.json` reduces native-data
+WASM ISO/timezone readiness from 25.0 ms to 16.3 ms (TS: 19.5 ms). Full calendar
+readiness remains about 27 ms; table work is deferred, not removed.

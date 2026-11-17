@@ -233,6 +233,15 @@ pub(crate) fn calendars() -> Result<CalendarRegistry<'static>, Error> {
         .copied()
         .map_err(|error| *error)
 }
+pub(crate) fn resolve_calendar(identifier: &str) -> Result<CalendarRef<'static>, Error> {
+    if identifier.eq_ignore_ascii_case("iso8601") {
+        return Ok(CalendarRef::Arithmetic(crate::calendar::Calendar::Iso8601));
+    }
+    calendars()?.resolve(identifier)
+}
+pub(crate) fn calendar_for_string(text: &str) -> Result<CalendarRef<'static>, Error> {
+    resolve_calendar(crate::parse::calendar_annotation(text).unwrap_or("iso8601"))
+}
 fn time_zones() -> TimeZoneRegistry<'static> {
     #[cfg(feature = "compiled_time_zones")]
     {
@@ -555,7 +564,7 @@ fn with_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }
     if op == "withPlainDateTime" {
         let calendar =
-            calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+            resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
         let source =
             PlainDateTime::from_epoch_nanoseconds_in(decimal(request, "nanoseconds")?, calendar)?;
         let result = source.with_fields(
@@ -569,8 +578,7 @@ fn with_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }
     let slot = &request["value"];
     let epoch = integer(slot.get("epochDay"), None)?;
-    let calendar =
-        calendars()?.resolve(slot["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let calendar = resolve_calendar(slot["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     Ok(json!(match op {
         "withPlainDate" => PlainDate::from_epoch_day_in(epoch, calendar)?
             .with_fields(date, overflow)?
@@ -610,7 +618,7 @@ fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
         ZonedDateTime::new_in_calendar(
             instant(record, "epochNanoseconds")?,
             time_zones().resolve(record["timeZone"].as_str().ok_or(Error::InvalidTimeZone)?)?,
-            calendars()?.resolve(record["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
+            resolve_calendar(record["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
         )
     } else {
         zoned_value(record)?
@@ -673,7 +681,7 @@ pub(crate) fn complete_result(
                 result = json!({"epochNanoseconds":result,"calendar":request["calendar"]});
             }
             let calendar =
-                calendars()?.resolve(result["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+                resolve_calendar(result["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
             let ns = decimal(&result, "epochNanoseconds")?;
             let mut properties =
                 partial_calendar_snapshot(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
@@ -720,7 +728,7 @@ pub(crate) fn complete_result(
         ),
         _ => return Ok((result, None)),
     };
-    let properties = partial_calendar_snapshot(calendars()?.resolve(calendar)?, epoch);
+    let properties = partial_calendar_snapshot(resolve_calendar(calendar)?, epoch);
     if !record {
         result = json!({"epochDay":epoch,"calendar":calendar});
     }
@@ -744,8 +752,7 @@ pub(crate) fn calendar_properties(
 }
 
 fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
-    let registry = calendars()?;
-    let calendar = registry.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let calendar = resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     if op == "calendarProperties" {
         return calendar_properties(calendar, request).map(CalendarSnapshot::into_json);
     }
@@ -936,7 +943,7 @@ fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }
     if op == "formatPlainDateTime" {
         let calendar =
-            calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+            resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
         let value =
             PlainDateTime::from_epoch_nanoseconds_in(decimal(request, "nanoseconds")?, calendar)?;
         return Ok(json!(
@@ -947,8 +954,7 @@ fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
         ));
     }
     let record = &request["value"];
-    let calendar =
-        calendars()?.resolve(record["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let calendar = resolve_calendar(record["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     let epoch = integer(record.get("epochDay"), None)?;
     let overflow = || -> Result<crate::Overflow, Error> {
         Ok(match calendar_overflow(request)? {
@@ -986,7 +992,7 @@ fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
             let value = PlainYearMonth::from_epoch_day_in(epoch, calendar)?;
             let other = &request["other"];
             let other_calendar =
-                calendars()?.resolve(other["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+                resolve_calendar(other["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
             let other = PlainYearMonth::from_epoch_day_in(
                 integer(other.get("epochDay"), None)?,
                 other_calendar,
@@ -1044,7 +1050,7 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
         let local = decimal(request, "nanoseconds")?;
         let fields = IsoDateTime::from_epoch_nanoseconds(local)?;
         let calendar =
-            calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+            resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
         let zone = time_zones().resolve(
             request["identifier"]
                 .as_str()
@@ -1131,7 +1137,7 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
         };
         return Ok(json!({"fields":fields,"timeZone":parsed.zone,"offset":offset}));
     }
-    let calendar = calendars()?.for_string(text)?;
+    let calendar = calendar_for_string(text)?;
     match op {
         "parsePlainDate" => {
             let result = PlainDate::parse_in(text, calendar)?;
@@ -1160,7 +1166,7 @@ fn zoned_value(
     Ok(ZonedDateTime::new_in_calendar(
         instant(value, "nanoseconds")?,
         time_zones().resolve(value["identifier"].as_str().ok_or(Error::InvalidTimeZone)?)?,
-        calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
+        resolve_calendar(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
     ))
 }
 fn zoned_operation(op: &str, request: &Value) -> Result<Value, Error> {
@@ -1232,7 +1238,7 @@ impl DurationAnchor {
         match value["kind"].as_str() {
             Some("date") => Ok(Self::Date(PlainDate::from_epoch_day_in(
                 integer(value.get("epochDay"), None)?,
-                calendars()?.resolve(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
+                resolve_calendar(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
             )?)),
             Some("zoned") => Ok(Self::Zoned(zoned_value(value)?)),
             _ => Err(Error::InvalidDateTime),
@@ -1451,8 +1457,7 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }
 }
 fn plain_operation(op: &str, request: &Value) -> Result<Value, Error> {
-    let calendar =
-        calendars()?.resolve(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
+    let calendar = resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     let subtract = || request["subtract"].as_bool().ok_or(Error::InvalidDuration);
     let since = || {
         request["since"]

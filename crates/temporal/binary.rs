@@ -547,15 +547,8 @@ fn run(bytes: &[u8], output: &mut Vec<u8>) -> Result<(), i32> {
     let request = Value::Object(request);
     if *operation == "calendarProperties" {
         crate::ffi::record_call();
-        let calendar = crate::ffi::calendars()
-            .and_then(|registry| {
-                registry.resolve(
-                    request["calendar"]
-                        .as_str()
-                        .ok_or(crate::Error::InvalidCalendar)?,
-                )
-            })
-            .map_err(|_| 1)?;
+        let calendar =
+            crate::ffi::resolve_calendar(request["calendar"].as_str().ok_or(1)?).map_err(|_| 1)?;
         let result = crate::ffi::calendar_properties(calendar, &request).map_err(|_| 1)?;
         encode_snapshot(output, result);
         return Ok(());

@@ -1848,3 +1848,13 @@ No TS algorithms or data were changed. New shared spec controls caught a Rust
 normalization bug for very large finite calendar fields; fixed before this WASM
 snapshot. Required-field errors, non-finite values and `reject` remain checked.
 The controls do not count as independent ICU rows. Existing exclusions are unchanged.
+
+### Deferred table initialization
+
+ISO lookups previously initialized and validated Chinese, Dangi and Umm al-Qura
+tables. ISO now resolves directly; first non-ISO use retains table validation.
+`lazy-calendar-startup-results.json` records nine new processes per profile:
+ISO/timezone readiness falls from 25.0 ms to 16.3 ms, versus TS 19.5 ms. First
+Chinese use rises from 2.0 ms to 10.7 ms. Full calendar readiness stays about 27 ms.
+No data or correctness checks removed. Earlier figures above remain checkpoint
+measurements before this change; this experiment measures startup separately.

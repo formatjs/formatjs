@@ -234,7 +234,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
             {
                 return Err(Error::OutOfRange);
             }
-            let calendar = crate::ffi::calendars()?.resolve(calendar)?;
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
             let epoch = epoch as i64;
             match operation {
                 "formatPlainDate" => write_text(
@@ -274,7 +274,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
                     .epoch_day(),
                 _ => return Err(Error::InvalidSyntax),
             };
-            let calendar = crate::ffi::calendars()?.resolve("iso8601")?;
+            let calendar = crate::ffi::resolve_calendar("iso8601")?;
             super::encode_date(
                 output,
                 epoch,
@@ -286,7 +286,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
             let calendar = crate::calendar::Calendar::Iso8601;
             let fields = iso_fields(fields, month_code, overflow)?;
             let epoch = PlainDate::from_calendar_fields(calendar, fields, overflow)?.epoch_day();
-            let calendar = crate::ffi::calendars()?.resolve("iso8601")?;
+            let calendar = crate::ffi::resolve_calendar("iso8601")?;
             super::encode_date(
                 output,
                 epoch,
@@ -295,7 +295,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
             );
         }
         Request::ParseDate(operation, text) => {
-            let calendar = crate::ffi::calendars()?.for_string(text)?;
+            let calendar = crate::ffi::calendar_for_string(text)?;
             let epoch = match operation {
                 "parsePlainDate" => PlainDate::parse_in(text, calendar)?.epoch_day(),
                 "parsePlainYearMonth" => PlainYearMonth::parse_in(text, calendar)?.epoch_day(),
@@ -316,7 +316,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
             {
                 return Err(Error::OutOfRange);
             }
-            let calendar = crate::ffi::calendars()?.resolve(calendar)?;
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
             let value = PlainDate::from_epoch_day_in(epoch as i64, calendar)?;
             let duration = duration(fields)?;
             let result = if subtract {
