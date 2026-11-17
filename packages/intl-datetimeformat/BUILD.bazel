@@ -405,12 +405,49 @@ generate_package_file(
     tool = "//packages/intl-datetimeformat/scripts:process-zdump",
 )
 
+_IDENTITY_SOURCES = [
+    "africa",
+    "antarctica",
+    "asia",
+    "australasia",
+    "europe",
+    "northamerica",
+    "southamerica",
+    "etcetera",
+    "backward",
+    "zone.tab",
+]
+
+[
+    copy_file(
+        name = "tz_identity_" + source,
+        src = "@iana_tzdata//:" + source,
+        out = "tz_identity_data/" + source,
+    )
+    for source in _IDENTITY_SOURCES
+]
+
+generate_package_file(
+    name = "tz_primary",
+    src = "primary.ts",
+    args = [
+        "--tab",
+        "$(rootpath :tz_identity_zone.tab)",
+    ] + [arg for source in _IDENTITY_SOURCES if source != "zone.tab" for arg in [
+        "--source",
+        "$(rootpath :tz_identity_%s)" % source,
+    ]],
+    data = ["//:node_modules/cldr-bcp47"] + [":tz_identity_" + source for source in _IDENTITY_SOURCES],
+    tool = "//packages/intl-datetimeformat/scripts:primary-zones",
+)
+
 formatjs_generated_package(
     name = "tz_pkg",
     package_name = "tz",
     srcs = [
         ":tz_all_tz",
         ":tz_links",
+        ":tz_primary",
     ],
 )
 
@@ -671,6 +708,7 @@ formatjs_test(
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/minimist",
         "//:node_modules/@types/node",
+        "//:node_modules/cldr-bcp47",
         "//:node_modules/fs-extra",
         "//:node_modules/json-stable-stringify",
         "//:node_modules/minimist",

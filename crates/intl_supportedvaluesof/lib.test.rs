@@ -52,7 +52,7 @@ fn lists_are_sorted_unique_and_runtime_specific() {
 
 #[test]
 fn aliases_and_formatter_fallbacks_are_not_advertised() {
-    for key in ["calendar", "collation", "timeZone", "unit"] {
+    for key in ["calendar", "collation", "unit"] {
         let values = supported_values_of(key, |_, value, _| {
             if ["gregory", "emoji", "UTC", "acre"].contains(&value) {
                 resolved(value)
@@ -154,6 +154,28 @@ fn primary_time_zones_include_etcetera_but_exclude_utc_aliases() {
     }
     assert!(!values.contains(&"Etc/UTC".to_owned()));
     assert!(!values.contains(&"Etc/GMT".to_owned()));
+}
+
+#[test]
+fn primary_time_zones_survive_older_formatter_aliases() {
+    let values = supported_values_of("timeZone", |_, value, _| match value {
+        "Asia/Kathmandu" => resolved("Asia/Katmandu"),
+        "America/Edmonton" => resolved("America/Edmonton"),
+        "Africa/Accra" => resolved("Africa/Abidjan"),
+        _ => None,
+    })
+    .unwrap();
+    assert_eq!(
+        values,
+        ["Africa/Accra", "America/Edmonton", "Asia/Kathmandu"]
+    );
+    for alias in ["America/Yellowknife", "Asia/Katmandu", "Europe/Kiev"] {
+        assert!(
+            !candidates(Key::TimeZone)
+                .iter()
+                .any(|candidate| candidate.value == alias)
+        );
+    }
 }
 
 #[test]

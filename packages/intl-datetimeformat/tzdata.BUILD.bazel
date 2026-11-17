@@ -4,6 +4,7 @@ exports_files([
     "asia",
     "australasia",
     "backward",
+    "zone.tab",
     "etcetera",
     "europe",
     "northamerica",

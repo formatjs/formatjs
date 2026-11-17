@@ -1,5 +1,10 @@
 # @formatjs/intl-supportedvaluesof
 
+Timezone candidates use primary IANA identities from pinned tzdata, zone.tab and
+CLDR aliases. Host DateTimeFormat acceptance determines availability; older host
+canonicalization does not remove accepted primary names. TS, Rust and Hermes
+share this policy without requiring Temporal.
+
 **ECMA-402 Section 8.3.2** — `Intl.supportedValuesOf`
 
 ## Purpose

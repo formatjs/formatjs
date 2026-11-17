@@ -42,6 +42,9 @@ pnpm add @formatjs/intl-supportedvaluesof
 - [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) or [polyfill](intl-datetimeformat)
 - [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) or [polyfill](intl-numberformat).
 
+Timezone results retain supported primary IANA names even when host
+DateTimeFormat resolves them to older aliases. No Temporal dependency required.
+
 ## Usage
 
 ### Simple

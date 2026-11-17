@@ -129,7 +129,10 @@ generate_package_file(
         "--source",
         "$(rootpath :iana_etcetera)",
     ],
-    data = [":iana_etcetera"],
+    data = [
+        ":iana_etcetera",
+        "//:node_modules/@formatjs_generated/tz",
+    ],
     tags = ["cldr"],
     tool = "//packages/intl-supportedvaluesof/scripts:timezones",
 )
