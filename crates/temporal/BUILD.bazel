@@ -40,9 +40,8 @@ rust_shared_library(
 
 temporal_wasm(
     name = "wasm_backend",
-    srcs = [":wasm_backend_core"],
-    outs = ["temporal-backend.wasm"],
-    cmd = "cp $< $@",
+    src = ":wasm_backend_core",
+    out = "temporal-backend.wasm",
     visibility = ["//visibility:public"],
 )
 
@@ -64,9 +63,8 @@ rust_shared_library(
 
 temporal_wasm(
     name = "wasm",
-    srcs = [":wasm_core"],
-    outs = ["temporal-core.wasm"],
-    cmd = "cp $< $@",
+    src = ":wasm_core",
+    out = "temporal-core.wasm",
     visibility = ["//visibility:public"],
 )
 

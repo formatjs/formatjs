@@ -50,8 +50,7 @@ rust_shared_library(
 
 temporal_wasm(
     name = "wasm",
-    srcs = [":wasm_core"],
-    outs = ["temporal-rs-core.wasm"],
-    cmd = "cp $< $@",
+    src = ":wasm_core",
+    out = "temporal-rs-core.wasm",
     visibility = ["//visibility:public"],
 )

@@ -66,6 +66,13 @@ bazel test -c opt //benchmarks/temporal:wasm_test
 bazel run -c opt //benchmarks/temporal:wasm_benchmark
 ```
 
+The WASM targets use the public `rules_rs` `rust_shared_library` rule. A
+package-local `with_cfg(copy_file)` transition selects
+`@rules_rs//rs/platforms:wasm32-unknown-unknown` and `compilation_mode = opt`,
+then stages `temporal-core.wasm` or `temporal-backend.wasm` with Bazel's
+hermetic copy action. These modules expose the raw Temporal ABI; they do not
+need wasm-bindgen or generated JavaScript glue.
+
 Independent ICU4J controls cover 25,269 Gregorian conversions, 2,349 Instant
 rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock rounds,
 840 date-arithmetic cases and 2,028 ISO short-date cases. Tests use the production
