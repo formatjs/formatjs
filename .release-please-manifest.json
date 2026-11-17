@@ -82,5 +82,7 @@
   "crates/intl_segmenter": "1.0.0",
   "crates/intl_supportedvaluesof": "1.0.0",
   "native/hermes": "1.0.1",
-  "crates/apple_printf_parser": "0.2.0"
+  "crates/apple_printf_parser": "0.2.0",
+  "packages/temporal": "1.0.0",
+  "crates/temporal": "1.0.0"
 }

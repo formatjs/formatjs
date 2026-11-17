@@ -1,9 +1,13 @@
 {
   "name": "@formatjs/temporal",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "description": "Temporal implementation",
+  "homepage": "https://github.com/formatjs/formatjs#readme",
+  "bugs": "https://github.com/formatjs/formatjs/issues",
   "license": "MIT AND Unicode-3.0",
+  "author": "Long Ho <holevietlong@gmail.com>",
+  "repository": "formatjs/formatjs.git",
   "type": "module",
   "sideEffects": [
     "./polyfill.js",
