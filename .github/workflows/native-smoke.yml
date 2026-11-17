@@ -146,7 +146,7 @@ jobs:
           chmod +x artifacts/hermes-intl-darwin-arm64
           artifacts/hermes-intl-darwin-arm64 artifacts/hermes-intl-extension.hbc
 
-      - uses: bazel-contrib/setup-bazel@0.19.1
+      - uses: bazel-contrib/setup-bazel@0.19.2
         with:
           bazelisk-cache: true
           repository-cache: true

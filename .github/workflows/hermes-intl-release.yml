@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ inputs.release_tag && format('refs/tags/{0}', inputs.release_tag) || github.ref }}
-      - uses: bazel-contrib/setup-bazel@0.19.1
+      - uses: bazel-contrib/setup-bazel@0.19.2
         with:
           bazelisk-cache: true
           repository-cache: true
@@ -92,7 +92,7 @@ jobs:
         with:
           name: formatjs-hermes-intl-apple-sdk
           path: artifacts/
-      - uses: bazel-contrib/setup-bazel@0.19.1
+      - uses: bazel-contrib/setup-bazel@0.19.2
         with:
           bazelisk-cache: true
           repository-cache: true
