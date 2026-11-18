@@ -9,11 +9,22 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 ## Native performance direction
 
 Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
-and `@js-temporal/polyfill` across matched public workloads. Native Rust currently
-wins the 25-case matched matrix after linearizing Chinese/Dangi year lookup.
-The restored JS comparison retains all 48 workloads without WASM. Fresh isolated
-TS wins are 21/48 versus basic `temporal-polyfill`, 35/48 versus the official polyfill. Separate native
-and JS matrices have different coverage; neither proves universal performance.
+and `@js-temporal/polyfill` across matched public workloads. Native Rust still
+wins the 25-case matched matrix after the ISO TS optimizations. The restored JS
+comparison retains all 48 workloads without WASM. TS raw-median wins improve
+from 21/48 to 28/48 versus basic, 35/48 to 44/48 versus official, using frozen
+reference samples with identical counts. Close cases need fresh controls.
+Separate native and JS matrices have different coverage; neither proves
+universal performance. See `benchmarks/temporal/iso-date-experiments.json`.
+
+Shared Gregorian conversion computes the civil year once. Date getters reuse
+private immutable ISO fields under a unique symbol; native backend checks and normal/extended bounds
+precede reuse. Returned calendar records remain uncached to avoid aliasing.
+ISO derived fields use Gregorian arithmetic directly. Date-only serialization
+avoids constructing an Instant and clock string. No formatted-output cache.
+Each accessed ISO date slot retains one field record for its lifetime.
+Alternating controls confirm roughly 7x faster date getters and 5x faster date
+formatting. Export-all consumer grows by 326 gzip bytes; performance goal is open.
 
 The shared borrowed calendar provider now advances year starts once within each
 64-year checkpoint block. No cache or data format change. Independent ICU/HKO

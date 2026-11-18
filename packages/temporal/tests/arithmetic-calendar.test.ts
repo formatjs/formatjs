@@ -10,6 +10,23 @@ import {
   calendarDateUntilRaw,
 } from '#packages/temporal/calendar.js'
 
+it('matches native Gregorian fields across positive and negative 400-year cycles', () => {
+  for (const firstYear of [-200, 2000]) {
+    const first = Date.UTC(firstYear, 0, 1) / 86400000
+    const end = Date.UTC(firstYear + 400, 0, 1) / 86400000
+    for (let epoch = first; epoch < end; epoch++) {
+      const reference = new Date(epoch * 86400000)
+      const month = reference.getUTCMonth() + 1
+      expect(calendarFromEpochDay('iso8601', epoch)).toEqual({
+        year: reference.getUTCFullYear(),
+        month,
+        monthCode: 'M' + String(month).padStart(2, '0'),
+        day: reference.getUTCDate(),
+      })
+    }
+  }
+}, 30_000)
+
 it('matches independent ICU arithmetic calendars in both directions', () => {
   const file = runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-arithmetic-calendar-fixtures.tsv`

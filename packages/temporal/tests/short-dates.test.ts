@@ -6,6 +6,33 @@ import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal as fullReference} from 'temporal-polyfill/full/implementation'
 import {Temporal} from '#packages/temporal/index.js'
 
+it('ignores inherited properties while reading private date fields', () => {
+  const date = new Temporal.PlainDate(2020, 2, 29)
+  const yearMonth = new Temporal.PlainYearMonth(2020, 2)
+  const monthDay = new Temporal.PlainMonthDay(2, 29)
+  const original = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'isoFields'
+  )
+  let fields: unknown[] | undefined
+  Object.defineProperty(Object.prototype, 'isoFields', {
+    configurable: true,
+    get() {
+      throw new Error('Inherited date fields')
+    },
+    set() {
+      throw new Error('Inherited date fields')
+    },
+  })
+  try {
+    fields = [date.year, date.day, yearMonth.month, monthDay.monthCode]
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'isoFields', original)
+    else Reflect.deleteProperty(Object.prototype, 'isoFields')
+  }
+  expect(fields).toEqual([2020, 29, 2, 'M02'])
+})
+
 it('does not observe array iteration while preparing builtin calendar fields', () => {
   const original = Array.prototype[Symbol.iterator]
   let added: ReturnType<typeof Temporal.PlainYearMonth.from> | undefined

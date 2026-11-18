@@ -3,7 +3,10 @@ import type {
   NativeTimeResult,
 } from '#packages/temporal/native.js'
 import {zonedKernel} from '#packages/temporal/zones.js'
+import type {CalendarDate} from '#packages/temporal/calendar.js'
+export const isoDateFields: unique symbol = Symbol()
 export interface DateSlot {
+  [isoDateFields]?: Readonly<CalendarDate>
   readonly properties?: NativeDateSnapshot
   readonly epochDay: number
   readonly calendar: string

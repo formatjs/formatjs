@@ -7,6 +7,7 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {
   DayFromYear,
+  DaysInYear,
   YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
@@ -34,6 +35,7 @@ import {
   getTimeSlot,
   getYearMonthSlot,
   getMonthDaySlot,
+  isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -413,6 +415,57 @@ export function calendarNameOption(
     throw new RangeError('Invalid calendarName')
   return option as 'auto' | 'always' | 'never' | 'critical'
 }
+const twoDigitDateParts = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
+  '31',
+]
+export function formatISODate(
+  epochDay: number,
+  kind: 'date' | 'year-month' | 'month-day' = 'date'
+): string {
+  const fields = calendarFromEpochDayRaw('iso8601', epochDay)
+  const month = twoDigitDateParts[fields.month],
+    day = twoDigitDateParts[fields.day]
+  if (kind === 'month-day') return month + '-' + day
+  const year =
+    fields.year >= 1000 && fields.year <= 9999
+      ? String(fields.year)
+      : fields.year >= 0 && fields.year < 1000
+        ? String(fields.year).padStart(4, '0')
+        : (fields.year < 0 ? '-' : '+') +
+          String(Math.abs(fields.year)).padStart(6, '0')
+  return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
+}
 export function calendarAnnotation(calendar: string, value: unknown): string {
   const option = calendarNameOption(value)
   return option === 'never' || (option === 'auto' && calendar === 'iso8601')
@@ -463,7 +516,12 @@ export function dateProperty(
       return undefined
     return value!.values[key] as string | number | boolean | undefined
   }
-  const fields = dateFields(slot, extended),
+  const cacheISO =
+      slot.calendar === 'iso8601' &&
+      (extended || (slot.epochDay >= -100000001 && slot.epochDay <= 100000000)),
+    fields = cacheISO
+      ? (slot[isoDateFields] ??= dateFields(slot, extended))
+      : dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)
   switch (key) {
     case 'era':
@@ -481,19 +539,36 @@ export function dateProperty(
     case 'dayOfWeek':
       return ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
     case 'dayOfYear':
-      return slot.epochDay - calendarStartOfYear(cal, fields.year) + 1
+      return (
+        slot.epochDay -
+        (cal === 'iso8601'
+          ? DayFromYear(fields.year)
+          : calendarStartOfYear(cal, fields.year)) +
+        1
+      )
     case 'daysInWeek':
       return 7
     case 'daysInMonth':
+      if (cal === 'iso8601') {
+        if (fields.month === 2) return DaysInYear(fields.year) === 366 ? 29 : 28
+        return fields.month === 4 ||
+          fields.month === 6 ||
+          fields.month === 9 ||
+          fields.month === 11
+          ? 30
+          : 31
+      }
       return daysInMonth(cal, fields.year, fields.month)
     case 'monthsInYear':
       return monthsInYear(cal, fields.year)
     case 'daysInYear':
+      if (cal === 'iso8601') return DaysInYear(fields.year)
       return (
         calendarStartOfYear(cal, fields.year + 1) -
         calendarStartOfYear(cal, fields.year)
       )
     case 'inLeapYear':
+      if (cal === 'iso8601') return DaysInYear(fields.year) === 366
       return ['hebrew', 'chinese', 'dangi'].includes(cal)
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -

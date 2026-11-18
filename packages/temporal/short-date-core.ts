@@ -10,6 +10,7 @@ import {
 import {
   calendarAnnotation,
   calendarNameOption,
+  formatISODate,
   dateFields,
   constructorCalendar,
   resolveCalendarYear,
@@ -224,21 +225,9 @@ export function formatShortDate(
       ? native!.formatPlainYearMonth(slot, option)
       : native!.formatPlainMonthDay(slot, option)
   const annotation = calendarAnnotation(slot.calendar, option)
-  const fields = calendarFromEpochDayRaw('iso8601', slot.epochDay)
-  const year =
-    fields.year >= 0 && fields.year <= 9999
-      ? String(fields.year).padStart(4, '0')
-      : (fields.year < 0 ? '-' : '+') +
-        String(Math.abs(fields.year)).padStart(6, '0')
-  const month = String(fields.month).padStart(2, '0'),
-    day = String(fields.day).padStart(2, '0')
   const full =
     slot.calendar !== 'iso8601' || option === 'always' || option === 'critical'
-  return (
-    (kind === 'year-month'
-      ? `${year}-${month}${full ? '-' + day : ''}`
-      : `${full ? year + '-' : ''}${month}-${day}`) + annotation
-  )
+  return formatISODate(slot.epochDay, full ? 'date' : kind) + annotation
 }
 export function mergeShortFields(
   slot: DateSlot,

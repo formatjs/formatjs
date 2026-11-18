@@ -6,14 +6,21 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current native/TS checkpoint: 67 focused Rust/TS/ICU/Hermes/Test262 targets pass,
-including the surviving full Intl compatibility gates. Documentation builds.
-Default TS executable AST remains alpha-equivalent to the independent baseline
-(2,560 bindings); retained production TS files match the previous commit exactly.
-Native Rust wins 25/25 matched cases after linearizing table-calendar lookup.
-Fresh JS baseline wins 21/48 against basic `temporal-polyfill`, 35/48 against
-`@js-temporal/polyfill`; performance goal remains open. The matrices have different
-coverage and do not establish universal performance. See
+Current ISO optimization checkpoint: 94 Rust/TS/ICU/Hermes/Test262 targets pass,
+including full TS Hermes source/bytecode and Intl compatibility gates.
+One-pass Gregorian conversion, private ISO field reuse and date-only formatting
+improve date getters about 7x and formatting 5x in alternating controls.
+Native Rust still wins 25/25 matched cases against optimized TS. JS raw-median
+wins rise to 28/48 against basic and 44/48 against official, using frozen
+reference samples. DateTime rounding controls vary from +2% to +11%; that possible
+regression remains open. Consumer size grows by 326 gzip bytes; startup remains
+about 23 ms. Performance goal is incomplete. The matrices have different coverage
+and do not establish universal performance. See
+[`iso-date-experiments.json`](../benchmarks/temporal/iso-date-experiments.json).
+
+The preceding no-WASM checkpoint passed 67 targets and retained the original TS
+executable AST (2,560 normalized bindings). Its independent baseline and raw
+samples remain in
 [`native-ts-experiments.json`](../benchmarks/temporal/native-ts-experiments.json).
 
 The completion evidence below predates WASM removal and remains historical.

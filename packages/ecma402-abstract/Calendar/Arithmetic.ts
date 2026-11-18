@@ -1,8 +1,6 @@
 import {
-  DateFromTime,
   DayFromYear,
   DaysInYear,
-  MonthFromTime,
   YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 
@@ -160,15 +158,24 @@ export function ArithmeticCalendarFromEpochDay(
   const t = epoch * 86400000,
     civilYear = YearFromTime(t)
   if (IsISOCalendar(calendar)) {
+    const ordinal = Math.floor(t / 86400000) - DayFromYear(civilYear),
+      leap = DaysInYear(civilYear) === 366 ? 1 : 0
+    if (!(ordinal >= 0 && ordinal < 365 + leap)) throw new Error('Invalid time')
     const year =
         civilYear -
         (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0),
-      month = MonthFromTime(t) + 1
+      // March starts a repeating 153-day, five-month cycle.
+      month =
+        ordinal < 31
+          ? 1
+          : ordinal < 59 + leap
+            ? 2
+            : 3 + Math.floor((5 * (ordinal - 59 - leap) + 2) / 153)
     return {
       year,
       month,
       monthCode: ArithmeticCalendarMonthCode(calendar, year, month),
-      day: DateFromTime(t),
+      day: ordinal - monthStarts[month - 1] - (month > 2 ? leap : 0) + 1,
     }
   }
   const jd = epoch + 2440588

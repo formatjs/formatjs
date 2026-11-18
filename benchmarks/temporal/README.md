@@ -30,6 +30,32 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
+Latest TS experiment: one Gregorian year conversion per calendar lookup, private
+ISO fields reused by getters, direct Gregorian derived fields and date-only
+serialization. Alternating parent/current/current/parent controls put eight date
+getters at 0.34–0.35 µs versus 2.44–2.65 µs; date formatting at 0.19 µs versus
+0.95–0.99 µs. No formatted-output memo. Native backend checks precede the cache;
+extended short-date bounds still apply.
+One field record stays with each accessed ISO date slot until that slot dies.
+
+[`js-optimized-results.json`](js-optimized-results.json) uses the baseline's exact
+counts and frozen reference samples: 28/48 raw-median wins against basic,
+44/48 against official. All checksums match. Full-run rounding regressions need
+care: alternating `Instant.round` controls show no slowdown; DateTime round/format
+controls range from +2% to +11%. That possible regression remains open.
+Close reference results need fresh controls. The export-all
+consumer grows from 39,749 to 40,075 gzip bytes. Native Rust still wins 25/25
+against this TS version in
+[`native-ts-optimized-results.json`](native-ts-optimized-results.json).
+[`iso-date-experiments.json`](iso-date-experiments.json) retains profiles,
+alternating controls, source hashes and validation targets. Goal remains open.
+The [raw V8 profile](iso-date-baseline.cpuprofile.gz) is gzip-compressed; decompress
+before opening in Chrome DevTools.
+All 94 conformance targets pass, including full TS Hermes source/bytecode and
+native Hermes suites. Import plus first operation is 23.00 ms versus 22.85 ms at
+the parent; reference medians are 34.48/29.42 ms. See
+[startup](iso-startup-results.json) and [package sizes](iso-size-results.json).
+
 Fresh isolated baseline: TS wins 21/48 raw medians against `temporal-polyfill`
 and 35/48 against the official polyfill. Both still beat TS on date formatting;
 27 and 13 workloads respectively remain slower. All three checksums match.

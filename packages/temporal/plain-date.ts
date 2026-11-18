@@ -32,7 +32,6 @@ import {
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
-import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   dateFields,
   dateProperty,
@@ -42,6 +41,7 @@ import {
   constructorCalendar,
   calendarAnnotation,
   calendarNameOption,
+  formatISODate,
   readDateFields,
   mergeDateFields,
   isoDay,
@@ -272,11 +272,7 @@ function format(slot: DateSlot, calendarName: unknown = undefined): string {
     native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.formatPlainDate(slot, show)
-  return (
-    formatInstant(BigInt(slot.epochDay) * nsPerDay + nsPerDay / 2n).split(
-      'T'
-    )[0] + calendarAnnotation(slot.calendar, show)
-  )
+  return formatISODate(slot.epochDay) + calendarAnnotation(slot.calendar, show)
 }
 class PlainDateValue {
   toPlainYearMonth(): PlainYearMonthObject {
