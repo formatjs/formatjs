@@ -315,6 +315,19 @@ assert.equal(
   '8.0.0'
 )
 
+// Temporal bundles shared formatter helpers without an npm dependency edge.
+for (const formatter of ['intl-datetimeformat', 'intl-durationformat']) {
+  const releases = await run([`packages/${formatter}`])
+  const temporal = packages.find(pkg => pkg.path === 'packages/temporal')
+  const candidate = releases.find(
+    candidate => candidate.path === 'packages/temporal'
+  )
+  assert.ok(candidate, `Temporal must release with ${formatter}`)
+  assert.equal(
+    candidate.pullRequest.version.toString(),
+    new PatchVersionUpdate().bump(Version.parse(temporal.version)).toString()
+  )
+}
 // Generated calendar payloads must release when their shared generator releases,
 // even though peer dependencies do not normally propagate version bumps.
 const calendarReleases = await run(['packages/intl-datetimeformat'])

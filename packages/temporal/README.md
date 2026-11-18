@@ -73,6 +73,8 @@ Use standalone when owned timezone history/rules must determine results.
 All eight classes expose `toLocaleString(locales?, options?)`. Date/time classes
 use captured DateTimeFormat operations; Duration uses DurationFormat. Without the
 corresponding Intl formatter, locale methods return their ISO representation.
+Temporal patch releases include updates to the shared DateTimeFormat and
+DurationFormat helpers.
 
 The owned DateTimeFormat path accepts exact nanoseconds, including plain dates
 outside Date's TimeClip range. Load the needed FormatJS Intl polyfills and data
