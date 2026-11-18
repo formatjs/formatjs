@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.8](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-dangi@1.1.7...@formatjs/intl-datetimeformat-calendar-dangi@1.1.8) (2026-11-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @formatjs/intl-datetimeformat bumped to 8.2.0
+
 ## [1.1.7](https://github.com/formatjs/formatjs/compare/@formatjs/intl-datetimeformat-calendar-dangi@1.1.6...@formatjs/intl-datetimeformat-calendar-dangi@1.1.7) (2026-11-17)
 
 
