@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 18. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 19. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 18 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 19 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -281,15 +281,9 @@ compact binary records, including offset seconds/fractions and hoursInDay.
 Non-ISO calendars and deferred getter errors retain complete general snapshots.
 SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
 
-Current ABI 18 isolated checkpoint measures zoned rounding at 3.87 µs, down from
-11.42; TS is 2.87. Zoned addition is 5.83 versus TS 6.24 µs; parsing 6.34 versus
-TS 4.00. Complete Rust/JS fields remain eager. WASM wins 24/48 medians; 24 workloads
-still lose, including DateTime parsing and Instant rounding. All 66 focused
-Rust/TS/WASM/Test262/ICU/Hermes targets pass; default TS executable AST matches
-baseline. Native Node namespace is 513,202 bytes gzip (+5,315), versus TS 39,691
-with host Intl. Native ISO/timezone startup is 16.70 ms versus TS 19.40 ms.
-See [typed zoned operations](../../benchmarks/temporal/README.md#typed-zoned-operations)
-for every workload, size/startup scope and fresh profiles. Goal remains open.
+Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
+See [typed Duration operations](../../benchmarks/temporal/README.md#typed-duration-operations)
+for all workloads, profiles and size/startup scope. Goal remains open.
 
 ABI 18 adds typed zoned addition/subtraction, rounding and day-start requests.
 Rust returns complete results directly from typed values, with complete ISO
@@ -298,3 +292,10 @@ the general complete representation. Offset seconds/fractions stay intact.
 SDK JSON response shapes remain stable; pair the WASM binary with its JS adapter.
 Native-only construction wraps private branded or validated Rust result slots;
 numeric user constructors retain validation and standard prototypes.
+
+ABI 19 adds typed Duration parsing, addition/subtraction and negation/absolute
+value. Rust returns all ten validated fields; native bindings wrap those fields
+without repeating JS duration validation. Numeric constructors and user field
+coercion retain their checks. Cloning an existing branded Duration creates a new
+object with the standard prototype. SDK JSON responses stay compatible; pair the
+WASM binary with its JS adapter.

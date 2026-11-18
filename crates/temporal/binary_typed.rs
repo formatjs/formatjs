@@ -20,6 +20,9 @@ const MODES: [RoundingMode; 9] = [
 ];
 enum Request<'a> {
     Parse(&'a str),
+    ParseDuration(&'a str),
+    AddDuration([f64; 10], [f64; 10], bool),
+    TransformDuration([f64; 10], bool),
     ParseZoned(&'a str),
     ResolveZoned(
         i128,
@@ -85,6 +88,35 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "parseDuration" => {
+            let len = reader.length()?;
+            Request::ParseDuration(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
+        }
+        "addDuration" | "transformDuration" => {
+            let mut one = [0.0; 10];
+            for value in &mut one {
+                *value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            if operation == "addDuration" {
+                let mut two = [0.0; 10];
+                for value in &mut two {
+                    *value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+                }
+                let subtract = match reader.byte()? {
+                    0 => false,
+                    1 => true,
+                    _ => return Err(2),
+                };
+                Request::AddDuration(one, two, subtract)
+            } else {
+                let absolute = match reader.byte()? {
+                    0 => false,
+                    1 => true,
+                    _ => return Err(2),
+                };
+                Request::TransformDuration(one, absolute)
+            }
+        }
         "addZonedDateTime" | "startOfZonedDay" => {
             let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
             let mut fields = [0.0; 10];
@@ -612,8 +644,38 @@ fn encode_zoned_value(output: &mut Vec<u8>, value: ZonedValue) -> Result<(), Err
     );
     Ok(())
 }
+fn encode_duration(output: &mut Vec<u8>, value: Duration) {
+    output.push(14);
+    for field in value.fields() {
+        output.extend_from_slice(&(field as f64).to_le_bytes());
+    }
+}
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::ParseDuration(text) => encode_duration(output, text.parse::<Duration>()?),
+        Request::AddDuration(one, two, subtract) => {
+            let one = duration(one)?;
+            let two = duration(two)?;
+            encode_duration(
+                output,
+                if subtract {
+                    one.checked_subtract(two)?
+                } else {
+                    one.checked_add(two)?
+                },
+            );
+        }
+        Request::TransformDuration(fields, absolute) => {
+            let value = duration(fields)?;
+            encode_duration(
+                output,
+                if absolute {
+                    value.abs()
+                } else {
+                    value.negated()
+                },
+            );
+        }
         Request::AddZoned(ns, fields, subtract, overflow, identifier, calendar) => {
             let value = zoned_value(ns, identifier, calendar)?;
             let duration = duration(fields)?;
@@ -644,10 +706,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
         }
         Request::DifferenceTime(one, other, largest, smallest, increment, mode) => {
             let value = time(one)?.until(time(other)?, largest, smallest, increment, mode)?;
-            output.push(14);
-            for field in value.fields() {
-                output.extend_from_slice(&(field as f64).to_le_bytes());
-            }
+            encode_duration(output, value);
         }
         Request::FormatDuration(fields, precision, mode) => {
             write_text(output, duration(fields)?.format(precision, mode)?)?

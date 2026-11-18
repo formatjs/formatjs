@@ -2072,3 +2072,24 @@ Native namespace grows 5,315 gzip bytes to 513,202, with unchanged data/dependen
 ISO/timezone startup is 16.70 versus TS 19.40 ms. Duration parsing profile self time
 is dominated by JS createDuration and generic decoding, making typed duration
 transport/private Rust-result construction the next candidates.
+
+## ABI 19 typed Duration transport
+
+ABI 19 adds direct parsing, addition/subtraction and negation/absolute value: 35 typed routes, unchanged 69 normalized operations. Rust calls its existing public Duration APIs and returns all ten validated, Number-rounded fields in an 81-byte record. Native JS wraps private results without repeated duration validation or generic record decoding. Numeric constructors and user coercion retain their checks; cloning preserves fresh object identity and standard prototypes. SDK JSON shapes stay compatible.
+
+Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
+
+Fresh sequential processes, eight varying inputs/parity, 20,000 warmup and nine samples of 50,000 calls per workload; transitions use 1,000 warmup and nine samples of 5,000. `duration-hillclimb-results.json` records all 48 current TS/native workloads. Pinned comparison timings are retained explicitly from the earlier Instant checkpoint, through zoned-operations-hillclimb-results.json. Median wins are not stable-win proof.
+
+`duration-experiments.json` retains short diagnostics, exact validated source hashes, all 66 targets and every slower workload/ratio. Binary controls cover framing, UTF-8, invalid booleans, nonfinite fields and recovery. Public controls cover all fields, wide Number rounding, unbalanced units, positive zero, memory growth and clone/getter reuse. No data, dependency, cache or exclusion changes.
+
+`duration-startup-results.json` uses nine fresh processes/profile with persistent compile cache disabled. Node namespace payload above differs from the browser export-all consumer in throughput JSON. Production WASM is stripped. `duration-profile-results.json` keeps named-WASM profiling separate from production size/timing claims. Default TS executable AST remains equivalent; intrinsic-capture negative control still rejected.
+
+Fresh profiles leave YearMonth differences as a target: createDuration uses 19.54%
+of sampled self time, generic decode 6.42% and decodeResult 2.85%. Typed difference
+transport with trusted complete Duration wrapping can remove the same overhead.
+Duration parse now wins; allocation still accounts for 25.05%, result decoding
+10.46%. Duration addition includes its public formatting work. These samples do
+not replace production timings. MonthDay parsing flips a marginal prior win back
+to a loss; all 23 slower workloads stay explicit. Raw WASM grows 1,918 bytes;
+TS browser gzip changes one byte from binding names, with identical executable AST.

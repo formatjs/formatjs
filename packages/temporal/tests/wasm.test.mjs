@@ -723,6 +723,68 @@ for (const [source, fields, expected] of [
 }
 
 const oneDayForZoned = Temporal.Duration.from({days: 1})
+const durationKeys = [
+  'years',
+  'months',
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
+  'microseconds',
+  'nanoseconds',
+]
+for (const [input, fields] of [
+  ['P1Y2M3W4DT5H6M7.123456789S', [1, 2, 3, 4, 5, 6, 7, 123, 456, 789]],
+  ['-PT0.000000001S', [0, 0, 0, 0, 0, 0, 0, 0, 0, -1]],
+  ['-PT0S', [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+  ['PT24H', [0, 0, 0, 0, 24, 0, 0, 0, 0, 0]],
+]) {
+  const before = countRequests()
+  const result = Temporal.Duration.from(input)
+  const complete = countRequests()
+  assert.equal(complete, before + 1, 'One complete Rust duration parse')
+  core.memory.grow(1)
+  assert.deepEqual(
+    durationKeys.map(key => result[key]),
+    fields
+  )
+  assert.equal(Object.getPrototypeOf(result), Temporal.Duration.prototype)
+  assert.equal(result.constructor, Temporal.Duration)
+  const copy = Temporal.Duration.from(result)
+  assert.notEqual(copy, result)
+  assert.deepEqual(
+    durationKeys.map(key => copy[key]),
+    fields
+  )
+  assert.equal(
+    countRequests(),
+    complete,
+    'Duration getters/clone reuse validated fields'
+  )
+}
+const wideDuration = new Temporal.Duration(0, 0, 0, 0, 0, 0, 0, 0, 0, 2 ** 70)
+for (const result of [
+  wideDuration.negated().abs(),
+  wideDuration.add({nanoseconds: 0}),
+]) {
+  assert.equal(result.nanoseconds, 2 ** 70)
+  assert.equal(result.years, 0)
+}
+for (const result of [
+  Temporal.Duration.from('-PT0S').negated(),
+  Temporal.Duration.from('-PT0S').abs(),
+])
+  for (const key of durationKeys)
+    assert.equal(Object.is(result[key], -0), false)
+assert.throws(() => new Temporal.Duration(1, -1), RangeError)
+assert.throws(() => new Temporal.Duration(2 ** 32), RangeError)
+assert.throws(() => Temporal.Duration.from('P1Y').add({days: 1}), RangeError)
+assert.throws(
+  () => Temporal.Duration.from('PT1S').add({hours: 1, minutes: -1}),
+  RangeError
+)
 for (const calendar of ['iso8601', 'gregory']) {
   const source = Temporal.ZonedDateTime.from(
     '2024-03-10T12:30-04:00[America/New_York][u-ca=' + calendar + ']'

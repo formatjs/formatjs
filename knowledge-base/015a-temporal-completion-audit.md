@@ -390,3 +390,9 @@ all 24 slower cases remain explicit. Native namespace is 513,202 bytes gzip
 (+5,315), no new data/dependency. ISO/timezone readiness is 16.70 versus TS
 19.40 ms. Fresh profiles prioritize Duration construction/transport next.
 This is partial progress; the all-workload objective remains unfulfilled.
+
+### ABI 19 typed Duration operations
+
+Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
+
+35 typed routes preserve all ten fields, unbalanced values, Number rounding and positive zero. Numeric user constructors remain checked. Full targets, source hashes, raw-packet controls, public memory/prototype/clone controls, all slower workloads and fresh production metrics live in `benchmarks/temporal/duration-*.json`. No new exclusions. All-workload goal remains open.

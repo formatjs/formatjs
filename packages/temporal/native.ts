@@ -68,6 +68,9 @@ export interface NativeCall {
   roundZonedDateTime?: NativeTemporal['roundZonedDateTime']
   addZonedDateTime?: NativeTemporal['addZonedDateTime']
   startOfZonedDay?: NativeTemporal['startOfZonedDay']
+  parseDuration?: NativeTemporal['parseDuration']
+  addDuration?: NativeTemporal['addDuration']
+  transformDuration?: NativeTemporal['transformDuration']
 }
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
@@ -924,8 +927,16 @@ export function configureNativeTemporal(
         calendar
       ),
     transformDuration: (fields, absolute) =>
-      call('transformDuration', {duration: durationFields(fields), absolute}),
-    parseDuration: value => call('parseDuration', {text: value}),
+      invoke?.transformDuration
+        ? invoke.transformDuration(fields, absolute)
+        : call('transformDuration', {
+            duration: durationFields(fields),
+            absolute,
+          }),
+    parseDuration: value =>
+      invoke?.parseDuration
+        ? invoke.parseDuration(value)
+        : call('parseDuration', {text: value}),
     validateDuration: fields => {
       call('validateDuration', {duration: durationFields(fields)})
     },
@@ -938,11 +949,13 @@ export function configureNativeTemporal(
             mode,
           }),
     addDuration: (one, two, subtract) =>
-      call('addDuration', {
-        duration: durationFields(one),
-        other: durationFields(two),
-        subtract,
-      }),
+      invoke?.addDuration
+        ? invoke.addDuration(one, two, subtract)
+        : call('addDuration', {
+            duration: durationFields(one),
+            other: durationFields(two),
+            subtract,
+          }),
     compareDuration: (one, two, relative) =>
       call('compareDuration', {
         duration: durationFields(one),

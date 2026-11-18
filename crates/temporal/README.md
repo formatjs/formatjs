@@ -16,7 +16,7 @@ needed when building this repository.
 
 Rust owns typed values and normalized math/parsing/formatting operations. JS owns
 ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-WASM ABI 18 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
+WASM ABI 19 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
 consumer installs Temporal and native Intl without a Rust toolchain.
 WASM uses reusable binary buffers and complete date-like result snapshots;
 calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
@@ -811,3 +811,10 @@ constructors still validate every field before timezone queries. Day boundaries
 retain the same local range check. PlainDateTime constructors that only store
 nanoseconds use that same range check without calculating unused ISO fields;
 calendar validation still runs. Offset-hint resolution now uses bounded visitation.
+
+WASM ABI 19 adds typed Duration parsing, addition/subtraction and negation/absolute
+value: 35 typed routes among the same 69 operations. Each calls the existing
+public Rust Duration API and returns all ten validated, Number-rounded fields.
+The shared duration record also serves PlainTime differences. Numeric input
+validation, unbalanced fields and positive zero remain intact. Malformed requests
+retain strict framing and recovery. SDK JSON shapes stay unchanged.

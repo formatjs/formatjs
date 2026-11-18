@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 18 ||
+    core.temporal_abi_version() !== 19 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -178,7 +178,7 @@ const durationPropertyNames = [
   'milliseconds',
   'microseconds',
   'nanoseconds',
-]
+] as const
 const datePropertyNames = [
   'dayOfWeek',
   'daysInWeek',
@@ -677,6 +677,9 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     write32(fastView, pointer + 20, increment, true)
     fastBytes[pointer + 24] = arrayIndex(modes, mode)
     const result = exchange(25)
+    return durationResult(result)
+  }
+  function durationResult(result: number) {
     if (fastBytes[result] !== 14)
       throw new BadType('Invalid Temporal WASM response')
     return {
@@ -691,6 +694,35 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       microseconds: readNumber(fastView, result + 65, true),
       nanoseconds: readNumber(fastView, result + 73, true),
     }
+  }
+  invoke.parseDuration = value => {
+    validateText(value)
+    const pointer = begin(operationCodes.parseDuration, 6 + value.length * 3)
+    const encoded = putText(encoder, value, parseBytes)
+    write32(fastView, pointer + 2, encoded.written, true)
+    return durationResult(exchange(6 + encoded.written))
+  }
+  invoke.addDuration = (one, two, subtract) => {
+    const pointer = begin(operationCodes.addDuration, 163)
+    for (let i = 0; i < durationPropertyNames.length; i++) {
+      const key = durationPropertyNames[i]
+      writeNumber(fastView, pointer + 2 + i * 8, one[key], true)
+      writeNumber(fastView, pointer + 82 + i * 8, two[key], true)
+    }
+    fastBytes[pointer + 162] = subtract ? 1 : 0
+    return durationResult(exchange(163))
+  }
+  invoke.transformDuration = (fields, absolute) => {
+    const pointer = begin(operationCodes.transformDuration, 83)
+    for (let i = 0; i < durationPropertyNames.length; i++)
+      writeNumber(
+        fastView,
+        pointer + 2 + i * 8,
+        fields[durationPropertyNames[i]],
+        true
+      )
+    fastBytes[pointer + 82] = absolute ? 1 : 0
+    return durationResult(exchange(83))
   }
   invoke.formatDuration = (fields, precision, mode) => {
     const pointer = begin(operationCodes.formatDuration, 84)

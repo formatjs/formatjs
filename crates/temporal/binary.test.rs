@@ -724,3 +724,91 @@ fn typed_zoned_addition_and_day_start_preserve_boundaries_and_recovery() {
         }
     }
 }
+
+#[test]
+fn typed_duration_records_preserve_fields_number_rounding_and_recover() {
+    use formatjs_temporal::Duration;
+    let parse = |value: &str| {
+        let mut bytes = vec![opcode("parseDuration"), 10];
+        text(&mut bytes, value);
+        bytes
+    };
+    for input in [
+        "P0D",
+        "-PT0S",
+        "PT24H",
+        "PT1.5H",
+        "-PT0.000000001S",
+        "P1Y2M3W4DT5H6M7.123456789S",
+        "PT9007199254740991S",
+    ] {
+        check_duration(call(&parse(input)), input.parse::<Duration>());
+    }
+    let fields = [0, 0, 0, 1, 25, 0, 0, 0, 0, (1i128 << 70) + 1];
+    let other = [0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+    let one = Duration::new(fields).unwrap();
+    let two = Duration::new(other).unwrap();
+    let mut add = vec![opcode("addDuration"), 10];
+    for value in fields.into_iter().chain(other) {
+        add.extend_from_slice(&(value as f64).to_le_bytes());
+    }
+    add.push(0);
+    check_duration(call(&add), one.checked_add(two));
+    add[162] = 1;
+    check_duration(call(&add), one.checked_subtract(two));
+    add[162] = 2;
+    assert_eq!(call(&add).0, 2);
+    for input in [
+        fields,
+        fields.map(|v| -v),
+        [0; 10],
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ] {
+        let value = Duration::new(input).unwrap();
+        let mut bytes = vec![opcode("transformDuration"), 10];
+        for field in input {
+            bytes.extend_from_slice(&(field as f64).to_le_bytes());
+        }
+        bytes.push(0);
+        check_duration(call(&bytes), Ok(value.negated()));
+        bytes[82] = 1;
+        check_duration(call(&bytes), Ok(value.abs()));
+        bytes[82] = 2;
+        assert_eq!(call(&bytes).0, 2);
+    }
+    let valid = parse("PT1.123456789S");
+    let expected = call(&valid);
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    let mut invalid_utf8 = valid.clone();
+    invalid_utf8[6] = 255;
+    for invalid in [trailing, invalid_utf8, valid[..valid.len() - 1].to_vec()] {
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), expected);
+    }
+    for invalid in ["PT", "P4294967296Y", "PT9007199254740992S", "PT1.5H1M"] {
+        assert_eq!(call(&parse(invalid)).0, 1, "{invalid}");
+        assert_eq!(call(&valid), expected);
+    }
+    let mut nonfinite = vec![opcode("transformDuration"), 10];
+    for _ in 0..10 {
+        nonfinite.extend_from_slice(&f64::NAN.to_le_bytes());
+    }
+    nonfinite.push(0);
+    assert_eq!(call(&nonfinite).0, 1);
+    assert_eq!(call(&valid), expected);
+}
+fn check_duration(
+    (status, result): (u32, Vec<u8>),
+    expected: Result<formatjs_temporal::Duration, formatjs_temporal::Error>,
+) {
+    let expected = expected.unwrap();
+    assert_eq!(status, 0);
+    assert_eq!(result.len(), 81);
+    assert_eq!(result[0], 14);
+    for (index, value) in expected.fields().into_iter().enumerate() {
+        let start = 1 + index * 8;
+        let actual = f64::from_le_bytes(result[start..start + 8].try_into().unwrap());
+        assert_eq!(actual.to_bits(), (value as f64).to_bits());
+    }
+}

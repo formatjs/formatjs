@@ -124,10 +124,15 @@ function addDurations(
   other: unknown,
   sign: number
 ): DurationObject {
+  if (import.meta.formatjsTemporalNativeData === true) {
+    const two = toNativeDurationFields(other, false)
+    return createNativeDuration(
+      nativeTemporal()!.addDuration(one, two, sign < 0)
+    )
+  }
   const two = toDurationFields(other)
   const native = nativeTemporal()
-  if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(native!.addDuration(one, two, sign < 0))
+  if (native) return createDuration(native.addDuration(one, two, sign < 0))
   const largest = Math.min(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
     throw new RangeError('Calendar units cannot be added without a calendar')
@@ -185,6 +190,12 @@ class DurationValue {
     return a < b ? -1 : a > b ? 1 : 0
   }
   static from(value: unknown): DurationObject {
+    if (import.meta.formatjsTemporalNativeData === true) {
+      const fields = getSlot(value as object)
+      if (fields) return createNativeDuration(fields)
+      if (typeof value === 'string')
+        return createNativeDuration(parseDurationString(value))
+    }
     return createDuration(toDurationFields(value))
   }
   get sign(): number {
@@ -199,9 +210,12 @@ class DurationValue {
   }
   negated(): DurationObject {
     const fields = read(this)
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeDuration(
+        nativeTemporal()!.transformDuration(fields, false)
+      )
     const native = nativeTemporal()
-    if (import.meta.formatjsTemporalNativeData === true || native)
-      return createDuration(native!.transformDuration(fields, false))
+    if (native) return createDuration(native.transformDuration(fields, false))
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
@@ -211,9 +225,12 @@ class DurationValue {
   }
   abs(): DurationObject {
     const fields = read(this)
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeDuration(
+        nativeTemporal()!.transformDuration(fields, true)
+      )
     const native = nativeTemporal()
-    if (import.meta.formatjsTemporalNativeData === true || native)
-      return createDuration(native!.transformDuration(fields, true))
+    if (native) return createDuration(native.transformDuration(fields, true))
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
