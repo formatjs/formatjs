@@ -535,3 +535,192 @@ fn typed_zoned_resolution_preserves_offsets_and_recovers_from_bad_modes() {
     assert_eq!(call(&trailing).0, 2);
     assert_eq!(call(&valid), before);
 }
+
+#[test]
+fn typed_zoned_rounding_keeps_complete_results_and_error_recovery() {
+    use formatjs_temporal::{Instant, RoundingMode, TimeZoneRegistry, ZonedDateTime, ZonedUnit};
+    let request = |ns: i128, unit: u8, increment: u32, mode: u8, zone: &str, calendar: &str| {
+        let mut bytes = vec![opcode("roundZonedDateTime"), 10];
+        bytes.extend_from_slice(&ns.to_le_bytes());
+        bytes.push(unit);
+        bytes.extend_from_slice(&increment.to_le_bytes());
+        bytes.push(mode);
+        text(&mut bytes, zone);
+        text(&mut bytes, calendar);
+        bytes
+    };
+    for (zone, input) in [
+        ("America/New_York", "2020-11-01T05:30Z"),
+        ("Australia/Lord_Howe", "2020-10-03T15:45Z"),
+        ("Pacific/Apia", "2011-12-30T10:30Z"),
+        ("UTC", "-271821-04-20T00:00Z"),
+        ("UTC", "+275760-09-13T00:00Z"),
+    ] {
+        let instant: Instant = input.parse().unwrap();
+        let provider = TimeZoneRegistry::compiled().resolve(zone).unwrap();
+        for (code, unit) in [(0, ZonedUnit::Hour), (6, ZonedUnit::Day)] {
+            for (mode_code, mode) in [
+                RoundingMode::Ceil,
+                RoundingMode::Floor,
+                RoundingMode::Expand,
+                RoundingMode::Trunc,
+                RoundingMode::HalfCeil,
+                RoundingMode::HalfFloor,
+                RoundingMode::HalfExpand,
+                RoundingMode::HalfTrunc,
+                RoundingMode::HalfEven,
+            ]
+            .into_iter()
+            .enumerate()
+            {
+                for calendar in ["iso8601", "gregory"] {
+                    let expected = ZonedDateTime::new(instant, provider).round(unit, 1, mode);
+                    let (status, result) = call(&request(
+                        instant.epoch_nanoseconds(),
+                        code,
+                        1,
+                        mode_code as u8,
+                        zone,
+                        calendar,
+                    ));
+                    match expected {
+                        Ok(value) => {
+                            assert_eq!(status, 0, "{input} {mode:?}");
+                            assert!(matches!(result[0], 16 | 17));
+                            assert_eq!(
+                                i128::from_le_bytes(result[1..17].try_into().unwrap()),
+                                value.instant().epoch_nanoseconds()
+                            );
+                            assert!(result.len() > 17);
+                        }
+                        Err(_) => assert_eq!(status, 1),
+                    }
+                }
+            }
+        }
+    }
+    let valid = request(0, 0, 1, 6, "UTC", "iso8601");
+    let before = call(&valid);
+    for (index, value) in [(18, 7), (23, 9), (28, 255)] {
+        let mut invalid = valid.clone();
+        invalid[index] = value;
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), before);
+    }
+    assert_eq!(call(&request(0, 0, 0, 6, "UTC", "iso8601")).0, 1);
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    assert_eq!(call(&trailing).0, 2);
+    assert_eq!(call(&valid), before);
+}
+
+#[test]
+fn typed_zoned_addition_and_day_start_preserve_boundaries_and_recovery() {
+    use formatjs_temporal::{
+        Duration, Instant, Overflow, PlainDate, TimeZoneRegistry, ZonedDateTime,
+    };
+    let addition = |ns: i128, fields: [f64; 10], subtract: u8| {
+        let mut bytes = vec![opcode("addZonedDateTime"), 10];
+        bytes.extend_from_slice(&ns.to_le_bytes());
+        for value in fields {
+            bytes.extend_from_slice(&value.to_le_bytes());
+        }
+        bytes.extend_from_slice(&[subtract, 0]);
+        text(&mut bytes, "America/New_York");
+        text(&mut bytes, "iso8601");
+        bytes
+    };
+    let day_start = |ns: i128, day: Option<f64>| {
+        let mut bytes = vec![opcode("startOfZonedDay"), 10];
+        bytes.extend_from_slice(&ns.to_le_bytes());
+        bytes.push(u8::from(day.is_some()));
+        bytes.extend_from_slice(&day.unwrap_or(0.0).to_le_bytes());
+        text(&mut bytes, "America/New_York");
+        text(&mut bytes, "iso8601");
+        bytes
+    };
+    let provider = TimeZoneRegistry::compiled()
+        .resolve("America/New_York")
+        .unwrap();
+    for input in [
+        "2024-03-10T16:30:00.123456789Z",
+        "2024-11-03T06:30:00.123456789Z",
+        "-271821-04-20T00:00Z",
+        "+275760-09-13T00:00Z",
+    ] {
+        let instant: Instant = input.parse().unwrap();
+        let value = ZonedDateTime::new(instant, provider);
+        for fields in [
+            [0, 1, 0, 1, 1, 0, 0, 0, 0, 1],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, (1i128 << 70) + 1],
+        ] {
+            let duration = Duration::new(fields).unwrap();
+            for subtract in [false, true] {
+                let expected = if subtract {
+                    value.checked_subtract(duration, Overflow::Constrain)
+                } else {
+                    value.checked_add(duration, Overflow::Constrain)
+                };
+                let actual = call(&addition(
+                    instant.epoch_nanoseconds(),
+                    fields.map(|v| v as f64),
+                    u8::from(subtract),
+                ));
+                check(actual, expected.map(|v| v.instant()));
+            }
+        }
+        for day in [None, Some(0), Some(19792)] {
+            let expected = if let Some(day) = day {
+                PlainDate::from_epoch_day(day)
+                    .unwrap()
+                    .to_zoned_date_time(provider, None)
+            } else {
+                value.start_of_day()
+            };
+            check(
+                call(&day_start(
+                    instant.epoch_nanoseconds(),
+                    day.map(|v| v as f64),
+                )),
+                expected.map(|v| v.instant()),
+            );
+        }
+    }
+    let valid = addition(0, [0.0; 10], 0);
+    let before = call(&valid);
+    for (index, value) in [(98, 2), (99, 2), (104, 255)] {
+        let mut invalid = valid.clone();
+        invalid[index] = value;
+        assert_eq!(call(&invalid).0, 2);
+        assert_eq!(call(&valid), before);
+    }
+    assert_eq!(call(&addition(0, [f64::NAN; 10], 0)).0, 1);
+    let mut bad_flag = day_start(0, None);
+    bad_flag[18] = 2;
+    assert_eq!(call(&bad_flag).0, 2);
+    for day in [f64::NAN, 0.5, 1e30] {
+        assert_eq!(call(&day_start(0, Some(day))).0, 1);
+    }
+    let mut trailing = day_start(0, None);
+    trailing.push(0);
+    assert_eq!(call(&trailing).0, 2);
+    assert_eq!(call(&valid), before);
+    fn check(
+        (status, result): (u32, Vec<u8>),
+        expected: Result<Instant, formatjs_temporal::Error>,
+    ) {
+        match expected {
+            Ok(value) => {
+                assert_eq!(status, 0);
+                assert!(matches!(result[0], 16 | 17));
+                assert_eq!(
+                    i128::from_le_bytes(result[1..17].try_into().unwrap()),
+                    value.epoch_nanoseconds()
+                );
+                assert!(result.len() > 17);
+            }
+            Err(_) => assert_eq!(status, 1),
+        }
+    }
+}

@@ -74,7 +74,22 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
         offset: OffsetInput,
         options: ZonedParseOptions,
     ) -> Result<Self, Error> {
-        let local = fields.to_epoch_nanoseconds()?;
+        Self::from_local_nanoseconds_with_offset(
+            fields.to_epoch_nanoseconds()?,
+            zone,
+            calendar,
+            offset,
+            options,
+        )
+    }
+    pub(crate) fn from_local_nanoseconds_with_offset(
+        local: i128,
+        zone: Z,
+        calendar: C,
+        offset: OffsetInput,
+        options: ZonedParseOptions,
+    ) -> Result<Self, Error> {
+        crate::iso::check_local(local)?;
         if matches!(offset, OffsetInput::Utc) {
             return Ok(Self::new_in_calendar(
                 Instant::from_epoch_nanoseconds(local)?,
@@ -92,7 +107,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
             _ => None,
         };
         let instant = if provided.is_none() || options.offset == OffsetOption::Ignore {
-            crate::zoned::resolve_local(fields, &zone, options.disambiguation)?
+            crate::zoned::resolve_local_nanoseconds(local, &zone, options.disambiguation)?
         } else {
             let provided = provided.unwrap();
             if options.offset == OffsetOption::Use {
@@ -102,7 +117,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
                     return Err(Error::OutOfRange);
                 }
                 let mut candidate: Option<Instant> = None;
-                zone.visit_offsets(&mut |actual| {
+                zone.visit_offsets_at(local, &mut |actual| {
                     if actual <= -NANOSECONDS_PER_DAY || actual >= NANOSECONDS_PER_DAY {
                         return;
                     }
@@ -125,7 +140,11 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
                     None if options.offset == OffsetOption::Reject => {
                         return Err(Error::InvalidDateTime);
                     }
-                    None => crate::zoned::resolve_local(fields, &zone, options.disambiguation)?,
+                    None => crate::zoned::resolve_local_nanoseconds(
+                        local,
+                        &zone,
+                        options.disambiguation,
+                    )?,
                 }
             }
         };

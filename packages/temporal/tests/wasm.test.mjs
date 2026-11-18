@@ -432,6 +432,7 @@ try {
 const arrayIterator = Array.prototype[Symbol.iterator]
 let durationWithPoisonedIterator
 let zonedWithPoisonedIterator
+let roundedZonedWithPoisonedIterator
 try {
   Array.prototype[Symbol.iterator] = function () {
     throw new Error('Temporal duration fields must not use array iteration')
@@ -443,11 +444,18 @@ try {
   zonedWithPoisonedIterator = Temporal.ZonedDateTime.from(
     '1970-01-01T00:00:00.123456789[+05:45]'
   ).epochNanoseconds
+  roundedZonedWithPoisonedIterator = Temporal.ZonedDateTime.from(
+    '1970-01-01T00:00:00.123456789[+05:45]'
+  )
+    .round('hour')
+    .add({days: 1})
+    .startOfDay().epochNanoseconds
 } finally {
   Array.prototype[Symbol.iterator] = arrayIterator
 }
 assert.equal(durationWithPoisonedIterator, 3_600_000_000_001n)
 assert.equal(zonedWithPoisonedIterator, -20_699_876_543_211n)
+assert.equal(roundedZonedWithPoisonedIterator, 65_700_000_000_000n)
 const core = instance.exports
 assert.equal(core.temporal_alloc(-1), 0)
 const slot = core.temporal_alloc(8)
@@ -714,7 +722,48 @@ for (const [source, fields, expected] of [
   assert.equal(result.toString(), expected)
 }
 
+const oneDayForZoned = Temporal.Duration.from({days: 1})
 for (const calendar of ['iso8601', 'gregory']) {
+  const source = Temporal.ZonedDateTime.from(
+    '2024-03-10T12:30-04:00[America/New_York][u-ca=' + calendar + ']'
+  )
+  for (const [
+    run,
+    expectedDay,
+    expectedHour,
+    expectedOffset,
+    expectedHours,
+  ] of [
+    [() => source.round('hour'), 10, 13, '-04:00', 23],
+    [() => source.add(oneDayForZoned), 11, 12, '-04:00', 24],
+    [() => source.subtract(oneDayForZoned), 9, 12, '-05:00', 24],
+    [() => source.startOfDay(), 10, 0, '-05:00', 23],
+  ]) {
+    const before = countRequests()
+    const result = run()
+    const complete = countRequests()
+    assert.equal(complete, before + 1, 'One complete Rust zoned operation')
+    assert.equal(
+      Object.getPrototypeOf(result),
+      Temporal.ZonedDateTime.prototype
+    )
+    assert.equal(result.constructor, Temporal.ZonedDateTime)
+    assert.deepEqual(
+      [
+        result.day,
+        result.hour,
+        result.monthCode,
+        result.offset,
+        result.hoursInDay,
+      ],
+      [expectedDay, expectedHour, 'M03', expectedOffset, expectedHours]
+    )
+    assert.equal(
+      countRequests(),
+      complete,
+      'Zoned getters reuse complete result'
+    )
+  }
   const result = Temporal.ZonedDateTime.from(
     '1970-01-01T00:00:00.123456789[utc][u-ca=' + calendar + ']'
   )
@@ -809,6 +858,78 @@ for (const input of [
   }
 }
 
+for (const input of [
+  '2021-01-01T00:00:00.123456789[UTC]',
+  '2020-12-31T23:59:59.999999999[UTC]',
+  '0000-02-29T00:00[UTC]',
+  '-000001-01-01T00:00[UTC]',
+  '-271821-04-20T00:00[UTC]',
+  '+275760-09-13T00:00[UTC]',
+]) {
+  const result = Temporal.ZonedDateTime.from(input).round('nanosecond')
+  const expected = JSON.parse(
+    query(
+      JSON.stringify({
+        op: 'zonedProperties',
+        value: {
+          epochNanoseconds: result.epochNanoseconds.toString(),
+          timeZone: 'UTC',
+          calendar: 'iso8601',
+        },
+      })
+    )
+  )
+  const before = countRequests()
+  core.memory.grow(1)
+  for (const key of [
+    'year',
+    'month',
+    'monthCode',
+    'day',
+    'era',
+    'eraYear',
+    'dayOfWeek',
+    'dayOfYear',
+    'daysInWeek',
+    'daysInMonth',
+    'daysInYear',
+    'monthsInYear',
+    'inLeapYear',
+    'weekOfYear',
+    'yearOfWeek',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+    'offset',
+    'offsetNanoseconds',
+    'hoursInDay',
+  ]) {
+    if (expected.errors.includes(key))
+      assert.throws(() => result[key], RangeError)
+    else
+      assert.equal(
+        result[key],
+        expected.date && key in expected.date
+          ? expected.date[key]
+          : expected.values[key],
+        input + ' ' + key
+      )
+  }
+  assert.equal(
+    countRequests(),
+    before,
+    'Owned Rust snapshots survive memory growth'
+  )
+}
+for (const ns of [
+  -8_640_000_000_000_000_000_001n,
+  8_640_000_000_000_000_000_001n,
+]) {
+  assert.throws(() => new Temporal.ZonedDateTime(ns, 'UTC'), RangeError)
+}
 const historical = Temporal.ZonedDateTime.from({
   year: 1971,
   month: 1,

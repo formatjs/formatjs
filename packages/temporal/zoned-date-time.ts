@@ -187,11 +187,24 @@ function local(slot: ZonedSlot): bigint {
     zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
   )
 }
+const NativeZonedDateTime = function (
+  this: ZonedDateTimeObject,
+  slot: ZonedSlot
+) {
+  setZonedSlot(this, slot)
+}
 export function createZonedDateTime(
   input: bigint | ZonedSlot,
   timeZone: string,
   calendar: string
 ): ZonedDateTimeObject {
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    typeof input !== 'bigint'
+  )
+    return new (NativeZonedDateTime as unknown as new (
+      slot: ZonedSlot
+    ) => ZonedDateTimeObject)(input)
   const epochNanoseconds =
     typeof input === 'bigint' ? input : input.epochNanoseconds
   validateInstant(epochNanoseconds)
@@ -963,6 +976,8 @@ Object.defineProperty(ZonedDateTimeValue, 'name', {
   value: 'ZonedDateTime',
   configurable: true,
 })
+if (import.meta.formatjsTemporalNativeData === true)
+  NativeZonedDateTime.prototype = ZonedDateTimeValue.prototype
 export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
   ZonedDateTimeValue,
   {

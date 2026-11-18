@@ -631,6 +631,36 @@ fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     };
     zoned_value_snapshot(value)
 }
+pub(crate) fn full_offset(offset: i128) -> impl core::fmt::Display {
+    Offset(offset)
+}
+struct Offset(i128);
+impl core::fmt::Display for Offset {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        let absolute = self.0.abs();
+        let seconds = absolute / 1_000_000_000;
+        write!(
+            f,
+            "{}{:02}:{:02}",
+            if self.0 < 0 { '-' } else { '+' },
+            seconds / 3600,
+            seconds / 60 % 60
+        )?;
+        let mut fraction = absolute % 1_000_000_000;
+        if seconds % 60 != 0 || fraction != 0 {
+            write!(f, ":{:02}", seconds % 60)?;
+            if fraction != 0 {
+                let mut digits = 9usize;
+                while fraction % 10 == 0 {
+                    fraction /= 10;
+                    digits -= 1;
+                }
+                write!(f, ".{fraction:0digits$}")?;
+            }
+        }
+        Ok(())
+    }
+}
 pub(crate) fn zoned_value_snapshot(
     value: ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>,
 ) -> Result<CalendarSnapshot, Error> {
@@ -641,33 +671,6 @@ pub(crate) fn zoned_value_snapshot(
         local.div_euclid(NANOSECONDS_PER_DAY) as i64,
     );
     add_clock(&mut properties, local);
-    struct Offset(i128);
-    impl core::fmt::Display for Offset {
-        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-            let absolute = self.0.abs();
-            let seconds = absolute / 1_000_000_000;
-            write!(
-                f,
-                "{}{:02}:{:02}",
-                if self.0 < 0 { '-' } else { '+' },
-                seconds / 3600,
-                seconds / 60 % 60
-            )?;
-            let mut fraction = absolute % 1_000_000_000;
-            if seconds % 60 != 0 || fraction != 0 {
-                write!(f, ":{:02}", seconds % 60)?;
-                if fraction != 0 {
-                    let mut digits = 9usize;
-                    while fraction % 10 == 0 {
-                        fraction /= 10;
-                        digits -= 1;
-                    }
-                    write!(f, ".{fraction:0digits$}")?;
-                }
-            }
-            Ok(())
-        }
-    }
     properties.values[17] = json!(local.to_string());
     properties.values[18] = json!(offset as i64);
     properties.values[19] = json!(Offset(offset).to_string());

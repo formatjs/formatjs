@@ -2430,8 +2430,9 @@ fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
 #[test]
 fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
     use formatjs_temporal::{
-        Disambiguation, FutureRule, OffsetTransition, TimeZone, TransitionDirection,
-        TransitionRule, TransitionZone, ZonedDateTime,
+        Disambiguation, FutureRule, OffsetInput, OffsetOption, OffsetTransition, TimeZone,
+        TransitionDirection, TransitionRule, TransitionZone, ZonedDateTime, ZonedParseOptions,
+        calendar::Calendar,
     };
     #[derive(Clone, Copy)]
     struct FullHistory<'a>(TransitionZone<'a>);
@@ -2525,6 +2526,35 @@ fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
                 let full = ZonedDateTime::from_local(fields, FullHistory(zone), mode)
                     .map(|value| value.instant());
                 assert_eq!(fast, full, "{local} {mode:?} {zone:?}");
+                for offset in [
+                    OffsetOption::Prefer,
+                    OffsetOption::Use,
+                    OffsetOption::Ignore,
+                    OffsetOption::Reject,
+                ] {
+                    let options = ZonedParseOptions {
+                        disambiguation: mode,
+                        offset,
+                    };
+                    let hint = OffsetInput::Exact(0);
+                    let fast = ZonedDateTime::from_local_with_offset(
+                        fields,
+                        zone,
+                        Calendar::Iso8601,
+                        hint,
+                        options,
+                    )
+                    .map(|v| v.instant());
+                    let full = ZonedDateTime::from_local_with_offset(
+                        fields,
+                        FullHistory(zone),
+                        Calendar::Iso8601,
+                        hint,
+                        options,
+                    )
+                    .map(|v| v.instant());
+                    assert_eq!(fast, full, "{local} {mode:?} {offset:?} {zone:?}");
+                }
             }
         }
     }

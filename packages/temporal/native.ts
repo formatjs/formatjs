@@ -65,6 +65,9 @@ export interface NativeCall {
   timeZoneTransition?: NativeTemporal['timeZoneTransition']
   resolveZonedDateTime?: NativeTemporal['resolveZonedDateTime']
   parseZonedFields?: NativeTemporal['parseZonedFields']
+  roundZonedDateTime?: NativeTemporal['roundZonedDateTime']
+  addZonedDateTime?: NativeTemporal['addZonedDateTime']
+  startOfZonedDay?: NativeTemporal['startOfZonedDay']
 }
 export type NativeQuery = (request: string) => string | number
 const parse = JSON.parse
@@ -789,12 +792,14 @@ export function configureNativeTemporal(
       ),
     addZonedDateTime: (slot, fields, subtract, overflow) =>
       timeResult(
-        call('addZonedDateTime', {
-          value: zonedFields(slot),
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        }),
+        invoke?.addZonedDateTime
+          ? invoke.addZonedDateTime(slot, fields, subtract, overflow)
+          : call('addZonedDateTime', {
+              value: zonedFields(slot),
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
         slot.calendar,
         slot.timeZone
       ),
@@ -818,18 +823,22 @@ export function configureNativeTemporal(
       }),
     roundZonedDateTime: (slot, unit, increment, mode) =>
       timeResult(
-        call('roundZonedDateTime', {
-          value: zonedFields(slot),
-          unit,
-          increment,
-          mode,
-        }),
+        invoke?.roundZonedDateTime
+          ? invoke.roundZonedDateTime(slot, unit, increment, mode)
+          : call('roundZonedDateTime', {
+              value: zonedFields(slot),
+              unit,
+              increment,
+              mode,
+            }),
         slot.calendar,
         slot.timeZone
       ),
     startOfZonedDay: (slot, day) =>
       timeResult(
-        call('startOfZonedDay', {value: zonedFields(slot), day}),
+        invoke?.startOfZonedDay
+          ? invoke.startOfZonedDay(slot, day)
+          : call('startOfZonedDay', {value: zonedFields(slot), day}),
         slot.calendar,
         slot.timeZone
       ),

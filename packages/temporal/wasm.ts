@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 17 ||
+    core.temporal_abi_version() !== 18 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -963,6 +963,59 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
         errors: [],
       },
     }
+  }
+  function appendZonedText(pointer: number, cursor: number, text: string) {
+    const encoded = putText(
+      encoder,
+      text,
+      new Bytes(fastBuffer!, cursor + 4, fastCapacity - (cursor - pointer) - 4)
+    )
+    write32(fastView, cursor, encoded.written, true)
+    return cursor + 4 + encoded.written
+  }
+  invoke.addZonedDateTime = (slot, fields, subtract, overflow) => {
+    const pointer = begin(
+      operationCodes.addZonedDateTime,
+      108 + (slot.timeZone.length + slot.calendar.length) * 3
+    )
+    integer(pointer + 2, slot.epochNanoseconds)
+    for (let i = 0; i < durationPropertyNames.length; i++)
+      writeNumber(
+        fastView,
+        pointer + 18 + i * 8,
+        fields[durationPropertyNames[i] as keyof typeof fields],
+        true
+      )
+    fastBytes[pointer + 98] = subtract ? 1 : 0
+    fastBytes[pointer + 99] = overflow === 'reject' ? 1 : 0
+    let cursor = appendZonedText(pointer, pointer + 100, slot.timeZone)
+    cursor = appendZonedText(pointer, cursor, slot.calendar)
+    return zonedResult(exchange(cursor - pointer), slot.calendar, slot.timeZone)
+  }
+  invoke.startOfZonedDay = (slot, day) => {
+    const pointer = begin(
+      operationCodes.startOfZonedDay,
+      35 + (slot.timeZone.length + slot.calendar.length) * 3
+    )
+    integer(pointer + 2, slot.epochNanoseconds)
+    fastBytes[pointer + 18] = day === undefined ? 0 : 1
+    writeNumber(fastView, pointer + 19, day ?? 0, true)
+    let cursor = appendZonedText(pointer, pointer + 27, slot.timeZone)
+    cursor = appendZonedText(pointer, cursor, slot.calendar)
+    return zonedResult(exchange(cursor - pointer), slot.calendar, slot.timeZone)
+  }
+  invoke.roundZonedDateTime = (slot, unit, increment, mode) => {
+    const pointer = begin(
+      operationCodes.roundZonedDateTime,
+      32 + (slot.timeZone.length + slot.calendar.length) * 3
+    )
+    integer(pointer + 2, slot.epochNanoseconds)
+    fastBytes[pointer + 18] = unit === 'day' ? 6 : arrayIndex(units, unit)
+    write32(fastView, pointer + 19, increment, true)
+    fastBytes[pointer + 23] = arrayIndex(modes, mode)
+    let cursor = appendZonedText(pointer, pointer + 24, slot.timeZone)
+    cursor = appendZonedText(pointer, cursor, slot.calendar)
+    return zonedResult(exchange(cursor - pointer), slot.calendar, slot.timeZone)
   }
   invoke.resolveZonedDateTime = (
     value,

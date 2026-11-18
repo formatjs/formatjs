@@ -2166,3 +2166,83 @@ no timezone/calendar data was added. TS namespace stays 39,692 gzip bytes.
 Browser export-all consumers are separate: native 510,943 bytes gzip, TS 39,749.
 TS and native bindings remain byte-identical to the prior checkpoint; the default
 TS AST also matches the independent baseline and rejects the negative control.
+
+### Typed zoned operations
+
+ABI 18 adds direct zoned addition/subtraction, rounding and day-start requests:
+32 typed routes among the unchanged 69 normalized operations. They call the public
+Rust methods and encode complete results from the existing typed value, avoiding
+dynamic request maps and a second zoned reconstruction. ISO records are built on
+the stack with all calendar/week/clock fields, exact offset text/nanoseconds and
+day length. Non-ISO/deferred-error snapshots retain their complete general path.
+SDK JSON shapes and data dependencies stay unchanged.
+
+Private local resolution accepts already validated nanoseconds. Public field
+constructors retain field/range validation; day boundaries keep the identical
+local range check. DateTime constructors that discard full ISO conversion now use
+its range check directly, keeping calendar validation. Offset-hint matching uses
+the bounded visitor, preserving the full-history default for custom providers.
+Native-only construction wraps private/Rust-result slots with the standard
+prototype; numeric user constructors keep validation. Pure TS must retain its
+baseline executable AST.
+
+`zoned-operations-experiments.json` records seven diagnostic stages and three
+alternating controls. Isolated nanoseconds/fields/fields/nanoseconds controls favor
+direct resolution for parse/round/day start; DateTime parse varies and does not
+prove a per-variant gain. Checked/trusted/trusted/checked construction shows modest
+parse/add/round gains, mixed day-start changes. These are not universal stable-win
+claims. Copied lazy snapshots, a separate flat JS decoder and Rust prevalidation
+before options are discarded. Prevalidation added a boundary without consistent
+gain and slowed DateTime addition. All Rust/JS result fields remain eager.
+
+All 66 focused Rust/TS/WASM/Test262/ICU/Hermes targets pass, including Rust public
+calendar/context/registry controls. New tests cover typed packet bounds/recovery,
+all nine rounding modes, optional day zero, wide Number duration fields, bounded
+versus full-history offset-hint policies, every public ISO field at week/year/BCE/
+range boundaries, ownership across memory growth, getter reuse, correct prototypes,
+constructor range rejection and poisoned Array iteration. Final formatted sources
+match their recorded SHA-256 hashes. No new conformance exclusions.
+
+`zoned-operations-hillclimb-results.json` refreshes all 48 TS/native-data WASM
+workloads in fresh sequential processes, unchanged eight inputs/parity, 20,000
+warmup and nine samples of 50,000 calls. Transitions retain 1,000 warmup and nine
+samples of 5,000. Pinned reference times are explicitly retained from the preceding
+checkpoint. Default TS executable AST matches the independent baseline; its
+intrinsic-capture negative control remains rejected.
+
+| Workload      | Previous WASM µs | Current WASM µs | Current TS µs |
+| ------------- | ---------------: | --------------: | ------------: |
+| zonedRound    |           11.415 |           3.870 |         2.869 |
+| zonedAddDay   |           15.134 |           5.834 |         6.243 |
+| zonedDayStart |           10.416 |           3.818 |         2.075 |
+| zonedParse    |            7.235 |           6.339 |         3.999 |
+| zonedWith     |           19.352 |          18.641 |         9.538 |
+| dateTimeParse |            2.762 |           2.901 |         2.470 |
+
+Rounding latency falls 66%, addition 61%, day start 63%. Addition wins this
+checkpoint; rounding/day start/parsing still lose to TS. DateTime parsing is
+slower than its preceding measurement despite the simpler constructor check;
+short diagnostics did not establish a stable gain. Current medians win 24/48
+against TS, 25/48 against temporal-polyfill and 36/48 against @js-temporal/polyfill.
+All 24 slower cases/ratios are recorded in zoned-operations-experiments.json.
+Instant rounding remains slower here (0.570 versus TS 0.453 microseconds); prior
+longer controls also lost. Median counts are not stable-win proof. Goal open.
+
+`zoned-operations-profile-results.json` records fresh separate profiles for zoned
+rounding, YearMonth formatting and Duration parsing. Rounding now spends 12.40%
+self time in zonedResult, 5.94% in dateTimeResult and 10.20% in recurring-rule
+events. YearMonth formatting still shows request encoding and Rust formatter/
+writer costs. Duration parsing spends 29.08% self time in createDuration, 9.86%
+in generic decode and 4.83% in decodeResult; the Rust parser function itself is
+1.57%. Rust overall is 28.38%, JS facade 60.16%. Typed duration records and
+private construction from validated Rust results are the next candidates.
+Profiles include explicit setup/warmup/runtime helpers/GC; their timings and
+sizes are not production claims.
+
+Nine fresh processes/profile in zoned-operations-startup-results.json measure
+native ISO/timezone readiness at 16.70 ms versus TS 19.40 ms; full native calendars
+27.42 ms. Native Node namespace is 513,202 gzip bytes (+5,315): JS 33,896 and WASM
+479,306. Raw WASM grows 7,064 bytes; no calendar/timezone data is added. TS namespace
+is 39,691 bytes gzip, one byte below the prior name-only variant; executable AST
+is unchanged. Browser export-all consumers are separate: native 516,265 bytes gzip,
+TS 39,748. No new dependency, cache or conformance exclusion.

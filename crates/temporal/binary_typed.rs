@@ -31,6 +31,9 @@ enum Request<'a> {
         Option<&'a str>,
     ),
     ZoneTransition(i128, TransitionDirection, &'a str),
+    RoundZoned(i128, crate::ZonedUnit, u32, RoundingMode, &'a str, &'a str),
+    AddZoned(i128, [f64; 10], bool, Overflow, &'a str, &'a str),
+    StartZoned(i128, Option<f64>, &'a str, &'a str),
     ParseTime(&'a str),
     DifferenceTime(f64, f64, TimeUnit, TimeUnit, u32, RoundingMode),
     FormatDuration([f64; 10], Precision, RoundingMode),
@@ -82,6 +85,66 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "addZonedDateTime" | "startOfZonedDay" => {
+            let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let mut fields = [0.0; 10];
+            let mut day = None;
+            let mut subtract = false;
+            let mut overflow = Overflow::Constrain;
+            if operation == "addZonedDateTime" {
+                for value in &mut fields {
+                    *value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+                }
+                subtract = match reader.byte()? {
+                    0 => false,
+                    1 => true,
+                    _ => return Err(2),
+                };
+                overflow = match reader.byte()? {
+                    0 => Overflow::Constrain,
+                    1 => Overflow::Reject,
+                    _ => return Err(2),
+                };
+            } else {
+                let present = reader.byte()?;
+                let value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+                day = match present {
+                    0 if value == 0.0 => None,
+                    1 => Some(value),
+                    _ => return Err(2),
+                };
+            }
+            let len = reader.length()?;
+            let identifier = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            let len = reader.length()?;
+            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            if operation == "addZonedDateTime" {
+                Request::AddZoned(ns, fields, subtract, overflow, identifier, calendar)
+            } else {
+                Request::StartZoned(ns, day, identifier, calendar)
+            }
+        }
+        "roundZonedDateTime" => {
+            let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let unit = *[
+                crate::ZonedUnit::Hour,
+                crate::ZonedUnit::Minute,
+                crate::ZonedUnit::Second,
+                crate::ZonedUnit::Millisecond,
+                crate::ZonedUnit::Microsecond,
+                crate::ZonedUnit::Nanosecond,
+                crate::ZonedUnit::Day,
+            ]
+            .get(usize::from(reader.byte()?))
+            .ok_or(2)?;
+            let increment = u32::from_le_bytes(reader.take(4)?.try_into().map_err(|_| 2)?);
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let len = reader.length()?;
+            let identifier = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            let len = reader.length()?;
+            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            Request::RoundZoned(ns, unit, increment, mode, identifier, calendar)
+        }
         "parseZonedFields" => {
             let len = reader.length()?;
             Request::ParseZoned(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
@@ -480,8 +543,105 @@ fn encode_time(output: &mut Vec<u8>, value: PlainTime) {
         output.extend_from_slice(&(field as u16).to_le_bytes());
     }
 }
+type ZonedValue =
+    crate::ZonedDateTime<crate::ResolvedTimeZone<'static>, crate::CalendarRef<'static>>;
+fn zoned_value(ns: i128, identifier: &str, calendar: &str) -> Result<ZonedValue, Error> {
+    Ok(crate::ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(ns)?,
+        crate::ffi::time_zones().resolve(identifier)?,
+        crate::ffi::resolve_calendar(calendar)?,
+    ))
+}
+fn iso_date_time_record(ns: i128) -> Result<[u8; 48], Error> {
+    let fields = crate::IsoDateTime::from_epoch_nanoseconds(ns)?;
+    let calendar = crate::calendar::Calendar::Iso8601;
+    let epoch = ns.div_euclid(crate::NANOSECONDS_PER_DAY) as i64;
+    let start = calendar
+        .start_of_year(fields.year)
+        .map_err(crate::calendar_provider::error)?;
+    let length = calendar
+        .days_in_month(fields.year, fields.month)
+        .map_err(crate::calendar_provider::error)?;
+    let weekday = (epoch + 3).rem_euclid(7) + 1;
+    let thursday = epoch + 4 - weekday;
+    let week_year = crate::calendar::iso_fields(thursday).0;
+    let week = (thursday - crate::iso::epoch_day_from_iso(week_year, 1, 1)) / 7 + 1;
+    let leap = fields.year % 4 == 0 && (fields.year % 100 != 0 || fields.year % 400 == 0);
+    let mut bytes = [0; 48];
+    bytes[0] = 12;
+    bytes[1..17].copy_from_slice(&ns.to_le_bytes());
+    bytes[17] = 11;
+    bytes[18..22].copy_from_slice(&(epoch as i32).to_le_bytes());
+    bytes[22..26].copy_from_slice(&fields.year.to_le_bytes());
+    bytes[26..30].copy_from_slice(&[fields.month, fields.day, weekday as u8, length]);
+    bytes[30..32].copy_from_slice(&(if leap { 366u16 } else { 365 }).to_le_bytes());
+    bytes[32..34].copy_from_slice(&((epoch - start + 1) as u16).to_le_bytes());
+    bytes[34] = week as u8;
+    bytes[35..39].copy_from_slice(&week_year.to_le_bytes());
+    bytes[39..42].copy_from_slice(&[fields.hour, fields.minute, fields.second]);
+    bytes[42..44].copy_from_slice(&((fields.nanosecond / 1_000_000) as u16).to_le_bytes());
+    bytes[44..46].copy_from_slice(&((fields.nanosecond / 1000 % 1000) as u16).to_le_bytes());
+    bytes[46..48].copy_from_slice(&((fields.nanosecond % 1000) as u16).to_le_bytes());
+    Ok(bytes)
+}
+fn encode_zoned_value(output: &mut Vec<u8>, value: ZonedValue) -> Result<(), Error> {
+    if value.calendar().id() == "iso8601" {
+        let ns = value.instant().epoch_nanoseconds();
+        let offset = value.time_zone().offset_nanoseconds(value.instant());
+        if let (Ok(record), Ok(hours)) = (iso_date_time_record(ns + offset), value.hours_in_day()) {
+            output.push(17);
+            output.extend_from_slice(&ns.to_le_bytes());
+            output.extend_from_slice(&(offset as f64).to_le_bytes());
+            output.extend_from_slice(&hours.to_le_bytes());
+            let length_at = output.len();
+            output.extend_from_slice(&[0; 4]);
+            let start = output.len();
+            write!(Text(output), "{}", crate::ffi::full_offset(offset))
+                .map_err(|_| Error::OutOfRange)?;
+            let length = (output.len() - start) as u32;
+            output[length_at..length_at + 4].copy_from_slice(&length.to_le_bytes());
+            output.extend_from_slice(&record);
+            return Ok(());
+        }
+    }
+    super::encode_zoned(
+        output,
+        value.instant().epoch_nanoseconds(),
+        value.calendar().id(),
+        crate::ffi::zoned_value_snapshot(value)?,
+    );
+    Ok(())
+}
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::AddZoned(ns, fields, subtract, overflow, identifier, calendar) => {
+            let value = zoned_value(ns, identifier, calendar)?;
+            let duration = duration(fields)?;
+            let value = if subtract {
+                value.checked_subtract(duration, overflow)?
+            } else {
+                value.checked_add(duration, overflow)?
+            };
+            encode_zoned_value(output, value)?;
+        }
+        Request::StartZoned(ns, day, identifier, calendar) => {
+            let value = zoned_value(ns, identifier, calendar)?;
+            let value = if let Some(day) = day {
+                crate::ZonedDateTime::new_in_calendar(
+                    value
+                        .day_boundary(i64::from(crate::ffi::calendar_field_number(day, false)?))?,
+                    *value.time_zone(),
+                    value.calendar(),
+                )
+            } else {
+                value.start_of_day()?
+            };
+            encode_zoned_value(output, value)?;
+        }
+        Request::RoundZoned(ns, unit, increment, mode, identifier, calendar) => {
+            let value = zoned_value(ns, identifier, calendar)?.round(unit, increment, mode)?;
+            encode_zoned_value(output, value)?;
+        }
         Request::DifferenceTime(one, other, largest, smallest, increment, mode) => {
             let value = time(one)?.until(time(other)?, largest, smallest, increment, mode)?;
             output.push(14);
@@ -637,7 +797,7 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
             calendar,
             text,
         ) => {
-            let fields = crate::IsoDateTime::from_epoch_nanoseconds(local)?;
+            crate::iso::check_local(local)?;
             let calendar = crate::ffi::resolve_calendar(calendar)?;
             let zone = crate::ffi::time_zones().resolve(identifier)?;
             let offset = match text {
@@ -665,16 +825,11 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
                 )?;
                 crate::ZonedDateTime::new_in_calendar(instant, zone, calendar)
             } else {
-                crate::ZonedDateTime::from_local_with_offset(
-                    fields, zone, calendar, offset, options,
+                crate::ZonedDateTime::from_local_nanoseconds_with_offset(
+                    local, zone, calendar, offset, options,
                 )?
             };
-            super::encode_zoned(
-                output,
-                value.instant().epoch_nanoseconds(),
-                calendar.id(),
-                crate::ffi::zoned_value_snapshot(value)?,
-            );
+            encode_zoned_value(output, value)?;
         }
         Request::ZoneTransition(value, direction, identifier) => {
             let zone = crate::ffi::time_zones().resolve(identifier)?;

@@ -280,7 +280,7 @@ impl PlainDateTime {
         Self::from_epoch_nanoseconds(fields.to_epoch_nanoseconds()?)
     }
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
-        IsoDateTime::from_epoch_nanoseconds(value)?;
+        crate::iso::check_local(value)?;
         Ok(Self(value, Calendar::Iso8601))
     }
 }
@@ -320,7 +320,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
         date.to_date_time(time)
     }
     pub fn from_epoch_nanoseconds_in(value: i128, calendar: C) -> Result<Self, Error> {
-        IsoDateTime::from_epoch_nanoseconds(value)?;
+        crate::iso::check_local(value)?;
         calendar
             .date(value.div_euclid(NANOSECONDS_PER_DAY) as i64)
             .map_err(error)?;

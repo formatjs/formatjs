@@ -363,3 +363,30 @@ rounding loses at 0.653 versus TS 0.601. Native namespace is 507,887 gzip bytes
 19.48 ms. Pure TS/native JS bundles match the prior checkpoint byte-for-byte;
 TS AST/negative-control checks pass. Fresh profiles retain generic zoned rounding
 transport as a next target. This is partial progress, not goal completion.
+
+### ABI 18 typed zoned operations
+
+Typed zoned addition/subtraction, rounding and day-start requests return complete
+results directly. ISO records are built on the stack; non-ISO/deferred-error paths
+remain general. ABI 18 has 32 typed routes, the same 69 operations and unchanged
+SDK JSON/data/dependencies. Private resolution works on validated nanoseconds;
+public field/range/calendar checks remain. Native-only private-slot construction
+keeps user numeric validation and standard prototypes.
+
+All 66 focused Rust/TS/WASM/Test262/ICU/Hermes and Rust public provider/calendar
+checks pass against recorded final source hashes. Added field/packet boundary,
+recovery, offset-hint, week/year/BCE, memory-growth ownership, prototype, numeric
+constructor and poisoned-iterator controls. No new exclusions. Pure TS executable
+AST matches the independent baseline. Alternating controls retain the resolution
+refactor and modest construction changes; copied lazy snapshots, a flat decoder
+and Rust duration prevalidation are discarded. Final measurements/profiles live
+in benchmarks/temporal/zoned-operations-*.json. All-workload goal stays open.
+
+Current isolated rounding/addition/day-start times are 3.870/5.834/3.818
+microseconds, versus preceding WASM 11.415/15.134/10.416 and current TS
+2.869/6.243/2.075. Parsing is 6.339 versus TS 3.999. DateTime parsing remains
+slower and rises from 2.762 to 2.901 in this checkpoint. Median wins are 24/48;
+all 24 slower cases remain explicit. Native namespace is 513,202 bytes gzip
+(+5,315), no new data/dependency. ISO/timezone readiness is 16.70 versus TS
+19.40 ms. Fresh profiles prioritize Duration construction/transport next.
+This is partial progress; the all-workload objective remains unfulfilled.

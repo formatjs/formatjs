@@ -2031,3 +2031,44 @@ to the prior checkpoint. Native namespace is 507,887 gzip bytes, down 1,722;
 raw WASM grows 318 bytes. ISO/timezone startup is 16.96 versus TS 19.48 ms.
 Zoned rounding's generic decoder/writer remains a measured next target.
 All-workload goal stays open.
+
+### Direct zoned operations and complete ISO records
+
+ABI 18 adds typed addZonedDateTime, roundZonedDateTime and startOfZonedDay requests:
+32 typed routes, unchanged 69 normalized operations. Each resolves its input once,
+calls the public Rust method and encodes its complete result. ISO records are
+built directly on the stack, preserving date/week/clock fields, local/instant
+nanoseconds, exact offset text/nanoseconds and day length. Non-ISO and deferred
+getter errors retain general snapshots. Existing exact offset formatting is shared;
+SDK JSON shapes and all data/dependencies remain unchanged.
+
+Local resolution now accepts validated nanoseconds privately. Public field APIs
+still call the same field/range validator; day boundaries use the same local range
+check. PlainDateTime constructors replace an unused full ISO conversion with its
+identical range check, keeping calendar validation. Offset-hint matching uses the
+bounded local visitor, including the full-history custom-provider default.
+Native-only zoned construction wraps Rust-result/private branded slots directly;
+numeric user constructors stay checked, with the standard prototype and brands.
+
+Alternating controls in zoned-operations-experiments.json support the raw-resolution
+refactor and modest private construction gains. Rust prevalidation before options
+added a boundary without a consistent gain and slowed DateTime addition; discarded.
+Copied lazy snapshots and a separate flat JS decoder also lacked a consistent
+matched gain; discarded. All complete Rust/JS result fields remain eager.
+New controls compare every public ISO field with generic FFI snapshots at week/
+year/BCE/range boundaries, retain results across memory growth, and verify prototype,
+constructor/range checks, malformed request recovery, offset-hint policies and
+poisoned Array iteration. No new conformance exclusions.
+
+All 66 focused targets pass against recorded final source hashes; pure TS executable
+AST still matches the independent baseline. `benchmarks/temporal/zoned-operations-*.json`
+retain trials, three alternating controls, all 48 isolated workloads, nine-process
+startup/size and fresh profiles. Zoned rounding falls from 11.415 to 3.870
+microseconds; addition 15.134 to 5.834; day start 10.416 to 3.818. TS is 2.869,
+6.243 and 2.075 respectively. Parsing is 6.339 versus TS 3.999. DateTime parsing
+remains slower at 2.901 versus TS 2.470 and rose from its prior WASM measurement.
+Current medians win 24/48; all 24 slower cases are inventoried. Goal open.
+Native namespace grows 5,315 gzip bytes to 513,202, with unchanged data/dependencies;
+ISO/timezone startup is 16.70 versus TS 19.40 ms. Duration parsing profile self time
+is dominated by JS createDuration and generic decoding, making typed duration
+transport/private Rust-result construction the next candidates.
