@@ -229,3 +229,85 @@ test.each([1, 2, 3] as const)(
     }
   }
 )
+
+test.each(['UTC', '+05:30', '-05:30'])(
+  'Temporal formatting preserves legacy RegExp statics in %s',
+  timeZone => {
+    const dtf = formatter({calendar: 'iso8601', timeZone})
+    for (const value of [
+      new Temporal.PlainDate(2020, 2, 3),
+      new Temporal.PlainDateTime(2020, 2, 3, 12, 30),
+      new Temporal.PlainTime(12, 30),
+      new Temporal.PlainYearMonth(2020, 2),
+      new Temporal.PlainMonthDay(2, 3),
+      new Temporal.Instant(0n),
+    ]) {
+      for (const method of [
+        'format',
+        'formatToParts',
+        'formatRange',
+        'formatRangeToParts',
+      ] as const) {
+        ;/sent(inel)/.exec('sentinel')
+        const before = [
+          RegExp.input,
+          RegExp.lastMatch,
+          RegExp.lastParen,
+          RegExp.leftContext,
+          RegExp.rightContext,
+          RegExp.$1,
+        ]
+        dtf[method](value, value)
+        const after = [
+          RegExp.input,
+          RegExp.lastMatch,
+          RegExp.lastParen,
+          RegExp.leftContext,
+          RegExp.rightContext,
+          RegExp.$1,
+        ]
+        expect(
+          after,
+          `${method} ${Object.prototype.toString.call(value)}`
+        ).toEqual(before)
+      }
+    }
+  }
+)
+
+test('intrinsic ISO parsing retains signed years and fractional seconds', () => {
+  const dtf = formatter({
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    fractionalSecondDigits: 3,
+    hourCycle: 'h23',
+  })
+  for (const year of [-123456, -1, 2000, 123456]) {
+    const value = new Temporal.PlainDateTime(
+      year,
+      2,
+      3,
+      12,
+      30,
+      45,
+      123,
+      456,
+      789
+    )
+    expect(dtf.formatToParts(value)).toEqual(
+      dtf.formatToParts(Date.UTC(year, 1, 3, 12, 30, 45, 123))
+    )
+  }
+  expect(
+    formatter({second: 'numeric', fractionalSecondDigits: 3})
+      .formatToParts(new Temporal.PlainTime(0, 0, 0, 123, 456, 789))
+      .find(
+        (part: {type: string; value: string}) =>
+          part.type === 'fractionalSecond'
+      )?.value
+  ).toBe('123')
+})
