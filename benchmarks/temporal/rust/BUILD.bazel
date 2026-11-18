@@ -1,6 +1,4 @@
 load("@rules_rs//rs:rust_binary.bzl", "rust_binary")
-load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
-load("//crates/temporal:wasm.bzl", "temporal_wasm")
 
 # gazelle:ignore
 # gazelle:rust_cargo_lock @temporal_benchmark_crates Cargo.toml Cargo.lock
@@ -19,6 +17,7 @@ rust_binary(
     crate_name = "temporal_rs_benchmark",
     crate_root = "native.rs",
     edition = "2024",
+    visibility = ["//benchmarks/temporal:__pkg__"],
     deps = [
         "//crates/temporal:with_compiled_data",
         "@temporal_benchmark_crates//:temporal_rs",
@@ -26,54 +25,4 @@ rust_binary(
     ],
 )
 
-rust_shared_library(
-    name = "wasm_core",
-    srcs = [
-        "utc_provider.rs",
-        "wasm.rs",
-    ],
-    crate_name = "temporal_rs_wasm_benchmark",
-    crate_root = "wasm.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cstrip=symbols",
-        "-Cpanic=abort",
-    ],
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = [
-        "@temporal_benchmark_crates//:temporal_rs",
-        "@temporal_benchmark_crates//:timezone_provider",
-        "@temporal_benchmark_crates//:writeable",
-    ],
-)
-
-temporal_wasm(
-    name = "wasm",
-    src = ":wasm_core",
-    out = "temporal-rs-core.wasm",
-    visibility = ["//visibility:public"],
-)
-
 # gazelle:ignore
-rust_shared_library(
-    name = "wasm_cost_core",
-    srcs = ["wasm-cost.rs"],
-    crate_name = "temporal_wasm_cost_control",
-    crate_root = "wasm-cost.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cstrip=symbols",
-        "-Cpanic=abort",
-    ],
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = ["//crates/temporal"],
-)
-
-temporal_wasm(
-    name = "wasm_cost",
-    src = ":wasm_cost_core",
-    out = "temporal-cost-control.wasm",
-    visibility = ["//visibility:public"],
-)

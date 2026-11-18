@@ -1,5 +1,22 @@
 # Temporal completion audit
 
+Current delivery scope: pure TypeScript, native Rust and native Hermes bindings.
+Temporal WASM runtime entries, assets, build targets and test variants are removed.
+WASM measurements and ABI notes below are historical. New native Rust/TS comparison:
+`bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
+outputs and reports per-workload samples; native timings exclude binding costs.
+
+Current native/TS checkpoint: 67 focused Rust/TS/ICU/Hermes/Test262 targets pass,
+including the surviving full Intl compatibility gates. Documentation builds.
+Default TS executable AST remains alpha-equivalent to the independent baseline
+(2,560 bindings); retained production TS files match the previous commit exactly.
+Native Rust wins 25/25 matched cases after linearizing table-calendar lookup.
+Fresh JS baseline wins 21/48 against basic `temporal-polyfill`, 35/48 against
+`@js-temporal/polyfill`; performance goal remains open. The matrices have different
+coverage and do not establish universal performance. See
+[`native-ts-experiments.json`](../benchmarks/temporal/native-ts-experiments.json).
+
+The completion evidence below predates WASM removal and remains historical.
 Scope: Rust and TS Temporal, Hermes, Test262 with justified exclusions,
 independent ICU controls, temporal-polyfill comparisons, WASM/TS size and speed,
 package migration and stacked PR delivery. Implementation and validation are

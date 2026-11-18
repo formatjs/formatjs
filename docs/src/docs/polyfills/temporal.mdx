@@ -2,8 +2,8 @@
 
 `@formatjs/temporal` brings Temporal dates, times, calendars, and time zones to TypeScript, Node.js, and Hermes.
 
-Use all eight Temporal value types and all 16 calendars, with an optional Rust
-backend.
+Use all eight Temporal value types and all 16 calendars. TypeScript runs in
+JavaScript hosts; native Rust powers the Hermes SDK.
 
 The [Rust crate](/docs/rust/temporal) provides the same date/time primitives for
 native applications.
@@ -43,13 +43,12 @@ This preserves an existing Temporal implementation. Use
 
 ## Choose an entry point
 
-| Entry                                  | Use it for                                                    |
-| -------------------------------------- | ------------------------------------------------------------- |
-| `@formatjs/temporal`                   | An isolated namespace using installed Intl data               |
-| `@formatjs/temporal/polyfill.js`       | Conditional global installation                               |
-| `@formatjs/temporal/polyfill-force.js` | Unconditional global installation                             |
-| `@formatjs/temporal/standalone.js`     | An isolated namespace with bundled calendar and IANA data     |
-| `@formatjs/temporal/wasm-native.js`    | An isolated namespace backed by the optional Rust WASM module |
+| Entry                                  | Use it for                                                |
+| -------------------------------------- | --------------------------------------------------------- |
+| `@formatjs/temporal`                   | An isolated namespace using installed Intl data           |
+| `@formatjs/temporal/polyfill.js`       | Conditional global installation                           |
+| `@formatjs/temporal/polyfill-force.js` | Unconditional global installation                         |
+| `@formatjs/temporal/standalone.js`     | An isolated namespace with bundled calendar and IANA data |
 
 The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 `PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
@@ -113,23 +112,12 @@ For Rust-backed Temporal, use the [native Hermes SDK](/docs/guides/hermes-intl#t
 Native integration requires rebuilding your app. The tested Hermes runtime has
 no WebAssembly runtime, so use TypeScript or the native SDK there.
 
-## Optional WASM backend
+## Rust
 
-```ts
-import {configureTemporalWasm} from '@formatjs/temporal/wasm-native.js'
-
-const {instance} = await WebAssembly.instantiateStreaming(
-  fetch('/temporal-backend.wasm')
-)
-const Temporal = configureTemporalWasm(instance)
-```
-
-Serve the package's `temporal-backend.wasm` asset as `application/wasm`.
-This entry includes Rust calendar/time-zone data without duplicate TypeScript
-tables. Keep its namespace separate from the default entry. WASM is optional;
-TypeScript remains the default. See the
-[versioned benchmarks](https://github.com/formatjs/formatjs/tree/main/benchmarks/temporal)
-for size and performance comparisons.
+The [Rust crate](https://crates.io/crates/formatjs_temporal) provides typed Temporal
+values, calendar providers, IANA timezone registries and optional compiled data.
+The native Hermes SDK binds that Rust engine. Temporal WASM entry points and
+assets have been removed; use TypeScript in JavaScript hosts or native Rust.
 
 ## Conformance and verification
 

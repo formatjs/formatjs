@@ -613,12 +613,6 @@ pub(crate) fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -
         errors: (1 << 11) - 1,
     })
 }
-pub(crate) fn date_time_snapshot(calendar: CalendarRef<'_>, ns: i128) -> CalendarSnapshot {
-    let mut properties =
-        partial_calendar_snapshot(calendar, ns.div_euclid(NANOSECONDS_PER_DAY) as i64);
-    add_clock(&mut properties, ns);
-    properties
-}
 fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     let value = if record.get("epochNanoseconds").is_some() {
         ZonedDateTime::new_in_calendar(
@@ -630,9 +624,6 @@ fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
         zoned_value(record)?
     };
     zoned_value_snapshot(value)
-}
-pub(crate) fn full_offset(offset: i128) -> impl core::fmt::Display {
-    Offset(offset)
 }
 struct Offset(i128);
 impl core::fmt::Display for Offset {
@@ -684,69 +675,6 @@ pub(crate) fn zoned_value_snapshot(
     }
     Ok(properties)
 }
-pub(crate) fn complete_result(
-    op: &str,
-    request: &Value,
-    mut result: Value,
-) -> Result<(Value, Option<CalendarSnapshot>), Error> {
-    match op {
-        "parsePlainDateTime" | "addPlainDateTime" | "roundPlainDateTime" | "withPlainDateTime" => {
-            if !result.is_object() {
-                result = json!({"epochNanoseconds":result,"calendar":request["calendar"]});
-            }
-            let calendar =
-                resolve_calendar(result["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
-            let ns = decimal(&result, "epochNanoseconds")?;
-            let properties = date_time_snapshot(calendar, ns);
-            return Ok((result, Some(properties)));
-        }
-        "resolveZonedDateTime"
-        | "addZonedDateTime"
-        | "roundZonedDateTime"
-        | "startOfZonedDay"
-        | "withZonedDateTime" => {
-            let (calendar, zone) = if op == "resolveZonedDateTime" {
-                (&request["calendar"], &request["identifier"])
-            } else {
-                (
-                    &request["value"]["calendar"],
-                    &request["value"]["identifier"],
-                )
-            };
-            let slot = json!({"epochNanoseconds":result,"calendar":calendar,"timeZone":zone});
-            let properties = zoned_snapshot(&slot)?;
-            return Ok((slot, Some(properties)));
-        }
-        _ => {}
-    }
-    let (calendar, epoch, record) = match op {
-        "parsePlainDate" | "parsePlainYearMonth" | "parsePlainMonthDay" => (
-            result["calendar"].as_str().ok_or(Error::InvalidCalendar)?,
-            integer(result.get("epochDay"), None)?,
-            true,
-        ),
-        "addPlainDate" => (
-            request["calendar"].as_str().ok_or(Error::InvalidCalendar)?,
-            integer(Some(&result), None)?,
-            false,
-        ),
-        "addPlainYearMonth" | "yearMonthToDate" | "monthDayToDate" | "withPlainDate"
-        | "withPlainYearMonth" | "withPlainMonthDay" => (
-            request["value"]["calendar"]
-                .as_str()
-                .ok_or(Error::InvalidCalendar)?,
-            integer(Some(&result), None)?,
-            false,
-        ),
-        _ => return Ok((result, None)),
-    };
-    let properties = partial_calendar_snapshot(resolve_calendar(calendar)?, epoch);
-    if !record {
-        result = json!({"epochDay":epoch,"calendar":calendar});
-    }
-    Ok((result, Some(properties)))
-}
-
 pub(crate) fn calendar_properties(
     calendar: CalendarRef<'_>,
     request: &Value,
@@ -1743,7 +1671,7 @@ pub(crate) fn execute(request: &Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {
         return Ok(
-            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format","calls":CALLS.load(Ordering::Relaxed),"operations":OPERATIONS,"binaryStrings":crate::binary::STRINGS,"completeTemporalBackend":false}),
+            json!({"backend":"rust-iso-instant-time-calendars-zones-duration-plain-zoned-strings-format","calls":CALLS.load(Ordering::Relaxed),"operations":OPERATIONS,"completeTemporalBackend":false}),
         );
     }
     if !matches!(

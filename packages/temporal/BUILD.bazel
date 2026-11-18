@@ -69,9 +69,6 @@ formatjs_library(
         "short-date-core.ts",
         "should-polyfill.ts",
         "standalone.ts",
-        "wasm.ts",
-        "wasm-native.ts",
-        "wasm-wire.ts",
         "zoned-date-time.ts",
         "zones.ts",
     ],
@@ -84,26 +81,21 @@ formatjs_library(
                 "index.ts",
                 "polyfill.ts",
                 "polyfill-force.ts",
-                "wasm.ts",
             ] else "false",
-            "import.meta.formatjsTemporalNativeData": "true" if entry == "wasm-native.ts" else "false",
+            "import.meta.formatjsTemporalNativeData": "false",
             "import.meta.formatjsTemporalCompactTimeZones": "false" if entry in [
                 "native.ts",
-                "wasm-native.ts",
             ] else "true",
             "import.meta.formatjsTemporalHostCalendar": "true" if entry in [
                 "index.ts",
                 "polyfill.ts",
                 "polyfill-force.ts",
-                "wasm.ts",
             ] else "false",
         }
         for entry in [
             "index.ts",
             "standalone.ts",
             "native.ts",
-            "wasm.ts",
-            "wasm-native.ts",
             "polyfill.ts",
             "polyfill-force.ts",
             "should-polyfill.ts",
@@ -112,7 +104,6 @@ formatjs_library(
     entry_point_external_paths = {
         "index.ts": {"#packages/temporal/native.js": "./native.js"},
         "standalone.ts": {"#packages/temporal/native.js": "./native.js"},
-        "wasm.ts": {"#packages/temporal/native.js": "./native.js"},
         "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
         "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
     },
@@ -120,15 +111,9 @@ formatjs_library(
         "index.ts",
         "standalone.ts",
         "native.ts",
-        "wasm.ts",
-        "wasm-native.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "should-polyfill.ts",
-    ],
-    extra_npm_srcs = [
-        ":wasm_asset",
-        ":wasm_notices",
     ],
     homepage = "https://github.com/formatjs/formatjs#readme",
     license = "MIT AND Unicode-3.0",
@@ -147,9 +132,6 @@ formatjs_library(
     exports = {
         ".": "./index.js",
         "./standalone.js": "./standalone.js",
-        "./wasm.js": "./wasm.js",
-        "./wasm-native.js": "./wasm-native.js",
-        "./temporal-backend.wasm": "./temporal-backend.wasm",
         "./polyfill.js": "./polyfill.js",
         "./polyfill-force.js": "./polyfill-force.js",
         "./should-polyfill.js": "./should-polyfill.js",
@@ -216,12 +198,10 @@ js_test(
             "//conformance-tests/icu4j:temporal_extended_calendar_fixtures",
         ],
         entry_point = "tests/legacy-extended-calendar.test.mjs",
-        env = {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+        env = {},
     )
     for mode in [
         "",
-        "wasm",
-        "native",
     ]
 ]
 
@@ -295,12 +275,10 @@ rolldown_bundle(
             "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
         ],
         entry_point = "tests/legacy-calendar-era.test.mjs",
-        env = {"FORMATJS_TEMPORAL_CALENDAR_FAULT": "1"} if mode == "fault" else {"FORMATJS_TEMPORAL_ARABIC_PROBE": "1"} if mode == "arabic" else {"FORMATJS_TEMPORAL_EXTENDED_WASM": mode} if mode else {},
+        env = {"FORMATJS_TEMPORAL_CALENDAR_FAULT": "1"} if mode == "fault" else {"FORMATJS_TEMPORAL_ARABIC_PROBE": "1"} if mode == "arabic" else {},
     )
     for mode in [
         "",
-        "wasm",
-        "native",
         "arabic",
         "fault",
     ]
@@ -414,12 +392,10 @@ sh_test(
             "//:node_modules/@bazel/runfiles",
         ],
         entry_point = "tests/legacy-lunar-boundary.test.mjs",
-        env = {"TZ": "UTC"} | ({"FORMATJS_TEMPORAL_LUNAR_WASM": mode} if mode else {}),
+        env = {"TZ": "UTC"},
     )
     for profile, mode in [
         ("", ""),
-        ("wasm_", "hybrid"),
-        ("wasm_native_", "native"),
     ]
 ]
 
@@ -440,12 +416,10 @@ sh_test(
             "//conformance-tests/icu4j:temporal_timezone_fixtures",
         ],
         entry_point = "tests/legacy-timezone.test.mjs",
-        env = ({"FORMATJS_TEMPORAL_TIMEZONE_WASM": mode} if mode else {}) | ({"FORMATJS_TEMPORAL_STALE_TIMEZONE": "1"} if stale else {}),
+        env = {"FORMATJS_TEMPORAL_STALE_TIMEZONE": "1"} if stale else {},
     )
     for profile, mode in [
         ("", ""),
-        ("wasm_", "hybrid"),
-        ("wasm_native_", "native"),
     ]
     for stale in [
         False,
@@ -568,12 +542,11 @@ js_test(
             "//tools/test262:validator",
             prelude + "-realm-prelude.js",
             prelude + "-prelude-source.js",
-        ] + (["//crates/temporal:wasm_backend"] if profile == "wasm_legacy" else []),
+        ],
         env = {"TZ": "UTC"},
     )
     for profile, prelude in [
         ("legacy", "instant"),
-        ("wasm_legacy", "wasm"),
     ]
 ]
 
@@ -1653,10 +1626,7 @@ js_test(
             "//tools/test262:validator",
             prelude + "-realm-prelude.js",
             prelude + "-prelude-source.js",
-        ] + (["//crates/temporal:wasm_backend"] if prelude in [
-            "wasm",
-            "wasm-locale",
-        ] else []),
+        ],
         env = {"TZ": "UTC"},
         tags = tags,
     )
@@ -1667,9 +1637,7 @@ js_test(
             [],
         ),
         ("compact_calendar_datetimeformat_test262", "compact-calendar", []),
-        ("wasm_legacy_datetimeformat_test262", "wasm", []),
         ("locale_datetimeformat_test262", "locale", []),
-        ("wasm_locale_datetimeformat_test262", "wasm-locale", []),
     ]
 ]
 
@@ -2702,108 +2670,6 @@ rolldown_bundle(
     ]
 ]
 
-rolldown_bundle(
-    name = "wasm-payload",
-    srcs = [
-        "tests/wasm-prelude.ts",
-        ":srcs",
-    ],
-    define = {
-        "import.meta.formatjsTemporalNativeData": "true",
-        "import.meta.formatjsTemporalCompactTimeZones": "false",
-        "import.meta.formatjsTemporalHostCalendar": "false",
-    },
-    entry_point = "tests/wasm-prelude.ts",
-    format = "iife",
-    target = "es2022",
-    deps = [":lib"],
-)
-
-js_run_binary(
-    name = "wasm-module-prelude",
-    srcs = ["//crates/temporal:wasm_backend"],
-    outs = ["wasm-module-prelude.js"],
-    args = [
-        "--wasm",
-        "$(rootpath //crates/temporal:wasm_backend)",
-        "--out",
-        "$(rootpath wasm-module-prelude.js)",
-    ],
-    tool = "//packages/temporal/scripts:wasm-prelude",
-)
-
-js_run_binary(
-    name = "wasm-realm-prelude",
-    srcs = [
-        "wasm-module-prelude.js",
-        "wasm-payload.js",
-    ],
-    outs = [
-        "wasm-prelude-source.js",
-        "wasm-realm-prelude.js",
-    ],
-    args = [
-        "--input",
-        "$(rootpath wasm-module-prelude.js)",
-        "--input",
-        "$(rootpath wasm-payload.js)",
-        "--out",
-        "$(rootpath wasm-realm-prelude.js)",
-        "--sourceOut",
-        "$(rootpath wasm-prelude-source.js)",
-    ],
-    tool = "//tools/test262:prelude",
-)
-
-js_run_binary(
-    name = "wasm-locale-realm-prelude",
-    srcs = [
-        "locale-payload.js",
-        "wasm-module-prelude.js",
-        "wasm-payload.js",
-    ],
-    outs = [
-        "wasm-locale-prelude-source.js",
-        "wasm-locale-realm-prelude.js",
-    ],
-    args = [
-        "--input",
-        "$(rootpath locale-payload.js)",
-        "--input",
-        "$(rootpath wasm-module-prelude.js)",
-        "--input",
-        "$(rootpath wasm-payload.js)",
-        "--out",
-        "$(rootpath wasm-locale-realm-prelude.js)",
-        "--sourceOut",
-        "$(rootpath wasm-locale-prelude-source.js)",
-    ],
-    tool = "//tools/test262:prelude",
-)
-
-test262_harness_bin.test262_harness_binary(
-    name = "wasm_harness",
-    data = [
-        "wasm-prelude-source.js",
-        "wasm-realm-prelude.js",
-        "//crates/temporal:wasm_backend",
-        "@com_github_tc39_test262//:test262-harness-copy",
-        "@com_github_tc39_test262//:test262-temporal-duration-copy",
-        "@com_github_tc39_test262//:test262-temporal-installation-copy",
-        "@com_github_tc39_test262//:test262-temporal-instant-copy",
-        "@com_github_tc39_test262//:test262-temporal-intl-copy",
-        "@com_github_tc39_test262//:test262-temporal-month-day-copy",
-        "@com_github_tc39_test262//:test262-temporal-now-copy",
-        "@com_github_tc39_test262//:test262-temporal-plain-date-copy",
-        "@com_github_tc39_test262//:test262-temporal-plain-date-time-copy",
-        "@com_github_tc39_test262//:test262-temporal-plain-time-copy",
-        "@com_github_tc39_test262//:test262-temporal-staging-copy",
-        "@com_github_tc39_test262//:test262-temporal-year-month-copy",
-        "@com_github_tc39_test262//:test262-temporal-zoned-copy",
-    ],
-    node_toolchain = "//tools/test262:node-runtime",
-)
-
 _CLASS_TEST262_SUITES = [
     (
         "instant",
@@ -2853,46 +2719,11 @@ _CLASS_TEST262_SUITES = [
 
 [
     sh_test(
-        name = "wasm_" + suite + "_test262",
-        size = "medium",
-        srcs = ["//tools/test262:run.sh"],
-        args = [
-            "$(rootpath :wasm_harness)",
-            "$(rootpath //tools/test262:validator)",
-            "Temporal.WASM." + suite,
-            "$(rootpath %s)" % baseline,
-            "--threads",
-            "4",
-            "--errorForFailures",
-            "--reporter",
-            "json",
-            "--reporter-keys",
-            "file,scenario,result,rawResult",
-            "--test262Dir",
-            _TEST262_ROOT,
-            "--prelude",
-            "$(rootpath wasm-realm-prelude.js)",
-        ] + patterns,
-        data = [
-            ":wasm_harness",
-            "//tools/test262:validator",
-            baseline,
-            "wasm-prelude-source.js",
-            "wasm-realm-prelude.js",
-            "//crates/temporal:wasm_backend",
-        ],
-        env = {"TZ": "UTC"},
-    )
-    for suite, patterns, baseline in _CLASS_TEST262_SUITES
-]
-
-[
-    sh_test(
         name = name,
         size = "enormous",
         srcs = ["//tools/test262:run.sh"],
         args = [
-            "$(rootpath :wasm_harness)",
+            "$(rootpath :compact_calendar_harness)",
             "$(rootpath //tools/test262:validator)",
             "Temporal.Intl." + name,
             "$(rootpath %s)" % baseline,
@@ -2911,29 +2742,18 @@ _CLASS_TEST262_SUITES = [
             "$(rootpath %s)" % prelude,
         ] + patterns,
         data = [
-            ":wasm_harness",
+            ":compact_calendar_harness",
             "//tools/test262:validator",
             baseline,
             prelude,
             source,
-            "//crates/temporal:wasm_backend",
         ],
         env = {"TZ": "UTC"},
         tags = tags,
     )
     for name, prelude, source, baseline, patterns, tags in [
         ("host_intl_compat_test262", "compact-calendar-realm-prelude.js", "compact-calendar-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
-        ("wasm_host_intl_compat_test262", "wasm-realm-prelude.js", "wasm-prelude-source.js", "tests/host-intl-compat-test262-count.json", _HOST_INTL_COMPAT_PATTERNS, []),
         ("locale_intl_compat_test262", "locale-realm-prelude.js", "locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
-        ("wasm_intl_compat_test262", "wasm-locale-realm-prelude.js", "wasm-locale-prelude-source.js", "tests/intl-compat-test262-count.json", _INTL_COMPAT_PATTERNS, []),
-        (
-            "wasm_intl_test262_full",
-            "wasm-locale-realm-prelude.js",
-            "wasm-locale-prelude-source.js",
-            "tests/intl-full-test262-count.json",
-            [_TEST262_ROOT + "/test/intl402/Temporal/**/*.js"],
-            ["manual"],
-        ),
     ]
 ]
 
@@ -2944,113 +2764,6 @@ rolldown_bundle(
     format = "esm",
     target = "es2022",
     deps = [":lib"],
-)
-
-[
-    js_test(
-        name = "wasm_native_package_test" if native_data else "wasm_package_test",
-        size = "medium",
-        timeout = "long",
-        args = [
-            "$(rlocationpath :pkg)",
-            "$(rlocationpath //crates/temporal:wasm_backend)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_iso_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_rounding_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_duration_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_time_carry_fixtures)",
-            "$(rlocationpath :plain-time-oracle.js)",
-            "$(rlocationpath :public-calendar-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_table_calendar_fixtures)",
-            "$(rlocationpath :timezone-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_transition_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_timezone_identity_fixtures)",
-            "$(rlocationpath :duration-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_plain_relative_fixtures)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_difference_fixtures)",
-            "$(rlocationpath :plain-arithmetic-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_date_arithmetic_fixtures)",
-            "$(rlocationpath :zoned-arithmetic-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_zoned_rounding_fixtures)",
-            "$(rlocationpath :string-oracle.js)",
-            "$(rlocationpath :date-output-oracle.js)",
-            "$(rlocationpath //conformance-tests/icu4j:temporal_short_date_fixtures)",
-        ],
-        data = [
-            ":date-output-oracle.js",
-            ":duration-oracle.js",
-            ":pkg",
-            ":plain-arithmetic-oracle.js",
-            ":plain-time-oracle.js",
-            ":public-calendar-oracle.js",
-            ":string-oracle.js",
-            ":timezone-oracle.js",
-            ":zoned-arithmetic-oracle.js",
-            "//:node_modules/@bazel/runfiles",
-            "//conformance-tests/icu4j:temporal_arithmetic_calendar_fixtures",
-            "//conformance-tests/icu4j:temporal_date_arithmetic_fixtures",
-            "//conformance-tests/icu4j:temporal_duration_fixtures",
-            "//conformance-tests/icu4j:temporal_iso_fixtures",
-            "//conformance-tests/icu4j:temporal_plain_relative_fixtures",
-            "//conformance-tests/icu4j:temporal_rounding_fixtures",
-            "//conformance-tests/icu4j:temporal_short_date_fixtures",
-            "//conformance-tests/icu4j:temporal_table_calendar_fixtures",
-            "//conformance-tests/icu4j:temporal_time_carry_fixtures",
-            "//conformance-tests/icu4j:temporal_timezone_fixtures",
-            "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
-            "//conformance-tests/icu4j:temporal_transition_fixtures",
-            "//conformance-tests/icu4j:temporal_zoned_difference_fixtures",
-            "//conformance-tests/icu4j:temporal_zoned_rounding_fixtures",
-            "//crates/temporal:wasm_backend",
-        ],
-        entry_point = "tests/wasm.test.mjs",
-        env = {"TZ": "UTC"} | ({"FORMATJS_TEMPORAL_NATIVE_DATA_ONLY": "1"} if native_data else {}),
-    )
-    for native_data in [
-        False,
-        True,
-    ]
-]
-
-copy_file(
-    name = "wasm_asset",
-    src = "//crates/temporal:wasm_backend",
-    out = "temporal-backend.wasm",
-)
-
-rolldown_bundle(
-    name = "wasm-unavailable-host",
-    srcs = [
-        "tests/wasm-unavailable-host.ts",
-        ":srcs",
-    ],
-    entry_point = "tests/wasm-unavailable-host.ts",
-    format = "iife",
-    target = "es2022",
-    deps = [":lib"],
-)
-
-sh_test(
-    name = "wasm_unavailable_hermes_test",
-    size = "small",
-    srcs = ["tests/oracle-host.sh"],
-    args = [
-        "$(rootpath //native/hermes:hermes_runner)",
-        "$(rootpath @hermes//:hermesc)",
-        "$(rootpath :wasm-unavailable-host.js)",
-    ],
-    data = [
-        ":wasm-unavailable-host.js",
-        "//native/hermes:hermes_runner",
-        "@hermes//:hermesc",
-    ],
-)
-
-copy_file(
-    name = "wasm_notices",
-    src = "//native/hermes/package:THIRD_PARTY_NOTICES.html",
-    out = "WASM_NOTICES.html",
 )
 
 rolldown_bundle(
@@ -3255,15 +2968,13 @@ genrule(
             "//tools/test262:validator",
             prelude + "-realm-prelude.js",
             prelude + "-prelude-source.js",
-        ] + (["//crates/temporal:wasm_backend"] if prelude.startswith("wasm") else []),
+        ],
         env = {"TZ": "UTC"},
     )
     for profile, prelude in [
         ("compact_calendar", "compact-calendar"),
         ("legacy", "instant"),
         ("locale", "locale"),
-        ("wasm_legacy", "wasm"),
-        ("wasm_locale", "wasm-locale"),
     ]
 ]
 

@@ -17,7 +17,6 @@ const {Temporal: officialReference} = await import(officialPackage)
 const directory = runfiles.resolve(process.argv[2])
 const load = (name: string) => import(pathToFileURL(join(directory, name)).href)
 const {Temporal} = await load('index.js')
-const {configureWasmBackend, createWasmQuery} = await load('wasm.js')
 function benchmarkCount(name: string, fallback: number): number {
   const value = Number(process.env[name] ?? fallback)
   if (!Number.isSafeInteger(value) || value < 1)
@@ -41,13 +40,7 @@ const transitionWarmup = benchmarkCount(
 const selectedProfile = process.env.FORMATJS_TEMPORAL_BENCHMARK_PROFILE
 if (
   selectedProfile &&
-  ![
-    'typescript',
-    'wasm',
-    'nativeDataWasm',
-    'reference',
-    'officialReference',
-  ].includes(selectedProfile)
+  !['typescript', 'reference', 'officialReference'].includes(selectedProfile)
 )
   throw new RangeError('Invalid benchmark profile: ' + selectedProfile)
 const strings = Array.from(
@@ -682,67 +675,34 @@ async function measureProfile(namespace: typeof reference, name: string) {
   }
 }
 const typescript = await measureProfile(Temporal, 'typescript')
-const bytes = readFileSync(join(directory, 'temporal-backend.wasm'))
-let start = performance.now()
-const module = new WebAssembly.Module(bytes)
-const compileMilliseconds = performance.now() - start
-start = performance.now()
-const instance = new WebAssembly.Instance(module, {})
-const instantiateMilliseconds = performance.now() - start
-configureWasmBackend(instance)
-const query = createWasmQuery(instance)
-const initialMemoryBytes = query.memoryBytes
-start = performance.now()
-checksum += Temporal.Instant.from(strings[0]).epochNanoseconds.toString().length
-const firstNativeOperationMilliseconds = performance.now() - start
-start = performance.now()
-checksum += Temporal.PlainDate.from({
-  calendar: 'chinese',
-  year: 2020,
-  monthCode: 'M01',
-  day: 1,
-}).monthCode.length
-const firstCalendarOperationMilliseconds = performance.now() - start
-start = performance.now()
-checksum += Temporal.ZonedDateTime.from(
-  zonedInputs[0][1] + '[' + zonedInputs[0][0] + ']'
-).epochNanoseconds.toString().length
-const firstTimezoneOperationMilliseconds = performance.now() - start
-start = performance.now()
-checksum += Temporal.Duration.from('P1M1DT2H')
-  .total({relativeTo: '2020-01-31', unit: 'hour'})
-  .toString().length
-const firstDurationOperationMilliseconds = performance.now() - start
-const wasm = await measureProfile(Temporal, 'wasm')
-const nativeDataTemporal = (await load('wasm-native.js')).configureTemporalWasm(
-  instance
-)
-const nativeDataWasm = await measureProfile(
-  nativeDataTemporal,
-  'nativeDataWasm'
-)
 const referenceResults = await measureProfile(reference, 'reference')
 const officialReferenceResults = await measureProfile(
   officialReference as unknown as typeof reference,
   'officialReference'
 )
-const officialCode = buildSync({
-  stdin: {
-    contents: "export {Temporal} from '@js-temporal/polyfill'",
-    resolveDir: directory,
-  },
-  bundle: true,
-  write: false,
-  format: 'esm',
-  target: 'es2022',
-  minify: true,
-  legalComments: 'none',
-}).outputFiles[0].contents
-const officialSize = {
-  minified: officialCode.byteLength,
-  gzip: gzipSync(officialCode, {level: 9}).length,
+const bundle = (contents: string, output?: string) => {
+  const code = buildSync({
+    stdin: {
+      contents,
+      resolveDir: directory,
+      sourcefile: 'measurement-entry.js',
+      loader: 'js',
+    },
+    bundle: true,
+    write: false,
+    format: 'esm',
+    target: 'es2022',
+    minify: true,
+    legalComments: 'none',
+  }).outputFiles[0].contents
+  if (output) writeFileSync(output, code)
+  return {
+    minified: code.byteLength,
+    gzip: gzipSync(code, {level: 9}).length,
+    sha256: createHash('sha256').update(code).digest('hex'),
+  }
 }
-const minify = (file: string) => {
+const modules = ['index.js', 'native.js'].map(file => {
   const source = readFileSync(join(directory, file), 'utf8')
   const code = transformSync(source, {
     target: 'es2022',
@@ -755,40 +715,7 @@ const minify = (file: string) => {
     minified: Buffer.byteLength(code),
     gzip: gzipSync(code, {level: 9}).length,
   }
-}
-const bundle = (wasm: boolean, nativeData = false) => {
-  const code = buildSync({
-    stdin: {
-      contents: nativeData
-        ? "export * from './wasm-native.js';"
-        : `export * from './index.js';${wasm ? "export {configureWasmBackend} from './wasm.js';" : ''}`,
-      resolveDir: directory,
-      sourcefile: 'measurement-entry.js',
-      loader: 'js',
-    },
-    bundle: true,
-    write: false,
-    format: 'esm',
-    target: 'es2022',
-    minify: true,
-    legalComments: 'none',
-  }).outputFiles[0].contents
-  if (!wasm && process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT)
-    writeFileSync(process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT, code)
-  return {
-    minified: code.byteLength,
-    gzip: gzipSync(code, {level: 9}).length,
-    sha256: createHash('sha256').update(code).digest('hex'),
-  }
-}
-const modules = ['index.js', 'native.js', 'wasm.js', 'wasm-native.js'].map(
-  minify
-)
-const binary = {raw: bytes.byteLength, gzip: gzipSync(bytes, {level: 9}).length}
-const tsBundle = bundle(false),
-  wasmBundle = bundle(true),
-  nativeDataBundle = bundle(true, true)
-const separateTS = modules[0].gzip + modules[1].gzip
+})
 console.log(
   JSON.stringify(
     {
@@ -797,11 +724,9 @@ console.log(
       icu: process.versions.icu,
       platform: process.platform + ' ' + process.arch,
       cpu: cpus()[0]?.model ?? 'unknown',
-      memoryScope:
-        'WASM linear memory only; excludes JS heap and compiled code.',
       scope:
-        'Actual published Temporal namespace. Default TS uses compact ICU4X lunisolar data/arithmetic, host Intl Umm al-Qura and named timezones. WASM delegates ISO/Instant/PlainTime/calendar/timezone/Duration math, plain/zoned/short-date arithmetic, string parsing and date formatting with16 native calendars and all IANA records; object semantics and host/Intl integration remain JS/TS. Native-data profile removes duplicated TS calendar/IANA tables; hybrid retains compact TS calendars. ISO date and zoned workloads use basic reference; no non-ISO throughput claim. Transition cases use explicit per-case counts. References temporal-polyfill1.0.7 basic and @js-temporal/polyfill0.5.1. Binary WASM operations return complete records with cached derived fields; JS retains observable object/coercion/option semantics.',
-      method: `Eight inputs, parity checked, ${warmup} warmup +${samples} samples x${iterations} calls; ${selectedProfile ? 'selected profile ' + selectedProfile : 'TS then WASM with fallback data then WASM with native data only then temporal-polyfill then @js-temporal/polyfill 0.5.1'} in one process. Initial native/calendar/timezone setup measured separately from hot loops; calendar setup includes registry validation. Hot operations exclude startup. timeParse/timeAdd read nanosecond; timeRoundFormat includes formatting. Gzip level9, esbuild es2022 minification. Separately compressed module sums and consumer bundles are alternative delivery modes.`,
+        'Actual published default TypeScript Temporal namespace versus temporal-polyfill 1.0.7 basic ISO/Gregorian implementation and @js-temporal/polyfill 0.5.1. Same 48 public workloads retained from previous facade benchmark. TS uses compact ICU4X lunisolar arithmetic/data, host Intl Umm al-Qura and named timezones. ISO date and zoned cases; no non-ISO throughput claim. Hot operations exclude startup. Selected profiles allow independent fresh processes. No native backend installed.',
+      method: `Eight varying inputs, output parity checked before timing, ${warmup} warmup, ${samples} samples x ${iterations} calls; transition-specific counts retained. ${selectedProfile ? 'Selected profile: ' + selectedProfile : 'TS, temporal-polyfill, then official reference in one process'}. Prefer isolated profiles for comparisons. Checksum consumes outputs. Size uses esbuild es2022 minification and gzip level9; export-all TS consumer and reference namespace consumers. Profiling runs are separate from production timings.`,
       references: {
         'temporal-polyfill': '1.0.7',
         '@js-temporal/polyfill': '0.5.1',
@@ -812,34 +737,24 @@ console.log(
       warmup,
       checksum,
       typescript,
-      wasm,
-      nativeDataWasm,
       reference: referenceResults,
       officialReference: officialReferenceResults,
-      compileMilliseconds,
-      instantiateMilliseconds,
-      firstNativeOperationMilliseconds,
-      firstCalendarOperationMilliseconds,
-      firstTimezoneOperationMilliseconds,
-      firstDurationOperationMilliseconds,
-      initialMemoryBytes,
-      finalMemoryBytes: query.memoryBytes,
-      native: JSON.parse(query('{"op":"info"}')),
       size: {
-        officialReference: officialSize,
         modules,
-        binary,
         consumer: {
-          typescript: tsBundle,
-          wasmJS: wasmBundle,
-          wasmCombinedGzip: wasmBundle.gzip + binary.gzip,
-          nativeDataWasmJS: nativeDataBundle,
-          nativeDataWasmCombinedGzip: nativeDataBundle.gzip + binary.gzip,
+          typescript: bundle(
+            "export * from './index.js';",
+            process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT
+          ),
+          reference: bundle(
+            "export {Temporal} from 'temporal-polyfill/implementation'"
+          ),
+          officialReference: bundle(
+            "export {Temporal} from '@js-temporal/polyfill'"
+          ),
         },
         separateModules: {
-          typescriptGzip: separateTS,
-          wasmCombinedGzip: separateTS + modules[2].gzip + binary.gzip,
-          nativeDataWasmCombinedGzip: modules[3].gzip + binary.gzip,
+          typescriptGzip: modules.reduce((sum, value) => sum + value.gzip, 0),
         },
       },
     },

@@ -1,5 +1,48 @@
 # Temporal benchmarks
 
+Current delivery scope: pure TypeScript, native Rust and native Hermes bindings.
+Temporal WASM runtime entries, assets, build targets and test variants are removed.
+WASM measurements and ABI notes below are historical. New native Rust/TS comparison:
+`bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
+outputs and reports per-workload samples; native timings exclude binding costs.
+
+## Native Rust versus TypeScript
+
+Run `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`.
+[`native-ts-results.json`](native-ts-results.json) records 25 matched public
+workloads, four inputs each, checked before timing. Native Rust wins all 25 in
+this snapshot. This excludes binding costs, named-zone workloads and startup;
+it does not claim every Temporal operation is faster.
+
+Chinese/Dangi epoch-day lookup previously recalculated each year start by
+rescanning the same 64-year block. One forward pass removes that quadratic scan.
+Fields improve from about 2.02–2.04 µs to 0.258–0.260 µs; month addition from
+6.47–6.61 µs to 1.18–1.19 µs. Tables and data ownership stay unchanged. The
+[before snapshot](native-ts-before-results.json) uses the same checksum method.
+String outputs use FNV-1a 32-bit in both languages; older native benchmark
+snapshots used 64-bit hashing and are not direct timing controls.
+
+Run `bazel run -c opt //benchmarks/temporal:comparison_benchmark` for the same
+48 JavaScript workloads previously used by the facade comparison, now without
+WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
+`officialReference` for isolated processes. References remain `temporal-polyfill`
+1.0.7 basic ISO/Gregorian and `@js-temporal/polyfill` 0.5.1. Goal remains open:
+Rust beats TS, and TS beats both references across matched workloads. Preserve
+spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
+
+Fresh isolated baseline: TS wins 21/48 raw medians against `temporal-polyfill`
+and 35/48 against the official polyfill. Both still beat TS on date formatting;
+27 and 13 workloads respectively remain slower. All three checksums match.
+[`js-comparison-results.json`](js-comparison-results.json) retains every case,
+raw sample and loss. This is an open optimization goal, not a completion claim.
+
+The default export-all TS consumer is 39,749 bytes gzip. Its executable AST is
+unchanged after local binding-name normalization; package graph changes renamed
+bindings. Nine fresh processes per profile measure import plus first ISO parse
+and named-zone projection: TS 22.85 ms, basic reference 34.54 ms, official 29.27 ms.
+These startup profiles exclude process launch and full calendar initialization.
+See [startup](js-startup-results.json) and [package sizes](without-wasm-size-results.json).
+
 ## Plain Date callers after installation
 
 Run `bazel run -c opt //benchmarks/temporal:legacy_date_benchmark`.

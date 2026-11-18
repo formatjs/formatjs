@@ -259,5 +259,4 @@ the newly built Apple archive. Publishing waits for the Linux build and either
 the Apple link checks or the verified reused archive.
 
 The Temporal SDK facade omits TS calendar and IANA tables. Its Rust archive owns
-those records; failed native operations propagate without a TS data retry. The
-standalone npm `wasm-native.js` entry uses the same data ownership on WASM hosts.
+those records; failed native operations propagate without a TS data retry.

@@ -25,9 +25,10 @@ const TIMES: [&str; 4] = [
 ];
 
 fn hash(text: &str) -> u64 {
-    text.bytes().fold(0xcbf29ce484222325, |value, byte| {
-        (value ^ u64::from(byte)).wrapping_mul(0x100000001b3)
-    })
+    // Match JavaScript's integer checksum without timing BigInt hashing.
+    u64::from(text.bytes().fold(0x811c9dc5u32, |value, byte| {
+        (value ^ u32::from(byte)).wrapping_mul(0x01000193)
+    }))
 }
 fn fields(year: i32, month: u8, day: u8) -> u64 {
     (year as u64)
@@ -87,7 +88,11 @@ fn record(
     };
     let one = median(&own_samples);
     let two = median(&reference_samples);
-    rows.push(format!("{{\"name\":\"{name}\",\"iterations\":{iterations},\"formatjsNanoseconds\":{one},\"temporalRsNanoseconds\":{two},\"temporalRsOverFormatjs\":{},\"formatjsSamples\":{own_samples:?},\"temporalRsSamples\":{reference_samples:?}}}", two / one));
+    let outputs = (0..4)
+        .map(|index| format!("\"{}\"", ours(index)))
+        .collect::<Vec<_>>()
+        .join(",");
+    rows.push(format!("{{\"name\":\"{name}\",\"iterations\":{iterations},\"outputs\":[{outputs}],\"formatjsNanoseconds\":{one},\"temporalRsNanoseconds\":{two},\"temporalRsOverFormatjs\":{},\"formatjsSamples\":{own_samples:?},\"temporalRsSamples\":{reference_samples:?}}}", two / one));
 }
 
 fn main() {
@@ -428,7 +433,7 @@ fn main() {
         );
     }
     println!(
-        "{{\"temporalRsVersion\":\"0.2.6\",\"rust\":\"1.97.0\",\"architecture\":\"{}\",\"method\":\"Optimized native Rust APIs; four inputs, matched checksums before timing, 256 warmup, nine alternating samples. Parsed inputs and calendar registries initialized outside timing. Strings allocated and hashed by both implementations. Calendar fields read as one aggregate in FormatJS, three public getters in temporal_rs. Harness checksum and black_box included. UTC/fixed-offset parsing only; no named-zone data, JS, FFI, JSON, cold startup or full-polyfill conformance comparison.\",\"results\":[{}]}}",
+        "{{\"temporalRsVersion\":\"0.2.6\",\"rust\":\"1.97.0\",\"architecture\":\"{}\",\"method\":\"Optimized native Rust APIs; four inputs, matched checksums before timing, 256 warmup, nine alternating samples. Parsed inputs and calendar registries initialized outside timing. Strings allocated and FNV-1a 32-bit hashed by both implementations. Calendar fields read as one aggregate in FormatJS, three public getters in temporal_rs. Harness checksum and black_box included. UTC/fixed-offset parsing only; no named-zone data, JS, FFI, JSON, cold startup or full-polyfill conformance comparison.\",\"results\":[{}]}}",
         std::env::consts::ARCH,
         rows.join(",")
     );

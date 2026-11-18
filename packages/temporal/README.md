@@ -1,6 +1,6 @@
 # @formatjs/temporal
 
-Temporal implementation in TypeScript with a Rust core. Importing the namespace changes no globals; runtime
+Temporal implementations in TypeScript and native Rust, with Hermes bindings. Importing the namespace changes no globals; runtime
 arithmetic never delegates to native Temporal or another Temporal polyfill.
 
 ```ts
@@ -101,15 +101,11 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 22. JS retains
-ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
-records through reusable module-owned buffers. Rust returns calendar, clock and
-zone properties with date-like results; getters reuse those immutable results.
-Date arithmetic and partial updates execute whole Rust operations. Instant
-formatting combines rounding, offset lookup and formatting in one call. Backend metadata keeps
-`completeTemporalBackend: false` because this ABI is not an ECMAScript object
-runtime. The [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
-records Rust routes, independent controls and exact conformance scope.
+Rust exposes typed values and normalized operations for native bindings. Hermes JS
+retains ECMAScript coercion, brands, slots and object allocation; Rust validates
+and computes complete results. See the
+[completion audit](../../knowledge-base/015a-temporal-completion-audit.md) for
+independent controls and conformance scope.
 
 Full Intl compatibility gates cover 4,078 executions with Node host Intl and
 4,076 with native SDK Intl. Pinned IANA alias and CLDR zero-offset assumptions
@@ -126,31 +122,11 @@ duration strings. Installation registers captured getters and parsers with
 FormatJS/native Hermes formatters and adapts legacy host formatters. Isolated
 namespaces can use `DurationFormat.__addTemporalNamespace(Temporal)` explicitly.
 
-## WASM with native data
+## Delivery
 
-```ts
-import {
-  configureTemporalWasm,
-  installTemporalWasm,
-} from '@formatjs/temporal/wasm-native.js'
-
-const {instance} = await WebAssembly.instantiateStreaming(
-  fetch('/temporal-backend.wasm')
-)
-const Temporal = configureTemporalWasm(instance)
-// Optional global installation:
-installTemporalWasm(instance, true)
-```
-
-This entry owns its namespace/backend state and omits duplicate TS calendar and
-IANA tables. Invalid modules reject before installation. Native errors propagate
-without a TS data retry. Keep this namespace separate from the default TS entry.
-The existing `index.js` plus `wasm.js` pair shares brands and retains TS data;
-`configureWasmBackend(instance)` switches that pair to Rust operations.
-
-WASM is optional. TS remains the default. See [benchmarks](../../benchmarks/temporal/README.md)
-for versioned performance, consumer payload and package graph measurements.
-Runtime payload and whole npm archive size are different scopes.
+Use the default or standalone TypeScript namespace in JavaScript hosts, the
+[`formatjs_temporal` crate](../../crates/temporal/README.md) in native Rust, or the
+native Hermes SDK. Temporal WASM entry points and assets have been removed.
 
 ## Hermes
 
@@ -182,18 +158,17 @@ data and release artifacts use Bazel.
 
 ```sh
 bazel test -c opt //packages/temporal:package_test
-bazel test -c opt //packages/temporal:wasm_package_test //packages/temporal:wasm_native_package_test
 bazel test -c opt //packages/temporal:compact_calendar_datetimeformat_test262
 bazel test -c opt //crates/temporal:temporal_test //crates/temporal:ffi_test
 ```
 
-Full class gates cover 9,090 executions per SDK source/HBC and WASM profile.
+Full class gates cover 9,090 executions per SDK source/HBC profile.
 Calendar, Now, installation and Intl selections run separately. The
 `intl402/Temporal` corpus has 4,080 executions; it does not include the separate
 65 DateTimeFormat files with the Temporal feature.
 
 Count-checked formatter gates require all 130 executions and zero failures on
-owned TS/Node, WASM, Hermes TS source/HBC and native SDK source/HBC. Their locale
+owned TS/Node, Hermes TS source/HBC and native SDK source/HBC. Their locale
 prelude includes Arabic data for non-Latin numeral bounds. Native-host and adapted
 non-Temporal DateTimeFormat diagnostics compare all 362 executions.
 
@@ -210,136 +185,30 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Matched Node namespace consumers measure 39,692 bytes gzip for default TS,
-23,083 for forced full `temporal-polyfill` and 44,522 for `@js-temporal/polyfill`.
-Native-data WASM totals 506,032 bytes, including 473,022 binary bytes.
-It owns calendar and IANA data; JS references use host Intl data.
-Nine-process ISO/timezone startup medians: TS 19.27 ms, native-data WASM
-16.61 ms, full reference 19.25 ms, official reference 26.78 ms.
-Current WASM medians win 23/48 workloads against TS, 25/48 against the basic
-reference and 35/48 against the official reference. Rounding wins this snapshot
-but loses longer controls; remaining slower workloads keep the goal open.
-See [current benchmarks](../../benchmarks/temporal/README.md#typed-timezone-transitions)
-for samples, bundle scopes and the official reference's ICU 78.2 Chinese
-calendar incompatibility.
+## Performance
 
-Final coverage includes every Temporal-feature file in pinned Test262, including
-DateTimeFormat, DurationFormat and staging. Six coherent profiles cover default
-TS and native-data WASM on Node, plus TS/native SDK on Hermes source/HBC.
-Each Node profile passes 13,474 unique scenarios; each Hermes profile passes
-13,472. Only documented IANA/CLDR data-version cases are excluded. The coherent
-matrix has 98,716 overlapping suite executions; report unions verify exact
-coverage separately. No Realm exclusion applies to this pin; unsupported Hermes
-Realm hooks and oracle authority limits remain documented.
+Compare native Rust and the published TypeScript namespace with matched inputs:
+
+```sh
+bazel run -c opt //benchmarks/temporal:native_ts_benchmark
+```
+
+Current native Rust medians win all 25 cases. The separate 48-case JS baseline
+wins 21 against `temporal-polyfill`, 35 against `@js-temporal/polyfill`; remaining
+losses keep the performance goal open. These are measured scopes, not universal
+performance claims.
+
+The benchmark validates outputs before timing, retains raw samples and includes
+`temporal_rs` as a separate native comparison. Native Rust timings exclude binding
+costs; Hermes performance must be measured through its native bindings.
+See [benchmarks](../../benchmarks/temporal/README.md) for results and limitations.
+
+Pinned Test262 coverage includes Temporal-feature files in DateTimeFormat,
+DurationFormat and staging. Supported profiles are TS on Node, plus TS and native
+SDK on Hermes source/bytecode. Only documented IANA/CLDR data-version cases are
+excluded. Historical WASM results remain in the benchmark records.
+
 For standalone and Rust namespaces, legacy host formatting compares host and
 owned offsets. Stale or missing host rules use owned local fields with a localized
-numeric offset label. Default TS follows installed Intl timezone data. Matching
-host output stays native.
-Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
-retain their input order.
-
-WASM ABI 22 specializes hot parsing, arithmetic, field updates and formatting.
-Keep the JS adapter and binary paired. Observable coercion/error order stays in
-the bindings; Rust validates and computes complete results. Finite month/day overflow
-fields above the safe-integer range still constrain correctly; `reject`, non-finite
-values and missing-field error types remain covered across TS, WASM and Hermes.
-See the [CPU profile follow-up](../../benchmarks/temporal/README.md#cpu-profile-follow-up-2026-11-17)
-for measured wins, remaining slow workloads, startup and size.
-
-ABI 13 adds direct PlainDateTime parsing, addition/subtraction, rounding and
-formatting. Complete ISO DateTime results carry signed nanoseconds, calendar
-properties and all six clock fields in one record. Non-ISO calendars and deferred
-getter errors keep the general representation. SDK JSON result shapes stay stable.
-
-ABI 14 adds typed clock results, time differences and duration formatting. Native
-clock slots keep exact Number nanoseconds and six Rust-computed fields in one
-record; other Temporal types receive BigInt lazily. All clock values are below
-2**47 nanoseconds, so transport remains exact. Pure TS keeps its existing slots.
-Existing SDK JSON responses stay stable; optional clock snapshots preserve older
-SDK behavior, including midnight rounding carry.
-
-ABI 15 returns Instant integers in 9 bytes when signed 64-bit values fit, otherwise
-17 bytes for the full signed 128-bit value. Checked scalar rounding can return a
-BigInt directly. Its reserved sentinel requests the full-width buffer path for
-errors, wide results and the sentinel value itself. Engines without scalar i64
-interop use buffers throughout. Both routes call the public Rust rounding method.
-Native Instant factories wrap validated Rust results directly; numeric user
-constructors retain range checks. JS option/coercion order stays unchanged.
-
-ABI 16 adds typed timezone-transition requests/results. Rust checks recurring
-transition candidates using one set of yearly events for before/after offsets.
-January 1 retains separate rule-year windows; the first second after explicit
-history retains its join check. No cache, new dependency or data-policy change.
-Signed/full-range values, null transitions and malformed requests stay covered.
-
-ABI 17 adds typed zoned parsing and resolution. Rust parsing returns the local
-nanosecond value and normalized spelling for valid timezone identifiers. JS still
-validates calendars/zones before reading options; failed identity validation stays
-at its original observable point. Resolution reuses its typed Rust ZonedDateTime
-instead of rebuilding it through dynamic records. Complete ISO zoned results use
-compact binary records, including offset seconds/fractions and hoursInDay.
-Non-ISO calendars and deferred getter errors retain complete general snapshots.
-SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
-
-Current native Instant storage checkpoint (ABI 22 unchanged): round 0.139 µs versus TS 0.475; parse 0.475 versus 1.578; add 0.787 versus 2.244. Full matrix records 36/48 raw median wins; 12 workloads remain slower. Close controls remain explicit; all-workload goal open. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable bundle unchanged.
-Native Node namespace is 518,004 gzip bytes (+119); TS 39,692, using host Intl. Rust binary unchanged. ISO/timezone readiness: native 17.64 ms, TS 19.53 ms. Full native calendar readiness 28.32 ms.
-See [native Instant storage](../../benchmarks/temporal/README.md#native-instant-storage)
-for workloads, profiles, controls and size/startup scope. Native-only Instant slots
-use private fields; public validation/coercion and complete Rust results stay intact.
-
-ABI 18 adds typed zoned addition/subtraction, rounding and day-start requests.
-Rust returns complete results directly from typed values, with complete ISO
-records built on the stack. Non-ISO calendars and deferred getter errors keep
-the general complete representation. Offset seconds/fractions stay intact.
-SDK JSON response shapes remain stable; pair the WASM binary with its JS adapter.
-Native-only construction wraps private branded or validated Rust result slots;
-numeric user constructors retain validation and standard prototypes.
-
-ABI 19 adds typed Duration parsing, addition/subtraction and negation/absolute
-value. Rust returns all ten validated fields; native bindings wrap those fields
-without repeating JS duration validation. Numeric constructors and user field
-coercion retain their checks. Cloning an existing branded Duration creates a new
-object with the standard prototype. SDK JSON responses stay compatible; pair the
-WASM binary with its JS adapter.
-
-ABI 20 adds typed Instant, PlainDate, PlainDateTime and PlainYearMonth differences.
-Rust returns every Duration field directly from its public methods. Native JS
-wraps validated fields; numeric user constructors remain checked. Signed values,
-rounding modes, since/until semantics and calendar identity stay intact. SDK JSON
-responses remain compatible; keep WASM binary and JS adapter paired.
-
-Earlier ABI 20 fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
-300,000 calls. Instant rounding is still slower: native 0.624/0.647 µs versus
-TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant difference
-wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
-at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
-stable-win claim: all 21 raw slower cases plus rounding remain explicit.
-
-ABI 21 adds typed zoned formatting and compact calendar identifiers for plain date
-formatting. Rust returns the full formatted string. Native DateTime factories wrap
-private validated slots directly; complete snapshots stay eager. Bindings retain
-the epoch day already returned by Rust, avoiding JS recomputation and wrapping.
-Numeric user constructors keep their checks and standard prototypes. SDK JSON
-stays compatible; keep WASM binary and JS adapter paired.
-
-Earlier ABI 21 fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
-300,000 calls. DateTime parsing wins: native 1.821/1.833 µs versus TS 2.569/2.625.
-Instant rounding remains slower: native 0.624/0.648 versus TS 0.597/0.581. Its
-full-matrix median win is unproven. Instant difference remains mixed: native
-2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
-2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
-wins do not establish all-workload completion.
-
-ABI 22 adds typed YearMonth addition/subtraction and YearMonth/MonthDay projection
-to PlainDate. Rust returns complete date snapshots, using direct ISO records and
-the existing general representation for other calendars/deferred getter errors.
-Numeric checks, observable field/option order and standard prototypes stay intact.
-SDK JSON remains compatible; keep WASM binary and JS adapter paired.
-
-Earlier ABI 22 TS/native/native/TS controls use 100,000 warmup and nine samples of 300,000
-calls. MonthDay projection wins at 2.268/2.168 µs versus TS 2.692/2.593. Date field
-construction nearly ties at 1.376/1.391 versus TS 1.392/1.421 but loses the full
-matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
-longer controls and loses the full matrix. Instant rounding remains slower:
-0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
-workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.
+numeric offset label. Default TS follows installed Intl timezone data.
+Reversed Date and Temporal formatter ranges retain their input endpoint order.

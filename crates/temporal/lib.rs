@@ -2,8 +2,6 @@
 #[cfg(feature = "ffi")]
 extern crate std;
 #[cfg(feature = "ffi")]
-pub mod binary;
-#[cfg(feature = "ffi")]
 pub mod ffi;
 
 mod calendar_difference;

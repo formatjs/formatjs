@@ -69,21 +69,16 @@ actual anchors; week rounding preserves larger calendar prefixes.
 
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
-checked. Hermes/WASM bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
+checked. Native Hermes bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test
-bazel build -c opt //crates/temporal:wasm
-bazel test -c opt //benchmarks/temporal:wasm_test
-bazel run -c opt //benchmarks/temporal:wasm_benchmark
+bazel run -c opt //benchmarks/temporal:native_ts_benchmark
 ```
 
-The WASM targets use the public `rules_rs` `rust_shared_library` rule. A
-package-local `with_cfg(copy_file)` transition selects
-`@rules_rs//rs/platforms:wasm32-unknown-unknown` and `compilation_mode = opt`,
-then stages `temporal-core.wasm` or `temporal-backend.wasm` with Bazel's
-hermetic copy action. These modules expose the raw Temporal ABI; they do not
-need wasm-bindgen or generated JavaScript glue.
+Supported delivery paths are native Rust, TypeScript and native Hermes bindings.
+Temporal WASM targets and npm assets have been removed. Native Rust benchmarks
+exclude JavaScript binding costs; Hermes has separate end-to-end benchmarks.
 
 Independent ICU4J controls cover 25,269 Gregorian conversions, 2,349 Instant
 rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock rounds,
@@ -93,13 +88,6 @@ IANA registry for 17,640 offset/local samples, 1,900 future gap/fold controls an
 relative Duration tests share 19,440 calendar-span rounds, including 6,480 exact
 relative totals. Relative comparisons reuse the same future-transition controls.
 Separate cases cover range edges, adjacent gaps and recurring leap-only rules.
-
-Initial WASM primitive measurements cover matched Instant/Duration kernels, excluding
-calendar/timezone data and the public object model. Later partial-facade profiles
-include all16 native calendar packs, IANA data and retained TS fallback packs. Pinned Hermes exposes no
-`WebAssembly` in either source or bytecode mode. See
-[benchmark scope and results](../../benchmarks/temporal/README.md#wasm-baseline)
-and [completion plan](../../knowledge-base/015-temporal.md).
 
 `Now<SystemClock>` accepts host epoch nanoseconds, clamps Instant bounds and
 converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
@@ -400,44 +388,10 @@ Invalid UTF-16 Instant strings retain `RangeError`: escaped code units are
 rejected before JSON-to-UTF-8 decoding. Source/bytecode regressions cover lone
 surrogates, captured intrinsics and mandatory native calls for every new operation.
 
-## Optional WASM backend
+## Historical backend measurements
 
-`@formatjs/temporal/wasm.js` exposes `configureWasmBackend(instance)`. Load the
-packaged `temporal-backend.wasm` with the application's asset loader, instantiate
-it, then select it for the existing namespace:
-
-```ts
-import {Temporal} from '@formatjs/temporal'
-import {configureWasmBackend} from '@formatjs/temporal/wasm.js'
-
-const {instance} = await WebAssembly.instantiate(bytes, {})
-configureWasmBackend(instance)
-Temporal.Instant.from('2020-02-29T12:00Z').round('hour')
-```
-
-`bytes` contains the packaged WASM asset. Configuration preserves constructors
-and existing values; it does not install globals. The optional module can be
-imported on Hermes, but activation fails explicitly there because WebAssembly
-is unavailable. TS remains the default. Rust JSI uses the separate Hermes profile.
-
-This backend delegates ISO conversion and Instant parsing, formatting, arithmetic,
-rounding and differences to Rust. Other algorithms and owned calendar/timezone
-data remain TS. It is a partial backend, not complete native Temporal. No selected
-Rust operation falls back to TS after an error.
-
-The WASM profile passes 8,570 pinned Test262 executions, including the full 934
-Instant cases. Published-package controls verify 25,265 ICU Gregorian rows,
-2,349 BigDecimal rounds and 3,168 signed differences. Tests also exercise actual
-shared backend state, memory growth, repeated errors/freeing, malformed UTF-16,
-ABI rejection and captured codecs/views. Hermes source and optimized bytecode
-verify optional import and explicit unavailability without breaking TS.
-
-On the recorded Node/V8 host, this JSON bridge is slower than TS across all five
-measured Instant operations. The consumer bundle is 420,004 gzip bytes including
-WASM versus 360,183 TS bytes. The binary itself is 132,990 raw / 58,527 gzip bytes.
-Both profiles include owned TS calendar/IANA data; they retain TS fallback code.
-This does not establish full native/WASM backend costs or a default-backend choice.
-See `benchmarks/temporal/wasm-facade-results.json` for raw samples and delivery modes.
+WASM references below describe retired experiments. They are retained to explain
+past measurements and ABI changes; WASM is no longer a supported delivery path.
 
 ## Rust PlainTime backend
 

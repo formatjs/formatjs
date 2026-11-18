@@ -1,10 +1,8 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_rs//rs:rust_library.bzl", "rust_library")
-load("@rules_rs//rs:rust_shared_library.bzl", "rust_shared_library")
 load("//tools:index.bzl", "generate_src_file", "ts_run_binary")
 load("//tools:rust_test.bzl", "formatjs_rust_test")
 load("//tools/ffi_headers:defs.bzl", "rust_ffi_header")
-load(":wasm.bzl", "temporal_wasm")
 
 filegroup(
     name = "cargo_sources",
@@ -16,64 +14,14 @@ filegroup(
         ],
         exclude = [
             "*.test.rs",
-            "wasm*.rs",
         ],
     ),
     visibility = ["//crates:__pkg__"],
 )
 
-config_setting(
-    name = "wasm_profile_names",
-    define_values = {"temporal_wasm_profile": "true"},
-)
+# gazelle:ignore
 
 # gazelle:ignore
-rust_shared_library(
-    name = "wasm_backend_core",
-    srcs = ["wasm_backend.rs"],
-    crate_name = "formatjs_temporal_wasm_backend",
-    crate_root = "wasm_backend.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cpanic=abort",
-    ] + select({
-        ":wasm_profile_names": ["-Cstrip=debuginfo"],
-        "//conditions:default": ["-Cstrip=symbols"],
-    }),
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = [":with_ffi"],
-)
-
-temporal_wasm(
-    name = "wasm_backend",
-    src = ":wasm_backend_core",
-    out = "temporal-backend.wasm",
-    visibility = ["//visibility:public"],
-)
-
-# gazelle:ignore
-rust_shared_library(
-    name = "wasm_core",
-    srcs = ["wasm.rs"],
-    crate_name = "formatjs_temporal_wasm",
-    crate_root = "wasm.rs",
-    edition = "2024",
-    rustc_flags = [
-        "-Copt-level=z",
-        "-Cstrip=symbols",
-        "-Cpanic=abort",
-    ],
-    target_compatible_with = ["@platforms//cpu:wasm32"],
-    deps = [":temporal"],
-)
-
-temporal_wasm(
-    name = "wasm",
-    src = ":wasm_core",
-    out = "temporal-core.wasm",
-    visibility = ["//visibility:public"],
-)
 
 rust_library(
     name = "temporal",
@@ -355,8 +303,6 @@ formatjs_rust_test(
 rust_library(
     name = "with_ffi",
     srcs = [
-        "binary.rs",
-        "binary_typed.rs",
         "calendar_difference.rs",
         "calendar_provider.rs",
         "calendar_registry.rs",
@@ -430,15 +376,4 @@ formatjs_rust_test(
         ":with_ffi",
         "@crates//:serde_json",
     ],  # keep
-)
-
-formatjs_rust_test(
-    name = "binary_test",
-    size = "small",
-    srcs = ["binary.test.rs"],
-    edition = "2024",
-    deps = [
-        ":with_ffi",
-        "@crates//:serde_json",
-    ],
 )

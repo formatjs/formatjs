@@ -1,5 +1,24 @@
 # Temporal implementation
 
+Current delivery scope: pure TypeScript, native Rust and native Hermes bindings.
+Temporal WASM runtime entries, assets, build targets and test variants are removed.
+WASM measurements and ABI notes below are historical. New native Rust/TS comparison:
+`bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
+outputs and reports per-workload samples; native timings exclude binding costs.
+
+## Native performance direction
+
+Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
+and `@js-temporal/polyfill` across matched public workloads. Native Rust currently
+wins the 25-case matched matrix after linearizing Chinese/Dangi year lookup.
+The restored JS comparison retains all 48 workloads without WASM. Fresh isolated
+TS wins are 21/48 versus basic `temporal-polyfill`, 35/48 versus the official polyfill. Separate native
+and JS matrices have different coverage; neither proves universal performance.
+
+The shared borrowed calendar provider now advances year starts once within each
+64-year checkpoint block. No cache or data format change. Independent ICU/HKO
+controls and checkpoint/leap/final-year boundary tests guard conversions.
+
 Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
