@@ -9,6 +9,7 @@ import {
   toDurationFields,
   toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
@@ -154,7 +155,11 @@ function difference(
     throw new RangeError('Invalid duration rounding increment')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
       native!.differenceInstant(
         since ? end : value,
         since ? value : end,

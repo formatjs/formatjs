@@ -2093,3 +2093,50 @@ Duration parse now wins; allocation still accounts for 25.05%, result decoding
 not replace production timings. MonthDay parsing flips a marginal prior win back
 to a loss; all 23 slower workloads stay explicit. Raw WASM grows 1,918 bytes;
 TS browser gzip changes one byte from binding names, with identical executable AST.
+
+## Typed differences
+
+ABI 20 adds direct Instant, PlainDate, PlainDateTime and PlainYearMonth differences:
+39 typed routes, unchanged 69 normalized operations. Requests carry signed 128-bit
+nanoseconds or integral epoch days, both YearMonth calendars and rounding options.
+Existing public Rust methods produce all ten validated Duration fields. Native JS
+wraps results without generic decoding or repeated duration validation. Numeric
+constructors, observable coercion/option order and SDK JSON shapes stay intact.
+
+Current ABI 20 isolated checkpoint: YearMonth difference 3.29 µs versus TS 5.53; Date difference 3.54 versus 6.15; DateTime difference 4.10 versus 6.39; Instant difference 2.54 versus 2.50. Full matrix records 27/48 median wins; rounding win fails longer controls. All 21 raw slower workloads plus rounding remain unresolved. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,007 gzip bytes (+2,099); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.57 ms, TS 19.53 ms. Full native calendar readiness 28.21 ms. Raw WASM grows 9,249 bytes.
+
+`differences-hillclimb-results.json` records all 48 current TS/native workloads in
+fresh sequential processes, eight varying inputs/parity, 20,000 warmup and nine
+samples of 50,000 calls; transitions use 1,000 warmup and nine samples of 5,000.
+Pinned comparison throughput remains explicitly retained from the earlier Instant
+checkpoint, through duration-hillclimb-results.json. Close median wins vary;
+all slower workload ratios are listed in differences-experiments.json.
+
+Raw controls compare public Rust methods across nine rounding modes, both signs,
+until/since and date/time unit choices. They cover complete field records,
+fractional/nonfinite days, signed nanosecond bounds, invalid calendars/UTF-8,
+boolean/unit/mode framing, semantic errors and recovery. Public controls verify
+one Rust request, every field, positive zero, standard prototype/constructor and
+ownership after memory growth. No new data, cache, dependency or exclusions.
+
+`differences-startup-results.json` uses nine fresh processes/profile with persistent
+compile cache disabled. Node namespace payload above differs from browser
+export-all consumer sizes in throughput JSON. Production WASM is stripped;
+`differences-profile-results.json` keeps named-WASM profiles separate. Default TS
+executable AST remains equivalent; intrinsic-capture negative control rejected.
+
+Longer fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. Instant rounding is still slower: native 0.624/0.647 µs versus
+TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant difference
+wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
+at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
+stable-win claim: all 21 raw slower cases plus rounding remain explicit.
+
+Fresh named-WASM profiles identify remaining overhead: zoned formatting spends
+10.08% in generic write, 5.85% in Rust Reader.value and 4.45% in JS decodeResult.
+DateTime round/format spends 10.02% in createPlainDateTime and 9.55% in
+dateTimeResult. Instant difference retains allocation/formatting costs:
+createNativeDuration 8.59%, formatDuration wrapper 8.67%, result decoding 5.45%.
+Profiles guide the next changes; their timings/sizes are not production claims.

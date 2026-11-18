@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 19. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 20. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 19 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 20 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -281,8 +281,9 @@ compact binary records, including offset seconds/fractions and hoursInDay.
 Non-ISO calendars and deferred getter errors retain complete general snapshots.
 SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
 
-Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
-See [typed Duration operations](../../benchmarks/temporal/README.md#typed-duration-operations)
+Current ABI 20 isolated checkpoint: YearMonth difference 3.29 µs versus TS 5.53; Date difference 3.54 versus 6.15; DateTime difference 4.10 versus 6.39; Instant difference 2.54 versus 2.50. Full matrix records 27/48 median wins; rounding win fails longer controls. All 21 raw slower workloads plus rounding remain unresolved. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+Native Node namespace is 516,007 gzip bytes (+2,099); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.57 ms, TS 19.53 ms. Full native calendar readiness 28.21 ms. Raw WASM grows 9,249 bytes.
+See [typed differences](../../benchmarks/temporal/README.md#typed-differences)
 for all workloads, profiles and size/startup scope. Goal remains open.
 
 ABI 18 adds typed zoned addition/subtraction, rounding and day-start requests.
@@ -299,3 +300,16 @@ without repeating JS duration validation. Numeric constructors and user field
 coercion retain their checks. Cloning an existing branded Duration creates a new
 object with the standard prototype. SDK JSON responses stay compatible; pair the
 WASM binary with its JS adapter.
+
+ABI 20 adds typed Instant, PlainDate, PlainDateTime and PlainYearMonth differences.
+Rust returns every Duration field directly from its public methods. Native JS
+wraps validated fields; numeric user constructors remain checked. Signed values,
+rounding modes, since/until semantics and calendar identity stay intact. SDK JSON
+responses remain compatible; keep WASM binary and JS adapter paired.
+
+Longer fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. Instant rounding is still slower: native 0.624/0.647 µs versus
+TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant difference
+wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
+at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
+stable-win claim: all 21 raw slower cases plus rounding remain explicit.

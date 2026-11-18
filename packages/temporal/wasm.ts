@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 19 ||
+    core.temporal_abi_version() !== 20 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -694,6 +694,155 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       microseconds: readNumber(fastView, result + 65, true),
       nanoseconds: readNumber(fastView, result + 73, true),
     }
+  }
+  const differenceUnits = [
+    'year',
+    'month',
+    'week',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+    'microsecond',
+    'nanosecond',
+  ]
+  function writeDifferenceOptions(
+    pointer: number,
+    largest: string,
+    smallest: string,
+    increment: number,
+    mode: string,
+    since: boolean
+  ): void {
+    fastBytes[pointer] = arrayIndex(differenceUnits, largest)
+    fastBytes[pointer + 1] = arrayIndex(differenceUnits, smallest)
+    write32(fastView, pointer + 2, increment, true)
+    fastBytes[pointer + 6] = arrayIndex(modes, mode)
+    fastBytes[pointer + 7] = since ? 1 : 0
+  }
+  invoke.differencePlainYearMonth = (
+    one,
+    other,
+    largest,
+    smallest,
+    increment,
+    mode,
+    since
+  ) => {
+    const pointer = begin(
+      operationCodes.differencePlainYearMonth,
+      34 + (one.calendar.length + other.calendar.length) * 3
+    )
+    writeNumber(fastView, pointer + 2, one.epochDay, true)
+    writeNumber(fastView, pointer + 10, other.epochDay, true)
+    writeDifferenceOptions(
+      pointer + 18,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    )
+    const first = putText(
+      encoder,
+      one.calendar,
+      new Bytes(buffer(), pointer + 30, one.calendar.length * 3)
+    )
+    write32(fastView, pointer + 26, first.written, true)
+    const next = pointer + 30 + first.written
+    const second = putText(
+      encoder,
+      other.calendar,
+      new Bytes(buffer(), next + 4, other.calendar.length * 3)
+    )
+    write32(fastView, next, second.written, true)
+    return durationResult(exchange(34 + first.written + second.written))
+  }
+  invoke.differencePlainDate = (
+    one,
+    other,
+    calendar,
+    largest,
+    smallest,
+    increment,
+    mode,
+    since
+  ) => {
+    const pointer = begin(
+      operationCodes.differencePlainDate,
+      30 + calendar.length * 3
+    )
+    writeNumber(fastView, pointer + 2, one, true)
+    writeNumber(fastView, pointer + 10, other, true)
+    writeDifferenceOptions(
+      pointer + 18,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    )
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(buffer(), pointer + 30, calendar.length * 3)
+    )
+    write32(fastView, pointer + 26, encoded.written, true)
+    return durationResult(exchange(30 + encoded.written))
+  }
+  invoke.differencePlainDateTime = (
+    one,
+    other,
+    calendar,
+    largest,
+    smallest,
+    increment,
+    mode,
+    since
+  ) => {
+    const pointer = begin(
+      operationCodes.differencePlainDateTime,
+      46 + calendar.length * 3
+    )
+    integer(pointer + 2, one)
+    integer(pointer + 18, other)
+    writeDifferenceOptions(
+      pointer + 34,
+      largest,
+      smallest,
+      increment,
+      mode,
+      since
+    )
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(buffer(), pointer + 46, calendar.length * 3)
+    )
+    write32(fastView, pointer + 42, encoded.written, true)
+    return durationResult(exchange(46 + encoded.written))
+  }
+  invoke.differenceInstant = (
+    one,
+    other,
+    largest,
+    smallest,
+    increment,
+    mode
+  ) => {
+    const pointer = begin(operationCodes.differenceInstant, 42)
+    integer(pointer + 2, one)
+    integer(pointer + 18, other)
+    writeDifferenceOptions(
+      pointer + 34,
+      largest,
+      smallest,
+      increment,
+      mode,
+      false
+    )
+    return durationResult(exchange(42))
   }
   invoke.parseDuration = value => {
     validateText(value)

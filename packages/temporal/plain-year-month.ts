@@ -35,6 +35,7 @@ import {
   toDurationFields,
   toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
@@ -186,7 +187,11 @@ function difference(
     throw new RangeError('Invalid year-month units')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
       native!.differencePlainYearMonth(
         slot,
         end,

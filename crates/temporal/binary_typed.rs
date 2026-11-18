@@ -1,8 +1,8 @@
 use super::Reader;
 use crate::{
-    CalendarName, CalendarProvider, Duration, Error, Instant, Overflow, PlainDate, PlainDateTime,
-    PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit, TimeZone,
-    TransitionDirection,
+    CalendarName, CalendarProvider, DateTimeUnit, Duration, Error, Instant, Overflow, PlainDate,
+    PlainDateTime, PlainMonthDay, PlainTime, PlainYearMonth, Precision, RoundingMode, TimeUnit,
+    TimeZone, TransitionDirection,
 };
 use core::fmt::{self, Write};
 use std::vec::Vec;
@@ -18,7 +18,55 @@ const MODES: [RoundingMode; 9] = [
     RoundingMode::HalfTrunc,
     RoundingMode::HalfEven,
 ];
+struct DifferenceOptions {
+    largest: DateTimeUnit,
+    smallest: DateTimeUnit,
+    increment: u32,
+    mode: RoundingMode,
+    since: bool,
+}
+fn difference_options(reader: &mut Reader<'_>) -> Result<DifferenceOptions, i32> {
+    let units = [
+        DateTimeUnit::Year,
+        DateTimeUnit::Month,
+        DateTimeUnit::Week,
+        DateTimeUnit::Day,
+        DateTimeUnit::Hour,
+        DateTimeUnit::Minute,
+        DateTimeUnit::Second,
+        DateTimeUnit::Millisecond,
+        DateTimeUnit::Microsecond,
+        DateTimeUnit::Nanosecond,
+    ];
+    Ok(DifferenceOptions {
+        largest: *units.get(usize::from(reader.byte()?)).ok_or(2)?,
+        smallest: *units.get(usize::from(reader.byte()?)).ok_or(2)?,
+        increment: u32::from_le_bytes(reader.take(4)?.try_into().map_err(|_| 2)?),
+        mode: *MODES.get(usize::from(reader.byte()?)).ok_or(2)?,
+        since: match reader.byte()? {
+            0 => false,
+            1 => true,
+            _ => return Err(2),
+        },
+    })
+}
+fn difference_text<'a>(reader: &mut Reader<'a>) -> Result<&'a str, i32> {
+    let len = reader.length()?;
+    core::str::from_utf8(reader.take(len)?).map_err(|_| 2)
+}
+fn difference_day(value: f64) -> Result<i64, Error> {
+    if !value.is_finite()
+        || value.fract() != 0.0
+        || value < i64::MIN as f64
+        || value >= -(i64::MIN as f64)
+    {
+        return Err(Error::OutOfRange);
+    }
+    Ok(value as i64)
+}
 enum Request<'a> {
+    DifferenceDate(&'a str, f64, f64, DifferenceOptions, &'a str, &'a str),
+    DifferenceNanoseconds(&'a str, i128, i128, DifferenceOptions, Option<&'a str>),
     Parse(&'a str),
     ParseDuration(&'a str),
     AddDuration([f64; 10], [f64; 10], bool),
@@ -88,6 +136,29 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "differencePlainYearMonth" | "differencePlainDate" => {
+            let one = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let other = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let options = difference_options(reader)?;
+            let calendar = difference_text(reader)?;
+            let other_calendar = if operation == "differencePlainYearMonth" {
+                difference_text(reader)?
+            } else {
+                calendar
+            };
+            Request::DifferenceDate(operation, one, other, options, calendar, other_calendar)
+        }
+        "differenceInstant" | "differencePlainDateTime" => {
+            let one = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let other = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let options = difference_options(reader)?;
+            let calendar = if operation == "differencePlainDateTime" {
+                Some(difference_text(reader)?)
+            } else {
+                None
+            };
+            Request::DifferenceNanoseconds(operation, one, other, options, calendar)
+        }
         "parseDuration" => {
             let len = reader.length()?;
             Request::ParseDuration(core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?)
@@ -652,6 +723,75 @@ fn encode_duration(output: &mut Vec<u8>, value: Duration) {
 }
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::DifferenceDate(operation, one, other, options, calendar, other_calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let DifferenceOptions {
+                largest,
+                smallest,
+                increment,
+                mode,
+                since,
+            } = options;
+            let one = difference_day(one)?;
+            let other = difference_day(other)?;
+            let result = if operation == "differencePlainYearMonth" {
+                let unit = |value| match value {
+                    DateTimeUnit::Year => Ok(crate::YearMonthUnit::Year),
+                    DateTimeUnit::Month => Ok(crate::YearMonthUnit::Month),
+                    _ => Err(Error::InvalidRoundingOptions),
+                };
+                let one = PlainYearMonth::from_epoch_day_in(one, calendar)?;
+                let other = PlainYearMonth::from_epoch_day_in(
+                    other,
+                    crate::ffi::resolve_calendar(other_calendar)?,
+                )?;
+                if since {
+                    one.since(other, unit(largest)?, unit(smallest)?, increment, mode)?
+                } else {
+                    one.until(other, unit(largest)?, unit(smallest)?, increment, mode)?
+                }
+            } else {
+                let one = PlainDate::from_epoch_day_in(one, calendar)?;
+                let other = PlainDate::from_epoch_day_in(other, calendar)?;
+                if since {
+                    one.since(other, largest, smallest, increment, mode)?
+                } else {
+                    one.until(other, largest, smallest, increment, mode)?
+                }
+            };
+            encode_duration(output, result);
+        }
+        Request::DifferenceNanoseconds(operation, one, other, options, calendar) => {
+            let DifferenceOptions {
+                largest,
+                smallest,
+                increment,
+                mode,
+                since,
+            } = options;
+            let result = if operation == "differenceInstant" {
+                let one = Instant::from_epoch_nanoseconds(one)?;
+                let other = Instant::from_epoch_nanoseconds(other)?;
+                let largest = largest.time().ok_or(Error::InvalidRoundingOptions)?;
+                let smallest = smallest.time().ok_or(Error::InvalidRoundingOptions)?;
+                if since {
+                    one.since(other, largest, smallest, increment, mode)?
+                } else {
+                    one.until(other, largest, smallest, increment, mode)?
+                }
+            } else {
+                let calendar =
+                    crate::ffi::resolve_calendar(calendar.ok_or(Error::InvalidCalendar)?)?;
+                let one = PlainDateTime::from_epoch_nanoseconds_in(one, calendar)?;
+                let other = PlainDateTime::from_epoch_nanoseconds_in(other, calendar)?;
+                if since {
+                    one.since(other, largest, smallest, increment, mode)?
+                } else {
+                    one.until(other, largest, smallest, increment, mode)?
+                }
+            };
+            encode_duration(output, result);
+        }
         Request::ParseDuration(text) => encode_duration(output, text.parse::<Duration>()?),
         Request::AddDuration(one, two, subtract) => {
             let one = duration(one)?;

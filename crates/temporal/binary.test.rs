@@ -812,3 +812,176 @@ fn check_duration(
         assert_eq!(actual.to_bits(), (value as f64).to_bits());
     }
 }
+
+#[test]
+fn typed_differences_match_public_rounding_and_recover() {
+    use formatjs_temporal::{
+        DateTimeUnit as U, Instant, PlainDate, PlainDateTime, PlainYearMonth, RoundingMode as R,
+        TimeUnit, YearMonthUnit,
+    };
+    let units = [
+        U::Year,
+        U::Month,
+        U::Week,
+        U::Day,
+        U::Hour,
+        U::Minute,
+        U::Second,
+        U::Millisecond,
+        U::Microsecond,
+        U::Nanosecond,
+    ];
+    let modes = [
+        R::Ceil,
+        R::Floor,
+        R::Expand,
+        R::Trunc,
+        R::HalfCeil,
+        R::HalfFloor,
+        R::HalfExpand,
+        R::HalfTrunc,
+        R::HalfEven,
+    ];
+    for operation in [
+        "differencePlainYearMonth",
+        "differencePlainDate",
+        "differencePlainDateTime",
+        "differenceInstant",
+    ] {
+        let days = operation == "differencePlainYearMonth" || operation == "differencePlainDate";
+        let pairs: &[(usize, usize)] = match operation {
+            "differencePlainYearMonth" => &[(0, 1), (1, 1)],
+            "differencePlainDate" => &[(0, 3), (1, 3), (2, 3), (3, 3)],
+            "differencePlainDateTime" => &[(0, 9), (3, 8), (4, 6)],
+            _ => &[(4, 9), (6, 8), (9, 9)],
+        };
+        for &(largest, smallest) in pairs {
+            for (mode, kind) in modes.into_iter().enumerate() {
+                for since in [false, true] {
+                    for reverse in [false, true] {
+                        let (one, other) = if days {
+                            (11016i128, 20148i128)
+                        } else {
+                            (-86_400_000_000_001, 86_400_000_000_001)
+                        };
+                        let (one, other) = if reverse { (other, one) } else { (one, other) };
+                        let mut bytes = vec![opcode(operation), 10];
+                        for value in [one, other] {
+                            if days {
+                                bytes.extend_from_slice(&(value as f64).to_le_bytes());
+                            } else {
+                                bytes.extend_from_slice(&value.to_le_bytes());
+                            }
+                        }
+                        bytes.extend_from_slice(&[largest as u8, smallest as u8]);
+                        bytes.extend_from_slice(&1u32.to_le_bytes());
+                        bytes.extend_from_slice(&[mode as u8, u8::from(since)]);
+                        if operation != "differenceInstant" {
+                            text(&mut bytes, "iso8601");
+                        }
+                        if operation == "differencePlainYearMonth" {
+                            text(&mut bytes, "iso8601");
+                        }
+                        let expected = match operation {
+                            "differencePlainYearMonth" => {
+                                let one = PlainYearMonth::from_epoch_day_in(
+                                    one as i64,
+                                    formatjs_temporal::calendar::Calendar::Iso8601,
+                                )
+                                .unwrap();
+                                let other = PlainYearMonth::from_epoch_day_in(
+                                    other as i64,
+                                    formatjs_temporal::calendar::Calendar::Iso8601,
+                                )
+                                .unwrap();
+                                let largest = if largest == 0 {
+                                    YearMonthUnit::Year
+                                } else {
+                                    YearMonthUnit::Month
+                                };
+                                if since {
+                                    one.since(other, largest, YearMonthUnit::Month, 1, kind)
+                                } else {
+                                    one.until(other, largest, YearMonthUnit::Month, 1, kind)
+                                }
+                            }
+                            "differencePlainDate" => {
+                                let one = PlainDate::from_epoch_day(one as i64).unwrap();
+                                let other = PlainDate::from_epoch_day(other as i64).unwrap();
+                                if since {
+                                    one.since(other, units[largest], units[smallest], 1, kind)
+                                } else {
+                                    one.until(other, units[largest], units[smallest], 1, kind)
+                                }
+                            }
+                            "differencePlainDateTime" => {
+                                let one = PlainDateTime::from_epoch_nanoseconds(one).unwrap();
+                                let other = PlainDateTime::from_epoch_nanoseconds(other).unwrap();
+                                if since {
+                                    one.since(other, units[largest], units[smallest], 1, kind)
+                                } else {
+                                    one.until(other, units[largest], units[smallest], 1, kind)
+                                }
+                            }
+                            _ => {
+                                let time = [
+                                    TimeUnit::Hour,
+                                    TimeUnit::Minute,
+                                    TimeUnit::Second,
+                                    TimeUnit::Millisecond,
+                                    TimeUnit::Microsecond,
+                                    TimeUnit::Nanosecond,
+                                ];
+                                let one = Instant::from_epoch_nanoseconds(one).unwrap();
+                                let other = Instant::from_epoch_nanoseconds(other).unwrap();
+                                if since {
+                                    one.since(other, time[largest - 4], time[smallest - 4], 1, kind)
+                                } else {
+                                    one.until(other, time[largest - 4], time[smallest - 4], 1, kind)
+                                }
+                            }
+                        };
+                        check_duration(call(&bytes), expected);
+                        let valid = call(&bytes);
+                        if days {
+                            for value in [f64::NAN, f64::INFINITY, 0.5, f64::MAX] {
+                                let mut bad = bytes.clone();
+                                bad[2..10].copy_from_slice(&value.to_le_bytes());
+                                assert_eq!(call(&bad).0, 1);
+                            }
+                        } else {
+                            let mut bad = bytes.clone();
+                            bad[2..18].copy_from_slice(&i128::MIN.to_le_bytes());
+                            assert_eq!(call(&bad).0, 1);
+                        }
+                        if operation != "differenceInstant" {
+                            let calendar = if days { 30 } else { 46 };
+                            let mut bad = bytes.clone();
+                            bad[calendar] = 255;
+                            assert_eq!(call(&bad).0, 2);
+                            bad[calendar] = b'x';
+                            assert_eq!(call(&bad).0, 1);
+                        }
+                        assert_eq!(call(&bytes), valid);
+                        let options = if days { 18 } else { 34 };
+                        for (offset, invalid) in [(options, 10), (options + 6, 9), (options + 7, 2)]
+                        {
+                            let mut bad = bytes.clone();
+                            bad[offset] = invalid;
+                            assert_eq!(call(&bad).0, 2);
+                            assert_eq!(call(&bytes), valid);
+                        }
+                        assert_eq!(call(&bytes[..bytes.len() - 1]).0, 2);
+                        let mut trailing = bytes.clone();
+                        trailing.push(0);
+                        assert_eq!(call(&trailing).0, 2);
+                        let mut increment = bytes.clone();
+                        increment[options + 2..options + 6].copy_from_slice(&0u32.to_le_bytes());
+                        assert_eq!(call(&increment).0, 1);
+                        assert_eq!(call(&bytes), valid);
+                    }
+                }
+            }
+        }
+    }
+}

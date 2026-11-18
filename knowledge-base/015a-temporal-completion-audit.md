@@ -396,3 +396,18 @@ This is partial progress; the all-workload objective remains unfulfilled.
 Current ABI 19 isolated checkpoint: Duration parsing 1.19 µs versus TS 2.36; addition 3.77 versus 4.88. WASM wins 25/48 medians; 23 workloads still lose. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline. Native Node namespace is 513,908 gzip bytes (+706); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.38 ms, TS 19.54 ms. Full native calendar readiness 27.99 ms.
 
 35 typed routes preserve all ten fields, unbalanced values, Number rounding and positive zero. Numeric user constructors remain checked. Full targets, source hashes, raw-packet controls, public memory/prototype/clone controls, all slower workloads and fresh production metrics live in `benchmarks/temporal/duration-*.json`. No new exclusions. All-workload goal remains open.
+
+### ABI 20 typed differences
+
+Current ABI 20 isolated checkpoint: YearMonth difference 3.29 µs versus TS 5.53; Date difference 3.54 versus 6.15; DateTime difference 4.10 versus 6.39; Instant difference 2.54 versus 2.50. Full matrix records 27/48 median wins; rounding win fails longer controls. All 21 raw slower workloads plus rounding remain unresolved. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,007 gzip bytes (+2,099); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.57 ms, TS 19.53 ms. Full native calendar readiness 28.21 ms. Raw WASM grows 9,249 bytes.
+
+39 typed routes return complete validated Duration records. Public methods, all rounding modes/signs/directions, malformed packet recovery, numeric bounds, memory ownership and public prototypes remain checked. Full targets, source hashes, slower workloads and production metrics live in `benchmarks/temporal/differences-*.json`. No new exclusions. All-workload goal remains open.
+
+Longer fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. Instant rounding is still slower: native 0.624/0.647 µs versus
+TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant difference
+wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
+at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
+stable-win claim: all 21 raw slower cases plus rounding remain explicit.

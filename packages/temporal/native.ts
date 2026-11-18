@@ -68,6 +68,10 @@ export interface NativeCall {
   roundZonedDateTime?: NativeTemporal['roundZonedDateTime']
   addZonedDateTime?: NativeTemporal['addZonedDateTime']
   startOfZonedDay?: NativeTemporal['startOfZonedDay']
+  differencePlainYearMonth?: NativeTemporal['differencePlainYearMonth']
+  differencePlainDate?: NativeTemporal['differencePlainDate']
+  differencePlainDateTime?: NativeTemporal['differencePlainDateTime']
+  differenceInstant?: NativeTemporal['differenceInstant']
   parseDuration?: NativeTemporal['parseDuration']
   addDuration?: NativeTemporal['addDuration']
   transformDuration?: NativeTemporal['transformDuration']
@@ -645,15 +649,25 @@ export function configureNativeTemporal(
       mode,
       since
     ) =>
-      call('differencePlainYearMonth', {
-        value: shortFields(start),
-        other: shortFields(end),
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainYearMonth
+        ? invoke.differencePlainYearMonth(
+            start,
+            end,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainYearMonth', {
+            value: shortFields(start),
+            other: shortFields(end),
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
     yearMonthToDate: (slot, day) =>
       dateResult(
         call('yearMonthToDate', {value: shortFields(slot), day}),
@@ -883,16 +897,27 @@ export function configureNativeTemporal(
       mode,
       since
     ) =>
-      call('differencePlainDate', {
-        epochDay: start,
-        other: end,
-        calendar,
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainDate
+        ? invoke.differencePlainDate(
+            start,
+            end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainDate', {
+            epochDay: start,
+            other: end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
     differencePlainDateTime: (
       start,
       end,
@@ -903,16 +928,27 @@ export function configureNativeTemporal(
       mode,
       since
     ) =>
-      call('differencePlainDateTime', {
-        nanoseconds: text(start),
-        other: text(end),
-        calendar,
-        largest,
-        smallest,
-        increment,
-        mode,
-        since,
-      }),
+      invoke?.differencePlainDateTime
+        ? invoke.differencePlainDateTime(
+            start,
+            end,
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since
+          )
+        : call('differencePlainDateTime', {
+            nanoseconds: text(start),
+            other: text(end),
+            calendar,
+            largest,
+            smallest,
+            increment,
+            mode,
+            since,
+          }),
     roundPlainDateTime: (value, calendar, unit, increment, mode) =>
       timeResult(
         roundDateTime
@@ -1177,13 +1213,22 @@ export function configureNativeTemporal(
         })
       ),
     differenceInstant: (value, other, largest, smallest, increment, mode) =>
-      call('differenceInstant', {
-        nanoseconds: text(value),
-        other: text(other),
-        largest,
-        smallest,
-        increment,
-        mode,
-      }),
+      invoke?.differenceInstant
+        ? invoke.differenceInstant(
+            value,
+            other,
+            largest,
+            smallest,
+            increment,
+            mode
+          )
+        : call('differenceInstant', {
+            nanoseconds: text(value),
+            other: text(other),
+            largest,
+            smallest,
+            increment,
+            mode,
+          }),
   }
 }

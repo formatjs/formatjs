@@ -61,6 +61,7 @@ import {
 } from '#packages/temporal/date-core.js'
 import {
   createDuration,
+  createNativeDuration,
   toDurationFields,
   toNativeDurationFields,
   type DurationObject,
@@ -248,7 +249,11 @@ function difference(
     throw new RangeError('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
       native!.differencePlainDateTime(
         slot.epochNanoseconds,
         end.epochNanoseconds,

@@ -764,6 +764,61 @@ for (const [input, fields] of [
     'Duration getters/clone reuse validated fields'
   )
 }
+const differenceInstantStart = new Temporal.Instant(-1n)
+const differenceInstantEnd = new Temporal.Instant(1n)
+const differenceDateStart = Temporal.PlainDate.from('2020-01-01')
+const differenceDateEnd = Temporal.PlainDate.from('2021-03-05')
+const differenceDateTimeStart = Temporal.PlainDateTime.from(
+  '1970-01-01T00:00:00'
+)
+const differenceDateTimeEnd = Temporal.PlainDateTime.from(
+  '1970-01-02T00:00:00.000000001'
+)
+const differenceYearMonthStart = Temporal.PlainYearMonth.from('2020-01')
+const differenceYearMonthEnd = Temporal.PlainYearMonth.from('2021-03')
+for (const [run, fields] of [
+  [
+    () => differenceInstantStart.until(differenceInstantEnd),
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  ],
+  [
+    () => differenceDateStart.until(differenceDateEnd, {largestUnit: 'day'}),
+    [0, 0, 0, 429, 0, 0, 0, 0, 0, 0],
+  ],
+  [
+    () =>
+      differenceDateTimeStart.until(differenceDateTimeEnd, {
+        largestUnit: 'day',
+      }),
+    [0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+  ],
+  [
+    () =>
+      differenceYearMonthStart.until(differenceYearMonthEnd, {
+        largestUnit: 'month',
+      }),
+    [0, 14, 0, 0, 0, 0, 0, 0, 0, 0],
+  ],
+]) {
+  const before = countRequests()
+  const result = run()
+  const complete = countRequests()
+  assert.equal(complete, before + 1, 'One complete Rust difference')
+  core.memory.grow(1)
+  assert.deepEqual(
+    durationKeys.map(key => result[key]),
+    fields
+  )
+  assert.equal(Object.getPrototypeOf(result), Temporal.Duration.prototype)
+  assert.equal(result.constructor, Temporal.Duration)
+  for (const key of durationKeys)
+    assert.equal(Object.is(result[key], -0), false)
+  assert.equal(
+    countRequests(),
+    complete,
+    'Difference getters reuse complete fields'
+  )
+}
 const wideDuration = new Temporal.Duration(0, 0, 0, 0, 0, 0, 0, 0, 0, 2 ** 70)
 for (const result of [
   wideDuration.negated().abs(),

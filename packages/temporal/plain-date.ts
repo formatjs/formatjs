@@ -59,6 +59,7 @@ import {
   toDurationFields,
   toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {durationNanoseconds} from '#packages/temporal/duration-core.js'
@@ -236,7 +237,11 @@ function difference(
     throw new RangeError('Invalid date units')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
-    return createDuration(
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
       native!.differencePlainDate(
         slot.epochDay,
         end.epochDay,
