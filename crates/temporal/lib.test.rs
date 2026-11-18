@@ -2672,3 +2672,124 @@ fn recurring_last_weekday_handles_short_and_leap_february() {
         );
     }
 }
+
+#[test]
+fn recurring_monthly_offsets_preserve_rule_year_boundaries() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let month = |month, week, weekday, seconds| TransitionRule::Month {
+        month,
+        week,
+        weekday,
+        seconds,
+    };
+    let check = |standard, daylight, start, end, samples: &[(&str, i32, i32)]| {
+        let rule = FutureRule::new(standard, Some((daylight, start, end))).unwrap();
+        let zone = TransitionZone::new(standard, &[], Some(rule)).unwrap();
+        for &(text, before, after) in samples {
+            let at: Instant = text.parse().unwrap();
+            for (delta, expected) in [(-1, before), (0, after), (1, after)] {
+                let instant =
+                    Instant::from_epoch_nanoseconds(at.epoch_nanoseconds() + delta).unwrap();
+                assert_eq!(
+                    zone.offset_nanoseconds(instant),
+                    i128::from(expected) * 1_000_000_000,
+                    "{text} {delta} {rule:?}"
+                );
+            }
+        }
+        zone
+    };
+    let north = check(
+        -18000,
+        -14400,
+        month(3, 2, 0, 7200),
+        month(11, 1, 0, 7200),
+        &[
+            ("1969-03-09T07:00Z", -18000, -14400),
+            ("1969-11-02T06:00Z", -14400, -18000),
+            ("2024-01-01T00:00Z", -18000, -18000),
+            ("2024-03-10T07:00Z", -18000, -14400),
+            ("2024-07-01T00:00Z", -14400, -14400),
+            ("2024-11-03T06:00Z", -14400, -18000),
+            ("2024-12-31T23:59:59Z", -18000, -18000),
+        ],
+    );
+    for value in [-MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS] {
+        assert_eq!(
+            north.offset_nanoseconds(Instant::from_epoch_nanoseconds(value).unwrap()),
+            -14_400_000_000_000
+        );
+    }
+    check(
+        36000,
+        39600,
+        month(10, 1, 0, 7200),
+        month(4, 1, 0, 10800),
+        &[
+            ("2024-01-01T00:00Z", 39600, 39600),
+            ("2024-04-06T16:00Z", 39600, 36000),
+            ("2024-07-01T00:00Z", 36000, 36000),
+            ("2024-10-05T16:00Z", 36000, 39600),
+            ("2024-12-31T23:59:59Z", 39600, 39600),
+        ],
+    );
+    check(
+        0,
+        3600,
+        month(2, 5, 4, 0),
+        month(4, 1, 0, 0),
+        &[
+            ("2023-02-23T00:00Z", 0, 3600),
+            ("2023-04-01T23:00Z", 3600, 0),
+            ("2024-02-29T00:00Z", 0, 3600),
+            ("2024-04-06T23:00Z", 3600, 0),
+        ],
+    );
+    check(
+        86399,
+        -86399,
+        month(2, 1, 0, -604799),
+        month(11, 5, 0, 604799),
+        &[
+            ("2024-01-01T00:00Z", 86399, 86399),
+            ("2024-01-27T00:00:02Z", 86399, -86399),
+            ("2024-07-01T00:00Z", -86399, -86399),
+            ("2024-12-01T23:59:58Z", -86399, 86399),
+        ],
+    );
+    // Edge months can move an event into a different UTC year.
+    check(
+        3600,
+        7200,
+        month(1, 1, 0, 0),
+        month(3, 1, 0, 0),
+        &[
+            ("2022-12-31T23:00Z", 3600, 7200),
+            ("2023-03-04T22:00Z", 7200, 3600),
+        ],
+    );
+    check(
+        0,
+        -3600,
+        month(3, 2, 0, 0),
+        month(12, 5, 1, 86399),
+        &[
+            ("2018-03-11T00:00Z", 0, -3600),
+            ("2019-01-01T00:59:59Z", -3600, 0),
+        ],
+    );
+    // Adjacent months can change event order between years.
+    check(
+        0,
+        -3600,
+        month(3, 4, 0, 604799),
+        month(4, 1, 0, -604799),
+        &[
+            ("2023-03-26T01:00:01Z", -3600, 0),
+            ("2023-04-01T23:59:59Z", 0, -3600),
+            ("2024-01-01T00:00Z", -3600, -3600),
+            ("2024-03-30T23:59:59Z", -3600, -3600),
+            ("2024-03-31T01:00:01Z", -3600, 0),
+        ],
+    );
+}

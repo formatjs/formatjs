@@ -137,12 +137,29 @@ impl FutureRule {
         was_dst != is_dst
     }
     fn offset(self, instant: Instant) -> i32 {
-        let Some((offset, _, _)) = self.daylight else {
+        let Some((offset, start, end)) = self.daylight else {
             return self.standard;
         };
         // Valid Instant seconds fit i64; no clock fields are needed here.
         let seconds = instant.epoch_nanoseconds().div_euclid(1_000_000_000) as i64;
         let year = crate::calendar::iso_fields(seconds.div_euclid(86_400)).0;
+        if let (
+            TransitionRule::Month { month: first, .. },
+            TransitionRule::Month { month: last, .. },
+        ) = (start, end)
+            && (2..=11).contains(&first)
+            && (2..=11).contains(&last)
+            && first.abs_diff(last) >= 2
+        {
+            // Even with seven-day rule times, these events stay ordered in this UTC year.
+            let (begin, end) = self.events(year).unwrap();
+            let dst = if begin < end {
+                seconds >= begin && seconds < end
+            } else {
+                seconds >= begin || seconds < end
+            };
+            return if dst { offset } else { self.standard };
+        }
         let mut latest = i64::MIN;
         let mut dst = false;
         for y in year - 1..=year + 1 {

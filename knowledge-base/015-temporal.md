@@ -11,7 +11,36 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 Goal: native Rust faster than TS; pure TS faster than both references across
 matched public workloads, preserving spec behavior and preventing regressions.
 
-Current ISO field checkpoint: TS wins 41/48 basic and
+Current recurring-rule checkpoint: native Rust still wins 25/25 original and
+7/7 additional named-zone workloads against current TS, reported separately.
+Six optimized controls improve named offset lookup ~45% (106 ns to 59 ns),
+day start ~38%, hours-in-day ~37%, day addition ~19% and time replacement ~31%.
+Full signed outputs match. All 56 focused Rust/Node/ICU/package/Hermes targets pass.
+See [monthly-rule experiments](../benchmarks/temporal/monthly-rules-experiments.json).
+
+Separated monthly rules in February through November use one UTC year's event
+pair. Validated offsets are below one day and rule times below seven days, so
+events shift less than eight days. Interior months keep events inside their UTC
+year; an intervening month preserves order. Edge/adjacent months and Day/Julian
+rules retain the original three-year search. Public cases cover year rollover,
+negative epochs, nanosecond boundaries, Instant limits, leap February and extreme
+allowed offsets/rule times. New vectors pass both old and optimized algorithms;
+independent ICU offsets/transitions pass too. No new data format or lookup cache.
+
+TS fast-return experiments were discarded: focused field gains did not hold in
+the full matrix. TS source and measured bundle are byte-identical to the preceding
+checkpoint, still 40,652 gzip bytes. Latest resampling wins 38/48 basic and
+48/48 official against retained references; prior identical TS scored 41/48
+basic. These count changes reflect resampling variability, not evidence of TS
+improvements or code regressions. Remaining losses, final fresh repeated references and earlier
+baseline verification keep the goal open.
+
+Per-input native diagnostics are separate timings, not CPU stack samples.
+Optimized benchmark executable grows 224 bytes; it includes reference/data/harness
+and is not a shipped crate/SDK size claim. Rejected TS V8 profiles and all raw
+controls remain recorded.
+
+Preceding ISO field checkpoint: TS wins 41/48 basic and
 48/48 official medians using the preceding checkpoint's reference samples.
 Rust wins 25/25 original and 7/7 additional named-zone cases against current TS,
 reported separately. All 56 focused Rust/Node/ICU/package/Hermes targets pass.
