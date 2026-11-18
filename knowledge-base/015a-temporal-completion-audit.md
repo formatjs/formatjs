@@ -6,7 +6,21 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current record-preparation checkpoint: 42 focused targets pass, including eight
+Current direct-path checkpoint: 44 focused Node/ICU/package/Hermes targets pass.
+Fresh isolated processes put TS ahead on 34/48 raw medians versus basic and
+46/48 versus official. Native Rust wins 25/25 against this TS version.
+Consumer size is 40,399 gzip bytes. One full reference round is a snapshot;
+close cases, prior rounding variability and broader native named-zone coverage
+keep the goal open. See
+[`direct-path-experiments.json`](../benchmarks/temporal/direct-path-experiments.json).
+
+ISO field reading reuses fixed key lists. PlainTime serialization uses exact
+numeric clock arithmetic without formatting an epoch date. ISO validation checks
+Gregorian month length directly; short-date parsing skips redundant calendar
+roundtrips after syntax validation. Alternating controls retain raw samples;
+Test262, independent ICU cases and both Hermes modes cover behavior.
+
+Preceding record-preparation checkpoint: 42 focused targets pass, including eight
 full Node suites, sixteen pure-TS Hermes source/bytecode suites, ten native SDK
 Hermes suites, ICU/public unit checks and package/type/export checks. Native Rust
 still wins 25/25 against this TS version. JS raw-median wins rise to 33/48 basic,

@@ -18,7 +18,6 @@ import {
   getMonthDaySlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainTimeString} from '#packages/temporal/instant-string.js'
-import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   createDuration,
   createNativeDuration,
@@ -327,12 +326,28 @@ function format(
       : precision === 'minute'
         ? factors[1]
         : 10n ** BigInt(9 - precision)
-  return formatInstant(
+  // One day's nanoseconds fit exactly in a Number.
+  let remaining = Number(
     quantum === 1n
       ? (value as bigint)
-      : roundInstant(value as bigint, quantum, mode) % day,
-    precision
-  ).slice(11, -1)
+      : roundInstant(value as bigint, quantum, mode) % day
+  )
+  const hour = Math.floor(remaining / 3_600_000_000_000)
+  remaining %= 3_600_000_000_000
+  const minute = Math.floor(remaining / 60_000_000_000)
+  remaining %= 60_000_000_000
+  const pad = (part: number): string => String(part).padStart(2, '0')
+  let result = pad(hour) + ':' + pad(minute)
+  if (precision !== 'minute') {
+    result += ':' + pad(Math.floor(remaining / 1_000_000_000))
+    const digits = String(remaining % 1_000_000_000).padStart(9, '0')
+    const fraction =
+      precision === 'auto'
+        ? digits.replace(/0+$/, '')
+        : digits.slice(0, precision)
+    if (fraction) result += '.' + fraction
+  }
+  return result
 }
 class PlainTimeValue implements PlainTimeObject {
   declare readonly [Symbol.toStringTag]: 'Temporal.PlainTime'

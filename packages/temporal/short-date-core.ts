@@ -187,14 +187,15 @@ export function parseShortSlot(
   )
     throw new RangeError('Date out of range')
   if (kind === 'month-day' && shortCalendar(calendar) === 'iso8601')
-    return monthDayFields(
+    return {
+      epochDay: isoReferenceDay(1972, parsed.month, parsed.day),
       calendar,
-      parsed as unknown as Record<string, unknown>,
-      'constrain'
-    )
+    }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
   if (kind === 'year-month') {
     checkYearMonth(epochDay)
+    if (calendar === 'iso8601')
+      return {epochDay: checkYearMonth(epochDay - parsed.day + 1), calendar}
     return yearMonthFields(
       calendar,
       dateFields({epochDay, calendar}, true) as unknown as Record<

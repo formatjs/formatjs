@@ -74,17 +74,22 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   ) {
     throw new RangeError('Invalid ISO fields')
   }
+  const leap = DaysInYear(year) === 366
+  const maximum =
+    month === 2
+      ? leap
+        ? 29
+        : 28
+      : month === 4 || month === 6 || month === 9 || month === 11
+        ? 30
+        : 31
+  if (date > maximum) throw new RangeError('Invalid ISO date')
   const epochDay =
     DayFromYear(year) +
     monthStarts[month - 1] +
-    Number(month > 2 && DaysInYear(year) === 366) +
+    Number(month > 2 && leap) +
     date -
     1
-  if (
-    MonthFromTime(epochDay * 86400000) !== month - 1 ||
-    DateFromTime(epochDay * 86400000) !== date
-  )
-    throw new RangeError('Invalid ISO date')
   const value =
     BigInt(epochDay) * day +
     BigInt(time[0] * 3600 + time[1] * 60 + time[2]) * second +

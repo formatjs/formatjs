@@ -312,8 +312,9 @@ export function dateFieldValue(key: string, value: unknown): string | number {
     throw new RangeError('Month and day must be positive')
   return result
 }
-const nativeISODateFields = ['day', 'month', 'monthCode', 'year']
-const nativeISODateTimeFields = [
+const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
+const isoYearMonthFieldNames = ['month', 'monthCode', 'year']
+const isoDateTimeFieldNames = [
   'day',
   'hour',
   'microsecond',
@@ -335,13 +336,13 @@ export function readDateFields(
   const result = Object.create(null) as Record<string, unknown>
   let any = false
   const names =
-    import.meta.formatjsTemporalNativeData === true &&
-    calendar === 'iso8601' &&
-    shape === 'date'
+    calendar === 'iso8601' && shape === 'date'
       ? withTime
-        ? nativeISODateTimeFields
-        : nativeISODateFields
-      : dateFieldNames(calendar, withTime, shape)
+        ? isoDateTimeFieldNames
+        : isoDateFieldNames
+      : calendar === 'iso8601' && !withTime && shape === 'year-month'
+        ? isoYearMonthFieldNames
+        : dateFieldNames(calendar, withTime, shape)
   for (let index = 0; index < names.length; index++) {
     const key = names[index],
       value = item[key]

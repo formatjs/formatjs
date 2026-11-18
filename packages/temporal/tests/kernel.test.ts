@@ -10,6 +10,22 @@ import {
 import {timeZone} from '#packages/temporal/zones.js'
 
 const instant = (text: string) => Temporal.Instant.from(text).epochNanoseconds
+it('accepts native Gregorian month ends and rejects the following day', () => {
+  for (const year of [-400, -100, -1, 0, 100, 400, 1900, 2000, 2100]) {
+    for (let month = 1; month <= 12; month++) {
+      const last = new Date(0)
+      last.setUTCFullYear(year, month, 0)
+      const day = last.getUTCDate()
+      expect(isoToEpochNanoseconds({year, month, day})).toBe(
+        BigInt(+last) * 1_000_000n
+      )
+      expect(() => isoToEpochNanoseconds({year, month, day: day + 1})).toThrow(
+        RangeError
+      )
+    }
+  }
+})
+
 it('keeps nanoseconds across negative epochs, leap days and instant bounds', () => {
   const limit = 8_640_000_000_000_000_000_000n
   for (const value of [-limit, -1_000_001n, -1n, 0n, 1n, 1_000_001n, limit]) {

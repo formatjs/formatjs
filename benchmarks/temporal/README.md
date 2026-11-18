@@ -30,7 +30,25 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-Latest record-preparation snapshot: TS wins 33/48 raw medians against basic and
+Current direct-path checkpoint: 44 focused Node/ICU/package/Hermes targets pass.
+Fresh isolated processes put TS ahead on 34/48 raw medians versus basic and
+46/48 versus official. Native Rust wins 25/25 against this TS version.
+Consumer size is 40,399 gzip bytes. One full reference round is a snapshot;
+close cases, prior rounding variability and broader native named-zone coverage
+keep the goal open. See
+[`direct-path-experiments.json`](direct-path-experiments.json).
+
+ISO field reading reuses fixed key lists. PlainTime serialization uses exact
+numeric clock arithmetic without formatting an epoch date. ISO validation checks
+Gregorian month length directly; short-date parsing skips redundant calendar
+roundtrips after syntax validation. Alternating controls retain raw samples;
+Test262, independent ICU cases and both Hermes modes cover behavior.
+
+Raw current snapshots: [JS48](direct-path-results.json),
+[native25](native-ts-direct-results.json), [startup](direct-startup-results.json),
+[sizes](direct-size-results.json). Every row retains samples and output checks.
+
+Preceding record-preparation snapshot: TS wins 33/48 raw medians against basic and
 45/48 against official, using the same counts and frozen reference samples.
 Private field merging keeps fast record shapes, callers avoid redundant copies,
 duration readers share a fixed property order, and `Duration.from` avoids duplicate

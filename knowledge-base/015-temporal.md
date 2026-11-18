@@ -9,15 +9,19 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 ## Native performance direction
 
 Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
-and `@js-temporal/polyfill` across matched public workloads. Native Rust still
-wins the 25-case matched matrix after the ISO TS optimizations. The restored JS
-comparison retains all 48 workloads without WASM. TS raw-median wins improve
-from 21/48 to 33/48 versus basic, 35/48 to 45/48 versus official, using frozen
-reference samples with identical counts. Close cases need fresh controls.
-Separate native and JS matrices have different coverage; neither proves
-universal performance. See `benchmarks/temporal/record-preparation-experiments.json`.
+and `@js-temporal/polyfill` across matched public workloads. Native Rust wins
+25/25 against the current TS version. Fresh isolated JavaScript comparisons retain
+all 48 workloads: TS wins 34/48 raw medians versus basic, 46/48 versus official.
+One full reference round, different native/JS coverage and prior rounding
+variability prevent a universal performance claim. Goal remains open. See
+`benchmarks/temporal/direct-path-experiments.json`.
 
-Record preparation now preserves owned field shapes instead of deleting keys,
+Fixed ISO field-name lists avoid per-read array preparation. PlainTime formatting
+uses exact numeric clock arithmetic. ISO validity uses Gregorian month lengths;
+parsed short dates skip redundant ISO calendar roundtrips. All 44 focused Node,
+ICU, package and Hermes targets pass. Consumer size is 40,399 gzip bytes.
+
+Preceding record preparation preserves owned field shapes instead of deleting keys,
 uses one ISO merge record, and avoids redundant caller copies/calendar reads.
 Duration conversion reuses the complete JS reader and skips duplicate validation
 of already validated owned fields. One static property-read order serves both
