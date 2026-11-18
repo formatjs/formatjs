@@ -5,12 +5,14 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
   setYearMonthSlot,
+  isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
   calendarFromObject,
   constructorCalendar,
   dateFields,
+  dateFieldsView,
   dateProperty,
   readDateFields,
   partialObject,
@@ -101,7 +103,7 @@ export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   const result = Object.create(
     PlainYearMonthValue.prototype
   ) as PlainYearMonthObject
-  setYearMonthSlot(result, {...slot})
+  setYearMonthSlot(result, slot)
   return result
 }
 export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
@@ -152,7 +154,7 @@ function add(
   )
     throw new RangeError('Year-month arithmetic only accepts years and months')
   const cal = shortCalendar(slot.calendar),
-    start = {...dateFields(slot, true), day: 1}
+    start = {...dateFieldsView(slot, true), day: 1}
   const firstDay = calendarToEpochDayRaw(cal, start, 'constrain')
   if (firstDay < -100000001 || firstDay > 100000000)
     throw new RangeError('Reference date out of range')
@@ -160,6 +162,7 @@ function add(
   return createPlainYearMonth({
     epochDay: checkYearMonth(result.epochDay),
     calendar: slot.calendar,
+    [isoDateFields]: cal === 'iso8601' ? result.date : undefined,
   })
 }
 function difference(

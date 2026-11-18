@@ -6,7 +6,34 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Provisional short-date checkpoint: TS wins 38/48 basic and
+Current ISO field checkpoint: TS wins 41/48 basic and
+48/48 official medians using the preceding checkpoint's reference samples.
+Rust wins 25/25 original and 7/7 additional named-zone cases against current TS,
+reported separately. All 56 focused Rust/Node/ICU/package/Hermes targets pass.
+Consumer is 40,652 gzip bytes (+109 this checkpoint). Final fresh repeated
+references, remaining slower cases and earlier baseline audit keep the goal open.
+See [immutable-slot experiments](../benchmarks/temporal/immutable-slots-experiments.json).
+
+Short-date factories retain owned slots. Parsed ISO strings and year-month
+addition retain validated ISO fields; formatting reuses those fields. Explicit
+`dateFieldsView` returns a readonly ISO view after backend/range guards. General
+pure-TS `dateFields` keeps fresh records. Arithmetic inputs are readonly.
+
+Six full profiles compare three processes per state against `6588cdf` before
+the provisional parser change. Combined medians improve YearMonth parsing ~17%,
+MonthDay parsing ~38%, YearMonth addition ~12% and date addition ~4%.
+Largest paired median increase is ~1.6%; Instant and PlainTime rounding medians improve slightly.
+All initial outliers remain recorded. Smaller variations and earlier baselines
+still need final verification. A broad readonly reader was replaced with the
+explicit view after MonthDay conversion regressed.
+
+Eager ISO fields cost ~88 extra retained bytes per unread parsed value in a
+200,000-value Node diagnostic. After a getter read, candidate retains ~32 fewer
+bytes/value. Arrays/WeakMap capacity are included; one process per state/kind/read
+mode gives approximate heap evidence, not universal bounds. No native/Hermes heap
+claim. CPU profiles and raw controls remain available.
+
+Preceding short-date checkpoint: TS wins 38/48 basic and
 48/48 official medians in a fresh comparison. Two TS processes,
 one process per reference; final repeated references still required. Rust wins
 25/25 original and 7/7 additional named-zone cases, reported separately.

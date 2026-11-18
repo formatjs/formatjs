@@ -267,7 +267,7 @@ export function calendarFromEpochDayRaw(
 }
 function addYearMonth(
   calendar: CalendarId,
-  original: CalendarDate,
+  original: Readonly<CalendarDate>,
   years: number,
   months: number,
   overflow: Overflow
@@ -314,7 +314,7 @@ export function addCalendarDateRaw(
 }
 function addCalendarEpochDay(
   calendar: CalendarId,
-  original: CalendarDate,
+  original: Readonly<CalendarDate>,
   duration: DateDuration,
   overflow: Overflow
 ): number {
@@ -343,7 +343,7 @@ function addCalendarEpochDay(
 // Fields must come from this calendar's epoch-day conversion.
 export function addNormalizedCalendarDate(
   calendar: CalendarId,
-  original: CalendarDate,
+  original: Readonly<CalendarDate>,
   duration: DateDuration,
   overflow: Overflow
 ): {epochDay: number; date: CalendarDate} {

@@ -66,7 +66,7 @@ export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   const result = Object.create(
     PlainMonthDayValue.prototype
   ) as PlainMonthDayObject
-  setMonthDaySlot(result, {...slot})
+  setMonthDaySlot(result, slot)
   return result
 }
 export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {

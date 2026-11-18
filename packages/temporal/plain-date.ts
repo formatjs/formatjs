@@ -34,6 +34,7 @@ import {
 import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
 import {
   dateFields,
+  dateFieldsView,
   dateProperty,
   datePropertyNames,
   calendarId,
@@ -321,7 +322,7 @@ class PlainDateValue {
         slot.calendar
       )
     }
-    const fields = mergeDateFields(slot.calendar, dateFields(slot), partial)
+    const fields = mergeDateFields(slot.calendar, dateFieldsView(slot), partial)
     return createPlainDate(
       dayFromFields(slot.calendar, fields, overflowOption(options)),
       slot.calendar

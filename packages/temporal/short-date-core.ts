@@ -17,7 +17,7 @@ import {
   resolveCalendarYear,
   mergeDateFields,
 } from '#packages/temporal/date-core.js'
-import type {DateSlot} from '#packages/temporal/plain-slots.js'
+import {isoDateFields, type DateSlot} from '#packages/temporal/plain-slots.js'
 import {parseShortDateString} from '#packages/temporal/instant-string.js'
 
 export function shortCalendar(calendar: string): CalendarId {
@@ -189,15 +189,27 @@ export function parseShortSlot(
     throw new RangeError('Date out of range')
   if (calendar === 'iso8601') {
     // Parsing already validated the ISO fields, including the reference year.
-    const epochDay = ArithmeticCalendarToEpochDay(
-      'iso8601',
-      kind === 'month-day' ? 1972 : parsed.year,
-      parsed.month,
-      parsed.day
-    )
-    if (kind === 'month-day') return {epochDay, calendar}
-    checkYearMonth(epochDay)
-    return {epochDay: checkYearMonth(epochDay - parsed.day + 1), calendar}
+    const year = kind === 'month-day' ? 1972 : parsed.year,
+      epochDay = ArithmeticCalendarToEpochDay(
+        'iso8601',
+        year,
+        parsed.month,
+        parsed.day
+      )
+    if (kind === 'year-month') checkYearMonth(epochDay)
+    return {
+      epochDay:
+        kind === 'month-day'
+          ? epochDay
+          : checkYearMonth(epochDay - parsed.day + 1),
+      calendar,
+      [isoDateFields]: {
+        year,
+        month: parsed.month,
+        monthCode: 'M' + (parsed.month < 10 ? '0' : '') + parsed.month,
+        day: kind === 'month-day' ? parsed.day : 1,
+      },
+    }
   }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
   if (kind === 'year-month') {
@@ -234,7 +246,13 @@ export function formatShortDate(
   const annotation = calendarAnnotation(slot.calendar, option)
   const full =
     slot.calendar !== 'iso8601' || option === 'always' || option === 'critical'
-  return formatISODate(slot.epochDay, full ? 'date' : kind) + annotation
+  return (
+    formatISODate(
+      slot.epochDay,
+      full ? 'date' : kind,
+      slot.calendar === 'iso8601' ? slot[isoDateFields] : undefined
+    ) + annotation
+  )
 }
 export function mergeShortFields(
   slot: DateSlot,

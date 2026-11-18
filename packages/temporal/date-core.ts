@@ -226,6 +226,21 @@ export function dateFields(slot: DateSlot, extended = false): CalendarDate {
     slot.epochDay
   )
 }
+export function dateFieldsView(
+  slot: DateSlot,
+  extended = false
+): Readonly<CalendarDate> {
+  if (
+    import.meta.formatjsTemporalNativeData !== true &&
+    !nativeTemporal() &&
+    slot.calendar === 'iso8601' &&
+    (extended || (slot.epochDay >= -100000001 && slot.epochDay <= 100000000))
+  ) {
+    const fields = slot[isoDateFields]
+    if (fields) return fields
+  }
+  return dateFields(slot, extended)
+}
 export function dayFromFields(
   calendar: string,
   fields: Record<string, unknown>,
@@ -425,8 +440,12 @@ export function addDate(
 ): number {
   const calendar = baseCalendar(slot.calendar)
   return dayCheck(
-    addNormalizedCalendarDate(calendar, dateFields(slot), duration, overflow)
-      .epochDay
+    addNormalizedCalendarDate(
+      calendar,
+      dateFieldsView(slot),
+      duration,
+      overflow
+    ).epochDay
   )
 }
 export function calendarNameOption(
@@ -473,9 +492,9 @@ const twoDigitDateParts = [
 ]
 export function formatISODate(
   epochDay: number,
-  kind: 'date' | 'year-month' | 'month-day' = 'date'
+  kind: 'date' | 'year-month' | 'month-day' = 'date',
+  fields: Readonly<CalendarDate> = calendarFromEpochDayRaw('iso8601', epochDay)
 ): string {
-  const fields = calendarFromEpochDayRaw('iso8601', epochDay)
   const month = twoDigitDateParts[fields.month],
     day = twoDigitDateParts[fields.day]
   if (kind === 'month-day') return month + '-' + day
