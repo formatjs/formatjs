@@ -58,6 +58,9 @@ fn record(
     theirs: impl Fn(usize) -> u64,
     rows: &mut Vec<String>,
 ) {
+    if std::env::var("FORMATJS_TEMPORAL_NATIVE_PROFILE").as_deref() == Ok("named") {
+        return;
+    }
     for index in 0..4 {
         assert_eq!(
             ours(index),
@@ -93,6 +96,38 @@ fn record(
         .collect::<Vec<_>>()
         .join(",");
     rows.push(format!("{{\"name\":\"{name}\",\"iterations\":{iterations},\"outputs\":[{outputs}],\"formatjsNanoseconds\":{one},\"temporalRsNanoseconds\":{two},\"temporalRsOverFormatjs\":{},\"formatjsSamples\":{own_samples:?},\"temporalRsSamples\":{reference_samples:?}}}", two / one));
+}
+
+fn record_named(name: &str, operation: impl Fn(usize) -> i128, rows: &mut Vec<String>) {
+    let outputs = (0..4)
+        .map(|index| format!("\"{}\"", operation(index)))
+        .collect::<Vec<_>>()
+        .join(",");
+    let checksum_operation = |index| operation(index) as u64;
+    sample(&checksum_operation, 256);
+    let iterations = 16384;
+    let samples = (0..9)
+        .map(|_| sample(&checksum_operation, iterations).0)
+        .collect::<Vec<_>>();
+    let mut sorted = samples.clone();
+    sorted.sort_by(f64::total_cmp);
+    let median = sorted[sorted.len() / 2];
+    let diagnostics = if std::env::var_os("FORMATJS_TEMPORAL_NATIVE_DIAGNOSTICS").is_some() {
+        let inputs = (0..4)
+            .map(|input| {
+                let operation = |_: usize| operation(black_box(input)) as u64;
+                let values = (0..9)
+                    .map(|_| sample(&operation, iterations).0)
+                    .collect::<Vec<_>>();
+                format!("{values:?}")
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+        format!(",\"inputSamples\":[{inputs}]")
+    } else {
+        String::new()
+    };
+    rows.push(format!("{{\"name\":\"{name}\",\"iterations\":{iterations},\"outputs\":[{outputs}],\"fullPrecision\":true,\"formatjsNanoseconds\":{median},\"formatjsSamples\":{samples:?}{diagnostics}}}"));
 }
 
 fn main() {
@@ -432,9 +467,91 @@ fn main() {
             &mut rows,
         );
     }
+    let zone_registry = own::TimeZoneRegistry::compiled();
+    let named_texts = [
+        "2020-03-08T06:59:59.123456789Z[America/New_York]",
+        "2020-11-01T05:30:00.987654321Z[America/New_York]",
+        "2020-10-03T15:15:00.000000001Z[Australia/Lord_Howe]",
+        "2400-11-05T05:02:03.000000001Z[America/New_York]",
+    ];
+    let named_dates = named_texts.map(|text| {
+        own::ZonedDateTime::parse(text, zone_registry, own::ZonedParseOptions::default()).unwrap()
+    });
+    let one_day = "P1D".parse::<own::Duration>().unwrap();
+    let noon = "12:34:56.123456789".parse::<own::PlainTime>().unwrap();
+    let mut named_rows = Vec::new();
+    record_named(
+        "zoned.named.parse",
+        |i| {
+            own::ZonedDateTime::parse(
+                named_texts[i],
+                zone_registry,
+                own::ZonedParseOptions::default(),
+            )
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds()
+        },
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.offset",
+        |i| own::TimeZone::offset_nanoseconds(named_dates[i].time_zone(), named_dates[i].instant()),
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.addDay",
+        |i| {
+            named_dates[i]
+                .checked_add(one_day, own::Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds()
+        },
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.startOfDay",
+        |i| {
+            named_dates[i]
+                .start_of_day()
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds()
+        },
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.hoursInDay",
+        |i| (named_dates[i].hours_in_day().unwrap() * 2.0) as i128,
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.transitionNext",
+        |i| {
+            named_dates[i]
+                .transition(own::TransitionDirection::Next)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds()
+        },
+        &mut named_rows,
+    );
+    record_named(
+        "zoned.named.withTime",
+        |i| {
+            named_dates[i]
+                .with_time(Some(noon))
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds()
+        },
+        &mut named_rows,
+    );
     println!(
-        "{{\"temporalRsVersion\":\"0.2.6\",\"rust\":\"1.97.0\",\"architecture\":\"{}\",\"method\":\"Optimized native Rust APIs; four inputs, matched checksums before timing, 256 warmup, nine alternating samples. Parsed inputs and calendar registries initialized outside timing. Strings allocated and FNV-1a 32-bit hashed by both implementations. Calendar fields read as one aggregate in FormatJS, three public getters in temporal_rs. Harness checksum and black_box included. UTC/fixed-offset parsing only; no named-zone data, JS, FFI, JSON, cold startup or full-polyfill conformance comparison.\",\"results\":[{}]}}",
+        "{{\"temporalRsVersion\":\"0.2.6\",\"rust\":\"1.97.0\",\"architecture\":\"{}\",\"method\":\"Original25 results: optimized native Rust APIs; four inputs, matched checksums before timing, 256 warmup, nine alternating samples. Parsed inputs and calendar registries initialized outside timing. Strings allocated and FNV-1a 32-bit hashed by both implementations. Calendar fields read as one aggregate in FormatJS, three public getters in temporal_rs. Harness checksum and black_box included. UTC/fixed-offset parsing only; no named-zone data, JS, FFI, JSON, cold startup or full-polyfill conformance comparison.\",\"results\":[{}],\"namedZoneMethod\":\"Seven additional FormatJS Rust/TS workloads. Four inputs cover New York gap/fold, Lord Howe half-hour change and New York year2400. Compiled IANA registry initialized outside timing. Full signed i128 outputs; hoursInDay uses half-hours. No temporal_rs named-zone comparison.\",\"namedZoneResults\":[{}]}}",
         std::env::consts::ARCH,
-        rows.join(",")
+        rows.join(","),
+        named_rows.join(",")
     );
 }

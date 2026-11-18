@@ -7,16 +7,21 @@ import {pathToFileURL} from 'node:url'
 import {runfiles} from '@bazel/runfiles'
 
 const resolve = (value: string) => runfiles.resolve(value)
+const profile = process.env.FORMATJS_TEMPORAL_NATIVE_PROFILE
+assert.ok(profile === undefined || profile === 'named')
 const directory = resolve(process.argv[2])
 const {Temporal} = await import(pathToFileURL(join(directory, 'index.js')).href)
 const native = spawnSync(resolve(process.argv[3]), [], {encoding: 'utf8'})
 assert.equal(native.status, 0, native.stderr)
-interface NativeRow {
+interface NativeMeasurement {
   name: string
   iterations: number
   outputs: string[]
   formatjsNanoseconds: number
   formatjsSamples: number[]
+  fullPrecision?: boolean
+}
+interface NativeRow extends NativeMeasurement {
   temporalRsNanoseconds: number
   temporalRsSamples: number[]
 }
@@ -24,6 +29,7 @@ const rust = JSON.parse(native.stdout) as {
   rust: string
   architecture: string
   results: NativeRow[]
+  namedZoneResults: NativeMeasurement[]
 }
 const instantTexts = [
   '2020-03-08T06:59:59.123456789Z',
@@ -115,7 +121,7 @@ for (const calendar of [
     fields(values[i].add(month))
 }
 assert.deepEqual(
-  Object.keys(operations).sort(),
+  profile === 'named' ? [] : Object.keys(operations).sort(),
   rust.results.map(row => row.name).sort()
 )
 const iterations = 50000,
@@ -138,29 +144,61 @@ function sample(operation: Operation, count: number): number {
   sink ^= checksum
   return elapsed
 }
-const results = rust.results.map(row => {
+function measureRow<T extends NativeMeasurement>(row: T) {
   const operation = operations[row.name]
+  const count = row.name === 'zoned.named.transitionNext' ? 5000 : iterations
+  const warm = row.name === 'zoned.named.transitionNext' ? 1000 : warmup
   const outputs = [0, 1, 2, 3].map(i => {
     const value = operation(i)
-    return typeof value === 'bigint'
+    return typeof value === 'bigint' && !row.fullPrecision
       ? BigInt.asUintN(64, value).toString()
       : value.toString()
   })
   assert.deepEqual(outputs, row.outputs, row.name)
-  sample(operation, warmup)
+  sample(operation, warm)
   const typescriptSamples = Array.from({length: samples}, () =>
-    sample(operation, iterations)
+    sample(operation, count)
   )
   const typescriptNanoseconds = [...typescriptSamples].sort((a, b) => a - b)[
     samples >> 1
   ]
   return {
     ...row,
+    typescriptIterations: count,
+    typescriptWarmup: warm,
     typescriptNanoseconds,
     typescriptSamples,
     typescriptOverRust: typescriptNanoseconds / row.formatjsNanoseconds,
   }
-})
+}
+const results = rust.results.map(measureRow)
+const namedTexts = [
+  '2020-03-08T06:59:59.123456789Z[America/New_York]',
+  '2020-11-01T05:30:00.987654321Z[America/New_York]',
+  '2020-10-03T15:15:00.000000001Z[Australia/Lord_Howe]',
+  '2400-11-05T05:02:03.000000001Z[America/New_York]',
+]
+const namedDates = namedTexts.map(text => Temporal.ZonedDateTime.from(text))
+const oneDay = Temporal.Duration.from('P1D')
+const noon = Temporal.PlainTime.from('12:34:56.123456789')
+const namedOperations: Record<string, Operation> = {
+  'zoned.named.parse': i =>
+    Temporal.ZonedDateTime.from(namedTexts[i]).epochNanoseconds,
+  'zoned.named.offset': i => namedDates[i].offsetNanoseconds,
+  'zoned.named.addDay': i => namedDates[i].add(oneDay).epochNanoseconds,
+  'zoned.named.startOfDay': i => namedDates[i].startOfDay().epochNanoseconds,
+  'zoned.named.hoursInDay': i => namedDates[i].hoursInDay * 2,
+  'zoned.named.transitionNext': i =>
+    namedDates[i].getTimeZoneTransition('next')!.epochNanoseconds,
+  'zoned.named.withTime': i =>
+    namedDates[i].withPlainTime(noon).epochNanoseconds,
+}
+assert.deepEqual(
+  Object.keys(namedOperations).sort(),
+  rust.namedZoneResults.map(row => row.name).sort()
+)
+Object.assign(operations, namedOperations)
+const namedZoneResults = rust.namedZoneResults.map(measureRow)
 console.log(
   JSON.stringify(
     {
@@ -171,7 +209,7 @@ console.log(
       architecture: rust.architecture,
       cpu: cpus()[0]?.model,
       method:
-        'Bazel -c opt native Rust public API versus published default TypeScript public API on Node/V8. Same four inputs per workload, all per-input outputs checked before timing. Native run first, then TS; separate runtimes, no FFI/WASM. Native 256 warmup, nine alternating 16384-call samples against temporal_rs; TS 20000 warmup, nine 50000-call samples. Both consume outputs; strings use FNV-1a 32-bit, avoiding TS BigInt hashing. Rust black_box and integer sum; TS number sum with low-32-bit reduction for BigInt outputs. Parsed values and calendar registries initialized outside timing. Rust calendar fields are one aggregate; TS reads three getters. TS may cache fields. UTC/fixed-offset zoned parsing only; no named-zone, startup, Hermes binding or conformance speed claim. Native temporal_rs reference retained as separate comparison.',
+        'Original25: Bazel -c opt native Rust public API versus published default TypeScript public API on Node/V8. Same four inputs per workload, all per-input outputs checked before timing. Native run first, then TS; separate runtimes, no FFI/WASM. Native 256 warmup, nine alternating 16384-call samples against temporal_rs; TS 20000 warmup, nine 50000-call samples. Both consume outputs; strings use FNV-1a 32-bit, avoiding TS BigInt hashing. Rust black_box and integer sum; TS number sum with low-32-bit reduction for BigInt outputs. Parsed values and calendar registries initialized outside timing. Rust calendar fields are one aggregate; TS reads three getters. TS may cache fields. UTC/fixed-offset zoned parsing only; no named-zone, startup, Hermes binding or conformance speed claim. Native temporal_rs reference retained as separate comparison.',
       iterations,
       warmup,
       samples,
@@ -179,6 +217,13 @@ console.log(
       rustFaster: results.filter(row => row.typescriptOverRust > 1).length,
       workloads: results.length,
       results,
+      namedZoneScope:
+        'Seven additional Rust/TS public workloads, four matched inputs: New York spring gap and autumn fold, Lord Howe half-hour change, New York year2400 future rules. Rust uses compiled IANA data; TS uses host Intl. Full signed nanosecond outputs checked without truncation; hoursInDay consumes exact half-hours. Same native sample counts; TS transition uses1000 warmup,9x5000 calls. Registry setup excluded. No temporal_rs named-zone comparison: its benchmark provider supports UTC only. Separate from original25; no startup or Hermes binding speed claim.',
+      namedZoneRustFaster: namedZoneResults.filter(
+        row => row.typescriptOverRust > 1
+      ).length,
+      namedZoneWorkloads: namedZoneResults.length,
+      namedZoneResults,
     },
     null,
     2

@@ -6,7 +6,24 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current direct-path checkpoint: 44 focused Node/ICU/package/Hermes targets pass.
+Current calendar/transition checkpoint: 49 focused Rust/Node/ICU/package/Hermes
+targets pass. TS wins 34/48 raw medians versus basic and 47/48 versus official,
+using the preceding checkpoint's reference samples. Native Rust wins
+25/25 original cases and 7/7 additional named-zone cases, reported separately.
+Named cases cover New York gap/fold, Lord Howe half-hour change and year-2400
+future rules. Full signed outputs match TS; no temporal_rs named-zone claim.
+Consumer size is 40,470 gzip bytes. Close cases, earlier rounding variability
+and remaining reference losses keep the goal open. See
+[`calendar-arithmetic-experiments.json`](../benchmarks/temporal/calendar-arithmetic-experiments.json).
+
+Shared calendar conversion uses Gregorian month prefixes after field validation.
+Other arithmetic calendars skip repeated outer validation while summing months.
+Rust recurring-transition search checks whether a candidate can improve the best
+result before evaluating its rules. Alternating controls confirm faster date
+addition and roughly 2x faster native transition lookup. Per-input native timing
+diagnostics and separate V8 CPU profiles retain the evidence; no new caches/data.
+
+Preceding direct-path checkpoint: 44 focused Node/ICU/package/Hermes targets pass.
 Fresh isolated processes put TS ahead on 34/48 raw medians versus basic and
 46/48 versus official. Native Rust wins 25/25 against this TS version.
 Consumer size is 40,399 gzip bytes. One full reference round is a snapshot;

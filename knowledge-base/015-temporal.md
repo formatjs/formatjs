@@ -10,16 +10,33 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
 and `@js-temporal/polyfill` across matched public workloads. Native Rust wins
-25/25 against the current TS version. Fresh isolated JavaScript comparisons retain
-all 48 workloads: TS wins 34/48 raw medians versus basic, 46/48 versus official.
-One full reference round, different native/JS coverage and prior rounding
-variability prevent a universal performance claim. Goal remains open. See
-`benchmarks/temporal/direct-path-experiments.json`.
+25/25 original cases and 7/7 additional named-zone cases, reported separately.
+TS wins 34/48 raw medians versus basic and 47/48 versus official using reference
+samples from the preceding checkpoint. Close cases, different native/JS coverage
+and earlier rounding variability keep the goal open. See
+`benchmarks/temporal/calendar-arithmetic-experiments.json`.
 
-Fixed ISO field-name lists avoid per-read array preparation. PlainTime formatting
-uses exact numeric clock arithmetic. ISO validity uses Gregorian month lengths;
-parsed short dates skip redundant ISO calendar roundtrips. All 44 focused Node,
-ICU, package and Hermes targets pass. Consumer size is 40,399 gzip bytes.
+`ArithmeticCalendarToEpochDay` owns numeric calendar conversion after callers
+validate month/day. Gregorian calendars reuse the shared month-prefix table;
+other arithmetic calendars sum lengths without repeated outer checks. Lunisolar
+and Umm al-Qura paths stay with their providers. Rust transition lookup rejects
+candidates that cannot improve the best result before evaluating recurring rules.
+Alternating controls show faster date/year-month addition and roughly 2x faster
+native transition lookup. No new caches or timezone data. All 49 focused Rust,
+Node, ICU, package and Hermes targets pass. Consumer size is 40,470 gzip bytes.
+
+The seven new native named-zone workloads retain exact signed outputs and use
+compiled IANA data versus TS host Intl. They cover New York gap/fold, Lord Howe
+half-hour changes and year2400. Original25 and temporal_rs comparisons stay intact;
+the UTC-only temporal_rs benchmark provider is excluded from new cases. Select
+`FORMATJS_TEMPORAL_NATIVE_PROFILE=named` for isolated named-only comparisons;
+`FORMATJS_TEMPORAL_NATIVE_DIAGNOSTICS=1` adds separate per-input native timings.
+
+Preceding direct-path optimizations reuse fixed ISO field-name lists, format
+PlainTime with exact numeric clock arithmetic, validate Gregorian month lengths
+directly and skip redundant parsed short-date roundtrips. That checkpoint passes
+44 focused targets, wins 34/48 basic and 46/48 official raw medians against fresh
+isolated references, and ships 40,399 gzip bytes.
 
 Preceding record preparation preserves owned field shapes instead of deleting keys,
 uses one ISO merge record, and avoids redundant caller copies/calendar reads.

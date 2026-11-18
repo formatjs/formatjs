@@ -94,6 +94,28 @@ export function ArithmeticCalendarStartOfYear(
         : 0)
   )
 }
+// Month and day must already be validated.
+export function ArithmeticCalendarToEpochDay(
+  calendar: ArithmeticCalendarId,
+  year: number,
+  month: number,
+  day: number
+): number {
+  if (IsISOCalendar(calendar)) {
+    const isoYear = CalendarISOYear(calendar, year)
+    return (
+      DayFromYear(isoYear) +
+      monthStarts[month - 1] +
+      Number(month > 2 && DaysInYear(isoYear) === 366) +
+      day -
+      1
+    )
+  }
+  let epoch = ArithmeticCalendarStartOfYear(calendar, year) + day - 1
+  for (let m = 1; m < month; m++)
+    epoch += ArithmeticCalendarDaysInMonth(calendar, year, m)
+  return epoch
+}
 export function ArithmeticCalendarMonthsInYear(
   calendar: ArithmeticCalendarId,
   year: number

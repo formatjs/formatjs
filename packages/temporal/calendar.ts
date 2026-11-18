@@ -17,6 +17,7 @@ import {
   ArithmeticCalendarDaysInMonth,
   ArithmeticCalendarMonthCode,
   ArithmeticCalendarFromEpochDay,
+  ArithmeticCalendarToEpochDay,
   ArithmeticCalendarEra,
   HebrewLeapYear as hebrewLeap,
   HebrewElapsedMonths as elapsedMonths,
@@ -214,6 +215,8 @@ export function calendarToEpochDayRaw(
     daysInMonth(calendar, year, month),
     overflow
   )
+  if (!isLunisolar(calendar) && calendar !== 'islamic-umalqura')
+    return integer(ArithmeticCalendarToEpochDay(calendar, year, month, day))
   let epoch = start(calendar, year) + day - 1
   for (let m = 1; m < month; m++) epoch += daysInMonth(calendar, year, m)
   return integer(epoch)

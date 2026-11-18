@@ -337,17 +337,17 @@ impl TimeZone for TransitionZone<'_> {
                     continue;
                 };
                 if (if next { raw > value } else { raw < value })
-                    && (if event > self.cutoff() + 1 {
-                        future.changes_at(candidate, before)
-                    } else {
-                        self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before)
-                    })
                     && recurring.is_none_or(|old: Instant| {
                         if next {
                             raw < old.epoch_nanoseconds()
                         } else {
                             raw > old.epoch_nanoseconds()
                         }
+                    })
+                    && (if event > self.cutoff() + 1 {
+                        future.changes_at(candidate, before)
+                    } else {
+                        self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before)
                     })
                 {
                     recurring = Some(candidate);
