@@ -1206,3 +1206,347 @@ fn typed_calendar_formats_accept_interned_and_utf8_ids() {
         }
     }
 }
+
+fn generic_short_call(operation: &str, fields: serde_json::Value) -> (u32, Vec<u8>) {
+    fn encode(bytes: &mut Vec<u8>, value: &serde_json::Value) {
+        use serde_json::Value;
+        match value {
+            Value::Null => bytes.push(0),
+            Value::Bool(value) => bytes.push(if *value { 2 } else { 1 }),
+            Value::Number(value) => {
+                bytes.push(3);
+                bytes.extend_from_slice(&value.as_f64().unwrap().to_le_bytes());
+            }
+            Value::String(value) => {
+                bytes.push(4);
+                text(bytes, value);
+            }
+            Value::Object(value) => {
+                bytes.push(6);
+                bytes.extend_from_slice(&(value.len() as u32).to_le_bytes());
+                for (key, value) in value {
+                    bytes.extend_from_slice(&u16::MAX.to_le_bytes());
+                    text(bytes, key);
+                    encode(bytes, value);
+                }
+            }
+            _ => panic!("Unexpected short-date request field"),
+        }
+    }
+    let mut bytes = vec![opcode(operation)];
+    encode(&mut bytes, &fields);
+    call(&bytes)
+}
+fn check_short_result(
+    actual: (u32, Vec<u8>),
+    expected: Result<i64, formatjs_temporal::Error>,
+    operation: &str,
+    request: serde_json::Value,
+    calendar: &str,
+) {
+    let Ok(epoch) = expected else {
+        assert_eq!(actual.0, 1);
+        return;
+    };
+    assert_eq!(actual.0, 0);
+    if calendar != "iso8601" {
+        assert_eq!(actual, generic_short_call(operation, request));
+        return;
+    }
+    let bytes = actual.1;
+    assert_eq!(bytes.len(), 22);
+    assert_eq!(bytes[0], 11);
+    assert_eq!(
+        i32::from_le_bytes(bytes[1..5].try_into().unwrap()) as i64,
+        epoch
+    );
+    let date = formatjs_temporal::PlainDate::from_epoch_day(epoch).unwrap();
+    let (year, month, day) = date.fields();
+    assert_eq!(i32::from_le_bytes(bytes[5..9].try_into().unwrap()), year);
+    assert_eq!(
+        &bytes[9..13],
+        &[
+            month,
+            day,
+            date.day_of_week(),
+            date.days_in_month().unwrap()
+        ]
+    );
+    assert_eq!(
+        u16::from_le_bytes(bytes[13..15].try_into().unwrap()),
+        date.days_in_year().unwrap()
+    );
+    assert_eq!(
+        u16::from_le_bytes(bytes[15..17].try_into().unwrap()),
+        date.day_of_year().unwrap()
+    );
+    let (week_year, week) = date.week_of_year().unwrap();
+    assert_eq!(bytes[17], week);
+    assert_eq!(
+        i32::from_le_bytes(bytes[18..22].try_into().unwrap()),
+        week_year
+    );
+}
+#[test]
+fn typed_short_arithmetic_and_projection_preserve_public_results() {
+    use formatjs_temporal::{
+        CalendarProvider, CalendarRegistry, Duration, Overflow, PlainMonthDay, PlainYearMonth,
+    };
+    use serde_json::json;
+    let registry = CalendarRegistry::compiled().unwrap();
+    for calendar in registry.calendars() {
+        let identifier = calendar.id();
+        let code = binary::STRINGS
+            .iter()
+            .position(|id| *id == identifier)
+            .unwrap() as u16;
+        for epoch in [0i64, 19792] {
+            let value = PlainYearMonth::from_epoch_day_in(epoch, calendar).unwrap();
+            for fields in [
+                [0; 10],
+                [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            ] {
+                let duration = Duration::new(fields).unwrap();
+                let mut record = serde_json::Map::new();
+                for (key, field) in [
+                    "years",
+                    "months",
+                    "weeks",
+                    "days",
+                    "hours",
+                    "minutes",
+                    "seconds",
+                    "milliseconds",
+                    "microseconds",
+                    "nanoseconds",
+                ]
+                .into_iter()
+                .zip(fields)
+                {
+                    record.insert(key.into(), json!(field as f64));
+                }
+                for subtract in [false, true] {
+                    for overflow in [Overflow::Constrain, Overflow::Reject] {
+                        let mut bytes = vec![opcode("addPlainYearMonth"), 10];
+                        bytes.extend_from_slice(&(epoch as f64).to_le_bytes());
+                        for field in fields {
+                            bytes.extend_from_slice(&(field as f64).to_le_bytes());
+                        }
+                        bytes.extend_from_slice(&[
+                            u8::from(subtract),
+                            u8::from(overflow == Overflow::Reject),
+                        ]);
+                        bytes.extend_from_slice(&code.to_le_bytes());
+                        let expected = if subtract {
+                            value.checked_subtract(duration, overflow)
+                        } else {
+                            value.checked_add(duration, overflow)
+                        }
+                        .map(|v| v.epoch_day());
+                        check_short_result(
+                            call(&bytes),
+                            expected,
+                            "addPlainYearMonth",
+                            json!({"value":{"epochDay":epoch,"calendar":identifier},"duration":record,
+                                "subtract":subtract,"overflow":if overflow == Overflow::Reject {"reject"} else {"constrain"}}),
+                            identifier,
+                        );
+                    }
+                }
+            }
+            for day in [1.0f64, 31.0, 1e100] {
+                let mut bytes = vec![opcode("yearMonthToDate"), 10];
+                bytes.extend_from_slice(&(epoch as f64).to_le_bytes());
+                bytes.extend_from_slice(&day.to_le_bytes());
+                bytes.extend_from_slice(&code.to_le_bytes());
+                check_short_result(
+                    call(&bytes),
+                    value
+                        .to_plain_date(day.min(255.0) as u8, Overflow::Constrain)
+                        .map(|v| v.epoch_day()),
+                    "yearMonthToDate",
+                    json!({"value":{"epochDay":epoch,"calendar":identifier},"day":day}),
+                    identifier,
+                );
+            }
+            let month_day = PlainMonthDay::from_epoch_day_in(epoch, calendar).unwrap();
+            let year = calendar.date_extended(epoch).unwrap().year;
+            for year in [year, year + 1, 0] {
+                let mut bytes = vec![opcode("monthDayToDate"), 10];
+                bytes.extend_from_slice(&(epoch as f64).to_le_bytes());
+                bytes.extend_from_slice(&(year as f64).to_le_bytes());
+                bytes.extend_from_slice(&code.to_le_bytes());
+                check_short_result(
+                    call(&bytes),
+                    month_day
+                        .to_plain_date(year, Overflow::Constrain)
+                        .map(|v| v.epoch_day()),
+                    "monthDayToDate",
+                    json!({"value":{"epochDay":epoch,"calendar":identifier},"year":year}),
+                    identifier,
+                );
+            }
+        }
+    }
+}
+#[test]
+fn typed_short_requests_reject_invalid_fields_and_recover() {
+    let code = binary::STRINGS
+        .iter()
+        .position(|id| *id == "iso8601")
+        .unwrap() as u16;
+    for operation in ["addPlainYearMonth", "yearMonthToDate", "monthDayToDate"] {
+        let mut bytes = vec![opcode(operation), 10];
+        bytes.extend_from_slice(&0f64.to_le_bytes());
+        if operation == "addPlainYearMonth" {
+            for _ in 0..10 {
+                bytes.extend_from_slice(&0f64.to_le_bytes());
+            }
+            bytes.extend_from_slice(&[0, 0]);
+        } else {
+            bytes.extend_from_slice(&1f64.to_le_bytes());
+        }
+        let calendar_at = bytes.len();
+        bytes.extend_from_slice(&code.to_le_bytes());
+        let expected = call(&bytes);
+        assert_eq!(expected.0, 0);
+        for bad in [f64::NAN, f64::INFINITY, 0.5, f64::MAX] {
+            let mut invalid = bytes.clone();
+            invalid[2..10].copy_from_slice(&bad.to_le_bytes());
+            assert_eq!(call(&invalid).0, 1);
+            assert_eq!(call(&bytes), expected);
+        }
+        if operation == "addPlainYearMonth" {
+            for offset in [90, 91] {
+                let mut invalid = bytes.clone();
+                invalid[offset] = 2;
+                assert_eq!(call(&invalid).0, 2);
+            }
+            for (offset, value) in [(18, -1.0f64), (42, 1.0)] {
+                let mut invalid = bytes.clone();
+                invalid[10..18].copy_from_slice(&1f64.to_le_bytes());
+                invalid[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
+                assert_eq!(call(&invalid).0, 1);
+            }
+        } else {
+            let values = if operation == "yearMonthToDate" {
+                [f64::NAN, f64::INFINITY, -1.0, 0.0, 0.5]
+            } else {
+                [f64::NAN, f64::INFINITY, f64::MAX, 2147483648.0, 0.5]
+            };
+            for value in values {
+                let mut invalid = bytes.clone();
+                invalid[10..18].copy_from_slice(&value.to_le_bytes());
+                assert_eq!(call(&invalid).0, 1);
+                assert_eq!(call(&bytes), expected);
+            }
+        }
+        let mut bad_code = bytes.clone();
+        bad_code[calendar_at..].copy_from_slice(&65534u16.to_le_bytes());
+        assert_eq!(call(&bad_code).0, 2);
+        let mut fallback = bytes[..calendar_at].to_vec();
+        fallback.extend_from_slice(&u16::MAX.to_le_bytes());
+        text(&mut fallback, "iso8601");
+        assert_eq!(call(&fallback), expected);
+        let mut unknown = bytes[..calendar_at].to_vec();
+        unknown.extend_from_slice(&u16::MAX.to_le_bytes());
+        text(&mut unknown, "unknown");
+        assert_eq!(call(&unknown).0, 1);
+        let mut utf8 = fallback.clone();
+        utf8[calendar_at + 6] = 255;
+        assert_eq!(call(&utf8).0, 2);
+        let mut trailing = bytes.clone();
+        trailing.push(0);
+        for invalid in [trailing, bytes[..bytes.len() - 1].to_vec()] {
+            assert_eq!(call(&invalid).0, 2);
+        }
+        assert_eq!(call(&bytes), expected);
+    }
+}
+
+#[test]
+fn direct_iso_records_preserve_extended_references_and_week_boundaries() {
+    use formatjs_temporal::{DateFields, Overflow, PlainYearMonth};
+    use serde_json::json;
+    let source = PlainYearMonth::new(2020, 1, 1).unwrap();
+    for (year, month) in [
+        (-271821, 4),
+        (275760, 9),
+        (0, 2),
+        (-1, 1),
+        (2021, 1),
+        (2020, 12),
+    ] {
+        let expected = source
+            .with_fields(
+                DateFields {
+                    year: Some(year),
+                    month: Some(month),
+                    ..DateFields::default()
+                },
+                Overflow::Constrain,
+            )
+            .unwrap();
+        let epoch = expected.epoch_day();
+        let mut bytes = vec![opcode("withPlainYearMonth"), 10];
+        bytes.extend_from_slice(&(source.epoch_day() as f64).to_le_bytes());
+        for field in [f64::from(year), f64::from(month), f64::NAN] {
+            bytes.extend_from_slice(&field.to_le_bytes());
+        }
+        bytes.extend_from_slice(&[0, 0, 0]);
+        let (status, record) = call(&bytes);
+        assert_eq!(status, 0);
+        assert_eq!(record.len(), 22);
+        let request = json!({"op":"calendarProperties","calendar":"iso8601",
+            "epoch":epoch,"extended":true})
+        .to_string();
+        let mut out = TemporalBytes {
+            data: core::ptr::null_mut(),
+            len: 0,
+        };
+        let expected: serde_json::Value = unsafe {
+            assert_eq!(
+                formatjs_temporal_query(request.as_ptr(), request.len(), &mut out),
+                0
+            );
+            let result =
+                serde_json::from_slice(core::slice::from_raw_parts(out.data, out.len)).unwrap();
+            formatjs_temporal_bytes_free(out);
+            result
+        };
+        assert_eq!(record[0], 11);
+        assert_eq!(
+            i32::from_le_bytes(record[1..5].try_into().unwrap()) as i64,
+            epoch
+        );
+        assert_eq!(
+            i32::from_le_bytes(record[5..9].try_into().unwrap()) as i64,
+            expected["date"]["year"].as_i64().unwrap()
+        );
+        assert_eq!(
+            record[9] as u64,
+            expected["date"]["month"].as_u64().unwrap()
+        );
+        assert_eq!(record[10] as u64, expected["date"]["day"].as_u64().unwrap());
+        for (offset, key) in [(11, "dayOfWeek"), (12, "daysInMonth"), (17, "weekOfYear")] {
+            assert_eq!(
+                record[offset] as u64,
+                expected["values"][key].as_u64().unwrap()
+            );
+        }
+        for (offset, key) in [(13, "daysInYear"), (15, "dayOfYear")] {
+            assert_eq!(
+                u16::from_le_bytes(record[offset..offset + 2].try_into().unwrap()) as u64,
+                expected["values"][key].as_u64().unwrap()
+            );
+        }
+        assert_eq!(
+            i32::from_le_bytes(record[18..22].try_into().unwrap()) as i64,
+            expected["values"]["yearOfWeek"].as_i64().unwrap()
+        );
+        assert!(expected["errors"].as_array().unwrap().is_empty());
+    }
+}

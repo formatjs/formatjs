@@ -57,6 +57,9 @@ export interface NativeCall {
   parsePlainDateTime?: NativeTemporal['parsePlainDateTime']
   formatPlainDateTime?: NativeTemporal['formatPlainDateTime']
   formatZonedDateTime?: NativeTemporal['formatZonedDateTime']
+  addPlainYearMonth?: NativeTemporal['addPlainYearMonth']
+  yearMonthToDate?: NativeTemporal['yearMonthToDate']
+  monthDayToDate?: NativeTemporal['monthDayToDate']
   createISODate?: NativeTemporal['createISODate']
   parseInstant?: NativeTemporal['parseInstant']
   formatInstant?: NativeTemporal['formatInstant']
@@ -633,12 +636,14 @@ export function configureNativeTemporal(
       call('zonedProperties', {value: zonedFields(slot)}),
     addPlainYearMonth: (slot, fields, subtract, overflow) =>
       dateResult(
-        call('addPlainYearMonth', {
-          value: shortFields(slot),
-          duration: durationFields(fields),
-          subtract,
-          overflow,
-        }),
+        invoke?.addPlainYearMonth
+          ? invoke.addPlainYearMonth(slot, fields, subtract, overflow)
+          : call('addPlainYearMonth', {
+              value: shortFields(slot),
+              duration: durationFields(fields),
+              subtract,
+              overflow,
+            }),
         slot.calendar
       ),
     differencePlainYearMonth: (
@@ -671,12 +676,16 @@ export function configureNativeTemporal(
           }),
     yearMonthToDate: (slot, day) =>
       dateResult(
-        call('yearMonthToDate', {value: shortFields(slot), day}),
+        invoke?.yearMonthToDate
+          ? invoke.yearMonthToDate(slot, day)
+          : call('yearMonthToDate', {value: shortFields(slot), day}),
         slot.calendar
       ),
     monthDayToDate: (slot, year) =>
       dateResult(
-        call('monthDayToDate', {value: shortFields(slot), year}),
+        invoke?.monthDayToDate
+          ? invoke.monthDayToDate(slot, year)
+          : call('monthDayToDate', {value: shortFields(slot), year}),
         slot.calendar
       ),
     formatPlainDate: (slot, calendarName) =>

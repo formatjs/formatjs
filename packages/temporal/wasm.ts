@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 21 ||
+    core.temporal_abi_version() !== 22 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -555,6 +555,62 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     write32(fastView, pointer + 2, encoded.written, true)
     return pointer + 6 + encoded.written
   }
+  function dateResult(result: number) {
+    return fastBytes[result] === 11
+      ? decodeISODate(fastView, fastBytes, result + 1)
+      : decodeResult(result - 8)
+  }
+  invoke.addPlainYearMonth = (slot, fields, subtract, overflow) => {
+    const code = stringCodes[slot.calendar]
+    const pointer = begin(
+      operationCodes.addPlainYearMonth,
+      code === undefined ? 98 + slot.calendar.length * 3 : 94
+    )
+    writeNumber(fastView, pointer + 2, slot.epochDay, true)
+    for (let index = 0; index < durationPropertyNames.length; index++)
+      writeNumber(
+        fastView,
+        pointer + 10 + index * 8,
+        fields[durationPropertyNames[index]],
+        true
+      )
+    fastBytes[pointer + 90] = subtract ? 1 : 0
+    fastBytes[pointer + 91] = overflow === 'reject' ? 1 : 0
+    return dateResult(
+      exchange(appendCalendar(pointer + 92, slot.calendar, code) - pointer)
+    )
+  }
+  function projectShortDate(
+    operation: number,
+    epoch: number,
+    calendar: string,
+    field: number
+  ) {
+    const code = stringCodes[calendar]
+    const pointer = begin(
+      operation,
+      code === undefined ? 24 + calendar.length * 3 : 20
+    )
+    writeNumber(fastView, pointer + 2, epoch, true)
+    writeNumber(fastView, pointer + 10, field, true)
+    return dateResult(
+      exchange(appendCalendar(pointer + 18, calendar, code) - pointer)
+    )
+  }
+  invoke.yearMonthToDate = (slot, day) =>
+    projectShortDate(
+      operationCodes.yearMonthToDate,
+      slot.epochDay,
+      slot.calendar,
+      day
+    )
+  invoke.monthDayToDate = (slot, year) =>
+    projectShortDate(
+      operationCodes.monthDayToDate,
+      slot.epochDay,
+      slot.calendar,
+      year
+    )
   invoke.formatDate = (operation, slot, calendarName) => {
     const code = stringCodes[slot.calendar]
     const pointer = begin(

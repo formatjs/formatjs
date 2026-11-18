@@ -101,7 +101,7 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 69 normalized operations; WASM uses ABI 21. JS retains
+Rust exposes typed values and 69 normalized operations; WASM uses ABI 22. JS retains
 ECMAScript coercion, brands, slots and object allocation. WASM transfers binary
 records through reusable module-owned buffers. Rust returns calendar, clock and
 zone properties with date-like results; getters reuse those immutable results.
@@ -238,7 +238,7 @@ host output stays native.
 Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
 retain their input order.
 
-WASM ABI 21 specializes hot parsing, arithmetic, field updates and formatting.
+WASM ABI 22 specializes hot parsing, arithmetic, field updates and formatting.
 Keep the JS adapter and binary paired. Observable coercion/error order stays in
 the bindings; Rust validates and computes complete results. Finite month/day overflow
 fields above the safe-integer range still constrain correctly; `reject`, non-finite
@@ -281,9 +281,9 @@ compact binary records, including offset seconds/fractions and hoursInDay.
 Non-ISO calendars and deferred getter errors retain complete general snapshots.
 SDK JSON shapes stay unchanged. Keep binary and JS adapter versions paired.
 
-Current ABI 21 isolated checkpoint: zoned format 1.93 µs versus TS 2.10; DateTime parse 2.00 versus 2.40; DateTime round/format 2.50 versus 1.64. Full matrix records 31/48 median wins; 17 workloads remain slower. Close rounding/difference controls stay explicit; median count is not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
-Native Node namespace is 516,755 gzip bytes (+748); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.39 ms, TS 19.60 ms. Full native calendar readiness 28.05 ms. Raw WASM grows 3,679 bytes.
-See [typed zoned formatting](../../benchmarks/temporal/README.md#typed-zoned-formatting)
+Current ABI 22 isolated checkpoint: YearMonth add 2.99 µs versus TS 5.62; YearMonth projection 1.42 versus 2.39; MonthDay projection 2.21 versus 2.73; date field construction 1.50 versus 1.45. Full matrix records 34/48 median wins; 14 workloads remain slower. Close-workload controls stay explicit; median counts are not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+Native Node namespace is 517,885 gzip bytes (+1,130); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.62 ms, TS 19.50 ms. Full native calendar readiness 28.31 ms. Raw WASM changes +4,391 bytes.
+See [typed short-date operations](../../benchmarks/temporal/README.md#typed-short-date-operations)
 for all workloads, profiles and size/startup scope. Goal remains open.
 
 ABI 18 adds typed zoned addition/subtraction, rounding and day-start requests.
@@ -321,10 +321,24 @@ the epoch day already returned by Rust, avoiding JS recomputation and wrapping.
 Numeric user constructors keep their checks and standard prototypes. SDK JSON
 stays compatible; keep WASM binary and JS adapter paired.
 
-Current fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+Earlier ABI 21 fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
 300,000 calls. DateTime parsing wins: native 1.821/1.833 µs versus TS 2.569/2.625.
 Instant rounding remains slower: native 0.624/0.648 versus TS 0.597/0.581. Its
 full-matrix median win is unproven. Instant difference remains mixed: native
 2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
 2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
 wins do not establish all-workload completion.
+
+ABI 22 adds typed YearMonth addition/subtraction and YearMonth/MonthDay projection
+to PlainDate. Rust returns complete date snapshots, using direct ISO records and
+the existing general representation for other calendars/deferred getter errors.
+Numeric checks, observable field/option order and standard prototypes stay intact.
+SDK JSON remains compatible; keep WASM binary and JS adapter paired.
+
+Fresh TS/native/native/TS controls use 100,000 warmup and nine samples of 300,000
+calls. MonthDay projection wins at 2.268/2.168 µs versus TS 2.692/2.593. Date field
+construction nearly ties at 1.376/1.391 versus TS 1.392/1.421 but loses the full
+matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
+longer controls and loses the full matrix. Instant rounding remains slower:
+0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
+workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.

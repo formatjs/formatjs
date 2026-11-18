@@ -606,7 +606,7 @@ fn add_clock(snapshot: &mut CalendarSnapshot, nanoseconds: i128) {
         *target = Value::from(value);
     }
 }
-fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -> CalendarSnapshot {
+pub(crate) fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -> CalendarSnapshot {
     calendar_snapshot(calendar, epoch).unwrap_or_else(|_| CalendarSnapshot {
         date: None,
         values: [const { Value::Null }; 21],

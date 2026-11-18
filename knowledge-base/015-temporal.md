@@ -2209,3 +2209,60 @@ causal A/B controls are retained. DateTime round/format still spends 10.49% in
 construction and 10.16% in result decoding. YearMonth format spends 9.55% in
 Text.write_str, 6.20% in std fmt.write and 6.08% in each UTF-8 decoder frame.
 These remaining allocation/formatting costs guide the next changes.
+
+## Typed short-date operations
+
+ABI 22 adds direct YearMonth addition/subtraction and YearMonth/MonthDay projection
+to PlainDate: 43 typed routes, unchanged 69 normalized operations. Existing public
+Rust methods do the math; the complete result includes all date/derived fields.
+ISO results use a shared stack record instead of intermediate dynamic snapshots.
+ISO field creation/updates and DateTime records share the date writer. Other
+calendars and deferred getter errors retain existing representations. JS field/
+option order, numeric checks, prototypes and SDK JSON remain intact.
+
+Current ABI 22 isolated checkpoint: YearMonth add 2.99 µs versus TS 5.62; YearMonth projection 1.42 versus 2.39; MonthDay projection 2.21 versus 2.73; date field construction 1.50 versus 1.45. Full matrix records 34/48 median wins; 14 workloads remain slower. Close-workload controls stay explicit; median counts are not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 517,885 gzip bytes (+1,130); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.62 ms, TS 19.50 ms. Full native calendar readiness 28.31 ms. Raw WASM changes +4,391 bytes.
+
+`short-date-experiments.json` retains baseline profiles, both diagnostic stages,
+full alternating controls and final source hashes. Generic/direct/direct/generic
+ISO-record controls show YearMonth add 2.942/2.948 versus 3.146/3.175 µs;
+YearMonth projection 1.610/1.610 versus 1.870/1.810; MonthDay projection
+2.172/2.147 versus 2.355/2.370; date fields 1.443/1.308 versus 1.585/1.592.
+An inline(always) experiment had no consistent benefit and was discarded.
+Unrelated DateTime parse variation in these controls is not claimed as a gain.
+
+`short-date-hillclimb-results.json` records all 48 fresh sequential TS/native
+workloads, eight varying inputs/parity, 20,000 warmup and nine samples of 50,000;
+transitions use 1,000 warmup and nine samples of 5,000. Pinned reference throughput
+remains explicitly retained from the earlier Instant checkpoint, through
+format-hillclimb-results.json. Every slower workload/ratio stays recorded.
+
+All compiled calendars compare add/subtract and both projections with public Rust
+methods; complete non-ISO records match the existing generic bridge. ISO fields
+match public date properties; extended reference dates, BCE, bounds and week/year
+boundaries match the generic oracle. Malformed flags, codes, UTF-8, numeric fields
+and framing recover. Public tests verify exact outputs, one operation request,
+standard prototypes and all getters across memory growth. No new exclusions.
+
+`short-date-startup-results.json` uses nine fresh processes/profile, persistent
+compile cache disabled. Namespace payload above differs from browser export-all
+consumer sizes in throughput JSON. Production WASM is stripped; named-WASM
+profiles in short-date-profile-results.json are separate from production claims.
+Default TS executable AST remains equivalent; negative control still rejected.
+
+Fresh TS/native/native/TS controls use 100,000 warmup and nine samples of 300,000
+calls. MonthDay projection wins at 2.268/2.168 µs versus TS 2.692/2.593. Date field
+construction nearly ties at 1.376/1.391 versus TS 1.392/1.421 but loses the full
+matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
+longer controls and loses the full matrix. Instant rounding remains slower:
+0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
+workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.
+
+Fresh profiles leave date field construction dominated by JS (63.50% self time),
+with Rust 13.28% and GC 10.11%. createPlainDate is 19.46%, decodeISODate 10.46%.
+A private trusted date factory looked faster in shared-process diagnostics but
+had small/mixed isolated gains; discarded. Original checked PlainDate construction
+stays intact. YearMonth add now spends 10.65% in construction and 8.28% in duration
+preparation. Zoned updates retain generic decode/write costs (9.67%/4.75%), making
+typed field updates a candidate. Profile timings/sizes are not production claims.

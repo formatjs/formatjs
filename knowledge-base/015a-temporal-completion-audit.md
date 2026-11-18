@@ -427,3 +427,19 @@ full-matrix median win is unproven. Instant difference remains mixed: native
 2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
 2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
 wins do not establish all-workload completion.
+
+### ABI 22 typed short-date operations
+
+Current ABI 22 isolated checkpoint: YearMonth add 2.99 µs versus TS 5.62; YearMonth projection 1.42 versus 2.39; MonthDay projection 2.21 versus 2.73; date field construction 1.50 versus 1.45. Full matrix records 34/48 median wins; 14 workloads remain slower. Close-workload controls stay explicit; median counts are not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 517,885 gzip bytes (+1,130); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.62 ms, TS 19.50 ms. Full native calendar readiness 28.31 ms. Raw WASM changes +4,391 bytes.
+
+43 typed routes retain complete metadata and general/deferred snapshots. All calendars, arithmetic/projection semantics, extended ISO records, malformed packet recovery, public memory/prototype/getter behavior and all 66 targets pass against recorded hashes. Evidence: `benchmarks/temporal/short-date-*.json`. No new exclusions. All-workload goal remains open.
+
+Fresh TS/native/native/TS controls use 100,000 warmup and nine samples of 300,000
+calls. MonthDay projection wins at 2.268/2.168 µs versus TS 2.692/2.593. Date field
+construction nearly ties at 1.376/1.391 versus TS 1.392/1.421 but loses the full
+matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
+longer controls and loses the full matrix. Instant rounding remains slower:
+0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
+workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.

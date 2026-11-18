@@ -833,6 +833,87 @@ for (const source of [
 assert.throws(() => new Temporal.PlainDateTime(275760, 9, 14), RangeError)
 assert.throws(() => new Temporal.PlainDateTime(-271821, 4, 18), RangeError)
 
+const shortYearMonth = Temporal.PlainYearMonth.from('2020-02')
+const shortMonthDay = Temporal.PlainMonthDay.from('02-29')
+const shortMonth = Temporal.Duration.from('P1M')
+const shortYear = Temporal.Duration.from('P1Y')
+for (const [run, kind, expectedText] of [
+  [() => shortYearMonth.add(shortMonth), 'PlainYearMonth', '2020-03'],
+  [() => shortYearMonth.subtract(shortYear), 'PlainYearMonth', '2019-02'],
+  [() => shortYearMonth.toPlainDate({day: 31}), 'PlainDate', '2020-02-29'],
+  [() => shortMonthDay.toPlainDate({year: 2021}), 'PlainDate', '2021-02-28'],
+]) {
+  const before = countRequests()
+  const result = run()
+  assert.equal(
+    countRequests(),
+    before + 1,
+    'One complete Rust short-date operation'
+  )
+  assert.equal(Object.getPrototypeOf(result), Temporal[kind].prototype)
+  assert.equal(result.constructor, Temporal[kind])
+  core.memory.grow(1)
+  assert.equal(result.toString(), expectedText)
+  const date = kind === 'PlainYearMonth' ? result.toPlainDate({day: 1}) : result
+  const ns = date.toZonedDateTime('UTC').epochNanoseconds
+  const expected = JSON.parse(
+    query(
+      JSON.stringify({
+        op: 'calendarProperties',
+        calendar: 'iso8601',
+        epoch: Number(ns / 86_400_000_000_000n),
+        extended: true,
+      })
+    )
+  )
+  const fields =
+    kind === 'PlainYearMonth'
+      ? [
+          'year',
+          'month',
+          'monthCode',
+          'era',
+          'eraYear',
+          'daysInMonth',
+          'daysInYear',
+          'monthsInYear',
+          'inLeapYear',
+        ]
+      : [
+          'year',
+          'month',
+          'monthCode',
+          'day',
+          'era',
+          'eraYear',
+          'dayOfWeek',
+          'dayOfYear',
+          'daysInWeek',
+          'daysInMonth',
+          'daysInYear',
+          'monthsInYear',
+          'inLeapYear',
+          'weekOfYear',
+          'yearOfWeek',
+        ]
+  const complete = countRequests()
+  core.memory.grow(1)
+  for (const key of fields) {
+    if (expected.errors.includes(key))
+      assert.throws(() => result[key], RangeError)
+    else
+      assert.equal(
+        result[key],
+        key in expected.date ? expected.date[key] : expected.values[key]
+      )
+  }
+  assert.equal(
+    countRequests(),
+    complete,
+    'Short-date getters reuse complete fields'
+  )
+}
+
 const oneDayForZoned = Temporal.Duration.from({days: 1})
 const durationKeys = [
   'years',

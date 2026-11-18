@@ -62,7 +62,7 @@ fn read_calendar<'a>(reader: &mut Reader<'a>) -> Result<&'a str, i32> {
         super::STRINGS.get(usize::from(code)).copied().ok_or(2)
     }
 }
-fn difference_day(value: f64) -> Result<i64, Error> {
+fn epoch_day(value: f64) -> Result<i64, Error> {
     if !value.is_finite()
         || value.fract() != 0.0
         || value < i64::MIN as f64
@@ -73,6 +73,8 @@ fn difference_day(value: f64) -> Result<i64, Error> {
     Ok(value as i64)
 }
 enum Request<'a> {
+    AddYearMonth(f64, [f64; 10], bool, Overflow, &'a str),
+    ProjectShort(&'a str, f64, f64, &'a str),
     FormatZoned(
         i128,
         Precision,
@@ -154,6 +156,29 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "addPlainYearMonth" => {
+            let epoch = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let mut fields = [0.0; 10];
+            for value in &mut fields {
+                *value = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            }
+            let subtract = match reader.byte()? {
+                0 => false,
+                1 => true,
+                _ => return Err(2),
+            };
+            let overflow = match reader.byte()? {
+                0 => Overflow::Constrain,
+                1 => Overflow::Reject,
+                _ => return Err(2),
+            };
+            Request::AddYearMonth(epoch, fields, subtract, overflow, read_calendar(reader)?)
+        }
+        "yearMonthToDate" | "monthDayToDate" => {
+            let epoch = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            let field = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
+            Request::ProjectShort(operation, epoch, field, read_calendar(reader)?)
+        }
         "formatZonedDateTime" => {
             let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
             let precision = match reader.byte()? {
@@ -708,32 +733,68 @@ fn zoned_value(ns: i128, identifier: &str, calendar: &str) -> Result<ZonedValue,
         crate::ffi::resolve_calendar(calendar)?,
     ))
 }
-fn iso_date_time_record(ns: i128) -> Result<[u8; 48], Error> {
-    let fields = crate::IsoDateTime::from_epoch_nanoseconds(ns)?;
+fn iso_date_record(epoch: i64, year: i32, month: u8, day: u8) -> Result<[u8; 22], Error> {
     let calendar = crate::calendar::Calendar::Iso8601;
-    let epoch = ns.div_euclid(crate::NANOSECONDS_PER_DAY) as i64;
     let start = calendar
-        .start_of_year(fields.year)
+        .start_of_year(year)
         .map_err(crate::calendar_provider::error)?;
     let length = calendar
-        .days_in_month(fields.year, fields.month)
+        .days_in_month(year, month)
         .map_err(crate::calendar_provider::error)?;
     let weekday = (epoch + 3).rem_euclid(7) + 1;
     let thursday = epoch + 4 - weekday;
     let week_year = crate::calendar::iso_fields(thursday).0;
     let week = (thursday - crate::iso::epoch_day_from_iso(week_year, 1, 1)) / 7 + 1;
-    let leap = fields.year % 4 == 0 && (fields.year % 100 != 0 || fields.year % 400 == 0);
+    let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    let mut bytes = [0; 22];
+    bytes[0] = 11;
+    bytes[1..5].copy_from_slice(
+        &i32::try_from(epoch)
+            .map_err(|_| Error::OutOfRange)?
+            .to_le_bytes(),
+    );
+    bytes[5..9].copy_from_slice(&year.to_le_bytes());
+    bytes[9..13].copy_from_slice(&[month, day, weekday as u8, length]);
+    bytes[13..15].copy_from_slice(&(if leap { 366u16 } else { 365 }).to_le_bytes());
+    bytes[15..17].copy_from_slice(&((epoch - start + 1) as u16).to_le_bytes());
+    bytes[17] = week as u8;
+    bytes[18..22].copy_from_slice(&week_year.to_le_bytes());
+    Ok(bytes)
+}
+fn encode_iso_date(output: &mut Vec<u8>, epoch: i64) -> Result<(), Error> {
+    let (year, month, day) = crate::calendar::iso_fields(epoch);
+    output.extend_from_slice(&iso_date_record(epoch, year, month, day)?);
+    Ok(())
+}
+fn encode_short_date(
+    output: &mut Vec<u8>,
+    epoch: i64,
+    calendar: crate::CalendarRef<'_>,
+) -> Result<(), Error> {
+    if calendar.id() == "iso8601" {
+        encode_iso_date(output, epoch)
+    } else {
+        super::encode_date(
+            output,
+            epoch,
+            calendar.id(),
+            crate::ffi::partial_calendar_snapshot(calendar, epoch),
+        );
+        Ok(())
+    }
+}
+fn iso_date_time_record(ns: i128) -> Result<[u8; 48], Error> {
+    let fields = crate::IsoDateTime::from_epoch_nanoseconds(ns)?;
+    let epoch = ns.div_euclid(crate::NANOSECONDS_PER_DAY) as i64;
     let mut bytes = [0; 48];
     bytes[0] = 12;
     bytes[1..17].copy_from_slice(&ns.to_le_bytes());
-    bytes[17] = 11;
-    bytes[18..22].copy_from_slice(&(epoch as i32).to_le_bytes());
-    bytes[22..26].copy_from_slice(&fields.year.to_le_bytes());
-    bytes[26..30].copy_from_slice(&[fields.month, fields.day, weekday as u8, length]);
-    bytes[30..32].copy_from_slice(&(if leap { 366u16 } else { 365 }).to_le_bytes());
-    bytes[32..34].copy_from_slice(&((epoch - start + 1) as u16).to_le_bytes());
-    bytes[34] = week as u8;
-    bytes[35..39].copy_from_slice(&week_year.to_le_bytes());
+    bytes[17..39].copy_from_slice(&iso_date_record(
+        epoch,
+        fields.year,
+        fields.month,
+        fields.day,
+    )?);
     bytes[39..42].copy_from_slice(&[fields.hour, fields.minute, fields.second]);
     bytes[42..44].copy_from_slice(&((fields.nanosecond / 1_000_000) as u16).to_le_bytes());
     bytes[44..46].copy_from_slice(&((fields.nanosecond / 1000 % 1000) as u16).to_le_bytes());
@@ -776,6 +837,36 @@ fn encode_duration(output: &mut Vec<u8>, value: Duration) {
 }
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::AddYearMonth(epoch, fields, subtract, overflow, calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let value = PlainYearMonth::from_epoch_day_in(epoch_day(epoch)?, calendar)?;
+            let duration = duration(fields)?;
+            let result = if subtract {
+                value.checked_subtract(duration, overflow)?
+            } else {
+                value.checked_add(duration, overflow)?
+            };
+            let epoch = result.epoch_day();
+            encode_short_date(output, epoch, calendar)?;
+        }
+        Request::ProjectShort(operation, epoch, field, calendar) => {
+            let calendar = crate::ffi::resolve_calendar(calendar)?;
+            let epoch = epoch_day(epoch)?;
+            let result = if operation == "yearMonthToDate" {
+                let value = PlainYearMonth::from_epoch_day_in(epoch, calendar)?;
+                if !field.is_finite() || field.fract() != 0.0 || field < 1.0 {
+                    return Err(Error::InvalidDateTime);
+                }
+                value.to_plain_date(field.min(255.0) as u8, Overflow::Constrain)?
+            } else {
+                PlainMonthDay::from_epoch_day_in(epoch, calendar)?.to_plain_date(
+                    crate::ffi::calendar_field_number(field, false)?,
+                    Overflow::Constrain,
+                )?
+            };
+            let epoch = result.epoch_day();
+            encode_short_date(output, epoch, calendar)?;
+        }
         Request::FormatZoned(
             ns,
             precision,
@@ -807,8 +898,8 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
                 mode,
                 since,
             } = options;
-            let one = difference_day(one)?;
-            let other = difference_day(other)?;
+            let one = epoch_day(one)?;
+            let other = epoch_day(other)?;
             let result = if operation == "differencePlainYearMonth" {
                 let unit = |value| match value {
                     DateTimeUnit::Year => Ok(crate::YearMonthUnit::Year),
@@ -1135,25 +1226,13 @@ fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
                     .epoch_day(),
                 _ => return Err(Error::InvalidSyntax),
             };
-            let calendar = crate::ffi::resolve_calendar("iso8601")?;
-            super::encode_date(
-                output,
-                epoch,
-                "iso8601",
-                crate::ffi::calendar_snapshot(calendar, epoch)?,
-            );
+            encode_iso_date(output, epoch)?;
         }
         Request::CreateISODate(fields, month_code, overflow) => {
             let calendar = crate::calendar::Calendar::Iso8601;
             let fields = iso_fields(fields, month_code, overflow)?;
             let epoch = PlainDate::from_calendar_fields(calendar, fields, overflow)?.epoch_day();
-            let calendar = crate::ffi::resolve_calendar("iso8601")?;
-            super::encode_date(
-                output,
-                epoch,
-                "iso8601",
-                crate::ffi::calendar_snapshot(calendar, epoch)?,
-            );
+            encode_iso_date(output, epoch)?;
         }
         Request::ParseDate(operation, text) => {
             let calendar = crate::ffi::calendar_for_string(text)?;
