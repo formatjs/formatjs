@@ -50,9 +50,17 @@ fn difference_options(reader: &mut Reader<'_>) -> Result<DifferenceOptions, i32>
         },
     })
 }
-fn difference_text<'a>(reader: &mut Reader<'a>) -> Result<&'a str, i32> {
+fn read_text<'a>(reader: &mut Reader<'a>) -> Result<&'a str, i32> {
     let len = reader.length()?;
     core::str::from_utf8(reader.take(len)?).map_err(|_| 2)
+}
+fn read_calendar<'a>(reader: &mut Reader<'a>) -> Result<&'a str, i32> {
+    let code = u16::from_le_bytes(reader.take(2)?.try_into().map_err(|_| 2)?);
+    if code == u16::MAX {
+        read_text(reader)
+    } else {
+        super::STRINGS.get(usize::from(code)).copied().ok_or(2)
+    }
 }
 fn difference_day(value: f64) -> Result<i64, Error> {
     if !value.is_finite()
@@ -65,6 +73,16 @@ fn difference_day(value: f64) -> Result<i64, Error> {
     Ok(value as i64)
 }
 enum Request<'a> {
+    FormatZoned(
+        i128,
+        Precision,
+        RoundingMode,
+        CalendarName,
+        bool,
+        crate::TimeZoneName,
+        &'a str,
+        &'a str,
+    ),
     DifferenceDate(&'a str, f64, f64, DifferenceOptions, &'a str, &'a str),
     DifferenceNanoseconds(&'a str, i128, i128, DifferenceOptions, Option<&'a str>),
     Parse(&'a str),
@@ -136,13 +154,50 @@ fn read_iso_fields(
 }
 fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Request<'a>, i32> {
     let request = match operation {
+        "formatZonedDateTime" => {
+            let ns = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
+            let precision = match reader.byte()? {
+                255 => Precision::Auto,
+                254 => Precision::Minute,
+                value => Precision::Digits(value),
+            };
+            let mode = *MODES.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let names = [
+                CalendarName::Auto,
+                CalendarName::Always,
+                CalendarName::Never,
+                CalendarName::Critical,
+            ];
+            let name = *names.get(usize::from(reader.byte()?)).ok_or(2)?;
+            let offset = match reader.byte()? {
+                0 => false,
+                1 => true,
+                _ => return Err(2),
+            };
+            let zone_name = match reader.byte()? {
+                0 => crate::TimeZoneName::Auto,
+                1 => crate::TimeZoneName::Never,
+                2 => crate::TimeZoneName::Critical,
+                _ => return Err(2),
+            };
+            Request::FormatZoned(
+                ns,
+                precision,
+                mode,
+                name,
+                offset,
+                zone_name,
+                read_text(reader)?,
+                read_text(reader)?,
+            )
+        }
         "differencePlainYearMonth" | "differencePlainDate" => {
             let one = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
             let other = f64::from_le_bytes(reader.take(8)?.try_into().map_err(|_| 2)?);
             let options = difference_options(reader)?;
-            let calendar = difference_text(reader)?;
+            let calendar = read_text(reader)?;
             let other_calendar = if operation == "differencePlainYearMonth" {
-                difference_text(reader)?
+                read_text(reader)?
             } else {
                 calendar
             };
@@ -153,7 +208,7 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
             let other = i128::from_le_bytes(reader.take(16)?.try_into().map_err(|_| 2)?);
             let options = difference_options(reader)?;
             let calendar = if operation == "differencePlainDateTime" {
-                Some(difference_text(reader)?)
+                Some(read_text(reader)?)
             } else {
                 None
             };
@@ -415,8 +470,7 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
                 CalendarName::Critical,
             ];
             let name = *names.get(usize::from(reader.byte()?)).ok_or(2)?;
-            let len = reader.length()?;
-            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            let calendar = read_calendar(reader)?;
             Request::FormatDateTime(value, precision, mode, name, calendar)
         }
         "parsePlainDate" | "parsePlainYearMonth" | "parsePlainMonthDay" => {
@@ -444,8 +498,7 @@ fn read_request<'a>(operation: &'a str, reader: &mut Reader<'a>) -> Result<Reque
                 CalendarName::Critical,
             ];
             let name = *names.get(usize::from(reader.byte()?)).ok_or(2)?;
-            let len = reader.length()?;
-            let calendar = core::str::from_utf8(reader.take(len)?).map_err(|_| 2)?;
+            let calendar = read_calendar(reader)?;
             Request::FormatDate(operation, epoch, name, calendar)
         }
         "addPlainDateTime" => {
@@ -723,6 +776,28 @@ fn encode_duration(output: &mut Vec<u8>, value: Duration) {
 }
 fn execute(request: Request<'_>, output: &mut Vec<u8>) -> Result<(), Error> {
     match request {
+        Request::FormatZoned(
+            ns,
+            precision,
+            rounding_mode,
+            calendar_name,
+            offset,
+            time_zone_name,
+            identifier,
+            calendar,
+        ) => {
+            let value = zoned_value(ns, identifier, calendar)?;
+            write_text(
+                output,
+                value.format(crate::ZonedFormatOptions {
+                    precision,
+                    rounding_mode,
+                    calendar_name,
+                    offset,
+                    time_zone_name,
+                })?,
+            )?;
+        }
         Request::DifferenceDate(operation, one, other, options, calendar, other_calendar) => {
             let calendar = crate::ffi::resolve_calendar(calendar)?;
             let DifferenceOptions {

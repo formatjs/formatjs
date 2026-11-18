@@ -985,3 +985,224 @@ fn typed_differences_match_public_rounding_and_recover() {
         }
     }
 }
+
+#[test]
+fn typed_zoned_formatting_matches_public_options_and_recovers() {
+    use formatjs_temporal::{
+        CalendarName as C, Precision as P, RoundingMode as R, TimeZoneName as Z, TimeZoneRegistry,
+        ZonedDateTime, ZonedFormatOptions, ZonedParseOptions,
+    };
+    let modes = [
+        R::Ceil,
+        R::Floor,
+        R::Expand,
+        R::Trunc,
+        R::HalfCeil,
+        R::HalfFloor,
+        R::HalfExpand,
+        R::HalfTrunc,
+        R::HalfEven,
+    ];
+    let calendars = [C::Auto, C::Always, C::Never, C::Critical];
+    let names = [Z::Auto, Z::Never, Z::Critical];
+    let request = |ns: i128,
+                   precision: u8,
+                   mode: u8,
+                   name: u8,
+                   offset: bool,
+                   zone_name: u8,
+                   zone: &str,
+                   calendar: &str| {
+        let mut bytes = vec![opcode("formatZonedDateTime"), 10];
+        bytes.extend_from_slice(&ns.to_le_bytes());
+        bytes.extend_from_slice(&[precision, mode, name, u8::from(offset), zone_name]);
+        text(&mut bytes, zone);
+        text(&mut bytes, calendar);
+        bytes
+    };
+    for source in [
+        "2020-03-08T06:59:59.999999999Z[America/New_York]",
+        "2020-11-01T05:59:59.999999999Z[America/New_York]",
+        "1900-01-01T00:00Z[Europe/Paris]",
+        "1969-12-31T23:59:59.999999999Z[UTC]",
+        "2020-01-01T12:34:56.123456789+05:30[+05:30]",
+        "2020-01-01T12:34:56.123456789+01:00[Europe/Paris][u-ca=hebrew]",
+        "+275760-09-13T00:00Z[UTC]",
+        "-271821-04-20T00:00Z[UTC]",
+    ] {
+        let value = ZonedDateTime::parse(
+            source,
+            TimeZoneRegistry::compiled(),
+            ZonedParseOptions::default(),
+        )
+        .unwrap();
+        for precision in [255, 254, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9] {
+            let kind = match precision {
+                255 => P::Auto,
+                254 => P::Minute,
+                n => P::Digits(n),
+            };
+            for (mode, rounding_mode) in modes.into_iter().enumerate() {
+                for (name, calendar_name) in calendars.into_iter().enumerate() {
+                    for (zone_name, time_zone_name) in names.into_iter().enumerate() {
+                        for offset in [false, true] {
+                            let bytes = request(
+                                value.instant().epoch_nanoseconds(),
+                                precision,
+                                mode as u8,
+                                name as u8,
+                                offset,
+                                zone_name as u8,
+                                value.time_zone().identifier(),
+                                value.calendar_id(),
+                            );
+                            let (status, result) = call(&bytes);
+                            match value.format(ZonedFormatOptions {
+                                precision: kind,
+                                rounding_mode,
+                                calendar_name,
+                                offset,
+                                time_zone_name,
+                            }) {
+                                Ok(expected) => {
+                                    let expected = expected.to_string();
+                                    assert_eq!(status, 0);
+                                    assert_eq!(result[0], 4);
+                                    assert_eq!(
+                                        u32::from_le_bytes(result[1..5].try_into().unwrap())
+                                            as usize,
+                                        expected.len()
+                                    );
+                                    assert_eq!(&result[5..], expected.as_bytes());
+                                }
+                                Err(_) => assert_eq!(status, 1),
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let valid = request(-1, 255, 3, 0, true, 0, "UTC", "iso8601");
+    let expected = call(&valid);
+    for (offset, byte) in [(19, 9), (20, 4), (21, 2), (22, 3), (27, 255)] {
+        let mut bad = valid.clone();
+        bad[offset] = byte;
+        assert_eq!(call(&bad).0, 2);
+        assert_eq!(call(&valid), expected);
+    }
+    let mut bad_precision = valid.clone();
+    bad_precision[18] = 10;
+    let mut bad_zone = valid.clone();
+    bad_zone[27] = b'X';
+    let mut bad_calendar = valid.clone();
+    bad_calendar[34] = b'X';
+    let mut bad_ns = valid.clone();
+    bad_ns[2..18].copy_from_slice(&i128::MIN.to_le_bytes());
+    for bad in [bad_precision, bad_zone, bad_calendar, bad_ns] {
+        assert_eq!(call(&bad).0, 1);
+        assert_eq!(call(&valid), expected);
+    }
+    let mut trailing = valid.clone();
+    trailing.push(0);
+    for bad in [trailing, valid[..valid.len() - 1].to_vec()] {
+        assert_eq!(call(&bad).0, 2);
+        assert_eq!(call(&valid), expected);
+    }
+}
+
+#[test]
+fn typed_calendar_formats_accept_interned_and_utf8_ids() {
+    use formatjs_temporal::{
+        CalendarName, CalendarProvider, CalendarRegistry, PlainDate, PlainDateTime, PlainMonthDay,
+        PlainYearMonth, Precision, RoundingMode,
+    };
+    let registry = CalendarRegistry::compiled().unwrap();
+    for calendar in registry.calendars() {
+        let identifier = calendar.id();
+        let code = binary::STRINGS
+            .iter()
+            .position(|id| *id == identifier)
+            .unwrap() as u16;
+        for epoch in [-1i64, 0, 19792] {
+            for (name, calendar_name) in [
+                CalendarName::Auto,
+                CalendarName::Always,
+                CalendarName::Never,
+                CalendarName::Critical,
+            ]
+            .into_iter()
+            .enumerate()
+            {
+                for operation in [
+                    "formatPlainDate",
+                    "formatPlainYearMonth",
+                    "formatPlainMonthDay",
+                    "formatPlainDateTime",
+                ] {
+                    let mut bytes = vec![opcode(operation), 10];
+                    let expected = if operation == "formatPlainDateTime" {
+                        let ns = i128::from(epoch) * 86_400_000_000_000 + 45_296_123_456_789;
+                        bytes.extend_from_slice(&ns.to_le_bytes());
+                        bytes.extend_from_slice(&[6, 3, name as u8]);
+                        PlainDateTime::from_epoch_nanoseconds_in(ns, calendar)
+                            .unwrap()
+                            .format(Precision::Digits(6), RoundingMode::Trunc)
+                            .unwrap()
+                            .with_calendar_name(calendar_name)
+                            .to_string()
+                    } else {
+                        bytes.extend_from_slice(&(epoch as f64).to_le_bytes());
+                        bytes.push(name as u8);
+                        match operation {
+                            "formatPlainDate" => PlainDate::from_epoch_day_in(epoch, calendar)
+                                .unwrap()
+                                .format(calendar_name)
+                                .to_string(),
+                            "formatPlainYearMonth" => {
+                                PlainYearMonth::from_epoch_day_in(epoch, calendar)
+                                    .unwrap()
+                                    .format(calendar_name)
+                                    .to_string()
+                            }
+                            _ => PlainMonthDay::from_epoch_day_in(epoch, calendar)
+                                .unwrap()
+                                .format(calendar_name)
+                                .to_string(),
+                        }
+                    };
+                    let mut utf8 = bytes.clone();
+                    utf8.extend_from_slice(&u16::MAX.to_le_bytes());
+                    text(&mut utf8, identifier);
+                    let mut interned = bytes.clone();
+                    interned.extend_from_slice(&code.to_le_bytes());
+                    assert_eq!(call(&interned), call(&utf8));
+                    let (status, result) = call(&interned);
+                    assert_eq!(status, 0);
+                    assert_eq!(result[0], 4);
+                    assert_eq!(
+                        u32::from_le_bytes(result[1..5].try_into().unwrap()) as usize,
+                        expected.len()
+                    );
+                    assert_eq!(&result[5..], expected.as_bytes());
+                    for bad_code in [65534u16, 0] {
+                        let mut bad = bytes.clone();
+                        bad.extend_from_slice(&bad_code.to_le_bytes());
+                        assert_eq!(call(&bad).0, if bad_code == 0 { 1 } else { 2 });
+                    }
+                    let mut malformed = bytes.clone();
+                    malformed.extend_from_slice(&u16::MAX.to_le_bytes());
+                    malformed.extend_from_slice(&1u32.to_le_bytes());
+                    malformed.push(255);
+                    assert_eq!(call(&malformed).0, 2);
+                    let mut unknown = bytes.clone();
+                    unknown.extend_from_slice(&u16::MAX.to_le_bytes());
+                    text(&mut unknown, "unknown");
+                    assert_eq!(call(&unknown).0, 1);
+                    assert_eq!(call(&interned).0, 0);
+                    assert_eq!(call(&interned[..interned.len() - 1]).0, 2);
+                }
+            }
+        }
+    }
+}

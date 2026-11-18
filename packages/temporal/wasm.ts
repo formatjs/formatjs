@@ -63,7 +63,7 @@ export function createWasmQuery(instance: WebAssembly.Instance): WasmQuery {
   if (
     !(core.memory instanceof Memory) ||
     typeof core.temporal_abi_version !== 'function' ||
-    core.temporal_abi_version() !== 20 ||
+    core.temporal_abi_version() !== 21 ||
     typeof core.temporal_alloc !== 'function' ||
     typeof core.temporal_free !== 'function' ||
     typeof core.temporal_query !== 'function'
@@ -125,6 +125,7 @@ const asSigned64 = BigInt.asIntN
 const readNumber = Function.prototype.call.bind(View.prototype.getFloat64)
 const read16 = Function.prototype.call.bind(View.prototype.getUint16)
 const read32 = Function.prototype.call.bind(View.prototype.getUint32)
+const write16 = Function.prototype.call.bind(View.prototype.setUint16)
 const write32 = Function.prototype.call.bind(View.prototype.setUint32)
 const readSigned = Function.prototype.call.bind(View.prototype.getBigInt64)
 const readUnsigned = Function.prototype.call.bind(View.prototype.getBigUint64)
@@ -470,10 +471,7 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
   let fastBytes: Uint8Array
   let fastPointer = -1,
     fastCapacity = 0
-  let parseBytes: Uint8Array,
-    zoneBytes: Uint8Array,
-    calendarBytes: Uint8Array,
-    formatCalendarBytes: Uint8Array
+  let parseBytes: Uint8Array, zoneBytes: Uint8Array, calendarBytes: Uint8Array
   function fastMemory(): void {
     const memory = buffer()
     if (memory !== fastBuffer) {
@@ -500,7 +498,6 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
       parseBytes = new Bytes(fastBuffer!, pointer + 6, capacity - 6)
       zoneBytes = new Bytes(fastBuffer!, pointer + 33, capacity - 33)
       calendarBytes = new Bytes(fastBuffer!, pointer + 96, capacity - 96)
-      formatCalendarBytes = new Bytes(fastBuffer!, pointer + 15, capacity - 15)
     }
     fastBytes[pointer] = code
     fastBytes[pointer + 1] = 10
@@ -543,16 +540,32 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
   const disambiguations = ['compatible', 'earlier', 'later', 'reject']
   const offsetOptions = ['prefer', 'use', 'ignore', 'reject']
   const calendarNames = ['auto', 'always', 'never', 'critical']
+  function appendCalendar(
+    pointer: number,
+    calendar: string,
+    code: number | undefined
+  ): number {
+    write16(fastView, pointer, code === undefined ? 65535 : code, true)
+    if (code !== undefined) return pointer + 2
+    const encoded = putText(
+      encoder,
+      calendar,
+      new Bytes(fastBuffer!, pointer + 6, calendar.length * 3)
+    )
+    write32(fastView, pointer + 2, encoded.written, true)
+    return pointer + 6 + encoded.written
+  }
   invoke.formatDate = (operation, slot, calendarName) => {
+    const code = stringCodes[slot.calendar]
     const pointer = begin(
       operationCodes[operation],
-      15 + slot.calendar.length * 3
+      code === undefined ? 17 + slot.calendar.length * 3 : 13
     )
     writeNumber(fastView, pointer + 2, slot.epochDay, true)
     fastBytes[pointer + 10] = arrayIndex(calendarNames, calendarName)
-    const encoded = putText(encoder, slot.calendar, formatCalendarBytes)
-    write32(fastView, pointer + 11, encoded.written, true)
-    const result = exchange(15 + encoded.written)
+    const result = exchange(
+      appendCalendar(pointer + 11, slot.calendar, code) - pointer
+    )
     if (fastBytes[result] !== 4)
       throw new BadType('Invalid Temporal WASM response')
     return getText(
@@ -614,6 +627,7 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     const daysInYear = read16(fastView, result + 30, true)
     return {
       epochNanoseconds: ns,
+      epochDay: read32(fastView, result + 18, true) | 0,
       calendar: 'iso8601',
       properties: {
         date: {
@@ -952,6 +966,47 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     const result = exchange(6 + encoded.written)
     return dateTimeResult(result)
   }
+  invoke.formatZonedDateTime = (
+    slot,
+    precision,
+    mode,
+    calendarName,
+    offset,
+    timeZoneName
+  ) => {
+    const pointer = begin(
+      operationCodes.formatZonedDateTime,
+      31 + (slot.timeZone.length + slot.calendar.length) * 3
+    )
+    integer(pointer + 2, slot.epochNanoseconds)
+    fastBytes[pointer + 18] =
+      precision === 'auto' ? 255 : precision === 'minute' ? 254 : precision
+    fastBytes[pointer + 19] = arrayIndex(modes, mode)
+    fastBytes[pointer + 20] = arrayIndex(calendarNames, calendarName)
+    fastBytes[pointer + 21] = offset ? 1 : 0
+    fastBytes[pointer + 22] =
+      timeZoneName === 'never' ? 1 : timeZoneName === 'critical' ? 2 : 0
+    const zone = putText(
+      encoder,
+      slot.timeZone,
+      new Bytes(fastBuffer!, pointer + 27, slot.timeZone.length * 3)
+    )
+    write32(fastView, pointer + 23, zone.written, true)
+    const next = pointer + 27 + zone.written
+    const calendar = putText(
+      encoder,
+      slot.calendar,
+      new Bytes(fastBuffer!, next + 4, slot.calendar.length * 3)
+    )
+    write32(fastView, next, calendar.written, true)
+    const result = exchange(31 + zone.written + calendar.written)
+    if (fastBytes[result] !== 4)
+      throw new BadType('Invalid Temporal WASM response')
+    return getText(
+      decoder,
+      new Bytes(fastBuffer!, result + 5, read32(fastView, result + 1, true))
+    )
+  }
   invoke.formatPlainDateTime = (
     value,
     calendar,
@@ -959,22 +1014,19 @@ export function createWasmCall(instance: WebAssembly.Instance): NativeCall {
     mode,
     calendarName
   ) => {
+    const code = stringCodes[calendar]
     const pointer = begin(
       operationCodes.formatPlainDateTime,
-      25 + calendar.length * 3
+      code === undefined ? 27 + calendar.length * 3 : 23
     )
     integer(pointer + 2, value)
     fastBytes[pointer + 18] =
       precision === 'auto' ? 255 : precision === 'minute' ? 254 : precision
     fastBytes[pointer + 19] = arrayIndex(modes, mode)
     fastBytes[pointer + 20] = arrayIndex(calendarNames, calendarName)
-    const encoded = putText(
-      encoder,
-      calendar,
-      new Bytes(fastBuffer!, pointer + 25, fastCapacity - 25)
+    const result = exchange(
+      appendCalendar(pointer + 21, calendar, code) - pointer
     )
-    write32(fastView, pointer + 21, encoded.written, true)
-    const result = exchange(25 + encoded.written)
     if (fastBytes[result] !== 4)
       throw new BadType('Invalid Temporal WASM response')
     return getText(

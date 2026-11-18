@@ -2140,3 +2140,72 @@ DateTime round/format spends 10.02% in createPlainDateTime and 9.55% in
 dateTimeResult. Instant difference retains allocation/formatting costs:
 createNativeDuration 8.59%, formatDuration wrapper 8.67%, result decoding 5.45%.
 Profiles guide the next changes; their timings/sizes are not production claims.
+
+## Typed zoned formatting
+
+ABI 21 adds direct zoned formatting: 40 typed routes, unchanged 69 operations.
+Rust calls its public formatter and returns the complete string, preserving all
+precision/rounding/annotation policies and offsets after rounding across DST.
+Four plain date format requests reuse the existing interned calendar IDs with
+strict UTF-8 fallback. No new strings, data or cache. Native DateTime construction
+wraps private validated slots directly; complete snapshots stay eager. Bindings retain
+the ISO epoch day already returned by Rust, removing JS BigInt division, a weak-map
+lookup and a second private date-slot allocation. Numeric
+constructors and observable JS option/coercion order remain checked. SDK JSON
+stays compatible; pair WASM binary and JS adapter.
+
+Current ABI 21 isolated checkpoint: zoned format 1.93 µs versus TS 2.10; DateTime parse 2.00 versus 2.40; DateTime round/format 2.50 versus 1.64. Full matrix records 31/48 median wins; 17 workloads remain slower. Close rounding/difference controls stay explicit; median count is not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,755 gzip bytes (+748); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.39 ms, TS 19.60 ms. Full native calendar readiness 28.05 ms. Raw WASM grows 3,679 bytes.
+
+`format-experiments.json` retains four shared-process diagnostic stages and four
+alternating implementation controls. The private DateTime factory has modest rounding gains;
+parsing overlaps in isolated controls, so its earlier shared-process win was not
+stable proof. Longer trusted/checked/checked/trusted runs measure rounding
+2.412/2.361 versus 2.509/2.493 µs. Calendar-ID controls keep the same trusted factory
+and compare UTF-8/interned/interned/UTF-8: YearMonth format 0.606/0.581 versus
+0.657/0.663 µs; MonthDay 0.582/0.560 versus 0.629/0.638. Neither short format is
+assumed faster than TS from these controls.
+
+Epoch-day reuse has separate derived/Rust/Rust/derived controls: DateTime parsing
+1.844/1.848 versus 2.879/2.883 µs. Zoned formatting stays 1.788–1.801 across
+variants. An intermediate parsing profile spent 17.12% in dateSlot and 14.43% in
+GC; the old bindings discarded the Rust epoch day and rebuilt a second slot.
+All complete Rust fields stay retained. Earlier factory-only parsing results
+remain mixed; this control isolates the additional epoch-day change.
+
+`format-hillclimb-results.json` records all 48 fresh sequential TS/native workloads,
+eight varying inputs/parity, 20,000 warmup and nine samples of 50,000 calls;
+transitions use 1,000 warmup and nine samples of 5,000. Pinned comparison throughput
+remains explicitly retained from the earlier Instant checkpoint, through
+differences-hillclimb-results.json. All slower workload ratios stay explicit.
+
+Raw controls compare the public Rust zoned formatter across precisions, nine
+rounding modes, annotation policies, DST gap/fold boundaries, historical/fixed
+offsets, Hebrew and instant bounds. All compiled calendars compare compact and
+UTF-8 plain format packets against public formatting. Invalid codes, UTF-8,
+precision, identifiers, range and framing recover. Public controls cover exact
+DST outputs, complete DateTime fields after memory growth, clones, prototypes and
+numeric constructor bounds. No new conformance exclusions.
+
+`format-startup-results.json` uses nine fresh processes/profile with persistent
+compile cache disabled. Namespace sizes above differ from browser export-all
+consumer sizes in throughput JSON. Production WASM is stripped; named-WASM
+profiles in `format-profile-results.json` are separate from production claims.
+Default TS executable AST remains equivalent; negative control stays rejected.
+
+Current fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. DateTime parsing wins: native 1.821/1.833 µs versus TS 2.569/2.625.
+Instant rounding remains slower: native 0.624/0.648 versus TS 0.597/0.581. Its
+full-matrix median win is unproven. Instant difference remains mixed: native
+2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
+2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
+wins do not establish all-workload completion.
+
+Final profiles retain named-WASM attribution separately from production timings.
+DateTime parsing now spends 15.46% in NativePlainDateTime, 10.80% in dateTimeResult
+and 10.34% in GC. The old dateSlot recomputation motivated epoch-day reuse; its
+causal A/B controls are retained. DateTime round/format still spends 10.49% in
+construction and 10.16% in result decoding. YearMonth format spends 9.55% in
+Text.write_str, 6.20% in std fmt.write and 6.08% in each UTF-8 decoder frame.
+These remaining allocation/formatting costs guide the next changes.

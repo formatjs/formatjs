@@ -125,10 +125,23 @@ function read(item: unknown): DateTimeSlot {
   if (!slot) throw new TypeError('Invalid PlainDateTime receiver')
   return slot
 }
+const NativePlainDateTime = function (
+  this: PlainDateTimeObject,
+  slot: DateTimeSlot
+) {
+  setDateTimeSlot(this, slot)
+}
 export function createPlainDateTime(
   input: bigint | DateTimeSlot,
   calendar: string
 ): PlainDateTimeObject {
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    typeof input !== 'bigint'
+  )
+    return new (NativePlainDateTime as unknown as new (
+      slot: DateTimeSlot
+    ) => PlainDateTimeObject)(input)
   const value = typeof input === 'bigint' ? input : input.epochNanoseconds
   checkDateTime(value)
   const result = Object.create(
@@ -145,6 +158,11 @@ const dateSlots = new WeakMap<
   {epochDay: number; calendar: string; properties?: DateTimeSlot['properties']}
 >()
 function dateSlot(slot: DateTimeSlot) {
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    slot.epochDay !== undefined
+  )
+    return slot as DateTimeSlot & {epochDay: number}
   let value = dateSlots.get(slot)
   if (!value) {
     value = {
@@ -504,6 +522,8 @@ class PlainDateTimeValue {
     throw new TypeError('Cannot convert Temporal.PlainDateTime to primitive')
   }
 }
+if (import.meta.formatjsTemporalNativeData === true)
+  NativePlainDateTime.prototype = PlainDateTimeValue.prototype
 const localeStringIntrinsic = PlainDateTimeValue.prototype.toString
 
 Object.defineProperty(PlainDateTimeValue, 'name', {

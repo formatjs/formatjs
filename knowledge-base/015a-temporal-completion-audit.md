@@ -411,3 +411,19 @@ TS 0.594/0.575. Its full-matrix median win is noisy and unproven. Instant differ
 wins those controls at 2.474/2.486 versus TS 2.646/2.535, but loses the full matrix
 at 2.538 versus TS 2.501. Keep it unresolved. The 27/48 raw median count is not a
 stable-win claim: all 21 raw slower cases plus rounding remain explicit.
+
+### ABI 21 typed zoned formatting
+
+Current ABI 21 isolated checkpoint: zoned format 1.93 µs versus TS 2.10; DateTime parse 2.00 versus 2.40; DateTime round/format 2.50 versus 1.64. Full matrix records 31/48 median wins; 17 workloads remain slower. Close rounding/difference controls stay explicit; median count is not stable-win proof. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable AST matches baseline.
+
+Native Node namespace is 516,755 gzip bytes (+748); TS 39,692, using host Intl. Native owns calendar/timezone data. ISO/timezone readiness: native 17.39 ms, TS 19.60 ms. Full native calendar readiness 28.05 ms. Raw WASM grows 3,679 bytes.
+
+40 typed routes retain complete results. Zoned formatting policies, compact/UTF-8 calendar identifiers, public memory/prototype/clone/numeric bounds and all 66 targets pass against recorded code hashes. Alternating controls support modest DateTime rounding and short-format encoding gains; shared-process parsing gains were not stable proof. Evidence: `benchmarks/temporal/format-*.json`. No new exclusions. All-workload goal remains open.
+
+Current fresh TS/native/native/TS controls use 100,000 warmup and nine samples of
+300,000 calls. DateTime parsing wins: native 1.821/1.833 µs versus TS 2.569/2.625.
+Instant rounding remains slower: native 0.624/0.648 versus TS 0.597/0.581. Its
+full-matrix median win is unproven. Instant difference remains mixed: native
+2.507/2.572 versus TS 2.611/2.517, while full matrix loses at 2.521 versus TS
+2.429. All 17 raw slower workloads plus rounding stay explicit. Raw 31/48 median
+wins do not establish all-workload completion.

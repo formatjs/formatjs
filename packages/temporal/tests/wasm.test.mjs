@@ -722,6 +722,117 @@ for (const [source, fields, expected] of [
   assert.equal(result.toString(), expected)
 }
 
+for (const [source, options, expected] of [
+  [
+    '2020-03-08T06:59:59.999999999Z[America/New_York]',
+    {smallestUnit: 'second', roundingMode: 'ceil'},
+    '2020-03-08T03:00:00-04:00[America/New_York]',
+  ],
+  [
+    '2020-11-01T05:59:59.999999999Z[America/New_York]',
+    {smallestUnit: 'second', roundingMode: 'ceil'},
+    '2020-11-01T01:00:00-05:00[America/New_York]',
+  ],
+  [
+    '2020-01-01T12:34:56.123456789+01:00[Europe/Paris][u-ca=hebrew]',
+    {
+      smallestUnit: 'minute',
+      offset: 'never',
+      timeZoneName: 'critical',
+      calendarName: 'critical',
+    },
+    '2020-01-01T12:34[!Europe/Paris][!u-ca=hebrew]',
+  ],
+]) {
+  const value = Temporal.ZonedDateTime.from(source)
+  const before = countRequests()
+  core.memory.grow(1)
+  const result = value.toString(options)
+  assert.equal(countRequests(), before + 1, 'One complete Rust zoned format')
+  core.memory.grow(1)
+  assert.equal(result, expected)
+}
+for (const source of [
+  '2021-01-01T00:00:00.123456789',
+  '2020-12-31T23:59:59.999999999',
+  '0000-02-29T00:00:00',
+  '-000001-01-01T00:00:00',
+  '-271821-04-20T00:00:00',
+  '+275760-09-13T00:00:00',
+]) {
+  const value = Temporal.PlainDateTime.from(source)
+  const copy = Temporal.PlainDateTime.from(value)
+  assert.notEqual(copy, value)
+  for (const result of [
+    copy,
+    value.round('nanosecond'),
+    value.add({nanoseconds: 0}),
+  ]) {
+    assert.equal(
+      Object.getPrototypeOf(result),
+      Temporal.PlainDateTime.prototype
+    )
+    assert.equal(result.constructor, Temporal.PlainDateTime)
+    const ns = result.toZonedDateTime('UTC').epochNanoseconds
+    const day =
+      ns / 86_400_000_000_000n - (ns < 0 && ns % 86_400_000_000_000n ? 1n : 0n)
+    const expected = JSON.parse(
+      query(
+        JSON.stringify({
+          op: 'calendarProperties',
+          calendar: 'iso8601',
+          epoch: Number(day),
+          extended: false,
+          nanoseconds: String(ns),
+        })
+      )
+    )
+    const before = countRequests()
+    core.memory.grow(1)
+    for (const key of [
+      'year',
+      'month',
+      'monthCode',
+      'day',
+      'era',
+      'eraYear',
+      'dayOfWeek',
+      'dayOfYear',
+      'daysInWeek',
+      'daysInMonth',
+      'daysInYear',
+      'monthsInYear',
+      'inLeapYear',
+      'weekOfYear',
+      'yearOfWeek',
+      'hour',
+      'minute',
+      'second',
+      'millisecond',
+      'microsecond',
+      'nanosecond',
+    ]) {
+      if (expected.errors.includes(key))
+        assert.throws(() => result[key], RangeError)
+      else
+        assert.equal(
+          result[key],
+          expected.date && key in expected.date
+            ? expected.date[key]
+            : expected.values[key],
+          source + ' ' + key
+        )
+    }
+    assert.equal(
+      countRequests(),
+      before,
+      'Complete DateTime fields survive memory growth'
+    )
+  }
+}
+assert.throws(() => new Temporal.PlainDateTime(275760, 9, 14), RangeError)
+assert.throws(() => new Temporal.PlainDateTime(-271821, 4, 18), RangeError)
+
 const oneDayForZoned = Temporal.Duration.from({days: 1})
 const durationKeys = [
   'years',

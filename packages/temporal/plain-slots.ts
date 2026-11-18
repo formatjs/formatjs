@@ -9,6 +9,7 @@ export interface DateSlot {
   readonly calendar: string
 }
 export interface DateTimeSlot {
+  readonly epochDay?: number
   readonly properties?: NativeDateSnapshot
   readonly epochNanoseconds: bigint
   readonly calendar: string

@@ -56,6 +56,7 @@ export interface NativeCall {
   formatDuration?: NativeTemporal['formatDuration']
   parsePlainDateTime?: NativeTemporal['parsePlainDateTime']
   formatPlainDateTime?: NativeTemporal['formatPlainDateTime']
+  formatZonedDateTime?: NativeTemporal['formatZonedDateTime']
   createISODate?: NativeTemporal['createISODate']
   parseInstant?: NativeTemporal['parseInstant']
   formatInstant?: NativeTemporal['formatInstant']
@@ -711,14 +712,23 @@ export function configureNativeTemporal(
       offset,
       timeZoneName
     ) =>
-      call('formatZonedDateTime', {
-        value: zonedFields(slot),
-        precision,
-        mode,
-        calendarName,
-        offset,
-        timeZoneName,
-      }),
+      invoke?.formatZonedDateTime
+        ? invoke.formatZonedDateTime(
+            slot,
+            precision,
+            mode,
+            calendarName,
+            offset,
+            timeZoneName
+          )
+        : call('formatZonedDateTime', {
+            value: zonedFields(slot),
+            precision,
+            mode,
+            calendarName,
+            offset,
+            timeZoneName,
+          }),
     createISODate: (fields, overflow) => {
       if (fields.year === undefined) throw new BadType('Year required')
       if (fields.day === undefined) throw new BadType('Day required')
