@@ -321,11 +321,7 @@ class PlainDateValue {
         slot.calendar
       )
     }
-    const fields = mergeDateFields(
-      slot.calendar,
-      {...dateFields(slot)},
-      partial
-    )
+    const fields = mergeDateFields(slot.calendar, dateFields(slot), partial)
     return createPlainDate(
       dayFromFields(slot.calendar, fields, overflowOption(options)),
       slot.calendar

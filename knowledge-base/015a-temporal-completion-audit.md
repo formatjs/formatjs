@@ -6,7 +6,16 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current ISO optimization checkpoint: 94 Rust/TS/ICU/Hermes/Test262 targets pass,
+Current record-preparation checkpoint: 42 focused targets pass, including eight
+full Node suites, sixteen pure-TS Hermes source/bytecode suites, ten native SDK
+Hermes suites, ICU/public unit checks and package/type/export checks. Native Rust
+still wins 25/25 against this TS version. JS raw-median wins rise to 33/48 basic,
+45/48 official using frozen reference samples. Consumer size is 40,219 gzip bytes;
+startup is 22.90 ms. Remaining losses and rounding variability keep the performance
+goal open. See
+[`record-preparation-experiments.json`](../benchmarks/temporal/record-preparation-experiments.json).
+
+Preceding ISO optimization checkpoint: 94 Rust/TS/ICU/Hermes/Test262 targets pass,
 including full TS Hermes source/bytecode and Intl compatibility gates.
 One-pass Gregorian conversion, private ISO field reuse and date-only formatting
 improve date getters about 7x and formatting 5x in alternating controls.

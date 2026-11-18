@@ -11,6 +11,7 @@ import {
 } from '#packages/temporal/relative-duration.js'
 import {
   durationFieldNames,
+  durationFieldReadOrder,
   durationNanoseconds,
   durationTotalNumber,
   durationSign,
@@ -68,7 +69,7 @@ export function toDurationFields(value: unknown): DurationFields {
   const existing = getSlot(value as object)
   if (existing) return {...existing}
   if (typeof value === 'string') return parseDurationString(value)
-  return validateDuration({...zeroDuration(), ...partialDuration(value)})
+  return toNativeDurationFields(value)
 }
 /** @internal Validate before options getters; no-options operations defer to Rust. */
 export function toNativeDurationFields(
@@ -85,8 +86,8 @@ export function toNativeDurationFields(
     throw new TypeError('Duration fields must be an object')
   const fields = zeroDuration()
   let found = false
-  for (let index = 0; index < nativeDurationFields.length; index++) {
-    const field = nativeDurationFields[index]
+  for (let index = 0; index < durationFieldReadOrder.length; index++) {
+    const field = durationFieldReadOrder[index]
     const number = (value as Record<string, unknown>)[field]
     if (number !== undefined) {
       fields[field] = integralDurationNumber(number)
@@ -96,19 +97,7 @@ export function toNativeDurationFields(
   if (!found) throw new TypeError('Duration fields required')
   return validate ? validateDuration(fields) : fields
 }
-const nativeDurationFields = [
-  'days',
-  'hours',
-  'microseconds',
-  'milliseconds',
-  'minutes',
-  'months',
-  'nanoseconds',
-  'seconds',
-  'weeks',
-  'years',
-] as const
-// Rust duration fields are Number-rounded and validated before transfer.
+// Fields must already be normalized and validated.
 export function createNativeDuration(fields: DurationFields): DurationObject {
   const value = Object.create(DurationValue.prototype) as DurationObject
   setSlot(value, fields)
@@ -196,7 +185,7 @@ class DurationValue {
       if (typeof value === 'string')
         return createNativeDuration(parseDurationString(value))
     }
-    return createDuration(toDurationFields(value))
+    return createNativeDuration(toDurationFields(value))
   }
   get sign(): number {
     return durationSign(read(this))

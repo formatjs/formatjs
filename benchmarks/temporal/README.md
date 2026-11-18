@@ -30,7 +30,24 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-Latest TS experiment: one Gregorian year conversion per calendar lookup, private
+Latest record-preparation snapshot: TS wins 33/48 raw medians against basic and
+45/48 against official, using the same counts and frozen reference samples.
+Private field merging keeps fast record shapes, callers avoid redundant copies,
+duration readers share a fixed property order, and `Duration.from` avoids duplicate
+validation. Alternating controls confirm update gains; targeted addition/creation
+measurements and raw profiles remain in
+[`record-preparation-experiments.json`](record-preparation-experiments.json).
+The inherited-era and observable-`Array.sort` regressions have public API tests.
+
+All 42 focused Node/ICU/package/Hermes targets pass. Native Rust still wins 25/25
+against this TS version. Consumer size is 40,219 gzip bytes (+144 over the ISO
+checkpoint); import plus first operation is 22.90 ms. See
+[JS48](record-preparation-results.json), [native25](native-ts-records-results.json),
+[startup](records-startup-results.json) and [sizes](records-size-results.json).
+Fifteen basic-reference and three official-reference losses remain. Rounding
+variability and close cases still need final fresh comparisons; goal stays open.
+
+Earlier ISO experiment: one Gregorian year conversion per calendar lookup, private
 ISO fields reused by getters, direct Gregorian derived fields and date-only
 serialization. Alternating parent/current/current/parent controls put eight date
 getters at 0.34–0.35 µs versus 2.44–2.65 µs; date formatting at 0.19 µs versus

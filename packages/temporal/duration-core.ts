@@ -11,6 +11,18 @@ export const durationFieldNames = [
   'microseconds',
   'nanoseconds',
 ] as const
+export const durationFieldReadOrder = [
+  'days',
+  'hours',
+  'microseconds',
+  'milliseconds',
+  'minutes',
+  'months',
+  'nanoseconds',
+  'seconds',
+  'weeks',
+  'years',
+] as const
 export type DurationField = (typeof durationFieldNames)[number]
 export type DurationFields = Record<DurationField, number>
 export const maxDurationNanoseconds = 9_007_199_254_740_992_000_000_000n
@@ -92,9 +104,8 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
     throw new TypeError('Duration fields must be an object')
   const result: Partial<DurationFields> = Object.create(null)
   let found = false
-  const sorted = durationFieldNames.slice().sort()
-  for (let index = 0; index < sorted.length; index++) {
-    const field = sorted[index]
+  for (let index = 0; index < durationFieldReadOrder.length; index++) {
+    const field = durationFieldReadOrder[index]
     const number = (value as Record<string, unknown>)[field]
     if (number !== undefined) {
       result[field] = integralDurationNumber(number)

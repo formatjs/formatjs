@@ -5,6 +5,21 @@ import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Duration, Instant} from '#packages/temporal/index.js'
 import {roundDuration, type RoundingMode} from '#packages/temporal/rounding.js'
 
+it('does not observe array sorting while reading duration fields', () => {
+  const value = Duration.from('P1DT2H')
+  const original = Array.prototype.sort
+  let changed: ReturnType<typeof Duration.from> | undefined
+  Array.prototype.sort = function () {
+    throw new Error('Observable Array sort')
+  }
+  try {
+    changed = value.with({minutes: 3})
+  } finally {
+    Array.prototype.sort = original
+  }
+  expect(changed!.toString()).toBe('P1DT2H3M')
+})
+
 it('matches independent ICU signed rounding and rational-to-double totals', () => {
   const path = runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-duration-fixtures.tsv`

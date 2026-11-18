@@ -235,7 +235,7 @@ export function mergeShortFields(
   kind: 'year-month' | 'month-day' = 'year-month'
 ): Record<string, unknown> {
   const fields: Record<string, unknown> = {...dateFields(slot, true)}
-  if (kind === 'month-day') delete fields.year
-  else delete fields.day
+  if (kind === 'month-day') fields.year = undefined
+  else fields.day = undefined
   return mergeDateFields(slot.calendar, fields, partial)
 }

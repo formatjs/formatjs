@@ -362,10 +362,9 @@ class PlainDateTimeValue {
       )
     }
     const current = {
-      ...dateFields(dateSlot(slot)),
       ...epochNanosecondsToISO(slot.epochNanoseconds),
+      ...dateFields(dateSlot(slot)),
     }
-    Object.assign(current, dateFields(dateSlot(slot)))
     const fields = mergeDateFields(slot.calendar, current, partial)
     const overflow = overflowOption(options)
     return createPlainDateTime(

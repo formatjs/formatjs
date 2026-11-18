@@ -12,10 +12,18 @@ Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill
 and `@js-temporal/polyfill` across matched public workloads. Native Rust still
 wins the 25-case matched matrix after the ISO TS optimizations. The restored JS
 comparison retains all 48 workloads without WASM. TS raw-median wins improve
-from 21/48 to 28/48 versus basic, 35/48 to 44/48 versus official, using frozen
+from 21/48 to 33/48 versus basic, 35/48 to 45/48 versus official, using frozen
 reference samples with identical counts. Close cases need fresh controls.
 Separate native and JS matrices have different coverage; neither proves
-universal performance. See `benchmarks/temporal/iso-date-experiments.json`.
+universal performance. See `benchmarks/temporal/record-preparation-experiments.json`.
+
+Record preparation now preserves owned field shapes instead of deleting keys,
+uses one ISO merge record, and avoids redundant caller copies/calendar reads.
+Duration conversion reuses the complete JS reader and skips duplicate validation
+of already validated owned fields. One static property-read order serves both
+duration readers; `Duration.with` no longer observes `Array.prototype.sort`.
+Public prototype/array-observation regressions and 42 focused Node/ICU/package/
+Hermes targets pass. Native Rust is retimed against this candidate, not older TS.
 
 Shared Gregorian conversion computes the civil year once. Date getters reuse
 private immutable ISO fields under a unique symbol; native backend checks and normal/extended bounds
@@ -24,7 +32,8 @@ ISO derived fields use Gregorian arithmetic directly. Date-only serialization
 avoids constructing an Instant and clock string. No formatted-output cache.
 Each accessed ISO date slot retains one field record for its lifetime.
 Alternating controls confirm roughly 7x faster date getters and 5x faster date
-formatting. Export-all consumer grows by 326 gzip bytes; performance goal is open.
+formatting. Current export-all consumer is 40,219 gzip bytes (+470 over the
+no-WASM baseline, +144 over the ISO checkpoint); performance goal is open.
 
 The shared borrowed calendar provider now advances year starts once within each
 64-year checkpoint block. No cache or data format change. Independent ICU/HKO

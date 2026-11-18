@@ -355,22 +355,38 @@ export function readDateFields(
 }
 export function mergeDateFields(
   calendar: string,
-  fields: Record<string, unknown>,
+  fields: Readonly<CalendarDate> | Record<string, unknown>,
   updates: Record<string, unknown>
 ): Record<string, unknown> {
-  const base = {...fields}
+  if (calendar === 'iso8601') {
+    const monthCode = fields.monthCode
+    return {
+      ...fields,
+      month: monthCode === undefined ? fields.month : undefined,
+      monthCode: updates.month === undefined ? monthCode : undefined,
+      ...updates,
+    }
+  }
+  // Own placeholders avoid inherited setters when fields are cleared.
+  const base: Record<string, unknown> = {
+    year: undefined,
+    month: undefined,
+    monthCode: undefined,
+    era: undefined,
+    eraYear: undefined,
+    ...fields,
+  }
   // ISODateToFields carries monthCode, not an ordinal month from the old year.
-  if (base.monthCode !== undefined) delete base.month
-  if (updates.month !== undefined) delete base.monthCode
+  if (base.monthCode !== undefined) base.month = undefined
+  if (updates.month !== undefined) base.monthCode = undefined
   if (
-    calendar !== 'iso8601' &&
-    (updates.year !== undefined ||
-      updates.era !== undefined ||
-      updates.eraYear !== undefined)
+    updates.year !== undefined ||
+    updates.era !== undefined ||
+    updates.eraYear !== undefined
   ) {
-    delete base.year
-    delete base.era
-    delete base.eraYear
+    base.year = undefined
+    base.era = undefined
+    base.eraYear = undefined
   }
   if (
     calendar === 'japanese' &&
@@ -378,8 +394,8 @@ export function mergeDateFields(
       updates.month !== undefined ||
       updates.monthCode !== undefined)
   ) {
-    delete base.era
-    delete base.eraYear
+    base.era = undefined
+    base.eraYear = undefined
   }
   return {...base, ...updates}
 }

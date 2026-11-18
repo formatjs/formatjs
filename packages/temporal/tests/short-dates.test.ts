@@ -6,6 +6,31 @@ import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal as fullReference} from 'temporal-polyfill/full/implementation'
 import {Temporal} from '#packages/temporal/index.js'
 
+it('ignores inherited era state when replacing Chinese years', () => {
+  const date = Temporal.PlainDate.from('2024-02-10').withCalendar('chinese')
+  const year = date.year
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'era')
+  let changed: typeof date | undefined
+  Object.defineProperty(Object.prototype, 'era', {
+    configurable: true,
+    get() {
+      throw new Error('Inherited era state')
+    },
+    set() {
+      throw new Error('Inherited era state')
+    },
+  })
+  try {
+    changed = date.with({year: year + 1})
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'era', original)
+    else Reflect.deleteProperty(Object.prototype, 'era')
+  }
+  expect(changed!.year).toBe(year + 1)
+  expect(changed!.monthCode).toBe('M01')
+  expect(changed!.day).toBe(1)
+})
+
 it('ignores inherited properties while reading private date fields', () => {
   const date = new Temporal.PlainDate(2020, 2, 29)
   const yearMonth = new Temporal.PlainYearMonth(2020, 2)
