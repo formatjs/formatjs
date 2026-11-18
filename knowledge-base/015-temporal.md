@@ -8,13 +8,30 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Native performance direction
 
-Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
-and `@js-temporal/polyfill` across matched public workloads. Native Rust wins
+Goal: native Rust faster than TS; pure TS faster than both references across
+matched public workloads, preserving spec behavior and preventing regressions.
+
+Provisional short-date checkpoint: TS wins 38/48 basic and
+48/48 official medians in a fresh comparison. Two TS processes,
+one process per reference; final repeated references still required. Rust wins
 25/25 original and 7/7 additional named-zone cases, reported separately.
-TS wins 36/48 raw medians versus basic and 48/48 versus official using retained
-isolated reference samples. Different coverage, close cases and small paired
-variations keep the goal open. See
-`benchmarks/temporal/normalized-addition-experiments.json`.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer is 40,543 gzip bytes.
+See [validated-short experiments](../benchmarks/temporal/validated-short-experiments.json).
+
+ISO short-date parsing uses already validated fields for shared Gregorian
+conversion. Native dispatch, parsed reference-year handling and year-month bounds
+remain. Full controls improve short-date parsing ~8–10%; scoped controls ~11–16%.
+Parsed-field caching and three rounding variants showed no useful extra gain and
+were discarded. Chronological benchmark samples now accompany sorted samples.
+
+Goal remains open: reference losses, fresh repeated-reference verification and
+regression audit. Unchanged rounding spans 456–566 ns in full controls
+(aggregate +8.6%); longer scoped controls show +4.5% medians/~3% means.
+Attribution remains unresolved. Original rounding code stays.
+Raw runs and separate baseline/candidate V8 profiles remain available.
+
+Preceding normalized-addition checkpoint used retained reference samples:
+TS 36/48 basic, 48/48 official; consumer 40,529 gzip bytes.
 
 `addNormalizedCalendarDate` returns epoch day plus validated target fields from
 already normalized calendar fields. Date and YearMonth callers avoid repeated

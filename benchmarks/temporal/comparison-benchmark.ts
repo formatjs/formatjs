@@ -642,13 +642,14 @@ function measure(namespace: typeof reference): unknown[] {
           checksum += test.run(index & 7).length
         elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
       }
-      elapsed.sort((a, b) => a - b)
+      const ordered = elapsed.slice().sort((a, b) => a - b)
       return {
         operation: test.name,
         iterations: caseIterations,
         warmup: caseWarmup,
-        medianNanoseconds: elapsed[Math.floor(samples / 2)],
-        samplesNanoseconds: elapsed,
+        medianNanoseconds: ordered[Math.floor(samples / 2)],
+        samplesNanoseconds: ordered,
+        samplesNanosecondsInOrder: elapsed,
       }
     })
 }

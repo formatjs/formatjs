@@ -6,7 +6,26 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
+Provisional short-date checkpoint: TS wins 38/48 basic and
+48/48 official medians in a fresh comparison. Two TS processes,
+one process per reference; final repeated references still required. Rust wins
+25/25 original and 7/7 additional named-zone cases, reported separately.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer is 40,543 gzip bytes.
+See [validated-short experiments](../benchmarks/temporal/validated-short-experiments.json).
+
+ISO short-date parsing uses already validated fields for shared Gregorian
+conversion. Native dispatch, parsed reference-year handling and year-month bounds
+remain. Full controls improve short-date parsing ~8–10%; scoped controls ~11–16%.
+Parsed-field caching and three rounding variants showed no useful extra gain and
+were discarded. Chronological benchmark samples now accompany sorted samples.
+
+Goal remains open: reference losses, fresh repeated-reference verification and
+regression audit. Unchanged rounding spans 456–566 ns in full controls
+(aggregate +8.6%); longer scoped controls show +4.5% medians/~3% means.
+Attribution remains unresolved. Original rounding code stays.
+Raw runs and separate baseline/candidate V8 profiles remain available.
+
+Preceding normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
 Hermes targets pass. TS wins 36/48 raw medians versus basic and 48/48 versus official
 using retained reference samples. Native Rust wins 25/25 original and
 7/7 additional named-zone cases, reported separately. Consumer size is

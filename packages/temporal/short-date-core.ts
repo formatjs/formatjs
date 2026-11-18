@@ -1,4 +1,5 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
+import {ArithmeticCalendarToEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
@@ -186,16 +187,21 @@ export function parseShortSlot(
     (parsed.year < -271821 || parsed.year > 275760)
   )
     throw new RangeError('Date out of range')
-  if (kind === 'month-day' && shortCalendar(calendar) === 'iso8601')
-    return {
-      epochDay: isoReferenceDay(1972, parsed.month, parsed.day),
-      calendar,
-    }
+  if (calendar === 'iso8601') {
+    // Parsing already validated the ISO fields, including the reference year.
+    const epochDay = ArithmeticCalendarToEpochDay(
+      'iso8601',
+      kind === 'month-day' ? 1972 : parsed.year,
+      parsed.month,
+      parsed.day
+    )
+    if (kind === 'month-day') return {epochDay, calendar}
+    checkYearMonth(epochDay)
+    return {epochDay: checkYearMonth(epochDay - parsed.day + 1), calendar}
+  }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
   if (kind === 'year-month') {
     checkYearMonth(epochDay)
-    if (calendar === 'iso8601')
-      return {epochDay: checkYearMonth(epochDay - parsed.day + 1), calendar}
     return yearMonthFields(
       calendar,
       dateFields({epochDay, calendar}, true) as unknown as Record<

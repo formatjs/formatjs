@@ -30,7 +30,29 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-Current normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
+Provisional short-date checkpoint: TS wins 38/48 basic and
+48/48 official medians in a fresh comparison. Two TS processes,
+one process per reference; final repeated references still required. Rust wins
+25/25 original and 7/7 additional named-zone cases, reported separately.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer is 40,543 gzip bytes.
+See [validated-short experiments](validated-short-experiments.json).
+
+ISO short-date parsing uses already validated fields for shared Gregorian
+conversion. Native dispatch, parsed reference-year handling and year-month bounds
+remain. Full controls improve short-date parsing ~8–10%; scoped controls ~11–16%.
+Parsed-field caching and three rounding variants showed no useful extra gain and
+were discarded. Chronological benchmark samples now accompany sorted samples.
+
+Goal remains open: reference losses, fresh repeated-reference verification and
+regression audit. Unchanged rounding spans 456–566 ns in full controls
+(aggregate +8.6%); longer scoped controls show +4.5% medians/~3% means.
+Attribution remains unresolved. Original rounding code stays.
+[Raw runs](validated-short-raw.json.gz) and separate baseline/candidate V8 profiles
+remain available. Current snapshots: [JS48](validated-short-results.json),
+[native](native-ts-short-results.json), [startup](short-parse-startup-results.json),
+[sizes](short-parse-size-results.json).
+
+Preceding normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
 Hermes targets pass. TS wins 36/48 raw medians versus basic and 48/48 versus official
 using retained reference samples. Native Rust wins 25/25 original and
 7/7 additional named-zone cases, reported separately. Consumer size is
@@ -49,7 +71,7 @@ that regressed rounding; original BigInt clock remains. Final paired medians hav
 no increase above 5%, but small differences still need fresh repeated controls.
 Independent precision and inherited-metadata regressions guard public behavior.
 
-Current raw snapshots: [JS48](normalized-addition-results.json),
+Preceding normalized-addition raw snapshots: [JS48](normalized-addition-results.json),
 [native25 plus named7](native-ts-addition-results.json),
 [startup](addition-startup-results.json), [sizes](addition-size-results.json).
 [Full controls](normalized-addition-full-controls.json.gz) retain the initial
@@ -74,7 +96,7 @@ result before evaluating its rules. Alternating controls confirm faster date
 addition and roughly 2x faster native transition lookup. Per-input native timing
 diagnostics and separate V8 CPU profiles retain the evidence; no new caches/data.
 
-Current raw snapshots: [JS48](calendar-arithmetic-results.json),
+Preceding normalized-addition raw snapshots: [JS48](calendar-arithmetic-results.json),
 [native25 plus named7](native-ts-calendar-results.json),
 [startup](calendar-startup-results.json), [sizes](calendar-size-results.json).
 Run `FORMATJS_TEMPORAL_NATIVE_PROFILE=named bazel run -c opt //benchmarks/temporal:native_ts_benchmark`
