@@ -307,6 +307,17 @@ export function addCalendarDateRaw(
     calendar,
     calendarToEpochDayRaw(calendar, fields, 'reject')
   )
+  return calendarFromEpochDayRaw(
+    calendar,
+    addCalendarEpochDay(calendar, original, duration, overflow)
+  )
+}
+function addCalendarEpochDay(
+  calendar: CalendarId,
+  original: CalendarDate,
+  duration: DateDuration,
+  overflow: Overflow
+): number {
   const values = [
     duration.years ?? 0,
     duration.months ?? 0,
@@ -327,10 +338,23 @@ export function addCalendarDateRaw(
     {year, month, day: original.day},
     overflow
   )
-  return calendarFromEpochDayRaw(
-    calendar,
-    epoch + integer(7 * values[2] + values[3])
-  )
+  return epoch + integer(7 * values[2] + values[3])
+}
+// Fields must come from this calendar's epoch-day conversion.
+export function addNormalizedCalendarDate(
+  calendar: CalendarId,
+  original: CalendarDate,
+  duration: DateDuration,
+  overflow: Overflow
+): {epochDay: number; date: CalendarDate} {
+  overflowCheck(overflow)
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    const date = native!.calendarAdd(calendar, original, duration, overflow)
+    return {epochDay: calendarToEpochDayRaw(calendar, date, 'reject'), date}
+  }
+  const epochDay = addCalendarEpochDay(calendar, original, duration, overflow)
+  return {epochDay, date: calendarFromEpochDayRaw(calendar, epochDay)}
 }
 export function addCalendarDate(
   calendar: CalendarId,

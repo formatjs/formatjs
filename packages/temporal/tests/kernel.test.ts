@@ -28,7 +28,20 @@ it('accepts native Gregorian month ends and rejects the following day', () => {
 
 it('keeps nanoseconds across negative epochs, leap days and instant bounds', () => {
   const limit = 8_640_000_000_000_000_000_000n
-  for (const value of [-limit, -1_000_001n, -1n, 0n, 1n, 1_000_001n, limit]) {
+  for (const value of [
+    -limit,
+    -limit + 1n,
+    -3_600_000_000_001n,
+    -1_000_001n,
+    -1n,
+    0n,
+    1n,
+    1_000_001n,
+    3_599_999_999_999n,
+    3_600_000_000_001n,
+    limit - 1n,
+    limit,
+  ]) {
     const fields = epochNanosecondsToISO(value)
     expect(isoToEpochNanoseconds(fields)).toBe(value)
     const reference = new Temporal.Instant(value).toZonedDateTimeISO('UTC')

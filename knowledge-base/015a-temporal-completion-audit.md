@@ -6,7 +6,26 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current calendar/transition checkpoint: 49 focused Rust/Node/ICU/package/Hermes
+Current normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
+Hermes targets pass. TS wins 36/48 raw medians versus basic and 48/48 versus official
+using retained reference samples. Native Rust wins 25/25 original and
+7/7 additional named-zone cases, reported separately. Consumer size is
+40,529 gzip bytes. Remaining reference losses, close cases and small paired timing
+differences keep the goal open. See
+[`normalized-addition-experiments.json`](../benchmarks/temporal/normalized-addition-experiments.json).
+
+Calendar addition consumes normalized fields and returns epoch day plus validated
+target fields, preserving calendar availability checks. Pure-TS DateTime clock
+getters avoid eager private date records; native SDK keeps its direct path.
+Sparse field records use captured Object.create and a frozen empty prototype with
+null parent, retaining provided keys and isolation from Object.prototype.
+Alternating controls show ~25% faster date addition, ~38% faster DateTime parsing
+and ~18–30% faster updates. Full-matrix checks rejected numeric clock variants
+that regressed rounding; original BigInt clock remains. Final paired medians have
+no increase above 5%, but small differences still need fresh repeated controls.
+Independent precision and inherited-metadata regressions guard public behavior.
+
+Preceding calendar/transition checkpoint: 49 focused Rust/Node/ICU/package/Hermes
 targets pass. TS wins 34/48 raw medians versus basic and 47/48 versus official,
 using the preceding checkpoint's reference samples. Native Rust wins
 25/25 original cases and 7/7 additional named-zone cases, reported separately.

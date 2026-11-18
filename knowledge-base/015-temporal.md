@@ -10,11 +10,29 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 Current goal: native Rust faster than TS; pure TS faster than `temporal-polyfill`
 and `@js-temporal/polyfill` across matched public workloads. Native Rust wins
-25/25 original cases and 7/7 additional named-zone cases, reported separately.
-TS wins 34/48 raw medians versus basic and 47/48 versus official using reference
-samples from the preceding checkpoint. Close cases, different native/JS coverage
-and earlier rounding variability keep the goal open. See
-`benchmarks/temporal/calendar-arithmetic-experiments.json`.
+25/25 original and 7/7 additional named-zone cases, reported separately.
+TS wins 36/48 raw medians versus basic and 48/48 versus official using retained
+isolated reference samples. Different coverage, close cases and small paired
+variations keep the goal open. See
+`benchmarks/temporal/normalized-addition-experiments.json`.
+
+`addNormalizedCalendarDate` returns epoch day plus validated target fields from
+already normalized calendar fields. Date and YearMonth callers avoid repeated
+conversions; raw APIs retain normalization. Target calendar availability and public
+range checks still run before returning values. Independent ICU arithmetic, table,
+relative-duration and zoned-difference oracles cover these paths.
+
+DateTime clock getters now check for a native backend before creating private date
+records. SDK's compile-time native path stays direct. Sparse field preparation uses
+a frozen empty prototype with null parent: no Object.prototype inheritance or
+omitted-key changes, with fast V8 property storage. Full-matrix checks rejected
+numeric clock experiments that slowed rounding; original BigInt clock stays.
+Precision checks one nanosecond inside Instant limits remain as regression guards.
+All 54 focused Rust/Node/ICU/package/Hermes targets pass. Consumer size is 40,529
+gzip bytes. Four full comparison profiles remove the confirmed rounding slowdown;
+small remaining paired differences need final fresh repeated measurements.
+
+Preceding shared-calendar/transition checkpoint:
 
 `ArithmeticCalendarToEpochDay` owns numeric calendar conversion after callers
 validate month/day. Gregorian calendars reuse the shared month-prefix table;
@@ -22,8 +40,8 @@ other arithmetic calendars sum lengths without repeated outer checks. Lunisolar
 and Umm al-Qura paths stay with their providers. Rust transition lookup rejects
 candidates that cannot improve the best result before evaluating recurring rules.
 Alternating controls show faster date/year-month addition and roughly 2x faster
-native transition lookup. No new caches or timezone data. All 49 focused Rust,
-Node, ICU, package and Hermes targets pass. Consumer size is 40,470 gzip bytes.
+native transition lookup. No new caches or timezone data. That checkpoint passes 49 focused Rust/Node/ICU/package/Hermes targets and ships
+40,470 gzip bytes.
 
 The seven new native named-zone workloads retain exact signed outputs and use
 compiled IANA data versus TS host Intl. They cover New York gap/fold, Lord Howe
@@ -60,7 +78,8 @@ The shared borrowed calendar provider now advances year starts once within each
 64-year checkpoint block. No cache or data format change. Independent ICU/HKO
 controls and checkpoint/leap/final-year boundary tests guard conversions.
 
-Goal: complete Temporal in TypeScript and Rust, support Hermes, validate against
+Earlier implementation goal (WASM measurements are historical): complete Temporal
+in TypeScript and Rust, support Hermes, validate against
 Test262 and independent ICU oracles, compare `temporal-polyfill`, measure WASM
 versus TypeScript size and speed. Deliver incremental stacked PRs using `gh stack`.
 

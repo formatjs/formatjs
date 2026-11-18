@@ -30,7 +30,34 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-Current calendar/transition checkpoint: 49 focused Rust/Node/ICU/package/Hermes
+Current normalized-addition/getter checkpoint: 54 focused Rust/Node/ICU/package/
+Hermes targets pass. TS wins 36/48 raw medians versus basic and 48/48 versus official
+using retained reference samples. Native Rust wins 25/25 original and
+7/7 additional named-zone cases, reported separately. Consumer size is
+40,529 gzip bytes. Remaining reference losses, close cases and small paired timing
+differences keep the goal open. See
+[`normalized-addition-experiments.json`](normalized-addition-experiments.json).
+
+Calendar addition consumes normalized fields and returns epoch day plus validated
+target fields, preserving calendar availability checks. Pure-TS DateTime clock
+getters avoid eager private date records; native SDK keeps its direct path.
+Sparse field records use captured Object.create and a frozen empty prototype with
+null parent, retaining provided keys and isolation from Object.prototype.
+Alternating controls show ~25% faster date addition, ~38% faster DateTime parsing
+and ~18–30% faster updates. Full-matrix checks rejected numeric clock variants
+that regressed rounding; original BigInt clock remains. Final paired medians have
+no increase above 5%, but small differences still need fresh repeated controls.
+Independent precision and inherited-metadata regressions guard public behavior.
+
+Current raw snapshots: [JS48](normalized-addition-results.json),
+[native25 plus named7](native-ts-addition-results.json),
+[startup](addition-startup-results.json), [sizes](addition-size-results.json).
+[Full controls](normalized-addition-full-controls.json.gz) retain the initial
+regressions, clock-only bisect and accepted candidate. Decompress before reading.
+The experiment record retains rejected allocation/clock timings and V8 storage
+diagnostics. Parser gain comes from getter laziness, not inverse clock conversion.
+
+Preceding calendar/transition checkpoint: 49 focused Rust/Node/ICU/package/Hermes
 targets pass. TS wins 34/48 raw medians versus basic and 47/48 versus official,
 using the preceding checkpoint's reference samples. Native Rust wins
 25/25 original cases and 7/7 additional named-zone cases, reported separately.

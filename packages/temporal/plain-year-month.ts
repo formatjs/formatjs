@@ -23,7 +23,7 @@ import {
   dayFromFields,
 } from '#packages/temporal/date-core.js'
 import {
-  addCalendarDateRaw,
+  addNormalizedCalendarDate,
   calendarToEpochDayRaw,
 } from '#packages/temporal/calendar.js'
 import {
@@ -156,11 +156,9 @@ function add(
   const firstDay = calendarToEpochDayRaw(cal, start, 'constrain')
   if (firstDay < -100000001 || firstDay > 100000000)
     throw new RangeError('Reference date out of range')
-  const result = addCalendarDateRaw(cal, start, fields, overflow)
+  const result = addNormalizedCalendarDate(cal, start, fields, overflow)
   return createPlainYearMonth({
-    epochDay: checkYearMonth(
-      calendarToEpochDayRaw(cal, {...result, day: 1}, 'reject')
-    ),
+    epochDay: checkYearMonth(result.epochDay),
     calendar: slot.calendar,
   })
 }

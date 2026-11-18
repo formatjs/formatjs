@@ -21,7 +21,8 @@ import {
   daysInMonth,
   monthsInYear,
   calendarStartOfYear,
-  addCalendarDate,
+  addNormalizedCalendarDate,
+  dayCheck,
   type CalendarId,
   type Overflow,
   type CalendarDate,
@@ -313,6 +314,8 @@ export function dateFieldValue(key: string, value: unknown): string | number {
   return result
 }
 const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
+const createObject = Object.create
+const fieldRecordPrototype = Object.freeze(createObject(null))
 const isoYearMonthFieldNames = ['month', 'monthCode', 'year']
 const isoDateTimeFieldNames = [
   'day',
@@ -333,7 +336,7 @@ export function readDateFields(
   shape: DateFieldShape = 'date',
   calendar = 'iso8601'
 ): Record<string, unknown> {
-  const result = Object.create(null) as Record<string, unknown>
+  const result = createObject(fieldRecordPrototype) as Record<string, unknown>
   let any = false
   const names =
     calendar === 'iso8601' && shape === 'date'
@@ -421,8 +424,10 @@ export function addDate(
   overflow: Overflow
 ): number {
   const calendar = baseCalendar(slot.calendar)
-  const result = addCalendarDate(calendar, dateFields(slot), duration, overflow)
-  return calendarToEpochDay(calendar, result, 'reject')
+  return dayCheck(
+    addNormalizedCalendarDate(calendar, dateFields(slot), duration, overflow)
+      .epochDay
+  )
 }
 export function calendarNameOption(
   value: unknown

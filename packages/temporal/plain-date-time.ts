@@ -561,11 +561,10 @@ defineGetters(
   (receiver, name) => {
     const slot = read(receiver),
       index = (clockNames as readonly string[]).indexOf(name)
-    const snapshot = nativeDateSnapshot(
-      dateSlot(slot),
-      false,
-      slot.epochNanoseconds
-    )
+    const snapshot =
+      import.meta.formatjsTemporalNativeData === true || nativeTemporal()
+        ? nativeDateSnapshot(dateSlot(slot), false, slot.epochNanoseconds)
+        : undefined
     if (snapshot && index >= 0) return snapshot.values[name]
     return index < 0
       ? dateProperty(dateSlot(slot), name)
