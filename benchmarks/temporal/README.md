@@ -2440,3 +2440,52 @@ had small/mixed isolated gains; discarded. Original checked PlainDate constructi
 stays intact. YearMonth add now spends 10.65% in construction and 8.28% in duration
 preparation. Zoned updates retain generic decode/write costs (9.67%/4.75%), making
 typed field updates a candidate. Profile timings/sizes are not production claims.
+
+## Native Instant storage
+
+Native-only Instant slots now use private fields instead of WeakMap entries.
+Rust still computes complete results; JS owns the returned epoch nanoseconds.
+Public numeric validation, coercion/prototype order, brands, subclasses and clones
+stay intact. ABI 22, 43 typed routes, 69 operations and SDK JSON stay unchanged.
+No new data, cache, dependency or conformance exclusion. Default TS bundle unchanged.
+
+Current native Instant storage checkpoint (ABI 22 unchanged): round 0.139 µs versus TS 0.475; parse 0.475 versus 1.578; add 0.787 versus 2.244. Full matrix records 36/48 raw median wins; 12 workloads remain slower. Close controls remain explicit; all-workload goal open. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable bundle unchanged.
+
+Native Node namespace is 518,004 gzip bytes (+119); TS 39,692, using host Intl. Rust binary unchanged. ISO/timezone readiness: native 17.64 ms, TS 19.53 ms. Full native calendar readiness 28.32 ms.
+
+Baseline round profiles attributed 35.49% self time to NativeInstant and 18.86%
+to GC; Rust accounted for 6.73%. WeakMap/private/private/WeakMap isolated controls
+used 100,000 warmup and nine samples of 200,000 calls, eight varying inputs/parity.
+Private round medians were 0.137/0.137 µs; WeakMap 0.581/0.958. Parse and add also
+improved. These controls preceded the final public-constructor cleanup; hot
+operation storage code is identical. Final source was independently validated.
+
+`instant-storage-experiments.json` retains baseline profiles, controls, exact source
+hashes, all 66 validation targets and every slower workload/ratio. Public tests
+cover forged/proxied receivers, frozen instances, prototype mutation, subclasses,
+clones without coercion, and exactly-once constructor coercion/prototype order.
+Both package targets reran after test-only formatting; runtime source stayed fixed.
+
+`instant-storage-hillclimb-results.json` records all 48 workloads in fresh sequential
+TS/native/reference/official processes: 20,000 warmup, nine samples of 50,000;
+transitions 1,000 warmup, nine samples of 5,000. Pinned temporal-polyfill 1.0.7
+and @js-temporal/polyfill 0.5.1 throughput refreshed in separate processes.
+`instant-storage-startup-results.json` uses nine fresh processes per profile,
+persistent compile cache disabled. Node namespace payload above differs from
+browser export-all consumer sizes in throughput JSON. Production WASM is stripped.
+Named-WASM profiles in `instant-storage-profile-results.json` are separate from
+production timing/size claims. TS AST guard and negative control remain intact.
+
+Fresh TS/native/native/TS close controls use 100,000 warmup and nine samples of
+300,000 calls. round: native 0.143/0.141 µs versus TS 0.534/0.586 (separated native win). until: native 2.335/2.388 µs versus TS 2.550/2.515 (separated native win). dateFromFields: native 1.362/1.352 µs versus TS 1.424/1.405 (separated native win). zonedFormat: native 1.791/1.803 µs versus TS 2.035/1.999 (separated native win).
+
+Raw slower workloads: monthDayParse, dateTimeWith, zonedWith, dateTimeRoundFormat, yearMonthFormat, monthDayFormat, zonedParse, zonedUntilDay, zonedRound, zonedDayStart, zonedTransition, durationTotalRelative.
+
+Fresh round profiles leave GC at 4.31% self time versus baseline 18.86%; the old
+constructor no longer appears among the top 30 frames. Rust share rises to 17.47%
+as JS allocation shrinks; binary unchanged. These are sampled shares, not elapsed
+time comparisons. Until still spends 8.69% in createNativeDuration; DateTime
+round/format spends 10.56% in NativePlainDateTime and 9.52% in dateTimeResult.
+Transition profiles show createZonedDateTime 12.05%, timezone identity 10.95%,
+TransitionRule.event 10.53% and registry resolution 6.59%. This workload only reads
+epoch nanoseconds; no second metadata query. These guide further experiments.

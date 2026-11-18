@@ -443,3 +443,17 @@ matrix at 1.500 versus TS 1.450; unresolved. Instant difference also overlaps in
 longer controls and loses the full matrix. Instant rounding remains slower:
 0.622/0.619 versus TS 0.585/0.586, rejecting its raw median win. All 14 raw slower
 workloads plus rounding remain explicit. Raw 34/48 medians are not stable-win proof.
+
+### Native Instant storage
+
+Native-only Instant slots use private fields instead of WeakMap entries. Rust still
+returns complete epoch nanoseconds. Public constructor coercion precedes exactly
+one newTarget prototype lookup; subclass/clone/brand behavior stays intact. ABI 22,
+43 typed routes, 69 operations and SDK JSON unchanged. No new exclusions.
+
+Current native Instant storage checkpoint (ABI 22 unchanged): round 0.139 µs versus TS 0.475; parse 0.475 versus 1.578; add 0.787 versus 2.244. Full matrix records 36/48 raw median wins; 12 workloads remain slower. Close controls remain explicit; all-workload goal open. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable bundle unchanged.
+
+Native Node namespace is 518,004 gzip bytes (+119); TS 39,692, using host Intl. Rust binary unchanged. ISO/timezone readiness: native 17.64 ms, TS 19.53 ms. Full native calendar readiness 28.32 ms.
+
+Evidence: `benchmarks/temporal/instant-storage-*.json`; benchmark README covers
+profiles, alternating storage controls, close margins and fresh reference scope.

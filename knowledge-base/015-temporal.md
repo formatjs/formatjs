@@ -2266,3 +2266,17 @@ had small/mixed isolated gains; discarded. Original checked PlainDate constructi
 stays intact. YearMonth add now spends 10.65% in construction and 8.28% in duration
 preparation. Zoned updates retain generic decode/write costs (9.67%/4.75%), making
 typed field updates a candidate. Profile timings/sizes are not production claims.
+
+## Native Instant storage
+
+Native-only Instant slots use private fields instead of WeakMap entries. Rust still
+returns complete epoch nanoseconds. Public constructor coercion precedes exactly
+one newTarget prototype lookup; subclass/clone/brand behavior stays intact. ABI 22,
+43 typed routes, 69 operations and SDK JSON unchanged. No new exclusions.
+
+Current native Instant storage checkpoint (ABI 22 unchanged): round 0.139 µs versus TS 0.475; parse 0.475 versus 1.578; add 0.787 versus 2.244. Full matrix records 36/48 raw median wins; 12 workloads remain slower. Close controls remain explicit; all-workload goal open. All 66 focused Rust/TS/WASM/Test262/ICU/Hermes/provider targets pass. Default TS executable bundle unchanged.
+
+Native Node namespace is 518,004 gzip bytes (+119); TS 39,692, using host Intl. Rust binary unchanged. ISO/timezone readiness: native 17.64 ms, TS 19.53 ms. Full native calendar readiness 28.32 ms.
+
+Evidence: `benchmarks/temporal/instant-storage-*.json`; benchmark README covers
+profiles, alternating storage controls, close margins and fresh reference scope.

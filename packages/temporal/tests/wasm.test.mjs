@@ -295,6 +295,90 @@ for (const [kind, value, unit, mode, expected] of rows(process.argv[6])) {
   }
   differences++
 }
+{
+  const epochNanoseconds = Object.getOwnPropertyDescriptor(
+    Temporal.Instant.prototype,
+    'epochNanoseconds'
+  ).get
+  const original = Object.freeze(new Temporal.Instant(123n))
+  const copy = Temporal.Instant.from(original)
+  assert.notEqual(copy, original)
+  assert.equal(epochNanoseconds.call(copy), 123n)
+  assert.deepEqual(Reflect.ownKeys(copy), [])
+  assert.equal(Object.getPrototypeOf(copy), Temporal.Instant.prototype)
+  assert.equal(copy.constructor, Temporal.Instant)
+  for (const receiver of [
+    null,
+    undefined,
+    1n,
+    {},
+    Object.create(Temporal.Instant.prototype),
+    new Proxy(original, {}),
+  ])
+    assert.throws(() => epochNanoseconds.call(receiver), TypeError)
+
+  class DerivedInstant extends Temporal.Instant {}
+  const derived = new DerivedInstant(-123n)
+  assert.equal(Object.getPrototypeOf(derived), DerivedInstant.prototype)
+  assert.equal(derived.epochNanoseconds, -123n)
+  Object.defineProperty(derived, Symbol.toPrimitive, {
+    value() {
+      throw new Error('Branded Instant conversion must skip coercion')
+    },
+  })
+  const plain = Temporal.Instant.from(derived)
+  assert.equal(Object.getPrototypeOf(plain), Temporal.Instant.prototype)
+  Object.setPrototypeOf(derived, null)
+  assert.equal(epochNanoseconds.call(derived), -123n)
+  assert.equal(Temporal.Instant.from(derived).epochNanoseconds, -123n)
+
+  const getPrototype = Object.getPrototypeOf
+  try {
+    Object.getPrototypeOf = () => {
+      throw new Error(
+        'Instant construction must not call Object.getPrototypeOf'
+      )
+    }
+    assert.equal(epochNanoseconds.call(new Temporal.Instant(456n)), 456n)
+  } finally {
+    Object.getPrototypeOf = getPrototype
+  }
+
+  for (const prototype of [null, 0, {}, () => {}]) {
+    const reads = []
+    const target = new Proxy(function () {}, {
+      get(target, key, receiver) {
+        if (key === 'prototype') {
+          reads.push('prototype')
+          return prototype
+        }
+        return Reflect.get(target, key, receiver)
+      },
+    })
+    const result = Reflect.construct(
+      Temporal.Instant,
+      [
+        {
+          [Symbol.toPrimitive](hint) {
+            assert.equal(hint, 'number')
+            reads.push('coerce')
+            return 42n
+          },
+        },
+      ],
+      target
+    )
+    assert.deepEqual(reads, ['coerce', 'prototype'])
+    assert.equal(epochNanoseconds.call(result), 42n)
+    assert.equal(
+      Object.getPrototypeOf(result),
+      prototype !== null &&
+        (typeof prototype === 'object' || typeof prototype === 'function')
+        ? prototype
+        : Temporal.Instant.prototype
+    )
+  }
+}
 for (const value of ['\ud800', '\udfff', '1970-01-01T00:00Z[foo=\ud800]'])
   assert.throws(() => Temporal.Instant.from(value), RangeError)
 assert.throws(

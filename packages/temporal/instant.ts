@@ -73,7 +73,12 @@ export interface InstantConstructor {
   fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject
 }
 const slots = new WeakMap<object, bigint>()
-const getSlot = slots.get.bind(slots)
+let nativeInstantSlot: (value: object) => bigint | undefined
+let nativeInstantPrototype: (value: object, prototype: object) => void
+const getSlot =
+  import.meta.formatjsTemporalNativeData === true
+    ? (value: object) => nativeInstantSlot(value)
+    : slots.get.bind(slots)
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
 export function validateInstant(value: bigint): bigint {
@@ -96,15 +101,35 @@ function read(value: unknown): bigint {
   if (result === undefined) throw new TypeError('Invalid Instant receiver')
   return result
 }
-const NativeInstant = function (this: InstantObject, value: bigint) {
-  setSlot(this, value)
-}
+const NativeInstant =
+  import.meta.formatjsTemporalNativeData === true
+    ? class {
+        #value: bigint
+        constructor(value: bigint) {
+          this.#value = value
+        }
+        static {
+          const setPrototype = Object.setPrototypeOf
+          nativeInstantPrototype = (value, prototype) => {
+            setPrototype(value, prototype)
+          }
+          nativeInstantSlot = (value: object) =>
+            value !== null &&
+            (typeof value === 'object' || typeof value === 'function') &&
+            #value in value
+              ? value.#value
+              : undefined
+        }
+      }
+    : undefined
 function createNativeInstant(value: bigint): InstantObject {
   return new (NativeInstant as unknown as new (value: bigint) => InstantObject)(
     value
   )
 }
 export function createInstant(value: bigint): InstantObject {
+  if (import.meta.formatjsTemporalNativeData === true)
+    return createNativeInstant(validateInstant(value))
   const result = Object.create(InstantValue.prototype) as InstantObject
   setSlot(result, validateInstant(value))
   return result
@@ -340,24 +365,59 @@ Object.defineProperty(InstantValue, 'name', {
   configurable: true,
 })
 // A normal JS constructor allocates before its body; Temporal coerces first.
-export const Instant: InstantConstructor = new Proxy(InstantValue, {
-  construct(target, args, newTarget) {
-    const value = validateInstant(toBigInt(args[0]))
-    const prototype = Reflect.get(newTarget, 'prototype')
-    const result = Object.create(
-      prototype !== null &&
-        (typeof prototype === 'object' || typeof prototype === 'function')
-        ? prototype
-        : target.prototype
-    )
-    setSlot(result, value)
-    return result
-  },
-})
+export const Instant: InstantConstructor = new Proxy(
+  import.meta.formatjsTemporalNativeData === true
+    ? (NativeInstant! as unknown as typeof InstantValue)
+    : InstantValue,
+  {
+    construct(target, args, newTarget) {
+      const value = validateInstant(toBigInt(args[0]))
+      const prototype = Reflect.get(newTarget, 'prototype')
+      if (import.meta.formatjsTemporalNativeData === true) {
+        const result = createNativeInstant(value)
+        const selected =
+          prototype !== null &&
+          (typeof prototype === 'object' || typeof prototype === 'function')
+            ? prototype
+            : target.prototype
+        if (selected !== NativeInstant!.prototype)
+          nativeInstantPrototype(result, selected)
+        return result
+      }
+      const result = Object.create(
+        prototype !== null &&
+          (typeof prototype === 'object' || typeof prototype === 'function')
+          ? prototype
+          : target.prototype
+      )
+      setSlot(result, value)
+      return result
+    },
+  }
+)
 Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},
 })
 
-if (import.meta.formatjsTemporalNativeData === true)
-  NativeInstant.prototype = InstantValue.prototype
+if (import.meta.formatjsTemporalNativeData === true) {
+  Object.defineProperty(NativeInstant!, 'name', {
+    value: 'Instant',
+    configurable: true,
+  })
+  for (const name of [
+    'compare',
+    'from',
+    'fromEpochNanoseconds',
+    'fromEpochMilliseconds',
+  ])
+    Object.defineProperty(
+      NativeInstant!,
+      name,
+      Object.getOwnPropertyDescriptor(InstantValue, name)!
+    )
+  Object.defineProperties(
+    NativeInstant!.prototype,
+    Object.getOwnPropertyDescriptors(InstantValue.prototype)
+  )
+}
