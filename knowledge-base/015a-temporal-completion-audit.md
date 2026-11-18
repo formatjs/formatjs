@@ -6,7 +6,31 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-Current recurring-rule checkpoint: native Rust still wins 25/25 original and
+## Calendar and field checkpoint
+
+Six isolated full-48-workload controls retain shared bounded Gregorian conversion,
+static ISO field preparation, prepared ISO conversion and one-array host timezone
+resolution. Field construction improves ~20%, date `with()` ~34%, short-date
+updates ~26%, date formatting ~33%, zoned formatting ~21% and hours-in-day ~24%.
+Field access/coercion order, native dispatch and range checks stay intact. No new
+per-value cache, data, dependency or public API.
+
+Consumer is 41,118 gzip bytes (+466, ~1.1%). Mixed frozen-bag cold operations improve
+~17–20%; retained memory stays about 145 bytes/value unread and 265 after a getter.
+All 71 focused Rust/Node/ICU/package/Hermes targets pass. An explicit return type
+fixes isolated declaration generation; emitted runtime matches every timed run.
+
+Rust wins 25/25 original plus 7/7 named-zone cases in each of three fresh runs.
+Scoped basic-reference controls still lose offset lookup (2.83x) and day start
+(1.08x). Final fresh all-48 comparisons against both references and startup remain
+pending. Original pre-optimization controls win 44/48 medians and 46/48 means;
+small increases and mixed-case rounding variation remain recorded. Isolated
+rounding improves ~1%, while one four-case mixture is ~7% slower. Goal stays open.
+See [calendar/field experiments](../benchmarks/temporal/calendar-fields-experiments.json).
+
+## Earlier checkpoints
+
+Earlier recurring-rule checkpoint: native Rust still wins 25/25 original and
 7/7 additional named-zone workloads against current TS, reported separately.
 Six optimized controls improve named offset lookup ~45% (106 ns to 59 ns),
 day start ~38%, hours-in-day ~37%, day addition ~19% and time replacement ~31%.

@@ -21,6 +21,10 @@ export const arithmeticCalendars = [
   'persian',
 ] as const
 export type ArithmeticCalendarId = (typeof arithmeticCalendars)[number]
+type GregorianCalendarId = Extract<
+  ArithmeticCalendarId,
+  'iso8601' | 'gregory' | 'buddhist' | 'japanese' | 'roc'
+>
 
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 const mod = (value: number, divisor: number): number =>
@@ -42,7 +46,9 @@ function hebrewDelay(year: number): number {
   const day = 29 * months + Math.floor((12084 + 13753 * months) / 25920)
   return day + Number(mod(3 * (day + 1), 7) < 3)
 }
-function IsISOCalendar(calendar: ArithmeticCalendarId): boolean {
+function IsISOCalendar(
+  calendar: ArithmeticCalendarId
+): calendar is GregorianCalendarId {
   return ['iso8601', 'gregory', 'buddhist', 'japanese', 'roc'].includes(
     calendar
   )
@@ -173,13 +179,55 @@ export function ArithmeticCalendarMonthCode(
   const code = month - Number(leap && month > 6)
   return 'M' + (code < 10 ? '0' : '') + code
 }
+// Validated integer epoch days within ±110000000.
+export function ArithmeticGregorianFromEpochDay(
+  calendar: GregorianCalendarId,
+  epoch: number
+): {year: number; month: number; monthCode: string; day: number} {
+  // Same March-based 400-year conversion as the Rust calendar core.
+  const shifted = epoch + 719468,
+    era = Math.floor(shifted / 146097),
+    dayOfEra = (shifted - era * 146097) >>> 0,
+    yearOfEra =
+      ((dayOfEra -
+        ((dayOfEra / 1460) | 0) +
+        ((dayOfEra / 36524) | 0) -
+        ((dayOfEra / 146096) | 0)) /
+        365) |
+      0,
+    ordinal =
+      dayOfEra -
+      (365 * yearOfEra + ((yearOfEra / 4) | 0) - ((yearOfEra / 100) | 0)),
+    marchMonth = ((5 * ordinal + 2) / 153) | 0,
+    month = marchMonth < 10 ? marchMonth + 3 : marchMonth - 9,
+    year =
+      yearOfEra +
+      era * 400 +
+      Number(month <= 2) -
+      (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0)
+  return {
+    year,
+    month,
+    monthCode: ArithmeticCalendarMonthCode(calendar, year, month),
+    day: ordinal - (((153 * marchMonth + 2) / 5) | 0) + 1,
+  }
+}
+
 export function ArithmeticCalendarFromEpochDay(
   calendar: ArithmeticCalendarId,
   epoch: number
 ): {year: number; month: number; monthCode: string; day: number} {
+  const iso = IsISOCalendar(calendar)
+  if (
+    iso &&
+    Number.isInteger(epoch) &&
+    epoch >= -110000000 &&
+    epoch <= 110000000
+  )
+    return ArithmeticGregorianFromEpochDay(calendar, epoch)
   const t = epoch * 86400000,
     civilYear = YearFromTime(t)
-  if (IsISOCalendar(calendar)) {
+  if (iso) {
     const ordinal = Math.floor(t / 86400000) - DayFromYear(civilYear),
       leap = DaysInYear(civilYear) === 366 ? 1 : 0
     if (!(ordinal >= 0 && ordinal < 365 + leap)) throw new Error('Invalid time')

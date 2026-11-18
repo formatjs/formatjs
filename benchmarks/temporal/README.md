@@ -30,7 +30,31 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-Current arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
+### Calendar and field checkpoint
+
+Six isolated full-48-workload controls retain shared bounded Gregorian conversion,
+static ISO field preparation, prepared ISO conversion and one-array host timezone
+resolution. Field construction improves ~20%, date `with()` ~34%, short-date
+updates ~26%, date formatting ~33%, zoned formatting ~21% and hours-in-day ~24%.
+Field access/coercion order, native dispatch and range checks stay intact. No new
+per-value cache, data, dependency or public API.
+
+Consumer is 41,118 gzip bytes (+466, ~1.1%). Mixed frozen-bag cold operations improve
+~17–20%; retained memory stays about 145 bytes/value unread and 265 after a getter.
+All 71 focused Rust/Node/ICU/package/Hermes targets pass. An explicit return type
+fixes isolated declaration generation; emitted runtime matches every timed run.
+
+Rust wins 25/25 original plus 7/7 named-zone cases in each of three fresh runs.
+Scoped basic-reference controls still lose offset lookup (2.83x) and day start
+(1.08x). Final fresh all-48 comparisons against both references and startup remain
+pending. Original pre-optimization controls win 44/48 medians and 46/48 means;
+small increases and mixed-case rounding variation remain recorded. Isolated
+rounding improves ~1%, while one four-case mixture is ~7% slower. Goal stays open.
+See [calendar/field experiments](calendar-fields-experiments.json) for all samples, profiles and limits.
+
+### Earlier arithmetic/writer checkpoint
+
+Earlier arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
 workloads in each of three isolated optimized runs against accepted TS. Six
 before/after Rust controls improve date formatting ~43% (106 ns to 60 ns) and
 named offset lookup ~69% (59 ns to 18 ns). Largest median increase across 32
@@ -43,7 +67,7 @@ formatting. No new cache, data, dependency, public API or runtime struct layout.
 Optimized benchmark executable grows 12,920 bytes (~0.30%); this includes
 reference/data/harness and is not a shipped crate/SDK size claim.
 
-Accepted TS stays byte-identical at 40,652 gzip bytes. Fresh repeated references
+TS at that checkpoint stayed byte-identical at 40,652 gzip bytes. Fresh repeated references
 show 40/48 basic and 48/48 official median wins; resampling explains count changes.
 Numeric offset caches improve hot reads but regress cold/full workloads; discarded.
 Parser splitting enables V8 inlining without a reliable throughput gain; discarded.

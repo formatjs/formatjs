@@ -111,24 +111,27 @@ export function createHostTimeZoneOffset(
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   const offsetNanoseconds = createHostTimeZoneOffset(timeZone)
-  const sampleOffsets = (local: bigint): bigint[] => {
-    const result: bigint[] = []
-    const samples = [clamp(local - day), clamp(local), clamp(local + day)]
-    for (let index = 0; index < samples.length; index++) {
-      const offset = offsetNanoseconds(samples[index])
-      if (!result.includes(offset)) result.push(offset)
-    }
-    return result
-  }
+
   const candidatesFor = (local: bigint): bigint[] => {
-    const candidates = sampleOffsets(local)
-      .map(offset => local - offset)
-      .filter(
-        instant =>
-          instant >= -limit &&
-          instant <= limit &&
-          instant + offsetNanoseconds(instant) === local
+    const before = offsetNanoseconds(clamp(local - day)),
+      middle = offsetNanoseconds(clamp(local)),
+      after = offsetNanoseconds(clamp(local + day)),
+      candidates: bigint[] = []
+    for (let index = 0; index < 3; index++) {
+      const offset = index === 0 ? before : index === 1 ? middle : after
+      if (
+        (index === 1 && offset === before) ||
+        (index === 2 && (offset === before || offset === middle))
       )
+        continue
+      const instant = local - offset
+      if (
+        instant >= -limit &&
+        instant <= limit &&
+        instant + offsetNanoseconds(instant) === local
+      )
+        candidates[candidates.length] = instant
+    }
     return candidates.sort((one, two) => (one < two ? -1 : one > two ? 1 : 0))
   }
   const possibleInstants = (fields: ISODateTime): bigint[] =>

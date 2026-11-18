@@ -185,6 +185,65 @@ function monthFromCode(
   const month = Number(code.slice(1))
   return month + Number(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
 }
+function isoMonthFromCode(code: string): number {
+  if (code.length !== 3 || code[0] !== 'M')
+    throw new RangeError('Invalid month code')
+  const tens = code[1],
+    units = code[2],
+    month = (tens === '1' ? 10 : 0) + +units
+  if (
+    (tens !== '0' && tens !== '1') ||
+    units < '0' ||
+    units > '9' ||
+    month < 1 ||
+    month > 12
+  )
+    throw new RangeError('Invalid month code')
+  return month
+}
+
+// ISO fields are already prepared; keep native dispatch and range checks.
+export function isoDayFromPreparedFields(
+  year: number,
+  fields: Readonly<Omit<CalendarFields, 'year'>>,
+  overflow: Overflow
+): number {
+  const sourceMonth = fields.month,
+    code = fields.monthCode,
+    sourceDay = fields.day
+  overflowCheck(overflow)
+  yearCheck(year)
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    if (sourceMonth === undefined && code === undefined)
+      throw new TypeError('Month or monthCode required')
+    return dayCheck(
+      native!.calendarToEpochDay(
+        'iso8601',
+        {year, month: sourceMonth, monthCode: code, day: sourceDay},
+        overflow
+      )
+    )
+  }
+  let month: number
+  if (code !== undefined) {
+    month = isoMonthFromCode(code)
+    if (sourceMonth !== undefined && integer(sourceMonth) !== month)
+      throw new RangeError('Month and monthCode disagree')
+  } else {
+    if (sourceMonth === undefined)
+      throw new TypeError('Month or monthCode required')
+    month = regulate(sourceMonth, 1, 12, overflow)
+  }
+  const day = regulate(
+    sourceDay,
+    1,
+    ArithmeticCalendarDaysInMonth('iso8601', year, month),
+    overflow
+  )
+  return dayCheck(ArithmeticCalendarToEpochDay('iso8601', year, month, day))
+}
+
 export function calendarToEpochDayRaw(
   calendar: CalendarId,
   fields: CalendarFields,

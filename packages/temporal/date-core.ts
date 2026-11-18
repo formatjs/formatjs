@@ -12,6 +12,7 @@ import {
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   calendarToEpochDay,
+  isoDayFromPreparedFields,
   calendarIds,
   calendarEra,
   calendarYearFromEra,
@@ -26,6 +27,7 @@ import {
   type CalendarId,
   type Overflow,
   type CalendarDate,
+  type CalendarFields,
 } from '#packages/temporal/calendar.js'
 import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
 import {optionsObject} from '#packages/temporal/rounding.js'
@@ -248,6 +250,12 @@ export function dayFromFields(
 ): number {
   const year = resolveCalendarYear(calendar, fields)!
   if (fields.day === undefined) throw new TypeError('Day required')
+  if (calendar === 'iso8601')
+    return isoDayFromPreparedFields(
+      year,
+      fields as unknown as CalendarFields,
+      overflow
+    )
   return calendarToEpochDay(
     baseCalendar(calendar),
     {
@@ -344,6 +352,39 @@ const isoDateTimeFieldNames = [
   'second',
   'year',
 ]
+function readISODateFields(
+  item: Record<string, unknown>,
+  partial: boolean,
+  withDay: boolean
+): Record<string, unknown> {
+  const result = createObject(fieldRecordPrototype) as Record<string, unknown>
+  let any = false
+  if (withDay) {
+    const value = item.day
+    if (value !== undefined) {
+      result.day = dateFieldValue('day', value)
+      any = true
+    }
+  }
+  const month = item.month
+  if (month !== undefined) {
+    result.month = dateFieldValue('month', month)
+    any = true
+  }
+  const monthCode = item.monthCode
+  if (monthCode !== undefined) {
+    result.monthCode = dateFieldValue('monthCode', monthCode)
+    any = true
+  }
+  const year = item.year
+  if (year !== undefined) {
+    result.year = dateFieldValue('year', year)
+    any = true
+  }
+  if (partial && !any) throw new TypeError('At least one field required')
+  return result
+}
+
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -351,6 +392,8 @@ export function readDateFields(
   shape: DateFieldShape = 'date',
   calendar = 'iso8601'
 ): Record<string, unknown> {
+  if (calendar === 'iso8601' && !withTime && shape !== 'year')
+    return readISODateFields(item, partial, shape === 'date')
   const result = createObject(fieldRecordPrototype) as Record<string, unknown>
   let any = false
   const names =

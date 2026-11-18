@@ -11,7 +11,18 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 Goal: native Rust faster than TS; pure TS faster than both references across
 matched public workloads, preserving spec behavior and preventing regressions.
 
-Current arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
+Current TS calendar/field checkpoint shares bounded Gregorian conversion and
+prepared ISO fields. Six full-48 controls improve field construction ~20%, date
+updates ~34%, zoned formatting ~21% and hours-in-day ~24%. All 71 focused checks
+pass. Consumer is 41,118 gzip bytes (+466); mixed cold use improves with unchanged
+retained memory. Rust wins all 25 original plus 7 named cases in three fresh runs.
+
+Scoped basic-reference losses remain: offset lookup 2.83x, day start 1.08x.
+Final fresh all-48 references and startup remain pending. Original-baseline and
+mixed-case rounding variability stay recorded; no blanket no-regression claim.
+See [calendar/field experiments](../benchmarks/temporal/calendar-fields-experiments.json).
+
+Earlier arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
 workloads in each of three isolated optimized runs against accepted TS. Six
 before/after Rust controls improve date formatting ~43% (106 ns to 60 ns) and
 named offset lookup ~69% (59 ns to 18 ns). Largest median increase across 32
@@ -24,7 +35,7 @@ formatting. No new cache, data, dependency, public API or runtime struct layout.
 Optimized benchmark executable grows 12,920 bytes (~0.30%); this includes
 reference/data/harness and is not a shipped crate/SDK size claim.
 
-Accepted TS stays byte-identical at 40,652 gzip bytes. Fresh repeated references
+TS at that checkpoint stayed byte-identical at 40,652 gzip bytes. Fresh repeated references
 show 40/48 basic and 48/48 official median wins; resampling explains count changes.
 Numeric offset caches improve hot reads but regress cold/full workloads; discarded.
 Parser splitting enables V8 inlining without a reliable throughput gain; discarded.

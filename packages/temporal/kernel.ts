@@ -1,16 +1,15 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
 import {
-  DateFromTime,
   DayFromYear,
   DaysInYear,
-  MonthFromTime,
   YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   TimeZoneOffset,
   TimeZoneRuleTransition,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
+import {ArithmeticGregorianFromEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
 const second = 1_000_000_000n
@@ -107,7 +106,7 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   if (value <= -limit - day || value >= limit + day)
     throw new RangeError('Local date out of range')
   const days = floorDivide(value, day)
-  const milliseconds = Number(days) * 86400000
+  const epochDay = Number(days)
   let time = value - days * day
   const hour = Number(time / (3600n * second))
   time %= 3600n * second
@@ -115,10 +114,11 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   time %= 60n * second
   const seconds = Number(time / second)
   time %= second
+  const date = ArithmeticGregorianFromEpochDay('iso8601', epochDay)
   return {
-    year: YearFromTime(milliseconds),
-    month: MonthFromTime(milliseconds) + 1,
-    day: DateFromTime(milliseconds),
+    year: date.year,
+    month: date.month,
+    day: date.day,
     hour,
     minute,
     second: seconds,
