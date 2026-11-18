@@ -60,6 +60,17 @@ The type does not promise translation coverage, escaping, or successful
 interpolation, and is distinct from the low-level rich-text result of the same
 name. Locale selection and domain error presentation remain application-owned.
 
+Date/time formatter declarations derive inputs from native `Intl.DateTimeFormat`.
+The shared TypeScript config includes `ESNext.Temporal`; consumers enable
+`esnext.temporal` or `esnext` with TypeScript 6.0+ for Temporal input types.
+Date, time, parts and range wrappers pass branded objects through to the selected
+`Intl.DateTimeFormat`; strings retain their existing Date parsing. The formatter
+cache advertises the same Temporal-aware signatures. React date/time components
+and range props derive their inputs from `IntlFormatters`. `ZonedDateTime` stays
+excluded. Duration methods also accept ISO strings supported by the runtime.
+`//packages/react-intl:temporal_test` exercises real native Temporal brands on the
+pinned Test262 Node runtime; its `_typecheck` target verifies declarations.
+
 ## react-intl
 
 **Purpose:** React components and hooks for i18n. The most widely used FormatJS package.

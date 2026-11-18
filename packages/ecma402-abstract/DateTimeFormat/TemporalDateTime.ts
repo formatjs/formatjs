@@ -13,7 +13,8 @@ export interface TemporalDateTimeValue {
   epochNanoseconds: bigint
 }
 
-// Intrinsic calls check internal slots across realms without reading user properties.
+// Internal bridge for Temporal §15.6.12 IsTemporalObject slot checks.
+// Captured intrinsics recognize brands without reading instance properties.
 // https://tc39.es/proposal-temporal/#sec-temporal-istemporalobject
 export type TemporalDateTimeNamespace = Record<
   TemporalDateTimeKind,
@@ -62,12 +63,12 @@ if (temporal) registerTemporalDateTimeNamespace(temporal)
 const stringOptions = Object.assign(Object.create(null), {
   calendarName: 'always',
 })
-const CALENDAR_ANNOTATION = /\[u-ca=([^\]]+)\]/
-const ISO_DATE = /^([+-]\d{6}|\d{4})-(\d{2})-(\d{2})/
-const ISO_TIME = /(?:^|T)(\d{2}):(\d{2}):(\d{2})(?:\.(\d+))?/
 const dateGetTime = Date.prototype.getTime
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
+// Temporal §15.6.11 preserves Temporal brands; other inputs use ToNumber.
+// Normalizing branded values to records here is an internal implementation choice.
+// https://tc39.es/proposal-temporal/#sec-todatetimeformattable
 export function ToDateTimeFormattable(
   value: unknown
 ): Decimal | TemporalDateTimeValue {
@@ -93,32 +94,48 @@ export function ToDateTimeFormattable(
           epochNanoseconds: BigInt(result),
         }
       }
-      // calendarName=always includes the ISO reference date for YearMonth/MonthDay.
-      // Parsing this intrinsic result avoids Date's TimeClip and user-defined coercion.
+      // Internal slot bridge: scan captured intrinsic output without touching RegExp statics.
+      // calendarName=always preserves reference dates (Temporal §9.5.6 / §10.5.3, step 4).
+      // https://tc39.es/proposal-temporal/#sec-temporal-temporalyearmonthtostring
+      // https://tc39.es/proposal-temporal/#sec-temporal-temporalmonthdaytostring
       const text = String(result)
-      const calendar = CALENDAR_ANNOTATION.exec(text)?.[1]
-      const date = ISO_DATE.exec(text)
-      const time = ISO_TIME.exec(text)
+      const calendarStart = text.indexOf('[u-ca=')
+      const calendar =
+        calendarStart < 0 ? undefined : text.slice(calendarStart + 6, -1)
+      const yearEnd = text[0] === '+' || text[0] === '-' ? 7 : 4
+      // Temporal §15.6.18, step 1 anchors PlainTime to 1970-01-01.
+      // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaltime
       let epochNanoseconds = BigInt(0)
-      if (date) {
-        const year = Number(date[1])
-        const month = Number(date[2])
+      if (kind !== 'PlainTime') {
+        const year = Number(text.slice(0, yearEnd))
+        const month = Number(text.slice(yearEnd + 1, yearEnd + 3))
+        const day = Number(text.slice(yearEnd + 4, yearEnd + 6))
         const days =
           DayFromYear(year) +
           monthStarts[month - 1] +
-          Number(date[3]) -
+          day -
           1 +
           (month > 2 && DaysInYear(year) === 366 ? 1 : 0)
         epochNanoseconds = BigInt(days) * BigInt(86400000000000)
       }
-      if (time) {
+      if (kind === 'PlainTime' || kind === 'PlainDateTime') {
+        const timeStart = kind === 'PlainTime' ? 0 : yearEnd + 7
+        const hour = Number(text.slice(timeStart, timeStart + 2))
+        const minute = Number(text.slice(timeStart + 3, timeStart + 5))
+        const second = Number(text.slice(timeStart + 6, timeStart + 8))
+        const fraction =
+          text[timeStart + 8] === '.'
+            ? text.slice(
+                timeStart + 9,
+                calendarStart < 0 ? undefined : calendarStart
+              )
+            : ''
         epochNanoseconds +=
-          BigInt(
-            Number(time[1]) * 3600 + Number(time[2]) * 60 + Number(time[3])
-          ) *
-            BigInt(1000000000) +
-          BigInt(((time[4] || '') + '000000000').slice(0, 9))
+          BigInt(hour * 3600 + minute * 60 + second) * BigInt(1000000000) +
+          BigInt((fraction + '000000000').slice(0, 9))
       } else {
+        // Temporal §15.6.15–17, step 2 combines date-only values with noon.
+        // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporaldate
         epochNanoseconds += BigInt(43200000000000)
       }
       return {kind, calendar, epochNanoseconds}

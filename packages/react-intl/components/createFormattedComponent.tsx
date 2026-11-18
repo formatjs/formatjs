@@ -78,17 +78,18 @@ export const FormattedListParts: React.FC<
 }
 FormattedListParts.displayName = 'FormattedListParts'
 
+// React type plumbing: inherit inputs from the matching parts API.
 export function createFormattedDateTimePartsComponent<
   Name extends 'formatDate' | 'formatTime',
 >(
   name: Name
 ): React.FC<
   Formatter[Name] & {
-    value: Parameters<IntlShape[Name]>[0]
+    value: Parameters<IntlShape[`${Name}ToParts`]>[0]
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null
   }
 > {
-  type FormatFn = IntlShape[Name]
+  type FormatFn = IntlShape[`${Name}ToParts`]
   type Props = Formatter[Name] & {
     value: Parameters<FormatFn>[0]
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null

@@ -161,8 +161,8 @@ export function formatDateToParts(
     onError: OnErrorFn
   },
   getDateTimeFormat: Formatters['getDateTimeFormat'],
-  value: Parameters<IntlFormatters['formatDate']>[0],
-  options: Parameters<IntlFormatters['formatDate']>[1] = {}
+  value: Parameters<IntlFormatters['formatDateToParts']>[0],
+  options: Parameters<IntlFormatters['formatDateToParts']>[1] = {}
 ): Intl.DateTimeFormatPart[] {
   const date = typeof value === 'string' ? new Date(value || 0) : value
   try {

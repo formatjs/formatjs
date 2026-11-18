@@ -313,7 +313,9 @@ registration are excluded.
 `TemporalDateTime.ts` captures available global Temporal intrinsics at module load;
 `__addTemporalNamespace` registers later or isolated namespaces. Brand-checking calls
 avoid instance properties. Intrinsic ISO serialization preserves YearMonth/MonthDay
-reference dates; arithmetic conversion avoids Date's TimeClip. The FormatJS Temporal
+reference dates; arithmetic conversion avoids Date's TimeClip. Fixed-field ISO
+parsing and numeric offset scanning preserve legacy RegExp statics during
+Temporal formatting, including parts and ranges. The FormatJS Temporal
 installer registers its namespace automatically.
 
 `InitializeDateTimeFormat` retains the already-read component options and caches

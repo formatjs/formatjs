@@ -17,65 +17,50 @@ const NANOSECONDS_PER_MILLISECOND = BigInt(1000000)
 const ZERO = BigInt(0)
 const ONE = BigInt(1)
 
-// Cached regex patterns for performance
-const OFFSET_TIMEZONE_PREFIX_REGEX = /^[+-]/
-const OFFSET_TIMEZONE_FORMAT_REGEX =
-  /^([+-])(\d{2})(?::?(\d{2}))?(?::?(\d{2}))?(?:\.(\d{1,9}))?$/
-
-/**
- * IsTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-istimezoneoffsetstring
- *
- * Determines if a string is a UTC offset identifier.
- *
- * @param offsetString - The string to check
- * @returns true if offsetString is a UTC offset format
- */
+// Internal prefix dispatch; DateTimeFormat validates timezone grammar first.
 function IsTimeZoneOffsetString(offsetString: string): boolean {
-  return OFFSET_TIMEZONE_PREFIX_REGEX.test(offsetString)
+  return offsetString[0] === '+' || offsetString[0] === '-'
 }
 
-/**
- * ParseTimeZoneOffsetString ( offsetString )
- * https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
- *
- * Parses a UTC offset string and returns the offset in milliseconds.
- * This is used to calculate the timezone offset for ToLocalTime.
- *
- * Supports formats: ±HH, ±HHMM, ±HH:MM, ±HH:MM:SS, ±HH:MM:SS.sss
- *
- * @param offsetString - The UTC offset string to parse (e.g., "+01:00")
- * @returns The offset in milliseconds
- */
+// Internal scanner for validated offsets, returning milliseconds.
+// Arithmetic follows Temporal §14.6.11 ParseDateTimeUTCOffset, steps 5–18.
+// https://tc39.es/proposal-temporal/#sec-parsedatetimeutcoffset
 function ParseTimeZoneOffsetString(offsetString: string): number {
-  // 1. Let parseResult be ParseText(offsetString, UTCOffset)
-  const match = OFFSET_TIMEZONE_FORMAT_REGEX.exec(offsetString)
-
-  // 2. Assert: parseResult is not a List of errors
-  if (!match) {
-    return 0
+  const sign = offsetString[0] === '+' ? 1 : -1
+  let position = 1
+  const components: number[] = []
+  for (let index = 0; index < 3; index++) {
+    if (
+      index &&
+      (position === offsetString.length || offsetString[position] === '.')
+    )
+      break
+    if (index && offsetString[position] === ':') position++
+    const first = offsetString.charCodeAt(position) - 48
+    const second = offsetString.charCodeAt(position + 1) - 48
+    if (!(first >= 0 && first <= 9 && second >= 0 && second <= 9)) return 0
+    components.push(first * 10 + second)
+    position += 2
   }
-
-  // 3. Extract components from parseResult
-  const sign = match[1] === '+' ? 1 : -1
-  const hours = parseInt(match[2], 10)
-  const minutes = match[3] ? parseInt(match[3], 10) : 0
-  const seconds = match[4] ? parseInt(match[4], 10) : 0
-  const fractionalStr = match[5] || '0'
-
-  // 4. Convert fractional seconds (nanoseconds) to milliseconds
-  // Pad to 9 digits and divide by 1000000
-  // Use manual padding for compatibility (padEnd is ES2017)
-  const paddedFractional = (fractionalStr + '000000000').slice(0, 9)
-  const fractional = parseInt(paddedFractional, 10) / 1000000
-
-  // 5. Calculate total offset in milliseconds
-  // offset = sign × (hours × 3600000 + minutes × 60000 + seconds × 1000 + fractional)
-  const offsetMs =
+  let fractional = 0
+  if (offsetString[position] === '.') {
+    const fractionStart = ++position
+    while (position < offsetString.length) {
+      const digit = offsetString.charCodeAt(position) - 48
+      if (digit < 0 || digit > 9) return 0
+      position++
+    }
+    const length = position - fractionStart
+    if (length < 1 || length > 9) return 0
+    fractional =
+      Number((offsetString.slice(fractionStart) + '000000000').slice(0, 9)) /
+      1000000
+  }
+  if (position !== offsetString.length) return 0
+  const [hours, minutes = 0, seconds = 0] = components
+  return (
     sign * (hours * 3600000 + minutes * 60000 + seconds * 1000 + fractional)
-
-  // 6. Return offset in milliseconds
-  return offsetMs
+  )
 }
 
 /**
@@ -124,12 +109,9 @@ export interface ToLocalTimeImplDetails {
   tzData: Record<string, UnpackedTimeZoneData>
 }
 
-/**
- * https://tc39.es/ecma402/#sec-tolocaltime
- * @param t
- * @param calendar
- * @param timeZone
- */
+// Temporal §15.6.23, steps 1–3: add the offset before computing calendar fields.
+// Millisecond arithmetic below is an internal representation of epoch nanoseconds.
+// https://tc39.es/proposal-temporal/#sec-tolocaltime
 export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,
