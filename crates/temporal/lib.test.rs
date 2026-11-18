@@ -2793,3 +2793,95 @@ fn recurring_monthly_offsets_preserve_rule_year_boundaries() {
         ],
     );
 }
+
+#[test]
+fn recurring_offsets_preserve_nanosecond_integer_widths() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Month {
+                month: 3,
+                week: 1,
+                weekday: 0,
+                seconds: 0,
+            },
+            TransitionRule::Month {
+                month: 8,
+                week: 1,
+                weekday: 0,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    // The negative i64 bound is outside DST; the other bounds are inside.
+    for (raw, expected) in [
+        (i128::from(i64::MIN) - 1, 0_i128),
+        (i128::from(i64::MIN), 0),
+        (i128::from(i64::MIN) + 1, 0),
+        (i128::from(i64::MAX) - 1, 3_600_000_000_000),
+        (i128::from(i64::MAX), 3_600_000_000_000),
+        (i128::from(i64::MAX) + 1, 3_600_000_000_000),
+        (-i128::from(u64::MAX) - 1, 3_600_000_000_000),
+        (-i128::from(u64::MAX), 3_600_000_000_000),
+        (-i128::from(u64::MAX) + 1, 3_600_000_000_000),
+        (i128::from(u64::MAX) - 1, 3_600_000_000_000),
+        (i128::from(u64::MAX), 3_600_000_000_000),
+        (i128::from(u64::MAX) + 1, 3_600_000_000_000),
+    ] {
+        assert_eq!(
+            zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(raw).unwrap()),
+            expected,
+            "{raw}"
+        );
+    }
+}
+
+#[test]
+fn offsets_preserve_wide_nanosecond_second_boundaries() {
+    use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
+    for seconds in [
+        -8_639_999_999_999_i64,
+        -17_179_869_184,
+        -13_596_181_323,
+        -9_223_372_037,
+        9_223_372_037,
+        13_596_181_323,
+        17_179_869_184,
+        8_639_999_999_999,
+    ] {
+        let events = [
+            OffsetTransition {
+                epoch_seconds: seconds - 1,
+                offset_seconds: 1,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds,
+                offset_seconds: 2,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds + 1,
+                offset_seconds: 3,
+            },
+        ];
+        let zone = TransitionZone::new(0, &events, None).unwrap();
+        let anchor = i128::from(seconds) * 1_000_000_000;
+        for (delta, expected) in [
+            (-1, 1),
+            (0, 2),
+            (1, 2),
+            (999_999_999, 2),
+            (1_000_000_000, 3),
+        ] {
+            let instant = Instant::from_epoch_nanoseconds(anchor + delta).unwrap();
+            assert_eq!(
+                zone.offset_nanoseconds(instant),
+                expected * 1_000_000_000,
+                "{seconds} {delta}"
+            );
+        }
+    }
+}

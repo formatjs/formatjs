@@ -73,18 +73,22 @@ impl IsoString {
         }
         self.len = end;
     }
-    pub(crate) fn date_time(fields: IsoDateTime, precision: Precision) -> Self {
-        let mut output = IsoString::new();
-        if (0..=9999).contains(&fields.year) {
-            output.number(fields.year as u32, 4);
+    pub(crate) fn date((year, month, day): (i32, u8, u8)) -> Self {
+        let mut output = Self::new();
+        if (0..=9999).contains(&year) {
+            output.number(year as u32, 4);
         } else {
-            output.push(if fields.year < 0 { b'-' } else { b'+' });
-            output.number(fields.year.unsigned_abs(), 6);
+            output.push(if year < 0 { b'-' } else { b'+' });
+            output.number(year.unsigned_abs(), 6);
         }
         output.push(b'-');
-        output.pair(u32::from(fields.month));
+        output.pair(u32::from(month));
         output.push(b'-');
-        output.pair(u32::from(fields.day));
+        output.pair(u32::from(day));
+        output
+    }
+    pub(crate) fn date_time(fields: IsoDateTime, precision: Precision) -> Self {
+        let mut output = Self::date((fields.year, fields.month, fields.day));
         output.push(b'T');
         output.append_time(
             (fields.hour, fields.minute, fields.second, fields.nanosecond),

@@ -17,6 +17,23 @@ pub enum TransitionRule {
         seconds: i32,
     },
 }
+fn monthly_day(first: i64, year: i32, month: u8, week: u8, weekday: u8) -> i64 {
+    let mut day = i64::from(weekday) - (first + 4).rem_euclid(7);
+    // Validated weekdays keep this difference between -6 and 6.
+    if day < 0 {
+        day += 7;
+    }
+    day += 7 * i64::from(week - 1);
+    let length = match month {
+        2 => 28 + i64::from(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)),
+        4 | 6 | 9 | 11 => 30,
+        _ => 31,
+    };
+    if day >= length {
+        day -= 7;
+    }
+    first + day
+}
 impl TransitionRule {
     const fn valid(self) -> bool {
         let (valid, seconds) = match self {
@@ -44,18 +61,7 @@ impl TransitionRule {
                 seconds,
             } => {
                 let first = crate::iso::epoch_day_from_iso(year, month, 1);
-                let mut day = first
-                    + (i64::from(weekday) - (first + 4).rem_euclid(7)).rem_euclid(7)
-                    + 7 * i64::from(week - 1);
-                let length = match month {
-                    2 => 28 + i64::from(leap),
-                    4 | 6 | 9 | 11 => 30,
-                    _ => 31,
-                };
-                if day >= first + length {
-                    day -= 7;
-                }
-                (day, seconds)
+                (monthly_day(first, year, month, week, weekday), seconds)
             }
             Self::Day { day, seconds } => (
                 crate::iso::epoch_day_from_iso(year, 1, 1) + i64::from(day),
@@ -109,7 +115,8 @@ impl FutureRule {
         let (year, month, day) = crate::calendar::iso_fields(seconds.div_euclid(86_400));
         // January 1 can put the two instants in different rule-year windows.
         if month == 1 && day == 1 && seconds.rem_euclid(86_400) == 0 {
-            return self.offset(instant) != self.offset(before);
+            return self.offset(instant.epoch_nanoseconds().div_euclid(1_000_000_000) as i64)
+                != self.offset(before.epoch_nanoseconds().div_euclid(1_000_000_000) as i64);
         }
         let mut previous = i64::MIN;
         let mut current = i64::MIN;
@@ -136,22 +143,48 @@ impl FutureRule {
         }
         was_dst != is_dst
     }
-    fn offset(self, instant: Instant) -> i32 {
+    fn offset(&self, seconds: i64) -> i32 {
         let Some((offset, start, end)) = self.daylight else {
             return self.standard;
         };
-        // Valid Instant seconds fit i64; no clock fields are needed here.
-        let seconds = instant.epoch_nanoseconds().div_euclid(1_000_000_000) as i64;
-        let year = crate::calendar::iso_fields(seconds.div_euclid(86_400)).0;
+        let utc_day = seconds.div_euclid(86_400);
+        let (year, month, day) = crate::calendar::iso_fields(utc_day);
         if let (
-            TransitionRule::Month { month: first, .. },
-            TransitionRule::Month { month: last, .. },
+            TransitionRule::Month {
+                month: first,
+                week: start_week,
+                weekday: start_weekday,
+                seconds: start_seconds,
+            },
+            TransitionRule::Month {
+                month: last,
+                week: end_week,
+                weekday: end_weekday,
+                seconds: end_seconds,
+            },
         ) = (start, end)
             && (2..=11).contains(&first)
             && (2..=11).contains(&last)
             && first.abs_diff(last) >= 2
         {
             // Even with seven-day rule times, these events stay ordered in this UTC year.
+            let first_day = utc_day - i64::from(day) + 1;
+            if month == first {
+                let begin = monthly_day(first_day, year, month, start_week, start_weekday) * 86_400
+                    + i64::from(start_seconds)
+                    - i64::from(self.standard);
+                return if seconds >= begin {
+                    offset
+                } else {
+                    self.standard
+                };
+            }
+            if month == last {
+                let end = monthly_day(first_day, year, month, end_week, end_weekday) * 86_400
+                    + i64::from(end_seconds)
+                    - i64::from(offset);
+                return if seconds < end { offset } else { self.standard };
+            }
             let (begin, end) = self.events(year).unwrap();
             let dst = if begin < end {
                 seconds >= begin && seconds < end
@@ -227,15 +260,30 @@ impl<'a> TransitionZone<'a> {
 }
 impl TimeZone for TransitionZone<'_> {
     fn offset_nanoseconds(&self, instant: Instant) -> i128 {
-        let seconds = instant.epoch_nanoseconds().div_euclid(1_000_000_000);
-        if seconds > i128::from(self.cutoff()) {
-            if let Some(future) = self.future {
-                return i128::from(future.offset(instant)) * 1_000_000_000;
+        let nanoseconds = instant.epoch_nanoseconds();
+        let seconds = if let Ok(value) = u64::try_from(nanoseconds) {
+            (value / 1_000_000_000) as i64
+        } else {
+            match i64::try_from(nanoseconds) {
+                Ok(value) => value.div_euclid(1_000_000_000),
+                Err(_) => {
+                    // Split the wide timestamp so both divisions use 64-bit integers.
+                    let upper = (nanoseconds >> 32) as i64;
+                    let lower = u64::from(nanoseconds as u32);
+                    let quotient = upper.div_euclid(1_000_000_000);
+                    let remainder = upper.rem_euclid(1_000_000_000) as u64;
+                    (quotient << 32) + (((remainder << 32) | lower) / 1_000_000_000) as i64
+                }
+            }
+        };
+        if seconds > self.cutoff() {
+            if let Some(future) = &self.future {
+                return i128::from(future.offset(seconds)) * 1_000_000_000;
             }
         }
         let index = self
             .transitions
-            .partition_point(|event| i128::from(event.epoch_seconds) <= seconds);
+            .partition_point(|event| event.epoch_seconds <= seconds);
         i128::from(if index == 0 {
             self.initial
         } else {

@@ -11,7 +11,28 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 Goal: native Rust faster than TS; pure TS faster than both references across
 matched public workloads, preserving spec behavior and preventing regressions.
 
-Current recurring-rule checkpoint: native Rust still wins 25/25 original and
+Current arithmetic/writer checkpoint: Rust wins 25/25 original plus 7/7 named-zone
+workloads in each of three isolated optimized runs against accepted TS. Six
+before/after Rust controls improve date formatting ~43% (106 ns to 60 ns) and
+named offset lookup ~69% (59 ns to 18 ns). Largest median increase across 32
+workloads is ~1.2%. All 66 focused Rust/Node/ICU/package/Hermes targets pass.
+See [arithmetic/writer experiments](../benchmarks/temporal/recurring-arithmetic-experiments.json) for raw samples and limits.
+
+Retained changes reuse guarded monthly-rule arithmetic, exact narrow/limb
+nanosecond division, unsigned Gregorian era-day math and checked ASCII date
+formatting. No new cache, data, dependency, public API or runtime struct layout.
+Optimized benchmark executable grows 12,920 bytes (~0.30%); this includes
+reference/data/harness and is not a shipped crate/SDK size claim.
+
+Accepted TS stays byte-identical at 40,652 gzip bytes. Fresh repeated references
+show 40/48 basic and 48/48 official median wins; resampling explains count changes.
+Numeric offset caches improve hot reads but regress cold/full workloads; discarded.
+Parser splitting enables V8 inlining without a reliable throughput gain; discarded.
+CPU profiles, heap audits and all timing controls remain recorded. TS startup
+was not remeasured because accepted source and bundle are unchanged. Eight basic
+reference losses and the earlier baseline audit keep the goal open.
+
+Preceding recurring-rule checkpoint: native Rust still wins 25/25 original and
 7/7 additional named-zone workloads against current TS, reported separately.
 Six optimized controls improve named offset lookup ~45% (106 ns to 59 ns),
 day start ~38%, hours-in-day ~37%, day addition ~19% and time replacement ~31%.

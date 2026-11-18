@@ -243,16 +243,9 @@ impl<C: CalendarProvider> fmt::Display for FormattedDate<C> {
         write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
-pub(crate) fn write_date(
-    f: &mut fmt::Formatter<'_>,
-    (year, month, day): (i32, u8, u8),
-) -> fmt::Result {
-    if (0..=9999).contains(&year) {
-        write!(f, "{year:04}")?;
-    } else {
-        write!(f, "{year:+07}")?;
-    }
-    write!(f, "-{month:02}-{day:02}")
+pub(crate) fn write_date(f: &mut fmt::Formatter<'_>, fields: (i32, u8, u8)) -> fmt::Result {
+    let output = crate::format::IsoString::date(fields);
+    f.write_str(output.as_str()?)
 }
 pub(crate) fn write_calendar(
     f: &mut fmt::Formatter<'_>,

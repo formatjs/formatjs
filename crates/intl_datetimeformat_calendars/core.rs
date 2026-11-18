@@ -597,16 +597,18 @@ pub fn iso_day(year: i32, month: u8, day: u8) -> i64 {
         - 719468
 }
 /// Raw inverse ISO conversion for validated epoch days within ±110000000.
+#[inline]
 pub fn iso_fields(day: i64) -> (i32, u8, u8) {
     let d = day + 719468;
     let era = d.div_euclid(146097);
-    let doe = d.rem_euclid(146097);
+    // Day within the era is in 0..146097.
+    let doe = d.rem_euclid(146097) as u32;
     let y = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
     let doy = doe - (365 * y + y / 4 - y / 100);
     let m = (5 * doy + 2) / 153;
-    let month = m + if m < 10 { 3 } else { -9 };
+    let month = if m < 10 { m + 3 } else { m - 9 };
     (
-        (y + era * 400 + i64::from(month <= 2)) as i32,
+        (i64::from(y) + era * 400 + i64::from(month <= 2)) as i32,
         month as u8,
         (doy - (153 * m + 2) / 5 + 1) as u8,
     )

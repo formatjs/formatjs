@@ -14,13 +14,10 @@ IANA timezones; `compiled_calendars` and `compiled_time_zones` enable each separ
 Published crates contain generated data and a Cargo build script; Bazel is only
 needed when building this repository.
 
-Rust owns typed values and normalized math/parsing/formatting operations. JS owns
-ECMAScript coercion, brands and object allocation; Intl supplies locale rendering.
-WASM ABI 22 exposes 69 Rust operations; native Hermes uses the same math through JSON FFI. The standalone SDK
-consumer installs Temporal and native Intl without a Rust toolchain.
-WASM uses reusable binary buffers and complete date-like result snapshots;
-calendar/clock/zone getters reuse those snapshots. JSON remains the native SDK
-and diagnostic interface. Both share the Rust operation dispatcher.
+Rust owns normalized Temporal operations. JS handles ECMAScript coercion, brands
+and object allocation; Intl supplies locale rendering. Native Hermes calls the
+Rust JSON FFI dispatcher and caches date-like result snapshots. The standalone
+SDK installs Temporal and native Intl without a Rust toolchain.
 Timezone candidate enumeration deduplicates offsets in a bounded stack buffer;
 histories with more offsets still visit every distinct value.
 `TimeZone::visit_offsets_at(local_nanoseconds, visitor)` defaults to full-history
@@ -230,9 +227,8 @@ and invalid data have distinct errors; missing data never substitutes UTC.
 `TimeZoneRegistry::compiled()`. Bazel generates immutable Rust records from the
 pinned TS timezone pack; generated records stay in Bazel outputs. Checked const
 constructors validate transition bounds/order and future rules at compilation.
-The default core and existing primitive WASM build include no timezone pack.
-Like other compiled-data variants here, this feature uses Bazel's generated-file
-environment rather than Cargo build scripts.
+The default core includes no timezone pack. Bazel builds supply generated-file
+environments; published crates include generated data for Cargo.
 
 ```rust
 use formatjs_temporal::{Instant, TimeZoneRegistry, ZonedDateTime};
@@ -250,8 +246,8 @@ future offset/local samples, 1,900 gap/fold controls and 14,058 transition query
 instants (both directions plus nanosecond boundaries). ICU-only legacy names,
 such as ACT, are checked as invalid identifiers; every recognized IANA name must
 resolve successfully. Existing zoned/relative/day-rounding controls use the same
-registry. Native Hermes installation and full WASM facade/data benchmarks remain
-pending.
+registry. Native Hermes uses the same production data; native benchmarks report
+Rust timings separately from binding costs.
 
 ## Zoned strings
 
@@ -291,10 +287,10 @@ options. Native Test262-derived cases cover folds/gaps, offset policies, date-on
 midnight gaps, syntax-dependent historical matching and asymmetric local bounds.
 These typed numerical/string checks do not install a native Hermes backend.
 
-The [size refresh](../../benchmarks/temporal/zoned-string-size-results.json) keeps
-the existing data-free primitive scope: TS 3,757 gzip bytes, WASM 19,531 plus
-463 bridge bytes. The full TS namespace remains 360,277 gzip bytes. These numbers
-do not measure the native zoned facade or compiled calendar/timezone data.
+The historical [size refresh](../../benchmarks/temporal/zoned-string-size-results.json)
+measured data-free primitives: TS 3,757 gzip bytes, WASM 19,531 plus 463 bridge
+bytes. The full TS namespace then measured 360,277 gzip bytes. These retired
+measurements exclude the native zoned facade and compiled calendar/timezone data.
 
 ## Calendar registry and native context
 
@@ -335,8 +331,13 @@ registry, replacing the test-only JSON loader. All 50,298 field rows additionall
 parse through `TemporalContext`; existing arithmetic/difference/relative/short-date
 controls retain their full scope. Native context tests cover all date classes,
 aliases, retained data lifetimes, leap-month policies and public date limits.
-The context supplies data and typed values; native Hermes installation and full
-WASM facade/data benchmarks remain required.
+The context supplies data and typed values to native Hermes. See the completion
+audit for current coverage.
+
+## Historical backend measurements
+
+WASM references below describe retired experiments. They are retained to explain
+past measurements and ABI changes; WASM is no longer a supported delivery path.
 
 ## Experimental Hermes Rust ISO bridge
 
@@ -387,11 +388,6 @@ startup, full WASM or full backend size. Backend selection remains open.
 Invalid UTF-16 Instant strings retain `RangeError`: escaped code units are
 rejected before JSON-to-UTF-8 decoding. Source/bytecode regressions cover lone
 surrogates, captured intrinsics and mandatory native calls for every new operation.
-
-## Historical backend measurements
-
-WASM references below describe retired experiments. They are retained to explain
-past measurements and ABI changes; WASM is no longer a supported delivery path.
 
 ## Rust PlainTime backend
 
