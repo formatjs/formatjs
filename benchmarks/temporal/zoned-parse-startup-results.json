@@ -1,0 +1,1454 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "icu": "78.2",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "sampleCount": 9,
+  "method": "Nine fresh processes per profile, persistent compile cache disabled. ABI 17 typed zoned parsing/resolution, Rust local timestamp and successful identity metadata, complete ISO zoned binary snapshots; generic non-ISO/deferred-error snapshots retained. Production stripped WASM.",
+  "scope": "Namespace imports without global installation. Official @js-temporal/polyfill 0.5.1 plus forced temporal-polyfill 1.0.7 full and basic implementations; full calendar comparison excludes basic and officialReference (documented ICU 78.2 incompatibility). TS default uses captured installed Intl for named timezones and Umm al-Qura, with compact owned Chinese/Dangi arithmetic/data. Standalone owns calendar packs and IANA histories. Both WASM profiles use Rust timezone data; native-data WASM drops duplicate TS packs while hybrid retains compact TS calendars. All matched outputs asserted. Diagnostic one-sample mode does not establish representative timings.",
+  "results": [
+    {
+      "name": "typescript",
+      "backend": "typescript",
+      "calendar": true,
+      "bundleBytes": 141234,
+      "bundleGzipBytes": 39692,
+      "binaryBytes": 0,
+      "binaryGzipBytes": 0,
+      "medians": {
+        "importMilliseconds": 5.1958879999999965,
+        "compileMilliseconds": 0,
+        "instantiateMilliseconds": 0,
+        "configureMilliseconds": 0,
+        "firstInstantMilliseconds": 0.8900479999999931,
+        "firstTimezoneMilliseconds": 13.303964,
+        "firstCalendarMilliseconds": 1.5787389999999988,
+        "processMilliseconds": 70.27255400000058,
+        "readyMilliseconds": 20.970617999999995,
+        "isoTimezoneReadyMilliseconds": 19.389471999999998,
+        "linearMemoryBytes": 0,
+        "retainedHeapDeltaBytes": 614248,
+        "residentDeltaBytes": 9633792
+      },
+      "samples": [
+        {
+          "importMilliseconds": 5.267598999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.9750990000000002,
+          "firstTimezoneMilliseconds": 14.965401,
+          "firstCalendarMilliseconds": 1.527159999999995,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.74127,
+          "isoTimezoneReadyMilliseconds": 21.21206,
+          "retainedHeapDeltaBytes": 616024,
+          "residentDeltaBytes": 9711616,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 75.62514599999997
+        },
+        {
+          "importMilliseconds": 5.157899999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8900479999999931,
+          "firstTimezoneMilliseconds": 13.337741000000001,
+          "firstCalendarMilliseconds": 1.5787389999999988,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 20.970617999999995,
+          "isoTimezoneReadyMilliseconds": 19.389471999999998,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9601024,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 68.88794600000006
+        },
+        {
+          "importMilliseconds": 5.212263999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8943510000000003,
+          "firstTimezoneMilliseconds": 13.368927000000006,
+          "firstCalendarMilliseconds": 1.5569960000000052,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 21.042779000000003,
+          "isoTimezoneReadyMilliseconds": 19.479227,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9666560,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.84589599999981
+        },
+        {
+          "importMilliseconds": 5.151262000000003,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.9675589999999943,
+          "firstTimezoneMilliseconds": 13.303396999999997,
+          "firstCalendarMilliseconds": 1.5822440000000029,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 21.010609000000002,
+          "isoTimezoneReadyMilliseconds": 19.426109000000004,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9605120,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 68.65287899999976
+        },
+        {
+          "importMilliseconds": 5.235921999999995,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.9041530000000009,
+          "firstTimezoneMilliseconds": 13.517696,
+          "firstCalendarMilliseconds": 1.559908,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 21.223999,
+          "isoTimezoneReadyMilliseconds": 19.661741999999997,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9633792,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 71.37087999999994
+        },
+        {
+          "importMilliseconds": 5.060627000000004,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8854120000000023,
+          "firstTimezoneMilliseconds": 13.242353000000001,
+          "firstCalendarMilliseconds": 1.6049399999999991,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 20.799564000000004,
+          "isoTimezoneReadyMilliseconds": 19.192218000000004,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9314304,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.19579600000043
+        },
+        {
+          "importMilliseconds": 5.224698000000004,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8838190000000026,
+          "firstTimezoneMilliseconds": 13.162410999999999,
+          "firstCalendarMilliseconds": 1.569810000000004,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 20.846989,
+          "isoTimezoneReadyMilliseconds": 19.274873000000007,
+          "retainedHeapDeltaBytes": 614376,
+          "residentDeltaBytes": 9928704,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.07823199999984
+        },
+        {
+          "importMilliseconds": 5.1958879999999965,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8895669999999996,
+          "firstTimezoneMilliseconds": 13.216096,
+          "firstCalendarMilliseconds": 1.5987210000000047,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 20.906346999999997,
+          "isoTimezoneReadyMilliseconds": 19.305436999999998,
+          "retainedHeapDeltaBytes": 616024,
+          "residentDeltaBytes": 9650176,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.27255400000058
+        },
+        {
+          "importMilliseconds": 5.152653999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8778199999999998,
+          "firstTimezoneMilliseconds": 13.303964,
+          "firstCalendarMilliseconds": 1.581159999999997,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 20.924737,
+          "isoTimezoneReadyMilliseconds": 19.338152,
+          "retainedHeapDeltaBytes": 614248,
+          "residentDeltaBytes": 9633792,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 75.52541099999962
+        }
+      ]
+    },
+    {
+      "name": "standalone",
+      "backend": "typescript",
+      "calendar": true,
+      "bundleBytes": 3019051,
+      "bundleGzipBytes": 340232,
+      "binaryBytes": 0,
+      "binaryGzipBytes": 0,
+      "medians": {
+        "importMilliseconds": 20.717313000000004,
+        "compileMilliseconds": 0,
+        "instantiateMilliseconds": 0,
+        "configureMilliseconds": 0,
+        "firstInstantMilliseconds": 0.8910730000000058,
+        "firstTimezoneMilliseconds": 1.6339359999999985,
+        "firstCalendarMilliseconds": 1.5611519999999999,
+        "processMilliseconds": 74.6060849999999,
+        "readyMilliseconds": 24.832349,
+        "isoTimezoneReadyMilliseconds": 23.267043,
+        "linearMemoryBytes": 0,
+        "retainedHeapDeltaBytes": 3721120,
+        "residentDeltaBytes": 12333056
+      },
+      "samples": [
+        {
+          "importMilliseconds": 22.862969999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8894439999999975,
+          "firstTimezoneMilliseconds": 1.5469149999999985,
+          "firstCalendarMilliseconds": 1.5448630000000065,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.849992999999998,
+          "isoTimezoneReadyMilliseconds": 25.303210999999997,
+          "retainedHeapDeltaBytes": 3721824,
+          "residentDeltaBytes": 11587584,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 75.45404100000002
+        },
+        {
+          "importMilliseconds": 20.760939999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.9137769999999961,
+          "firstTimezoneMilliseconds": 1.6527969999999996,
+          "firstCalendarMilliseconds": 1.5643519999999995,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 24.897784,
+          "isoTimezoneReadyMilliseconds": 23.33142,
+          "retainedHeapDeltaBytes": 3721120,
+          "residentDeltaBytes": 12603392,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 75.76860999999997
+        },
+        {
+          "importMilliseconds": 20.717313000000004,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8941459999999992,
+          "firstTimezoneMilliseconds": 1.650936999999999,
+          "firstCalendarMilliseconds": 1.5633589999999984,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 24.832349,
+          "isoTimezoneReadyMilliseconds": 23.267043,
+          "retainedHeapDeltaBytes": 3721072,
+          "residentDeltaBytes": 14786560,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 76.203078
+        },
+        {
+          "importMilliseconds": 20.017204999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8788149999999959,
+          "firstTimezoneMilliseconds": 1.6339359999999985,
+          "firstCalendarMilliseconds": 1.5391509999999968,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 24.075061999999996,
+          "isoTimezoneReadyMilliseconds": 22.533777,
+          "retainedHeapDeltaBytes": 3721120,
+          "residentDeltaBytes": 12357632,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 74.01871200000005
+        },
+        {
+          "importMilliseconds": 25.946189999999994,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8973160000000036,
+          "firstTimezoneMilliseconds": 1.5485450000000043,
+          "firstCalendarMilliseconds": 1.5445829999999958,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 29.942825999999997,
+          "isoTimezoneReadyMilliseconds": 28.396349999999998,
+          "retainedHeapDeltaBytes": 3722000,
+          "residentDeltaBytes": 11333632,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.09181699999999
+        },
+        {
+          "importMilliseconds": 20.238423000000004,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8793249999999944,
+          "firstTimezoneMilliseconds": 1.6379869999999954,
+          "firstCalendarMilliseconds": 1.5521630000000002,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 24.313887,
+          "isoTimezoneReadyMilliseconds": 22.759651000000005,
+          "retainedHeapDeltaBytes": 3721120,
+          "residentDeltaBytes": 14524416,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 74.6060849999999
+        },
+        {
+          "importMilliseconds": 19.851609000000003,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8910730000000058,
+          "firstTimezoneMilliseconds": 1.6378019999999935,
+          "firstCalendarMilliseconds": 1.5611519999999999,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 23.947579000000005,
+          "isoTimezoneReadyMilliseconds": 22.384342000000004,
+          "retainedHeapDeltaBytes": 3721120,
+          "residentDeltaBytes": 12214272,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 73.92484599999989
+        },
+        {
+          "importMilliseconds": 20.106842999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8852159999999998,
+          "firstTimezoneMilliseconds": 1.601028999999997,
+          "firstCalendarMilliseconds": 1.5685939999999974,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 24.168233,
+          "isoTimezoneReadyMilliseconds": 22.597609999999996,
+          "retainedHeapDeltaBytes": 3721216,
+          "residentDeltaBytes": 12333056,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 73.24285400000008
+        },
+        {
+          "importMilliseconds": 21.898012,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 0.8931809999999984,
+          "firstTimezoneMilliseconds": 1.5516679999999994,
+          "firstCalendarMilliseconds": 1.572650000000003,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 25.921701,
+          "isoTimezoneReadyMilliseconds": 24.346868,
+          "retainedHeapDeltaBytes": 3722000,
+          "residentDeltaBytes": 11571200,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 73.39299100000062
+        }
+      ]
+    },
+    {
+      "name": "officialReference",
+      "backend": "typescript",
+      "calendar": false,
+      "calendarUnavailableReason": "0.5.1 on ICU 78.2: Chinese month addition throws RangeError: Unexpected leap month suffix: Mo1",
+      "bundleBytes": 154339,
+      "bundleGzipBytes": 44522,
+      "binaryBytes": 0,
+      "binaryGzipBytes": 0,
+      "medians": {
+        "importMilliseconds": 20.695152,
+        "compileMilliseconds": 0,
+        "instantiateMilliseconds": 0,
+        "configureMilliseconds": 0,
+        "firstInstantMilliseconds": 3.0717690000000033,
+        "firstTimezoneMilliseconds": 2.920096000000008,
+        "firstCalendarMilliseconds": null,
+        "processMilliseconds": 76.39143100000001,
+        "readyMilliseconds": 26.710499999999996,
+        "isoTimezoneReadyMilliseconds": 26.709958999999998,
+        "linearMemoryBytes": 0,
+        "retainedHeapDeltaBytes": 820560,
+        "residentDeltaBytes": 10006528
+      },
+      "samples": [
+        {
+          "importMilliseconds": 20.694851,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.116326000000001,
+          "firstTimezoneMilliseconds": 2.920096000000008,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.735992999999993,
+          "isoTimezoneReadyMilliseconds": 26.735488000000004,
+          "retainedHeapDeltaBytes": 820528,
+          "residentDeltaBytes": 10354688,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 78.81318799999997
+        },
+        {
+          "importMilliseconds": 20.547826999999998,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.062679000000003,
+          "firstTimezoneMilliseconds": 2.8997230000000016,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.514569,
+          "isoTimezoneReadyMilliseconds": 26.514068,
+          "retainedHeapDeltaBytes": 820528,
+          "residentDeltaBytes": 9830400,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 75.53789400000005
+        },
+        {
+          "importMilliseconds": 20.749378,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.0524869999999993,
+          "firstTimezoneMilliseconds": 2.9513569999999945,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.757642000000004,
+          "isoTimezoneReadyMilliseconds": 26.757139000000002,
+          "retainedHeapDeltaBytes": 820688,
+          "residentDeltaBytes": 10158080,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 76.52334100000007
+        },
+        {
+          "importMilliseconds": 20.578344,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.1018339999999966,
+          "firstTimezoneMilliseconds": 2.9224770000000007,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.60729,
+          "isoTimezoneReadyMilliseconds": 26.606655000000003,
+          "retainedHeapDeltaBytes": 820560,
+          "residentDeltaBytes": 9891840,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 75.82333000000017
+        },
+        {
+          "importMilliseconds": 20.766332999999996,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.0717690000000033,
+          "firstTimezoneMilliseconds": 2.934236999999996,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.776955,
+          "isoTimezoneReadyMilliseconds": 26.776320999999996,
+          "retainedHeapDeltaBytes": 820688,
+          "residentDeltaBytes": 10006528,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 76.39143100000001
+        },
+        {
+          "importMilliseconds": 20.961926,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.0961029999999994,
+          "firstTimezoneMilliseconds": 2.909906999999997,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.972432999999995,
+          "isoTimezoneReadyMilliseconds": 26.97188,
+          "retainedHeapDeltaBytes": 820528,
+          "residentDeltaBytes": 10018816,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 76.850367
+        },
+        {
+          "importMilliseconds": 20.618468999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.060507000000001,
+          "firstTimezoneMilliseconds": 2.9347610000000017,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.618263,
+          "isoTimezoneReadyMilliseconds": 26.617612,
+          "retainedHeapDeltaBytes": 820688,
+          "residentDeltaBytes": 10354688,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 76.03051499999992
+        },
+        {
+          "importMilliseconds": 20.707048,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.0658949999999976,
+          "firstTimezoneMilliseconds": 2.9035570000000064,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.680866,
+          "isoTimezoneReadyMilliseconds": 26.680341,
+          "retainedHeapDeltaBytes": 820528,
+          "residentDeltaBytes": 10006528,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 77.04705999999987
+        },
+        {
+          "importMilliseconds": 20.695152,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 3.0971079999999986,
+          "firstTimezoneMilliseconds": 2.913767,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 26.710499999999996,
+          "isoTimezoneReadyMilliseconds": 26.709958999999998,
+          "retainedHeapDeltaBytes": 820688,
+          "residentDeltaBytes": 9830400,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 76.29676999999992
+        }
+      ]
+    },
+    {
+      "name": "referenceFull",
+      "backend": "typescript",
+      "calendar": true,
+      "bundleBytes": 65196,
+      "bundleGzipBytes": 23083,
+      "binaryBytes": 0,
+      "binaryGzipBytes": 0,
+      "medians": {
+        "importMilliseconds": 4.612082000000001,
+        "compileMilliseconds": 0,
+        "instantiateMilliseconds": 0,
+        "configureMilliseconds": 0,
+        "firstInstantMilliseconds": 1.3937970000000064,
+        "firstTimezoneMilliseconds": 13.388513000000003,
+        "firstCalendarMilliseconds": 3.287496999999995,
+        "processMilliseconds": 71.52244199999996,
+        "readyMilliseconds": 22.966619,
+        "isoTimezoneReadyMilliseconds": 19.392474,
+        "linearMemoryBytes": 0,
+        "retainedHeapDeltaBytes": 535872,
+        "residentDeltaBytes": 9699328
+      },
+      "samples": [
+        {
+          "importMilliseconds": 4.587629999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3832529999999963,
+          "firstTimezoneMilliseconds": 13.206005999999995,
+          "firstCalendarMilliseconds": 4.671810999999998,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 23.855425999999994,
+          "isoTimezoneReadyMilliseconds": 19.180819,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9625600,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 73.64772600000003
+        },
+        {
+          "importMilliseconds": 4.637461999999999,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3594250000000017,
+          "firstTimezoneMilliseconds": 13.388513000000003,
+          "firstCalendarMilliseconds": 3.2642019999999974,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.655555999999997,
+          "isoTimezoneReadyMilliseconds": 19.389195,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9867264,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 71.52244199999996
+        },
+        {
+          "importMilliseconds": 4.613086000000003,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3983119999999971,
+          "firstTimezoneMilliseconds": 13.244609000000004,
+          "firstCalendarMilliseconds": 3.287496999999995,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.549656,
+          "isoTimezoneReadyMilliseconds": 19.259739000000003,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9830400,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 71.47621800000002
+        },
+        {
+          "importMilliseconds": 4.583075000000001,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.4096540000000033,
+          "firstTimezoneMilliseconds": 13.701833,
+          "firstCalendarMilliseconds": 3.2785889999999966,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.979340999999998,
+          "isoTimezoneReadyMilliseconds": 19.698569,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9641984,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 71.42293100000006
+        },
+        {
+          "importMilliseconds": 4.665298999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.399517000000003,
+          "firstTimezoneMilliseconds": 13.324025000000006,
+          "firstCalendarMilliseconds": 3.299078999999999,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.693743999999995,
+          "isoTimezoneReadyMilliseconds": 19.392474,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9949184,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.81941499999994
+        },
+        {
+          "importMilliseconds": 6.556367999999999,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.980091999999999,
+          "firstTimezoneMilliseconds": 20.122163000000008,
+          "firstCalendarMilliseconds": 4.290562999999992,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 32.957802,
+          "isoTimezoneReadyMilliseconds": 28.66422,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9715712,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 86.01798399999961
+        },
+        {
+          "importMilliseconds": 4.546239,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3678099999999986,
+          "firstTimezoneMilliseconds": 13.810135000000002,
+          "firstCalendarMilliseconds": 3.236260999999999,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.966619,
+          "isoTimezoneReadyMilliseconds": 19.728058000000004,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9420800,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 72.97322299999996
+        },
+        {
+          "importMilliseconds": 4.598171000000001,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3758509999999973,
+          "firstTimezoneMilliseconds": 13.382355000000004,
+          "firstCalendarMilliseconds": 3.301625999999999,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 22.664138,
+          "isoTimezoneReadyMilliseconds": 19.360331000000002,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9666560,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 70.46964800000023
+        },
+        {
+          "importMilliseconds": 4.612082000000001,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3937970000000064,
+          "firstTimezoneMilliseconds": 13.821644,
+          "firstCalendarMilliseconds": 3.258420000000001,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 23.092306,
+          "isoTimezoneReadyMilliseconds": 19.831559,
+          "retainedHeapDeltaBytes": 535872,
+          "residentDeltaBytes": 9699328,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 73.71380899999986
+        }
+      ]
+    },
+    {
+      "name": "referenceBasic",
+      "backend": "typescript",
+      "calendar": false,
+      "bundleBytes": 55839,
+      "bundleGzipBytes": 19275,
+      "binaryBytes": 0,
+      "binaryGzipBytes": 0,
+      "medians": {
+        "importMilliseconds": 4.186326999999999,
+        "compileMilliseconds": 0,
+        "instantiateMilliseconds": 0,
+        "configureMilliseconds": 0,
+        "firstInstantMilliseconds": 1.3803740000000033,
+        "firstTimezoneMilliseconds": 13.362237,
+        "firstCalendarMilliseconds": null,
+        "processMilliseconds": 68.18300199999999,
+        "readyMilliseconds": 18.905923,
+        "isoTimezoneReadyMilliseconds": 18.905378,
+        "linearMemoryBytes": 0,
+        "retainedHeapDeltaBytes": 447584,
+        "residentDeltaBytes": 9261056
+      },
+      "samples": [
+        {
+          "importMilliseconds": 4.187320999999997,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3907000000000025,
+          "firstTimezoneMilliseconds": 13.323554000000001,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.905923,
+          "isoTimezoneReadyMilliseconds": 18.905378,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9625600,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 68.28145700000005
+        },
+        {
+          "importMilliseconds": 4.130091,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3691969999999998,
+          "firstTimezoneMilliseconds": 13.319774000000002,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.823333000000005,
+          "isoTimezoneReadyMilliseconds": 18.822881000000002,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9256960,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 68.14905399999998
+        },
+        {
+          "importMilliseconds": 4.191435999999996,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3972459999999955,
+          "firstTimezoneMilliseconds": 13.430531000000002,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 19.023574999999994,
+          "isoTimezoneReadyMilliseconds": 19.023004,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9170944,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 68.18300199999999
+        },
+        {
+          "importMilliseconds": 4.186326999999999,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3825709999999987,
+          "firstTimezoneMilliseconds": 13.416814000000002,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.990129999999994,
+          "isoTimezoneReadyMilliseconds": 18.989669999999997,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9338880,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 70.11414099999979
+        },
+        {
+          "importMilliseconds": 4.150320000000001,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3762710000000027,
+          "firstTimezoneMilliseconds": 13.248089,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.779052,
+          "isoTimezoneReadyMilliseconds": 18.778556000000002,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9261056,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 67.62329299999965
+        },
+        {
+          "importMilliseconds": 4.2220960000000005,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3958129999999969,
+          "firstTimezoneMilliseconds": 13.405830000000002,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 19.028174,
+          "isoTimezoneReadyMilliseconds": 19.027724,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9195520,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 66.22553299999981
+        },
+        {
+          "importMilliseconds": 4.151174999999995,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.379330000000003,
+          "firstTimezoneMilliseconds": 13.261624999999995,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.796612999999994,
+          "isoTimezoneReadyMilliseconds": 18.796087999999997,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9306112,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 68.35346299999992
+        },
+        {
+          "importMilliseconds": 4.097301999999999,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3781290000000013,
+          "firstTimezoneMilliseconds": 13.386911999999995,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.8669,
+          "isoTimezoneReadyMilliseconds": 18.866363,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9314304,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 67.19134699999995
+        },
+        {
+          "importMilliseconds": 4.200786000000001,
+          "compileMilliseconds": 0,
+          "instantiateMilliseconds": 0,
+          "configureMilliseconds": 0,
+          "firstInstantMilliseconds": 1.3803740000000033,
+          "firstTimezoneMilliseconds": 13.362237,
+          "firstCalendarMilliseconds": null,
+          "linearMemoryBytes": 0,
+          "readyMilliseconds": 18.947906000000003,
+          "isoTimezoneReadyMilliseconds": 18.947430000000004,
+          "retainedHeapDeltaBytes": 447584,
+          "residentDeltaBytes": 9195520,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": null
+          },
+          "processMilliseconds": 68.34995499999968
+        }
+      ]
+    },
+    {
+      "name": "hybridWasm",
+      "backend": "hybrid",
+      "calendar": true,
+      "bundleBytes": 171159,
+      "bundleGzipBytes": 48483,
+      "binaryBytes": 3506244,
+      "binaryGzipBytes": 476002,
+      "medians": {
+        "importMilliseconds": 5.953598999999997,
+        "compileMilliseconds": 2.1892619999999994,
+        "instantiateMilliseconds": 1.3782660000000035,
+        "configureMilliseconds": 1.3194850000000002,
+        "firstInstantMilliseconds": 1.9656360000000035,
+        "firstTimezoneMilliseconds": 3.4053200000000032,
+        "firstCalendarMilliseconds": 10.708588999999996,
+        "processMilliseconds": 78.22664799999984,
+        "readyMilliseconds": 28.694894999999995,
+        "isoTimezoneReadyMilliseconds": 18.004691,
+        "linearMemoryBytes": 4194304,
+        "retainedHeapDeltaBytes": 685264,
+        "residentDeltaBytes": 16019456
+      },
+      "samples": [
+        {
+          "importMilliseconds": 5.925036999999996,
+          "compileMilliseconds": 2.1502670000000066,
+          "instantiateMilliseconds": 1.415659000000005,
+          "configureMilliseconds": 1.3393370000000004,
+          "firstInstantMilliseconds": 1.982014999999997,
+          "firstTimezoneMilliseconds": 3.4054009999999977,
+          "firstCalendarMilliseconds": 10.772263999999993,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.630292999999995,
+          "isoTimezoneReadyMilliseconds": 17.855900999999996,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 16617472,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.96394099999998
+        },
+        {
+          "importMilliseconds": 5.944724000000001,
+          "compileMilliseconds": 2.2699130000000025,
+          "instantiateMilliseconds": 1.4592770000000002,
+          "configureMilliseconds": 1.306798999999998,
+          "firstInstantMilliseconds": 2.0138260000000017,
+          "firstTimezoneMilliseconds": 3.381071999999996,
+          "firstCalendarMilliseconds": 10.888171999999997,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.895117999999997,
+          "isoTimezoneReadyMilliseconds": 18.004691,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 15220736,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 79.05314900000008
+        },
+        {
+          "importMilliseconds": 5.965005000000005,
+          "compileMilliseconds": 2.4097010000000054,
+          "instantiateMilliseconds": 1.3539850000000015,
+          "configureMilliseconds": 1.3233450000000033,
+          "firstInstantMilliseconds": 1.9656360000000035,
+          "firstTimezoneMilliseconds": 3.5679859999999977,
+          "firstCalendarMilliseconds": 10.784779999999998,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 29.183870999999996,
+          "isoTimezoneReadyMilliseconds": 18.396744000000005,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 16629760,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.93344100000013
+        },
+        {
+          "importMilliseconds": 5.944021000000006,
+          "compileMilliseconds": 2.127347999999998,
+          "instantiateMilliseconds": 1.3782660000000035,
+          "configureMilliseconds": 1.3069180000000031,
+          "firstInstantMilliseconds": 2.0275040000000004,
+          "firstTimezoneMilliseconds": 3.402401999999995,
+          "firstCalendarMilliseconds": 10.697783000000001,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.544227999999997,
+          "isoTimezoneReadyMilliseconds": 17.844332,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 16019456,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.3627590000001
+        },
+        {
+          "importMilliseconds": 5.953598999999997,
+          "compileMilliseconds": 2.1892619999999994,
+          "instantiateMilliseconds": 1.326235000000004,
+          "configureMilliseconds": 1.3458110000000048,
+          "firstInstantMilliseconds": 1.9632289999999983,
+          "firstTimezoneMilliseconds": 3.6681990000000013,
+          "firstCalendarMilliseconds": 10.629168,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.694894999999995,
+          "isoTimezoneReadyMilliseconds": 18.063182999999995,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 14839808,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.02488700000004
+        },
+        {
+          "importMilliseconds": 5.854709,
+          "compileMilliseconds": 2.2557350000000014,
+          "instantiateMilliseconds": 1.6452380000000062,
+          "configureMilliseconds": 1.3114640000000009,
+          "firstInstantMilliseconds": 1.9555329999999955,
+          "firstTimezoneMilliseconds": 3.4053200000000032,
+          "firstCalendarMilliseconds": 10.708588999999996,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.738426999999994,
+          "isoTimezoneReadyMilliseconds": 18.02749,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 15458304,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.27806899999996
+        },
+        {
+          "importMilliseconds": 5.981489000000003,
+          "compileMilliseconds": 2.156615000000002,
+          "instantiateMilliseconds": 1.351115,
+          "configureMilliseconds": 1.3053939999999997,
+          "firstInstantMilliseconds": 1.965484999999994,
+          "firstTimezoneMilliseconds": 3.444744,
+          "firstCalendarMilliseconds": 10.661971000000001,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.563189,
+          "isoTimezoneReadyMilliseconds": 17.898828,
+          "retainedHeapDeltaBytes": 692944,
+          "residentDeltaBytes": 16887808,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 76.54016900000033
+        },
+        {
+          "importMilliseconds": 5.998282000000003,
+          "compileMilliseconds": 2.2214309999999955,
+          "instantiateMilliseconds": 1.354104999999997,
+          "configureMilliseconds": 1.3194850000000002,
+          "firstInstantMilliseconds": 1.9582290000000029,
+          "firstTimezoneMilliseconds": 3.3923539999999974,
+          "firstCalendarMilliseconds": 10.689083000000004,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.644571,
+          "isoTimezoneReadyMilliseconds": 17.953470000000003,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 16154624,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.22664799999984
+        },
+        {
+          "importMilliseconds": 5.9756690000000035,
+          "compileMilliseconds": 2.09084,
+          "instantiateMilliseconds": 1.581783999999999,
+          "configureMilliseconds": 1.3530349999999984,
+          "firstInstantMilliseconds": 1.982761999999994,
+          "firstTimezoneMilliseconds": 3.374814999999998,
+          "firstCalendarMilliseconds": 10.803669,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.956142999999997,
+          "isoTimezoneReadyMilliseconds": 18.150262000000005,
+          "retainedHeapDeltaBytes": 685264,
+          "residentDeltaBytes": 15261696,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.91557199999988
+        }
+      ]
+    },
+    {
+      "name": "nativeDataWasm",
+      "backend": "native",
+      "calendar": true,
+      "bundleBytes": 122499,
+      "bundleGzipBytes": 33607,
+      "binaryBytes": 3506244,
+      "binaryGzipBytes": 476002,
+      "medians": {
+        "importMilliseconds": 5.0010639999999995,
+        "compileMilliseconds": 2.3102250000000026,
+        "instantiateMilliseconds": 1.403265999999995,
+        "configureMilliseconds": 1.2901579999999981,
+        "firstInstantMilliseconds": 1.922335000000004,
+        "firstTimezoneMilliseconds": 3.367563000000004,
+        "firstCalendarMilliseconds": 10.667030000000004,
+        "processMilliseconds": 77.7642649999998,
+        "readyMilliseconds": 27.739895000000004,
+        "isoTimezoneReadyMilliseconds": 17.014091,
+        "linearMemoryBytes": 4194304,
+        "retainedHeapDeltaBytes": 580664,
+        "residentDeltaBytes": 16257024
+      },
+      "samples": [
+        {
+          "importMilliseconds": 4.977910999999999,
+          "compileMilliseconds": 2.0653580000000034,
+          "instantiateMilliseconds": 1.451864999999998,
+          "configureMilliseconds": 1.276680000000006,
+          "firstInstantMilliseconds": 1.8928100000000043,
+          "firstTimezoneMilliseconds": 3.3699649999999934,
+          "firstCalendarMilliseconds": 14.950216000000005,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 31.582929999999998,
+          "isoTimezoneReadyMilliseconds": 16.630441999999995,
+          "retainedHeapDeltaBytes": 580744,
+          "residentDeltaBytes": 15740928,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 79.62770499999999
+        },
+        {
+          "importMilliseconds": 5.025591999999996,
+          "compileMilliseconds": 2.372888000000003,
+          "instantiateMilliseconds": 1.3536009999999976,
+          "configureMilliseconds": 1.2855589999999992,
+          "firstInstantMilliseconds": 1.9337829999999983,
+          "firstTimezoneMilliseconds": 3.353302999999997,
+          "firstCalendarMilliseconds": 10.669429999999998,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.816895000000002,
+          "isoTimezoneReadyMilliseconds": 17.145196999999996,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 17866752,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 76.95335600000021
+        },
+        {
+          "importMilliseconds": 5.006149000000001,
+          "compileMilliseconds": 2.4052879999999988,
+          "instantiateMilliseconds": 1.3617749999999944,
+          "configureMilliseconds": 1.3098589999999959,
+          "firstInstantMilliseconds": 1.9762849999999972,
+          "firstTimezoneMilliseconds": 3.367563000000004,
+          "firstCalendarMilliseconds": 10.669822999999994,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.952757999999996,
+          "isoTimezoneReadyMilliseconds": 17.280862999999997,
+          "retainedHeapDeltaBytes": 580744,
+          "residentDeltaBytes": 16678912,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.934845
+        },
+        {
+          "importMilliseconds": 5.019505000000002,
+          "compileMilliseconds": 2.2488719999999986,
+          "instantiateMilliseconds": 1.4911400000000015,
+          "configureMilliseconds": 1.2901579999999981,
+          "firstInstantMilliseconds": 1.892713999999998,
+          "firstTimezoneMilliseconds": 3.399546000000001,
+          "firstCalendarMilliseconds": 10.567494000000003,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.584146000000004,
+          "isoTimezoneReadyMilliseconds": 17.014091,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 16257024,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.69682300000022
+        },
+        {
+          "importMilliseconds": 4.967320999999998,
+          "compileMilliseconds": 2.172708,
+          "instantiateMilliseconds": 1.336266000000002,
+          "configureMilliseconds": 1.284606999999994,
+          "firstInstantMilliseconds": 1.9469700000000003,
+          "firstTimezoneMilliseconds": 3.3261950000000056,
+          "firstCalendarMilliseconds": 10.649937999999992,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.306757000000005,
+          "isoTimezoneReadyMilliseconds": 16.654570999999997,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 14749696,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.29566000000023
+        },
+        {
+          "importMilliseconds": 5.276881000000003,
+          "compileMilliseconds": 2.4760929999999988,
+          "instantiateMilliseconds": 1.403265999999995,
+          "configureMilliseconds": 1.3303140000000013,
+          "firstInstantMilliseconds": 1.922335000000004,
+          "firstTimezoneMilliseconds": 3.3133570000000034,
+          "firstCalendarMilliseconds": 10.660956000000006,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 28.056916000000008,
+          "isoTimezoneReadyMilliseconds": 17.393743,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 16224256,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 81.49628299999995
+        },
+        {
+          "importMilliseconds": 4.969549000000001,
+          "compileMilliseconds": 2.373708999999998,
+          "instantiateMilliseconds": 1.3559380000000019,
+          "configureMilliseconds": 1.3044650000000004,
+          "firstInstantMilliseconds": 1.915503000000001,
+          "firstTimezoneMilliseconds": 3.367792999999999,
+          "firstCalendarMilliseconds": 10.585357000000002,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.739895000000004,
+          "isoTimezoneReadyMilliseconds": 17.152353000000005,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 18132992,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.40989199999967
+        },
+        {
+          "importMilliseconds": 4.990458999999994,
+          "compileMilliseconds": 2.3102250000000026,
+          "instantiateMilliseconds": 1.4767119999999991,
+          "configureMilliseconds": 1.265398999999995,
+          "firstInstantMilliseconds": 1.946441,
+          "firstTimezoneMilliseconds": 3.3206710000000044,
+          "firstCalendarMilliseconds": 10.667030000000004,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.644788999999996,
+          "isoTimezoneReadyMilliseconds": 16.975367,
+          "retainedHeapDeltaBytes": 580744,
+          "residentDeltaBytes": 15900672,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 77.7642649999998
+        },
+        {
+          "importMilliseconds": 5.0010639999999995,
+          "compileMilliseconds": 2.0993920000000017,
+          "instantiateMilliseconds": 1.4166820000000016,
+          "configureMilliseconds": 1.2923289999999952,
+          "firstInstantMilliseconds": 1.920853000000001,
+          "firstTimezoneMilliseconds": 3.414684000000001,
+          "firstCalendarMilliseconds": 10.800177999999995,
+          "linearMemoryBytes": 4194304,
+          "readyMilliseconds": 27.593431000000002,
+          "isoTimezoneReadyMilliseconds": 16.791012000000002,
+          "retainedHeapDeltaBytes": 580664,
+          "residentDeltaBytes": 16519168,
+          "output": {
+            "iso": "2020-02-28T18:14:59.123456789Z",
+            "zoned": "2020-02-28T13:14:59.123456789-05:00[America/New_York]",
+            "chinese": "2024-03-10[u-ca=chinese]"
+          },
+          "processMilliseconds": 78.61115299999983
+        }
+      ]
+    }
+  ]
+}

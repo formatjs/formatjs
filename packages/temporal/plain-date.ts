@@ -32,9 +32,9 @@ import {
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
-import {formatInstant} from '#packages/temporal/instant-format.js'
 import {
   dateFields,
+  dateFieldsView,
   dateProperty,
   datePropertyNames,
   calendarId,
@@ -42,6 +42,7 @@ import {
   constructorCalendar,
   calendarAnnotation,
   calendarNameOption,
+  formatISODate,
   readDateFields,
   mergeDateFields,
   isoDay,
@@ -57,7 +58,9 @@ import {
 } from '#packages/temporal/date-core.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {durationNanoseconds} from '#packages/temporal/duration-core.js'
@@ -122,9 +125,10 @@ function read(item: unknown): DateSlot {
   return slot
 }
 export function createPlainDate(
-  epochDay: number,
+  value: number | DateSlot,
   calendar: string
 ): PlainDateObject {
+  const epochDay = typeof value === 'number' ? value : value.epochDay
   if (
     !Number.isInteger(epochDay) ||
     epochDay < -100000001 ||
@@ -132,7 +136,7 @@ export function createPlainDate(
   )
     throw new RangeError('Date out of range')
   const result = Object.create(PlainDateValue.prototype) as PlainDateObject
-  setDateSlot(result, {epochDay, calendar})
+  setDateSlot(result, typeof value === 'number' ? {epochDay, calendar} : value)
   return result
 }
 export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
@@ -151,6 +155,11 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   if (object(item)) {
     const calendar = calendarFromObject(item)
     const fields = readDateFields(item, false, false, 'date', calendar)
+    if (
+      import.meta.formatjsTemporalNativeData === true &&
+      calendar === 'iso8601'
+    )
+      return nativeTemporal()!.createISODate(fields, overflowOption(options))
     return {
       epochDay: dayFromFields(calendar, fields, overflowOption(options)),
       calendar,
@@ -158,6 +167,13 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
   }
   if (typeof item !== 'string')
     throw new TypeError('Expected date string or object')
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    const result = native!.parsePlainDate(item)
+    constructorCalendar(result.calendar)
+    overflowOption(options)
+    return result
+  }
   const parsed = parsePlainDateTimeString(item, true)
   const calendar = constructorCalendar(parsed.calendar)
   overflowOption(options)
@@ -169,11 +185,14 @@ function add(
   options: unknown,
   sign: number
 ): PlainDateObject {
-  const fields = toDurationFields(duration)
+  const fields =
+    import.meta.formatjsTemporalNativeData === true
+      ? toNativeDurationFields(duration)
+      : toDurationFields(duration)
   const native = nativeTemporal()
-  if (native)
+  if (import.meta.formatjsTemporalNativeData === true || native)
     return createPlainDate(
-      native.addPlainDate(
+      native!.addPlainDate(
         value.epochDay,
         value.calendar,
         fields,
@@ -218,9 +237,13 @@ function difference(
   )
     throw new RangeError('Invalid date units')
   const native = nativeTemporal()
-  if (native)
-    return createDuration(
-      native.differencePlainDate(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
+      native!.differencePlainDate(
         slot.epochDay,
         end.epochDay,
         slot.calendar,
@@ -248,12 +271,9 @@ function difference(
 function format(slot: DateSlot, calendarName: unknown = undefined): string {
   const show = calendarNameOption(calendarName),
     native = nativeTemporal()
-  if (native) return native.formatPlainDate(slot, show)
-  return (
-    formatInstant(BigInt(slot.epochDay) * nsPerDay + nsPerDay / 2n).split(
-      'T'
-    )[0] + calendarAnnotation(slot.calendar, show)
-  )
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatPlainDate(slot, show)
+  return formatISODate(slot.epochDay) + calendarAnnotation(slot.calendar, show)
 }
 class PlainDateValue {
   toPlainYearMonth(): PlainYearMonthObject {
@@ -278,7 +298,7 @@ class PlainDateValue {
   }
   static from(item: unknown, options: unknown = undefined): PlainDateObject {
     const slot = toPlainDateSlot(item, options)
-    return createPlainDate(slot.epochDay, slot.calendar)
+    return createPlainDate(slot, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toPlainDateSlot(one).epochDay,
@@ -294,11 +314,15 @@ class PlainDateValue {
         'date',
         slot.calendar
       )
-    const fields = mergeDateFields(
-      slot.calendar,
-      {...dateFields(slot)},
-      partial
-    )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(slot)
+      return createPlainDate(
+        native!.withDate(slot, partial, overflowOption(options)),
+        slot.calendar
+      )
+    }
+    const fields = mergeDateFields(slot.calendar, dateFieldsView(slot), partial)
     return createPlainDate(
       dayFromFields(slot.calendar, fields, overflowOption(options)),
       slot.calendar

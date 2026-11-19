@@ -70,7 +70,7 @@ pub(crate) fn epoch_day_from_iso(year: i32, month: u8, day: u8) -> i64 {
     crate::calendar::iso_day(year, month, day)
 }
 
-fn check_local(value: i128) -> Result<(), Error> {
+pub(crate) fn check_local(value: i128) -> Result<(), Error> {
     let bound = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;
     if value <= -bound || value >= bound {
         return Err(Error::OutOfRange);

@@ -1,16 +1,15 @@
 import {nativeTemporal} from '#packages/temporal/native.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
 import {
-  DateFromTime,
   DayFromYear,
   DaysInYear,
-  MonthFromTime,
   YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   TimeZoneOffset,
   TimeZoneRuleTransition,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
+import {ArithmeticGregorianFromEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
 
 const second = 1_000_000_000n
@@ -34,6 +33,8 @@ export interface TimeZoneKernel {
   transition(instant: bigint, direction: 'next' | 'previous'): bigint | null
   offsetNanoseconds(instant: bigint): bigint
   possibleInstants(fields: ISODateTime): bigint[]
+  // Internal callers validate local nanoseconds before using this shortcut.
+  possibleInstantsFromEpochNanoseconds?(local: bigint): bigint[]
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
@@ -50,7 +51,8 @@ function checkInstant(value: bigint): bigint {
 
 export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   const native = nativeTemporal()
-  if (native) return native.isoToEpochNanoseconds(fields)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.isoToEpochNanoseconds(fields)
   const {year, month, day: date} = fields
   const time = [
     fields.hour ?? 0,
@@ -73,17 +75,22 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   ) {
     throw new RangeError('Invalid ISO fields')
   }
+  const leap = DaysInYear(year) === 366
+  const maximum =
+    month === 2
+      ? leap
+        ? 29
+        : 28
+      : month === 4 || month === 6 || month === 9 || month === 11
+        ? 30
+        : 31
+  if (date > maximum) throw new RangeError('Invalid ISO date')
   const epochDay =
     DayFromYear(year) +
     monthStarts[month - 1] +
-    Number(month > 2 && DaysInYear(year) === 366) +
+    Number(month > 2 && leap) +
     date -
     1
-  if (
-    MonthFromTime(epochDay * 86400000) !== month - 1 ||
-    DateFromTime(epochDay * 86400000) !== date
-  )
-    throw new RangeError('Invalid ISO date')
   const value =
     BigInt(epochDay) * day +
     BigInt(time[0] * 3600 + time[1] * 60 + time[2]) * second +
@@ -96,11 +103,12 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
 
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
-  if (native) return native.epochNanosecondsToISO(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.epochNanosecondsToISO(value)
   if (value <= -limit - day || value >= limit + day)
     throw new RangeError('Local date out of range')
   const days = floorDivide(value, day)
-  const milliseconds = Number(days) * 86400000
+  const epochDay = Number(days)
   let time = value - days * day
   const hour = Number(time / (3600n * second))
   time %= 3600n * second
@@ -108,10 +116,11 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   time %= 60n * second
   const seconds = Number(time / second)
   time %= second
+  const date = ArithmeticGregorianFromEpochDay('iso8601', epochDay)
   return {
-    year: YearFromTime(milliseconds),
-    month: MonthFromTime(milliseconds) + 1,
-    day: DateFromTime(milliseconds),
+    year: date.year,
+    month: date.month,
+    day: date.day,
     hour,
     minute,
     second: seconds,
@@ -126,7 +135,8 @@ export function addISODays(
   days: number
 ): Required<ISODateTime> {
   const native = nativeTemporal()
-  if (native) return native.addISODays(fields, days)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.addISODays(fields, days)
   if (!Number.isSafeInteger(days)) throw new RangeError('Invalid day count')
   return epochNanosecondsToISO(
     isoToEpochNanoseconds(fields) + BigInt(days) * day
@@ -226,8 +236,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       ) * second
     )
   }
-  const possibleInstants = (fields: ISODateTime): bigint[] => {
-    const local = isoToEpochNanoseconds(fields)
+  const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (const offset of offsets) {
       const instant = local - BigInt(offset) * second
@@ -237,6 +246,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     }
     return candidates.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
   }
+  const possibleInstants = (fields: ISODateTime): bigint[] =>
+    possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
   const resolve = (
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
@@ -279,6 +290,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   return {
     offsetNanoseconds,
     possibleInstants,
+    possibleInstantsFromEpochNanoseconds,
     resolve,
     transition: (instant, direction) => {
       checkInstant(instant)

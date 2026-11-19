@@ -17,6 +17,8 @@ import {
   ArithmeticCalendarDaysInMonth,
   ArithmeticCalendarMonthCode,
   ArithmeticCalendarFromEpochDay,
+  ArithmeticGregorianFromEpochDay,
+  ArithmeticCalendarToEpochDay,
   ArithmeticCalendarEra,
   HebrewLeapYear as hebrewLeap,
   HebrewElapsedMonths as elapsedMonths,
@@ -44,6 +46,54 @@ export interface CalendarDate {
   monthCode: string
   day: number
 }
+const isoFieldsMemo = new Map<number, Readonly<CalendarDate>>()
+const getISOFields = isoFieldsMemo.get.bind(isoFieldsMemo)
+const setISOFields = isoFieldsMemo.set.bind(isoFieldsMemo)
+const deleteISOFields = isoFieldsMemo.delete.bind(isoFieldsMemo)
+const isoFieldsKeys = new Float64Array(64)
+let isoFieldsCount = 0
+let isoFieldsPosition = 0
+let isoFieldsSkip = 0
+
+// Pure ISO metadata; callers validate fields and bounds.
+export function cachedISODateFields(epochDay: number): Readonly<CalendarDate>
+export function cachedISODateFields(
+  epochDay: number,
+  year: number,
+  month: number,
+  day: number
+): Readonly<CalendarDate>
+export function cachedISODateFields(
+  epochDay: number,
+  year?: number,
+  month?: number,
+  day?: number
+): Readonly<CalendarDate> {
+  const remember = isoFieldsSkip === 0
+  if (remember) {
+    const fields = getISOFields(epochDay)
+    if (fields) return fields
+    isoFieldsSkip = 32
+  } else isoFieldsSkip--
+  const fields =
+    year === undefined
+      ? ArithmeticGregorianFromEpochDay('iso8601', epochDay)
+      : {
+          year,
+          month: month!,
+          monthCode: 'M' + (month! < 10 ? '0' : '') + month,
+          day: day!,
+        }
+  if (remember) {
+    if (isoFieldsCount === 64) deleteISOFields(isoFieldsKeys[isoFieldsPosition])
+    else isoFieldsCount++
+    setISOFields(epochDay, fields)
+    isoFieldsKeys[isoFieldsPosition] = epochDay
+    isoFieldsPosition = (isoFieldsPosition + 1) & 63
+  }
+  return fields
+}
+
 export interface DateDuration {
   years?: number
   months?: number
@@ -102,14 +152,16 @@ export function calendarStartOfYear(
   calendarCheck(calendar)
   yearCheck(year)
   const native = nativeTemporal()
-  if (native) return native.calendarStartOfYear(calendar, year)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarStartOfYear(calendar, year)
   return start(calendar, year)
 }
 export function monthsInYear(calendar: CalendarId, year: number): number {
   calendarCheck(calendar)
   yearCheck(year)
   const native = nativeTemporal()
-  if (native) return native.calendarMonthsInYear(calendar, year)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarMonthsInYear(calendar, year)
   if (isLunisolar(calendar)) return tableLeapMonth(calendar, year) ? 13 : 12
   return calendar === 'islamic-umalqura'
     ? 12
@@ -121,7 +173,8 @@ export function daysInMonth(
   month: number
 ): number {
   const native = nativeTemporal()
-  if (native) return native.calendarDaysInMonth(calendar, year, month)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarDaysInMonth(calendar, year, month)
   const count = monthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
     throw new RangeError('Invalid calendar month')
@@ -181,6 +234,65 @@ function monthFromCode(
   const month = Number(code.slice(1))
   return month + Number(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
 }
+function isoMonthFromCode(code: string): number {
+  if (code.length !== 3 || code[0] !== 'M')
+    throw new RangeError('Invalid month code')
+  const tens = code[1],
+    units = code[2],
+    month = (tens === '1' ? 10 : 0) + +units
+  if (
+    (tens !== '0' && tens !== '1') ||
+    units < '0' ||
+    units > '9' ||
+    month < 1 ||
+    month > 12
+  )
+    throw new RangeError('Invalid month code')
+  return month
+}
+
+// ISO fields are already prepared; keep native dispatch and range checks.
+export function isoDayFromPreparedFields(
+  year: number,
+  fields: Readonly<Omit<CalendarFields, 'year'>>,
+  overflow: Overflow
+): number {
+  const sourceMonth = fields.month,
+    code = fields.monthCode,
+    sourceDay = fields.day
+  overflowCheck(overflow)
+  yearCheck(year)
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    if (sourceMonth === undefined && code === undefined)
+      throw new TypeError('Month or monthCode required')
+    return dayCheck(
+      native!.calendarToEpochDay(
+        'iso8601',
+        {year, month: sourceMonth, monthCode: code, day: sourceDay},
+        overflow
+      )
+    )
+  }
+  let month: number
+  if (code !== undefined) {
+    month = isoMonthFromCode(code)
+    if (sourceMonth !== undefined && integer(sourceMonth) !== month)
+      throw new RangeError('Month and monthCode disagree')
+  } else {
+    if (sourceMonth === undefined)
+      throw new TypeError('Month or monthCode required')
+    month = regulate(sourceMonth, 1, 12, overflow)
+  }
+  const day = regulate(
+    sourceDay,
+    1,
+    ArithmeticCalendarDaysInMonth('iso8601', year, month),
+    overflow
+  )
+  return dayCheck(ArithmeticCalendarToEpochDay('iso8601', year, month, day))
+}
+
 export function calendarToEpochDayRaw(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -190,27 +302,39 @@ export function calendarToEpochDayRaw(
   overflowCheck(overflow)
   const year = yearCheck(fields.year)
   const native = nativeTemporal()
-  if (native) {
+  if (import.meta.formatjsTemporalNativeData === true || native) {
     if (fields.month === undefined && fields.monthCode === undefined)
       throw new TypeError('Month or monthCode required')
-    return native.calendarToEpochDay(calendar, fields, overflow)
+    return native!.calendarToEpochDay(calendar, fields, overflow)
   }
   let month: number
   if (fields.monthCode !== undefined) {
-    month = monthFromCode(calendar, year, fields.monthCode, overflow)
+    month =
+      calendar === 'iso8601'
+        ? isoMonthFromCode(fields.monthCode)
+        : monthFromCode(calendar, year, fields.monthCode, overflow)
     if (fields.month !== undefined && integer(fields.month) !== month)
       throw new RangeError('Month and monthCode disagree')
   } else {
     if (fields.month === undefined)
       throw new TypeError('Month or monthCode required')
-    month = regulate(fields.month, 1, monthsInYear(calendar, year), overflow)
+    month = regulate(
+      fields.month,
+      1,
+      calendar === 'iso8601' ? 12 : monthsInYear(calendar, year),
+      overflow
+    )
   }
   const day = regulate(
     fields.day,
     1,
-    daysInMonth(calendar, year, month),
+    calendar === 'iso8601'
+      ? ArithmeticCalendarDaysInMonth('iso8601', year, month)
+      : daysInMonth(calendar, year, month),
     overflow
   )
+  if (!isLunisolar(calendar) && calendar !== 'islamic-umalqura')
+    return integer(ArithmeticCalendarToEpochDay(calendar, year, month, day))
   let epoch = start(calendar, year) + day - 1
   for (let m = 1; m < month; m++) epoch += daysInMonth(calendar, year, m)
   return integer(epoch)
@@ -236,7 +360,8 @@ export function calendarFromEpochDayRaw(
   if (Math.abs(integer(epoch)) > 110000000)
     throw new RangeError('Calendar date out of range')
   const native = nativeTemporal()
-  if (native) return native.calendarFromEpochDay(calendar, epoch)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarFromEpochDay(calendar, epoch)
   if (isLunisolar(calendar)) {
     const value = tableDate(calendar, epoch)
     return {...value, monthCode: monthCode(calendar, value.year, value.month)}
@@ -260,7 +385,7 @@ export function calendarFromEpochDayRaw(
 }
 function addYearMonth(
   calendar: CalendarId,
-  original: CalendarDate,
+  original: Readonly<CalendarDate>,
   years: number,
   months: number,
   overflow: Overflow
@@ -294,11 +419,23 @@ export function addCalendarDateRaw(
 ): CalendarDate {
   overflowCheck(overflow)
   const native = nativeTemporal()
-  if (native) return native.calendarAdd(calendar, fields, duration, overflow)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarAdd(calendar, fields, duration, overflow)
   const original = calendarFromEpochDayRaw(
     calendar,
     calendarToEpochDayRaw(calendar, fields, 'reject')
   )
+  return calendarFromEpochDayRaw(
+    calendar,
+    addCalendarEpochDay(calendar, original, duration, overflow)
+  )
+}
+function addCalendarEpochDay(
+  calendar: CalendarId,
+  original: Readonly<CalendarDate>,
+  duration: DateDuration,
+  overflow: Overflow
+): number {
   const values = [
     duration.years ?? 0,
     duration.months ?? 0,
@@ -319,10 +456,23 @@ export function addCalendarDateRaw(
     {year, month, day: original.day},
     overflow
   )
-  return calendarFromEpochDayRaw(
-    calendar,
-    epoch + integer(7 * values[2] + values[3])
-  )
+  return epoch + integer(7 * values[2] + values[3])
+}
+// Fields must come from this calendar's epoch-day conversion.
+export function addNormalizedCalendarDate(
+  calendar: CalendarId,
+  original: Readonly<CalendarDate>,
+  duration: DateDuration,
+  overflow: Overflow
+): {epochDay: number; date: CalendarDate} {
+  overflowCheck(overflow)
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    const date = native!.calendarAdd(calendar, original, duration, overflow)
+    return {epochDay: calendarToEpochDayRaw(calendar, date, 'reject'), date}
+  }
+  const epochDay = addCalendarEpochDay(calendar, original, duration, overflow)
+  return {epochDay, date: calendarFromEpochDayRaw(calendar, epochDay)}
 }
 export function addCalendarDate(
   calendar: CalendarId,
@@ -352,7 +502,8 @@ export function calendarMonthSerial(
 ): number {
   calendarCheck(calendar)
   const native = nativeTemporal()
-  if (native) return native.calendarMonthSerial(calendar, year, month)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarMonthSerial(calendar, year, month)
   if (isLunisolar(calendar)) return tableMonthSerial(calendar, year, month)
   return calendar === 'hebrew'
     ? elapsedMonths(year) + month - 1
@@ -365,7 +516,8 @@ export function calendarDateUntilRaw(
   largest: string
 ): DateDuration {
   const native = nativeTemporal()
-  if (native) return native.calendarUntil(calendar, one, two, largest)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarUntil(calendar, one, two, largest)
   const first = calendarFromEpochDayRaw(calendar, one),
     last = calendarFromEpochDayRaw(calendar, two)
   const result = {years: 0, months: 0, weeks: 0, days: 0},
@@ -434,9 +586,9 @@ export function calendarEra(
   extended = false
 ): {era: string; eraYear: number} | undefined {
   const native = nativeTemporal()
-  if (native) {
+  if (import.meta.formatjsTemporalNativeData === true || native) {
     if (!extended) dayCheck(epoch)
-    return native.calendarEra(calendar, epoch)
+    return native!.calendarEra(calendar, epoch)
   }
   const {year} = (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
     calendar,
@@ -457,7 +609,8 @@ export function calendarYearFromEra(
   calendarCheck(calendar)
   integer(eraYear)
   const native = nativeTemporal()
-  if (native) return native.calendarYearFromEra(calendar, era, eraYear)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.calendarYearFromEra(calendar, era, eraYear)
   if (calendar === 'japanese')
     for (const [, name, offset] of japaneseEras)
       if (era === name) return yearCheck(eraYear + offset)

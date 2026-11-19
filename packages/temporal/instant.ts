@@ -7,7 +7,9 @@ import {
 import {timeZoneIdentifier} from '#packages/temporal/zones.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
@@ -31,6 +33,7 @@ import {
   type Precision,
 } from '#packages/temporal/rounding.js'
 import {resolveTimeZone} from '#packages/temporal/zones.js'
+import {parseTimeZoneString} from '#packages/temporal/instant-string.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 
@@ -40,8 +43,8 @@ function instantString(
   offset?: bigint
 ): string {
   const native = nativeTemporal()
-  return native
-    ? native.formatInstant(value, precision, offset)
+  return import.meta.formatjsTemporalNativeData === true || native
+    ? native!.formatInstant(value, precision, offset)
     : formatInstant(value, precision, offset)
 }
 
@@ -70,7 +73,12 @@ export interface InstantConstructor {
   fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject
 }
 const slots = new WeakMap<object, bigint>()
-const getSlot = slots.get.bind(slots)
+let nativeInstantSlot: (value: object) => bigint | undefined
+let nativeInstantPrototype: (value: object, prototype: object) => void
+const getSlot =
+  import.meta.formatjsTemporalNativeData === true
+    ? (value: object) => nativeInstantSlot(value)
+    : slots.get.bind(slots)
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
 export function validateInstant(value: bigint): bigint {
@@ -93,7 +101,35 @@ function read(value: unknown): bigint {
   if (result === undefined) throw new TypeError('Invalid Instant receiver')
   return result
 }
+const NativeInstant =
+  import.meta.formatjsTemporalNativeData === true
+    ? class {
+        #value: bigint
+        constructor(value: bigint) {
+          this.#value = value
+        }
+        static {
+          const setPrototype = Object.setPrototypeOf
+          nativeInstantPrototype = (value, prototype) => {
+            setPrototype(value, prototype)
+          }
+          nativeInstantSlot = (value: object) =>
+            value !== null &&
+            (typeof value === 'object' || typeof value === 'function') &&
+            #value in value
+              ? value.#value
+              : undefined
+        }
+      }
+    : undefined
+function createNativeInstant(value: bigint): InstantObject {
+  return new (NativeInstant as unknown as new (value: bigint) => InstantObject)(
+    value
+  )
+}
 export function createInstant(value: bigint): InstantObject {
+  if (import.meta.formatjsTemporalNativeData === true)
+    return createNativeInstant(validateInstant(value))
   const result = Object.create(InstantValue.prototype) as InstantObject
   setSlot(result, validateInstant(value))
   return result
@@ -105,6 +141,8 @@ function toInstant(item: unknown): bigint {
   const primitive = ToPrimitive(item, 'string')
   if (typeof primitive !== 'string')
     throw new TypeError('Expected Instant or instant string')
+  if (import.meta.formatjsTemporalNativeData === true)
+    return parseInstantString(primitive)
   return validateInstant(parseInstantString(primitive))
 }
 function difference(
@@ -141,9 +179,13 @@ function difference(
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeError('Invalid duration rounding increment')
   const native = nativeTemporal()
-  if (native)
-    return createDuration(
-      native.differenceInstant(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
+      native!.differenceInstant(
         since ? end : value,
         since ? value : end,
         names[largeIndex],
@@ -171,6 +213,8 @@ class InstantValue implements InstantObject {
     return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(toInstant(item))
     return createInstant(toInstant(item))
   }
   static fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject {
@@ -206,10 +250,15 @@ class InstantValue implements InstantObject {
   }
   add(other: unknown): InstantObject {
     const value = read(this),
-      fields = toDurationFields(other)
+      fields =
+        import.meta.formatjsTemporalNativeData === true
+          ? toNativeDurationFields(other, false)
+          : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(native!.addInstant(value, fields, false))
     return createInstant(
       native
         ? native.addInstant(value, fields, false)
@@ -218,10 +267,15 @@ class InstantValue implements InstantObject {
   }
   subtract(other: unknown): InstantObject {
     const value = read(this),
-      fields = toDurationFields(other)
+      fields =
+        import.meta.formatjsTemporalNativeData === true
+          ? toNativeDurationFields(other, false)
+          : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
       throw new RangeError('Instant arithmetic requires time units')
     const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(native!.addInstant(value, fields, true))
     return createInstant(
       native
         ? native.addInstant(value, fields, true)
@@ -229,6 +283,8 @@ class InstantValue implements InstantObject {
     )
   }
   round(roundTo: unknown): InstantObject {
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeInstant(roundInstantOptions(read(this), roundTo))
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
   toString(options: unknown = undefined): string {
@@ -240,8 +296,20 @@ class InstantValue implements InstantObject {
     const zoneOption = resolved.timeZone
     if (unit !== undefined && timeUnit(unit) === 'hour')
       throw new RangeError('Cannot serialize with hour precision')
+    const native = nativeTemporal()
+    let identifier: string | undefined
+    if (native && zoneOption !== undefined) {
+      const zoned = getZonedSlot(zoneOption as object)
+      if (!zoned && typeof zoneOption !== 'string')
+        throw new TypeError('Timezone must be a string')
+      identifier = zoned?.timeZone ?? parseTimeZoneString(zoneOption as string)
+    }
     const zone =
-      zoneOption === undefined ? undefined : resolveTimeZone(zoneOption)
+      import.meta.formatjsTemporalNativeData !== true &&
+      !native &&
+      zoneOption !== undefined
+        ? resolveTimeZone(zoneOption)
+        : undefined
     const precision: Precision =
       unit === 'minute'
         ? 'minute'
@@ -260,10 +328,15 @@ class InstantValue implements InstantObject {
         : precision === 'minute'
           ? timeUnitNanoseconds.minute
           : 10n ** BigInt(9 - precision)
-    const native = nativeTemporal()
-    const rounded = native
-      ? native.roundInstant(value, quantum, mode)
-      : roundInstant(value, quantum, mode)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatInstant(
+        value,
+        precision,
+        undefined,
+        mode,
+        identifier
+      )
+    const rounded = roundInstant(value, quantum, mode)
     return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
   toLocaleString(
@@ -292,21 +365,59 @@ Object.defineProperty(InstantValue, 'name', {
   configurable: true,
 })
 // A normal JS constructor allocates before its body; Temporal coerces first.
-export const Instant: InstantConstructor = new Proxy(InstantValue, {
-  construct(target, args, newTarget) {
-    const value = validateInstant(toBigInt(args[0]))
-    const prototype = Reflect.get(newTarget, 'prototype')
-    const result = Object.create(
-      prototype !== null &&
-        (typeof prototype === 'object' || typeof prototype === 'function')
-        ? prototype
-        : target.prototype
-    )
-    setSlot(result, value)
-    return result
-  },
-})
+export const Instant: InstantConstructor = new Proxy(
+  import.meta.formatjsTemporalNativeData === true
+    ? (NativeInstant! as unknown as typeof InstantValue)
+    : InstantValue,
+  {
+    construct(target, args, newTarget) {
+      const value = validateInstant(toBigInt(args[0]))
+      const prototype = Reflect.get(newTarget, 'prototype')
+      if (import.meta.formatjsTemporalNativeData === true) {
+        const result = createNativeInstant(value)
+        const selected =
+          prototype !== null &&
+          (typeof prototype === 'object' || typeof prototype === 'function')
+            ? prototype
+            : target.prototype
+        if (selected !== NativeInstant!.prototype)
+          nativeInstantPrototype(result, selected)
+        return result
+      }
+      const result = Object.create(
+        prototype !== null &&
+          (typeof prototype === 'object' || typeof prototype === 'function')
+          ? prototype
+          : target.prototype
+      )
+      setSlot(result, value)
+      return result
+    },
+  }
+)
 Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},
 })
+
+if (import.meta.formatjsTemporalNativeData === true) {
+  Object.defineProperty(NativeInstant!, 'name', {
+    value: 'Instant',
+    configurable: true,
+  })
+  for (const name of [
+    'compare',
+    'from',
+    'fromEpochNanoseconds',
+    'fromEpochMilliseconds',
+  ])
+    Object.defineProperty(
+      NativeInstant!,
+      name,
+      Object.getOwnPropertyDescriptor(InstantValue, name)!
+    )
+  Object.defineProperties(
+    NativeInstant!.prototype,
+    Object.getOwnPropertyDescriptors(InstantValue.prototype)
+  )
+}

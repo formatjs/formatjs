@@ -2393,3 +2393,564 @@ fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
         }
     }
 }
+
+#[test]
+fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
+    use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
+    let events: Vec<_> = (0..400)
+        .map(|index| OffsetTransition {
+            epoch_seconds: index,
+            offset_seconds: if index % 2 == 0 { 3600 } else { 0 },
+        })
+        .collect();
+    let zone = TransitionZone::new(0, &events, None).unwrap();
+    let mut offsets = Vec::new();
+    zone.visit_offsets(&mut |value| offsets.push(value));
+    assert_eq!(offsets, [0, 3_600_000_000_000]);
+
+    let many: Vec<_> = (0..40)
+        .map(|index| OffsetTransition {
+            epoch_seconds: index,
+            offset_seconds: index as i32,
+        })
+        .collect();
+    let zone = TransitionZone::new(0, &many, None).unwrap();
+    offsets.clear();
+    zone.visit_offsets(&mut |value| offsets.push(value));
+    offsets.sort();
+    offsets.dedup();
+    assert_eq!(
+        offsets,
+        (0..40)
+            .map(|value| value * 1_000_000_000)
+            .collect::<Vec<i128>>()
+    );
+}
+
+#[test]
+fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
+    use formatjs_temporal::{
+        Disambiguation, FutureRule, OffsetInput, OffsetOption, OffsetTransition, TimeZone,
+        TransitionDirection, TransitionRule, TransitionZone, ZonedDateTime, ZonedParseOptions,
+        calendar::Calendar,
+    };
+    #[derive(Clone, Copy)]
+    struct FullHistory<'a>(TransitionZone<'a>);
+    impl TimeZone for FullHistory<'_> {
+        fn offset_nanoseconds(&self, instant: Instant) -> i128 {
+            self.0.offset_nanoseconds(instant)
+        }
+        fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
+            self.0.visit_offsets(visitor);
+        }
+        fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
+            self.0.transition(instant, direction)
+        }
+    }
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day { day: 0, seconds: 0 },
+            TransitionRule::Day {
+                day: 0,
+                seconds: 7200,
+            },
+        )),
+    )
+    .unwrap();
+    let limit = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    let mut events = vec![OffsetTransition {
+        epoch_seconds: -limit,
+        offset_seconds: -86399,
+    }];
+    events.extend((0..40).map(|index| OffsetTransition {
+        epoch_seconds: -86401 + index * 4400,
+        offset_seconds: if index % 2 == 0 {
+            index as i32 * 1000
+        } else {
+            -(index as i32) * 1000
+        },
+    }));
+    events.push(OffsetTransition {
+        epoch_seconds: limit,
+        offset_seconds: 86399,
+    });
+    let join = [OffsetTransition {
+        epoch_seconds: -1,
+        offset_seconds: 3600,
+    }];
+    for (zone, boundaries) in [
+        (
+            TransitionZone::new(86399, &events, None).unwrap(),
+            events.as_slice(),
+        ),
+        (
+            TransitionZone::new(0, &[], Some(rule)).unwrap(),
+            join.as_slice(),
+        ),
+        (
+            TransitionZone::new(0, &join, Some(rule)).unwrap(),
+            join.as_slice(),
+        ),
+    ] {
+        let mut locals = vec![0, -MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS];
+        for text in [
+            "2024-01-01T00:00Z",
+            "2024-01-01T01:00Z",
+            "2400-01-01T00:00Z",
+        ] {
+            let at = text.parse::<Instant>().unwrap().epoch_nanoseconds();
+            locals.extend([at - 1, at, at + 1]);
+        }
+        for event in boundaries {
+            let at = i128::from(event.epoch_seconds) * 1_000_000_000;
+            for offset in [-86399, event.offset_seconds, 0, 86399] {
+                for delta in [-1, 0, 1] {
+                    locals.push(at + i128::from(offset) * 1_000_000_000 + delta);
+                }
+            }
+        }
+        for local in locals {
+            let Ok(fields) = IsoDateTime::from_epoch_nanoseconds(local) else {
+                continue;
+            };
+            for mode in [
+                Disambiguation::Compatible,
+                Disambiguation::Earlier,
+                Disambiguation::Later,
+                Disambiguation::Reject,
+            ] {
+                let fast =
+                    ZonedDateTime::from_local(fields, zone, mode).map(|value| value.instant());
+                let full = ZonedDateTime::from_local(fields, FullHistory(zone), mode)
+                    .map(|value| value.instant());
+                assert_eq!(fast, full, "{local} {mode:?} {zone:?}");
+                for offset in [
+                    OffsetOption::Prefer,
+                    OffsetOption::Use,
+                    OffsetOption::Ignore,
+                    OffsetOption::Reject,
+                ] {
+                    let options = ZonedParseOptions {
+                        disambiguation: mode,
+                        offset,
+                    };
+                    let hint = OffsetInput::Exact(0);
+                    let fast = ZonedDateTime::from_local_with_offset(
+                        fields,
+                        zone,
+                        Calendar::Iso8601,
+                        hint,
+                        options,
+                    )
+                    .map(|v| v.instant());
+                    let full = ZonedDateTime::from_local_with_offset(
+                        fields,
+                        FullHistory(zone),
+                        Calendar::Iso8601,
+                        hint,
+                        options,
+                    )
+                    .map(|v| v.instant());
+                    assert_eq!(fast, full, "{local} {mode:?} {offset:?} {zone:?}");
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn instant_rounding_keeps_wide_results_at_signed_64_bit_boundaries() {
+    use formatjs_temporal::{RoundingMode, TimeUnit};
+    let base = 9_223_372_036_854_775_800i128;
+    for (value, expected) in [
+        (base + 7, [base, base + 10, base + 10]),
+        (base + 8, [base, base + 10, base + 10]),
+        (-base - 8, [-base - 10, -base, -base - 10]),
+        (-base - 9, [-base - 10, -base, -base - 10]),
+        (base + 5, [base, base + 10, base]),
+        (base + 15, [base + 10, base + 20, base + 20]),
+        (-base - 5, [-base - 10, -base, -base]),
+        (-base - 15, [-base - 20, -base - 10, -base - 20]),
+    ] {
+        for (mode, expected) in [
+            RoundingMode::Floor,
+            RoundingMode::Ceil,
+            RoundingMode::HalfEven,
+        ]
+        .into_iter()
+        .zip(expected)
+        {
+            assert_eq!(
+                Instant::from_epoch_nanoseconds(value)
+                    .unwrap()
+                    .round(TimeUnit::Nanosecond, 10, mode)
+                    .unwrap()
+                    .epoch_nanoseconds(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
+fn recurring_transitions_preserve_january_boundary_and_explicit_join() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionRule, TransitionZone,
+    };
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day { day: 0, seconds: 0 },
+            TransitionRule::Day {
+                day: 0,
+                seconds: 7200,
+            },
+        )),
+    )
+    .unwrap();
+    let midnight: Instant = "2024-01-01T00:00Z".parse().unwrap();
+    let end: Instant = "2024-01-01T01:00Z".parse().unwrap();
+    let before = Instant::from_epoch_nanoseconds(midnight.epoch_nanoseconds() - 1).unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    assert_eq!(
+        zone.transition(before, TransitionDirection::Next),
+        Some(midnight)
+    );
+    assert_eq!(
+        zone.transition(midnight, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(
+        zone.transition(end, TransitionDirection::Previous),
+        Some(midnight)
+    );
+    let transitions = [OffsetTransition {
+        epoch_seconds: (midnight.epoch_nanoseconds() / 1_000_000_000) as i64 - 1,
+        offset_seconds: 3600,
+    }];
+    let joined = TransitionZone::new(0, &transitions, Some(rule)).unwrap();
+    assert_eq!(
+        joined.transition(before, TransitionDirection::Next),
+        Some(end)
+    );
+    assert_eq!(joined.offset_nanoseconds(midnight), 3_600_000_000_000);
+    assert_eq!(joined.offset_nanoseconds(end), 0);
+}
+
+#[test]
+fn recurring_last_weekday_handles_short_and_leap_february() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Month {
+                month: 2,
+                week: 5,
+                weekday: 4,
+                seconds: 0,
+            },
+            TransitionRule::Day {
+                day: 200,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    for text in ["2023-02-23T00:00Z", "2024-02-29T00:00Z"] {
+        let instant: Instant = text.parse().unwrap();
+        let before = Instant::from_epoch_nanoseconds(instant.epoch_nanoseconds() - 1).unwrap();
+        assert_eq!(zone.offset_nanoseconds(before), 0, "{text}");
+        assert_eq!(
+            zone.offset_nanoseconds(instant),
+            3_600_000_000_000,
+            "{text}"
+        );
+    }
+}
+
+#[test]
+fn recurring_monthly_offsets_preserve_rule_year_boundaries() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let month = |month, week, weekday, seconds| TransitionRule::Month {
+        month,
+        week,
+        weekday,
+        seconds,
+    };
+    let check = |standard, daylight, start, end, samples: &[(&str, i32, i32)]| {
+        let rule = FutureRule::new(standard, Some((daylight, start, end))).unwrap();
+        let zone = TransitionZone::new(standard, &[], Some(rule)).unwrap();
+        for &(text, before, after) in samples {
+            let at: Instant = text.parse().unwrap();
+            for (delta, expected) in [(-1, before), (0, after), (1, after)] {
+                let instant =
+                    Instant::from_epoch_nanoseconds(at.epoch_nanoseconds() + delta).unwrap();
+                assert_eq!(
+                    zone.offset_nanoseconds(instant),
+                    i128::from(expected) * 1_000_000_000,
+                    "{text} {delta} {rule:?}"
+                );
+            }
+        }
+        zone
+    };
+    let north = check(
+        -18000,
+        -14400,
+        month(3, 2, 0, 7200),
+        month(11, 1, 0, 7200),
+        &[
+            ("1969-03-09T07:00Z", -18000, -14400),
+            ("1969-11-02T06:00Z", -14400, -18000),
+            ("2024-01-01T00:00Z", -18000, -18000),
+            ("2024-03-10T07:00Z", -18000, -14400),
+            ("2024-07-01T00:00Z", -14400, -14400),
+            ("2024-11-03T06:00Z", -14400, -18000),
+            ("2024-12-31T23:59:59Z", -18000, -18000),
+        ],
+    );
+    for value in [-MAX_EPOCH_NANOSECONDS, MAX_EPOCH_NANOSECONDS] {
+        assert_eq!(
+            north.offset_nanoseconds(Instant::from_epoch_nanoseconds(value).unwrap()),
+            -14_400_000_000_000
+        );
+    }
+    check(
+        36000,
+        39600,
+        month(10, 1, 0, 7200),
+        month(4, 1, 0, 10800),
+        &[
+            ("2024-01-01T00:00Z", 39600, 39600),
+            ("2024-04-06T16:00Z", 39600, 36000),
+            ("2024-07-01T00:00Z", 36000, 36000),
+            ("2024-10-05T16:00Z", 36000, 39600),
+            ("2024-12-31T23:59:59Z", 39600, 39600),
+        ],
+    );
+    check(
+        0,
+        3600,
+        month(2, 5, 4, 0),
+        month(4, 1, 0, 0),
+        &[
+            ("2023-02-23T00:00Z", 0, 3600),
+            ("2023-04-01T23:00Z", 3600, 0),
+            ("2024-02-29T00:00Z", 0, 3600),
+            ("2024-04-06T23:00Z", 3600, 0),
+        ],
+    );
+    check(
+        86399,
+        -86399,
+        month(2, 1, 0, -604799),
+        month(11, 5, 0, 604799),
+        &[
+            ("2024-01-01T00:00Z", 86399, 86399),
+            ("2024-01-27T00:00:02Z", 86399, -86399),
+            ("2024-07-01T00:00Z", -86399, -86399),
+            ("2024-12-01T23:59:58Z", -86399, 86399),
+        ],
+    );
+    // Edge months can move an event into a different UTC year.
+    check(
+        3600,
+        7200,
+        month(1, 1, 0, 0),
+        month(3, 1, 0, 0),
+        &[
+            ("2022-12-31T23:00Z", 3600, 7200),
+            ("2023-03-04T22:00Z", 7200, 3600),
+        ],
+    );
+    check(
+        0,
+        -3600,
+        month(3, 2, 0, 0),
+        month(12, 5, 1, 86399),
+        &[
+            ("2018-03-11T00:00Z", 0, -3600),
+            ("2019-01-01T00:59:59Z", -3600, 0),
+        ],
+    );
+    // Adjacent months can change event order between years.
+    check(
+        0,
+        -3600,
+        month(3, 4, 0, 604799),
+        month(4, 1, 0, -604799),
+        &[
+            ("2023-03-26T01:00:01Z", -3600, 0),
+            ("2023-04-01T23:59:59Z", 0, -3600),
+            ("2024-01-01T00:00Z", -3600, -3600),
+            ("2024-03-30T23:59:59Z", -3600, -3600),
+            ("2024-03-31T01:00:01Z", -3600, 0),
+        ],
+    );
+}
+
+#[test]
+fn recurring_offsets_preserve_nanosecond_integer_widths() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let rule = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Month {
+                month: 3,
+                week: 1,
+                weekday: 0,
+                seconds: 0,
+            },
+            TransitionRule::Month {
+                month: 8,
+                week: 1,
+                weekday: 0,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    let zone = TransitionZone::new(0, &[], Some(rule)).unwrap();
+    // The negative i64 bound is outside DST; the other bounds are inside.
+    for (raw, expected) in [
+        (i128::from(i64::MIN) - 1, 0_i128),
+        (i128::from(i64::MIN), 0),
+        (i128::from(i64::MIN) + 1, 0),
+        (i128::from(i64::MAX) - 1, 3_600_000_000_000),
+        (i128::from(i64::MAX), 3_600_000_000_000),
+        (i128::from(i64::MAX) + 1, 3_600_000_000_000),
+        (-i128::from(u64::MAX) - 1, 3_600_000_000_000),
+        (-i128::from(u64::MAX), 3_600_000_000_000),
+        (-i128::from(u64::MAX) + 1, 3_600_000_000_000),
+        (i128::from(u64::MAX) - 1, 3_600_000_000_000),
+        (i128::from(u64::MAX), 3_600_000_000_000),
+        (i128::from(u64::MAX) + 1, 3_600_000_000_000),
+    ] {
+        assert_eq!(
+            zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(raw).unwrap()),
+            expected,
+            "{raw}"
+        );
+    }
+}
+
+#[test]
+fn offsets_preserve_wide_nanosecond_second_boundaries() {
+    use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
+    for seconds in [
+        -8_639_999_999_999_i64,
+        -17_179_869_184,
+        -13_596_181_323,
+        -9_223_372_037,
+        9_223_372_037,
+        13_596_181_323,
+        17_179_869_184,
+        8_639_999_999_999,
+    ] {
+        let events = [
+            OffsetTransition {
+                epoch_seconds: seconds - 1,
+                offset_seconds: 1,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds,
+                offset_seconds: 2,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds + 1,
+                offset_seconds: 3,
+            },
+        ];
+        let zone = TransitionZone::new(0, &events, None).unwrap();
+        let anchor = i128::from(seconds) * 1_000_000_000;
+        for (delta, expected) in [
+            (-1, 1),
+            (0, 2),
+            (1, 2),
+            (999_999_999, 2),
+            (1_000_000_000, 3),
+        ] {
+            let instant = Instant::from_epoch_nanoseconds(anchor + delta).unwrap();
+            assert_eq!(
+                zone.offset_nanoseconds(instant),
+                expected * 1_000_000_000,
+                "{seconds} {delta}"
+            );
+        }
+    }
+}
+
+#[test]
+fn recurring_month_offsets_match_shifted_transition_intervals() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let month = |month, week, seconds| TransitionRule::Month {
+        month,
+        week,
+        weekday: 0,
+        seconds,
+    };
+    for (year_start, first_change, second_change, days) in [
+        (
+            "1969-01-01T00:00Z",
+            "1969-01-25T00:00:02Z",
+            "1969-12-07T23:59:58Z",
+            365,
+        ),
+        (
+            "2024-01-01T00:00Z",
+            "2024-01-27T00:00:02Z",
+            "2024-12-01T23:59:58Z",
+            366,
+        ),
+    ] {
+        let year_start = year_start.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let first_change = first_change.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let second_change = second_change
+            .parse::<Instant>()
+            .unwrap()
+            .epoch_nanoseconds();
+        for (standard, daylight, start, end, southern) in [
+            (
+                86399,
+                -86399,
+                month(2, 1, -604799),
+                month(11, 5, 604799),
+                false,
+            ),
+            (
+                -86399,
+                86399,
+                month(11, 5, 604799),
+                month(2, 1, -604799),
+                true,
+            ),
+        ] {
+            let future = FutureRule::new(standard, Some((daylight, start, end))).unwrap();
+            let zone = TransitionZone::new(standard, &[], Some(future)).unwrap();
+            for day in 0..days {
+                for clock in [0, NANOSECONDS_PER_DAY / 2, NANOSECONDS_PER_DAY - 1] {
+                    let nanoseconds = year_start + i128::from(day) * NANOSECONDS_PER_DAY + clock;
+                    let between = nanoseconds >= first_change && nanoseconds < second_change;
+                    let expected = if between != southern {
+                        daylight
+                    } else {
+                        standard
+                    };
+                    assert_eq!(
+                        zone.offset_nanoseconds(
+                            Instant::from_epoch_nanoseconds(nanoseconds).unwrap()
+                        ),
+                        i128::from(expected) * 1_000_000_000,
+                        "nanoseconds={nanoseconds}, southern={southern}"
+                    );
+                }
+            }
+        }
+    }
+}

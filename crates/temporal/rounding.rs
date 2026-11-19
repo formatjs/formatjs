@@ -66,8 +66,23 @@ impl FromStr for RoundingMode {
     }
 }
 pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i128 {
-    let lower = value.div_euclid(quantum);
-    let remainder = value.rem_euclid(quantum);
+    if quantum == 1 {
+        return value;
+    }
+    let (lower, remainder) = if value >= i128::from(i64::MIN)
+        && value <= i128::from(i64::MAX)
+        && quantum > 1
+        && quantum <= i128::from(i64::MAX)
+    {
+        let value = value as i64;
+        let quantum = quantum as i64;
+        (
+            i128::from(value.div_euclid(quantum)),
+            i128::from(value.rem_euclid(quantum)),
+        )
+    } else {
+        (value.div_euclid(quantum), value.rem_euclid(quantum))
+    };
     if remainder == 0 {
         return value;
     }

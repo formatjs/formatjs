@@ -1,0 +1,194 @@
+{
+  "node": "v24.14.0",
+  "v8": "13.6.233.17-node.41",
+  "icu": "78.2",
+  "cpu": "Intel(R) Xeon(R) Platinum 8488C",
+  "method": "Nine fresh Node processes per profile, rotated order, persistent compile cache disabled. Dynamic import then first Instant parse and named-zone projection/date creation. Matched outputs. Timings exclude process launch and result formatting; include module compilation/evaluation and first-use data setup. Default TS and both references use host Intl timezone data. ISO/Gregorian only; no full calendar initialization, native Rust or Hermes startup claim.",
+  "medians": {
+    "typescript": {
+      "importMilliseconds": 9.314483999999997,
+      "firstOperationMilliseconds": 13.74222,
+      "totalMilliseconds": 23.066242
+    },
+    "reference": {
+      "importMilliseconds": 19.924330999999995,
+      "firstOperationMilliseconds": 14.593624000000005,
+      "totalMilliseconds": 34.520123
+    },
+    "officialReference": {
+      "importMilliseconds": 23.758659,
+      "firstOperationMilliseconds": 5.7482669999999985,
+      "totalMilliseconds": 29.476194
+    }
+  },
+  "samples": {
+    "typescript": [
+      {
+        "importMilliseconds": 9.622941999999998,
+        "firstOperationMilliseconds": 14.498951000000002,
+        "totalMilliseconds": 24.121893,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.422554000000002,
+        "firstOperationMilliseconds": 14.495687999999998,
+        "totalMilliseconds": 23.918242,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 11.360320000000002,
+        "firstOperationMilliseconds": 14.330020000000001,
+        "totalMilliseconds": 25.690340000000003,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.294019000000002,
+        "firstOperationMilliseconds": 13.704731999999996,
+        "totalMilliseconds": 22.998751,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.272333,
+        "firstOperationMilliseconds": 13.793909,
+        "totalMilliseconds": 23.066242,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.327091,
+        "firstOperationMilliseconds": 13.74222,
+        "totalMilliseconds": 23.069311,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.110913,
+        "firstOperationMilliseconds": 13.570635999999997,
+        "totalMilliseconds": 22.681548999999997,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.314483999999997,
+        "firstOperationMilliseconds": 13.681336000000002,
+        "totalMilliseconds": 22.99582,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 9.255347,
+        "firstOperationMilliseconds": 13.647962999999997,
+        "totalMilliseconds": 22.903309999999998,
+        "result": ["1583000099123456789", "2020-02-29"]
+      }
+    ],
+    "reference": [
+      {
+        "importMilliseconds": 20.036098999999997,
+        "firstOperationMilliseconds": 14.741827,
+        "totalMilliseconds": 34.777925999999994,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 21.06379,
+        "firstOperationMilliseconds": 15.255513999999998,
+        "totalMilliseconds": 36.319304,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 19.924330999999995,
+        "firstOperationMilliseconds": 14.595792000000003,
+        "totalMilliseconds": 34.520123,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 19.860106,
+        "firstOperationMilliseconds": 14.593624000000005,
+        "totalMilliseconds": 34.45373000000001,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.325046999999998,
+        "firstOperationMilliseconds": 14.439540000000001,
+        "totalMilliseconds": 37.764587,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 19.8642,
+        "firstOperationMilliseconds": 14.362862999999997,
+        "totalMilliseconds": 34.227063,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 19.914631000000004,
+        "firstOperationMilliseconds": 14.353538,
+        "totalMilliseconds": 34.268169,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 20.037177000000003,
+        "firstOperationMilliseconds": 14.439513999999996,
+        "totalMilliseconds": 34.476691,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 19.903322,
+        "firstOperationMilliseconds": 14.714264,
+        "totalMilliseconds": 34.617586,
+        "result": ["1583000099123456789", "2020-02-29"]
+      }
+    ],
+    "officialReference": [
+      {
+        "importMilliseconds": 24.232729000000003,
+        "firstOperationMilliseconds": 8.748203999999994,
+        "totalMilliseconds": 32.98093299999999,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 25.099399,
+        "firstOperationMilliseconds": 5.7482669999999985,
+        "totalMilliseconds": 30.847665999999997,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.791378999999996,
+        "firstOperationMilliseconds": 5.733373,
+        "totalMilliseconds": 29.524751999999996,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.634981,
+        "firstOperationMilliseconds": 5.714150000000004,
+        "totalMilliseconds": 29.349131000000003,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.703763,
+        "firstOperationMilliseconds": 5.760202,
+        "totalMilliseconds": 29.463964999999998,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.697763000000002,
+        "firstOperationMilliseconds": 5.778430999999998,
+        "totalMilliseconds": 29.476194,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.758659,
+        "firstOperationMilliseconds": 5.7087159999999955,
+        "totalMilliseconds": 29.467374999999997,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.786718999999998,
+        "firstOperationMilliseconds": 5.788779000000005,
+        "totalMilliseconds": 29.575498000000003,
+        "result": ["1583000099123456789", "2020-02-29"]
+      },
+      {
+        "importMilliseconds": 23.559614,
+        "firstOperationMilliseconds": 5.6878110000000035,
+        "totalMilliseconds": 29.247425000000003,
+        "result": ["1583000099123456789", "2020-02-29"]
+      }
+    ]
+  }
+}

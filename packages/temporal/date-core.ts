@@ -1,11 +1,19 @@
+import {
+  nativeTemporal,
+  type NativeTemporal,
+  type NativeDateSnapshot,
+} from '#packages/temporal/native.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {
   DayFromYear,
+  DaysInYear,
   YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   calendarToEpochDay,
+  isoDayFromPreparedFields,
+  cachedISODateFields,
   calendarIds,
   calendarEra,
   calendarYearFromEra,
@@ -15,15 +23,14 @@ import {
   daysInMonth,
   monthsInYear,
   calendarStartOfYear,
-  addCalendarDate,
+  addNormalizedCalendarDate,
+  dayCheck,
   type CalendarId,
   type Overflow,
   type CalendarDate,
+  type CalendarFields,
 } from '#packages/temporal/calendar.js'
-import {
-  isoToEpochNanoseconds,
-  epochNanosecondsToISO,
-} from '#packages/temporal/kernel.js'
+import {isoToEpochNanoseconds} from '#packages/temporal/kernel.js'
 import {optionsObject} from '#packages/temporal/rounding.js'
 import {
   getDateSlot,
@@ -32,6 +39,7 @@ import {
   getTimeSlot,
   getYearMonthSlot,
   getMonthDaySlot,
+  isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -175,11 +183,66 @@ export function timeOf(value: bigint): bigint {
 export function isoDay(year: number, month: number, day: number): number {
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
+const dateSnapshots = new WeakMap<
+  DateSlot,
+  {owner: NativeTemporal; value: NativeDateSnapshot}
+>()
+export function nativeDateSnapshot(
+  slot: DateSlot,
+  extended = false,
+  nanoseconds?: bigint
+): NativeDateSnapshot | undefined {
+  const owner = nativeTemporal()
+  if (!owner) return undefined
+  if (
+    Math.abs(slot.epochDay) > 110000000 ||
+    (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
+  )
+    throw new RangeError('Calendar date out of range')
+  if (
+    import.meta.formatjsTemporalNativeData === true &&
+    slot.properties?.owner === owner
+  )
+    return slot.properties
+  const existing = dateSnapshots.get(slot)
+  if (existing?.owner === owner) return existing.value
+  const value =
+    slot.properties?.owner === owner
+      ? slot.properties
+      : owner.calendarProperties(
+          baseCalendar(slot.calendar),
+          slot.epochDay,
+          extended,
+          nanoseconds
+        )
+  dateSnapshots.set(slot, {owner, value})
+  return value
+}
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
+  const value = nativeDateSnapshot(slot, extended)
+  if (import.meta.formatjsTemporalNativeData === true || value) {
+    if (!value!.date) throw new RangeError('Calendar date out of range')
+    return value!.date
+  }
   return (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
     baseCalendar(slot.calendar),
     slot.epochDay
   )
+}
+export function dateFieldsView(
+  slot: DateSlot,
+  extended = false
+): Readonly<CalendarDate> {
+  if (
+    import.meta.formatjsTemporalNativeData !== true &&
+    !nativeTemporal() &&
+    slot.calendar === 'iso8601' &&
+    (extended || (slot.epochDay >= -100000001 && slot.epochDay <= 100000000))
+  ) {
+    const fields = slot[isoDateFields]
+    if (fields) return fields
+  }
+  return dateFields(slot, extended)
 }
 export function dayFromFields(
   calendar: string,
@@ -188,6 +251,12 @@ export function dayFromFields(
 ): number {
   const year = resolveCalendarYear(calendar, fields)!
   if (fields.day === undefined) throw new TypeError('Day required')
+  if (calendar === 'iso8601')
+    return isoDayFromPreparedFields(
+      year,
+      fields as unknown as CalendarFields,
+      overflow
+    )
   return calendarToEpochDay(
     baseCalendar(calendar),
     {
@@ -268,6 +337,55 @@ export function dateFieldValue(key: string, value: unknown): string | number {
     throw new RangeError('Month and day must be positive')
   return result
 }
+const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
+const createObject = Object.create
+const fieldRecordPrototype = Object.freeze(createObject(null))
+const isoYearMonthFieldNames = ['month', 'monthCode', 'year']
+const isoDateTimeFieldNames = [
+  'day',
+  'hour',
+  'microsecond',
+  'millisecond',
+  'minute',
+  'month',
+  'monthCode',
+  'nanosecond',
+  'second',
+  'year',
+]
+function readISODateFields(
+  item: Record<string, unknown>,
+  partial: boolean,
+  withDay: boolean
+): Record<string, unknown> {
+  const result = createObject(fieldRecordPrototype) as Record<string, unknown>
+  let any = false
+  if (withDay) {
+    const value = item.day
+    if (value !== undefined) {
+      result.day = dateFieldValue('day', value)
+      any = true
+    }
+  }
+  const month = item.month
+  if (month !== undefined) {
+    result.month = dateFieldValue('month', month)
+    any = true
+  }
+  const monthCode = item.monthCode
+  if (monthCode !== undefined) {
+    result.monthCode = dateFieldValue('monthCode', monthCode)
+    any = true
+  }
+  const year = item.year
+  if (year !== undefined) {
+    result.year = dateFieldValue('year', year)
+    any = true
+  }
+  if (partial && !any) throw new TypeError('At least one field required')
+  return result
+}
+
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -275,9 +393,18 @@ export function readDateFields(
   shape: DateFieldShape = 'date',
   calendar = 'iso8601'
 ): Record<string, unknown> {
-  const result = Object.create(null) as Record<string, unknown>
+  if (calendar === 'iso8601' && !withTime && shape !== 'year')
+    return readISODateFields(item, partial, shape === 'date')
+  const result = createObject(fieldRecordPrototype) as Record<string, unknown>
   let any = false
-  const names = dateFieldNames(calendar, withTime, shape)
+  const names =
+    calendar === 'iso8601' && shape === 'date'
+      ? withTime
+        ? isoDateTimeFieldNames
+        : isoDateFieldNames
+      : calendar === 'iso8601' && !withTime && shape === 'year-month'
+        ? isoYearMonthFieldNames
+        : dateFieldNames(calendar, withTime, shape)
   for (let index = 0; index < names.length; index++) {
     const key = names[index],
       value = item[key]
@@ -291,22 +418,38 @@ export function readDateFields(
 }
 export function mergeDateFields(
   calendar: string,
-  fields: Record<string, unknown>,
+  fields: Readonly<CalendarDate> | Record<string, unknown>,
   updates: Record<string, unknown>
 ): Record<string, unknown> {
-  const base = {...fields}
+  if (calendar === 'iso8601') {
+    const monthCode = fields.monthCode
+    return {
+      ...fields,
+      month: monthCode === undefined ? fields.month : undefined,
+      monthCode: updates.month === undefined ? monthCode : undefined,
+      ...updates,
+    }
+  }
+  // Own placeholders avoid inherited setters when fields are cleared.
+  const base: Record<string, unknown> = {
+    year: undefined,
+    month: undefined,
+    monthCode: undefined,
+    era: undefined,
+    eraYear: undefined,
+    ...fields,
+  }
   // ISODateToFields carries monthCode, not an ordinal month from the old year.
-  if (base.monthCode !== undefined) delete base.month
-  if (updates.month !== undefined) delete base.monthCode
+  if (base.monthCode !== undefined) base.month = undefined
+  if (updates.month !== undefined) base.monthCode = undefined
   if (
-    calendar !== 'iso8601' &&
-    (updates.year !== undefined ||
-      updates.era !== undefined ||
-      updates.eraYear !== undefined)
+    updates.year !== undefined ||
+    updates.era !== undefined ||
+    updates.eraYear !== undefined
   ) {
-    delete base.year
-    delete base.era
-    delete base.eraYear
+    base.year = undefined
+    base.era = undefined
+    base.eraYear = undefined
   }
   if (
     calendar === 'japanese' &&
@@ -314,8 +457,8 @@ export function mergeDateFields(
       updates.month !== undefined ||
       updates.monthCode !== undefined)
   ) {
-    delete base.era
-    delete base.eraYear
+    base.era = undefined
+    base.eraYear = undefined
   }
   return {...base, ...updates}
 }
@@ -340,8 +483,14 @@ export function addDate(
   overflow: Overflow
 ): number {
   const calendar = baseCalendar(slot.calendar)
-  const result = addCalendarDate(calendar, dateFields(slot), duration, overflow)
-  return calendarToEpochDay(calendar, result, 'reject')
+  return dayCheck(
+    addNormalizedCalendarDate(
+      calendar,
+      dateFieldsView(slot),
+      duration,
+      overflow
+    ).epochDay
+  )
 }
 export function calendarNameOption(
   value: unknown
@@ -350,6 +499,57 @@ export function calendarNameOption(
   if (!['auto', 'always', 'never', 'critical'].includes(option))
     throw new RangeError('Invalid calendarName')
   return option as 'auto' | 'always' | 'never' | 'critical'
+}
+const twoDigitDateParts = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+  '24',
+  '25',
+  '26',
+  '27',
+  '28',
+  '29',
+  '30',
+  '31',
+]
+export function formatISODate(
+  epochDay: number,
+  kind: 'date' | 'year-month' | 'month-day' = 'date',
+  fields: Readonly<CalendarDate> = calendarFromEpochDayRaw('iso8601', epochDay)
+): string {
+  const month = twoDigitDateParts[fields.month],
+    day = twoDigitDateParts[fields.day]
+  if (kind === 'month-day') return month + '-' + day
+  const year =
+    fields.year >= 1000 && fields.year <= 9999
+      ? String(fields.year)
+      : fields.year >= 0 && fields.year < 1000
+        ? String(fields.year).padStart(4, '0')
+        : (fields.year < 0 ? '-' : '+') +
+          String(Math.abs(fields.year)).padStart(6, '0')
+  return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
 export function calendarAnnotation(calendar: string, value: unknown): string {
   const option = calendarNameOption(value)
@@ -381,7 +581,32 @@ export function dateProperty(
   extended = false
 ): string | number | boolean | undefined {
   if (key === 'calendarId') return slot.calendar
-  const fields = dateFields(slot, extended),
+  const value = nativeDateSnapshot(slot, extended)
+  if (import.meta.formatjsTemporalNativeData === true || value) {
+    if (value!.errors.includes(key))
+      throw new RangeError('Calendar field out of range')
+    if (
+      key === 'year' ||
+      key === 'month' ||
+      key === 'monthCode' ||
+      key === 'day'
+    ) {
+      if (!value!.date) throw new RangeError('Calendar date out of range')
+      return value!.date[key]
+    }
+    if (
+      (key === 'weekOfYear' || key === 'yearOfWeek') &&
+      slot.calendar !== 'iso8601'
+    )
+      return undefined
+    return value!.values[key] as string | number | boolean | undefined
+  }
+  const cacheISO =
+      slot.calendar === 'iso8601' &&
+      (extended || (slot.epochDay >= -100000001 && slot.epochDay <= 100000000)),
+    fields = cacheISO
+      ? (slot[isoDateFields] ??= cachedISODateFields(slot.epochDay))
+      : dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)
   switch (key) {
     case 'era':
@@ -399,19 +624,36 @@ export function dateProperty(
     case 'dayOfWeek':
       return ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
     case 'dayOfYear':
-      return slot.epochDay - calendarStartOfYear(cal, fields.year) + 1
+      return (
+        slot.epochDay -
+        (cal === 'iso8601'
+          ? DayFromYear(fields.year)
+          : calendarStartOfYear(cal, fields.year)) +
+        1
+      )
     case 'daysInWeek':
       return 7
     case 'daysInMonth':
+      if (cal === 'iso8601') {
+        if (fields.month === 2) return DaysInYear(fields.year) === 366 ? 29 : 28
+        return fields.month === 4 ||
+          fields.month === 6 ||
+          fields.month === 9 ||
+          fields.month === 11
+          ? 30
+          : 31
+      }
       return daysInMonth(cal, fields.year, fields.month)
     case 'monthsInYear':
-      return monthsInYear(cal, fields.year)
+      return cal === 'iso8601' ? 12 : monthsInYear(cal, fields.year)
     case 'daysInYear':
+      if (cal === 'iso8601') return DaysInYear(fields.year)
       return (
         calendarStartOfYear(cal, fields.year + 1) -
         calendarStartOfYear(cal, fields.year)
       )
     case 'inLeapYear':
+      if (cal === 'iso8601') return DaysInYear(fields.year) === 366
       return ['hebrew', 'chinese', 'dangi'].includes(cal)
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -
@@ -435,7 +677,9 @@ export function dateProperty(
   return undefined
 }
 export function checkDateTime(value: bigint): bigint {
-  epochNanosecondsToISO(value)
+  const bound = 8640000086400000000000n
+  if (value <= -bound || value >= bound)
+    throw new RangeError('Local date out of range')
   return value
 }
 

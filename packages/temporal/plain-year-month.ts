@@ -5,12 +5,14 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getYearMonthSlot,
   setYearMonthSlot,
+  isoDateFields,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
   calendarFromObject,
   constructorCalendar,
   dateFields,
+  dateFieldsView,
   dateProperty,
   readDateFields,
   partialObject,
@@ -23,7 +25,7 @@ import {
   dayFromFields,
 } from '#packages/temporal/date-core.js'
 import {
-  addCalendarDateRaw,
+  addNormalizedCalendarDate,
   calendarToEpochDayRaw,
 } from '#packages/temporal/calendar.js'
 import {
@@ -33,7 +35,9 @@ import {
 } from '#packages/temporal/plain-date.js'
 import {
   toDurationFields,
+  toNativeDurationFields,
   createDuration,
+  createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {
@@ -99,7 +103,7 @@ export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   const result = Object.create(
     PlainYearMonthValue.prototype
   ) as PlainYearMonthObject
-  setYearMonthSlot(result, {...slot})
+  setYearMonthSlot(result, slot)
   return result
 }
 export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
@@ -126,18 +130,15 @@ function add(
   options: unknown,
   sign: number
 ): PlainYearMonthObject {
-  const fields = toDurationFields(duration),
+  const fields =
+      import.meta.formatjsTemporalNativeData === true
+        ? toNativeDurationFields(duration)
+        : toDurationFields(duration),
     native = nativeTemporal()
-  if (native)
-    return createPlainYearMonth({
-      epochDay: native.addPlainYearMonth(
-        slot,
-        fields,
-        sign < 0,
-        overflowOption(options)
-      ),
-      calendar: slot.calendar,
-    })
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return createPlainYearMonth(
+      native!.addPlainYearMonth(slot, fields, sign < 0, overflowOption(options))
+    )
   const keys = Object.keys(fields) as (keyof typeof fields)[]
   for (let index = 0; index < keys.length; index++) fields[keys[index]] *= sign
   const overflow = overflowOption(options)
@@ -153,16 +154,15 @@ function add(
   )
     throw new RangeError('Year-month arithmetic only accepts years and months')
   const cal = shortCalendar(slot.calendar),
-    start = {...dateFields(slot, true), day: 1}
+    start = {...dateFieldsView(slot, true), day: 1}
   const firstDay = calendarToEpochDayRaw(cal, start, 'constrain')
   if (firstDay < -100000001 || firstDay > 100000000)
     throw new RangeError('Reference date out of range')
-  const result = addCalendarDateRaw(cal, start, fields, overflow)
+  const result = addNormalizedCalendarDate(cal, start, fields, overflow)
   return createPlainYearMonth({
-    epochDay: checkYearMonth(
-      calendarToEpochDayRaw(cal, {...result, day: 1}, 'reject')
-    ),
+    epochDay: checkYearMonth(result.epochDay),
     calendar: slot.calendar,
+    [isoDateFields]: cal === 'iso8601' ? result.date : undefined,
   })
 }
 function difference(
@@ -187,9 +187,13 @@ function difference(
   )
     throw new RangeError('Invalid year-month units')
   const native = nativeTemporal()
-  if (native)
-    return createDuration(
-      native.differencePlainYearMonth(
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return (
+      import.meta.formatjsTemporalNativeData === true
+        ? createNativeDuration
+        : createDuration
+    )(
+      native!.differencePlainYearMonth(
         slot,
         end,
         largest,
@@ -276,6 +280,13 @@ class PlainYearMonthValue {
         'year-month',
         slot.calendar
       )
+    const native = nativeTemporal()
+    if (import.meta.formatjsTemporalNativeData === true || native) {
+      dateFields(slot, true)
+      return createPlainYearMonth(
+        native!.withDate(slot, partial, overflowOption(options), 'year-month')
+      )
+    }
     return createPlainYearMonth(
       yearMonthFields(
         slot.calendar,
@@ -312,8 +323,8 @@ class PlainYearMonthValue {
     const day = integer(raw)
     if (day <= 0) throw new RangeError('Day must be positive')
     const native = nativeTemporal()
-    if (native)
-      return createPlainDate(native.yearMonthToDate(slot, day), slot.calendar)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return createPlainDate(native!.yearMonthToDate(slot, day), slot.calendar)
     return createPlainDate(
       dayFromFields(
         slot.calendar,

@@ -63,3 +63,42 @@ it('preserves private slots during conversions and rounds across midnight', () =
     }
   }
 })
+it('reads clock fields without inherited native metadata', () => {
+  const value = new Temporal.PlainDateTime(
+    2024,
+    2,
+    29,
+    12,
+    34,
+    56,
+    123,
+    456,
+    789
+  )
+  const original = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'properties'
+  )
+  let fields: number[] | undefined
+  Object.defineProperty(Object.prototype, 'properties', {
+    configurable: true,
+    get() {
+      throw new Error('Inherited native metadata')
+    },
+  })
+  try {
+    fields = [
+      value.hour,
+      value.minute,
+      value.second,
+      value.millisecond,
+      value.microsecond,
+      value.nanosecond,
+    ]
+  } finally {
+    if (original)
+      Object.defineProperty(Object.prototype, 'properties', original)
+    else Reflect.deleteProperty(Object.prototype, 'properties')
+  }
+  expect(fields).toEqual([12, 34, 56, 123, 456, 789])
+})

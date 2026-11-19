@@ -370,13 +370,23 @@ impl NumericCalendar for TableCalendar<'_> {
             }
             Data::UmmAlQura(_) => Calendar::IslamicCivil.from_epoch_day_raw(epoch)?.year,
         };
-        while self.start_of_year(year)? > epoch {
-            year -= 1
+        let mut start = self.start_of_year(year)?;
+        while start > epoch {
+            year -= 1;
+            start = self.start_of_year(year)?;
         }
-        while self.start_of_year(year + 1)? <= epoch {
-            year += 1
+        loop {
+            let next = match self.data {
+                Data::Lunisolar(_) => start + year_length(self.packed(year)?),
+                Data::UmmAlQura(_) => self.start_of_year(year + 1)?,
+            };
+            if next > epoch {
+                break;
+            }
+            year += 1;
+            start = next;
         }
-        let mut remaining = epoch - self.start_of_year(year)?;
+        let mut remaining = epoch - start;
         let mut month = 1;
         while remaining >= i64::from(self.days_in_month(year, month)?) {
             remaining -= i64::from(self.days_in_month(year, month)?);

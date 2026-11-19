@@ -62,6 +62,9 @@ impl<Z: TimeZone> TimeZone for NamedTimeZone<Z> {
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
         self.provider.visit_offsets(visitor);
     }
+    fn visit_offsets_at(&self, local: i128, visitor: &mut dyn FnMut(i128)) {
+        self.provider.visit_offsets_at(local, visitor);
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
         self.provider.transition(instant, direction)
     }

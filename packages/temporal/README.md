@@ -1,6 +1,6 @@
 # @formatjs/temporal
 
-Temporal implementation in TypeScript with a Rust core. Importing the namespace changes no globals; runtime
+Temporal implementations in TypeScript and native Rust, with Hermes bindings. Importing the namespace changes no globals; runtime
 arithmetic never delegates to native Temporal or another Temporal polyfill.
 
 ```ts
@@ -103,11 +103,11 @@ bounds. Safe-year labels retain the original local date, clock and timezone;
 ranges restore both endpoints. Boundary checks verify field consistency, not
 independent astronomical accuracy outside the documented oracle ranges.
 
-Rust exposes typed values and 62 normalized operations through ABI 9. JS retains
-ECMAScript coercion, brands, slots and object allocation. Backend metadata keeps
-`completeTemporalBackend: false` because this ABI is not an ECMAScript object
-runtime. The [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
-records Rust routes, independent controls and exact conformance scope.
+Rust exposes typed values and normalized operations for native bindings. Hermes JS
+retains ECMAScript coercion, brands, slots and object allocation; Rust validates
+and computes complete results. See the
+[completion audit](../../knowledge-base/015a-temporal-completion-audit.md) for
+independent controls and conformance scope.
 
 Full Intl compatibility gates cover 4,078 executions with Node host Intl and
 4,076 with native SDK Intl. Pinned IANA alias and CLDR zero-offset assumptions
@@ -124,31 +124,11 @@ duration strings. Installation registers captured getters and parsers with
 FormatJS/native Hermes formatters and adapts legacy host formatters. Isolated
 namespaces can use `DurationFormat.__addTemporalNamespace(Temporal)` explicitly.
 
-## WASM with native data
+## Delivery
 
-```ts
-import {
-  configureTemporalWasm,
-  installTemporalWasm,
-} from '@formatjs/temporal/wasm-native.js'
-
-const {instance} = await WebAssembly.instantiateStreaming(
-  fetch('/temporal-backend.wasm')
-)
-const Temporal = configureTemporalWasm(instance)
-// Optional global installation:
-installTemporalWasm(instance, true)
-```
-
-This entry owns its namespace/backend state and omits duplicate TS calendar and
-IANA tables. Invalid modules reject before installation. Native errors propagate
-without a TS data retry. Keep this namespace separate from the default TS entry.
-The existing `index.js` plus `wasm.js` pair shares brands and retains TS data;
-`configureWasmBackend(instance)` switches that pair to Rust operations.
-
-WASM is optional. TS remains the default. See [benchmarks](../../benchmarks/temporal/README.md)
-for versioned performance, consumer payload and package graph measurements.
-Runtime payload and whole npm archive size are different scopes.
+Use the default or standalone TypeScript namespace in JavaScript hosts, the
+[`formatjs_temporal` crate](../../crates/temporal/README.md) in native Rust, or the
+native Hermes SDK. Temporal WASM entry points and assets have been removed.
 
 ## Hermes
 
@@ -173,25 +153,24 @@ calendar updates preserve month codes and era relationships. Zoned updates prefe
 the source offset by default and support explicit gap/fold and offset policies.
 Rust `PlainDate::to_zoned_date_time(zone, None)` selects the first instant of the
 civil day; supplying `Some(time)` uses compatible resolution.
-JS adapters delegate normalized operations through ABI 9. Rust builds, generated
+JS adapters delegate normalized operations through the matching Rust backend. Rust builds, generated
 data and release artifacts use Bazel.
 
 ## Validation
 
 ```sh
 bazel test -c opt //packages/temporal:package_test
-bazel test -c opt //packages/temporal:wasm_package_test //packages/temporal:wasm_native_package_test
 bazel test -c opt //packages/temporal:compact_calendar_datetimeformat_test262
 bazel test -c opt //crates/temporal:temporal_test //crates/temporal:ffi_test
 ```
 
-Full class gates cover 9,090 executions per SDK source/HBC and WASM profile.
+Full class gates cover 9,090 executions per SDK source/HBC profile.
 Calendar, Now, installation and Intl selections run separately. The
 `intl402/Temporal` corpus has 4,080 executions; it does not include the separate
 65 DateTimeFormat files with the Temporal feature.
 
 Count-checked formatter gates require all 130 executions and zero failures on
-owned TS/Node, WASM, Hermes TS source/HBC and native SDK source/HBC. Their locale
+owned TS/Node, Hermes TS source/HBC and native SDK source/HBC. Their locale
 prelude includes Arabic data for non-Latin numeral bounds. Native-host and adapted
 non-Temporal DateTimeFormat diagnostics compare all 362 executions.
 
@@ -208,27 +187,30 @@ Separate ICU/HKO/KASI fixtures cover 30,620 rows, including Hermes source/byteco
 The pinned full Temporal-feature corpus passes with only the documented
 IANA/CLDR data exclusions; coverage details follow below.
 
-Matched bundled namespace consumers measure 38,639 bytes gzip for default TS,
-339,338 for standalone and 23,083 for forced full `temporal-polyfill`.
-Default dropped 44.5% from 69,657 by using installed Intl timezone data.
-Native-data WASM glue plus binary measures 479,583 bytes; hybrid 484,339.
-Nine-process Node startup medians: TS 20.84 ms; full reference 22.58 ms.
-Previous owned-data TS snapshot was 12.11 ms: smaller payload costs more startup
-in this sample. See `benchmarks/temporal/host-intl-default-startup-results.json`
-for methods, raw samples and memory. Earlier hot-operation measurements describe
-previous data policies; they are not refreshed throughput claims.
+## Performance
 
-Final coverage includes every Temporal-feature file in pinned Test262, including
-DateTimeFormat, DurationFormat and staging. Six coherent profiles cover default
-TS and native-data WASM on Node, plus TS/native SDK on Hermes source/HBC.
-Each Node profile passes 13,474 unique scenarios; each Hermes profile passes
-13,472. Only documented IANA/CLDR data-version cases are excluded. The coherent
-matrix has 98,716 overlapping suite executions; report unions verify exact
-coverage separately. No Realm exclusion applies to this pin; unsupported Hermes
-Realm hooks and oracle authority limits remain documented.
+Compare native Rust and the published TypeScript namespace with matched inputs:
+
+```sh
+bazel run -c opt //benchmarks/temporal:native_ts_benchmark
+```
+
+Current native Rust medians win all 25 cases. The separate 48-case JS baseline
+wins 21 against `temporal-polyfill`, 35 against `@js-temporal/polyfill`; remaining
+losses keep the performance goal open. These are measured scopes, not universal
+performance claims.
+
+The benchmark validates outputs before timing, retains raw samples and includes
+`temporal_rs` as a separate native comparison. Native Rust timings exclude binding
+costs; Hermes performance must be measured through its native bindings.
+See [benchmarks](../../benchmarks/temporal/README.md) for results and limitations.
+
+Pinned Test262 coverage includes Temporal-feature files in DateTimeFormat,
+DurationFormat and staging. Supported profiles are TS on Node, plus TS and native
+SDK on Hermes source/bytecode. Only documented IANA/CLDR data-version cases are
+excluded. Historical WASM results remain in the benchmark records.
+
 For standalone and Rust namespaces, legacy host formatting compares host and
 owned offsets. Stale or missing host rules use owned local fields with a localized
-numeric offset label. Default TS follows installed Intl timezone data. Matching
-host output stays native.
-Reversed Date and Temporal formatter ranges remain valid; endpoint source fields
-retain their input order.
+numeric offset label. Default TS follows installed Intl timezone data.
+Reversed Date and Temporal formatter ranges retain their input endpoint order.

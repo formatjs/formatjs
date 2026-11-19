@@ -1,0 +1,810 @@
+import {zonedInputs} from './zoned-inputs.ts'
+import {readFileSync, writeFileSync} from 'node:fs'
+import {Session} from 'node:inspector/promises'
+import {createHash} from 'node:crypto'
+import {join} from 'node:path'
+import {cpus} from 'node:os'
+import {pathToFileURL} from 'node:url'
+import {gzipSync} from 'node:zlib'
+import {runfiles} from '@bazel/runfiles'
+import {buildSync, transformSync} from 'esbuild'
+import {Temporal as reference} from 'temporal-polyfill/implementation'
+
+// Keep the reference's incompatible Intl declarations out of our global types.
+const officialPackage: string = '@js-temporal/polyfill'
+const {Temporal: officialReference} = await import(officialPackage)
+
+const directory = runfiles.resolve(process.argv[2])
+const load = (name: string) => import(pathToFileURL(join(directory, name)).href)
+const {Temporal} = await load('index.js')
+function benchmarkCount(name: string, fallback: number): number {
+  const value = Number(process.env[name] ?? fallback)
+  if (!Number.isSafeInteger(value) || value < 1)
+    throw new RangeError('Invalid benchmark count: ' + name)
+  return value
+}
+const iterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_ITERATIONS',
+  10000
+)
+const samples = benchmarkCount('FORMATJS_TEMPORAL_BENCHMARK_SAMPLES', 7)
+const warmup = benchmarkCount('FORMATJS_TEMPORAL_BENCHMARK_WARMUP', 3000)
+const transitionIterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_TRANSITION_ITERATIONS',
+  512
+)
+const transitionWarmup = benchmarkCount(
+  'FORMATJS_TEMPORAL_TRANSITION_WARMUP',
+  128
+)
+const longCases = new Set(
+  (process.env.FORMATJS_TEMPORAL_BENCHMARK_LONG_CASES ?? '')
+    .split(',')
+    .filter(Boolean)
+)
+const longIterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_LONG_ITERATIONS',
+  iterations
+)
+const longWarmup = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_LONG_WARMUP',
+  warmup
+)
+const selectedProfile = process.env.FORMATJS_TEMPORAL_BENCHMARK_PROFILE
+const callsiteMode =
+  process.env.FORMATJS_TEMPORAL_BENCHMARK_CALLSITE ?? 'shared'
+if (!['shared', 'isolated'].includes(callsiteMode))
+  throw new RangeError('Invalid benchmark callsite mode: ' + callsiteMode)
+let callsiteIdentity = 0
+if (
+  selectedProfile &&
+  !['typescript', 'reference', 'officialReference'].includes(selectedProfile)
+)
+  throw new RangeError('Invalid benchmark profile: ' + selectedProfile)
+const strings = Array.from(
+  {length: 8},
+  (_, index) => `2020-02-${21 + index}T23:59:59.123456789+05:45`
+)
+const dateStrings = strings.map(value => value.slice(0, 10))
+const dateTimeStrings = strings.map(value => value.slice(0, -6))
+const yearMonthStrings = strings.map(
+  (_, index) => `2020-${String(index + 2).padStart(2, '0')}`
+)
+const monthDayStrings = strings.map(value => value.slice(5, 10))
+let checksum = 0
+let profiling = false
+function measure(namespace: typeof reference): unknown[] {
+  const values = strings.map(value => namespace.Instant.from(value))
+  const expected = strings.map(value => reference.Instant.from(value))
+  const clocks = strings.map(
+    (_, index) => `23:59:${51 + index}.12345678${index}`
+  )
+  const times = clocks.map(value => namespace.PlainTime.from(value))
+  const expectedTimes = clocks.map(value => reference.PlainTime.from(value))
+  const dates = strings.map(value =>
+    namespace.PlainDate.from(value.slice(0, 10))
+  )
+  const expectedDates = strings.map(value =>
+    reference.PlainDate.from(value.slice(0, 10))
+  )
+  const dateTimes = strings.map(value =>
+    namespace.PlainDateTime.from(value.slice(0, -6))
+  )
+  const referenceDateTimes = strings.map(value =>
+    reference.PlainDateTime.from(value.slice(0, -6))
+  )
+  const dateTimeEnds = dateTimes.map(value =>
+    value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+  )
+  const referenceDateTimeEnds = referenceDateTimes.map(value =>
+    value.add({months: 1, days: 3, hours: 2, nanoseconds: 481})
+  )
+  const yearMonths = dates.map((value, index) =>
+    value.toPlainYearMonth().add({months: index})
+  )
+  const expectedYearMonths = expectedDates.map((value, index) =>
+    value.toPlainYearMonth().add({months: index})
+  )
+  const monthDays = dates.map(value => value.toPlainMonthDay())
+  const referenceMonthDays = expectedDates.map(value => value.toPlainMonthDay())
+  const dateFields = (value: InstanceType<typeof reference.PlainDate>) =>
+    [
+      value.year,
+      value.month,
+      value.monthCode,
+      value.day,
+      value.daysInMonth,
+      value.monthsInYear,
+      value.daysInYear,
+      value.dayOfYear,
+    ].join(',')
+  const zonedStrings = zonedInputs.map(([id, local]) => local + '[' + id + ']')
+  const zonedValues = zonedStrings.map(value =>
+    namespace.ZonedDateTime.from(value)
+  )
+  const referenceZonedValues = zonedStrings.map(value =>
+    reference.ZonedDateTime.from(value)
+  )
+  const zonedEnds = zonedValues.map(value => value.add({days: 1, hours: 1}))
+  const referenceZonedEnds = referenceZonedValues.map(value =>
+    value.add({days: 1, hours: 1})
+  )
+  const durationStrings = strings.map(
+    (_, index) => `P1DT${index + 1}H2M3.12345678${index}S`
+  )
+  const durations = durationStrings.map(value => namespace.Duration.from(value))
+  const referenceDurations = durationStrings.map(value =>
+    reference.Duration.from(value)
+  )
+  const calendarDurations = durations.map(value => value.with({months: 1}))
+  const referenceCalendarDurations = referenceDurations.map(value =>
+    value.with({months: 1})
+  )
+  const durationAnchors = dates.map((value, index) =>
+    index % 2 ? value : zonedValues[index]
+  )
+  const referenceDurationAnchors = expectedDates.map((value, index) =>
+    index % 2 ? value : referenceZonedValues[index]
+  )
+  const cases = [
+    {
+      name: 'parse',
+      run: (index: number) =>
+        namespace.Instant.from(strings[index]).epochNanoseconds.toString(),
+      check: (index: number) =>
+        reference.Instant.from(strings[index]).epochNanoseconds.toString(),
+    },
+    {
+      name: 'format',
+      run: (index: number) =>
+        values[index].toString({fractionalSecondDigits: 9}),
+      check: (index: number) =>
+        expected[index].toString({fractionalSecondDigits: 9}),
+    },
+    {
+      name: 'add',
+      run: (index: number) =>
+        values[index]
+          .add({hours: 1, nanoseconds: 1})
+          .epochNanoseconds.toString(),
+      check: (index: number) =>
+        expected[index]
+          .add({hours: 1, nanoseconds: 1})
+          .epochNanoseconds.toString(),
+    },
+    {
+      name: 'round',
+      run: (index: number) =>
+        values[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+      check: (index: number) =>
+        expected[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+    },
+    {
+      name: 'until',
+      run: (index: number) =>
+        values[index]
+          .until(values[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+      check: (index: number) =>
+        expected[index]
+          .until(expected[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+    },
+    {
+      name: 'timeParse',
+      run: (index: number) =>
+        namespace.PlainTime.from(clocks[index]).nanosecond.toString(),
+      check: (index: number) =>
+        reference.PlainTime.from(clocks[index]).nanosecond.toString(),
+    },
+    {
+      name: 'timeFormat',
+      run: (index: number) =>
+        times[index].toString({fractionalSecondDigits: 9}),
+      check: (index: number) =>
+        expectedTimes[index].toString({fractionalSecondDigits: 9}),
+    },
+    {
+      name: 'timeAdd',
+      run: (index: number) =>
+        times[index].add({hours: 1, nanoseconds: 1}).nanosecond.toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .add({hours: 1, nanoseconds: 1})
+          .nanosecond.toString(),
+    },
+    {
+      name: 'timeRoundFormat',
+      run: (index: number) =>
+        times[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .round({
+            smallestUnit: 'millisecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'timeUntil',
+      run: (index: number) =>
+        times[index]
+          .until(times[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+      check: (index: number) =>
+        expectedTimes[index]
+          .until(expectedTimes[(index + 1) & 7], {
+            largestUnit: 'hour',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfExpand',
+          })
+          .toString(),
+    },
+    {
+      name: 'dateParse',
+      run: (index: number) =>
+        namespace.PlainDate.from(dateStrings[index]).day.toString(),
+      check: (index: number) =>
+        reference.PlainDate.from(dateStrings[index]).day.toString(),
+    },
+    {
+      name: 'dateTimeParse',
+      run: (index: number) =>
+        namespace.PlainDateTime.from(
+          dateTimeStrings[index]
+        ).nanosecond.toString(),
+      check: (index: number) =>
+        reference.PlainDateTime.from(
+          dateTimeStrings[index]
+        ).nanosecond.toString(),
+    },
+    {
+      name: 'yearMonthParse',
+      run: (index: number) =>
+        namespace.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+      check: (index: number) =>
+        reference.PlainYearMonth.from(yearMonthStrings[index]).month.toString(),
+    },
+    {
+      name: 'monthDayParse',
+      run: (index: number) =>
+        namespace.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
+      check: (index: number) =>
+        reference.PlainMonthDay.from(monthDayStrings[index]).day.toString(),
+    },
+    {
+      name: 'dateFromFields',
+      run: (index: number) =>
+        namespace.PlainDate.from({
+          year: 2020,
+          monthCode: 'M02',
+          day: 21 + index,
+        }).day.toString(),
+      check: (index: number) =>
+        reference.PlainDate.from({
+          year: 2020,
+          monthCode: 'M02',
+          day: 21 + index,
+        }).day.toString(),
+    },
+    {
+      name: 'dateFields',
+      run: (index: number) => dateFields(dates[index]),
+      check: (index: number) => dateFields(expectedDates[index]),
+    },
+    {
+      name: 'dateWith',
+      run: (index: number) => dates[index].with({day: 19}).toString(),
+      check: (index: number) => expectedDates[index].with({day: 19}).toString(),
+    },
+    {
+      name: 'dateTimeWith',
+      run: (index: number) =>
+        dateTimes[index].with({day: 19, hour: 12}).toString(),
+      check: (index: number) =>
+        referenceDateTimes[index].with({day: 19, hour: 12}).toString(),
+    },
+    {
+      name: 'yearMonthWith',
+      run: (index: number) => yearMonths[index].with({month: 5}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].with({month: 5}).toString(),
+    },
+    {
+      name: 'monthDayWith',
+      run: (index: number) => monthDays[index].with({day: 19}).toString(),
+      check: (index: number) =>
+        referenceMonthDays[index].with({day: 19}).toString(),
+    },
+    {
+      name: 'zonedWith',
+      run: (index: number) => zonedValues[index].with({hour: 12}).toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].with({hour: 12}).toString(),
+    },
+    {
+      name: 'dateAdd',
+      run: (index: number) =>
+        dates[index].add({years: 1, months: 2, days: 3}).toString(),
+      check: (index: number) =>
+        expectedDates[index].add({years: 1, months: 2, days: 3}).toString(),
+    },
+    {
+      name: 'dateUntil',
+      run: (index: number) =>
+        dates[index]
+          .until(dates[(index + 1) & 7], {largestUnit: 'month'})
+          .toString(),
+      check: (index: number) =>
+        expectedDates[index]
+          .until(expectedDates[(index + 1) & 7], {largestUnit: 'month'})
+          .toString(),
+    },
+    {
+      name: 'dateTimeAdd',
+      run: (index: number) =>
+        dateTimes[index].add({months: 1, hours: 25, nanoseconds: 1}).toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .add({months: 1, hours: 25, nanoseconds: 1})
+          .toString(),
+    },
+    {
+      name: 'dateTimeUntil',
+      run: (index: number) =>
+        dateTimes[index]
+          .until(dateTimeEnds[index], {
+            largestUnit: 'month',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .until(referenceDateTimeEnds[index], {
+            largestUnit: 'month',
+            smallestUnit: 'microsecond',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'dateTimeRoundFormat',
+      run: (index: number) =>
+        dateTimes[index]
+          .round({
+            smallestUnit: 'microsecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        referenceDateTimes[index]
+          .round({
+            smallestUnit: 'microsecond',
+            roundingIncrement: 125,
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'dateFormat',
+      run: (index: number) => dates[index].toString({calendarName: 'critical'}),
+      check: (index: number) =>
+        expectedDates[index].toString({calendarName: 'critical'}),
+    },
+    {
+      name: 'dateTimeFormat',
+      run: (index: number) =>
+        dateTimes[index].toString({
+          calendarName: 'always',
+          smallestUnit: 'second',
+          roundingMode: 'ceil',
+        }),
+      check: (index: number) =>
+        referenceDateTimes[index].toString({
+          calendarName: 'always',
+          smallestUnit: 'second',
+          roundingMode: 'ceil',
+        }),
+    },
+    {
+      name: 'yearMonthFormat',
+      run: (index: number) =>
+        yearMonths[index].toString({calendarName: 'critical'}),
+      check: (index: number) =>
+        expectedYearMonths[index].toString({calendarName: 'critical'}),
+    },
+    {
+      name: 'monthDayFormat',
+      run: (index: number) =>
+        monthDays[index].toString({calendarName: 'always'}),
+      check: (index: number) =>
+        referenceMonthDays[index].toString({calendarName: 'always'}),
+    },
+    {
+      name: 'zonedFormat',
+      run: (index: number) =>
+        zonedValues[index].toString({
+          calendarName: 'critical',
+          timeZoneName: 'critical',
+          smallestUnit: 'second',
+        }),
+      check: (index: number) =>
+        referenceZonedValues[index].toString({
+          calendarName: 'critical',
+          timeZoneName: 'critical',
+          smallestUnit: 'second',
+        }),
+    },
+    {
+      name: 'yearMonthUntil',
+      run: (index: number) =>
+        yearMonths[index]
+          .until(yearMonths[(index + 1) & 7], {largestUnit: 'year'})
+          .toString(),
+      check: (index: number) =>
+        expectedYearMonths[index]
+          .until(expectedYearMonths[(index + 1) & 7], {largestUnit: 'year'})
+          .toString(),
+    },
+    {
+      name: 'yearMonthToDate',
+      run: (index: number) =>
+        yearMonths[index].toPlainDate({day: 31}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].toPlainDate({day: 31}).toString(),
+    },
+    {
+      name: 'monthDayToDate',
+      run: (index: number) =>
+        monthDays[index].toPlainDate({year: 2024 + index}).toString(),
+      check: (index: number) =>
+        referenceMonthDays[index].toPlainDate({year: 2024 + index}).toString(),
+    },
+    {
+      name: 'yearMonthAdd',
+      run: (index: number) =>
+        yearMonths[index].add({years: 1, months: 3}).toString(),
+      check: (index: number) =>
+        expectedYearMonths[index].add({years: 1, months: 3}).toString(),
+    },
+    {
+      name: 'zonedParse',
+      run: (index: number) =>
+        namespace.ZonedDateTime.from(
+          zonedStrings[index]
+        ).epochNanoseconds.toString(),
+      check: (index: number) =>
+        reference.ZonedDateTime.from(
+          zonedStrings[index]
+        ).epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedOffset',
+      run: (index: number) => zonedValues[index].offsetNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].offsetNanoseconds.toString(),
+    },
+    {
+      name: 'zonedAddDay',
+      run: (index: number) =>
+        zonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].add({days: 1}).epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedUntilDay',
+      run: (index: number) =>
+        zonedValues[index]
+          .until(zonedEnds[index], {largestUnit: 'day'})
+          .toString(),
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .until(referenceZonedEnds[index], {largestUnit: 'day'})
+          .toString(),
+    },
+    {
+      name: 'zonedRound',
+      run: (index: number) =>
+        zonedValues[index]
+          .round({
+            smallestUnit: 'hour',
+            roundingIncrement: 1,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .round({
+            smallestUnit: 'hour',
+            roundingIncrement: 1,
+            roundingMode: 'halfEven',
+          })
+          .epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedDayStart',
+      run: (index: number) =>
+        zonedValues[index].startOfDay().epochNanoseconds.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].startOfDay().epochNanoseconds.toString(),
+    },
+    {
+      name: 'zonedHoursInDay',
+      run: (index: number) => zonedValues[index].hoursInDay.toString(),
+      check: (index: number) =>
+        referenceZonedValues[index].hoursInDay.toString(),
+    },
+    {
+      name: 'zonedTransition',
+      iterations: transitionIterations,
+      warmup: transitionWarmup,
+      run: (index: number) =>
+        zonedValues[index]
+          .getTimeZoneTransition('next')
+          ?.epochNanoseconds.toString() ?? 'null',
+      check: (index: number) =>
+        referenceZonedValues[index]
+          .getTimeZoneTransition('next')
+          ?.epochNanoseconds.toString() ?? 'null',
+    },
+    {
+      name: 'durationParse',
+      run: (index: number) =>
+        namespace.Duration.from(durationStrings[index]).nanoseconds.toString(),
+      check: (index: number) =>
+        reference.Duration.from(durationStrings[index]).nanoseconds.toString(),
+    },
+    {
+      name: 'durationFormat',
+      run: (index: number) =>
+        durations[index].toString({
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfEven',
+        }),
+      check: (index: number) =>
+        referenceDurations[index].toString({
+          smallestUnit: 'microsecond',
+          roundingMode: 'halfEven',
+        }),
+    },
+    {
+      name: 'durationAdd',
+      run: (index: number) =>
+        durations[index].add({hours: 25, nanoseconds: 1}).toString(),
+      check: (index: number) =>
+        referenceDurations[index].add({hours: 25, nanoseconds: 1}).toString(),
+    },
+    {
+      name: 'durationRoundRelative',
+      run: (index: number) =>
+        calendarDurations[index]
+          .round({
+            relativeTo: durationAnchors[index],
+            largestUnit: 'month',
+            smallestUnit: 'day',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+      check: (index: number) =>
+        referenceCalendarDurations[index]
+          .round({
+            relativeTo: referenceDurationAnchors[index],
+            largestUnit: 'month',
+            smallestUnit: 'day',
+            roundingMode: 'halfEven',
+          })
+          .toString(),
+    },
+    {
+      name: 'durationTotalRelative',
+      run: (index: number) =>
+        calendarDurations[index]
+          .total({relativeTo: durationAnchors[index], unit: 'hour'})
+          .toString(),
+      check: (index: number) =>
+        referenceCalendarDurations[index]
+          .total({relativeTo: referenceDurationAnchors[index], unit: 'hour'})
+          .toString(),
+    },
+  ]
+  for (const name of longCases)
+    if (!cases.some(test => test.name === name))
+      throw new RangeError('Unknown long benchmark case: ' + name)
+  const selected = process.env.FORMATJS_TEMPORAL_BENCHMARK_FILTER?.split(',')
+  return cases
+    .filter(test => !selected || selected.includes(test.name))
+    .map(test => {
+      const count = longCases.has(test.name)
+        ? longIterations
+        : (test.iterations ?? iterations)
+      const caseIterations = profiling ? Math.max(count, 50000) : count
+      const caseWarmup = longCases.has(test.name)
+        ? longWarmup
+        : (test.warmup ?? warmup)
+      for (let index = 0; index < 8; index++)
+        if (test.run(index) !== test.check(index))
+          throw new Error('Benchmark parity: ' + test.name)
+      // Separate JIT feedback per case; shared mode preserves historical timings.
+      const isolatedLoop =
+        callsiteMode === 'isolated'
+          ? (new Function(
+              'run',
+              `return function temporalCase${callsiteIdentity++}(count) {
+                let result = 0;
+                for (let index = 0; index < count; index++)
+                  result += run(index & 7).length;
+                return result;
+              }`
+            )(test.run) as (count: number) => number)
+          : undefined
+      if (isolatedLoop) checksum += isolatedLoop(caseWarmup)
+      else
+        for (let index = 0; index < caseWarmup; index++)
+          checksum += test.run(index & 7).length
+      const elapsed = []
+      for (let sample = 0; sample < samples; sample++) {
+        const start = performance.now()
+        if (isolatedLoop) checksum += isolatedLoop(caseIterations)
+        else
+          for (let index = 0; index < caseIterations; index++)
+            checksum += test.run(index & 7).length
+        elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
+      }
+      const ordered = elapsed.slice().sort((a, b) => a - b)
+      return {
+        operation: test.name,
+        iterations: caseIterations,
+        warmup: caseWarmup,
+        medianNanoseconds: ordered[Math.floor(samples / 2)],
+        samplesNanoseconds: ordered,
+        samplesNanosecondsInOrder: elapsed,
+      }
+    })
+}
+async function measureProfile(namespace: typeof reference, name: string) {
+  if (selectedProfile && selectedProfile !== name) return []
+  if (process.env.FORMATJS_TEMPORAL_PROFILE !== name) return measure(namespace)
+  const session = new Session()
+  session.connect()
+  await session.post('Profiler.enable')
+  await session.post('Profiler.setSamplingInterval', {interval: 100})
+  await session.post('Profiler.start')
+  profiling = true
+  try {
+    return measure(namespace)
+  } finally {
+    profiling = false
+    const {profile} = await session.post('Profiler.stop')
+    writeFileSync(
+      process.env.FORMATJS_TEMPORAL_PROFILE_OUTPUT ??
+        '/tmp/temporal.cpuprofile',
+      JSON.stringify(profile)
+    )
+    session.disconnect()
+  }
+}
+const typescript = await measureProfile(Temporal, 'typescript')
+const referenceResults = await measureProfile(reference, 'reference')
+const officialReferenceResults = await measureProfile(
+  officialReference as unknown as typeof reference,
+  'officialReference'
+)
+const bundle = (contents: string, output?: string) => {
+  const code = buildSync({
+    stdin: {
+      contents,
+      resolveDir: directory,
+      sourcefile: 'measurement-entry.js',
+      loader: 'js',
+    },
+    bundle: true,
+    write: false,
+    format: 'esm',
+    target: 'es2022',
+    minify: true,
+    legalComments: 'none',
+  }).outputFiles[0].contents
+  if (output) writeFileSync(output, code)
+  return {
+    minified: code.byteLength,
+    gzip: gzipSync(code, {level: 9}).length,
+    sha256: createHash('sha256').update(code).digest('hex'),
+  }
+}
+const modules = ['index.js', 'native.js'].map(file => {
+  const source = readFileSync(join(directory, file), 'utf8')
+  const code = transformSync(source, {
+    target: 'es2022',
+    minify: true,
+    legalComments: 'none',
+  }).code
+  return {
+    file,
+    raw: Buffer.byteLength(source),
+    minified: Buffer.byteLength(code),
+    gzip: gzipSync(code, {level: 9}).length,
+  }
+})
+console.log(
+  JSON.stringify(
+    {
+      node: process.version,
+      v8: process.versions.v8,
+      icu: process.versions.icu,
+      platform: process.platform + ' ' + process.arch,
+      cpu: cpus()[0]?.model ?? 'unknown',
+      scope:
+        'Actual published default TypeScript Temporal namespace versus temporal-polyfill 1.0.7 basic ISO/Gregorian implementation and @js-temporal/polyfill 0.5.1. Same 48 public workloads retained from previous facade benchmark. TS uses compact ICU4X lunisolar arithmetic/data, host Intl Umm al-Qura and named timezones. ISO date and zoned cases; no non-ISO throughput claim. Hot operations exclude startup. Selected profiles allow independent fresh processes. No native backend installed.',
+      method: `Eight varying inputs, output parity checked before timing, ${warmup} warmup, ${samples} samples x ${iterations} calls; transition and per-case overrides reported per row. ${selectedProfile ? 'Selected profile: ' + selectedProfile : 'TS, temporal-polyfill, then official reference in one process'}. Prefer isolated profiles for comparisons. Checksum consumes outputs. Size uses esbuild es2022 minification and gzip level9; export-all TS consumer and reference namespace consumers. Profiling runs are separate from production timings.`,
+      references: {
+        'temporal-polyfill': '1.0.7',
+        '@js-temporal/polyfill': '0.5.1',
+      },
+      selectedProfile: selectedProfile ?? 'all',
+      iterations,
+      samples,
+      callsiteMode,
+      warmup,
+      longCases: [...longCases],
+      longIterations,
+      longWarmup,
+      checksum,
+      typescript,
+      reference: referenceResults,
+      officialReference: officialReferenceResults,
+      size: {
+        modules,
+        consumer: {
+          typescript: bundle(
+            "export * from './index.js';",
+            process.env.FORMATJS_TEMPORAL_TS_BUNDLE_OUTPUT
+          ),
+          reference: bundle(
+            "export {Temporal} from 'temporal-polyfill/implementation'"
+          ),
+          officialReference: bundle(
+            "export {Temporal} from '@js-temporal/polyfill'"
+          ),
+        },
+        separateModules: {
+          typescriptGzip: modules.reduce((sum, value) => sum + value.gzip, 0),
+        },
+      },
+    },
+    null,
+    2
+  )
+)

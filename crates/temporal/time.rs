@@ -99,11 +99,13 @@ impl PlainTime {
         self.0
     }
     pub fn fields(self) -> (u8, u8, u8, u32) {
+        // PlainTime is always within one day.
+        let value = self.0 as u64;
         (
-            (self.0 / 3_600_000_000_000) as u8,
-            (self.0 / 60_000_000_000 % 60) as u8,
-            (self.0 / 1_000_000_000 % 60) as u8,
-            (self.0 % 1_000_000_000) as u32,
+            (value / 3_600_000_000_000) as u8,
+            (value / 60_000_000_000 % 60) as u8,
+            (value / 1_000_000_000 % 60) as u8,
+            (value % 1_000_000_000) as u32,
         )
     }
     pub fn checked_add(self, duration: Duration) -> Result<Self, Error> {
@@ -217,28 +219,7 @@ impl fmt::Display for PlainTime {
 }
 impl fmt::Display for FormattedTime {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (hour, minute, second, fraction) = self.time.fields();
-        write!(f, "{hour:02}:{minute:02}")?;
-        if self.precision != Precision::Minute {
-            write!(f, ":{second:02}")?;
-            let (mut value, mut digits) = (fraction, 9usize);
-            match self.precision {
-                Precision::Auto => {
-                    while digits > 0 && value % 10 == 0 {
-                        value /= 10;
-                        digits -= 1;
-                    }
-                }
-                Precision::Digits(count) => {
-                    digits = usize::from(count);
-                    value /= 10u32.pow(u32::from(9 - count));
-                }
-                _ => unreachable!(),
-            }
-            if digits > 0 {
-                write!(f, ".{value:0digits$}")?;
-            }
-        }
-        Ok(())
+        let output = crate::format::IsoString::time(self.time.fields(), self.precision);
+        f.write_str(output.as_str()?)
     }
 }

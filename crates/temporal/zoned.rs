@@ -44,6 +44,11 @@ pub enum TransitionDirection {
 pub trait TimeZone {
     fn offset_nanoseconds(&self, instant: Instant) -> i128;
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128));
+    /// Include candidate offsets and both sides of any containing gap/fold.
+    /// Extra offsets are allowed; the default scans the full history.
+    fn visit_offsets_at(&self, _local_nanoseconds: i128, visitor: &mut dyn FnMut(i128)) {
+        self.visit_offsets(visitor);
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
@@ -275,8 +280,15 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
     zone: &Z,
     visitor: &mut dyn FnMut(Instant),
 ) -> Result<(), Error> {
-    let local = fields.to_epoch_nanoseconds()?;
-    zone.visit_offsets(&mut |offset| {
+    visit_possible_nanoseconds(fields.to_epoch_nanoseconds()?, zone, visitor);
+    Ok(())
+}
+fn visit_possible_nanoseconds<Z: TimeZone>(
+    local: i128,
+    zone: &Z,
+    visitor: &mut dyn FnMut(Instant),
+) {
+    zone.visit_offsets_at(local, &mut |offset| {
         if offset <= -NANOSECONDS_PER_DAY || offset >= NANOSECONDS_PER_DAY {
             return;
         }
@@ -287,13 +299,12 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
             }
         }
     });
-    Ok(())
 }
 
 pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, Error> {
     let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
-    let fields = IsoDateTime::from_epoch_nanoseconds(midnight)?;
-    let candidate = resolve_local(fields, zone, Disambiguation::Compatible)?;
+    crate::iso::check_local(midnight)?;
+    let candidate = resolve_local_nanoseconds(midnight, zone, Disambiguation::Compatible)?;
     if candidate.epoch_nanoseconds() + zone.offset_nanoseconds(candidate) == midnight {
         return Ok(candidate);
     }
@@ -323,13 +334,20 @@ pub(crate) fn resolve_local<Z: TimeZone>(
     zone: &Z,
     disambiguation: Disambiguation,
 ) -> Result<Instant, Error> {
+    resolve_local_nanoseconds(fields.to_epoch_nanoseconds()?, zone, disambiguation)
+}
+pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
+    local: i128,
+    zone: &Z,
+    disambiguation: Disambiguation,
+) -> Result<Instant, Error> {
     let mut first: Option<i128> = None;
     let mut last: Option<i128> = None;
-    visit_possible_instants(fields, zone, &mut |instant| {
+    visit_possible_nanoseconds(local, zone, &mut |instant| {
         let candidate = instant.epoch_nanoseconds();
         first = Some(first.map_or(candidate, |old| old.min(candidate)));
         last = Some(last.map_or(candidate, |old| old.max(candidate)));
-    })?;
+    });
     if let (Some(first), Some(last)) = (first, last) {
         if first != last && disambiguation == Disambiguation::Reject {
             return Err(Error::InvalidDateTime);
@@ -343,10 +361,9 @@ pub(crate) fn resolve_local<Z: TimeZone>(
     if disambiguation == Disambiguation::Reject {
         return Err(Error::InvalidDateTime);
     }
-    let local = fields.to_epoch_nanoseconds()?;
     let mut minimum = i128::MAX;
     let mut maximum = i128::MIN;
-    zone.visit_offsets(&mut |offset| {
+    zone.visit_offsets_at(local, &mut |offset| {
         minimum = minimum.min(offset);
         maximum = maximum.max(offset);
     });

@@ -11,6 +11,7 @@ import {
 } from '#packages/temporal/relative-duration.js'
 import {
   durationFieldNames,
+  durationFieldReadOrder,
   durationNanoseconds,
   durationTotalNumber,
   durationSign,
@@ -68,7 +69,39 @@ export function toDurationFields(value: unknown): DurationFields {
   const existing = getSlot(value as object)
   if (existing) return {...existing}
   if (typeof value === 'string') return parseDurationString(value)
-  return validateDuration({...zeroDuration(), ...partialDuration(value)})
+  return toNativeDurationFields(value)
+}
+/** @internal Validate before options getters; no-options operations defer to Rust. */
+export function toNativeDurationFields(
+  value: unknown,
+  validate = true
+): DurationFields {
+  const existing = getSlot(value as object)
+  if (existing) return existing
+  if (typeof value === 'string') return parseDurationString(value)
+  if (
+    value === null ||
+    (typeof value !== 'object' && typeof value !== 'function')
+  )
+    throw new TypeError('Duration fields must be an object')
+  const fields = zeroDuration()
+  let found = false
+  for (let index = 0; index < durationFieldReadOrder.length; index++) {
+    const field = durationFieldReadOrder[index]
+    const number = (value as Record<string, unknown>)[field]
+    if (number !== undefined) {
+      fields[field] = integralDurationNumber(number)
+      found = true
+    }
+  }
+  if (!found) throw new TypeError('Duration fields required')
+  return validate ? validateDuration(fields) : fields
+}
+// Fields must already be normalized and validated.
+export function createNativeDuration(fields: DurationFields): DurationObject {
+  const value = Object.create(DurationValue.prototype) as DurationObject
+  setSlot(value, fields)
+  return value
 }
 export function createDuration(fields: DurationFields): DurationObject {
   const value = Object.create(DurationValue.prototype) as DurationObject
@@ -80,6 +113,12 @@ function addDurations(
   other: unknown,
   sign: number
 ): DurationObject {
+  if (import.meta.formatjsTemporalNativeData === true) {
+    const two = toNativeDurationFields(other, false)
+    return createNativeDuration(
+      nativeTemporal()!.addDuration(one, two, sign < 0)
+    )
+  }
   const two = toDurationFields(other)
   const native = nativeTemporal()
   if (native) return createDuration(native.addDuration(one, two, sign < 0))
@@ -110,7 +149,8 @@ class DurationValue {
     if (durationFieldNames.every(field => left[field] === right[field]))
       return 0
     const native = nativeTemporal()
-    if (native) return native.compareDuration(left, right, relative)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.compareDuration(left, right, relative)
     if (relative) {
       const sameDate =
         left.years === right.years &&
@@ -139,7 +179,13 @@ class DurationValue {
     return a < b ? -1 : a > b ? 1 : 0
   }
   static from(value: unknown): DurationObject {
-    return createDuration(toDurationFields(value))
+    if (import.meta.formatjsTemporalNativeData === true) {
+      const fields = getSlot(value as object)
+      if (fields) return createNativeDuration(fields)
+      if (typeof value === 'string')
+        return createNativeDuration(parseDurationString(value))
+    }
+    return createNativeDuration(toDurationFields(value))
   }
   get sign(): number {
     return durationSign(read(this))
@@ -153,6 +199,10 @@ class DurationValue {
   }
   negated(): DurationObject {
     const fields = read(this)
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeDuration(
+        nativeTemporal()!.transformDuration(fields, false)
+      )
     const native = nativeTemporal()
     if (native) return createDuration(native.transformDuration(fields, false))
     const result = zeroDuration()
@@ -164,6 +214,10 @@ class DurationValue {
   }
   abs(): DurationObject {
     const fields = read(this)
+    if (import.meta.formatjsTemporalNativeData === true)
+      return createNativeDuration(
+        nativeTemporal()!.transformDuration(fields, true)
+      )
     const native = nativeTemporal()
     if (native) return createDuration(native.transformDuration(fields, true))
     const result = zeroDuration()
@@ -228,9 +282,9 @@ class DurationValue {
         relativeRound(fields, relative, largest, smallest, increment, mode)
       )
     const native = nativeTemporal()
-    if (native)
+    if (import.meta.formatjsTemporalNativeData === true || native)
       return createDuration(
-        native.roundDuration(fields, largest, smallest, increment, mode)
+        native!.roundDuration(fields, largest, smallest, increment, mode)
       )
     if (fields.years || fields.months || fields.weeks || largeIndex < 3)
       throw new RangeError('Calendar rounding requires relativeTo')
@@ -261,7 +315,8 @@ class DurationValue {
     if (unit === undefined) throw new RangeError('unit is required')
     if (relative) return relativeTotal(fields, relative, unit)
     const native = nativeTemporal()
-    if (native) return native.totalDuration(fields, unit)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.totalDuration(fields, unit)
     const factors: Record<string, bigint> = {
       day: 86_400_000_000_000n,
       hour: 3_600_000_000_000n,
@@ -302,7 +357,8 @@ class DurationValue {
               ? 9
               : digits
     const native = nativeTemporal()
-    if (native) return native.formatDuration(fields, precision, mode)
+    if (import.meta.formatjsTemporalNativeData === true || native)
+      return native!.formatDuration(fields, precision, mode)
     if (precision === 'auto' || precision === 9)
       return formatDuration(fields, precision)
     const rounded = roundDuration(

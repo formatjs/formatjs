@@ -11,7 +11,8 @@ export function formatDuration(
   digits: number | 'auto' = 'auto'
 ): string {
   const native = nativeTemporal()
-  if (native) return native.formatDuration(fields, digits, 'trunc')
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.formatDuration(fields, digits, 'trunc')
   const sign = durationSign(fields)
   const absolute = zeroDuration()
   for (let index = 0; index < durationFieldNames.length; index++) {

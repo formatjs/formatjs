@@ -11,6 +11,18 @@ export const durationFieldNames = [
   'microseconds',
   'nanoseconds',
 ] as const
+export const durationFieldReadOrder = [
+  'days',
+  'hours',
+  'microseconds',
+  'milliseconds',
+  'minutes',
+  'months',
+  'nanoseconds',
+  'seconds',
+  'weeks',
+  'years',
+] as const
 export type DurationField = (typeof durationFieldNames)[number]
 export type DurationFields = Record<DurationField, number>
 export const maxDurationNanoseconds = 9_007_199_254_740_992_000_000_000n
@@ -67,11 +79,6 @@ export function validateDuration(fields: DurationFields): DurationFields {
       throw new RangeError('Invalid duration fields')
     fields[key] = value || 0
   }
-  const native = nativeTemporal()
-  if (native) {
-    native.validateDuration(fields)
-    return fields
-  }
   if (
     Math.abs(fields.years) >= 4294967296 ||
     Math.abs(fields.months) >= 4294967296 ||
@@ -97,9 +104,8 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
     throw new TypeError('Duration fields must be an object')
   const result: Partial<DurationFields> = Object.create(null)
   let found = false
-  const sorted = durationFieldNames.slice().sort()
-  for (let index = 0; index < sorted.length; index++) {
-    const field = sorted[index]
+  for (let index = 0; index < durationFieldReadOrder.length; index++) {
+    const field = durationFieldReadOrder[index]
     const number = (value as Record<string, unknown>)[field]
     if (number !== undefined) {
       result[field] = integralDurationNumber(number)
@@ -111,7 +117,8 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
 }
 export function parseDurationString(value: string): DurationFields {
   const native = nativeTemporal()
-  if (native) return native.parseDuration(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.parseDuration(value)
   const match =
     /^([+-])?P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)([.,]\d{1,9})?H)?(?:(\d+)([.,]\d{1,9})?M)?(?:(\d+)([.,]\d{1,9})?S)?)?$/i.exec(
       value

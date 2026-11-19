@@ -1,15 +1,30 @@
+import type {
+  NativeDateSnapshot,
+  NativeTimeResult,
+} from '#packages/temporal/native.js'
 import {zonedKernel} from '#packages/temporal/zones.js'
+import type {CalendarDate} from '#packages/temporal/calendar.js'
+export const isoDateFields: unique symbol = Symbol()
 export interface DateSlot {
+  [isoDateFields]?: Readonly<CalendarDate>
+  readonly properties?: NativeDateSnapshot
   readonly epochDay: number
   readonly calendar: string
 }
 export interface DateTimeSlot {
+  readonly epochDay?: number
+  readonly properties?: NativeDateSnapshot
   readonly epochNanoseconds: bigint
   readonly calendar: string
 }
 const dates = new WeakMap<object, DateSlot>()
 const dateTimes = new WeakMap<object, DateTimeSlot>()
-const times = new WeakMap<object, bigint>()
+const times = new WeakMap<object, bigint | NativeTimeResult>()
+const ToBigInt = BigInt
+const nativeTimeLookup =
+  import.meta.formatjsTemporalNativeData === true
+    ? times.get.bind(times)
+    : undefined!
 export const getDateSlot: (value: object) => DateSlot | undefined =
   dates.get.bind(dates)
 export const setDateSlot: (value: object, slot: DateSlot) => unknown =
@@ -19,7 +34,28 @@ export const getDateTimeSlot: (value: object) => DateTimeSlot | undefined =
 export const setDateTimeSlot: (value: object, slot: DateTimeSlot) => unknown =
   dateTimes.set.bind(dateTimes)
 export const getTimeSlot: (value: object) => bigint | undefined =
-  times.get.bind(times)
+  import.meta.formatjsTemporalNativeData === true
+    ? value => {
+        const slot = nativeTimeLookup(value)
+        if (typeof slot === 'bigint' || slot === undefined) return slot
+        return (
+          slot.bigintNanoseconds ??
+          (slot.bigintNanoseconds = ToBigInt(slot.nanoseconds))
+        )
+      }
+    : (times.get.bind(times) as (value: object) => bigint | undefined)
+export const getNativeTimeSlot: (
+  value: object
+) => NativeTimeResult | undefined = nativeTimeLookup as (
+  value: object
+) => NativeTimeResult | undefined
+export const setNativeTimeSlot: (
+  value: object,
+  slot: NativeTimeResult
+) => unknown =
+  import.meta.formatjsTemporalNativeData === true
+    ? times.set.bind(times)
+    : undefined!
 export const setTimeSlot: (value: object, slot: bigint) => unknown =
   times.set.bind(times)
 

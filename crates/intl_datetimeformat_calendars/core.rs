@@ -596,17 +596,45 @@ pub fn iso_day(year: i32, month: u8, day: u8) -> i64 {
         - 1
         - 719468
 }
+const ISO_YEAR_BLOCK_COUNT: usize = (146097 + 127) / 128;
+static ISO_YEAR_BLOCKS: [u32; ISO_YEAR_BLOCK_COUNT] = iso_year_blocks();
+
+const fn iso_year_blocks() -> [u32; ISO_YEAR_BLOCK_COUNT] {
+    let mut blocks = [0; ISO_YEAR_BLOCK_COUNT];
+    let mut index = 0;
+    while index < ISO_YEAR_BLOCK_COUNT {
+        let doe = index as u32 * 128;
+        let year = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+        let ordinal = doe - (365 * year + year / 4 - year / 100);
+        let leap = if year % 4 == 3 && (year % 100 != 99 || year == 399) {
+            1
+        } else {
+            0
+        };
+        // March-based year, ordinal and year length at each 128-day block.
+        blocks[index] = year | (ordinal << 9) | (leap << 18);
+        index += 1;
+    }
+    blocks
+}
+
 /// Raw inverse ISO conversion for validated epoch days within ±110000000.
+#[inline]
 pub fn iso_fields(day: i64) -> (i32, u8, u8) {
     let d = day + 719468;
     let era = d.div_euclid(146097);
-    let doe = d.rem_euclid(146097);
-    let y = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
-    let doy = doe - (365 * y + y / 4 - y / 100);
+    // Day within the era is in 0..146097.
+    let doe = d.rem_euclid(146097) as u32;
+    let block = ISO_YEAR_BLOCKS[(doe >> 7) as usize];
+    let ordinal = ((block >> 9) & 511) + (doe & 127);
+    let length = 365 + (block >> 18);
+    let next_year = u32::from(ordinal >= length);
+    let y = (block & 511) + next_year;
+    let doy = ordinal - length * next_year;
     let m = (5 * doy + 2) / 153;
-    let month = m + if m < 10 { 3 } else { -9 };
+    let month = if m < 10 { m + 3 } else { m - 9 };
     (
-        (y + era * 400 + i64::from(month <= 2)) as i32,
+        (i64::from(y) + era * 400 + i64::from(month <= 2)) as i32,
         month as u8,
         (doy - (153 * m + 2) / 5 + 1) as u8,
     )

@@ -1,3 +1,4 @@
+import type {NativeDateSnapshot} from '#packages/temporal/native.js'
 import {
   isoToEpochNanoseconds,
   type ISODateTime,
@@ -72,7 +73,8 @@ function validateAnnotations(value: string): {
 
 export function parseInstantString(value: string): bigint {
   const native = nativeTemporal()
-  if (native) return native.parseInstant(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.parseInstant(value)
   const match =
     /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})[Tt ](\d{2})(?:(:?)(\d{2})(?:\6(\d{2})(?:[.,](\d{1,9}))?)?)?([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)([\s\S]*)$/.exec(
       value
@@ -142,15 +144,20 @@ export function parseISODateParts(value: string): ParsedDateFields {
 export function parsePlainDateTimeString(
   value: string,
   dateOnly = false
-): {epochNanoseconds: bigint; calendar: string} {
+): {
+  epochNanoseconds: bigint
+  calendar: string
+  properties?: NativeDateSnapshot
+} {
   const native = nativeTemporal()
-  if (native) {
-    if (!dateOnly) return native.parsePlainDateTime(value)
-    const result = native.parsePlainDate(value)
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    if (!dateOnly) return native!.parsePlainDateTime(value)
+    const result = native!.parsePlainDate(value)
     return {
       epochNanoseconds:
         BigInt(result.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
       calendar: result.calendar,
+      properties: result.properties,
     }
   }
   const fields = parseISODateParts(value)
@@ -219,7 +226,8 @@ export function parseCalendarString(value: string): string {
 
 export function parsePlainTimeString(value: string): bigint {
   const native = nativeTemporal()
-  if (native) return native.parsePlainTime(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.parsePlainTime(value)
   const index = value.indexOf('[')
   let body = index < 0 ? value : value.slice(0, index)
   validateAnnotations(index < 0 ? '' : value.slice(index))
@@ -330,9 +338,12 @@ export function parseZonedDateTimeString(value: string): {
   fields: ParsedDateFields
   timeZone: string
   offset: string | undefined
+  localNanoseconds?: bigint
+  validatedTimeZone?: string
 } {
   const native = nativeTemporal()
-  if (native) return native.parseZonedFields(value)
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.parseZonedFields(value)
   const index = value.indexOf('[')
   if (index < 0) throw new RangeError('Timezone annotation required')
   const body = value.slice(0, index),

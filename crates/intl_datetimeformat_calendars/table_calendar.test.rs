@@ -6,6 +6,40 @@ use formatjs_intl_datetimeformat_calendars::table_calendar::{
 };
 use serde::Deserialize;
 
+#[test]
+fn lunisolar_checkpoint_and_final_year_boundaries() {
+    let years = "AAAB".repeat(32) + "AA";
+    let dictionary = [0, (6 << 13) | (1 << 12)];
+    let calendar = TableCalendar::lunisolar(
+        TableCalendarId::Chinese,
+        LunisolarData {
+            first_year: 2000,
+            end_day: 24580,
+            checkpoints: &[1000, 24232],
+            month_checkpoints: &[0, 800],
+            dictionary: &dictionary,
+            years: &years,
+        },
+    )
+    .unwrap();
+    for (epoch, year, month, day, month_code) in [
+        (1000, 2000, 1, 1, "M01"),
+        (1347, 2000, 12, 29, "M12"),
+        (1348, 2001, 1, 1, "M01"),
+        (1522, 2001, 7, 1, "M06L"),
+        (24231, 2063, 13, 30, "M12"),
+        (24232, 2064, 1, 1, "M01"),
+        (24233, 2064, 1, 2, "M01"),
+        (24579, 2064, 12, 29, "M12"),
+    ] {
+        let value = calendar.from_epoch_day(epoch).unwrap();
+        assert_eq!((value.year, value.month, value.day), (year, month, day));
+        assert_eq!(value.month_code, code(month_code));
+    }
+    assert!(calendar.from_epoch_day(999).is_err());
+    assert!(calendar.from_epoch_day(24580).is_err());
+}
+
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct Lunar {

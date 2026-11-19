@@ -643,17 +643,12 @@ Rolldown temporary tsconfigs use unique directories, cleaned after output. Sandb
 processes can share PIDs, so PID-only files in shared /tmp collide across parallel
 actions and can silently leave workspace imports unresolved in emitted bundles.
 
-## Temporal WASM dependencies
+## Temporal native builds
 
-The workspace `crate.from_cargo` platform list includes `wasm32-unknown-unknown`
-so the Temporal std/serde JSON backend can use the same pinned dependency graph.
-`//crates/temporal:wasm_backend` uses `with_cfg(copy_file)` to select the
-`rules_rs` wasm32 platform and `opt` mode for its public `rust_shared_library`
-dependency, then stages the named artifact with a hermetic copy action.
-`//packages/temporal:wasm_asset` copies it into the npm package. The raw Temporal
-ABI needs no wasm-bindgen toolchain or generated JavaScript glue. Use cquery for its
-actual transitioned artifact path. The earlier no_std primitive WASM target stays
-separate and cannot represent full facade/data size.
+Temporal ships pure TypeScript, native Rust and Hermes bindings. Temporal WASM
+backend and npm asset targets were removed; older benchmark records are historical.
+Use `bazel run -c opt //benchmarks/temporal:native_ts_benchmark` for native Rust/TS
+comparisons. Native timings exclude Hermes binding costs.
 
 ### Constants for individual package entries
 
@@ -661,4 +656,5 @@ separate and cannot represent full facade/data size.
 constants to that entry's Rolldown bundle. `rolldown_bundle(define=...)` uses the
 same path. Values are JavaScript expressions. The runner supplies Rolldown's
 `transform.define` option; a top-level `define` is ignored by the pinned version.
-Temporal uses this to exclude duplicate TS data from its native-data WASM facade.
+Temporal uses these constants to select host Intl for default entries and owned
+data for standalone.

@@ -243,16 +243,9 @@ impl<C: CalendarProvider> fmt::Display for FormattedDate<C> {
         write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
-pub(crate) fn write_date(
-    f: &mut fmt::Formatter<'_>,
-    (year, month, day): (i32, u8, u8),
-) -> fmt::Result {
-    if (0..=9999).contains(&year) {
-        write!(f, "{year:04}")?;
-    } else {
-        write!(f, "{year:+07}")?;
-    }
-    write!(f, "-{month:02}-{day:02}")
+pub(crate) fn write_date(f: &mut fmt::Formatter<'_>, fields: (i32, u8, u8)) -> fmt::Result {
+    let output = crate::format::IsoString::date(fields);
+    f.write_str(output.as_str()?)
 }
 pub(crate) fn write_calendar(
     f: &mut fmt::Formatter<'_>,
@@ -280,7 +273,7 @@ impl PlainDateTime {
         Self::from_epoch_nanoseconds(fields.to_epoch_nanoseconds()?)
     }
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
-        IsoDateTime::from_epoch_nanoseconds(value)?;
+        crate::iso::check_local(value)?;
         Ok(Self(value, Calendar::Iso8601))
     }
 }
@@ -320,7 +313,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
         date.to_date_time(time)
     }
     pub fn from_epoch_nanoseconds_in(value: i128, calendar: C) -> Result<Self, Error> {
-        IsoDateTime::from_epoch_nanoseconds(value)?;
+        crate::iso::check_local(value)?;
         calendar
             .date(value.div_euclid(NANOSECONDS_PER_DAY) as i64)
             .map_err(error)?;
@@ -481,15 +474,8 @@ impl<C: CalendarProvider> FormattedDateTime<C> {
 }
 impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write_date(f, self.value.date().fields())?;
-        write!(
-            f,
-            "T{}",
-            self.value
-                .time()
-                .format(self.precision, RoundingMode::Trunc)
-                .map_err(|_| fmt::Error)?
-        )?;
+        let output = crate::format::IsoString::date_time(self.value.fields(), self.precision);
+        f.write_str(output.as_str()?)?;
         write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }

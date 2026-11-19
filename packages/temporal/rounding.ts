@@ -130,6 +130,8 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   const increment = roundingIncrement(resolved.roundingIncrement)
   const mode = roundingMode(resolved.roundingMode, 'halfExpand')
   const unit = timeUnit(unitOption(resolved.smallestUnit))
+  if (import.meta.formatjsTemporalNativeData === true)
+    return nativeTemporal()!.roundInstantUnit(value, unit, increment, mode)
   const maximum = 86_400_000_000_000n / timeUnitNanoseconds[unit]
   if (BigInt(increment) > maximum || maximum % BigInt(increment) !== 0n)
     throw new RangeError('Rounding increment must divide a day')

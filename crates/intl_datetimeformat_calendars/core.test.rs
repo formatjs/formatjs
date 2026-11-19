@@ -290,3 +290,19 @@ fn differences_balance_with_one_sign_and_exact_endpoints() {
         }
     }
 }
+
+#[test]
+fn iso_fields_round_trip_across_complete_eras() {
+    use formatjs_intl_datetimeformat_calendars::calendar::{iso_day, iso_fields};
+    for day in (-865_565_i64..=-573_372).chain([-100_000_001, 100_000_000]) {
+        let (year, month, date) = iso_fields(day);
+        assert!((1..=12).contains(&month));
+        let length = match month {
+            2 => 28 + u8::from(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)),
+            4 | 6 | 9 | 11 => 30,
+            _ => 31,
+        };
+        assert!(date >= 1 && date <= length);
+        assert_eq!(iso_day(year, month, date), day, "{year}-{month}-{date}");
+    }
+}

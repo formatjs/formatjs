@@ -1,7 +1,12 @@
 {
   "test262Commit": "2e58f87d8350ad51224617a041c6e041d52f8444",
+  "deliveryScope": {
+    "active": ["pure TypeScript", "native Rust", "native Hermes"],
+    "retired": ["WASM"],
+    "records": "Historical verification; current checks and open work are in knowledge-base/015a-temporal-completion-audit.md."
+  },
   "nativeFallback": false,
-  "note": "Whole native Temporal namespace replaced. Historical per-class diagnostics remain below; fullNamespaceAudit records the current post-fix full namespace/Intl results and exact provider scopes. No complete conformance claim.",
+  "note": "Historical verification records. WASM profiles below are retired. fullNamespaceAudit records its original provider scopes; no complete conformance claim. See deliveryScope for current supported backends.",
   "selected": {
     "executions": 346,
     "passes": 346,

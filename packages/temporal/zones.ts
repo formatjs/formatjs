@@ -12,7 +12,9 @@ import {
 } from '#packages/temporal/instant-string.js'
 import {
   createTimeZone,
+  epochNanosecondsToISO,
   isoToEpochNanoseconds,
+  type ISODateTime,
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
 
@@ -58,30 +60,44 @@ function withNativeZone(
   identifier: string,
   fallback: () => TimeZoneKernel
 ): TimeZoneKernel {
+  let resolved: TimeZoneKernel | undefined
+  const fallbackKernel = (): TimeZoneKernel => (resolved ??= fallback())
+  const possibleInstants = (fields: ISODateTime): bigint[] => {
+    const native = nativeTemporal()
+    return import.meta.formatjsTemporalNativeData === true || native
+      ? native!.timeZonePossibleInstants(identifier, fields)
+      : fallbackKernel().possibleInstants(fields)
+  }
   return {
     offsetNanoseconds: value => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneOffset(identifier, value)
-        : fallback().offsetNanoseconds(value)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneOffset(identifier, value)
+        : fallbackKernel().offsetNanoseconds(value)
     },
-    possibleInstants: fields => {
-      const native = nativeTemporal()
-      return native
-        ? native.timeZonePossibleInstants(identifier, fields)
-        : fallback().possibleInstants(fields)
+    possibleInstants,
+    possibleInstantsFromEpochNanoseconds: local => {
+      if (import.meta.formatjsTemporalNativeData === true || nativeTemporal())
+        return possibleInstants(epochNanosecondsToISO(local))
+      const zone = fallbackKernel()
+      if (nativeTemporal())
+        return possibleInstants(epochNanosecondsToISO(local))
+      return (
+        zone.possibleInstantsFromEpochNanoseconds?.(local) ??
+        zone.possibleInstants(epochNanosecondsToISO(local))
+      )
     },
     resolve: (fields, disambiguation = 'compatible') => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneResolve(identifier, fields, disambiguation)
-        : fallback().resolve(fields, disambiguation)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneResolve(identifier, fields, disambiguation)
+        : fallbackKernel().resolve(fields, disambiguation)
     },
     transition: (value, direction) => {
       const native = nativeTemporal()
-      return native
-        ? native.timeZoneTransition(identifier, value, direction)
-        : fallback().transition(value, direction)
+      return import.meta.formatjsTemporalNativeData === true || native
+        ? native!.timeZoneTransition(identifier, value, direction)
+        : fallbackKernel().transition(value, direction)
     },
   }
 }
@@ -121,7 +137,8 @@ export function timeZoneIdentifier(value: unknown): string {
     throw new TypeError('Timezone must be a string')
   const name = parseTimeZoneString(value)
   const native = nativeTemporal()
-  if (native) return native.timeZoneIdentity(name).identifier
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.timeZoneIdentity(name).identifier
   if (/^[+-]/.test(name)) {
     const offset = parseOffsetNanoseconds(name, true)
     const minutes = Number((offset < 0n ? -offset : offset) / 60_000_000_000n)
@@ -165,6 +182,13 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       throw new RangeError('Instant out of range')
     return value
   }
+  const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
+    const value = local - offset
+    return value < -8_640_000_000_000_000_000_000n ||
+      value > 8_640_000_000_000_000_000_000n
+      ? []
+      : [value]
+  }
   const result: TimeZoneKernel = {
     transition: instant => {
       check(instant)
@@ -174,13 +198,9 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       check(instant)
       return offset
     },
-    possibleInstants: fields => {
-      const value = isoToEpochNanoseconds(fields) - offset
-      return value < -8_640_000_000_000_000_000_000n ||
-        value > 8_640_000_000_000_000_000_000n
-        ? []
-        : [value]
-    },
+    possibleInstants: fields =>
+      possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields)),
+    possibleInstantsFromEpochNanoseconds,
     resolve: fields => check(isoToEpochNanoseconds(fields) - offset),
   }
   const zone = withNativeZone(key, () => result)
@@ -190,7 +210,8 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
 
 export function primaryTimeZoneIdentifier(id: string): string {
   const native = nativeTemporal()
-  if (native) return native.timeZoneIdentity(id).primary
+  if (import.meta.formatjsTemporalNativeData === true || native)
+    return native!.timeZoneIdentity(id).primary
   const primary = fallbackTimeZonePrimary()
   return primary[id as keyof typeof primary] ?? id
 }

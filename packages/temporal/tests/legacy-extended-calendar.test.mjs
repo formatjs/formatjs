@@ -6,23 +6,8 @@ import {runfiles} from '@bazel/runfiles'
 
 const Native = Intl.DateTimeFormat
 const directory = runfiles.resolve(process.argv[2])
-let {Temporal} = await import(pathToFileURL(join(directory, 'index.js')))
-if (process.env.FORMATJS_TEMPORAL_EXTENDED_WASM) {
-  const instance = new WebAssembly.Instance(
-    new WebAssembly.Module(
-      readFileSync(join(directory, 'temporal-backend.wasm'))
-    ),
-    {}
-  )
-  if (process.env.FORMATJS_TEMPORAL_EXTENDED_WASM === 'native')
-    Temporal = (
-      await import(pathToFileURL(join(directory, 'wasm-native.js')))
-    ).configureTemporalWasm(instance)
-  else
-    (
-      await import(pathToFileURL(join(directory, 'wasm.js')))
-    ).configureWasmBackend(instance)
-}
+const {Temporal} = await import(pathToFileURL(join(directory, 'index.js')))
+
 const calendars = [
   'buddhist',
   'japanese',
