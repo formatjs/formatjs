@@ -8,17 +8,34 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Current TS formatter audit
 
-Current TS candidate skips repeated ISO regulation, getter and formatting work.
-All 71 Rust/Node/Test262/ICU/Hermes gates pass with no new exclusions. Consumer
-is 41,604 gzip bytes (+486 versus regression baseline). Six original full-48
-controls pass 47/48 rows at the 3% median/mean screen. DateTime parsing flags
-median +3.3% while mean improves 0.25%; that flag remains open. Unchanged parser
-algorithms narrow the investigation to layout/JIT/measurement effects; longer
-causal-prefix diagnostics are prepared. Fresh reference/native comparisons run
-independently. Import plus first operation totals 21.8 ms TS, 39.6 ms basic and
-29.4 ms official, excluding process launch. TS first operation alone is slower
-than official. All samples, raw profiles and emitted modules remain in
-[day-start evidence](../benchmarks/temporal/day-start-experiments.json).
+Matched workload target reached: native Rust wins all 37 cases in six fresh
+runs, preserving the original 25 plus 7/3/2 named-zone groups. TS wins all 48
+medians and means against `@js-temporal/polyfill` 0.5.1. Against `temporal-polyfill`
+1.0.7 basic, original full-48 results win 47 medians and all 48 means;
+`dateFromFields` retains a 1.90% slower median and 5.35% faster mean. Six longer
+controls retain its original predecessor order and shared callsite: TS wins by
+15.2% median and 14.7% mean. This supplements the original slower point.
+
+Six original full-48 before/after controls pass 47 rows at the 3% median/mean
+regression screen. DateTime parsing retains +3.31% median and -0.25% mean;
+six longer causal-prefix controls give +0.46% median and +0.55% mean, within the
+screen. Parser algorithms are AST-identical. This supports the practical screen;
+it does not claim exactly zero cost or replace the original full-suite result.
+
+Clean committed source passes all 71 Rust/Node/Test262/ICU/Hermes gates, with no
+new exclusions. Consumer: 146,826 minified / 41,604 gzip bytes (+486 gzip versus
+regression baseline; basic 19,367, official 47,066). Nine fresh processes/profile
+measure import plus first operation at 21.8 ms TS, 39.6 ms basic and 29.4 ms
+official, excluding launch. TS first operation alone remains slower than official.
+
+Raw full-suite comparison retains three TS, three basic and two official
+processes, all 48 cases/eight inputs with parity and consumed outputs. Worst TS
+process beats best official process on every median and mean. Host restart lost
+the third official process and temporary controls; it is not counted. Regenerated
+native/prefix controls and clean validation stay separate from earlier full-suite
+and startup data. These are hot matched-workload results on Node/V8 and native
+Rust, excluding binding costs; no universal API, engine or platform speed claim.
+See [day-start evidence](../benchmarks/temporal/day-start-experiments.json) for samples, profiles, sources and recovery notes.
 
 ## Current native Gregorian lookup checkpoint
 
@@ -33,7 +50,7 @@ Scattered 8,192-date controls improve ~12%. First conversion adds ~60 ns;
 probe process wall time stays unchanged within noise. Native benchmark executable
 adds 4,336 bytes including harness/reference/data; this is not a shipped SDK size.
 No locale/timezone data, allocation, per-value cache, API or TS change. TS
-regression and reference refresh remain open; goal stays active.
+regression/reference controls are reported above.
 See [rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
 
 Reproduce wide-date and first-call probes with

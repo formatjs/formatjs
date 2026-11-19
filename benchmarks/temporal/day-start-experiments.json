@@ -1,6 +1,6 @@
 {
   "baseCommit": "0e0ddb52f2756c0a46ccf6afafb0fe23d4d02575",
-  "status": "Current formatter candidate passes all71 source-matched Rust/Node/Test262/ICU/Hermes gates. Latest full48 passes47/48 original3% median/mean screen; DateTime parse median flag stays open. Fresh current references/native comparisons running independently; startup complete. Earlier contrary results, raw profiles and emitted modules retained. Goal remains open.",
+  "status": "Matched workload target reached with explicit limits: Rust wins all37 in six fresh runs; TS full48 wins47 basic medians/48 means and48 official medians/means. Longer matched field-construction controls win remaining basic near-tie; parser diagnostic stays below3% regression screen. Original slower points retained. Clean committed71 gates pass. No universal engine/API/platform performance claim.",
   "changes": [
     "Reuse validated local epoch nanoseconds in normal day-start resolution; retain pre-query bounds, gaps/transitions and native-owner dispatch. No per-value cache or storage change.",
     "Add three separately reported native Rust/TS workloads: zoned formatting, day-based difference and hour rounding. Original25 and named7 unchanged."
@@ -766,64 +766,73 @@
   ],
   "raw": {
     "file": "day-start-controls.json.gz",
-    "sha256": "c70b9b9e8a4b151230181234175d2c12e57d13283a4e548a41e162305d6b18df",
-    "bytes": 6146176,
+    "sha256": "132deb5f875169980ff23199d9f55ed2cd4e8ba4b64c827b74abc507b6eb8365",
+    "bytes": 7540916,
     "members": [
-      "fullControls",
-      "nativeRepeats",
-      "startup",
-      "validation",
-      "flatCacheCold",
-      "sharedStateCold",
-      "uniformStateCold",
-      "fullDriver",
+      "adaptiveIdentityRingTriage",
       "coldDriver",
       "coldWorkloads",
-      "freshDriver",
-      "rejectedSourceSnapshots",
-      "deliveryManifest",
-      "dayStartSourceSnapshots",
-      "freshComparisons",
-      "identityRingRejected",
-      "adaptiveIdentityRingTriage",
-      "dayStartProfiles",
-      "probedIdentityRingTriage",
-      "directFactoryRejected",
-      "isoFieldReuseTriage",
-      "isoFieldReuseValidation",
-      "readonlyConsumerAudit",
-      "combinedFullRegression",
-      "longWindowDiagnostic",
-      "fullJITDiagnostic",
-      "independentCallsiteDiagnostic",
-      "preliminaryCombinedComparisons",
-      "taggedNumericValuesRejected",
+      "combinedFinalChecks",
       "combinedFinalComparisons",
+      "combinedFullRegression",
       "combinedLongClose",
       "combinedNativeBeforeRuleOptimization",
       "combinedStartup",
-      "combinedFinalChecks",
-      "referenceInterleaving",
-      "rawISODispatchFull48",
-      "sourceSnapshots",
-      "postLookupOriginal48Full",
-      "postLookupOriginal48Sources",
-      "postLookupRawISOValidation71",
-      "postLookupLong48Full",
-      "postLookupLong48Sources",
-      "postLookupCPUProfiles",
-      "postLookupCPUProfileAnalysis",
+      "dayStartProfiles",
+      "dayStartSourceSnapshots",
+      "deliveryManifest",
+      "directFactoryRejected",
+      "finalArtifactProbe",
+      "finalCleanValidation",
+      "finalDeliveryAudit",
+      "finalOfficialSeparation",
+      "finalRecoveredBasic",
+      "finalRecoveredNative",
+      "finalRecoveredParsing",
+      "finalRecovery",
+      "flatCacheCold",
+      "formatCleanupBasicThreeRuns",
+      "formatCleanupDiagnostics",
+      "formatCleanupEmittedPackages",
+      "formatCleanupFocusedValidation",
+      "formatCleanupFull48",
+      "formatCleanupFull48Sources",
+      "formatCleanupParserEquivalence",
+      "formatCleanupStartup",
+      "formatCleanupValidation71",
+      "freshComparisons",
+      "freshDriver",
+      "fullControls",
+      "fullDriver",
+      "fullJITDiagnostic",
+      "identityRingRejected",
+      "independentCallsiteDiagnostic",
+      "isoFieldReuseTriage",
+      "isoFieldReuseValidation",
       "isoMonthCountDiagnostic",
       "isoMonthCountFull48",
       "isoMonthCountFull48Sources",
-      "formatCleanupDiagnostics",
-      "formatCleanupFocusedValidation",
-      "formatCleanupValidation71",
-      "formatCleanupFull48",
-      "formatCleanupFull48Sources",
-      "formatCleanupEmittedPackages",
-      "formatCleanupStartup",
-      "formatCleanupParserEquivalence"
+      "longWindowDiagnostic",
+      "nativeRepeats",
+      "postLookupCPUProfileAnalysis",
+      "postLookupCPUProfiles",
+      "postLookupLong48Full",
+      "postLookupLong48Sources",
+      "postLookupOriginal48Full",
+      "postLookupOriginal48Sources",
+      "postLookupRawISOValidation71",
+      "preliminaryCombinedComparisons",
+      "probedIdentityRingTriage",
+      "rawISODispatchFull48",
+      "readonlyConsumerAudit",
+      "referenceInterleaving",
+      "rejectedSourceSnapshots",
+      "sharedStateCold",
+      "sourceSnapshots",
+      "startup",
+      "taggedNumericValuesRejected",
+      "uniformStateCold",
+      "validation"
     ]
   },
   "limits": [
@@ -7172,7 +7181,8 @@
         "meanCandidateOverParent": 1.000883013057139
       }
     ],
-    "status": "Flags remain; see exact names/ratios. Goal stays open."
+    "status": "Flags remain; see exact names/ratios. Goal stays open.",
+    "finalDiagnostic": "See finalVerification.regressionParsing; original full48 remains47/48, diagnostic supplement only."
   },
   "formatCleanupStartup": {
     "rawMember": "formatCleanupStartup",
@@ -7198,7 +7208,944 @@
   "formatCleanupParsingFlag": {
     "full48RawMember": "formatCleanupFull48",
     "sourceEquivalenceMember": "formatCleanupParserEquivalence",
-    "status": "Open: latest original48 median+3.31%, arithmeticmean-0.25%. Three earlier full audits show this median within0.3\u20130.7% of parent; earlier CPU profile attributed path self time varies1.9%. AST confirms string-parse path algorithms unchanged, but layout/JIT/GC effects remain possible. Longer causal-prefix diagnostic prepared, not yet run.",
+    "status": "Original full48 median+3.31%, mean-0.25% retained. Six longer causal-prefix controls: median+0.46%, mean+0.55%, within3% screen. Algorithms AST-identical; no claim of exactly zero cost.",
     "preparedDiagnostic": "Retain first12 original cases through dateTimeParse and all11 predecessor counts/order/inputs/shared-callsite. Only flagged target uses500kwarm9x2million; omit suffix after target. Six ABBAAB CPU10 states, same runtime/consumer bytes. Supplement, never replace, original48 flag."
+  },
+  "formatCleanupBasicThreeComparisons": {
+    "rawMember": "formatCleanupBasicThreeRuns",
+    "processesPerProfile": 3,
+    "workloads": 48,
+    "medianWins": 47,
+    "meanWins": 48,
+    "remainingSlowerPoints": [
+      {
+        "operation": "dateFromFields",
+        "medians": {
+          "typescript": 1023.5614400000122,
+          "reference": 1004.503379999951
+        },
+        "medianProcessMeans": {
+          "typescript": 909.5806088888922,
+          "reference": 961.003704444439
+        },
+        "typescriptOverBasic": 1.0189726190867194,
+        "meanTypescriptOverBasic": 0.9464902212991211
+      }
+    ],
+    "status": "Retained3TS/3basic full48 wins47medians/48means. Originalfieldmedian+1.90% retained; six longer original-prefix controls support remaining workload win. Official raw counts3TS/2official, all48medians/means win."
+  },
+  "finalVerification": {
+    "selectedRuntimeCommit": "480abe635702dd246e37429e5401a665d785b516",
+    "rawMembers": [
+      "finalRecoveredNative",
+      "finalRecoveredParsing",
+      "finalRecoveredBasic",
+      "finalCleanValidation",
+      "finalArtifactProbe",
+      "finalOfficialSeparation",
+      "finalDeliveryAudit",
+      "finalRecovery"
+    ],
+    "referenceProcesses": {
+      "typescript": 3,
+      "temporal-polyfill": 3,
+      "@js-temporal/polyfill": 2
+    },
+    "referenceResults": [
+      {
+        "operation": "parse",
+        "medians": {
+          "typescript": 1272.8073400000005,
+          "reference": 1834.5701600000007,
+          "officialReference": 4370.93866
+        },
+        "medianProcessMeans": {
+          "typescript": 1334.4939488888888,
+          "reference": 1924.7955488888895,
+          "officialReference": 4393.651066666667
+        },
+        "typescriptOverBasic": 0.6937904953168976,
+        "meanTypescriptOverBasic": 0.69331724590658,
+        "typescriptOverOfficial": 0.2911977126670546,
+        "meanTypescriptOverOfficial": 0.30373234666114024
+      },
+      {
+        "operation": "format",
+        "medians": {
+          "typescript": 398.2348200000001,
+          "reference": 1239.6603600000026,
+          "officialReference": 6112.311840000002
+        },
+        "medianProcessMeans": {
+          "typescript": 442.27847111111083,
+          "reference": 1296.3308666666676,
+          "officialReference": 6129.176035555554
+        },
+        "typescriptOverBasic": 0.32124510297320413,
+        "meanTypescriptOverBasic": 0.3411771504356505,
+        "typescriptOverOfficial": 0.06515289638756389,
+        "meanTypescriptOverOfficial": 0.0721595314844016
+      },
+      {
+        "operation": "add",
+        "medians": {
+          "typescript": 1159.4119199999977,
+          "reference": 1434.9985399999966,
+          "officialReference": 5666.56567
+        },
+        "medianProcessMeans": {
+          "typescript": 1164.3390088888889,
+          "reference": 1456.431657777778,
+          "officialReference": 5711.708358888889
+        },
+        "typescriptOverBasic": 0.8079533795205119,
+        "meanTypescriptOverBasic": 0.7994463747550203,
+        "typescriptOverOfficial": 0.20460575020566166,
+        "meanTypescriptOverOfficial": 0.2038512710609388
+      },
+      {
+        "operation": "round",
+        "medians": {
+          "typescript": 608.9829999999984,
+          "reference": 781.3637800000015,
+          "officialReference": 4043.7822400000005
+        },
+        "medianProcessMeans": {
+          "typescript": 648.3298133333326,
+          "reference": 880.6276422222223,
+          "officialReference": 4063.286918888891
+        },
+        "typescriptOverBasic": 0.7793847316546938,
+        "meanTypescriptOverBasic": 0.7362133349542639,
+        "typescriptOverOfficial": 0.15059737737015194,
+        "meanTypescriptOverOfficial": 0.1595579702529643
+      },
+      {
+        "operation": "until",
+        "medians": {
+          "typescript": 2301.904679999998,
+          "reference": 22956.179760000014,
+          "officialReference": 7789.983740000007
+        },
+        "medianProcessMeans": {
+          "typescript": 2397.400391111113,
+          "reference": 23061.6479,
+          "officialReference": 7813.994233333329
+        },
+        "typescriptOverBasic": 0.10027385671595719,
+        "meanTypescriptOverBasic": 0.10395616139430838,
+        "typescriptOverOfficial": 0.2954954409185963,
+        "meanTypescriptOverOfficial": 0.30680856928255235
+      },
+      {
+        "operation": "timeParse",
+        "medians": {
+          "typescript": 1211.3929999999982,
+          "reference": 2258.788400000012,
+          "officialReference": 10641.395140000022
+        },
+        "medianProcessMeans": {
+          "typescript": 1252.1942666666675,
+          "reference": 2251.927266666668,
+          "officialReference": 10667.943001111114
+        },
+        "typescriptOverBasic": 0.5363021166568731,
+        "meanTypescriptOverBasic": 0.5560544895040868,
+        "typescriptOverOfficial": 0.11383779890349938,
+        "meanTypescriptOverOfficial": 0.1173791673367814
+      },
+      {
+        "operation": "timeFormat",
+        "medians": {
+          "typescript": 155.8681400000023,
+          "reference": 698.3389600000008,
+          "officialReference": 559.7785800000202
+        },
+        "medianProcessMeans": {
+          "typescript": 161.86559555555706,
+          "reference": 703.8159799999994,
+          "officialReference": 569.975457777776
+        },
+        "typescriptOverBasic": 0.22319840210547917,
+        "meanTypescriptOverBasic": 0.22998283664368804,
+        "typescriptOverOfficial": 0.2784460598688801,
+        "meanTypescriptOverOfficial": 0.28398695653781253
+      },
+      {
+        "operation": "timeAdd",
+        "medians": {
+          "typescript": 1366.5822599999956,
+          "reference": 1607.4118799999997,
+          "officialReference": 3982.435919999989
+        },
+        "medianProcessMeans": {
+          "typescript": 1400.4929688888872,
+          "reference": 1647.0802066666631,
+          "officialReference": 4025.214172222214
+        },
+        "typescriptOverBasic": 0.8501755380829933,
+        "meanTypescriptOverBasic": 0.8502882635710767,
+        "typescriptOverOfficial": 0.343152353848797,
+        "meanTypescriptOverOfficial": 0.3479300501706502
+      },
+      {
+        "operation": "timeRoundFormat",
+        "medians": {
+          "typescript": 607.1938199999931,
+          "reference": 1637.5832600000285,
+          "officialReference": 1842.31495
+        },
+        "medianProcessMeans": {
+          "typescript": 790.9017688888889,
+          "reference": 1632.973971111108,
+          "officialReference": 1885.1705311111155
+        },
+        "typescriptOverBasic": 0.3707865333210493,
+        "meanTypescriptOverBasic": 0.4843321344251088,
+        "typescriptOverOfficial": 0.3295819859682478,
+        "meanTypescriptOverOfficial": 0.41953858064115457
+      },
+      {
+        "operation": "timeUntil",
+        "medians": {
+          "typescript": 2604.0713200000027,
+          "reference": 22833.77833999999,
+          "officialReference": 8003.954790000025
+        },
+        "medianProcessMeans": {
+          "typescript": 2598.817666666665,
+          "reference": 22907.645497777776,
+          "officialReference": 8024.6825788889
+        },
+        "typescriptOverBasic": 0.11404469646787348,
+        "meanTypescriptOverBasic": 0.11344761149367232,
+        "typescriptOverOfficial": 0.3253480795835423,
+        "meanTypescriptOverOfficial": 0.32385301737710576
+      },
+      {
+        "operation": "dateParse",
+        "medians": {
+          "typescript": 1228.825539999998,
+          "reference": 1700.1696800000354,
+          "officialReference": 2027.31034000004
+        },
+        "medianProcessMeans": {
+          "typescript": 1303.7445355555549,
+          "reference": 1709.6882555555526,
+          "officialReference": 1979.738452222215
+        },
+        "typescriptOverBasic": 0.7227664123500734,
+        "meanTypescriptOverBasic": 0.7625627252916416,
+        "typescriptOverOfficial": 0.6061358814950718,
+        "meanTypescriptOverOfficial": 0.6585438263787465
+      },
+      {
+        "operation": "dateTimeParse",
+        "medians": {
+          "typescript": 1401.94254,
+          "reference": 3931.6517600000225,
+          "officialReference": 2353.207570000013
+        },
+        "medianProcessMeans": {
+          "typescript": 1444.0678155555584,
+          "reference": 3938.121813333362,
+          "officialReference": 2427.715891111111
+        },
+        "typescriptOverBasic": 0.356578513454099,
+        "meanTypescriptOverBasic": 0.3666894738162631,
+        "typescriptOverOfficial": 0.5957581294029205,
+        "meanTypescriptOverOfficial": 0.5948257046233861
+      },
+      {
+        "operation": "yearMonthParse",
+        "medians": {
+          "typescript": 593.4150599999884,
+          "reference": 949.9559999999474,
+          "officialReference": 2063.8730900000155
+        },
+        "medianProcessMeans": {
+          "typescript": 866.2284955555556,
+          "reference": 946.6032066666634,
+          "officialReference": 2083.986359999997
+        },
+        "typescriptOverBasic": 0.624676363957932,
+        "meanTypescriptOverBasic": 0.9150914442872673,
+        "typescriptOverOfficial": 0.28752497567570107,
+        "meanTypescriptOverOfficial": 0.4156593882675685
+      },
+      {
+        "operation": "monthDayParse",
+        "medians": {
+          "typescript": 835.8718000000044,
+          "reference": 1015.2304399999412,
+          "officialReference": 1580.2520899999947
+        },
+        "medianProcessMeans": {
+          "typescript": 760.7870244444449,
+          "reference": 1057.5998422222215,
+          "officialReference": 1617.0813544444416
+        },
+        "typescriptOverBasic": 0.8233320900031847,
+        "meanTypescriptOverBasic": 0.7193524375399721,
+        "typescriptOverOfficial": 0.528948390759608,
+        "meanTypescriptOverOfficial": 0.4704692329507553
+      },
+      {
+        "operation": "dateFromFields",
+        "medians": {
+          "typescript": 1023.5614400000122,
+          "reference": 1004.503379999951,
+          "officialReference": 3293.6559200000193
+        },
+        "medianProcessMeans": {
+          "typescript": 909.5806088888922,
+          "reference": 961.003704444439,
+          "officialReference": 3304.2099166666676
+        },
+        "typescriptOverBasic": 1.0189726190867194,
+        "meanTypescriptOverBasic": 0.9464902212991211,
+        "typescriptOverOfficial": 0.310767567973526,
+        "meanTypescriptOverOfficial": 0.2752793048349936
+      },
+      {
+        "operation": "dateFields",
+        "medians": {
+          "typescript": 312.4809599999935,
+          "reference": 390.2826600000117,
+          "officialReference": 1799.397800000006
+        },
+        "medianProcessMeans": {
+          "typescript": 353.02572222222403,
+          "reference": 404.8758111111157,
+          "officialReference": 1801.5730255555495
+        },
+        "typescriptOverBasic": 0.8006529421521934,
+        "meanTypescriptOverBasic": 0.8719358196613487,
+        "typescriptOverOfficial": 0.17365863179336577,
+        "meanTypescriptOverOfficial": 0.1959541562925887
+      },
+      {
+        "operation": "dateWith",
+        "medians": {
+          "typescript": 714.8707600000125,
+          "reference": 1554.6448399999645,
+          "officialReference": 3977.1023500000592
+        },
+        "medianProcessMeans": {
+          "typescript": 703.210804444441,
+          "reference": 1545.918968888881,
+          "officialReference": 3974.1467511111196
+        },
+        "typescriptOverBasic": 0.4598289857637381,
+        "meanTypescriptOverBasic": 0.4548820595363217,
+        "typescriptOverOfficial": 0.17974663387780349,
+        "meanTypescriptOverOfficial": 0.1769463606868147
+      },
+      {
+        "operation": "dateTimeWith",
+        "medians": {
+          "typescript": 2275.8793199999855,
+          "reference": 4909.572040000057,
+          "officialReference": 8302.986240000027
+        },
+        "medianProcessMeans": {
+          "typescript": 2358.862213333337,
+          "reference": 5149.375559999996,
+          "officialReference": 8318.02649666666
+        },
+        "typescriptOverBasic": 0.46355961404732926,
+        "meanTypescriptOverBasic": 0.4580870410107238,
+        "typescriptOverOfficial": 0.2741037084989771,
+        "meanTypescriptOverOfficial": 0.28358435913598257
+      },
+      {
+        "operation": "yearMonthWith",
+        "medians": {
+          "typescript": 836.3090799999918,
+          "reference": 1132.137619999994,
+          "officialReference": 2777.713680000088
+        },
+        "medianProcessMeans": {
+          "typescript": 869.9012933333345,
+          "reference": 1181.73671555555,
+          "officialReference": 2794.0825488888768
+        },
+        "typescriptOverBasic": 0.7386991344744787,
+        "meanTypescriptOverBasic": 0.736121068155509,
+        "typescriptOverOfficial": 0.3010782162400429,
+        "meanTypescriptOverOfficial": 0.3113370053004584
+      },
+      {
+        "operation": "monthDayWith",
+        "medians": {
+          "typescript": 887.5337199999921,
+          "reference": 1413.59724000009,
+          "officialReference": 3686.2766099999862
+        },
+        "medianProcessMeans": {
+          "typescript": 869.1410133333354,
+          "reference": 1427.956391111139,
+          "officialReference": 3699.547592222225
+        },
+        "typescriptOverBasic": 0.6278547346342693,
+        "meanTypescriptOverBasic": 0.608660753748249,
+        "typescriptOverOfficial": 0.24076698899706156,
+        "meanTypescriptOverOfficial": 0.2349317022331545
+      },
+      {
+        "operation": "zonedWith",
+        "medians": {
+          "typescript": 4988.7980400000015,
+          "reference": 5959.643179999985,
+          "officialReference": 40528.83582000002
+        },
+        "medianProcessMeans": {
+          "typescript": 5044.520871111118,
+          "reference": 5979.440288888873,
+          "officialReference": 40821.84682444447
+        },
+        "typescriptOverBasic": 0.8370967672598167,
+        "meanTypescriptOverBasic": 0.8436443257883113,
+        "typescriptOverOfficial": 0.12309255716489512,
+        "meanTypescriptOverOfficial": 0.12357404829833461
+      },
+      {
+        "operation": "dateAdd",
+        "medians": {
+          "typescript": 1825.8912599999892,
+          "reference": 2106.271320000087,
+          "officialReference": 5081.243540000069
+        },
+        "medianProcessMeans": {
+          "typescript": 1823.3850755555573,
+          "reference": 2102.551680000017,
+          "officialReference": 5133.712265555563
+        },
+        "typescriptOverBasic": 0.8668832180651416,
+        "meanTypescriptOverBasic": 0.867224854875169,
+        "typescriptOverOfficial": 0.35933945020079955,
+        "meanTypescriptOverOfficial": 0.3551786662819976
+      },
+      {
+        "operation": "dateUntil",
+        "medians": {
+          "typescript": 4671.47742000001,
+          "reference": 22926.86748000007,
+          "officialReference": 5690.308999999979
+        },
+        "medianProcessMeans": {
+          "typescript": 4674.169944444442,
+          "reference": 23017.672655555558,
+          "officialReference": 5801.284011111145
+        },
+        "typescriptOverBasic": 0.20375559042573554,
+        "meanTypescriptOverBasic": 0.20306874697500235,
+        "typescriptOverOfficial": 0.8209532065833379,
+        "meanTypescriptOverOfficial": 0.8057130000000082
+      },
+      {
+        "operation": "dateTimeAdd",
+        "medians": {
+          "typescript": 2705.241479999968,
+          "reference": 5219.51814,
+          "officialReference": 7806.429840000055
+        },
+        "medianProcessMeans": {
+          "typescript": 2673.0339422222055,
+          "reference": 5289.603117777798,
+          "officialReference": 7878.887155555519
+        },
+        "typescriptOverBasic": 0.5182933380896283,
+        "meanTypescriptOverBasic": 0.5053373349010667,
+        "typescriptOverOfficial": 0.3465401643832552,
+        "meanTypescriptOverOfficial": 0.33926541774842023
+      },
+      {
+        "operation": "dateTimeUntil",
+        "medians": {
+          "typescript": 4615.117580000006,
+          "reference": 66048.16330000016,
+          "officialReference": 17504.447450000007
+        },
+        "medianProcessMeans": {
+          "typescript": 4626.802975555555,
+          "reference": 65979.7598755556,
+          "officialReference": 17580.85168999998
+        },
+        "typescriptOverBasic": 0.06987503284591708,
+        "meanTypescriptOverBasic": 0.07012458039074661,
+        "typescriptOverOfficial": 0.26365399954398466,
+        "meanTypescriptOverOfficial": 0.26317285744394786
+      },
+      {
+        "operation": "dateTimeRoundFormat",
+        "medians": {
+          "typescript": 1319.6772000000055,
+          "reference": 3738.9188999999897,
+          "officialReference": 4209.381120000035
+        },
+        "medianProcessMeans": {
+          "typescript": 1369.5405911111043,
+          "reference": 3859.7117333333717,
+          "officialReference": 4238.777577777768
+        },
+        "typescriptOverBasic": 0.3529568935020252,
+        "meanTypescriptOverBasic": 0.35482976080400824,
+        "typescriptOverOfficial": 0.31350860432423727,
+        "meanTypescriptOverOfficial": 0.32309800785279774
+      },
+      {
+        "operation": "dateFormat",
+        "medians": {
+          "typescript": 137.86658000004536,
+          "reference": 244.512720000057,
+          "officialReference": 169.4702099999995
+        },
+        "medianProcessMeans": {
+          "typescript": 140.9239111111108,
+          "reference": 251.2021755556149,
+          "officialReference": 170.42232888889782
+        },
+        "typescriptOverBasic": 0.5638421592136934,
+        "meanTypescriptOverBasic": 0.5609979722484966,
+        "typescriptOverOfficial": 0.8135151304765939,
+        "meanTypescriptOverOfficial": 0.8269099010082317
+      },
+      {
+        "operation": "dateTimeFormat",
+        "medians": {
+          "typescript": 849.5323199999985,
+          "reference": 2138.5741399999824,
+          "officialReference": 1670.5468899999687
+        },
+        "medianProcessMeans": {
+          "typescript": 850.2157311111174,
+          "reference": 2140.3782444444046,
+          "officialReference": 1672.1713111111117
+        },
+        "typescriptOverBasic": 0.3972423981522593,
+        "meanTypescriptOverBasic": 0.3972268608681429,
+        "typescriptOverOfficial": 0.5085354533209269,
+        "meanTypescriptOverOfficial": 0.5084501363357158
+      },
+      {
+        "operation": "yearMonthFormat",
+        "medians": {
+          "typescript": 86.48975999996765,
+          "reference": 250.1778600001126,
+          "officialReference": 177.39572999998927
+        },
+        "medianProcessMeans": {
+          "typescript": 87.42297555555221,
+          "reference": 248.5316755556333,
+          "officialReference": 178.7770399999863
+        },
+        "typescriptOverBasic": 0.3457130858818951,
+        "meanTypescriptOverBasic": 0.35175788100290967,
+        "typescriptOverOfficial": 0.4875526598073859,
+        "meanTypescriptOverOfficial": 0.4890056103152782
+      },
+      {
+        "operation": "monthDayFormat",
+        "medians": {
+          "typescript": 121.51808000002347,
+          "reference": 234.98855999991068,
+          "officialReference": 164.37625999999
+        },
+        "medianProcessMeans": {
+          "typescript": 121.60377555556705,
+          "reference": 245.10823111111273,
+          "officialReference": 164.80848888890858
+        },
+        "typescriptOverBasic": 0.517123386772827,
+        "meanTypescriptOverBasic": 0.4961227740264728,
+        "typescriptOverOfficial": 0.7392678237114707,
+        "meanTypescriptOverOfficial": 0.7378489808103013
+      },
+      {
+        "operation": "zonedFormat",
+        "medians": {
+          "typescript": 1575.4639000000316,
+          "reference": 2326.1132999998517,
+          "officialReference": 11241.193610000046
+        },
+        "medianProcessMeans": {
+          "typescript": 1573.4504022222004,
+          "reference": 2329.6810000000146,
+          "officialReference": 11323.44406666666
+        },
+        "typescriptOverBasic": 0.6772945668640182,
+        "meanTypescriptOverBasic": 0.6753930697903234,
+        "typescriptOverOfficial": 0.14015094434442582,
+        "meanTypescriptOverOfficial": 0.13895510879539189
+      },
+      {
+        "operation": "yearMonthUntil",
+        "medians": {
+          "typescript": 2770.913220000002,
+          "reference": 23093.091940000013,
+          "officialReference": 8391.56541000004
+        },
+        "medianProcessMeans": {
+          "typescript": 2851.31932888889,
+          "reference": 23216.590662222232,
+          "officialReference": 8408.47391777777
+        },
+        "typescriptOverBasic": 0.11998883593411099,
+        "meanTypescriptOverBasic": 0.12281386920123996,
+        "typescriptOverOfficial": 0.3302021833373267,
+        "meanTypescriptOverOfficial": 0.33910069255973263
+      },
+      {
+        "operation": "yearMonthToDate",
+        "medians": {
+          "typescript": 586.6462599999795,
+          "reference": 2242.3544600000605,
+          "officialReference": 3664.6265400000266
+        },
+        "medianProcessMeans": {
+          "typescript": 617.9471200000019,
+          "reference": 2243.509953333382,
+          "officialReference": 3678.148901111094
+        },
+        "typescriptOverBasic": 0.26162066277423585,
+        "meanTypescriptOverBasic": 0.27543765477031334,
+        "typescriptOverOfficial": 0.16008350471641108,
+        "meanTypescriptOverOfficial": 0.16800492220783467
+      },
+      {
+        "operation": "monthDayToDate",
+        "medians": {
+          "typescript": 848.7365200000204,
+          "reference": 2179.8411999997916,
+          "officialReference": 3664.893090000114
+        },
+        "medianProcessMeans": {
+          "typescript": 790.2695666666518,
+          "reference": 2198.833346666684,
+          "officialReference": 3673.519347777765
+        },
+        "typescriptOverBasic": 0.3893570412377294,
+        "meanTypescriptOverBasic": 0.3594040302620747,
+        "typescriptOverOfficial": 0.23158561495718663,
+        "meanTypescriptOverOfficial": 0.2151260118296947
+      },
+      {
+        "operation": "yearMonthAdd",
+        "medians": {
+          "typescript": 1752.3224199999822,
+          "reference": 1979.7154599998612,
+          "officialReference": 6778.314350000001
+        },
+        "medianProcessMeans": {
+          "typescript": 1881.528095555558,
+          "reference": 2013.0677711111234,
+          "officialReference": 6802.625474444423
+        },
+        "typescriptOverBasic": 0.8851385238968155,
+        "meanTypescriptOverBasic": 0.9346571052185881,
+        "typescriptOverOfficial": 0.2585189074330821,
+        "meanTypescriptOverOfficial": 0.2765885175692734
+      },
+      {
+        "operation": "zonedParse",
+        "medians": {
+          "typescript": 3103.417499999996,
+          "reference": 5765.650380000006,
+          "officialReference": 34876.78759000002
+        },
+        "medianProcessMeans": {
+          "typescript": 3168.182397777774,
+          "reference": 5752.916524444428,
+          "officialReference": 34952.15124333334
+        },
+        "typescriptOverBasic": 0.5382597444279985,
+        "meanTypescriptOverBasic": 0.5507089116130939,
+        "typescriptOverOfficial": 0.08898232074819348,
+        "meanTypescriptOverOfficial": 0.09064341635858716
+      },
+      {
+        "operation": "zonedOffset",
+        "medians": {
+          "typescript": 36.445755999999164,
+          "reference": 40.09676799999579,
+          "officialReference": 3272.0663119999954
+        },
+        "medianProcessMeans": {
+          "typescript": 38.732901166666935,
+          "reference": 40.96775588888785,
+          "officialReference": 3277.191441555555
+        },
+        "typescriptOverBasic": 0.908944980303724,
+        "meanTypescriptOverBasic": 0.9454484466202577,
+        "typescriptOverOfficial": 0.011138452746613901,
+        "meanTypescriptOverOfficial": 0.011818931501994262
+      },
+      {
+        "operation": "zonedAddDay",
+        "medians": {
+          "typescript": 2651.747200000027,
+          "reference": 2885.9932600002503,
+          "officialReference": 21632.79133999982
+        },
+        "medianProcessMeans": {
+          "typescript": 2678.361506666665,
+          "reference": 2905.4210333333403,
+          "officialReference": 21744.28253555554
+        },
+        "typescriptOverBasic": 0.9188334694862722,
+        "meanTypescriptOverBasic": 0.9218496995575977,
+        "typescriptOverOfficial": 0.12257998324501239,
+        "meanTypescriptOverOfficial": 0.12317543714248082
+      },
+      {
+        "operation": "zonedUntilDay",
+        "medians": {
+          "typescript": 6584.727459999994,
+          "reference": 44890.03620000003,
+          "officialReference": 31387.745590000122
+        },
+        "medianProcessMeans": {
+          "typescript": 6586.525162222226,
+          "reference": 45225.91386888884,
+          "officialReference": 31609.60198666674
+        },
+        "typescriptOverBasic": 0.14668572399146315,
+        "meanTypescriptOverBasic": 0.14563608778181336,
+        "typescriptOverOfficial": 0.2097865691283618,
+        "meanTypescriptOverOfficial": 0.20837102488669396
+      },
+      {
+        "operation": "zonedRound",
+        "medians": {
+          "typescript": 2224.2736600000353,
+          "reference": 2660.102579999948,
+          "officialReference": 29152.265119999938
+        },
+        "medianProcessMeans": {
+          "typescript": 2219.2554422222183,
+          "reference": 2708.218795555521,
+          "officialReference": 29213.446284444428
+        },
+        "typescriptOverBasic": 0.8361608596312398,
+        "meanTypescriptOverBasic": 0.819452049392854,
+        "typescriptOverOfficial": 0.07629848489797351,
+        "meanTypescriptOverOfficial": 0.07596691676202294
+      },
+      {
+        "operation": "zonedDayStart",
+        "medians": {
+          "typescript": 1111.6995999999926,
+          "reference": 1428.8597800000573,
+          "officialReference": 30732.890799999877
+        },
+        "medianProcessMeans": {
+          "typescript": 1156.520851111143,
+          "reference": 1487.730795555431,
+          "officialReference": 31031.361024444406
+        },
+        "typescriptOverBasic": 0.7780326772161983,
+        "meanTypescriptOverBasic": 0.7773723946336448,
+        "typescriptOverOfficial": 0.03617295903709771,
+        "meanTypescriptOverOfficial": 0.03726942077081679
+      },
+      {
+        "operation": "zonedHoursInDay",
+        "medians": {
+          "typescript": 1029.4099000000278,
+          "reference": 1988.339380000252,
+          "officialReference": 42344.89537999965
+        },
+        "medianProcessMeans": {
+          "typescript": 1032.8953400000075,
+          "reference": 1993.9470777778317,
+          "officialReference": 42431.3724122222
+        },
+        "typescriptOverBasic": 0.5177234381385624,
+        "meanTypescriptOverBasic": 0.518015423534272,
+        "typescriptOverOfficial": 0.024310129727850006,
+        "meanTypescriptOverOfficial": 0.024342727592343582
+      },
+      {
+        "operation": "zonedTransition",
+        "medians": {
+          "typescript": 416.8353299999944,
+          "reference": 6287.3957099999825,
+          "officialReference": 396552.16472
+        },
+        "medianProcessMeans": {
+          "typescript": 427.8309850000086,
+          "reference": 6296.09743888886,
+          "officialReference": 396610.48025444447
+        },
+        "typescriptOverBasic": 0.06629697719471128,
+        "meanTypescriptOverBasic": 0.067951773166254,
+        "typescriptOverOfficial": 0.001051148794747637,
+        "meanTypescriptOverOfficial": 0.0010787183049866325
+      },
+      {
+        "operation": "durationParse",
+        "medians": {
+          "typescript": 1731.929139999993,
+          "reference": 1881.685179999913,
+          "officialReference": 2317.481619999744
+        },
+        "medianProcessMeans": {
+          "typescript": 1696.4370022222283,
+          "reference": 1987.2425600000295,
+          "officialReference": 2338.8045522222656
+        },
+        "typescriptOverBasic": 0.9204138707199007,
+        "meanTypescriptOverBasic": 0.8536637833592912,
+        "typescriptOverOfficial": 0.7473324168155363,
+        "meanTypescriptOverOfficial": 0.7253436378898451
+      },
+      {
+        "operation": "durationFormat",
+        "medians": {
+          "typescript": 2265.214019999985,
+          "reference": 79311.8560799997,
+          "officialReference": 7141.21593000018
+        },
+        "medianProcessMeans": {
+          "typescript": 2273.773564444467,
+          "reference": 79488.42222666665,
+          "officialReference": 7154.286565555571
+        },
+        "typescriptOverBasic": 0.02856084994045689,
+        "meanTypescriptOverBasic": 0.028605091166115322,
+        "typescriptOverOfficial": 0.3172028464345746,
+        "meanTypescriptOverOfficial": 0.31781974954589975
+      },
+      {
+        "operation": "durationAdd",
+        "medians": {
+          "typescript": 3654.4579800000065,
+          "reference": 85066.55465999967,
+          "officialReference": 11388.3005400002
+        },
+        "medianProcessMeans": {
+          "typescript": 3679.244108888864,
+          "reference": 84867.76144222221,
+          "officialReference": 11494.001085555388
+        },
+        "typescriptOverBasic": 0.04295998579707872,
+        "meanTypescriptOverBasic": 0.04335267062975009,
+        "typescriptOverOfficial": 0.32089581471476886,
+        "meanTypescriptOverOfficial": 0.32010124946939517
+      },
+      {
+        "operation": "durationRoundRelative",
+        "medians": {
+          "typescript": 11557.532100000099,
+          "reference": 50267.83656000043,
+          "officialReference": 60875.773529999424
+        },
+        "medianProcessMeans": {
+          "typescript": 11615.378697777778,
+          "reference": 50373.205593333376,
+          "officialReference": 61131.67663555566
+        },
+        "typescriptOverBasic": 0.22991902757153387,
+        "meanTypescriptOverBasic": 0.23058645089116606,
+        "typescriptOverOfficial": 0.18985437769106256,
+        "meanTypescriptOverOfficial": 0.19000589116873645
+      },
+      {
+        "operation": "durationTotalRelative",
+        "medians": {
+          "typescript": 2180.5813200000557,
+          "reference": 3058.9729400002398,
+          "officialReference": 33677.121979999356
+        },
+        "medianProcessMeans": {
+          "typescript": 2193.73185777778,
+          "reference": 3077.588424444548,
+          "officialReference": 33879.52666666682
+        },
+        "typescriptOverBasic": 0.7128475350291542,
+        "meanTypescriptOverBasic": 0.7128087174859034,
+        "typescriptOverOfficial": 0.0647496339293806,
+        "meanTypescriptOverOfficial": 0.0647509594617842
+      }
+    ],
+    "wins": {
+      "typescriptOverBasic": 47,
+      "meanTypescriptOverBasic": 48,
+      "typescriptOverOfficial": 48,
+      "meanTypescriptOverOfficial": 48
+    },
+    "basicFieldConstruction": {
+      "medians": {
+        "typescript": 830.4034544999995,
+        "reference": 979.3306349999984
+      },
+      "medianProcessMeans": {
+        "typescript": 834.5272471111111,
+        "reference": 978.762474555556
+      },
+      "medianRatio": 0.8479296213377424,
+      "meanRatio": 0.8526351068884815,
+      "method": "Six ABBAAB causal-prefix controls; all original case definitions/initializations, predecessor order/counts/warmup/shared-callsite retained. Only target gets500kwarm9x2million, except original longround preserved in parser mode. Original48/eightinputs/parity retained separately. Prefix changes result-array capacity and omits only suffix after target; diagnostic supplements original full48, never erases slower original points. Same runtime consumer hashes verified."
+    },
+    "regressionParsing": {
+      "medians": {
+        "parent": 1393.5302540000012,
+        "candidate": 1399.9680149999986
+      },
+      "medianProcessMeans": {
+        "parent": 1390.1621302222225,
+        "candidate": 1397.7885519999998
+      },
+      "medianRatio": 1.0046197497194758,
+      "meanRatio": 1.0054859944836494,
+      "method": "Six ABBAAB causal-prefix controls; all original case definitions/initializations, predecessor order/counts/warmup/shared-callsite retained. Only target gets500kwarm9x2million, except original longround preserved in parser mode. Original48/eightinputs/parity retained separately. Prefix changes result-array capacity and omits only suffix after target; diagnostic supplements original full48, never erases slower original points. Same runtime consumer hashes verified."
+    },
+    "native": {
+      "processes": 6,
+      "groups": [25, 7, 3, 2],
+      "eachRunMedianWins": 37,
+      "eachRunMeanWins": 37,
+      "method": "Six optimized fresh public Rust/TS comparisons, three default plus three original-offset100kwarm9x2million. Original25/named7/extended3/rule2 separate, all4inputs/fullparity/consumedoutputs. Binding and startup costs excluded."
+    },
+    "validation": {
+      "commit": "480abe635702dd246e37429e5401a665d785b516",
+      "targets": 71,
+      "exitCode": 0,
+      "cleanSnapshot": true
+    },
+    "artifact": {
+      "minifiedBytes": 146826,
+      "gzipBytes": 41604,
+      "sha256": "b665d2137dd7697e788b718860639e481251b61203bde8ccc97591a6d4aaa542"
+    },
+    "limits": [
+      "Hot matched public workloads, full48/eightJSinputs and37/four native inputs; native excludes bindings/startup.",
+      "Full-suite dateFromFields median remains1.90% slower than basic, mean5.35% faster. Longer original-prefix control supports win; never relabel original raw point.",
+      "Full-suite dateTimeParse median remains3.31% slower, mean0.25% faster than regression baseline. Longer causal-prefix control is supplemental, not full-suite replacement.",
+      "Lost third official process is not reconstructed or counted. Retained worst-of3 TS beats best-of2 official for every48 median and mean.",
+      "Clean71 and regenerated controls after host restart; earlier full48 and startup retained separately.",
+      "Consumer+486gzip versus regression baseline; TS first operation alone slower than official; native table4,568readonly bytes adds~60ns first conversion."
+    ],
+    "buildGraphAudit": [
+      {
+        "query": "filter(\"wasm\", //packages/temporal/... union //crates/temporal/... union //benchmarks/temporal/...)",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mINFO: \u001b[0mEmpty results\n\u001b[0m"
+      },
+      {
+        "query": "somepath(//packages/temporal:temporal, //:node_modules/temporal-polyfill)",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mLoading:\u001b[0m 71 packages loaded\n    currently loading: @@llvm++llvm+llvm-project//clang ... (2 packages)\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[35mWARNING: \u001b[0mDownload from https://swcdn.apple.com/content/downloads/60/13/122-35686-A_30JUXWIJFR/ck0gzuw5qccefzm3ptlwou3pu6a55d0o02/CLTools_macOSNMOS_SDK.pkg failed: class java.io.IOException GET returned 403 Forbidden\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n\u001b[32mLoading:\u001b[0m 85 packages loaded\n    currently loading: @@llvm++osx+macos_sdk//sysroot\n\u001b[32mINFO: \u001b[0mEmpty results\n\u001b[0m"
+      },
+      {
+        "query": "somepath(//packages/temporal:temporal, //:node_modules/@js-temporal/polyfill)",
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": "\u001b[32mLoading:\u001b[0m 0 packages loaded\n\u001b[32mINFO: \u001b[0mEmpty results\n\u001b[0m"
+      }
+    ]
   }
 }
