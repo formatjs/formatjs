@@ -33,6 +33,8 @@ export interface TimeZoneKernel {
   transition(instant: bigint, direction: 'next' | 'previous'): bigint | null
   offsetNanoseconds(instant: bigint): bigint
   possibleInstants(fields: ISODateTime): bigint[]
+  // Internal callers validate local nanoseconds before using this shortcut.
+  possibleInstantsFromEpochNanoseconds?(local: bigint): bigint[]
   resolve(fields: ISODateTime, disambiguation?: Disambiguation): bigint
 }
 
@@ -234,8 +236,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       ) * second
     )
   }
-  const possibleInstants = (fields: ISODateTime): bigint[] => {
-    const local = isoToEpochNanoseconds(fields)
+  const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (const offset of offsets) {
       const instant = local - BigInt(offset) * second
@@ -245,6 +246,8 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     }
     return candidates.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
   }
+  const possibleInstants = (fields: ISODateTime): bigint[] =>
+    possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
   const resolve = (
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
@@ -287,6 +290,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   return {
     offsetNanoseconds,
     possibleInstants,
+    possibleInstantsFromEpochNanoseconds,
     resolve,
     transition: (instant, direction) => {
       checkInstant(instant)

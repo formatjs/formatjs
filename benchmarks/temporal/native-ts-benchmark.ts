@@ -30,6 +30,8 @@ const rust = JSON.parse(native.stdout) as {
   architecture: string
   results: NativeRow[]
   namedZoneResults: NativeMeasurement[]
+  extendedNamedZoneResults: NativeMeasurement[]
+  additionalNamedZoneResults: NativeMeasurement[]
 }
 const instantTexts = [
   '2020-03-08T06:59:59.123456789Z',
@@ -127,6 +129,14 @@ assert.deepEqual(
 const iterations = 50000,
   warmup = 20000,
   samples = 9
+const offsetIterations =
+  process.env.FORMATJS_TEMPORAL_NATIVE_OFFSET_ITERATIONS === undefined
+    ? undefined
+    : Number(process.env.FORMATJS_TEMPORAL_NATIVE_OFFSET_ITERATIONS)
+assert.ok(
+  offsetIterations === undefined ||
+    (Number.isSafeInteger(offsetIterations) && offsetIterations > 0)
+)
 let sink = 0
 function sample(operation: Operation, count: number): number {
   let checksum = 0
@@ -146,8 +156,18 @@ function sample(operation: Operation, count: number): number {
 }
 function measureRow<T extends NativeMeasurement>(row: T) {
   const operation = operations[row.name]
-  const count = row.name === 'zoned.named.transitionNext' ? 5000 : iterations
-  const warm = row.name === 'zoned.named.transitionNext' ? 1000 : warmup
+  const longOffset =
+    row.name === 'zoned.named.offset' && offsetIterations !== undefined
+  const count = longOffset
+    ? offsetIterations!
+    : row.name === 'zoned.named.transitionNext'
+      ? 5000
+      : iterations
+  const warm = longOffset
+    ? 100000
+    : row.name === 'zoned.named.transitionNext'
+      ? 1000
+      : warmup
   const outputs = [0, 1, 2, 3].map(i => {
     const value = operation(i)
     return typeof value === 'bigint' && !row.fullPrecision
@@ -199,6 +219,48 @@ assert.deepEqual(
 )
 Object.assign(operations, namedOperations)
 const namedZoneResults = rust.namedZoneResults.map(measureRow)
+const namedEnds = namedDates.map(value => value.add({days: 1, hours: 1}))
+const extendedNamedOperations: Record<string, Operation> = {
+  'zoned.named.format': i => hash(namedDates[i].toString()),
+  'zoned.named.untilDay': i =>
+    hash(namedDates[i].until(namedEnds[i], {largestUnit: 'day'}).toString()),
+  'zoned.named.roundHour': i =>
+    namedDates[i].round({
+      smallestUnit: 'hour',
+      roundingIncrement: 1,
+      roundingMode: 'halfEven',
+    }).epochNanoseconds,
+}
+assert.deepEqual(
+  Object.keys(extendedNamedOperations).sort(),
+  rust.extendedNamedZoneResults.map(row => row.name).sort()
+)
+Object.assign(operations, extendedNamedOperations)
+const extendedNamedZoneResults = rust.extendedNamedZoneResults.map(measureRow)
+const additionalNamedInputs: Record<string, string[]> = {
+  'zoned.named.offsetLastWeek': [
+    '2400-03-15T12:34:56.123456789Z[Europe/Paris]',
+    '2400-10-15T12:34:56.123456789Z[Europe/London]',
+    '2400-09-15T12:34:56.123456789Z[Pacific/Chatham]',
+    '2400-10-15T12:34:56.123456789Z[Africa/Cairo]',
+  ],
+  'zoned.named.offsetOrdinary': [
+    '2020-01-15T12:34:56.123456789Z[America/New_York]',
+    '2020-07-15T12:34:56.123456789Z[America/New_York]',
+    '2400-01-15T12:34:56.123456789Z[Australia/Lord_Howe]',
+    '2400-07-15T12:34:56.123456789Z[Australia/Lord_Howe]',
+  ],
+}
+assert.deepEqual(
+  Object.keys(additionalNamedInputs).sort(),
+  rust.additionalNamedZoneResults.map(row => row.name).sort()
+)
+for (const [name, texts] of Object.entries(additionalNamedInputs)) {
+  const values = texts.map(text => Temporal.ZonedDateTime.from(text))
+  operations[name] = index => values[index].offsetNanoseconds
+}
+const additionalNamedZoneResults =
+  rust.additionalNamedZoneResults.map(measureRow)
 console.log(
   JSON.stringify(
     {
@@ -213,6 +275,7 @@ console.log(
       iterations,
       warmup,
       samples,
+      offsetIterations,
       sink,
       rustFaster: results.filter(row => row.typescriptOverRust > 1).length,
       workloads: results.length,
@@ -224,6 +287,20 @@ console.log(
       ).length,
       namedZoneWorkloads: namedZoneResults.length,
       namedZoneResults,
+      extendedNamedZoneScope:
+        'Three additional Rust/TS public workloads on the same four named-zone inputs: formatting, day-based difference and hour rounding. Separate from original25 and named7. Full signed nanoseconds or ASCII FNV-1a32 hashes checked per input before timing. Duration endpoints initialized outside timing. Same sample counts and limits as named7; does not replace the eight-input JS48 comparison.',
+      extendedNamedZoneRustFaster: extendedNamedZoneResults.filter(
+        row => row.typescriptOverRust > 1
+      ).length,
+      extendedNamedZoneWorkloads: extendedNamedZoneResults.length,
+      extendedNamedZoneResults,
+      additionalNamedZoneScope:
+        'Two additional raw Rust/cached TS offset workloads, four matched inputs each. Last-week rules cover Paris, London, Chatham and Cairo in year2400 transition months. Ordinary months cover New York and Lord Howe in January/July, including year2400. Original25/named7/extended3 remain separate and unchanged. Full signed outputs checked before timing; same sample counts. No universal API or Hermes speed claim.',
+      additionalNamedZoneRustFaster: additionalNamedZoneResults.filter(
+        row => row.typescriptOverRust > 1
+      ).length,
+      additionalNamedZoneWorkloads: additionalNamedZoneResults.length,
+      additionalNamedZoneResults,
     },
     null,
     2

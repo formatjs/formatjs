@@ -125,6 +125,56 @@ it('preserves variable-length days, offsets, references and private conversions'
   expect(historical.toString()).toBe('1900-01-01T00:00:00+00:09[Europe/Paris]')
 })
 
+it.each(['iso8601', 'hebrew'])(
+  'preserves frozen zoned values after reading offsets with %s calendar',
+  calendar => {
+    const value = Object.freeze(
+      Temporal.ZonedDateTime.from(
+        '2020-03-07T12:00-05:00[America/New_York]'
+      ).withCalendar(calendar)
+    )
+    expect(value.offsetNanoseconds).toBe(-18_000_000_000_000)
+    const copy = Temporal.ZonedDateTime.from(value)
+    expect(copy).not.toBe(value)
+    expect(copy.calendarId).toBe(calendar)
+    expect(copy.equals(value)).toBe(true)
+
+    const next = value.add({days: 1})
+    expect(next.offsetNanoseconds).toBe(-14_400_000_000_000)
+    expect(next.calendarId).toBe(calendar)
+    expect(next.toInstant().toString()).toBe('2020-03-08T16:00:00Z')
+
+    const shifted = value.withTimeZone('Asia/Kathmandu')
+    expect(shifted.offsetNanoseconds).toBe(20_700_000_000_000)
+    expect(shifted.calendarId).toBe(calendar)
+    expect(shifted.epochNanoseconds).toBe(value.epochNanoseconds)
+    const alternate = calendar === 'iso8601' ? 'hebrew' : 'iso8601'
+    const recalendar = value.withCalendar(alternate)
+    expect(recalendar.calendarId).toBe(alternate)
+    expect(recalendar.offsetNanoseconds).toBe(-18_000_000_000_000)
+    expect(value.calendarId).toBe(calendar)
+    expect(value.offsetNanoseconds).toBe(-18_000_000_000_000)
+
+    const options = {
+      calendar,
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+    } as const
+    // Native format and formatToParts can use different narrow-space literals.
+    const spacing = (text: string) => text.replace(/\u202f/g, ' ')
+    expect(spacing(value.toLocaleString('en-US', options))).toBe(
+      spacing(
+        new Intl.DateTimeFormat('en-US', {
+          ...options,
+          timeZone: value.timeZoneId,
+        }).format(new Date(value.epochMilliseconds))
+      )
+    )
+  }
+)
+
 it('uses first valid instant for date-only gaps regardless of disambiguation', () => {
   const value = Temporal.ZonedDateTime.from('1986-01-01[Asia/Kathmandu]', {
     disambiguation: 'reject',

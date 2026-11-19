@@ -251,5 +251,11 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     })
     return value
   }
-  return {offsetNanoseconds, possibleInstants, resolve, transition}
+  return {
+    offsetNanoseconds,
+    possibleInstants,
+    possibleInstantsFromEpochNanoseconds: candidatesFor,
+    resolve,
+    transition,
+  }
 }

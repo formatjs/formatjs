@@ -143,6 +143,33 @@ impl FutureRule {
         }
         was_dst != is_dst
     }
+    #[cold]
+    fn offset_current_year(&self, year: i32, seconds: i64, offset: i32) -> i32 {
+        let (begin, end) = self.events(year).unwrap();
+        let dst = if begin < end {
+            seconds >= begin && seconds < end
+        } else {
+            seconds >= begin || seconds < end
+        };
+        if dst { offset } else { self.standard }
+    }
+    #[cold]
+    fn offset_near_year(&self, year: i32, seconds: i64, offset: i32) -> i32 {
+        let mut latest = i64::MIN;
+        let mut dst = false;
+        for y in year - 1..=year + 1 {
+            let (begin, end) = self.events(y).unwrap();
+            if begin <= seconds && begin >= latest {
+                latest = begin;
+                dst = true;
+            }
+            if end <= seconds && end > latest {
+                latest = end;
+                dst = false;
+            }
+        }
+        if dst { offset } else { self.standard }
+    }
     fn offset(&self, seconds: i64) -> i32 {
         let Some((offset, start, end)) = self.daylight else {
             return self.standard;
@@ -185,28 +212,20 @@ impl FutureRule {
                     - i64::from(offset);
                 return if seconds < end { offset } else { self.standard };
             }
-            let (begin, end) = self.events(year).unwrap();
-            let dst = if begin < end {
-                seconds >= begin && seconds < end
-            } else {
-                seconds >= begin || seconds < end
-            };
-            return if dst { offset } else { self.standard };
-        }
-        let mut latest = i64::MIN;
-        let mut dst = false;
-        for y in year - 1..=year + 1 {
-            let (begin, end) = self.events(y).unwrap();
-            if begin <= seconds && begin >= latest {
-                latest = begin;
-                dst = true;
+            // Rule times and offsets can move events into adjacent months by less than eight days.
+            let near_shifted_event = ((month + 1 == first || month + 1 == last) && day > 20)
+                || ((month == first + 1 || month == last + 1) && day <= 8);
+            if !near_shifted_event {
+                let dst = if first < last {
+                    month > first && month < last
+                } else {
+                    month > first || month < last
+                };
+                return if dst { offset } else { self.standard };
             }
-            if end <= seconds && end > latest {
-                latest = end;
-                dst = false;
-            }
+            return self.offset_current_year(year, seconds, offset);
         }
-        if dst { offset } else { self.standard }
+        self.offset_near_year(year, seconds, offset)
     }
 }
 

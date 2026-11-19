@@ -1,0 +1,695 @@
+{
+  "baseCommit": "0e0ddb52f2756c0a46ccf6afafb0fe23d4d02575",
+  "status": "Retained provisional: ordinary-offset median/mean ~54%faster in12prebuiltcontrols; all37 pass3%mean/4%median regression screen. All71gatespass. FreshRust/TS37 counts36,37,36: primaryraw offset remains near-tie/slower; goalNOTcomplete. TS48originalregressionaudit alsoopen.",
+  "changes": [
+    "Classify safe ordinary months using interior-separated monthly rules; conservative adjacent-month windows preserve full event fallback.",
+    "Move uncommon one-year/three-year event evaluation into cold private helpers; constconstructors/Copy/Sync/no_std/data/API/layout unchanged.",
+    "Add separate matched last-week/ordinary offset cases; retain original25,named7,extended3 unchanged. Add Rust-only long CPU profile modes and optional matched raw-offset iteration override.",
+    "Add independent full-year public north/south extreme-shift intervals; oracle passes old andnew implementations."
+  ],
+  "sourceHashes": {
+    "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
+    "crates/temporal/lib.test.rs": "a3fded1427e43db816a6fd0b7209cd220c6566d7dd226d7091f6711cd1ce95f1",
+    "benchmarks/temporal/rust/native.rs": "40ab10b35070e47fb6cb87c67a3abc2dc4775473d2fd7156b831f0aa06dda7fc",
+    "benchmarks/temporal/native-ts-benchmark.ts": "379441b135f18567daf5347e670823c59f2e565d4342d8238800b42936d24c76"
+  },
+  "controls": {
+    "rawMember": "coldMonthClassification",
+    "results": [
+      {
+        "group": "results",
+        "name": "instant.parse",
+        "medians": {
+          "parent": 35.311126708984375,
+          "candidate": 34.135101318359375
+        },
+        "medianProcessMeans": {
+          "parent": 35.22509765625,
+          "candidate": 34.35547553168403
+        },
+        "candidateOverParent": 0.9666953308990343,
+        "meanCandidateOverParent": 0.9753124282847325
+      },
+      {
+        "group": "results",
+        "name": "instant.format",
+        "medians": {
+          "parent": 91.74569702148438,
+          "candidate": 90.8697509765625
+        },
+        "medianProcessMeans": {
+          "parent": 91.11144002278645,
+          "candidate": 91.38517252604166
+        },
+        "candidateOverParent": 0.990452456372785,
+        "meanCandidateOverParent": 1.0030043702874936
+      },
+      {
+        "group": "results",
+        "name": "instant.roundMicrosecond",
+        "medians": {
+          "parent": 9.88250732421875,
+          "candidate": 10.142608642578125
+        },
+        "medianProcessMeans": {
+          "parent": 10.031945122612846,
+          "candidate": 10.11318630642361
+        },
+        "candidateOverParent": 1.0263193650989717,
+        "meanCandidateOverParent": 1.0080982484271808
+      },
+      {
+        "group": "results",
+        "name": "instant.addTime",
+        "medians": {
+          "parent": 15.919281005859375,
+          "candidate": 16.060211181640625
+        },
+        "medianProcessMeans": {
+          "parent": 16.041717529296875,
+          "candidate": 16.425455729166664
+        },
+        "candidateOverParent": 1.0088527977946604,
+        "meanCandidateOverParent": 1.0239212664834032
+      },
+      {
+        "group": "results",
+        "name": "duration.parseFormat",
+        "medians": {
+          "parent": 334.3426818847656,
+          "candidate": 330.9768371582031
+        },
+        "medianProcessMeans": {
+          "parent": 334.265862358941,
+          "candidate": 331.97179836697046
+        },
+        "candidateOverParent": 0.9899329493094078,
+        "meanCandidateOverParent": 0.9931370078422573
+      },
+      {
+        "group": "results",
+        "name": "duration.format",
+        "medians": {
+          "parent": 156.84701538085938,
+          "candidate": 157.443115234375
+        },
+        "medianProcessMeans": {
+          "parent": 157.20461018880206,
+          "candidate": 157.84848361545139
+        },
+        "candidateOverParent": 1.0038005176704712,
+        "meanCandidateOverParent": 1.0040957668218256
+      },
+      {
+        "group": "results",
+        "name": "date.parse",
+        "medians": {
+          "parent": 72.47482299804688,
+          "candidate": 71.91473388671875
+        },
+        "medianProcessMeans": {
+          "parent": 73.04411146375867,
+          "candidate": 72.62629869249132
+        },
+        "candidateOverParent": 0.9922719492347953,
+        "meanCandidateOverParent": 0.9942799937887581
+      },
+      {
+        "group": "results",
+        "name": "date.format",
+        "medians": {
+          "parent": 56.862945556640625,
+          "candidate": 57.337799072265625
+        },
+        "medianProcessMeans": {
+          "parent": 56.90003119574653,
+          "candidate": 57.958157009548614
+        },
+        "candidateOverParent": 1.0083508427320567,
+        "meanCandidateOverParent": 1.0185962255479604
+      },
+      {
+        "group": "results",
+        "name": "date.add",
+        "medians": {
+          "parent": 100.0899658203125,
+          "candidate": 101.1309814453125
+        },
+        "medianProcessMeans": {
+          "parent": 101.21805826822916,
+          "candidate": 101.75194973415799
+        },
+        "candidateOverParent": 1.0104007990857835,
+        "meanCandidateOverParent": 1.0052746661521013
+      },
+      {
+        "group": "results",
+        "name": "time.parseFormat",
+        "medians": {
+          "parent": 89.35150146484375,
+          "candidate": 90.93121337890625
+        },
+        "medianProcessMeans": {
+          "parent": 89.78867594401041,
+          "candidate": 90.25989447699652
+        },
+        "candidateOverParent": 1.0176797467100658,
+        "meanCandidateOverParent": 1.0052480842158755
+      },
+      {
+        "group": "results",
+        "name": "time.roundMicrosecond",
+        "medians": {
+          "parent": 80.015380859375,
+          "candidate": 78.32318115234375
+        },
+        "medianProcessMeans": {
+          "parent": 80.02365112304688,
+          "candidate": 78.73748440212674
+        },
+        "candidateOverParent": 0.9788515696750197,
+        "meanCandidateOverParent": 0.9839276675973896
+      },
+      {
+        "group": "results",
+        "name": "dateTime.parseFormat",
+        "medians": {
+          "parent": 220.40185546875,
+          "candidate": 216.19058227539062
+        },
+        "medianProcessMeans": {
+          "parent": 219.9088609483507,
+          "candidate": 217.21070692274304
+        },
+        "candidateOverParent": 0.9808927507238864,
+        "meanCandidateOverParent": 0.9877305806870539
+      },
+      {
+        "group": "results",
+        "name": "yearMonth.parseFormat",
+        "medians": {
+          "parent": 227.43380737304688,
+          "candidate": 229.96798706054688
+        },
+        "medianProcessMeans": {
+          "parent": 226.8267347547743,
+          "candidate": 230.50475056966144
+        },
+        "candidateOverParent": 1.0111424933556308,
+        "meanCandidateOverParent": 1.0162150895434063
+      },
+      {
+        "group": "results",
+        "name": "monthDay.parseFormat",
+        "medians": {
+          "parent": 200.71047973632812,
+          "candidate": 200.7083740234375
+        },
+        "medianProcessMeans": {
+          "parent": 201.28336249457465,
+          "candidate": 199.77047729492188
+        },
+        "candidateOverParent": 0.9999895087048101,
+        "meanCandidateOverParent": 0.9924838040218373
+      },
+      {
+        "group": "results",
+        "name": "zoned.parseUtcOrOffset",
+        "medians": {
+          "parent": 208.65145874023438,
+          "candidate": 196.68191528320312
+        },
+        "medianProcessMeans": {
+          "parent": 209.3240220811632,
+          "candidate": 196.16170925564236
+        },
+        "candidateOverParent": 0.9426337897213888,
+        "meanCandidateOverParent": 0.9371199124942416
+      },
+      {
+        "group": "results",
+        "name": "calendar.hebrew.fields",
+        "medians": {
+          "parent": 195.1717529296875,
+          "candidate": 194.58853149414062
+        },
+        "medianProcessMeans": {
+          "parent": 195.71679009331598,
+          "candidate": 194.8805202907986
+        },
+        "candidateOverParent": 0.9970117528443935,
+        "meanCandidateOverParent": 0.9957271432761662
+      },
+      {
+        "group": "results",
+        "name": "calendar.hebrew.addMonth",
+        "medians": {
+          "parent": 798.9653015136719,
+          "candidate": 797.3855895996094
+        },
+        "medianProcessMeans": {
+          "parent": 799.8690592447917,
+          "candidate": 800.7639227973091
+        },
+        "candidateOverParent": 0.998022802853804,
+        "meanCandidateOverParent": 1.001118762555164
+      },
+      {
+        "group": "results",
+        "name": "calendar.persian.fields",
+        "medians": {
+          "parent": 62.346466064453125,
+          "candidate": 63.91754150390625
+        },
+        "medianProcessMeans": {
+          "parent": 62.86173502604167,
+          "candidate": 63.78267415364583
+        },
+        "candidateOverParent": 1.0251991097270687,
+        "meanCandidateOverParent": 1.0146502339972423
+      },
+      {
+        "group": "results",
+        "name": "calendar.persian.addMonth",
+        "medians": {
+          "parent": 244.35250854492188,
+          "candidate": 243.41305541992188
+        },
+        "medianProcessMeans": {
+          "parent": 245.85206095377603,
+          "candidate": 244.2229241265191
+        },
+        "candidateOverParent": 0.9961553366871726,
+        "meanCandidateOverParent": 0.9933735075437776
+      },
+      {
+        "group": "results",
+        "name": "calendar.chinese.fields",
+        "medians": {
+          "parent": 244.800048828125,
+          "candidate": 241.557373046875
+        },
+        "medianProcessMeans": {
+          "parent": 245.68105740017361,
+          "candidate": 241.69144354926215
+        },
+        "candidateOverParent": 0.9867537780454991,
+        "meanCandidateOverParent": 0.9837610034199216
+      },
+      {
+        "group": "results",
+        "name": "calendar.chinese.addMonth",
+        "medians": {
+          "parent": 1113.4316711425781,
+          "candidate": 1120.7352294921875
+        },
+        "medianProcessMeans": {
+          "parent": 1110.8096313476562,
+          "candidate": 1124.8685506184895
+        },
+        "candidateOverParent": 1.0065595029662795,
+        "meanCandidateOverParent": 1.012656461444052
+      },
+      {
+        "group": "results",
+        "name": "calendar.dangi.fields",
+        "medians": {
+          "parent": 243.401611328125,
+          "candidate": 240.11874389648438
+        },
+        "medianProcessMeans": {
+          "parent": 243.42109849717883,
+          "candidate": 240.5200670030382
+        },
+        "candidateOverParent": 0.9865125484842618,
+        "meanCandidateOverParent": 0.9880822512425962
+      },
+      {
+        "group": "results",
+        "name": "calendar.dangi.addMonth",
+        "medians": {
+          "parent": 1105.8644104003906,
+          "candidate": 1117.6091918945312
+        },
+        "medianProcessMeans": {
+          "parent": 1108.7725185818142,
+          "candidate": 1118.667734781901
+        },
+        "candidateOverParent": 1.0106204534513308,
+        "meanCandidateOverParent": 1.0089244782263753
+      },
+      {
+        "group": "results",
+        "name": "calendar.islamic-umalqura.fields",
+        "medians": {
+          "parent": 125.53802490234375,
+          "candidate": 127.9017333984375
+        },
+        "medianProcessMeans": {
+          "parent": 125.78855726453992,
+          "candidate": 128.66830444335938
+        },
+        "candidateOverParent": 1.0188286258122388,
+        "meanCandidateOverParent": 1.0228935544014803
+      },
+      {
+        "group": "results",
+        "name": "calendar.islamic-umalqura.addMonth",
+        "medians": {
+          "parent": 386.06085205078125,
+          "candidate": 392.23504638671875
+        },
+        "medianProcessMeans": {
+          "parent": 385.90977647569446,
+          "candidate": 394.760491265191
+        },
+        "candidateOverParent": 1.0159928008839534,
+        "meanCandidateOverParent": 1.0229346736699063
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.parse",
+        "medians": {
+          "parent": 454.5330810546875,
+          "candidate": 445.2516174316406
+        },
+        "medianProcessMeans": {
+          "parent": 455.30796983506946,
+          "candidate": 446.587148030599
+        },
+        "candidateOverParent": 0.9795802241686999,
+        "meanCandidateOverParent": 0.9808463229676619
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.offset",
+        "medians": {
+          "parent": 17.235809326171875,
+          "candidate": 16.956939697265625
+        },
+        "medianProcessMeans": {
+          "parent": 17.402662489149307,
+          "candidate": 17.31729465060764
+        },
+        "candidateOverParent": 0.9838203345355649,
+        "meanCandidateOverParent": 0.9950945529975718
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.addDay",
+        "medians": {
+          "parent": 506.58843994140625,
+          "candidate": 510.5315856933594
+        },
+        "medianProcessMeans": {
+          "parent": 505.9062262641059,
+          "candidate": 509.12871636284723
+        },
+        "candidateOverParent": 1.0077837262777043,
+        "meanCandidateOverParent": 1.0063697379700938
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.startOfDay",
+        "medians": {
+          "parent": 136.84991455078125,
+          "candidate": 137.9071044921875
+        },
+        "medianProcessMeans": {
+          "parent": 137.35619099934894,
+          "candidate": 137.62352837456598
+        },
+        "candidateOverParent": 1.007725177943125,
+        "meanCandidateOverParent": 1.0019463074308628
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.hoursInDay",
+        "medians": {
+          "parent": 243.90008544921875,
+          "candidate": 242.655517578125
+        },
+        "medianProcessMeans": {
+          "parent": 243.42518785264758,
+          "candidate": 242.82127888997394
+        },
+        "candidateOverParent": 0.9948972224884568,
+        "meanCandidateOverParent": 0.9975191188389296
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.transitionNext",
+        "medians": {
+          "parent": 213.48239135742188,
+          "candidate": 212.35885620117188
+        },
+        "medianProcessMeans": {
+          "parent": 213.84516059027777,
+          "candidate": 213.41040378146704
+        },
+        "candidateOverParent": 0.9947371061889179,
+        "meanCandidateOverParent": 0.9979669551201875
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.withTime",
+        "medians": {
+          "parent": 171.16464233398438,
+          "candidate": 172.08828735351562
+        },
+        "medianProcessMeans": {
+          "parent": 172.19490559895831,
+          "candidate": 173.0286865234375
+        },
+        "candidateOverParent": 1.005396237254006,
+        "meanCandidateOverParent": 1.0048420766083583
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.format",
+        "medians": {
+          "parent": 289.7896728515625,
+          "candidate": 289.947998046875
+        },
+        "medianProcessMeans": {
+          "parent": 288.902581108941,
+          "candidate": 292.34195285373266
+        },
+        "candidateOverParent": 1.0005463451949634,
+        "meanCandidateOverParent": 1.011904953329215
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.untilDay",
+        "medians": {
+          "parent": 1375.5030212402344,
+          "candidate": 1378.9996337890625
+        },
+        "medianProcessMeans": {
+          "parent": 1394.1744554307725,
+          "candidate": 1379.659915500217
+        },
+        "candidateOverParent": 1.0025420609732107,
+        "meanCandidateOverParent": 0.9895891508598393
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.roundHour",
+        "medians": {
+          "parent": 352.3118896484375,
+          "candidate": 352.4269714355469
+        },
+        "medianProcessMeans": {
+          "parent": 352.5032484266493,
+          "candidate": 352.79325697157117
+        },
+        "candidateOverParent": 1.0003266474691621,
+        "meanCandidateOverParent": 1.000822711694761
+      },
+      {
+        "group": "additionalNamedZoneResults",
+        "name": "zoned.named.offsetLastWeek",
+        "medians": {
+          "parent": 16.99237060546875,
+          "candidate": 16.848052978515625
+        },
+        "medianProcessMeans": {
+          "parent": 17.130879720052086,
+          "candidate": 17.092549641927086
+        },
+        "candidateOverParent": 0.9915069162329428,
+        "meanCandidateOverParent": 0.9977625154836541
+      },
+      {
+        "group": "additionalNamedZoneResults",
+        "name": "zoned.named.offsetOrdinary",
+        "medians": {
+          "parent": 32.8548583984375,
+          "candidate": 15.1650390625
+        },
+        "medianProcessMeans": {
+          "parent": 33.30620998806424,
+          "candidate": 15.476674397786459
+        },
+        "candidateOverParent": 0.4615767591687814,
+        "meanCandidateOverParent": 0.46467834086594506
+      }
+    ],
+    "frequencyRatios": {
+      "parent": 1.419962529648279,
+      "candidate": 1.4207876480872283
+    },
+    "benchmarkBytes": {
+      "parent": 4390328,
+      "candidate": 4391136
+    },
+    "limits": "Original rejected six-process experiments remain. Prebuilding both variants avoids compilation between measured processes; counters diagnose frequency balance, not adjusted speed scores. Fresh Rust/TS and broad gates still required if kept."
+  },
+  "native37": {
+    "rawMember": "native37",
+    "trials": [
+      {
+        "rustFaster": 25,
+        "namedZoneRustFaster": 6,
+        "extendedNamedZoneRustFaster": 3,
+        "additionalNamedZoneRustFaster": 2
+      },
+      {
+        "rustFaster": 25,
+        "namedZoneRustFaster": 7,
+        "extendedNamedZoneRustFaster": 3,
+        "additionalNamedZoneRustFaster": 2
+      },
+      {
+        "rustFaster": 25,
+        "namedZoneRustFaster": 6,
+        "extendedNamedZoneRustFaster": 3,
+        "additionalNamedZoneRustFaster": 2
+      }
+    ],
+    "scope": "Original25/named7/extended3/additional2 separately reported; native excludesbindings. Threefreshdefaultcount processes. Originaloffset aggregate~16.92nsRust vs16.71nsTS, unresolved."
+  },
+  "longOffsetBaseline": {
+    "rawMember": "longOffsetBaseline",
+    "limits": "One full37 process, only originalraw offset uses100kwarm9x2million inboth languages. Originaloffset TS/Rust~0.966, confirmingremainingloss. Othersdefaultcounts; notfinalrepeatedlongcontrol."
+  },
+  "profile": {
+    "rawMember": "baselineHardwareProfile",
+    "futureRuleCyclesPercent": 85.51,
+    "transitionZoneCyclesPercent": 8.85,
+    "limits": "Baselinebefore newmonthclassification. Flat usercycles,~5Ksamples,zero lost. Samefour originalinputs,1millionwarm/3x100million; hardwareprofiletimingsnotproductionclaims. Exactmangledannotations/rawsamples/sourcehashes retained. No stack-memory capture."
+  },
+  "validation": {
+    "rawMember": "validation71",
+    "targets": [
+      "//packages/temporal:instant_test262_full",
+      "//packages/temporal:instant_hermes_test262_full",
+      "//packages/temporal:instant_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_test262_full",
+      "//packages/temporal:plain_date_hermes_test262_full",
+      "//packages/temporal:plain_date_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_date_time_test262_full",
+      "//packages/temporal:plain_date_time_hermes_test262_full",
+      "//packages/temporal:plain_date_time_hermes_bytecode_test262_full",
+      "//packages/temporal:plain_time_test262_full",
+      "//packages/temporal:plain_time_hermes_test262_full",
+      "//packages/temporal:plain_time_hermes_bytecode_test262_full",
+      "//packages/temporal:year_month_test262_full",
+      "//packages/temporal:year_month_hermes_test262_full",
+      "//packages/temporal:year_month_hermes_bytecode_test262_full",
+      "//packages/temporal:month_day_test262_full",
+      "//packages/temporal:month_day_hermes_test262_full",
+      "//packages/temporal:month_day_hermes_bytecode_test262_full",
+      "//packages/temporal:duration_test262_full",
+      "//packages/temporal:duration_hermes_test262_full",
+      "//packages/temporal:duration_hermes_bytecode_test262_full",
+      "//packages/temporal:zoned_test262_full",
+      "//packages/temporal:zoned_hermes_test262_full",
+      "//packages/temporal:zoned_hermes_bytecode_test262_full",
+      "//packages/temporal:sdk_hermes_date_source_test262",
+      "//packages/temporal:sdk_hermes_date_bytecode_test262",
+      "//packages/temporal:sdk_hermes_datetime_source_test262",
+      "//packages/temporal:sdk_hermes_datetime_bytecode_test262",
+      "//packages/temporal:sdk_hermes_time_source_test262",
+      "//packages/temporal:sdk_hermes_time_bytecode_test262",
+      "//packages/temporal:sdk_hermes_duration_source_test262",
+      "//packages/temporal:sdk_hermes_duration_bytecode_test262",
+      "//packages/temporal:sdk_hermes_zoned_source_test262",
+      "//packages/temporal:sdk_hermes_zoned_bytecode_test262",
+      "//packages/temporal:public_calendar_test",
+      "//packages/temporal:short_date_test",
+      "//packages/temporal:instant_test",
+      "//packages/temporal:package_test",
+      "//packages/temporal:types_typecheck_test",
+      "//packages/temporal:no_internal_imports_test",
+      "//packages/temporal:package_json_test",
+      "//packages/temporal:package_exports_test",
+      "//packages/temporal:kernel_test",
+      "//packages/temporal:plain_time_test",
+      "//packages/temporal:arithmetic_calendar_test",
+      "//packages/temporal:calendar_test",
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:registry_test",
+      "//crates/temporal:zoned_string_test",
+      "//packages/temporal:plain_date_time_test",
+      "//packages/temporal:table_calendar_test",
+      "//packages/temporal:duration_oracle_test",
+      "//packages/temporal:zoned_difference_test",
+      "//packages/temporal:relative_duration_test",
+      "//packages/temporal:native_date_output_hermes_oracle_test",
+      "//packages/temporal:native_plain_hermes_oracle_test",
+      "//packages/temporal:host_timezone_test",
+      "//packages/temporal:host_timezone_reference_test",
+      "//packages/temporal:zoned_test",
+      "//packages/temporal:native_timezone_hermes_oracle_test",
+      "//packages/temporal:native_zoned_hermes_oracle_test",
+      "//packages/temporal:legacy_timezone_hermes_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test",
+      "//crates/intl_datetimeformat_calendars:table_calendar_test",
+      "//crates/intl_datetimeformat_calendars:intl_datetimeformat_calendars_test",
+      "//crates/intl_datetimeformat_calendars:compiled_calendars_test",
+      "//packages/intl-datetimeformat:calendar_test",
+      "//packages/intl-datetimeformat:temporal_test",
+      "//packages/intl-datetimeformat:temporal_polyfill_test",
+      "//packages/temporal:host_timezone_reference_node26_test",
+      "//packages/temporal:native_string_hermes_oracle_test"
+    ],
+    "exitCode": 0,
+    "sourceHashLimits": "Runtime/tests unchanged since71pass; two laterbenchmark-only override edits separately formatted/typechecked/full37parity checked. No new71rerun claimed forbenchmark edits."
+  },
+  "rejected": [
+    "Narrowi64offset product: no speedgain.",
+    "Direct cutoff indexing: no speedgain.",
+    "Coarse pivot:9\u201311%offsetregression; publicboundaryoracle/layoutchecks passed; allthreeeditedfilesrestored.",
+    "Week1\u20134monthlengthskip:~3%offsetgainbutbroaderregressionscreenfailed.",
+    "Monthclassification withoutcoldhelpers:~54%ordinarygainbutbroaderregressionscreenfailed.",
+    "Inline hint onshortenedpath: no gain; .text/.rodata/.data identical, source-locationdata differs. Timing spread remains important; no purehintretained."
+  ],
+  "limits": [
+    "No full-API/engine speed claim; original raw Rust lookup compared with cached TS getter.",
+    "Runtime data/layout/cache/dependencies unchanged; executable size includesharness/reference/data and isnot shippedcrate/SDK size.",
+    "Defaultcounts preserved. CPUprofilemodes and optionalrawoffsetwindowoverride areseparate diagnostics, neverreplaceoriginal37/JS48.",
+    "TS originalbefore/after regression audit staysopen despite48/48referencewins."
+  ],
+  "raw": {
+    "file": "rule-classification-controls.json.gz",
+    "sha256": "9ab88fb167d63c7f00478f4b576dbfe33b2ebd656a63ee5e3cdbe10b1c053566",
+    "bytes": 713016,
+    "members": [
+      "narrowOffsetProductRejected",
+      "directCutoffRejected",
+      "coarsePivotRejected",
+      "weekGuardRejected",
+      "monthClassificationRejected",
+      "coldMonthClassification",
+      "inlineHintRejected",
+      "baseline37",
+      "longOffsetBaseline",
+      "native37",
+      "validation71",
+      "inlineSectionAudit",
+      "baselineHardwareProfile",
+      "sourceSnapshots"
+    ]
+  }
+}

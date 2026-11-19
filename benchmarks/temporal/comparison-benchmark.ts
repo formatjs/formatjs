@@ -38,6 +38,11 @@ const transitionWarmup = benchmarkCount(
   128
 )
 const selectedProfile = process.env.FORMATJS_TEMPORAL_BENCHMARK_PROFILE
+const callsiteMode =
+  process.env.FORMATJS_TEMPORAL_BENCHMARK_CALLSITE ?? 'shared'
+if (!['shared', 'isolated'].includes(callsiteMode))
+  throw new RangeError('Invalid benchmark callsite mode: ' + callsiteMode)
+let callsiteIdentity = 0
 if (
   selectedProfile &&
   !['typescript', 'reference', 'officialReference'].includes(selectedProfile)
@@ -633,13 +638,30 @@ function measure(namespace: typeof reference): unknown[] {
       for (let index = 0; index < 8; index++)
         if (test.run(index) !== test.check(index))
           throw new Error('Benchmark parity: ' + test.name)
-      for (let index = 0; index < caseWarmup; index++)
-        checksum += test.run(index & 7).length
+      // Separate JIT feedback per case; shared mode preserves historical timings.
+      const isolatedLoop =
+        callsiteMode === 'isolated'
+          ? (new Function(
+              'run',
+              `return function temporalCase${callsiteIdentity++}(count) {
+                let result = 0;
+                for (let index = 0; index < count; index++)
+                  result += run(index & 7).length;
+                return result;
+              }`
+            )(test.run) as (count: number) => number)
+          : undefined
+      if (isolatedLoop) checksum += isolatedLoop(caseWarmup)
+      else
+        for (let index = 0; index < caseWarmup; index++)
+          checksum += test.run(index & 7).length
       const elapsed = []
       for (let sample = 0; sample < samples; sample++) {
         const start = performance.now()
-        for (let index = 0; index < caseIterations; index++)
-          checksum += test.run(index & 7).length
+        if (isolatedLoop) checksum += isolatedLoop(caseIterations)
+        else
+          for (let index = 0; index < caseIterations; index++)
+            checksum += test.run(index & 7).length
         elapsed.push(((performance.now() - start) * 1_000_000) / caseIterations)
       }
       const ordered = elapsed.slice().sort((a, b) => a - b)
@@ -735,6 +757,7 @@ console.log(
       selectedProfile: selectedProfile ?? 'all',
       iterations,
       samples,
+      callsiteMode,
       warmup,
       checksum,
       typescript,

@@ -17,6 +17,7 @@ import {
   ArithmeticCalendarDaysInMonth,
   ArithmeticCalendarMonthCode,
   ArithmeticCalendarFromEpochDay,
+  ArithmeticGregorianFromEpochDay,
   ArithmeticCalendarToEpochDay,
   ArithmeticCalendarEra,
   HebrewLeapYear as hebrewLeap,
@@ -45,6 +46,54 @@ export interface CalendarDate {
   monthCode: string
   day: number
 }
+const isoFieldsMemo = new Map<number, Readonly<CalendarDate>>()
+const getISOFields = isoFieldsMemo.get.bind(isoFieldsMemo)
+const setISOFields = isoFieldsMemo.set.bind(isoFieldsMemo)
+const deleteISOFields = isoFieldsMemo.delete.bind(isoFieldsMemo)
+const isoFieldsKeys = new Float64Array(64)
+let isoFieldsCount = 0
+let isoFieldsPosition = 0
+let isoFieldsSkip = 0
+
+// Pure ISO metadata; callers validate fields and bounds.
+export function cachedISODateFields(epochDay: number): Readonly<CalendarDate>
+export function cachedISODateFields(
+  epochDay: number,
+  year: number,
+  month: number,
+  day: number
+): Readonly<CalendarDate>
+export function cachedISODateFields(
+  epochDay: number,
+  year?: number,
+  month?: number,
+  day?: number
+): Readonly<CalendarDate> {
+  const remember = isoFieldsSkip === 0
+  if (remember) {
+    const fields = getISOFields(epochDay)
+    if (fields) return fields
+    isoFieldsSkip = 32
+  } else isoFieldsSkip--
+  const fields =
+    year === undefined
+      ? ArithmeticGregorianFromEpochDay('iso8601', epochDay)
+      : {
+          year,
+          month: month!,
+          monthCode: 'M' + (month! < 10 ? '0' : '') + month,
+          day: day!,
+        }
+  if (remember) {
+    if (isoFieldsCount === 64) deleteISOFields(isoFieldsKeys[isoFieldsPosition])
+    else isoFieldsCount++
+    setISOFields(epochDay, fields)
+    isoFieldsKeys[isoFieldsPosition] = epochDay
+    isoFieldsPosition = (isoFieldsPosition + 1) & 63
+  }
+  return fields
+}
+
 export interface DateDuration {
   years?: number
   months?: number

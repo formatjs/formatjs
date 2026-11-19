@@ -30,7 +30,76 @@ WASM. Select `FORMATJS_TEMPORAL_BENCHMARK_PROFILE=typescript`, `reference` or
 Rust beats TS, and TS beats both references across matched workloads. Preserve
 spec behavior, Test262/ICU/Hermes gates and record size/startup tradeoffs.
 
-### Calendar and field checkpoint
+`FORMATJS_TEMPORAL_BENCHMARK_CALLSITE=isolated` gives each case its own generated
+timing loop and JIT feedback. Default `shared` preserves historical measurements.
+Both modes retain all 48 workloads, eight inputs, parity checks and consumed
+outputs. Report modes separately: filtering cases also changes shared-loop JIT
+feedback. Full-suite V8 traces show repeated `wrong call target` deoptimizations
+in both parent and candidate; this alone does not explain individual regressions.
+
+The provisional offset/ISO-field candidate passes all 71 focused checks and is
+41,503 gzip bytes. Six original shared-loop full-48 controls flag YearMonth update,
+round/format, YearMonth projection and transition timing increases. Longer
+eight-case diagnostics reverse several comparisons. Regression audit stays open;
+these diagnostics do not replace original results or establish new reference wins.
+
+### Reference and recurring-rule checkpoint
+
+Three fresh processes per implementation show TS wins all 48 medians and means
+against both pinned references. Longer controls support the four close cases.
+Consumer is 41,503 gzip bytes (+385 versus the preceding checkpoint). Fresh import
+plus first operation is ~22.0 ms TS, ~39.7 ms basic and ~29.5 ms official; process
+launch is excluded. Original TS before/after regression audit remains open.
+See [day-start experiments](day-start-experiments.json) for all samples and limits.
+
+Rust ordinary offset lookup improves ~54%, from ~32.9 ns to ~15.2 ns, across 12
+controls with both optimized binaries built before measurement. Conservative
+month boundaries retain event evaluation; cold helpers handle remaining paths.
+All 37 cases pass the 3% mean/4% median regression screen. New offset cases cover
+last-week rules and ordinary months; original 25, named 7 and extended 3 stay
+separate. Fresh Rust/TS runs win 36/37, 37/37 and 36/37. Original offset lookup
+remains near tie/slower (~16.92 ns Rust, ~16.71 ns TS by process medians).
+All 71 Rust/Node/Test262/ICU/Hermes checks pass. Goal remains open.
+See [rule experiments](rule-classification-experiments.json).
+
+Standalone Rust CPU profiling uses `FORMATJS_TEMPORAL_NATIVE_PROFILE=offset`
+with `bazel run -c opt //benchmarks/temporal/rust:native_benchmark`. Values
+`offset-last-week` and `offset-ordinary` select the other offset cases. These use
+one million warmup and three samples of 100 million calls; profiling samples stay
+separate from production timing claims. Baseline hardware samples put ~86% of
+original offset cycles in recurring rules, ~9% in outer zone lookup.
+
+For matched long controls, set
+`FORMATJS_TEMPORAL_NATIVE_OFFSET_ITERATIONS=2000000` and run
+`bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. All 37 workloads
+remain; only original offset uses 100,000 warmup and nine samples of two million
+calls in both languages. Default counts stay unchanged without the override.
+
+### Earlier day-start and native coverage checkpoint
+
+Six isolated full-48 controls improve TS day start ~26% and hours-in-day ~35%.
+Normal resolution reuses validated local nanoseconds instead of converting to ISO
+fields and back. Gap/transition fallback, bounds and native-owner checks remain.
+Consumer is 41,234 gzip bytes (+116). No new per-value storage, data or dependency.
+
+All 71 focused Rust/Node/ICU/package/Hermes targets pass. Three optimized native
+runs win all 25 original, 7 named-zone and 3 additional cases, reported separately.
+The new cases cover zoned formatting, day-based difference and hour rounding;
+original workloads and inputs stay unchanged. Native timings exclude bindings.
+
+Cache experiments were rejected: uniform shared state made hot offset reads ~81%
+faster but cold named reads ~9.5% slower, with unchanged retained heap. Full controls
+retain other increases up to ~3.6%; regression audit remains open. Three fresh
+processes per implementation show 45/48 basic and 48/48 official median wins.
+Basic losses remain: offset lookup 2.76x, field construction ~7.5%, YearMonth
+parsing ~2%. YearMonth addition is a near tie by means. Goal remains open.
+
+Fresh-process import plus first operation is ~22.9 ms for TS, ~39.7 ms for basic
+reference and ~29.9 ms for official reference. Process launch is excluded; this
+does not establish a change-specific startup improvement.
+See [day-start experiments](day-start-experiments.json) for raw samples and limits.
+
+### Earlier calendar and field checkpoint
 
 Six isolated full-48-workload controls retain shared bounded Gregorian conversion,
 static ISO field preparation, prepared ISO conversion and one-array host timezone

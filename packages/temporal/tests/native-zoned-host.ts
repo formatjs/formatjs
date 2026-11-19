@@ -20,6 +20,7 @@ const values = [
   '2020-10-04T01:45[Australia/Lord_Howe]',
 ].map(value => Temporal.ZonedDateTime.from(value))
 const ends = values.map(value => value.add({months: 1, hours: 2}))
+const offsets = values.map(value => value.offsetNanoseconds)
 const actions = values.flatMap((value, index) => [
   {operation: 'addZonedDateTime', run: () => value.add({days: 1})},
   {operation: 'addZonedDateTime', run: () => value.subtract({hours: 24})},
@@ -35,8 +36,13 @@ const actions = values.flatMap((value, index) => [
   {operation: 'roundZonedDateTime', run: () => value.round('hour')},
   {operation: 'startOfZonedDay', run: () => value.startOfDay()},
   {operation: 'zonedProperties', run: () => value.hoursInDay},
+  {operation: 'zonedProperties', run: () => value.offsetNanoseconds},
 ])
 configureNativeTemporal(query)
+values.forEach((value, index) => {
+  if (value.offsetNanoseconds !== offsets[index])
+    throw new Error('Native offset differs from warmed TS value')
+})
 for (const action of actions) action.run()
 try {
   for (const action of actions) {

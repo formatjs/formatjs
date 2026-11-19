@@ -2,6 +2,7 @@ import {nativeTemporal} from '#packages/temporal/native.js'
 import {ArithmeticCalendarToEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import {
   calendarFromEpochDayRaw,
+  cachedISODateFields,
   calendarToEpochDayRaw,
   daysInMonth,
   calendarStartOfYear,
@@ -197,18 +198,19 @@ export function parseShortSlot(
         parsed.day
       )
     if (kind === 'year-month') checkYearMonth(epochDay)
+    const referenceDay =
+      kind === 'month-day'
+        ? epochDay
+        : checkYearMonth(epochDay - parsed.day + 1)
     return {
-      epochDay:
-        kind === 'month-day'
-          ? epochDay
-          : checkYearMonth(epochDay - parsed.day + 1),
+      epochDay: referenceDay,
       calendar,
-      [isoDateFields]: {
+      [isoDateFields]: cachedISODateFields(
+        referenceDay,
         year,
-        month: parsed.month,
-        monthCode: 'M' + (parsed.month < 10 ? '0' : '') + parsed.month,
-        day: kind === 'month-day' ? parsed.day : 1,
-      },
+        parsed.month,
+        kind === 'month-day' ? parsed.day : 1
+      ),
     }
   }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)

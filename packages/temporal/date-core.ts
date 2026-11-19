@@ -13,6 +13,7 @@ import {
 import {
   calendarToEpochDay,
   isoDayFromPreparedFields,
+  cachedISODateFields,
   calendarIds,
   calendarEra,
   calendarYearFromEra,
@@ -604,7 +605,7 @@ export function dateProperty(
       slot.calendar === 'iso8601' &&
       (extended || (slot.epochDay >= -100000001 && slot.epochDay <= 100000000)),
     fields = cacheISO
-      ? (slot[isoDateFields] ??= dateFields(slot, extended))
+      ? (slot[isoDateFields] ??= cachedISODateFields(slot.epochDay))
       : dateFields(slot, extended),
     cal = baseCalendar(slot.calendar)
   switch (key) {

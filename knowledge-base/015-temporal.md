@@ -11,7 +11,23 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 Goal: native Rust faster than TS; pure TS faster than both references across
 matched public workloads, preserving spec behavior and preventing regressions.
 
-Current TS calendar/field checkpoint shares bounded Gregorian conversion and
+Current combined TS candidate wins all 48 medians and means against both pinned
+references across three fresh processes each. Longer controls support four close
+cases. Consumer is 41,503 gzip bytes (+385); import plus first operation is
+~22.0 ms TS, ~39.7 ms basic and ~29.5 ms official, excluding process launch.
+Original TS before/after regression audit remains open.
+See [day-start experiments](../benchmarks/temporal/day-start-experiments.json).
+
+Rust classifies safe ordinary months directly and keeps event evaluation near
+possible shifted boundaries. Cold helpers handle remaining paths. Twelve prebuilt
+controls improve ordinary offset lookup ~54%; all 37 cases pass the regression
+screen. All 71 Rust/Node/Test262/ICU/Hermes checks pass. Fresh Rust/TS runs win
+36/37, 37/37 and 36/37; original raw offset remains near tie/slower. Separate
+25/7/3/2 counts retain original scope and add last-week/ordinary-month coverage.
+Goal remains open. Benchmark README documents long controls and CPU profiles.
+See [rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
+
+Previous TS calendar/field checkpoint shares bounded Gregorian conversion and
 prepared ISO fields. Six full-48 controls improve field construction ~20%, date
 updates ~34%, zoned formatting ~21% and hours-in-day ~24%. All 71 focused checks
 pass. Consumer is 41,118 gzip bytes (+466); mixed cold use improves with unchanged

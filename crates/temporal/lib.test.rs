@@ -2885,3 +2885,72 @@ fn offsets_preserve_wide_nanosecond_second_boundaries() {
         }
     }
 }
+
+#[test]
+fn recurring_month_offsets_match_shifted_transition_intervals() {
+    use formatjs_temporal::{FutureRule, TimeZone, TransitionRule, TransitionZone};
+    let month = |month, week, seconds| TransitionRule::Month {
+        month,
+        week,
+        weekday: 0,
+        seconds,
+    };
+    for (year_start, first_change, second_change, days) in [
+        (
+            "1969-01-01T00:00Z",
+            "1969-01-25T00:00:02Z",
+            "1969-12-07T23:59:58Z",
+            365,
+        ),
+        (
+            "2024-01-01T00:00Z",
+            "2024-01-27T00:00:02Z",
+            "2024-12-01T23:59:58Z",
+            366,
+        ),
+    ] {
+        let year_start = year_start.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let first_change = first_change.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let second_change = second_change
+            .parse::<Instant>()
+            .unwrap()
+            .epoch_nanoseconds();
+        for (standard, daylight, start, end, southern) in [
+            (
+                86399,
+                -86399,
+                month(2, 1, -604799),
+                month(11, 5, 604799),
+                false,
+            ),
+            (
+                -86399,
+                86399,
+                month(11, 5, 604799),
+                month(2, 1, -604799),
+                true,
+            ),
+        ] {
+            let future = FutureRule::new(standard, Some((daylight, start, end))).unwrap();
+            let zone = TransitionZone::new(standard, &[], Some(future)).unwrap();
+            for day in 0..days {
+                for clock in [0, NANOSECONDS_PER_DAY / 2, NANOSECONDS_PER_DAY - 1] {
+                    let nanoseconds = year_start + i128::from(day) * NANOSECONDS_PER_DAY + clock;
+                    let between = nanoseconds >= first_change && nanoseconds < second_change;
+                    let expected = if between != southern {
+                        daylight
+                    } else {
+                        standard
+                    };
+                    assert_eq!(
+                        zone.offset_nanoseconds(
+                            Instant::from_epoch_nanoseconds(nanoseconds).unwrap()
+                        ),
+                        i128::from(expected) * 1_000_000_000,
+                        "nanoseconds={nanoseconds}, southern={southern}"
+                    );
+                }
+            }
+        }
+    }
+}

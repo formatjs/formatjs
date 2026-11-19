@@ -6,7 +6,51 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
-## Calendar and field checkpoint
+## Current reference and recurring-rule checkpoint
+
+Current combined TS candidate wins all 48 medians and means against both pinned
+references across three fresh processes each. Longer controls support four close
+cases. Consumer is 41,503 gzip bytes (+385); import plus first operation is
+~22.0 ms TS, ~39.7 ms basic and ~29.5 ms official, excluding process launch.
+Original TS before/after regression audit remains open.
+See [day-start experiments](../benchmarks/temporal/day-start-experiments.json).
+
+Rust classifies safe ordinary months directly and keeps event evaluation near
+possible shifted boundaries. Cold helpers handle remaining paths. Twelve prebuilt
+controls improve ordinary offset lookup ~54%; all 37 cases pass the regression
+screen. All 71 Rust/Node/Test262/ICU/Hermes checks pass. Fresh Rust/TS runs win
+36/37, 37/37 and 36/37; original raw offset remains near tie/slower. Separate
+25/7/3/2 counts retain original scope and add last-week/ordinary-month coverage.
+Goal remains open. Benchmark README documents long controls and CPU profiles.
+See [rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
+
+## Earlier day-start and native coverage checkpoint
+
+Six full-48 controls improve TS day start ~26% and hours-in-day ~35% by retaining
+validated local nanoseconds during resolution. Bounds, native-owner dispatch and
+gap/transition fallback remain. Consumer is 41,234 gzip bytes (+116); no per-value
+storage or data change. All 71 focused Rust/Node/ICU/package/Hermes targets pass.
+
+Rust wins 25/25 original, 7/7 named and 3/3 additional named cases in each of three
+optimized runs. New cases cover formatting, day-based difference and hour rounding;
+original cases stay unchanged. This excludes binding costs and broader API claims.
+
+Shared-state offset caches were rejected: hot reads improved ~81%, but cold named
+reads regressed ~9.5%. Full controls retain other increases up to ~3.6%; regression
+audit remains open. Three fresh processes per implementation show 45/48 basic and
+48/48 official median wins. Basic losses: offset lookup 2.76x, field construction
+~7.5%, YearMonth parsing ~2%; YearMonth addition is a near tie by means.
+Import plus first operation is ~22.9 ms TS, ~39.7 ms basic and ~29.9 ms official,
+excluding process launch. Goal remains open.
+See [day-start experiments](../benchmarks/temporal/day-start-experiments.json).
+
+Provisional bounded offset/readonly ISO-field reuse passes all 71 checks; consumer
+is 41,503 gzip bytes. Six original full-48 controls flag timing regressions.
+Longer selected-case diagnostics reverse several comparisons. Shared-loop V8
+deoptimizations occur in both builds; independent-callsite measurements investigate
+that confound. Original timings stay recorded. No new full-reference win claim.
+
+## Earlier calendar and field checkpoint
 
 Six isolated full-48-workload controls retain shared bounded Gregorian conversion,
 static ISO field preparation, prepared ISO conversion and one-array host timezone

@@ -582,9 +582,16 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
   day ??= epochDayOf(local(slot))
   const kernel = zonedKernel(slot.timeZone),
     midnight = BigInt(day) * nsPerDay
-  const fields = epochNanosecondsToISO(midnight),
-    candidates = kernel.possibleInstants(fields)
+  if (
+    midnight <= -8_640_000_000_000_000_000_000n - nsPerDay ||
+    midnight >= 8_640_000_000_000_000_000_000n + nsPerDay
+  )
+    throw new RangeError('Local date out of range')
+  const candidates = kernel.possibleInstantsFromEpochNanoseconds
+    ? kernel.possibleInstantsFromEpochNanoseconds(midnight)
+    : kernel.possibleInstants(epochNanosecondsToISO(midnight))
   if (candidates.length) return candidates[0]
+  const fields = epochNanosecondsToISO(midnight)
   let event: bigint | null = kernel.resolve(fields)
   while (event !== null && event >= midnight - nsPerDay) {
     if (event > -8_640_000_000_000_000_000_000n) {
@@ -600,6 +607,46 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
     event = kernel.transition(event, 'previous')
   }
   throw new RangeError('No day boundary in instant range')
+}
+
+const numericOffsetSlots: (ZonedSlot | undefined)[] = [
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+]
+const numericOffsetValues = new Float64Array(16)
+let numericOffsetPosition = 0
+let numericOffsetSkip = 0
+function numericOffset(slot: ZonedSlot): number {
+  const remember = numericOffsetSkip === 0
+  if (remember) {
+    for (let index = 0; index < numericOffsetSlots.length; index++) {
+      if (numericOffsetSlots[index] === slot) return numericOffsetValues[index]
+    }
+    numericOffsetSkip = 32
+  } else numericOffsetSkip--
+  const value = Number(
+    zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
+  )
+  if (remember) {
+    numericOffsetSlots[numericOffsetPosition] = slot
+    numericOffsetValues[numericOffsetPosition] = value
+    numericOffsetPosition = (numericOffsetPosition + 1) & 15
+  }
+  return value
 }
 
 function offsetText(slot: ZonedSlot): string {
@@ -717,9 +764,7 @@ class ZonedDateTimeValue {
     const slot = read(this),
       cached = zonedSnapshot(slot)
     if (cached) return cached.value.values.offsetNanoseconds as number
-    return Number(
-      zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
-    )
+    return numericOffset(slot)
   }
   get offset(): string {
     return offsetText(read(this))
