@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.4.0...formatjs_intl_hermes_v0.4.1) (2026-11-19)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * formatjs_intl_datetimeformat_calendars bumped from 0.3.0 to 1.0.0
+
 ## [0.4.0](https://github.com/formatjs/formatjs/compare/formatjs_intl_hermes_v0.3.3...formatjs_intl_hermes_v0.4.0) (2026-11-17)
 
 

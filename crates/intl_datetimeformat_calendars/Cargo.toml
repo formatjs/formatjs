@@ -1,6 +1,6 @@
 [package]
 name = "formatjs_intl_datetimeformat_calendars"
-version = "0.3.0"
+version = "1.0.0"
 edition = "2024"
 authors = ["FormatJS Team", "Long Ho <holevietlong@gmail.com>"]
 description = "Numeric calendar math and optional native DateTimeFormat providers"
