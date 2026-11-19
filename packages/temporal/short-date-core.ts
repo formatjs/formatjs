@@ -10,7 +10,6 @@ import {
   type Overflow,
 } from '#packages/temporal/calendar.js'
 import {
-  calendarAnnotation,
   calendarNameOption,
   formatISODate,
   dateFields,
@@ -245,7 +244,10 @@ export function formatShortDate(
     return kind === 'year-month'
       ? native!.formatPlainYearMonth(slot, option)
       : native!.formatPlainMonthDay(slot, option)
-  const annotation = calendarAnnotation(slot.calendar, option)
+  const annotation =
+    option === 'never' || (option === 'auto' && slot.calendar === 'iso8601')
+      ? ''
+      : `[${option === 'critical' ? '!' : ''}u-ca=${slot.calendar}]`
   const full =
     slot.calendar !== 'iso8601' || option === 'always' || option === 'critical'
   return (

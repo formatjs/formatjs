@@ -6,6 +6,20 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
+## Current TS formatter audit
+
+Current TS candidate skips repeated ISO regulation, getter and formatting work.
+All 71 Rust/Node/Test262/ICU/Hermes gates pass with no new exclusions. Consumer
+is 41,604 gzip bytes (+486 versus regression baseline). Six original full-48
+controls pass 47/48 rows at the 3% median/mean screen. DateTime parsing flags
+median +3.3% while mean improves 0.25%; that flag remains open. Unchanged parser
+algorithms narrow the investigation to layout/JIT/measurement effects; longer
+causal-prefix diagnostics are prepared. Fresh reference/native comparisons run
+independently. Import plus first operation totals 21.8 ms TS, 39.6 ms basic and
+29.4 ms official, excluding process launch. TS first operation alone is slower
+than official. All samples, raw profiles and emitted modules remain in
+[day-start evidence](../benchmarks/temporal/day-start-experiments.json).
+
 ## Current native Gregorian lookup checkpoint
 
 Rust Gregorian conversion uses a 4,568-byte immutable table for 128-day blocks.

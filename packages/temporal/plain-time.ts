@@ -336,7 +336,7 @@ function format(
   remaining %= 3_600_000_000_000
   const minute = Math.floor(remaining / 60_000_000_000)
   remaining %= 60_000_000_000
-  const pad = (part: number): string => String(part).padStart(2, '0')
+  const pad = (part: number): string => (part < 10 ? '0' + part : String(part))
   let result = pad(hour) + ':' + pad(minute)
   if (precision !== 'minute') {
     result += ':' + pad(Math.floor(remaining / 1_000_000_000))

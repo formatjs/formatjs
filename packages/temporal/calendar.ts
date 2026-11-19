@@ -309,18 +309,28 @@ export function calendarToEpochDayRaw(
   }
   let month: number
   if (fields.monthCode !== undefined) {
-    month = monthFromCode(calendar, year, fields.monthCode, overflow)
+    month =
+      calendar === 'iso8601'
+        ? isoMonthFromCode(fields.monthCode)
+        : monthFromCode(calendar, year, fields.monthCode, overflow)
     if (fields.month !== undefined && integer(fields.month) !== month)
       throw new RangeError('Month and monthCode disagree')
   } else {
     if (fields.month === undefined)
       throw new TypeError('Month or monthCode required')
-    month = regulate(fields.month, 1, monthsInYear(calendar, year), overflow)
+    month = regulate(
+      fields.month,
+      1,
+      calendar === 'iso8601' ? 12 : monthsInYear(calendar, year),
+      overflow
+    )
   }
   const day = regulate(
     fields.day,
     1,
-    daysInMonth(calendar, year, month),
+    calendar === 'iso8601'
+      ? ArithmeticCalendarDaysInMonth('iso8601', year, month)
+      : daysInMonth(calendar, year, month),
     overflow
   )
   if (!isLunisolar(calendar) && calendar !== 'islamic-umalqura')

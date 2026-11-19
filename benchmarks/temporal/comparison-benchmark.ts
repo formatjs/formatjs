@@ -37,6 +37,19 @@ const transitionWarmup = benchmarkCount(
   'FORMATJS_TEMPORAL_TRANSITION_WARMUP',
   128
 )
+const longCases = new Set(
+  (process.env.FORMATJS_TEMPORAL_BENCHMARK_LONG_CASES ?? '')
+    .split(',')
+    .filter(Boolean)
+)
+const longIterations = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_LONG_ITERATIONS',
+  iterations
+)
+const longWarmup = benchmarkCount(
+  'FORMATJS_TEMPORAL_BENCHMARK_LONG_WARMUP',
+  warmup
+)
 const selectedProfile = process.env.FORMATJS_TEMPORAL_BENCHMARK_PROFILE
 const callsiteMode =
   process.env.FORMATJS_TEMPORAL_BENCHMARK_CALLSITE ?? 'shared'
@@ -627,14 +640,20 @@ function measure(namespace: typeof reference): unknown[] {
           .toString(),
     },
   ]
+  for (const name of longCases)
+    if (!cases.some(test => test.name === name))
+      throw new RangeError('Unknown long benchmark case: ' + name)
   const selected = process.env.FORMATJS_TEMPORAL_BENCHMARK_FILTER?.split(',')
   return cases
     .filter(test => !selected || selected.includes(test.name))
     .map(test => {
-      const caseIterations = profiling
-        ? Math.max(test.iterations ?? iterations, 50000)
+      const count = longCases.has(test.name)
+        ? longIterations
         : (test.iterations ?? iterations)
-      const caseWarmup = test.warmup ?? warmup
+      const caseIterations = profiling ? Math.max(count, 50000) : count
+      const caseWarmup = longCases.has(test.name)
+        ? longWarmup
+        : (test.warmup ?? warmup)
       for (let index = 0; index < 8; index++)
         if (test.run(index) !== test.check(index))
           throw new Error('Benchmark parity: ' + test.name)
@@ -749,7 +768,7 @@ console.log(
       cpu: cpus()[0]?.model ?? 'unknown',
       scope:
         'Actual published default TypeScript Temporal namespace versus temporal-polyfill 1.0.7 basic ISO/Gregorian implementation and @js-temporal/polyfill 0.5.1. Same 48 public workloads retained from previous facade benchmark. TS uses compact ICU4X lunisolar arithmetic/data, host Intl Umm al-Qura and named timezones. ISO date and zoned cases; no non-ISO throughput claim. Hot operations exclude startup. Selected profiles allow independent fresh processes. No native backend installed.',
-      method: `Eight varying inputs, output parity checked before timing, ${warmup} warmup, ${samples} samples x ${iterations} calls; transition-specific counts retained. ${selectedProfile ? 'Selected profile: ' + selectedProfile : 'TS, temporal-polyfill, then official reference in one process'}. Prefer isolated profiles for comparisons. Checksum consumes outputs. Size uses esbuild es2022 minification and gzip level9; export-all TS consumer and reference namespace consumers. Profiling runs are separate from production timings.`,
+      method: `Eight varying inputs, output parity checked before timing, ${warmup} warmup, ${samples} samples x ${iterations} calls; transition and per-case overrides reported per row. ${selectedProfile ? 'Selected profile: ' + selectedProfile : 'TS, temporal-polyfill, then official reference in one process'}. Prefer isolated profiles for comparisons. Checksum consumes outputs. Size uses esbuild es2022 minification and gzip level9; export-all TS consumer and reference namespace consumers. Profiling runs are separate from production timings.`,
       references: {
         'temporal-polyfill': '1.0.7',
         '@js-temporal/polyfill': '0.5.1',
@@ -759,6 +778,9 @@ console.log(
       samples,
       callsiteMode,
       warmup,
+      longCases: [...longCases],
+      longIterations,
+      longWarmup,
       checksum,
       typescript,
       reference: referenceResults,

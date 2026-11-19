@@ -37,11 +37,20 @@ outputs. Report modes separately: filtering cases also changes shared-loop JIT
 feedback. Full-suite V8 traces show repeated `wrong call target` deoptimizations
 in both parent and candidate; this alone does not explain individual regressions.
 
-The provisional offset/ISO-field candidate passes all 71 focused checks and is
-41,503 gzip bytes. Six original shared-loop full-48 controls flag YearMonth update,
-round/format, YearMonth projection and transition timing increases. Longer
-eight-case diagnostics reverse several comparisons. Regression audit stays open;
-these diagnostics do not replace original results or establish new reference wins.
+Current TS candidate skips repeated ISO regulation, getter and formatting work.
+All 71 Rust/Node/Test262/ICU/Hermes checks pass. Consumer is 41,604 gzip bytes
+(+486 versus regression baseline; basic reference 19,367, official 47,066).
+Six full-48 controls pass 47/48 rows at the 3% median/mean screen. DateTime
+parsing flags median +3.3% while mean improves 0.25%; investigation stays open.
+Longer causal-prefix diagnostics are prepared; current references/native refresh
+run independently. Import plus first operation totals 21.8 ms TS, 39.6 ms basic
+and 29.4 ms official, excluding launch; TS first operation alone remains slower
+than official. Current reference speed wins are not yet established.
+
+Earlier offset/ISO-field controls showed small timing increases that changed
+between full-suite runs. Full CPU profiles, source snapshots and every contrary
+sample remain in [day-start evidence](day-start-experiments.json). Filtered timings
+and profiler timings are diagnostic; neither replaces original full-48 controls.
 
 ### Native Gregorian lookup checkpoint
 

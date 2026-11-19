@@ -645,7 +645,7 @@ export function dateProperty(
       }
       return daysInMonth(cal, fields.year, fields.month)
     case 'monthsInYear':
-      return monthsInYear(cal, fields.year)
+      return cal === 'iso8601' ? 12 : monthsInYear(cal, fields.year)
     case 'daysInYear':
       if (cal === 'iso8601') return DaysInYear(fields.year)
       return (
