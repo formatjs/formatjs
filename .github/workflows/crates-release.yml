@@ -71,7 +71,7 @@ jobs:
           disk-cache: ${{ github.workflow }}
           repository-cache: true
 
-      - name: Select Crates
+      - name: Plan Crates
         id: crates
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -181,28 +181,17 @@ jobs:
               ;;
           esac
 
-          if [ "${#crates[@]}" -eq 0 ]; then
-            echo "No crates selected for this event"
-            echo "has_crates=false" >> "$GITHUB_OUTPUT"
-            echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          has_intl=false
-          has_temporal=false
+          plan_args=(
+            --workspace "$GITHUB_WORKSPACE"
+            --plan "$RUNNER_TEMP/crates-publish-plan.json"
+            --plan-only
+            --github-output "$GITHUB_OUTPUT"
+          )
           for crate in "${crates[@]}"; do
-            if contains_crate "$crate" "${intl_crates[@]}"; then has_intl=true; fi
-            if [ "$crate" = formatjs_temporal ]; then has_intl=true; has_temporal=true; fi
+            plan_args+=(--crate "$crate")
           done
-          {
-            echo "has_intl=$has_intl"
-            echo "has_temporal=$has_temporal"
-            echo "has_crates=true"
-            echo "dry_run=$dry_run"
-            echo "names<<EOF"
-            printf '%s\n' "${crates[@]}"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          bazel run //tools/cargo:publish -- "${plan_args[@]}"
+          echo "dry_run=$dry_run" >> "$GITHUB_OUTPUT"
 
       - name: Setup Cargo Toolchain
         if: ${{ steps.crates.outputs.has_crates == 'true' }}
@@ -216,6 +205,7 @@ jobs:
           set -euo pipefail
 
           targets=(
+            //tools/cargo:publish_test
             //crates/apple_printf_parser:apple_printf_parser_test
             //crates/apple_printf_parser:doc_test
             //crates/java_printf_parser:java_printf_parser_test
@@ -272,17 +262,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          intl_packages=()
-          while IFS= read -r crate; do
-            if [ -n "${INTL_RELEASE_DIR:-}" ] && [ -f "$INTL_RELEASE_DIR/crates/${crate#formatjs_}/Cargo.toml" ]; then
-              intl_packages+=(-p "$crate")
-            else
-              cargo publish --locked --dry-run -p "$crate"
-            fi
-          done <<< "${{ steps.crates.outputs.names }}"
-          if [ "${#intl_packages[@]}" -gt 0 ]; then
-            (cd "$INTL_RELEASE_DIR" && cargo publish --locked --dry-run --all-features "${intl_packages[@]}")
-          fi
+          publish_args=(--workspace "$GITHUB_WORKSPACE" --plan "$RUNNER_TEMP/crates-publish-plan.json" --dry-run)
+          if [ -n "${INTL_RELEASE_DIR:-}" ]; then publish_args+=(--release-dir "$INTL_RELEASE_DIR"); fi
+          bazel run //tools/cargo:publish -- "${publish_args[@]}"
 
       - name: Authenticate with crates.io
         id: auth
@@ -297,93 +279,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          wait_for_crate() {
-            local crate="$1"
-            local version="$2"
-            local url="https://crates.io/api/v1/crates/$crate/$version"
-
-            for attempt in $(seq 1 30); do
-              if curl \
-                --fail \
-                --silent \
-                --show-error \
-                --header "Accept: application/json" \
-                --user-agent "formatjs-crates-release (https://github.com/formatjs/formatjs)" \
-                "$url" > /dev/null; then
-                echo "$crate $version is available on crates.io"
-                return 0
-              fi
-
-              if [ "$attempt" -lt 30 ]; then
-                sleep 20
-              fi
-            done
-
-            echo "$crate $version did not become available on crates.io" >&2
-            return 1
-          }
-
-          publishes_crate() {
-            local crate="$1"
-
-            while IFS= read -r selected_crate; do
-              if [ "$selected_crate" = "$crate" ]; then
-                return 0
-              fi
-            done <<< "${{ steps.crates.outputs.names }}"
-
-            return 1
-          }
-
-          wait_if_published_by_this_run() {
-            local crate="$1"
-            local version="$2"
-
-            if publishes_crate "$crate"; then
-              wait_for_crate "$crate" "$version"
-            else
-              echo "$crate is not selected in this run; skipping crates.io availability wait"
-            fi
-          }
-
-          dependency_version() {
-            local manifest="$1"
-            local crate="$2"
-            sed -n "s/^$crate = .*version = \"\\([^\"]*\\)\".*/\\1/p" "$manifest" | head -1
-          }
-
-          intl_packages=()
-          while IFS= read -r crate; do
-            if [ -n "${INTL_RELEASE_DIR:-}" ] && [ -f "$INTL_RELEASE_DIR/crates/${crate#formatjs_}/Cargo.toml" ]; then
-              intl_packages+=(-p "$crate")
-              continue
-            fi
-            case "$crate" in
-              formatjs_icu_messageformat_parser)
-                wait_if_published_by_this_run \
-                  formatjs_icu_skeleton_parser \
-                  "$(dependency_version crates/icu_messageformat_parser/Cargo.toml formatjs_icu_skeleton_parser)"
-                ;;
-              formatjs_icu_messageformat)
-                wait_if_published_by_this_run \
-                  formatjs_icu_skeleton_parser \
-                  "$(dependency_version crates/icu_messageformat/Cargo.toml formatjs_icu_skeleton_parser)"
-                wait_if_published_by_this_run \
-                  formatjs_icu_messageformat_parser \
-                  "$(dependency_version crates/icu_messageformat/Cargo.toml formatjs_icu_messageformat_parser)"
-                ;;
-              formatjs_intl)
-                wait_if_published_by_this_run \
-                  formatjs_intl_macros \
-                  "$(dependency_version crates/formatjs_intl/Cargo.toml formatjs_intl_macros)"
-                wait_if_published_by_this_run \
-                  formatjs_icu_messageformat \
-                  "$(dependency_version crates/formatjs_intl/Cargo.toml formatjs_icu_messageformat)"
-                ;;
-            esac
-
-            cargo publish --locked -p "$crate"
-          done <<< "${{ steps.crates.outputs.names }}"
-          if [ "${#intl_packages[@]}" -gt 0 ]; then
-            (cd "$INTL_RELEASE_DIR" && cargo publish --locked --all-features "${intl_packages[@]}")
-          fi
+          publish_args=(--workspace "$GITHUB_WORKSPACE" --plan "$RUNNER_TEMP/crates-publish-plan.json")
+          if [ -n "${INTL_RELEASE_DIR:-}" ]; then publish_args+=(--release-dir "$INTL_RELEASE_DIR"); fi
+          bazel run //tools/cargo:publish -- "${publish_args[@]}"
