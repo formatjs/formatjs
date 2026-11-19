@@ -43,7 +43,29 @@ round/format, YearMonth projection and transition timing increases. Longer
 eight-case diagnostics reverse several comparisons. Regression audit stays open;
 these diagnostics do not replace original results or establish new reference wins.
 
-### Reference and recurring-rule checkpoint
+### Native Gregorian lookup checkpoint
+
+Rust Gregorian conversion uses a 4,568-byte immutable table for 128-day blocks.
+One year carry replaces repeated year divisions; signed-era and month/day math
+stay. Twelve controls improve original offset median ~9% and mean ~10%; all 37
+cases pass the regression screen. Three default and three long-offset fresh
+Rust/TS runs win all 37 medians and means, preserving separate 25/7/3/2 groups.
+All 71 Rust/Node/Test262/ICU/Hermes checks pass, with no new exclusions.
+
+Scattered 8,192-date controls improve ~12%. First conversion adds ~60 ns;
+probe process wall time stays unchanged within noise. Native benchmark executable
+adds 4,336 bytes including harness/reference/data; this is not a shipped SDK size.
+No locale/timezone data, allocation, per-value cache, API or TS change. TS
+regression and reference refresh remain open; goal stays active.
+See [rule experiments](rule-classification-experiments.json).
+
+Reproduce wide-date and first-call probes with
+`bazel run -c opt //benchmarks/temporal/rust:lookup_benchmark` and
+`bazel run -c opt //benchmarks/temporal/rust:lookup_benchmark -- --first 0`.
+First-call timing excludes process launch; wide controls keep 8,192 timestamps
+across Temporal's range and consume public Instant-to-ISO date fields.
+
+### Earlier reference and recurring-rule checkpoint
 
 Three fresh processes per implementation show TS wins all 48 medians and means
 against both pinned references. Longer controls support the four close cases.

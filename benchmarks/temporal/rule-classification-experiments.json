@@ -1,6 +1,6 @@
 {
   "baseCommit": "0e0ddb52f2756c0a46ccf6afafb0fe23d4d02575",
-  "status": "Retained provisional: ordinary-offset median/mean ~54%faster in12prebuiltcontrols; all37 pass3%mean/4%median regression screen. All71gatespass. FreshRust/TS37 counts36,37,36: primaryraw offset remains near-tie/slower; goalNOTcomplete. TS48originalregressionaudit alsoopen.",
+  "status": "Retained: all37 means/medians win in three default and three long-offset fresh comparisons; twelve before/after controls pass original guards. All71 Rust/Node/Test262/ICU/Hermes gates pass. Scattered8192-date controls improve ~12%; cold first call adds ~60ns, whole-process launch unchanged within noise. TS original regression/reference refresh remains open; goal not complete.",
   "changes": [
     "Classify safe ordinary months using interior-separated monthly rules; conservative adjacent-month windows preserve full event fallback.",
     "Move uncommon one-year/three-year event evaluation into cold private helpers; constconstructors/Copy/Sync/no_std/data/API/layout unchanged.",
@@ -655,7 +655,8 @@
       "//packages/temporal:native_string_hermes_oracle_test"
     ],
     "exitCode": 0,
-    "sourceHashLimits": "Runtime/tests unchanged since71pass; two laterbenchmark-only override edits separately formatted/typechecked/full37parity checked. No new71rerun claimed forbenchmark edits."
+    "sourceHashLimits": "Runtime/tests unchanged since71pass; two laterbenchmark-only override edits separately formatted/typechecked/full37parity checked. No new71rerun claimed forbenchmark edits.",
+    "scope": "Earlier month-classification checkpoint; current lookup full71 gate recorded separately when complete."
   },
   "rejected": [
     "Narrowi64offset product: no speedgain.",
@@ -663,18 +664,23 @@
     "Coarse pivot:9\u201311%offsetregression; publicboundaryoracle/layoutchecks passed; allthreeeditedfilesrestored.",
     "Week1\u20134monthlengthskip:~3%offsetgainbutbroaderregressionscreenfailed.",
     "Monthclassification withoutcoldhelpers:~54%ordinarygainbutbroaderregressionscreenfailed.",
-    "Inline hint onshortenedpath: no gain; .text/.rodata/.data identical, source-locationdata differs. Timing spread remains important; no purehintretained."
+    "Inline hint onshortenedpath: no gain; .text/.rodata/.data identical, source-locationdata differs. Timing spread remains important; no purehintretained.",
+    "Unsigned 1024-era bias with inline wide-date fallback: twelve prebuilt controls improve original offset median ~9.6%/mean ~7.5%, but instant formatting slows ~5.7%/~5.2% and YearMonth parse/format ~4.3%/~3.4%. Seven Rust/ICU gates and complete-era/branch-boundary/wide-date roundtrips pass. Parent restored; raw controls and exact sources retained as biasedEraRejected.",
+    "Unsigned era bias with cold wide-date fallback: twelve prebuilt controls slow original offset median ~8.3%/mean ~7.0%, ordinary offset unchanged. Seven Rust/ICU gates and wide-date tests pass; code/tests restored. Raw controls and exact sources retained as biasedEraColdRejected.",
+    "Forced inline(always): standalone hot function disappears, unlike ordinary inline hint, but twelve prebuilt controls show original offset median ~0.6% faster/mean ~0.7% slower. Benchmark executable grows 2,464 bytes including harness/data. No reliable gain; parent restored. Raw controls, exact sources and symbol audit retained.",
+    "Century-based inverse: all correctness gates pass; twelve controls improve original offset median ~3.3%/mean ~2.3%, below predeclared 5% threshold. Original signed-era conversion restored. Exact sources and raw37 controls retained.",
+    "256-day Gregorian lookup: 2,284 readonly bytes; original offset median ~14.4%/mean ~13.2% faster, ordinary ~15.1%/~15.3% faster. Seven Rust/ICU gates pass. Instant microsecond-round median increases 0.58ns (~6.0%), mean ~1.7%, exceeding predeclared median guard. Baseline restored; all37 samples and exact source retained."
   ],
   "limits": [
     "No full-API/engine speed claim; original raw Rust lookup compared with cached TS getter.",
-    "Runtime data/layout/cache/dependencies unchanged; executable size includesharness/reference/data and isnot shippedcrate/SDK size.",
+    "Current lookup adds4568 readonly algorithm bytes. Runtime object layout/cache/dependencies and locale/timezone data formats stay unchanged. Executable sizes include harness/reference/data, not shipped crate/SDK payload.",
     "Defaultcounts preserved. CPUprofilemodes and optionalrawoffsetwindowoverride areseparate diagnostics, neverreplaceoriginal37/JS48.",
     "TS originalbefore/after regression audit staysopen despite48/48referencewins."
   ],
   "raw": {
     "file": "rule-classification-controls.json.gz",
-    "sha256": "9ab88fb167d63c7f00478f4b576dbfe33b2ebd656a63ee5e3cdbe10b1c053566",
-    "bytes": 713016,
+    "sha256": "7ba312cccdb0e96df7273ad962a5acc71a8e610a733bf23c701dfaeda2746498",
+    "bytes": 1374885,
     "members": [
       "narrowOffsetProductRejected",
       "directCutoffRejected",
@@ -689,7 +695,811 @@
       "validation71",
       "inlineSectionAudit",
       "baselineHardwareProfile",
-      "sourceSnapshots"
+      "sourceSnapshots",
+      "biasedEraRejected",
+      "biasedEraColdRejected",
+      "forceInlineRejected",
+      "forceInlineSymbolAudit",
+      "centuryInverseRejected",
+      "yearBlocks256Rejected",
+      "yearBlocks256TableAudit",
+      "yearBlocks128",
+      "yearBlocks128TableAudit",
+      "yearBlocks128Native37",
+      "yearBlocks128NativeLong37",
+      "yearBlocks128Validation71",
+      "yearBlocks128ColdAudit"
     ]
+  },
+  "gregorianLookup": {
+    "status": "Retained: all37 means/medians win in three default and three long-offset fresh comparisons; twelve before/after controls pass original guards. All71 Rust/Node/Test262/ICU/Hermes gates pass. Scattered8192-date controls improve ~12%; cold first call adds ~60ns, whole-process launch unchanged within noise. TS original regression/reference refresh remains open; goal not complete.",
+    "rawMember": "yearBlocks128",
+    "changes": "1142 immutable u32 entries (4568 bytes) encode March-year, ordinal and leap length at128day blocks. One branchless year carry replaces repeated year divisions. Existing signed-era/month/day arithmetic retained. Rust-only constants; no locale/timezone data, allocation, pervalue cache, public API or TS change.",
+    "coreSha256": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+    "results": [
+      {
+        "group": "results",
+        "name": "instant.parse",
+        "medians": {
+          "parent": 34.3280029296875,
+          "candidate": 34.523956298828125
+        },
+        "medianProcessMeans": {
+          "parent": 34.457305908203125,
+          "candidate": 34.717251247829864
+        },
+        "candidateOverParent": 1.0057082659175365,
+        "meanCandidateOverParent": 1.0075439832794604
+      },
+      {
+        "group": "results",
+        "name": "instant.format",
+        "medians": {
+          "parent": 89.84622192382812,
+          "candidate": 90.2781982421875
+        },
+        "medianProcessMeans": {
+          "parent": 89.95681423611111,
+          "candidate": 90.39888509114583
+        },
+        "candidateOverParent": 1.0048079519551263,
+        "meanCandidateOverParent": 1.0049142564550408
+      },
+      {
+        "group": "results",
+        "name": "instant.roundMicrosecond",
+        "medians": {
+          "parent": 9.635284423828125,
+          "candidate": 9.719818115234375
+        },
+        "medianProcessMeans": {
+          "parent": 9.939212375217014,
+          "candidate": 9.957875569661457
+        },
+        "candidateOverParent": 1.0087733467625717,
+        "meanCandidateOverParent": 1.0018777337418585
+      },
+      {
+        "group": "results",
+        "name": "instant.addTime",
+        "medians": {
+          "parent": 16.7818603515625,
+          "candidate": 15.949920654296875
+        },
+        "medianProcessMeans": {
+          "parent": 16.55632866753472,
+          "candidate": 16.235856797960068
+        },
+        "candidateOverParent": 0.9504262531187035,
+        "meanCandidateOverParent": 0.9806435426591242
+      },
+      {
+        "group": "results",
+        "name": "duration.parseFormat",
+        "medians": {
+          "parent": 331.51513671875,
+          "candidate": 331.1375732421875
+        },
+        "medianProcessMeans": {
+          "parent": 332.7202419704861,
+          "candidate": 335.4729580349392
+        },
+        "candidateOverParent": 0.9988610973233394,
+        "meanCandidateOverParent": 1.0082733651795592
+      },
+      {
+        "group": "results",
+        "name": "duration.format",
+        "medians": {
+          "parent": 159.80792236328125,
+          "candidate": 164.73135375976562
+        },
+        "medianProcessMeans": {
+          "parent": 161.65802001953125,
+          "candidate": 164.92150539822046
+        },
+        "candidateOverParent": 1.0308084312947405,
+        "meanCandidateOverParent": 1.0201875872183448
+      },
+      {
+        "group": "results",
+        "name": "date.parse",
+        "medians": {
+          "parent": 72.70535278320312,
+          "candidate": 68.3642578125
+        },
+        "medianProcessMeans": {
+          "parent": 73.25713094075522,
+          "candidate": 68.35268147786459
+        },
+        "candidateOverParent": 0.9402919481919352,
+        "meanCandidateOverParent": 0.9330515760048401
+      },
+      {
+        "group": "results",
+        "name": "date.format",
+        "medians": {
+          "parent": 56.494293212890625,
+          "candidate": 54.021881103515625
+        },
+        "medianProcessMeans": {
+          "parent": 56.59380764431424,
+          "candidate": 53.74140421549479
+        },
+        "candidateOverParent": 0.9562360732603898,
+        "meanCandidateOverParent": 0.9495986655157312
+      },
+      {
+        "group": "results",
+        "name": "date.add",
+        "medians": {
+          "parent": 100.43930053710938,
+          "candidate": 96.35073852539062
+        },
+        "medianProcessMeans": {
+          "parent": 100.63014390733507,
+          "candidate": 95.95082600911459
+        },
+        "candidateOverParent": 0.9592932050516606,
+        "meanCandidateOverParent": 0.9534998389495556
+      },
+      {
+        "group": "results",
+        "name": "time.parseFormat",
+        "medians": {
+          "parent": 90.93417358398438,
+          "candidate": 90.19021606445312
+        },
+        "medianProcessMeans": {
+          "parent": 91.06860690646701,
+          "candidate": 90.49716186523438
+        },
+        "candidateOverParent": 0.9918187245761446,
+        "meanCandidateOverParent": 0.9937251149364836
+      },
+      {
+        "group": "results",
+        "name": "time.roundMicrosecond",
+        "medians": {
+          "parent": 78.9573974609375,
+          "candidate": 78.83758544921875
+        },
+        "medianProcessMeans": {
+          "parent": 79.24521213107639,
+          "candidate": 79.30289713541667
+        },
+        "candidateOverParent": 0.9984825739503632,
+        "meanCandidateOverParent": 1.0007279304678354
+      },
+      {
+        "group": "results",
+        "name": "dateTime.parseFormat",
+        "medians": {
+          "parent": 220.52471923828125,
+          "candidate": 214.91299438476562
+        },
+        "medianProcessMeans": {
+          "parent": 219.68716091579861,
+          "candidate": 214.1984354654948
+        },
+        "candidateOverParent": 0.9745528534265946,
+        "meanCandidateOverParent": 0.9750157204115923
+      },
+      {
+        "group": "results",
+        "name": "yearMonth.parseFormat",
+        "medians": {
+          "parent": 227.68353271484375,
+          "candidate": 212.21212768554688
+        },
+        "medianProcessMeans": {
+          "parent": 228.4784952799479,
+          "candidate": 211.2269083658854
+        },
+        "candidateOverParent": 0.9320486429351321,
+        "meanCandidateOverParent": 0.924493607624102
+      },
+      {
+        "group": "results",
+        "name": "monthDay.parseFormat",
+        "medians": {
+          "parent": 206.46047973632812,
+          "candidate": 191.07003784179688
+        },
+        "medianProcessMeans": {
+          "parent": 206.24726019965277,
+          "candidate": 191.9029574924045
+        },
+        "candidateOverParent": 0.9254557486537546,
+        "meanCandidateOverParent": 0.9304509417804503
+      },
+      {
+        "group": "results",
+        "name": "zoned.parseUtcOrOffset",
+        "medians": {
+          "parent": 225.98309326171875,
+          "candidate": 210.07769775390625
+        },
+        "medianProcessMeans": {
+          "parent": 226.4771152072483,
+          "candidate": 211.12122260199652
+        },
+        "candidateOverParent": 0.9296168785096153,
+        "meanCandidateOverParent": 0.9321967140423895
+      },
+      {
+        "group": "results",
+        "name": "calendar.hebrew.fields",
+        "medians": {
+          "parent": 195.75234985351562,
+          "candidate": 193.03878784179688
+        },
+        "medianProcessMeans": {
+          "parent": 196.19371202256946,
+          "candidate": 193.68034193250867
+        },
+        "candidateOverParent": 0.986137780651168,
+        "meanCandidateOverParent": 0.9871893443263275
+      },
+      {
+        "group": "results",
+        "name": "calendar.hebrew.addMonth",
+        "medians": {
+          "parent": 795.2221069335938,
+          "candidate": 793.6943359375
+        },
+        "medianProcessMeans": {
+          "parent": 796.6139390733507,
+          "candidate": 797.0908881293403
+        },
+        "candidateOverParent": 0.9980788122176522,
+        "meanCandidateOverParent": 1.0005987204498887
+      },
+      {
+        "group": "results",
+        "name": "calendar.persian.fields",
+        "medians": {
+          "parent": 62.500335693359375,
+          "candidate": 59.831634521484375
+        },
+        "medianProcessMeans": {
+          "parent": 62.790974934895836,
+          "candidate": 60.00701904296875
+        },
+        "candidateOverParent": 0.9573010105902752,
+        "meanCandidateOverParent": 0.9556631204593717
+      },
+      {
+        "group": "results",
+        "name": "calendar.persian.addMonth",
+        "medians": {
+          "parent": 244.71450805664062,
+          "candidate": 232.5341796875
+        },
+        "medianProcessMeans": {
+          "parent": 246.18138970269098,
+          "candidate": 234.57728407118054
+        },
+        "candidateOverParent": 0.9502263741293123,
+        "meanCandidateOverParent": 0.952863595231449
+      },
+      {
+        "group": "results",
+        "name": "calendar.chinese.fields",
+        "medians": {
+          "parent": 244.46145629882812,
+          "candidate": 242.92868041992188
+        },
+        "medianProcessMeans": {
+          "parent": 244.94246758355035,
+          "candidate": 243.78243340386285
+        },
+        "candidateOverParent": 0.9937299895774465,
+        "meanCandidateOverParent": 0.9952640544894821
+      },
+      {
+        "group": "results",
+        "name": "calendar.chinese.addMonth",
+        "medians": {
+          "parent": 1113.9132385253906,
+          "candidate": 1110.2355346679688
+        },
+        "medianProcessMeans": {
+          "parent": 1115.3277147081162,
+          "candidate": 1111.1109517415364
+        },
+        "candidateOverParent": 0.9966983928997105,
+        "meanCandidateOverParent": 0.9962192610199027
+      },
+      {
+        "group": "results",
+        "name": "calendar.dangi.fields",
+        "medians": {
+          "parent": 242.30575561523438,
+          "candidate": 242.9124755859375
+        },
+        "medianProcessMeans": {
+          "parent": 243.09624905056424,
+          "candidate": 242.90607706705728
+        },
+        "candidateOverParent": 1.0025039437018846,
+        "meanCandidateOverParent": 0.999217709099792
+      },
+      {
+        "group": "results",
+        "name": "calendar.dangi.addMonth",
+        "medians": {
+          "parent": 1112.4024047851562,
+          "candidate": 1109.8936767578125
+        },
+        "medianProcessMeans": {
+          "parent": 1113.3190171983506,
+          "candidate": 1108.9611070421006
+        },
+        "candidateOverParent": 0.9977447657281645,
+        "meanCandidateOverParent": 0.9960856591067522
+      },
+      {
+        "group": "results",
+        "name": "calendar.islamic-umalqura.fields",
+        "medians": {
+          "parent": 125.71371459960938,
+          "candidate": 116.938720703125
+        },
+        "medianProcessMeans": {
+          "parent": 126.8670179578993,
+          "candidate": 118.13068983289931
+        },
+        "candidateOverParent": 0.9301985950822295,
+        "meanCandidateOverParent": 0.9311379090828861
+      },
+      {
+        "group": "results",
+        "name": "calendar.islamic-umalqura.addMonth",
+        "medians": {
+          "parent": 384.71966552734375,
+          "candidate": 351.3233947753906
+        },
+        "medianProcessMeans": {
+          "parent": 385.873779296875,
+          "candidate": 351.0700039333767
+        },
+        "candidateOverParent": 0.9131932319961442,
+        "meanCandidateOverParent": 0.9098052854824278
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.parse",
+        "medians": {
+          "parent": 433.301513671875,
+          "candidate": 437.02801513671875
+        },
+        "medianProcessMeans": {
+          "parent": 432.4135064019097,
+          "candidate": 434.6085442437066
+        },
+        "candidateOverParent": 1.0086002502812987,
+        "meanCandidateOverParent": 1.0050762471784513
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.offset",
+        "medians": {
+          "parent": 16.848236083984375,
+          "candidate": 15.326019287109375
+        },
+        "medianProcessMeans": {
+          "parent": 17.159176296657986,
+          "candidate": 15.432539198133682
+        },
+        "candidateOverParent": 0.9096512662045381,
+        "meanCandidateOverParent": 0.8993752923407755
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.addDay",
+        "medians": {
+          "parent": 503.157958984375,
+          "candidate": 481.2873840332031
+        },
+        "medianProcessMeans": {
+          "parent": 503.9669358995226,
+          "candidate": 481.76838853624133
+        },
+        "candidateOverParent": 0.9565333816932606,
+        "meanCandidateOverParent": 0.9559523734951789
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.startOfDay",
+        "medians": {
+          "parent": 136.61111450195312,
+          "candidate": 126.77291870117188
+        },
+        "medianProcessMeans": {
+          "parent": 136.73756239149304,
+          "candidate": 127.56264241536459
+        },
+        "candidateOverParent": 0.9279839284186456,
+        "meanCandidateOverParent": 0.9329012466241006
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.hoursInDay",
+        "medians": {
+          "parent": 241.33590698242188,
+          "candidate": 230.23190307617188
+        },
+        "medianProcessMeans": {
+          "parent": 241.64034356011285,
+          "candidate": 228.84230550130206
+        },
+        "candidateOverParent": 0.9539894247603247,
+        "meanCandidateOverParent": 0.9470368322182632
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.transitionNext",
+        "medians": {
+          "parent": 213.28692626953125,
+          "candidate": 205.06964111328125
+        },
+        "medianProcessMeans": {
+          "parent": 213.27915785047742,
+          "candidate": 204.78106011284723
+        },
+        "candidateOverParent": 0.9614730949525438,
+        "meanCandidateOverParent": 0.9601550483259695
+      },
+      {
+        "group": "namedZoneResults",
+        "name": "zoned.named.withTime",
+        "medians": {
+          "parent": 171.85931396484375,
+          "candidate": 161.703857421875
+        },
+        "medianProcessMeans": {
+          "parent": 172.13949924045139,
+          "candidate": 160.9928181966146
+        },
+        "candidateOverParent": 0.9409083144306849,
+        "meanCandidateOverParent": 0.9352462328923901
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.format",
+        "medians": {
+          "parent": 288.76092529296875,
+          "candidate": 289.4053649902344
+        },
+        "medianProcessMeans": {
+          "parent": 288.34289211697046,
+          "candidate": 288.6960754394531
+        },
+        "candidateOverParent": 1.0022317413500867,
+        "meanCandidateOverParent": 1.00122487265037
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.untilDay",
+        "medians": {
+          "parent": 1367.0521850585938,
+          "candidate": 1332.1257019042969
+        },
+        "medianProcessMeans": {
+          "parent": 1375.6846720377603,
+          "candidate": 1331.4378424750435
+        },
+        "candidateOverParent": 0.9744512436788945,
+        "meanCandidateOverParent": 0.9678365031884993
+      },
+      {
+        "group": "extendedNamedZoneResults",
+        "name": "zoned.named.roundHour",
+        "medians": {
+          "parent": 350.47052001953125,
+          "candidate": 330.3399963378906
+        },
+        "medianProcessMeans": {
+          "parent": 352.1860419379341,
+          "candidate": 331.07680257161456
+        },
+        "candidateOverParent": 0.9425614351800009,
+        "meanCandidateOverParent": 0.9400622487757774
+      },
+      {
+        "group": "additionalNamedZoneResults",
+        "name": "zoned.named.offsetLastWeek",
+        "medians": {
+          "parent": 17.20220947265625,
+          "candidate": 15.47430419921875
+        },
+        "medianProcessMeans": {
+          "parent": 17.4029541015625,
+          "candidate": 15.720163981119791
+        },
+        "candidateOverParent": 0.8995532942332733,
+        "meanCandidateOverParent": 0.9033043407100855
+      },
+      {
+        "group": "additionalNamedZoneResults",
+        "name": "zoned.named.offsetOrdinary",
+        "medians": {
+          "parent": 15.13916015625,
+          "candidate": 13.43536376953125
+        },
+        "medianProcessMeans": {
+          "parent": 15.43014187282986,
+          "candidate": 13.476311577690971
+        },
+        "candidateOverParent": 0.8874576681180455,
+        "meanCandidateOverParent": 0.8733757400779776
+      }
+    ],
+    "binaries": {
+      "parent": {
+        "path": "/tmp/temporal-year-blocks-128-parent-native",
+        "sha256": "cb924df2337b430c849b53950100b4828609da47ebe55c9d143742e1ffbba0d0",
+        "bytes": 4399768
+      },
+      "candidate": {
+        "path": "/tmp/temporal-year-blocks-128-candidate-native",
+        "sha256": "ea9f09569c8faf68ff7b81386aefe40e478806d3a20e9886f6a8a493b0155527",
+        "bytes": 4404104
+      }
+    },
+    "tableAuditRawMember": "yearBlocks128TableAudit",
+    "native37": {
+      "yearBlocks128Native37": {
+        "rawMember": "yearBlocks128Native37",
+        "winsByProcess": [
+          [25, 7, 3, 2],
+          [25, 7, 3, 2],
+          [25, 7, 3, 2]
+        ],
+        "all37MeansAndMediansWin": true
+      },
+      "yearBlocks128NativeLong37": {
+        "rawMember": "yearBlocks128NativeLong37",
+        "winsByProcess": [
+          [25, 7, 3, 2],
+          [25, 7, 3, 2],
+          [25, 7, 3, 2]
+        ],
+        "all37MeansAndMediansWin": true
+      }
+    },
+    "validation": {
+      "rawMember": "yearBlocks128Validation71",
+      "targets": 71,
+      "exitCode": 0,
+      "sourceHashes": {
+        "packages/temporal/legacy-extended-date.ts": "db3735b17f8180f497626bb65a8980b75082048d997785301ef1a256949eb029",
+        "packages/temporal/locale.ts": "eec708e27fc83520c09c4690e96fd0dd37a64d7a759f58ab2acf97bb94bb01e8",
+        "packages/temporal/host-calendar-data.ts": "848ddafdea6607c28612d8ae572e592754ddc563fa7f39e24e5bbbc08230f342",
+        "packages/temporal/plain-year-month.ts": "4a9e18ca75301bd0db8784d53f63af6d4004193380d7f96aa26353f011a7518c",
+        "packages/temporal/legacy-calendar-date.ts": "9baa5fc4aba84d65bdf8f6aec488eedac476c836a7730a7f814c356c18cbbe11",
+        "packages/temporal/calendar-table.ts": "38fce31451a870bbae228181b6f4b2a0c837cd25db27c33e565c41f9e86943d0",
+        "packages/temporal/now.ts": "b7c71adbaa2fdc0de24e31a268fc3af6f91407771b893426aaca5c25775ce752",
+        "packages/temporal/duration-core.ts": "ff520da2bcce723433fd8c8cc5230e11a863169eb3cb6042ee68cd1ff627c0d5",
+        "packages/temporal/zones.ts": "7daa8ad831885ac27fd8c97c3db4ae228a56fd2dbab4001e7c61ded30913a3de",
+        "packages/temporal/instant-string.ts": "271a70879e734276d36c8af0b98a176db21e4d878339d9ae4c25772fd0d05c7b",
+        "packages/temporal/instant.ts": "7e9a6581bcfb8fa9ca086140e699d99da3f4ad5cdf7a5b7df08fe3b3d54158c9",
+        "packages/temporal/legacy-lunisolar-date.ts": "635c6a39f73f63a2d8dd81696bb46a7c0637961e14ae4cd06d97a7e978890a32",
+        "packages/temporal/native.ts": "91580bbeb483e7492bfbb35e06f52b0fd155dab94643f4fe5f0799ba88e2abe5",
+        "packages/temporal/kernel.ts": "bcff36b96bc3639fcd0a2b62e2715bb8290c78dddf61b48571ce2ad513714661",
+        "packages/temporal/zoned-date-time.ts": "7c46db9102884db8f71af4ebebe00e50915f57cd70debd605896a0eaa902d337",
+        "packages/temporal/duration-format.ts": "e242443b6f420fbccff376ca6a8a554ad9c353af4352860340030a505f32bd3d",
+        "packages/temporal/host-calendar.ts": "ed3516d392ac91291b4bfc90f4dfc3fea2d810a2a12e46ea4b6faf24a13502bf",
+        "packages/temporal/compact-timezone.ts": "83024dc54bae75d00d77f4a81b043f8eb1a6b3a075243612e47f0d0ff061dab1",
+        "packages/temporal/standalone.ts": "8d86dbce7a507ff481ae5a4f11ee0678e6a631ecb191b7fcdec915d0b8352a86",
+        "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+        "packages/temporal/plain-time.ts": "3397145dfaf5fa34f843a61b4aa20157d24e09641d4e2c707b9f8a4cb4a0c549",
+        "packages/temporal/date-core.ts": "fe66fb1b6e8bf040e21f2b291d7e2cb3bda5ebc1369d4645ad479f0eae42fadc",
+        "packages/temporal/instant-format.ts": "42c05f410577acca4c3347506af129eda4efb06bb849eee379affbf489a1d9f4",
+        "packages/temporal/index.ts": "121e72dfcfe3c585c9091779ab13d5daa3636217ff6c3f81ff3fce95c02645cf",
+        "packages/temporal/relative-duration.ts": "65e41e02a2b4b794f680bc228242f61c6ada533a8d4e39fe903f5cb3c652a4b9",
+        "packages/temporal/install.ts": "b56fe02f0a9e1c62ca6d24de6c42c84185b49aad7c4f7195d1204dacb226923d",
+        "packages/temporal/polyfill.ts": "3f855cd83fba8f555f1d2bcf7893ff16da520a818ca032a04fecc5c9a2b2b54a",
+        "packages/temporal/legacy-durationformat.ts": "e7268d538030934af47ae1dd6611df779368e89a525536b19ec647e82146bbb3",
+        "packages/temporal/rounding.ts": "9615f49e263172752ee6d79731eb7ec84bc244ec09538facc69d0e2f8b8ef088",
+        "packages/temporal/plain-month-day.ts": "cc9c415f639bbf3c62a658f6b4042bab23cd5c2fa71776fb1d24621ca8d8e985",
+        "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
+        "packages/temporal/plain-date-time.ts": "454e0bb55aee3958e3d89fd2571bf72fa2185a9d5a7bfcaeaa79b3fa7abedc84",
+        "packages/temporal/date-to-temporal-instant.ts": "387c429b7754f165f35a6dba35bdd90a52c4e7d1aa4c271c913a257f9b7c19b8",
+        "packages/temporal/legacy-intl.ts": "58c8f7fd7293b56ac7516554da4b0415c66b864a89032d0bcb21361750dc2424",
+        "packages/temporal/legacy-zoned-date.ts": "7870a7c161897c6dc9caed47e1065ef8943e5f878fcbde939c5332243f47f172",
+        "packages/temporal/host-timezone.ts": "12836440d78dd8630fbcd61c6087560918d6395ccbc95b7624b8f3daa7ba658d",
+        "packages/temporal/plain-date.ts": "26a5822ee22735abce575f563b7da1fff8b34aa6bc2d1c81a79d2a91129bc6be",
+        "packages/temporal/lunisolar.ts": "72e330867540c818bd3e6c1ff5f0e48751b30361022ab8bf578171c0d7741991",
+        "packages/temporal/duration.ts": "55d92b5ad77f6c61228e7c90a0f99dbf91bef0bd320ba20eae3c3270d4c82f68",
+        "packages/temporal/short-date-core.ts": "4d0e9cd4a677fe73d9e95fac7a95afdcc1cc7be25f30d5acd8e3e892497ca735",
+        "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
+        "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
+        "packages/temporal/fallback-data.ts": "f813740f999ebf55b91ada61aea0d992d02a13f8e4e6245780c7f9274ea60159",
+        "packages/temporal/polyfill-force.ts": "daad905821c6ac2de26a6fb539c9a4750c8b5ebb57aa457f888b0c49793f30b1",
+        "packages/temporal/calendar.ts": "51041d69f36992d438617cf83aa41859463b561b3217d641dbdc13c5b165384d",
+        "packages/temporal/date-bridge.ts": "ef2762936b2afd41e40de2b94b330c546ed9578b7b7c08962d0a7430dfc0f4ed",
+        "packages/temporal/tests/zoned-arithmetic-oracle.ts": "e0333814dc60dcb8b55b22d7f81740af7cadfc673bebbb5886d35dc114b44b8e",
+        "packages/temporal/tests/transitions.test.ts": "1c0cced3ea7b24aca8fd0800747d6345b71f556a7f3789884215d6421f7d1dc9",
+        "packages/temporal/tests/native-string-host.ts": "afd1ba98e06454af84bc1cffd52075321c53f7e8c23a1f3b7c2f433d75a0529d",
+        "packages/temporal/tests/plain-relative.test.ts": "57eca319eb68649c0286f296dbb2bcf8f395a04fae2c6248b765f29a280b47af",
+        "packages/temporal/tests/compact-timezone.test.ts": "2704d91ce529a8f83328cc71420d1ce9ce50bb6d346c0321ce68f120049b655d",
+        "packages/temporal/tests/table-calendars.test.ts": "3134c353f4a90a183d16e52d5510ba0d580cc0b4436a3ddb5af5d01ec5805317",
+        "packages/temporal/tests/plain-time.test.ts": "d67a5362b7b8b5fb7d719904cb59566b5bb199292735d007d7fd97ec7466e543",
+        "packages/temporal/tests/iso.test.ts": "691975cbf105daee10c1c57a1eed9fadd37173e818eac3af40705be7e3433505",
+        "packages/temporal/tests/now.test.ts": "afeb982ef7a32ce38dc520d177aba0d9e428ec0a81978f4cbf423d20f571a9f3",
+        "packages/temporal/tests/legacy-calendar-era-oracle.ts": "9588b5f8af247160ec00ce8564f74d1a25af7f54344b953a9e2a4d49876d374a",
+        "packages/temporal/tests/legacy-calendar-era-host.ts": "ee5de706456c525888f0b4cb6480823de04e6e60200da942a2e89e87e6848362",
+        "packages/temporal/tests/public-calendars.test.ts": "adce1e1af7e92255b395e280c550050ebd9e3f5a334d15f44a2ad3182563b0d2",
+        "packages/temporal/tests/compact-calendar-numeric.ts": "60cb6c16dddd255699ecc508428c27bee2e7ec6ce9c5192c247bc54fe6402499",
+        "packages/temporal/tests/installation-host.ts": "5c1dd416a143570c76de76f3e728b2d7f874063cfd0292509f9555e294118c51",
+        "packages/temporal/tests/zoned.test.ts": "0dd6d8404812efe1de69dc4a67d4d5d4bdc675b5128b2ba08040042a00de9945",
+        "packages/temporal/tests/host-timezone-host.ts": "cdeb327c4a746648eeffda4661ce30b5a08f8b657db9bca3756a58430a49019b",
+        "packages/temporal/tests/date-output-oracle.ts": "f0497091c0b65f9b306f2e410a3ffe4347d251b0ef98cc8d6f168c399f00ccb0",
+        "packages/temporal/tests/zoned-differences.test.ts": "0eacb50b836621e1c9e78a11201441e1e148875b61c092b062c2f7829e655e01",
+        "packages/temporal/tests/native-iso-host.ts": "162fdd5eed86601e6cb0ff53f114121ec7ab7d874c1549c8130899e5a7f52af5",
+        "packages/temporal/tests/timezone-oracle.ts": "306d2fc37b818e1d54ec0bbbaca1e1a9dc2941581b0ab0a6bdf5cab97af8386e",
+        "packages/temporal/tests/public-calendar-host.ts": "37d97c917db7370e2c442e9f85918591813686d67f348c11e86f32198fa721d6",
+        "packages/temporal/tests/arithmetic-calendar.test.ts": "aa1f00b613db71f83b6c213819622b40f15d20a0dc2317ec94c864d273e2b74e",
+        "packages/temporal/tests/arithmetic-calendar-oracle.ts": "7b66c127f063fc187fa151c03ff676e071bf4b7a9b1ac2b478bdc51bf0bba3b8",
+        "packages/temporal/tests/native-plain-host.ts": "9360bd856136f4b84fa9c447b60b54e672c5d1cf6a4d5165b66bf215d65e7166",
+        "packages/temporal/tests/plain-arithmetic-oracle.ts": "8cfc953083e7151e198eb3e12b7e77f15cf0f8e3d372bf197bcd962f1bb75a1a",
+        "packages/temporal/tests/host-timezone-oracle.ts": "c55688dbf82ceeb531623c43985cd6a28ba434106f7d3c9e4691f286566cecaa",
+        "packages/temporal/tests/relative-duration.test.ts": "96d0862b55caedeb6be51661fb75ced7d1bc05922779fde5376825ce2bbfbd00",
+        "packages/temporal/tests/extended-calendar-host.ts": "d743f24873ca25503288e41cfb70f00a3bc3676ac05f9466e9c7addaa9225681",
+        "packages/temporal/tests/durationformat.test.ts": "f1609699e905194f9340a0a037cc0faf59b2f93db68855d1a60a5f3b55537a30",
+        "packages/temporal/tests/plain-relative-oracle.ts": "05728fd7560aa8fc41cc10ff00219ef4fe08a9f7fb68003e489f0810b0c17730",
+        "packages/temporal/tests/host-calendar-host.ts": "702043948f401f8a46070ab2c1a94a16ab2b94e0cb02584082549637f420e6e1",
+        "packages/temporal/tests/native-timezone-host.ts": "b74786bb14f7358d91f2113988609ac2d6bc0502ccb02ad00f515258940e148a",
+        "packages/temporal/tests/string-oracle.ts": "7d27eabcad743e081bcfc9794a5fa3ffefe467f34702deacdd7891c679432cec",
+        "packages/temporal/tests/duration.test.ts": "c53d756dfd15cd313e24268f31ff73d3551762a7c245408eed6b98824b9d4a94",
+        "packages/temporal/tests/rounding.test.ts": "bf5edecbf98dd1ebc29b0a2bfcdc78124008e85d66bf96cf2e6b4f6409aa231a",
+        "packages/temporal/tests/legacy-timezone-host.ts": "1ff6d476b47489ce621b2e4cc9b2a64b1c54c66811f8b4a63b5cf961d1b26d22",
+        "packages/temporal/tests/kernel.test.ts": "27dabc608b708fcfde72021febf23fb97e6e8e270bd9f233b94fd1fff1e78829",
+        "packages/temporal/tests/raw-icu-table-calendars.test.ts": "cabfeb0d2bcc992e3a12234f1f00329fb59754cb5c977df128c740bee7e3802f",
+        "packages/temporal/tests/duration-oracle.test.ts": "a131c291c1298f0e8884cffce285c38dd21187e99ea9300d8b0fb6f6b309e5c3",
+        "packages/temporal/tests/installation.test.ts": "987a8a141a947d3d33d1c4ee5bc63bae05164e79d0c93d236c41f77c60820144",
+        "packages/temporal/tests/legacy-timezone-oracle.ts": "a3ee9c85fe8037523be97c4851307e4234da6c7945525eac689c8fb44d426a0a",
+        "packages/temporal/tests/native-duration-host.ts": "585f5f5cdb7cb968c91a46b93f2fac3959180e69b7bfa0454849df8ac11f3cec",
+        "packages/temporal/tests/plain-relative-host.ts": "d82cd34d012de5e7c6a99070295daa7252aafe81b91034e76adca9b060926907",
+        "packages/temporal/tests/now-host.ts": "9607a538a37c5c87366b15ea5aab1203c89e0de3c00a7f9c2422a392b45a06a6",
+        "packages/temporal/tests/instant-prelude.ts": "73a15e0106c2d2f0a7e7e420803a4427971d87c634ed8dcb920cdcec4fc5b034",
+        "packages/temporal/tests/native-iso-prelude.ts": "1b25acc14fc4c41abbfd52715c239c6cd4499be12276590f520b56b5b7f0ef89",
+        "packages/temporal/tests/instant.test.ts": "36a01294d0000870e95a7d8999d22d7ec49b6899c21a142faa15b89cfb0e9bfe",
+        "packages/temporal/tests/arithmetic-calendar-host.ts": "a26348c82dca0dc29c342231eb3a346cd595d0fbbaa82ac5b3b07e7ba1701476",
+        "packages/temporal/tests/plain-time-oracle.ts": "affbc0ff5605ac6afda122968947a1a7ad698d503daadd454d03f02137b802d9",
+        "packages/temporal/tests/timezone-oracle.test.ts": "4f94ba0d0f12cf0ad03afb0bc0f46d6d85b7fdb2176ab2b8bdfc94615fca82ad",
+        "packages/temporal/tests/table-calendar-host.ts": "671bf9b6d819ec138803e81b7e72432ad0c4209083533c515e289f921a7a365d",
+        "packages/temporal/tests/host-timezone.test.ts": "7787e25cfb166add44d9ae71e1745c10318afc006112992bd8db97c06c52f6d8",
+        "packages/temporal/tests/typescript-prelude.ts": "7bef583332a2a0d4b3817c040d8c14fcdb777b2e8ffe22094ac88bcdfbca877f",
+        "packages/temporal/tests/public-calendar-oracle.ts": "ec352cb85c33e2fa7c9c47015e6976f39b170ce1ed0824f1b6c630dbd8e10777",
+        "packages/temporal/tests/native-date-output-host.ts": "11bb4af27f180d96cb250c3415c7d44dff36b18edefe15a466b733563a778f7e",
+        "packages/temporal/tests/compact-timezone-host.ts": "dc140ab9e2b83f66c2fac500da7c2ae72b64f792cf38e8d60a0dcb4aaebfaed1",
+        "packages/temporal/tests/duration-oracle.ts": "9e6f1fd2bff1bed37ffa96e39261e2a6803a0d2713150cd908e06bb04d8cf1ec",
+        "packages/temporal/tests/plain-date-time.test.ts": "de7dd8832b634648c41a2f00840a8928dfeb00abbeecd7e7a8c82f2c6974a513",
+        "packages/temporal/tests/short-dates.test.ts": "dbe826912a630ffe1e15a135c9baf83e25727c99d195f382c227f51363fa8af8",
+        "packages/temporal/tests/host-timezone-icu.test.ts": "567c0b801ee89794573a46ccc557ff3fd6a23982d6b3f86a8e5ce5230d5ced9c",
+        "packages/temporal/tests/icu.test.ts": "8d4eb546e62439be8b5f88bbc4e6b819c95b58340e8081cd24343438f2edc54f",
+        "packages/temporal/tests/native-zoned-host.ts": "5f97231227f190f052012dd71cc25e58bee2be8cb70f89d877eedb32130efd4d",
+        "packages/temporal/tests/timezone-identity.test.ts": "5514b0e305164de8d8e30bf2ec2198d312a05dc86ce643a9eae9c0bbbc5052f6",
+        "packages/temporal/tests/string-oracle.test.ts": "c32e6bed539303bca22fcf526a703864d3c4ba55d1aa10d35d32afd56a562bd3",
+        "packages/temporal/tests/calendar.test.ts": "98b434aadefbab17b211a04722b55ef1662e02f844ec4ff8b78dae61c08b752f",
+        "crates/temporal/context.test.rs": "b7076e9de2e542bea19308062bc3c210dd475bcc5aec874f7407a5602808359a",
+        "crates/temporal/ffi.test.rs": "3794c90f817f4d50527f5da225fd182000d5a505d111208c05e4cbb6b9c46438",
+        "crates/temporal/identifiers_generated.rs": "d4f06da96d033590067594efa10aa349504f0ca3080be5718c338fc19849e46c",
+        "crates/temporal/registry.test.rs": "3b3fc7acfbe3ac865df6b0d09ca703e068b821ed20bd1a26d08eab5afd7bcdde",
+        "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
+        "crates/temporal/calendar_provider.rs": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+        "crates/temporal/zoned_string.test.rs": "81bae490f9f8655bc165329d1743e49fb99c8366c1ec9de803d8e4d738a22994",
+        "crates/temporal/parse.rs": "e36461dc72b4e7a0c4cc465f07b8a74542216feee49b76b0e179451a55c686ba",
+        "crates/temporal/zoned.rs": "43200dfed025d53c3e6dd639d0480888eaf49e02b6f68b5898636ca912e3ae04",
+        "crates/temporal/duration.rs": "29d713b9da728c2db205725c92bb5e6cbd63013eac61f8feb269ec39ce5f1668",
+        "crates/temporal/iso.rs": "5e4ff2b5df38f908d155bf2a1c1469ecc69aea11c18abb196f81a6985aa4b001",
+        "crates/temporal/zoned_difference.rs": "8cfc3eb838918618748869a0628fb333eb74d6005739961727991dd9abf16cf2",
+        "crates/temporal/format.rs": "df342603b6a66f185d92d43b3bd754c2ce23857446f57bff38ecbbddec45ca5f",
+        "crates/temporal/lib.rs": "e75a043c0a21b49432d02d8e52ed2c6adda593906c81ecb4af12e849e91e1042",
+        "crates/temporal/short_dates.rs": "4bea110e971b22d9d728513fc9690989ee2a857dba6e3e10bf882a974cf0e4cd",
+        "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
+        "crates/temporal/timezone_registry.rs": "fbe381674a42adf1e26c872d34d1d4bbed1e2a91b6a993b9546aa5aa5b1238d6",
+        "crates/temporal/calendar.test.rs": "4d5cd31c9040253900a523f4ec8f6cceb50d67973c714f2c8ce554ab42702911",
+        "crates/temporal/date.rs": "f7a90065fe1b314e205bd6e2e570ef4f88cdcad5ae09e33298c93c5b8e02b467",
+        "crates/temporal/calendar_difference.rs": "17dfc5e8e214b8badcfe9c37e0290856d14555dee8f5dd025fbbe4fec5be917b",
+        "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
+        "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+        "crates/temporal/plain_relative.rs": "1284148f9193dbc26aaa49d96b3f4978071309d51d389fc711b22ba1b0906e74",
+        "crates/temporal/relative_duration.rs": "6bf14e4f89ec54ba4e5c29312097735dff227e6ad15b60fa2fc8b7417ed2a2b9",
+        "crates/temporal/time.rs": "5d3ba8c1eceb9dfa693bf06f78af049dc1b52ea81cc3a727a981a0f32a492e4a",
+        "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
+        "crates/temporal/lib.test.rs": "a3fded1427e43db816a6fd0b7209cd220c6566d7dd226d7091f6711cd1ce95f1",
+        "crates/temporal/rounding.rs": "371e2d64eef5d4b2c143c3a84041e542a21a7d3132bfc478e30caf490df3ab86",
+        "crates/temporal/ffi.rs": "d343cb02453783c4c3b92413623377cbfbfc9ab012d1f401ea121b7b9dc4b92b",
+        "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
+        "crates/intl_datetimeformat_calendars/core.rs": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+        "crates/intl_datetimeformat_calendars/compiled.rs": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
+        "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
+        "crates/intl_datetimeformat_calendars/ffi.test.rs": "df10996548b0cc5458a85316b4944724e7e4c727f9e744ddb5a7060322d901e4",
+        "crates/intl_datetimeformat_calendars/conformance.rs": "9ab3d7f573b36f2bfbbd75be3178c0338eeb1bf63cf66faf0e7bb876bb6fcdfc",
+        "crates/intl_datetimeformat_calendars/core.test.rs": "c81dd6da7a80a31f9fa25d27a650a5c11d42287efe1c8243438891bdd16e5c92",
+        "crates/intl_datetimeformat_calendars/table_calendar.rs": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
+        "crates/intl_datetimeformat_calendars/lib.rs": "eeb14fc42369332d013addddcac7be859537557286c46423814273c1c03376fd",
+        "crates/intl_datetimeformat_calendars/arithmetic.rs": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
+        "crates/intl_datetimeformat_calendars/table_calendar.test.rs": "4dd79f044c3befdef993ea491c949e240f77b35a1c9a099efcb9b6d1c793cee8",
+        "crates/intl_datetimeformat_calendars/date_math.rs": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
+        "crates/intl_datetimeformat_calendars/provider.rs": "9e9babca20cf719ed0e4a5b64f7d0213371f5654f4be89dc8c80cda21e3603b0",
+        "crates/intl_datetimeformat_calendars/compiled.test.rs": "26cba97edf04911287d61ea3dc2dff785f2c1d8a462d6c51c2b5c2146b2acdb3",
+        "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
+        "packages/ecma402-abstract/Calendar/Arithmetic.ts": "4d2daa97d090de855c1938de13dfa0bff8af752e71f884bdf6fd63de40cb651b",
+        "benchmarks/temporal/native-ts-benchmark.ts": "379441b135f18567daf5347e670823c59f2e565d4342d8238800b42936d24c76",
+        "benchmarks/temporal/rust/native.rs": "40ab10b35070e47fb6cb87c67a3abc2dc4775473d2fd7156b831f0aa06dda7fc",
+        "benchmarks/temporal/comparison-benchmark.ts": "82a63a84cb07ebd40639f5ee4eb3026d6f6e979d30cdad0ad07dc05dbb51272d",
+        "benchmarks/temporal/zoned-inputs.ts": "86b2e8343bf5389a1f2204c30aa3308a9ce7b9ffece477ea4bca3b0103d28f5e"
+      }
+    },
+    "coldAudit": {
+      "wideMedianNanoseconds": {
+        "parent": 17.181012,
+        "candidate": 15.190853
+      },
+      "wideMedianProcessMeans": {
+        "parent": 17.192102,
+        "candidate": 15.172874
+      },
+      "wideCandidateOverParent": 0.8841652051695209,
+      "wideMeanCandidateOverParent": 0.882549091437452,
+      "wideFirstPassNanoseconds": {
+        "parent": 17.31317138671875,
+        "candidate": 15.85052490234375
+      },
+      "firstCallByInput": [
+        {
+          "epochDay": -100000000,
+          "firstCallNanoseconds": {
+            "parent": 256,
+            "candidate": 323
+          },
+          "wholeProcessNanoseconds": {
+            "parent": 1771432.0000000044,
+            "candidate": 1763652.000000093
+          }
+        },
+        {
+          "epochDay": -1,
+          "firstCallNanoseconds": {
+            "parent": 251,
+            "candidate": 309
+          },
+          "wholeProcessNanoseconds": {
+            "parent": 1730359.000000135,
+            "candidate": 1723140.0000000577
+          }
+        },
+        {
+          "epochDay": 0,
+          "firstCallNanoseconds": {
+            "parent": 247,
+            "candidate": 307
+          },
+          "wholeProcessNanoseconds": {
+            "parent": 1768952.000000354,
+            "candidate": 1741898.0000002193
+          }
+        },
+        {
+          "epochDay": 100000000,
+          "firstCallNanoseconds": {
+            "parent": 257,
+            "candidate": 317
+          },
+          "wholeProcessNanoseconds": {
+            "parent": 1778209.0000000608,
+            "candidate": 1777888.9999999593
+          }
+        }
+      ],
+      "wideRegressionScreenPass": true,
+      "limits": "Cold one-call timer/page-touch/process noise reported separately; first-call may trade latency for warm lookup. Interpret absolute differences and immutable-data size, not raw ratios alone. Original37 measurements and scope remain separate. First-call values include timer, code/data/page-table effects; no prior Temporal call. Filesystem was warmed by executable hashing.",
+      "rawMember": "yearBlocks128ColdAudit"
+    }
   }
 }

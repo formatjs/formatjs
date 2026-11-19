@@ -26,3 +26,13 @@ rust_binary(
 )
 
 # gazelle:ignore
+
+rust_binary(
+    name = "lookup_benchmark",
+    srcs = ["lookup-probe.rs"],
+    crate_name = "temporal_lookup_benchmark",
+    crate_root = "lookup-probe.rs",
+    edition = "2024",
+    visibility = ["//benchmarks/temporal:__pkg__"],
+    deps = ["//crates/temporal:with_compiled_data"],
+)

@@ -11,7 +11,16 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 Goal: native Rust faster than TS; pure TS faster than both references across
 matched public workloads, preserving spec behavior and preventing regressions.
 
-Current combined TS candidate wins all 48 medians and means against both pinned
+Rust Gregorian inverse conversion now uses 4,568 readonly bytes for 128-day
+blocks. Six fresh comparisons win all 37 Rust/TS medians and means, including
+three long-offset controls; original 25/7/3/2 groups stay separate. All 71
+Rust/Node/Test262/ICU/Hermes gates pass. Scattered 8,192-date controls improve
+~12%; first call adds ~60 ns, probe process time unchanged within noise. No new
+locale/timezone data, allocation, per-value cache or TS change. TS regression and
+reference refresh remain open. See the benchmark README and
+[rule experiments](../benchmarks/temporal/rule-classification-experiments.json).
+
+Earlier combined TS candidate wins all 48 medians and means against both pinned
 references across three fresh processes each. Longer controls support four close
 cases. Consumer is 41,503 gzip bytes (+385); import plus first operation is
 ~22.0 ms TS, ~39.7 ms basic and ~29.5 ms official, excluding process launch.
