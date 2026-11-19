@@ -144,6 +144,16 @@ versions on npm before publishing dependents. Existing versions are skipped, so
 maintainers can retry `release.yml` with the affected `npm_paths` after resolving a
 publication failure.
 
+## Rust release recovery
+
+Crate release events publish missing local dependencies before their dependents.
+Published versions are skipped; each upload must appear in the crates.io index
+before publication continues. Registry errors stop the run.
+
+Retry failed releases through `crates-release.yml` with the affected crate
+selected. Keep `dry_run` enabled to validate missing crates without uploading;
+disable it to publish. Generated data still comes from Bazel package assembly.
+
 ## Rust BUILD maintenance
 
 After changing Rust modules or imports, regenerate BUILD files with:

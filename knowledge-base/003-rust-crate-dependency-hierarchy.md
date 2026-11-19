@@ -56,7 +56,7 @@ It compares resolved argument indices and conversion requirement sets. The Rust
 `verify --message-syntax java-printf --structural-equality` command and npm CLI
 share this implementation through `formatjs_cli_napi::verify_java_printf`.
 ICU verification remains the default. Java printf catalogs contain string leaves;
-Android XML extraction and plural/array item splitting happen before verification.
+Android XML extraction and plural/array item splitting happen in `formatjs_cli::android_resources` for `--message-syntax android`; `java-printf` continues to accept JSON string catalogs.
 
 ## Apple resource verification
 
@@ -697,3 +697,26 @@ Bazel-only Temporal ABI exports. It embeds the TS facade, preserving coercion an
 brands while Rust owns numeric/calendar/timezone operations. Per-runtime host
 providers supply Now's clock and timezone. The prebuilt SDK includes this optional
 adapter; the published Cargo SDK source graph still excludes private Temporal.
+
+## Android resource verification
+
+`formatjs_cli::android_resources` parses native resource XML with roxmltree and
+then applies Android quoting/escaping before Java printf verification.
+`verify_resources` groups files by resource directory and locale, validates array
+shape and plural fallback compatibility, and reports missing/extra keys. Rust
+and npm use the same code through `verify_android_resources` in the N-API crate.
+Locale typography and brand rules remain caller policy.
+Android `--structural-equality` compares custom XML entity names and counts per
+item using source spellings after XML validation, excluding literal CDATA,
+comments, predefined entities and numeric references. Rust and npm share the
+check through the existing Android resource verifier, including formatted=false
+items; basic XML validation remains permissive.
+
+Structural equality also compares canonical inline-markup forests (sorted siblings,
+nesting and expanded attribute names/values, excluding XLIFF wrappers) and
+whole-value resource-reference identity. Reference detection uses XML-decoded raw
+text before Android unescaping and skips styled items. Theme attribute shorthand
+and Android package namespace prefixes are normalized; resource lookup/linking
+and escaped HTML parsing remain outside
+this verifier. Both checks run per item, including formatted=false and source
+other fallback for target-only plural categories.

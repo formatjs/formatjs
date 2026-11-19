@@ -46,7 +46,10 @@ When `globalThis.Temporal` is available before importing this polyfill, all four
 formatting methods accept `Temporal.PlainDate`, `PlainDateTime`, `PlainTime`,
 `PlainYearMonth`, `PlainMonthDay`, and `Instant` values. Plain values use their
 wall-clock fields; `Instant` uses the formatter's timezone. Range endpoints must
-have the same Temporal type. `ZonedDateTime` is rejected, as required by the spec.
+have the same Temporal type. `ZonedDateTime` is rejected, as required by the
+[Temporal Intl integration](https://tc39.es/proposal-temporal/#sec-temporal-handledatetimevalue).
+Formatting reads captured Temporal intrinsics, ignoring instance overrides,
+and converts input fields without changing legacy `RegExp` state.
 
 For runtimes without native Temporal, install
 [`@formatjs/temporal`](/docs/polyfills/temporal) and load it first:

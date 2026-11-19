@@ -84,14 +84,14 @@ export {
 export const FormattedDate: React.FC<
   Intl.DateTimeFormatOptions &
     CustomFormatConfig<'date'> & {
-      value: string | number | Date | undefined
+      value: Parameters<IntlShape['formatDate']>[0]
       children?(formattedDate: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatDate')
 export const FormattedTime: React.FC<
   Intl.DateTimeFormatOptions &
     CustomFormatConfig<'time'> & {
-      value: string | number | Date | undefined
+      value: Parameters<IntlShape['formatTime']>[0]
       children?(formattedTime: string): React.ReactElement | null
     }
 > = createFormattedComponent('formatTime')
@@ -120,13 +120,13 @@ export const FormattedDisplayName: React.FC<
 > = createFormattedComponent('formatDisplayName')
 export const FormattedDateParts: React.FC<
   FormatDateOptions & {
-    value: Parameters<Intl.DateTimeFormat['format']>[0] | string
+    value: Parameters<IntlShape['formatDateToParts']>[0]
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null
   }
 > = createFormattedDateTimePartsComponent('formatDate')
 export const FormattedTimeParts: React.FC<
   FormatTimeOptions & {
-    value: Parameters<Intl.DateTimeFormat['format']>[0] | string
+    value: Parameters<IntlShape['formatTimeToParts']>[0]
     children(val: Intl.DateTimeFormatPart[]): React.ReactElement | null
   }
 > = createFormattedDateTimePartsComponent('formatTime')

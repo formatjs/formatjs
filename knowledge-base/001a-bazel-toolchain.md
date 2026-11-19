@@ -192,8 +192,9 @@ package manifest against the corresponding `:package_json` wrapper. The
 all release-managed npm packages, including native packages assembled by
 platform-specific workflow jobs, and emits the npm workspace graph used by the
 custom Release Please `formatjs-bazel-workspace` plugin for dependent package
-bumps. Root `package.json` lists published packages as `workspace:*` dev
-dependencies, package-local manifests define their dependency graph, and
+bumps. Temporal also releases with DateTimeFormat and DurationFormat because it
+bundles their shared Intl helpers. Root `package.json` lists published packages as
+`workspace:*` dev dependencies, package-local manifests define their dependency graph, and
 their first-party dependencies also use `workspace:*`. `npm_link_all_packages()`
 turns the resulting lockfile entries into root `//:node_modules/<workspace>`
 labels.

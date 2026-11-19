@@ -214,24 +214,28 @@ export interface IntlFormatters<TBase = unknown> {
     value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
     opts?: FormatTimeOptions
   ): string
+  // Temporal §15.7.1, step 4 uses ToDateTimeFormattable for parts too.
+  // https://tc39.es/proposal-temporal/#sec-Intl.DateTimeFormat.prototype.formatToParts
   formatDateToParts(
     this: void,
-    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
+    value: Parameters<Intl.DateTimeFormat['formatToParts']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
   formatTimeToParts(
     this: void,
-    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
+    value: Parameters<Intl.DateTimeFormat['formatToParts']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
+  // Temporal §15.10.1–2, step 3 uses ToTemporalDuration, including ISO strings.
+  // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
   formatDuration(
     this: void,
-    value: DurationInput,
+    value: DurationInput | string,
     opts?: FormatDurationOptions
   ): string
   formatDurationToParts(
     this: void,
-    value: DurationInput,
+    value: DurationInput | string,
     opts?: FormatDurationOptions
   ): DurationFormatPart[]
   formatRelativeTime(

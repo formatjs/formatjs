@@ -177,3 +177,32 @@ try {
   nativeDateTimeFormat.prototype.resolvedOptions = nativeResolvedOptions
   nativeDateTimeFormat.prototype.formatToParts = nativeFormatToParts
 }
+
+const temporalFormatter = new Intl.DateTimeFormat('en', {
+  calendar: 'iso8601',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+})
+const temporalDateTime = new owned.PlainDateTime(2020, 2, 3, 4, 5, 6)
+const regexpStatics = () => [
+  RegExp.input,
+  RegExp.lastMatch,
+  RegExp.lastParen,
+  RegExp.leftContext,
+  RegExp.rightContext,
+  ...Array.from({length: 9}, (_, index) => RegExp[`$${index + 1}`]),
+]
+for (const format of [
+  () => temporalFormatter.format(temporalDateTime),
+  () => temporalFormatter.formatToParts(temporalDateTime),
+  () => temporalFormatter.formatRange(temporalDateTime, temporalDateTime),
+  () =>
+    temporalFormatter.formatRangeToParts(temporalDateTime, temporalDateTime),
+]) {
+  ;/(sentinel)/.exec('before sentinel after')
+  const before = regexpStatics()
+  format()
+  assert.deepEqual(regexpStatics(), before)
+}

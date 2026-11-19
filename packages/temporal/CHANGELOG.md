@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/formatjs/formatjs/compare/@formatjs/temporal@1.1.0...@formatjs/temporal@1.1.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* **@formatjs/temporal:** release bundled Intl fixes ([e05a7a5](https://github.com/formatjs/formatjs/commit/e05a7a52680285c40e6315a5c10ed4c975d3dbd3))
+
 ## [1.1.0](https://github.com/formatjs/formatjs/compare/@formatjs/temporal@1.0.0...@formatjs/temporal@1.1.0) (2026-11-17)
 
 

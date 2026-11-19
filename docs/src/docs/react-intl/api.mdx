@@ -90,14 +90,20 @@ interface IntlFormatters {
     value: Parameters<Intl.DurationFormat['format']>[0],
     opts?: FormatDurationOptions
   ): ReturnType<Intl.DurationFormat['formatToParts']>
-  formatDate(value: number | Date | string, opts?: FormatDateOptions): string
-  formatTime(value: number | Date | string, opts?: FormatDateOptions): string
+  formatDate(
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
+    opts?: FormatDateOptions
+  ): string
+  formatTime(
+    value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
+    opts?: FormatDateOptions
+  ): string
   formatDateToParts(
-    value: number | Date | string,
+    value: Parameters<Intl.DateTimeFormat['formatToParts']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
   formatTimeToParts(
-    value: number | Date | string,
+    value: Parameters<Intl.DateTimeFormat['formatToParts']>[0] | string,
     opts?: FormatDateOptions
   ): Intl.DateTimeFormatPart[]
   formatRelativeTime(
@@ -171,16 +177,46 @@ When formatting rich text message, the output we produced is of type `Array<stri
 
 A map of tag to rich text formatting function. This is meant to provide a centralized way to format common tags such as `<b>`, `<p>`... or enforcing certain Design System in the codebase (e.g standardized `<a>` or `<button>`...). See https://github.com/formatjs/formatjs/issues/1752 for more context.
 
+### Temporal inputs
+
+TypeScript 6.0+ includes native Temporal declarations. Enable `esnext.temporal`
+in your `tsconfig.json` `lib` list (or use `esnext`) to include them in date/time
+API and component input types.
+
+Date/time APIs, including parts and ranges, accept `Temporal.PlainDate`,
+`PlainDateTime`, `PlainTime`, `PlainYearMonth`, `PlainMonthDay`, and `Instant`.
+This includes `useIntl()`, client/server `createIntl()`, and the corresponding
+`FormattedDate`, `FormattedTime`, parts, and range components.
+
+The runtime's `Intl.DateTimeFormat` must support Temporal, or use the
+[DateTimeFormat polyfill](/docs/polyfills/intl-datetimeformat#temporal-inputs).
+React Intl passes Temporal objects through without converting them to `Date`.
+Plain values keep their wall-clock fields; instants use the formatter's timezone.
+
+Options must overlap the Temporal type. `formatTime` defaults to hour and minute,
+so use `PlainTime`, `PlainDateTime`, or `Instant` with those defaults.
+`PlainYearMonth` and `PlainMonthDay` require an exactly matching `calendar` option,
+including `iso8601`. Range endpoints must have the same Temporal type.
+`ZonedDateTime` is unsupported; convert it to `Instant` or a plain type first.
+
+```tsx
+<FormattedDate value={Temporal.PlainDate.from('2026-11-17')} />
+<FormattedTime value={Temporal.PlainTime.from('12:30')} />
+```
+
+Duration APIs and components accept `Temporal.Duration` and ISO duration strings
+when the runtime's `Intl.DurationFormat` supports Temporal integration.
+
 ## formatDate
 
 ```tsx
 function formatDate(
-  value: number | Date | string,
+  value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
 
-This function will return a formatted date string. It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
+This function will return a formatted date string. It accepts a timestamp, `Date`, date string, or a [supported Temporal object](#temporal-inputs), and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx live
 intl.formatDate(Date.now(), {
@@ -194,7 +230,7 @@ intl.formatDate(Date.now(), {
 
 ```tsx
 function formatTime(
-  value: number | Date | string,
+  value: Parameters<Intl.DateTimeFormat['format']>[0] | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
@@ -208,7 +244,7 @@ This function will return a formatted date string, but it differs from [`formatD
 }
 ```
 
-It expects a `value` which can be parsed as a date (i.e., `isFinite(new Date(value))`), and accepts `options` that conform to `DateTimeFormatOptions`.
+It accepts a timestamp, `Date`, date string, or a [supported Temporal object](#temporal-inputs), and accepts `options` that conform to `DateTimeFormatOptions`.
 
 ```tsx live
 intl.formatTime(Date.now())
@@ -225,13 +261,13 @@ intl.formatTime(Date.now())
 
 ```tsx
 function formatDateTimeRange(
-  from: number | Date | string,
-  to: number | Date | string,
+  from: Parameters<Intl.DateTimeFormat['formatRange']>[0] | string,
+  to: Parameters<Intl.DateTimeFormat['formatRange']>[1] | string,
   options?: Intl.DateTimeFormatOptions & {format?: string}
 ): string
 ```
 
-This function will return a formatted date/time range string. Both `from` & `to` must be values which can be parsed as a date (i.e., `isFinite(new Date(value))`).
+This function will return a formatted date/time range string. Both `from` and `to` accept timestamps, `Date` values, date strings, or [supported Temporal objects](#temporal-inputs).
 
 It expects 2 values (a `from` Date & a `to` Date) and accepts `options` that conform to `DateTimeFormatOptions`.
 

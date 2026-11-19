@@ -22,10 +22,11 @@ export function formatInstant(
         fields.nanosecond,
       9
     )
-    const fraction =
-      precision === 'auto'
-        ? digits.replace(/0+$/, '')
-        : digits.slice(0, precision)
+    let length = precision === 'auto' ? digits.length : precision
+    if (precision === 'auto') {
+      while (length && digits[length - 1] === '0') length--
+    }
+    const fraction = digits.slice(0, length)
     if (fraction) result += '.' + fraction
   }
   if (offset === undefined) return result + 'Z'
