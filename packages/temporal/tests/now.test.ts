@@ -117,27 +117,29 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
 })
 
-it('falls back to the Date offset when host Intl has no system zone name', async () => {
-  // Some Windows hosts report resolvedOptions().timeZone as undefined.
-  const resolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions
-  vi.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockImplementation(
-    function (this: Intl.DateTimeFormat) {
-      return {...resolvedOptions.call(this), timeZone: undefined as never}
+for (const timeZone of [undefined, '', 'Etc/Unknown']) {
+  it(`falls back to the Date offset when host Intl reports ${JSON.stringify(timeZone)}`, async () => {
+    const resolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions
+    vi.spyOn(
+      Intl.DateTimeFormat.prototype,
+      'resolvedOptions'
+    ).mockImplementation(function (this: Intl.DateTimeFormat) {
+      return {...resolvedOptions.call(this), timeZone: timeZone as never}
+    })
+    const offset = vi.spyOn(Date.prototype, 'getTimezoneOffset')
+    try {
+      vi.resetModules()
+      const {Now} = await import('#packages/temporal/now.js')
+      offset.mockReturnValue(360)
+      expect(Now.timeZoneId()).toBe('-06:00')
+      expect(Now.plainDateISO().toString()).toBe(
+        Now.zonedDateTimeISO('-06:00').toPlainDate().toString()
+      )
+      offset.mockReturnValue(0)
+      expect(Now.timeZoneId()).toBe('UTC')
+    } finally {
+      vi.restoreAllMocks()
+      vi.resetModules()
     }
-  )
-  const offset = vi.spyOn(Date.prototype, 'getTimezoneOffset')
-  try {
-    vi.resetModules()
-    const {Now} = await import('#packages/temporal/now.js')
-    offset.mockReturnValue(360)
-    expect(Now.timeZoneId()).toBe('-06:00')
-    expect(Now.plainDateISO().toString()).toBe(
-      Now.zonedDateTimeISO('-06:00').toPlainDate().toString()
-    )
-    offset.mockReturnValue(0)
-    expect(Now.timeZoneId()).toBe('UTC')
-  } finally {
-    vi.restoreAllMocks()
-    vi.resetModules()
-  }
-})
+  })
+}
