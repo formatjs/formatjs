@@ -70,6 +70,15 @@ impl<'a> TimeZoneRegistry<'a> {
             provider,
         })
     }
+    /// SystemTimeZoneIdentifier: always a primary or offset zone, never an error.
+    /// https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier
+    /// Hosts can report no zone or one this registry can't resolve; treat those
+    /// like a UTC-only host (step 1).
+    pub fn system(&self, host: Option<&str>) -> ResolvedTimeZone<'a> {
+        host.and_then(|value| self.resolve(value).ok())
+            .and_then(|zone| self.resolve(zone.primary_identifier()).ok())
+            .unwrap_or_else(|| self.resolve("UTC").expect("UTC needs no records"))
+    }
 }
 impl TimeZoneRegistry<'static> {
     /// All pinned IANA zones and footer rules, compiled by Bazel.

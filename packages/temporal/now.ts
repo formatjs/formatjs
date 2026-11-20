@@ -40,9 +40,20 @@ export function createNow(clock: SystemClock): NowObject {
     const value = clock.epochNanoseconds()
     return value < -limit ? -limit : value > limit ? limit : value
   }
+  // SystemTimeZoneIdentifier returns a primary or offset identifier and has no
+  // throw path: https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier
+  // Hosts can still report undefined (seen on Windows) or a name we don't
+  // know, so treat those like a UTC-only host (step 1).
+  function systemZone(): string {
+    const value: unknown = clock.timeZoneId()
+    if (typeof value === 'string')
+      try {
+        return primaryTimeZoneIdentifier(timeZoneIdentifier(value))
+      } catch {}
+    return 'UTC'
+  }
   function zone(value: unknown): string {
-    if (value !== undefined) return timeZoneIdentifier(value)
-    return primaryTimeZoneIdentifier(timeZoneIdentifier(clock.timeZoneId()))
+    return value === undefined ? systemZone() : timeZoneIdentifier(value)
   }
   function local(value: unknown): bigint {
     const name = zone(value),
@@ -91,21 +102,10 @@ const HostDate = Date,
 
 let systemClock: SystemClock = {
   epochNanoseconds: () => toBigInt(hostNow()) * 1_000_000n,
-  // SystemTimeZoneIdentifier always returns a primary or offset time zone
-  // identifier and never throws:
-  // https://tc39.es/ecma262/#sec-systemtimezoneidentifier
-  // Some hosts report resolvedOptions().timeZone as undefined (seen on Windows)
-  // or as a name we don't know, so fall back to the Date offset for those.
   timeZoneId() {
-    if (HostDateTimeFormat && hostResolvedOptions) {
-      const name: unknown = hostResolvedOptions(
-        new HostDateTimeFormat()
-      ).timeZone
-      if (typeof name === 'string')
-        try {
-          return timeZoneIdentifier(name)
-        } catch {}
-    }
+    if (HostDateTimeFormat && hostResolvedOptions)
+      return hostResolvedOptions(new HostDateTimeFormat()).timeZone
+    // Hosts without Intl expose the current system offset through Date.
     const minutes = -hostOffset(new HostDate())
     if (minutes === 0) return 'UTC'
     const absolute = Math.abs(minutes)

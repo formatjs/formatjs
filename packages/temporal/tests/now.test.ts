@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
-import {expect, it, vi} from 'vitest'
+import {expect, it} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {createNow} from '#packages/temporal/now.js'
@@ -117,29 +117,21 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
 })
 
-for (const timeZone of [undefined, '', 'Etc/Unknown']) {
-  it(`falls back to the Date offset when host Intl reports ${JSON.stringify(timeZone)}`, async () => {
-    const resolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions
-    vi.spyOn(
-      Intl.DateTimeFormat.prototype,
-      'resolvedOptions'
-    ).mockImplementation(function (this: Intl.DateTimeFormat) {
-      return {...resolvedOptions.call(this), timeZone: timeZone as never}
+it('treats a missing or unknown system zone as UTC instead of throwing', () => {
+  for (const value of [undefined, null, 0, '', 'Etc/Unknown', '+05:30:15']) {
+    const now = createNow({
+      epochNanoseconds: () => 0n,
+      timeZoneId: () => value as string,
     })
-    const offset = vi.spyOn(Date.prototype, 'getTimezoneOffset')
-    try {
-      vi.resetModules()
-      const {Now} = await import('#packages/temporal/now.js')
-      offset.mockReturnValue(360)
-      expect(Now.timeZoneId()).toBe('-06:00')
-      expect(Now.plainDateISO().toString()).toBe(
-        Now.zonedDateTimeISO('-06:00').toPlainDate().toString()
-      )
-      offset.mockReturnValue(0)
-      expect(Now.timeZoneId()).toBe('UTC')
-    } finally {
-      vi.restoreAllMocks()
-      vi.resetModules()
-    }
+    expect(now.timeZoneId(), String(value)).toBe('UTC')
+    expect(now.zonedDateTimeISO().toString(), String(value)).toBe(
+      '1970-01-01T00:00:00+00:00[UTC]'
+    )
+    expect(now.plainDateISO().toString(), String(value)).toBe('1970-01-01')
+  }
+  const now = createNow({
+    epochNanoseconds: () => 0n,
+    timeZoneId: () => 'asia/kolkata',
   })
-}
+  expect(now.timeZoneId()).toBe('Asia/Kolkata')
+})
