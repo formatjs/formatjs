@@ -4,6 +4,26 @@ import {expect, it} from 'vitest'
 import {Temporal} from '#packages/temporal/index.js'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 
+it('compares equal date fields without hiding zoned endpoint overflow', () => {
+  const relativeTo = new Temporal.ZonedDateTime(
+    8_640_000_000_000_000_000_000n,
+    'UTC'
+  )
+  expect(() =>
+    Temporal.Duration.compare('P1D', 'P1DT1S', {relativeTo})
+  ).toThrow(RangeError)
+  expect(Temporal.Duration.compare('P1D', 'P1D', {relativeTo})).toBe(0)
+  expect(Temporal.Duration.compare('PT1S', 'PT2S', {relativeTo})).toBe(-1)
+})
+
+it('compares plain days as 24-hour units, but validates the calendar part', () => {
+  const relativeTo = '+275760-09-13'
+  expect(Temporal.Duration.compare('P1D', 'PT24H', {relativeTo})).toBe(0)
+  expect(() =>
+    Temporal.Duration.compare('P1M', 'P1MT1S', {relativeTo})
+  ).toThrow(RangeError)
+})
+
 it('matches independent ICU spans through Duration round/total', () => {
   const file = runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-zoned-difference-fixtures.tsv`

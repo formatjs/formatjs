@@ -47,7 +47,11 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     ) -> Result<core::cmp::Ordering, Error> {
         let left = one.fields();
         let right = two.fields();
-        if left[..4] == right[..4] {
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L89-L104
+        if left == right {
+            return Ok(core::cmp::Ordering::Equal);
+        }
+        if left[..4].iter().chain(&right[..4]).all(|&v| v == 0) {
             return Ok(one
                 .time_nanoseconds(false)?
                 .cmp(&two.time_nanoseconds(false)?));

@@ -1,6 +1,37 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn compare_duration_bounds_depend_on_relative_to_kind() {
+    use core::cmp::Ordering;
+    use formatjs_temporal::{Duration, FixedOffset, PlainDate, ZonedDateTime};
+    let zoned = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let plain: PlainDate = "+275760-09-13".parse().unwrap();
+    let day: Duration = "P1D".parse().unwrap();
+    assert!(
+        zoned
+            .compare_durations(day, "P1DT1S".parse().unwrap())
+            .is_err()
+    );
+    assert_eq!(zoned.compare_durations(day, day), Ok(Ordering::Equal));
+    assert_eq!(
+        zoned.compare_durations("PT1S".parse().unwrap(), "PT2S".parse().unwrap()),
+        Ok(Ordering::Less)
+    );
+    assert_eq!(
+        plain.compare_durations(day, "PT24H".parse().unwrap()),
+        Ok(Ordering::Equal)
+    );
+    assert!(
+        plain
+            .compare_durations("P1M".parse().unwrap(), "P1MT1S".parse().unwrap())
+            .is_err()
+    );
+}
+
+#[test]
 fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
     use formatjs_temporal::{
         OffsetTransition, PlainDate, PlainTime, TimeZone, TransitionDirection, TransitionZone,

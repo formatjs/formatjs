@@ -170,14 +170,30 @@ impl<C: CalendarProvider> PlainDate<C> {
         one: Duration,
         two: Duration,
     ) -> Result<core::cmp::Ordering, Error> {
-        if one.fields()[..4] == two.fields()[..4] {
-            return Ok(one
-                .time_nanoseconds(false)?
-                .cmp(&two.time_nanoseconds(false)?));
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L89-L114
+        if one == two {
+            return Ok(core::cmp::Ordering::Equal);
         }
-        let anchor = PlainAnchor::from(self);
-        Ok(anchor
-            .endpoint(one.fields())?
-            .cmp(&anchor.endpoint(two.fields())?))
+        // DateDurationDays: only the calendar portion needs a representable date.
+        let days = |value: Duration| -> Result<i128, Error> {
+            let mut fields = value.fields();
+            let days = fields[3];
+            if fields[..3].iter().all(|&v| v == 0) {
+                return Ok(days);
+            }
+            fields[3..].fill(0);
+            let later = self.checked_add(Duration::new(fields)?, Overflow::Constrain)?;
+            Ok(days + i128::from(later.epoch_day() - self.epoch_day()))
+        };
+        let days1 = days(one)?;
+        let days2 = days(two)?;
+        let time = |value: Duration, days: i128| -> Result<i128, Error> {
+            let ns = value.time_nanoseconds(false)? + days * NANOSECONDS_PER_DAY;
+            if ns <= -MAX_DURATION_NANOSECONDS || ns >= MAX_DURATION_NANOSECONDS {
+                return Err(Error::InvalidDuration);
+            }
+            Ok(ns)
+        };
+        Ok(time(one, days1)?.cmp(&time(two, days2)?))
     }
 }
