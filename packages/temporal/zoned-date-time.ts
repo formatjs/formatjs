@@ -671,20 +671,34 @@ function offsetText(slot: ZonedSlot): string {
   return text
 }
 function format(slot: ZonedSlot, options?: unknown): string {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L687-L700
+  // L687: toString passes its receiver to read.
+  // L688: read requires the ZonedDateTime slot before any getters run.
+  // L689: use empty options for undefined.
+  // L690: getter order and validation order are observable.
   const resolved = optionsObject(options),
+    // L691: calendarName precedes fractionalSecondDigits.
     show = calendarNameOption(resolved.calendarName),
     suffix = calendarAnnotation(slot.calendar, show)
+  // L692: read fractionalSecondDigits.
   const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
+  // L693: offset accepts auto or never.
   const offset = option(resolved.offset, 'auto', ['auto', 'never'])
+  // L694: omitted roundingMode means trunc.
   const mode = roundingMode(resolved.roundingMode, 'trunc'),
-    unit = unitOption(resolved.smallestUnit)
+    // L695: "auto" is recognized; unknown values fail before timeZoneName.
+    unit = unitOption(resolved.smallestUnit, true)
+  // L696: finish reading timeZoneName before validating the unit group.
   const zoneName = option(resolved.timeZoneName, 'auto', [
     'auto',
     'never',
     'critical',
   ])
+  // L697: require a time unit or unset, not "auto".
+  // L698: exclude hour as a string precision.
   if (unit !== undefined && timeUnit(unit) === 'hour')
     throw new RangeError('Cannot format hours only')
+  // L699: smallestUnit takes precedence over fractionalSecondDigits.
   const precision: Precision =
     unit === 'minute'
       ? 'minute'
@@ -697,6 +711,7 @@ function format(slot: ZonedSlot, options?: unknown): string {
             : unit === 'nanosecond'
               ? 9
               : digits
+  // L700: format with the validated precision, annotation options and rounding mode.
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.formatZonedDateTime(

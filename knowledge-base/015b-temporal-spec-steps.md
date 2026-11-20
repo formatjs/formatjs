@@ -14,6 +14,10 @@ Compare observable behavior against [the pinned TC39 text](https://github.com/tc
 
 `Instant.prototype.round` is also traced in `rounding.ts` and `crates/temporal/rounding.rs`: [receiver, options and unit limits](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L183-L212), [rounding relative to the beginning of time](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L996-L1001). This does not cover duration or calendar rounding.
 
+Getter order is observable even when both paths eventually throw. [`Instant.toString`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L232-L247) reads `timeZone` and [`ZonedDateTime.toString`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L687-L700) reads `timeZoneName` before rejecting `smallestUnit: "auto"`. Unknown strings fail earlier. [`GetDifferenceSettings`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1863-L1868) similarly rejects an unknown `largestUnit` before `roundingIncrement` in the plain date, plain date-time, and zoned date-time `until` and `since` paths. These checks do not cover the arithmetic performed after option validation.
+
+The [separate Duration.compare audit](https://github.com/formatjs/formatjs/pull/8056) covers its TypeScript and Rust paths. It does not cover other duration arithmetic.
+
 ## Not yet checked step by step
 
 - Constructors, allocation and cross-realm prototype selection; parsing, formatting, coercion and option-reading helpers.
