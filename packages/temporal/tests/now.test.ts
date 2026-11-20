@@ -1,6 +1,6 @@
 import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
-import {expect, it} from 'vitest'
+import {expect, it, vi} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {createNow} from '#packages/temporal/now.js'
@@ -115,4 +115,29 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.timeZoneId()).toBe('America/New_York')
   expect(now.zonedDateTimeISO().timeZoneId).toBe('America/New_York')
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
+})
+
+it('falls back to the Date offset when host Intl has no system zone name', async () => {
+  // Some Windows hosts report resolvedOptions().timeZone as undefined.
+  const resolvedOptions = Intl.DateTimeFormat.prototype.resolvedOptions
+  vi.spyOn(Intl.DateTimeFormat.prototype, 'resolvedOptions').mockImplementation(
+    function (this: Intl.DateTimeFormat) {
+      return {...resolvedOptions.call(this), timeZone: undefined as never}
+    }
+  )
+  const offset = vi.spyOn(Date.prototype, 'getTimezoneOffset')
+  try {
+    vi.resetModules()
+    const {Now} = await import('#packages/temporal/now.js')
+    offset.mockReturnValue(360)
+    expect(Now.timeZoneId()).toBe('-06:00')
+    expect(Now.plainDateISO().toString()).toBe(
+      Now.zonedDateTimeISO('-06:00').toPlainDate().toString()
+    )
+    offset.mockReturnValue(0)
+    expect(Now.timeZoneId()).toBe('UTC')
+  } finally {
+    vi.restoreAllMocks()
+    vi.resetModules()
+  }
 })

@@ -92,9 +92,15 @@ const HostDate = Date,
 let systemClock: SystemClock = {
   epochNanoseconds: () => toBigInt(hostNow()) * 1_000_000n,
   timeZoneId() {
-    if (HostDateTimeFormat && hostResolvedOptions)
-      return hostResolvedOptions(new HostDateTimeFormat()).timeZone
-    // Hosts without Intl expose the current system offset through Date.
+    if (HostDateTimeFormat && hostResolvedOptions) {
+      const name: unknown = hostResolvedOptions(
+        new HostDateTimeFormat()
+      ).timeZone
+      if (typeof name === 'string' && name) return name
+    }
+    // Hosts without Intl, or whose Intl can't name the system zone (seen
+    // on some Windows hosts as undefined), still expose the offset through Date.
+    // SystemTimeZoneIdentifier must return a string, so never pass undefined on.
     const minutes = -hostOffset(new HostDate())
     if (minutes === 0) return 'UTC'
     const absolute = Math.abs(minutes)
