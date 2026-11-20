@@ -1012,6 +1012,7 @@ class ZonedDateTimeValue {
     return format(read(this))
   }
   valueOf(): never {
+    // ZonedDateTime.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.ZonedDateTime to primitive')
   }
 }

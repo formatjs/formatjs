@@ -102,18 +102,23 @@ impl core::error::Error for Error {}
 pub struct Instant(i128);
 impl Instant {
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
+        // Instant.fromEpochNanoseconds 1 is handled by the typed boundary.
+        // Steps 2–3: check both inclusive bounds, then store the exact value.
         if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&value) {
             return Err(Error::OutOfRange);
         }
         Ok(Self(value))
     }
     pub fn from_epoch_milliseconds(value: i64) -> Result<Self, Error> {
+        // Instant.fromEpochMilliseconds 1–2: already integral at this boundary.
+        // Steps 3–5: widen before scaling, then check nanosecond bounds.
         Self::from_epoch_nanoseconds(i128::from(value) * 1_000_000)
     }
     pub const fn epoch_nanoseconds(self) -> i128 {
         self.0
     }
     pub const fn epoch_milliseconds(self) -> i64 {
+        // epochMilliseconds 4–5: floor, including for negative sub-milliseconds.
         self.0.div_euclid(1_000_000) as i64
     }
     pub fn from_iso_offset(fields: IsoDateTime, offset_nanoseconds: i128) -> Result<Self, Error> {

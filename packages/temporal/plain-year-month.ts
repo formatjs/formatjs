@@ -363,6 +363,7 @@ class PlainYearMonthValue {
     return formatShortDate(read(this), 'year-month')
   }
   valueOf(): never {
+    // PlainYearMonth.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.PlainYearMonth to primitive')
   }
 }

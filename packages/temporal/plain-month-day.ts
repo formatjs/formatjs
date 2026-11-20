@@ -187,6 +187,7 @@ class PlainMonthDayValue {
     return formatShortDate(read(this), 'month-day')
   }
   valueOf(): never {
+    // PlainMonthDay.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.PlainMonthDay to primitive')
   }
 }

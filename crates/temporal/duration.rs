@@ -115,6 +115,8 @@ impl Duration {
         self.0
     }
     pub fn sign(self) -> i8 {
+        // DurationSign 1/1.a/1.b: first nonzero slot in significance order;
+        // step 2: zero only after exhausting all ten fields.
         self.0
             .into_iter()
             .find(|value| *value != 0)

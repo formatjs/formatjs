@@ -82,8 +82,11 @@ export const Temporal: {
   PlainYearMonth: PlainYearMonthConstructor
   PlainMonthDay: PlainMonthDayConstructor
 } = Object.defineProperties(
+  // Temporal object: ordinary, Object.prototype, no [[Call]] or [[Construct]].
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html#L4-L23
   {},
   {
+    // Constructor and Now properties reference the objects, not wrapper functions.
     Now: {value: Now, writable: true, configurable: true},
     ZonedDateTime: {value: ZonedDateTime, writable: true, configurable: true},
     Instant: {value: Instant, writable: true, configurable: true},
@@ -93,6 +96,7 @@ export const Temporal: {
     PlainDate: {value: PlainDate, writable: true, configurable: true},
     PlainYearMonth: {value: PlainYearMonth, writable: true, configurable: true},
     PlainMonthDay: {value: PlainMonthDay, writable: true, configurable: true},
+    // @@toStringTag is configurable, but neither writable nor enumerable.
     [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
   }
 ) as {

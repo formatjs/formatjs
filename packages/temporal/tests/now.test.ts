@@ -117,6 +117,21 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
 })
 
+it('recovers from a throwing host zone lookup without swallowing explicit zone errors', () => {
+  let lookups = 0
+  const now = createNow({
+    epochNanoseconds: () => 0n,
+    timeZoneId() {
+      lookups++
+      throw new Error('host zone unavailable')
+    },
+  })
+  expect(now.timeZoneId()).toBe('UTC')
+  expect(now.zonedDateTimeISO().timeZoneId).toBe('UTC')
+  expect(() => now.zonedDateTimeISO('Invalid/Zone')).toThrow(RangeError)
+  expect(lookups).toBe(2)
+})
+
 it('treats a missing or unknown system zone as UTC instead of throwing', () => {
   for (const value of [undefined, null, 0, '', 'Etc/Unknown', '+05:30:15']) {
     const now = createNow({

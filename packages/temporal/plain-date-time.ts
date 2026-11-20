@@ -518,6 +518,7 @@ class PlainDateTimeValue {
     return format(read(this))
   }
   valueOf(): never {
+    // PlainDateTime.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.PlainDateTime to primitive')
   }
 }
