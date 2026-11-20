@@ -516,9 +516,9 @@ export function differenceZonedDuration(
 ): DurationObject {
   const end = toZonedDateTimeSlot(other)
   if (start.calendar !== end.calendar) throw new RangeError('Calendars differ')
-  const resolved = optionsObject(options),
-    largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  const resolved = optionsObject(options)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1863-L1868
+  const largestOption = unitOption(resolved.largestUnit, true) ?? 'auto'
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc'),
     smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
@@ -536,9 +536,7 @@ export function differenceZonedDuration(
     ],
     smallIndex = names.indexOf(smallest)
   const largest =
-    largestText === 'auto'
-      ? names[Math.min(4, smallIndex)]
-      : unitOption(largestText)!
+    largestOption === 'auto' ? names[Math.min(4, smallIndex)] : largestOption
   const largeIndex = names.indexOf(largest)
   if (largeIndex > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')

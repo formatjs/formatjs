@@ -6,7 +6,6 @@ import {
   zonedFromLocal,
   type ZonedDateTimeObject,
 } from '#packages/temporal/zoned-date-time.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   createPlainDate,
   type PlainDateObject,
@@ -252,17 +251,15 @@ function difference(
   const end = toPlainDateTimeSlot(other)
   if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
   const resolved = optionsObject(options)
-  const largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1863-L1868
+  const largestOption = unitOption(resolved.largestUnit, true) ?? 'auto'
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
   const names = ['year', 'month', 'week', 'day', ...clockNames]
   const smallIndex = names.indexOf(smallest)
   const largest =
-    largestText === 'auto'
-      ? names[Math.min(3, smallIndex)]
-      : unitOption(largestText)!
+    largestOption === 'auto' ? names[Math.min(3, smallIndex)] : largestOption
   if (names.indexOf(largest) > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
