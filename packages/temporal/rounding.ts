@@ -73,9 +73,15 @@ export function roundingMode(
   // L183: the validated string is also the internal mode.
   return mode as RoundingMode
 }
-export function unitOption(value: unknown): string | undefined {
+export function unitOption(
+  value: unknown,
+  allowAuto = false
+): string | undefined {
   if (value === undefined) return undefined
   let unit = ToString(value)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L549-L559
+  // "auto" is a distinct option value, not a unit with a plural form.
+  if (allowAuto && unit === 'auto') return unit
   if (unit.endsWith('s')) unit = unit.slice(0, -1)
   if (!units.includes(unit)) throw new RangeError('Invalid temporal unit')
   return unit

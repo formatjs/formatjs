@@ -306,16 +306,29 @@ class InstantValue implements InstantObject {
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
   toString(options: unknown = undefined): string {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L232-L247
+    // L232: take this as the receiver.
+    // L233: reject an unbranded receiver before reading options.
     const value = read(this)
+    // L234: accept an object or default to an empty one.
     const resolved = optionsObject(options)
+    // L235: property access and independent validation are interleaved.
+    // L236: read fractionalSecondDigits first.
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
+    // L237: omitted roundingMode means trunc.
     const mode = roundingMode(resolved.roundingMode, 'trunc')
-    const unit = unitOption(resolved.smallestUnit)
+    // L238: "auto" is recognized here; unknown strings already throw.
+    const unit = unitOption(resolved.smallestUnit, true)
+    // L239: read timeZone before rejecting recognized but disallowed units.
     const zoneOption = resolved.timeZone
+    // L240: allow only time units or unset, not "auto".
+    // L241: hour is also invalid for string precision.
     if (unit !== undefined && timeUnit(unit) === 'hour')
       throw new RangeError('Cannot serialize with hour precision')
     const native = nativeTemporal()
     let identifier: string | undefined
+    // L242: omitted timeZone skips conversion.
+    // L243: both backends convert the supplied zone before rounding.
     if (native && zoneOption !== undefined) {
       const zoned = getZonedSlot(zoneOption as object)
       if (!zoned && typeof zoneOption !== 'string')
@@ -328,6 +341,7 @@ class InstantValue implements InstantObject {
       zoneOption !== undefined
         ? resolveTimeZone(zoneOption)
         : undefined
+    // L244: smallestUnit takes precedence over fractionalSecondDigits.
     const precision: Precision =
       unit === 'minute'
         ? 'minute'
@@ -354,7 +368,10 @@ class InstantValue implements InstantObject {
         mode,
         identifier
       )
+    // L245: round epoch time before looking up the output zone offset.
     const rounded = roundInstant(value, quantum, mode)
+    // L246: only the rounded instant's slot is needed, not an observable wrapper.
+    // L247: format with the offset at the rounded instant.
     return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
   toLocaleString(

@@ -2,6 +2,20 @@ import strings from '#packages/temporal/tests/instant-strings.json' with {type: 
 import {expect, it} from 'vitest'
 import {Instant} from '#packages/temporal/index.js'
 
+it('reads timeZone before rejecting auto, but not before rejecting unknown units', () => {
+  const instant = new Instant(0n)
+  const failure = new Error('timeZone getter')
+  const options = (smallestUnit: string) => ({
+    smallestUnit,
+    get timeZone(): never {
+      throw failure
+    },
+  })
+  expect(() => instant.toString(options('auto'))).toThrow(failure)
+  expect(() => instant.toString(options('autos'))).toThrow(RangeError)
+  expect(() => instant.toString({smallestUnit: 'auto'})).toThrow(RangeError)
+})
+
 it('coerces before reading newTarget.prototype, propagates abrupt completions', () => {
   const order: string[] = []
   const value = {
