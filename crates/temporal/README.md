@@ -91,6 +91,9 @@ converts through an explicit TimeZone provider. It supplies instant, zoned ISO,
 plain date/time, date and time views. Injected clock tests reuse all 17,640
 independent ICU timezone samples, including sub-millisecond nanoseconds. This
 host boundary does not install a system clock or discover a system zone itself.
+Pass the host's zone name to `TimeZoneRegistry::system`; like
+SystemTimeZoneIdentifier it never fails and returns UTC when the host name is
+missing or unresolvable.
 
 `named_time_zone_identifier` looks up 597 case-insensitive IANA names without
 allocation. `NamedTimeZone<Z>` attaches validated spelling/primary identity to a

@@ -2954,3 +2954,28 @@ fn recurring_month_offsets_match_shifted_transition_intervals() {
         }
     }
 }
+
+#[test]
+fn system_time_zone_falls_back_to_utc() {
+    use formatjs_temporal::TimeZone;
+    let zones = iana_registry();
+    for host in [None, Some(""), Some("Etc/Unknown"), Some("+05:30:15")] {
+        let zone = zones.system(host);
+        assert_eq!(zone.identifier(), "UTC", "{host:?}");
+        assert_eq!(
+            zone.offset_nanoseconds(Instant::from_epoch_nanoseconds(0).unwrap()),
+            0
+        );
+    }
+    assert_eq!(
+        zones.system(Some("asia/calcutta")).identifier(),
+        "Asia/Kolkata"
+    );
+    assert_eq!(zones.system(Some("-06:00")).identifier(), "-06:00");
+    assert_eq!(
+        formatjs_temporal::TimeZoneRegistry::empty()
+            .system(Some("America/Regina"))
+            .identifier(),
+        "UTC"
+    );
+}

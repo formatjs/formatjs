@@ -40,9 +40,20 @@ export function createNow(clock: SystemClock): NowObject {
     const value = clock.epochNanoseconds()
     return value < -limit ? -limit : value > limit ? limit : value
   }
+  // SystemTimeZoneIdentifier returns a primary or offset identifier and has no
+  // throw path: https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier
+  // Hosts can still report undefined (seen on Windows) or a name we don't
+  // know, so treat those like a UTC-only host (step 1).
+  function systemZone(): string {
+    const value: unknown = clock.timeZoneId()
+    if (typeof value === 'string')
+      try {
+        return primaryTimeZoneIdentifier(timeZoneIdentifier(value))
+      } catch {}
+    return 'UTC'
+  }
   function zone(value: unknown): string {
-    if (value !== undefined) return timeZoneIdentifier(value)
-    return primaryTimeZoneIdentifier(timeZoneIdentifier(clock.timeZoneId()))
+    return value === undefined ? systemZone() : timeZoneIdentifier(value)
   }
   function local(value: unknown): bigint {
     const name = zone(value),

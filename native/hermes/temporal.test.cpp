@@ -132,12 +132,14 @@ int main(int argc, char **argv) {
     }
     host->zone = "Unknown/Zone";
     host->nanos = "1583649000000000000";
+    // SystemTimeZoneIdentifier never throws; an unusable host zone reads as UTC.
     evaluate(*first, R"JS(
       check(Temporal.Now.plainDateTimeISO('UTC').toString() === '2020-03-08T06:30:00');
-      let rejected = false;
-      try { Temporal.Now.timeZoneId(); } catch (error) { rejected = error instanceof RangeError; }
-      check(rejected);
+      check(Temporal.Now.timeZoneId() === 'UTC');
+      check(Temporal.Now.plainDateTimeISO().toString() === '2020-03-08T06:30:00');
     )JS");
+    host->zone = "";
+    evaluate(*first, "check(Temporal.Now.zonedDateTimeISO().timeZoneId === 'UTC')");
     host->nanos = "9999999999999999999999999999999999";
     evaluate(*first, "check(Temporal.Now.instant().epochNanoseconds === 8640000000000000000000n)");
     host.reset();

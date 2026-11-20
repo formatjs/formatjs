@@ -116,3 +116,22 @@ it('uses a primary system-zone ID while preserving explicit aliases', () => {
   expect(now.zonedDateTimeISO().timeZoneId).toBe('America/New_York')
   expect(now.zonedDateTimeISO('US/Eastern').timeZoneId).toBe('US/Eastern')
 })
+
+it('treats a missing or unknown system zone as UTC instead of throwing', () => {
+  for (const value of [undefined, null, 0, '', 'Etc/Unknown', '+05:30:15']) {
+    const now = createNow({
+      epochNanoseconds: () => 0n,
+      timeZoneId: () => value as string,
+    })
+    expect(now.timeZoneId(), String(value)).toBe('UTC')
+    expect(now.zonedDateTimeISO().toString(), String(value)).toBe(
+      '1970-01-01T00:00:00+00:00[UTC]'
+    )
+    expect(now.plainDateISO().toString(), String(value)).toBe('1970-01-01')
+  }
+  const now = createNow({
+    epochNanoseconds: () => 0n,
+    timeZoneId: () => 'asia/kolkata',
+  })
+  expect(now.timeZoneId()).toBe('Asia/Kolkata')
+})
