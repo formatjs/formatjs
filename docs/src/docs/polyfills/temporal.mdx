@@ -57,6 +57,8 @@ String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`
 or inherited option getters/setters. Object-form options retain inherited
 property reads.
+Host timezone and owned DateTimeFormat adapters also create private copied
+records without consulting `Object.assign` or invoking inherited slot setters.
 Its constructor prototype reads and formatter option reads use ordinary property
 access without consulting a replaced `Reflect.get`.
 Temporal and shared date/calendar helpers retain a captured `Math.floor` for

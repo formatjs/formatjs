@@ -1,3 +1,4 @@
+import {legacyZonedProjection} from '#packages/temporal/legacy-zoned-date.js'
 import {expect, it, vi} from 'vitest'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {
@@ -210,4 +211,49 @@ it('reuses observed fixed-offset history across overlapping transition searches'
     Intl.DateTimeFormat = Original
     vi.resetModules()
   }
+})
+
+it('builds host timezone options without mutable Object.assign', () => {
+  const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Object, 'assign', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable host Object.assign reached')
+      },
+    })
+    actual = createHostTimeZone('Asia/Kathmandu').offsetNanoseconds(0n)
+  } finally {
+    Object.defineProperty(Object, 'assign', original)
+  }
+  expect(actual).toBe(19_800_000_000_000n)
+})
+
+it('copies legacy zoned options without mutable Object.assign', () => {
+  const Constructor = Intl.DateTimeFormat
+  const resolved = new Constructor('en', {timeZone: 'UTC'}).resolvedOptions()
+  const selected = {year: 'numeric', month: '2-digit', day: '2-digit'}
+  const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Object, 'assign', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable legacy Object.assign reached')
+      },
+    })
+    const result = legacyZonedProjection(
+      Constructor,
+      resolved,
+      selected,
+      0n,
+      0n,
+      Constructor.prototype.formatToParts
+    )
+    actual = result.formatter.format(result.milliseconds)
+  } finally {
+    Object.defineProperty(Object, 'assign', original)
+  }
+  expect(actual).toBe('01/01/1970')
 })
