@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   DateFromTime,
   MonthFromTime,
@@ -47,7 +48,7 @@ export function CalendarDateFromTime(
     }
   }
   if (!Object.prototype.hasOwnProperty.call(calendarData, calendar)) {
-    throw new RangeError(`Calendar data not loaded: ${calendar}`)
+    throw new RangeErrorConstructor(`Calendar data not loaded: ${calendar}`)
   }
   return calendarData[calendar](t)
 }

@@ -1,4 +1,8 @@
-import {floor, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  floor,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   createHostTimeZoneOffset,
@@ -34,7 +38,7 @@ export function legacyHostTimeZone(
   try {
     zone = createHostTimeZoneOffset(timeZone, {Constructor, parts})
   } catch (error) {
-    if (!(error instanceof RangeError)) throw error
+    if (!(error instanceof RangeErrorConstructor)) throw error
   }
   cache.set(timeZone, zone)
   return zone
@@ -102,7 +106,9 @@ function offsetName(
     minute = floor((seconds % 3600) / 60),
     second = seconds % 60
   if (!NumberConstructor || !numberFormat)
-    throw new RangeError('Timezone offset labels require Intl.NumberFormat')
+    throw new RangeErrorConstructor(
+      'Timezone offset labels require Intl.NumberFormat'
+    )
   const numeric = (digits: number): ((value: number) => string) =>
     numberFormat.call(
       new NumberConstructor(resolved.locale, {

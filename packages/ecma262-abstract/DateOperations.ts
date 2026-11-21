@@ -1,4 +1,8 @@
-import {floor, numberIsFinite} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  ErrorConstructor,
+  floor,
+  numberIsFinite,
+} from '#packages/ecma262-abstract/intrinsics.js'
 const MS_PER_DAY = 86400000
 
 function mod(x: number, y: number): number {
@@ -71,7 +75,7 @@ export function MonthFromTime(
   if (dwy < 304 + leap) return 9
   if (dwy < 334 + leap) return 10
   if (dwy < 365 + leap) return 11
-  throw new Error('Invalid time')
+  throw new ErrorConstructor('Invalid time')
 }
 
 export function DateFromTime(t: number): number {
@@ -90,7 +94,7 @@ export function DateFromTime(t: number): number {
   if (mft === 9) return dwy - 272 - leap
   if (mft === 10) return dwy - 303 - leap
   if (mft === 11) return dwy - 333 - leap
-  throw new Error('Invalid time')
+  throw new ErrorConstructor('Invalid time')
 }
 
 const HOURS_PER_DAY = 24

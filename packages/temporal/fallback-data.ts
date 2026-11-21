@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import names from '@formatjs_generated/tz/temporal-names.js'
 import {chinese} from '@formatjs_generated/icu.calendar/chinese.js'
 import {dangi} from '@formatjs_generated/icu.calendar/dangi.js'
@@ -23,7 +24,7 @@ const hostTimeZones = import.meta.formatjsTemporalHostTimeZones === true
 const nativeDataOnly = import.meta.formatjsTemporalNativeData === true
 const compactTimeZones = import.meta.formatjsTemporalCompactTimeZones !== false
 function unavailable(): never {
-  throw new RangeError(
+  throw new RangeErrorConstructor(
     'Temporal native build requires Rust calendar and timezone data'
   )
 }
@@ -63,6 +64,6 @@ export function fallbackTimeZoneData(name: string): UnpackedTimeZoneData {
   if (nativeDataOnly) return unavailable()
   if (compactTimeZones) return unpackCompactTimeZone(name)
   const entry = packed.zones.find(value => value.startsWith(name + '|'))
-  if (!entry) throw new RangeError('Unknown canonical zone')
+  if (!entry) throw new RangeErrorConstructor('Unknown canonical zone')
   return UnpackTimeZoneData({...packed, zones: [entry]})[name]
 }

@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLocaleList.js'
@@ -227,7 +231,7 @@ export function InitializeDateTimeFormat(
   opt.localeMatcher = matcher
   let calendar = GetOption(options, 'calendar', 'string', undefined, undefined)
   if (calendar !== undefined && !IsUnicodeLocaleIdentifierType(calendar)) {
-    throw new RangeError('Malformed calendar')
+    throw new RangeErrorConstructor('Malformed calendar')
   }
   const internalSlots = getInternalSlots(dtf)
   opt.ca = calendar
@@ -242,7 +246,7 @@ export function InitializeDateTimeFormat(
     numberingSystem !== undefined &&
     !IsUnicodeLocaleIdentifierType(numberingSystem)
   ) {
-    throw new RangeError('Malformed numbering system')
+    throw new RangeErrorConstructor('Malformed numbering system')
   }
   opt.nu = numberingSystem
   const hour12 = GetOption(options, 'hour12', 'boolean', undefined, undefined)
@@ -276,7 +280,9 @@ export function InitializeDateTimeFormat(
   let {timeZone} = options
   if (timeZone !== undefined) {
     if (localeTimeZone !== undefined)
-      throw new TypeError('timeZone option conflicts with ZonedDateTime')
+      throw new TypeErrorConstructor(
+        'timeZone option conflicts with ZonedDateTime'
+      )
     timeZone = ToString(timeZone)
     if (
       !IsValidTimeZoneName(timeZone, {
@@ -284,7 +290,7 @@ export function InitializeDateTimeFormat(
         uppercaseLinks,
       })
     ) {
-      throw new RangeError('Invalid timeZoneName')
+      throw new RangeErrorConstructor('Invalid timeZoneName')
     }
   } else {
     timeZone = localeTimeZone ?? getDefaultTimeZone()
@@ -396,7 +402,7 @@ export function InitializeDateTimeFormat(
   const formats = dataLocaleData.formats[calendar as string]
   // UNSPECCED: IMPLEMENTATION DETAILS
   if (!formats) {
-    throw new RangeError(
+    throw new RangeErrorConstructor(
       `Calendar "${calendar}" is not supported. Try setting "calendar" to 1 of the following: ${Object.keys(
         dataLocaleData.formats
       ).join(', ')}`
@@ -484,7 +490,7 @@ export function InitializeDateTimeFormat(
     for (const prop of DATE_TIME_PROPS) {
       const p = opt[prop]
       if (p !== undefined) {
-        throw new TypeError(
+        throw new TypeErrorConstructor(
           `Intl.DateTimeFormat can't set option ${prop} when ${
             dateStyle ? 'dateStyle' : 'timeStyle'
           } is used`
@@ -495,7 +501,9 @@ export function InitializeDateTimeFormat(
       (required === 'date' && timeStyle !== undefined) ||
       (required === 'time' && dateStyle !== undefined)
     )
-      throw new TypeError('DateTimeFormat style conflicts with required type')
+      throw new TypeErrorConstructor(
+        'DateTimeFormat style conflicts with required type'
+      )
     // Spec: ECMA-402 11.1.2 CreateDateTimeFormat steps 12-14 resolve
     // hour12 to hc; step 30.5 picks the style format; step 33 stores
     // [[HourCycle]] when the selected format has [[hour]].
@@ -611,7 +619,7 @@ export function InitializeDateTimeFormat(
           kind === 'PlainMonthDay') &&
           dateStyle === undefined)
       ) {
-        throw new TypeError(
+        throw new TypeErrorConstructor(
           'DateTimeFormat styles do not overlap the Temporal type'
         )
       }
@@ -638,7 +646,7 @@ export function InitializeDateTimeFormat(
           kind !== 'Instant' &&
           allFields.some(key => temporalOptions[key] !== undefined)
         ) {
-          throw new TypeError(
+          throw new TypeErrorConstructor(
             'DateTimeFormat options do not overlap the Temporal type'
           )
         }

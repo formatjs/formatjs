@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 
@@ -20,12 +24,12 @@ export function GetOption<T extends object, K extends keyof T, F>(
   // https://tc39.es/ecma402/#sec-getoption
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L384
   if (!IsObject(opts)) {
-    throw new TypeError('Options must be an object')
+    throw new TypeErrorConstructor('Options must be an object')
   }
   let value: any = opts[prop]
   if (value !== undefined) {
     if (type !== 'boolean' && type !== 'string') {
-      throw new TypeError('invalid type')
+      throw new TypeErrorConstructor('invalid type')
     }
     if (type === 'boolean') {
       value = Boolean(value)
@@ -34,7 +38,9 @@ export function GetOption<T extends object, K extends keyof T, F>(
       value = ToString(value)
     }
     if (values !== undefined && !values.filter(val => val == value).length) {
-      throw new RangeError(`${value} is not within ${values.join(', ')}`)
+      throw new RangeErrorConstructor(
+        `${value} is not within ${values.join(', ')}`
+      )
     }
     return value
   }

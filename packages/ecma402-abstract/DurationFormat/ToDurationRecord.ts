@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   type DurationInput,
@@ -9,9 +13,9 @@ import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToI
 export function ToDurationRecord(input: DurationInput): DurationRecord {
   if (!IsObject(input)) {
     if (typeof input === 'string') {
-      throw new RangeError('Invalid duration format')
+      throw new RangeErrorConstructor('Invalid duration format')
     }
-    throw new TypeError('Invalid duration')
+    throw new TypeErrorConstructor('Invalid duration')
   }
   const result: DurationRecord = {
     years: 0,
@@ -49,10 +53,10 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
     }
   }
   if (!anyDefined) {
-    throw new TypeError('Invalid duration format')
+    throw new TypeErrorConstructor('Invalid duration format')
   }
   if (!IsValidDurationRecord(result)) {
-    throw new RangeError('Invalid duration format')
+    throw new RangeErrorConstructor('Invalid duration format')
   }
   return result
 }

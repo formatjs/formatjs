@@ -1,4 +1,6 @@
 import {
+  ErrorConstructor,
+  RangeErrorConstructor,
   floor,
   numberFrom,
   numberIsInteger,
@@ -36,7 +38,8 @@ const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 const mod = (value: number, divisor: number): number =>
   value - floor(value / divisor) * divisor
 function integer(value: number): number {
-  if (!numberIsSafeInteger(value)) throw new RangeError('Expected safe integer')
+  if (!numberIsSafeInteger(value))
+    throw new RangeErrorConstructor('Expected safe integer')
   return value
 }
 export function HebrewLeapYear(year: number): boolean {
@@ -141,7 +144,7 @@ export function ArithmeticCalendarDaysInMonth(
 ): number {
   const count = ArithmeticCalendarMonthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
-    throw new RangeError('Invalid calendar month')
+    throw new RangeErrorConstructor('Invalid calendar month')
   if (IsISOCalendar(calendar)) {
     return month === 12
       ? 31
@@ -233,7 +236,8 @@ export function ArithmeticCalendarFromEpochDay(
   if (iso) {
     const ordinal = floor(t / 86400000) - DayFromYear(civilYear),
       leap = DaysInYear(civilYear) === 366 ? 1 : 0
-    if (!(ordinal >= 0 && ordinal < 365 + leap)) throw new Error('Invalid time')
+    if (!(ordinal >= 0 && ordinal < 365 + leap))
+      throw new ErrorConstructor('Invalid time')
     const year =
         civilYear -
         (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0),

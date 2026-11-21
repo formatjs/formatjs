@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   mathMin,
   numberFrom,
   numberIsInteger,
@@ -43,7 +45,7 @@ export function checkYearMonth(epochDay: number): number {
     epochDay < -100000019 ||
     epochDay > 100000017
   )
-    throw new RangeError('Year-month out of range')
+    throw new RangeErrorConstructor('Year-month out of range')
   return epochDay
 }
 
@@ -93,7 +95,7 @@ export function monthDayFields(
           numberFrom(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0))
         : daysInMonth(cal, 1972, month)
     if (day > maximum && overflow === 'reject')
-      throw new RangeError('Day out of range')
+      throw new RangeErrorConstructor('Day out of range')
     return {
       epochDay: isoReferenceDay(1972, month, mathMin(day, maximum)),
       calendar,
@@ -104,7 +106,7 @@ export function monthDayFields(
       calendarStartOfYear(cal, year) > 100000000 ||
       calendarStartOfYear(cal, year + 1) <= -100000001
     )
-      throw new RangeError('Calendar year out of range')
+      throw new RangeErrorConstructor('Calendar year out of range')
     const epoch = calendarToEpochDayRaw(
       cal,
       {
@@ -119,11 +121,11 @@ export function monthDayFields(
     code = normalized.monthCode
     day = normalized.day
   } else if (code === undefined)
-    throw new TypeError('monthCode or year required')
+    throw new TypeErrorConstructor('monthCode or year required')
   const lunisolar = calendar === 'chinese' || calendar === 'dangi'
   if (lunisolar) {
     if (day > 30 && overflow === 'reject')
-      throw new RangeError('Day out of range')
+      throw new RangeErrorConstructor('Day out of range')
     day = mathMin(day, 30)
     if (
       code!.endsWith('L') &&
@@ -132,7 +134,8 @@ export function monthDayFields(
         (day === 30 &&
           ['M02L', 'M08L', 'M09L', 'M10L', 'M11L'].includes(code!)))
     ) {
-      if (overflow === 'reject') throw new RangeError('Invalid month-day')
+      if (overflow === 'reject')
+        throw new RangeErrorConstructor('Invalid month-day')
       code = code!.slice(0, -1)
     }
   }
@@ -157,7 +160,7 @@ export function monthDayFields(
           'reject'
         )
       } catch (error) {
-        if (!(error instanceof RangeError)) throw error
+        if (!(error instanceof RangeErrorConstructor)) throw error
         continue
       }
       const month = calendarFromEpochDayRaw(cal, start).month,
@@ -174,7 +177,7 @@ export function monthDayFields(
   }
   if (overflow === 'constrain' && best !== undefined)
     return {epochDay: best, calendar}
-  throw new RangeError('Invalid month-day')
+  throw new RangeErrorConstructor('Invalid month-day')
 }
 
 export function parseShortSlot(
@@ -212,7 +215,7 @@ export function parseShortSlot(
     calendar !== 'iso8601' &&
     (parsed.year < -271821 || parsed.year > 275760)
   )
-    throw new RangeError('Date out of range')
+    throw new RangeErrorConstructor('Date out of range')
   if (calendar === 'iso8601') {
     // Parsing already validated the ISO fields, including the reference year.
     const year = kind === 'month-day' ? 1972 : parsed.year,

@@ -1,3 +1,4 @@
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 function IsCallable(fn: any): fn is Function {
   return typeof fn === 'function'
 }
@@ -22,7 +23,7 @@ export function OrdinaryHasInstance(
   }
   let P = C.prototype
   if (P === null || (typeof P !== 'object' && typeof P !== 'function')) {
-    throw new TypeError(
+    throw new TypeErrorConstructor(
       'OrdinaryHasInstance called on an object with an invalid prototype property.'
     )
   }

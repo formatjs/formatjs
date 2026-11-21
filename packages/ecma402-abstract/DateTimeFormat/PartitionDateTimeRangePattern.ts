@@ -1,3 +1,4 @@
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
@@ -58,7 +59,9 @@ export function PartitionDateTimeRangePattern(
     firstTemporal !== secondTemporal ||
     (firstTemporal && secondTemporal && x.kind !== y.kind)
   ) {
-    throw new TypeError('Range endpoints must have the same Temporal type')
+    throw new TypeErrorConstructor(
+      'Range endpoints must have the same Temporal type'
+    )
   }
   const slots = implDetails.getInternalSlots(dtf)
   const first = HandleDateTimeValue(slots, x)

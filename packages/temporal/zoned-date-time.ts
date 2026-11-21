@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -149,7 +151,7 @@ export interface ZonedDateTimeConstructor {
 }
 function read(value: unknown): ZonedSlot {
   const slot = getZonedSlot(value as object)
-  if (!slot) throw new TypeError('Invalid ZonedDateTime receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid ZonedDateTime receiver')
   return slot
 }
 const zonedSnapshots = new WeakMap<
@@ -229,13 +231,14 @@ function option<T extends string>(
   allowed: readonly T[]
 ): T {
   const text = value === undefined ? fallback : ToString(value)
-  if (!allowed.includes(text as T)) throw new RangeError('Invalid option')
+  if (!allowed.includes(text as T))
+    throw new RangeErrorConstructor('Invalid option')
   return text as T
 }
 function offsetString(value: unknown): string {
   const primitive = object(value) ? ToPrimitive(value, 'string') : value
   if (typeof primitive !== 'string')
-    throw new TypeError('Offset must be a string')
+    throw new TypeErrorConstructor('Offset must be a string')
   parseOffsetNanoseconds(primitive)
   return primitive
 }
@@ -281,7 +284,7 @@ function resolve(
   const provided = parseOffsetNanoseconds(offset)
   if (behavior === 'use') return validateInstant(localTime - provided)
   if (localTime < -8_640_000_000_000_000_000_000n)
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
   const candidates = kernel.possibleInstants(fields)
   for (let i = 0; i < candidates.length; i++) {
     const actual = localTime - candidates[i]
@@ -293,7 +296,7 @@ function resolve(
       return candidates[i]
   }
   if (behavior === 'reject')
-    throw new RangeError('Offset does not match timezone')
+    throw new RangeErrorConstructor('Offset does not match timezone')
   return kernel.resolve(fields, ambiguous)
 }
 export function toZonedDateTimeSlot(
@@ -356,7 +359,9 @@ export function toZonedDateTimeSlot(
     }
   } else {
     if (typeof item !== 'string')
-      throw new TypeError('Expected zoned date/time string or object')
+      throw new TypeErrorConstructor(
+        'Expected zoned date/time string or object'
+      )
     const parsed = parseZonedDateTimeString(item)
     dateOnly = !/[Tt ]/.test(item.slice(0, item.indexOf('[')))
     calendar = constructorCalendar(parsed.fields.calendar)
@@ -489,7 +494,7 @@ export function unroundedZonedDifference(
     try {
       return addZonedDuration(start, fields)
     } catch (error) {
-      if (!(error instanceof RangeError)) throw error
+      if (!(error instanceof RangeErrorConstructor)) throw error
       return bigIntFrom(sign) * 8_640_000_000_000_000_000_001n
     }
   }
@@ -522,7 +527,8 @@ export function differenceZonedDuration(
   since: boolean
 ): DurationObject {
   const end = toZonedDateTimeSlot(other)
-  if (start.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (start.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options),
     largestRaw = resolved.largestUnit,
     largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -548,9 +554,9 @@ export function differenceZonedDuration(
       : unitOption(largestText)!
   const largeIndex = names.indexOf(largest)
   if (largeIndex > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
-    throw new RangeError('Timezones differ')
+    throw new RangeErrorConstructor('Timezones differ')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
@@ -593,7 +599,7 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
     midnight <= -8_640_000_000_000_000_000_000n - nsPerDay ||
     midnight >= 8_640_000_000_000_000_000_000n + nsPerDay
   )
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
   const candidates = kernel.possibleInstantsFromEpochNanoseconds
     ? kernel.possibleInstantsFromEpochNanoseconds(midnight)
     : kernel.possibleInstants(epochNanosecondsToISO(midnight))
@@ -613,7 +619,7 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
     }
     event = kernel.transition(event, 'previous')
   }
-  throw new RangeError('No day boundary in instant range')
+  throw new RangeErrorConstructor('No day boundary in instant range')
 }
 
 const numericOffsetSlots: (ZonedSlot | undefined)[] = [
@@ -693,7 +699,7 @@ function format(slot: ZonedSlot, options?: unknown): string {
     'critical',
   ])
   if (unit !== undefined && timeUnit(unit) === 'hour')
-    throw new RangeError('Cannot format hours only')
+    throw new RangeErrorConstructor('Cannot format hours only')
   const precision: Precision =
     unit === 'minute'
       ? 'minute'
@@ -741,7 +747,7 @@ class ZonedDateTimeValue {
     _timeZone: unknown,
     _calendar: unknown = undefined
   ) {
-    throw new TypeError('Use exported ZonedDateTime constructor')
+    throw new TypeErrorConstructor('Use exported ZonedDateTime constructor')
   }
   static from(
     item: unknown,
@@ -781,7 +787,7 @@ class ZonedDateTimeValue {
       cached = zonedSnapshot(slot)
     if (cached) {
       if (cached.value.errors.includes('hoursInDay'))
-        throw new RangeError('Day boundary out of range')
+        throw new RangeErrorConstructor('Day boundary out of range')
       return cached.value.values.hoursInDay as number
     }
     const native = nativeTemporal()
@@ -809,7 +815,7 @@ class ZonedDateTimeValue {
         any = true
       }
     }
-    if (!any) throw new TypeError('At least one field required')
+    if (!any) throw new TypeErrorConstructor('At least one field required')
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native) {
       dateFields(zonedSnapshot(slot)!.date)
@@ -860,7 +866,8 @@ class ZonedDateTimeValue {
   }
   round(roundTo: unknown): ZonedDateTimeObject {
     const slot = read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? Object.assign(createObject(null), {smallestUnit: roundTo})
@@ -882,7 +889,8 @@ class ZonedDateTimeValue {
       )
     let value: bigint
     if (unit === 'day') {
-      if (increment !== 1) throw new RangeError('Invalid day increment')
+      if (increment !== 1)
+        throw new RangeErrorConstructor('Invalid day increment')
       const start = startOfDay(slot),
         end = startOfDay(slot, epochDayOf(local(slot)) + 1)
       const current =
@@ -914,7 +922,8 @@ class ZonedDateTimeValue {
   }
   withCalendar(calendar: unknown): ZonedDateTimeObject {
     const slot = read(this)
-    if (calendar === undefined) throw new TypeError('Calendar required')
+    if (calendar === undefined)
+      throw new TypeErrorConstructor('Calendar required')
     return createZonedDateTime(
       slot.epochNanoseconds,
       slot.timeZone,
@@ -951,12 +960,13 @@ class ZonedDateTimeValue {
   }
   getTimeZoneTransition(direction: unknown): ZonedDateTimeObject | null {
     const slot = read(this)
-    if (direction === undefined) throw new TypeError('Direction required')
+    if (direction === undefined)
+      throw new TypeErrorConstructor('Direction required')
     const raw =
       typeof direction === 'string'
         ? direction
         : optionsObject(direction).direction
-    if (raw === undefined) throw new RangeError('Direction required')
+    if (raw === undefined) throw new RangeErrorConstructor('Direction required')
     const choice = option(raw, 'next', ['next', 'previous'])
     const value = zonedKernel(slot.timeZone).transition(
       slot.epochNanoseconds,
@@ -1020,7 +1030,9 @@ class ZonedDateTimeValue {
     return format(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.ZonedDateTime to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.ZonedDateTime to primitive'
+    )
   }
 }
 const localeStringIntrinsic = ZonedDateTimeValue.prototype.toString
@@ -1041,16 +1053,16 @@ export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
         typeof primitive !== 'string' &&
         typeof primitive !== 'boolean'
       )
-        throw new TypeError('Invalid BigInt input')
+        throw new TypeErrorConstructor('Invalid BigInt input')
       const value = bigIntFrom(primitive)
       if (typeof args[1] !== 'string')
-        throw new TypeError('Timezone must be a string')
+        throw new TypeErrorConstructor('Timezone must be a string')
       if (
         !/^(?:[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*|[+-]\d{2}(?::?\d{2})?)$/.test(
           args[1]
         )
       )
-        throw new RangeError('Invalid timezone identifier')
+        throw new RangeErrorConstructor('Invalid timezone identifier')
       const zone = timeZoneIdentifier(args[1]),
         calendar = constructorCalendar(args[2])
       validateInstant(value)

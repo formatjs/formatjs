@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -128,7 +130,7 @@ export interface PlainDateConstructor {
 }
 function read(item: unknown): DateSlot {
   const slot = getDateSlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainDate receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainDate receiver')
   return slot
 }
 export function createPlainDate(
@@ -141,7 +143,7 @@ export function createPlainDate(
     epochDay < -100000001 ||
     epochDay > 100000000
   )
-    throw new RangeError('Date out of range')
+    throw new RangeErrorConstructor('Date out of range')
   const result = createObject(PlainDateValue.prototype) as PlainDateObject
   setDateSlot(result, typeof value === 'number' ? {epochDay, calendar} : value)
   return result
@@ -173,7 +175,7 @@ export function toPlainDateSlot(item: unknown, options?: unknown): DateSlot {
     }
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected date string or object')
+    throw new TypeErrorConstructor('Expected date string or object')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (options !== undefined) prepareDateTimeString(item, options)
@@ -225,7 +227,8 @@ function difference(
   since: boolean
 ): DurationObject {
   const end = toPlainDateSlot(other)
-  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (slot.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit,
     largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -243,7 +246,7 @@ function difference(
     !names.includes(largest) ||
     names.indexOf(largest) > smallIndex
   )
-    throw new RangeError('Invalid date units')
+    throw new RangeErrorConstructor('Invalid date units')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return (
@@ -302,7 +305,7 @@ class PlainDateValue {
     _day: unknown,
     _calendar: unknown = undefined
   ) {
-    throw new TypeError('Use exported PlainDate constructor')
+    throw new TypeErrorConstructor('Use exported PlainDate constructor')
   }
   static from(item: unknown, options: unknown = undefined): PlainDateObject {
     const slot = toPlainDateSlot(item, options)
@@ -338,7 +341,8 @@ class PlainDateValue {
   }
   withCalendar(calendar: unknown): PlainDateObject {
     const slot = read(this)
-    if (calendar === undefined) throw new TypeError('Calendar required')
+    if (calendar === undefined)
+      throw new TypeErrorConstructor('Calendar required')
     return createPlainDate(slot.epochDay, calendarId(calendar))
   }
   add(duration: unknown, options: unknown = undefined): PlainDateObject {
@@ -409,7 +413,9 @@ class PlainDateValue {
     return format(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainDate to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainDate to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainDateValue.prototype.toString

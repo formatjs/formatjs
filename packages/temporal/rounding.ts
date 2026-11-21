@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   floor,
   mathTrunc,
@@ -60,7 +62,8 @@ const units = [
 ]
 export function optionsObject(value: unknown): Record<string, unknown> {
   if (value === undefined) return createObject(null)
-  if (!IsObject(value)) throw new TypeError('Options must be an object')
+  if (!IsObject(value))
+    throw new TypeErrorConstructor('Options must be an object')
   return value as Record<string, unknown>
 }
 export function roundingMode(
@@ -69,26 +72,28 @@ export function roundingMode(
 ): RoundingMode {
   if (value === undefined) return fallback
   const mode = ToString(value)
-  if (!modes.includes(mode)) throw new RangeError('Invalid rounding mode')
+  if (!modes.includes(mode))
+    throw new RangeErrorConstructor('Invalid rounding mode')
   return mode as RoundingMode
 }
 export function unitOption(value: unknown): string | undefined {
   if (value === undefined) return undefined
   let unit = ToString(value)
   if (unit.endsWith('s')) unit = unit.slice(0, -1)
-  if (!units.includes(unit)) throw new RangeError('Invalid temporal unit')
+  if (!units.includes(unit))
+    throw new RangeErrorConstructor('Invalid temporal unit')
   return unit
 }
 export function timeUnit(unit: string | undefined): TimeUnit {
   if (unit === undefined || !Object.hasOwn(timeUnitNanoseconds, unit))
-    throw new RangeError('Expected a time unit')
+    throw new RangeErrorConstructor('Expected a time unit')
   return unit as TimeUnit
 }
 export function roundingIncrement(value: unknown): number {
   if (value === undefined) return 1
   const increment = mathTrunc(+(value as number))
   if (!numberIsFinite(increment) || increment < 1 || increment > 1_000_000_000)
-    throw new RangeError('Invalid rounding increment')
+    throw new RangeErrorConstructor('Invalid rounding increment')
   return increment
 }
 export function fractionalSecondDigits(value: unknown): 'auto' | number {
@@ -96,11 +101,11 @@ export function fractionalSecondDigits(value: unknown): 'auto' | number {
   if (typeof value === 'number') {
     const digits = floor(value)
     if (!numberIsFinite(digits) || digits < 0 || digits > 9)
-      throw new RangeError('Invalid fractionalSecondDigits')
+      throw new RangeErrorConstructor('Invalid fractionalSecondDigits')
     return digits
   }
   if (ToString(value) !== 'auto')
-    throw new RangeError('Invalid fractionalSecondDigits')
+    throw new RangeErrorConstructor('Invalid fractionalSecondDigits')
   return 'auto'
 }
 
@@ -152,7 +157,8 @@ export function roundInstant(
   return (lower + (up ? 1n : 0n)) * quantum
 }
 export function roundInstantOptions(value: bigint, options: unknown): bigint {
-  if (options === undefined) throw new TypeError('roundTo is required')
+  if (options === undefined)
+    throw new TypeErrorConstructor('roundTo is required')
   const resolved =
     typeof options === 'string'
       ? Object.assign(createObject(null), {smallestUnit: options})
@@ -164,7 +170,7 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
     return nativeTemporal()!.roundInstantUnit(value, unit, increment, mode)
   const maximum = 86_400_000_000_000n / timeUnitNanoseconds[unit]
   if (bigIntFrom(increment) > maximum || maximum % bigIntFrom(increment) !== 0n)
-    throw new RangeError('Rounding increment must divide a day')
+    throw new RangeErrorConstructor('Rounding increment must divide a day')
   const native = nativeTemporal()
   return (native ? native.roundInstant : roundInstant)(
     value,

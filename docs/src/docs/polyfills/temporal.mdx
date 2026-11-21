@@ -58,6 +58,8 @@ access without consulting a replaced `Reflect.get`.
 Temporal and shared date/calendar helpers retain a captured `Math.floor` for
 internal floor arithmetic. Other internal math operations, numeric predicates and
 Number/BigInt conversions also retain captured bindings.
+Temporal validation and shared helpers retain their original Error, TypeError and
+RangeError constructors after global bindings change.
 Shared primitive coercion retains intrinsic helper bindings while preserving user
 conversion hooks and their standard hints. Browser host objects such as
 `document.all` retain object semantics for field bags, options, constructor

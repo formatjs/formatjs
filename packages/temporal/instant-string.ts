@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -18,12 +19,12 @@ export function parseOffsetNanoseconds(
       value
     )
   if (!match || match[0] !== value || (annotation && match[5] !== undefined))
-    throw new RangeError('Invalid UTC offset')
+    throw new RangeErrorConstructor('Invalid UTC offset')
   const hour = +match[2],
     minute = +(match[4] ?? 0),
     second = +(match[5] ?? 0)
   if (hour > 23 || minute > 59 || second > 59)
-    throw new RangeError('Invalid UTC offset')
+    throw new RangeErrorConstructor('Invalid UTC offset')
   const result =
     bigIntFrom(hour * 3600 + minute * 60 + second) * 1_000_000_000n +
     bigIntFrom((match[6] ?? '').padEnd(9, '0'))
@@ -41,25 +42,28 @@ function validateAnnotations(value: string): {
     zoneSeen = false
   while (value) {
     const match = /^\[(!?)([^[\]]+)\]/.exec(value)
-    if (!match) throw new RangeError('Invalid annotation')
+    if (!match) throw new RangeErrorConstructor('Invalid annotation')
     const critical = match[1] === '!'
     const text = match[2]
     if (text.includes('=')) {
       const annotation =
         /^([a-z_][a-z_0-9-]*)=([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*)$/.exec(text)
       if (!annotation || annotation[0] !== text)
-        throw new RangeError('Invalid annotation')
+        throw new RangeErrorConstructor('Invalid annotation')
       annotationSeen = true
       if (annotation[1] === 'u-ca') {
         if (calendarSeen && (critical || criticalCalendar))
-          throw new RangeError('Duplicate critical calendar annotation')
+          throw new RangeErrorConstructor(
+            'Duplicate critical calendar annotation'
+          )
         calendar ??= annotation[2]
         calendarSeen = true
         criticalCalendar ||= critical
-      } else if (critical) throw new RangeError('Unknown critical annotation')
+      } else if (critical)
+        throw new RangeErrorConstructor('Unknown critical annotation')
     } else {
       if (zoneSeen || annotationSeen)
-        throw new RangeError('Unexpected timezone annotation')
+        throw new RangeErrorConstructor('Unexpected timezone annotation')
       zoneSeen = true
       timeZone = text
       if (/^[+-]/.test(text)) parseOffsetNanoseconds(text, true)
@@ -68,7 +72,7 @@ function validateAnnotations(value: string): {
           text
         )
       )
-        throw new RangeError('Invalid timezone annotation')
+        throw new RangeErrorConstructor('Invalid timezone annotation')
     }
     value = value.slice(match[0].length)
   }
@@ -84,7 +88,7 @@ export function parseInstantString(value: string): bigint {
       value
     )
   if (!match || match[1] === '-000000')
-    throw new RangeError('Invalid instant string')
+    throw new RangeErrorConstructor('Invalid instant string')
   validateAnnotations(match[11])
   const fraction = (match[9] ?? '').padEnd(9, '0')
   const second = +(match[8] ?? 0)
@@ -123,14 +127,14 @@ export function parseISODateParts(value: string): ParsedDateFields {
       value
     )
   if (!match || !isValidDate(match[1], match[3], match[4]))
-    throw new RangeError('Invalid ISO date/time')
+    throw new RangeErrorConstructor('Invalid ISO date/time')
   const annotations = validateAnnotations(match[11])
   if (match[10]) parseOffsetNanoseconds(match[10])
   const hour = +(match[5] ?? 0),
     minute = +(match[7] ?? 0),
     second = +(match[8] ?? 0)
   if (hour > 23 || minute > 59 || second > 60)
-    throw new RangeError('Invalid ISO time')
+    throw new RangeErrorConstructor('Invalid ISO time')
   const fraction = (match[9] ?? '').padEnd(9, '0')
   return {
     year: +match[1],
@@ -161,11 +165,12 @@ export function parseShortDateString(
       annotation.calendar !== undefined &&
       annotation.calendar.toLowerCase() !== 'iso8601'
     )
-      throw new RangeError('Short ISO date requires ISO calendar')
+      throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
     const year = kind === 'year-month' ? short[1] : '1972',
       month = kind === 'year-month' ? short[2] : short[1],
       day = kind === 'year-month' ? '01' : short[2]
-    if (!isValidDate(year, month, day)) throw new RangeError('Invalid ISO date')
+    if (!isValidDate(year, month, day))
+      throw new RangeErrorConstructor('Invalid ISO date')
     return {year: +year, month: +month, day: +day, calendar: 'iso8601'}
   }
   return parseISODateParts(value)
@@ -184,7 +189,7 @@ export function parseCalendarString(value: string): string {
       annotation.calendar !== undefined &&
       annotation.calendar.toLowerCase() !== 'iso8601'
     )
-      throw new RangeError('Short ISO date requires ISO calendar')
+      throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
   } else if (/^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]|$)/.test(body))
     // ParseTemporalCalendarString 1619: parse fields without creating a bounded date.
     parseISODateParts(body.replace(/[Zz]$/, ''))
@@ -202,7 +207,7 @@ export function parsePlainTimeString(value: string): bigint {
   const date = /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})[Tt ]/.exec(body)
   if (date) {
     if (!isValidDate(date[1], date[3], date[4]))
-      throw new RangeError('Invalid ISO date')
+      throw new RangeErrorConstructor('Invalid ISO date')
     body = body.slice(date[0].length)
   } else if (/^[Tt]/.test(body)) body = body.slice(1)
   else {
@@ -212,7 +217,7 @@ export function parsePlainTimeString(value: string): bigint {
       (ym && isValidDate(ym[1], ym[2], '01')) ||
       (md && isValidDate('1972', md[1], md[2]))
     )
-      throw new RangeError('Ambiguous ISO time')
+      throw new RangeErrorConstructor('Ambiguous ISO time')
   }
   const match =
     /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?$/.exec(
@@ -225,7 +230,7 @@ export function parsePlainTimeString(value: string): bigint {
     +(match[3] ?? 0) > 59 ||
     +(match[4] ?? 0) > 60
   )
-    throw new RangeError('Invalid ISO time')
+    throw new RangeErrorConstructor('Invalid ISO time')
   if (match[6]) parseOffsetNanoseconds(match[6])
   return (
     bigIntFrom(
@@ -255,7 +260,7 @@ export function parseTimeZoneString(value: string): string {
     /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]([\s\S]+))?$/.exec(body)
   if (date && date[0] === body) {
     if (!isValidDate(date[1], date[3], date[4]))
-      throw new RangeError('Invalid ISO date')
+      throw new RangeErrorConstructor('Invalid ISO date')
     time = date[5]
   } else {
     let yearMonth = /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body)
@@ -272,7 +277,7 @@ export function parseTimeZoneString(value: string): string {
         annotations.calendar !== undefined &&
         annotations.calendar.toLowerCase() !== 'iso8601'
       )
-        throw new RangeError('Short ISO date requires ISO calendar')
+        throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
     } else time = /^[Tt]/.test(body) ? body.slice(1) : body
   }
   if (time !== undefined) {
@@ -287,11 +292,11 @@ export function parseTimeZoneString(value: string): string {
       +(match[3] ?? 0) > 59 ||
       +(match[4] ?? 0) > 60
     )
-      throw new RangeError('Invalid ISO time')
+      throw new RangeErrorConstructor('Invalid ISO time')
     offset = match[6]
     if (offset && !/^[Zz]$/.test(offset)) parseOffsetNanoseconds(offset)
     if (!date && offset && /^[Zz]$/.test(offset))
-      throw new RangeError('Time-only string cannot use Z')
+      throw new RangeErrorConstructor('Time-only string cannot use Z')
   }
   if (annotations.timeZone !== undefined) return annotations.timeZone
   if (offset && /^[Zz]$/.test(offset)) return 'UTC'
@@ -299,7 +304,9 @@ export function parseTimeZoneString(value: string): string {
     parseOffsetNanoseconds(offset, true)
     return offset
   }
-  throw new RangeError('Timezone string needs an offset or annotation')
+  throw new RangeErrorConstructor(
+    'Timezone string needs an offset or annotation'
+  )
 }
 
 export function parseZonedDateTimeString(value: string): {
@@ -313,16 +320,16 @@ export function parseZonedDateTimeString(value: string): {
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parseZonedFields(value)
   const index = value.indexOf('[')
-  if (index < 0) throw new RangeError('Timezone annotation required')
+  if (index < 0) throw new RangeErrorConstructor('Timezone annotation required')
   const body = value.slice(0, index),
     annotations = validateAnnotations(value.slice(index))
   if (annotations.timeZone === undefined)
-    throw new RangeError('Timezone annotation required')
+    throw new RangeErrorConstructor('Timezone annotation required')
   const offset =
     /([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)$/.exec(body)?.[1]
   // Keep local fields independent of any supplied UTC offset.
   if (/[Zz]$/.test(body) && !/[Tt ]/.test(body))
-    throw new RangeError('Offset requires time')
+    throw new RangeErrorConstructor('Offset requires time')
   const fields = parseISODateParts(
     body.replace(/[Zz]$/, '') + value.slice(index)
   )

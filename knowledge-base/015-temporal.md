@@ -60,6 +60,12 @@ constructor and coercion semantics stay intact. GetISOPartsFromEpoch gains 16
 individual TS/Rust traces; two complete Gregorian eras are compared with builtin
 UTC fields in TS, alongside Rust full-era and independent ICU controls. Forward
 conversion, range policy and other intrinsic dependencies remain under audit.
+Shared Error/TypeError/RangeError captures now protect 348 value references in 59
+Temporal and shared-helper modules from global constructor replacement. This
+includes invariant constructor arguments; Symbol.hasInstance-based classification
+and cross-realm behavior remain open. Date/time integer coercion and month/day
+positive-integer conversion gain six individual spec-line traces, preserving
+ToNumber hooks, abrupt completions, truncation and mathematical zero.
 
 ## Native performance direction
 

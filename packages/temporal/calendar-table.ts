@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   floor,
   numberIsInteger,
   numberIsSafeInteger,
@@ -35,7 +36,7 @@ function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   const table = data(calendar),
     index = year - table.firstYear
   if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)
-    throw new RangeError('Calendar year out of range')
+    throw new RangeErrorConstructor('Calendar year out of range')
   return table.dictionary[
     alphabet.indexOf(table.years[index * 2]) * 64 +
       alphabet.indexOf(table.years[index * 2 + 1])
@@ -127,7 +128,7 @@ export function tableYearMonth(
   const table = data(calendar),
     checkpoints = table.monthCheckpoints
   if (!numberIsSafeInteger(serial) || serial < 0)
-    throw new RangeError('Calendar month out of range')
+    throw new RangeErrorConstructor('Calendar month out of range')
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
@@ -152,7 +153,7 @@ export function tableDate(
   const table = data(calendar),
     checkpoints = table.checkpoints
   if (epoch < checkpoints[0] || epoch >= table.endDay)
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
