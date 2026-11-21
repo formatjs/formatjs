@@ -22,6 +22,11 @@ before representable-range checks and calendar projection, on both JS backends.
 Calendar identifier extraction validates string syntax without requiring its date
 to fit Temporal’s representable range. Calendar-bearing objects use private slots;
 field-bag defaults remain distinct from required `withCalendar` arguments.
+Normal unit names match explicit private singular/plural pairs, avoiding mutable
+String.prototype.endsWith and slice. The [unit audit](audits/temporal-unit-option-audit.md)
+compares the pinned table's value/name columns and lists all 24 helper callsites.
+Auto/default policies, group validation and complete callers remain open.
+
 String shorthand in Instant/PlainTime/PlainDateTime/ZonedDateTime/Duration
 round() and Duration.total() builds a fresh null-prototype record through
 `unitOptions` in rounding.ts. One own data property retains the primitive string;
