@@ -285,3 +285,73 @@ it('preserves the pinned lower-date guard for offset prefer and reject', () => {
       RangeError
     )
 })
+
+it.each([
+  '+999999-01-01T00:00[UTC]',
+  '+999999-01-01[UTC]',
+  '-271821-04-19T00:00[UTC]',
+  '+275760-09-14T00:00[UTC]',
+])('reads zoned string options before rejecting range: %s', text => {
+  const reads: string[] = []
+  const options = {
+    get disambiguation() {
+      reads.push('disambiguation')
+      return 'compatible'
+    },
+    get offset() {
+      reads.push('offset')
+      return 'reject'
+    },
+    get overflow() {
+      reads.push('overflow')
+      return 'constrain'
+    },
+  }
+  expect(() => Temporal.ZonedDateTime.from(text, options)).toThrow(RangeError)
+  expect(reads).toEqual(['disambiguation', 'offset', 'overflow'])
+})
+
+it.each(['disambiguation', 'offset', 'overflow'])(
+  'preserves abrupt %s completion before zoned string range failure',
+  name => {
+    const failure = {}
+    const options = Object.defineProperty({}, name, {
+      get() {
+        throw failure
+      },
+    })
+    let caught: unknown
+    try {
+      Temporal.ZonedDateTime.from('+999999-01-01T00:00[UTC]', options)
+    } catch (error) {
+      caught = error
+    }
+    expect(caught).toBe(failure)
+  }
+)
+
+it.each([
+  '+999999-02-30T00:00[UTC]',
+  '+999999-01-01T00:00[NoSuch/Zone]',
+  '+999999-01-01T00:00[UTC][u-ca=unknown]',
+])(
+  'rejects invalid syntax or identifiers before zoned string options: %s',
+  text => {
+    let read = false
+    expect(() =>
+      Temporal.ZonedDateTime.from(text, {
+        get disambiguation() {
+          read = true
+          return 'compatible'
+        },
+      })
+    ).toThrow(RangeError)
+    expect(read).toBe(false)
+  }
+)
+
+it('preserves minimum-Instant parsing despite the MakeDay witness ambiguity', () => {
+  expect(
+    Temporal.ZonedDateTime.from('-271821-04-20T00:00Z[UTC]').epochNanoseconds
+  ).toBe(-8_640_000_000_000_000_000_000n)
+})

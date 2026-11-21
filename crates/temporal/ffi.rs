@@ -1082,7 +1082,9 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let text = request["text"].as_str().ok_or(Error::InvalidSyntax)?;
     if op == "parseZonedFields" {
         let parsed = crate::parse::zoned_fields(text)?;
-        parsed.fields.to_epoch_nanoseconds()?;
+        // ParseISODateTime validates fields; JS reads options before representability.
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L977-L995
+        parsed.fields.validate()?;
         let mut fields = record(parsed.fields);
         fields["calendar"] = json!(crate::parse::calendar_annotation(text).unwrap_or("iso8601"));
         let offset = parsed_offset_text(parsed.offset);

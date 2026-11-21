@@ -74,7 +74,12 @@ Hermes controls replace the predicates after loading. Other array methods,
 iterators and intrinsic dependencies remain under audit. Independent UTC date
 controls now check forward conversion with sub-millisecond clock fields across
 the same two full Gregorian eras as reverse conversion. GetUTCEpochNanoseconds
-remains open pending its combined range/caller review.
+retains open MakeDay/call lines, while clock composition and independent local
+limit conditions now have individual traces. The minimum-Instant witness-range
+ambiguity is recorded in the separate spec-issues document.
+Zoned string conversion now reads disambiguation, offset and overflow before
+representability checks. Native field parsing validates syntax/ISO fields and
+defers epoch-range conversion until those JS option reads complete.
 
 ## Native performance direction
 

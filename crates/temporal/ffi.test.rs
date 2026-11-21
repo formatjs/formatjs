@@ -428,3 +428,38 @@ fn complete_clock_requests_keep_legacy_rounding_responses_unchanged() {
         Ok(json!({"nanoseconds":"86399999999999","fields":[23,59,59,999,999,999]}))
     );
 }
+
+#[test]
+fn zoned_fields_defer_representability_but_validate_the_iso_date() {
+    for (text, year) in [
+        ("+999999-01-01T00:00[UTC]", 999999),
+        ("-999999-01-01T00:00[UTC]", -999999),
+        ("+999999-01-01[UTC]", 999999),
+    ] {
+        let parsed = query(
+            json!({"op":"parseZonedFields","text":text})
+                .to_string()
+                .as_bytes(),
+        )
+        .expect("syntactically valid zoned fields before range checks");
+        assert_eq!(parsed["fields"]["year"], year);
+        assert_eq!(
+            query(
+                json!({"op":"isoToEpochNanoseconds","fields":parsed["fields"]})
+                    .to_string()
+                    .as_bytes()
+            ),
+            Err(1)
+        );
+    }
+    for text in ["+999999-02-30T00:00[UTC]", "+999999-01-01T24:00[UTC]"] {
+        assert_eq!(
+            query(
+                json!({"op":"parseZonedFields","text":text})
+                    .to_string()
+                    .as_bytes()
+            ),
+            Err(1)
+        );
+    }
+}
