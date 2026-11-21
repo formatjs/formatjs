@@ -55,6 +55,10 @@ The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 
 ## Calendars and time-zone data
 
+Month codes must match Temporal's grammar exactly. Malformed codes such as
+`M00` or codes with trailing whitespace throw before later field getters run.
+A syntactically valid code can still be invalid for the chosen calendar.
+
 The default entry captures the installed `Intl.DateTimeFormat` for named
 time-zone offsets and Umm al-Qura data. It works with native Intl or installed
 FormatJS polyfills. Load Intl polyfills and their data **before importing

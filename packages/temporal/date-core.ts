@@ -325,10 +325,23 @@ export function dateFieldNames(
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
   if (key === 'monthCode') {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L83-L85
+    // L83: use the string hint without coercing a primitive to String.
     const primitive = object(value) ? ToPrimitive(value, 'string') : value
+    // L84: reject non-string primitives.
     if (typeof primitive !== 'string')
       throw new TypeError('monthCode must be a string')
-    if (!/^M\d{2}L?$/.test(primitive))
+    // L85: consume the whole MonthCode grammar; zero requires the leap suffix.
+    const leap = primitive.length === 4 && primitive[3] === 'L'
+    if (
+      (primitive.length !== 3 && !leap) ||
+      primitive[0] !== 'M' ||
+      primitive[1] < '0' ||
+      primitive[1] > '9' ||
+      primitive[2] < '0' ||
+      primitive[2] > '9' ||
+      (primitive[1] === '0' && primitive[2] === '0' && !leap)
+    )
       throw new RangeError('Invalid monthCode syntax')
     return primitive
   }

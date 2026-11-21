@@ -102,3 +102,47 @@ it('reads clock fields without inherited native metadata', () => {
   }
   expect(fields).toEqual([12, 34, 56, 123, 456, 789])
 })
+
+it('rejects malformed month codes before reading later fields', () => {
+  const later = new Error('year getter reached')
+  const convert = [
+    (fields: object) => Temporal.PlainDate.from(fields),
+    (fields: object) => Temporal.PlainDateTime.from(fields),
+    (fields: object) => Temporal.PlainYearMonth.from(fields),
+    (fields: object) => Temporal.PlainMonthDay.from(fields),
+    (fields: object) => new Temporal.PlainDate(2020, 1, 1).with(fields),
+    (fields: object) => new Temporal.PlainDateTime(2020, 1, 1).with(fields),
+  ]
+  for (const monthCode of ['M00', 'M01\n', 'M01\r', 'M01\u2028', 'M01\u2029']) {
+    for (const from of convert) {
+      expect(
+        () =>
+          from({
+            day: 1,
+            monthCode,
+            get year(): never {
+              throw later
+            },
+          }),
+        JSON.stringify(monthCode)
+      ).toThrow(RangeError)
+    }
+  }
+})
+
+it('defers calendar-specific month code checks until after field preparation', () => {
+  const later = new Error('year getter reached')
+  for (const monthCode of ['M00L', 'M13', 'M99', 'M99L']) {
+    expect(
+      () =>
+        Temporal.PlainDate.from({
+          day: 1,
+          monthCode,
+          get year(): never {
+            throw later
+          },
+        }),
+      monthCode
+    ).toThrow(later)
+  }
+})
