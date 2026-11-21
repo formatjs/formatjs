@@ -134,7 +134,7 @@ it('preserves exact transition nanoseconds and distinguishes date arithmetic fro
   )
 })
 
-it('matches builtin UTC fields over two complete Gregorian eras', () => {
+it('matches builtin UTC dates in both directions over two complete Gregorian eras', () => {
   let count = 0
   for (let epochDay = -865565; epochDay <= -573372; epochDay++) {
     const fields = epochNanosecondsToISO(BigInt(epochDay) * 86_400_000_000_000n)
@@ -145,6 +145,22 @@ it('matches builtin UTC fields over two complete Gregorian eras', () => {
       fields.day !== reference.getUTCDate()
     )
       throw new Error('Gregorian era mismatch at epoch day ' + epochDay)
+    const forward = isoToEpochNanoseconds({
+      year: reference.getUTCFullYear(),
+      month: reference.getUTCMonth() + 1,
+      day: reference.getUTCDate(),
+      hour: 13,
+      minute: 14,
+      second: 15,
+      millisecond: 987,
+      microsecond: 654,
+      nanosecond: 321,
+    })
+    if (
+      forward !==
+      BigInt(epochDay) * 86_400_000_000_000n + 47_655_987_654_321n
+    )
+      throw new Error('Gregorian forward mismatch at epoch day ' + epochDay)
     count++
   }
   expect(count).toBe(292194)

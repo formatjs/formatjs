@@ -66,6 +66,15 @@ includes invariant constructor arguments; Symbol.hasInstance-based classificatio
 and cross-realm behavior remain open. Date/time integer coercion and month/day
 positive-integer conversion gain six individual spec-line traces, preserving
 ToNumber hooks, abrupt completions, truncation and mathematical zero.
+Temporal and shared formatter private-list predicates now retain Array.prototype.every/some
+and Reflect.apply: 51 calls across 20 runtime modules. Shared captures also cover
+canonical variant aliases; locale matcher retains its existing dependency
+structure with a local capture. Public, owned-formatter and installed-native
+Hermes controls replace the predicates after loading. Other array methods,
+iterators and intrinsic dependencies remain under audit. Independent UTC date
+controls now check forward conversion with sub-millisecond clock fields across
+the same two full Gregorian eras as reverse conversion. GetUTCEpochNanoseconds
+remains open pending its combined range/caller review.
 
 ## Native performance direction
 

@@ -196,6 +196,25 @@ int main(int argc, char **argv) {
         }
       }
       check(numericResults.join('|') === '1|1|23|2024-02-29|-1|M05L|0|1969-12-31T23:59:59.999999999Z|2');
+      const listEvery = Array.prototype.every, listSome = Array.prototype.some, listApply = Reflect.apply;
+      const listPoison = function () { throw new Error('Mutable array predicate reached'); };
+      let listResults;
+      try {
+        Array.prototype.every = listPoison;
+        Array.prototype.some = listPoison;
+        Reflect.apply = listPoison;
+        listResults = [
+          new Temporal.PlainDateTime(2000, 2, 29, 12, 34, 56).toString(),
+          Temporal.Duration.from('P1DT2H').toString(),
+          Temporal.Duration.compare({hours: 2}, {hours: 2}),
+          new Temporal.PlainDate(2000, 1, 31).add({months: 1}).day,
+        ];
+      } finally {
+        Array.prototype.every = listEvery;
+        Array.prototype.some = listSome;
+        Reflect.apply = listApply;
+      }
+      check(listResults.join('|') === '2000-02-29T12:34:56|P1DT2H|0|29');
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

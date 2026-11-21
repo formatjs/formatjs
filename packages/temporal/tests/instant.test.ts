@@ -540,3 +540,34 @@ it.each([
     expect(() => read(Symbol())).toThrow(TypeError)
   }
 )
+
+it.each(['every', 'some'] as const)(
+  'does not call a replaced Array.prototype.%s for private Temporal lists',
+  name => {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, name)!
+    const originalApply = Reflect.apply
+    const failure = {message: 'Mutable array predicate reached'}
+    let result: unknown
+    try {
+      Reflect.apply = function () {
+        throw failure
+      }
+      Object.defineProperty(Array.prototype, name, {
+        ...original,
+        value: function () {
+          throw failure
+        },
+      })
+      result = [
+        new Temporal.PlainDateTime(2000, 2, 29, 12, 34, 56).toString(),
+        Temporal.Duration.from('P1DT2H').toString(),
+        Temporal.Duration.compare({hours: 2}, {hours: 2}),
+        new Temporal.PlainDate(2000, 1, 31).add({months: 1}).day,
+      ]
+    } finally {
+      Reflect.apply = originalApply
+      Object.defineProperty(Array.prototype, name, original)
+    }
+    expect(result).toEqual(['2000-02-29T12:34:56', 'P1DT2H', 0, 29])
+  }
+)

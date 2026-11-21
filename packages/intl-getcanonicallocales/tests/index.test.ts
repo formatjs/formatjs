@@ -360,3 +360,20 @@ it('does not identify Locale objects by their visible properties', () => {
   }
   expect(getCanonicalLocales(fake)).toEqual(['en'])
 })
+
+it('canonicalizes variant aliases without a mutable array predicate', () => {
+  const original = Object.getOwnPropertyDescriptor(Array.prototype, 'every')!
+  let actual: string[]
+  try {
+    Object.defineProperty(Array.prototype, 'every', {
+      ...original,
+      value: () => {
+        throw new Error('Mutable alias predicate reached')
+      },
+    })
+    actual = getCanonicalLocales(['hy-arevmda', 'ja-Latn-hepburn-heploc'])
+  } finally {
+    Object.defineProperty(Array.prototype, 'every', original)
+  }
+  expect(actual!).toEqual(['hyw', 'ja-Latn-alalc97'])
+})

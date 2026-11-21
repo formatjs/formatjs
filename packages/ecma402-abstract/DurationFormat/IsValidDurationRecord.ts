@@ -1,3 +1,4 @@
+import {arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {TABLE_1} from '#packages/ecma402-abstract/DurationFormat/constants.js'
 import {type DurationRecord} from '#packages/ecma402-abstract/types/duration.js'
 import {DurationRecordSign} from '#packages/ecma402-abstract/DurationFormat/DurationRecordSign.js'
@@ -19,7 +20,8 @@ export function IsValidDurationRecord(record: DurationRecord): boolean {
   // https://tc39.es/ecma402/#sec-isvalidduration
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L569-L574
   if (
-    (['years', 'months', 'weeks'] as const).some(
+    arraySome(
+      ['years', 'months', 'weeks'] as const,
       unit => Math.abs(record[unit]) >= 2 ** 32
     )
   ) {

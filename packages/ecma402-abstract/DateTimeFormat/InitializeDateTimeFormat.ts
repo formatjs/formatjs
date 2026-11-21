@@ -1,6 +1,8 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayEvery,
+  arraySome,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
@@ -458,7 +460,7 @@ export function InitializeDateTimeFormat(
         : required === 'time'
           ? timeFields
           : [...dateFields, ...timeFields]
-    const needDefaults = relevant.every(key => opt[key] === undefined)
+    const needDefaults = arrayEvery(relevant, key => opt[key] === undefined)
     if (needDefaults) {
       if (defaults !== 'time') {
         opt.year = 'numeric'
@@ -628,7 +630,8 @@ export function InitializeDateTimeFormat(
           [key]: bestFormat[key as keyof Formats],
         })
       }
-      const conflicting = DATE_TIME_PROPS.some(
+      const conflicting = arraySome(
+        DATE_TIME_PROPS,
         key => bestFormat[key] !== undefined && !allowed.includes(key)
       )
       selectedOptions.hour12 =
@@ -641,10 +644,10 @@ export function InitializeDateTimeFormat(
     } else {
       for (const key of allowed)
         Object.assign(selectedOptions, {[key]: temporalOptions[key]})
-      if (required.every(key => temporalOptions[key] === undefined)) {
+      if (arrayEvery(required, key => temporalOptions[key] === undefined)) {
         if (
           kind !== 'Instant' &&
-          allFields.some(key => temporalOptions[key] !== undefined)
+          arraySome(allFields, key => temporalOptions[key] !== undefined)
         ) {
           throw new TypeErrorConstructor(
             'DateTimeFormat options do not overlap the Temporal type'

@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arraySome,
   floor,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
@@ -58,7 +59,7 @@ export function legacyZonedProjection(
   )
   const probe = parts.call(formatter, 0)
   let timeZoneName: string | undefined
-  if (probe.some(part => part.type === 'timeZoneName')) {
+  if (arraySome(probe, part => part.type === 'timeZoneName')) {
     const long =
       selected.timeZoneName === 'long' ||
       selected.timeZoneName === 'longOffset' ||

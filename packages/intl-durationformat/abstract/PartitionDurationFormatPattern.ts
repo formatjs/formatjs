@@ -1,3 +1,4 @@
+import {arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {BigDecimal} from '@formatjs/bigdecimal'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
@@ -21,7 +22,7 @@ export function PartitionDurationFormatPattern(
   let done = false
   let separated = false
   let signDisplayed = true
-  const negative = TABLE_2.some(row => duration[row.valueField] < 0)
+  const negative = arraySome(TABLE_2, row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
   let dataLocale = internalSlots.dataLocale
   const dataLocaleData = DurationFormat.localeData[dataLocale]

@@ -1,4 +1,7 @@
-import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  TypeErrorConstructor,
+  arraySome,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
@@ -130,7 +133,7 @@ export function PartitionDateTimeRangePattern(
     // Hidden day periods must not override an hour or minute interval.
     if (
       (field === 'ampm' || field === 'dayPeriod') &&
-      !parts.some(part => part.type === field)
+      !arraySome(parts, part => part.type === field)
     ) {
       continue
     }
@@ -183,10 +186,12 @@ export function PartitionDateTimeRangePattern(
   // Some combined-style intervals contain only the time pattern.
   const selected = rangePattern
   if (
-    DATE_FIELDS.some(
+    arraySome(
+      DATE_FIELDS,
       field =>
         pattern.includes(field) &&
-        !selected.patternParts.some(
+        !arraySome(
+          selected.patternParts,
           part =>
             part.pattern === '{0}' ||
             part.pattern === '{1}' ||
