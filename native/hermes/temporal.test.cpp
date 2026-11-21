@@ -587,6 +587,22 @@ int main(int argc, char **argv) {
             check(input.toString({fractionalSecondDigits:precision}) === prefix + (precision ? fixed.slice(0, precision + 1) : '') + suffix);
         }
       }
+      const fractionPaddingRuns = [
+        [() => new Temporal.ZonedDateTime(0n, '+01:02').offsetNanoseconds, 3720000000000],
+        [() => Temporal.Instant.from('1970-01-01T00:00:00+01:02:03.000000004').epochNanoseconds, -3723000000004n],
+        [() => Temporal.PlainTime.from('12:34:56.000000007').nanosecond, 7],
+        [() => Temporal.PlainDateTime.from('2000-01-01T12:34:56.000007008').microsecond, 7],
+        [() => Temporal.ZonedDateTime.from('1970-01-01T00:00:00.000000009+00:00[UTC]').epochNanoseconds, 9n],
+      ];
+      for (const [run, expected] of fractionPaddingRuns) {
+        const original = Object.getOwnPropertyDescriptor(String.prototype, 'padEnd');
+        let actual;
+        try {
+          Object.defineProperty(String.prototype, 'padEnd', {configurable:true, get() { throw new Error('Private fraction padding hook reached'); }});
+          actual = run();
+        } finally { Object.defineProperty(String.prototype, 'padEnd', original); }
+        check(actual === expected);
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

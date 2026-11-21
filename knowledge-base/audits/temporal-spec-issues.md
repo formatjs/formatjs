@@ -71,10 +71,10 @@ Status: unresolved witness-range wording, related to open
 [ECMA-262 #1087](https://github.com/tc39/ecma262/issues/1087). Rechecked 2026-11-21.
 
 Pinned [GetUTCEpochNanoseconds](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L355-L359)
-uses MakeDay, then asserts an integral millisecond result. Frozen ECMA-262
-[MakeDay's witness step](https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34685)
+uses MakeDay, then asserts an integral millisecond result. Published ECMA-262
+[§21.4.1.28 step 8](https://tc39.es/ecma262/#sec-makeday)
 asks for a finite time value on the first day of the month. Its
-[supported time-value range](https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34073-L34075)
+[§21.4.1.1 time-value range](https://tc39.es/ecma262/#sec-time-values-and-time-range)
 is ±8,640,000,000,000,000 milliseconds.
 
 The minimum Instant is -271821-04-20, epoch day -100000000. April 1 of that
