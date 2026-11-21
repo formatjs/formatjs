@@ -1,3 +1,13 @@
+import {
+  bigIntFrom,
+  mathAbs,
+  mathMax,
+  mathMin,
+  numberFrom,
+  numberIsFinite,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 // Experimental numeric kernel. No Temporal object/coercion/branding semantics.
 import {
@@ -64,9 +74,9 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   ]
   const bounds = [23, 59, 59, 999, 999, 999]
   if (
-    ![year, month, date].every(Number.isInteger) ||
-    !time.every(Number.isInteger) ||
-    Math.abs(year) > 275761 ||
+    ![year, month, date].every(numberIsInteger) ||
+    !time.every(numberIsInteger) ||
+    mathAbs(year) > 275761 ||
     month < 1 ||
     month > 12 ||
     date < 1 ||
@@ -88,45 +98,64 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   const epochDay =
     DayFromYear(year) +
     monthStarts[month - 1] +
-    Number(month > 2 && leap) +
+    numberFrom(month > 2 && leap) +
     date -
     1
   const value =
-    BigInt(epochDay) * day +
-    BigInt(time[0] * 3600 + time[1] * 60 + time[2]) * second +
-    BigInt(time[3] * 1_000_000 + time[4] * 1000 + time[5])
+    bigIntFrom(epochDay) * day +
+    bigIntFrom(time[0] * 3600 + time[1] * 60 + time[2]) * second +
+    bigIntFrom(time[3] * 1_000_000 + time[4] * 1000 + time[5])
   // Local fields may lie one offset beyond the instant range.
   if (value <= -limit - day || value >= limit + day)
     throw new RangeError('Local date out of range')
   return value
 }
 
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L77
+// Line tags below refer to this pinned timezone.html.
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.epochNanosecondsToISO(value)
+  // L62: the valid-Instant domain is contained in this wider local-time domain.
   if (value <= -limit - day || value >= limit + day)
     throw new RangeError('Local date out of range')
+  // L64: exact day/clock division equals the spec's integral-millisecond split.
+  // Valid-Instant milliseconds fit exactly below 2**53; no rounding is needed here.
   const days = floorDivide(value, day)
-  const epochDay = Number(days)
+  const epochDay = numberFrom(days)
+  // L63: day and clock units are multiples of 10**6, preserving its modulo remainder.
   let time = value - days * day
-  const hour = Number(time / (3600n * second))
+  // L68: the nonnegative day remainder determines the UTC hour.
+  const hour = numberFrom(time / (3600n * second))
   time %= 3600n * second
-  const minute = Number(time / (60n * second))
+  // L69: remove complete hours before selecting the UTC minute.
+  const minute = numberFrom(time / (60n * second))
   time %= 60n * second
-  const seconds = Number(time / second)
+  // L70: remove complete minutes before selecting the UTC second.
+  const seconds = numberFrom(time / second)
   time %= second
+  // L65: the March-based Gregorian inverse yields the epoch year.
+  // L66: that inverse already returns a one-based month.
+  // L67: its day is the proleptic Gregorian day of month.
   const date = ArithmeticGregorianFromEpochDay('iso8601', epochDay)
+  // L77: the flat private result combines the conceptual date and time records.
   return {
+    // L75: preserve the three ISO date-record fields.
     year: date.year,
     month: date.month,
     day: date.day,
+    // L76: preserve the six time-record fields.
     hour,
     minute,
     second: seconds,
-    millisecond: Number(time / 1_000_000n),
-    microsecond: Number((time / 1000n) % 1000n),
-    nanosecond: Number(time % 1000n),
+    // L71: complete milliseconds within the current second.
+    millisecond: numberFrom(time / 1_000_000n),
+    // L72: discarding complete milliseconds equals flooring remainderNs / 1000.
+    // L73: modulo 1000 guarantees a microsecond in 0..999.
+    microsecond: numberFrom((time / 1000n) % 1000n),
+    // L74: the final modulo gives the nanosecond within the microsecond.
+    nanosecond: numberFrom(time % 1000n),
   }
 }
 
@@ -137,9 +166,9 @@ export function addISODays(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.addISODays(fields, days)
-  if (!Number.isSafeInteger(days)) throw new RangeError('Invalid day count')
+  if (!numberIsSafeInteger(days)) throw new RangeError('Invalid day count')
   return epochNanosecondsToISO(
-    isoToEpochNanoseconds(fields) + BigInt(days) * day
+    isoToEpochNanoseconds(fields) + bigIntFrom(days) * day
   )
 }
 
@@ -151,8 +180,8 @@ function zoneTransition(
   const next = direction === 'next'
   let best: bigint | null = null
   const consider = (seconds: number): void => {
-    if (!Number.isFinite(seconds)) return
-    const candidate = BigInt(seconds) * second
+    if (!numberIsFinite(seconds)) return
+    const candidate = bigIntFrom(seconds) * second
     if (
       candidate < -limit ||
       candidate > limit ||
@@ -172,11 +201,11 @@ function zoneTransition(
   while (low < high) {
     const middle = (low + high) >>> 1,
       candidate = data[middle][0]
-    if (candidate <= Number(floorDivide(instant, second))) low = middle + 1
+    if (candidate <= numberFrom(floorDivide(instant, second))) low = middle + 1
     else high = middle
   }
   // Compare exact nanoseconds after finding the neighboring second.
-  let index = Math.max(0, Math.min(data.length - 1, low - 1))
+  let index = mathMax(0, mathMin(data.length - 1, low - 1))
   if (next) {
     for (; index < data.length; index++) {
       consider(data[index][0])
@@ -195,13 +224,13 @@ function zoneTransition(
     !future.end ||
     future.daylightOffset === undefined ||
     future.daylightOffset === future.standardOffset ||
-    (!next && Number(instant / second) < cutoff)
+    (!next && numberFrom(instant / second) < cutoff)
   )
     return best
-  if (next && best !== null && best <= BigInt(cutoff) * second) return best
-  const base = YearFromTime(Number(floorDivide(instant, 1_000_000n)))
-  const edgeYear = Number.isFinite(cutoff) ? YearFromTime(cutoff * 1000) : base
-  const year = next ? Math.max(base, edgeYear) : base
+  if (next && best !== null && best <= bigIntFrom(cutoff) * second) return best
+  const base = YearFromTime(numberFrom(floorDivide(instant, 1_000_000n)))
+  const edgeYear = numberIsFinite(cutoff) ? YearFromTime(cutoff * 1000) : base
+  const year = next ? mathMax(base, edgeYear) : base
   // Gregorian POSIX rules repeat every 400 years. Include adjacent years for extended times.
   let recurringFound = false
   for (let distance = -1; distance <= 401; distance++) {
@@ -214,7 +243,7 @@ function zoneTransition(
     if (end > cutoff) consider(end)
     recurringFound ||= previous !== best
     if (distance >= 1 && recurringFound) break
-    if (!next && Number.isFinite(cutoff) && y < edgeYear - 1) break
+    if (!next && numberIsFinite(cutoff) && y < edgeYear - 1) break
   }
   return best
 }
@@ -231,15 +260,15 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
   const offsetNanoseconds = (instant: bigint): bigint => {
     checkInstant(instant)
     return (
-      BigInt(
-        TimeZoneOffset(Number(floorDivide(instant, 1_000_000n)), data)[0]
+      bigIntFrom(
+        TimeZoneOffset(numberFrom(floorDivide(instant, 1_000_000n)), data)[0]
       ) * second
     )
   }
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (const offset of offsets) {
-      const instant = local - BigInt(offset) * second
+      const instant = local - bigIntFrom(offset) * second
       if (instant < -limit || instant > limit) continue
       if (instant + offsetNanoseconds(instant) === local)
         candidates.push(instant)
@@ -264,11 +293,11 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     let minimum = Infinity,
       maximum = -Infinity
     for (const offset of offsets) {
-      minimum = Math.min(minimum, offset)
-      maximum = Math.max(maximum, offset)
+      minimum = mathMin(minimum, offset)
+      maximum = mathMax(maximum, offset)
     }
-    const lower = local - BigInt(maximum) * second,
-      upper = local - BigInt(minimum) * second
+    const lower = local - bigIntFrom(maximum) * second,
+      upper = local - bigIntFrom(minimum) * second
     let event = zoneTransition(
       data,
       lower < -limit ? -limit : lower - 1n,

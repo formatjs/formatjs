@@ -1,3 +1,4 @@
+import {bigIntFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -174,7 +175,7 @@ class PlainMonthDayValue {
       {
         kind: 'PlainMonthDay',
         epochNanoseconds:
-          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+          bigIntFrom(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
         calendar: slot.calendar,
       },
       locales,

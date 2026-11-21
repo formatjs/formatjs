@@ -1,3 +1,8 @@
+import {
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -96,7 +101,7 @@ function toBigInt(value: unknown): bigint {
     typeof primitive !== 'boolean'
   )
     throw new TypeError('Invalid BigInt input')
-  return BigInt(primitive)
+  return bigIntFrom(primitive)
 }
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
@@ -169,7 +174,7 @@ function difference(
   ] as const
   const smallIndex = names.indexOf(smallestTime)
   const largeIndex = names.indexOf(
-    timeUnit(largest ?? names[Math.min(2, smallIndex)])
+    timeUnit(largest ?? names[mathMin(2, smallIndex)])
   )
   if (largeIndex > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
@@ -195,7 +200,7 @@ function difference(
   const valueToRound = (end - value) * (since ? -1n : 1n)
   const rounded = roundDuration(
     valueToRound,
-    BigInt(increment) * timeUnitNanoseconds[smallestTime],
+    bigIntFrom(increment) * timeUnitNanoseconds[smallestTime],
     mode
   )
   return createDuration(balanceDurationTime(rounded, largeIndex + 4))
@@ -221,7 +226,7 @@ class InstantValue implements InstantObject {
   static fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject {
     // Unary + is ToNumber; unlike BigInt(), it rejects BigInt/Symbol input.
     const milliseconds = +(epochMilliseconds as number)
-    return createInstant(BigInt(milliseconds) * 1_000_000n)
+    return createInstant(bigIntFrom(milliseconds) * 1_000_000n)
   }
   toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject {
     const value = read(this)
@@ -233,7 +238,7 @@ class InstantValue implements InstantObject {
   get epochMilliseconds(): number {
     const value = read(this)
     const truncated = value / 1_000_000n
-    return Number(
+    return numberFrom(
       value < 0n && value % 1_000_000n !== 0n ? truncated - 1n : truncated
     )
   }
@@ -325,7 +330,7 @@ class InstantValue implements InstantObject {
         ? 1n
         : precision === 'minute'
           ? timeUnitNanoseconds.minute
-          : 10n ** BigInt(9 - precision)
+          : 10n ** bigIntFrom(9 - precision)
     if (import.meta.formatjsTemporalNativeData === true || native)
       return native!.formatInstant(
         value,

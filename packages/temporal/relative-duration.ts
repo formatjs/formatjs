@@ -1,3 +1,8 @@
+import {
+  bigIntFrom,
+  mathTrunc,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {dayCheck} from '#packages/temporal/calendar.js'
@@ -98,7 +103,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
 export function relativeOrigin(relative: RelativeTo): bigint {
   return 'zoned' in relative
     ? relative.zoned.epochNanoseconds
-    : BigInt(relative.date.epochDay) * nsPerDay
+    : bigIntFrom(relative.date.epochDay) * nsPerDay
 }
 export function relativeEndpoint(
   relative: RelativeTo,
@@ -106,7 +111,7 @@ export function relativeEndpoint(
 ): bigint {
   if ('zoned' in relative) return addZonedDuration(relative.zoned, fields)
   const end =
-    BigInt(addDate(relative.date, fields, 'constrain')) * nsPerDay +
+    bigIntFrom(addDate(relative.date, fields, 'constrain')) * nsPerDay +
     durationNanoseconds(fields, false)
   const normalized = end - relativeOrigin(relative)
   if (
@@ -168,7 +173,7 @@ export function relativeTotal(
       unit !== 'week'
     ) {
       const value =
-        BigInt(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
+        bigIntFrom(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
       if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
         throw new RangeError('Duration out of range')
       dayCheck(epochDayOf(relativeOrigin(relative) + value))
@@ -196,7 +201,7 @@ export function relativeTotal(
   // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
   // L1908: zero uses the positive window.
   const sign = end < start ? -1 : 1
-  while ((a - end) * BigInt(sign) > 0n) {
+  while ((a - end) * bigIntFrom(sign) > 0n) {
     count -= sign
     candidate[(unit + 's') as keyof DurationFields] = count
     a = relativeEndpoint(relative, candidate)
@@ -206,15 +211,15 @@ export function relativeTotal(
   candidate[(unit + 's') as keyof DurationFields] = count + sign
   let b = relativeEndpoint(relative, candidate)
   if (a === end) return count || 0
-  while ((end - b) * BigInt(sign) >= 0n) {
+  while ((end - b) * bigIntFrom(sign) >= 0n) {
     count += sign
     a = b
     if (a === end) return count || 0
     candidate[(unit + 's') as keyof DurationFields] = count + sign
     b = relativeEndpoint(relative, candidate)
   }
-  const span = (b - a) * BigInt(sign)
-  return durationTotalNumber(BigInt(count) * span + end - a, span)
+  const span = (b - a) * bigIntFrom(sign)
+  return durationTotalNumber(bigIntFrom(count) * span + end - a, span)
 }
 
 export function relativeRound(
@@ -255,16 +260,16 @@ export function relativeRound(
     const result = zeroDuration()
     result.years = full.years
     result.months = full.months
-    const count = full.weeks + Math.trunc(full.days / 7)
+    const count = full.weeks + mathTrunc(full.days / 7)
     result.weeks = count
     const a = relativeEndpoint(relative, result)
     if (a === end) return result
     const sign = end < start ? -1 : 1
     result.weeks = count + sign
     const b = relativeEndpoint(relative, result),
-      span = (b - a) * BigInt(sign)
-    result.weeks = Number(
-      roundDuration(BigInt(count) * span + end - a, span, mode) / span
+      span = (b - a) * bigIntFrom(sign)
+    result.weeks = numberFrom(
+      roundDuration(bigIntFrom(count) * span + end - a, span, mode) / span
     )
     return result
   }

@@ -1,3 +1,4 @@
+import {bigIntFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -239,8 +240,8 @@ function difference(
   }
   return createDuration(
     roundedDateTimeDifference(
-      BigInt(a.epochDay) * nsPerDay,
-      BigInt(b.epochDay) * nsPerDay,
+      bigIntFrom(a.epochDay) * nsPerDay,
+      bigIntFrom(b.epochDay) * nsPerDay,
       slot.calendar,
       largest,
       smallest,
@@ -350,7 +351,7 @@ class PlainYearMonthValue {
       {
         kind: 'PlainYearMonth',
         epochNanoseconds:
-          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+          bigIntFrom(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
         calendar: slot.calendar,
       },
       locales,

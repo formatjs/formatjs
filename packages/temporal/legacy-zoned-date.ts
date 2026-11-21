@@ -1,4 +1,4 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {floor, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   createHostTimeZoneOffset,
@@ -65,7 +65,7 @@ export function legacyZonedProjection(
   const ms = local / 1_000_000n - (local < 0n && local % 1_000_000n ? 1n : 0n)
   return {
     formatter,
-    milliseconds: Number(ms),
+    milliseconds: numberFrom(ms),
     plain: true,
     [legacyTimeZoneName]: timeZoneName,
   }
@@ -97,7 +97,7 @@ function offsetName(
     resolved.numberingSystem === 'latn' || /01/.test(label('Etc/GMT-1', true))
       ? 'latn'
       : resolved.numberingSystem
-  const seconds = Number((offset < 0n ? -offset : offset) / 1_000_000_000n)
+  const seconds = numberFrom((offset < 0n ? -offset : offset) / 1_000_000_000n)
   const hour = floor(seconds / 3600),
     minute = floor((seconds % 3600) / 60),
     second = seconds % 60

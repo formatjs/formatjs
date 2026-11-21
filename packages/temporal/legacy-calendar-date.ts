@@ -1,4 +1,8 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  mathAbs,
+  numberIsFinite,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {beforeHijrah} from '@formatjs_generated/datetimeformat.calendars/fallback-eras.js'
 import {
   calendarEra,
@@ -51,7 +55,7 @@ const clockTypes = new Set([
 ])
 
 function clipped(value: LegacyDateTimeProjection): boolean {
-  return value.plain === true && Math.abs(value.milliseconds) > limit
+  return value.plain === true && mathAbs(value.milliseconds) > limit
 }
 function number(
   source: Intl.DateTimeFormat,
@@ -240,8 +244,8 @@ export function legacyCalendarParts(
     return undefined
   if (value.plain !== true) {
     if (
-      !Number.isFinite(value.milliseconds) ||
-      Math.abs(value.milliseconds) > limit
+      !numberIsFinite(value.milliseconds) ||
+      mathAbs(value.milliseconds) > limit
     )
       return undefined
     const lunar = calendar === 'chinese' || calendar === 'dangi'

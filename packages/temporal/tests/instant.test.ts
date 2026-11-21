@@ -364,3 +364,82 @@ it.each([
     expect(actual).toBe(expected)
   }
 )
+
+it.each([
+  ['Math.abs', () => Temporal.Duration.from('-PT1H').abs().hours, 1],
+  [
+    'Math.min',
+    () =>
+      new Temporal.Instant(0n).until(new Temporal.Instant(1_000_000_000n), {
+        smallestUnit: 'second',
+      }).seconds,
+    1,
+  ],
+  ['Math.max', () => Temporal.PlainTime.from({hour: 25}).hour, 23],
+  [
+    'Math.trunc',
+    () => new Temporal.PlainDate(2024.9, 2.9, 29.9).toString(),
+    '2024-02-29',
+  ],
+  [
+    'Math.sign',
+    () =>
+      Temporal.PlainDate.from('2024-02-29').until('2024-01-29', {
+        largestUnit: 'month',
+      }).months,
+    -1,
+  ],
+  ['Number.isInteger', () => new Temporal.PlainDate(2024, 2, 29).day, 29],
+  [
+    'Number.isSafeInteger',
+    () =>
+      Temporal.PlainDate.from({
+        calendar: 'hebrew',
+        year: 5784,
+        monthCode: 'M05L',
+        day: 1,
+      }).monthCode,
+    'M05L',
+  ],
+  [
+    'Number.isFinite',
+    () =>
+      new Temporal.Instant(1n).round({
+        smallestUnit: 'second',
+        roundingIncrement: 1,
+      }).epochNanoseconds,
+    0n,
+  ],
+  [
+    'Number',
+    () => new Temporal.Instant(-1n).toString(),
+    '1969-12-31T23:59:59.999999999Z',
+  ],
+  [
+    'BigInt',
+    () => new Temporal.Instant(1n).add({nanoseconds: 1}).epochNanoseconds,
+    2n,
+  ],
+] as const)(
+  'keeps arithmetic independent of mutable %s',
+  (name, run, expected) => {
+    const parts = name.split('.')
+    const owner =
+      parts.length === 1 ? globalThis : parts[0] === 'Math' ? Math : Number
+    const property = parts[parts.length - 1]
+    const original = Object.getOwnPropertyDescriptor(owner, property)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, property, {
+        ...original,
+        value: function () {
+          throw new Error('Mutable numeric intrinsic reached')
+        },
+      })
+      actual = run()
+    } finally {
+      Object.defineProperty(owner, property, original)
+    }
+    expect(actual).toBe(expected)
+  }
+)

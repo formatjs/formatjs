@@ -1,3 +1,4 @@
+import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   registerTemporalDateTimeNamespace,
@@ -75,7 +76,7 @@ export function installLegacyDateTimeFormat(
       return {
         formatter: cached,
         plain: value.kind !== 'Instant',
-        milliseconds: Number(
+        milliseconds: numberFrom(
           ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
         ),
       }
