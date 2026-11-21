@@ -4,6 +4,10 @@
 
 ## Purpose
 
+Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
+operations and own private-list writes. See the [seven-step parser audit](audits/temporal-pattern-partition-audit.md)
+for source mapping and remaining formatter producer work.
+
 FormatDateTimeToParts delegates result construction to shared CreatePartsArray.
 The builder traverses private records by index and defines own array properties;
 result projection cannot invoke mutable iterators, push or numeric setters.

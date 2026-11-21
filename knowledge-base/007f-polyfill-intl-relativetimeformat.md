@@ -4,6 +4,10 @@
 
 ## Purpose
 
+Shared locale-pattern parsing follows ECMA-402 §9.2.15 with captured String
+operations and own private-list appends. See the [parser audit](audits/temporal-pattern-partition-audit.md).
+The caller's interpolation loops retain their separate audit status.
+
 Polyfill for `Intl.RelativeTimeFormat` — formats relative time expressions (e.g., "2 days ago", "in 3 hours") across 700+ locales.
 
 ## Dependencies
