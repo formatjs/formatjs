@@ -1,4 +1,8 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  mathAbs,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 import type {Precision} from '#packages/temporal/rounding.js'
 
@@ -13,7 +17,7 @@ export function formatInstant(
   const year =
     fields.year >= 0 && fields.year <= 9999
       ? pad(fields.year, 4)
-      : (fields.year < 0 ? '-' : '+') + pad(Math.abs(fields.year), 6)
+      : (fields.year < 0 ? '-' : '+') + pad(mathAbs(fields.year), 6)
   let result = `${year}-${pad(fields.month)}-${pad(fields.day)}T${pad(fields.hour)}:${pad(fields.minute)}`
   if (precision !== 'minute') {
     result += `:${pad(fields.second)}`
@@ -32,7 +36,7 @@ export function formatInstant(
   }
   if (offset === undefined) return result + 'Z'
   const absolute = offset < 0n ? -offset : offset
-  const minutes = Number((absolute + 30_000_000_000n) / 60_000_000_000n)
+  const minutes = numberFrom((absolute + 30_000_000_000n) / 60_000_000_000n)
   return (
     result +
     (offset < 0n && minutes !== 0 ? '-' : '+') +

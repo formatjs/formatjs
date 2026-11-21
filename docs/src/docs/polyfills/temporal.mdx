@@ -56,7 +56,8 @@ Temporal uses a captured `Object.create` for its own internal allocations.
 Its constructor prototype reads and formatter option reads use ordinary property
 access without consulting a replaced `Reflect.get`.
 Temporal and shared date/calendar helpers retain a captured `Math.floor` for
-internal floor arithmetic.
+internal floor arithmetic. Other internal math operations, numeric predicates and
+Number/BigInt conversions also retain captured bindings.
 Shared primitive coercion retains intrinsic helper bindings while preserving user
 conversion hooks and their standard hints. Browser host objects such as
 `document.all` retain object semantics for field bags, options, constructor

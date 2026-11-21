@@ -1,4 +1,9 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
@@ -62,14 +67,14 @@ function fields(
       .call(formatter, milliseconds)
       .map(part => [part.type, part.value])
   )
-  const year = Number(
+  const year = numberFrom(
     values.get(calendar === 'iso8601' ? 'year' : 'relatedYear')
   )
-  const day = Number(values.get('day'))
+  const day = numberFrom(values.get('day'))
   const month = /^(\d{1,2})(bis)?$/.exec(values.get('month') || '')
   if (
-    !Number.isSafeInteger(year) ||
-    !Number.isInteger(day) ||
+    !numberIsSafeInteger(year) ||
+    !numberIsInteger(day) ||
     day < 1 ||
     day > (calendar === 'iso8601' ? 31 : 30) ||
     !month ||
@@ -91,7 +96,7 @@ function fields(
   }
   return {
     year: bce ? 1 - year : year,
-    month: Number(month[1]),
+    month: numberFrom(month[1]),
     day,
     monthCode: `M${month[1].padStart(2, '0')}${month[2] ? 'L' : ''}`,
   }

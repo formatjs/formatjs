@@ -1,3 +1,4 @@
+import {bigIntFrom, mathAbs} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   durationFieldNames,
@@ -17,7 +18,7 @@ export function formatDuration(
   const absolute = zeroDuration()
   for (let index = 0; index < durationFieldNames.length; index++) {
     const key = durationFieldNames[index]
-    absolute[key] = Math.abs(fields[key])
+    absolute[key] = mathAbs(fields[key])
   }
   let result = sign < 0 ? '-P' : 'P'
   const designators = ['Y', 'M', 'W', 'D']
@@ -29,10 +30,10 @@ export function formatDuration(
   if (absolute.hours) time += absolute.hours + 'H'
   if (absolute.minutes) time += absolute.minutes + 'M'
   const secondNs =
-    BigInt(absolute.seconds) * 1_000_000_000n +
-    BigInt(absolute.milliseconds) * 1_000_000n +
-    BigInt(absolute.microseconds) * 1000n +
-    BigInt(absolute.nanoseconds)
+    bigIntFrom(absolute.seconds) * 1_000_000_000n +
+    bigIntFrom(absolute.milliseconds) * 1_000_000n +
+    bigIntFrom(absolute.microseconds) * 1000n +
+    bigIntFrom(absolute.nanoseconds)
   const fraction = String(secondNs % 1_000_000_000n).padStart(9, '0')
   const decimals =
     digits === 'auto' ? fraction.replace(/0+$/, '') : fraction.slice(0, digits)

@@ -1,3 +1,8 @@
+import {
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {
@@ -166,7 +171,7 @@ function zonedSnapshot(slot: ZonedSlot) {
       ? slot.properties
       : owner.zonedProperties(slot)
   value.owner = owner
-  const local = BigInt(value.values.localNanoseconds as string)
+  const local = bigIntFrom(value.values.localNanoseconds as string)
   entry = {
     owner,
     value,
@@ -335,7 +340,7 @@ export function toZonedDateTimeSlot(
       ]),
       overflow = overflowOption(resolved)
     value =
-      BigInt(dayFromFields(calendar, fields, overflow)) * nsPerDay +
+      bigIntFrom(dayFromFields(calendar, fields, overflow)) * nsPerDay +
       clockNanoseconds(fields, overflow)
     return {
       epochNanoseconds: resolve(
@@ -441,7 +446,7 @@ function add(
         overflow
       )
     value = zonedKernel(slot.timeZone).resolve(
-      epochNanosecondsToISO(BigInt(day) * nsPerDay + timeOf(start))
+      epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + timeOf(start))
     )
   }
   return createZonedDateTime(
@@ -472,7 +477,8 @@ export function unroundedZonedDifference(
     begin = epochDayOf(beginLocal),
     finish = epochDayOf(endLocal)
   let day = finish
-  if ((timeOf(endLocal) - timeOf(beginLocal)) * BigInt(sign) < 0n) day -= sign
+  if ((timeOf(endLocal) - timeOf(beginLocal)) * bigIntFrom(sign) < 0n)
+    day -= sign
   if ((day - begin) * sign < 0) day = begin
   let fields = dateUntil(
     {epochDay: begin, calendar: start.calendar},
@@ -484,11 +490,11 @@ export function unroundedZonedDifference(
       return addZonedDuration(start, fields)
     } catch (error) {
       if (!(error instanceof RangeError)) throw error
-      return BigInt(sign) * 8_640_000_000_000_000_000_001n
+      return bigIntFrom(sign) * 8_640_000_000_000_000_000_001n
     }
   }
   let anchor = anchorFor(fields)
-  while ((anchor - end) * BigInt(sign) > 0n) {
+  while ((anchor - end) * bigIntFrom(sign) > 0n) {
     day -= sign
     if ((day - begin) * sign < 0) {
       fields = zeroDuration()
@@ -538,7 +544,7 @@ export function differenceZonedDuration(
     smallIndex = names.indexOf(smallest)
   const largest =
     largestText === 'auto'
-      ? names[Math.min(4, smallIndex)]
+      ? names[mathMin(4, smallIndex)]
       : unitOption(largestText)!
   const largeIndex = names.indexOf(largest)
   if (largeIndex > smallIndex)
@@ -582,7 +588,7 @@ function startOfDay(slot: ZonedSlot, day?: number): bigint {
     return native!.startOfZonedDay(slot, day).epochNanoseconds
   day ??= epochDayOf(local(slot))
   const kernel = zonedKernel(slot.timeZone),
-    midnight = BigInt(day) * nsPerDay
+    midnight = bigIntFrom(day) * nsPerDay
   if (
     midnight <= -8_640_000_000_000_000_000_000n - nsPerDay ||
     midnight >= 8_640_000_000_000_000_000_000n + nsPerDay
@@ -639,7 +645,7 @@ function numericOffset(slot: ZonedSlot): number {
     }
     numericOffsetSkip = 32
   } else numericOffsetSkip--
-  const value = Number(
+  const value = numberFrom(
     zonedKernel(slot.timeZone).offsetNanoseconds(slot.epochNanoseconds)
   )
   if (remember) {
@@ -715,7 +721,7 @@ function format(slot: ZonedSlot, options?: unknown): string {
       ? 1n
       : precision === 'minute'
         ? 60_000_000_000n
-        : 10n ** BigInt(9 - precision)
+        : 10n ** bigIntFrom(9 - precision)
   const value = roundInstant(slot.epochNanoseconds, quantum, mode),
     shift = zonedKernel(slot.timeZone).offsetNanoseconds(value)
   return (
@@ -754,7 +760,7 @@ class ZonedDateTimeValue {
   }
   get epochMilliseconds(): number {
     const value = read(this).epochNanoseconds
-    return Number(
+    return numberFrom(
       value / 1_000_000n - (value < 0n && value % 1_000_000n !== 0n ? 1n : 0n)
     )
   }
@@ -782,8 +788,9 @@ class ZonedDateTimeValue {
     if (import.meta.formatjsTemporalNativeData === true || native)
       return native!.hoursInZonedDay(slot)
     return (
-      Number(startOfDay(slot, epochDayOf(local(slot)) + 1) - startOfDay(slot)) /
-      3_600_000_000_000
+      numberFrom(
+        startOfDay(slot, epochDayOf(local(slot)) + 1) - startOfDay(slot)
+      ) / 3_600_000_000_000
     )
   }
   with(item: unknown, options: unknown = undefined): ZonedDateTimeObject {
@@ -839,7 +846,7 @@ class ZonedDateTimeValue {
       ]),
       overflow = overflowOption(resolved)
     const value =
-      BigInt(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
+      bigIntFrom(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
       clockNanoseconds(fields, overflow)
     const offset =
       updates.offset === undefined
@@ -884,7 +891,7 @@ class ZonedDateTimeValue {
     } else {
       const current = local(slot),
         rounded =
-          BigInt(epochDayOf(current)) * nsPerDay +
+          bigIntFrom(epochDayOf(current)) * nsPerDay +
           roundTime(timeOf(current), timeUnit(unit), increment, mode)
       value = resolve(
         rounded,
@@ -921,7 +928,7 @@ class ZonedDateTimeValue {
         ? startOfDay(slot)
         : zonedKernel(slot.timeZone).resolve(
             epochNanosecondsToISO(
-              BigInt(epochDayOf(local(slot))) * nsPerDay +
+              bigIntFrom(epochDayOf(local(slot))) * nsPerDay +
                 getTimeSlot(PlainTime.from(time))!
             )
           )
@@ -1035,7 +1042,7 @@ export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
         typeof primitive !== 'boolean'
       )
         throw new TypeError('Invalid BigInt input')
-      const value = BigInt(primitive)
+      const value = bigIntFrom(primitive)
       if (typeof args[1] !== 'string')
         throw new TypeError('Timezone must be a string')
       if (

@@ -1,3 +1,8 @@
+import {
+  mathMin,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {ArithmeticCalendarToEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import {
@@ -34,7 +39,7 @@ export function isoReferenceDay(
 export function checkYearMonth(epochDay: number): number {
   // Inclusive ISO months at Temporal's year-month limits.
   if (
-    !Number.isInteger(epochDay) ||
+    !numberIsInteger(epochDay) ||
     epochDay < -100000019 ||
     epochDay > 100000017
   )
@@ -84,12 +89,13 @@ export function monthDayFields(
     year ??= 1972
     const maximum =
       month === 2
-        ? 28 + Number(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0))
+        ? 28 +
+          numberFrom(year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0))
         : daysInMonth(cal, 1972, month)
     if (day > maximum && overflow === 'reject')
       throw new RangeError('Day out of range')
     return {
-      epochDay: isoReferenceDay(1972, month, Math.min(day, maximum)),
+      epochDay: isoReferenceDay(1972, month, mathMin(day, maximum)),
       calendar,
     }
   }
@@ -118,7 +124,7 @@ export function monthDayFields(
   if (lunisolar) {
     if (day > 30 && overflow === 'reject')
       throw new RangeError('Day out of range')
-    day = Math.min(day, 30)
+    day = mathMin(day, 30)
     if (
       code!.endsWith('L') &&
       (code === 'M01L' ||
@@ -156,7 +162,7 @@ export function monthDayFields(
       }
       const month = calendarFromEpochDayRaw(cal, start).month,
         length = daysInMonth(cal, candidate, month),
-        validDay = Math.min(day, length),
+        validDay = mathMin(day, length),
         epoch = start + validDay - 1
       if (epoch < minimum || epoch > maximum) continue
       if (validDay === day) return {epochDay: epoch, calendar}

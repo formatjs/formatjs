@@ -1,4 +1,12 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  bigIntFrom,
+  floor,
+  mathMax,
+  mathMin,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -98,12 +106,12 @@ function read(value: unknown): bigint {
 }
 function fields(value: bigint): number[] {
   return factors.map((factor, index) =>
-    Number((value / factor) % BigInt(maxima[index]))
+    numberFrom((value / factor) % bigIntFrom(maxima[index]))
   )
 }
 function integer(value: unknown): number {
-  const result = Math.trunc(+(value as number))
-  if (!Number.isInteger(result))
+  const result = mathTrunc(+(value as number))
+  if (!numberIsInteger(result))
     throw new RangeError('Time field must be finite')
   return result || 0
 }
@@ -121,10 +129,10 @@ function regulate(values: number[], constrain: boolean): bigint {
   let result = 0n
   for (let index = 0; index < 6; index++) {
     let value = values[index]
-    if (constrain) value = Math.max(0, Math.min(maxima[index] - 1, value))
+    if (constrain) value = mathMax(0, mathMin(maxima[index] - 1, value))
     if (value < 0 || value >= maxima[index])
       throw new RangeError('Time out of range')
-    result += BigInt(value) * factors[index]
+    result += bigIntFrom(value) * factors[index]
   }
   return result
 }
@@ -237,7 +245,8 @@ export function roundTime(
   const parent = index === 0 ? day : factors[index - 1]
   const base = (value / parent) * parent
   return (
-    base + roundInstant(value - base, factors[index] * BigInt(increment), mode)
+    base +
+    roundInstant(value - base, factors[index] * bigIntFrom(increment), mode)
   )
 }
 function difference(
@@ -290,7 +299,7 @@ function difference(
     balanceDurationTime(
       roundDuration(
         ((end as bigint) - (value as bigint)) * (since ? -1n : 1n),
-        factors[smallIndex] * BigInt(increment),
+        factors[smallIndex] * bigIntFrom(increment),
         mode
       ),
       largeIndex + 4
@@ -326,9 +335,9 @@ function format(
       ? 1n
       : precision === 'minute'
         ? factors[1]
-        : 10n ** BigInt(9 - precision)
+        : 10n ** bigIntFrom(9 - precision)
   // One day's nanoseconds fit exactly in a Number.
-  let remaining = Number(
+  let remaining = numberFrom(
     quantum === 1n
       ? (value as bigint)
       : roundInstant(value as bigint, quantum, mode) % day

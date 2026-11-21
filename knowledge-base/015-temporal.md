@@ -54,6 +54,13 @@ intrinsic dependencies remain under audit. The pinned lower-date offset guard
 is preserved; its behavior conflicts with an editorial removal claim documented
 in the separate [spec issue record](audits/temporal-spec-issues.md).
 
+Remaining numeric method/predicate and Number/BigInt constructor dependencies
+now use shared captures too: 249 references across 34 runtime modules. Original
+constructor and coercion semantics stay intact. GetISOPartsFromEpoch gains 16
+individual TS/Rust traces; two complete Gregorian eras are compared with builtin
+UTC fields in TS, alongside Rust full-era and independent ICU controls. Forward
+conversion, range policy and other intrinsic dependencies remain under audit.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across

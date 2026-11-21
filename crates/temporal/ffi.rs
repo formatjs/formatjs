@@ -146,6 +146,14 @@ fn fields(value: &Value) -> Result<IsoDateTime, Error> {
     })
 }
 fn record(fields: IsoDateTime) -> Value {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L71-L77
+    // L71: split the combined subsecond field into complete milliseconds.
+    // L72: microseconds discard complete milliseconds before selecting three digits.
+    // L73: modulo 1000 bounds that field to 0..999.
+    // L74: the final remainder gives nanoseconds within the microsecond.
+    // L75: preserve the three ISO date-record fields.
+    // L76: preserve the six time-record fields.
+    // L77: the flat transport object combines those conceptual records.
     json!({"year":fields.year,"month":fields.month,"day":fields.day,"hour":fields.hour,"minute":fields.minute,"second":fields.second,"millisecond":fields.nanosecond/1_000_000,"microsecond":fields.nanosecond/1000%1000,"nanosecond":fields.nanosecond%1000})
 }
 const DURATION_FIELDS: [&str; 10] = [

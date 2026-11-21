@@ -1,3 +1,9 @@
+import {
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -131,7 +137,7 @@ export function createPlainDate(
 ): PlainDateObject {
   const epochDay = typeof value === 'number' ? value : value.epochDay
   if (
-    !Number.isInteger(epochDay) ||
+    !numberIsInteger(epochDay) ||
     epochDay < -100000001 ||
     epochDay > 100000000
   )
@@ -206,7 +212,7 @@ function add(
   for (const key of Object.keys(fields) as (keyof typeof fields)[])
     fields[key] *= sign
   const time = durationNanoseconds(fields, false)
-  fields.days += Number(time / nsPerDay)
+  fields.days += numberFrom(time / nsPerDay)
   return createPlainDate(
     addDate(value, fields, overflowOption(options)),
     value.calendar
@@ -230,7 +236,7 @@ function difference(
     smallIndex = names.indexOf(smallest)
   const largest =
     largestText === 'auto'
-      ? names[Math.min(3, smallIndex)]
+      ? names[mathMin(3, smallIndex)]
       : unitOption(largestText)!
   if (
     smallIndex < 0 ||
@@ -258,8 +264,8 @@ function difference(
     )
   return createDuration(
     roundedDateTimeDifference(
-      BigInt(slot.epochDay) * nsPerDay,
-      BigInt(end.epochDay) * nsPerDay,
+      bigIntFrom(slot.epochDay) * nsPerDay,
+      bigIntFrom(end.epochDay) * nsPerDay,
       slot.calendar,
       largest,
       smallest,
@@ -363,7 +369,7 @@ class PlainDateValue {
     } else zone = timeZoneIdentifier(item)
     const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
     return zonedFromLocal(
-      BigInt(slot.epochDay) * nsPerDay + clock,
+      bigIntFrom(slot.epochDay) * nsPerDay + clock,
       zone,
       slot.calendar,
       undefined,
@@ -374,7 +380,7 @@ class PlainDateValue {
     const slot = read(this)
     const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
     return createPlainDateTime(
-      BigInt(slot.epochDay) * nsPerDay + clock,
+      bigIntFrom(slot.epochDay) * nsPerDay + clock,
       slot.calendar
     )
   }
@@ -391,7 +397,7 @@ class PlainDateValue {
       {
         kind: 'PlainDate',
         epochNanoseconds:
-          BigInt(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
+          bigIntFrom(slot.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
         calendar: slot.calendar,
       },
       locales,

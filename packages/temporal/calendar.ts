@@ -1,4 +1,14 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  mathAbs,
+  mathMax,
+  mathMin,
+  mathSign,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   isLunisolar,
@@ -104,12 +114,11 @@ export interface DateDuration {
 const mod = (value: number, divisor: number): number =>
   value - floor(value / divisor) * divisor
 function integer(value: number): number {
-  if (!Number.isSafeInteger(value))
-    throw new RangeError('Expected safe integer')
+  if (!numberIsSafeInteger(value)) throw new RangeError('Expected safe integer')
   return value
 }
 function yearCheck(year: number): number {
-  if (Math.abs(integer(year)) > 400000)
+  if (mathAbs(integer(year)) > 400000)
     throw new RangeError('Calendar year out of range')
   return year
 }
@@ -132,10 +141,10 @@ function regulate(
   max: number,
   overflow: Overflow
 ): number {
-  if (!Number.isInteger(value)) throw new RangeError('Expected finite integer')
+  if (!numberIsInteger(value)) throw new RangeError('Expected finite integer')
   if (overflow === 'reject' && (value < min || value > max))
     throw new RangeError('Calendar field out of range')
-  return Math.min(Math.max(value, min), max)
+  return mathMin(mathMax(value, min), max)
 }
 function start(calendar: CalendarId, year: number): number {
   if (isLunisolar(calendar)) return tableYearStart(calendar, year)!
@@ -192,7 +201,7 @@ function monthCode(calendar: CalendarId, year: number, month: number): string {
     const leap = tableLeapMonth(calendar, year)
     return (
       'M' +
-      String(month - Number(leap > 0 && month > leap)).padStart(2, '0') +
+      String(month - numberFrom(leap > 0 && month > leap)).padStart(2, '0') +
       (leap > 0 && month === leap + 1 ? 'L' : '')
     )
   }
@@ -211,13 +220,13 @@ function monthFromCode(
   if (isLunisolar(calendar)) {
     if (!/^M(0[1-9]|1[0-2])L?$/.test(code))
       throw new RangeError('Invalid month code')
-    const number = Number(code.slice(1, 3)),
+    const number = numberFrom(code.slice(1, 3)),
       leap = tableLeapMonth(calendar, year)
     if (code.endsWith('L') && leap !== number && overflow === 'reject')
       throw new RangeError('Leap month absent')
     return (
       number +
-      Number(
+      numberFrom(
         leap > 0 && (number > leap || (number === leap && code.endsWith('L')))
       )
     )
@@ -232,8 +241,10 @@ function monthFromCode(
     (code === 'M13' && !['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
   )
     throw new RangeError('Invalid month code')
-  const month = Number(code.slice(1))
-  return month + Number(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
+  const month = numberFrom(code.slice(1))
+  return (
+    month + numberFrom(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
+  )
 }
 function isoMonthFromCode(code: string): number {
   if (code.length !== 3 || code[0] !== 'M')
@@ -358,7 +369,7 @@ export function calendarFromEpochDayRaw(
   epoch: number
 ): CalendarDate {
   calendarCheck(calendar)
-  if (Math.abs(integer(epoch)) > 110000000)
+  if (mathAbs(integer(epoch)) > 110000000)
     throw new RangeError('Calendar date out of range')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -522,7 +533,7 @@ export function calendarDateUntilRaw(
   const first = calendarFromEpochDayRaw(calendar, one),
     last = calendarFromEpochDayRaw(calendar, two)
   const result = {years: 0, months: 0, weeks: 0, days: 0},
-    sign = Math.sign(two - one)
+    sign = mathSign(two - one)
   if (!sign) return result
   // Difference prefixes compare unregulated days and month codes, not clamped dates.
   const surpasses = (): boolean => {
@@ -576,7 +587,7 @@ export function calendarDateUntilRaw(
   }
   result.days = two - anchor
   if (largest === 'week') {
-    result.weeks = Math.trunc(result.days / 7) || 0
+    result.weeks = mathTrunc(result.days / 7) || 0
     result.days = result.days % 7 || 0
   }
   return result

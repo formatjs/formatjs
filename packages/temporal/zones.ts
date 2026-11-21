@@ -1,4 +1,4 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {floor, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
@@ -142,7 +142,9 @@ export function timeZoneIdentifier(value: unknown): string {
     return native!.timeZoneIdentity(name).identifier
   if (/^[+-]/.test(name)) {
     const offset = parseOffsetNanoseconds(name, true)
-    const minutes = Number((offset < 0n ? -offset : offset) / 60_000_000_000n)
+    const minutes = numberFrom(
+      (offset < 0n ? -offset : offset) / 60_000_000_000n
+    )
     return (
       (offset < 0n ? '-' : '+') +
       String(floor(minutes / 60)).padStart(2, '0') +

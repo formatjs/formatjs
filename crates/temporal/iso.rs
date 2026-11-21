@@ -51,16 +51,27 @@ impl IsoDateTime {
 }
 
 // Calendar differences may round across public date limits.
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L70
+// Line tags below refer to this pinned timezone.html.
 pub(crate) fn iso_from_epoch_nanoseconds_raw(value: i128) -> IsoDateTime {
+    // L62: valid Instant inputs satisfy this raw converter's supported domain.
+    // L64: exact day/clock division replaces the integral-millisecond intermediate.
     let days = value.div_euclid(NANOSECONDS_PER_DAY);
+    // L63: the nonnegative day remainder retains the modulo-10**6 remainder too.
     let time = value.rem_euclid(NANOSECONDS_PER_DAY);
+    // L65: the inverse Gregorian cycle conversion yields the epoch year.
+    // L66: its month is already one-based.
+    // L67: its day is the Gregorian day of month.
     let (year, month, day) = crate::calendar::iso_fields(days as i64);
     IsoDateTime {
         year,
         month,
         day,
+        // L68: select the hour within the nonnegative day remainder.
         hour: (time / 3_600_000_000_000) as u8,
+        // L69: discard complete hours when selecting the minute.
         minute: (time / 60_000_000_000 % 60) as u8,
+        // L70: discard complete minutes when selecting the second.
         second: (time / 1_000_000_000 % 60) as u8,
         nanosecond: (time % 1_000_000_000) as u32,
     }

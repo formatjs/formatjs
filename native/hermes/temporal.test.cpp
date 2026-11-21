@@ -164,6 +164,38 @@ int main(int argc, char **argv) {
         '1969-12-31T23:59:59.999999999Z', '1970-01-01T01:30:00+01:30', 53,
         '12:34:56.12', '1970-01-01T01:30:00+01:30[+01:30]',
       ].join('|'));
+      const numericBindings = [
+        [Math, 'abs'], [Math, 'min'], [Math, 'max'], [Math, 'trunc'], [Math, 'sign'],
+        [Number, 'isInteger'], [Number, 'isSafeInteger'], [Number, 'isFinite'],
+        [globalThis, 'Number'], [globalThis, 'BigInt'],
+      ];
+      const numericDescriptors = numericBindings.map(([owner, key]) => Object.getOwnPropertyDescriptor(owner, key));
+      let numericResults;
+      try {
+        for (let i = 0; i < numericBindings.length; i++) {
+          const [owner, key] = numericBindings[i];
+          Object.defineProperty(owner, key, {...numericDescriptors[i], value: function () {
+            throw new Error('Mutable numeric intrinsic reached');
+          }});
+        }
+        numericResults = [
+          Temporal.Duration.from('-PT1H').abs().hours,
+          new Temporal.Instant(0n).until(new Temporal.Instant(1000000000n), {smallestUnit: 'second'}).seconds,
+          Temporal.PlainTime.from({hour: 25}).hour,
+          new Temporal.PlainDate(2024.9, 2.9, 29.9).toString(),
+          Temporal.PlainDate.from('2024-02-29').until('2024-01-29', {largestUnit: 'month'}).months,
+          Temporal.PlainDate.from({calendar: 'hebrew', year: 5784, monthCode: 'M05L', day: 1}).monthCode,
+          new Temporal.Instant(1n).round({smallestUnit: 'second', roundingIncrement: 1}).epochNanoseconds,
+          new Temporal.Instant(-1n).toString(),
+          new Temporal.Instant(1n).add({nanoseconds: 1}).epochNanoseconds,
+        ];
+      } finally {
+        for (let i = numericBindings.length - 1; i >= 0; i--) {
+          const [owner, key] = numericBindings[i];
+          Object.defineProperty(owner, key, numericDescriptors[i]);
+        }
+      }
+      check(numericResults.join('|') === '1|1|23|2024-02-29|-1|M05L|0|1969-12-31T23:59:59.999999999Z|2');
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

@@ -1,4 +1,4 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {floor, numberIsFinite} from '#packages/ecma262-abstract/intrinsics.js'
 const MS_PER_DAY = 86400000
 
 function mod(x: number, y: number): number {
@@ -31,7 +31,7 @@ export function YearFromTime(t: number): number {
   // Local timezone adjustment may move an otherwise valid instant past Date's bounds.
   // https://tc39.es/ecma262/#sec-yearfromtime
   // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34177
-  if (!Number.isFinite(t)) return NaN
+  if (!numberIsFinite(t)) return NaN
   const day = Day(t)
   let year = 1970 + floor(day / 365.2425)
   while (DayFromYear(year) > day) year--

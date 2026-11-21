@@ -1,3 +1,9 @@
+import {
+  bigIntFrom,
+  mathAbs,
+  mathMax,
+  mathMin,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -120,12 +126,12 @@ function addDurations(
   const two = toDurationFields(other)
   const native = nativeTemporal()
   if (native) return createDuration(native.addDuration(one, two, sign < 0))
-  const largest = Math.min(largestDurationField(one), largestDurationField(two))
+  const largest = mathMin(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
     throw new RangeError('Calendar units cannot be added without a calendar')
   return createDuration(
     balanceDurationTime(
-      durationNanoseconds(one) + BigInt(sign) * durationNanoseconds(two),
+      durationNanoseconds(one) + bigIntFrom(sign) * durationNanoseconds(two),
       largest
     )
   )
@@ -221,7 +227,7 @@ class DurationValue {
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]
-      result[key] = Math.abs(fields[key])
+      result[key] = mathAbs(fields[key])
     }
     return createDuration(result)
   }
@@ -264,7 +270,7 @@ class DurationValue {
       smallIndex = units.indexOf(smallest)
     const largest =
         largestOption ??
-        units[Math.min(largestDurationField(fields), smallIndex)],
+        units[mathMin(largestDurationField(fields), smallIndex)],
       largeIndex = units.indexOf(largest)
     if (largeIndex > smallIndex)
       throw new RangeError('Largest unit smaller than smallest unit')
@@ -294,7 +300,7 @@ class DurationValue {
       balanceDurationTime(
         roundDuration(
           durationNanoseconds(fields),
-          BigInt(increment) * quantum,
+          bigIntFrom(increment) * quantum,
           mode
         ),
         largeIndex
@@ -361,12 +367,12 @@ class DurationValue {
       return formatDuration(fields, precision)
     const rounded = roundDuration(
       durationNanoseconds(fields, false),
-      10n ** BigInt(9 - precision),
+      10n ** bigIntFrom(9 - precision),
       mode
     )
     const balanced = balanceDurationTime(
       rounded,
-      Math.max(3, Math.min(largestDurationField(fields), 6))
+      mathMax(3, mathMin(largestDurationField(fields), 6))
     )
     balanced.years = fields.years
     balanced.months = fields.months

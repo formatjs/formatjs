@@ -245,6 +245,46 @@ Current pass:
   and accepted-failure baselines are unchanged.
   Remaining ISO arithmetic/range clauses stay open. No new line signoffs.
 
+- Numeric intrinsic dependencies: [shared captures](../../packages/ecma262-abstract/intrinsics.ts)
+  now retain abs/min/max/trunc/sign, finite/integer/safe-integer predicates and
+  Number/BigInt constructor calls. Replace 249 runtime references in 34 modules;
+  existing native transport and clock captures remain intact. Constructor
+  conversions preserve their original semantics, including Number(BigInt);
+  unary-plus and explicit ToBigInt validation are unchanged.
+  Ten independent public mutation regressions failed before the fix and pass
+  after it. Installed native Hermes also replaces all ten dependency classes
+  simultaneously while constructing, formatting, rounding and comparing values.
+  Other intrinsic, error-constructor, prototype and provider dependencies remain
+  open; this does not sign off complete public operations.
+
+- ISO reverse conversion: [TS kernel](../../packages/temporal/kernel.ts),
+  [Rust ISO conversion](../../crates/temporal/iso.rs) and
+  [native record packing](../../crates/temporal/ffi.rs) now individually trace
+  GetISOPartsFromEpoch, `timezone.html` lines 62–77. Its valid-Instant domain is
+  contained in the implementation's wider local-time domain; no extra public
+  range is claimed. Exact Euclidean day/clock division produces the same fields
+  as the spec's integral-millisecond intermediate, which is exact below 2**53.
+  Every discarded hour/minute/second is a multiple of 10**6 nanoseconds, so the
+  remaining clock keeps the original nonnegative sub-millisecond remainder.
+  Splitting it into millisecond/microsecond/nanosecond digits preserves 0..999
+  bounds even at negative epochs. Flat private/transport records preserve the
+  conceptual ISO date/time record fields.
+  Gregorian inversion was reviewed through the March-based 400-year cycle and
+  the Rust 128-day block lookup. New TS controls compare all 292,194 days across
+  two complete eras around year zero with builtin UTC fields. Existing Rust
+  full-era checks and independent ICU Gregorian controls cover the corresponding
+  native conversion; current sub-millisecond/boundary vectors remain in place.
+  The native request uses a null-prototype flat record, captured bigint text,
+  call/JSON helpers and a trusted backend result with own numeric fields.
+  Input parsing, forward conversion, local-time range policy and other calendar
+  algorithms remain open. No arithmetic defect found in these reviewed reverse
+  conversion steps.
+  All 89 validation targets pass: public mutation/type checks, installed native
+  Hermes, all 40 Temporal class backend gates, Intl consumer units/baseline gates,
+  locale and ICU oracles, kernel controls and Rust era/public tests. Temporal,
+  DateTimeFormat and DurationFormat package assembly passes. Existing exclusions
+  and accepted-failure baselines are unchanged.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -257,9 +297,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [host-exotic objects](https://github.com/formatjs/formatjs/pull/8070),
 [provider host objects](https://github.com/formatjs/formatjs/pull/8071),
 [exact rounding audit](https://github.com/formatjs/formatjs/pull/8072),
-[captured numeric floor](https://github.com/formatjs/formatjs/pull/8073).
+[captured numeric floor](https://github.com/formatjs/formatjs/pull/8073),
+[numeric intrinsics and ISO reverse conversion](https://github.com/formatjs/formatjs/pull/8074).
 
-New traces: 81 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 97 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -290,7 +331,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                        3 |                         282 |
 | [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        6 |                         177 |
 | [temporal](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html)             |                    29 |                        0 |                          29 |
-| [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                        0 |                         132 |
+| [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                       16 |                         116 |
 | [zoneddatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html)   |                   487 |                       30 |                         457 |
 
 ## `abstractops`
@@ -1325,7 +1366,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-getavailablenamedtimezoneidentifier`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L23)
   - Open: [37–39](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L37-L39).
 - [`sec-temporal-getisopartsfromepoch`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L51)
-  - Open: [62–77](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L77).
+  - Traced: [62–77](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L77).
 - [`sec-temporal-getnamedtimezonenexttransition`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L81)
   - Open: [102–103](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L102-L103).
 - [`sec-temporal-getnamedtimezoneprevioustransition`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L107)

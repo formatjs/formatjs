@@ -1,4 +1,10 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  mathAbs,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
   approximateLunisolarYear,
@@ -25,7 +31,7 @@ function remember(key: string, value: CalendarYearData): CalendarYearData {
 }
 
 function fields(calendar: HostTableCalendar, day: number) {
-  if (!Number.isInteger(day) || Math.abs(day) > limit)
+  if (!numberIsInteger(day) || mathAbs(day) > limit)
     throw new RangeError('Host Intl calendar date out of range')
   if (!Constructor || !parts || !resolved)
     throw new RangeError(
@@ -48,10 +54,10 @@ function fields(calendar: HostTableCalendar, day: number) {
     date = NaN
   for (const part of parts.call(formatter, day * dayMilliseconds)) {
     const type: string = part.type
-    if (type === 'relatedYear' || type === 'year') year = Number(part.value)
-    else if (type === 'day') date = Number(part.value)
+    if (type === 'relatedYear' || type === 'year') year = numberFrom(part.value)
+    else if (type === 'day') date = numberFrom(part.value)
   }
-  if (!Number.isSafeInteger(year) || !(date >= 1 && date <= 30))
+  if (!numberIsSafeInteger(year) || !(date >= 1 && date <= 30))
     throw new RangeError('Unsupported host Intl calendar fields')
   return {year, day: date}
 }
@@ -60,7 +66,7 @@ export function hostCalendarYear(
   calendar: HostTableCalendar,
   year: number
 ): CalendarYearData {
-  if (!Number.isSafeInteger(year)) throw new RangeError('Invalid calendar year')
+  if (!numberIsSafeInteger(year)) throw new RangeError('Invalid calendar year')
   const key = `${calendar}:${year}`,
     cached = years.get(key)
   if (cached) return cached
@@ -69,7 +75,7 @@ export function hostCalendarYear(
     return remember(key, compact ?? approximateLunisolarYear(calendar, year))
   }
   let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)
-  if (Math.abs(probe) > limit - 800)
+  if (mathAbs(probe) > limit - 800)
     throw new RangeError('Host Intl calendar year requires boundary data')
   probe += 400
   let value = fields(calendar, probe)
@@ -118,7 +124,7 @@ export function hostCalendarAddMonths(
   month: number,
   delta: number
 ): {year: number; month: number} {
-  if (!Number.isSafeInteger(delta)) throw new RangeError('Invalid month count')
+  if (!numberIsSafeInteger(delta)) throw new RangeError('Invalid month count')
   const target =
     lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +
     delta
