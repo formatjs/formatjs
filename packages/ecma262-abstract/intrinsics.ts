@@ -4,6 +4,7 @@ export const floor: typeof Math.floor = Math.floor
 // Number/BigInt calls retain constructor conversion semantics.
 export const numberFrom: typeof Number = Number
 export const bigIntFrom: typeof BigInt = BigInt
+export const objectFrom: typeof Object = Object
 export const mathAbs: typeof Math.abs = Math.abs
 export const mathMin: typeof Math.min = Math.min
 export const mathMax: typeof Math.max = Math.max
