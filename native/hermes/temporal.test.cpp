@@ -95,6 +95,8 @@ int main(int argc, char **argv) {
       }
       const shortOptionFailure = new Error('overflow getter reached');
       for (const [from, text] of [
+        [Temporal.PlainDate.from, '+275760-09-14'],
+        [Temporal.PlainDateTime.from, '-271821-04-19T00:00'],
         [Temporal.PlainYearMonth.from, '+275760-10'],
         [Temporal.PlainMonthDay.from, '+999999-01-01[u-ca=gregory]'],
       ]) {

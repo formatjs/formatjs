@@ -146,3 +146,50 @@ it('defers calendar-specific month code checks until after field preparation', (
     ).toThrow(later)
   }
 })
+
+it('reads string overflow after syntax and calendar but before range checks', () => {
+  const reached = new Error('overflow getter reached')
+  for (const from of [Temporal.PlainDate.from, Temporal.PlainDateTime.from]) {
+    for (const text of ['+999999-01-01', '+275760-09-14T12:34']) {
+      expect(() =>
+        from(text, {
+          get overflow(): never {
+            throw reached
+          },
+        })
+      ).toThrow(reached)
+      expect(() => from(text, 1 as never)).toThrow(TypeError)
+    }
+    for (const text of [
+      '2020-02-30',
+      '2020-01-01T24:00',
+      '2020-01-01[u-ca=unknown]',
+    ]) {
+      expect(() =>
+        from(text, {
+          get overflow(): never {
+            throw reached
+          },
+        })
+      ).toThrow(RangeError)
+    }
+    let reads = 0
+    from('2020-02-29T12:34', {
+      get overflow() {
+        reads++
+        return 'reject' as const
+      },
+    })
+    expect(reads).toBe(1)
+  }
+  expect(Temporal.PlainDate.from('-271821-04-19T23:59').toString()).toBe(
+    '-271821-04-19'
+  )
+  expect(() =>
+    Temporal.PlainDateTime.from('-271821-04-19T00:00', {
+      get overflow(): never {
+        throw reached
+      },
+    })
+  ).toThrow(reached)
+})

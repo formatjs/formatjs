@@ -54,7 +54,11 @@ import {
   type TimeUnit,
   type RoundingMode,
 } from '#packages/temporal/rounding.js'
-import {parseCalendarString} from '#packages/temporal/instant-string.js'
+import {
+  parseCalendarString,
+  parseISODateParts,
+  type ParsedDateFields,
+} from '#packages/temporal/instant-string.js'
 
 export const nsPerDay = 86_400_000_000_000n
 export const clockNames = [
@@ -119,6 +123,16 @@ export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
     throw new TypeError('Calendar must be a string')
   return supportedCalendar(value.toLowerCase())
+}
+export function prepareDateTimeString(
+  value: string,
+  options: unknown
+): ParsedDateFields {
+  // ToTemporalDate 683–688; ToTemporalDateTime 824–830: syntax, calendar, options, then bounds.
+  const fields = parseISODateParts(value)
+  fields.calendar = constructorCalendar(fields.calendar)
+  overflowOption(options)
+  return fields
 }
 function supportedCalendar(value: string): CalendarId {
   const id =
