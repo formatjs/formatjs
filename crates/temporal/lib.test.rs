@@ -3327,3 +3327,86 @@ fn rounding_increment_caps_distinguish_time_and_instant() {
         duration
     );
 }
+
+#[test]
+fn instant_offsets_preserve_grammar_and_nanosecond_boundaries() {
+    for sign in [-1i128, 1] {
+        for (body, nanoseconds) in [
+            ("00", 0),
+            ("23", 82_800_000_000_000),
+            ("2359", 86_340_000_000_000),
+            ("23:59", 86_340_000_000_000),
+            ("235959", 86_399_000_000_000),
+            ("23:59:59", 86_399_000_000_000),
+            ("23:59:59.1", 86_399_100_000_000),
+            ("235959,000000001", 86_399_000_000_001),
+            ("23:59:59.999999999", 86_399_999_999_999),
+        ] {
+            let input = format!(
+                "1970-01-01T00:00:00{}{body}",
+                if sign < 0 { '-' } else { '+' }
+            );
+            let instant: Instant = input.parse().unwrap();
+            assert_eq!(instant.epoch_nanoseconds(), -sign * nanoseconds, "{input}");
+        }
+    }
+    for offset in [
+        "",
+        "+",
+        "+0",
+        "+24",
+        "+01:60",
+        "+010260",
+        "+01:02:60",
+        "+0102:03",
+        "+01:0203",
+        "+01.5",
+        "+01:02.5",
+        "+01:02:03.",
+        "+01:02:03,",
+        "+01:02:03.1234567890",
+        "+01:02:03.1x",
+        "+01:02:03.1\n",
+        "+01:02:03.+1",
+        "+01:02:03.١",
+        "−01",
+        "+١٢",
+        "+01 ",
+    ] {
+        let input = format!("1970-01-01T00:00:00{offset}");
+        assert!(input.parse::<Instant>().is_err(), "{input:?}");
+    }
+}
+
+#[test]
+fn fixed_zone_identifiers_keep_minute_precision() {
+    use formatjs_temporal::{TimeZone, TimeZoneRegistry};
+    let registry = TimeZoneRegistry::empty();
+    let epoch = Instant::from_epoch_nanoseconds(0).unwrap();
+    for (input, canonical, nanoseconds) in [
+        ("+00", "+00:00", 0),
+        ("-00", "+00:00", 0),
+        ("-0000", "+00:00", 0),
+        ("-00:00", "+00:00", 0),
+        ("+23", "+23:00", 82_800_000_000_000),
+        ("-2359", "-23:59", -86_340_000_000_000),
+        ("+23:59", "+23:59", 86_340_000_000_000),
+    ] {
+        let zone = registry.resolve(input).unwrap();
+        assert_eq!(zone.identifier(), canonical);
+        assert_eq!(zone.offset_nanoseconds(epoch), nanoseconds);
+    }
+    for input in [
+        "+000000",
+        "+00:00:00",
+        "+010203.1",
+        "+01:02:03,000000001",
+        "+24",
+        "+01:60",
+        "−01",
+        "+١٢",
+        "+01\n",
+    ] {
+        assert!(registry.resolve(input).is_err(), "{input:?}");
+    }
+}

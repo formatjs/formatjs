@@ -4,6 +4,10 @@ Source: published [ECMA-262 §21.4.1.33.2 ParseTimeZoneOffsetString](https://tc3
 This is an ECMA-262 dependency used by Temporal. It does not establish a
 Temporal API chapter in that document or complete the surrounding parsers.
 
+The later [complete offset helper review](temporal-offset-grammar-audit.md)
+supersedes the offset scanner described here. The three other clock parsers
+continue using fractionDigits. This file records the earlier padding change.
+
 ## Reviewed substeps
 
 The fraction branch contributes zero when absent (15.a). Otherwise, 16.b–16.c
