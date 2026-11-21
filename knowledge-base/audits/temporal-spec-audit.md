@@ -9,7 +9,7 @@ Current pass:
 
 - `ParseMonthCode` syntax and coercion, `calendar.html` lines 83–85.
   Implementation: `dateFieldValue` in [date-core.ts](../../packages/temporal/date-core.ts).
-  Reject `M00` and trailing line terminators before later field getters;
+  Reject `M00` before later field getters; preserve rejection of trailing terminators;
   keep `M00L` and calendar-invalid but syntactically valid codes for calendar resolution.
   Remaining result construction and downstream calendar checks stay open.
   Regression first failed with `year getter reached`; date/time, short-date and
@@ -39,11 +39,26 @@ Current pass:
   and bytecode modes. No exclusions changed.
   Remaining nudge construction, rounding and ratio lines stay open.
 
+- Short-date string option ordering, `plainyearmonth.html` lines 474–479 and
+  `plainmonthday.html` lines 302–307.
+  Implementation: `parseShortSlot` in [short-date-core.ts](../../packages/temporal/short-date-core.ts).
+  Parse syntax and canonicalize the calendar before options; read `overflow`
+  before representability checks and calendar projection. Undefined native options
+  retain the direct parser because normalization has no observable reads.
+  The public regression failed before the fix. Short-date ICU controls, Node
+  YearMonth/MonthDay Test262, typechecks and installed native Hermes checks pass.
+  Full YearMonth/MonthDay suites pass on TS and SDK Hermes in source and bytecode
+  modes. No exclusions changed.
+  Malformed syntax and unknown calendars still fail before the overflow getter.
+  Remaining conversion steps stay open. Trailing-terminator cases are controls;
+  their rejection was already correct before this audit.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
-[calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063).
+[calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
+[short-date option order](https://github.com/formatjs/formatjs/pull/8064).
 
-New traces: 12 source lines. All other baseline traces retain their linked PR status.
+New traces: 24 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
 
@@ -65,9 +80,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | [mainadditions](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html)   |                   160 |                        9 |                         151 |
 | [plaindate](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html)           |                   272 |                       26 |                         246 |
 | [plaindatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html)   |                   315 |                        5 |                         310 |
-| [plainmonthday](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html)   |                   103 |                        0 |                         103 |
+| [plainmonthday](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html)   |                   103 |                        6 |                          97 |
 | [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                        3 |                         282 |
-| [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        0 |                         183 |
+| [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        6 |                         177 |
 | [temporal](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html)             |                    29 |                        0 |                          29 |
 | [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                        0 |                         132 |
 | [zoneddatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html)   |                   487 |                       30 |                         457 |
@@ -882,7 +897,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-properties-of-temporal-plainmonthday-instances`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L229)
 - [`sec-temporal-plainmonthday-abstract-ops`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L274)
 - [`sec-temporal-totemporalmonthday`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L277)
-  - Open: [289–317](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L289-L317).
+  - Traced: [302–307](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L302-L307).
+  - Open: [289–301](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L289-L301), [308–317](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L308-L317).
 - [`sec-temporal-createtemporalmonthday`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L321)
   - Open: [334–339](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L334-L339).
 - [`sec-temporal-temporalmonthdaytostring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L343)
@@ -1036,7 +1052,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-plainyearmonth-abstract-ops`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L417)
 - [`sec-temporal-iso-year-month-records`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L420)
 - [`sec-temporal-totemporalyearmonth`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L449)
-  - Open: [461–485](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L461-L485).
+  - Traced: [474–479](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L474-L479).
+  - Open: [461–473](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L461-L473), [480–485](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L480-L485).
 - [`sec-temporal-isoyearmonthwithinlimits`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L489)
   - Open: [500–503](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L500-L503).
 - [`sec-temporal-balanceisoyearmonth`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L513)

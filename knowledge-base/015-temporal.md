@@ -10,13 +10,15 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 The [line audit ledger](audits/temporal-spec-audit.md) pins the Temporal specification
 and tracks reviewed lines separately from open clauses and pending PRs.
-`ParseMonthCode` field preparation now rejects bare `M00` and trailing line
-terminators before reading later fields. Calendar-specific validity stays deferred.
+`ParseMonthCode` field preparation now rejects bare `M00` before reading later
+fields. Trailing terminators remain invalid. Calendar-specific validity stays deferred.
 Duration `relativeTo` conversion recognizes PlainDateTime internal slots and copies
 only the ISO date and calendar, without observing shadowed public getters.
 TS and Rust calendar-unit totals validate both interpolation endpoints before
 returning exact results. Zero zoned calendar totals use the positive window;
 plain zero totals retain their specified shortcut.
+Short-date string conversion reads `overflow` after syntax/calendar validation,
+before representable-range checks and calendar projection, on both JS backends.
 
 ## Native performance direction
 

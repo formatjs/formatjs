@@ -167,3 +167,58 @@ it('preserves Hebrew month codes through short-date conversion and leap years', 
     )
   }
 })
+
+it('reads short-date overflow after parsing but before range checks', () => {
+  const failure = new Error('overflow getter reached')
+  const options = {
+    get overflow(): never {
+      throw failure
+    },
+  }
+  for (const text of ['+275760-10', '-271821-03', '+999999-01']) {
+    expect(() => Temporal.PlainYearMonth.from(text, options), text).toThrow(
+      failure
+    )
+    expect(() => Temporal.PlainYearMonth.from(text, 1), text).toThrow(TypeError)
+  }
+  for (const text of [
+    '+999999-01-01[u-ca=gregory]',
+    '+275760-09-14[u-ca=gregory]',
+  ]) {
+    expect(() => Temporal.PlainMonthDay.from(text, options), text).toThrow(
+      failure
+    )
+    expect(() => Temporal.PlainMonthDay.from(text, 1), text).toThrow(TypeError)
+  }
+  for (const from of [
+    Temporal.PlainYearMonth.from,
+    Temporal.PlainMonthDay.from,
+  ]) {
+    for (const text of [
+      '2020-02-30',
+      '2020-01-01[u-ca=invalid]',
+      '2020-02\n',
+      '02-29\n',
+    ]) {
+      expect(() => from(text, options), text).toThrow(RangeError)
+    }
+  }
+})
+
+it('reads short-date overflow once and keeps constrained string normalization', () => {
+  for (const [from, text, expected] of [
+    [Temporal.PlainYearMonth.from, '2020-02-29', '2020-02'],
+    [Temporal.PlainMonthDay.from, '2020-02-29', '02-29'],
+  ] as const) {
+    let reads = 0
+    expect(
+      from(text, {
+        get overflow() {
+          reads++
+          return 'reject'
+        },
+      }).toString()
+    ).toBe(expected)
+    expect(reads).toBe(1)
+  }
+})

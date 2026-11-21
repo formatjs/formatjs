@@ -58,6 +58,8 @@ The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 Month codes must match Temporal's grammar exactly. Malformed codes such as
 `M00` or codes with trailing whitespace throw before later field getters run.
 A syntactically valid code can still be invalid for the chosen calendar.
+`PlainYearMonth.from` and `PlainMonthDay.from` validate string syntax and calendar,
+then read `overflow`, then check representable bounds and normalize the date.
 
 Duration operations accept a `PlainDateTime` as `relativeTo`. They use its stored
 date and calendar, ignore its time, and do not read shadowed public field getters.
