@@ -458,3 +458,121 @@ it('uses one number-hint conversion and propagates an abrupt increment exactly',
   }
   expect(actual).toBe(failure)
 })
+
+it.each(
+  [
+    {
+      name: 'Instant',
+      prepare: () => new Temporal.Instant(1_120_300_000n),
+      expected: ['1970-01-01T00:00:01.1203Z', '1970-01-01T00:00:01.1203Z'],
+    },
+    {
+      name: 'PlainTime',
+      prepare: () => new Temporal.PlainTime(12, 34, 56, 120, 300),
+      expected: ['12:34:56.1203', '12:34:56.1203'],
+    },
+    {
+      name: 'Duration',
+      prepare: () => new Temporal.Duration(0, 0, 0, 0, 0, 0, 1, 120, 300),
+      expected: ['PT1.1203S', 'PT1.1203S'],
+    },
+  ].flatMap(test =>
+    ['String', 'padStart', 'slice', 'replace'].map(key => ({...test, key}))
+  )
+)(
+  '$name formats private digits without mutable $key',
+  ({prepare, expected, key}) => {
+    const value = prepare()
+    const target = key === 'String' ? globalThis : String.prototype
+    const original = Object.getOwnPropertyDescriptor(target, key)!
+    let actual: string[] | undefined
+    try {
+      Object.defineProperty(target, key, {
+        configurable: true,
+        get() {
+          throw new Error('Private formatting hook reached')
+        },
+      })
+      actual = [value.toString(), value.toString({fractionalSecondDigits: 4})]
+    } finally {
+      Object.defineProperty(target, key, original)
+    }
+    expect(actual).toEqual(expected)
+  }
+)
+
+it.each([0, 1, 1000, 1_000_000, 120_300_000, 999_999_999])(
+  'matches independent serialization for every precision of fraction %s',
+  fraction => {
+    const milliseconds = Math.floor(fraction / 1_000_000)
+    const microseconds = Math.floor(fraction / 1000) % 1000
+    const nanoseconds = fraction % 1000
+    const pairs = [
+      [
+        new Temporal.Instant(BigInt(fraction)),
+        new reference.Instant(BigInt(fraction)),
+      ],
+      [
+        new Temporal.PlainTime(
+          0,
+          0,
+          0,
+          milliseconds,
+          microseconds,
+          nanoseconds
+        ),
+        new reference.PlainTime(
+          0,
+          0,
+          0,
+          milliseconds,
+          microseconds,
+          nanoseconds
+        ),
+      ],
+      [
+        new Temporal.Duration(
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          milliseconds,
+          microseconds,
+          nanoseconds
+        ),
+        new reference.Duration(
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          milliseconds,
+          microseconds,
+          nanoseconds
+        ),
+      ],
+    ] as const
+    for (const fractionalSecondDigits of [
+      'auto',
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+    ] as const)
+      for (const [actual, expected] of pairs) {
+        const options = {fractionalSecondDigits, roundingMode: 'trunc'} as const
+        expect(actual.toString(options)).toBe(expected.toString(options))
+      }
+  }
+)
