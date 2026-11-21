@@ -93,6 +93,16 @@ int main(int argc, char **argv) {
         check(failure instanceof RangeError);
         check(new Temporal.Duration().total({relativeTo: '+275760-09-13', unit}) === 0);
       }
+      const shortOptionFailure = new Error('overflow getter reached');
+      for (const [from, text] of [
+        [Temporal.PlainYearMonth.from, '+275760-10'],
+        [Temporal.PlainMonthDay.from, '+999999-01-01[u-ca=gregory]'],
+      ]) {
+        let failure;
+        try { from(text, {get overflow() { throw shortOptionFailure; }}); }
+        catch (error) { failure = error; }
+        check(failure === shortOptionFailure);
+      }
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));

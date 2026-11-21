@@ -83,9 +83,7 @@ export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {
   }
   if (typeof item !== 'string')
     throw new TypeError('Expected month-day string or object')
-  const slot = parseShortSlot(item, 'month-day')
-  overflowOption(options)
-  return slot
+  return parseShortSlot(item, 'month-day', options)
 }
 class PlainMonthDayValue {
   constructor(

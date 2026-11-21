@@ -16,6 +16,7 @@ import {
   constructorCalendar,
   resolveCalendarYear,
   mergeDateFields,
+  overflowOption,
 } from '#packages/temporal/date-core.js'
 import {isoDateFields, type DateSlot} from '#packages/temporal/plain-slots.js'
 import {parseShortDateString} from '#packages/temporal/instant-string.js'
@@ -172,15 +173,34 @@ export function monthDayFields(
 
 export function parseShortSlot(
   value: string,
-  kind: 'year-month' | 'month-day'
+  kind: 'year-month' | 'month-day',
+  options?: unknown
 ): DateSlot {
   const native = nativeTemporal()
+  // Undefined options have no observable reads; keep the direct native parser.
+  if (
+    (import.meta.formatjsTemporalNativeData === true || native) &&
+    options === undefined
+  )
+    return kind === 'year-month'
+      ? native!.parsePlainYearMonth(value)
+      : native!.parsePlainMonthDay(value)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html#L474-L479
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html#L302-L307
+  // plainyearmonth L474 / plainmonthday L302: parse syntax before touching options.
+  const parsed = parseShortDateString(value, kind)
+  // plainyearmonth L475 / plainmonthday L303: retain the parsed calendar.
+  const calendarLike = parsed.calendar
+  // plainyearmonth L476 / plainmonthday L304: default absent calendar to ISO.
+  // plainyearmonth L477 / plainmonthday L305: canonicalize before reading options.
+  const calendar = constructorCalendar(calendarLike)
+  // plainyearmonth L478 / plainmonthday L306: normalize options in overflowOption.
+  // plainyearmonth L479 / plainmonthday L307: read overflow before bounds and projection.
+  overflowOption(options)
   if (import.meta.formatjsTemporalNativeData === true || native)
     return kind === 'year-month'
       ? native!.parsePlainYearMonth(value)
       : native!.parsePlainMonthDay(value)
-  const parsed = parseShortDateString(value, kind),
-    calendar = constructorCalendar(parsed.calendar)
   if (
     kind === 'month-day' &&
     calendar !== 'iso8601' &&
