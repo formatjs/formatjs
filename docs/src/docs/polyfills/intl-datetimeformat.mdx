@@ -426,6 +426,9 @@ The same rule applies to both range endpoints. Numeric arguments use standard
 `ToNumber` conversion once; BigInt and Symbol values throw `TypeError`. Omitting
 the date in `format()` or `formatToParts()` uses the current time.
 
+Temporal Instant formatting preserves nanosecond flooring even when global
+`Number` or `Number.isSafeInteger` is replaced after initialization.
+
 ## Built-in methods
 
 DateTimeFormat methods cannot be constructed with `new` and have no own

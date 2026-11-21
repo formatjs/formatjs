@@ -1,4 +1,9 @@
 import {UTCOffsetNanoseconds} from '#packages/ecma262-abstract/UTCOffsetNanoseconds.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {
+  numberFrom,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   HourFromTime,
   MinFromTime,
@@ -49,10 +54,10 @@ function getApplicableZoneData(
   }
 
   // 4. Find the applicable transition for time t
-  const [offset, dst] = TimeZoneOffset(t, zoneData)
+  const zone = TimeZoneOffset(t, zoneData)
 
   // 5. Return offset in milliseconds and DST flag
-  return [offset * 1e3, dst]
+  return [zone[0] * 1e3, zone[1]]
 }
 
 export interface ToLocalTimeImplDetails {
@@ -94,21 +99,19 @@ export function ToLocalTime(
   ) {
     epochMilliseconds -= ONE
   }
-  const milliseconds = Number(epochMilliseconds)
-  const [timeZoneOffset, inDST] = getApplicableZoneData(
-    milliseconds,
-    timeZone,
-    tzData
-  )
+  const milliseconds = numberFrom(epochMilliseconds)
+  const zone = getApplicableZoneData(milliseconds, timeZone, tzData)
+  const timeZoneOffset = zone[0]
+  const inDST = zone[1]
 
   // Integer offsets commute with flooring; fractional offsets must be added first.
   const localMilliseconds = milliseconds + timeZoneOffset
   const tz =
-    Number.isSafeInteger(milliseconds) &&
-    Number.isSafeInteger(timeZoneOffset) &&
-    Number.isSafeInteger(localMilliseconds)
+    numberIsSafeInteger(milliseconds) &&
+    numberIsSafeInteger(timeZoneOffset) &&
+    numberIsSafeInteger(localMilliseconds)
       ? localMilliseconds
-      : new Decimal(String(epochNanoseconds))
+      : new Decimal(ToString(epochNanoseconds))
           .div(1000000)
           .plus(timeZoneOffset)
           .floor()
