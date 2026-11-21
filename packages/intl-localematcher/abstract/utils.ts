@@ -1,5 +1,9 @@
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
+
+const apply = Reflect.apply
+const some = Array.prototype.some
+
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
 // https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
@@ -364,7 +368,9 @@ function prepare(locales: readonly string[]): Supported {
     result &&
     !immutable &&
     (result.original.length !== locales.length ||
-      result.original.some((tag, index) => tag !== locales[index]))
+      apply(some, result.original, [
+        (tag: string, index: number) => tag !== locales[index],
+      ]))
   )
     result = undefined
   if (!result) {

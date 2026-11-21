@@ -1,3 +1,4 @@
+import {arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {ToDurationRecord} from '#packages/ecma402-abstract/DurationFormat/ToDurationRecord.js'
 import type {
   DurationInput,
@@ -32,7 +33,7 @@ export function registerTemporalDurationNamespace(
   const constructor = namespace?.Duration
   if (
     !constructor ||
-    readers.some(reader => reader.constructor === constructor)
+    arraySome(readers, reader => reader.constructor === constructor)
   )
     return
   const from = constructor.from,
@@ -46,7 +47,7 @@ export function registerTemporalDurationNamespace(
   const getters = fields.map(
     field => Object.getOwnPropertyDescriptor(prototype, field)?.get
   )
-  if (getters.some(getter => typeof getter !== 'function')) return
+  if (arraySome(getters, getter => typeof getter !== 'function')) return
   readers.push({
     constructor,
     from,

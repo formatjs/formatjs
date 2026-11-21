@@ -1,5 +1,7 @@
 import {
   RangeErrorConstructor,
+  arrayEvery,
+  arraySome,
   bigIntFrom,
   mathAbs,
   mathMax,
@@ -75,14 +77,14 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
   ]
   const bounds = [23, 59, 59, 999, 999, 999]
   if (
-    ![year, month, date].every(numberIsInteger) ||
-    !time.every(numberIsInteger) ||
+    !arrayEvery([year, month, date], numberIsInteger) ||
+    !arrayEvery(time, numberIsInteger) ||
     mathAbs(year) > 275761 ||
     month < 1 ||
     month > 12 ||
     date < 1 ||
     date > 31 ||
-    time.some((value, i) => value < 0 || value > bounds[i])
+    arraySome(time, (value, i) => value < 0 || value > bounds[i])
   ) {
     throw new RangeErrorConstructor('Invalid ISO fields')
   }

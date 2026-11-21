@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayEvery,
   bigIntFrom,
   mathAbs,
   mathMax,
@@ -155,7 +156,7 @@ class DurationValue {
       right = toDurationFields(two)
     const resolved = optionsObject(options)
     const relative = toRelativeTo(resolved.relativeTo)
-    if (durationFieldNames.every(field => left[field] === right[field]))
+    if (arrayEvery(durationFieldNames, field => left[field] === right[field]))
       return 0
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
