@@ -516,3 +516,114 @@ it('initializes private timezone spellings without a replacement Map constructor
     vi.resetModules()
   }
 })
+
+it.each(['toLowerCase', 'Object.keys'] as const)(
+  'prepares first-use timezone names without public %s',
+  async hook => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      const owner = hook === 'Object.keys' ? Object : String.prototype
+      const key = hook === 'Object.keys' ? 'keys' : hook
+      const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+      const sentinel = new Error('Observable private timezone preparation')
+      let actual: string | undefined, error: unknown
+      try {
+        Object.defineProperty(owner, key, {
+          ...descriptor,
+          value() {
+            throw sentinel
+          },
+        })
+        actual = new isolated.Instant(0n).toString({timeZone: 'uTc'})
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(owner, key, descriptor)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe('1970-01-01T00:00:00+00:00')
+    } finally {
+      vi.resetModules()
+    }
+  }
+)
+
+it('formats an Instant UTC zone without public String.prototype.toUpperCase', async () => {
+  vi.resetModules()
+  try {
+    const {Temporal: isolated} = await import('#packages/temporal/index.js')
+    const value = new isolated.Instant(0n)
+    const descriptor = Object.getOwnPropertyDescriptor(
+      String.prototype,
+      'toUpperCase'
+    )!
+    const sentinel = new Error('Observable private timezone case conversion')
+    let actual: string | undefined, error: unknown
+    try {
+      Object.defineProperty(String.prototype, 'toUpperCase', {
+        ...descriptor,
+        value() {
+          throw sentinel
+        },
+      })
+      actual = value.toString({timeZone: 'uTc'})
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(String.prototype, 'toUpperCase', descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe('1970-01-01T00:00:00+00:00')
+  } finally {
+    vi.resetModules()
+  }
+})
+
+it.each(['iterator', 'push', 'sort', 'index setter', 'future setter'] as const)(
+  'unpacks cold named-zone data without public Array.prototype %s',
+  async hook => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      const future = hook === 'future setter'
+      const value = new isolated.ZonedDateTime(
+        0n,
+        future ? 'America/New_York' : 'Africa/Monrovia'
+      )
+      const key =
+        hook === 'iterator'
+          ? Symbol.iterator
+          : hook === 'index setter'
+            ? '1'
+            : future
+              ? 'future'
+              : hook
+      const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)
+      const sentinel = new Error('Observable private timezone rows')
+      const poison = () => {
+        throw sentinel
+      }
+      let actual: number | undefined, error: unknown
+      try {
+        Object.defineProperty(
+          Array.prototype,
+          key,
+          hook === 'index setter' || future
+            ? {configurable: true, set: poison}
+            : {...descriptor, value: poison}
+        )
+        actual = value.offsetNanoseconds
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (descriptor) Object.defineProperty(Array.prototype, key, descriptor)
+        else Reflect.deleteProperty(Array.prototype, key)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe(future ? -18_000_000_000_000 : -2_670_000_000_000)
+    } finally {
+      vi.resetModules()
+    }
+  }
+)

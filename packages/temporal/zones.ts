@@ -26,6 +26,13 @@ import {
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
 
+const objectKeys = Object.keys
+const stringToLowerCase = Function.prototype.call.bind(
+  String.prototype.toLowerCase
+) as (value: string) => string
+const stringToUpperCase = Function.prototype.call.bind(
+  String.prototype.toUpperCase
+) as (value: string) => string
 const MapConstructor = Map
 const mapGet = Function.prototype.call.bind(MapConstructor.prototype.get) as <
   V,
@@ -55,20 +62,20 @@ function typescriptTimeZone(name: string): TimeZoneKernel {
     identifiers = new MapConstructor()
     for (let i = 0; i < names.length; i++) {
       const canonical = names[i]
-      mapSet(identifiers, canonical.toLowerCase(), canonical)
+      mapSet(identifiers, stringToLowerCase(canonical), canonical)
     }
-    const aliases = Object.keys({...links, ...primary})
+    const aliases = objectKeys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++) {
       const alias = aliases[i],
         target = primary[alias as keyof typeof primary] ?? alias
       mapSet(
         identifiers,
-        alias.toLowerCase(),
-        mapGet(identifiers, target.toLowerCase()) ?? target
+        stringToLowerCase(alias),
+        mapGet(identifiers, stringToLowerCase(target)) ?? target
       )
     }
   }
-  const canonical = mapGet(identifiers, name.toLowerCase())
+  const canonical = mapGet(identifiers, stringToLowerCase(name))
   if (canonical === undefined)
     throw new RangeErrorConstructor('Unknown timezone')
   if (canonical === 'UTC' || canonical === 'Etc/UTC' || canonical === 'Etc/GMT')
@@ -149,7 +156,10 @@ export function resolveTimeZone(
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Timezone must be a string')
   const identifier = parseTimeZoneString(value)
-  if (isTimeZoneOffsetString(identifier) || identifier.toUpperCase() === 'UTC')
+  if (
+    isTimeZoneOffsetString(identifier) ||
+    stringToUpperCase(identifier) === 'UTC'
+  )
     return zonedKernel(timeZoneIdentifier(identifier))
   return timeZone(identifier)
 }
@@ -181,14 +191,14 @@ export function timeZoneIdentifier(value: unknown): string {
     spellings = new MapConstructor()
     for (let i = 0; i < names.length; i++) {
       const id = names[i]
-      mapSet(spellings, id.toLowerCase(), id)
+      mapSet(spellings, stringToLowerCase(id), id)
     }
-    const aliases = Object.keys({...links, ...primary})
+    const aliases = objectKeys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++)
-      mapSet(spellings, aliases[i].toLowerCase(), aliases[i])
+      mapSet(spellings, stringToLowerCase(aliases[i]), aliases[i])
     mapSet(spellings, 'utc', 'UTC')
   }
-  const id = mapGet(spellings, name.toLowerCase())
+  const id = mapGet(spellings, stringToLowerCase(name))
   if (!id) throw new RangeErrorConstructor('Unknown timezone')
   if (import.meta.formatjsTemporalHostTimeZones === true) typescriptTimeZone(id)
   return id
