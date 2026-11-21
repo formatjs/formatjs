@@ -26,7 +26,6 @@ import {
   getTimeSlot,
   type DateTimeSlot,
 } from '#packages/temporal/plain-slots.js'
-import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
 import {
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
@@ -36,6 +35,7 @@ import {
   calendarId,
   calendarFromObject,
   constructorCalendar,
+  prepareDateTimeString,
   calendarAnnotation,
   calendarNameOption,
   object,
@@ -203,10 +203,17 @@ export function toPlainDateTimeSlot(
   }
   if (typeof item !== 'string')
     throw new TypeError('Expected date/time string or object')
-  const parsed = parsePlainDateTimeString(item),
-    calendar = constructorCalendar(parsed.calendar)
-  overflowOption(options)
-  return {...parsed, calendar}
+  const native = nativeTemporal()
+  if (import.meta.formatjsTemporalNativeData === true || native) {
+    if (options !== undefined) prepareDateTimeString(item, options)
+    const parsed = native!.parsePlainDateTime(item)
+    return {...parsed, calendar: constructorCalendar(parsed.calendar)}
+  }
+  const fields = prepareDateTimeString(item, options)
+  return {
+    epochNanoseconds: isoToEpochNanoseconds(fields),
+    calendar: fields.calendar,
+  }
 }
 function add(
   slot: DateTimeSlot,
