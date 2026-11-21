@@ -1,5 +1,14 @@
 # Temporal implementation
 
+Calendar-relative difference rounding matches half modes with exact string
+comparisons, avoiding mutable String.prototype.startsWith. The
+[relative rounding audit](audits/temporal-relative-rounding-contract-audit.md)
+records two public regressions, native field-bag controls and remaining contracts.
+The [calendar count/window audit](audits/temporal-calendar-count-window-audit.md)
+bounds shipped counts and checks Apia's collapsed backward-day window; the
+[date-largest precision scan](audits/temporal-date-largest-precision-audit.md)
+keeps numerical exactness separate from complete window/provider correctness.
+
 Duration.from field-bag controls verify inherited Get receivers, immediate numeric
 coercion, abrupt short-circuiting and zero normalization. Zoned conversion controls
 verify signed half-minute boundaries, earliest fold matching and historical

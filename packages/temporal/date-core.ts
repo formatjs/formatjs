@@ -925,7 +925,13 @@ export function roundRelativeDifference(
         mode === 'expand' ||
         (mode === 'ceil' && positive) ||
         (mode === 'floor' && !positive)
-      if (mode.startsWith('half')) {
+      if (
+        mode === 'halfCeil' ||
+        mode === 'halfFloor' ||
+        mode === 'halfExpand' ||
+        mode === 'halfTrunc' ||
+        mode === 'halfEven'
+      ) {
         const distance = (end - a) * physicalSign,
           span = (b - a) * physicalSign
         expand =

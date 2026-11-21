@@ -218,3 +218,23 @@ already cover this receiver. The
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;
 this finding does not prescribe a replacement rule or establish a new runtime
 regression. Day rounding retains open status pending an authoritative resolution.
+
+## Day-window retry ignores shift after Apia's skipped date
+
+Reviewed 2026-11-21. Published proposal comparison only, not adopted ECMA-262
+Temporal authority. [ComputeNudgeWindow §7.5.33 steps 4.c–4.d](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow)
+ignore additionalShift for day units, although year/month branches use it.
+[NudgeToCalendarUnit §7.5.34 step 6.a.i](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit)
+retries with that flag after an unbracketed destination.
+
+The [independent Apia endpoints](temporal-calendar-count-window-audit.md#apia-adjacent-day-counts-need-not-have-distinct-endpoints)
+give a reachable backward difference of -1 day and -2 hours. Initial day counts
+-1/-2 resolve to the same instant; retry recomputes that identical pair, still
+not bracketing the destination. Step 6.a.ii's bracket assertion fails; step 13's
+distinct-endpoint assertion would also fail if execution continued.
+
+FormatJS already advances both counts for every irregular date unit. Its -2/-3
+window brackets this destination; new TS/native Hermes controls preserve that
+behavior. This practical fallback is not derived from the published day branch.
+General retry sufficiency remains open. No runtime change or upstream issue
+filing is included.

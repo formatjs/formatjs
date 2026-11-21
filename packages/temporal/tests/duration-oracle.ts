@@ -15,6 +15,61 @@ export function checkDurationOracle(
   zonedRounds: number
   zonedTotals: number
 } {
+  const fieldReads: string[] = []
+  const inherited = Temporal.Duration.from(
+    Object.create({
+      get days() {
+        fieldReads.push('get days')
+        return {
+          [Symbol.toPrimitive](hint: string) {
+            fieldReads.push('convert days:' + hint)
+            return -0
+          },
+        }
+      },
+      get hours() {
+        fieldReads.push('get hours')
+        return 1
+      },
+    })
+  )
+  equal(
+    fieldReads.join(','),
+    'get days,convert days:number,get hours',
+    'Duration.from inherited fields convert before the next getter'
+  )
+  equal(inherited.days, 0, 'Duration.from normalizes inherited negative zero')
+  equal(inherited.hours, 1, 'Duration.from retains inherited hours')
+
+  const abrupt = {}
+  let laterRead = false
+  let caught: unknown
+  try {
+    Temporal.Duration.from(
+      Object.create({
+        get days() {
+          return {
+            [Symbol.toPrimitive]() {
+              throw abrupt
+            },
+          }
+        },
+        get hours() {
+          laterRead = true
+          return 0
+        },
+      })
+    )
+  } catch (error) {
+    caught = error
+  }
+  equal(caught, abrupt, 'Duration.from preserves the coercion exception')
+  equal(
+    laterRead,
+    false,
+    'Duration.from stops before the next inherited getter'
+  )
+
   const limit = 9_007_199_254_740_992_000_000_000n
   const nanoseconds = (value: InstanceType<typeof Temporal.Duration>): bigint =>
     BigInt(value.days) * 86_400_000_000_000n +
