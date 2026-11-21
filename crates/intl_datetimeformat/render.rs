@@ -30,6 +30,7 @@ pub enum PartKind {
     TimeZoneName,
     RelatedYear,
     YearName,
+    Unknown,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 pub struct Part {
@@ -328,7 +329,15 @@ impl RenderData {
                         }
                         "minute" => (Field::Minute, PartKind::Minute, i32::from(civil.minute)),
                         "second" => (Field::Second, PartKind::Second, i32::from(civil.second)),
-                        _ => continue,
+                        _ => {
+                            // ECMA-402 §11.5.4, step 15.j.
+                            result.push(Part {
+                                kind: PartKind::Unknown,
+                                value: format!("{name}:{}", local.epoch_nanoseconds),
+                                source: None,
+                            });
+                            continue;
+                        }
                     };
                     let width = format.get(field);
                     let mut text = match width {
