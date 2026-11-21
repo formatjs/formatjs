@@ -1,4 +1,10 @@
-import {bigIntFrom, mathAbs} from '#packages/ecma262-abstract/intrinsics.js'
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {formatFractionalSeconds} from '#packages/temporal/format-digits.js'
+import {
+  bigIntFrom,
+  mathAbs,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   durationFieldNames,
@@ -34,15 +40,15 @@ export function formatDuration(
     bigIntFrom(absolute.milliseconds) * 1_000_000n +
     bigIntFrom(absolute.microseconds) * 1000n +
     bigIntFrom(absolute.nanoseconds)
-  const fraction = String(secondNs % 1_000_000_000n).padStart(9, '0')
-  const decimals =
-    digits === 'auto' ? fraction.replace(/0+$/, '') : fraction.slice(0, digits)
+  const decimals = formatFractionalSeconds(
+    numberFrom(secondNs % 1_000_000_000n),
+    digits
+  )
   if (
     secondNs !== 0n ||
     digits !== 'auto' ||
     ((result === 'P' || result === '-P') && time === '')
   )
-    time +=
-      String(secondNs / 1_000_000_000n) + (decimals ? '.' + decimals : '') + 'S'
+    time += ToString(secondNs / 1_000_000_000n) + decimals + 'S'
   return result + (time ? 'T' + time : '')
 }

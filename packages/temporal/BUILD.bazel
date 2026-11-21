@@ -37,6 +37,7 @@ formatjs_library(
         "duration-core.ts",
         "duration-format.ts",
         "fallback-data.ts",
+        "format-digits.ts",
         "host-calendar.ts",
         "host-calendar-data.ts",
         "host-timezone.ts",
