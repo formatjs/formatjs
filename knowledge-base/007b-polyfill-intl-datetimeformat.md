@@ -321,6 +321,13 @@ installer registers its namespace automatically.
 `InitializeDateTimeFormat` retains the already-read component options and caches
 formats by Temporal type. Plain values format in `+00:00` without changing the
 formatter's resolved timezone. Instants use its configured timezone.
+Numeric formattable values remain primitive Numbers through TimeClip. Public
+conversion uses unary plus once; private Decimal objects no longer undergo a
+second observable ToPrimitive. TimeClip follows published ECMA-262 §21.4.1.31
+with captured finite/absolute/truncation operations and positive-zero
+normalization. Omitted format/formatToParts timestamps call captured Date.now.
+See the [section audit](audits/temporal-timeclip-audit.md) for TS/Rust mappings.
+
 `HandleDateTimeValue` produces the proposal's value-format record: selected format,
 exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
 Partitioning and pattern formatting consume that record without a Temporal bypass

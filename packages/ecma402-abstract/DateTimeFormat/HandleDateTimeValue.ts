@@ -1,19 +1,18 @@
-import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  bigIntFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
-import type Decimal from '@formatjs/bigdecimal'
 import type {IntlDateTimeFormatInternal} from '#packages/ecma402-abstract/types/date-time.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 
-export type DateTimeFormattable = Decimal | TemporalDateTimeValue
+export type DateTimeFormattable = number | TemporalDateTimeValue
 
 export function isTemporalDateTimeValue(
   value: DateTimeFormattable
 ): value is TemporalDateTimeValue {
-  return HasOwnProperty(value, 'kind')
+  return typeof value !== 'number'
 }
 
 /** https://tc39.es/proposal-temporal/#sec-temporal-value-format-records */
@@ -31,10 +30,10 @@ export function HandleDateTimeValue(
   if (!isTemporalDateTimeValue(value)) {
     // HandleDateTimeOthers clips Number inputs before creating the record.
     const clipped = TimeClip(value)
-    if (clipped.isNaN()) throw new RangeErrorConstructor('Invalid time')
+    if (clipped !== clipped) throw new RangeErrorConstructor('Invalid time')
     return {
       format: slots,
-      epochNanoseconds: BigInt(clipped.toNumber()) * BigInt(1000000),
+      epochNanoseconds: bigIntFrom(clipped) * 1_000_000n,
       isPlain: false,
     }
   }

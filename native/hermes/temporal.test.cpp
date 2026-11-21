@@ -622,6 +622,32 @@ int main(int argc, char **argv) {
         try { new Temporal.ZonedDateTime(0n, offset); } catch (error) { rejected = error instanceof RangeError; }
         check(rejected);
       }
+      const timestampFormatter = new Intl.DateTimeFormat('en', {timeZone:'UTC'});
+      const timestampRuns = [() => timestampFormatter.format(1.9), () => timestampFormatter.formatToParts(1.9), () => timestampFormatter.formatRange(-1.9,1.9), () => timestampFormatter.formatRangeToParts(-1.9,1.9)];
+      const timestampExpected = JSON.stringify(timestampRuns.map(run => run()));
+      for (const key of [Symbol.toPrimitive, 'valueOf']) {
+        const original = Object.getOwnPropertyDescriptor(Object.prototype, key);
+        let actual;
+        try {
+          Object.defineProperty(Object.prototype, key, {configurable:true, get() { throw new Error('Private timestamp coercion reached'); }});
+          actual = timestampRuns.map(run => run());
+        } finally {
+          if (original) Object.defineProperty(Object.prototype, key, original);
+          else Reflect.deleteProperty(Object.prototype, key);
+        }
+        check(JSON.stringify(actual) === timestampExpected);
+      }
+      for (const method of ['format','formatToParts']) {
+        const before = JSON.stringify(timestampFormatter[method](Date.now()));
+        const original = Object.getOwnPropertyDescriptor(Date, 'now');
+        let actual;
+        try {
+          Object.defineProperty(Date, 'now', {configurable:true, get() { throw new Error('Mutable timestamp clock reached'); }});
+          actual = timestampFormatter[method]();
+        } finally { Object.defineProperty(Date, 'now', original); }
+        const after = JSON.stringify(timestampFormatter[method](Date.now()));
+        check(JSON.stringify(actual) === before || JSON.stringify(actual) === after);
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

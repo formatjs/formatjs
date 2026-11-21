@@ -12,7 +12,6 @@ import {
   DayFromYear,
   DaysInYear,
 } from '#packages/ecma262-abstract/DateOperations.js'
-import Decimal from '@formatjs/bigdecimal'
 import {
   HandleDateTimeValue,
   type DateTimeFormattable,
@@ -50,7 +49,7 @@ type Input =
     }
   | {type: 'pair'; first: SingleInput; second: SingleInput}
 function formattable(input: SingleInput): DateTimeFormattable {
-  if (input.type === 'date') return new Decimal(Number(input.value))
+  if (input.type === 'date') return Number(input.value)
   if (input.type === 'zoned')
     return {kind: 'ZonedDateTime', epochNanoseconds: 0n}
   return {

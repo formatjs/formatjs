@@ -106,7 +106,7 @@ export function installLegacyDateTimeFormat(
     const value = ToDateTimeFormattable(input)
     return isTemporalDateTimeValue(value)
       ? project(state, value)
-      : {formatter: state.formatter, milliseconds: value.toNumber()}
+      : {formatter: state.formatter, milliseconds: value}
   }
   function range(
     state: State,
@@ -121,8 +121,8 @@ export function installLegacyDateTimeFormat(
     const lastTemporal = isTemporalDateTimeValue(last)
     if (!firstTemporal && !lastTemporal)
       return [
-        {formatter: state.formatter, milliseconds: first.toNumber()},
-        {formatter: state.formatter, milliseconds: last.toNumber()},
+        {formatter: state.formatter, milliseconds: first},
+        {formatter: state.formatter, milliseconds: last},
       ]
     if (!firstTemporal || !lastTemporal || first.kind !== last.kind)
       throw new TypeErrorConstructor(
