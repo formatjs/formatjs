@@ -29,12 +29,22 @@ The historical/provisional Temporal inventory above remains unchanged.
 | [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation          | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                                                               |
 | [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation          | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                                                         |
 | [§21.4.1.3, §21.4.1.5, §21.4.1.7–§21.4.1.16 UTC date helpers](https://tc39.es/ecma262/#sec-day)  | Reviewed bounded arithmetic | [Twelve section mappings](temporal-date-operations-audit.md) for supported finite time values and needed year origins. MakeDay/range wording and full callers remain open. |
+| [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip)                                     | Reviewed operation          | [All three steps in TS/Rust](temporal-timeclip-audit.md), Number-input truncation dependency and numeric Intl boundary. Full callers remain open.                          |
 | [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open                        | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                                                          |
 | [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open                        | Range checked as issue evidence; implementation coverage remains open.                                                                                                     |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- ECMA-262 [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip), steps 1–3:
+  [full helper mapping](temporal-timeclip-audit.md) in TS/Rust. Numeric formatter
+  timestamps now stay primitive Numbers, avoiding private Decimal re-coercion.
+  Default formatting captures intrinsic Date.now. Four public mutation
+  regressions reproduced both gaps; focused helper/provider tests pass.
+  All 98 validation targets and both Temporal/DateTimeFormat package assemblies
+  pass (74 executed, 24 cached), including native comparisons and root Rust/TS
+  interoperability. Full Temporal callers remain open; no historical credit added.
 
 - Shared UTC date arithmetic: [twelve published ECMA-262 section mappings](temporal-date-operations-audit.md)
   cover Day, DayFromYear, YearFromTime, DayWithinYear, IsLeapYear, MonthFromTime,
@@ -780,7 +790,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [intrinsic fractional formatting](https://github.com/formatjs/formatjs/pull/8092),
 [private parsed fraction padding](https://github.com/formatjs/formatjs/pull/8093),
 [UTC-offset grammar and operation audit](https://github.com/formatjs/formatjs/pull/8094),
-[shared UTC date arithmetic audit](https://github.com/formatjs/formatjs/pull/8095).
+[shared UTC date arithmetic audit](https://github.com/formatjs/formatjs/pull/8095),
+[primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

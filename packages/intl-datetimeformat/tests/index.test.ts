@@ -209,6 +209,59 @@ describe('Intl.DateTimeFormat', function () {
     const after = [RegExp.lastMatch, RegExp.$1]
     expect(after).toEqual(before)
   })
+  it.each(['exotic', 'ordinary'] as const)(
+    'numeric formatting avoids private %s coercion hooks',
+    kind => {
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const runs = [
+        () => formatter.format(1.9),
+        () => formatter.formatToParts(1.9),
+        () => formatter.formatRange(-1.9, 1.9),
+        () => formatter.formatRangeToParts(-1.9, 1.9),
+      ]
+      const expected = runs.map(run => run())
+      const key = kind === 'exotic' ? Symbol.toPrimitive : 'valueOf'
+      const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+      let actual: unknown
+      try {
+        Object.defineProperty(Object.prototype, key, {
+          configurable: true,
+          get() {
+            throw new Error('Private timestamp coercion reached')
+          },
+        })
+        actual = runs.map(run => run())
+      } finally {
+        if (original) Object.defineProperty(Object.prototype, key, original)
+        else Reflect.deleteProperty(Object.prototype, key)
+      }
+      expect(actual).toEqual(expected)
+    }
+  )
+
+  it.each(['format', 'formatToParts'] as const)(
+    '%s reads current time without mutable Date.now',
+    method => {
+      const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
+      const before = JSON.stringify(formatter[method](Date.now()))
+      const original = Object.getOwnPropertyDescriptor(Date, 'now')!
+      let actual: unknown
+      try {
+        Object.defineProperty(Date, 'now', {
+          configurable: true,
+          get() {
+            throw new Error('Mutable timestamp clock reached')
+          },
+        })
+        actual = formatter[method]()
+      } finally {
+        Object.defineProperty(Date, 'now', original)
+      }
+      const after = JSON.stringify(formatter[method](Date.now()))
+      expect([before, after]).toContain(JSON.stringify(actual))
+    }
+  )
+
   it('rejects values one millisecond beyond the exact TimeClip bounds', () => {
     const dtf = new DateTimeFormat('en', {timeZone: 'UTC'})
     const limit = 8_640_000_000_000_000
@@ -1403,11 +1456,22 @@ describe('hourCycle override', function () {
   })
 })
 
-it('rejects BigInt date arguments', () => {
+it('rejects BigInt and Symbol date arguments', () => {
   const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})
-  for (const value of [0n, Object(0n), {valueOf: () => 0n}]) {
+  for (const value of [
+    0n,
+    Object(0n),
+    {valueOf: () => 0n},
+    Symbol(),
+    Object(Symbol()),
+    {valueOf: () => Symbol()},
+  ]) {
     expect(() => formatter.format(value as any)).toThrow(TypeError)
     expect(() => formatter.formatToParts(value as any)).toThrow(TypeError)
+    expect(() => formatter.formatRange(value as any, 0)).toThrow(TypeError)
+    expect(() => formatter.formatRangeToParts(0, value as any)).toThrow(
+      TypeError
+    )
   }
 })
 
