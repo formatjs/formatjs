@@ -19,6 +19,9 @@ returning exact results. Zero zoned calendar totals use the positive window;
 plain zero totals retain their specified shortcut.
 PlainDate, PlainDateTime and short-date string conversion read `overflow` after syntax/calendar validation,
 before representable-range checks and calendar projection, on both JS backends.
+Calendar identifier extraction validates string syntax without requiring its date
+to fit Temporal’s representable range. Calendar-bearing objects use private slots;
+field-bag defaults remain distinct from required `withCalendar` arguments.
 
 ## Native performance direction
 

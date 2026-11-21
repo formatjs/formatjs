@@ -1,4 +1,3 @@
-import type {NativeDateSnapshot} from '#packages/temporal/native.js'
 import {
   isoToEpochNanoseconds,
   type ISODateTime,
@@ -141,43 +140,6 @@ export function parseISODateParts(value: string): ParsedDateFields {
     calendar: annotations.calendar ?? 'iso8601',
   }
 }
-export function parsePlainDateTimeString(
-  value: string,
-  dateOnly = false
-): {
-  epochNanoseconds: bigint
-  calendar: string
-  properties?: NativeDateSnapshot
-} {
-  const native = nativeTemporal()
-  if (import.meta.formatjsTemporalNativeData === true || native) {
-    if (!dateOnly) return native!.parsePlainDateTime(value)
-    const result = native!.parsePlainDate(value)
-    return {
-      epochNanoseconds:
-        BigInt(result.epochDay) * 86_400_000_000_000n + 43_200_000_000_000n,
-      calendar: result.calendar,
-      properties: result.properties,
-    }
-  }
-  const fields = parseISODateParts(value)
-  return {
-    epochNanoseconds: isoToEpochNanoseconds(
-      dateOnly
-        ? {
-            ...fields,
-            hour: 12,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-            microsecond: 0,
-            nanosecond: 0,
-          }
-        : fields
-    ),
-    calendar: fields.calendar,
-  }
-}
 export function parseShortDateString(
   value: string,
   kind: 'year-month' | 'month-day'
@@ -219,7 +181,8 @@ export function parseCalendarString(value: string): string {
     )
       throw new RangeError('Short ISO date requires ISO calendar')
   } else if (/^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]|$)/.test(body))
-    parsePlainDateTimeString(body.replace(/[Zz]$/, ''), true)
+    // ParseTemporalCalendarString 1619: parse fields without creating a bounded date.
+    parseISODateParts(body.replace(/[Zz]$/, ''))
   else parsePlainTimeString(body)
   return annotation.calendar ?? 'iso8601'
 }

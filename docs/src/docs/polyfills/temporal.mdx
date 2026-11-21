@@ -61,6 +61,9 @@ A syntactically valid code can still be invalid for the chosen calendar.
 `PlainDate.from`, `PlainDateTime.from`, `PlainYearMonth.from` and
 `PlainMonthDay.from` validate string syntax and calendar,
 then read `overflow`, then check representable bounds and normalize the date.
+Calendar strings passed to `withCalendar` or a field bag need valid ISO syntax;
+their date can lie outside Temporal’s representable range. Only the calendar
+annotation is used.
 
 Duration operations accept a `PlainDateTime` as `relativeTo`. They use its stored
 date and calendar, ignore its time, and do not read shadowed public field getters.

@@ -105,6 +105,14 @@ int main(int argc, char **argv) {
         catch (error) { failure = error; }
         check(failure === shortOptionFailure);
       }
+      for (const calendar of [
+        '+999999-01-01[u-ca=gregory]',
+        '-999999-12-31T23:59:60Z[Unknown/Zone][u-ca=gregory]',
+      ]) {
+        const date = new Temporal.PlainDate(2020, 2, 29);
+        check(date.withCalendar(calendar).calendarId === 'gregory');
+        check(Temporal.PlainDate.from({year: 2020, month: 2, day: 29, calendar}).calendarId === 'gregory');
+      }
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));
