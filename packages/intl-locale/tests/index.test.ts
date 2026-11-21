@@ -504,3 +504,20 @@ it('brand access retains private WeakMap lookup after prototype replacement', ()
   }
   expect(actual).toEqual(['en-US'])
 })
+
+it('resolves numeric collation without mutable Object.is', () => {
+  const original = Object.is
+  let actual: unknown, error: unknown
+  try {
+    Object.is = () => {
+      throw new Error('Mutable equality reached')
+    }
+    actual = new Locale('en-u-kn-false').numeric
+  } catch (caught) {
+    error = caught
+  } finally {
+    Object.is = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toBe(false)
+})

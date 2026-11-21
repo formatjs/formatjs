@@ -4,6 +4,11 @@ import {expect, it} from 'vitest'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
+import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+import {ArrayCreate} from '#packages/ecma262-abstract/ArrayCreate.js'
 
 type HostExotic = Record<PropertyKey, unknown> &
   ((...args: unknown[]) => unknown)
@@ -16,6 +21,19 @@ function createHostExotic(): HostExotic {
     setFlagsFromString('--no-allow-natives-syntax')
   }
 }
+
+it('preserves undetectable object identity, classification and own Symbol fields', () => {
+  const host = createHostExotic(),
+    key = Symbol('field')
+  host[key] = 23
+  expect(IsObject(host)).toBe(true)
+  expect(ToObject(host)).toBe(host)
+  expect(SameValue(host, host)).toBe(true)
+  expect(SameValue(host, undefined)).toBe(false)
+  expect(SameValue(host, null)).toBe(false)
+  expect(HasOwnProperty(host, key)).toBe(true)
+  expect(Object.getPrototypeOf(ArrayCreate(0, host))).toBe(host)
+})
 
 it('uses host objects as callable constructors, instances and prototypes', () => {
   const host = createHostExotic()

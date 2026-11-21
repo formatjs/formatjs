@@ -17,6 +17,9 @@ later legal changes require updated timezone data.
 
 This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+`formatToParts` result allocation follows
+[ECMA-262 §10.4.2.2 ArrayCreate](https://tc39.es/ecma262/#sec-arraycreate).
+
 TypeScript and Rust also run independent ICU4J 79.1 snapshot comparisons in
 Bazel CI: 12,808 cases covering 17 locales, calendars, numbering systems, DST,
 styles, fractional seconds, and range parts. Snapshots retain raw ICU4J and ICU4C evidence, including differences required
