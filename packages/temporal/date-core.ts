@@ -105,13 +105,18 @@ function calendarSlot(value: object): {calendar: string} | undefined {
   )
 }
 export function calendarFromObject(item: Record<string, unknown>): string {
+  // GetTemporalCalendarIdentifierWithISODefault 696–697: slots precede public fields.
+  // Steps 698–700: read calendar once; undefined defaults to ISO in calendarId.
   return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
 }
 export function calendarId(value: unknown = 'iso8601'): string {
+  // ToTemporalCalendarIdentifier 675: use the five calendar-bearing slots.
   const slot = calendarSlot(value as object)
   if (slot) return slot.calendar
+  // Step 676: withCalendar rejects undefined before calling this shared defaulting path.
   if (typeof value !== 'string')
     throw new TypeError('Calendar must be a string')
+  // Steps 677–678: parse the identifier, then canonicalize it.
   const id = (
     /^[A-Za-z][A-Za-z0-9-]*$/.test(value) && !/^[Tt]\d/.test(value)
       ? value

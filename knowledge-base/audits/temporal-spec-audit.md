@@ -65,13 +65,30 @@ Current pass:
   Hermes Date/DateTime source/bytecode suites pass. No exclusions changed.
   Remaining conversion and creation steps stay open.
 
+- Calendar identifier conversion, `calendar.html` lines 675–678 and 696–700;
+  calendar-string syntax delegation, `abstractops.html` line 1619.
+  Implementation: `calendarId`/`calendarFromObject` in [date-core.ts](../../packages/temporal/date-core.ts)
+  and `parseCalendarString` in [instant-string.ts](../../packages/temporal/instant-string.ts).
+  Calendar extraction parses ISO fields without creating a bounded date. Valid
+  six-digit years outside Temporal's range remain usable as calendar strings;
+  malformed dates, times, annotations and unsupported calendars still fail.
+  All five calendar-bearing slots bypass public calendar/coercion getters.
+  Field bags read `calendar` once and default undefined to ISO; all three
+  `withCalendar` methods already reject missing/undefined arguments before the
+  shared helper. Public controls cover these distinct defaults.
+  The range regression failed before the fix. Focused tests and installed native
+  Hermes checks pass. Full Node suites for all five calendar-bearing classes and
+  all 20 TS/SDK Hermes source/bytecode suites pass. No exclusions changed.
+  Remaining calendar grammar details and bare-identifier fallback stay open.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
 [short-date option order](https://github.com/formatjs/formatjs/pull/8064),
-[date/date-time option order](https://github.com/formatjs/formatjs/pull/8065).
+[date/date-time option order](https://github.com/formatjs/formatjs/pull/8065),
+[calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066).
 
-New traces: 37 source lines. All other baseline traces retain their linked PR status.
+New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
 
@@ -79,14 +96,17 @@ Pinned revision: [`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`](https://github.com
 
 “Traced” means this pass compared that line and placed a line-specific implementation comment. “Open” means not individually signed off here, even when tests pass or an earlier comment cites a group of steps. Typed Rust paths do not implement JS coercion. Review host policy and engine-only requirements separately.
 
+Confirmed specification bugs or inconsistencies will be documented separately from
+implementation findings. None confirmed in the current pass.
+
 Implementation: [Now, Instant and option reads](https://github.com/formatjs/formatjs/pull/8055/files); [Duration.compare, TypeScript and Rust](https://github.com/formatjs/formatjs/pull/8056/files). The `Now` and Date bridge review uses some grouped comments, so those lines are not automatically marked traced here.
 
 Time conversion stack, bottom to top: [plain dates and internal clock conversion](https://github.com/formatjs/formatjs/pull/8057/files), then [zoned clock conversion and property access](https://github.com/formatjs/formatjs/pull/8058/files). Coverage of a caller does not imply coverage of all calendar or time-zone algorithms it invokes.
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       22 |                         419 |
-| [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                        3 |                         216 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       23 |                         418 |
+| [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                       12 |                         207 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       42 |                         660 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
 | [intl](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/intl.html)                     |                   736 |                        0 |                         736 |
@@ -174,7 +194,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-parseisodatetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1504)
   - Open: [1516–1594](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1516-L1594).
 - [`sec-temporal-parsetemporalcalendarstring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1605)
-  - Open: [1619–1626](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1619-L1626).
+  - Traced: [1619](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1619).
+  - Open: [1620–1626](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1620-L1626).
 - [`sec-temporal-parsetemporaldurationstring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1630)
   - Open: [1643–1730](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1643-L1730).
 - [`sec-temporal-parsetemporaltimezonestring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1734)
@@ -219,9 +240,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-calendardateuntil`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L613)
   - Open: [630–658](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L630-L658).
 - [`sec-temporal-totemporalcalendaridentifier`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L662)
-  - Open: [675–678](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L675-L678).
+  - Traced: [675–678](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L675-L678).
 - [`sec-temporal-gettemporalcalendarslotvaluewithisodefault`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L682)
-  - Open: [696–700](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L696-L700).
+  - Traced: [696–700](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L696-L700).
 - [`sec-temporal-calendardatefromfields`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L704)
   - Open: [717–720](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L717-L720).
 - [`sec-temporal-calendaryearmonthfromfields`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html#L724)
