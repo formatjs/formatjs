@@ -68,6 +68,15 @@ export function optionsObject(value: unknown): Record<string, unknown> {
     throw new TypeErrorConstructor('Options must be an object')
   return value as Record<string, unknown>
 }
+// String shorthand creates a private null-prototype record with one own data property.
+export function unitOptions(
+  value: string,
+  key: 'smallestUnit' | 'unit' = 'smallestUnit'
+): Record<string, unknown> {
+  const result = createObject(null) as Record<string, unknown>
+  result[key] = value
+  return result
+}
 export function roundingMode(
   value: unknown,
   fallback: RoundingMode
@@ -161,10 +170,11 @@ export function roundInstant(
 export function roundInstantOptions(value: bigint, options: unknown): bigint {
   if (options === undefined)
     throw new TypeErrorConstructor('roundTo is required')
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L186-L189
+  // L186: select string shorthand; L187: retain the primitive unit string.
+  // L188: create a null-prototype record; L189: create its own smallestUnit data property.
   const resolved =
-    typeof options === 'string'
-      ? Object.assign(createObject(null), {smallestUnit: options})
-      : optionsObject(options)
+    typeof options === 'string' ? unitOptions(options) : optionsObject(options)
   const increment = roundingIncrement(resolved.roundingIncrement)
   const mode = roundingMode(resolved.roundingMode, 'halfExpand')
   const unit = timeUnit(unitOption(resolved.smallestUnit))

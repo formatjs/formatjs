@@ -53,6 +53,10 @@ This preserves an existing Temporal implementation. Use
 The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 `PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
 Temporal uses a captured `Object.create` for its own internal allocations.
+String shorthand such as `time.round('minute')` or `duration.total('hour')`
+creates private options directly, without reading a replaced `Object.assign`
+or inherited option getters/setters. Object-form options retain inherited
+property reads.
 Its constructor prototype reads and formatter option reads use ordinary property
 access without consulting a replaced `Reflect.get`.
 Temporal and shared date/calendar helpers retain a captured `Math.floor` for
