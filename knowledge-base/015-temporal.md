@@ -108,6 +108,14 @@ JSON FFI; native Hermes also checks prototype mutations and huge-finite values.
 Saturating native integer conversion preserves both clamp and reject behavior.
 Other private lists, record producers and calendar regulation remain under audit.
 
+Private membership/index queries now retain Array.prototype.includes/indexOf
+and Reflect.apply: 76 calls across Temporal and shared formatter/locale providers.
+Locale matcher uses local captures to preserve dependency direction. SameValueZero,
+strict equality, first-match indices and sparse-slot behavior stay intact.
+The [callsite inventory](audits/temporal-list-search-inventory.md) records each
+reviewed code line. String searches, other list operations and full caller
+algorithms remain open; the formal spec-line count is unchanged by this fix.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across

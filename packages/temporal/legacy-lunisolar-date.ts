@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arrayIncludes,
   arraySome,
   floor,
   numberFrom,
@@ -143,7 +144,9 @@ export function calendarLabelFormatter(
     if (
       !options.dateStyle &&
       !options.year &&
-      arraySome(raw, part => ['relatedYear', 'yearName'].includes(part.type))
+      arraySome(raw, part =>
+        arrayIncludes(['relatedYear', 'yearName'], part.type)
+      )
     )
       projected.year = 'numeric'
     result = new Constructor!(options.locale, projected)

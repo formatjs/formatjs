@@ -1,3 +1,4 @@
+import {arrayIncludes} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
 
@@ -228,7 +229,7 @@ const maximal = memoize(
     }
     const locale = new Intl.Locale(tag).maximize()
     let flags = input.flags
-    if (matchingData.macroRegions.includes(input.region)) {
+    if (arrayIncludes(matchingData.macroRegions, input.region)) {
       const regionLocale = new Intl.Locale(`und-${input.region}`).maximize()
       if (
         (input.language === 'und' &&

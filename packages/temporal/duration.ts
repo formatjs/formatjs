@@ -3,6 +3,8 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayEvery,
+  arrayIncludes,
+  arrayIndexOf,
   bigIntFrom,
   mathAbs,
   mathMax,
@@ -279,11 +281,11 @@ class DurationValue {
       'nanosecond',
     ]
     const smallest = smallestOption ?? 'nanosecond',
-      smallIndex = units.indexOf(smallest)
+      smallIndex = arrayIndexOf(units, smallest)
     const largest =
         largestOption ??
         units[mathMin(largestDurationField(fields), smallIndex)],
-      largeIndex = units.indexOf(largest)
+      largeIndex = arrayIndexOf(units, largest)
     if (largeIndex > smallIndex)
       throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
     if (smallIndex > 3) {
@@ -362,7 +364,10 @@ class DurationValue {
     const unit = unitOption(resolved.smallestUnit)
     if (
       unit !== undefined &&
-      !['second', 'millisecond', 'microsecond', 'nanosecond'].includes(unit)
+      !arrayIncludes(
+        ['second', 'millisecond', 'microsecond', 'nanosecond'],
+        unit
+      )
     )
       throw new RangeErrorConstructor('Invalid duration string precision')
     const precision =

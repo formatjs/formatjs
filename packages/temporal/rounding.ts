@@ -2,6 +2,7 @@ import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
   bigIntFrom,
   floor,
   mathTrunc,
@@ -73,7 +74,7 @@ export function roundingMode(
 ): RoundingMode {
   if (value === undefined) return fallback
   const mode = ToString(value)
-  if (!modes.includes(mode))
+  if (!arrayIncludes(modes, mode))
     throw new RangeErrorConstructor('Invalid rounding mode')
   return mode as RoundingMode
 }
@@ -81,7 +82,7 @@ export function unitOption(value: unknown): string | undefined {
   if (value === undefined) return undefined
   let unit = ToString(value)
   if (unit.endsWith('s')) unit = unit.slice(0, -1)
-  if (!units.includes(unit))
+  if (!arrayIncludes(units, unit))
     throw new RangeErrorConstructor('Invalid temporal unit')
   return unit
 }

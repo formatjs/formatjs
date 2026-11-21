@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIndexOf,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -181,8 +182,9 @@ function difference(
     'microsecond',
     'nanosecond',
   ] as const
-  const smallIndex = names.indexOf(smallestTime)
-  const largeIndex = names.indexOf(
+  const smallIndex = arrayIndexOf(names, smallestTime)
+  const largeIndex = arrayIndexOf(
+    names,
     timeUnit(largest ?? names[mathMin(2, smallIndex)])
   )
   if (largeIndex > smallIndex)

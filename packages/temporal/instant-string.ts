@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arrayIncludes,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -114,7 +115,7 @@ function isValidDate(year: string, month: string, day: string): boolean {
     d = +day
   const leap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0)
   const maximum =
-    m === 2 ? 28 + numberFrom(leap) : [4, 6, 9, 11].includes(m) ? 30 : 31
+    m === 2 ? 28 + numberFrom(leap) : arrayIncludes([4, 6, 9, 11], m) ? 30 : 31
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 

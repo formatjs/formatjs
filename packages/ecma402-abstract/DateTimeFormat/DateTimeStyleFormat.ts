@@ -1,3 +1,4 @@
+import {arrayIncludes} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type DateTimeFormatLocaleInternalData,
   type Formats,
@@ -25,7 +26,7 @@ function combineStyleRanges(
     if (date[field] !== undefined) fields[field] = date[field] as never
   }
   for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
-    if (['era', 'year', 'month', 'day'].includes(field)) continue
+    if (arrayIncludes(['era', 'year', 'month', 'day'], field)) continue
     const range = ranges[field]
     let combined: string
     const reversed =

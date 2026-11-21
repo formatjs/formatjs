@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/intl-localematcher/abstract/intrinsics.js'
 import type {Keyword} from '#packages/intl-localematcher/abstract/types.js'
 import {invariant} from '#packages/intl-localematcher/abstract/utils.js'
 
@@ -29,7 +30,7 @@ export function UnicodeExtensionComponents(extension: string): {
     let subtag = extension.slice(k, k + len)
     invariant(len >= 2, 'Expected a subtag to have at least 2 characters')
     if (keyword === undefined && len != 2) {
-      if (attributes.indexOf(subtag) === -1) {
+      if (arrayIndexOf(attributes, subtag) === -1) {
         attributes.push(subtag)
       }
     } else if (len === 2) {

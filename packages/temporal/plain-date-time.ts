@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIndexOf,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -278,12 +279,12 @@ function difference(
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
   const names = ['year', 'month', 'week', 'day', ...clockNames]
-  const smallIndex = names.indexOf(smallest)
+  const smallIndex = arrayIndexOf(names, smallest)
   const largest =
     largestText === 'auto'
       ? names[mathMin(3, smallIndex)]
       : unitOption(largestText)!
-  if (names.indexOf(largest) > smallIndex)
+  if (arrayIndexOf(names, largest) > smallIndex)
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -593,7 +594,7 @@ defineGetters(
   [...datePropertyNames, ...clockNames],
   (receiver, name) => {
     const slot = read(receiver),
-      index = (clockNames as readonly string[]).indexOf(name)
+      index = arrayIndexOf(clockNames as readonly string[], name)
     const snapshot =
       import.meta.formatjsTemporalNativeData === true || nativeTemporal()
         ? nativeDateSnapshot(dateSlot(slot), false, slot.epochNanoseconds)

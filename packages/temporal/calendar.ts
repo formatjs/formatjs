@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
   arraySome,
   floor,
   mathAbs,
@@ -132,7 +133,7 @@ export function dayCheck(day: number): number {
   return day
 }
 function calendarCheck(calendar: CalendarId): void {
-  if (!calendarIds.includes(calendar))
+  if (!arrayIncludes(calendarIds, calendar))
     throw new RangeErrorConstructor('Unsupported calendar')
 }
 function overflowCheck(overflow: Overflow): void {
@@ -243,7 +244,8 @@ function monthFromCode(
   }
   if (
     !/^M(0[1-9]|1[0-3])$/.test(code) ||
-    (code === 'M13' && !['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
+    (code === 'M13' &&
+      !arrayIncludes(['coptic', 'ethiopic', 'ethioaa'], calendar))
   )
     throw new RangeErrorConstructor('Invalid month code')
   const month = numberFrom(code.slice(1))

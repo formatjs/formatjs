@@ -3,6 +3,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayEvery,
+  arrayIncludes,
   arraySome,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
@@ -235,9 +236,11 @@ export function legacyDateTimeProjection(
       timeStyle,
       intrinsics.formatToParts
     )
-    if (arraySome(Object.keys(styleFields), key => !allowed.includes(key))) {
+    if (
+      arraySome(Object.keys(styleFields), key => !arrayIncludes(allowed, key))
+    ) {
       for (const key of allowed) selected[key] = styleFields[key]
-      if (styleFields.hour !== undefined && allowed.includes('hour'))
+      if (styleFields.hour !== undefined && arrayIncludes(allowed, 'hour'))
         selected.hourCycle = resolved.hourCycle
     } else {
       selected.dateStyle = dateStyle

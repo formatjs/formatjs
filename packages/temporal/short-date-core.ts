@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
   mathMin,
   numberFrom,
   numberIsInteger,
@@ -132,7 +133,7 @@ export function monthDayFields(
       (code === 'M01L' ||
         code === 'M12L' ||
         (day === 30 &&
-          ['M02L', 'M08L', 'M09L', 'M10L', 'M11L'].includes(code!)))
+          arrayIncludes(['M02L', 'M08L', 'M09L', 'M10L', 'M11L'], code!)))
     ) {
       if (overflow === 'reject')
         throw new RangeErrorConstructor('Invalid month-day')

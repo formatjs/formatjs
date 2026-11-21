@@ -2,6 +2,8 @@ import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
+  arrayIndexOf,
   bigIntFrom,
   floor,
   mathAbs,
@@ -166,7 +168,7 @@ function supportedCalendar(value: string): CalendarId {
       : value === 'ethiopic-amete-alem'
         ? 'ethioaa'
         : value
-  if (!calendarIds.includes(id as CalendarId))
+  if (!arrayIncludes(calendarIds, id as CalendarId))
     throw new RangeErrorConstructor('Unsupported calendar')
   return id as CalendarId
 }
@@ -179,7 +181,7 @@ export function resolveCalendarYear(
   shape: 'date' | 'year-month' | 'month-day' = 'date'
 ): number | undefined {
   let year = fields.year as number | undefined
-  const supportsEra = !['iso8601', 'chinese', 'dangi'].includes(calendar)
+  const supportsEra = !arrayIncludes(['iso8601', 'chinese', 'dangi'], calendar)
   const needsYear =
     shape !== 'month-day' ||
     (calendar !== 'iso8601' &&
@@ -356,11 +358,11 @@ export function dateFieldNames(
     let include: boolean
     if (key === 'day') include = shape === 'date'
     else if (key === 'era' || key === 'eraYear')
-      include = !['iso8601', 'chinese', 'dangi'].includes(calendar)
+      include = !arrayIncludes(['iso8601', 'chinese', 'dangi'], calendar)
     else if (key === 'month' || key === 'monthCode') include = shape !== 'year'
     else if (key === 'year') include = true
     else if (key === 'offset' || key === 'timeZone')
-      include = extra.includes(key)
+      include = arrayIncludes(extra, key)
     else include = withTime
     if (include) result[result.length] = key
   }
@@ -559,7 +561,7 @@ export function calendarNameOption(
   value: unknown
 ): 'auto' | 'always' | 'never' | 'critical' {
   const option = value === undefined ? 'auto' : ToString(value)
-  if (!['auto', 'always', 'never', 'critical'].includes(option))
+  if (!arrayIncludes(['auto', 'always', 'never', 'critical'], option))
     throw new RangeErrorConstructor('Invalid calendarName')
   return option as 'auto' | 'always' | 'never' | 'critical'
 }
@@ -646,7 +648,7 @@ export function dateProperty(
   if (key === 'calendarId') return slot.calendar
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
-    if (value!.errors.includes(key))
+    if (arrayIncludes(value!.errors, key))
       throw new RangeErrorConstructor('Calendar field out of range')
     if (
       key === 'year' ||
@@ -718,7 +720,7 @@ export function dateProperty(
       )
     case 'inLeapYear':
       if (cal === 'iso8601') return DaysInYear(fields.year) === 366
-      return ['hebrew', 'chinese', 'dangi'].includes(cal)
+      return arrayIncludes(['hebrew', 'chinese', 'dangi'], cal)
         ? monthsInYear(cal, fields.year) === 13
         : calendarStartOfYear(cal, fields.year + 1) -
             calendarStartOfYear(cal, fields.year) ===
@@ -776,7 +778,7 @@ function unroundedDifference(
   if (HasOwnProperty(timeUnitNanoseconds, largest))
     return balanceDurationTime(
       end - start,
-      clockNames.indexOf(largest as TimeUnit) + 4
+      arrayIndexOf(clockNames, largest as TimeUnit) + 4
     )
   const sign = end < start ? -1 : end > start ? 1 : 0
   let lastDay = epochDayOf(end),
@@ -862,10 +864,12 @@ export function roundRelativeDifference(
   since: boolean,
   anchor: DifferenceAnchor
 ): DurationFields {
-  const largeIndex = differenceUnits.indexOf(
+  const largeIndex = arrayIndexOf(
+      differenceUnits,
       largest as (typeof differenceUnits)[number]
     ),
-    smallIndex = differenceUnits.indexOf(
+    smallIndex = arrayIndexOf(
+      differenceUnits,
       smallest as (typeof differenceUnits)[number]
     ),
     sinceSign = since ? -1n : 1n
