@@ -5,7 +5,11 @@ import {
   mathMin,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {
   nativeTemporal,
@@ -1051,29 +1055,34 @@ Object.defineProperty(ZonedDateTimeValue, 'name', {
 })
 if (import.meta.formatjsTemporalNativeData === true)
   NativeZonedDateTime.prototype = ZonedDateTimeValue.prototype
-export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L30-L33
+// L30: ordinary calls reach the class target, which rejects missing NewTarget.
+export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
   ZonedDateTimeValue,
   {
     construct(target, args, newTarget) {
-      const primitive = ToPrimitive(args[0], 'number')
+      // L31: ToPrimitive uses the number hint; only Boolean/String/BigInt may follow.
+      const primitive = ToPrimitive(argumentAt(args, 0), 'number')
       if (
         typeof primitive !== 'bigint' &&
         typeof primitive !== 'string' &&
         typeof primitive !== 'boolean'
       )
         throw new TypeErrorConstructor('Invalid BigInt input')
-      const value = bigIntFrom(primitive)
-      if (typeof args[1] !== 'string')
+      // L32: epoch representability precedes timezone/calendar validation.
+      const value = validateInstant(bigIntFrom(primitive))
+      const zoneArgument = argumentAt(args, 1)
+      // L33: omitted and non-String timezone arguments are rejected without coercion.
+      if (typeof zoneArgument !== 'string')
         throw new TypeErrorConstructor('Timezone must be a string')
       if (
         !/^(?:[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*|[+-]\d{2}(?::?\d{2})?)$/.test(
-          args[1]
+          zoneArgument
         )
       )
         throw new RangeErrorConstructor('Invalid timezone identifier')
-      const zone = timeZoneIdentifier(args[1]),
-        calendar = constructorCalendar(args[2])
-      validateInstant(value)
+      const zone = timeZoneIdentifier(zoneArgument),
+        calendar = constructorCalendar(argumentAt(args, 2))
       const prototype = newTarget.prototype,
         result = createObject(object(prototype) ? prototype : target.prototype)
       setZonedSlot(result, {epochNanoseconds: value, timeZone: zone, calendar})

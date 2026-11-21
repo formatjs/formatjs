@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -5,7 +6,7 @@ import {
   arraySome,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
@@ -130,14 +131,14 @@ export function legacyDateTimeProjection(
     : undefined
   let source: Record<PropertyKey, unknown> | undefined
   const snapshot: Record<string, unknown> = createObject(null)
-  const proxy = new Proxy(createObject(null), {
+  const proxy = createProxy(createObject(null), {
     get(_target, key) {
       if (source === undefined) {
         if (options === null) throw new TypeErrorConstructor('Invalid options')
         source = options === undefined ? createObject(null) : Object(options)
       }
       if (typeof key !== 'string') return source![key]
-      if (!Object.prototype.hasOwnProperty.call(snapshot, key)) {
+      if (!HasOwnProperty(snapshot, key)) {
         const raw = source![key]
         if (
           key === 'timeZone' &&

@@ -6,7 +6,11 @@ import {
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import {
@@ -373,13 +377,13 @@ Object.defineProperty(InstantValue, 'name', {
   configurable: true,
 })
 // A normal JS constructor allocates before its body; Temporal coerces first.
-export const Instant: InstantConstructor = new Proxy(
+export const Instant: InstantConstructor = createProxy(
   import.meta.formatjsTemporalNativeData === true
     ? (NativeInstant! as unknown as typeof InstantValue)
     : InstantValue,
   {
     construct(target, args, newTarget) {
-      const value = validateInstant(toBigInt(args[0]))
+      const value = validateInstant(toBigInt(argumentAt(args, 0)))
       const prototype = newTarget.prototype
       if (import.meta.formatjsTemporalNativeData === true) {
         const result = createNativeInstant(value)

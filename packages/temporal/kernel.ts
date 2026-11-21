@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   arrayEvery,
@@ -68,12 +69,12 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     return native!.isoToEpochNanoseconds(fields)
   const {year, month, day: date} = fields
   const time = [
-    fields.hour ?? 0,
-    fields.minute ?? 0,
-    fields.second ?? 0,
-    fields.millisecond ?? 0,
-    fields.microsecond ?? 0,
-    fields.nanosecond ?? 0,
+    HasOwnProperty(fields, 'hour') ? (fields.hour ?? 0) : 0,
+    HasOwnProperty(fields, 'minute') ? (fields.minute ?? 0) : 0,
+    HasOwnProperty(fields, 'second') ? (fields.second ?? 0) : 0,
+    HasOwnProperty(fields, 'millisecond') ? (fields.millisecond ?? 0) : 0,
+    HasOwnProperty(fields, 'microsecond') ? (fields.microsecond ?? 0) : 0,
+    HasOwnProperty(fields, 'nanosecond') ? (fields.nanosecond ?? 0) : 0,
   ]
   const bounds = [23, 59, 59, 999, 999, 999]
   if (

@@ -5,7 +5,11 @@ import {
   mathMin,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {nativeDateSnapshot} from '#packages/temporal/date-core.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -550,18 +554,20 @@ Object.defineProperty(PlainDateTimeValue, 'name', {
   value: 'PlainDateTime',
   configurable: true,
 })
-export const PlainDateTime: PlainDateTimeConstructor = new Proxy(
+export const PlainDateTime: PlainDateTimeConstructor = createProxy(
   PlainDateTimeValue,
   {
     construct(target, args, newTarget) {
-      const year = integer(args[0]),
-        month = integer(args[1]),
-        day = integer(args[2])
+      const year = integer(argumentAt(args, 0)),
+        month = integer(argumentAt(args, 1)),
+        day = integer(argumentAt(args, 2))
       const clock = createObject(null) as Record<string, number>
       for (let index = 0; index < 6; index++)
         clock[clockNames[index]] =
-          args[index + 3] === undefined ? 0 : integer(args[index + 3])
-      const calendar = constructorCalendar(args[9])
+          argumentAt(args, index + 3) === undefined
+            ? 0
+            : integer(argumentAt(args, index + 3))
+      const calendar = constructorCalendar(argumentAt(args, 9))
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
       const prototype = newTarget.prototype
       const result = createObject(
