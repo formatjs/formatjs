@@ -4,12 +4,14 @@ import type {PluralRules} from '#packages/intl-pluralrules/index.js'
 import {type PluralRulesInternal} from '#packages/intl-pluralrules/index.js'
 
 const internalSlotMap = new WeakMap<PluralRules, PluralRulesInternal>()
+const readInternalSlots = internalSlotMap.get.bind(internalSlotMap)
+const writeInternalSlots = internalSlotMap.set.bind(internalSlotMap)
 
 export default function getInternalSlots(x: PluralRules): PluralRulesInternal {
-  let internalSlots = internalSlotMap.get(x)
+  let internalSlots = readInternalSlots(x)
   if (!internalSlots) {
     internalSlots = Object.create(null) as PluralRulesInternal
-    internalSlotMap.set(x, internalSlots)
+    writeInternalSlots(x, internalSlots)
   }
   return internalSlots
 }

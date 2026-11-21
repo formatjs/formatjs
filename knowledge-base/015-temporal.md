@@ -1,5 +1,11 @@
 # Temporal implementation
 
+The [private formatter-cache audit](audits/temporal-private-format-cache-audit.md)
+maps all eight numeric PartitionDateTimePattern steps. Captured WeakMap operations
+protect formatter slots, patterns and directly used locale/number dependencies.
+Numeric, native-Temporal, owned-Temporal and native Hermes controls exercise cold
+and warm paths. Complete constructors, producers and other collections stay open.
+
 The [display-year audit](audits/temporal-calendar-year-audit.md) applies published
 ECMA-402 §11.5.4 step 15.f.iv to every calendar. Nonpositive provider years become
 `1 - year` before numeric or two-digit rendering in TS/Rust. Buddhist year-zero

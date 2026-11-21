@@ -475,6 +475,10 @@ const intervalCandidates = new WeakMap<
   object,
   Map<number, IntervalCandidate[]>
 >()
+const getIntervalCandidates = intervalCandidates.get.bind(intervalCandidates)
+const setIntervalCandidates = intervalCandidates.set.bind(intervalCandidates)
+const deleteIntervalCandidates =
+  intervalCandidates.delete.bind(intervalCandidates)
 function intervalSignature(format: Formats): number {
   const fields = DATE_TIME_PROPS.reduce(
     (mask, field, index) =>
@@ -517,7 +521,7 @@ function findIntervalFormat(
   const target = parseDateTimeSkeleton(rawPattern)
   let best: Record<string, string> | undefined
   let bestScore = Infinity
-  let candidates = intervalCandidates.get(intervalFormats)
+  let candidates = getIntervalCandidates(intervalFormats)
   if (!candidates) {
     candidates = new Map()
     for (const key of Object.keys(intervalFormats)) {
@@ -541,7 +545,7 @@ function findIntervalFormat(
         configurable: true,
       })
     }
-    intervalCandidates.set(intervalFormats, candidates)
+    setIntervalCandidates(intervalFormats, candidates)
   }
   for (const {key, format: candidate} of candidates.get(
     intervalSignature(target)
@@ -661,20 +665,20 @@ const calendarPreferences = new WeakMap<
   DateTimeFormatLocaleInternalData,
   string[]
 >()
+const getCalendarPreferences = calendarPreferences.get.bind(calendarPreferences)
+const setCalendarPreferences = calendarPreferences.set.bind(calendarPreferences)
 
 function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
   // ResolveLocale must only select calendars with both arithmetic and patterns.
   // Preserve CLDR preference order; Gregorian remains available without add-ons.
   // https://tc39.es/ecma402/#sec-resolvelocale
-  data.ca = calendarPreferences
-    .get(data)!
-    .filter(
-      calendar =>
-        HasOwnProperty(data.formats, calendar) &&
-        (calendar === 'gregory' ||
-          calendar === 'iso8601' ||
-          HasOwnProperty(DateTimeFormat.calendarData, calendar))
-    )
+  data.ca = getCalendarPreferences(data)!.filter(
+    calendar =>
+      HasOwnProperty(data.formats, calendar) &&
+      (calendar === 'gregory' ||
+        calendar === 'iso8601' ||
+        HasOwnProperty(DateTimeFormat.calendarData, calendar))
+  )
 }
 
 DateTimeFormat.__addLocaleData = function __addLocaleData(
@@ -682,9 +686,9 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
 ) {
   for (const entry of data) {
     const {locale} = entry
-    intervalCandidates.delete(entry.data.intervalFormats)
+    deleteIntervalCandidates(entry.data.intervalFormats)
     for (const calendar of Object.keys(entry.data.calendarData || {}))
-      intervalCandidates.delete(
+      deleteIntervalCandidates(
         entry.data.calendarData![calendar].intervalFormats
       )
     rawLocaleData.set(locale, entry)
@@ -795,7 +799,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       }
     }
 
-    calendarPreferences.set(processedData, [...d.ca])
+    setCalendarPreferences(processedData, [...d.ca])
     updateAvailableCalendars(processedData)
     const previous = processedLocales.get(locale)
     if (previous) {

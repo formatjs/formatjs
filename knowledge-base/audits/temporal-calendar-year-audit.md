@@ -14,7 +14,7 @@ years directly. Buddhist provider years −1 and 0 therefore appeared as −1 an
 instead of the algorithm's 2 and 1. The same issue can affect other providers
 that return nonpositive year fields.
 
-[TS:378](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L378)
+[TS:384](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L384)
 now tests only the field name and sign. Positive values pass through unchanged;
 nonpositive values become `1 - value` before either numeric or two-digit
 formatting. The transformation also reaches range patterns through this shared
@@ -51,7 +51,7 @@ the same six year/width combinations through format_to_parts. The new test
 failed before the Rust correction. Neither implementation replaces calendar
 arithmetic or rendering with a mock.
 
-[Owned Temporal integration](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L49)
+[Owned Temporal integration](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L87)
 also checks the same three ISO years through PlainDate inputs and public
 PlainDate.toLocaleString, with explicit English year/era output.
 

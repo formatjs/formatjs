@@ -57,9 +57,9 @@ No runtime change is needed for these vectors.
 
 Existing [negative-submillisecond cancellation controls](../../packages/intl-datetimeformat/tests/rust-timezones.test.ts#L207)
 check ±1 ns and ±999999 ns around epoch zero. Public
-[format, parts and range controls](../../packages/intl-datetimeformat/tests/temporal.test.ts#L174)
+[format, parts and range controls](../../packages/intl-datetimeformat/tests/temporal.test.ts#L222)
 check ±1 ns and adjacent nanoseconds at both Date limits against exact BigInt
-flooring. [Plain-date coverage](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L270)
+flooring. [Plain-date coverage](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L308)
 checks the extra supported day below the Date minimum.
 
 These regressions detect specific lossy conversions; they do not prove every

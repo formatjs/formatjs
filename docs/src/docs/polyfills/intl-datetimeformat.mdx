@@ -15,6 +15,9 @@ later legal changes require updated timezone data.
 
 ## ECMA-402 Spec Compliance
 
+Private slot, locale and pattern caches capture their WeakMap methods when
+modules load.
+
 This package implements `Intl.DateTimeFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
 Pattern rendering preserves unrecognized fields as `unknown` parts. Two-digit
