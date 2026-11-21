@@ -100,7 +100,7 @@ Current pass:
   These lines stay open: this fixes the observable allocator dependency, while
   complete prototype selection and cross-realm requirements still need review.
   Formatter-provider `Object.create` calls and other mutable intrinsic dependencies
-  remain open, including shared `ToPrimitive` calls through `Reflect.apply`.
+  remain open. Shared `ToPrimitive` call dependencies are addressed below.
   Constructor and formatter `Reflect.get` dependencies are addressed below.
   No new line signoffs.
 
@@ -119,6 +119,26 @@ Current pass:
   The same eight allocation lines above remain open for full prototype and
   cross-realm review. Other mutable intrinsic dependencies remain open.
 
+- Shared primitive coercion dependencies: [ToPrimitive](../../packages/ecma262-abstract/ToPrimitive.ts)
+  and [ToString](../../packages/ecma262-abstract/ToString.ts) retain their realm's
+  call helper, well-known primitive-conversion symbol and string/error constructors.
+  Ordinary conversion traverses its private method list by index, preserving
+  receiver, hint, getter/call order, fallback and abrupt completion behavior.
+  The reference contracts are ECMA-262
+  [ToPrimitive](https://tc39.es/ecma262/multipage/abstract-operations.html#sec-toprimitive),
+  [OrdinaryToPrimitive](https://tc39.es/ecma262/multipage/abstract-operations.html#sec-ordinarytoprimitive)
+  and [ToString](https://tc39.es/ecma262/multipage/abstract-operations.html#sec-tostring).
+  All five independent mutation regressions failed before the fix and pass after
+  it. Shared helper/type checks and public Temporal/installed Hermes integration
+  pass, including simultaneous `Reflect.apply`, `Symbol` and `String` replacement.
+  All 60 test targets pass: shared helper/type checks, Temporal public/native
+  integration, all 40 full class suites, three locale gates, owned formatter/ICU
+  controls, legacy Intl host and eight shared Intl consumer suites. Package
+  assembly passes. Existing exclusions and data-conflict records are unchanged.
+  These auxiliary ECMA-262 operations are outside the 14-file line-count index.
+  No new Temporal line signoffs. Other intrinsic dependencies and browser-only
+  host-exotic object classification remain open.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -126,7 +146,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [date/date-time option order](https://github.com/formatjs/formatjs/pull/8065),
 [calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066),
 [intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067),
-[internal property reads](https://github.com/formatjs/formatjs/pull/8068).
+[internal property reads](https://github.com/formatjs/formatjs/pull/8068),
+[primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069).
 
 New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is

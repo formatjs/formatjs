@@ -29,6 +29,9 @@ Formatter-provider allocations, other intrinsic dependencies and full cross-real
 allocation remain open.
 Constructor prototype reads and Temporal formatter option proxies use direct
 property access, preserving getter receivers without mutable `Reflect.get`.
+Shared ECMA-262 primitive/string conversion captures its realm intrinsics and
+traverses the private fallback list by index. User conversion hooks retain their
+standard receiver, hint and ordering. Other helpers/host-exotic paths remain open.
 
 ## Native performance direction
 

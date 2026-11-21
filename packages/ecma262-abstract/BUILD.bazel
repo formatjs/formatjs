@@ -1,4 +1,5 @@
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:test.bzl", "formatjs_test")
 
 formatjs_library(
     name = "ecma262-abstract",
@@ -18,5 +19,14 @@ formatjs_library(
     visibility = ["//visibility:public"],
     deps = [
         "//:node_modules/@formatjs/bigdecimal",
+    ],
+)
+
+formatjs_test(
+    name = "ecma262-abstract_test",
+    srcs = ["tests/coercion.test.ts"],
+    deps = [
+        ":ecma262-abstract",
+        "//:node_modules/vitest",
     ],
 )

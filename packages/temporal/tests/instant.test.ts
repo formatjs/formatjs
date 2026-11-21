@@ -262,3 +262,48 @@ it('reads locale options with their original receiver without mutable Reflect.ge
   expect(correctReceiver).toBe(true)
   expect(reads).toBe(1)
 })
+
+it('keeps Temporal input and option coercion independent of mutable globals', () => {
+  const key = Symbol.toPrimitive
+  let numberHint: string | undefined, stringHint: string | undefined
+  const input = {
+    [key](hint: string) {
+      numberHint = hint
+      return 0n
+    },
+  }
+  const overflow = {
+    [key](hint: string) {
+      stringHint = hint
+      return 'reject'
+    },
+  }
+  const originalApply = Reflect.apply,
+    originalSymbol = Symbol,
+    originalString = String
+  const failure = new Error('Mutable coercion global reached')
+  const poison = function () {
+    throw failure
+  }
+  let instant: InstanceType<typeof Instant> | undefined,
+    date: InstanceType<typeof Temporal.PlainDate> | undefined,
+    error: unknown
+  try {
+    Reflect.apply = poison
+    Reflect.set(globalThis, 'Symbol', poison)
+    Reflect.set(globalThis, 'String', poison)
+    instant = new Instant(input)
+    date = Temporal.PlainDate.from('2020-02-29', {overflow})
+  } catch (caught) {
+    error = caught
+  } finally {
+    Reflect.apply = originalApply
+    Reflect.set(globalThis, 'Symbol', originalSymbol)
+    Reflect.set(globalThis, 'String', originalString)
+  }
+  expect(error).toBeUndefined()
+  expect(instant!.epochNanoseconds).toBe(0n)
+  expect(date!.day).toBe(29)
+  expect(numberHint).toBe('number')
+  expect(stringHint).toBe('string')
+})
