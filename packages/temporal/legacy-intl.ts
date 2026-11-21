@@ -132,7 +132,7 @@ export function installLegacyDateTimeFormat(
     const snapshot: Record<string, unknown> = createObject(null)
     const tracked = new Proxy(createObject(null), {
       get(_target, key) {
-        if (!source) {
+        if (source === undefined) {
           if (options === null) throw new TypeError('Invalid options')
           source = options === undefined ? createObject(null) : Object(options)
         }

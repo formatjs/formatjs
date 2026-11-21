@@ -125,7 +125,7 @@ export function legacyDateTimeProjection(
   const snapshot: Record<string, unknown> = createObject(null)
   const proxy = new Proxy(createObject(null), {
     get(_target, key) {
-      if (!source) {
+      if (source === undefined) {
         if (options === null) throw new TypeError('Invalid options')
         source = options === undefined ? createObject(null) : Object(options)
       }

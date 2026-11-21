@@ -56,7 +56,9 @@ Temporal uses a captured `Object.create` for its own internal allocations.
 Its constructor prototype reads and formatter option reads use ordinary property
 access without consulting a replaced `Reflect.get`.
 Shared primitive coercion retains intrinsic helper bindings while preserving user
-conversion hooks and their standard hints.
+conversion hooks and their standard hints. Browser host objects such as
+`document.all` retain object semantics for field bags, options, constructor
+prototypes and primitive conversion.
 
 ## Calendars and time-zone data
 

@@ -1,4 +1,7 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+
 // Capture realm intrinsics before coercion invokes user code.
+const functionToString = Function.prototype.toString
 const apply = Reflect.apply
 const toPrimitiveSymbol = Symbol.toPrimitive
 const TypeErrorConstructor = TypeError
@@ -7,9 +10,7 @@ const ErrorConstructor = Error
 type Primitive = string | number | bigint | boolean | symbol | undefined | null
 
 function IsPrimitive(value: unknown): value is Primitive {
-  return (
-    value === null || (typeof value !== 'object' && typeof value !== 'function')
-  )
+  return !IsObject(value)
 }
 
 function invariant(
@@ -23,7 +24,15 @@ function invariant(
 }
 
 function IsCallable(fn: any): fn is Function {
-  return typeof fn === 'function'
+  if (typeof fn === 'function') return true
+  if (typeof fn !== 'undefined' || fn === undefined) return false
+  // Function.prototype.toString tests [[Call]] without invoking the value.
+  try {
+    apply(functionToString, fn, [])
+    return true
+  } catch {
+    return false
+  }
 }
 
 function OrdinaryToPrimitive<
@@ -55,11 +64,8 @@ function OrdinaryToPrimitive<
 export function ToPrimitive<
   T extends 'string' | 'number' = 'string' | 'number',
 >(input: any, preferredType: T): Primitive {
-  if (
-    input !== null &&
-    (typeof input === 'object' || typeof input === 'function')
-  ) {
-    const exoticToPrim = input[toPrimitiveSymbol]
+  if (IsObject(input)) {
+    const exoticToPrim = (input as Record<symbol, unknown>)[toPrimitiveSymbol]
     let hint
     if (exoticToPrim !== undefined && exoticToPrim !== null) {
       if (preferredType === undefined) {
@@ -73,7 +79,7 @@ export function ToPrimitive<
         )
         hint = 'number'
       }
-      let result = apply(exoticToPrim, input, [hint])
+      let result = apply(exoticToPrim as Function, input, [hint])
       if (IsPrimitive(result)) {
         return result
       }

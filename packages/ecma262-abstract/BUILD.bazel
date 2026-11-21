@@ -7,6 +7,7 @@ formatjs_library(
         "ArrayCreate.ts",
         "DateOperations.ts",
         "HasOwnProperty.ts",
+        "IsObject.ts",
         "OrdinaryHasInstance.ts",
         "SameValue.ts",
         "TimeClip.ts",
@@ -24,9 +25,14 @@ formatjs_library(
 
 formatjs_test(
     name = "ecma262-abstract_test",
-    srcs = ["tests/coercion.test.ts"],
+    srcs = [
+        "tests/coercion.test.ts",
+        "tests/host-exotic.test.ts",
+    ],
+    tsconfig_types = ["node"],
     deps = [
         ":ecma262-abstract",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
