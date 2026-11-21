@@ -1,3 +1,4 @@
+import {getCanonicalLocales} from '@formatjs/intl-getcanonicallocales'
 import {runInThisContext} from 'node:vm'
 import {setFlagsFromString} from 'node:v8'
 import {expect, it} from 'vitest'
@@ -71,4 +72,40 @@ it.each([
   expect(
     Object.getPrototypeOf(Reflect.construct(Constructor, args, Target))
   ).toBe(prototype)
+})
+
+it('coerces undetectable locale entries as objects with the string hint', () => {
+  const value = hostObject()
+  const hints: string[] = []
+  value[Symbol.toPrimitive] = function (hint: string) {
+    expect(this).toBe(value)
+    hints.push(hint)
+    return 'en-us'
+  }
+  expect(getCanonicalLocales([value] as any)).toEqual(['en-US'])
+  expect(getCanonicalLocales(hostObject({0: value, length: 1}) as any)).toEqual(
+    ['en-US']
+  )
+  expect(hints).toEqual(['string', 'string'])
+})
+
+it('propagates undetectable locale coercion failures before later entries', () => {
+  const value = hostObject()
+  const failure = new Error('Locale coercion failure')
+  value[Symbol.toPrimitive] = () => {
+    throw failure
+  }
+  let caught: unknown
+  try {
+    getCanonicalLocales({
+      0: value,
+      get 1() {
+        throw new Error('Later locale read')
+      },
+      length: 2,
+    } as any)
+  } catch (error) {
+    caught = error
+  }
+  expect(caught).toBe(failure)
 })
