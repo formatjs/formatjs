@@ -167,6 +167,113 @@ it('preserves exact duration parsing at calendar and nanosecond bounds', () => {
     expect(() => Duration.from(text), JSON.stringify(text)).toThrow(RangeError)
 })
 
+it('reads inherited duration fields and coerces each before the next getter', () => {
+  const fields = [
+    'days',
+    'hours',
+    'microseconds',
+    'milliseconds',
+    'minutes',
+    'months',
+    'nanoseconds',
+    'seconds',
+    'weeks',
+    'years',
+  ] as const
+  const order: string[] = []
+  const prototype = Object.create(null)
+  const input = Object.create(prototype)
+  Object.defineProperty(input, Symbol.toPrimitive, {
+    value() {
+      throw new Error('Unexpected field-bag primitive conversion')
+    },
+  })
+  for (let index = 0; index < fields.length; index++) {
+    const field = fields[index]
+    Object.defineProperty(prototype, field, {
+      get() {
+        expect(this).toBe(input)
+        order.push(`get ${field}`)
+        return {
+          [Symbol.toPrimitive](hint: string) {
+            order.push(`convert ${field}:${hint}`)
+            return index + 1
+          },
+        }
+      },
+    })
+  }
+  const value = Duration.from(input)
+  expect(order).toEqual([
+    'get days',
+    'convert days:number',
+    'get hours',
+    'convert hours:number',
+    'get microseconds',
+    'convert microseconds:number',
+    'get milliseconds',
+    'convert milliseconds:number',
+    'get minutes',
+    'convert minutes:number',
+    'get months',
+    'convert months:number',
+    'get nanoseconds',
+    'convert nanoseconds:number',
+    'get seconds',
+    'convert seconds:number',
+    'get weeks',
+    'convert weeks:number',
+    'get years',
+    'convert years:number',
+  ])
+  expect(fields.map(field => value[field])).toEqual([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ])
+})
+
+it.each(['getter', 'coercion'] as const)(
+  'stops reading duration fields after an abrupt %s',
+  stage => {
+    const order: string[] = []
+    const sentinel = new Error('Duration input failure')
+    const input = {
+      get days() {
+        order.push('get days')
+        if (stage === 'getter') throw sentinel
+        return {
+          [Symbol.toPrimitive](hint: string) {
+            order.push(`convert days:${hint}`)
+            throw sentinel
+          },
+        }
+      },
+      get hours() {
+        order.push('get hours')
+        throw new Error('Later duration getter')
+      },
+    }
+    let thrown: unknown
+    try {
+      Duration.from(input)
+    } catch (error) {
+      thrown = error
+    }
+    expect(thrown).toBe(sentinel)
+    expect(order).toEqual(
+      stage === 'getter' ? ['get days'] : ['get days', 'convert days:number']
+    )
+  }
+)
+
+it('distinguishes absent duration fields from supplied zero values', () => {
+  expect(() => Duration.from({seconds: undefined})).toThrow(TypeError)
+  for (const seconds of [null, 0, -0]) {
+    const value = Duration.from({seconds})
+    expect(value.blank).toBe(true)
+    expect(Object.is(value.seconds, 0)).toBe(true)
+  }
+})
+
 it('does not observe array sorting while reading duration fields', () => {
   const value = Duration.from('P1DT2H')
   const original = Array.prototype.sort
