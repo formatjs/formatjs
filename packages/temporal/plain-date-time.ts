@@ -82,6 +82,7 @@ import {
 import {durationNanoseconds} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
+  unitOptions,
   fractionalSecondDigits,
   roundingIncrement,
   roundingMode,
@@ -459,9 +460,12 @@ class PlainDateTimeValue {
     const slot = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L495-L498
+    // L495: select string shorthand; L496: retain the primitive unit string.
+    // L497: create a null-prototype record; L498: create its own smallestUnit data property.
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(createObject(null), {smallestUnit: roundTo})
+        ? unitOptions(roundTo)
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
