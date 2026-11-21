@@ -8,6 +8,13 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The [shared primitive conversion audit](audits/temporal-coercion-contract-audit.md)
+maps every step of ECMA-262 §7.1.1 ToPrimitive, §7.1.1.1 OrdinaryToPrimitive and
+§7.1.19 ToString to code, including fused GetMethod and captured %String%
+delegation. Proxy ordering, abrupt completions and cross-realm controls extend
+the existing mutable-intrinsic and undetectable-host evidence. Runtime unchanged;
+full Temporal caller contracts and chapter citation selection remain open.
+
 The [numeric timestamp clipping audit](audits/temporal-timeclip-audit.md) maps
 all TimeClip steps to TS/Rust. DateTimeFormat keeps numeric timestamps as primitive
 Numbers through clipping; private Decimal coercion cannot intercept them.
