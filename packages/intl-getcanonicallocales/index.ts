@@ -1,4 +1,9 @@
 import {
+  addLocaleBrandReader,
+  getLocaleBrandReaders,
+  localeString,
+} from '#packages/intl-getcanonicallocales/locale-brand.js'
+import {
   TypeErrorConstructor,
   arrayIndexOf,
   mathMax,
@@ -12,35 +17,6 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/canonicalizer.js'
 import {emitUnicodeLocaleId} from '#packages/intl-getcanonicallocales/emitter.js'
 import {parseUnicodeLocaleId} from '#packages/intl-getcanonicallocales/parser.js'
-
-// Keep the original intrinsic when Intl.Locale is later replaced by a polyfill.
-const originalLocaleToString =
-  typeof Intl !== 'undefined' ? Intl.Locale?.prototype.toString : undefined
-
-function localeString(value: unknown): string | undefined {
-  if (
-    value === null ||
-    (typeof value !== 'object' && typeof value !== 'function')
-  )
-    return undefined
-  // Probe the Locale brand without reading user properties or calling an own toString.
-  // ECMA-402 §9.2.1 CanonicalizeLocaleList, steps 3–7.
-  // https://tc39.es/ecma402/#sec-canonicalizelocalelist
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L51-L70
-  const currentLocaleToString =
-    typeof Intl !== 'undefined' ? Intl.Locale?.prototype.toString : undefined
-  for (const method of [originalLocaleToString, currentLocaleToString]) {
-    if (method) {
-      try {
-        const tag = method.call(value)
-        if (typeof tag === 'string') return tag
-      } catch {
-        // The intrinsic rejects objects without its Locale internal slots.
-      }
-    }
-  }
-  return undefined
-}
 
 /**
  * ECMA-402 §9.2.1 CanonicalizeLocaleList, steps 3–7.
@@ -58,6 +34,8 @@ function CanonicalizeLocaleList(
   if (locales === undefined) return []
   if (locales === null)
     throw new TypeErrorConstructor('Cannot convert null to an object')
+  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L51
+  // L51: private readers test the Locale brand without visible property access.
   const singleLocale = localeString(locales)
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L54
   // L54: ToObject preserves objects and boxes primitives.
@@ -90,6 +68,8 @@ function CanonicalizeLocaleList(
         'Locale list entries must be strings or objects'
       )
     }
+    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L63-L64
+    // L63-L64: genuine Locale objects supply their private tag without coercion.
     const tag = localeString(value) ?? ToString(value)
     const canonicalizedTag = emitUnicodeLocaleId(
       CanonicalizeUnicodeLocaleId(parseUnicodeLocaleId(tag))
@@ -110,6 +90,12 @@ export function getCanonicalLocales(
 ): string[] {
   return CanonicalizeLocaleList(locales)
 }
+
+// Private setup capabilities for separately bundled FormatJS Locale packages.
+Object.defineProperties(getCanonicalLocales, {
+  __addLocaleBrandReader: {value: addLocaleBrandReader},
+  __getLocaleBrandReaders: {value: getLocaleBrandReaders},
+})
 
 export * from '#packages/intl-getcanonicallocales/emitter.js'
 export {

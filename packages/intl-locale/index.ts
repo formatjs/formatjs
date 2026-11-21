@@ -1,3 +1,4 @@
+import {registerLocaleBrand} from '#packages/intl-locale/locale-brand.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {IsUnicodeLocaleIdentifierType} from '#packages/ecma402-abstract/IsUnicodeLocaleIdentifierType.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
@@ -916,5 +917,7 @@ try {
 } catch {
   // Meta fix so we're test262-compliant, not important
 }
+
+registerLocaleBrand(Locale)
 
 export default Locale
