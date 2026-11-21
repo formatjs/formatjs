@@ -2,6 +2,7 @@
 
 Refreshed 2026-11-12 with CLDR 49 against Test262 `2e58f87d8350ad51224617a041c6e041d52f8444`,
 using the pinned Node 26.8.1 Test262 host. Counts include strict/default executions.
+Isolated Locale installation rechecked 2026-11-21 after connecting private brand readers.
 All cases in each of the twelve upstream directories are included. No test is
 excluded because it fails.
 
@@ -22,26 +23,27 @@ remain in isolated, combined, and native Hermes installation.
 | durationformat      |      220 |                 0 |               4 |                 0 |
 | getcanonicallocales |       76 |                 0 |               2 |                 0 |
 | listformat          |      162 |                 2 |               0 |                 2 |
-| locale              |      380 |                12 |              50 |                 2 |
+| locale              |      380 |                 2 |              50 |                 2 |
 | numberformat        |      502 |                 2 |               0 |                 2 |
 | pluralrules         |      106 |                 2 |               0 |                 2 |
 | relativetimeformat  |      160 |                 2 |               0 |                 2 |
 | segmenter           |      158 |                 4 |               0 |                 4 |
 | supportedvaluesof   |       50 |                 4 |               6 |                 0 |
 
-Total: 2,550 executions, 2,508 polyfill passes, 42 polyfill failures. Native controls
+Total: 2,550 executions, 2,518 polyfill passes, 32 polyfill failures. Native controls
 use the same pin and Node 26.8.1 host: 2,436 passes and 114 failures. Native failures
 do not establish polyfill correctness.
 
 Combined and Hermes: 2,550 executions, 2,522 passes, 28 failures per mode.
 
-Eight newly exposed isolated Locale failures come from the host's
-`Intl.getCanonicalLocales`, which removes `yes` from keys without that alias.
-The isolated suite deliberately retains native prerequisites. Combined and
-Hermes installation use FormatJS canonicalization and pass these cases.
-[Native feature detection](https://github.com/formatjs/formatjs/pull/7929) replaces
+Locale installation now connects its private slots to FormatJS canonicalization,
+replacing a canonicalizer without the compatible brand registry. Ten former
+isolated failures now pass: two Locale-brand executions and eight `yes` alias
+executions previously delegated to the host. The isolated Locale suite passes
+378/380; two constructor-realm failures remain. Ten stale baseline entries are
+removed. Combined and Hermes counts above are unchanged.
+[Native feature detection](https://github.com/formatjs/formatjs/pull/7929) also replaces
 affected host functions during normal canonicalization polyfill installation.
-Load that polyfill before Locale when native canonicalization is incorrect.
 
 ECMA-402 [CanonicalizeUnicodeLocaleId](https://tc39.es/ecma402/#sec-canonicalizeunicodelocaleid)
 uses [CLDR's key-specific alias rules](https://unicode.org/reports/tr35/#processing-localeids):
@@ -55,7 +57,7 @@ This matrix selects twelve polyfill directories, not `intl402/Temporal`.
 Calendar formatting coverage does not establish complete Era/MonthCode Temporal
 construction or arithmetic conformance.
 
-Combined installation fixes two native Locale-branding failures. RelativeTimeFormat has the same two
+Locale installation fixes its two native canonicalizer/JS-private-brand failures. RelativeTimeFormat has the same two
 foreign-realm failures in both modes. Removing its redundant class constructor
 guard changes those diagnostics from TypeError to prototype mismatch; failure
 identities and counts stay unchanged. Its numbering-system coverage no longer

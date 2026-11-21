@@ -531,7 +531,7 @@ Current pass:
   real undetectable host values are checked with V8's engine test object.
   [Companion ECMA-402 audit](temporal-locale-list-audit.md) maps lines 54, 55 and
   62 individually. These are outside the 14 Temporal files, so the Temporal
-  count remains 171. Locale brand selection, its mutable current-Intl probe,
+  count remains 171. Brand selection is addressed in the next pass below;
   parser/canonicalization internals, list allocation and full caller algorithms
   remain open. The search inventory now has 75 active calls because the typeof
   whitelist is replaced by IsObject, with all remaining source links refreshed.
@@ -540,6 +540,22 @@ Current pass:
   locale profiles, getCanonicalLocales Test262 and Intl consumer/baseline gates.
   Temporal, DateTimeFormat, DurationFormat, getCanonicalLocales, locale matcher
   and Locale package assemblies pass. Exclusions/baselines are unchanged.
+
+- Locale brand queries now use captured native access or registered private
+  WeakMap readers, avoiding mutable global/prototype reads, call methods and
+  iterators. Installers connect private brands; independent bundles exchange
+  leaf readers without registry cycles and retain earlier native/polyfill values.
+  Thirteen failing regressions now pass, including five bundle/load-order cases.
+  [Companion audit](temporal-locale-list-audit.md) traces ECMA-402 lines 51, 63
+  and 64 individually; six companion lines are now traced. Temporal stays at
+  171 new source-line traces. Trusted initialization and completed registered
+  instances bound this proof; Locale constructor production, unregistered brands,
+  realms and complete callers remain open. All 114 selected gates pass after
+  removing ten stale Locale Test262 baseline entries and rechecking that gate;
+  raw Locale improves to 378/380 with constructor-realm failures retained.
+  getCanonicalLocales is 76/76. Both native package conformance modes and all
+  six public package assemblies pass. No exclusions added; Temporal's documented
+  Intl data discrepancies remain visible in the accepted-failure gates.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -562,7 +578,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [chronological comparison audit](https://github.com/formatjs/formatjs/pull/8081),
 [private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082),
 [private list search intrinsics](https://github.com/formatjs/formatjs/pull/8083),
-[locale-list input coercion](https://github.com/formatjs/formatjs/pull/8084).
+[locale-list input coercion](https://github.com/formatjs/formatjs/pull/8084),
+[private Locale brand readers](https://github.com/formatjs/formatjs/pull/8085).
 
 New traces: 171 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
