@@ -21,7 +21,15 @@ public final class TemporalRoundingOracle {
         BigInteger quantum = BigInteger.valueOf(factors[i]).multiply(BigInteger.valueOf(increments[i]));
         if (!origin.mod(quantum.multiply(BigInteger.TWO)).equals(BigInteger.ZERO)) throw new IllegalStateException("Origin must be an even quantum multiple");
         TreeSet<BigInteger> samples = new TreeSet<>();
-        for (BigInteger edge : new BigInteger[] {origin.negate(), origin.negate().add(quantum), quantum.negate(), quantum.negate().divide(BigInteger.TWO), BigInteger.ZERO, quantum.divide(BigInteger.TWO), quantum, origin.subtract(quantum), origin}) {
+        for (BigInteger edge : new BigInteger[] {origin.negate(), origin.negate().add(quantum),
+            origin.negate().add(quantum.divide(BigInteger.TWO)),
+            quantum.multiply(BigInteger.valueOf(-5)).divide(BigInteger.TWO),
+            quantum.multiply(BigInteger.valueOf(-3)).divide(BigInteger.TWO),
+            quantum.negate(), quantum.negate().divide(BigInteger.TWO), BigInteger.ZERO,
+            quantum.divide(BigInteger.TWO), quantum,
+            quantum.multiply(BigInteger.valueOf(3)).divide(BigInteger.TWO),
+            quantum.multiply(BigInteger.valueOf(5)).divide(BigInteger.TWO),
+            origin.subtract(quantum), origin.subtract(quantum.divide(BigInteger.TWO)), origin}) {
           for (int delta : new int[] {-1, 0, 1}) {
             BigInteger value = edge.add(BigInteger.valueOf(delta));
             if (value.abs().compareTo(origin) <= 0) samples.add(value);

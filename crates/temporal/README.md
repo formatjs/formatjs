@@ -79,8 +79,8 @@ Supported delivery paths are native Rust, TypeScript and native Hermes bindings.
 Temporal WASM targets and npm assets have been removed. Native Rust benchmarks
 exclude JavaScript binding costs; Hermes has separate end-to-end benchmarks.
 
-Independent ICU4J controls cover 25,269 Gregorian conversions, 2,349 Instant
-rounding cases, 5,430 signed Duration rounding/totals, 7,740 clock rounds,
+Independent ICU4J controls cover 25,269 Gregorian conversions, 3,987 Instant
+rounding cases, 7,130 signed Duration rounding/totals, 7,740 clock rounds,
 840 date-arithmetic cases and 2,028 ISO short-date cases. Tests use the production
 IANA registry for 17,640 offset/local samples, 1,900 future gap/fold controls and
 14,058 strict transition query instants. Zoned difference and
