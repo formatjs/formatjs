@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   floor,
   mathAbs,
   numberFrom,
@@ -32,9 +33,9 @@ function remember(key: string, value: CalendarYearData): CalendarYearData {
 
 function fields(calendar: HostTableCalendar, day: number) {
   if (!numberIsInteger(day) || mathAbs(day) > limit)
-    throw new RangeError('Host Intl calendar date out of range')
+    throw new RangeErrorConstructor('Host Intl calendar date out of range')
   if (!Constructor || !parts || !resolved)
-    throw new RangeError(
+    throw new RangeErrorConstructor(
       'Temporal requires Intl.DateTimeFormat calendar support'
     )
   let formatter = formatters.get(calendar)
@@ -47,7 +48,7 @@ function fields(calendar: HostTableCalendar, day: number) {
       day: 'numeric',
     })
     if (resolved.call(formatter).calendar !== calendar)
-      throw new RangeError(`Host Intl does not support ${calendar}`)
+      throw new RangeErrorConstructor(`Host Intl does not support ${calendar}`)
     formatters.set(calendar, formatter)
   }
   let year = NaN,
@@ -58,7 +59,7 @@ function fields(calendar: HostTableCalendar, day: number) {
     else if (type === 'day') date = numberFrom(part.value)
   }
   if (!numberIsSafeInteger(year) || !(date >= 1 && date <= 30))
-    throw new RangeError('Unsupported host Intl calendar fields')
+    throw new RangeErrorConstructor('Unsupported host Intl calendar fields')
   return {year, day: date}
 }
 
@@ -66,7 +67,8 @@ export function hostCalendarYear(
   calendar: HostTableCalendar,
   year: number
 ): CalendarYearData {
-  if (!numberIsSafeInteger(year)) throw new RangeError('Invalid calendar year')
+  if (!numberIsSafeInteger(year))
+    throw new RangeErrorConstructor('Invalid calendar year')
   const key = `${calendar}:${year}`,
     cached = years.get(key)
   if (cached) return cached
@@ -76,19 +78,23 @@ export function hostCalendarYear(
   }
   let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)
   if (mathAbs(probe) > limit - 800)
-    throw new RangeError('Host Intl calendar year requires boundary data')
+    throw new RangeErrorConstructor(
+      'Host Intl calendar year requires boundary data'
+    )
   probe += 400
   let value = fields(calendar, probe)
   // Find the following year, then walk back by actual host month boundaries.
   for (let attempts = 0; value.year <= year; attempts++) {
-    if (attempts >= 3) throw new RangeError('Unsupported host calendar year')
+    if (attempts >= 3)
+      throw new RangeErrorConstructor('Unsupported host calendar year')
     probe += 400
     value = fields(calendar, probe)
   }
   const starts: number[] = []
   let end = NaN
   for (let attempts = 0; value.year >= year; attempts++) {
-    if (attempts >= 40) throw new RangeError('Unsupported host calendar year')
+    if (attempts >= 40)
+      throw new RangeErrorConstructor('Unsupported host calendar year')
     const start = probe - value.day + 1
     if (value.year === year) {
       starts.push(start)
@@ -98,7 +104,7 @@ export function hostCalendarYear(
   }
   starts.reverse()
   if (starts.length !== 12)
-    throw new RangeError('Unsupported host calendar year')
+    throw new RangeErrorConstructor('Unsupported host calendar year')
   return remember(key, {starts, end, leap: 0})
 }
 
@@ -124,7 +130,8 @@ export function hostCalendarAddMonths(
   month: number,
   delta: number
 ): {year: number; month: number} {
-  if (!numberIsSafeInteger(delta)) throw new RangeError('Invalid month count')
+  if (!numberIsSafeInteger(delta))
+    throw new RangeErrorConstructor('Invalid month count')
   const target =
     lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +
     delta

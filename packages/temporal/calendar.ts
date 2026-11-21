@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   floor,
   mathAbs,
   mathMax,
@@ -114,26 +116,27 @@ export interface DateDuration {
 const mod = (value: number, divisor: number): number =>
   value - floor(value / divisor) * divisor
 function integer(value: number): number {
-  if (!numberIsSafeInteger(value)) throw new RangeError('Expected safe integer')
+  if (!numberIsSafeInteger(value))
+    throw new RangeErrorConstructor('Expected safe integer')
   return value
 }
 function yearCheck(year: number): number {
   if (mathAbs(integer(year)) > 400000)
-    throw new RangeError('Calendar year out of range')
+    throw new RangeErrorConstructor('Calendar year out of range')
   return year
 }
 export function dayCheck(day: number): number {
   if (integer(day) < -100000001 || day > 100000000)
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   return day
 }
 function calendarCheck(calendar: CalendarId): void {
   if (!calendarIds.includes(calendar))
-    throw new RangeError('Unsupported calendar')
+    throw new RangeErrorConstructor('Unsupported calendar')
 }
 function overflowCheck(overflow: Overflow): void {
   if (overflow !== 'constrain' && overflow !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
 }
 function regulate(
   value: number,
@@ -141,9 +144,10 @@ function regulate(
   max: number,
   overflow: Overflow
 ): number {
-  if (!numberIsInteger(value)) throw new RangeError('Expected finite integer')
+  if (!numberIsInteger(value))
+    throw new RangeErrorConstructor('Expected finite integer')
   if (overflow === 'reject' && (value < min || value > max))
-    throw new RangeError('Calendar field out of range')
+    throw new RangeErrorConstructor('Calendar field out of range')
   return mathMin(mathMax(value, min), max)
 }
 function start(calendar: CalendarId, year: number): number {
@@ -187,7 +191,7 @@ export function daysInMonth(
     return native!.calendarDaysInMonth(calendar, year, month)
   const count = monthsInYear(calendar, year)
   if (integer(month) < 1 || month > count)
-    throw new RangeError('Invalid calendar month')
+    throw new RangeErrorConstructor('Invalid calendar month')
   if (isLunisolar(calendar)) return tableMonthLength(calendar, year, month)!
   if (calendar === 'islamic-umalqura')
     return (
@@ -219,11 +223,11 @@ function monthFromCode(
 ): number {
   if (isLunisolar(calendar)) {
     if (!/^M(0[1-9]|1[0-2])L?$/.test(code))
-      throw new RangeError('Invalid month code')
+      throw new RangeErrorConstructor('Invalid month code')
     const number = numberFrom(code.slice(1, 3)),
       leap = tableLeapMonth(calendar, year)
     if (code.endsWith('L') && leap !== number && overflow === 'reject')
-      throw new RangeError('Leap month absent')
+      throw new RangeErrorConstructor('Leap month absent')
     return (
       number +
       numberFrom(
@@ -233,14 +237,14 @@ function monthFromCode(
   }
   if (calendar === 'hebrew' && code === 'M05L') {
     if (!hebrewLeap(year) && overflow === 'reject')
-      throw new RangeError('Leap month absent')
+      throw new RangeErrorConstructor('Leap month absent')
     return 6
   }
   if (
     !/^M(0[1-9]|1[0-3])$/.test(code) ||
     (code === 'M13' && !['coptic', 'ethiopic', 'ethioaa'].includes(calendar))
   )
-    throw new RangeError('Invalid month code')
+    throw new RangeErrorConstructor('Invalid month code')
   const month = numberFrom(code.slice(1))
   return (
     month + numberFrom(calendar === 'hebrew' && hebrewLeap(year) && month >= 6)
@@ -248,7 +252,7 @@ function monthFromCode(
 }
 function isoMonthFromCode(code: string): number {
   if (code.length !== 3 || code[0] !== 'M')
-    throw new RangeError('Invalid month code')
+    throw new RangeErrorConstructor('Invalid month code')
   const tens = code[1],
     units = code[2],
     month = (tens === '1' ? 10 : 0) + +units
@@ -259,7 +263,7 @@ function isoMonthFromCode(code: string): number {
     month < 1 ||
     month > 12
   )
-    throw new RangeError('Invalid month code')
+    throw new RangeErrorConstructor('Invalid month code')
   return month
 }
 
@@ -277,7 +281,7 @@ export function isoDayFromPreparedFields(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (sourceMonth === undefined && code === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     return dayCheck(
       native!.calendarToEpochDay(
         'iso8601',
@@ -290,10 +294,10 @@ export function isoDayFromPreparedFields(
   if (code !== undefined) {
     month = isoMonthFromCode(code)
     if (sourceMonth !== undefined && integer(sourceMonth) !== month)
-      throw new RangeError('Month and monthCode disagree')
+      throw new RangeErrorConstructor('Month and monthCode disagree')
   } else {
     if (sourceMonth === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     month = regulate(sourceMonth, 1, 12, overflow)
   }
   const day = regulate(
@@ -316,7 +320,7 @@ export function calendarToEpochDayRaw(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (fields.month === undefined && fields.monthCode === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     return native!.calendarToEpochDay(calendar, fields, overflow)
   }
   let month: number
@@ -326,10 +330,10 @@ export function calendarToEpochDayRaw(
         ? isoMonthFromCode(fields.monthCode)
         : monthFromCode(calendar, year, fields.monthCode, overflow)
     if (fields.month !== undefined && integer(fields.month) !== month)
-      throw new RangeError('Month and monthCode disagree')
+      throw new RangeErrorConstructor('Month and monthCode disagree')
   } else {
     if (fields.month === undefined)
-      throw new TypeError('Month or monthCode required')
+      throw new TypeErrorConstructor('Month or monthCode required')
     month = regulate(
       fields.month,
       1,
@@ -370,7 +374,7 @@ export function calendarFromEpochDayRaw(
 ): CalendarDate {
   calendarCheck(calendar)
   if (mathAbs(integer(epoch)) > 110000000)
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.calendarFromEpochDay(calendar, epoch)
@@ -455,7 +459,7 @@ function addCalendarEpochDay(
     duration.days ?? 0,
   ].map(integer)
   if (values.some(x => x < 0) && values.some(x => x > 0))
-    throw new RangeError('Mixed duration signs')
+    throw new RangeErrorConstructor('Mixed duration signs')
   const {year, month} = addYearMonth(
     calendar,
     original,
@@ -648,6 +652,6 @@ export function calendarYearFromEra(
   )
     era = era === 'ad' ? 'ce' : 'bce'
   const index = names[calendar]?.indexOf(era) ?? -1
-  if (index < 0) throw new RangeError('Invalid era')
+  if (index < 0) throw new RangeErrorConstructor('Invalid era')
   return yearCheck(index === 1 ? 1 - eraYear : eraYear)
 }

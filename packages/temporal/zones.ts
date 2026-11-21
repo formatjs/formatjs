@@ -1,4 +1,9 @@
-import {floor, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  floor,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
@@ -47,7 +52,8 @@ function typescriptTimeZone(name: string): TimeZoneKernel {
     }
   }
   const canonical = identifiers.get(name.toLowerCase())
-  if (canonical === undefined) throw new RangeError('Unknown timezone')
+  if (canonical === undefined)
+    throw new RangeErrorConstructor('Unknown timezone')
   if (canonical === 'UTC' || canonical === 'Etc/UTC' || canonical === 'Etc/GMT')
     return zonedKernel('UTC')
   name = canonical
@@ -107,7 +113,8 @@ export function timeZone(name: string): TimeZoneKernel {
   const existing = namedKernels.get(name)
   if (existing) return existing
   const identifier = timeZoneIdentifier(name)
-  if (/^[+-]/.test(identifier)) throw new RangeError('Expected named timezone')
+  if (/^[+-]/.test(identifier))
+    throw new RangeErrorConstructor('Expected named timezone')
   let zone = namedKernels.get(identifier)
   if (!zone) {
     zone = withNativeZone(identifier, () => typescriptTimeZone(identifier))
@@ -123,7 +130,7 @@ export function resolveTimeZone(
   const slot = getZonedSlot(value as object)
   if (slot) return zonedKernel(slot.timeZone)
   if (typeof value !== 'string')
-    throw new TypeError('Timezone must be a string')
+    throw new TypeErrorConstructor('Timezone must be a string')
   const identifier = parseTimeZoneString(value)
   if (/^[+-]/.test(identifier) || identifier.toUpperCase() === 'UTC')
     return zonedKernel(timeZoneIdentifier(identifier))
@@ -135,7 +142,7 @@ export function timeZoneIdentifier(value: unknown): string {
   const slot = getZonedSlot(value as object)
   if (slot) return slot.timeZone
   if (typeof value !== 'string')
-    throw new TypeError('Timezone must be a string')
+    throw new TypeErrorConstructor('Timezone must be a string')
   const name = parseTimeZoneString(value)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
@@ -165,7 +172,7 @@ export function timeZoneIdentifier(value: unknown): string {
     spellings.set('utc', 'UTC')
   }
   const id = spellings.get(name.toLowerCase())
-  if (!id) throw new RangeError('Unknown timezone')
+  if (!id) throw new RangeErrorConstructor('Unknown timezone')
   if (import.meta.formatjsTemporalHostTimeZones === true) typescriptTimeZone(id)
   return id
 }
@@ -182,7 +189,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       value < -8_640_000_000_000_000_000_000n ||
       value > 8_640_000_000_000_000_000_000n
     )
-      throw new RangeError('Instant out of range')
+      throw new RangeErrorConstructor('Instant out of range')
     return value
   }
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {

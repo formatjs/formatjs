@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -90,7 +92,7 @@ const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
 export function validateInstant(value: bigint): bigint {
   if (value < -limit || value > limit)
-    throw new RangeError('Instant out of range')
+    throw new RangeErrorConstructor('Instant out of range')
   return value
 }
 function toBigInt(value: unknown): bigint {
@@ -100,12 +102,13 @@ function toBigInt(value: unknown): bigint {
     typeof primitive !== 'string' &&
     typeof primitive !== 'boolean'
   )
-    throw new TypeError('Invalid BigInt input')
+    throw new TypeErrorConstructor('Invalid BigInt input')
   return bigIntFrom(primitive)
 }
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
-  if (result === undefined) throw new TypeError('Invalid Instant receiver')
+  if (result === undefined)
+    throw new TypeErrorConstructor('Invalid Instant receiver')
   return result
 }
 const NativeInstant =
@@ -143,7 +146,7 @@ function toInstant(item: unknown): bigint {
   if (existing !== undefined) return existing
   const primitive = ToPrimitive(item, 'string')
   if (typeof primitive !== 'string')
-    throw new TypeError('Expected Instant or instant string')
+    throw new TypeErrorConstructor('Expected Instant or instant string')
   if (import.meta.formatjsTemporalNativeData === true)
     return parseInstantString(primitive)
   return validateInstant(parseInstantString(primitive))
@@ -177,10 +180,10 @@ function difference(
     timeUnit(largest ?? names[mathMin(2, smallIndex)])
   )
   if (largeIndex > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex]
   if (increment >= maximum || maximum % increment !== 0)
-    throw new RangeError('Invalid duration rounding increment')
+    throw new RangeErrorConstructor('Invalid duration rounding increment')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return (
@@ -208,7 +211,7 @@ function difference(
 class InstantValue implements InstantObject {
   declare readonly [Symbol.toStringTag]: 'Temporal.Instant'
   constructor(_epochNanoseconds: unknown) {
-    throw new TypeError('Use the exported Instant constructor')
+    throw new TypeErrorConstructor('Use the exported Instant constructor')
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const left = toInstant(one),
@@ -258,7 +261,7 @@ class InstantValue implements InstantObject {
           ? toNativeDurationFields(other, false)
           : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
-      throw new RangeError('Instant arithmetic requires time units')
+      throw new RangeErrorConstructor('Instant arithmetic requires time units')
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(native!.addInstant(value, fields, false))
@@ -275,7 +278,7 @@ class InstantValue implements InstantObject {
           ? toNativeDurationFields(other, false)
           : toDurationFields(other)
     if (fields.years || fields.months || fields.weeks || fields.days)
-      throw new RangeError('Instant arithmetic requires time units')
+      throw new RangeErrorConstructor('Instant arithmetic requires time units')
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(native!.addInstant(value, fields, true))
@@ -298,13 +301,13 @@ class InstantValue implements InstantObject {
     const unit = unitOption(resolved.smallestUnit)
     const zoneOption = resolved.timeZone
     if (unit !== undefined && timeUnit(unit) === 'hour')
-      throw new RangeError('Cannot serialize with hour precision')
+      throw new RangeErrorConstructor('Cannot serialize with hour precision')
     const native = nativeTemporal()
     let identifier: string | undefined
     if (native && zoneOption !== undefined) {
       const zoned = getZonedSlot(zoneOption as object)
       if (!zoned && typeof zoneOption !== 'string')
-        throw new TypeError('Timezone must be a string')
+        throw new TypeErrorConstructor('Timezone must be a string')
       identifier = zoned?.timeZone ?? parseTimeZoneString(zoneOption as string)
     }
     const zone =
@@ -358,7 +361,9 @@ class InstantValue implements InstantObject {
     return instantString(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.Instant to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.Instant to primitive'
+    )
   }
 }
 const localeStringIntrinsic = InstantValue.prototype.toString

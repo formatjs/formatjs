@@ -285,6 +285,39 @@ Current pass:
   DateTimeFormat and DurationFormat package assembly passes. Existing exclusions
   and accepted-failure baselines are unchanged.
 
+- Intrinsic exceptions: [shared captures](../../packages/ecma262-abstract/intrinsics.ts)
+  retain Error, TypeError and RangeError constructors. Replace 348 value references
+  in 59 Temporal/shared helper modules, including explicit throws, constructors
+  passed to invariant and exception classification. Existing primitive/string
+  conversion and native transport captures remain intact.
+  Replacing a global constructor after module initialization no longer invokes user
+  code instead of throwing the specified intrinsic error. Twenty-two public/helper
+  regressions failed before the fix and pass afterward: all eight Temporal
+  constructor bounds and receiver brands, nonfinite/nonpositive date inputs,
+  object/options coercion, duration integrality and invariant diagnostics.
+  Two additional public controls cover numeric coercion hint/count, truncation,
+  user abrupt completions and BigInt/Symbol rejection for date and time inputs.
+  Capturing constructors does not finish error classification: mutable
+  Symbol.hasInstance, proxy behavior and cross-realm policy remain open.
+
+- Integer coercion: `ToIntegerWithTruncation`, abstractops.html lines 1796–1798,
+  now has individual traces in both [date-core.ts](../../packages/temporal/date-core.ts)
+  and [plain-time.ts](../../packages/temporal/plain-time.ts). Unary plus delegates
+  ToNumber to the engine, preserving numeric-hint conversion and abrupt completion.
+  Captured truncation may precede the finite check: NaN/infinities remain
+  nonintegral, while every finite result is an integer. Returning zero normalizes
+  negative zero to the mathematical value.
+  Month/day field preparation individually traces `ToPositiveIntegerWithTruncation`,
+  lines 1779–1781: perform that conversion, reject nonpositive results, return the
+  positive integer. Typed Rust receives already-coerced numeric inputs.
+  These six new signoffs cover the coercion operations; field enumeration,
+  constructor sequencing and ToIntegerIfIntegral's provider path stay open.
+  All 91 validation targets pass: focused public/helper regressions and typechecks,
+  all 40 Temporal class Test262 backend gates, native Hermes, Rust/kernel controls,
+  Intl consumer units and accepted-failure gates, locale gates and ICU oracles.
+  Temporal, DateTimeFormat and DurationFormat package assembly passes. Existing
+  exclusions and accepted-failure baselines are unchanged.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -298,9 +331,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [provider host objects](https://github.com/formatjs/formatjs/pull/8071),
 [exact rounding audit](https://github.com/formatjs/formatjs/pull/8072),
 [captured numeric floor](https://github.com/formatjs/formatjs/pull/8073),
-[numeric intrinsics and ISO reverse conversion](https://github.com/formatjs/formatjs/pull/8074).
+[numeric intrinsics and ISO reverse conversion](https://github.com/formatjs/formatjs/pull/8074),
+[intrinsic exceptions and integer coercion](https://github.com/formatjs/formatjs/pull/8075).
 
-New traces: 97 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 103 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -319,7 +353,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       57 |                         384 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       63 |                         378 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                       12 |                         207 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       42 |                         660 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
@@ -415,9 +449,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-parsetemporaltimezonestring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1734)
   - Open: [1757–1764](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1757-L1764).
 - [`sec-topositiveintegerwithtruncation`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1768)
-  - Open: [1779–1781](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1779-L1781).
+  - Traced: [1779–1781](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1779-L1781).
 - [`sec-tointegerwithtruncation`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1785)
-  - Open: [1796–1798](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798).
+  - Traced: [1796–1798](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798).
 - [`sec-temporal-tooffsetstring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1802)
   - Open: [1816–1819](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1816-L1819).
 - [`sec-temporal-isodatetofields`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1823)

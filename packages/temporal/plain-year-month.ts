@@ -1,4 +1,8 @@
-import {bigIntFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  bigIntFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -97,7 +101,7 @@ export interface PlainYearMonthConstructor {
 }
 function read(item: unknown): DateSlot {
   const slot = getYearMonthSlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainYearMonth receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainYearMonth receiver')
   return slot
 }
 export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
@@ -121,7 +125,7 @@ export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
     return yearMonthFields(calendar, fields, overflow)
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected year-month string or object')
+    throw new TypeErrorConstructor('Expected year-month string or object')
   return parseShortSlot(item, 'year-month', options)
 }
 function add(
@@ -152,12 +156,14 @@ function add(
     fields.microseconds ||
     fields.nanoseconds
   )
-    throw new RangeError('Year-month arithmetic only accepts years and months')
+    throw new RangeErrorConstructor(
+      'Year-month arithmetic only accepts years and months'
+    )
   const cal = shortCalendar(slot.calendar),
     start = {...dateFieldsView(slot, true), day: 1}
   const firstDay = calendarToEpochDayRaw(cal, start, 'constrain')
   if (firstDay < -100000001 || firstDay > 100000000)
-    throw new RangeError('Reference date out of range')
+    throw new RangeErrorConstructor('Reference date out of range')
   const result = addNormalizedCalendarDate(cal, start, fields, overflow)
   return createPlainYearMonth({
     epochDay: checkYearMonth(result.epochDay),
@@ -172,7 +178,8 @@ function difference(
   since: boolean
 ): DurationObject {
   const end = toYearMonthSlot(other)
-  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (slot.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options),
     rawLargest = resolved.largestUnit
   const text = rawLargest === undefined ? 'auto' : ToString(rawLargest),
@@ -185,7 +192,7 @@ function difference(
     (smallest !== 'year' && smallest !== 'month') ||
     (largest === 'month' && smallest === 'year')
   )
-    throw new RangeError('Invalid year-month units')
+    throw new RangeErrorConstructor('Invalid year-month units')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return (
@@ -228,7 +235,7 @@ function difference(
     b.epochDay < -100000001 ||
     b.epochDay > 100000000
   )
-    throw new RangeError('Reference date out of range')
+    throw new RangeErrorConstructor('Reference date out of range')
   if (smallest === 'month' && increment === 1) {
     const fields = dateUntil(a, b.epochDay, largest)
     fields.days = 0
@@ -258,7 +265,7 @@ class PlainYearMonthValue {
     _calendar: unknown = undefined,
     _referenceISODay?: unknown
   ) {
-    throw new TypeError('Use exported PlainYearMonth constructor')
+    throw new TypeErrorConstructor('Use exported PlainYearMonth constructor')
   }
   static from(
     item: unknown,
@@ -317,11 +324,11 @@ class PlainYearMonthValue {
   }
   toPlainDate(item: unknown): PlainDateObject {
     const slot = read(this)
-    if (!object(item)) throw new TypeError('Expected date fields')
+    if (!object(item)) throw new TypeErrorConstructor('Expected date fields')
     const raw = item.day
-    if (raw === undefined) throw new TypeError('Day required')
+    if (raw === undefined) throw new TypeErrorConstructor('Day required')
     const day = integer(raw)
-    if (day <= 0) throw new RangeError('Day must be positive')
+    if (day <= 0) throw new RangeErrorConstructor('Day must be positive')
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
       return createPlainDate(native!.yearMonthToDate(slot, day), slot.calendar)
@@ -363,7 +370,9 @@ class PlainYearMonthValue {
     return formatShortDate(read(this), 'year-month')
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainYearMonth to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainYearMonth to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainYearMonthValue.prototype.toString

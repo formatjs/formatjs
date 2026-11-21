@@ -13,3 +13,8 @@ export const numberIsInteger: typeof Number.isInteger = Number.isInteger
 export const numberIsFinite: typeof Number.isFinite = Number.isFinite
 export const numberIsSafeInteger: typeof Number.isSafeInteger =
   Number.isSafeInteger
+
+// Specification exceptions use the original constructors of this realm.
+export const ErrorConstructor: typeof Error = Error
+export const TypeErrorConstructor: typeof TypeError = TypeError
+export const RangeErrorConstructor: typeof RangeError = RangeError

@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 
 export function GetDurationUnitOptions<T extends object>(
@@ -55,10 +56,12 @@ export function GetDurationUnitOptions<T extends object>(
   // https://tc39.es/ecma402/#sec-validatedurationunitstyle
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L657-L659
   if (display === 'always' && style === 'fractional') {
-    throw new RangeError('Fractional units cannot use always display')
+    throw new RangeErrorConstructor(
+      'Fractional units cannot use always display'
+    )
   }
   if (prevStyle === 'fractional' && style !== 'fractional') {
-    throw new RangeError(
+    throw new RangeErrorConstructor(
       'Fractional units must be followed by fractional units'
     )
   }
@@ -68,7 +71,7 @@ export function GetDurationUnitOptions<T extends object>(
     style !== 'numeric' &&
     style !== '2-digit'
   ) {
-    throw new RangeError("Can't mix numeric and non-numeric styles")
+    throw new RangeErrorConstructor("Can't mix numeric and non-numeric styles")
   }
   if (twoDigitHours && unit === 'hours') {
     style = '2-digit' as Exclude<T[keyof T], undefined>

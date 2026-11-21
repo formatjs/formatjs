@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   bigIntFrom,
   mathAbs,
   mathMin,
@@ -29,7 +30,7 @@ const day = 86400n * second
 const limit = 100000000n * day
 function check(instant: bigint): bigint {
   if (instant < -limit || instant > limit)
-    throw new RangeError('Instant out of range')
+    throw new RangeErrorConstructor('Instant out of range')
   return instant
 }
 const clamp = (instant: bigint): bigint =>
@@ -44,7 +45,7 @@ export function createHostTimeZoneOffset(
 ): HostTimeZone['offsetNanoseconds'] {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
-    throw new RangeError(
+    throw new RangeErrorConstructor(
       'Temporal requires Intl.DateTimeFormat timezone support'
     )
   const formatter = new Constructor(
@@ -92,12 +93,12 @@ export function createHostTimeZoneOffset(
         seconds < 60
       )
     )
-      throw new RangeError('Unsupported host timezone fields')
+      throw new RangeErrorConstructor('Unsupported host timezone fields')
     const utcDate = DateFromTime(key * 1000),
       nextDate = date === utcDate + 1 || (date === 1 && utcDate >= 28),
       previousDate = date === utcDate - 1 || (utcDate === 1 && date >= 28)
     if (date !== utcDate && !nextDate && !previousDate)
-      throw new RangeError('Unsupported host timezone calendar')
+      throw new RangeErrorConstructor('Unsupported host timezone calendar')
     const difference = date === utcDate ? 0 : nextDate ? 1 : -1,
       utcSeconds = numberFrom(((epochSecond % 86400n) + 86400n) % 86400n),
       offsetSeconds =
@@ -107,7 +108,7 @@ export function createHostTimeZoneOffset(
         seconds -
         utcSeconds
     if (mathAbs(offsetSeconds) >= 86400)
-      throw new RangeError('Invalid host timezone offset')
+      throw new RangeErrorConstructor('Invalid host timezone offset')
     const offset = bigIntFrom(offsetSeconds) * second
     if (offsets.size >= 64) offsets.delete(offsets.keys().next().value!)
     offsets.set(key, offset)
@@ -148,17 +149,17 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
     if (!['compatible', 'earlier', 'later', 'reject'].includes(disambiguation))
-      throw new RangeError('Invalid disambiguation')
+      throw new RangeErrorConstructor('Invalid disambiguation')
     const local = isoToEpochNanoseconds(fields),
       candidates = candidatesFor(local)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')
-      throw new RangeError('Ambiguous or nonexistent local time')
+      throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
     const before = offsetNanoseconds(clamp(local - day)),
       after = offsetNanoseconds(clamp(local + day))
-    if (after <= before) throw new RangeError('No matching instant')
+    if (after <= before) throw new RangeErrorConstructor('No matching instant')
     return check(local - (disambiguation === 'earlier' ? after : before))
   }
   const canonical =

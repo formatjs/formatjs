@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {IsWellFormedCurrencyCode} from '#packages/ecma402-abstract/IsWellFormedCurrencyCode.js'
 import {IsWellFormedUnitIdentifier} from '#packages/ecma402-abstract/IsWellFormedUnitIdentifier.js'
@@ -38,14 +42,14 @@ export function SetNumberFormatUnitOptions(
   invariant(
     currency === undefined || IsWellFormedCurrencyCode(currency),
     'Malformed currency code',
-    RangeError
+    RangeErrorConstructor
   )
 
   // 5. If style is "currency" and currency is undefined, throw a TypeError exception.
   invariant(
     style !== 'currency' || currency !== undefined,
     'currency cannot be undefined',
-    TypeError
+    TypeErrorConstructor
   )
 
   // 6. Let currencyDisplay be ? GetOption(options, "currencyDisplay", "string", « "code", "symbol", "narrowSymbol", "name" », "symbol").
@@ -72,13 +76,13 @@ export function SetNumberFormatUnitOptions(
   invariant(
     unit === undefined || IsWellFormedUnitIdentifier(unit),
     'Invalid unit argument for Intl.NumberFormat()',
-    RangeError
+    RangeErrorConstructor
   )
   // 10. If style is "unit" and unit is undefined, throw a TypeError exception.
   invariant(
     style !== 'unit' || unit !== undefined,
     'unit cannot be undefined',
-    TypeError
+    TypeErrorConstructor
   )
 
   // 11. Let unitDisplay be ? GetOption(options, "unitDisplay", "string", « "short", "narrow", "long" », "short").

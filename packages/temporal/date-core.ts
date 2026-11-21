@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   floor,
   mathAbs,
@@ -95,15 +97,21 @@ export function object(value: unknown): value is Record<string, unknown> {
   return IsObject(value)
 }
 export function integer(value: unknown): number {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798
+  // L1796: unary + performs ToNumber, preserving user coercion and throws.
+  // L1798: captured truncation is unobservable; finite inputs become integers.
   const result = mathTrunc(+(value as number))
-  if (!numberIsInteger(result)) throw new RangeError('Expected finite number')
+  // L1797: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
+  if (!numberIsInteger(result))
+    throw new RangeErrorConstructor('Expected finite number')
+  // L1798: mathematical zero has no negative sign.
   return result || 0
 }
 export function overflowOption(options: unknown): Overflow {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
   if (value !== 'constrain' && value !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
   return value
 }
 function calendarSlot(value: object): {calendar: string} | undefined {
@@ -126,7 +134,7 @@ export function calendarId(value: unknown = 'iso8601'): string {
   if (slot) return slot.calendar
   // Step 676: withCalendar rejects undefined before calling this shared defaulting path.
   if (typeof value !== 'string')
-    throw new TypeError('Calendar must be a string')
+    throw new TypeErrorConstructor('Calendar must be a string')
   // Steps 677–678: parse the identifier, then canonicalize it.
   const id = (
     /^[A-Za-z][A-Za-z0-9-]*$/.test(value) && !/^[Tt]\d/.test(value)
@@ -137,7 +145,7 @@ export function calendarId(value: unknown = 'iso8601'): string {
 }
 export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
-    throw new TypeError('Calendar must be a string')
+    throw new TypeErrorConstructor('Calendar must be a string')
   return supportedCalendar(value.toLowerCase())
 }
 export function prepareDateTimeString(
@@ -158,7 +166,7 @@ function supportedCalendar(value: string): CalendarId {
         ? 'ethioaa'
         : value
   if (!calendarIds.includes(id as CalendarId))
-    throw new RangeError('Unsupported calendar')
+    throw new RangeErrorConstructor('Unsupported calendar')
   return id as CalendarId
 }
 function baseCalendar(calendar: string): CalendarId {
@@ -180,16 +188,16 @@ export function resolveCalendarYear(
     year === undefined &&
     !(supportsEra && fields.era !== undefined && fields.eraYear !== undefined)
   )
-    throw new TypeError('Year required')
+    throw new TypeErrorConstructor('Year required')
   if (
     supportsEra &&
     (fields.era === undefined) !== (fields.eraYear === undefined)
   )
-    throw new TypeError('era and eraYear required together')
+    throw new TypeErrorConstructor('era and eraYear required together')
   if (shape !== 'year-month' && fields.day === undefined)
-    throw new TypeError('Day required')
+    throw new TypeErrorConstructor('Day required')
   if (fields.month === undefined && fields.monthCode === undefined)
-    throw new TypeError('Month or monthCode required')
+    throw new TypeErrorConstructor('Month or monthCode required')
   if (supportsEra && fields.era !== undefined) {
     const resolved = calendarYearFromEra(
       baseCalendar(calendar),
@@ -197,7 +205,7 @@ export function resolveCalendarYear(
       fields.eraYear as number
     )
     if (year !== undefined && year !== resolved)
-      throw new RangeError('Year and era disagree')
+      throw new RangeErrorConstructor('Year and era disagree')
     year = resolved
   }
   return year
@@ -228,7 +236,7 @@ export function nativeDateSnapshot(
     mathAbs(slot.epochDay) > 110000000 ||
     (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
   )
-    throw new RangeError('Calendar date out of range')
+    throw new RangeErrorConstructor('Calendar date out of range')
   if (
     import.meta.formatjsTemporalNativeData === true &&
     slot.properties?.owner === owner
@@ -251,7 +259,8 @@ export function nativeDateSnapshot(
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
-    if (!value!.date) throw new RangeError('Calendar date out of range')
+    if (!value!.date)
+      throw new RangeErrorConstructor('Calendar date out of range')
     return value!.date
   }
   return (extended ? calendarFromEpochDayRaw : calendarFromEpochDay)(
@@ -280,7 +289,7 @@ export function dayFromFields(
   overflow: Overflow
 ): number {
   const year = resolveCalendarYear(calendar, fields)!
-  if (fields.day === undefined) throw new TypeError('Day required')
+  if (fields.day === undefined) throw new TypeErrorConstructor('Day required')
   if (calendar === 'iso8601')
     return isoDayFromPreparedFields(
       year,
@@ -308,7 +317,7 @@ export function clockNanoseconds(
     if (overflow === 'constrain')
       field = mathMax(0, mathMin(clockBounds[index], field))
     if (field < 0 || field > clockBounds[index])
-      throw new RangeError('Time out of range')
+      throw new RangeErrorConstructor('Time out of range')
     value += bigIntFrom(field) * clockFactors[index]
   }
   return value
@@ -360,7 +369,7 @@ export function dateFieldValue(key: string, value: unknown): string | number {
     const primitive = object(value) ? ToPrimitive(value, 'string') : value
     // L84: reject non-string primitives.
     if (typeof primitive !== 'string')
-      throw new TypeError('monthCode must be a string')
+      throw new TypeErrorConstructor('monthCode must be a string')
     // L85: consume the whole MonthCode grammar; zero requires the leap suffix.
     const leap = primitive.length === 4 && primitive[3] === 'L'
     if (
@@ -372,12 +381,17 @@ export function dateFieldValue(key: string, value: unknown): string | number {
       primitive[2] > '9' ||
       (primitive[1] === '0' && primitive[2] === '0' && !leap)
     )
-      throw new RangeError('Invalid monthCode syntax')
+      throw new RangeErrorConstructor('Invalid monthCode syntax')
     return primitive
   }
+  // Month/day: ToPositiveIntegerWithTruncation, abstractops.html L1779–L1781.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1779-L1781
+  // L1779: propagate ToIntegerWithTruncation's coercion and exceptions.
   const result = integer(value)
+  // L1780: reject nonpositive values after truncation, including signed zero.
   if ((key === 'month' || key === 'day') && result <= 0)
-    throw new RangeError('Month and day must be positive')
+    throw new RangeErrorConstructor('Month and day must be positive')
+  // L1781: return the positive mathematical integer for month/day.
   return result
 }
 const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
@@ -424,7 +438,8 @@ function readISODateFields(
     result.year = dateFieldValue('year', year)
     any = true
   }
-  if (partial && !any) throw new TypeError('At least one field required')
+  if (partial && !any)
+    throw new TypeErrorConstructor('At least one field required')
   return result
 }
 
@@ -455,7 +470,8 @@ export function readDateFields(
       any = true
     }
   }
-  if (partial && !any) throw new TypeError('At least one field required')
+  if (partial && !any)
+    throw new TypeErrorConstructor('At least one field required')
   return result
 }
 export function mergeDateFields(
@@ -514,9 +530,9 @@ export function partialObject(item: unknown): Record<string, unknown> {
     getYearMonthSlot(item) ||
     getMonthDaySlot(item)
   )
-    throw new TypeError('Expected partial Temporal object')
+    throw new TypeErrorConstructor('Expected partial Temporal object')
   if (item.calendar !== undefined || item.timeZone !== undefined)
-    throw new TypeError('Unexpected calendar or timeZone')
+    throw new TypeErrorConstructor('Unexpected calendar or timeZone')
   return item
 }
 export function addDate(
@@ -539,7 +555,7 @@ export function calendarNameOption(
 ): 'auto' | 'always' | 'never' | 'critical' {
   const option = value === undefined ? 'auto' : ToString(value)
   if (!['auto', 'always', 'never', 'critical'].includes(option))
-    throw new RangeError('Invalid calendarName')
+    throw new RangeErrorConstructor('Invalid calendarName')
   return option as 'auto' | 'always' | 'never' | 'critical'
 }
 const twoDigitDateParts = [
@@ -626,14 +642,15 @@ export function dateProperty(
   const value = nativeDateSnapshot(slot, extended)
   if (import.meta.formatjsTemporalNativeData === true || value) {
     if (value!.errors.includes(key))
-      throw new RangeError('Calendar field out of range')
+      throw new RangeErrorConstructor('Calendar field out of range')
     if (
       key === 'year' ||
       key === 'month' ||
       key === 'monthCode' ||
       key === 'day'
     ) {
-      if (!value!.date) throw new RangeError('Calendar date out of range')
+      if (!value!.date)
+        throw new RangeErrorConstructor('Calendar date out of range')
       return value!.date[key]
     }
     if (
@@ -721,7 +738,7 @@ export function dateProperty(
 export function checkDateTime(value: bigint): bigint {
   const bound = 8640000086400000000000n
   if (value <= -bound || value >= bound)
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
   return value
 }
 
@@ -845,7 +862,7 @@ export function roundRelativeDifference(
   if (smallIndex >= 4) {
     const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
     if (increment >= maximum || maximum % increment)
-      throw new RangeError('Invalid rounding increment')
+      throw new RangeErrorConstructor('Invalid rounding increment')
   }
   if (start === end) return zeroDuration()
   const sign = end < start ? -1 : 1,

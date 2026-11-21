@@ -1,3 +1,7 @@
+import {
+  ErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import type {BigDecimal} from '@formatjs/bigdecimal'
 import {memoize, strategies} from '@formatjs/fast-memoize'
 
@@ -52,7 +56,9 @@ export function getMultiInternalSlots<
 ): Pick<Internal, Field> {
   const slots = map.get(pl)
   if (!slots) {
-    throw new TypeError(`${pl} InternalSlot has not been initialized`)
+    throw new TypeErrorConstructor(
+      `${pl} InternalSlot has not been initialized`
+    )
   }
   return fields.reduce(
     (all, f) => {
@@ -131,7 +137,7 @@ export function createDataProperty<T extends object>(
 export function invariant(
   condition: boolean,
   message: string,
-  Err: any = Error
+  Err: any = ErrorConstructor
 ): asserts condition {
   if (!condition) {
     throw new Err(message)

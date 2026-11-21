@@ -1,4 +1,8 @@
-import {bigIntFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  bigIntFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -59,12 +63,12 @@ export interface PlainMonthDayConstructor {
 }
 function read(item: unknown): DateSlot {
   const slot = getMonthDaySlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainMonthDay receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainMonthDay receiver')
   return slot
 }
 export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   if (slot.epochDay < -100000001 || slot.epochDay > 100000000)
-    throw new RangeError('Month-day out of range')
+    throw new RangeErrorConstructor('Month-day out of range')
   const result = createObject(
     PlainMonthDayValue.prototype
   ) as PlainMonthDayObject
@@ -84,7 +88,7 @@ export function toMonthDaySlot(item: unknown, options?: unknown): DateSlot {
     return monthDayFields(calendar, fields, overflow)
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected month-day string or object')
+    throw new TypeErrorConstructor('Expected month-day string or object')
   return parseShortSlot(item, 'month-day', options)
 }
 class PlainMonthDayValue {
@@ -94,7 +98,7 @@ class PlainMonthDayValue {
     _calendar: unknown = undefined,
     _referenceISOYear?: unknown
   ) {
-    throw new TypeError('Use exported PlainMonthDay constructor')
+    throw new TypeErrorConstructor('Use exported PlainMonthDay constructor')
   }
   static from(
     item: unknown,
@@ -133,7 +137,7 @@ class PlainMonthDayValue {
   }
   toPlainDate(item: unknown): PlainDateObject {
     const slot = read(this)
-    if (!object(item)) throw new TypeError('Expected date fields')
+    if (!object(item)) throw new TypeErrorConstructor('Expected date fields')
     const prepared = readDateFields(item, false, false, 'year', slot.calendar),
       fields = dateFields(slot, true)
     const native = nativeTemporal()
@@ -187,7 +191,9 @@ class PlainMonthDayValue {
     return formatShortDate(read(this), 'month-day')
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainMonthDay to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainMonthDay to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainMonthDayValue.prototype.toString
@@ -206,7 +212,7 @@ export const PlainMonthDay: PlainMonthDayConstructor = new Proxy(
         year = args[3] === undefined ? 1972 : integer(args[3])
       const epochDay = isoReferenceDay(year, month, day)
       if (epochDay < -100000001 || epochDay > 100000000)
-        throw new RangeError('Month-day out of range')
+        throw new RangeErrorConstructor('Month-day out of range')
       const prototype = newTarget.prototype,
         result = createObject(object(prototype) ? prototype : target.prototype)
       setMonthDaySlot(result, {epochDay, calendar})
