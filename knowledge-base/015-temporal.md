@@ -17,7 +17,7 @@ only the ISO date and calendar, without observing shadowed public getters.
 TS and Rust calendar-unit totals validate both interpolation endpoints before
 returning exact results. Zero zoned calendar totals use the positive window;
 plain zero totals retain their specified shortcut.
-Short-date string conversion reads `overflow` after syntax/calendar validation,
+PlainDate, PlainDateTime and short-date string conversion read `overflow` after syntax/calendar validation,
 before representable-range checks and calendar projection, on both JS backends.
 
 ## Native performance direction
