@@ -100,3 +100,8 @@ transitive compiler gates for both changed helper packages are included in the
 [checked-in target list](temporal-validation-targets.txt). Gazelle, published
 section anchors, source links and ledger integrity pass. Full published-head CI
 retains its separate status.
+
+Full-suite, cross-build and native smoke CI subsequently passed for integration
+layer #8100 at 2bd58b1a28a1b1f4ae9cf73f3c18cc376b50c1d9; see the
+[full-suite invocation](https://formatjs.buildbuddy.io/invocation/b937cefb-1978-4a78-ab80-d1f5617339c2).
+Later stack heads require their own CI result.

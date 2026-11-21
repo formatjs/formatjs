@@ -25,11 +25,16 @@ The historical/provisional Temporal inventory above remains unchanged.
 
 | Section                                                                                          | Status                      | Evidence or gap                                                                                                                                                                  |
 | ------------------------------------------------------------------------------------------------ | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§6.1 language types](https://tc39.es/ecma262/#sec-ecmascript-language-types)                    | Reviewed classification     | [IsObject/Type mapping](temporal-object-contract-audit.md#language-type-classification), including host Objects and revoked Proxies.                                             |
 | [§7.1.1 ToPrimitive](https://tc39.es/ecma262/#sec-toprimitive)                                   | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#toprimitive), including fused GetMethod, all hints, abrupt completions and realms. Temporal callers remain open.     |
 | [§7.1.1.1 OrdinaryToPrimitive](https://tc39.es/ecma262/#sec-ordinarytoprimitive)                 | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#ordinarytoprimitive), callable/host boundaries and ordered Get/Call traces. Browser document.all run remains absent. |
 | [§7.1.4 ToNumber](https://tc39.es/ecma262/#sec-tonumber)                                         | Reviewed helper             | [All ten steps delegated to native unary plus](temporal-number-conversion-audit.md). Primitive return replaces Decimal adapter; full callers remain open.                        |
 | [§7.1.19 ToString](https://tc39.es/ecma262/#sec-tostring)                                        | Reviewed helper             | [Twelve-step delegation proof](temporal-coercion-contract-audit.md#tostring) through captured %String%, excluding its primitive-Symbol exception. Caller contracts remain open.  |
+| [§7.1.20 ToObject](https://tc39.es/ecma262/#sec-toobject)                                        | Reviewed helper             | [All eight runtime steps](temporal-object-contract-audit.md#toobject) through strict nullish rejection and captured %Object%.                                                    |
+| [§7.2.9 SameValue](https://tc39.es/ecma262/#sec-samevalue)                                       | Reviewed helper             | [Complete pure-comparison proof](temporal-object-contract-audit.md#samevalue), Number/non-Number dependencies and 361 native controls.                                           |
+| [§7.3.12 HasOwnProperty](https://tc39.es/ecma262/#sec-hasownproperty)                            | Reviewed helper             | [All three steps](temporal-object-contract-audit.md#hasownproperty), String/Symbol keys and descriptor traps.                                                                    |
 | [§7.3.21 OrdinaryHasInstance](https://tc39.es/ecma262/#sec-ordinaryhasinstance)                  | Reviewed helper             | [All six steps via captured intrinsic](temporal-instance-check-audit.md). Bound slots, host Objects and mutation controls; full formatter callers remain open.                   |
+| [§10.4.2.2 ArrayCreate](https://tc39.es/ecma262/#sec-arraycreate)                                | Reviewed helper             | [All seven steps](temporal-object-contract-audit.md#arraycreate), sparse lengths, maximum bound, custom/host prototypes and intrinsic captures.                                  |
 | [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar            | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open.                                              |
 | [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation          | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                                                                     |
 | [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation          | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                                                               |
@@ -41,6 +46,15 @@ The historical/provisional Temporal inventory above remains unchanged.
 ## Historical passes and current fixes
 
 Current pass:
+
+- Foundation object contracts: [six helper mappings](temporal-object-contract-audit.md)
+  cover ArrayCreate, SameValue, HasOwnProperty, ToObject and language-type
+  classification. Sparse array allocation and pure equality remove mutable
+  Array.from/Object.is hooks. Symbol own keys and host prototypes are covered.
+  Seven regressions reproduced; all 135 consumer targets and seven package
+  assemblies pass (85 executed, 50 cached). The foundation suite has 100 passing
+  cases. Formatter iteration/appending remains open; no complete public caller
+  or new historical Temporal line credit assigned.
 
 - Primitive Number conversion: [ECMA-262 §7.1.4 and ECMA-402 §13.5.2](temporal-number-conversion-audit.md)
   now have complete shared helper mappings. ToNumber returns a primitive;
@@ -837,7 +851,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097),
 [intrinsic constructor instance checks](https://github.com/formatjs/formatjs/pull/8098),
 [timestamp build integration repair](https://github.com/formatjs/formatjs/pull/8099),
-[primitive Number conversion and duration integrality](https://github.com/formatjs/formatjs/pull/8100).
+[primitive Number conversion and duration integrality](https://github.com/formatjs/formatjs/pull/8100),
+[foundation array/object/equality contracts](https://github.com/formatjs/formatjs/pull/8101).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

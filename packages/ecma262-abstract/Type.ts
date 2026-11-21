@@ -1,8 +1,6 @@
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 
-/**
- * https://www.ecma-international.org/ecma-262/11.0/index.html#sec-type
- */
+/** ECMA-262 §6.1 language-type classification. */
 export function Type(
   x: any
 ):
