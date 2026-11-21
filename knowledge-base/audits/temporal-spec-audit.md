@@ -66,6 +66,7 @@ The historical/provisional Temporal inventory above remains unchanged.
 | [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip)                                                                                                                            | Reviewed operation                  | [All three steps in TS/Rust](temporal-timeclip-audit.md), Number-input truncation dependency and numeric Intl boundary. Full callers remain open.                                                                        |
 | [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                                                                                                              | Open                                | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                                                                                                        |
 | [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)                                                                                         | Open                                | Range checked as issue evidence; implementation coverage remains open.                                                                                                                                                   |
+| [§24.1.3.6 Map.prototype.get](https://tc39.es/ecma262/#sec-map.prototype.get), [§24.1.3.11 Map.prototype.set](https://tc39.es/ecma262/#sec-map.prototype.set)                           | Captured native delegation reviewed | [Five private timezone stores](temporal-zone-cache-relative-routing-audit.md) preserve native receivers/key/value semantics through captured operations. Other collections and complete Temporal callers remain open.    |
 
 ## ECMA-402 parts dependencies
 
@@ -86,7 +87,16 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Relative preparation and zoned rounding validation: [bounded audit](temporal-relative-preparation-validation-audit.md)
+- Timezone private caches and relativeTo routing: [bounded audit](temporal-zone-cache-relative-routing-audit.md)
+  captures the constructor/get/set used by five private Maps and replaces an
+  extra lexical RegExp test with indexed scanning. Three cache mutation and two
+  routing hook/statics regressions failed before correction. All six focused
+  gates pass; all 53 expanded tests pass (52 executed, one cached), including
+  40 class/backend and five Now gates. Two assemblies pass. All three final native
+  malformed-routing oracle gates pass (two executed, one cached). Downstream parsers, String/Object
+  helpers, providers and complete callers remain open; no chapter credit.
+
+- [Relative preparation and zoned rounding validation #8119](https://github.com/formatjs/formatjs/pull/8119): [bounded audit](temporal-relative-preparation-validation-audit.md)
   preserves null-prototype private relativeTo records and validates rounding
   unit/increment before local-time work in TS/Rust. Public/private getter and
   provider-counter regressions failed before correction. Seven focused gates pass;

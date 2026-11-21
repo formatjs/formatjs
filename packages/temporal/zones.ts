@@ -26,42 +26,57 @@ import {
   type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
 
+const MapConstructor = Map
+const mapGet = Function.prototype.call.bind(MapConstructor.prototype.get) as <
+  V,
+>(
+  map: Map<string, V>,
+  key: string
+) => V | undefined
+const mapSet = Function.prototype.call.bind(MapConstructor.prototype.set) as <
+  V,
+>(
+  map: Map<string, V>,
+  key: string,
+  value: V
+) => void
 let identifiers: Map<string, string> | undefined
-const cache = new Map<string, ReturnType<typeof createTimeZone>>()
+const cache = new MapConstructor<string, ReturnType<typeof createTimeZone>>()
 function typescriptTimeZone(name: string): TimeZoneKernel {
   if (import.meta.formatjsTemporalHostTimeZones === true) {
     if (name === 'UTC' || name === 'Etc/UTC' || name === 'Etc/GMT')
       return zonedKernel('UTC')
-    let zone = cache.get(name)
-    if (!zone) cache.set(name, (zone = createHostTimeZone(name)))
+    let zone = mapGet(cache, name)
+    if (!zone) mapSet(cache, name, (zone = createHostTimeZone(name)))
     return zone
   }
   if (!identifiers) {
     const {primary, links, names} = fallbackTimeZoneIdentifiers()
-    identifiers = new Map()
+    identifiers = new MapConstructor()
     for (let i = 0; i < names.length; i++) {
       const canonical = names[i]
-      identifiers.set(canonical.toLowerCase(), canonical)
+      mapSet(identifiers, canonical.toLowerCase(), canonical)
     }
     const aliases = Object.keys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++) {
       const alias = aliases[i],
         target = primary[alias as keyof typeof primary] ?? alias
-      identifiers.set(
+      mapSet(
+        identifiers,
         alias.toLowerCase(),
-        identifiers.get(target.toLowerCase()) ?? target
+        mapGet(identifiers, target.toLowerCase()) ?? target
       )
     }
   }
-  const canonical = identifiers.get(name.toLowerCase())
+  const canonical = mapGet(identifiers, name.toLowerCase())
   if (canonical === undefined)
     throw new RangeErrorConstructor('Unknown timezone')
   if (canonical === 'UTC' || canonical === 'Etc/UTC' || canonical === 'Etc/GMT')
     return zonedKernel('UTC')
   name = canonical
-  let zone = cache.get(name)
+  let zone = mapGet(cache, name)
   if (!zone) {
-    cache.set(name, (zone = createTimeZone(fallbackTimeZoneData(name))))
+    mapSet(cache, name, (zone = createTimeZone(fallbackTimeZoneData(name))))
   }
   return zone
 }
@@ -110,17 +125,17 @@ function withNativeZone(
     },
   }
 }
-const namedKernels = new Map<string, TimeZoneKernel>()
+const namedKernels = new MapConstructor<string, TimeZoneKernel>()
 export function timeZone(name: string): TimeZoneKernel {
-  const existing = namedKernels.get(name)
+  const existing = mapGet(namedKernels, name)
   if (existing) return existing
   const identifier = timeZoneIdentifier(name)
   if (isTimeZoneOffsetString(identifier))
     throw new RangeErrorConstructor('Expected named timezone')
-  let zone = namedKernels.get(identifier)
+  let zone = mapGet(namedKernels, identifier)
   if (!zone) {
     zone = withNativeZone(identifier, () => typescriptTimeZone(identifier))
-    namedKernels.set(identifier, zone)
+    mapSet(namedKernels, identifier, zone)
   }
   return zone
 }
@@ -163,27 +178,27 @@ export function timeZoneIdentifier(value: unknown): string {
   }
   if (!spellings) {
     const {primary, links, names} = fallbackTimeZoneIdentifiers()
-    spellings = new Map()
+    spellings = new MapConstructor()
     for (let i = 0; i < names.length; i++) {
       const id = names[i]
-      spellings.set(id.toLowerCase(), id)
+      mapSet(spellings, id.toLowerCase(), id)
     }
     const aliases = Object.keys({...links, ...primary})
     for (let i = 0; i < aliases.length; i++)
-      spellings.set(aliases[i].toLowerCase(), aliases[i])
-    spellings.set('utc', 'UTC')
+      mapSet(spellings, aliases[i].toLowerCase(), aliases[i])
+    mapSet(spellings, 'utc', 'UTC')
   }
-  const id = spellings.get(name.toLowerCase())
+  const id = mapGet(spellings, name.toLowerCase())
   if (!id) throw new RangeErrorConstructor('Unknown timezone')
   if (import.meta.formatjsTemporalHostTimeZones === true) typescriptTimeZone(id)
   return id
 }
-const fixedKernels = new Map<string, TimeZoneKernel>()
+const fixedKernels = new MapConstructor<string, TimeZoneKernel>()
 export function zonedKernel(identifier: string): TimeZoneKernel {
   const utc = identifier === 'UTC'
   if (!utc && !isTimeZoneOffsetString(identifier)) return timeZone(identifier)
   const key = utc ? 'UTC' : identifier
-  const existing = fixedKernels.get(key)
+  const existing = mapGet(fixedKernels, key)
   if (existing) return existing
   const offset = utc ? 0n : parseOffsetNanoseconds(identifier, true)
   const check = (value: bigint): bigint => {
@@ -216,7 +231,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
     resolve: fields => check(isoToEpochNanoseconds(fields) - offset),
   }
   const zone = withNativeZone(key, () => result)
-  fixedKernels.set(key, zone)
+  mapSet(fixedKernels, key, zone)
   return zone
 }
 

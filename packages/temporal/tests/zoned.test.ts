@@ -1,6 +1,6 @@
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
-import {expect, it} from 'vitest'
+import {expect, it, vi} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
@@ -454,3 +454,65 @@ it.each([
     expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
   }
 )
+
+it.each([
+  ['get', 'UTC', 0],
+  ['set', '+13:47', 49_620_000_000_000],
+] as const)(
+  'reads a valid fixed-zone offset without public Map.prototype.%s',
+  async (method, zone, expected) => {
+    vi.resetModules()
+    try {
+      const {Temporal: isolated} = await import('#packages/temporal/index.js')
+      // Fresh module keeps the fixed kernel cold; all objects use its own slots.
+      const value = new isolated.ZonedDateTime(0n, zone)
+      const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, method)!
+      const sentinel = new Error('Observable zone cache method')
+      let actual: number | undefined, error: unknown
+      try {
+        Object.defineProperty(Map.prototype, method, {
+          ...descriptor,
+          value() {
+            throw sentinel
+          },
+        })
+        actual = value.offsetNanoseconds
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(Map.prototype, method, descriptor)
+      }
+      expect(error).toBeUndefined()
+      expect(actual).toBe(expected)
+    } finally {
+      vi.resetModules()
+    }
+  }
+)
+
+it('initializes private timezone spellings without a replacement Map constructor', async () => {
+  vi.resetModules()
+  try {
+    const {Temporal: isolated} = await import('#packages/temporal/index.js')
+    const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'Map')!
+    const sentinel = new Error('Observable timezone Map constructor')
+    let actual: string | undefined, error: unknown
+    try {
+      Object.defineProperty(globalThis, 'Map', {
+        ...descriptor,
+        value: function () {
+          throw sentinel
+        },
+      })
+      actual = new isolated.ZonedDateTime(0n, 'UTC').timeZoneId
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(globalThis, 'Map', descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe('UTC')
+  } finally {
+    vi.resetModules()
+  }
+})

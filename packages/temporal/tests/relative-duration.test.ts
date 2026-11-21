@@ -174,3 +174,52 @@ it('validates zero zoned calendar totals while preserving the plain zero shortcu
     })
   ).toBe(31)
 })
+
+it('rejects malformed relativeTo annotations without an extra RegExp test hook', () => {
+  const duration = Temporal.Duration.from('PT1H')
+  const descriptor = Object.getOwnPropertyDescriptor(RegExp.prototype, 'test')!
+  const sentinel = new Error('Observable relativeTo classification')
+  let hooks = 0
+  let unitReads = 0
+  let caught: unknown
+  try {
+    Object.defineProperty(RegExp.prototype, 'test', {
+      configurable: true,
+      get() {
+        hooks++
+        throw sentinel
+      },
+    })
+    try {
+      duration.total({
+        relativeTo: '[[]',
+        get unit() {
+          unitReads++
+          return 'hour'
+        },
+      })
+    } catch (error) {
+      caught = error
+    }
+  } finally {
+    Object.defineProperty(RegExp.prototype, 'test', descriptor)
+  }
+  expect(hooks).toBe(0)
+  expect(caught).toBeInstanceOf(RangeError)
+  expect(unitReads).toBe(0)
+})
+
+it('preserves legacy RegExp state before malformed relativeTo annotation rejection', () => {
+  const duration = Temporal.Duration.from('PT1H')
+  ;/(relative marker)/.exec('relative marker')
+  const expected = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  let caught: unknown
+  try {
+    duration.total({relativeTo: '[[]', unit: 'hour'})
+  } catch (error) {
+    caught = error
+  }
+  const actual = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  expect(caught).toBeInstanceOf(RangeError)
+  expect(actual).toEqual(expected)
+})

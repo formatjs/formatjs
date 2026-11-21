@@ -50,6 +50,19 @@ import {
   type DurationFields,
 } from '#packages/temporal/duration-core.js'
 
+function hasTimeZoneAnnotation(value: string): boolean {
+  let opening = -1
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    if (character === ']') {
+      if (opening >= 0 && index - opening > 1) return true
+      opening = -1
+    } else if (character === '=') opening = -1
+    else if (character === '[' && opening < 0) opening = index
+  }
+  return false
+}
+
 export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
@@ -74,7 +87,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
     return {date}
   }
   if (typeof value === 'string') {
-    return /\[!?[^=\]]+\]/.test(value)
+    return hasTimeZoneAnnotation(value)
       ? {zoned: toZonedDateTimeSlot(value)}
       : {date: toPlainDateSlot(value)}
   }
