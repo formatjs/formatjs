@@ -8,7 +8,8 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
         if unit == ZonedUnit::Day {
             self.validate_duration_day(duration)?;
         }
-        if duration.sign() == 0 {
+        // Zero zoned calendar totals still require the next nudge endpoint.
+        if duration.sign() == 0 && unit >= ZonedUnit::Day {
             return Ok(0.0);
         }
         let end = self.checked_add(duration, Overflow::Constrain)?;
@@ -97,17 +98,21 @@ pub(crate) fn total<A: RelativeAnchor>(
     let mut fields = [0; 10];
     fields[unit as usize] = count;
     let mut a = start.endpoint(fields)?;
-    let sign = (finish - origin).signum();
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
+    // L1908: zero takes the positive nudge window.
+    let sign = if finish < origin { -1 } else { 1 };
     while (a - finish) * sign > 0 {
         count -= sign;
         fields[unit as usize] = count;
         a = start.endpoint(fields)?;
     }
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1631-L1637
+    // L1631: check the other endpoint before an exact total returns.
+    fields[unit as usize] = count + sign;
+    let mut b = start.endpoint(fields)?;
     if a == finish {
         return Ok(count as f64);
     }
-    fields[unit as usize] = count + sign;
-    let mut b = start.endpoint(fields)?;
     while (finish - b) * sign >= 0 {
         count += sign;
         a = b;

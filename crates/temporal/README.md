@@ -67,6 +67,8 @@ actual anchors; week rounding preserves larger calendar prefixes.
 Relative Duration adapters: `total_duration`, `round_duration` and
 `compare_durations` on `ZonedDateTime`. Required endpoint/next-day bounds remain
 checked. Native Hermes bindings delegate normalized operations to this core. Native SDK installation and Intl integration are available.
+Calendar-unit totals validate both interpolation endpoints even for exact results.
+Zero zoned calendar totals use the positive window; plain zero totals return zero.
 
 ```sh
 bazel test -c opt //crates/temporal:temporal_test

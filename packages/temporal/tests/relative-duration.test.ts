@@ -131,3 +131,46 @@ it('uses internal date-time fields for relativeTo', () => {
     )
   }
 })
+
+it('validates the full calendar window for exact totals at the date limits', () => {
+  for (const [date, duration, unit] of [
+    ['+275759-09-13', 'P1Y', 'year'],
+    ['+275760-08-13', 'P1M', 'month'],
+    ['+275760-09-06', 'P1W', 'week'],
+    ['-271821-05-20', '-P1M', 'month'],
+  ] as const) {
+    for (const relativeTo of [date, `${date}T00:00[UTC]`]) {
+      expect(
+        () => Temporal.Duration.from(duration).total({relativeTo, unit}),
+        `${duration} ${relativeTo} ${unit}`
+      ).toThrow(RangeError)
+    }
+  }
+})
+
+it('validates zero zoned calendar totals while preserving the plain zero shortcut', () => {
+  const zero = new Temporal.Duration()
+  const maximum = new Temporal.ZonedDateTime(
+    8_640_000_000_000_000_000_000n,
+    'UTC'
+  )
+  const minimum = new Temporal.ZonedDateTime(
+    -8_640_000_000_000_000_000_000n,
+    'UTC'
+  )
+  for (const unit of ['year', 'month', 'week'] as const) {
+    expect(() => zero.total({relativeTo: maximum, unit}), unit).toThrow(
+      RangeError
+    )
+    expect(zero.total({relativeTo: minimum, unit})).toBe(0)
+    expect(zero.total({relativeTo: '+275760-09-13', unit})).toBe(0)
+    expect(zero.total({relativeTo: '-271821-04-19', unit})).toBe(0)
+  }
+  expect(zero.total({relativeTo: maximum, unit: 'hour'})).toBe(0)
+  expect(
+    Temporal.Duration.from('P1M').total({
+      relativeTo: '+275760-08-13',
+      unit: 'day',
+    })
+  ).toBe(31)
+})

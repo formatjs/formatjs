@@ -61,6 +61,8 @@ A syntactically valid code can still be invalid for the chosen calendar.
 
 Duration operations accept a `PlainDateTime` as `relativeTo`. They use its stored
 date and calendar, ignore its time, and do not read shadowed public field getters.
+Calendar-unit totals validate both interpolation endpoints. Near date limits,
+even an exact total or a zero zoned total can throw `RangeError`.
 
 The default entry captures the installed `Intl.DateTimeFormat` for named
 time-zone offsets and Umm al-Qura data. It works with native Intl or installed
