@@ -1,5 +1,11 @@
 # Temporal implementation
 
+PlainDateTime and ZonedDateTime clock-unit differences round the original integer
+epoch span before constructing Number-valued Duration fields. The
+[difference precision audit](audits/temporal-difference-precision-audit.md) records
+the premature-conversion defect, signed rounding proof and TS/Rust controls.
+Calendar/day differences and complete callers remain open.
+
 Duration totals retain original BigInt string conversion for private bit lengths;
 fixed-precision formatting scans private field names by index. The
 [bounded total proof](audits/temporal-duration-private-operations-audit.md) covers
