@@ -222,3 +222,34 @@ it('adds fractional offsets before flooring negative submilliseconds', () => {
     })
   }
 })
+
+it('retains nanosecond carries for fractional offsets near Date limits', () => {
+  const offsets = [
+    ['+23:59:59.999999999', 86_399_999_999_999n],
+    ['-23:59:59.999999999', -86_399_999_999_999n],
+    ['+12:34:56.123456789', 45_296_123_456_789n],
+    ['-12:34:56.123456789', -45_296_123_456_789n],
+  ] as const
+  for (const anchor of [0, -8_639_999_913_600_000, 8_639_999_913_600_000]) {
+    for (const [zone, offset] of offsets) {
+      for (const delta of [-1n, 0n, 1n]) {
+        const instant = BigInt(anchor) * 1_000_000n - offset + delta
+        const expected = new Date(anchor + (delta < 0n ? -1 : 0))
+        const year = expected.getUTCFullYear()
+        expect(
+          ToLocalTime(instant, 'gregory', zone, {tzData: {}}),
+          `${instant} ${zone}`
+        ).toMatchObject({
+          year: year > 0 ? year : 1 - year,
+          month: expected.getUTCMonth(),
+          day: expected.getUTCDate(),
+          weekday: expected.getUTCDay(),
+          hour: expected.getUTCHours(),
+          minute: expected.getUTCMinutes(),
+          second: expected.getUTCSeconds(),
+          millisecond: expected.getUTCMilliseconds(),
+        })
+      }
+    }
+  }
+})

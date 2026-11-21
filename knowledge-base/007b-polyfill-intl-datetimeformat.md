@@ -4,6 +4,11 @@
 
 ## Purpose
 
+The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)
+checks fractional offsets near both Date limits against builtin UTC fields.
+Its fault control catches nanoseconds rounded through Number before Decimal
+construction. The existing runtime passes; complete ToLocalTime review stays open.
+
 The central date-pattern loop uses private indexed traversal and own List writes.
 Fractional seconds use captured floor; two-digit fields use private Unicode
 truncation without mutable array methods. TS and Rust preserve
