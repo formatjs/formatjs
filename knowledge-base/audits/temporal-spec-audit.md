@@ -27,6 +27,7 @@ The historical/provisional Temporal inventory above remains unchanged.
 | ------------------------------------------------------------------------------------------------ | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [§7.1.1 ToPrimitive](https://tc39.es/ecma262/#sec-toprimitive)                                   | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#toprimitive), including fused GetMethod, all hints, abrupt completions and realms. Temporal callers remain open.     |
 | [§7.1.1.1 OrdinaryToPrimitive](https://tc39.es/ecma262/#sec-ordinarytoprimitive)                 | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#ordinarytoprimitive), callable/host boundaries and ordered Get/Call traces. Browser document.all run remains absent. |
+| [§7.1.4 ToNumber](https://tc39.es/ecma262/#sec-tonumber)                                         | Reviewed helper             | [All ten steps delegated to native unary plus](temporal-number-conversion-audit.md). Primitive return replaces Decimal adapter; full callers remain open.                        |
 | [§7.1.19 ToString](https://tc39.es/ecma262/#sec-tostring)                                        | Reviewed helper             | [Twelve-step delegation proof](temporal-coercion-contract-audit.md#tostring) through captured %String%, excluding its primitive-Symbol exception. Caller contracts remain open.  |
 | [§7.3.21 OrdinaryHasInstance](https://tc39.es/ecma262/#sec-ordinaryhasinstance)                  | Reviewed helper             | [All six steps via captured intrinsic](temporal-instance-check-audit.md). Bound slots, host Objects and mutation controls; full formatter callers remain open.                   |
 | [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar            | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open.                                              |
@@ -41,13 +42,24 @@ The historical/provisional Temporal inventory above remains unchanged.
 
 Current pass:
 
+- Primitive Number conversion: [ECMA-262 §7.1.4 and ECMA-402 §13.5.2](temporal-number-conversion-audit.md)
+  now have complete shared helper mappings. ToNumber returns a primitive;
+  DurationFormat integrality uses captured Number.isInteger and normalizes zero.
+  Private Decimal construction no longer inserts numeric hooks between field
+  Gets. Twelve helper/public regressions reproduced before the fix. All 124
+  consumer targets and five package assemblies pass (74 executed, 50 cached),
+  including standalone/transitive helper compiler gates. Full callers remain
+  open; no new historical Temporal line credit assigned.
+
 - Numeric timestamp integration: [composite compiler and package repair](temporal-timeclip-audit.md#composite-build-and-package-integration)
   preserves exact BigInt scaling under the existing ES2018 target and narrows a
   type assertion without changing unary-plus conversion. Bazel regenerates the
   package manifest; pnpm removes only its stale lockfile dependency entry.
   The three exact full-CI failures are added to the [checked-in consumer matrix](temporal-validation-targets.txt).
   All 116 targets, five package assemblies and frozen lockfile validation pass.
-  Full published-head CI remains a separate gate. No historical line credit added.
+  Full-suite, cross-build and native smoke CI passed for #8099 at
+  da293123a2d9d7db37657e2f86047de04cf9b954. Later heads retain their own CI gate.
+  No historical line credit added.
 
 - Shared constructor checks: [ECMA-262 §7.3.21 step mapping](temporal-instance-check-audit.md)
   replaces manual traversal with captured §20.2.3.6 delegation. Actual bound
@@ -824,7 +836,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096),
 [shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097),
 [intrinsic constructor instance checks](https://github.com/formatjs/formatjs/pull/8098),
-[timestamp build integration repair](https://github.com/formatjs/formatjs/pull/8099).
+[timestamp build integration repair](https://github.com/formatjs/formatjs/pull/8099),
+[primitive Number conversion and duration integrality](https://github.com/formatjs/formatjs/pull/8100).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

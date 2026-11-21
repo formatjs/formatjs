@@ -6,6 +6,13 @@
 
 Polyfill for `Intl.DurationFormat` — formats durations (hours, minutes, seconds) with locale-aware separators.
 
+Duration-like field conversion keeps primitive Numbers through ToIntegerIfIntegral.
+Captured Number.isInteger validates the full finite integral Number domain;
+private Decimal construction cannot interrupt consecutive field Gets. See the
+[number conversion audit](audits/temporal-number-conversion-audit.md) for numbered
+ECMA-262 §7.1.4 and ECMA-402 §13.5.2 mappings. Complete record/brand conversion
+retains its separate audit status.
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
