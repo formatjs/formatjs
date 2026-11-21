@@ -13,7 +13,7 @@ import {
   type DateProperties,
 } from '#packages/temporal/plain-date.js'
 import {
-  PlainTime,
+  toTimeRecordOrMidnight,
   createPlainTime,
   roundTime,
   type PlainTimeObject,
@@ -23,7 +23,6 @@ import {
   getZonedDateTimeSlot,
   getDateTimeSlot,
   setDateTimeSlot,
-  getTimeSlot,
   type DateTimeSlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
@@ -379,8 +378,14 @@ class PlainDateTimeValue {
     return createPlainDateTime(slot.epochNanoseconds, calendarId(calendar))
   }
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L429-L433
+    // L429: take this as the date-time.
+    // L430: require its initialized slot.
     const slot = read(this)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    // L431: convert time without consulting the public constructor.
+    const clock = toTimeRecordOrMidnight(time)
+    // L432: combine the original date with the replacement time.
+    // L433: keep the receiver's calendar on the new object.
     return createPlainDateTime(
       BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
       slot.calendar

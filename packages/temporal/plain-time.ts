@@ -88,6 +88,7 @@ const names = [
 const factors = names.map(name => timeUnitNanoseconds[name])
 const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
+const ToBigInt = BigInt
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
   if (result === undefined) throw new TypeError('Invalid PlainTime receiver')
@@ -216,6 +217,16 @@ function create(value: bigint | NativeTimeResult): PlainTimeObject {
 }
 export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
+}
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L595-L597
+export function toTimeRecordOrMidnight(item: unknown): bigint {
+  // L595: only undefined means midnight.
+  if (item === undefined) return 0n
+  // L596: ToTemporalTime is internal, not the replaceable PlainTime.from.
+  // L597: return its time slot directly, without allocating a public wrapper.
+  return import.meta.formatjsTemporalNativeData === true
+    ? ToBigInt(toNativeTime(item).nanoseconds)
+    : toTime(item)
 }
 function validateIncrement(unit: TimeUnit, increment: number): void {
   const maximum = maxima[names.indexOf(unit)]
