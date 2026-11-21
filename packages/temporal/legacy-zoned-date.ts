@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   createHostTimeZoneOffset,
@@ -97,8 +98,8 @@ function offsetName(
       ? 'latn'
       : resolved.numberingSystem
   const seconds = Number((offset < 0n ? -offset : offset) / 1_000_000_000n)
-  const hour = Math.floor(seconds / 3600),
-    minute = Math.floor((seconds % 3600) / 60),
+  const hour = floor(seconds / 3600),
+    minute = floor((seconds % 3600) / 60),
     second = seconds % 60
   if (!NumberConstructor || !numberFormat)
     throw new RangeError('Timezone offset labels require Intl.NumberFormat')

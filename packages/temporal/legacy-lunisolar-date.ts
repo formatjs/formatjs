@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
@@ -205,7 +206,7 @@ export function correctLunisolarParts(
       expectedEpochDay ??
         (iso
           ? isoDay(iso.year, iso.month, iso.day)
-          : Math.floor(value.milliseconds / dayMilliseconds))
+          : floor(value.milliseconds / dayMilliseconds))
     ),
     actual = fields(
       calendar,

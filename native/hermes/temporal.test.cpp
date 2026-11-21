@@ -148,6 +148,22 @@ int main(int argc, char **argv) {
         localeText = new Temporal.PlainDate(2020, 2, 29).toLocaleString('en', localeOptions);
       } finally { Reflect.get = originalGet; }
       check(localeReads === 1 && localeText === '2020');
+      const originalFloor = Math.floor;
+      let floorResults;
+      try {
+        Math.floor = function () { throw new Error('Mutable Math.floor reached'); };
+        floorResults = [
+          new Temporal.Instant(-1n).toString(),
+          new Temporal.Instant(0n).toString({timeZone: '+01:30'}),
+          new Temporal.PlainDate(2021, 1, 1).weekOfYear,
+          new Temporal.PlainTime(12, 34, 56, 123).toString({fractionalSecondDigits: 2}),
+          new Temporal.ZonedDateTime(0n, '+01:30').toString(),
+        ];
+      } finally { Math.floor = originalFloor; }
+      check(floorResults.join('|') === [
+        '1969-12-31T23:59:59.999999999Z', '1970-01-01T01:30:00+01:30', 53,
+        '12:34:56.12', '1970-01-01T01:30:00+01:30[+01:30]',
+      ].join('|'));
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 import type {Precision} from '#packages/temporal/rounding.js'
 
@@ -35,7 +36,7 @@ export function formatInstant(
   return (
     result +
     (offset < 0n && minutes !== 0 ? '-' : '+') +
-    pad(Math.floor(minutes / 60)) +
+    pad(floor(minutes / 60)) +
     ':' +
     pad(minutes % 60)
   )

@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   DayFromYear,
   DaysInYear,
@@ -74,7 +75,7 @@ export function TimeZoneOffset(
   let low = 0
   let high = data.length
   while (low + 1 < high) {
-    const middle = Math.floor((low + high) / 2)
+    const middle = floor((low + high) / 2)
     if (data[middle][0] <= t / 1000) low = middle
     else high = middle
   }

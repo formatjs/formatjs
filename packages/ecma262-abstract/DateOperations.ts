@@ -1,11 +1,12 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 const MS_PER_DAY = 86400000
 
 function mod(x: number, y: number): number {
-  return x - Math.floor(x / y) * y
+  return x - floor(x / y) * y
 }
 
 export function Day(t: number): number {
-  return Math.floor(t / MS_PER_DAY)
+  return floor(t / MS_PER_DAY)
 }
 
 export function WeekDay(t: number): number {
@@ -19,9 +20,9 @@ export function DayFromYear(y: number): number {
   // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34143-L34147
   return (
     365 * (y - 1970) +
-    Math.floor((y - 1969) / 4) -
-    Math.floor((y - 1901) / 100) +
-    Math.floor((y - 1601) / 400)
+    floor((y - 1969) / 4) -
+    floor((y - 1901) / 100) +
+    floor((y - 1601) / 400)
   )
 }
 
@@ -32,7 +33,7 @@ export function YearFromTime(t: number): number {
   // https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34177
   if (!Number.isFinite(t)) return NaN
   const day = Day(t)
-  let year = 1970 + Math.floor(day / 365.2425)
+  let year = 1970 + floor(day / 365.2425)
   while (DayFromYear(year) > day) year--
   while (DayFromYear(year + 1) <= day) year++
   return year
@@ -100,15 +101,15 @@ const MS_PER_MINUTE = MS_PER_SECOND * SECONDS_PER_MINUTE
 const MS_PER_HOUR = MS_PER_MINUTE * MINUTES_PER_HOUR
 
 export function HourFromTime(t: number): number {
-  return mod(Math.floor(t / MS_PER_HOUR), HOURS_PER_DAY)
+  return mod(floor(t / MS_PER_HOUR), HOURS_PER_DAY)
 }
 
 export function MinFromTime(t: number): number {
-  return mod(Math.floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR)
+  return mod(floor(t / MS_PER_MINUTE), MINUTES_PER_HOUR)
 }
 
 export function SecFromTime(t: number): number {
-  return mod(Math.floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE)
+  return mod(floor(t / MS_PER_SECOND), SECONDS_PER_MINUTE)
 }
 
 export function msFromTime(t: number): number {

@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
   approximateLunisolarYear,
@@ -67,7 +68,7 @@ export function hostCalendarYear(
     const compact = compactCalendarYear(calendar, year)
     return remember(key, compact ?? approximateLunisolarYear(calendar, year))
   }
-  let probe = -492148 + 354 * (year - 1) + Math.floor((3 + 11 * year) / 30)
+  let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)
   if (Math.abs(probe) > limit - 800)
     throw new RangeError('Host Intl calendar year requires boundary data')
   probe += 400

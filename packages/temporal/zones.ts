@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
@@ -144,7 +145,7 @@ export function timeZoneIdentifier(value: unknown): string {
     const minutes = Number((offset < 0n ? -offset : offset) / 60_000_000_000n)
     return (
       (offset < 0n ? '-' : '+') +
-      String(Math.floor(minutes / 60)).padStart(2, '0') +
+      String(floor(minutes / 60)).padStart(2, '0') +
       ':' +
       String(minutes % 60).padStart(2, '0')
     )

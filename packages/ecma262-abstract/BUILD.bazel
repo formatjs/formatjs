@@ -16,6 +16,7 @@ formatjs_library(
         "ToPrimitive.ts",
         "ToString.ts",
         "Type.ts",
+        "intrinsics.ts",
     ],
     visibility = ["//visibility:public"],
     deps = [
@@ -27,6 +28,7 @@ formatjs_test(
     name = "ecma262-abstract_test",
     srcs = [
         "tests/coercion.test.ts",
+        "tests/date-intrinsics.test.ts",
         "tests/host-exotic.test.ts",
     ],
     tsconfig_types = ["node"],
