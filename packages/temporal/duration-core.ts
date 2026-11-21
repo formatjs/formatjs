@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 export const durationFieldNames = [
   'years',
@@ -102,7 +103,7 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
     (typeof value !== 'object' && typeof value !== 'function')
   )
     throw new TypeError('Duration fields must be an object')
-  const result: Partial<DurationFields> = Object.create(null)
+  const result: Partial<DurationFields> = createObject(null)
   let found = false
   for (let index = 0; index < durationFieldReadOrder.length; index++) {
     const field = durationFieldReadOrder[index]

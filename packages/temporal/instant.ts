@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
 import {
@@ -130,7 +131,7 @@ function createNativeInstant(value: bigint): InstantObject {
 export function createInstant(value: bigint): InstantObject {
   if (import.meta.formatjsTemporalNativeData === true)
     return createNativeInstant(validateInstant(value))
-  const result = Object.create(InstantValue.prototype) as InstantObject
+  const result = createObject(InstantValue.prototype) as InstantObject
   setSlot(result, validateInstant(value))
   return result
 }
@@ -384,7 +385,7 @@ export const Instant: InstantConstructor = new Proxy(
           nativeInstantPrototype(result, selected)
         return result
       }
-      const result = Object.create(
+      const result = createObject(
         prototype !== null &&
           (typeof prototype === 'object' || typeof prototype === 'function')
           ? prototype

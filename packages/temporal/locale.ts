@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import type {DurationFields} from '#packages/temporal/duration-core.js'
@@ -121,12 +122,12 @@ export function legacyDateTimeProjection(
     ? legacyHostTimeZone(Constructor, value.timeZone!, intrinsics.formatToParts)
     : undefined
   let source: Record<string, unknown> | undefined
-  const snapshot: Record<string, unknown> = Object.create(null)
-  const proxy = new Proxy(Object.create(null), {
+  const snapshot: Record<string, unknown> = createObject(null)
+  const proxy = new Proxy(createObject(null), {
     get(_target, key) {
       if (!source) {
         if (options === null) throw new TypeError('Invalid options')
-        source = options === undefined ? Object.create(null) : Object(options)
+        source = options === undefined ? createObject(null) : Object(options)
       }
       if (typeof key !== 'string') return Reflect.get(source!, key)
       if (!Object.prototype.hasOwnProperty.call(snapshot, key)) {
@@ -179,7 +180,7 @@ export function legacyDateTimeProjection(
     allowed.push('era')
   const instant = value.kind === 'Instant' || value.kind === 'ZonedDateTime'
   if (instant) allowed.push('timeZoneName')
-  const selected: Record<string, unknown> = Object.create(null)
+  const selected: Record<string, unknown> = createObject(null)
   for (const key of [
     'calendar',
     'numberingSystem',
@@ -305,7 +306,7 @@ function legacyStyleFields(
     second: '2-digit',
     timeZoneName: 'short',
   }
-  const seed: Record<string, unknown> = Object.create(null)
+  const seed: Record<string, unknown> = createObject(null)
   for (const part of parts[0]) {
     const key = field(part.type)
     if (defaults[key] !== undefined) seed[key] = defaults[key]

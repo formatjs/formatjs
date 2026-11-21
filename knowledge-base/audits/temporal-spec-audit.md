@@ -81,12 +81,36 @@ Current pass:
   all 20 TS/SDK Hermes source/bytecode suites pass. No exclusions changed.
   Remaining calendar grammar details and bare-identifier fallback stay open.
 
+- Internal object allocation: remove observable reads of mutable `Object.create`
+  from constructors, factories, option records and Intl adapters. Shared capture:
+  [intrinsics.ts](../../packages/temporal/intrinsics.ts). The native transport
+  already captures its allocator during initialization.
+  Public regression failed with `Mutable Object.create reached`; all eight
+  constructors and all eight `from` factories pass after the fix, on pure TS and
+  installed native Hermes. 46 focused/conformance test targets pass, including
+  full Node class suites, all 32 TS/SDK Hermes class suites, legacy Intl host and
+  owned formatter/ICU controls. Package assembly passes.
+  The three unfiltered Intl diagnostics each execute 4,080 scenarios: 4,076 pass;
+  four existing IANA2026f/CLDR49 data conflicts remain. See the separate
+  [discrepancy record](temporal-conformance-discrepancies.md). No new failures,
+  exclusions or accepted-failure count changes.
+  Allocation lines reviewed here: `instant.html` 387, `duration.html` 1277,
+  `plaindate.html` 642, `plaindatetime.html` 877, `plaintime.html` 710,
+  `plainyearmonth.html` 549, `plainmonthday.html` 336, `zoneddatetime.html` 1028.
+  These lines stay open: this fixes the observable allocator dependency, while
+  complete prototype selection and cross-realm requirements still need review.
+  Formatter-provider `Object.create` calls and other mutable intrinsic dependencies
+  remain open, including constructor `Reflect.get` calls and shared `ToPrimitive`
+  calls through `Reflect.apply`.
+  No new line signoffs.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
 [short-date option order](https://github.com/formatjs/formatjs/pull/8064),
 [date/date-time option order](https://github.com/formatjs/formatjs/pull/8065),
-[calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066).
+[calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066),
+[intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067).
 
 New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
@@ -96,8 +120,9 @@ Pinned revision: [`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`](https://github.com
 
 “Traced” means this pass compared that line and placed a line-specific implementation comment. “Open” means not individually signed off here, even when tests pass or an earlier comment cites a group of steps. Typed Rust paths do not implement JS coercion. Review host policy and engine-only requirements separately.
 
-Confirmed specification bugs or inconsistencies will be documented separately from
-implementation findings. None confirmed in the current pass.
+Standards-policy inconsistencies are recorded in [spec issues](temporal-spec-issues.md);
+external test/data conflicts are recorded in [conformance discrepancies](temporal-conformance-discrepancies.md).
+No specification algorithm defect is confirmed in the current pass.
 
 Implementation: [Now, Instant and option reads](https://github.com/formatjs/formatjs/pull/8055/files); [Duration.compare, TypeScript and Rust](https://github.com/formatjs/formatjs/pull/8056/files). The `Now` and Date bridge review uses some grouped comments, so those lines are not automatically marked traced here.
 

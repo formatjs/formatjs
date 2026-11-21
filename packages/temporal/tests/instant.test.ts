@@ -1,6 +1,6 @@
 import strings from '#packages/temporal/tests/instant-strings.json' with {type: 'json'}
 import {expect, it} from 'vitest'
-import {Instant} from '#packages/temporal/index.js'
+import {Instant, Temporal} from '#packages/temporal/index.js'
 
 it('coerces before reading newTarget.prototype, propagates abrupt completions', () => {
   const order: string[] = []
@@ -127,4 +127,82 @@ it('compares exact instants, coercing left before right', () => {
   expect(order).toEqual(['left', 'right'])
   expect(Instant.compare(new Instant(1n), new Instant(0n))).toBe(1)
   expect(Instant.compare('19700101T00Z', new Instant(0n))).toBe(0)
+})
+
+it('allocates Temporal objects without observing mutable Object.create', () => {
+  const cases: [string, () => {toString(): string}, string][] = [
+    ['Instant constructor', () => new Instant(0n), '1970-01-01T00:00:00Z'],
+    [
+      'Instant.from',
+      () => Instant.from('1970-01-01T00:00Z'),
+      '1970-01-01T00:00:00Z',
+    ],
+    ['Duration constructor', () => new Temporal.Duration(0, 0, 0, 1), 'P1D'],
+    ['Duration.from', () => Temporal.Duration.from('P1D'), 'P1D'],
+    [
+      'PlainDate constructor',
+      () => new Temporal.PlainDate(2020, 2, 29),
+      '2020-02-29',
+    ],
+    [
+      'PlainDate.from',
+      () => Temporal.PlainDate.from('2020-02-29'),
+      '2020-02-29',
+    ],
+    [
+      'PlainDateTime constructor',
+      () => new Temporal.PlainDateTime(2020, 2, 29),
+      '2020-02-29T00:00:00',
+    ],
+    [
+      'PlainDateTime.from',
+      () => Temporal.PlainDateTime.from('2020-02-29'),
+      '2020-02-29T00:00:00',
+    ],
+    ['PlainTime constructor', () => new Temporal.PlainTime(12, 34), '12:34:00'],
+    ['PlainTime.from', () => Temporal.PlainTime.from('12:34'), '12:34:00'],
+    [
+      'PlainYearMonth constructor',
+      () => new Temporal.PlainYearMonth(2020, 2),
+      '2020-02',
+    ],
+    [
+      'PlainYearMonth.from',
+      () => Temporal.PlainYearMonth.from('2020-02'),
+      '2020-02',
+    ],
+    [
+      'PlainMonthDay constructor',
+      () => new Temporal.PlainMonthDay(2, 29),
+      '02-29',
+    ],
+    ['PlainMonthDay.from', () => Temporal.PlainMonthDay.from('02-29'), '02-29'],
+    [
+      'ZonedDateTime constructor',
+      () => new Temporal.ZonedDateTime(0n, 'UTC'),
+      '1970-01-01T00:00:00+00:00[UTC]',
+    ],
+    [
+      'ZonedDateTime.from',
+      () => Temporal.ZonedDateTime.from('1970-01-01T00:00[UTC]'),
+      '1970-01-01T00:00:00+00:00[UTC]',
+    ],
+  ]
+  const original = Object.create
+  const failure = new Error('Mutable Object.create reached')
+  for (const [name, create, expected] of cases) {
+    let result: {toString(): string} | undefined, error: unknown
+    try {
+      Object.create = () => {
+        throw failure
+      }
+      result = create()
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.create = original
+    }
+    expect(error, name).toBeUndefined()
+    expect(result!.toString(), name).toBe(expected)
+  }
 })

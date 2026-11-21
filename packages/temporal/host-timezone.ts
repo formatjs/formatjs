@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {steps} from '@formatjs_generated/tz/temporal-names.js'
 import links from '@formatjs_generated/tz/links.js'
 import primary from '@formatjs_generated/tz/primary.js'
@@ -42,7 +43,7 @@ export function createHostTimeZoneOffset(
     )
   const formatter = new Constructor(
     'en-US-u-nu-latn',
-    Object.assign(Object.create(null), {
+    Object.assign(createObject(null), {
       timeZone,
       calendar: 'iso8601',
       numberingSystem: 'latn',
