@@ -44,6 +44,7 @@ import {
 } from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
+  unitOptions,
   fractionalSecondDigits,
   roundingMode,
   unitOption,
@@ -254,9 +255,12 @@ class DurationValue {
     const fields = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L395-L398
+    // L395: select string shorthand; L396: retain the primitive unit string.
+    // L397: create a null-prototype record; L398: create its own smallestUnit data property.
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(createObject(null), {smallestUnit: roundTo})
+        ? unitOptions(roundTo)
         : optionsObject(roundTo)
     const largestRaw = resolved.largestUnit,
       largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -327,9 +331,12 @@ class DurationValue {
     const fields = read(this)
     if (options === undefined)
       throw new TypeErrorConstructor('totalOf is required')
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L468-L471
+    // L468: select string shorthand; L469: retain the primitive unit string.
+    // L470: create a null-prototype record; L471: create its own unit data property.
     const resolved =
       typeof options === 'string'
-        ? Object.assign(createObject(null), {unit: options})
+        ? unitOptions(options, 'unit')
         : optionsObject(options)
     const relative = toRelativeTo(resolved.relativeTo)
     const unit = unitOption(resolved.unit)

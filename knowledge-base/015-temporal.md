@@ -22,6 +22,13 @@ before representable-range checks and calendar projection, on both JS backends.
 Calendar identifier extraction validates string syntax without requiring its date
 to fit Temporal’s representable range. Calendar-bearing objects use private slots;
 field-bag defaults remain distinct from required `withCalendar` arguments.
+String shorthand in Instant/PlainTime/PlainDateTime/ZonedDateTime/Duration
+round() and Duration.total() builds a fresh null-prototype record through
+`unitOptions` in rounding.ts. One own data property retains the primitive string;
+mutable Object.assign and inherited option getters/setters cannot intercept it.
+Object-form options keep ordinary Get semantics. Host/provider copy operations
+and remaining option algorithms still need separate review.
+
 Temporal runtime allocation uses `intrinsics.ts` to capture `Object.create` once.
 Constructors, factories, option records and Intl adapters avoid observing later
 replacement of that property. Native transport keeps its existing capture.
