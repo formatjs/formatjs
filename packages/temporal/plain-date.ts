@@ -10,7 +10,10 @@ import {
   createPlainDateTime,
   type PlainDateTimeObject,
 } from '#packages/temporal/plain-date-time.js'
-import {PlainTime} from '#packages/temporal/plain-time.js'
+import {
+  PlainTime,
+  toTimeRecordOrMidnight,
+} from '#packages/temporal/plain-time.js'
 import {
   createPlainYearMonth,
   type PlainYearMonthObject,
@@ -369,8 +372,14 @@ class PlainDateValue {
     )
   }
   toPlainDateTime(time: unknown = undefined): PlainDateTimeObject {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L433-L437
+    // L433: take this as the date.
+    // L434: check its brand before accessing the time argument.
     const slot = read(this)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    // L435: convert the argument internally, defaulting to midnight.
+    const clock = toTimeRecordOrMidnight(time)
+    // L436: combine the ISO day with the wall-clock time.
+    // L437: create the result in the original calendar.
     return createPlainDateTime(
       BigInt(slot.epochDay) * nsPerDay + clock,
       slot.calendar

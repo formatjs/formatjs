@@ -1,4 +1,4 @@
-import {it, expect} from 'vitest'
+import {it, expect, vi} from 'vitest'
 import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
@@ -101,4 +101,21 @@ it('reads clock fields without inherited native metadata', () => {
     else Reflect.deleteProperty(Object.prototype, 'properties')
   }
   expect(fields).toEqual([12, 34, 56, 123, 456, 789])
+})
+
+it('combines a date and time without calling the public PlainTime.from', () => {
+  const from = vi.spyOn(Temporal.PlainTime, 'from').mockImplementation(() => {
+    throw new Error('public PlainTime.from called')
+  })
+  try {
+    const date = new Temporal.PlainDate(2000, 1, 2)
+    const dt = date.toPlainDateTime('23:59:59.123456789')
+    expect(dt.toString()).toBe('2000-01-02T23:59:59.123456789')
+    expect(dt.withPlainTime({hour: 5}).hour).toBe(5)
+    expect(dt.withPlainTime().hour).toBe(0)
+    expect(() => dt.withPlainTime(null)).toThrow(TypeError)
+    expect(from).not.toHaveBeenCalled()
+  } finally {
+    from.mockRestore()
+  }
 })
