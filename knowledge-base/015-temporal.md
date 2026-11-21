@@ -8,6 +8,12 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The [timestamp integration follow-up](audits/temporal-timeclip-audit.md#composite-build-and-package-integration)
+repairs standalone DateTimeFormat compiler gates and synchronizes its generated
+manifest and lockfile. Captured BigInt builds the millisecond scale without a
+BigInt literal; the Date object's unary-plus conversion retains its semantics.
+Composite typechecks and manifest sync now join the consumer validation matrix.
+
 Shared [constructor instance checks](audits/temporal-instance-check-audit.md)
 delegate ECMA-262 §7.3.21 to captured Function.prototype[Symbol.hasInstance].
 Actual bound-function slots and host Object classification remain engine-owned;

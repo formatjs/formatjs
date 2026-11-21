@@ -77,7 +77,7 @@ export function ToDateTimeFormattable(
     } catch {
       // A non-Date may still carry a Temporal brand.
     }
-    if (isDate) return +(value as number)
+    if (isDate) return +(value as unknown as number)
     for (const {kind, read} of readers) {
       let result: string | bigint
       try {

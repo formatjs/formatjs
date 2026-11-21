@@ -41,14 +41,23 @@ The historical/provisional Temporal inventory above remains unchanged.
 
 Current pass:
 
+- Numeric timestamp integration: [composite compiler and package repair](temporal-timeclip-audit.md#composite-build-and-package-integration)
+  preserves exact BigInt scaling under the existing ES2018 target and narrows a
+  type assertion without changing unary-plus conversion. Bazel regenerates the
+  package manifest; pnpm removes only its stale lockfile dependency entry.
+  The three exact full-CI failures are added to the [checked-in consumer matrix](temporal-validation-targets.txt).
+  All 116 targets, five package assemblies and frozen lockfile validation pass.
+  Full published-head CI remains a separate gate. No historical line credit added.
+
 - Shared constructor checks: [ECMA-262 §7.3.21 step mapping](temporal-instance-check-audit.md)
   replaces manual traversal with captured §20.2.3.6 delegation. Actual bound
   functions and host Objects follow engine internal slots; replacing mutable
   Object.prototype.isPrototypeOf no longer breaks Temporal formatter creation.
   Three helper regressions and one public formatter regression reproduced before
   the fix. All 110 consumer targets and five package assemblies pass (33 executed,
-  77 cached). Parent full CI separately exposed pending numeric-layer composite
-  typecheck and package-manifest gaps; these results do not establish full CI success.
+  77 cached). Parent full CI separately exposed numeric-layer composite typecheck
+  and package-manifest gaps, repaired by the integration follow-up above. These
+  focused results do not establish full CI success.
   Full constructor callers remain open; no historical line credit added.
 
 - Shared primitive conversion: [ECMA-262 §7.1.1, §7.1.1.1 and §7.1.19](temporal-coercion-contract-audit.md)
@@ -814,7 +823,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [shared UTC date arithmetic audit](https://github.com/formatjs/formatjs/pull/8095),
 [primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096),
 [shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097),
-[intrinsic constructor instance checks](https://github.com/formatjs/formatjs/pull/8098).
+[intrinsic constructor instance checks](https://github.com/formatjs/formatjs/pull/8098),
+[timestamp build integration repair](https://github.com/formatjs/formatjs/pull/8099).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
