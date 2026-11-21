@@ -49,8 +49,10 @@ This is a focused consumer matrix; full repository CI remains a separate gate.
 Post-repair validation: all 116 declared targets and five package assemblies
 pass. This includes both previously failing standalone compiler gates, package
 manifest sync, package metadata/exports, release manifests, all Temporal backend
-profiles and four Intl consumers. The frozen lockfile check passes. Full CI on
-the published stack head still needs its own result; these are local results.
+profiles and four Intl consumers. The frozen lockfile check passes. Integration
+layer #8099 at da293123a2d9d7db37657e2f86047de04cf9b954 subsequently passed
+[full-suite CI](https://formatjs.buildbuddy.io/invocation/fba7b278-66cc-4ea9-9795-a1663f8ba0f1),
+cross-build and native smoke checks. Later stack heads require their own CI result.
 No new historical Temporal line credit assigned.
 
 ## Defect and fix

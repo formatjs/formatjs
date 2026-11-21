@@ -19,9 +19,6 @@ formatjs_library(
         "intrinsics.ts",
     ],
     visibility = ["//visibility:public"],
-    deps = [
-        "//:node_modules/@formatjs/bigdecimal",
-    ],
 )
 
 formatjs_test(
