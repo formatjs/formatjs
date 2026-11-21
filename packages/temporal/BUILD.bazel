@@ -45,6 +45,7 @@ formatjs_library(
         "instant.ts",
         "instant-format.ts",
         "instant-string.ts",
+        "intrinsics.ts",
         "kernel.ts",
         "legacy-calendar-date.ts",
         "legacy-durationformat.ts",

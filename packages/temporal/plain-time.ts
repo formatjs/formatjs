@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
@@ -206,11 +207,11 @@ function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
 function create(value: bigint | NativeTimeResult): PlainTimeObject {
   if (import.meta.formatjsTemporalNativeData === true) {
     const data = typeof value === 'bigint' ? nativeTimeFromValue(value) : value
-    const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
+    const result = createObject(PlainTimeValue.prototype) as PlainTimeObject
     setNativeTimeSlot(result, data)
     return result
   }
-  const result = Object.create(PlainTimeValue.prototype) as PlainTimeObject
+  const result = createObject(PlainTimeValue.prototype) as PlainTimeObject
   setSlot(result, (((value as bigint) % day) + day) % day)
   return result
 }
@@ -462,7 +463,7 @@ class PlainTimeValue implements PlainTimeObject {
     if (roundTo === undefined) throw new TypeError('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? Object.assign(createObject(null), {smallestUnit: roundTo})
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement)
     const mode = roundingMode(resolved.roundingMode, 'halfExpand')
@@ -535,7 +536,7 @@ export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
       )
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
       const prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
+      const result = createObject(
         object(prototype) ? prototype : target.prototype
       )
       setNativeTimeSlot(result, value)
@@ -546,7 +547,7 @@ export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
     )
     const value = regulate(values, false)
     const prototype = Reflect.get(newTarget, 'prototype')
-    const result = Object.create(
+    const result = createObject(
       object(prototype) ? prototype : target.prototype
     )
     setSlot(result, value)

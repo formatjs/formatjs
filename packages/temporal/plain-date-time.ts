@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeDateSnapshot} from '#packages/temporal/date-core.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -144,7 +145,7 @@ export function createPlainDateTime(
     ) => PlainDateTimeObject)(input)
   const value = typeof input === 'bigint' ? input : input.epochNanoseconds
   checkDateTime(value)
-  const result = Object.create(
+  const result = createObject(
     PlainDateTimeValue.prototype
   ) as PlainDateTimeObject
   setDateTimeSlot(
@@ -439,7 +440,7 @@ class PlainDateTimeValue {
     if (roundTo === undefined) throw new TypeError('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? Object.assign(createObject(null), {smallestUnit: roundTo})
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
@@ -543,14 +544,14 @@ export const PlainDateTime: PlainDateTimeConstructor = new Proxy(
       const year = integer(args[0]),
         month = integer(args[1]),
         day = integer(args[2])
-      const clock = Object.create(null) as Record<string, number>
+      const clock = createObject(null) as Record<string, number>
       for (let index = 0; index < 6; index++)
         clock[clockNames[index]] =
           args[index + 3] === undefined ? 0 : integer(args[index + 3])
       const calendar = constructorCalendar(args[9])
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
       const prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
+      const result = createObject(
         object(prototype) ? prototype : target.prototype
       )
       setDateTimeSlot(result, {epochNanoseconds: value, calendar})

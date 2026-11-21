@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {dayCheck} from '#packages/temporal/calendar.js'
 import {toDurationFields} from '#packages/temporal/duration.js'
@@ -73,7 +74,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (!object(value))
     throw new TypeError('relativeTo must be a string or object')
   const calendar = calendarFromObject(value),
-    prepared = Object.create(null) as Record<string, unknown>
+    prepared = createObject(null) as Record<string, unknown>
   const names = dateFieldNames(calendar, true, 'date', ['offset', 'timeZone'])
   for (let i = 0; i < names.length; i++) {
     const key = names[i],

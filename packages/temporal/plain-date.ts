@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -135,7 +136,7 @@ export function createPlainDate(
     epochDay > 100000000
   )
     throw new RangeError('Date out of range')
-  const result = Object.create(PlainDateValue.prototype) as PlainDateObject
+  const result = createObject(PlainDateValue.prototype) as PlainDateObject
   setDateSlot(result, typeof value === 'number' ? {epochDay, calendar} : value)
   return result
 }
@@ -419,7 +420,7 @@ export const PlainDate: PlainDateConstructor = new Proxy(PlainDateValue, {
       calendar = constructorCalendar(args[3])
     const epochDay = isoDay(year, month, day)
     const prototype = Reflect.get(newTarget, 'prototype')
-    const result = Object.create(
+    const result = createObject(
       object(prototype) ? prototype : target.prototype
     )
     setDateSlot(result, {epochDay, calendar})

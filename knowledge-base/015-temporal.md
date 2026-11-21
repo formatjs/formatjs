@@ -22,6 +22,11 @@ before representable-range checks and calendar projection, on both JS backends.
 Calendar identifier extraction validates string syntax without requiring its date
 to fit Temporal’s representable range. Calendar-bearing objects use private slots;
 field-bag defaults remain distinct from required `withCalendar` arguments.
+Temporal runtime allocation uses `intrinsics.ts` to capture `Object.create` once.
+Constructors, factories, option records and Intl adapters avoid observing later
+replacement of that property. Native transport keeps its existing capture.
+Formatter-provider allocations, other intrinsic dependencies and full cross-realm
+allocation remain open.
 
 ## Native performance direction
 

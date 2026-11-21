@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -63,7 +64,7 @@ function read(item: unknown): DateSlot {
 export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   if (slot.epochDay < -100000001 || slot.epochDay > 100000000)
     throw new RangeError('Month-day out of range')
-  const result = Object.create(
+  const result = createObject(
     PlainMonthDayValue.prototype
   ) as PlainMonthDayObject
   setMonthDaySlot(result, slot)
@@ -206,7 +207,7 @@ export const PlainMonthDay: PlainMonthDayConstructor = new Proxy(
       if (epochDay < -100000001 || epochDay > 100000000)
         throw new RangeError('Month-day out of range')
       const prototype = Reflect.get(newTarget, 'prototype'),
-        result = Object.create(object(prototype) ? prototype : target.prototype)
+        result = createObject(object(prototype) ? prototype : target.prototype)
       setMonthDaySlot(result, {epochDay, calendar})
       return result
     },
