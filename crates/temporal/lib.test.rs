@@ -3118,3 +3118,112 @@ fn comparisons_preserve_chronological_field_order_and_ignore_calendars() {
         );
     }
 }
+
+#[test]
+fn exact_clock_difference_vectors_and_component_boundaries() {
+    use formatjs_temporal::{Duration, PlainTime, RoundingMode, TimeUnit};
+    let vectors: serde_json::Value =
+        serde_json::from_str(include_str!(env!("FORMATJS_TEMPORAL_TIME_STRINGS"))).unwrap();
+    for vector in vectors["differences"].as_array().unwrap() {
+        let one: PlainTime = vector["one"].as_str().unwrap().parse().unwrap();
+        let two: PlainTime = vector["two"].as_str().unwrap().parse().unwrap();
+        let mut expected = [0i128; 10];
+        for (index, value) in vector["fields"].as_array().unwrap().iter().enumerate() {
+            expected[index + 4] = i128::from(value.as_i64().unwrap());
+        }
+        let until = one
+            .until(
+                two,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap();
+        assert_eq!(until.fields(), expected, "{vector}");
+        assert_eq!(
+            until.time_nanoseconds(false).unwrap(),
+            vector["nanoseconds"]
+                .as_str()
+                .unwrap()
+                .parse::<i128>()
+                .unwrap()
+        );
+        assert_eq!(
+            one.since(
+                two,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected.map(|field| -field)
+        );
+        assert_eq!(
+            two.until(
+                one,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected.map(|field| -field)
+        );
+        assert_eq!(
+            two.since(
+                one,
+                TimeUnit::Hour,
+                TimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc
+            )
+            .unwrap()
+            .fields(),
+            expected
+        );
+    }
+    let one: PlainTime = "00:59:59.999999999".parse().unwrap();
+    let two: PlainTime = "23:00:00".parse().unwrap();
+    for vector in vectors["largestDifferences"].as_array().unwrap() {
+        let unit = match vector["unit"].as_str().unwrap() {
+            "hour" => TimeUnit::Hour,
+            "minute" => TimeUnit::Minute,
+            "second" => TimeUnit::Second,
+            "millisecond" => TimeUnit::Millisecond,
+            "microsecond" => TimeUnit::Microsecond,
+            "nanosecond" => TimeUnit::Nanosecond,
+            value => panic!("Unknown vector unit: {value}"),
+        };
+        let mut expected = [0i128; 10];
+        for (index, value) in vector["fields"].as_array().unwrap().iter().enumerate() {
+            expected[index + 4] = i128::from(value.as_i64().unwrap());
+        }
+        assert_eq!(
+            one.until(two, unit, TimeUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            expected
+        );
+        assert_eq!(
+            one.since(two, unit, TimeUnit::Nanosecond, 1, RoundingMode::Trunc)
+                .unwrap()
+                .fields(),
+            expected.map(|field| -field)
+        );
+    }
+    for sign in [1i128, -1] {
+        let mut fields =
+            [0, 0, 0, 0, 2_501_999_792_983, 36, 31, 999, 999, 999].map(|field| field * sign);
+        let value = Duration::new(fields).unwrap();
+        assert_eq!(
+            value.time_nanoseconds(false).unwrap(),
+            sign * 9_007_199_254_740_991_999_999_999
+        );
+        fields[9] += sign;
+        assert!(Duration::new(fields).is_err());
+    }
+}

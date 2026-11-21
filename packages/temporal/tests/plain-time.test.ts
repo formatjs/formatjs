@@ -342,3 +342,72 @@ it.each(['complete', 'partial'] as const)(
     }
   }
 )
+
+it('matches exact clock differences across every borrow and both day endpoints', () => {
+  const fields = (value: ReturnType<typeof Temporal.Duration.from>) => [
+    value.years,
+    value.months,
+    value.weeks,
+    value.days,
+    value.hours,
+    value.minutes,
+    value.seconds,
+    value.milliseconds,
+    value.microseconds,
+    value.nanoseconds,
+  ]
+  for (const vector of strings.differences) {
+    const one = PlainTime.from(vector.one),
+      two = PlainTime.from(vector.two)
+    const expected = [0, 0, 0, 0, ...vector.fields]
+    const negative = expected.map(value => -value || 0)
+    expect(fields(one.until(two)), `${vector.one} until ${vector.two}`).toEqual(
+      expected
+    )
+    expect(fields(one.since(two))).toEqual(negative)
+    expect(fields(two.until(one))).toEqual(negative)
+    expect(fields(two.since(one))).toEqual(expected)
+    if (vector.nanoseconds === '0') {
+      for (const value of fields(one.since(two)))
+        expect(Object.is(value, 0)).toBe(true)
+    }
+  }
+  const one = PlainTime.from('00:59:59.999999999'),
+    two = PlainTime.from('23:00:00')
+  for (const vector of strings.largestDifferences) {
+    const expected = [0, 0, 0, 0, ...vector.fields]
+    expect(
+      fields(one.until(two, {largestUnit: vector.unit})),
+      vector.unit
+    ).toEqual(expected)
+    expect(fields(one.since(two, {largestUnit: vector.unit}))).toEqual(
+      expected.map(value => -value || 0)
+    )
+  }
+})
+
+it('subtracts private clock records without public field or coercion reads', () => {
+  const one = PlainTime.from('12:34:56.123456789'),
+    two = PlainTime.from('13:33:55.122455788')
+  for (const value of [one, two]) {
+    for (const key of [
+      'hour',
+      'minute',
+      'second',
+      'millisecond',
+      'microsecond',
+      'nanosecond',
+      'toString',
+      'valueOf',
+      Symbol.toPrimitive,
+    ]) {
+      Object.defineProperty(value, key, {
+        get() {
+          throw new Error('Public clock read during difference')
+        },
+      })
+    }
+  }
+  expect(one.until(two).toJSON()).toBe('PT58M58.998998999S')
+  expect(one.since(two).toJSON()).toBe('-PT58M58.998998999S')
+})

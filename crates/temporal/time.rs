@@ -192,6 +192,16 @@ impl PlainTime {
         if largest.nanoseconds() < smallest.nanoseconds() {
             return Err(Error::InvalidRoundingOptions);
         }
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L529-L537
+        // L529: subtract encoded hour contributions.
+        // L530: subtract encoded minute contributions.
+        // L531: subtract encoded second contributions.
+        // L532: subtract encoded millisecond contributions.
+        // L533: subtract encoded microsecond contributions.
+        // L534: subtract encoded nanosecond contributions.
+        // L535: linearity makes their weighted sum equal other minus self.
+        // L536: both clocks lie in [0, one day); their difference cannot reach one day.
+        // L537: forward the exact difference to rounding and decomposition.
         Duration::from_time_nanoseconds(
             round_duration(
                 other.0 - self.0,

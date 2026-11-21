@@ -345,6 +345,16 @@ function difference(
         mode
       )
     )
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L529-L537
+  // L529: subtract encoded hour contributions.
+  // L530: subtract encoded minute contributions.
+  // L531: subtract encoded second contributions.
+  // L532: subtract encoded millisecond contributions.
+  // L533: subtract encoded microsecond contributions.
+  // L534: subtract encoded nanosecond contributions.
+  // L535: linearity makes their weighted sum equal end minus value.
+  // L536: both clocks lie in [0, day), so their difference has magnitude below day.
+  // L537: pass that exact duration onward; since uses the reversed operand order.
   return createDuration(
     balanceDurationTime(
       roundDuration(

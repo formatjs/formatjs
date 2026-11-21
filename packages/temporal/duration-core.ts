@@ -69,6 +69,14 @@ export function durationSign(fields: DurationFields): -1 | 0 | 1 {
   }
   return 0
 }
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1327-L1333
+// Time-only terms expand the component fold; optional days are separate.
+// L1327: an hour contributes 60 minutes.
+// L1328: a minute contributes 60 seconds.
+// L1329: a second contributes 1000 milliseconds.
+// L1330: a millisecond contributes 1000 microseconds.
+// L1331: a microsecond contributes 1000 nanoseconds.
+// L1333: return the exact integer sum. Caller-bound assertion L1332 remains open.
 export function durationNanoseconds(
   fields: DurationFields,
   includeDays = true
