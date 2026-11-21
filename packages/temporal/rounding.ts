@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -88,7 +89,7 @@ export function roundingIncrement(value: unknown): number {
 export function fractionalSecondDigits(value: unknown): 'auto' | number {
   if (value === undefined) return 'auto'
   if (typeof value === 'number') {
-    const digits = Math.floor(value)
+    const digits = floor(value)
     if (!Number.isFinite(digits) || digits < 0 || digits > 9)
       throw new RangeError('Invalid fractionalSecondDigits')
     return digits

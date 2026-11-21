@@ -273,3 +273,15 @@ it('rounds repeated civil dates to earliest midnight boundaries', () => {
     }
   }
 })
+
+it('preserves the pinned lower-date guard for offset prefer and reject', () => {
+  const text = '-271821-04-19T23:00-01:00[-01:00]'
+  for (const offset of ['use', 'ignore'] as const)
+    expect(Temporal.ZonedDateTime.from(text, {offset}).epochNanoseconds).toBe(
+      -8_640_000_000_000_000_000_000n
+    )
+  for (const offset of ['prefer', 'reject'] as const)
+    expect(() => Temporal.ZonedDateTime.from(text, {offset})).toThrow(
+      RangeError
+    )
+})

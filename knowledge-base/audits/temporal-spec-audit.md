@@ -212,7 +212,7 @@ Current pass:
   multiples, midpoint neighbors, even/odd quotient ties and wide values. The
   exact-time oracle shifts by an even quantum multiple before ICU rounding;
   the duration oracle uses signed ICU rounding directly. No algorithm defect
-  found in these reviewed arithmetic steps. Production executable tokens are unchanged.
+  found in these reviewed arithmetic steps. Rounding-core executable tokens are unchanged.
   Fixture review exposed a coverage gap: existing half-even midpoint rows all
   rounded to zero. Extended ICU sample inputs with three-half/five-half quanta and
   Instant limit-adjacent midpoints; expected outputs still come from ICU. Current
@@ -225,6 +225,26 @@ Current pass:
   native ISO/Duration ICU oracles in source and optimized bytecode modes.
   No exclusions or accepted-failure baselines changed.
 
+- Numeric floor dependency: [captured floor](../../packages/ecma262-abstract/intrinsics.ts)
+  replaces 50 dynamic calls across 15 Temporal/shared date and calendar modules,
+  including the shared timezone-transition search. Internal floor operations no
+  longer consult a replacement `Math.floor` installed by user code after import.
+  Seven shared date-operation regressions and eight public Temporal regressions
+  failed before the fix. Installed native Hermes also checks formatting, week
+  calculation and precision under the replacement. Other numeric/global/prototype
+  dependencies and formatter-provider floor calls remain open.
+  The ISO range review also found an editorial inconsistency in the
+  CheckISODaysRange removal note, recorded separately in
+  [spec issues](temporal-spec-issues.md#range-guard-removal-note-versus-lower-bound-offset-behavior).
+  Pinned `prefer`/`reject` lower-date rejection stays intact; `use`/`ignore` still
+  reach the valid minimum instant. Node/Rust controls cover this distinction.
+  All 89 validation targets pass: focused regressions/typechecks, installed
+  native Hermes, Rust bound controls, all 40 class Test262 backend gates, shared
+  Intl consumer units and baseline gates, locale gates and ICU oracles. Temporal,
+  DateTimeFormat and DurationFormat package assembly passes. Existing exclusions
+  and accepted-failure baselines are unchanged.
+  Remaining ISO arithmetic/range clauses stay open. No new line signoffs.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -236,7 +256,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069),
 [host-exotic objects](https://github.com/formatjs/formatjs/pull/8070),
 [provider host objects](https://github.com/formatjs/formatjs/pull/8071),
-[exact rounding audit](https://github.com/formatjs/formatjs/pull/8072).
+[exact rounding audit](https://github.com/formatjs/formatjs/pull/8072),
+[captured numeric floor](https://github.com/formatjs/formatjs/pull/8073).
 
 New traces: 81 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

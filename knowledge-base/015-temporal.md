@@ -44,9 +44,15 @@ Exact signed and exact-time rounding now have individual TS/Rust traces for
 40 pinned spec lines: 34 newly signed off, six existing traces reverified. Integer
 quotient/remainder arithmetic preserves midpoint and parity behavior without
 floating-point division. Caller option, calendar-scaling and range checks remain
-separate audit work; production executable code is unchanged. ICU fixtures now
+separate audit work; integer rounding-core executable code is unchanged. ICU fixtures now
 include nonzero half-even results for both signs and both lower-quotient parities:
 3,987 Instant rounding rows and 7,130 signed Duration rounding/total rows.
+
+Temporal and shared numeric date/calendar helpers capture `Math.floor` once;
+50 internal floor calls avoid later replacement of the global property. Other
+intrinsic dependencies remain under audit. The pinned lower-date offset guard
+is preserved; its behavior conflicts with an editorial removal claim documented
+in the separate [spec issue record](audits/temporal-spec-issues.md).
 
 ## Native performance direction
 

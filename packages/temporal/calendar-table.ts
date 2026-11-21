@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   fallbackLunisolar,
   fallbackUmmAlQura,
@@ -72,7 +73,7 @@ export function tableYearStart(
     index = year - table.firstYear
   if (index === table.years.length / 2) return table.endDay
   pattern(calendar, year)
-  const block = Math.floor(index / 64)
+  const block = floor(index / 64)
   let start = table.checkpoints[block]
   for (let i = block * 64; i < index; i++)
     start += length(pattern(calendar, table.firstYear + i))
@@ -108,7 +109,7 @@ export function tableMonthSerial(
   const table = data(calendar),
     index = year - table.firstYear
   pattern(calendar, year)
-  const block = Math.floor(index / 64)
+  const block = floor(index / 64)
   let serial = table.monthCheckpoints[block]
   for (let i = block * 64; i < index; i++)
     serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12
@@ -126,7 +127,7 @@ export function tableYearMonth(
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
-    const mid = Math.floor((low + high) / 2)
+    const mid = floor((low + high) / 2)
     if (checkpoints[mid] <= serial) low = mid
     else high = mid
   }
@@ -151,7 +152,7 @@ export function tableDate(
   let low = 0,
     high = checkpoints.length
   while (low + 1 < high) {
-    const mid = Math.floor((low + high) / 2)
+    const mid = floor((low + high) / 2)
     if (checkpoints[mid] <= epoch) low = mid
     else high = mid
   }

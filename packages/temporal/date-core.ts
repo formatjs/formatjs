@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
@@ -702,7 +703,7 @@ export function dateProperty(
       const year = YearFromTime(thursday * 86400000)
       return key === 'yearOfWeek'
         ? year
-        : Math.floor((thursday - DayFromYear(year)) / 7) + 1
+        : floor((thursday - DayFromYear(year)) / 7) + 1
     }
   }
   return undefined

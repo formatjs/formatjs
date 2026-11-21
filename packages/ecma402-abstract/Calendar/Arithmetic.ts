@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   DayFromYear,
   DaysInYear,
@@ -28,7 +29,7 @@ type GregorianCalendarId = Extract<
 
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 const mod = (value: number, divisor: number): number =>
-  value - Math.floor(value / divisor) * divisor
+  value - floor(value / divisor) * divisor
 function integer(value: number): number {
   if (!Number.isSafeInteger(value))
     throw new RangeError('Expected safe integer')
@@ -38,12 +39,12 @@ export function HebrewLeapYear(year: number): boolean {
   return mod(7 * year + 1, 19) < 7
 }
 export function HebrewElapsedMonths(year: number): number {
-  return Math.floor((235 * year - 234) / 19)
+  return floor((235 * year - 234) / 19)
 }
 // Same postponement arithmetic as crates/intl_datetimeformat_calendars/core.rs.
 function hebrewDelay(year: number): number {
   const months = HebrewElapsedMonths(year)
-  const day = 29 * months + Math.floor((12084 + 13753 * months) / 25920)
+  const day = 29 * months + floor((12084 + 13753 * months) / 25920)
   return day + Number(mod(3 * (day + 1), 7) < 3)
 }
 function IsISOCalendar(
@@ -64,12 +65,12 @@ export function ArithmeticCalendarStartOfYear(
     return DayFromYear(CalendarISOYear(calendar, year))
   switch (calendar) {
     case 'coptic':
-      return 1824665 - 2440588 + 365 * year + Math.floor(year / 4)
+      return 1824665 - 2440588 + 365 * year + floor(year / 4)
     case 'ethiopic':
-      return 1723856 - 2440588 + 365 * year + Math.floor(year / 4)
+      return 1723856 - 2440588 + 365 * year + floor(year / 4)
     case 'ethioaa': {
       const value = year - 5500
-      return 1723856 - 2440588 + 365 * value + Math.floor(value / 4)
+      return 1723856 - 2440588 + 365 * value + floor(value / 4)
     }
     case 'indian': {
       const value = year + 78
@@ -82,12 +83,10 @@ export function ArithmeticCalendarStartOfYear(
         2440588 -
         Number(calendar === 'islamic-tbla') +
         354 * (year - 1) +
-        Math.floor((3 + 11 * year) / 30)
+        floor((3 + 11 * year) / 30)
       )
     case 'persian':
-      return (
-        1948320 - 2440588 + 365 * (year - 1) + Math.floor((8 * year + 21) / 33)
-      )
+      return 1948320 - 2440588 + 365 * (year - 1) + floor((8 * year + 21) / 33)
   }
   const present = hebrewDelay(year)
   return (
@@ -186,7 +185,7 @@ export function ArithmeticGregorianFromEpochDay(
 ): {year: number; month: number; monthCode: string; day: number} {
   // Same March-based 400-year conversion as the Rust calendar core.
   const shifted = epoch + 719468,
-    era = Math.floor(shifted / 146097),
+    era = floor(shifted / 146097),
     dayOfEra = (shifted - era * 146097) >>> 0,
     yearOfEra =
       ((dayOfEra -
@@ -228,7 +227,7 @@ export function ArithmeticCalendarFromEpochDay(
   const t = epoch * 86400000,
     civilYear = YearFromTime(t)
   if (iso) {
-    const ordinal = Math.floor(t / 86400000) - DayFromYear(civilYear),
+    const ordinal = floor(t / 86400000) - DayFromYear(civilYear),
       leap = DaysInYear(civilYear) === 366 ? 1 : 0
     if (!(ordinal >= 0 && ordinal < 365 + leap)) throw new Error('Invalid time')
     const year =
@@ -240,7 +239,7 @@ export function ArithmeticCalendarFromEpochDay(
           ? 1
           : ordinal < 59 + leap
             ? 2
-            : 3 + Math.floor((5 * (ordinal - 59 - leap) + 2) / 153)
+            : 3 + floor((5 * (ordinal - 59 - leap) + 2) / 153)
     return {
       year,
       month,
@@ -252,29 +251,29 @@ export function ArithmeticCalendarFromEpochDay(
   let year: number
   switch (calendar) {
     case 'coptic':
-      year = Math.floor((4 * (jd - 1824665) + 3) / 1461)
+      year = floor((4 * (jd - 1824665) + 3) / 1461)
       break
     case 'ethiopic':
     case 'ethioaa':
       year =
-        Math.floor((4 * (jd - 1723856) + 3) / 1461) +
+        floor((4 * (jd - 1723856) + 3) / 1461) +
         (calendar === 'ethioaa' ? 5500 : 0)
       break
     case 'islamic-civil':
     case 'islamic-tbla':
-      year = Math.floor(
+      year = floor(
         (30 * (jd - 1948440 + Number(calendar === 'islamic-tbla')) + 10646) /
           10631
       )
       break
     case 'persian':
-      year = 1 + Math.floor((33 * (jd - 1948320) + 3) / 12053)
+      year = 1 + floor((33 * (jd - 1948320) + 3) / 12053)
       break
     case 'indian':
       year = civilYear - 78
       break
     default:
-      year = Math.floor(((epoch + 2092590) * 492480) / 179876755) + 1
+      year = floor(((epoch + 2092590) * 492480) / 179876755) + 1
   }
   while (ArithmeticCalendarStartOfYear(calendar, year) > epoch) year--
   while (ArithmeticCalendarStartOfYear(calendar, year + 1) <= epoch) year++

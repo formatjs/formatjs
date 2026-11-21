@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {createInstant, type InstantObject} from '#packages/temporal/instant.js'
 import {
   createPlainDate,
@@ -111,7 +112,7 @@ let systemClock: SystemClock = {
     const absolute = Math.abs(minutes)
     return (
       (minutes < 0 ? '-' : '+') +
-      String(Math.floor(absolute / 60)).padStart(2, '0') +
+      String(floor(absolute / 60)).padStart(2, '0') +
       ':' +
       String(absolute % 60).padStart(2, '0')
     )
