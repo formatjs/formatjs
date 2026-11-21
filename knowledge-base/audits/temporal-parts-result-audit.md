@@ -71,8 +71,10 @@ function is mocked.
 
 This closes the facade loops recorded in the
 [foundation object audit](temporal-object-contract-audit.md). It does not close
-private-list handling inside PartitionDateTimePattern, FormatDateTimePattern,
-PartitionNumberPattern or their dependencies. Those producers must separately
+private-list handling inside PartitionDateTimePattern, PartitionNumberPattern
+or their dependencies. The later [date producer audit](temporal-date-pattern-audit.md)
+reviews FormatDateTimePattern's central appends and numeric projection while
+retaining its constructor/calendar/locale dependencies as open. Those producers must separately
 prove that their arrays and records satisfy this helper's input model. Temporal
 brand routing and complete formatToParts methods retain their own audit status.
 
