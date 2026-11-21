@@ -33,7 +33,7 @@ export function HandleDateTimeValue(
     if (clipped !== clipped) throw new RangeErrorConstructor('Invalid time')
     return {
       format: slots,
-      epochNanoseconds: bigIntFrom(clipped) * 1_000_000n,
+      epochNanoseconds: bigIntFrom(clipped) * bigIntFrom(1_000_000),
       isPlain: false,
     }
   }
