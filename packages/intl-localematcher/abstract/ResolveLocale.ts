@@ -25,6 +25,8 @@ interface LocaleArraySnapshot {
 }
 
 const availableLocaleArrays = new WeakMap<Set<string>, LocaleArraySnapshot>()
+const getLocaleArray = availableLocaleArrays.get.bind(availableLocaleArrays)
+const setLocaleArray = availableLocaleArrays.set.bind(availableLocaleArrays)
 
 function localeArray(
   locales: Set<string> | readonly string[],
@@ -32,7 +34,7 @@ function localeArray(
 ): readonly string[] {
   if (Array.isArray(locales)) return locales
   const available = locales as Set<string>
-  let cached = availableLocaleArrays.get(available)
+  let cached = getLocaleArray(available)
   if (cached?.original.length !== available.size) cached = undefined
   if (cached) {
     const original = cached.original
@@ -46,7 +48,7 @@ function localeArray(
   }
   if (!cached) {
     cached = {original: Array.from(available), snapshot: undefined}
-    availableLocaleArrays.set(available, cached)
+    setLocaleArray(available, cached)
   }
   if (!bestFit) return cached.original
   return (cached.snapshot ??= createLocaleListSnapshot(cached.original))

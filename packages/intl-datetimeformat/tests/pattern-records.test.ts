@@ -9,6 +9,83 @@ import type {IntlDateTimeFormatPart} from '#packages/ecma402-abstract/types/date
 
 DateTimeFormat.__addLocaleData(en as any)
 
+it.each([
+  ['get', 'best fit'],
+  ['get', 'lookup'],
+  ['set', 'best fit'],
+  ['set', 'lookup'],
+] as const)(
+  'formats through private cold/warm caches without WeakMap.prototype.%s (%s)',
+  (method, localeMatcher) => {
+    const create = () =>
+      new DateTimeFormat('en', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'UTC',
+        localeMatcher,
+      })
+    const epoch = Date.UTC(2024, 0, 2)
+    for (const warm of [false, true]) {
+      const formatter = create()
+      if (warm) formatter.formatToParts(epoch)
+      const original = WeakMap.prototype[method]
+      let actual: string[] | undefined, error: unknown
+      try {
+        WeakMap.prototype[method] = () => {
+          throw new Error(`Mutable WeakMap.${method}`)
+        }
+        actual = [
+          formatter.format(epoch),
+          formatter
+            .formatToParts(epoch)
+            .map(part => part.value)
+            .join(''),
+          formatter.formatRange(epoch, epoch),
+          formatter
+            .formatRangeToParts(epoch, epoch)
+            .map(part => part.value)
+            .join(''),
+          create().format(epoch),
+        ]
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(WeakMap.prototype, method, {value: original})
+      }
+      expect(error, `warm=${warm}: ${(error as Error)?.stack}`).toBeUndefined()
+      expect(actual).toEqual(Array(5).fill('01/02/2024'))
+    }
+  }
+)
+
+it('reloads locale patterns without public WeakMap cache methods', () => {
+  const {get, set, delete: remove} = WeakMap.prototype
+  let actual: string | undefined, error: unknown
+  try {
+    const poison = () => {
+      throw new Error('Mutable WeakMap method')
+    }
+    WeakMap.prototype.get =
+      WeakMap.prototype.set =
+      WeakMap.prototype.delete =
+        poison
+    DateTimeFormat.__addLocaleData(en as any)
+    actual = new DateTimeFormat('en', {
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(0)
+  } catch (caught) {
+    error = caught
+  } finally {
+    WeakMap.prototype.get = get
+    WeakMap.prototype.set = set
+    WeakMap.prototype.delete = remove
+  }
+  expect(error, (error as Error)?.stack).toBeUndefined()
+  expect(actual).toBe('1970')
+})
+
 // Range rendering already supplies local time and native number formatters.
 function renderer(pattern: string, numberingSystem = 'latn') {
   const epoch = BigInt('1704164645987000000') // 2024-01-02T03:04:05.987Z

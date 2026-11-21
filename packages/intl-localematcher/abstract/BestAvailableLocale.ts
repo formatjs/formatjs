@@ -1,5 +1,11 @@
 // Cache for Set conversions to avoid repeated array->Set conversions
 const availableLocalesSetCache = new WeakMap<readonly string[], Set<string>>()
+const getAvailableLocales = availableLocalesSetCache.get.bind(
+  availableLocalesSetCache
+)
+const setAvailableLocales = availableLocalesSetCache.set.bind(
+  availableLocalesSetCache
+)
 
 /**
  * https://tc39.es/ecma402/#sec-bestavailablelocale
@@ -11,10 +17,10 @@ export function BestAvailableLocale(
   locale: string
 ): string | undefined {
   // Fast path: use Set for O(1) lookups instead of O(n) indexOf
-  let availableSet = availableLocalesSetCache.get(availableLocales)
+  let availableSet = getAvailableLocales(availableLocales)
   if (!availableSet) {
     availableSet = new Set(availableLocales)
-    availableLocalesSetCache.set(availableLocales, availableSet)
+    setAvailableLocales(availableLocales, availableSet)
   }
 
   let candidate = locale
