@@ -35,7 +35,10 @@ standard receiver, hint and ordering. Shared object classification includes
 `document.all`-style host exotic objects despite their `typeof` result. Temporal
 field bags, options and constructor prototypes use the same object check.
 Ordinary primitive conversion recognizes callable host objects without invoking
-them to test callability. Other helpers and cross-realm allocation remain open.
+them to test callability. Shared provider object/options coercion also preserves
+host-object identity; owned DurationFormat accepts their options and duration
+fields, including through Temporal's locale method. Other helpers and cross-realm
+allocation remain open.
 
 ## Native performance direction
 

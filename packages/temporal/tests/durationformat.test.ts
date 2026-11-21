@@ -1,3 +1,6 @@
+import {runInThisContext} from 'node:vm'
+import {setFlagsFromString} from 'node:v8'
+import {configureLocaleFormatting} from '#packages/temporal/locale.js'
 import {expect, it} from 'vitest'
 import {DurationFormat} from '#packages/intl-durationformat/core.js'
 import {Temporal} from '#packages/temporal/index.js'
@@ -124,4 +127,79 @@ it('adapts existing host formatters without changing their prototype or descript
     if (hook) Object.defineProperty(Native, '__addTemporalNamespace', hook)
     else Reflect.deleteProperty(Native, '__addTemporalNamespace')
   }
+})
+
+it('formats durations with host-exotic options through the owned provider', () => {
+  const options = hostObject({style: 'digital' as const})
+  const original = Object.getOwnPropertyDescriptor(Intl, 'DurationFormat')!
+  try {
+    Object.defineProperty(Intl, 'DurationFormat', {
+      ...original,
+      value: DurationFormat,
+    })
+    configureLocaleFormatting()
+    expect(
+      Temporal.Duration.from('PT1H2M3S').toLocaleString('en', options)
+    ).toBe('1:02:03')
+    expect(
+      new DurationFormat('en', options).format({
+        hours: 1,
+        minutes: 2,
+        seconds: 3,
+      })
+    ).toBe('1:02:03')
+  } finally {
+    Object.defineProperty(Intl, 'DurationFormat', original)
+    configureLocaleFormatting()
+  }
+})
+
+function hostObject<T extends object>(fields: T): T {
+  setFlagsFromString('--allow-natives-syntax')
+  try {
+    return Object.assign(runInThisContext('%GetUndetectable()') as T, fields)
+  } finally {
+    setFlagsFromString('--no-allow-natives-syntax')
+  }
+}
+
+it('reads host-exotic duration fields once in specification order', () => {
+  const fields = hostObject({hours: 1, minutes: 2, seconds: 3})
+  const order: string[] = []
+  for (const field of [
+    'days',
+    'hours',
+    'microseconds',
+    'milliseconds',
+    'minutes',
+    'months',
+    'nanoseconds',
+    'seconds',
+    'weeks',
+    'years',
+  ] as const) {
+    const value = (fields as Record<string, unknown>)[field]
+    Object.defineProperty(fields, field, {
+      get() {
+        order.push(field)
+        expect(this).toBe(fields)
+        return value
+      },
+    })
+  }
+  expect(new DurationFormat('en', {style: 'digital'}).format(fields)).toBe(
+    '1:02:03'
+  )
+  expect(order).toEqual([
+    'days',
+    'hours',
+    'microseconds',
+    'milliseconds',
+    'minutes',
+    'months',
+    'nanoseconds',
+    'seconds',
+    'weeks',
+    'years',
+  ])
 })

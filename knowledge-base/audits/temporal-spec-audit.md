@@ -158,8 +158,35 @@ Current pass:
   and all eight constructor prototypes. All 60 focused, typecheck, full class,
   locale, installed native Hermes and shared Intl consumer test targets pass;
   package assembly passes. No exclusions changed. Full prototype/cross-realm allocation
-  lines remain open. Formatter-provider object checks remain open.
+  lines remain open. Provider option and duration-field checks are addressed
+  below; other provider object checks remain open.
   No new line signoffs.
+
+- Provider host-object coercion: [ToObject](../../packages/ecma262-abstract/ToObject.ts)
+  rejects only strict undefined/null; [CoerceOptionsToObject](../../packages/ecma402-abstract/CoerceOptionsToObject.ts)
+  and [GetOptionsObject](../../packages/ecma402-abstract/GetOptionsObject.ts)
+  distinguish undefined from undetectable host objects. [GetOption](../../packages/ecma402-abstract/GetOption.ts)
+  and [ToDurationRecord](../../packages/ecma402-abstract/DurationFormat/ToDurationRecord.ts)
+  use shared object classification. Owned DurationFormat accepts host-exotic
+  options through `Duration.toLocaleString` and reads duration-like host fields
+  once, with the original getter receiver and specified order.
+  The contracts are ECMA-262 [ToObject](https://tc39.es/ecma262/multipage/abstract-operations.html#sec-toobject)
+  and [GetOptionsObject](https://tc39.es/ecma262/multipage/abstract-operations.html#sec-getoptionsobject),
+  plus ECMA-402 [CoerceOptionsToObject](https://tc39.es/ecma402/#sec-coerceoptionstoobject),
+  [GetOption](https://tc39.es/ecma402/#sec-getoption) and
+  [ToDurationRecord](https://tc39.es/ecma402/#sec-todurationrecord).
+  Seven real-engine regressions failed before the fix; all eight focused helper,
+  provider integration and typecheck targets pass after it. All 36 broad targets
+  also pass: twelve Intl Test262 baseline gates, thirteen Intl consumer unit
+  suites, owned formatter controls and Temporal provider/locale gates. Existing
+  accepted failures and exclusions are unchanged. Temporal, DurationFormat and
+  DateTimeFormat package assembly passes.
+  `intl.html`'s ToDurationRecord block is deleted editorial content in the pinned
+  Temporal proposal. Its retained provider helper backs ordinary inputs; do not
+  count this fix as signoff of that deleted block or of the full replacement
+  ToTemporalDuration/format algorithms. Provider receiver/legacy-constructor checks
+  (`OrdinaryHasInstance` and formatter facades) and mutable intrinsic dependencies
+  remain open. No new line signoffs.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -170,7 +197,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067),
 [internal property reads](https://github.com/formatjs/formatjs/pull/8068),
 [primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069),
-[host-exotic objects](https://github.com/formatjs/formatjs/pull/8070).
+[host-exotic objects](https://github.com/formatjs/formatjs/pull/8070),
+[provider host objects](https://github.com/formatjs/formatjs/pull/8071).
 
 New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is

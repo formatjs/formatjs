@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   type DurationInput,
   type DurationRecord,
@@ -6,10 +7,7 @@ import {IsValidDurationRecord} from '#packages/ecma402-abstract/DurationFormat/I
 import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToIntegerIfIntegral.js'
 
 export function ToDurationRecord(input: DurationInput): DurationRecord {
-  if (
-    (typeof input !== 'object' || input === null) &&
-    typeof input !== 'function'
-  ) {
+  if (!IsObject(input)) {
     if (typeof input === 'string') {
       throw new RangeError('Invalid duration format')
     }
