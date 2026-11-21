@@ -208,6 +208,17 @@ js_test(
 ]
 
 js_test(
+    name = "legacy_display_year_test",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-display-year.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
+js_test(
     name = "legacy_calendar_cache_test",
     args = ["$(rlocationpath :pkg)"],
     data = [

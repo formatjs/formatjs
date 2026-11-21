@@ -94,7 +94,7 @@ export function checkLegacyCalendarEras(
         const year = actual.find(part => part.type === 'year')?.value
         equal(
           year,
-          number(eraYear),
+          number(eraYear <= 0 ? 1 - eraYear : eraYear),
           `${locale} ${calendar} ${epoch} ${timeZone}`
         )
         for (const [type, expected] of [
@@ -175,7 +175,7 @@ export function checkLegacyCalendarEras(
                     (source === 'startRange' ? 'endRange' : 'startRange')
                 )
                 .find(part => part.type === 'year')?.value,
-              number(expected),
+              number(expected <= 0 ? 1 - expected : expected),
               `${calendar} era-boundary range ${source}`
             )
           equal(

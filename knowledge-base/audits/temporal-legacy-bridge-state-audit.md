@@ -73,3 +73,17 @@ No baseline, exclusion, timeout or arithmetic change. Complete bridge option
 normalization, brand conversion, projection semantics, realm/bootstrap behavior,
 remaining dynamic calls and existing native diagnostics remain open. No new
 specification inconsistency or historical Temporal source-line credit.
+
+## Projection cache reuse inspection
+
+The current bridge rejects ZonedDateTime before cache lookup and checks each
+value's calendar against the fixed formatter calendar before either hit or miss.
+For the six accepted types, legacyDateTimeProjection's formatter selection uses
+kind, fixed locale/options and resolved calendar/timezone. Its value-dependent
+ZonedDateTime host-offset fallback requires localNanoseconds, which this bridge
+does not supply. Thus it cannot create a timezone-name override in this path.
+A cache hit retains the selected formatter, reconstructs plain from kind, and
+uses the same BigInt floor-to-millisecond expression as a miss. No per-value
+projection metadata is lost on these branches. The 98 packaged controls above
+exercise misses/hits; this inspection establishes reuse equivalence for those
+branches, not the complete projection/option-selection contract.

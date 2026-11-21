@@ -90,6 +90,10 @@ This order also applies when native parsing is enabled.
 
 ## Calendars and time-zone data
 
+Date formatting normalizes nonpositive calendar display years to `1 - year`,
+including the native Intl bridge. For example, Buddhist calendar year 0 displays
+as year 1. Temporal's stored calendar year stays 0.
+
 Month codes must match Temporal's grammar exactly. Malformed codes such as
 `M00` or codes with trailing whitespace throw before later field getters run.
 A syntactically valid code can still be invalid for the chosen calendar.

@@ -115,7 +115,11 @@ for (const [index, profile] of profiles.entries()) {
       }),
       parts = formatter.formatToParts(input),
       actual = Object.fromEntries(parts.map(part => [part.type, part.value]))
-    assert.equal(actual.year, profile.number(row.eraYear), JSON.stringify(row))
+    assert.equal(
+      actual.year,
+      profile.number(row.eraYear <= 0 ? 1 - row.eraYear : row.eraYear),
+      JSON.stringify(row)
+    )
     if (row.era === 'bh' && profile.locale === 'en')
       assert.equal(actual.era, 'BH')
     assert(
@@ -167,7 +171,9 @@ for (const [index, profile] of profiles.entries()) {
     })
     assert.equal(
       short.formatToParts(input).find(part => part.type === 'year').value,
-      Array.from(profile.two(row.eraYear)).slice(-2).join('')
+      Array.from(profile.two(row.eraYear <= 0 ? 1 - row.eraYear : row.eraYear))
+        .slice(-2)
+        .join('')
     )
     checked += 2
   }
@@ -193,7 +199,13 @@ for (const calendar of calendars) {
             ? 'relatedYear'
             : 'year'
         ],
-        String(value.eraYear ?? value.year)
+        String(
+          calendar === 'chinese' || calendar === 'dangi'
+            ? value.year
+            : (value.eraYear ?? value.year) <= 0
+              ? 1 - (value.eraYear ?? value.year)
+              : (value.eraYear ?? value.year)
+        )
       )
       assert.equal(actual.day, String(value.day))
       if (calendar !== 'hebrew')

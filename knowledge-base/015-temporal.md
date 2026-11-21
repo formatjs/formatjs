@@ -16,6 +16,9 @@ The [display-year audit](audits/temporal-calendar-year-audit.md) applies publish
 ECMA-402 §11.5.4 step 15.f.iv to every calendar. Nonpositive provider years become
 `1 - year` before numeric or two-digit rendering in TS/Rust. Buddhist year-zero
 controls differ from native ICU; that disagreement is documented separately.
+The native Intl bridge now applies the same display transformation before numeric
+or two-digit restoration, including locale methods and ranges. Raw calendar
+fields and independent ICU fixtures remain unchanged.
 Calendar arithmetic and full ToLocalTime contracts remain open.
 
 The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)

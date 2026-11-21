@@ -358,7 +358,8 @@ function restoreCalendarParts(
   const calendar = options.calendar as CalendarId,
     date = calendarFromEpochDayRaw(calendar, epoch),
     era = calendarEra(calendar, epoch, true),
-    year = era?.eraYear ?? date.year,
+    rawYear = era?.eraYear ?? date.year,
+    year = rawYear <= 0 ? 1 - rawYear : rawYear,
     sample = representative(
       calendar,
       date.monthCode,

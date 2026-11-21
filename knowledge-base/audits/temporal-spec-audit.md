@@ -63,6 +63,29 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- [Native Intl bridge display years #8109](https://github.com/formatjs/formatjs/pull/8109):
+  [Year audit follow-up](temporal-calendar-year-audit.md#native-intl-bridge-follow-up)
+  applies published ECMA-402 §11.5.4 step 15.f.iv before bridge numeric/two-digit
+  rendering. Buddhist −1/0/1 now displays 2/1/1; stored Temporal fields and raw ICU
+  fixtures stay unchanged. New public regression failed before the correction.
+  All 124 new controls pass across locale methods, Number/Date/Instant/plain
+  inputs, cold/warm formatting and ranges, including supplementary-plane digits.
+  Seven focused gates pass, including independent ICU and native Hermes.
+  Complete bridge and calendar algorithms remain open. No new specification
+  issue or historical source-line credit.
+  Expanded matrix: 202/204 pass (79 executed, 125 cached); two raw strict failures
+  exactly match existing ListFormat/PluralRules baseline keys/messages. All ten
+  assemblies and 40 Temporal class/backend gates pass. Full 42-case pattern
+  oracle and unchanged 12,808-case ICU snapshot pass from cache. Final cleanup
+  removes a redundant year condition from month/day oracle assertions; all five
+  affected oracle/compiler gates pass on rerun. Runtime and other tested inputs
+  remain unchanged. Native Hermes passes 936 ICU-era plus 24 lunar checks in both
+  source/bytecode runs; the formatter comparison passes 9,440 cases and 40,284
+  assertions per run. Parent #8108 at e54185b34cc5c7b4290d7954192e2d937256aceb has
+  successful hooks, cross-build, native smoke and
+  [all-target test](https://formatjs.buildbuddy.io/invocation/ea8c55a2-d323-4237-b2e4-e4a35c593b80)
+  statuses.
+
 - [Native Intl bridge private state #8108](https://github.com/formatjs/formatjs/pull/8108):
   [Source audit](temporal-legacy-bridge-state-audit.md) maps selected storage and
   native delegation to ECMA-262 §6.1.7.2, §7.3.13–14 and §28.1.1–2.
