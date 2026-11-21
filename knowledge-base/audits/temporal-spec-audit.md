@@ -23,19 +23,29 @@ This is a partial dependency index, not a complete Temporal chapter inventory.
 Reviewed operation contracts below do not sign off their Temporal callers.
 The historical/provisional Temporal inventory above remains unchanged.
 
-| Section                                                                                          | Status                      | Evidence or gap                                                                                                                                                            |
-| ------------------------------------------------------------------------------------------------ | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar            | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open.                                        |
-| [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation          | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                                                               |
-| [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation          | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                                                         |
-| [§21.4.1.3, §21.4.1.5, §21.4.1.7–§21.4.1.16 UTC date helpers](https://tc39.es/ecma262/#sec-day)  | Reviewed bounded arithmetic | [Twelve section mappings](temporal-date-operations-audit.md) for supported finite time values and needed year origins. MakeDay/range wording and full callers remain open. |
-| [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip)                                     | Reviewed operation          | [All three steps in TS/Rust](temporal-timeclip-audit.md), Number-input truncation dependency and numeric Intl boundary. Full callers remain open.                          |
-| [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open                        | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                                                          |
-| [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open                        | Range checked as issue evidence; implementation coverage remains open.                                                                                                     |
+| Section                                                                                          | Status                      | Evidence or gap                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------ | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§7.1.1 ToPrimitive](https://tc39.es/ecma262/#sec-toprimitive)                                   | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#toprimitive), including fused GetMethod, all hints, abrupt completions and realms. Temporal callers remain open.     |
+| [§7.1.1.1 OrdinaryToPrimitive](https://tc39.es/ecma262/#sec-ordinarytoprimitive)                 | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#ordinarytoprimitive), callable/host boundaries and ordered Get/Call traces. Browser document.all run remains absent. |
+| [§7.1.19 ToString](https://tc39.es/ecma262/#sec-tostring)                                        | Reviewed helper             | [Twelve-step delegation proof](temporal-coercion-contract-audit.md#tostring) through captured %String%, excluding its primitive-Symbol exception. Caller contracts remain open.  |
+| [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar            | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open.                                              |
+| [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation          | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                                                                     |
+| [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation          | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                                                               |
+| [§21.4.1.3, §21.4.1.5, §21.4.1.7–§21.4.1.16 UTC date helpers](https://tc39.es/ecma262/#sec-day)  | Reviewed bounded arithmetic | [Twelve section mappings](temporal-date-operations-audit.md) for supported finite time values and needed year origins. MakeDay/range wording and full callers remain open.       |
+| [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip)                                     | Reviewed operation          | [All three steps in TS/Rust](temporal-timeclip-audit.md), Number-input truncation dependency and numeric Intl boundary. Full callers remain open.                                |
+| [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open                        | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                                                                |
+| [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open                        | Range checked as issue evidence; implementation coverage remains open.                                                                                                           |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- Shared primitive conversion: [ECMA-262 §7.1.1, §7.1.1.1 and §7.1.19](temporal-coercion-contract-audit.md)
+  now have complete helper mappings, including GetMethod fusion and captured
+  %String% delegation. Added Proxy ordering, abrupt-completion, non-callable,
+  revoked-callable, cross-realm and Symbol boundary evidence. All 79 helper tests
+  and both typecheck gates pass. Runtime unchanged; Temporal callers and chapter
+  selection remain open. No historical line credit added.
 
 - ECMA-262 [§21.4.1.31 TimeClip](https://tc39.es/ecma262/#sec-timeclip), steps 1–3:
   [full helper mapping](temporal-timeclip-audit.md) in TS/Rust. Numeric formatter
@@ -791,7 +801,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private parsed fraction padding](https://github.com/formatjs/formatjs/pull/8093),
 [UTC-offset grammar and operation audit](https://github.com/formatjs/formatjs/pull/8094),
 [shared UTC date arithmetic audit](https://github.com/formatjs/formatjs/pull/8095),
-[primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096).
+[primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096),
+[shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
