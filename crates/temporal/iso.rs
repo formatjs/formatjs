@@ -11,7 +11,7 @@ pub struct IsoDateTime {
     pub nanosecond: u32,
 }
 impl IsoDateTime {
-    pub fn to_epoch_nanoseconds(self) -> Result<i128, Error> {
+    pub(crate) fn validate(self) -> Result<(), Error> {
         let leap = self.year % 4 == 0 && (self.year % 100 != 0 || self.year % 400 == 0);
         let days = match self.month {
             2 => {
@@ -34,7 +34,16 @@ impl IsoDateTime {
         {
             return Err(Error::InvalidDateTime);
         }
+        Ok(())
+    }
+    pub fn to_epoch_nanoseconds(self) -> Result<i128, Error> {
+        self.validate()?;
         let epoch_day = i128::from(epoch_day_from_iso(self.year, self.month, self.day));
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L356-L359
+        // L356: bounded clock fields give exact MakeTime millisecond terms.
+        // L357: day and clock terms compose the same MakeDate intermediate.
+        // L358: day-range candidates have integral |ms| < 2**53; i128 is exact too.
+        // L359: the packed subsecond field retains millisecond/microsecond/nanosecond.
         let value = epoch_day * NANOSECONDS_PER_DAY
             + (i128::from(self.hour) * 3600
                 + i128::from(self.minute) * 60
@@ -82,9 +91,14 @@ pub(crate) fn epoch_day_from_iso(year: i32, month: u8, day: u8) -> i64 {
 }
 
 pub(crate) fn check_local(value: i128) -> Result<(), Error> {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766
+    // L762: valid clocks outside the early day bound cannot pass this interval.
     let bound = MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY;
+    // L764: equality at the lower local boundary is rejected.
+    // L765: equality at the upper local boundary is rejected.
     if value <= -bound || value >= bound {
         return Err(Error::OutOfRange);
     }
+    // L766: success represents the predicate's true result.
     Ok(())
 }

@@ -182,6 +182,7 @@ export interface NativeTemporal {
   parsePlainDateTime(value: string): DateTimeSlot
   parsePlainYearMonth(value: string): DateSlot
   parsePlainMonthDay(value: string): DateSlot
+  // Validate syntax/fields only; callers read options before representability.
   parseZonedFields(value: string): {
     fields: Required<ISODateTime> & {calendar: string}
     timeZone: string

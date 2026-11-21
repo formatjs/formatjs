@@ -736,9 +736,14 @@ export function dateProperty(
   return undefined
 }
 export function checkDateTime(value: bigint): bigint {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766
+  // L762: prepared day/clock values outside the early day bound fail this interval.
   const bound = 8640000086400000000000n
+  // L764: equality at the lower local boundary is rejected.
+  // L765: equality at the upper local boundary is rejected.
   if (value <= -bound || value >= bound)
     throw new RangeErrorConstructor('Local date out of range')
+  // L766: successful return represents the predicate's true result.
   return value
 }
 

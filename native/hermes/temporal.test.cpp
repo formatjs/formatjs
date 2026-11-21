@@ -196,6 +196,27 @@ int main(int argc, char **argv) {
         }
       }
       check(numericResults.join('|') === '1|1|23|2024-02-29|-1|M05L|0|1969-12-31T23:59:59.999999999Z|2');
+      for (const text of ['+999999-01-01T00:00[UTC]', '+999999-01-01[UTC]',
+                          '-271821-04-19T00:00[UTC]', '+275760-09-14T00:00[UTC]']) {
+        const reads = [];
+        let rejected = false;
+        try {
+          Temporal.ZonedDateTime.from(text, {
+            get disambiguation() { reads.push('disambiguation'); return 'compatible'; },
+            get offset() { reads.push('offset'); return 'reject'; },
+            get overflow() { reads.push('overflow'); return 'constrain'; },
+          });
+        } catch (error) { rejected = error instanceof RangeError; }
+        check(rejected && reads.join('|') === 'disambiguation|offset|overflow');
+      }
+      const zonedOptionFailure = {};
+      let zonedOptionCaught;
+      try {
+        Temporal.ZonedDateTime.from('+999999-01-01T00:00[UTC]', {
+          get overflow() { throw zonedOptionFailure; },
+        });
+      } catch (error) { zonedOptionCaught = error; }
+      check(zonedOptionCaught === zonedOptionFailure);
       const listEvery = Array.prototype.every, listSome = Array.prototype.some, listApply = Reflect.apply;
       const listPoison = function () { throw new Error('Mutable array predicate reached'); };
       let listResults;
