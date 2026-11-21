@@ -239,9 +239,13 @@ export function balanceDurationTime(
   return validateDuration(fields)
 }
 export function largestDurationField(fields: DurationFields): number {
-  const index = durationFieldNames.findIndex(key => fields[key] !== 0)
-  return index < 0 ? 9 : index
+  for (let index = 0; index < durationFieldNames.length; index++)
+    if (fields[durationFieldNames[index]] !== 0) return index
+  return 9
 }
+
+const durationBigIntToString = BigInt.prototype.toString
+const durationApply = Reflect.apply
 
 // Round the exact ratio once; converting the numerator first loses low bits.
 export function durationTotalNumber(
@@ -251,7 +255,9 @@ export function durationTotalNumber(
   if (nanoseconds === 0n) return 0
   const negative = nanoseconds < 0n
   const absolute = negative ? -nanoseconds : nanoseconds
-  let exponent = absolute.toString(2).length - divisor.toString(2).length
+  let exponent =
+    durationApply(durationBigIntToString, absolute, [2]).length -
+    durationApply(durationBigIntToString, divisor, [2]).length
   if (
     exponent >= 0
       ? absolute < divisor << bigIntFrom(exponent)

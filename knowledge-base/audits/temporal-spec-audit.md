@@ -86,7 +86,15 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- ZonedDateTime identity rounding: [source/boundary audit](temporal-zoned-identity-rounding-audit.md)
+- Duration private totals/field selection: [bounded audit](temporal-duration-private-operations-audit.md)
+  captures BigInt bit-length conversion and replaces private findIndex with an
+  indexed scan. Two public regressions failed before correction. All twelve
+  relevant gates pass (eight executed, four cached), including five Duration
+  backends and independent precision controls; two package assemblies pass.
+  No baseline, exclusions or timeout changes. Exact-ratio proof assumes exact
+  input nanoseconds; rounded-difference intermediates and full callers stay open.
+
+- [ZonedDateTime identity rounding #8114](https://github.com/formatjs/formatjs/pull/8114): [source/boundary audit](temporal-zoned-identity-rounding-audit.md)
   restores a fresh equivalent object for nanosecond increment 1 after option
   validation. Two public tests failed before correction at the lower local-date
   guard; all twelve relevant expanded gates pass (ten executed, two cached),
