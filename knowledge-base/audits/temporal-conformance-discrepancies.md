@@ -6,6 +6,22 @@ Implementation findings stay in [the spec audit ledger](temporal-spec-audit.md).
 This file records external test/data conflicts. No specification defect is
 confirmed by the issue below.
 
+## Native Buddhist year numbering versus published display normalization
+
+[ECMA-402 §11.5.4 step 15.f.iv](https://tc39.es/ecma402/#sec-formatdatetimepattern)
+unconditionally transforms a year value at or below zero to `1 - value`.
+The Buddhist providers return signed years −1/0/1 for ISO January 1 in
+−000544/−000543/−000542. Following that step renders year parts 2/1/1.
+
+The native Intl control instead returns −1/0/1. The [year audit](temporal-calendar-year-audit.md) includes failing TS/Rust
+witnesses, the correction and exact source mapping. Native output is diagnostic
+evidence, not the expected result for these tests.
+
+This is an implementation/specification disagreement, not a proven internal
+specification inconsistency. Standards intent remains an open question; no
+external issue was filed. Follow the published unconditional algorithm rather
+than silently retaining ICU behavior. Calendar arithmetic itself is unchanged.
+
 ## Test262 legacy US timezone aliases versus IANA 2026f
 
 Pinned inputs: IANA `2026f` and Test262

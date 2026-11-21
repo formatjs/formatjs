@@ -63,7 +63,7 @@ covers eight helper contracts, including Proxy ordering and bound targets.
 [host-exotic.test.ts](../../packages/ecma262-abstract/tests/host-exotic.test.ts)
 adds callable constructor, instance and prototype controls using V8's
 undetectable host test Object. This is not a browser document.all run.
-[temporal-owned.test.ts:49](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L49)
+[temporal-owned.test.ts:97](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L97)
 checks public Temporal formatting during prototype-method mutation.
 [native Hermes controls](../../native/hermes/tests/datetimeformat.ts#L253)
 repeat formatter construction and output checks for TS and Rust installed APIs.

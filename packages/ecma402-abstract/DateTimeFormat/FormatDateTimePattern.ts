@@ -375,12 +375,8 @@ export function FormatDateTimePattern(
         | 'short'
       // @ts-ignore
       let v = tm[p]
-      if (
-        p === 'year' &&
-        v <= 0 &&
-        (internalSlots.calendar === 'gregory' ||
-          internalSlots.calendar === 'iso8601')
-      ) {
+      // ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
+      if (p === 'year' && v <= 0) {
         v = 1 - v
       }
       if (p === 'month') {
