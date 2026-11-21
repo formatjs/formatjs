@@ -59,6 +59,9 @@ Month codes must match Temporal's grammar exactly. Malformed codes such as
 `M00` or codes with trailing whitespace throw before later field getters run.
 A syntactically valid code can still be invalid for the chosen calendar.
 
+Duration operations accept a `PlainDateTime` as `relativeTo`. They use its stored
+date and calendar, ignore its time, and do not read shadowed public field getters.
+
 The default entry captures the installed `Intl.DateTimeFormat` for named
 time-zone offsets and Umm al-Qura data. It works with native Intl or installed
 FormatJS polyfills. Load Intl polyfills and their data **before importing

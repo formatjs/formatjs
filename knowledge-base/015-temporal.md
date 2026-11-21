@@ -12,6 +12,8 @@ The [line audit ledger](audits/temporal-spec-audit.md) pins the Temporal specifi
 and tracks reviewed lines separately from open clauses and pending PRs.
 `ParseMonthCode` field preparation now rejects bare `M00` and trailing line
 terminators before reading later fields. Calendar-specific validity stays deferred.
+Duration `relativeTo` conversion recognizes PlainDateTime internal slots and copies
+only the ISO date and calendar, without observing shadowed public getters.
 
 ## Native performance direction
 

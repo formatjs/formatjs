@@ -111,3 +111,23 @@ it('matches forced full-polyfill Hebrew controls through leap months', async () 
     }
   }
 })
+
+it('uses internal date-time fields for relativeTo', () => {
+  for (const [text, days] of [
+    ['2020-01-31T23:59:59.123456789', 29],
+    ['1969-11-30T23:59:59.123456789', 30],
+  ] as const) {
+    const relativeTo = Temporal.PlainDateTime.from(text)
+    for (const key of ['calendar', 'year', 'hour', 'timeZone']) {
+      Object.defineProperty(relativeTo, key, {
+        get() {
+          throw new Error(`Unexpected ${key} read`)
+        },
+      })
+    }
+    expect(Temporal.Duration.compare('P1M', {days}, {relativeTo})).toBe(0)
+    expect(Temporal.Duration.from('P1M').total({relativeTo, unit: 'day'})).toBe(
+      days
+    )
+  }
+})
