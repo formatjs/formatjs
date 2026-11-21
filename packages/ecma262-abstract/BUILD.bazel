@@ -29,6 +29,7 @@ formatjs_test(
     srcs = [
         "tests/coercion.test.ts",
         "tests/date-intrinsics.test.ts",
+        "tests/has-own-property.test.ts",
         "tests/host-exotic.test.ts",
     ],
     tsconfig_types = ["node"],

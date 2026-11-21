@@ -3,7 +3,11 @@ import {
   TypeErrorConstructor,
   bigIntFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -202,14 +206,17 @@ Object.defineProperty(PlainMonthDayValue, 'name', {
   value: 'PlainMonthDay',
   configurable: true,
 })
-export const PlainMonthDay: PlainMonthDayConstructor = new Proxy(
+export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
   PlainMonthDayValue,
   {
     construct(target, args, newTarget) {
-      const month = integer(args[0]),
-        day = integer(args[1]),
-        calendar = constructorCalendar(args[2]),
-        year = args[3] === undefined ? 1972 : integer(args[3])
+      const month = integer(argumentAt(args, 0)),
+        day = integer(argumentAt(args, 1)),
+        calendar = constructorCalendar(argumentAt(args, 2)),
+        year =
+          argumentAt(args, 3) === undefined
+            ? 1972
+            : integer(argumentAt(args, 3))
       const epochDay = isoReferenceDay(year, month, day)
       if (epochDay < -100000001 || epochDay > 100000000)
         throw new RangeErrorConstructor('Month-day out of range')

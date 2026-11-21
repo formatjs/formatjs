@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {compact} from '@formatjs_generated/tz/temporal-compact.js'
 import {TimeZoneRuleTransition} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
@@ -8,7 +9,7 @@ export function compactTimeZoneNames(): string[] {
 }
 
 export function unpackCompactTimeZone(name: string): UnpackedTimeZoneData {
-  const entry = Object.hasOwn(compact.zones, name)
+  const entry = HasOwnProperty(compact.zones, name)
     ? compact.zones[name]
     : undefined
   if (!entry) throw new RangeErrorConstructor('Unknown timezone')

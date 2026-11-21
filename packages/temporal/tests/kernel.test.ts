@@ -165,3 +165,21 @@ it('matches builtin UTC dates in both directions over two complete Gregorian era
   }
   expect(count).toBe(292194)
 })
+
+it('defaults an omitted private hour without reading Object.prototype', () => {
+  const original = Object.getOwnPropertyDescriptor(Object.prototype, 'hour')
+  let result: bigint
+  try {
+    Object.defineProperty(Object.prototype, 'hour', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited private hour reached')
+      },
+    })
+    result = isoToEpochNanoseconds({year: 1970, month: 1, day: 1})
+  } finally {
+    if (original) Object.defineProperty(Object.prototype, 'hour', original)
+    else Reflect.deleteProperty(Object.prototype, 'hour')
+  }
+  expect(result!).toBe(0n)
+})

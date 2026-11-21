@@ -571,3 +571,234 @@ it.each(['every', 'some'] as const)(
     expect(result).toEqual(['2000-02-29T12:34:56', 'P1DT2H', 0, 29])
   }
 )
+
+it.each([
+  'minute',
+  'second',
+  'millisecond',
+  'microsecond',
+  'nanosecond',
+] as const)(
+  'ignores inherited %s when building a private noon record',
+  name => {
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, name)
+    let result: string
+    try {
+      Object.defineProperty(Object.prototype, name, {
+        configurable: true,
+        get() {
+          throw new Error('Inherited private clock field reached')
+        },
+      })
+      result = new Temporal.PlainDate(2024, 2, 29).toString()
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, name, original)
+      else Reflect.deleteProperty(Object.prototype, name)
+    }
+    expect(result!).toBe('2024-02-29')
+  }
+)
+
+it('still reads inherited time fields from user field bags', () => {
+  let reads = 0
+  const fields = Object.assign(
+    Object.create({
+      get minute() {
+        reads++
+        return 34
+      },
+    }),
+    {year: 2024, month: 2, day: 29, hour: 12}
+  )
+  expect(Temporal.PlainDateTime.from(fields).toString()).toBe(
+    '2024-02-29T12:34:00'
+  )
+  expect(reads).toBe(1)
+})
+
+it.each([
+  ['Instant', TypeError],
+  ['ZonedDateTime', TypeError],
+  ['PlainDate', RangeError],
+  ['PlainDateTime', RangeError],
+  ['PlainYearMonth', RangeError],
+  ['PlainMonthDay', RangeError],
+  ['PlainTime', undefined],
+  ['Duration', undefined],
+] as const)(
+  'ignores inherited argument zero in %s construction',
+  (name, ErrorType) => {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, '0')
+    const length = Object.getOwnPropertyDescriptor(Array.prototype, 'length')!
+    const failure = {message: 'Inherited argument reached'}
+    let result: unknown, caught: unknown
+    try {
+      Object.defineProperty(Array.prototype, '0', {
+        configurable: true,
+        get() {
+          throw failure
+        },
+      })
+      const value = Reflect.construct(Temporal[name], [])
+      result = name === 'PlainTime' ? value.hour : value.years
+    } catch (error) {
+      caught = error
+    } finally {
+      if (original) Object.defineProperty(Array.prototype, '0', original)
+      else Reflect.deleteProperty(Array.prototype, '0')
+      Object.defineProperty(Array.prototype, 'length', length)
+    }
+    if (ErrorType) expect(caught).toBeInstanceOf(ErrorType)
+    else {
+      expect(caught).toBeUndefined()
+      expect(result).toBe(0)
+    }
+  }
+)
+
+it.each([
+  ['PlainDate', '3', () => new Temporal.PlainDate(2024, 2, 29).year, 2024],
+  [
+    'PlainDateTime',
+    '9',
+    () => new Temporal.PlainDateTime(2024, 2, 29, 12, 34, 56, 0, 0, 0).year,
+    2024,
+  ],
+  ['PlainYearMonth', '2', () => new Temporal.PlainYearMonth(2024, 2).month, 2],
+  [
+    'PlainMonthDay',
+    '2',
+    () => new Temporal.PlainMonthDay(2, 29).monthCode,
+    'M02',
+  ],
+] as const)(
+  'ignores inherited calendar argument in %s',
+  (_name, key, run, expected) => {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, key)
+    const length = Object.getOwnPropertyDescriptor(Array.prototype, 'length')!
+    let actual: unknown
+    try {
+      Object.defineProperty(Array.prototype, key, {
+        configurable: true,
+        get() {
+          throw new Error('Inherited calendar argument reached')
+        },
+      })
+      actual = run()
+    } finally {
+      if (original) Object.defineProperty(Array.prototype, key, original)
+      else Reflect.deleteProperty(Array.prototype, key)
+      Object.defineProperty(Array.prototype, 'length', length)
+    }
+    expect(actual).toBe(expected)
+  }
+)
+
+it.each(['get', 'apply'] as const)(
+  'ignores inherited private Proxy %s traps',
+  trap => {
+    for (const [name, args] of [
+      ['Instant', [0n]],
+      ['ZonedDateTime', [0n, 'UTC']],
+      ['PlainDate', [2024, 2, 29]],
+      ['PlainDateTime', [2024, 2, 29]],
+      ['PlainYearMonth', [2024, 2]],
+      ['PlainMonthDay', [2, 29]],
+      ['PlainTime', []],
+      ['Duration', []],
+    ] as const) {
+      const Constructor = Temporal[name]
+      const prototype = Constructor.prototype
+      const original = Object.getOwnPropertyDescriptor(Object.prototype, trap)
+      const restore = original && Object.assign(Object.create(null), original)
+      const failure = {message: 'Inherited private Proxy trap reached'}
+      let value: unknown, caught: unknown
+      try {
+        Object.defineProperty(Object.prototype, trap, {
+          configurable: true,
+          get() {
+            throw failure
+          },
+        })
+        if (trap === 'get') value = Reflect.construct(Constructor, args)
+        else Reflect.apply(Constructor, undefined, args)
+      } catch (error) {
+        caught = error
+      } finally {
+        if (restore) Object.defineProperty(Object.prototype, trap, restore)
+        else Reflect.deleteProperty(Object.prototype, trap)
+      }
+      if (trap === 'get') {
+        expect(caught, name).toBeUndefined()
+        expect(Object.getPrototypeOf(value), name).toBe(prototype)
+      } else expect(caught, name).toBeInstanceOf(TypeError)
+    }
+  }
+)
+
+it('retains private Proxy allocation intrinsics for lazy locale formatting', () => {
+  const originalProxy = Object.getOwnPropertyDescriptor(globalThis, 'Proxy')!
+  const originalSetPrototypeOf = Object.setPrototypeOf
+  const failure = {message: 'Mutable private Proxy intrinsic reached'}
+  let actual: string
+  try {
+    Object.defineProperty(globalThis, 'Proxy', {
+      ...originalProxy,
+      value() {
+        throw failure
+      },
+    })
+    Object.setPrototypeOf = () => {
+      throw failure
+    }
+    actual = new Temporal.PlainDate(2024, 2, 29).toLocaleString('en', {
+      year: 'numeric',
+    })
+  } finally {
+    Object.defineProperty(globalThis, 'Proxy', originalProxy)
+    Object.setPrototypeOf = originalSetPrototypeOf
+  }
+  expect(actual!).toBe('2024')
+})
+
+it.each([
+  [8_640_000_000_000_000_000_001n, undefined, undefined],
+  [-8_640_000_000_000_000_000_001n, {}, undefined],
+  [8_640_000_000_000_000_000_001n, 'UTC', {}],
+] as const)(
+  'validates ZonedDateTime epoch range before other arguments',
+  (epoch, zone, calendar) => {
+    expect(() =>
+      Reflect.construct(Temporal.ZonedDateTime, [epoch, zone, calendar])
+    ).toThrow(RangeError)
+  }
+)
+
+it.each([
+  ['prototype', Object.prototype, 'hasOwnProperty'],
+  ['static', Object, 'hasOwn'],
+] as const)(
+  'retains %s own-property checks in public operations',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable own-property method reached')
+        },
+      })
+      actual = [
+        new Temporal.PlainDate(2024, 2, 29).toLocaleString('en', {
+          year: 'numeric',
+        }),
+        new Temporal.Duration(0, 0, 0, 0, 1).total({unit: 'minute'}),
+        new Temporal.Instant(1n).round('second').epochNanoseconds,
+      ]
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual(['2024', 60, 0n])
+  }
+)

@@ -154,6 +154,10 @@ values, calendar providers, IANA timezone registries and optional compiled data.
 The native Hermes SDK binds that Rust engine. Temporal WASM entry points and
 assets have been removed; use TypeScript in JavaScript hosts or native Rust.
 
+Private defaults ignore inherited prototype fields. Public field bags still read
+inherited getters. `ZonedDateTime` constructors check epoch range before validating
+timezone and calendar arguments.
+
 ## Conformance and verification
 
 The pinned Temporal-feature Test262 corpus passes on Node.js and Hermes
