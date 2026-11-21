@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDuration} from '#packages/temporal/locale.js'
@@ -99,12 +100,12 @@ export function toNativeDurationFields(
 }
 // Fields must already be normalized and validated.
 export function createNativeDuration(fields: DurationFields): DurationObject {
-  const value = Object.create(DurationValue.prototype) as DurationObject
+  const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, fields)
   return value
 }
 export function createDuration(fields: DurationFields): DurationObject {
-  const value = Object.create(DurationValue.prototype) as DurationObject
+  const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))
   return value
 }
@@ -238,7 +239,7 @@ class DurationValue {
     if (roundTo === undefined) throw new TypeError('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? Object.assign(createObject(null), {smallestUnit: roundTo})
         : optionsObject(roundTo)
     const largestRaw = resolved.largestUnit,
       largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -308,7 +309,7 @@ class DurationValue {
     if (options === undefined) throw new TypeError('totalOf is required')
     const resolved =
       typeof options === 'string'
-        ? Object.assign(Object.create(null), {unit: options})
+        ? Object.assign(createObject(null), {unit: options})
         : optionsObject(options)
     const relative = toRelativeTo(resolved.relativeTo)
     const unit = unitOption(resolved.unit)
@@ -404,7 +405,7 @@ export const Duration: DurationConstructor = new Proxy(DurationValue, {
         args[i] === undefined ? 0 : integralDurationNumber(args[i])
     validateDuration(fields)
     const prototype = Reflect.get(newTarget, 'prototype')
-    const value = Object.create(
+    const value = createObject(
       prototype !== null &&
         (typeof prototype === 'object' || typeof prototype === 'function')
         ? prototype

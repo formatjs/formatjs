@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   registerTemporalDateTimeNamespace,
   ToDateTimeFormattable,
@@ -50,7 +51,7 @@ export function installLegacyDateTimeFormat(
   const states = new WeakMap<object, State>()
   // Native bound functions identify the formatter without rereading its legacy symbol.
   const boundStates = new WeakMap<Function, State>()
-  const probe = Object.create(Native.prototype)
+  const probe = createObject(Native.prototype)
   const chained = Reflect.apply(Native, probe, [])
   const legacySymbol =
     chained === probe ? Object.getOwnPropertySymbols(probe)[0] : undefined
@@ -128,12 +129,12 @@ export function installLegacyDateTimeFormat(
     newTarget: Function
   ): Intl.DateTimeFormat {
     let source: Record<string, unknown> | undefined
-    const snapshot: Record<string, unknown> = Object.create(null)
-    const tracked = new Proxy(Object.create(null), {
+    const snapshot: Record<string, unknown> = createObject(null)
+    const tracked = new Proxy(createObject(null), {
       get(_target, key) {
         if (!source) {
           if (options === null) throw new TypeError('Invalid options')
-          source = options === undefined ? Object.create(null) : Object(options)
+          source = options === undefined ? createObject(null) : Object(options)
         }
         const raw = Reflect.get(source!, key)
         if (typeof key !== 'string' || raw === undefined) return raw

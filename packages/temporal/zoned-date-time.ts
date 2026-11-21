@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {
   nativeTemporal,
@@ -208,7 +209,7 @@ export function createZonedDateTime(
   const epochNanoseconds =
     typeof input === 'bigint' ? input : input.epochNanoseconds
   validateInstant(epochNanoseconds)
-  const result = Object.create(
+  const result = createObject(
     ZonedDateTimeValue.prototype
   ) as ZonedDateTimeObject
   setZonedSlot(
@@ -307,7 +308,7 @@ export function toZonedDateTimeSlot(
   } else if (object(item)) {
     calendar = calendarFromObject(item)
     // Prepare fields in alphabetical order, including offset/timeZone.
-    const prepared = Object.create(null) as Record<string, unknown>
+    const prepared = createObject(null) as Record<string, unknown>
     const names = dateFieldNames(calendar, true, 'date', ['offset', 'timeZone'])
     for (let i = 0; i < names.length; i++) {
       const key = names[i],
@@ -789,7 +790,7 @@ class ZonedDateTimeValue {
     const slot = read(this),
       partial = partialObject(item),
       current = local(slot)
-    const updates = Object.create(null) as Record<string, unknown>
+    const updates = createObject(null) as Record<string, unknown>
     const names = dateFieldNames(slot.calendar, true, 'date', ['offset'])
     let any = false
     for (let i = 0; i < names.length; i++) {
@@ -855,7 +856,7 @@ class ZonedDateTimeValue {
     if (roundTo === undefined) throw new TypeError('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(Object.create(null), {smallestUnit: roundTo})
+        ? Object.assign(createObject(null), {smallestUnit: roundTo})
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
@@ -1047,7 +1048,7 @@ export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
         calendar = constructorCalendar(args[2])
       validateInstant(value)
       const prototype = Reflect.get(newTarget, 'prototype'),
-        result = Object.create(object(prototype) ? prototype : target.prototype)
+        result = createObject(object(prototype) ? prototype : target.prototype)
       setZonedSlot(result, {epochNanoseconds: value, timeZone: zone, calendar})
       return result
     },

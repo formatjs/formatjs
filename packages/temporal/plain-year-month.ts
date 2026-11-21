@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -100,7 +101,7 @@ function read(item: unknown): DateSlot {
 }
 export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   checkYearMonth(slot.epochDay)
-  const result = Object.create(
+  const result = createObject(
     PlainYearMonthValue.prototype
   ) as PlainYearMonthObject
   setYearMonthSlot(result, slot)
@@ -380,7 +381,7 @@ export const PlainYearMonth: PlainYearMonthConstructor = new Proxy(
         day = args[3] === undefined ? 1 : integer(args[3])
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
         prototype = Reflect.get(newTarget, 'prototype')
-      const result = Object.create(
+      const result = createObject(
         object(prototype) ? prototype : target.prototype
       )
       setYearMonthSlot(result, {epochDay, calendar})

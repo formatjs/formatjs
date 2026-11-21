@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 
@@ -51,7 +52,7 @@ const units = [
   'nanosecond',
 ]
 export function optionsObject(value: unknown): Record<string, unknown> {
-  if (value === undefined) return Object.create(null)
+  if (value === undefined) return createObject(null)
   if (
     value === null ||
     (typeof value !== 'object' && typeof value !== 'function')
@@ -125,7 +126,7 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   if (options === undefined) throw new TypeError('roundTo is required')
   const resolved =
     typeof options === 'string'
-      ? Object.assign(Object.create(null), {smallestUnit: options})
+      ? Object.assign(createObject(null), {smallestUnit: options})
       : optionsObject(options)
   const increment = roundingIncrement(resolved.roundingIncrement)
   const mode = roundingMode(resolved.roundingMode, 'halfExpand')

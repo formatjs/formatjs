@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   createHostTimeZoneOffset,
   type HostTimeZone,
@@ -48,7 +49,7 @@ export function legacyZonedProjection(
 ): LegacyDateTimeProjection {
   const formatter = new Constructor(
     resolved.locale,
-    Object.assign(Object.create(null), selected, {timeZone: 'UTC'})
+    Object.assign(createObject(null), selected, {timeZone: 'UTC'})
   )
   const probe = parts.call(formatter, 0)
   let timeZoneName: string | undefined

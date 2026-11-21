@@ -1,3 +1,4 @@
+import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   nativeTemporal,
   type NativeTemporal,
@@ -370,7 +371,6 @@ export function dateFieldValue(key: string, value: unknown): string | number {
   return result
 }
 const isoDateFieldNames = ['day', 'month', 'monthCode', 'year']
-const createObject = Object.create
 const fieldRecordPrototype = Object.freeze(createObject(null))
 const isoYearMonthFieldNames = ['month', 'monthCode', 'year']
 const isoDateTimeFieldNames = [
