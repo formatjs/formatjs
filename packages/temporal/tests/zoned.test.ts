@@ -411,3 +411,46 @@ it('validates rounding options before returning an unchanged zoned instant', () 
     }).epochNanoseconds
   ).toBe(2n)
 })
+
+it.each([
+  ['year', 1],
+  ['nanosecond', 3],
+  ['hour', 24],
+  ['day', 2],
+] as const)(
+  'rejects %s increment %s before local conversion',
+  (unit, increment) => {
+    const value = new Temporal.ZonedDateTime(0n, 'UTC')
+    const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'get')!
+    const reads: string[] = []
+    let queries = 0
+    let thrown: unknown
+    Map.prototype.get = function () {
+      queries++
+      throw new Error('Unexpected local-time cache read')
+    }
+    try {
+      value.round({
+        get roundingIncrement() {
+          reads.push('roundingIncrement')
+          return increment
+        },
+        get roundingMode() {
+          reads.push('roundingMode')
+          return 'halfExpand'
+        },
+        get smallestUnit() {
+          reads.push('smallestUnit')
+          return unit
+        },
+      })
+    } catch (error) {
+      thrown = error
+    } finally {
+      Object.defineProperty(Map.prototype, 'get', descriptor)
+    }
+    expect(thrown).toBeInstanceOf(RangeError)
+    expect(queries).toBe(0)
+    expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  }
+)

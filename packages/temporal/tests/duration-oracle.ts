@@ -15,6 +15,74 @@ export function checkDurationOracle(
   zonedRounds: number
   zonedTotals: number
 } {
+  const relativeBag = Object.assign(Object.create(null), {
+    year: 2000,
+    month: 1,
+    day: 1,
+    timeZone: 'UTC',
+  })
+  const privateDuration = Temporal.Duration.from('PT1H')
+  const hourDescriptor = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'hour'
+  )
+  const privateSentinel = new Error('Observable private relativeTo hour')
+  let privateHooks = 0
+  let privateTotal: number | undefined
+  let privateRounded: InstanceType<typeof Temporal.Duration> | undefined
+  let privateTotalError: unknown
+  let privateRoundError: unknown
+  try {
+    Object.defineProperty(Object.prototype, 'hour', {
+      configurable: true,
+      get() {
+        privateHooks++
+        throw privateSentinel
+      },
+    })
+    try {
+      privateTotal = privateDuration.total({
+        relativeTo: relativeBag,
+        unit: 'hour',
+      })
+    } catch (error) {
+      privateTotalError = error
+    }
+    try {
+      privateRounded = privateDuration.round({
+        relativeTo: relativeBag,
+        smallestUnit: 'hour',
+      })
+    } catch (error) {
+      privateRoundError = error
+    }
+  } finally {
+    if (hourDescriptor)
+      Object.defineProperty(Object.prototype, 'hour', hourDescriptor)
+    else Reflect.deleteProperty(Object.prototype, 'hour')
+  }
+  equal(
+    privateHooks,
+    0,
+    'Duration relativeTo private fields ignore inherited hour'
+  )
+  equal(
+    privateTotalError,
+    undefined,
+    'Duration.total keeps relativeTo preparation private'
+  )
+  equal(
+    privateRoundError,
+    undefined,
+    'Duration.round keeps relativeTo preparation private'
+  )
+  equal(privateTotal, 1, 'Duration.total with private zoned relativeTo')
+  equal(
+    privateRounded?.hours,
+    1,
+    'Duration.round with private zoned relativeTo'
+  )
+
   const fieldReads: string[] = []
   const inherited = Temporal.Duration.from(
     Object.create({

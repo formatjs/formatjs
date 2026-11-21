@@ -86,7 +86,16 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Relative difference rounding: [private mode audit](temporal-relative-rounding-contract-audit.md)
+- Relative preparation and zoned rounding validation: [bounded audit](temporal-relative-preparation-validation-audit.md)
+  preserves null-prototype private relativeTo records and validates rounding
+  unit/increment before local-time work in TS/Rust. Public/private getter and
+  provider-counter regressions failed before correction. Seven focused gates pass;
+  all 21 expanded tests pass (20 executed, one cached), including native Hermes
+  mutation controls and 15 affected class/backend gates. Two package assemblies
+  pass; no baseline, exclusions or timeout changes. Complete callers/parser/cache/realm
+  contracts remain open; no chapter credit or new specification issue.
+
+- [Relative difference rounding #8118](https://github.com/formatjs/formatjs/pull/8118): [private mode audit](temporal-relative-rounding-contract-audit.md)
   replaces mutable startsWith with exact half-mode comparisons. Two public tests
   reproduced the hook before correction. Shared controls add native Duration
   field-bag ordering and Apia's collapsed day window across all nine modes and

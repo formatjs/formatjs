@@ -217,6 +217,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             )?
         } else {
             let time = unit.time().ok_or(Error::InvalidRoundingOptions)?;
+            crate::time::validate_increment(time, increment)?;
             let rounded = self.local()?.round(time, increment, mode)?;
             let offset = self.time_zone.offset_nanoseconds(self.instant);
             let preferred = Instant::from_epoch_nanoseconds(rounded.epoch_nanoseconds() - offset);

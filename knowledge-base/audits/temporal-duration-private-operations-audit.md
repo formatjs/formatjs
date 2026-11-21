@@ -56,7 +56,7 @@ The fixed-unit path supplies 0<abs(N)<2**53\*10**9<2**83 and
 subnormal, underflow and overflow cases. This proof assumes the supplied integer
 nanosecond sum is exact; it does not establish every caller's intermediates.
 
-[Relative totals](../../packages/temporal/relative-duration.ts#L182) use fixed
+[Relative totals](../../packages/temporal/relative-duration.ts#L184) use fixed
 divisors or a positive endpoint span. Under existing endpoint and bracketing
 validation, supported endpoints have magnitude below 2**73, spans below 2**74,
 and bounded calendar counts. A nonzero integer ratio then has e>=-74. Full

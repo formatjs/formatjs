@@ -1,5 +1,11 @@
 # Temporal implementation
 
+Zoned relativeTo preparation retains its private null-prototype record through
+Duration round/total conversion. Public inherited getters/coercions still run.
+ZonedDateTime.round validates allowed units and unit-specific increments before
+local conversion in TS/Rust. The [preparation/validation audit](audits/temporal-relative-preparation-validation-audit.md)
+records observable regressions and preserves broader parser/cache/realm work.
+
 Calendar-relative difference rounding matches half modes with exact string
 comparisons, avoiding mutable String.prototype.startsWith. The
 [relative rounding audit](audits/temporal-relative-rounding-contract-audit.md)
