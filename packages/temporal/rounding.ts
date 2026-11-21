@@ -50,18 +50,21 @@ const modes = [
   'halfTrunc',
   'halfEven',
 ]
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L549
+// L549: private pairs encode every normal singular/plural unit name; auto is separate.
 const units = [
-  'year',
-  'month',
-  'week',
-  'day',
-  'hour',
-  'minute',
-  'second',
-  'millisecond',
-  'microsecond',
-  'nanosecond',
-]
+  ['year', 'years'],
+  ['month', 'months'],
+  ['week', 'weeks'],
+  ['day', 'days'],
+  ['hour', 'hours'],
+  ['minute', 'minutes'],
+  ['second', 'seconds'],
+  ['millisecond', 'milliseconds'],
+  ['microsecond', 'microseconds'],
+  ['nanosecond', 'nanoseconds'],
+] as const
+
 export function optionsObject(value: unknown): Record<string, unknown> {
   if (value === undefined) return createObject(null)
   if (!IsObject(value))
@@ -89,11 +92,14 @@ export function roundingMode(
 }
 export function unitOption(value: unknown): string | undefined {
   if (value === undefined) return undefined
-  let unit = ToString(value)
-  if (unit.endsWith('s')) unit = unit.slice(0, -1)
-  if (!arrayIncludes(units, unit))
-    throw new RangeErrorConstructor('Invalid temporal unit')
-  return unit
+  const unit = ToString(value)
+  for (let index = 0; index < units.length; index++) {
+    const pair = units[index]
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L559
+    // L559: either exact spelling returns its canonical unit without visible string methods.
+    if (unit === pair[0] || unit === pair[1]) return pair[0]
+  }
+  throw new RangeErrorConstructor('Invalid temporal unit')
 }
 export function timeUnit(unit: string | undefined): TimeUnit {
   if (unit === undefined || !HasOwnProperty(timeUnitNanoseconds, unit))

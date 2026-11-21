@@ -483,6 +483,34 @@ int main(int argc, char **argv) {
         catch (error) { failure = error; }
         check(failure instanceof RangeError);
       }
+      const unitNameInstant = new Temporal.Instant(90000000000n);
+      const unitNameTime = new Temporal.PlainTime(12, 34, 45);
+      const unitNameDateTime = new Temporal.PlainDateTime(2000, 1, 2, 12, 34, 45);
+      const unitNameZoned = Temporal.ZonedDateTime.from('2000-01-02T12:34:45Z[UTC]');
+      const unitNameDuration = new Temporal.Duration(0, 0, 0, 0, 1, 30);
+      const unitNameDate = new Temporal.PlainDate(2024, 2, 28), unitNameDateEnd = new Temporal.PlainDate(2024, 3, 1);
+      const unitNameMonth = new Temporal.PlainYearMonth(2024, 1), unitNameMonthEnd = new Temporal.PlainYearMonth(2024, 3);
+      for (const key of ['endsWith', 'slice']) {
+        const original = Object.getOwnPropertyDescriptor(String.prototype, key);
+        const hints = [];
+        const token = text => ({[Symbol.toPrimitive](hint) { hints.push(hint); return text; }});
+        let results;
+        try {
+          Object.defineProperty(String.prototype, key, {configurable: true, get() { throw new Error('Private unit name string hook reached'); }});
+          results = [
+            unitNameInstant.round({smallestUnit: token('minutes')}).epochNanoseconds,
+            unitNameTime.round({smallestUnit: token('minutes')}).minute,
+            unitNameDateTime.round({smallestUnit: token('minutes')}).minute,
+            unitNameZoned.round({smallestUnit: token('minutes')}).epochNanoseconds,
+            unitNameDuration.round({smallestUnit: token('hours')}).hours,
+            unitNameDuration.total({unit: token('minutes')}),
+            unitNameDate.until(unitNameDateEnd, {largestUnit: token('days'), smallestUnit: 'days'}).days,
+            unitNameMonth.until(unitNameMonthEnd, {largestUnit: token('months')}).months,
+          ];
+        } finally { Object.defineProperty(String.prototype, key, original); }
+        check(results.join('|') === '120000000000|35|35|946816500000000000|2|90|2|2');
+        check(hints.join('|') === 'string|string|string|string|string|string|string|string');
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');
