@@ -342,6 +342,84 @@ int main(int argc, char **argv) {
         Reflect.apply = listApply;
       }
       check(listResults.join('|') === '2000-02-29T12:34:56|P1DT2H|0|29');
+      for (const partial of [false, true]) {
+        const clockEvents = [];
+        const input = new Proxy({}, {
+          has() { throw new Error('Unexpected time HasProperty'); },
+          ownKeys() { throw new Error('Unexpected time enumeration'); },
+          get(target, key) {
+            if (key === 'calendar' || key === 'timeZone') return undefined;
+            clockEvents.push('get ' + key);
+            return {[Symbol.toPrimitive](hint) {
+              clockEvents.push('coerce ' + key + ' ' + hint);
+              return 1.9;
+            }};
+          }
+        });
+        const options = {get overflow() { clockEvents.push('overflow'); return 'reject'; }};
+        const clockResult = partial ? new Temporal.PlainTime(12).with(input, options)
+          : Temporal.PlainTime.from(input, options);
+        check(clockResult.toJSON() === '01:01:01.001001001');
+        check(clockEvents.join('|') ===
+          'get hour|coerce hour number|get microsecond|coerce microsecond number|' +
+          'get millisecond|coerce millisecond number|get minute|coerce minute number|' +
+          'get nanosecond|coerce nanosecond number|get second|coerce second number|overflow');
+        const clockOrder = ['hour', 'microsecond', 'millisecond', 'minute', 'nanosecond', 'second'];
+        for (let stop = 0; stop < clockOrder.length; stop++) {
+          for (const stage of ['get', 'coerce']) {
+            const events = [], failure = {};
+            const abruptInput = new Proxy({}, {get(target, key) {
+              if (key === 'calendar' || key === 'timeZone') return undefined;
+              events.push('get ' + key);
+              if (key === clockOrder[stop] && stage === 'get') throw failure;
+              return {[Symbol.toPrimitive](hint) {
+                events.push('coerce ' + key + ' ' + hint);
+                if (key === clockOrder[stop]) throw failure;
+                return 1;
+              }};
+            }});
+            let caught;
+            try {
+              const abruptOptions = {get overflow() { throw new Error('Unexpected time options'); }};
+              if (partial) new Temporal.PlainTime(12).with(abruptInput, abruptOptions);
+              else Temporal.PlainTime.from(abruptInput, abruptOptions);
+            } catch (error) { caught = error; }
+            check(caught === failure);
+            const expected = [];
+            for (let index = 0; index <= stop; index++) {
+              expected.push('get ' + clockOrder[index]);
+              if (index < stop || stage === 'coerce') expected.push('coerce ' + clockOrder[index] + ' number');
+            }
+            check(events.join('|') === expected.join('|'));
+          }
+        }
+        const missing = [], empty = new Proxy({}, {get(target, key) {
+          if (key !== 'calendar' && key !== 'timeZone') missing.push(key);
+          return undefined;
+        }});
+        let emptyFailure;
+        try {
+          const emptyOptions = {get overflow() { throw new Error('Unexpected empty time options'); }};
+          if (partial) new Temporal.PlainTime(12).with(empty, emptyOptions);
+          else Temporal.PlainTime.from(empty, emptyOptions);
+        } catch (error) { emptyFailure = error; }
+        check(emptyFailure instanceof TypeError && missing.join('|') === clockOrder.join('|'));
+        const zeroTime = partial ? new Temporal.PlainTime(12, 34).with({hour: -0.9})
+          : Temporal.PlainTime.from({hour: -0.9});
+        check(zeroTime.toJSON() === (partial ? '00:34:00' : '00:00:00'));
+      }
+      for (const [name, complete, partial] of [
+        ['hour', '01:00:00', '01:34:56.123456789'],
+        ['minute', '00:01:00', '12:01:56.123456789'],
+        ['second', '00:00:01', '12:34:01.123456789'],
+        ['millisecond', '00:00:00.001', '12:34:56.001456789'],
+        ['microsecond', '00:00:00.000001', '12:34:56.123001789'],
+        ['nanosecond', '00:00:00.000000001', '12:34:56.123456001'],
+      ]) {
+        const inherited = Object.create({[name]: 1.9});
+        check(Temporal.PlainTime.from(inherited).toJSON() === complete);
+        check(new Temporal.PlainTime(12, 34, 56, 123, 456, 789).with(inherited).toJSON() === partial);
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

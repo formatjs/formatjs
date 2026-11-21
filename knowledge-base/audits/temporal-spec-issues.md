@@ -118,3 +118,38 @@ error, not an implementation comparison bug. TS, Rust and native Hermes controls
 check both directions and equality, including every lower-field carry boundary.
 Input conversion remains separate audit work. No upstream issue or PR was filed
 by this audit.
+
+## Partial time records use a different missing-field sentinel than with()
+
+Status: inconsistent producer/consumer contract in pinned Temporal revision
+`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`. The default-branch source still
+contains both forms when fetched through GitHub on 2026-11-21 (file blob
+`6ad3d7e4a0207642286ad2d771a55f9de34762e9`).
+
+[ToTemporalTimeRecord](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L728-L759)
+initializes absent partial fields to the specification enum `~unset~` at line 732. Undefined property values leave that enum unchanged. But
+[PlainTime.prototype.with](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L206-L230)
+checks each field against the ECMAScript value `undefined`, not that enum.
+Those are distinct specification values. Taken literally, an absent field
+passes the test, gets copied into the clock, and reaches RegulateTime outside
+its integer-input contract. For example, setting only minute leaves hour and
+four lower fields unset. The algorithm cannot justify a valid integer clock.
+
+```js
+new Temporal.PlainTime(12, 34, 56, 123, 456, 789).with({minute: 1}).toJSON()
+// Existing behavior: '12:01:56.123456789'
+```
+
+Audit decision: preserve the receiver's missing fields, including properties
+whose Get returns undefined. The implementation fuses this merge by seeding its
+private field list from the receiver before reading the partial input. Node and
+installed native Hermes controls cover all six independently supplied fields,
+undefined inputs, inherited fields and coercion/throw ordering. These tests
+preserve behavior; they do not resolve the normative inconsistency.
+
+A candidate spec repair is to test `~unset~` in all six with() branches, or to
+make the producer use undefined consistently. Keep ToTemporalTimeRecord lines
+728–732 and 759, and the with() merge lines 207–230, open pending a consistent
+contract. The independently reviewed Gets, defined guards, conversions and
+supplied-field flag at lines 733–758 do not depend on which missing sentinel is
+chosen. No upstream issue or PR was filed by this audit.
