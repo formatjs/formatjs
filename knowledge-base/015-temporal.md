@@ -105,6 +105,12 @@ and calendar arguments, preserving RangeError precedence. Noon/date combination
 and the first four zoned-constructor steps gain six individual spec-line traces;
 dependent range calls, allocation and identifier parsing remain open.
 
+Exact clock subtraction and the time-only component fold now have TS/Rust
+substep traces. Shared vectors cover mixed borrows, day endpoints, every largest
+time unit and signed duration-limit composition. Scalar clocks stay below one
+day (and 2**47 nanoseconds), so native input transport preserves every integer.
+The general component-bound assertion and complete difference callers remain open.
+
 Comparison cores now have individual TS/Rust traces for ISO dates, clocks,
 date-times, epochs and inclusive Instant bounds, plus public comparison return
 steps. Exact epoch-day/nanosecond encodings preserve field ordering and ignore
