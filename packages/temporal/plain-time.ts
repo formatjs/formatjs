@@ -102,7 +102,8 @@ const names = [
   'microsecond',
   'nanosecond',
 ] as const
-const factors = names.map(name => timeUnitNanoseconds[name])
+const factors = clockValues(index => timeUnitNanoseconds[names[index]])
+const fieldOrder = [0, 4, 3, 1, 5, 2]
 const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
 function read(value: unknown): bigint {
@@ -111,9 +112,13 @@ function read(value: unknown): bigint {
     throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
+// A private six-field list must not consult array iterators, methods or species.
+function clockValues<T>(read: (index: number) => T): T[] {
+  return [read(0), read(1), read(2), read(3), read(4), read(5)]
+}
 function fields(value: bigint): number[] {
-  return factors.map((factor, index) =>
-    numberFrom((value / factor) % bigIntFrom(maxima[index]))
+  return clockValues(index =>
+    numberFrom((value / factors[index]) % bigIntFrom(maxima[index]))
   )
 }
 function integer(value: unknown): number {
@@ -139,6 +144,24 @@ function regulate(values: number[], constrain: boolean): bigint {
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.regulatePlainTime(values, constrain)
   let result = 0n
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632
+  // L622: the validated overflow choice selects independent field clamping.
+  // L623: index 0 clamps hour to 0..23.
+  // L624: index 1 clamps minute to 0..59.
+  // L625: index 2 clamps second to 0..59.
+  // L626: index 3 clamps millisecond to 0..999.
+  // L627: index 4 clamps microsecond to 0..999.
+  // L628: index 5 clamps nanosecond to 0..999.
+  // L629: the other mode leaves each integer field unchanged.
+  // L630: the other validated mode is reject.
+  // L631: any unchanged field outside its bounds throws RangeError.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661
+  // L655: index 0 rejects an hour outside 0..23.
+  // L656: index 1 rejects a minute outside 0..59.
+  // L657: index 2 rejects a second outside 0..59.
+  // L658: index 3 rejects a millisecond outside 0..999.
+  // L659: index 4 rejects a microsecond outside 0..999.
+  // L660: index 5 rejects a nanosecond outside 0..999.
   for (let index = 0; index < 6; index++) {
     let value = values[index]
     if (constrain) value = mathMax(0, mathMin(maxima[index] - 1, value))
@@ -146,6 +169,9 @@ function regulate(values: number[], constrain: boolean): bigint {
       throw new RangeErrorConstructor('Time out of range')
     result += bigIntFrom(value) * factors[index]
   }
+  // L661: every field passed; the IsValidTime predicate is true.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L632
+  // L632: exact within-day nanoseconds encode all six fields with implicit Days 0.
   return result
 }
 function object(value: unknown): value is Record<string, unknown> {
@@ -155,9 +181,10 @@ function timeFields(
   item: Record<string, unknown>,
   initial = [0, 0, 0, 0, 0, 0]
 ): number[] {
-  const result = [...initial]
+  const result = clockValues(index => initial[index])
   let any = false
-  for (const index of [0, 4, 3, 1, 5, 2]) {
+  for (let position = 0; position < 6; position++) {
+    const index = fieldOrder[position]
     const raw = item[names[index]]
     if (raw !== undefined) {
       result[index] = integer(raw)
@@ -570,12 +597,12 @@ Object.defineProperty(PlainTimeValue, 'name', {
 })
 export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   construct(target, args, newTarget) {
+    const values = clockValues(index =>
+      argumentAt(args, index) === undefined
+        ? 0
+        : integer(argumentAt(args, index))
+    )
     if (import.meta.formatjsTemporalNativeData === true) {
-      const values = names.map((_, index) =>
-        argumentAt(args, index) === undefined
-          ? 0
-          : integer(argumentAt(args, index))
-      )
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
       const prototype = newTarget.prototype
       const result = createObject(
@@ -584,11 +611,6 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
       setNativeTimeSlot(result, value)
       return result
     }
-    const values = names.map((_, index) =>
-      argumentAt(args, index) === undefined
-        ? 0
-        : integer(argumentAt(args, index))
-    )
     const value = regulate(values, false)
     const prototype = newTarget.prototype
     const result = createObject(

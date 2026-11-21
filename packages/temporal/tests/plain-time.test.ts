@@ -86,3 +86,92 @@ it('wraps time while ignoring calendar fields; preserves signed differences', ()
     PlainTime.prototype.toJSON.call(new Proxy(new PlainTime(), {}))
   ).toThrow(TypeError)
 })
+
+it.each([
+  ['map', Array.prototype, 'map'],
+  ['iterator', Array.prototype, Symbol.iterator],
+  ['iterator next', Object.getPrototypeOf([][Symbol.iterator]()), 'next'],
+  ['species constructor', Array.prototype, 'constructor'],
+] as const)(
+  'does not observe private clock array %s hooks',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    const initial = new PlainTime(12, 34, 56, 123, 456, 789)
+    const failure = {message: 'Private clock array hook reached'}
+    const reads: string[] = []
+    const fields = Object.create(null)
+    for (const name of [
+      'hour',
+      'minute',
+      'second',
+      'millisecond',
+      'microsecond',
+      'nanosecond',
+    ]) {
+      Object.defineProperty(fields, name, {
+        get() {
+          reads.push(name)
+          return name === 'hour' ? 12 : 1
+        },
+      })
+    }
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        configurable: true,
+        get() {
+          throw failure
+        },
+      })
+      actual = [
+        new PlainTime(12, 34, 56, 123, 456, 789).nanosecond,
+        PlainTime.from(fields).toString(),
+        initial.with({minute: 59}).toString(),
+        initial.microsecond,
+      ]
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual([
+      789,
+      '12:01:01.001001001',
+      '12:59:56.123456789',
+      456,
+    ])
+    expect(reads).toEqual([
+      'hour',
+      'microsecond',
+      'millisecond',
+      'minute',
+      'nanosecond',
+      'second',
+    ])
+  }
+)
+
+it.each([
+  ['hour', 23],
+  ['minute', 59],
+  ['second', 59],
+  ['millisecond', 999],
+  ['microsecond', 999],
+  ['nanosecond', 999],
+] as const)('regulates %s independently before packing', (name, maximum) => {
+  for (const value of [0, maximum]) {
+    expect(PlainTime.from({[name]: value}, {overflow: 'reject'})[name]).toBe(
+      value
+    )
+  }
+  for (const value of [-1, -1e100, -Number.MAX_VALUE]) {
+    expect(PlainTime.from({[name]: value})[name]).toBe(0)
+    expect(() => PlainTime.from({[name]: value}, {overflow: 'reject'})).toThrow(
+      RangeError
+    )
+  }
+  for (const value of [maximum + 1, 1e100, Number.MAX_VALUE]) {
+    expect(PlainTime.from({[name]: value})[name]).toBe(maximum)
+    expect(() => PlainTime.from({[name]: value}, {overflow: 'reject'})).toThrow(
+      RangeError
+    )
+  }
+})

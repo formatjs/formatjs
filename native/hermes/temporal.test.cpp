@@ -233,6 +233,34 @@ int main(int argc, char **argv) {
       check(Temporal.PlainDateTime.compare('2000-03-01T00:00', '2000-02-29T23:59:59.999999999') === 1);
       check(Temporal.Instant.compare(new Temporal.Instant(-1n), new Temporal.Instant(0n)) === -1);
       check(Temporal.ZonedDateTime.compare(new Temporal.ZonedDateTime(0n, '+23:00', 'hebrew'), new Temporal.ZonedDateTime(1n, '-23:00')) === -1);
+      const clockInitial = new Temporal.PlainTime(12, 34, 56, 123, 456, 789);
+      for (const [owner, key] of [
+        [Array.prototype, 'map'], [Array.prototype, Symbol.iterator],
+        [Object.getPrototypeOf([][Symbol.iterator]()), 'next'],
+        [Array.prototype, 'constructor'],
+      ]) {
+        const original = Object.getOwnPropertyDescriptor(owner, key);
+        let actual;
+        try {
+          Object.defineProperty(owner, key, {configurable: true, get() {
+            throw new Error('Private clock array hook reached');
+          }});
+          actual = [new Temporal.PlainTime(12, 34, 56, 123, 456, 789).nanosecond,
+            Temporal.PlainTime.from({hour: 12, minute: 34}).minute,
+            clockInitial.with({minute: 59}).second, clockInitial.microsecond];
+        } finally { Object.defineProperty(owner, key, original); }
+        check(actual[0] === 789 && actual[1] === 34 && actual[2] === 56 && actual[3] === 456);
+      }
+      for (const [name, maximum] of [['hour', 23], ['minute', 59], ['second', 59],
+        ['millisecond', 999], ['microsecond', 999], ['nanosecond', 999]]) {
+        for (const input of [-Number.MAX_VALUE, -1e100, 1e100, Number.MAX_VALUE]) {
+          check(Temporal.PlainTime.from({[name]: input})[name] === (input < 0 ? 0 : maximum));
+          let caught;
+          try { Temporal.PlainTime.from({[name]: input}, {overflow: 'reject'}); }
+          catch (error) { caught = error; }
+          check(caught instanceof RangeError);
+        }
+      }
       const privateConstructors = [
         ['Instant', [0n]], ['ZonedDateTime', [0n, 'UTC']],
         ['PlainDate', [2024, 2, 29]], ['PlainDateTime', [2024, 2, 29]],
