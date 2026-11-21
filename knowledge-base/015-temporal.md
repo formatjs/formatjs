@@ -8,6 +8,12 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The [single-value parts audit](audits/temporal-parts-result-audit.md) maps
+ECMA-402 §11.5.7 and §16.5.6 source steps. A shared typed result builder copies
+private records by index and creates own data properties, preventing iterator,
+push and inherited-index-setter hooks during projection. Partition producers
+and complete public methods retain separate audit status.
+
 The [foundation object audit](audits/temporal-object-contract-audit.md) maps
 ArrayCreate, SameValue, HasOwnProperty, ToObject and language-type classification
 to current ECMA-262 sections. Captured native array allocation preserves holes,

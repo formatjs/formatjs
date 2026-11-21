@@ -43,9 +43,31 @@ The historical/provisional Temporal inventory above remains unchanged.
 | [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open                        | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).                                                                |
 | [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open                        | Range checked as issue evidence; implementation coverage remains open.                                                                                                           |
 
+## ECMA-402 parts dependencies
+
+Projection review below assumes the partition producer's specified private List
+and Record contract. Producers and complete public methods remain open.
+
+| Section                                                                             | Status                             | Evidence or gap                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open. |
+| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                           |
+
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Single-value formatter parts #8102](https://github.com/formatjs/formatjs/pull/8102): [ECMA-402 §11.5.7 / §16.5.6 source mapping](temporal-parts-result-audit.md)
+  traces producer delegation and moves shared result construction to CreatePartsArray.
+  Indexed traversal and captured own-property creation remove iterator, push and
+  inherited-index-setter hooks. Three regression controls reproduced before the
+  fix; 21 focused gates and the 145-target consumer matrix pass (27 executed,
+  118 cached); seven package assemblies build. Partition
+  producers and public method contracts remain open; no Temporal line credit added.
+
+- Parent CI checkpoint: #8101 at aa8e3b0300381a7ab9730245d9163a95612632aa passed
+  [all-target tests](https://formatjs.buildbuddy.io/invocation/6971c41b-844f-4a67-8bee-fb2ede88f35b),
+  cross-build, native smoke and hooks. Later heads retain their own CI gate.
 
 - Foundation object contracts: [six helper mappings](temporal-object-contract-audit.md)
   cover ArrayCreate, SameValue, HasOwnProperty, ToObject and language-type
