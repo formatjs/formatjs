@@ -148,6 +148,30 @@ int main(int argc, char **argv) {
         localeText = new Temporal.PlainDate(2020, 2, 29).toLocaleString('en', localeOptions);
       } finally { Reflect.get = originalGet; }
       check(localeReads === 1 && localeText === '2020');
+      const coercionKey = Symbol.toPrimitive;
+      const coercionInput = {[coercionKey](hint) {
+        if (hint !== 'number') throw new Error('Wrong Instant hint');
+        return 0n;
+      }};
+      const coercionOverflow = {[coercionKey](hint) {
+        if (hint !== 'string') throw new Error('Wrong option hint');
+        return 'reject';
+      }};
+      const coercionApply = Reflect.apply, coercionSymbol = Symbol, coercionString = String;
+      let coercedInstant, coercedDate;
+      const coercionPoison = function () { throw new Error('Mutable coercion global reached'); };
+      try {
+        Reflect.apply = coercionPoison;
+        Reflect.set(globalThis, 'Symbol', coercionPoison);
+        Reflect.set(globalThis, 'String', coercionPoison);
+        coercedInstant = new Temporal.Instant(coercionInput);
+        coercedDate = Temporal.PlainDate.from('2020-02-29', {overflow: coercionOverflow});
+      } finally {
+        Reflect.apply = coercionApply;
+        Reflect.set(globalThis, 'Symbol', coercionSymbol);
+        Reflect.set(globalThis, 'String', coercionString);
+      }
+      check(coercedInstant.epochNanoseconds === 0n && coercedDate.day === 29);
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));
