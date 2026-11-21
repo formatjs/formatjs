@@ -200,6 +200,8 @@ The polyfill also replaces `Date.prototype.toLocaleString`,
 `toLocaleDateString`, and `toLocaleTimeString` with their ECMA-402 behavior,
 including the standard date and time defaults when only `timeZone` is set.
 
+Replacing `Object.prototype.isPrototypeOf` does not affect formatter construction.
+
 ### Temporal namespaces
 
 DateTimeFormat recognizes Temporal intrinsic brands, including separately bundled
