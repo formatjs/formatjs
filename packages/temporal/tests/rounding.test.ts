@@ -576,3 +576,82 @@ it.each([0, 1, 1000, 1_000_000, 120_300_000, 999_999_999])(
       }
   }
 )
+
+it.each([
+  [
+    'fixed zone constructor',
+    () => new Temporal.ZonedDateTime(0n, '+01:02').offsetNanoseconds,
+    3_720_000_000_000,
+  ],
+  [
+    'Instant offset',
+    () =>
+      Temporal.Instant.from('1970-01-01T00:00:00+01:02:03.000000004')
+        .epochNanoseconds,
+    -3_723_000_000_004n,
+  ],
+  [
+    'PlainTime fraction',
+    () => Temporal.PlainTime.from('12:34:56.000000007').nanosecond,
+    7,
+  ],
+  [
+    'PlainDateTime fraction',
+    () =>
+      Temporal.PlainDateTime.from('2000-01-01T12:34:56.000007008').microsecond,
+    7,
+  ],
+  [
+    'zoned fraction',
+    () =>
+      Temporal.ZonedDateTime.from('1970-01-01T00:00:00.000000009+00:00[UTC]')
+        .epochNanoseconds,
+    9n,
+  ],
+] as const)(
+  'parses %s without private String.prototype.padEnd reads',
+  (_name, run, expected) => {
+    const original = Object.getOwnPropertyDescriptor(
+      String.prototype,
+      'padEnd'
+    )!
+    let actual: unknown
+    try {
+      Object.defineProperty(String.prototype, 'padEnd', {
+        configurable: true,
+        get() {
+          throw new Error('Private fraction padding hook reached')
+        },
+      })
+      actual = run()
+    } finally {
+      Object.defineProperty(String.prototype, 'padEnd', original)
+    }
+    expect(actual).toBe(expected)
+  }
+)
+
+it.each([
+  '',
+  '1',
+  '12',
+  '123',
+  '1234',
+  '12345',
+  '123456',
+  '1234567',
+  '12345678',
+  '123456789',
+  '000000001',
+])(
+  'preserves offset fraction width %s for both signs and decimal separators',
+  digits => {
+    for (const sign of ['+', '-'])
+      for (const separator of digits ? ['.', ','] : ['']) {
+        const text = `1970-01-01T00:00:00${sign}01:02:03${separator}${digits}`
+        expect(Temporal.Instant.from(text).epochNanoseconds).toBe(
+          reference.Instant.from(text).epochNanoseconds
+        )
+      }
+  }
+)

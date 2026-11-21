@@ -11,6 +11,14 @@ import {
 } from '#packages/temporal/kernel.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 
+// ECMA-262 §21.4.1.33.2 steps 15.a, 16.b–16.d:
+// https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
+// Parsers supply at most nine ASCII digits; absent fractions represent zero.
+function fractionDigits(value = ''): string {
+  while (value.length < 9) value += '0'
+  return value
+}
+
 export function parseOffsetNanoseconds(
   value: string,
   annotation = false
@@ -28,7 +36,7 @@ export function parseOffsetNanoseconds(
     throw new RangeErrorConstructor('Invalid UTC offset')
   const result =
     bigIntFrom(hour * 3600 + minute * 60 + second) * 1_000_000_000n +
-    bigIntFrom((match[6] ?? '').padEnd(9, '0'))
+    bigIntFrom(fractionDigits(match[6]))
   return match[1] === '-' ? -result : result
 }
 
@@ -91,7 +99,7 @@ export function parseInstantString(value: string): bigint {
   if (!match || match[1] === '-000000')
     throw new RangeErrorConstructor('Invalid instant string')
   validateAnnotations(match[11])
-  const fraction = (match[9] ?? '').padEnd(9, '0')
+  const fraction = fractionDigits(match[9])
   const second = +(match[8] ?? 0)
   const local = isoToEpochNanoseconds({
     year: +match[1],
@@ -136,7 +144,7 @@ export function parseISODateParts(value: string): ParsedDateFields {
     second = +(match[8] ?? 0)
   if (hour > 23 || minute > 59 || second > 60)
     throw new RangeErrorConstructor('Invalid ISO time')
-  const fraction = (match[9] ?? '').padEnd(9, '0')
+  const fraction = fractionDigits(match[9])
   return {
     year: +match[1],
     month: +match[3],
@@ -238,7 +246,7 @@ export function parsePlainTimeString(value: string): bigint {
       +match[1] * 3600 + +(match[3] ?? 0) * 60 + mathMin(59, +(match[4] ?? 0))
     ) *
       1_000_000_000n +
-    bigIntFrom((match[5] ?? '').padEnd(9, '0'))
+    bigIntFrom(fractionDigits(match[5]))
   )
 }
 
