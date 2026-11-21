@@ -1,5 +1,8 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
-import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  arrayEvery,
+  arrayIndexOf,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
   CalendarRegistry,
@@ -315,7 +318,7 @@ const {resolvedOptions} = {
     const ro: Record<string, unknown> = {}
     for (const key of RESOLVED_OPTIONS_KEYS) {
       let value = internalSlots[key]
-      if (DATE_TIME_PROPS.indexOf(key as TABLE_6) > -1) {
+      if (arrayIndexOf(DATE_TIME_PROPS, key as TABLE_6) > -1) {
         if (
           internalSlots.dateStyle !== undefined ||
           internalSlots.timeStyle !== undefined
@@ -691,7 +694,7 @@ DateTimeFormat.__addLocaleData = function __addLocaleData(
       calendarData: {...entry.data.calendarData},
     }
     for (const patch of calendarLocaleData.get(locale)?.values() ?? []) {
-      if (d.ca.indexOf(patch.calendar) < 0) d.ca.push(patch.calendar)
+      if (arrayIndexOf(d.ca, patch.calendar) < 0) d.ca.push(patch.calendar)
       d.formats[patch.calendar] = patch.formats
       d.calendarData[patch.calendar] = patch.data
     }

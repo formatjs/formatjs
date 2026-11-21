@@ -1,3 +1,7 @@
+import {
+  arrayIncludes,
+  arrayIndexOf,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {CanonicalizeUnicodeLocaleId} from '#packages/intl-getcanonicallocales/canonicalizer.js'
@@ -69,7 +73,7 @@ function CanonicalizeLocaleList(
     const value = list[k]
     if (
       value === null ||
-      !['string', 'object', 'function'].includes(typeof value)
+      !arrayIncludes(['string', 'object', 'function'], typeof value)
     ) {
       throw new TypeError('Locale list entries must be strings or objects')
     }
@@ -77,7 +81,8 @@ function CanonicalizeLocaleList(
     const canonicalizedTag = emitUnicodeLocaleId(
       CanonicalizeUnicodeLocaleId(parseUnicodeLocaleId(tag))
     )
-    if (seen.indexOf(canonicalizedTag) < 0) appendToList(seen, canonicalizedTag)
+    if (arrayIndexOf(seen, canonicalizedTag) < 0)
+      appendToList(seen, canonicalizedTag)
   }
   return seen
 }

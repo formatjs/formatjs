@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arrayIncludes,
   bigIntFrom,
   mathAbs,
   mathMin,
@@ -148,7 +149,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     fields: ISODateTime,
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
-    if (!['compatible', 'earlier', 'later', 'reject'].includes(disambiguation))
+    if (
+      !arrayIncludes(
+        ['compatible', 'earlier', 'later', 'reject'],
+        disambiguation
+      )
+    )
       throw new RangeErrorConstructor('Invalid disambiguation')
     const local = isoToEpochNanoseconds(fields),
       candidates = candidatesFor(local)

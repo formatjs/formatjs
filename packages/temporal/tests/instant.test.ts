@@ -802,3 +802,28 @@ it.each([
     expect(actual).toEqual(['2024', 60, 0n])
   }
 )
+
+it.each(['includes', 'indexOf'] as const)(
+  'uses private list searches without mutable Array.prototype.%s',
+  name => {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, name)!
+    let actual: unknown
+    try {
+      Object.defineProperty(Array.prototype, name, {
+        ...original,
+        value() {
+          throw new Error('Mutable private list search reached')
+        },
+      })
+      actual = [
+        new Temporal.PlainDate(2000, 2, 29).withCalendar('hebrew').calendarId,
+        new Temporal.PlainTime(12, 34, 56).round('minute').toString(),
+        new Temporal.Instant(1n).round('second').epochNanoseconds,
+        Temporal.PlainDate.from('2000-05-06').toString(),
+      ]
+    } finally {
+      Object.defineProperty(Array.prototype, name, original)
+    }
+    expect(actual).toEqual(['hebrew', '12:35:00', 0n, '2000-05-06'])
+  }
+)

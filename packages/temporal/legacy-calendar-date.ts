@@ -2,6 +2,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayEvery,
+  arrayIncludes,
   arraySome,
   floor,
   mathAbs,
@@ -248,7 +249,7 @@ export function legacyCalendarParts(
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||
-    !calendarIds.includes(calendar)
+    !arrayIncludes(calendarIds, calendar)
   )
     return undefined
   if (value.plain !== true) {
@@ -268,7 +269,8 @@ export function legacyCalendarParts(
       raw = parts.call(value.formatter, value.milliseconds)
       if (
         !arraySome(raw, part =>
-          ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'].includes(
+          arrayIncludes(
+            ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
             part.type
           )
         )
@@ -326,7 +328,8 @@ export function legacyCalendarParts(
     raw = parts.call(value.formatter, surrogate)
   if (
     !arraySome(raw, part =>
-      ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'].includes(
+      arrayIncludes(
+        ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
         part.type
       )
     )
@@ -438,7 +441,7 @@ export function legacyCalendarRangeParts(
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||
-    !calendarIds.includes(calendar as CalendarId)
+    !arrayIncludes(calendarIds, calendar as CalendarId)
   )
     return undefined
   const start =

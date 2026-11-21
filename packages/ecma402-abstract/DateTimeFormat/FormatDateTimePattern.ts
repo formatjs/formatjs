@@ -1,4 +1,8 @@
-import {arrayEvery, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  arrayEvery,
+  arrayIndexOf,
+  arraySome,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
@@ -347,7 +351,7 @@ export function FormatDateTimePattern(
         )
       }
       result.push({type: p, value: fv})
-    } else if (DATE_TIME_PROPS.indexOf(p as 'era') > -1) {
+    } else if (arrayIndexOf(DATE_TIME_PROPS, p as 'era') > -1) {
       let fv = ''
       let f = (format?.[p as 'year'] ?? internalSlots[p as 'year']) as
         | 'numeric'

@@ -1,3 +1,4 @@
+import {arrayIndexOf} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type Formats,
   type TABLE_6,
@@ -59,8 +60,8 @@ export function bestFitFormatMatcherScore(
         score -= differentNumericTypePenalty
       } else {
         const values = ['2-digit', 'numeric', 'narrow', 'short', 'long']
-        const optionsPropIndex = values.indexOf(optionsProp as string)
-        const formatPropIndex = values.indexOf(formatProp as string)
+        const optionsPropIndex = arrayIndexOf(values, optionsProp as string)
+        const formatPropIndex = arrayIndexOf(values, formatProp as string)
         const delta = Math.max(
           -2,
           Math.min(formatPropIndex - optionsPropIndex, 2)

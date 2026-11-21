@@ -1,6 +1,8 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayIncludes,
+  arrayIndexOf,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -235,7 +237,7 @@ function option<T extends string>(
   allowed: readonly T[]
 ): T {
   const text = value === undefined ? fallback : ToString(value)
-  if (!allowed.includes(text as T))
+  if (!arrayIncludes(allowed, text as T))
     throw new RangeErrorConstructor('Invalid option')
   return text as T
 }
@@ -483,7 +485,7 @@ export function unroundedZonedDifference(
   end: bigint,
   largest: string
 ): DurationFields {
-  const clockIndex = (clockNames as readonly string[]).indexOf(largest)
+  const clockIndex = arrayIndexOf(clockNames as readonly string[], largest)
   if (clockIndex >= 0)
     return balanceDurationTime(end - start.epochNanoseconds, clockIndex + 4)
   const sign =
@@ -559,12 +561,12 @@ export function differenceZonedDuration(
       'microsecond',
       'nanosecond',
     ],
-    smallIndex = names.indexOf(smallest)
+    smallIndex = arrayIndexOf(names, smallest)
   const largest =
     largestText === 'auto'
       ? names[mathMin(4, smallIndex)]
       : unitOption(largestText)!
-  const largeIndex = names.indexOf(largest)
+  const largeIndex = arrayIndexOf(names, largest)
   if (largeIndex > smallIndex)
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
@@ -804,7 +806,7 @@ class ZonedDateTimeValue {
     const slot = read(this),
       cached = zonedSnapshot(slot)
     if (cached) {
-      if (cached.value.errors.includes('hoursInDay'))
+      if (arrayIncludes(cached.value.errors, 'hoursInDay'))
         throw new RangeErrorConstructor('Day boundary out of range')
       return cached.value.values.hoursInDay as number
     }
@@ -1107,12 +1109,12 @@ defineGetters(
     const slot = read(receiver),
       cached = zonedSnapshot(slot)
     if (cached) {
-      if ((clockNames as readonly string[]).includes(name))
+      if (arrayIncludes(clockNames as readonly string[], name))
         return cached.value.values[name]
       return dateProperty(cached.date, name)
     }
     const value = local(slot)
-    return (clockNames as readonly string[]).includes(name)
+    return arrayIncludes(clockNames as readonly string[], name)
       ? epochNanosecondsToISO(value)[name as (typeof clockNames)[number]]
       : dateProperty(
           {epochDay: epochDayOf(value), calendar: slot.calendar},

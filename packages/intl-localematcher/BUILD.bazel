@@ -22,6 +22,7 @@ formatjs_library(
         "abstract/LookupSupportedLocales.ts",
         "abstract/ResolveLocale.ts",
         "abstract/UnicodeExtensionComponents.ts",
+        "abstract/intrinsics.ts",
         "abstract/languageMatching.ts",
         "abstract/types.ts",
         "abstract/utils.ts",
