@@ -623,7 +623,7 @@ Current pass:
   failure baselines changed.
 
 - Exact clock differences now have nine independent substep traces:
-  `plaintime.html` 529–537 in [TS difference](../../packages/temporal/plain-time.ts#L361)
+  `plaintime.html` 529–537 in [TS difference](../../packages/temporal/plain-time.ts#L306)
   and [Rust PlainTime::until](../../crates/temporal/time.rs#L207).
   The scalar encoding is linear in all six fields, so subtracting encoded
   clocks equals composing their component differences, including mixed borrows.
@@ -678,6 +678,22 @@ Current pass:
   Nine new Temporal traces bring this audit's total to 243. Full callers, option
   ordering beyond these controls, other table columns and realm requirements stay open.
 
+- Fractional-second formatting: `abstractops.html` lines 762–770.
+  The [fractional formatting audit](temporal-fractional-format-audit.md) maps
+  [format-digits.ts](../../packages/temporal/format-digits.ts), which now shares the
+  bounded decimal prefix/trim operation among Instant, PlainTime and Duration.
+  Captured primitive conversion and indexed string access replace mutable
+  String, padStart, slice and replace calls in these three formatting paths.
+  Eleven public mutation regressions failed before the fix; a twelfth control
+  already passed. Six fraction vectors compare all eleven precision choices
+  against an independent JS implementation, covering 198 serializations.
+  Native Hermes repeats mutation and precision controls; Rust implementations
+  retain their equivalent integer digit trimming/truncation algorithms.
+  All 72 Temporal matrix targets pass, including all 40 class/backend gates;
+  three additional ICU string-oracle/typecheck targets and package assembly pass.
+  Nine new traces bring the audit total to 252. Parsing, other formatting
+  methods, surrounding callers and realm requirements stay open.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -706,9 +722,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private formatter record copies](https://github.com/formatjs/formatjs/pull/8088),
 [exact clock difference audit](https://github.com/formatjs/formatjs/pull/8089),
 [private unit-name matching](https://github.com/formatjs/formatjs/pull/8090),
-[rounding-increment validation audit](https://github.com/formatjs/formatjs/pull/8091).
+[rounding-increment validation audit](https://github.com/formatjs/formatjs/pull/8091),
+[intrinsic fractional formatting](https://github.com/formatjs/formatjs/pull/8092).
 
-New traces: 243 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -728,7 +745,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       74 |                         367 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       83 |                         358 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                       12 |                         207 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       56 |                         646 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       51 |                         106 |
@@ -795,7 +812,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-ispartialtemporalobject`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L726)
   - Open: [737–743](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L737-L743).
 - [`sec-temporal-formatfractionalseconds`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L747)
-  - Open: [762–770](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L762-L770).
+  - Traced: [762–770](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L762-L770).
 - [`sec-temporal-formattimestring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L774)
   - Open: [795–801](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L795-L801).
 - [`sec-getunsignedroundingmode`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L807)

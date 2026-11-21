@@ -477,6 +477,8 @@ fn write_duration(
         }
         if second_ns != 0 || fields[..6].iter().all(|v| *v == 0) || precision != Precision::Auto {
             write!(f, "{}", second_ns / 1_000_000_000)?;
+            // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L762-L770
+            // Auto strips trailing zeroes, including the zero fraction; fixed precision truncates.
             let (fraction, digits) = if let Precision::Digits(d) = precision {
                 (
                     second_ns % 1_000_000_000 / 10i128.pow(u32::from(9 - d)),
