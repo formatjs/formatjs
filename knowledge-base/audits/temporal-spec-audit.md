@@ -5,15 +5,27 @@ to the linked PRs and remain pending until their implementation is present and
 verified. Open ranges stay open until individually reviewed. Counts describe
 numbered source lines, including editorial material, not normative requirements.
 
-Current pass: `ParseMonthCode` syntax and coercion, `calendar.html` lines 83–85.
-Implementation: `dateFieldValue` in [date-core.ts](../../packages/temporal/date-core.ts).
-The grammar rejects `M00` and trailing line terminators before later field getters;
-`M00L` and calendar-invalid but syntactically valid codes reach calendar resolution.
-Remaining ParseMonthCode result construction and downstream calendar checks stay open.
-Regression: `plain_date_time_test` first failed with `year getter reached` for
-`M00`; `bazel test //packages/temporal:{plain_date_time_test,short_date_test,calendar_test}`
-passes after the fix. New traces: 3 source lines. All other baseline traces retain
-their linked PR status.
+Current pass:
+
+- `ParseMonthCode` syntax and coercion, `calendar.html` lines 83–85.
+  Implementation: `dateFieldValue` in [date-core.ts](../../packages/temporal/date-core.ts).
+  Reject `M00` and trailing line terminators before later field getters;
+  keep `M00L` and calendar-invalid but syntactically valid codes for calendar resolution.
+  Remaining result construction and downstream calendar checks stay open.
+  Regression first failed with `year getter reached`; date/time, short-date and
+  calendar suites plus implementation/test typechecks pass after the fix.
+- `GetTemporalRelativeToOption` internal-slot branches, `abstractops.html` lines 607–613.
+  Implementation: `toRelativeTo` in [relative-duration.ts](../../packages/temporal/relative-duration.ts).
+  PlainDateTime copies its internal ISO date and calendar without reading public
+  fields. Date and zoned anchors retain their existing internal records.
+  Regression first failed with `Unexpected hour read`; relative-duration tests,
+  implementation/test typechecks and installed native Hermes regressions pass.
+  The final pre-epoch vector passes. Affected Node Date, DateTime, YearMonth,
+  MonthDay and Duration Test262 targets pass. Full Date/Duration Test262 suites
+  pass on both TS and SDK Hermes in source and bytecode modes. No exclusions changed.
+  Typed Rust receives prepared anchors; JS getter/coercion requirements live here.
+
+New traces: 10 source lines. All other baseline traces retain their linked PR status.
 
 Pinned revision: [`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec). This is a navigation index, not a conformance report. Each clause links to its source, including prose, grammar, tables, and nested clauses. Numbered lines include notes and editorial redlines; do not treat their count as a count of normative requirements.
 
@@ -25,7 +37,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       15 |                         426 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       22 |                         419 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                        3 |                         216 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       40 |                         662 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
@@ -78,7 +90,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-validatetemporalunitvaluedoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L563)
   - Open: [576–581](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L576-L581).
 - [`sec-temporal-gettemporalrelativetooption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L585)
-  - Open: [602–655](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L602-L655).
+  - Traced: [607–613](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L607-L613).
+  - Open: [602–606](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L602-L606), [614–655](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L614-L655).
 - [`sec-temporal-largeroftwotemporalunits`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L659)
   - Open: [671–674](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L671-L674).
 - [`sec-temporal-iscalendarunit`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L678)

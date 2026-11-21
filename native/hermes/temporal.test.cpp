@@ -68,6 +68,17 @@ int main(int argc, char **argv) {
       check(Temporal.PlainDate.from('-271821-04-19').toLocaleString('en', {year:'numeric'}) === '271822');
       check(beforeTemporalFormatter.format(Temporal.PlainDate.from('2020-02-29')) === '02/29/2020');
       check(Temporal.PlainTime.from('12:34:56.123456789').nanosecond === 789);
+      for (const monthCode of ['M00', 'M01\n']) {
+        let failure;
+        try {
+          Temporal.PlainDate.from({day: 1, monthCode, get year() { throw new Error('Unexpected year read'); }});
+        } catch (error) { failure = error; }
+        check(failure instanceof RangeError);
+      }
+      const anchor = new Temporal.PlainDateTime(2020, 1, 31, 23, 59);
+      Object.defineProperty(anchor, 'hour', {get() { throw new Error('Unexpected hour read'); }});
+      check(Temporal.Duration.compare('P1M', 'P29D', {relativeTo: anchor}) === 0);
+      check(Temporal.Duration.from('P1M').total({relativeTo: anchor, unit: 'day'}) === 29);
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));
