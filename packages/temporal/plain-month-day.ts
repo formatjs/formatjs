@@ -206,7 +206,7 @@ export const PlainMonthDay: PlainMonthDayConstructor = new Proxy(
       const epochDay = isoReferenceDay(year, month, day)
       if (epochDay < -100000001 || epochDay > 100000000)
         throw new RangeError('Month-day out of range')
-      const prototype = Reflect.get(newTarget, 'prototype'),
+      const prototype = newTarget.prototype,
         result = createObject(object(prototype) ? prototype : target.prototype)
       setMonthDaySlot(result, {epochDay, calendar})
       return result

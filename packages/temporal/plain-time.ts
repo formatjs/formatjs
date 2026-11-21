@@ -535,7 +535,7 @@ export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
         args[index] === undefined ? 0 : integer(args[index])
       )
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
-      const prototype = Reflect.get(newTarget, 'prototype')
+      const prototype = newTarget.prototype
       const result = createObject(
         object(prototype) ? prototype : target.prototype
       )
@@ -546,7 +546,7 @@ export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
       args[index] === undefined ? 0 : integer(args[index])
     )
     const value = regulate(values, false)
-    const prototype = Reflect.get(newTarget, 'prototype')
+    const prototype = newTarget.prototype
     const result = createObject(
       object(prototype) ? prototype : target.prototype
     )

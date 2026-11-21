@@ -373,7 +373,7 @@ export const Instant: InstantConstructor = new Proxy(
   {
     construct(target, args, newTarget) {
       const value = validateInstant(toBigInt(args[0]))
-      const prototype = Reflect.get(newTarget, 'prototype')
+      const prototype = newTarget.prototype
       if (import.meta.formatjsTemporalNativeData === true) {
         const result = createNativeInstant(value)
         const selected =

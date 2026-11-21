@@ -419,7 +419,7 @@ export const PlainDate: PlainDateConstructor = new Proxy(PlainDateValue, {
       day = integer(args[2]),
       calendar = constructorCalendar(args[3])
     const epochDay = isoDay(year, month, day)
-    const prototype = Reflect.get(newTarget, 'prototype')
+    const prototype = newTarget.prototype
     const result = createObject(
       object(prototype) ? prototype : target.prototype
     )

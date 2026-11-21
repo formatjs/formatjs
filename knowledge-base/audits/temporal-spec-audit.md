@@ -100,9 +100,24 @@ Current pass:
   These lines stay open: this fixes the observable allocator dependency, while
   complete prototype selection and cross-realm requirements still need review.
   Formatter-provider `Object.create` calls and other mutable intrinsic dependencies
-  remain open, including constructor `Reflect.get` calls and shared `ToPrimitive`
-  calls through `Reflect.apply`.
+  remain open, including shared `ToPrimitive` calls through `Reflect.apply`.
+  Constructor and formatter `Reflect.get` dependencies are addressed below.
   No new line signoffs.
+
+- Internal property reads: constructor prototype selection and formatter option
+  proxies use direct property access instead of mutable `Reflect.get`.
+  Implementation: the eight constructor facades, [locale.ts](../../packages/temporal/locale.ts)
+  and [legacy-intl.ts](../../packages/temporal/legacy-intl.ts).
+  Ordinary property access preserves getter receivers and abrupt completions
+  without consulting user replacements of the reflection helper. Symbol keys
+  remain valid through `Record<PropertyKey, unknown>` option-source typing.
+  Both public constructor and locale-option regressions failed before the fix;
+  all 49 test targets pass: focused public/type checks, installed native Hermes,
+  legacy Intl host, all 40 full Node/TS-Hermes/SDK-Hermes class suites, the
+  three 306-case locale gates and owned formatter/ICU controls. Package assembly
+  passes. Locale-gate exclusions and data-conflict records remain unchanged.
+  The same eight allocation lines above remain open for full prototype and
+  cross-realm review. Other mutable intrinsic dependencies remain open.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -110,7 +125,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [short-date option order](https://github.com/formatjs/formatjs/pull/8064),
 [date/date-time option order](https://github.com/formatjs/formatjs/pull/8065),
 [calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066),
-[intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067).
+[intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067),
+[internal property reads](https://github.com/formatjs/formatjs/pull/8068).
 
 New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is

@@ -550,7 +550,7 @@ export const PlainDateTime: PlainDateTimeConstructor = new Proxy(
           args[index + 3] === undefined ? 0 : integer(args[index + 3])
       const calendar = constructorCalendar(args[9])
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
-      const prototype = Reflect.get(newTarget, 'prototype')
+      const prototype = newTarget.prototype
       const result = createObject(
         object(prototype) ? prototype : target.prototype
       )

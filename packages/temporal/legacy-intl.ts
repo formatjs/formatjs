@@ -128,7 +128,7 @@ export function installLegacyDateTimeFormat(
     options: unknown,
     newTarget: Function
   ): Intl.DateTimeFormat {
-    let source: Record<string, unknown> | undefined
+    let source: Record<PropertyKey, unknown> | undefined
     const snapshot: Record<string, unknown> = createObject(null)
     const tracked = new Proxy(createObject(null), {
       get(_target, key) {
@@ -136,7 +136,7 @@ export function installLegacyDateTimeFormat(
           if (options === null) throw new TypeError('Invalid options')
           source = options === undefined ? createObject(null) : Object(options)
         }
-        const raw = Reflect.get(source!, key)
+        const raw = source![key]
         if (typeof key !== 'string' || raw === undefined) return raw
         const value = legacyDateTimeOption(key, raw)
         snapshot[key] = value

@@ -380,7 +380,7 @@ export const PlainYearMonth: PlainYearMonthConstructor = new Proxy(
         calendar = constructorCalendar(args[2]),
         day = args[3] === undefined ? 1 : integer(args[3])
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
-        prototype = Reflect.get(newTarget, 'prototype')
+        prototype = newTarget.prototype
       const result = createObject(
         object(prototype) ? prototype : target.prototype
       )

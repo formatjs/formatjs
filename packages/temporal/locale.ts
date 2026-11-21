@@ -121,7 +121,7 @@ export function legacyDateTimeProjection(
   const host = zoned
     ? legacyHostTimeZone(Constructor, value.timeZone!, intrinsics.formatToParts)
     : undefined
-  let source: Record<string, unknown> | undefined
+  let source: Record<PropertyKey, unknown> | undefined
   const snapshot: Record<string, unknown> = createObject(null)
   const proxy = new Proxy(createObject(null), {
     get(_target, key) {
@@ -129,9 +129,9 @@ export function legacyDateTimeProjection(
         if (options === null) throw new TypeError('Invalid options')
         source = options === undefined ? createObject(null) : Object(options)
       }
-      if (typeof key !== 'string') return Reflect.get(source!, key)
+      if (typeof key !== 'string') return source![key]
       if (!Object.prototype.hasOwnProperty.call(snapshot, key)) {
-        const raw = Reflect.get(source!, key)
+        const raw = source![key]
         if (
           key === 'timeZone' &&
           value.kind === 'ZonedDateTime' &&

@@ -113,27 +113,41 @@ int main(int argc, char **argv) {
         check(date.withCalendar(calendar).calendarId === 'gregory');
         check(Temporal.PlainDate.from({year: 2020, month: 2, day: 29, calendar}).calendarId === 'gregory');
       }
-      const originalCreate = Object.create;
-      let allocated;
+      for (const [owner, key] of [[Object, 'create'], [Reflect, 'get']]) {
+        const original = owner[key];
+        let allocated;
+        try {
+          owner[key] = function () { throw new Error('Mutable helper reached'); };
+          allocated = [
+            new Temporal.Instant(0n), Temporal.Instant.from('1970-01-01T00:00Z'),
+            new Temporal.Duration(0, 0, 0, 1), Temporal.Duration.from('P1D'),
+            new Temporal.PlainDate(2020, 2, 29), Temporal.PlainDate.from('2020-02-29'),
+            new Temporal.PlainDateTime(2020, 2, 29), Temporal.PlainDateTime.from('2020-02-29'),
+            new Temporal.PlainTime(12, 34), Temporal.PlainTime.from('12:34'),
+            new Temporal.PlainYearMonth(2020, 2), Temporal.PlainYearMonth.from('2020-02'),
+            new Temporal.PlainMonthDay(2, 29), Temporal.PlainMonthDay.from('02-29'),
+            new Temporal.ZonedDateTime(0n, 'UTC'), Temporal.ZonedDateTime.from('1970-01-01T00:00[UTC]'),
+          ];
+        } finally { owner[key] = original; }
+        check(allocated.map(value => value.toString()).join('|') === [
+          '1970-01-01T00:00:00Z', '1970-01-01T00:00:00Z', 'P1D', 'P1D',
+          '2020-02-29', '2020-02-29', '2020-02-29T00:00:00', '2020-02-29T00:00:00',
+          '12:34:00', '12:34:00', '2020-02', '2020-02', '02-29', '02-29',
+          '1970-01-01T00:00:00+00:00[UTC]', '1970-01-01T00:00:00+00:00[UTC]',
+        ].join('|'));
+      }
+      const originalGet = Reflect.get;
+      let localeReads = 0, localeText;
+      const localeOptions = {get year() {
+        if (this !== localeOptions) throw new Error('Wrong options receiver');
+        localeReads++;
+        return 'numeric';
+      }};
       try {
-        Object.create = function () { throw new Error('Mutable Object.create reached'); };
-        allocated = [
-          new Temporal.Instant(0n), Temporal.Instant.from('1970-01-01T00:00Z'),
-          new Temporal.Duration(0, 0, 0, 1), Temporal.Duration.from('P1D'),
-          new Temporal.PlainDate(2020, 2, 29), Temporal.PlainDate.from('2020-02-29'),
-          new Temporal.PlainDateTime(2020, 2, 29), Temporal.PlainDateTime.from('2020-02-29'),
-          new Temporal.PlainTime(12, 34), Temporal.PlainTime.from('12:34'),
-          new Temporal.PlainYearMonth(2020, 2), Temporal.PlainYearMonth.from('2020-02'),
-          new Temporal.PlainMonthDay(2, 29), Temporal.PlainMonthDay.from('02-29'),
-          new Temporal.ZonedDateTime(0n, 'UTC'), Temporal.ZonedDateTime.from('1970-01-01T00:00[UTC]'),
-        ];
-      } finally { Object.create = originalCreate; }
-      check(allocated.map(value => value.toString()).join('|') === [
-        '1970-01-01T00:00:00Z', '1970-01-01T00:00:00Z', 'P1D', 'P1D',
-        '2020-02-29', '2020-02-29', '2020-02-29T00:00:00', '2020-02-29T00:00:00',
-        '12:34:00', '12:34:00', '2020-02', '2020-02', '02-29', '02-29',
-        '1970-01-01T00:00:00+00:00[UTC]', '1970-01-01T00:00:00+00:00[UTC]',
-      ].join('|'));
+        Reflect.get = function () { throw new Error('Mutable Reflect.get reached'); };
+        localeText = new Temporal.PlainDate(2020, 2, 29).toLocaleString('en', localeOptions);
+      } finally { Reflect.get = originalGet; }
+      check(localeReads === 1 && localeText === '2020');
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));
