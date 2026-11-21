@@ -501,7 +501,8 @@ Current pass:
   longer consult replaced search methods. Five locale-matcher calls use local
   captures, preserving dependency layering. The helpers retain SameValueZero
   versus strict equality, first-match indices and original sparse-slot behavior.
-  [Per-callsite inventory](temporal-list-search-inventory.md) links all 76 code lines.
+  [Current callsite inventory](temporal-list-search-inventory.md) links the retained
+  searches; locale entry classification subsequently replaces one of the 76 with IsObject.
   Two Temporal, two owned-formatter and two locale-matcher mutation cases plus
   native Hermes failed before the fix. Owned/native controls also replace
   Reflect.apply; ordinary fields, calendars, exact rounding and locale extension
@@ -512,13 +513,33 @@ Current pass:
   searches, other list methods/iterators and cross-realm behavior remain open.
   No new formal spec-line traces or complete public methods are claimed here;
   ISO date regulation and its remaining callers retain their open status.
-  Follow-up: CanonicalizeLocaleList still classifies entries with a typeof
-  whitelist. Undetectable host objects need a separate classification review;
-  retaining the search intrinsic does not sign off that guard.
+  The locale-entry type guard is resolved by the companion input audit below.
   All 109 gates and five package assemblies pass: regression/helper checks and
   typechecks, all 40 Temporal class Test262 backend gates, native Hermes,
   Rust/kernel/ICU controls, locale profiles and Intl consumer/accepted-failure
   gates. Exclusions and accepted-failure baselines are unchanged.
+
+- Locale-list input conversion now accepts undetectable host objects through
+  IsObject and preserves string-hint coercion and abrupt completions. Shared
+  ToObject retains the original Object constructor; primitive boxing and object
+  identity no longer depend on global replacement. Locale-list length uses one
+  Get/ToNumber followed by captured truncation/clamping and a pure NaN check.
+  Invalid entries and null input use intrinsic TypeError.
+  Nine regressions failed before these fixes; focused tests/typechecks, the
+  76-case getCanonicalLocales Test262 run (zero failures) and native Hermes
+  package conformance pass. Native controls exercise ordinary input cases;
+  real undetectable host values are checked with V8's engine test object.
+  [Companion ECMA-402 audit](temporal-locale-list-audit.md) maps lines 54, 55 and
+  62 individually. These are outside the 14 Temporal files, so the Temporal
+  count remains 171. Locale brand selection, its mutable current-Intl probe,
+  parser/canonicalization internals, list allocation and full caller algorithms
+  remain open. The search inventory now has 75 active calls because the typeof
+  whitelist is replaced by IsObject, with all remaining source links refreshed.
+  All 111 gates pass: new host/coercion regressions and typechecks, all 40
+  Temporal class Test262 backend gates, native Hermes, Rust/kernel/ICU controls,
+  locale profiles, getCanonicalLocales Test262 and Intl consumer/baseline gates.
+  Temporal, DateTimeFormat, DurationFormat, getCanonicalLocales, locale matcher
+  and Locale package assemblies pass. Exclusions/baselines are unchanged.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -540,7 +561,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private defaults and constructor order](https://github.com/formatjs/formatjs/pull/8080),
 [chronological comparison audit](https://github.com/formatjs/formatjs/pull/8081),
 [private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082),
-[private list search intrinsics](https://github.com/formatjs/formatjs/pull/8083).
+[private list search intrinsics](https://github.com/formatjs/formatjs/pull/8083),
+[locale-list input coercion](https://github.com/formatjs/formatjs/pull/8084).
 
 New traces: 171 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

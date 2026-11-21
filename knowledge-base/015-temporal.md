@@ -109,12 +109,19 @@ Saturating native integer conversion preserves both clamp and reject behavior.
 Other private lists, record producers and calendar regulation remain under audit.
 
 Private membership/index queries now retain Array.prototype.includes/indexOf
-and Reflect.apply: 76 calls across Temporal and shared formatter/locale providers.
+and Reflect.apply: 75 active calls across Temporal and shared formatter/locale providers.
 Locale matcher uses local captures to preserve dependency direction. SameValueZero,
 strict equality, first-match indices and sparse-slot behavior stay intact.
 The [callsite inventory](audits/temporal-list-search-inventory.md) records each
 reviewed code line. String searches, other list operations and full caller
 algorithms remain open; the formal spec-line count is unchanged by this fix.
+
+Locale-list input classification now includes undetectable host objects and
+uses intrinsic TypeError. Shared ToObject retains original primitive boxing;
+locale-list length conversion reads once, uses the number hint, then captured
+truncation/clamping. The [ECMA-402 companion audit](audits/temporal-locale-list-audit.md)
+traces three dependency substeps separately from Temporal's numbered-line count.
+Current-Intl Locale brand probes and complete caller algorithms remain open.
 
 ## Native performance direction
 

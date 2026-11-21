@@ -1,3 +1,4 @@
+import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {expect, it} from 'vitest'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -194,4 +195,25 @@ it('preserves receiver, hints, fallback order and abrupt completions', () => {
   expect(() => ToPrimitive({[Symbol.toPrimitive]: 1}, 'number')).toThrow(
     TypeError
   )
+})
+
+it('boxes primitives with the original Object intrinsic', () => {
+  const define = Object.defineProperty
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'Object')!
+  const record = Object.create(null)
+  let actual: unknown[]
+  try {
+    define(globalThis, 'Object', {
+      ...original,
+      value() {
+        throw new Error('Mutable Object constructor reached')
+      },
+    })
+    actual = [ToObject(7), ToObject(record)]
+  } finally {
+    define(globalThis, 'Object', original)
+  }
+  expect(typeof actual![0]).toBe('object')
+  expect(Number.prototype.valueOf.call(actual![0])).toBe(7)
+  expect(actual![1]).toBe(record)
 })
