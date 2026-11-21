@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   isLunisolar,
@@ -101,7 +102,7 @@ export interface DateDuration {
   days?: number
 }
 const mod = (value: number, divisor: number): number =>
-  value - Math.floor(value / divisor) * divisor
+  value - floor(value / divisor) * divisor
 function integer(value: number): number {
   if (!Number.isSafeInteger(value))
     throw new RangeError('Expected safe integer')
@@ -369,7 +370,7 @@ export function calendarFromEpochDayRaw(
   if (calendar !== 'islamic-umalqura')
     return ArithmeticCalendarFromEpochDay(calendar, epoch)
   const jd = epoch + 2440588
-  let year = Math.floor((30 * (jd - 1948440) + 10646) / 10631)
+  let year = floor((30 * (jd - 1948440) + 10646) / 10631)
   while (start(calendar, year) > epoch) year--
   while (start(calendar, year + 1) <= epoch) year++
   let month = 1,
@@ -399,12 +400,12 @@ function addYearMonth(
   if (calendar !== 'hebrew') {
     const count = monthsInYear(calendar, year)
     const serial = year * count + original.month - 1 + months
-    year = yearCheck(Math.floor(serial / count))
+    year = yearCheck(floor(serial / count))
     month = mod(serial, count) + 1
   } else {
     month = monthFromCode(calendar, year, original.monthCode, overflow)
     const serial = integer(elapsedMonths(year) + month - 1 + months)
-    year = yearCheck(Math.floor((19 * serial + 234) / 235))
+    year = yearCheck(floor((19 * serial + 234) / 235))
     while (elapsedMonths(year) > serial) year--
     while (elapsedMonths(year + 1) <= serial) year++
     month = serial - elapsedMonths(year) + 1

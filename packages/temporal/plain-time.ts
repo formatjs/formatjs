@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -332,14 +333,14 @@ function format(
       ? (value as bigint)
       : roundInstant(value as bigint, quantum, mode) % day
   )
-  const hour = Math.floor(remaining / 3_600_000_000_000)
+  const hour = floor(remaining / 3_600_000_000_000)
   remaining %= 3_600_000_000_000
-  const minute = Math.floor(remaining / 60_000_000_000)
+  const minute = floor(remaining / 60_000_000_000)
   remaining %= 60_000_000_000
   const pad = (part: number): string => (part < 10 ? '0' + part : String(part))
   let result = pad(hour) + ':' + pad(minute)
   if (precision !== 'minute') {
-    result += ':' + pad(Math.floor(remaining / 1_000_000_000))
+    result += ':' + pad(floor(remaining / 1_000_000_000))
     const digits = String(remaining % 1_000_000_000).padStart(9, '0')
     const fraction =
       precision === 'auto'

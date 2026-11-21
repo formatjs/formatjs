@@ -307,3 +307,60 @@ it('keeps Temporal input and option coercion independent of mutable globals', ()
   expect(numberHint).toBe('number')
   expect(stringHint).toBe('string')
 })
+
+it.each([
+  [
+    'Instant UTC',
+    () => new Temporal.Instant(-1n).toString(),
+    '1969-12-31T23:59:59.999999999Z',
+  ],
+  [
+    'Instant fixed offset',
+    () => new Temporal.Instant(0n).toString({timeZone: '+01:30'}),
+    '1970-01-01T01:30:00+01:30',
+  ],
+  ['PlainDate week', () => new Temporal.PlainDate(2021, 1, 1).weekOfYear, 53],
+  [
+    'PlainDateTime',
+    () => new Temporal.PlainDateTime(2024, 2, 29, 12, 34, 56).toString(),
+    '2024-02-29T12:34:56',
+  ],
+  [
+    'PlainTime precision',
+    () =>
+      new Temporal.PlainTime(12, 34, 56, 123).toString({
+        fractionalSecondDigits: 2,
+      }),
+    '12:34:56.12',
+  ],
+  [
+    'PlainYearMonth',
+    () => new Temporal.PlainYearMonth(2024, 2).toString(),
+    '2024-02',
+  ],
+  [
+    'PlainMonthDay',
+    () => new Temporal.PlainMonthDay(2, 29).toString(),
+    '02-29',
+  ],
+  [
+    'ZonedDateTime',
+    () => new Temporal.ZonedDateTime(0n, '+01:30').toString(),
+    '1970-01-01T01:30:00+01:30[+01:30]',
+  ],
+] as const)(
+  'keeps %s arithmetic independent of mutable Math.floor',
+  (_name, run, expected) => {
+    const original = Math.floor
+    let actual: unknown
+    try {
+      Math.floor = function () {
+        throw new Error('Mutable Math.floor reached')
+      }
+      actual = run()
+    } finally {
+      Math.floor = original
+    }
+    expect(actual).toBe(expected)
+  }
+)

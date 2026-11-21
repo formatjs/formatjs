@@ -1,3 +1,4 @@
+import {floor} from '#packages/ecma262-abstract/intrinsics.js'
 import {beforeHijrah} from '@formatjs_generated/datetimeformat.calendars/fallback-eras.js'
 import {
   calendarEra,
@@ -87,7 +88,7 @@ function representative(
   if (cached !== undefined) return cached
   const first = calendarFromEpochDayRaw(
     calendar,
-    Math.floor(reference / dayMilliseconds)
+    floor(reference / dayMilliseconds)
   ).year
   for (let delta = 0; delta < 32; delta++) {
     const year = first + delta
@@ -282,7 +283,7 @@ export function legacyCalendarParts(
         lunar ? parts.call(value.formatter, reference) : clockParts
       )
       const local = epoch * dayMilliseconds
-      surrogate = local - Math.floor((local - 946684800000) / cycle) * cycle
+      surrogate = local - floor((local - 946684800000) / cycle) * cycle
       raw = parts
         .call(labels, surrogate)
         .map(part =>
@@ -305,7 +306,7 @@ export function legacyCalendarParts(
   // Whole Gregorian cycles preserve weekday and clock in the plain UTC projection.
   const surrogate =
       value.milliseconds -
-      Math.floor((value.milliseconds - 946684800000) / cycle) * cycle,
+      floor((value.milliseconds - 946684800000) / cycle) * cycle,
     raw = parts.call(value.formatter, surrogate)
   if (
     !raw.some(part =>
@@ -320,7 +321,7 @@ export function legacyCalendarParts(
   return restoreCalendarParts(
     value,
     raw,
-    Math.floor(value.milliseconds / dayMilliseconds),
+    floor(value.milliseconds / dayMilliseconds),
     value.formatter,
     options,
     parts
