@@ -149,3 +149,27 @@ it('computes signed Instant differences with exact epoch arithmetic', () => {
   expect(new Instant(0n).add('PT0.000000001S').epochNanoseconds).toBe(1n)
   expect(() => new Instant(0n).add('P1D')).toThrow(RangeError)
 })
+
+it.each([1, -1])(
+  'composes six clock fields exactly at the signed duration boundary: %s',
+  sign => {
+    const fields = {
+      hours: sign * 2_501_999_792_983,
+      minutes: sign * 36,
+      seconds: sign * 31,
+      milliseconds: sign * 999,
+      microseconds: sign * 999,
+      nanoseconds: sign * 999,
+    }
+    const value = Duration.from(fields)
+    expect(value.toJSON()).toBe(
+      `${sign < 0 ? '-' : ''}PT2501999792983H36M31.999999999S`
+    )
+    expect(value.total('nanoseconds')).toBe(
+      sign * 9_007_199_254_740_992_000_000_000
+    )
+    expect(() => Duration.from({...fields, nanoseconds: sign * 1000})).toThrow(
+      RangeError
+    )
+  }
+)
