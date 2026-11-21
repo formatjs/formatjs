@@ -29,6 +29,12 @@ mutable Object.assign and inherited option getters/setters cannot intercept it.
 Object-form options keep ordinary Get semantics. Host/provider copy operations
 and remaining option algorithms still need separate review.
 
+Remaining host and DateTimeFormat record copies use six null-prototype literals
+and four captured own data-property writes. This removes mutable Object.assign
+reads and inherited slot setters. The property descriptor itself has a null
+prototype. The [copy audit](audits/temporal-record-copy-audit.md) maps each site;
+other private record probes, initialization and complete callers stay open.
+
 Temporal runtime allocation uses `intrinsics.ts` to capture `Object.create` once.
 Constructors, factories, option records and Intl adapters avoid observing later
 replacement of that property. Native transport keeps its existing capture.

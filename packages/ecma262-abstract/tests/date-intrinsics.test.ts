@@ -1,3 +1,4 @@
+import {setDataProperty} from '#packages/ecma262-abstract/intrinsics.js'
 import {expect, it} from 'vitest'
 import {
   Day,
@@ -33,3 +34,53 @@ it.each([
     expect(actual).toBe(expected)
   }
 )
+
+it('creates own data fields without mutable definition or inherited descriptor hooks', () => {
+  const define = Object.defineProperty
+  const originalDefine = Object.getOwnPropertyDescriptor(
+    Object,
+    'defineProperty'
+  )!
+  const originalGet = Object.getOwnPropertyDescriptor(Object.prototype, 'get')
+  const prototype = {
+    set field(_value: unknown) {
+      throw new Error('Inherited data setter reached')
+    },
+  }
+  const target = Object.create(prototype)
+  const key = Symbol('record field')
+  const value = {}
+  try {
+    define(Object.prototype, 'get', {
+      configurable: true,
+      get() {
+        throw new Error('Inherited descriptor getter reached')
+      },
+    })
+    define(Object, 'defineProperty', {
+      __proto__: null,
+      configurable: true,
+      get() {
+        throw new Error('Mutable data definition reached')
+      },
+    } as PropertyDescriptor)
+    setDataProperty(target, 'field', 0)
+    setDataProperty(target, key, value)
+    setDataProperty(target, '__proto__', value)
+  } finally {
+    Reflect.deleteProperty(Object.prototype, 'get')
+    if (originalGet) define(Object.prototype, 'get', originalGet)
+    define(Object, 'defineProperty', originalDefine)
+  }
+  expect(Object.getPrototypeOf(target)).toBe(prototype)
+  expect(Object.getOwnPropertyDescriptor(target, 'field')).toEqual({
+    value: 0,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  })
+  expect(target[key]).toBe(value)
+  expect(Object.getOwnPropertyDescriptor(target, '__proto__')!.value).toBe(
+    value
+  )
+})

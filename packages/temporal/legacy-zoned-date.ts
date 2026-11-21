@@ -4,7 +4,6 @@ import {
   floor,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   createHostTimeZoneOffset,
   type HostTimeZone,
@@ -53,10 +52,11 @@ export function legacyZonedProjection(
   offset: bigint,
   parts: Parts
 ): LegacyDateTimeProjection {
-  const formatter = new Constructor(
-    resolved.locale,
-    Object.assign(createObject(null), selected, {timeZone: 'UTC'})
-  )
+  const formatter = new Constructor(resolved.locale, {
+    __proto__: null,
+    ...selected,
+    timeZone: 'UTC',
+  } as Intl.DateTimeFormatOptions)
   const probe = parts.call(formatter, 0)
   let timeZoneName: string | undefined
   if (arraySome(probe, part => part.type === 'timeZoneName')) {
