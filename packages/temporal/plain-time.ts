@@ -395,6 +395,22 @@ class PlainTimeValue implements PlainTimeObject {
     return create(toTime(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L833-L845
+    // L833: a greater hour dominates every lower clock field.
+    // L834: a lesser hour dominates every lower clock field.
+    // L835: with equal hours, a greater minute gives greater nanoseconds.
+    // L836: with equal hours, a lesser minute gives lesser nanoseconds.
+    // L837: with equal hours/minutes, a greater second gives greater nanoseconds.
+    // L838: with equal hours/minutes, a lesser second gives lesser nanoseconds.
+    // L839: with equal higher fields, greater milliseconds give greater nanoseconds.
+    // L840: with equal higher fields, lesser milliseconds give lesser nanoseconds.
+    // L841: with equal higher fields, greater microseconds give greater nanoseconds.
+    // L842: with equal higher fields, lesser microseconds give lesser nanoseconds.
+    // L843: with equal higher fields, greater nanoseconds compare greater.
+    // L844: with equal higher fields, lesser nanoseconds compare lesser.
+    // L845: equal clock totals identify all six normalized clock fields.
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L75
+    // L75: both backends compare normalized private clocks and return a Number sign.
     if (import.meta.formatjsTemporalNativeData === true) {
       const left = toNativeTime(one).nanoseconds,
         right = toNativeTime(two).nanoseconds

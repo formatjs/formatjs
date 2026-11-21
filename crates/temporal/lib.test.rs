@@ -3028,3 +3028,93 @@ fn zero_calendar_totals_depend_on_anchor_kind() {
     }
     assert_eq!(maximum.total_duration(zero, DateTimeUnit::Hour), Ok(0.0));
 }
+
+#[test]
+fn comparisons_preserve_chronological_field_order_and_ignore_calendars() {
+    use core::cmp::Ordering;
+    use formatjs_temporal::{PlainDate, PlainDateTime, PlainTime, calendar::Calendar};
+    let clocks = [
+        "00:00:00",
+        "00:00:00.000000001",
+        "00:00:00.000000999",
+        "00:00:00.000001000",
+        "00:00:00.000999999",
+        "00:00:00.001000000",
+        "00:00:00.999999999",
+        "00:00:01",
+        "00:00:59.999999999",
+        "00:01:00",
+        "00:59:59.999999999",
+        "01:00:00",
+        "23:59:59.999999999",
+    ]
+    .map(|text| text.parse::<PlainTime>().unwrap());
+    let date = PlainDate::new(2000, 2, 29).unwrap();
+    for (first, one) in clocks.iter().enumerate() {
+        for (second, two) in clocks.iter().enumerate() {
+            assert_eq!(one.cmp(two), first.cmp(&second));
+            assert_eq!(
+                date.to_date_time(*one)
+                    .unwrap()
+                    .compare(date.to_date_time(*two).unwrap()),
+                first.cmp(&second)
+            );
+        }
+    }
+    let dates = [
+        "-271821-04-19",
+        "-000001-12-31",
+        "0000-01-01",
+        "1900-02-28",
+        "1900-03-01",
+        "2000-02-28",
+        "2000-02-29",
+        "2000-03-01",
+        "+275760-09-13",
+    ]
+    .map(|text| text.parse::<PlainDate>().unwrap());
+    let noon = PlainTime::new(12, 0, 0, 0).unwrap();
+    for (first, one) in dates.iter().enumerate() {
+        for (second, two) in dates.iter().enumerate() {
+            assert_eq!(one.compare(*two), first.cmp(&second));
+            assert_eq!(
+                one.to_date_time(noon)
+                    .unwrap()
+                    .compare(two.to_date_time(noon).unwrap()),
+                first.cmp(&second)
+            );
+        }
+    }
+    let last: PlainDateTime = "2000-02-29T23:59:59.999999999".parse().unwrap();
+    let next: PlainDateTime = "2000-03-01T00:00".parse().unwrap();
+    assert_eq!(last.compare(next), Ordering::Less);
+    assert_eq!(
+        date.compare(date.with_calendar(Calendar::Hebrew).unwrap()),
+        Ordering::Equal
+    );
+    assert_eq!(
+        last.compare(last.with_calendar(Calendar::Hebrew).unwrap()),
+        Ordering::Equal
+    );
+    let epochs = [
+        -MAX_EPOCH_NANOSECONDS,
+        -MAX_EPOCH_NANOSECONDS + 1,
+        -1,
+        0,
+        1,
+        MAX_EPOCH_NANOSECONDS - 1,
+        MAX_EPOCH_NANOSECONDS,
+    ]
+    .map(|value| Instant::from_epoch_nanoseconds(value).unwrap());
+    for (first, one) in epochs.iter().enumerate() {
+        for (second, two) in epochs.iter().enumerate() {
+            assert_eq!(one.cmp(two), first.cmp(&second));
+        }
+    }
+    for value in [-MAX_EPOCH_NANOSECONDS - 1, MAX_EPOCH_NANOSECONDS + 1] {
+        assert_eq!(
+            Instant::from_epoch_nanoseconds(value),
+            Err(formatjs_temporal::Error::OutOfRange)
+        );
+    }
+}

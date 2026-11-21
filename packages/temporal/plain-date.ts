@@ -318,6 +318,16 @@ class PlainDateValue {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toPlainDateSlot(one).epochDay,
       b = toPlainDateSlot(two).epochDay
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L909-L915
+    // L909: a greater year has a greater epoch day, regardless of month/day.
+    // L910: a lesser year has a lesser epoch day, regardless of month/day.
+    // L911: within one year, a greater month has a greater epoch day.
+    // L912: within one year, a lesser month has a lesser epoch day.
+    // L913: within one month, a greater day has a greater epoch day.
+    // L914: within one month, a lesser day has a lesser epoch day.
+    // L915: equal epoch days identify the same ISO date.
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L76
+    // L76: compare the private ISO dates and return a Number sign, ignoring calendars.
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateObject {

@@ -217,6 +217,22 @@ int main(int argc, char **argv) {
         });
       } catch (error) { zonedOptionCaught = error; }
       check(zonedOptionCaught === zonedOptionFailure);
+      for (const [later, earlier] of [
+        ['01:00:00', '00:59:59.999999999'],
+        ['00:01:00', '00:00:59.999999999'],
+        ['00:00:01', '00:00:00.999999999'],
+        ['00:00:00.001', '00:00:00.000999999'],
+        ['00:00:00.000001', '00:00:00.000000999'],
+        ['00:00:00.000000001', '00:00:00'],
+      ]) {
+        check(Temporal.PlainTime.compare(later, earlier) === 1);
+        check(Temporal.PlainTime.compare(earlier, later) === -1);
+        check(Object.is(Temporal.PlainTime.compare(later, later), 0));
+      }
+      check(Temporal.PlainDate.compare('0000-01-01', '-000001-12-31') === 1);
+      check(Temporal.PlainDateTime.compare('2000-03-01T00:00', '2000-02-29T23:59:59.999999999') === 1);
+      check(Temporal.Instant.compare(new Temporal.Instant(-1n), new Temporal.Instant(0n)) === -1);
+      check(Temporal.ZonedDateTime.compare(new Temporal.ZonedDateTime(0n, '+23:00', 'hebrew'), new Temporal.ZonedDateTime(1n, '-23:00')) === -1);
       const privateConstructors = [
         ['Instant', [0n]], ['ZonedDateTime', [0n, 'UTC']],
         ['PlainDate', [2024, 2, 29]], ['PlainDateTime', [2024, 2, 29]],
