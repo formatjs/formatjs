@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -12,7 +13,7 @@ export type DateTimeFormattable = Decimal | TemporalDateTimeValue
 export function isTemporalDateTimeValue(
   value: DateTimeFormattable
 ): value is TemporalDateTimeValue {
-  return Object.prototype.hasOwnProperty.call(value, 'kind')
+  return HasOwnProperty(value, 'kind')
 }
 
 /** https://tc39.es/proposal-temporal/#sec-temporal-value-format-records */

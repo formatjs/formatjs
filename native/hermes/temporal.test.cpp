@@ -217,6 +217,63 @@ int main(int argc, char **argv) {
         });
       } catch (error) { zonedOptionCaught = error; }
       check(zonedOptionCaught === zonedOptionFailure);
+      const privateConstructors = [
+        ['Instant', [0n]], ['ZonedDateTime', [0n, 'UTC']],
+        ['PlainDate', [2024, 2, 29]], ['PlainDateTime', [2024, 2, 29]],
+        ['PlainYearMonth', [2024, 2]], ['PlainMonthDay', [2, 29]],
+        ['PlainTime', []], ['Duration', []],
+      ];
+      for (const trap of ['get', 'apply']) {
+        for (const [name, args] of privateConstructors) {
+          const Constructor = Temporal[name], prototype = Constructor.prototype;
+          const original = Object.getOwnPropertyDescriptor(Object.prototype, trap);
+          const restore = original && Object.assign(Object.create(null), original);
+          let value, caught;
+          try {
+            Object.defineProperty(Object.prototype, trap, {configurable: true, get() {
+              throw new Error('Inherited private Proxy trap reached');
+            }});
+            if (trap === 'get') value = Reflect.construct(Constructor, args);
+            else Reflect.apply(Constructor, undefined, args);
+          } catch (error) { caught = error; }
+          finally {
+            if (restore) Object.defineProperty(Object.prototype, trap, restore);
+            else Reflect.deleteProperty(Object.prototype, trap);
+          }
+          check(trap === 'get' ? caught === undefined && Object.getPrototypeOf(value) === prototype : caught instanceof TypeError);
+        }
+      }
+      for (const [name] of privateConstructors) {
+        const original = Object.getOwnPropertyDescriptor(Array.prototype, '0');
+        const length = Object.getOwnPropertyDescriptor(Array.prototype, 'length');
+        let value, caught;
+        try {
+          Object.defineProperty(Array.prototype, '0', {configurable: true, get() {
+            throw new Error('Inherited private argument reached');
+          }});
+          value = Reflect.construct(Temporal[name], []);
+        } catch (error) { caught = error; }
+        finally {
+          if (original) Object.defineProperty(Array.prototype, '0', original);
+          else Reflect.deleteProperty(Array.prototype, '0');
+          Object.defineProperty(Array.prototype, 'length', length);
+        }
+        if (name === 'PlainTime') check(caught === undefined && value.hour === 0);
+        else if (name === 'Duration') check(caught === undefined && value.years === 0);
+        else check(caught instanceof (name === 'Instant' || name === 'ZonedDateTime' ? TypeError : RangeError));
+      }
+      const inheritedMinute = Object.getOwnPropertyDescriptor(Object.prototype, 'minute');
+      let privateDate;
+      try {
+        Object.defineProperty(Object.prototype, 'minute', {configurable: true, get() {
+          throw new Error('Inherited private clock field reached');
+        }});
+        privateDate = new Temporal.PlainDate(2024, 2, 29).toString();
+      } finally {
+        if (inheritedMinute) Object.defineProperty(Object.prototype, 'minute', inheritedMinute);
+        else Reflect.deleteProperty(Object.prototype, 'minute');
+      }
+      check(privateDate === '2024-02-29');
       const listEvery = Array.prototype.every, listSome = Array.prototype.some, listApply = Reflect.apply;
       const listPoison = function () { throw new Error('Mutable array predicate reached'); };
       let listResults;

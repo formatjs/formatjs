@@ -3,7 +3,11 @@ import {
   TypeErrorConstructor,
   bigIntFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -381,14 +385,15 @@ Object.defineProperty(PlainYearMonthValue, 'name', {
   value: 'PlainYearMonth',
   configurable: true,
 })
-export const PlainYearMonth: PlainYearMonthConstructor = new Proxy(
+export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
   PlainYearMonthValue,
   {
     construct(target, args, newTarget) {
-      const year = integer(args[0]),
-        month = integer(args[1]),
-        calendar = constructorCalendar(args[2]),
-        day = args[3] === undefined ? 1 : integer(args[3])
+      const year = integer(argumentAt(args, 0)),
+        month = integer(argumentAt(args, 1)),
+        calendar = constructorCalendar(argumentAt(args, 2)),
+        day =
+          argumentAt(args, 3) === undefined ? 1 : integer(argumentAt(args, 3))
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
         prototype = newTarget.prototype
       const result = createObject(

@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   arraySome,
@@ -459,7 +460,7 @@ export function parseDateTimeSkeleton(
       for (const key of Object.keys(rangePatterns)) {
         if (key === 'date') {
           for (const field of ['G', 'y', 'M', 'd']) {
-            if (!Object.prototype.hasOwnProperty.call(rangePatterns, field))
+            if (!HasOwnProperty(rangePatterns, field))
               addRange(field, rangePatterns[key])
           }
         } else addRange(key, rangePatterns[key])

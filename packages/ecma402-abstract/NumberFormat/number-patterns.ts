@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {ErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CompiledNumberPatterns,
@@ -111,7 +112,7 @@ export function compileNumberPatterns(
   const tokens = new Map<string, number>()
   const add = (pattern: string, compact = false) => {
     const table = compact ? result.compact : result.standard
-    if (Object.prototype.hasOwnProperty.call(table, pattern)) return
+    if (HasOwnProperty(table, pattern)) return
     table[pattern] = compile(pattern, compact).map(plan => {
       const key = JSON.stringify(plan)
       let id = ids.get(key)

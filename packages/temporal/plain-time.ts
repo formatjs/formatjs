@@ -10,7 +10,11 @@ import {
   numberIsInteger,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {
@@ -548,11 +552,13 @@ Object.defineProperty(PlainTimeValue, 'name', {
   value: 'PlainTime',
   configurable: true,
 })
-export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
+export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   construct(target, args, newTarget) {
     if (import.meta.formatjsTemporalNativeData === true) {
       const values = names.map((_, index) =>
-        args[index] === undefined ? 0 : integer(args[index])
+        argumentAt(args, index) === undefined
+          ? 0
+          : integer(argumentAt(args, index))
       )
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
       const prototype = newTarget.prototype
@@ -563,7 +569,9 @@ export const PlainTime: PlainTimeConstructor = new Proxy(PlainTimeValue, {
       return result
     }
     const values = names.map((_, index) =>
-      args[index] === undefined ? 0 : integer(args[index])
+      argumentAt(args, index) === undefined
+        ? 0
+        : integer(argumentAt(args, index))
     )
     const value = regulate(values, false)
     const prototype = newTarget.prototype
