@@ -58,6 +58,8 @@ function floorDivide(value: bigint, divisor: bigint): bigint {
 }
 
 function checkInstant(value: bigint): bigint {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
+  // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
   if (value < -limit || value > limit)
     throw new RangeErrorConstructor('Instant out of range')
   return value
