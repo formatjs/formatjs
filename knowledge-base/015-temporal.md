@@ -14,6 +14,9 @@ and tracks reviewed lines separately from open clauses and pending PRs.
 terminators before reading later fields. Calendar-specific validity stays deferred.
 Duration `relativeTo` conversion recognizes PlainDateTime internal slots and copies
 only the ISO date and calendar, without observing shadowed public getters.
+TS and Rust calendar-unit totals validate both interpolation endpoints before
+returning exact results. Zero zoned calendar totals use the positive window;
+plain zero totals retain their specified shortcut.
 
 ## Native performance direction
 

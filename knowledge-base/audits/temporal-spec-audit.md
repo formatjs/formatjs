@@ -25,7 +25,27 @@ Current pass:
   pass on both TS and SDK Hermes in source and bytecode modes. No exclusions changed.
   Typed Rust receives prepared anchors; JS getter/coercion requirements live here.
 
-New traces: 10 source lines. All other baseline traces retain their linked PR status.
+- Calendar-total nudge bounds, `duration.html` lines 1631 and 1908.
+  Implementation: `relativeTotal` in [relative-duration.ts](../../packages/temporal/relative-duration.ts)
+  and `total`/`total_duration` in [Rust](../../crates/temporal/relative_duration.rs).
+  Validate the next interpolation endpoint before returning an exact year/month/week
+  total. Zero zoned calendar totals use the positive window; plain zero totals keep
+  the explicit shortcut from `plaindatetime.html` line 1023.
+  Both public TS and Rust regressions failed before the fix and pass after it;
+  boundary cases cover both signs, exact totals and zero anchor differences.
+  Rust public tests, TS relative and plain-relative oracles, implementation/test
+  typechecks, Node Duration Test262 and installed native Hermes regressions pass.
+  Calendar-provider tests and full TS/SDK Hermes Duration suites pass in source
+  and bytecode modes. No exclusions changed.
+  Remaining nudge construction, rounding and ratio lines stay open.
+
+Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
+[relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
+[calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063).
+
+New traces: 12 source lines. All other baseline traces retain their linked PR status.
+Ledger integrity checked across all 14 pinned spec files: every numbered line is
+indexed, counts match the table, and traced/open sets are disjoint.
 
 Pinned revision: [`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec). This is a navigation index, not a conformance report. Each clause links to its source, including prose, grammar, tables, and nested clauses. Numbered lines include notes and editorial redlines; do not treat their count as a count of normative requirements.
 
@@ -39,7 +59,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
 | [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       22 |                         419 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                        3 |                         216 |
-| [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       40 |                         662 |
+| [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       42 |                         660 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
 | [intl](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/intl.html)                     |                   736 |                        0 |                         736 |
 | [mainadditions](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html)   |                   160 |                        9 |                         151 |
@@ -334,7 +354,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
   - Open: [1522–1524](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1522-L1524).
 - [`sec-temporal-duration-nudge-result-records`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1528)
 - [`sec-temporal-computenudgewindow`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1564)
-  - Open: [1585–1639](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1585-L1639).
+  - Traced: [1631](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1631).
+  - Open: [1585–1630](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1585-L1630), [1632–1639](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1632-L1639).
 - [`sec-temporal-nudgetocalendarunit`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1643)
   - Open: [1665–1705](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1665-L1705).
 - [`sec-temporal-nudgetozonedtime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1709)
@@ -346,7 +367,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-roundrelativeduration`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1849)
   - Open: [1871–1886](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1871-L1886).
 - [`sec-temporal-totalrelativeduration`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1890)
-  - Open: [1907–1912](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1907-L1912).
+  - Traced: [1908](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908).
+  - Open: [1907](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1907), [1909–1912](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1909-L1912).
 - [`sec-temporal-temporaldurationtostring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1916)
   - Open: [1928–1954](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1928-L1954).
 - [`sec-temporal-adddurations`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1958)

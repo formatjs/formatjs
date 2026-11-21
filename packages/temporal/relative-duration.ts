@@ -153,7 +153,10 @@ export function relativeTotal(
     nanosecond: 1n,
   }
   if (unit === 'day') validateZonedDay(fields, relative)
-  if (!durationSign(fields)) return 0
+  const calendarUnit = unit === 'year' || unit === 'month' || unit === 'week'
+  // DifferencePlainDateTimeWithTotal L1023 permits the plain zero shortcut.
+  // TotalRelativeDuration L1907-L1909 still nudges zero zoned calendar totals.
+  if (!durationSign(fields) && ('date' in relative || !calendarUnit)) return 0
   if ('date' in relative) {
     checkDateTime(relativeOrigin(relative))
     if (
@@ -189,15 +192,19 @@ export function relativeTotal(
   const candidate = zeroDuration()
   candidate[(unit + 's') as keyof DurationFields] = count
   let a = relativeEndpoint(relative, candidate)
-  const sign = end < start ? -1 : end > start ? 1 : 0
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1908
+  // L1908: zero uses the positive window.
+  const sign = end < start ? -1 : 1
   while ((a - end) * BigInt(sign) > 0n) {
     count -= sign
     candidate[(unit + 's') as keyof DurationFields] = count
     a = relativeEndpoint(relative, candidate)
   }
-  if (a === end) return count || 0
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1631-L1637
+  // L1631: validate the window's other endpoint even when a equals end.
   candidate[(unit + 's') as keyof DurationFields] = count + sign
   let b = relativeEndpoint(relative, candidate)
+  if (a === end) return count || 0
   while ((end - b) * BigInt(sign) >= 0n) {
     count += sign
     a = b
