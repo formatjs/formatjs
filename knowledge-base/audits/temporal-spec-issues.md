@@ -153,3 +153,23 @@ make the producer use undefined consistently. Keep ToTemporalTimeRecord lines
 contract. The independently reviewed Gets, defined guards, conversions and
 supplied-field flag at lines 733–758 do not depend on which missing sentinel is
 chosen. No upstream issue or PR was filed by this audit.
+
+## PartitionPattern literal placeholder versus result description
+
+Status: editorial inconsistency in published ECMA-402; algorithm behavior is
+unambiguous. No upstream issue or PR filed by this audit.
+
+[§6.10 Pattern String Types](https://tc39.es/ecma402/#sec-pattern-string-types)
+allows the nonempty ASCII word placeholder name `literal`.
+[§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)
+therefore accepts `{literal}`. Step 4.f produces the Record
+`{ [[Type]]: "literal", [[Value]]: undefined }`.
+The introductory return-field description instead requires a String value
+whenever the type is `literal`. Those statements disagree for this valid input.
+
+Audit decision: follow step 4.f. Do not rename keys, coerce undefined, or reject
+the input to repair the introductory description. The shared parser test retains
+this witness. Current formatter schemas use their own placeholder vocabularies;
+this finding does not establish a public formatter failure. The specification
+could reserve the name in §6.10 or describe literal segments by their origin
+rather than by the type field alone.
