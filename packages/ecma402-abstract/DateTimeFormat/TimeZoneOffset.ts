@@ -1,4 +1,4 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {floor, numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   DayFromYear,
   DaysInYear,
@@ -22,7 +22,7 @@ export function TimeZoneRuleTransition(
     const first =
       DayFromYear(year) +
       monthStarts[rule.month - 1] +
-      Number(leap && rule.month > 2)
+      numberFrom(leap && rule.month > 2)
     const weekday = (((first + 4) % 7) + 7) % 7
     day = first + ((rule.weekday - weekday + 7) % 7) + (rule.week - 1) * 7
     const next =
@@ -30,11 +30,11 @@ export function TimeZoneRuleTransition(
         ? DayFromYear(year + 1)
         : DayFromYear(year) +
           monthStarts[rule.month] +
-          Number(leap && rule.month >= 2)
+          numberFrom(leap && rule.month >= 2)
     if (day >= next) day -= 7
   } else {
     day = DayFromYear(year) + rule.day
-    if (rule.kind === 'julian') day += -1 + Number(leap && rule.day >= 60)
+    if (rule.kind === 'julian') day += -1 + numberFrom(leap && rule.day >= 60)
   }
   return day * 86400 + rule.seconds
 }

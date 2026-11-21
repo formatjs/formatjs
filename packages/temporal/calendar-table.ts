@@ -1,4 +1,8 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   fallbackLunisolar,
   fallbackUmmAlQura,
@@ -30,7 +34,7 @@ function data(calendar: 'chinese' | 'dangi') {
 function pattern(calendar: 'chinese' | 'dangi', year: number): number {
   const table = data(calendar),
     index = year - table.firstYear
-  if (!Number.isInteger(index) || index < 0 || index * 2 >= table.years.length)
+  if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)
     throw new RangeError('Calendar year out of range')
   return table.dictionary[
     alphabet.indexOf(table.years[index * 2]) * 64 +
@@ -122,7 +126,7 @@ export function tableYearMonth(
   if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)
   const table = data(calendar),
     checkpoints = table.monthCheckpoints
-  if (!Number.isSafeInteger(serial) || serial < 0)
+  if (!numberIsSafeInteger(serial) || serial < 0)
     throw new RangeError('Calendar month out of range')
   let low = 0,
     high = checkpoints.length

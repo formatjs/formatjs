@@ -1,3 +1,4 @@
+import {mathAbs} from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
   legacyCalendarParts,
@@ -29,7 +30,7 @@ type Format = (this: Intl.DateTimeFormat) => (value?: number) => string
 const nativeParts = globalThis.Intl?.DateTimeFormat?.prototype.formatToParts
 
 function clipped(value: LegacyDateTimeProjection): boolean {
-  return value.plain === true && Math.abs(value.milliseconds) > limit
+  return value.plain === true && mathAbs(value.milliseconds) > limit
 }
 function gregorian(
   formatter: Intl.DateTimeFormat,
@@ -129,7 +130,7 @@ function rangeShifts(
 ): [number, number] {
   const delta = shift(first) || shift(last)
   const fits = (value: LegacyDateTimeProjection): boolean =>
-    Math.abs(value.milliseconds + delta) <= limit &&
+    mathAbs(value.milliseconds + delta) <= limit &&
     YearFromTime(value.milliseconds) <= 0 ===
       YearFromTime(value.milliseconds + delta) <= 0
   return fits(first) && fits(last)

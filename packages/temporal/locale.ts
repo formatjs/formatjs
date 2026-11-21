@@ -1,3 +1,4 @@
+import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
@@ -267,7 +268,7 @@ export function legacyDateTimeProjection(
       )
   }
   const ms = ns / 1_000_000n - (ns < 0n && ns % 1_000_000n ? 1n : 0n)
-  return {formatter, milliseconds: Number(ms), plain: !instant}
+  return {formatter, milliseconds: numberFrom(ms), plain: !instant}
 }
 
 function legacyStyleFields(

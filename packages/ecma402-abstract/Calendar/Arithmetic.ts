@@ -1,4 +1,9 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  floor,
+  numberFrom,
+  numberIsInteger,
+  numberIsSafeInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   DayFromYear,
   DaysInYear,
@@ -31,8 +36,7 @@ const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 const mod = (value: number, divisor: number): number =>
   value - floor(value / divisor) * divisor
 function integer(value: number): number {
-  if (!Number.isSafeInteger(value))
-    throw new RangeError('Expected safe integer')
+  if (!numberIsSafeInteger(value)) throw new RangeError('Expected safe integer')
   return value
 }
 export function HebrewLeapYear(year: number): boolean {
@@ -45,7 +49,7 @@ export function HebrewElapsedMonths(year: number): number {
 function hebrewDelay(year: number): number {
   const months = HebrewElapsedMonths(year)
   const day = 29 * months + floor((12084 + 13753 * months) / 25920)
-  return day + Number(mod(3 * (day + 1), 7) < 3)
+  return day + numberFrom(mod(3 * (day + 1), 7) < 3)
 }
 function IsISOCalendar(
   calendar: ArithmeticCalendarId
@@ -81,7 +85,7 @@ export function ArithmeticCalendarStartOfYear(
       return (
         1948440 -
         2440588 -
-        Number(calendar === 'islamic-tbla') +
+        numberFrom(calendar === 'islamic-tbla') +
         354 * (year - 1) +
         floor((3 + 11 * year) / 30)
       )
@@ -111,7 +115,7 @@ export function ArithmeticCalendarToEpochDay(
     return (
       DayFromYear(isoYear) +
       monthStarts[month - 1] +
-      Number(month > 2 && DaysInYear(isoYear) === 366) +
+      numberFrom(month > 2 && DaysInYear(isoYear) === 366) +
       day -
       1
     )
@@ -143,7 +147,7 @@ export function ArithmeticCalendarDaysInMonth(
       ? 31
       : monthStarts[month] -
           monthStarts[month - 1] +
-          Number(
+          numberFrom(
             month === 2 && DaysInYear(CalendarISOYear(calendar, year)) === 366
           )
   }
@@ -154,7 +158,7 @@ export function ArithmeticCalendarDaysInMonth(
     return month === 13 ? length - 360 : 30
   if (calendar === 'indian')
     return month === 1
-      ? 30 + Number(DaysInYear(year + 78) === 366)
+      ? 30 + numberFrom(DaysInYear(year + 78) === 366)
       : month <= 6
         ? 31
         : 30
@@ -162,7 +166,7 @@ export function ArithmeticCalendarDaysInMonth(
     return month % 2 === 1 || (month === 12 && length === 355) ? 30 : 29
   if (calendar === 'persian')
     return month <= 6 ? 31 : month < 12 ? 30 : length - 336
-  const code = month + Number(!HebrewLeapYear(year) && month >= 6)
+  const code = month + numberFrom(!HebrewLeapYear(year) && month >= 6)
   if ([4, 7, 9, 11, 13].includes(code)) return 29
   if (code === 2) return length % 10 === 5 ? 30 : 29
   if (code === 3) return length % 10 === 3 ? 29 : 30
@@ -175,7 +179,7 @@ export function ArithmeticCalendarMonthCode(
 ): string {
   const leap = calendar === 'hebrew' && HebrewLeapYear(year)
   if (leap && month === 6) return 'M05L'
-  const code = month - Number(leap && month > 6)
+  const code = month - numberFrom(leap && month > 6)
   return 'M' + (code < 10 ? '0' : '') + code
 }
 // Validated integer epoch days within ±110000000.
@@ -202,7 +206,7 @@ export function ArithmeticGregorianFromEpochDay(
     year =
       yearOfEra +
       era * 400 +
-      Number(month <= 2) -
+      numberFrom(month <= 2) -
       (calendar === 'buddhist' ? -543 : calendar === 'roc' ? 1911 : 0)
   return {
     year,
@@ -219,7 +223,7 @@ export function ArithmeticCalendarFromEpochDay(
   const iso = IsISOCalendar(calendar)
   if (
     iso &&
-    Number.isInteger(epoch) &&
+    numberIsInteger(epoch) &&
     epoch >= -110000000 &&
     epoch <= 110000000
   )
@@ -262,7 +266,8 @@ export function ArithmeticCalendarFromEpochDay(
     case 'islamic-civil':
     case 'islamic-tbla':
       year = floor(
-        (30 * (jd - 1948440 + Number(calendar === 'islamic-tbla')) + 10646) /
+        (30 * (jd - 1948440 + numberFrom(calendar === 'islamic-tbla')) +
+          10646) /
           10631
       )
       break

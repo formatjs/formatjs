@@ -133,3 +133,19 @@ it('preserves exact transition nanoseconds and distinguishes date arithmetic fro
     RangeError
   )
 })
+
+it('matches builtin UTC fields over two complete Gregorian eras', () => {
+  let count = 0
+  for (let epochDay = -865565; epochDay <= -573372; epochDay++) {
+    const fields = epochNanosecondsToISO(BigInt(epochDay) * 86_400_000_000_000n)
+    const reference = new Date(epochDay * 86_400_000)
+    if (
+      fields.year !== reference.getUTCFullYear() ||
+      fields.month !== reference.getUTCMonth() + 1 ||
+      fields.day !== reference.getUTCDate()
+    )
+      throw new Error('Gregorian era mismatch at epoch day ' + epochDay)
+    count++
+  }
+  expect(count).toBe(292194)
+})

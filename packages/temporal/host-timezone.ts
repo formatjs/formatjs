@@ -1,3 +1,9 @@
+import {
+  bigIntFrom,
+  mathAbs,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {steps} from '@formatjs_generated/tz/temporal-names.js'
 import links from '@formatjs_generated/tz/links.js'
@@ -59,7 +65,7 @@ export function createHostTimeZoneOffset(
     check(instant)
     const epochSecond =
         instant / second - (instant < 0n && instant % second !== 0n ? 1n : 0n),
-      key = Number(epochSecond),
+      key = numberFrom(epochSecond),
       cached = offsets.get(key)
     if (cached !== undefined) return cached
     let date = -1,
@@ -69,10 +75,10 @@ export function createHostTimeZoneOffset(
     const fields = parts.call(formatter, key * 1000)
     for (let index = 0; index < fields.length; index++) {
       const part = fields[index]
-      if (part.type === 'day') date = Number(part.value)
-      else if (part.type === 'hour') hour = Number(part.value)
-      else if (part.type === 'minute') minute = Number(part.value)
-      else if (part.type === 'second') seconds = Number(part.value)
+      if (part.type === 'day') date = numberFrom(part.value)
+      else if (part.type === 'hour') hour = numberFrom(part.value)
+      else if (part.type === 'minute') minute = numberFrom(part.value)
+      else if (part.type === 'second') seconds = numberFrom(part.value)
     }
     if (
       !(
@@ -93,16 +99,16 @@ export function createHostTimeZoneOffset(
     if (date !== utcDate && !nextDate && !previousDate)
       throw new RangeError('Unsupported host timezone calendar')
     const difference = date === utcDate ? 0 : nextDate ? 1 : -1,
-      utcSeconds = Number(((epochSecond % 86400n) + 86400n) % 86400n),
+      utcSeconds = numberFrom(((epochSecond % 86400n) + 86400n) % 86400n),
       offsetSeconds =
         difference * 86400 +
         (hour % 24) * 3600 +
         minute * 60 +
         seconds -
         utcSeconds
-    if (Math.abs(offsetSeconds) >= 86400)
+    if (mathAbs(offsetSeconds) >= 86400)
       throw new RangeError('Invalid host timezone offset')
-    const offset = BigInt(offsetSeconds) * second
+    const offset = bigIntFrom(offsetSeconds) * second
     if (offsets.size >= 64) offsets.delete(offsets.keys().next().value!)
     offsets.set(key, offset)
     return offset
@@ -160,8 +166,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     (primary as Record<string, string>)[timeZone] ??
     timeZone
   // Host tzdata can contain transitions absent from our generated metadata.
-  const step = BigInt(
-    Math.min(steps[timeZone] ?? steps[canonical] ?? 7 * 86400, 7 * 86400)
+  const step = bigIntFrom(
+    mathMin(steps[timeZone] ?? steps[canonical] ?? 7 * 86400, 7 * 86400)
   )
   const transitions: {
     direction: string
@@ -187,7 +193,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       value / second - (value < 0n && value % second ? 1n : 0n)
     const earliest = -5364662400n // IANA transitions begin after 1800.
     const horizon = 3n * 366n * 86400n
-    const now = floorSecond(BigInt(nowMilliseconds()) * 1000000n)
+    const now = floorSecond(bigIntFrom(nowMilliseconds()) * 1000000n)
     const original = floorSecond(next ? instant : instant - 1n)
     let cursor = next ? (original < earliest ? earliest : original) : original
     const end = next ? (original > now ? original : now) + horizon : earliest

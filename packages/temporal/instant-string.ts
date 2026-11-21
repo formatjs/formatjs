@@ -1,4 +1,9 @@
 import {
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
+import {
   isoToEpochNanoseconds,
   type ISODateTime,
 } from '#packages/temporal/kernel.js'
@@ -20,8 +25,8 @@ export function parseOffsetNanoseconds(
   if (hour > 23 || minute > 59 || second > 59)
     throw new RangeError('Invalid UTC offset')
   const result =
-    BigInt(hour * 3600 + minute * 60 + second) * 1_000_000_000n +
-    BigInt((match[6] ?? '').padEnd(9, '0'))
+    bigIntFrom(hour * 3600 + minute * 60 + second) * 1_000_000_000n +
+    bigIntFrom((match[6] ?? '').padEnd(9, '0'))
   return match[1] === '-' ? -result : result
 }
 
@@ -105,7 +110,7 @@ function isValidDate(year: string, month: string, day: string): boolean {
     d = +day
   const leap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0)
   const maximum =
-    m === 2 ? 28 + Number(leap) : [4, 6, 9, 11].includes(m) ? 30 : 31
+    m === 2 ? 28 + numberFrom(leap) : [4, 6, 9, 11].includes(m) ? 30 : 31
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
@@ -133,7 +138,7 @@ export function parseISODateParts(value: string): ParsedDateFields {
     day: +match[4],
     hour,
     minute,
-    second: Math.min(59, second),
+    second: mathMin(59, second),
     millisecond: +fraction.slice(0, 3),
     microsecond: +fraction.slice(3, 6),
     nanosecond: +fraction.slice(6, 9),
@@ -223,11 +228,11 @@ export function parsePlainTimeString(value: string): bigint {
     throw new RangeError('Invalid ISO time')
   if (match[6]) parseOffsetNanoseconds(match[6])
   return (
-    BigInt(
-      +match[1] * 3600 + +(match[3] ?? 0) * 60 + Math.min(59, +(match[4] ?? 0))
+    bigIntFrom(
+      +match[1] * 3600 + +(match[3] ?? 0) * 60 + mathMin(59, +(match[4] ?? 0))
     ) *
       1_000_000_000n +
-    BigInt((match[5] ?? '').padEnd(9, '0'))
+    bigIntFrom((match[5] ?? '').padEnd(9, '0'))
   )
 }
 

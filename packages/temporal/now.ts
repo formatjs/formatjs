@@ -1,4 +1,4 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {floor, mathAbs} from '#packages/ecma262-abstract/intrinsics.js'
 import {createInstant, type InstantObject} from '#packages/temporal/instant.js'
 import {
   createPlainDate,
@@ -109,7 +109,7 @@ let systemClock: SystemClock = {
     // Hosts without Intl expose the current system offset through Date.
     const minutes = -hostOffset(new HostDate())
     if (minutes === 0) return 'UTC'
-    const absolute = Math.abs(minutes)
+    const absolute = mathAbs(minutes)
     return (
       (minutes < 0 ? '-' : '+') +
       String(floor(absolute / 60)).padStart(2, '0') +

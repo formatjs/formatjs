@@ -1,3 +1,8 @@
+import {
+  bigIntFrom,
+  mathMin,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeDateSnapshot} from '#packages/temporal/date-core.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
@@ -186,7 +191,7 @@ export function toPlainDateTimeSlot(
     overflowOption(options)
     return (
       existing ?? {
-        epochNanoseconds: checkDateTime(BigInt(date!.epochDay) * nsPerDay),
+        epochNanoseconds: checkDateTime(bigIntFrom(date!.epochDay) * nsPerDay),
         calendar: date!.calendar,
       }
     )
@@ -198,7 +203,7 @@ export function toPlainDateTimeSlot(
     const day = dayFromFields(calendar, fields, overflow),
       clock = clockNanoseconds(fields, overflow)
     return {
-      epochNanoseconds: checkDateTime(BigInt(day) * nsPerDay + clock),
+      epochNanoseconds: checkDateTime(bigIntFrom(day) * nsPerDay + clock),
       calendar,
     }
   }
@@ -247,7 +252,7 @@ function add(
   fields.days += carry
   const day = addDate(dateSlot(slot), fields, overflow)
   return createPlainDateTime(
-    BigInt(day) * nsPerDay + timeOf(time),
+    bigIntFrom(day) * nsPerDay + timeOf(time),
     slot.calendar
   )
 }
@@ -269,7 +274,7 @@ function difference(
   const smallIndex = names.indexOf(smallest)
   const largest =
     largestText === 'auto'
-      ? names[Math.min(3, smallIndex)]
+      ? names[mathMin(3, smallIndex)]
       : unitOption(largestText)!
   if (names.indexOf(largest) > smallIndex)
     throw new RangeError('Largest unit smaller than smallest unit')
@@ -376,7 +381,7 @@ class PlainDateTimeValue {
     const fields = mergeDateFields(slot.calendar, current, partial)
     const overflow = overflowOption(options)
     return createPlainDateTime(
-      BigInt(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
+      bigIntFrom(dayFromFields(slot.calendar, fields, overflow)) * nsPerDay +
         clockNanoseconds(fields, overflow),
       slot.calendar
     )
@@ -390,7 +395,7 @@ class PlainDateTimeValue {
     const slot = read(this)
     const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
     return createPlainDateTime(
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
       slot.calendar
     )
   }
@@ -464,7 +469,7 @@ class PlainDateTimeValue {
       rounded = roundInstant(clock, nsPerDay, mode)
     } else rounded = roundTime(clock, timeUnit(unit), increment, mode)
     return createPlainDateTime(
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay + rounded,
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay + rounded,
       slot.calendar
     )
   }
@@ -504,9 +509,9 @@ class PlainDateTimeValue {
         ? 1n
         : precision === 'minute'
           ? 60_000_000_000n
-          : 10n ** BigInt(9 - precision)
+          : 10n ** bigIntFrom(9 - precision)
     const value =
-      BigInt(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
+      bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
       roundInstant(timeOf(slot.epochNanoseconds), quantum, mode)
     return formatInstant(value, precision).slice(0, -1) + suffix
   }
@@ -576,9 +581,9 @@ defineGetters(
     if (snapshot && index >= 0) return snapshot.values[name]
     return index < 0
       ? dateProperty(dateSlot(slot), name)
-      : Number(
+      : numberFrom(
           (timeOf(slot.epochNanoseconds) / clockFactors[index]) %
-            BigInt(clockBounds[index] + 1)
+            bigIntFrom(clockBounds[index] + 1)
         )
   }
 )

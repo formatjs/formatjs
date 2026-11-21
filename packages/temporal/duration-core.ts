@@ -1,3 +1,9 @@
+import {
+  bigIntFrom,
+  mathAbs,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -66,7 +72,7 @@ export function durationNanoseconds(
 ): bigint {
   let value = 0n
   for (let i = includeDays ? 3 : 4; i < durationFieldNames.length; i++)
-    value += BigInt(fields[durationFieldNames[i]]) * timeFactors[i - 3]
+    value += bigIntFrom(fields[durationFieldNames[i]]) * timeFactors[i - 3]
   return value
 }
 export function validateDuration(fields: DurationFields): DurationFields {
@@ -75,16 +81,16 @@ export function validateDuration(fields: DurationFields): DurationFields {
     const key = durationFieldNames[index]
     const value = fields[key]
     if (
-      !Number.isInteger(value) ||
+      !numberIsInteger(value) ||
       (value !== 0 && (value < 0 ? -1 : 1) !== sign)
     )
       throw new RangeError('Invalid duration fields')
     fields[key] = value || 0
   }
   if (
-    Math.abs(fields.years) >= 4294967296 ||
-    Math.abs(fields.months) >= 4294967296 ||
-    Math.abs(fields.weeks) >= 4294967296
+    mathAbs(fields.years) >= 4294967296 ||
+    mathAbs(fields.months) >= 4294967296 ||
+    mathAbs(fields.weeks) >= 4294967296
   )
     throw new RangeError('Calendar duration out of range')
   const time = durationNanoseconds(fields)
@@ -94,7 +100,7 @@ export function validateDuration(fields: DurationFields): DurationFields {
 }
 export function integralDurationNumber(value: unknown): number {
   const number = +(value as number)
-  if (!Number.isInteger(number))
+  if (!numberIsInteger(number))
     throw new RangeError('Duration fields must be integral')
   return number || 0
 }
@@ -146,16 +152,16 @@ export function parseDurationString(value: string): DurationFields {
     result[pair[1]] = +(match[pair[0]] ?? 0)
   }
   const fraction = (text: string | undefined): bigint =>
-    BigInt((text?.slice(1) ?? '').padEnd(9, '0'))
+    bigIntFrom((text?.slice(1) ?? '').padEnd(9, '0'))
   let extra =
     fraction(match[7]) * 3600n + fraction(match[9]) * 60n + fraction(match[11])
-  result.minutes += Number(extra / 60_000_000_000n)
+  result.minutes += numberFrom(extra / 60_000_000_000n)
   extra %= 60_000_000_000n
-  result.seconds += Number(extra / 1_000_000_000n)
+  result.seconds += numberFrom(extra / 1_000_000_000n)
   extra %= 1_000_000_000n
-  result.milliseconds = Number(extra / 1_000_000n)
-  result.microseconds = Number((extra / 1000n) % 1000n)
-  result.nanoseconds = Number(extra % 1000n)
+  result.milliseconds = numberFrom(extra / 1_000_000n)
+  result.microseconds = numberFrom((extra / 1000n) % 1000n)
+  result.nanoseconds = numberFrom(extra % 1000n)
   if (match[1] === '-')
     for (let index = 0; index < durationFieldNames.length; index++) {
       const field = durationFieldNames[index]
@@ -169,7 +175,7 @@ export function balanceDurationTime(
 ): DurationFields {
   const fields = zeroDuration()
   for (let i = largest; i < durationFieldNames.length; i++) {
-    fields[durationFieldNames[i]] = Number(value / timeFactors[i - 3]) || 0
+    fields[durationFieldNames[i]] = numberFrom(value / timeFactors[i - 3]) || 0
     value %= timeFactors[i - 3]
   }
   return validateDuration(fields)
@@ -190,13 +196,13 @@ export function durationTotalNumber(
   let exponent = absolute.toString(2).length - divisor.toString(2).length
   if (
     exponent >= 0
-      ? absolute < divisor << BigInt(exponent)
-      : absolute << BigInt(-exponent) < divisor
+      ? absolute < divisor << bigIntFrom(exponent)
+      : absolute << bigIntFrom(-exponent) < divisor
   )
     exponent--
   const shift = 52 - exponent
-  const numerator = shift >= 0 ? absolute << BigInt(shift) : absolute
-  const denominator = shift >= 0 ? divisor : divisor << BigInt(-shift)
+  const numerator = shift >= 0 ? absolute << bigIntFrom(shift) : absolute
+  const denominator = shift >= 0 ? divisor : divisor << bigIntFrom(-shift)
   let mantissa = numerator / denominator
   const remainder = numerator % denominator
   if (
@@ -204,6 +210,6 @@ export function durationTotalNumber(
     (remainder * 2n === denominator && mantissa % 2n !== 0n)
   )
     mantissa++
-  const value = Number(mantissa) * 2 ** (exponent - 52)
+  const value = numberFrom(mantissa) * 2 ** (exponent - 52)
   return negative ? -value : value
 }

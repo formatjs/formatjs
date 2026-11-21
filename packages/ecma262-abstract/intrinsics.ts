@@ -1,2 +1,15 @@
 // Specification arithmetic must not consult a replacement installed by user code.
 export const floor: typeof Math.floor = Math.floor
+
+// Number/BigInt calls retain constructor conversion semantics.
+export const numberFrom: typeof Number = Number
+export const bigIntFrom: typeof BigInt = BigInt
+export const mathAbs: typeof Math.abs = Math.abs
+export const mathMin: typeof Math.min = Math.min
+export const mathMax: typeof Math.max = Math.max
+export const mathTrunc: typeof Math.trunc = Math.trunc
+export const mathSign: typeof Math.sign = Math.sign
+export const numberIsInteger: typeof Number.isInteger = Number.isInteger
+export const numberIsFinite: typeof Number.isFinite = Number.isFinite
+export const numberIsSafeInteger: typeof Number.isSafeInteger =
+  Number.isSafeInteger

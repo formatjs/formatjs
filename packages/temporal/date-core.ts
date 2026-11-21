@@ -1,4 +1,14 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  bigIntFrom,
+  floor,
+  mathAbs,
+  mathMax,
+  mathMin,
+  mathSign,
+  mathTrunc,
+  numberFrom,
+  numberIsInteger,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
@@ -85,8 +95,8 @@ export function object(value: unknown): value is Record<string, unknown> {
   return IsObject(value)
 }
 export function integer(value: unknown): number {
-  const result = Math.trunc(+(value as number))
-  if (!Number.isInteger(result)) throw new RangeError('Expected finite number')
+  const result = mathTrunc(+(value as number))
+  if (!numberIsInteger(result)) throw new RangeError('Expected finite number')
   return result || 0
 }
 export function overflowOption(options: unknown): Overflow {
@@ -195,7 +205,7 @@ export function resolveCalendarYear(
 export function epochDayOf(value: bigint): number {
   let days = value / nsPerDay
   if (value < 0n && value % nsPerDay !== 0n) days--
-  return Number(days)
+  return numberFrom(days)
 }
 export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
@@ -215,7 +225,7 @@ export function nativeDateSnapshot(
   const owner = nativeTemporal()
   if (!owner) return undefined
   if (
-    Math.abs(slot.epochDay) > 110000000 ||
+    mathAbs(slot.epochDay) > 110000000 ||
     (!extended && (slot.epochDay < -100000001 || slot.epochDay > 100000000))
   )
     throw new RangeError('Calendar date out of range')
@@ -296,10 +306,10 @@ export function clockNanoseconds(
   for (let index = 0; index < 6; index++) {
     let field = (fields[clockNames[index]] ?? 0) as number
     if (overflow === 'constrain')
-      field = Math.max(0, Math.min(clockBounds[index], field))
+      field = mathMax(0, mathMin(clockBounds[index], field))
     if (field < 0 || field > clockBounds[index])
       throw new RangeError('Time out of range')
-    value += BigInt(field) * clockFactors[index]
+    value += bigIntFrom(field) * clockFactors[index]
   }
   return value
 }
@@ -580,7 +590,7 @@ export function formatISODate(
       : fields.year >= 0 && fields.year < 1000
         ? String(fields.year).padStart(4, '0')
         : (fields.year < 0 ? '-' : '+') +
-          String(Math.abs(fields.year)).padStart(6, '0')
+          String(mathAbs(fields.year)).padStart(6, '0')
   return year + '-' + month + (kind === 'year-month' ? '' : '-' + day)
 }
 export function calendarAnnotation(calendar: string, value: unknown): string {
@@ -744,9 +754,9 @@ function unroundedDifference(
   const sign = end < start ? -1 : end > start ? 1 : 0
   let lastDay = epochDayOf(end),
     time = timeOf(end) - timeOf(start)
-  if (BigInt(sign) * time < 0n) {
+  if (bigIntFrom(sign) * time < 0n) {
     lastDay -= sign
-    time += BigInt(sign) * nsPerDay
+    time += bigIntFrom(sign) * nsPerDay
   }
   const result = dateUntil(
     {epochDay: epochDayOf(start), calendar},
@@ -790,7 +800,7 @@ export function roundedDateTimeDifference(
       zoned: false,
       unrounded: value => unroundedDifference(start, value, calendar, largest),
       endpoint: fields =>
-        BigInt(
+        bigIntFrom(
           addDate({epochDay: epochDayOf(start), calendar}, fields, 'constrain')
         ) *
           nsPerDay +
@@ -839,7 +849,7 @@ export function roundRelativeDifference(
   }
   if (start === end) return zeroDuration()
   const sign = end < start ? -1 : 1,
-    physicalSign = BigInt(sign)
+    physicalSign = bigIntFrom(sign)
   let result = anchor.unrounded(end),
     rounded = end,
     expanded = false
@@ -853,9 +863,9 @@ export function roundRelativeDifference(
     const key = `${smallest}s` as keyof DurationFields,
       count =
         smallest === 'week'
-          ? result.weeks + Math.trunc(result.days / 7)
+          ? result.weeks + mathTrunc(result.days / 7)
           : result[key]
-    let truncated = Math.trunc(count / increment) * increment
+    let truncated = mathTrunc(count / increment) * increment
     prefix[key] = truncated
     let a = anchor.endpoint(prefix)
     prefix[key] = truncated + sign * increment
@@ -885,7 +895,7 @@ export function roundRelativeDifference(
               (mode === 'halfCeil' && positive) ||
               (mode === 'halfFloor' && !positive) ||
               (mode === 'halfEven' &&
-                Math.abs(truncated / increment) % 2 === 1)))
+                mathAbs(truncated / increment) % 2 === 1)))
       }
     }
     prefix[key] = (expand ? truncated + sign * increment : truncated) || 0
@@ -894,7 +904,8 @@ export function roundRelativeDifference(
     expanded ||= expand
   } else if (anchor.zoned && largeIndex < 4) {
     const time = durationNanoseconds(result, false),
-      quantum = BigInt(increment) * timeUnitNanoseconds[smallest as TimeUnit]
+      quantum =
+        bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
     let value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
     if (value !== time) {
       const date = {...result}
@@ -922,19 +933,19 @@ export function roundRelativeDifference(
   } else {
     const time = durationNanoseconds(result),
       quantum =
-        BigInt(increment) *
+        bigIntFrom(increment) *
         (smallest === 'day'
           ? nsPerDay
           : timeUnitNanoseconds[smallest as TimeUnit])
     const value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
-    const days = largeIndex < 4 ? Number(value / nsPerDay) : 0
-    expanded = Math.sign(days - result.days) === sign
+    const days = largeIndex < 4 ? numberFrom(value / nsPerDay) : 0
+    expanded = mathSign(days - result.days) === sign
     rounded = end + value - time
     result = {
       ...result,
       ...balanceDurationTime(
         largeIndex < 4 ? value % nsPerDay : value,
-        Math.max(4, largeIndex)
+        mathMax(4, largeIndex)
       ),
       years: result.years,
       months: result.months,
@@ -944,11 +955,7 @@ export function roundRelativeDifference(
   }
   // Keep the chosen rounding quantum; only bubble when a larger boundary was crossed.
   if (expanded && smallest !== 'week') {
-    for (
-      let index = Math.min(smallIndex, 3) - 1;
-      index >= largeIndex;
-      index--
-    ) {
+    for (let index = mathMin(smallIndex, 3) - 1; index >= largeIndex; index--) {
       if (index === 2 && largest !== 'week') continue
       const next = zeroDuration()
       for (let keep = 0; keep < index; keep++) {

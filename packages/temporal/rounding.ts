@@ -1,4 +1,9 @@
-import {floor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  bigIntFrom,
+  floor,
+  mathTrunc,
+  numberIsFinite,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -81,8 +86,8 @@ export function timeUnit(unit: string | undefined): TimeUnit {
 }
 export function roundingIncrement(value: unknown): number {
   if (value === undefined) return 1
-  const increment = Math.trunc(+(value as number))
-  if (!Number.isFinite(increment) || increment < 1 || increment > 1_000_000_000)
+  const increment = mathTrunc(+(value as number))
+  if (!numberIsFinite(increment) || increment < 1 || increment > 1_000_000_000)
     throw new RangeError('Invalid rounding increment')
   return increment
 }
@@ -90,7 +95,7 @@ export function fractionalSecondDigits(value: unknown): 'auto' | number {
   if (value === undefined) return 'auto'
   if (typeof value === 'number') {
     const digits = floor(value)
-    if (!Number.isFinite(digits) || digits < 0 || digits > 9)
+    if (!numberIsFinite(digits) || digits < 0 || digits > 9)
       throw new RangeError('Invalid fractionalSecondDigits')
     return digits
   }
@@ -158,12 +163,12 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   if (import.meta.formatjsTemporalNativeData === true)
     return nativeTemporal()!.roundInstantUnit(value, unit, increment, mode)
   const maximum = 86_400_000_000_000n / timeUnitNanoseconds[unit]
-  if (BigInt(increment) > maximum || maximum % BigInt(increment) !== 0n)
+  if (bigIntFrom(increment) > maximum || maximum % bigIntFrom(increment) !== 0n)
     throw new RangeError('Rounding increment must divide a day')
   const native = nativeTemporal()
   return (native ? native.roundInstant : roundInstant)(
     value,
-    BigInt(increment) * timeUnitNanoseconds[unit],
+    bigIntFrom(increment) * timeUnitNanoseconds[unit],
     mode
   )
 }
