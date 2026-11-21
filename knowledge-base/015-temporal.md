@@ -1,5 +1,10 @@
 # Temporal implementation
 
+The [local-time record audit](audits/temporal-local-time-record-audit.md) maps
+published ECMA-402 §11.5.11–12 to TS/Rust. Builtin Gregorian/ISO formatter records
+retain signed years; pattern rendering applies era-year normalization separately.
+Offset/data policy, other calendars and full caller contracts remain open.
+
 The [native Intl bridge audit](audits/temporal-legacy-bridge-state-audit.md)
 covers private WeakMap/Map state and captured Reflect delegation. Packaged
 controls exercise six Temporal types, cold/warm caches and fresh constructors;

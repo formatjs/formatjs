@@ -43,7 +43,7 @@ export function CalendarDateFromTime(
     const year = YearFromTime(t)
     return {
       era: year > 0 ? 'AD' : 'BC',
-      year: year > 0 ? year : 1 - year,
+      year,
       month: MonthFromTime(t),
       day: DateFromTime(t),
     }

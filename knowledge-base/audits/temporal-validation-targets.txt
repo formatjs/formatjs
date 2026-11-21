@@ -127,6 +127,7 @@
 //packages/temporal:duration_test262_full
 //packages/temporal:durationformat_hermes_bytecode_test262
 //packages/temporal:durationformat_hermes_source_test262
+//packages/temporal:extended_calendar_hermes_test
 //packages/temporal:instant_test
 //packages/temporal:instant_test262_full
 //packages/temporal:instant_test_typecheck_typecheck_test
@@ -163,6 +164,8 @@
 //packages/temporal:plain_time_test
 //packages/temporal:plain_time_test262_full
 //packages/temporal:plain_time_test_typecheck_typecheck_test
+//packages/temporal:public_calendar_test
+//packages/temporal:public_calendar_test_typecheck_typecheck_test
 //packages/temporal:sdk_hermes_date_bytecode_test262
 //packages/temporal:sdk_hermes_date_source_test262
 //packages/temporal:sdk_hermes_datetime_bytecode_test262
