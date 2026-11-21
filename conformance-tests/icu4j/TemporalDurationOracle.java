@@ -23,7 +23,10 @@ public final class TemporalDurationOracle {
       for (int unit = 0; unit < factors.length; unit++) {
         BigInteger quantum = BigInteger.valueOf(factors[unit]);
         TreeSet<BigInteger> values = new TreeSet<>();
-        for (BigInteger edge : new BigInteger[] {BigInteger.ZERO, quantum, quantum.divide(BigInteger.TWO), BigInteger.ONE.shiftLeft(53), BigInteger.ONE.shiftLeft(63), limit.subtract(quantum), limit}) {
+        for (BigInteger edge : new BigInteger[] {BigInteger.ZERO, quantum, quantum.divide(BigInteger.TWO),
+            quantum.multiply(BigInteger.valueOf(3)).divide(BigInteger.TWO),
+            quantum.multiply(BigInteger.valueOf(5)).divide(BigInteger.TWO),
+            BigInteger.ONE.shiftLeft(53), BigInteger.ONE.shiftLeft(63), limit.subtract(quantum), limit}) {
           for (int delta = -3; delta <= 3; delta++) {
             BigInteger value = edge.add(BigInteger.valueOf(delta));
             if (value.abs().compareTo(limit) < 0) {values.add(value); values.add(value.negate());}
