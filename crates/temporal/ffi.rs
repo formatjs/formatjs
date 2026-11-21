@@ -1309,6 +1309,8 @@ pub(crate) fn regulate_time_fields(
         if !value.is_finite() || value.fract() != 0.0 {
             return Err(Error::InvalidDateTime);
         }
+        // Saturation beyond i128 preserves regulation: clamp selects the same
+        // endpoint; reject still rejects. Values within clock bounds cast exactly.
         *target = value as i128;
     }
     PlainTime::from_fields(

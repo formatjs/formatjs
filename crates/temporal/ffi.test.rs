@@ -463,3 +463,43 @@ fn zoned_fields_defer_representability_but_validate_the_iso_date() {
         );
     }
 }
+
+#[test]
+fn each_clock_field_clamps_before_narrowing_and_rejects_outside_bounds() {
+    for (name, maximum, factor) in [
+        ("hour", 23, 3_600_000_000_000i128),
+        ("minute", 59, 60_000_000_000),
+        ("second", 59, 1_000_000_000),
+        ("millisecond", 999, 1_000_000),
+        ("microsecond", 999, 1000),
+        ("nanosecond", 999, 1),
+    ] {
+        for (value, expected, valid) in [
+            (-f64::MAX, 0, false),
+            (-1e100, 0, false),
+            (-1.0, 0, false),
+            (0.0, 0, true),
+            (f64::from(maximum), maximum, true),
+            (f64::from(maximum + 1), maximum, false),
+            (1e100, maximum, false),
+            (f64::MAX, maximum, false),
+        ] {
+            let mut input = json!({"op":"regulatePlainTime","fields":{
+                "hour":0,"minute":0,"second":0,"millisecond":0,"microsecond":0,"nanosecond":0
+            },"constrain":true});
+            input["fields"][name] = json!(value);
+            let expected = json!((i128::from(expected) * factor).to_string());
+            assert_eq!(
+                query(input.to_string().as_bytes()),
+                Ok(expected.clone()),
+                "{name} {value}"
+            );
+            input["constrain"] = json!(false);
+            assert_eq!(
+                query(input.to_string().as_bytes()),
+                if valid { Ok(expected) } else { Err(1) },
+                "{name} {value}"
+            );
+        }
+    }
+}

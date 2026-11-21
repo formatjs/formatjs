@@ -71,6 +71,24 @@ impl PlainTime {
             i128::from(fraction % 1000),
         ];
         let mut total = 0;
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632
+        // L622: the validated overflow choice selects independent field clamping.
+        // L623: index 0 clamps hour to 0..23.
+        // L624: index 1 clamps minute to 0..59.
+        // L625: index 2 clamps second to 0..59.
+        // L626: index 3 clamps millisecond to 0..999.
+        // L627: index 4 clamps microsecond to 0..999.
+        // L628: index 5 clamps nanosecond to 0..999.
+        // L629: the other mode leaves each integer field unchanged.
+        // L630: the other validated mode is reject.
+        // L631: any unchanged field outside its bounds returns the error mapped to RangeError.
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661
+        // L655: index 0 rejects an hour outside 0..23.
+        // L656: index 1 rejects a minute outside 0..59.
+        // L657: index 2 rejects a second outside 0..59.
+        // L658: index 3 rejects a millisecond outside 0..999.
+        // L659: index 4 rejects a microsecond outside 0..999.
+        // L660: index 5 rejects a nanosecond outside 0..999.
         for (index, (maximum, factor)) in [
             (23, 3_600_000_000_000),
             (59, 60_000_000_000),
@@ -91,6 +109,9 @@ impl PlainTime {
             }
             total += value * factor;
         }
+        // L661: all six fields satisfy IsValidTime.
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L632
+        // L632: exact within-day nanoseconds encode the fields with implicit Days 0.
         Ok(Self(total))
     }
     pub fn new(hour: u8, minute: u8, second: u8, nanosecond: u32) -> Result<Self, Error> {

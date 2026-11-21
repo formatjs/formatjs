@@ -99,6 +99,15 @@ calendar/timezone identity. Input conversion and other callers remain open.
 The separate spec-issues document records CompareTimeRecord's reversed prose
 signs; implementation retains the numbered algorithm's chronological signs.
 
+PlainTime now builds private six-field lists with literals and indexed reads,
+avoiding Array map, iteration, iterator-next and species hooks. Public getter
+order stays intact. RegulateTime and IsValidTime gain 18 TS/Rust line traces:
+independent clamps/guards, exact within-day encoding and zero implicit day carry.
+All six fields have signed huge-finite and boundary controls through JS and the
+JSON FFI; native Hermes also checks prototype mutations and huge-finite values.
+Saturating native integer conversion preserves both clamp and reject behavior.
+Other private lists, record producers and calendar regulation remain under audit.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across
