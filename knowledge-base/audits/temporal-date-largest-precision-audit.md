@@ -38,7 +38,7 @@ field itself exceeded `2**53` before rounding.
 ## Plain fixed-day rounding
 
 With plain date/day largest units and time/day smallest units, the
-[TS fixed-length branch:1003](../../packages/temporal/date-core.ts#L1003) combines
+[TS fixed-length branch:1016](../../packages/temporal/date-core.ts#L1016) combines
 integer day and clock fields through BigInt. After exact rounding, line 987
 converts only the quotient by one day back to Number. For time smallest units,
 bounded public endpoints and sub-day rounding keep that day quotient below
@@ -47,7 +47,7 @@ round beyond the input interval; the quotient still stays below `1.201e9`.
 Both bounds are exactly representable. The separately balanced remainder is
 below one day.
 
-[Rust:270](../../crates/temporal/calendar_difference.rs#L270) performs the same
+[Rust:277](../../crates/temporal/calendar_difference.rs#L277) performs the same
 calculation in i128 and reconstructs the remainder at hour. Provided the calendar
 day field has the required bounded integer value, its intermediate f64
 conversion is exact as well. This does not validate that a custom provider
@@ -55,7 +55,7 @@ returned the right day count.
 
 ## Irregular date-unit counts
 
-[TS:927](../../packages/temporal/date-core.ts#L927) uses Number counts and
+[TS:942](../../packages/temporal/date-core.ts#L942) uses Number counts and
 `trunc(count / increment) * increment` before BigInt endpoint comparisons.
 A sufficient precision contract is an integral count with magnitude below
 `2**34`, and a positive integral increment at most `10**9`. This comfortably
@@ -71,7 +71,7 @@ The truncated product and adjacent increment are bounded integers below
 `2**35`, so multiplication/addition remain exact. The quotient used for half-even
 parity is then an exact integer. Division by seven in week preparation obeys the
 same argument. Rust uses i128 division/products directly in
-[lines 199–208](../../crates/temporal/calendar_difference.rs#L199).
+[lines 199–208](../../crates/temporal/calendar_difference.rs#L208).
 
 Both implementations compare irregular rounding distances and endpoint spans
 with BigInt/i128, preserving nanoseconds at half boundaries. Endpoint production

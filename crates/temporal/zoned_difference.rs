@@ -1,4 +1,4 @@
-use crate::calendar_difference::{RelativeAnchor, difference};
+use crate::calendar_difference::{RelativeAnchor, difference, validate_options};
 use crate::{
     CalendarProvider, Duration, Error, Instant, Overflow, RoundingMode, TimeZone, ZonedDateTime,
     ZonedUnit,
@@ -37,8 +37,12 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
         if self.calendar_id() != other.calendar_id() {
             return Err(Error::InvalidDateTime);
         }
+        validate_options(largest, smallest, increment)?;
         if largest <= ZonedUnit::Day && self.time_zone() != other.time_zone() {
             return Err(Error::InvalidDateTime);
+        }
+        if self.instant() == other.instant() {
+            return Duration::new([0; 10]);
         }
         difference(
             self,

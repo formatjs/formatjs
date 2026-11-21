@@ -3642,3 +3642,234 @@ fn zoned_round_rejects_invalid_increments_before_offset_queries() {
         assert_eq!(queries.get(), 0, "{unit:?} increment {increment}");
     }
 }
+
+fn day_window_gap_near_maximum()
+-> formatjs_temporal::ZonedDateTime<formatjs_temporal::TransitionZone<'static>> {
+    use formatjs_temporal::{OffsetTransition, TransitionZone, ZonedDateTime};
+    static EVENTS: [OffsetTransition; 1] = [OffsetTransition {
+        epoch_seconds: 8_639_999_914_500,
+        offset_seconds: 9_900,
+    }];
+    ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(8_639_999_829_900_000_000_000).unwrap(),
+        TransitionZone::new(6_300, &EVENTS, None).unwrap(),
+    )
+}
+
+#[test]
+fn day_window_gap_literal_endpoints() {
+    use formatjs_temporal::{Duration, Overflow};
+    let origin = day_window_gap_near_maximum();
+    let one_day: Duration = "P1D".parse().unwrap();
+    let shifted = origin.checked_add(one_day, Overflow::Constrain).unwrap();
+    assert_eq!(
+        shifted.instant().epoch_nanoseconds(),
+        8_639_999_916_300_000_000_000
+    );
+    assert_eq!(
+        origin
+            .checked_add("P1DT30M".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        8_639_999_918_100_000_000_000
+    );
+    assert_eq!(
+        origin
+            .checked_add("P2D".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        8_639_999_999_100_000_000_000
+    );
+    assert!(shifted.checked_add(one_day, Overflow::Constrain).is_err());
+}
+
+#[test]
+fn day_window_gap_total_retains_original_clock() {
+    use formatjs_temporal::DateTimeUnit;
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .total_duration("P1DT30M".parse().unwrap(), DateTimeUnit::Day)
+            .unwrap(),
+        1.0217391304347827
+    );
+}
+
+#[test]
+fn day_window_gap_round_day_half_expand() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration("P1DT30M".parse().unwrap(), U::Day, U::Day, 1, R::HalfExpand)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_gap_round_day_ceil() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration("P1DT30M".parse().unwrap(), U::Day, U::Day, 1, R::Ceil)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_gap_round_exact_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, RoundingMode as R};
+    assert_eq!(
+        day_window_gap_near_maximum()
+            .round_duration(
+                "P1DT30M".parse().unwrap(),
+                U::Day,
+                U::Minute,
+                1,
+                R::HalfExpand
+            )
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 1, 0, 30, 0, 0, 0, 0]
+    );
+}
+
+#[test]
+fn day_window_maximum_zero_day() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Day, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .since(&maximum, U::Day, U::Day, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Day, 1, R::Trunc)
+            .is_err()
+    );
+}
+
+#[test]
+fn day_window_maximum_zero_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .since(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Minute, 1, R::Trunc)
+            .is_err()
+    );
+    for (smallest, increment) in [(U::Minute, 7), (U::Hour, 24)] {
+        assert!(
+            maximum
+                .until(&maximum, U::Day, smallest, increment, R::Trunc)
+                .is_err()
+        );
+        assert!(
+            maximum
+                .since(&maximum, U::Day, smallest, increment, R::Trunc)
+                .is_err()
+        );
+    }
+}
+
+#[test]
+fn day_window_maximum_zero_nanosecond() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        maximum
+            .until(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+    assert_eq!(
+        maximum
+            .round_duration("PT0S".parse().unwrap(), U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0; 10]
+    );
+}
+
+#[test]
+fn day_window_maximum_exact_minute() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let before = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 60_000_000_000).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert!(
+        before
+            .until(&maximum, U::Day, U::Minute, 1, R::Trunc)
+            .is_err()
+    );
+}
+
+#[test]
+fn day_window_maximum_exact_nanosecond() {
+    use formatjs_temporal::{DateTimeUnit as U, FixedOffset, RoundingMode as R, ZonedDateTime};
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let before = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 60_000_000_000).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert_eq!(
+        before
+            .until(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    );
+    assert_eq!(
+        before
+            .since(&maximum, U::Day, U::Nanosecond, 1, R::Trunc)
+            .unwrap()
+            .fields(),
+        [0, 0, 0, 0, 0, -1, 0, 0, 0, 0]
+    );
+}

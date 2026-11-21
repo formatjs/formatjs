@@ -569,7 +569,8 @@ export function differenceZonedDuration(
   start: ZonedSlot,
   other: unknown,
   options: unknown,
-  since: boolean
+  since: boolean,
+  isDurationRounding = false
 ): DurationObject {
   const end = toZonedDateTimeSlot(other)
   if (start.calendar !== end.calendar)
@@ -602,6 +603,14 @@ export function differenceZonedDuration(
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   if (largeIndex < 4 && !timeZoneEquals(start.timeZone, end.timeZone))
     throw new RangeErrorConstructor('Timezones differ')
+  if (!isDurationRounding && start.epochNanoseconds === end.epochNanoseconds) {
+    if (smallIndex >= 4) {
+      const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
+      if (increment >= maximum || maximum % increment)
+        throw new RangeErrorConstructor('Invalid rounding increment')
+    }
+    return createDuration(zeroDuration())
+  }
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(

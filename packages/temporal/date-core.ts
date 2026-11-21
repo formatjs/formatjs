@@ -902,7 +902,13 @@ export function roundRelativeDifference(
     if (increment >= maximum || maximum % increment)
       throw new RangeErrorConstructor('Invalid rounding increment')
   }
-  if (start === end) return zeroDuration()
+  const exactZonedNanosecond =
+    anchor.zoned && smallIndex === 9 && increment === 1
+  if (
+    start === end &&
+    (!anchor.zoned || largeIndex >= 4 || exactZonedNanosecond)
+  )
+    return zeroDuration()
   if (largeIndex >= 4) {
     // Round the exact epoch difference before converting Duration fields to Numbers.
     const quantum =
@@ -917,6 +923,15 @@ export function roundRelativeDifference(
   let result = anchor.unrounded(end),
     rounded = end,
     expanded = false
+  if (exactZonedNanosecond) {
+    if (since) {
+      for (let index = 0; index < differenceUnits.length; index++) {
+        const key = `${differenceUnits[index]}s` as keyof DurationFields
+        result[key] = -result[key] || 0
+      }
+    }
+    return result
+  }
   const irregular = smallIndex < 3 || (anchor.zoned && smallIndex === 3)
   if (irregular) {
     const prefix = zeroDuration()
@@ -977,28 +992,26 @@ export function roundRelativeDifference(
       quantum =
         bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
     let value = sinceSign * roundDuration(time * sinceSign, quantum, mode)
-    if (value !== time) {
-      const date = {...result}
-      for (let index = 4; index < differenceUnits.length; index++)
-        date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
-      const origin = anchor.endpoint(date),
-        next = {...date, days: date.days + sign},
-        span = anchor.endpoint(next) - origin
-      expanded = (value - span) * physicalSign >= 0n
-      if (expanded) {
-        date.days += sign
-        value =
-          sinceSign * roundDuration((value - span) * sinceSign, quantum, mode)
-        rounded = origin + span + value
-      } else rounded = origin + value
-      result = {
-        ...date,
-        ...balanceDurationTime(value, 4),
-        years: date.years,
-        months: date.months,
-        weeks: date.weeks,
-        days: date.days,
-      }
+    const date = {...result}
+    for (let index = 4; index < differenceUnits.length; index++)
+      date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
+    const origin = anchor.endpoint(date),
+      next = {...date, days: date.days + sign},
+      span = anchor.endpoint(next) - origin
+    expanded = (value - span) * physicalSign >= 0n
+    if (expanded) {
+      date.days += sign
+      value =
+        sinceSign * roundDuration((value - span) * sinceSign, quantum, mode)
+      rounded = origin + span + value
+    } else rounded = origin + value
+    result = {
+      ...date,
+      ...balanceDurationTime(value, 4),
+      years: date.years,
+      months: date.months,
+      weeks: date.weeks,
+      days: date.days,
     }
   } else {
     const time = durationNanoseconds(result),

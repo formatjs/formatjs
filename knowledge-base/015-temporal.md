@@ -1,5 +1,14 @@
 # Temporal implementation
 
+Zoned date-largest differences validate required day windows from the original
+anchor/clock, including Duration zero and exact subday rounding. Public equal-epoch
+until/since still return zero after validation. Unchanged clock quantities still
+carry across a shorter fold window. Nanosecond/increment 1
+keeps its no-nudge path. Duration totals/rounds share those checks instead of
+adding a day from a gap-shifted clock. The [window audit](audits/temporal-day-window-engine-audit.md)
+records boundary regressions and the [total map](audits/temporal-duration-total-contract-audit.md)
+keeps complete caller/provider obligations explicit.
+
 Calendar identifier preparation uses indexed bare-name recognition and captured
 lowercase. Zoned conversion classifies date-only bodies, offset precision and Z
 without mutable String/RegExp methods. The [caller audit](audits/temporal-iso-caller-audit.md)

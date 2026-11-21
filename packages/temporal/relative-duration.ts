@@ -140,23 +140,6 @@ export function relativeEndpoint(
   dayCheck(epochDayOf(end))
   return end
 }
-function validateZonedDay(fields: DurationFields, relative: RelativeTo): void {
-  if (!('zoned' in relative)) return
-  const calendar = {...fields},
-    keys = [
-      'hours',
-      'minutes',
-      'seconds',
-      'milliseconds',
-      'microseconds',
-      'nanoseconds',
-    ] as const
-  for (let i = 0; i < keys.length; i++) calendar[keys[i]] = 0
-  const anchor = addZonedDuration(relative.zoned, calendar),
-    day = zeroDuration()
-  day.days = durationSign(fields) || 1
-  addZonedDuration({...relative.zoned, epochNanoseconds: anchor}, day)
-}
 export function relativeTotal(
   fields: DurationFields,
   relative: RelativeTo,
@@ -175,11 +158,14 @@ export function relativeTotal(
     microsecond: 1000n,
     nanosecond: 1n,
   }
-  if (unit === 'day') validateZonedDay(fields, relative)
   const calendarUnit = unit === 'year' || unit === 'month' || unit === 'week'
   // DifferencePlainDateTimeWithTotal L1023 permits the plain zero shortcut.
   // TotalRelativeDuration L1907-L1909 still nudges zero zoned calendar totals.
-  if (!durationSign(fields) && ('date' in relative || !calendarUnit)) return 0
+  if (
+    !durationSign(fields) &&
+    ('date' in relative || (!calendarUnit && unit !== 'day'))
+  )
+    return 0
   if ('date' in relative) {
     checkDateTime(relativeOrigin(relative))
     if (
@@ -291,7 +277,6 @@ export function relativeRound(
     return result
   }
   if ('zoned' in relative) {
-    if (largest === 'day') validateZonedDay(fields, relative)
     const result = toDurationFields(
       differenceZonedDuration(
         relative.zoned,
@@ -306,7 +291,8 @@ export function relativeRound(
           roundingIncrement: increment,
           roundingMode: mode,
         },
-        false
+        false,
+        true
       )
     )
     return result
