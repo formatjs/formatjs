@@ -1047,7 +1047,7 @@ export const ZonedDateTime: ZonedDateTimeConstructor = new Proxy(
       const zone = timeZoneIdentifier(args[1]),
         calendar = constructorCalendar(args[2])
       validateInstant(value)
-      const prototype = Reflect.get(newTarget, 'prototype'),
+      const prototype = newTarget.prototype,
         result = createObject(object(prototype) ? prototype : target.prototype)
       setZonedSlot(result, {epochNanoseconds: value, timeZone: zone, calendar})
       return result

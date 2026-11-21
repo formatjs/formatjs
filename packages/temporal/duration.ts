@@ -404,7 +404,7 @@ export const Duration: DurationConstructor = new Proxy(DurationValue, {
       fields[durationFieldNames[i]] =
         args[i] === undefined ? 0 : integralDurationNumber(args[i])
     validateDuration(fields)
-    const prototype = Reflect.get(newTarget, 'prototype')
+    const prototype = newTarget.prototype
     const value = createObject(
       prototype !== null &&
         (typeof prototype === 'object' || typeof prototype === 'function')
