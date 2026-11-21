@@ -8,7 +8,39 @@ Unnumbered prose, grammar, tables, property attributes and realm requirements
 remain open unless an audit entry supplies explicit evidence. A clause with no
 numbered algorithm is not signed off by having an empty line inventory.
 
+Requested citation authority: [ECMA-262](https://tc39.es/ecma262/), using numbered
+sections and steps. The fetched 2026-11-21 document has no Temporal API chapters;
+its Temporal-prefixed productions are shared date/time grammar. Temporal chapter
+selection and the broader citation migration remain pending clarification. The
+source-line inventory below is historical evidence, not section completion.
+A provisional mapping onto the separately published proposal has 64 sections
+with prior partial evidence and 588 without mapped evidence; none is fully signed
+off. These are proposal inventory counts, not ECMA-262 section completion.
+
+## ECMA-262 dependency sections touched
+
+This is a partial dependency index, not a complete Temporal chapter inventory.
+No section below is fully signed off.
+
+| Section                                                                                          | Status  | Evidence or gap                                                                                                                |
+| ------------------------------------------------------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Partial | Steps 15.a, 16.b–16.d: [private fraction padding](temporal-offset-fraction-audit.md). Remaining parsing and integrations open. |
+| [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Open    | Grammar recognition and every caller need review.                                                                              |
+| [§21.4.1.28 MakeDay](https://tc39.es/ecma262/#sec-makeday)                                       | Open    | Step 8 witness ambiguity; [separate issue](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).              |
+| [§21.4.1.1 Time Values and Time Range](https://tc39.es/ecma262/#sec-time-values-and-time-range)  | Open    | Range checked as issue evidence; implementation coverage remains open.                                                         |
+
+## Historical passes and current fixes
+
 Current pass:
+
+- ECMA-262 [§21.4.1.33.2 steps 15.a and 16.b–16.d](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring):
+  private nine-digit fraction padding replaces mutable padEnd calls in four
+  shared parser sites. Five public mutation regressions reproduced the gap.
+  The [offset fraction audit](temporal-offset-fraction-audit.md) records the
+  bounded-digit equivalence and independent controls. This dependency review
+  adds no credit to historical Temporal source-line counts; full sections and
+  remaining parser hooks stay open.
+  All 75 validation targets and Temporal package assembly pass.
 
 - `ParseMonthCode` syntax and coercion, `calendar.html` lines 83–85.
   Implementation: `dateFieldValue` in [date-core.ts](../../packages/temporal/date-core.ts).
@@ -723,7 +755,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [exact clock difference audit](https://github.com/formatjs/formatjs/pull/8089),
 [private unit-name matching](https://github.com/formatjs/formatjs/pull/8090),
 [rounding-increment validation audit](https://github.com/formatjs/formatjs/pull/8091),
-[intrinsic fractional formatting](https://github.com/formatjs/formatjs/pull/8092).
+[intrinsic fractional formatting](https://github.com/formatjs/formatjs/pull/8092),
+[private parsed fraction padding](https://github.com/formatjs/formatjs/pull/8093).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

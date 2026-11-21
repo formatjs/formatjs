@@ -8,6 +8,13 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+UTC-offset fraction padding follows published
+[ECMA-262 §21.4.1.33.2 steps 15.a, 16.b–16.d](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring).
+The shared parser builds nine private digits directly; replacing padEnd cannot
+intercept offset, Instant, date-time or PlainTime fraction padding. See the
+[dependency audit](audits/temporal-offset-fraction-audit.md). Other parser hooks
+remain open. Temporal chapter citation migration is pending source clarification.
+
 The [line audit ledger](audits/temporal-spec-audit.md) pins the Temporal specification
 and tracks reviewed lines separately from open clauses and pending PRs.
 `ParseMonthCode` field preparation now rejects bare `M00` before reading later
