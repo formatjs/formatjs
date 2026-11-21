@@ -35,9 +35,8 @@ Effective 2–2.5-fold parallelism plus additional prose/grammar, fixes and
 integration work motivates the range. Historical lines include editorial text;
 this calculation cannot measure compliance or bound undiscovered defects.
 
-Three parallel read-only lanes now cover transition lookup/data invariants,
-ToLocalTime conversion/intrinsic contracts, and remaining Duration/ZonedDateTime
-algorithm partitioning. Runtime edits, ledger reconciliation and Bazel runs
+Parallel review now covers Duration conversion/arithmetic/stringification and
+ZonedDateTime rounding/offset matching. Runtime edits, ledger reconciliation and Bazel runs
 remain coordinated in the shared checkout. Re-estimate after the first day of
 parallel results, using completed operation contracts and discovered defects
 alongside historical line counts.
@@ -87,7 +86,17 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Duration string parsing: [grammar/arithmetic and hook audit](temporal-duration-parser-audit.md)
+- ZonedDateTime identity rounding: [source/boundary audit](temporal-zoned-identity-rounding-audit.md)
+  restores a fresh equivalent object for nanosecond increment 1 after option
+  validation. Two public tests failed before correction at the lower local-date
+  guard; all twelve relevant expanded gates pass (ten executed, two cached),
+  including five ZonedDateTime backends and native Hermes. Temporal assembly
+  passes; no baseline, exclusions or timeout changes.
+  The separately recorded [Casey repeated-date assertion](temporal-spec-issues.md#day-rounding-upper-bound-assertion-on-repeated-civil-dates)
+  is an algorithm inconsistency in the historical/published proposal comparison,
+  not a numbered ECMA-262 Temporal finding. Complete rounding remains open.
+
+- [Duration string parsing #8113](https://github.com/formatjs/formatjs/pull/8113): [grammar/arithmetic and hook audit](temporal-duration-parser-audit.md)
   maps the TS/Rust parser contracts without adding Temporal chapter credit.
   Indexed ASCII scanning removes mutable RegExp/String methods and legacy RegExp
   state changes. Five regressions failed before correction; three focused gates

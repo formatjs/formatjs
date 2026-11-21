@@ -355,3 +355,59 @@ it('preserves minimum-Instant parsing despite the MakeDay witness ambiguity', ()
     Temporal.ZonedDateTime.from('-271821-04-20T00:00Z[UTC]').epochNanoseconds
   ).toBe(-8_640_000_000_000_000_000_000n)
 })
+
+it('preserves exact zoned instants when rounding to one nanosecond at the bounds', () => {
+  for (const [epoch, zone] of [
+    [-8_640_000_000_000_000_000_000n, '-01:00'],
+    [8_640_000_000_000_000_000_000n, '+01:00'],
+  ] as const) {
+    const value = new Temporal.ZonedDateTime(epoch, zone)
+    for (const roundTo of [
+      'nanosecond',
+      {smallestUnit: 'nanosecond', roundingIncrement: 1},
+    ]) {
+      const rounded = value.round(roundTo)
+      expect(rounded).not.toBe(value)
+      expect(rounded.epochNanoseconds).toBe(epoch)
+      expect(rounded.timeZoneId).toBe(zone)
+      expect(rounded.calendarId).toBe(value.calendarId)
+    }
+  }
+})
+
+it('validates rounding options before returning an unchanged zoned instant', () => {
+  const value = new Temporal.ZonedDateTime(
+    -8_640_000_000_000_000_000_000n,
+    '-01:00'
+  )
+  const reads: string[] = []
+  const rounded = value.round({
+    get roundingIncrement() {
+      reads.push('roundingIncrement')
+      return 1
+    },
+    get roundingMode() {
+      reads.push('roundingMode')
+      return 'halfExpand'
+    },
+    get smallestUnit() {
+      reads.push('smallestUnit')
+      return 'nanosecond'
+    },
+  })
+  expect(rounded.epochNanoseconds).toBe(value.epochNanoseconds)
+  expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  expect(() =>
+    value.round({smallestUnit: 'nanosecond', roundingIncrement: 0})
+  ).toThrow(RangeError)
+  expect(() =>
+    value.round({smallestUnit: 'nanosecond', roundingMode: 'invalid'})
+  ).toThrow(RangeError)
+  expect(() => value.round('minute')).toThrow(RangeError)
+  expect(
+    new Temporal.ZonedDateTime(1n, 'UTC').round({
+      smallestUnit: 'nanosecond',
+      roundingIncrement: 2,
+    }).epochNanoseconds
+  ).toBe(2n)
+})

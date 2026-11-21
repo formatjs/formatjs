@@ -900,6 +900,12 @@ class ZonedDateTimeValue {
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       unit = unitOption(resolved.smallestUnit)
+    if (unit === 'nanosecond' && increment === 1)
+      return createZonedDateTime(
+        slot.epochNanoseconds,
+        slot.timeZone,
+        slot.calendar
+      )
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
       return createZonedDateTime(
