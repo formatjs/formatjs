@@ -252,6 +252,50 @@ equal(
 const native = new Native('en', {timeZone: 'UTC'}),
   reference = new Reference('en', {timeZone: 'UTC'})
 for (const Constructor of [Native, Reference]) {
+  for (const method of ['get', 'set', 'has'] as const) {
+    const options = {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    } as const
+    const formatter = new Constructor('en', options)
+    const original = WeakMap.prototype[method]
+    let actual: unknown, error: unknown
+    try {
+      WeakMap.prototype[method] = () => {
+        throw new Error(`Mutable WeakMap.${method}`)
+      }
+      actual = [
+        formatter.format(0),
+        formatter
+          .formatToParts(0)
+          .map((part: any) => part.value)
+          .join(''),
+        formatter.formatRange(0, 0),
+        formatter
+          .formatRangeToParts(0, 0)
+          .map((part: any) => part.value)
+          .join(''),
+        new Constructor('en', options).format(0),
+      ]
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(WeakMap.prototype, method, {value: original})
+    }
+    check(
+      error === undefined,
+      `private storage ignores WeakMap.${method}: ${String((error as Error)?.stack || error)}`
+    )
+    equal(
+      actual,
+      ['01/01/1970', '01/01/1970', '01/01/1970', '01/01/1970', '01/01/1970'],
+      'private cache output'
+    )
+  }
+}
+for (const Constructor of [Native, Reference]) {
   const formatter = new Constructor('en', {
     timeZone: 'UTC',
     year: 'numeric',

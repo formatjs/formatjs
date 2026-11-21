@@ -19,6 +19,8 @@ const patterns = new WeakMap<
   IntlDateTimeFormatInternal,
   {pattern: string; parts: IntlDateTimeFormatPart[]}
 >()
+const getPattern = patterns.get.bind(patterns)
+const setPattern = patterns.set.bind(patterns)
 
 /**
  * https://tc39.es/ecma402/#sec-partitiondatetimepattern
@@ -34,13 +36,13 @@ export function PartitionDateTimePattern(
   const internalSlots = record.format
 
   const {pattern} = internalSlots
-  let parsed = patterns.get(internalSlots)
+  let parsed = getPattern(internalSlots)
   if (!parsed || parsed.pattern !== pattern) {
     parsed = {
       pattern,
       parts: PartitionPattern<IntlDateTimeFormatPartType>(pattern),
     }
-    patterns.set(internalSlots, parsed)
+    setPattern(internalSlots, parsed)
   }
   return FormatDateTimePattern(
     dtf,

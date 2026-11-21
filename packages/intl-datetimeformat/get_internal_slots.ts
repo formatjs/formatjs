@@ -10,15 +10,17 @@ const internalSlotMap = new WeakMap<
   DateTimeFormat | Intl.DateTimeFormat,
   IntlDateTimeFormatInternal
 >()
+const readInternalSlots = internalSlotMap.get.bind(internalSlotMap)
+const writeInternalSlots = internalSlotMap.set.bind(internalSlotMap)
 
 export default function getInternalSlots(
   x: DateTimeFormat | Intl.DateTimeFormat,
   initialize = false
 ): IntlDateTimeFormatInternal {
-  let internalSlots = internalSlotMap.get(x)
+  let internalSlots = readInternalSlots(x)
   if (!internalSlots && initialize) {
     internalSlots = Object.create(null) as IntlDateTimeFormatInternal
-    internalSlotMap.set(x, internalSlots)
+    writeInternalSlots(x, internalSlots)
   }
   // ECMA-402 §11.3.3, step 3: require the receiver's internal brand.
   // Only constructor initialization may allocate slots.

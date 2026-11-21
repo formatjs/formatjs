@@ -4,6 +4,12 @@
 
 ## Purpose
 
+Private formatter WeakMap methods are captured when modules load, including
+pattern, skeleton, calendar-preference and interval caches. The
+[cache and numeric-dispatch audit](audits/temporal-private-format-cache-audit.md)
+maps ECMA-402 §11.5.5 and the locale/number dependencies reached by public
+mutation controls. Broader constructor and producer contracts remain open.
+
 Nonpositive calendar display years follow ECMA-402 §11.5.4 step 15.f.iv in TS/Rust:
 `1 - year` applies before numeric or two-digit rendering, for every calendar.
 The [year audit](audits/temporal-calendar-year-audit.md) records source steps,

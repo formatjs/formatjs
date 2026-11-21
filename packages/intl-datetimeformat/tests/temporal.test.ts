@@ -11,6 +11,54 @@ function formatter(options: Intl.DateTimeFormatOptions = {}) {
   return new DateTimeFormat('en', {timeZone: 'UTC', ...options}) as any
 }
 
+test.each([
+  ['get', 'best fit'],
+  ['get', 'lookup'],
+  ['set', 'best fit'],
+  ['set', 'lookup'],
+] as const)(
+  'formats branded Temporal inputs without WeakMap.prototype.%s (%s)',
+  (method, localeMatcher) => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      localeMatcher,
+    } as const
+    for (const warm of [false, true]) {
+      const dtf = formatter(options)
+      if (warm) dtf.formatToParts(value)
+      const original = WeakMap.prototype[method]
+      let actual: string[] | undefined, error: unknown
+      try {
+        WeakMap.prototype[method] = () => {
+          throw new Error(`Mutable WeakMap.${method}`)
+        }
+        actual = [
+          dtf.format(value),
+          dtf
+            .formatToParts(value)
+            .map((part: any) => part.value)
+            .join(''),
+          dtf.formatRange(value, value),
+          dtf
+            .formatRangeToParts(value, value)
+            .map((part: any) => part.value)
+            .join(''),
+          formatter(options).format(value),
+        ]
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(WeakMap.prototype, method, {value: original})
+      }
+      expect(error, `warm=${warm}: ${(error as Error)?.stack}`).toBeUndefined()
+      expect(actual).toEqual(Array(5).fill('01/02/2024'))
+    }
+  }
+)
+
 test('plain values ignore timezone while instants use it', () => {
   const dtf = formatter({
     hour: 'numeric',

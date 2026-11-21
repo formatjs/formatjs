@@ -158,13 +158,19 @@ const numberFormattersCache = new WeakMap<
     'locale' | 'numberingSystem' | 'fractionalSecondDigits'
   > & {formatters: NumberFormatters}
 >()
+const getNumberFormatters = numberFormattersCache.get.bind(
+  numberFormattersCache
+)
+const setNumberFormatters = numberFormattersCache.set.bind(
+  numberFormattersCache
+)
 
 function createNumberFormatters(
   internalSlots: IntlDateTimeFormatInternal,
   fractionalSecondDigits: IntlDateTimeFormatInternal['fractionalSecondDigits'] = internalSlots.fractionalSecondDigits
 ): NumberFormatters {
   const {locale, numberingSystem} = internalSlots
-  const cached = numberFormattersCache.get(internalSlots)
+  const cached = getNumberFormatters(internalSlots)
   if (
     cached &&
     cached.locale === locale &&
@@ -191,7 +197,7 @@ function createNumberFormatters(
     nf3 = createMemoizedNumberFormat(locale, nf3Options)
   }
   const formatters = {nf, nf2, nf3}
-  numberFormattersCache.set(internalSlots, {
+  setNumberFormatters(internalSlots, {
     locale,
     numberingSystem,
     fractionalSecondDigits,

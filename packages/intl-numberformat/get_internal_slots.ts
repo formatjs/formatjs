@@ -3,15 +3,18 @@
 import {type NumberFormatInternal} from '#packages/ecma402-abstract/types/number.js'
 
 const internalSlotMap = new WeakMap<Intl.NumberFormat, NumberFormatInternal>()
+const readInternalSlots = internalSlotMap.get.bind(internalSlotMap)
+const writeInternalSlots = internalSlotMap.set.bind(internalSlotMap)
+const containsInternalSlots = internalSlotMap.has.bind(internalSlotMap)
 
 export default function getInternalSlots(
   x: Intl.NumberFormat,
   initialize = false
 ): NumberFormatInternal {
-  let internalSlots = internalSlotMap.get(x)
+  let internalSlots = readInternalSlots(x)
   if (!internalSlots && initialize) {
     internalSlots = Object.create(null) as NumberFormatInternal
-    internalSlotMap.set(x, internalSlots)
+    writeInternalSlots(x, internalSlots)
   }
   // ECMA-402 §16.3.3 step 3: require the receiver's internal brand.
   // https://tc39.es/ecma402/#sec-intl.numberformat.prototype.format
@@ -23,5 +26,5 @@ export default function getInternalSlots(
 }
 
 export function hasInternalSlots(x: unknown): x is Intl.NumberFormat {
-  return internalSlotMap.has(x as Intl.NumberFormat)
+  return containsInternalSlots(x as Intl.NumberFormat)
 }
