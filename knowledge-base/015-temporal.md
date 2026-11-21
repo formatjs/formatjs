@@ -6,6 +6,13 @@ WASM measurements and ABI notes below are historical. New native Rust/TS compari
 `bazel run -c opt //benchmarks/temporal:native_ts_benchmark`. It checks matched
 outputs and reports per-workload samples; native timings exclude binding costs.
 
+## Specification audit
+
+The [line audit ledger](audits/temporal-spec-audit.md) pins the Temporal specification
+and tracks reviewed lines separately from open clauses and pending PRs.
+`ParseMonthCode` field preparation now rejects bare `M00` and trailing line
+terminators before reading later fields. Calendar-specific validity stays deferred.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across
