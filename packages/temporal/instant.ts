@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
 import {getZonedSlot} from '#packages/temporal/plain-slots.js'
@@ -115,11 +116,7 @@ const NativeInstant =
             setPrototype(value, prototype)
           }
           nativeInstantSlot = (value: object) =>
-            value !== null &&
-            (typeof value === 'object' || typeof value === 'function') &&
-            #value in value
-              ? value.#value
-              : undefined
+            IsObject(value) && #value in value ? value.#value : undefined
         }
       }
     : undefined
@@ -376,20 +373,13 @@ export const Instant: InstantConstructor = new Proxy(
       const prototype = newTarget.prototype
       if (import.meta.formatjsTemporalNativeData === true) {
         const result = createNativeInstant(value)
-        const selected =
-          prototype !== null &&
-          (typeof prototype === 'object' || typeof prototype === 'function')
-            ? prototype
-            : target.prototype
+        const selected = IsObject(prototype) ? prototype : target.prototype
         if (selected !== NativeInstant!.prototype)
           nativeInstantPrototype(result, selected)
         return result
       }
       const result = createObject(
-        prototype !== null &&
-          (typeof prototype === 'object' || typeof prototype === 'function')
-          ? prototype
-          : target.prototype
+        IsObject(prototype) ? prototype : target.prototype
       )
       setSlot(result, value)
       return result

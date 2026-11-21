@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -127,9 +128,7 @@ function regulate(values: number[], constrain: boolean): bigint {
   return result
 }
 function object(value: unknown): value is Record<string, unknown> {
-  return (
-    value !== null && (typeof value === 'object' || typeof value === 'function')
-  )
+  return IsObject(value)
 }
 function timeFields(
   item: Record<string, unknown>,
