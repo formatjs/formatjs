@@ -55,6 +55,8 @@ The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 Temporal uses a captured `Object.create` for its own internal allocations.
 Its constructor prototype reads and formatter option reads use ordinary property
 access without consulting a replaced `Reflect.get`.
+Shared primitive coercion retains intrinsic helper bindings while preserving user
+conversion hooks and their standard hints.
 
 ## Calendars and time-zone data
 
