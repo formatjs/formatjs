@@ -1,5 +1,11 @@
 # Temporal implementation
 
+ISO string parsing uses indexed UTF-16 reads for date, clock, offset and annotation
+syntax. It avoids mutable RegExp/String methods and legacy RegExp match-state
+changes inside the shared parser module. The [ISO parser audit](audits/temporal-iso-parser-audit.md)
+records entrypoint policies, exact fractional arithmetic and remaining public
+calendar/timezone caller dependencies. Native dispatch stays unchanged.
+
 Zoned clock rounding retains the original bigint offset for exact matching,
 without private string formatting/reparsing. The [raw-offset audit](audits/temporal-zoned-round-raw-offset-audit.md)
 records five public regressions, provider-call timing and unchanged shared string
