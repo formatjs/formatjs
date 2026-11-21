@@ -56,6 +56,9 @@
 //packages/intl-datetimeformat:package_exports_test
 //packages/intl-datetimeformat:package_json_sync_test
 //packages/intl-datetimeformat:package_json_test
+//packages/intl-datetimeformat:rust_timezone_test
+//packages/intl-datetimeformat:rust_timezone_test_typecheck_transitive_typecheck_test
+//packages/intl-datetimeformat:rust_timezone_test_typecheck_typecheck_test
 //packages/intl-datetimeformat:temporal_owned_test
 //packages/intl-datetimeformat:temporal_owned_test_typecheck_typecheck_test
 //packages/intl-datetimeformat:temporal_polyfill_test
