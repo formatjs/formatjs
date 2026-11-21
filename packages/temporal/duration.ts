@@ -6,6 +6,8 @@ import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   toRelativeTo,
   relativeTotal,
+  dateDurationDays,
+  addDaysToDurationTime,
   relativeEndpoint,
   relativeRound,
 } from '#packages/temporal/relative-duration.js'
@@ -142,40 +144,69 @@ class DurationValue {
     two: unknown,
     options: unknown = undefined
   ): -1 | 0 | 1 {
-    const left = toDurationFields(one),
-      right = toDurationFields(two)
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L85-L114
+    // L85: convert one first; a throw prevents reading two.
+    const left = toDurationFields(one)
+    // L86: convert two.
+    const right = toDurationFields(two)
+    // L87: resolve options after both durations.
     const resolved = optionsObject(options)
+    // L88: read relativeTo even if the duration fields match.
     const relative = toRelativeTo(resolved.relativeTo)
+    // L89: equality here means all ten fields.
     if (durationFieldNames.every(field => left[field] === right[field]))
+      // L90: equal fields skip endpoint arithmetic.
       return 0
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
       return native!.compareDuration(left, right, relative)
-    if (relative) {
-      const sameDate =
-        left.years === right.years &&
-        left.months === right.months &&
-        left.weeks === right.weeks &&
-        left.days === right.days
-      const a = sameDate
-          ? durationNanoseconds(left, false)
-          : relativeEndpoint(relative, left),
-        b = sameDate
-          ? durationNanoseconds(right, false)
-          : relativeEndpoint(relative, right)
-      return a < b ? -1 : a > b ? 1 : 0
+    // L91: select the zoned anchor, if present.
+    const zoned = relative && 'zoned' in relative ? relative : undefined
+    // L92: plain and zoned anchors are mutually exclusive.
+    const plain = relative && 'date' in relative ? relative.date : undefined
+    // L93: first nonzero unit, in significance order.
+    const largest1 = largestDurationField(left)
+    // L94: likewise for two.
+    const largest2 = largestDurationField(right)
+    // L95: left's validated fields already represent its date and time parts.
+    // L96: right uses the same representation.
+    // L97: even identical nonzero date parts require both endpoint checks.
+    if (zoned && (largest1 <= 3 || largest2 <= 3)) {
+      // L98: the anchor carries its time zone.
+      // L99: the anchor also carries its calendar.
+      // L100: constrained addition can throw before the second addition.
+      const a = relativeEndpoint(zoned, left)
+      // L101: add two to the original anchor, not the first endpoint.
+      const b = relativeEndpoint(zoned, right)
+      // L102: later endpoint.
+      if (a > b) return 1
+      // L103: earlier endpoint.
+      if (a < b) return -1
+      // L104: same instant despite different fields.
+      return 0
     }
-    if (
-      left.years ||
-      left.months ||
-      left.weeks ||
-      right.years ||
-      right.months ||
-      right.weeks
-    )
-      throw new RangeError('Calendar comparison requires relativeTo')
-    const a = durationNanoseconds(left),
-      b = durationNanoseconds(right)
+    let days1: bigint, days2: bigint
+    // L105: years, months and weeks need calendar arithmetic.
+    if (largest1 < 3 || largest2 < 3) {
+      // L106: no implicit reference date.
+      if (!plain)
+        throw new RangeError('Calendar comparison requires relativeTo')
+      // L107: calendar addition for one may throw.
+      days1 = dateDurationDays(plain, left)
+      // L108: convert two before adding either time part.
+      days2 = dateDurationDays(plain, right)
+    } else {
+      // L109: no calendar units; ignore the plain anchor.
+      // L110: take one's days unchanged.
+      days1 = BigInt(left.days)
+      // L111: take two's days unchanged.
+      days2 = BigInt(right.days)
+    }
+    // L112: treat each day as exactly 24 hours.
+    const a = addDaysToDurationTime(left, days1)
+    // L113: enforce the same time-duration bound on two.
+    const b = addDaysToDurationTime(right, days2)
+    // L114: compare exact nanoseconds, not floating-point totals.
     return a < b ? -1 : a > b ? 1 : 0
   }
   static from(value: unknown): DurationObject {

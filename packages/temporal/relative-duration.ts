@@ -42,6 +42,43 @@ import {
 } from '#packages/temporal/duration-core.js'
 
 export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1479-L1485
+export function dateDurationDays(
+  date: DateSlot,
+  fields: DurationFields
+): bigint {
+  // L1479: only years, months and weeks participate in calendar addition.
+  const calendar = {
+    ...zeroDuration(),
+    years: fields.years,
+    months: fields.months,
+    weeks: fields.weeks,
+  }
+  // L1480: days alone need no representable endpoint.
+  if (!calendar.years && !calendar.months && !calendar.weeks)
+    return BigInt(fields.days)
+  // L1481: constrain the calendar addition, not the final day count.
+  // L1483: addDate already returns the later ISO epoch day.
+  const later = addDate(date, calendar, 'constrain')
+  // L1482: the original ISO epoch day is stored in the slot.
+  // L1484: subtract epoch days before combining with the duration.
+  const elapsed = later - date.epochDay
+  // L1485: the result is a count, not another Temporal.PlainDate.
+  return BigInt(fields.days) + BigInt(elapsed)
+}
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1370-L1372
+export function addDaysToDurationTime(
+  fields: DurationFields,
+  days: bigint
+): bigint {
+  // L1370: fixed 24-hour days, excluding any days already in fields.
+  const value = durationNanoseconds(fields, false) + days * nsPerDay
+  // L1371: maxDurationNanoseconds is the first unrepresentable magnitude.
+  if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
+    throw new RangeError('Duration out of range')
+  // L1372: retain exact nanoseconds.
+  return value
+}
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
   const zoned = getZonedSlot(value as object),
