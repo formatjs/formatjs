@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import type {
   DateSlot,
   DateTimeSlot,
@@ -455,12 +456,18 @@ export function configureNativeTemporal(
     copy.year = fields.year
     copy.month = fields.month
     copy.day = fields.day
-    copy.hour = fields.hour ?? 0
-    copy.minute = fields.minute ?? 0
-    copy.second = fields.second ?? 0
-    copy.millisecond = fields.millisecond ?? 0
-    copy.microsecond = fields.microsecond ?? 0
-    copy.nanosecond = fields.nanosecond ?? 0
+    copy.hour = HasOwnProperty(fields, 'hour') ? (fields.hour ?? 0) : 0
+    copy.minute = HasOwnProperty(fields, 'minute') ? (fields.minute ?? 0) : 0
+    copy.second = HasOwnProperty(fields, 'second') ? (fields.second ?? 0) : 0
+    copy.millisecond = HasOwnProperty(fields, 'millisecond')
+      ? (fields.millisecond ?? 0)
+      : 0
+    copy.microsecond = HasOwnProperty(fields, 'microsecond')
+      ? (fields.microsecond ?? 0)
+      : 0
+    copy.nanosecond = HasOwnProperty(fields, 'nanosecond')
+      ? (fields.nanosecond ?? 0)
+      : 0
     return copy
   }
   function request(

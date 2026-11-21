@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -8,7 +9,11 @@ import {
   mathMin,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDuration} from '#packages/temporal/locale.js'
@@ -341,7 +346,7 @@ class DurationValue {
       nanosecond: 1n,
     }
     if (
-      !Object.hasOwn(factors, unit) ||
+      !HasOwnProperty(factors, unit) ||
       fields.years ||
       fields.months ||
       fields.weeks
@@ -412,12 +417,14 @@ Object.defineProperty(DurationValue, 'name', {
   value: 'Duration',
   configurable: true,
 })
-export const Duration: DurationConstructor = new Proxy(DurationValue, {
+export const Duration: DurationConstructor = createProxy(DurationValue, {
   construct(target, args, newTarget) {
     const fields = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++)
       fields[durationFieldNames[i]] =
-        args[i] === undefined ? 0 : integralDurationNumber(args[i])
+        argumentAt(args, i) === undefined
+          ? 0
+          : integralDurationNumber(argumentAt(args, i))
     validateDuration(fields)
     const prototype = newTarget.prototype
     const value = createObject(

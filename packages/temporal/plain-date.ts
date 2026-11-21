@@ -6,7 +6,11 @@ import {
   numberFrom,
   numberIsInteger,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {
+  argumentAt,
+  createObject,
+  createProxy,
+} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -424,12 +428,12 @@ Object.defineProperty(PlainDateValue, 'name', {
   value: 'PlainDate',
   configurable: true,
 })
-export const PlainDate: PlainDateConstructor = new Proxy(PlainDateValue, {
+export const PlainDate: PlainDateConstructor = createProxy(PlainDateValue, {
   construct(target, args, newTarget) {
-    const year = integer(args[0]),
-      month = integer(args[1]),
-      day = integer(args[2]),
-      calendar = constructorCalendar(args[3])
+    const year = integer(argumentAt(args, 0)),
+      month = integer(argumentAt(args, 1)),
+      day = integer(argumentAt(args, 2)),
+      calendar = constructorCalendar(argumentAt(args, 3))
     const epochDay = isoDay(year, month, day)
     const prototype = newTarget.prototype
     const result = createObject(
