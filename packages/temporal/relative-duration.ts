@@ -18,6 +18,7 @@ import {
 } from '#packages/temporal/date-core.js'
 import {
   getDateSlot,
+  getDateTimeSlot,
   getZonedSlot,
   type DateSlot,
   type ZonedSlot,
@@ -44,10 +45,26 @@ import {
 export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
-  const zoned = getZonedSlot(value as object),
-    date = getDateSlot(value as object)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L607-L613
+  // L607: recognize a zoned value by its internal slot.
+  const zoned = getZonedSlot(value as object)
+  // L608: retain the zoned anchor without reading public fields.
   if (zoned) return {zoned}
+  // L609: recognize an initialized date.
+  const date = getDateSlot(value as object)
+  // L610: retain its internal date record.
   if (date) return {date}
+  // L611: date-times also bypass property-bag conversion.
+  const dateTime = getDateTimeSlot(value as object)
+  if (dateTime) {
+    // L612: copy its ISO date and calendar, discarding the clock.
+    const date = {
+      epochDay: epochDayOf(dateTime.epochNanoseconds),
+      calendar: dateTime.calendar,
+    }
+    // L613: return only the plain anchor.
+    return {date}
+  }
   if (typeof value === 'string') {
     return /\[!?[^=\]]+\]/.test(value)
       ? {zoned: toZonedDateTimeSlot(value)}
