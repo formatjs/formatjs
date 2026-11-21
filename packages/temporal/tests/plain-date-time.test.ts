@@ -301,3 +301,63 @@ it('uses calendar slots and defaults only field-bag calendars', () => {
     Temporal.PlainDateTime.from({year: 2020, month: 2, day: 29}).calendarId
   ).toBe('iso8601')
 })
+
+it.each([
+  [
+    true,
+    '-271821-04-19T00:00:00.000000001',
+    [-271821, 4, 19, 0, 0, 0, 0, 0, 1],
+  ],
+  [
+    true,
+    '+275760-09-13T23:59:59.999999999',
+    [275760, 9, 13, 23, 59, 59, 999, 999, 999],
+  ],
+  [false, '-271821-04-19T00:00', [-271821, 4, 19, 0, 0, 0, 0, 0, 0]],
+  [false, '+275760-09-14T00:00', [275760, 9, 14, 0, 0, 0, 0, 0, 0]],
+] as const)(
+  'keeps strict local limits across input forms: %s %s',
+  (accepted, text, values) => {
+    const [
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      second,
+      millisecond,
+      microsecond,
+      nanosecond,
+    ] = values
+    const fields = {
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      second,
+      millisecond,
+      microsecond,
+      nanosecond,
+    }
+    for (const create of [
+      () => Temporal.PlainDateTime.from(text),
+      () => Temporal.PlainDateTime.from(fields),
+      () =>
+        new Temporal.PlainDateTime(
+          year,
+          month,
+          day,
+          hour,
+          minute,
+          second,
+          millisecond,
+          microsecond,
+          nanosecond
+        ),
+    ]) {
+      if (accepted) expect(create().toString()).toBe(text)
+      else expect(create).toThrow(RangeError)
+    }
+  }
+)

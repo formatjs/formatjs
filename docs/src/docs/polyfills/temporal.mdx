@@ -69,6 +69,10 @@ conversion hooks and their standard hints. Browser host objects such as
 `document.all` retain object semantics for field bags, options, constructor
 prototypes and primitive conversion.
 
+ZonedDateTime string conversion validates syntax and identifiers, then reads
+`disambiguation`, `offset` and `overflow` before checking representable range.
+This order also applies when native parsing is enabled.
+
 ## Calendars and time-zone data
 
 Month codes must match Temporal's grammar exactly. Malformed codes such as

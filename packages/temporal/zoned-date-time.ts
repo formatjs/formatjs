@@ -309,7 +309,8 @@ export function toZonedDateTimeSlot(
     zone: string,
     offset: string | undefined,
     matchMinute = false,
-    dateOnly = false
+    dateOnly = false,
+    parsedString: ReturnType<typeof parseZonedDateTimeString> | undefined
   if (existing) {
     calendar = existing.calendar
     zone = existing.timeZone
@@ -363,6 +364,7 @@ export function toZonedDateTimeSlot(
         'Expected zoned date/time string or object'
       )
     const parsed = parseZonedDateTimeString(item)
+    parsedString = parsed
     dateOnly = !/[Tt ]/.test(item.slice(0, item.indexOf('[')))
     calendar = constructorCalendar(parsed.fields.calendar)
     zone =
@@ -371,23 +373,29 @@ export function toZonedDateTimeSlot(
         ? parsed.validatedTimeZone
         : timeZoneIdentifier(parsed.timeZone)
     offset = parsed.offset
-    value =
-      import.meta.formatjsTemporalNativeData === true &&
-      parsed.localNanoseconds !== undefined
-        ? parsed.localNanoseconds
-        : isoToEpochNanoseconds(parsed.fields)
     matchMinute = offset !== undefined && /^[+-]\d{2}(?::?\d{2})?$/.test(offset)
   }
+  // String branch: https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L992-L995
+  // L992: resolve options after parsing syntax and identifiers, before range checks.
   const resolved = optionsObject(options),
+    // L993: disambiguation is read and validated first.
     ambiguous = disambiguation(resolved.disambiguation),
+    // L994: offset follows, with reject as the default.
     behavior = option(resolved.offset, 'reject', [
       'prefer',
       'use',
       'ignore',
       'reject',
     ])
+  // L995: read and validate overflow even for string input.
   overflowOption(resolved)
   if (existing) return existing
+  if (parsedString)
+    value =
+      import.meta.formatjsTemporalNativeData === true &&
+      parsedString.localNanoseconds !== undefined
+        ? parsedString.localNanoseconds
+        : isoToEpochNanoseconds(parsedString.fields)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.resolveZonedDateTime(
