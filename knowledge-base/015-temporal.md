@@ -8,6 +8,12 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+Shared [constructor instance checks](audits/temporal-instance-check-audit.md)
+delegate ECMA-262 §7.3.21 to captured Function.prototype[Symbol.hasInstance].
+Actual bound-function slots and host Object classification remain engine-owned;
+mutable Object.prototype.isPrototypeOf cannot stop Temporal formatter creation.
+Full formatter constructor and Temporal caller algorithms remain open.
+
 The [shared primitive conversion audit](audits/temporal-coercion-contract-audit.md)
 maps every step of ECMA-262 §7.1.1 ToPrimitive, §7.1.1.1 OrdinaryToPrimitive and
 §7.1.19 ToString to code, including fused GetMethod and captured %String%
