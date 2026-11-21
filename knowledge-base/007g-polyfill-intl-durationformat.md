@@ -18,7 +18,10 @@ global namespace and exposes `__addTemporalNamespace` for late installation and
 isolated namespaces. Registration is idempotent per constructor and checks for
 duplicates before reading mutable `from`/prototype properties. Each bundled
 formatter registers through its own hook, preserving independent namespace brands.
-Ordinary duration-like inputs retain the specified property-read order.
+Ordinary duration-like inputs retain the specified property-read order, including
+host exotic objects such as `document.all`. Shared option coercion preserves such
+objects instead of treating their `typeof` result or loose equality as undefined/null.
+Temporal's `Duration.toLocaleString` uses the same provider option semantics.
 
 Temporal's installer calls this hook and adapts legacy host DurationFormat when
 needed. The adapter preserves native prototype identity and method descriptor flags and validates

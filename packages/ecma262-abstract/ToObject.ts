@@ -4,7 +4,7 @@
 export function ToObject<T>(
   arg: T
 ): T extends null ? never : T extends undefined ? never : T {
-  if (arg == null) {
+  if (arg === undefined || arg === null) {
     throw new TypeError('undefined/null cannot be converted to object')
   }
   return Object(arg)

@@ -6,7 +6,7 @@ import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
  * @returns
  */
 export function CoerceOptionsToObject<T>(options?: T): T {
-  if (typeof options === 'undefined') {
+  if (options === undefined) {
     return Object.create(null)
   }
   return ToObject(options)

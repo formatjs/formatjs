@@ -7,6 +7,9 @@ A polyfill for Intl.DurationFormat
 
 This package implements `Intl.DurationFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+Host objects such as `document.all` retain object semantics for options and
+duration-like fields, including when formatting through `Temporal.Duration.prototype.toLocaleString`.
+
 Temporal may be loaded before or after DurationFormat. After loading a compatible
 Temporal implementation, register its namespace to format branded durations and
 ISO duration strings:
