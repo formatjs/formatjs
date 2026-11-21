@@ -78,6 +78,10 @@ import {
   type ParsedDateFields,
 } from '#packages/temporal/instant-string.js'
 
+const stringToLowerCase = Function.prototype.call.bind(
+  String.prototype.toLowerCase
+) as (value: string) => string
+
 export const nsPerDay = 86_400_000_000_000n
 export const clockNames = [
   'hour',
@@ -131,6 +135,28 @@ export function calendarFromObject(item: Record<string, unknown>): string {
   // Steps 698–700: read calendar once; undefined defaults to ISO in calendarId.
   return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
 }
+function bareCalendarIdentifier(value: string): boolean {
+  if (value.length === 0) return false
+  if (
+    (value[0] === 'T' || value[0] === 't') &&
+    value.length > 1 &&
+    value[1] >= '0' &&
+    value[1] <= '9'
+  )
+    return false
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    if (
+      (character >= 'A' && character <= 'Z') ||
+      (character >= 'a' && character <= 'z') ||
+      (index > 0 &&
+        ((character >= '0' && character <= '9') || character === '-'))
+    )
+      continue
+    return false
+  }
+  return true
+}
 export function calendarId(value: unknown = 'iso8601'): string {
   // ToTemporalCalendarIdentifier 675: use the five calendar-bearing slots.
   const slot = calendarSlot(value as object)
@@ -139,17 +165,15 @@ export function calendarId(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Calendar must be a string')
   // Steps 677–678: parse the identifier, then canonicalize it.
-  const id = (
-    /^[A-Za-z][A-Za-z0-9-]*$/.test(value) && !/^[Tt]\d/.test(value)
-      ? value
-      : parseCalendarString(value)
-  ).toLowerCase()
+  const id = stringToLowerCase(
+    bareCalendarIdentifier(value) ? value : parseCalendarString(value)
+  )
   return supportedCalendar(id)
 }
 export function constructorCalendar(value: unknown = 'iso8601'): string {
   if (typeof value !== 'string')
     throw new TypeErrorConstructor('Calendar must be a string')
-  return supportedCalendar(value.toLowerCase())
+  return supportedCalendar(stringToLowerCase(value))
 }
 export function prepareDateTimeString(
   value: string,

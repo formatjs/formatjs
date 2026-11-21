@@ -114,13 +114,9 @@ proved grammar defect; syntax and installed-zone membership are separate.
 
 ## Remaining caller obligations
 
-- Calendar canonicalization still invokes private RegExp/String methods in
-  [calendarId:134](../../packages/temporal/date-core.ts#L134) and
-  [constructorCalendar:149](../../packages/temporal/date-core.ts#L149).
-  Parser mutation coverage does not close those public caller dependencies.
-- Zoned string date-only classification still invokes RegExp.test and
-  String.slice/indexOf at
-  [zoned caller:397](../../packages/temporal/zoned-date-time.ts#L397).
+- Calendar canonicalization and zoned date-only/offset classification now have
+  separate [caller controls](temporal-iso-caller-audit.md). Those bounded fixes
+  supersede the earlier mutable-method gaps; complete caller contracts remain open.
 - Complete public object coercion, option/getter order, abrupt completion and
   allowed-goal/error precedence require caller-specific evidence. Bare calendar
   identifiers are partly recognized by calendarId, outside this module.

@@ -88,6 +88,12 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- [ISO caller preparation](temporal-iso-caller-audit.md) removes demonstrated
+  calendar/zoned classifier hooks after shared parser isolation. Seven public
+  regressions reproduced; four focused gates, all 60 expanded tests and both
+  package assemblies pass. Complete caller
+  ordering, provider and realm contracts remain open.
+
 - ISO string parser: [indexed scanner audit](temporal-iso-parser-audit.md) maps
   seven parser exports and both short-date shapes. Seven mutation regressions
   and a legacy RegExp-state regression reproduced before correction. Indexed
@@ -109,7 +115,7 @@ Current pass:
   gates, all 53 expanded tests and six owning timezone oracle/typecheck gates pass;
   Temporal/DurationFormat assemblies pass. Full providers/calendar/parsers remain open.
 
-- Landing: first 16 audit PRs merged through [#8076](https://github.com/formatjs/formatjs/pull/8076).
+- Landing: first 17 audit PRs merged through [#8077](https://github.com/formatjs/formatjs/pull/8077).
   Remaining stack rebased onto main. Timestamp compiler/package fixes now belong
   to earliest affected #8096; calendar oracle normalization belongs to #8109.
   All five owning gates pass there. Final stack tree is unchanged; fresh CI

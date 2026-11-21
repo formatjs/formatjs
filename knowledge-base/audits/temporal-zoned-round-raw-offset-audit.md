@@ -15,8 +15,8 @@ result. Valid offsets survived that BigInt format/parse round trip exactly; this
 was not a Number precision defect. It nevertheless introduced observable String,
 padStart, replace and RegExp operations into a private numeric calculation.
 
-[Raw offset acquisition:958](../../packages/temporal/zoned-date-time.ts#L958)
-now obtains the original bigint directly. [Resolution:962](../../packages/temporal/zoned-date-time.ts#L962)
+[Raw offset acquisition:966](../../packages/temporal/zoned-date-time.ts#L966)
+now obtains the original bigint directly. [Resolution:970](../../packages/temporal/zoned-date-time.ts#L970)
 passes it with the rounded local coordinate, prepared kernel and ISO fields to
 the extracted integer resolver. No Number or Decimal conversion is introduced.
 
@@ -26,7 +26,7 @@ the extracted integer resolver. No Number or Decimal conversion is introduced.
   prepares kernel and ISO fields first, handles Z/undefined/ignore, then parses
   the supplied offset before dispatch. Existing string callers keep syntax,
   coercion and rejection ordering. Their interface is unchanged.
-- [Integer resolver:305](../../packages/temporal/zoned-date-time.ts#L305) retains
+- [Integer resolver:304](../../packages/temporal/zoned-date-time.ts#L304) retains
   use handling, the lower local-date guard, ordered candidate lookup, exact or
   minute comparison, reject handling and compatible fallback. Its arithmetic
   body is unchanged. [Offset matching proof](temporal-zoned-offset-match-audit.md)

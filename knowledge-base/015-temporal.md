@@ -1,5 +1,10 @@
 # Temporal implementation
 
+Calendar identifier preparation uses indexed bare-name recognition and captured
+lowercase. Zoned conversion classifies date-only bodies, offset precision and Z
+without mutable String/RegExp methods. The [caller audit](audits/temporal-iso-caller-audit.md)
+records public controls and remaining conversion ordering/provider obligations.
+
 ISO string parsing uses indexed UTF-16 reads for date, clock, offset and annotation
 syntax. It avoids mutable RegExp/String methods and legacy RegExp match-state
 changes inside the shared parser module. The [ISO parser audit](audits/temporal-iso-parser-audit.md)

@@ -72,7 +72,7 @@ Take origin `2012-01-01T12:00+14:00[Pacific/Apia]` and destination
 The initial unrounded date/time difference is −1 day and −2 hours. Rounding by
 one day initially constructs the identical −1-day and −2-day endpoints. The
 source's one-window retry moves to counts −2 and −3:
-[TS:913](../../packages/temporal/date-core.ts#L913) and
+[TS:937](../../packages/temporal/date-core.ts#L937) and
 [Rust:209](../../crates/temporal/calendar_difference.rs#L209).
 That window spans 24 hours, with the destination two hours from its nearer
 −2-day endpoint. Thus half modes/trunc select `-P2D`; floor/expand select `-P3D`;

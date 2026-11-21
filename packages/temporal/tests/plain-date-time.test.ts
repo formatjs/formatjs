@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs'
 import {runfiles} from '@bazel/runfiles'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal} from '#packages/temporal/index.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {checkPlainArithmeticOracle} from '#packages/temporal/tests/plain-arithmetic-oracle.js'
 
 it('matches independent ICU arithmetic, metadata and clock carry', () => {
@@ -361,3 +362,91 @@ it.each([
     }
   }
 )
+
+it.each([
+  [RegExp.prototype, 'exec'],
+  [RegExp.prototype, 'test'],
+  [String.prototype, 'toLowerCase'],
+] as const)('prepares public calendars without mutable %s.%s', (owner, key) => {
+  expect(nativeTemporal()).toBeUndefined()
+  const date = new Temporal.PlainDate(2020, 2, 29)
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+  const sentinel = new Error('Observable calendar method')
+  const results: string[] = []
+  const failures: unknown[] = []
+  const rejected: unknown[] = []
+  const reads: string[] = []
+  let hooks = 0
+  const calendarObject = {
+    [Symbol.toPrimitive]() {
+      reads.push('coerce')
+      throw sentinel
+    },
+  }
+  const inherited = {
+    get calendar() {
+      reads.push('calendar')
+      return 'ISO8601'
+    },
+  }
+  const fields = Object.assign(Object.create(inherited), {
+    year: 2020,
+    month: 2,
+    day: 29,
+  })
+  const valid = [
+    () => date.withCalendar('GrEgOrY').calendarId,
+    () => date.withCalendar('T1234[u-ca=GREGORY]').calendarId,
+    () => date.withCalendar('2020-02-29[u-ca=ISLAMICC]').calendarId,
+    () => new Temporal.PlainDate(2020, 2, 29, 'ETHIOPIC-AMETE-ALEM').calendarId,
+    () => new Temporal.PlainDate(2020, 2, 29).calendarId,
+    () => Temporal.PlainDate.from(fields).calendarId,
+  ]
+  const invalid = [
+    () => date.withCalendar('T2460[u-ca=gregory]'),
+    () => new Temporal.PlainDate(2020, 2, 29, '2020-02-29[u-ca=gregory]'),
+    () => date.withCalendar('unknown-calendar'),
+    () => date.withCalendar(calendarObject),
+  ]
+  try {
+    Object.defineProperty(owner, key, {
+      configurable: true,
+      get() {
+        hooks++
+        throw sentinel
+      },
+    })
+    for (let index = 0; index < valid.length; index++) {
+      try {
+        results.push(valid[index]())
+      } catch (error) {
+        failures.push(error)
+      }
+    }
+    for (let index = 0; index < invalid.length; index++) {
+      try {
+        invalid[index]()
+        rejected.push(undefined)
+      } catch (error) {
+        rejected.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(owner, key, descriptor)
+  }
+  expect(hooks).toBe(0)
+  expect(failures).toEqual([])
+  expect(results).toEqual([
+    'gregory',
+    'gregory',
+    'islamic-civil',
+    'ethioaa',
+    'iso8601',
+    'iso8601',
+  ])
+  expect(reads).toEqual(['calendar'])
+  expect(rejected).toHaveLength(4)
+  for (let index = 0; index < 3; index++)
+    expect(rejected[index]).toBeInstanceOf(RangeError)
+  expect(rejected[3]).toBeInstanceOf(TypeError)
+})

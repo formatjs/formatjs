@@ -3,6 +3,7 @@ import {readFileSync} from 'node:fs'
 import {expect, it, vi} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 
 it('matches independent ICU offsets and local fields through future transitions', () => {
@@ -681,3 +682,93 @@ it.each([
     expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
   }
 )
+
+it.each([
+  [String.prototype, 'slice'],
+  [String.prototype, 'indexOf'],
+  [RegExp.prototype, 'test'],
+  [RegExp.prototype, 'exec'],
+] as const)('converts zoned strings without mutable %s.%s', (owner, key) => {
+  expect(nativeTemporal()).toBeUndefined()
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+  const sentinel = new Error('Observable zoned string classification')
+  const actual: bigint[] = []
+  const failures: unknown[] = []
+  const reads: string[] = []
+  try {
+    Object.defineProperty(owner, key, {
+      ...descriptor,
+      value: function () {
+        throw sentinel
+      },
+    })
+    for (const text of [
+      '1970-01-01[UTC]',
+      '1970-01-01T00:00+00:00[UTC]',
+      '1970-01-01T00:00:00+00:00:00[UTC]',
+      '1970-01-01T00Z[UTC]',
+    ]) {
+      try {
+        actual.push(
+          Temporal.ZonedDateTime.from(text, {
+            get disambiguation() {
+              reads.push('disambiguation')
+              return 'compatible'
+            },
+            get offset() {
+              reads.push('offset')
+              return 'reject'
+            },
+            get overflow() {
+              reads.push('overflow')
+              return 'reject'
+            },
+          }).epochNanoseconds
+        )
+      } catch (error) {
+        failures.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(owner, key, descriptor)
+  }
+  expect(failures).toEqual([])
+  expect(actual).toEqual([0n, 0n, 0n, 0n])
+  expect(reads).toEqual([
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+    'disambiguation',
+    'offset',
+    'overflow',
+  ])
+})
+
+it('keeps minute and exact offset matching distinct after string classification', () => {
+  expect(
+    Temporal.ZonedDateTime.from('1970-01-01T00:00-00:45[Africa/Monrovia]')
+      .epochNanoseconds
+  ).toBe(2_670_000_000_000n)
+  expect(() =>
+    Temporal.ZonedDateTime.from('1970-01-01T00:00-00:45:00[Africa/Monrovia]')
+  ).toThrow(RangeError)
+})
+
+it('rejects invalid offset syntax before zoned string options', () => {
+  let reads = 0
+  expect(() =>
+    Temporal.ZonedDateTime.from('1970-01-01T00+24:00[UTC]', {
+      get disambiguation() {
+        reads++
+        return 'compatible'
+      },
+    })
+  ).toThrow(RangeError)
+  expect(reads).toBe(0)
+})

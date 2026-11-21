@@ -13,13 +13,13 @@ the requested live document has no Temporal API chapters in the fetched snapshot
 
 ## Comparison and rounding
 
-[TS offset candidates:318](../../packages/temporal/zoned-date-time.ts#L318) walks candidate
-instants and computes `actual = localTime - candidate`. Lines 324–325 accept
+[TS offset candidates:317](../../packages/temporal/zoned-date-time.ts#L317) walks candidate
+instants and computes `actual = localTime - candidate`. Lines 323–324 accept
 exact equality, or equality after minute rounding when `matchMinute` is true.
 This assumes the zone supplies valid, complete candidates for the same local
 date/time.
 
-Lines 320–323 compute, for offset `a` and minute `M = 60_000_000_000` ns:
+Lines 319–322 compute, for offset `a` and minute `M = 60_000_000_000` ns:
 
 ```text
 sign(a) * floor((abs(a) + M / 2) / M) * M
@@ -62,7 +62,7 @@ the same candidate satisfies both comparisons; a later exact match does not
 override an earlier rounded match. This review does not establish that every
 zone visitor supplies every possible candidate.
 
-[TS:405](../../packages/temporal/zoned-date-time.ts#L405) enables minute matching
+[TS:411](../../packages/temporal/zoned-date-time.ts#L411) enables minute matching
 for string offsets with hours and optional minutes, without seconds.
 [Rust parse:293](../../crates/temporal/parse.rs#L293) distinguishes UTC, wall,
 minute and exact input; consumed lengths 3/5/6 select minute precision. Those
