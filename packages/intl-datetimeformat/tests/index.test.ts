@@ -1541,3 +1541,23 @@ it('preserves the CLDR day-period separator with Han decimal digits', () => {
       .join('')
   ).toBe(formatter.format(date))
 })
+
+it('constructs private format records without mutable Object.assign', () => {
+  const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+  let actual: unknown
+  try {
+    Object.defineProperty(Object, 'assign', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable construction Object.assign reached')
+      },
+    })
+    actual = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+    }).format(0)
+  } finally {
+    Object.defineProperty(Object, 'assign', original)
+  }
+  expect(actual).toBe('1970')
+})

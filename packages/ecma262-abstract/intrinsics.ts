@@ -55,3 +55,21 @@ export function arrayIndexOf(
 ): number {
   return arrayApply(indexOf, values, [search])
 }
+
+const defineProperty = Object.defineProperty
+
+// Private Record fields must not invoke inherited setters or descriptor getters.
+export function setDataProperty(
+  target: object,
+  key: PropertyKey,
+  value: unknown
+): void {
+  const descriptor = {
+    __proto__: null,
+    value,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  }
+  defineProperty(target, key, descriptor)
+}

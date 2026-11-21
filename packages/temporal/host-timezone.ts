@@ -6,7 +6,6 @@ import {
   mathMin,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
 import {steps} from '@formatjs_generated/tz/temporal-names.js'
 import links from '@formatjs_generated/tz/links.js'
 import primary from '@formatjs_generated/tz/primary.js'
@@ -49,19 +48,17 @@ export function createHostTimeZoneOffset(
     throw new RangeErrorConstructor(
       'Temporal requires Intl.DateTimeFormat timezone support'
     )
-  const formatter = new Constructor(
-    'en-US-u-nu-latn',
-    Object.assign(createObject(null), {
-      timeZone,
-      calendar: 'iso8601',
-      numberingSystem: 'latn',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: false,
-    })
-  )
+  const formatter = new Constructor('en-US-u-nu-latn', {
+    __proto__: null,
+    timeZone,
+    calendar: 'iso8601',
+    numberingSystem: 'latn',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false,
+  } as Intl.DateTimeFormatOptions)
   const offsets = new Map<number, bigint>()
   const offsetNanoseconds = (instant: bigint): bigint => {
     check(instant)

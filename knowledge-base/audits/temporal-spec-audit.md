@@ -603,6 +603,25 @@ Current pass:
   locale profiles and Intl consumers. Existing Intl data discrepancies remain
   visible in the accepted-failure gates. Exclusions and baselines are unchanged.
 
+- Remaining host and formatter Object.assign copies are removed: six fresh
+  null-prototype literal/spread records and four captured own data-property
+  writes. Slot copies also bypass inherited setters; the internal descriptor's
+  null prototype avoids inherited get/set hooks. Public option/source Gets
+  retain their semantics. The [copy inventory](temporal-record-copy-audit.md)
+  maps all ten original sites to current code and records the proof boundary.
+  Ten new regressions reproduced before the fix: host/legacy adapters, eager/lazy
+  skeletons, owned formatter branches, a slot setter and public cold construction.
+  Helper controls cover mutable definition, descriptor getters, symbols, zero
+  and prototype-sensitive names. No new formal Temporal traces are claimed;
+  the count stays 217. Complete callers and other record operations remain open.
+  All 122 selected gates and six package assemblies pass across the expanded
+  matrix and an unchanged isolated Rust oracle rerun. The parallel run passed
+  121 gates; the oracle hit existing 300s/5s limits, then passed all 42 tests
+  alone. No timeout limits widened. Native DateTimeFormat package conformance
+  passes 355 tests / 806 assertions per source/bytecode mode with ten existing
+  skips and zero failures. Intl discrepancies remain visible; no exclusions or
+  failure baselines changed.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -627,7 +646,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [locale-list input coercion](https://github.com/formatjs/formatjs/pull/8084),
 [private Locale brand readers](https://github.com/formatjs/formatjs/pull/8085),
 [time-record field conversion audit](https://github.com/formatjs/formatjs/pull/8086),
-[string unit option records](https://github.com/formatjs/formatjs/pull/8087).
+[string unit option records](https://github.com/formatjs/formatjs/pull/8087),
+[private formatter record copies](https://github.com/formatjs/formatjs/pull/8088).
 
 New traces: 217 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
