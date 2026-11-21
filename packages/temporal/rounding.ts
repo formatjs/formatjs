@@ -186,6 +186,8 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   const unit = timeUnit(unitOption(resolved.smallestUnit))
   if (import.meta.formatjsTemporalNativeData === true)
     return nativeTemporal()!.roundInstantUnit(value, unit, increment, mode)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
+  // L430-L431: inclusive day divisor. L435-L437: bound, exact remainder, return.
   const maximum = 86_400_000_000_000n / timeUnitNanoseconds[unit]
   if (bigIntFrom(increment) > maximum || maximum % bigIntFrom(increment) !== 0n)
     throw new RangeErrorConstructor('Rounding increment must divide a day')

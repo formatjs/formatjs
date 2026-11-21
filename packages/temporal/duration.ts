@@ -292,6 +292,9 @@ class DurationValue {
       largeIndex = arrayIndexOf(units, largest)
     if (largeIndex > smallIndex)
       throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722
+    // Calendar rows have no fixed cap; time rows use 24, 60, 60, 1000, 1000, 1000.
+    // L432-L437: positive integer increments must be smaller divisors of that cap.
     if (smallIndex > 3) {
       const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
       if (increment >= maximum || maximum % increment)

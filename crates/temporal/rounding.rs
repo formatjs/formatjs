@@ -126,6 +126,8 @@ pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i
 }
 impl Instant {
     pub fn round(self, unit: TimeUnit, increment: u32, mode: RoundingMode) -> Result<Self, Error> {
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
+        // L430-L431, L435-L437: inclusive day divisor after the separate 1e9 cap.
         let maximum = NANOSECONDS_PER_DAY / unit.nanoseconds();
         if increment == 0
             || increment > 1_000_000_000
