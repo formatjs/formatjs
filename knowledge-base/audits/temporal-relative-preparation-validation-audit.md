@@ -34,8 +34,8 @@ reads roundingIncrement, roundingMode and smallestUnit in steps 7–9, validates
 allowed units in step 10 and unit-specific increment in steps 11–13, then handles
 identity in step 14 and computes local fields in step 18.
 
-[TS options:901](../../packages/temporal/zoned-date-time.ts#L901) preserve the
-existing reads/coercions. [Unit/increment checks:904](../../packages/temporal/zoned-date-time.ts#L904)
+[TS options:921](../../packages/temporal/zoned-date-time.ts#L921) preserve the
+existing reads/coercions. [Unit/increment checks:924](../../packages/temporal/zoned-date-time.ts#L924)
 now precede identity, native dispatch and local conversion. Day requires increment
 1; timeUnit rejects missing/date units; the existing
 [time validator:280](../../packages/temporal/plain-time.ts#L280) enforces strict

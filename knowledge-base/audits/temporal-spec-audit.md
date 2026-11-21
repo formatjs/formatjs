@@ -88,14 +88,25 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Timezone name and compact-data preparation: [bounded source mapping](temporal-zone-preparation-audit.md)
+- Zoned clock rounding: [raw-offset source audit](temporal-zoned-round-raw-offset-audit.md)
+  removes offset formatting/reparsing while preserving exact matching, shared
+  string caller semantics and TS provider-query order. Five public regressions
+  reproduced; four focused gates, eleven expanded tests and two assemblies pass.
+  The [whole-method matrix](temporal-zoned-round-contract-audit.md) maps all compared
+  branches, including field-relative halfEven arithmetic. Authority, Casey, provider
+  and realm obligations remain open.
+
+- [Timezone name and compact-data preparation #8121](https://github.com/formatjs/formatjs/pull/8121): [bounded source mapping](temporal-zone-preparation-audit.md)
   captures case/key/sort dependencies, removes tuple iteration and defines own
   transition rows/future metadata. Eight public regressions reproduced; focused
   gates, all 53 expanded tests and six owning timezone oracle/typecheck gates pass;
   Temporal/DurationFormat assemblies pass. Full providers/calendar/parsers remain open.
 
 - Landing: first 15 audit PRs merged through [#8075](https://github.com/formatjs/formatjs/pull/8075).
-  Remaining stack rebased onto main; fresh CI required before further landing.
+  Remaining stack rebased onto main. Timestamp compiler/package fixes now belong
+  to earliest affected #8096; calendar oracle normalization belongs to #8109.
+  All five owning gates pass there. Final stack tree is unchanged; fresh CI
+  remains required before further landing.
 
 - Timezone private caches and relativeTo routing: [bounded audit](temporal-zone-cache-relative-routing-audit.md)
   captures the constructor/get/set used by five private Maps and replaces an

@@ -627,3 +627,57 @@ it.each(['iterator', 'push', 'sort', 'index setter', 'future setter'] as const)(
     }
   }
 )
+
+it.each([
+  ['String', 'UTC'],
+  ['padStart', 'UTC'],
+  ['replace', 'Africa/Monrovia'],
+  ['RegExp.test', 'UTC'],
+  ['RegExp.exec', 'UTC'],
+] as const)(
+  'rounds a zoned instant with its raw offset without public %s',
+  (hook, zone) => {
+    const value = new Temporal.ZonedDateTime(1n, zone)
+    const owner =
+      hook === 'String'
+        ? globalThis
+        : hook === 'RegExp.test' || hook === 'RegExp.exec'
+          ? RegExp.prototype
+          : String.prototype
+    const key =
+      hook === 'RegExp.test' ? 'test' : hook === 'RegExp.exec' ? 'exec' : hook
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const sentinel = new Error('Observable zoned rounding offset conversion')
+    const reads: string[] = []
+    let actual: bigint | undefined, error: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...descriptor,
+        value: function () {
+          throw sentinel
+        },
+      })
+      actual = value.round({
+        get roundingIncrement() {
+          reads.push('roundingIncrement')
+          return 1
+        },
+        get roundingMode() {
+          reads.push('roundingMode')
+          return 'halfExpand'
+        },
+        get smallestUnit() {
+          reads.push('smallestUnit')
+          return 'second'
+        },
+      }).epochNanoseconds
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toBe(0n)
+    expect(reads).toEqual(['roundingIncrement', 'roundingMode', 'smallestUnit'])
+  }
+)

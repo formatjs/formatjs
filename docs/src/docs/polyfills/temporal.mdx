@@ -68,7 +68,8 @@ Calendar-relative difference rounding compares validated mode names directly,
 without calling a replaced `String.prototype.startsWith`.
 Zoned `relativeTo` preparation for Duration rounding/totals keeps omitted private
 fields isolated from inherited getters. ZonedDateTime rounding rejects invalid
-units/increments before computing local time.
+units/increments before computing local time. Clock rounding keeps timezone
+offsets as exact bigint values, avoiding private string formatting and reparsing.
 Private timezone caches retain their original Map constructor and access methods.
 Timezone name preparation retains original case/key methods. Default compact-zone
 transition preparation avoids replaced array methods and inherited row/metadata setters.

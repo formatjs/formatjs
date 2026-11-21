@@ -15,7 +15,7 @@ below 24; subsequent minutes/seconds are below 60 and subsecond fields below 100
 [Rust:122](../../crates/temporal/calendar_difference.rs#L122) uses the same
 Euclidean day remainder and borrow, then balances at hour.
 
-[Zoned TS:533](../../packages/temporal/zoned-date-time.ts#L533) also balances at
+[Zoned TS:553](../../packages/temporal/zoned-date-time.ts#L553) also balances at
 hour. This scan does not assume its remainder is below one day: repeated dates,
 calendar anchoring and overshoot correction need separate proofs. A coarser
 public-domain bound is enough for precision. Both the end and a successful

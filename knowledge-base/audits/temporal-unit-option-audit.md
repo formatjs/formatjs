@@ -43,7 +43,7 @@ surrounding algorithms have been signed off.
 | [packages/temporal/plain-time.ts](../../packages/temporal/plain-time.ts)             | [320](../../packages/temporal/plain-time.ts#L320), [323](../../packages/temporal/plain-time.ts#L323), [559](../../packages/temporal/plain-time.ts#L559), [574](../../packages/temporal/plain-time.ts#L574)                     |
 | [packages/temporal/plain-year-month.ts](../../packages/temporal/plain-year-month.ts) | [190](../../packages/temporal/plain-year-month.ts#L190), [193](../../packages/temporal/plain-year-month.ts#L193)                                                                                                               |
 | [packages/temporal/rounding.ts](../../packages/temporal/rounding.ts)                 | [186](../../packages/temporal/rounding.ts#L186)                                                                                                                                                                                |
-| [packages/temporal/zoned-date-time.ts](../../packages/temporal/zoned-date-time.ts)   | [553](../../packages/temporal/zoned-date-time.ts#L553), [570](../../packages/temporal/zoned-date-time.ts#L570), [711](../../packages/temporal/zoned-date-time.ts#L711), [902](../../packages/temporal/zoned-date-time.ts#L902) |
+| [packages/temporal/zoned-date-time.ts](../../packages/temporal/zoned-date-time.ts)   | [573](../../packages/temporal/zoned-date-time.ts#L573), [590](../../packages/temporal/zoned-date-time.ts#L590), [731](../../packages/temporal/zoned-date-time.ts#L731), [922](../../packages/temporal/zoned-date-time.ts#L922) |
 
 Validation: all 114 selected gates and six public package assemblies pass.
 This includes all 40 Temporal class backend gates, source/test typechecks,
