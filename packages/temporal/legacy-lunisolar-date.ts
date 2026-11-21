@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   floor,
   numberFrom,
   numberIsInteger,
@@ -81,7 +82,7 @@ function fields(
     +month[1] < 1 ||
     +month[1] > 12
   )
-    throw new RangeError('Unsupported host calendar fields')
+    throw new RangeErrorConstructor('Unsupported host calendar fields')
   let bce = false
   if (calendar === 'iso8601') {
     let positive = positiveEras.get(formatter)
@@ -89,7 +90,8 @@ function fields(
       positive = nativeParts!
         .call(formatter, 0)
         .find(part => part.type === 'era')?.value
-      if (!positive) throw new RangeError('Unsupported host Gregorian era')
+      if (!positive)
+        throw new RangeErrorConstructor('Unsupported host Gregorian era')
       positiveEras.set(formatter, positive)
     }
     bce = values.get('era') !== positive
@@ -164,7 +166,10 @@ function part(
   const value = nativeParts!
     .call(source, epoch * dayMilliseconds)
     .find(part => part.type === type)
-  if (!value) throw new RangeError(`Unsupported host calendar pattern: ${type}`)
+  if (!value)
+    throw new RangeErrorConstructor(
+      `Unsupported host calendar pattern: ${type}`
+    )
   return value.value
 }
 function monthLabel(
@@ -176,11 +181,12 @@ function monthLabel(
     epoch = data.months.get(code)
   if (epoch !== undefined) return part(source, epoch + 14, 'month')
   if (!code.endsWith('L') || !data.leap)
-    throw new RangeError('Unsupported host calendar month')
+    throw new RangeErrorConstructor('Unsupported host calendar month')
   const normal = monthLabel(source, calendar, data.leap.slice(0, -1)),
     leap = part(source, data.months.get(data.leap)! + 14, 'month'),
     index = leap.indexOf(normal)
-  if (index < 0) throw new RangeError('Unsupported host leap-month pattern')
+  if (index < 0)
+    throw new RangeErrorConstructor('Unsupported host leap-month pattern')
   return (
     leap.slice(0, index) +
     monthLabel(source, calendar, code.slice(0, -1)) +
@@ -243,7 +249,7 @@ export function correctLunisolarParts(
         changes.set(item.type, part(labels, isoDay(cycleYear, 7, 1), item.type))
       else if (type === 'year' || type === 'relatedYear') {
         if (!NumberConstructor || !numberFormat)
-          throw new RangeError(
+          throw new RangeErrorConstructor(
             'Calendar year correction requires Intl.NumberFormat'
           )
         const format = numberFormat.call(
@@ -324,7 +330,7 @@ export function joinCalendarRangeParts(
     let start = end - 1
     while (start >= 0 && sample[start].source !== 'startRange') start--
     if (start < 0 || end < 0)
-      throw new RangeError('Unsupported host calendar range pattern')
+      throw new RangeErrorConstructor('Unsupported host calendar range pattern')
     separator = sample
       .slice(start + 1, end)
       .map(part => part.value)

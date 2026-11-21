@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathAbs,
   mathMax,
@@ -70,7 +72,7 @@ const getSlot = slots.get.bind(slots),
   setSlot = slots.set.bind(slots)
 function read(value: unknown): DurationFields {
   const fields = getSlot(value as object)
-  if (!fields) throw new TypeError('Invalid Duration receiver')
+  if (!fields) throw new TypeErrorConstructor('Invalid Duration receiver')
   return fields
 }
 export function toDurationFields(value: unknown): DurationFields {
@@ -87,7 +89,8 @@ export function toNativeDurationFields(
   const existing = getSlot(value as object)
   if (existing) return existing
   if (typeof value === 'string') return parseDurationString(value)
-  if (!IsObject(value)) throw new TypeError('Duration fields must be an object')
+  if (!IsObject(value))
+    throw new TypeErrorConstructor('Duration fields must be an object')
   const fields = zeroDuration()
   let found = false
   for (let index = 0; index < durationFieldReadOrder.length; index++) {
@@ -98,7 +101,7 @@ export function toNativeDurationFields(
       found = true
     }
   }
-  if (!found) throw new TypeError('Duration fields required')
+  if (!found) throw new TypeErrorConstructor('Duration fields required')
   return validate ? validateDuration(fields) : fields
 }
 // Fields must already be normalized and validated.
@@ -128,7 +131,9 @@ function addDurations(
   if (native) return createDuration(native.addDuration(one, two, sign < 0))
   const largest = mathMin(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
-    throw new RangeError('Calendar units cannot be added without a calendar')
+    throw new RangeErrorConstructor(
+      'Calendar units cannot be added without a calendar'
+    )
   return createDuration(
     balanceDurationTime(
       durationNanoseconds(one) + bigIntFrom(sign) * durationNanoseconds(two),
@@ -139,7 +144,7 @@ function addDurations(
 
 class DurationValue {
   constructor(..._values: unknown[]) {
-    throw new TypeError('Use exported Duration constructor')
+    throw new TypeErrorConstructor('Use exported Duration constructor')
   }
   static compare(
     one: unknown,
@@ -177,7 +182,7 @@ class DurationValue {
       right.months ||
       right.weeks
     )
-      throw new RangeError('Calendar comparison requires relativeTo')
+      throw new RangeErrorConstructor('Calendar comparison requires relativeTo')
     const a = durationNanoseconds(left),
       b = durationNanoseconds(right)
     return a < b ? -1 : a > b ? 1 : 0
@@ -239,7 +244,8 @@ class DurationValue {
   }
   round(roundTo: unknown): DurationObject {
     const fields = read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? Object.assign(createObject(null), {smallestUnit: roundTo})
@@ -253,7 +259,7 @@ class DurationValue {
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),
       smallestOption = unitOption(resolved.smallestUnit)
     if (largestRaw === undefined && smallestOption === undefined)
-      throw new RangeError('Rounding unit required')
+      throw new RangeErrorConstructor('Rounding unit required')
     const units = [
       'year',
       'month',
@@ -273,14 +279,16 @@ class DurationValue {
         units[mathMin(largestDurationField(fields), smallIndex)],
       largeIndex = units.indexOf(largest)
     if (largeIndex > smallIndex)
-      throw new RangeError('Largest unit smaller than smallest unit')
+      throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
     if (smallIndex > 3) {
       const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
       if (increment >= maximum || maximum % increment)
-        throw new RangeError('Invalid rounding increment')
+        throw new RangeErrorConstructor('Invalid rounding increment')
     }
     if (smallIndex < 4 && largeIndex < smallIndex && increment !== 1)
-      throw new RangeError('Calendar increment cannot balance to larger units')
+      throw new RangeErrorConstructor(
+        'Calendar increment cannot balance to larger units'
+      )
     if (relative)
       return createDuration(
         relativeRound(fields, relative, largest, smallest, increment, mode)
@@ -291,7 +299,7 @@ class DurationValue {
         native!.roundDuration(fields, largest, smallest, increment, mode)
       )
     if (fields.years || fields.months || fields.weeks || largeIndex < 3)
-      throw new RangeError('Calendar rounding requires relativeTo')
+      throw new RangeErrorConstructor('Calendar rounding requires relativeTo')
     const quantum =
       smallest === 'day'
         ? 86_400_000_000_000n
@@ -309,14 +317,15 @@ class DurationValue {
   }
   total(options: unknown): number {
     const fields = read(this)
-    if (options === undefined) throw new TypeError('totalOf is required')
+    if (options === undefined)
+      throw new TypeErrorConstructor('totalOf is required')
     const resolved =
       typeof options === 'string'
         ? Object.assign(createObject(null), {unit: options})
         : optionsObject(options)
     const relative = toRelativeTo(resolved.relativeTo)
     const unit = unitOption(resolved.unit)
-    if (unit === undefined) throw new RangeError('unit is required')
+    if (unit === undefined) throw new RangeErrorConstructor('unit is required')
     if (relative) return relativeTotal(fields, relative, unit)
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
@@ -336,7 +345,7 @@ class DurationValue {
       fields.months ||
       fields.weeks
     )
-      throw new RangeError('Calendar total requires relativeTo')
+      throw new RangeErrorConstructor('Calendar total requires relativeTo')
     return durationTotalNumber(durationNanoseconds(fields), factors[unit])
   }
   toString(options: unknown = undefined): string {
@@ -349,7 +358,7 @@ class DurationValue {
       unit !== undefined &&
       !['second', 'millisecond', 'microsecond', 'nanosecond'].includes(unit)
     )
-      throw new RangeError('Invalid duration string precision')
+      throw new RangeErrorConstructor('Invalid duration string precision')
     const precision =
       unit === 'second'
         ? 0
@@ -393,7 +402,9 @@ class DurationValue {
     return formatDuration(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.Duration to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.Duration to primitive'
+    )
   }
 }
 Object.defineProperty(DurationValue, 'name', {

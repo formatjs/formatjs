@@ -443,3 +443,100 @@ it.each([
     expect(actual).toBe(expected)
   }
 )
+
+function checkIntrinsicError(
+  name: 'TypeError' | 'RangeError',
+  run: () => unknown
+): void {
+  const original = Object.getOwnPropertyDescriptor(globalThis, name)!
+  const prototype = original.value.prototype
+  const replacementFailure = {message: 'Mutable error constructor reached'}
+  let caught: unknown
+  try {
+    Object.defineProperty(globalThis, name, {
+      ...original,
+      value: function () {
+        throw replacementFailure
+      },
+    })
+    try {
+      run()
+    } catch (error) {
+      caught = error
+    }
+  } finally {
+    Object.defineProperty(globalThis, name, original)
+  }
+  expect(Object.getPrototypeOf(caught)).toBe(prototype)
+}
+
+it.each([
+  ['Instant', () => new Temporal.Instant(8_640_000_000_000_000_000_001n)],
+  ['Duration', () => new Temporal.Duration(2 ** 32)],
+  ['PlainDate', () => new Temporal.PlainDate(2024, 13, 1)],
+  ['nonfinite integer', () => new Temporal.PlainDate(Infinity, 1, 1)],
+  [
+    'nonpositive truncated field',
+    () => Temporal.PlainDate.from({year: 2024, month: 0.9, day: 1}),
+  ],
+  ['PlainDateTime', () => new Temporal.PlainDateTime(2024, 1, 1, 24)],
+  ['PlainTime', () => new Temporal.PlainTime(24)],
+  ['PlainYearMonth', () => new Temporal.PlainYearMonth(2024, 13)],
+  ['PlainMonthDay', () => new Temporal.PlainMonthDay(2, 30)],
+  [
+    'ZonedDateTime',
+    () => new Temporal.ZonedDateTime(8_640_000_000_000_000_000_001n, 'UTC'),
+  ],
+] as const)(
+  'throws intrinsic RangeError for invalid %s construction',
+  (_name, run) => {
+    checkIntrinsicError('RangeError', run)
+  }
+)
+
+it.each([
+  'Instant',
+  'Duration',
+  'PlainDate',
+  'PlainDateTime',
+  'PlainTime',
+  'PlainYearMonth',
+  'PlainMonthDay',
+  'ZonedDateTime',
+] as const)('throws intrinsic TypeError for an invalid %s receiver', name => {
+  checkIntrinsicError('TypeError', () =>
+    Reflect.apply(Temporal[name].prototype.toString, {}, [])
+  )
+})
+
+it.each([
+  ['date', (value: any) => new Temporal.PlainDate(2024, 1, value).day],
+  ['time', (value: any) => new Temporal.PlainTime(value).hour],
+] as const)(
+  'truncates %s constructor input with one numeric coercion',
+  (_name, read) => {
+    const hints: string[] = []
+    const value = {
+      [Symbol.toPrimitive](hint: string) {
+        hints.push(hint)
+        return 2.9
+      },
+    }
+    expect(read(value)).toBe(2)
+    expect(hints).toEqual(['number'])
+    const failure = {}
+    let caught: unknown
+    try {
+      read({
+        valueOf() {
+          throw failure
+        },
+      })
+    } catch (error) {
+      caught = error
+    }
+    expect(caught).toBe(failure)
+    expect(() => read(2n)).toThrow(TypeError)
+    expect(() => read(Symbol())).toThrow(TypeError)
+  }
+)

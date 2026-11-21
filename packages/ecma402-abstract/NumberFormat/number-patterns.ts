@@ -1,3 +1,4 @@
+import {ErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CompiledNumberPatterns,
   NumberPatternPlan,
@@ -53,7 +54,7 @@ function compile(pattern: string, compact: boolean): NumberPatternPlan[] {
     NUMBER.lastIndex = 0
     const number = NUMBER.exec(value)?.[0]
     if (!number && !compact)
-      throw new Error(`Missing number pattern: ${pattern}`)
+      throw new ErrorConstructor(`Missing number pattern: ${pattern}`)
     const groups = (number || '0').split('.')[0].split(',')
     const primary = groups.length > 1 ? groups[groups.length - 1].length : 3
     const secondary =

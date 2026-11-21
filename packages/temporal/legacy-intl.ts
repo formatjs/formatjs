@@ -1,4 +1,8 @@
-import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   registerTemporalDateTimeNamespace,
@@ -59,7 +63,7 @@ export function installLegacyDateTimeFormat(
   const hasInstance = Function.prototype[Symbol.hasInstance]
   function project(state: State, value: TemporalDateTimeValue): Projection {
     if (value.kind === 'ZonedDateTime')
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         'Temporal.ZonedDateTime is not supported by DateTimeFormat'
       )
     if (
@@ -69,7 +73,9 @@ export function installLegacyDateTimeFormat(
         value.kind === 'PlainYearMonth' ||
         value.kind === 'PlainMonthDay')
     )
-      throw new RangeError('Temporal calendar does not match DateTimeFormat')
+      throw new RangeErrorConstructor(
+        'Temporal calendar does not match DateTimeFormat'
+      )
     const cached = state.projections.get(value.kind)
     if (cached) {
       const ns = value.epochNanoseconds
@@ -108,7 +114,7 @@ export function installLegacyDateTimeFormat(
     end: unknown
   ): [Projection, Projection] {
     if (start === undefined || end === undefined)
-      throw new TypeError('DateTimeFormat range requires two values')
+      throw new TypeErrorConstructor('DateTimeFormat range requires two values')
     const first = ToDateTimeFormattable(start)
     const last = ToDateTimeFormattable(end)
     const firstTemporal = isTemporalDateTimeValue(first)
@@ -119,7 +125,7 @@ export function installLegacyDateTimeFormat(
         {formatter: state.formatter, milliseconds: last.toNumber()},
       ]
     if (!firstTemporal || !lastTemporal || first.kind !== last.kind)
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         'DateTimeFormat range requires matching Temporal types'
       )
     return [project(state, first), project(state, last)]
@@ -134,7 +140,8 @@ export function installLegacyDateTimeFormat(
     const tracked = new Proxy(createObject(null), {
       get(_target, key) {
         if (source === undefined) {
-          if (options === null) throw new TypeError('Invalid options')
+          if (options === null)
+            throw new TypeErrorConstructor('Invalid options')
           source = options === undefined ? createObject(null) : Object(options)
         }
         const raw = source![key]

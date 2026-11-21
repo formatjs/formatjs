@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   floor,
   mathMax,
@@ -101,7 +103,8 @@ const maxima = [24, 60, 60, 1000, 1000, 1000]
 const day = 86_400_000_000_000n
 function read(value: unknown): bigint {
   const result = getSlot(value as object)
-  if (result === undefined) throw new TypeError('Invalid PlainTime receiver')
+  if (result === undefined)
+    throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
 function fields(value: bigint): number[] {
@@ -110,16 +113,21 @@ function fields(value: bigint): number[] {
   )
 }
 function integer(value: unknown): number {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798
+  // L1796: unary + performs ToNumber, preserving user coercion and throws.
+  // L1798: captured truncation is unobservable; finite inputs become integers.
   const result = mathTrunc(+(value as number))
+  // L1797: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
   if (!numberIsInteger(result))
-    throw new RangeError('Time field must be finite')
+    throw new RangeErrorConstructor('Time field must be finite')
+  // L1798: mathematical zero has no negative sign.
   return result || 0
 }
 function overflow(options: unknown): boolean {
   const raw = optionsObject(options).overflow
   const value = raw === undefined ? 'constrain' : ToString(raw)
   if (value !== 'constrain' && value !== 'reject')
-    throw new RangeError('Invalid overflow')
+    throw new RangeErrorConstructor('Invalid overflow')
   return value === 'constrain'
 }
 function regulate(values: number[], constrain: boolean): bigint {
@@ -131,7 +139,7 @@ function regulate(values: number[], constrain: boolean): bigint {
     let value = values[index]
     if (constrain) value = mathMax(0, mathMin(maxima[index] - 1, value))
     if (value < 0 || value >= maxima[index])
-      throw new RangeError('Time out of range')
+      throw new RangeErrorConstructor('Time out of range')
     result += bigIntFrom(value) * factors[index]
   }
   return result
@@ -152,7 +160,7 @@ function timeFields(
       any = true
     }
   }
-  if (!any) throw new TypeError('At least one time field required')
+  if (!any) throw new TypeErrorConstructor('At least one time field required')
   return result
 }
 function toTime(value: unknown, options?: unknown): bigint {
@@ -172,14 +180,14 @@ function toTime(value: unknown, options?: unknown): bigint {
     return regulate(values, overflow(options))
   }
   if (typeof value !== 'string')
-    throw new TypeError('Expected time string or object')
+    throw new TypeErrorConstructor('Expected time string or object')
   const result = parsePlainTimeString(value)
   overflow(options)
   return result
 }
 function nativeTime(value: object): NativeTimeResult {
   const result = getNativeTimeSlot(value)
-  if (!result) throw new TypeError('Invalid PlainTime receiver')
+  if (!result) throw new TypeErrorConstructor('Invalid PlainTime receiver')
   return result
 }
 function nativeTimeFromValue(value: bigint): NativeTimeResult {
@@ -207,7 +215,7 @@ function toNativeTime(value: unknown, options?: unknown): NativeTimeResult {
     return nativeTemporal()!.regulatePlainTimeResult(values, overflow(options))
   }
   if (typeof value !== 'string')
-    throw new TypeError('Expected time string or object')
+    throw new TypeErrorConstructor('Expected time string or object')
   const result = nativeTemporal()!.parsePlainTimeResult(value)
   overflow(options)
   return result
@@ -229,7 +237,7 @@ export function createPlainTime(value: bigint): PlainTimeObject {
 function validateIncrement(unit: TimeUnit, increment: number): void {
   const maximum = maxima[names.indexOf(unit)]
   if (increment >= maximum || maximum % increment !== 0)
-    throw new RangeError('Invalid time rounding increment')
+    throw new RangeErrorConstructor('Invalid time rounding increment')
 }
 export function roundTime(
   value: bigint,
@@ -270,7 +278,7 @@ function difference(
   const smallIndex = names.indexOf(smallest),
     largeIndex = names.indexOf(timeUnit(largest ?? 'hour'))
   if (largeIndex > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   validateIncrement(smallest, increment)
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true)
@@ -369,7 +377,7 @@ class PlainTimeValue implements PlainTimeObject {
     _microsecond?: unknown,
     _nanosecond?: unknown
   ) {
-    throw new TypeError('Use exported PlainTime constructor')
+    throw new TypeErrorConstructor('Use exported PlainTime constructor')
   }
   declare readonly hour: number
   declare readonly minute: number
@@ -406,9 +414,9 @@ class PlainTimeValue implements PlainTimeObject {
       getYearMonthSlot(item) ||
       getMonthDaySlot(item)
     )
-      throw new TypeError('Expected partial time object')
+      throw new TypeErrorConstructor('Expected partial time object')
     if (item.calendar !== undefined || item.timeZone !== undefined)
-      throw new TypeError('Unexpected calendar or timeZone')
+      throw new TypeErrorConstructor('Unexpected calendar or timeZone')
     const values = timeFields(
       item,
       import.meta.formatjsTemporalNativeData === true
@@ -469,7 +477,8 @@ class PlainTimeValue implements PlainTimeObject {
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
         : read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? Object.assign(createObject(null), {smallestUnit: roundTo})
@@ -493,7 +502,7 @@ class PlainTimeValue implements PlainTimeObject {
     const mode = roundingMode(resolved.roundingMode, 'trunc')
     const raw = unitOption(resolved.smallestUnit)
     if (raw !== undefined && timeUnit(raw) === 'hour')
-      throw new RangeError('Cannot format hours only')
+      throw new RangeErrorConstructor('Cannot format hours only')
     const precision: Precision =
       raw === 'minute'
         ? 'minute'
@@ -528,7 +537,9 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainTime to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainTime to primitive'
+    )
   }
 }
 const localeStringIntrinsic = PlainTimeValue.prototype.toString

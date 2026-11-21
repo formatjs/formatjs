@@ -1,4 +1,7 @@
-import {mathAbs} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  mathAbs,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {YearFromTime} from '#packages/ecma262-abstract/DateOperations.js'
 import {
   legacyCalendarParts,
@@ -49,7 +52,9 @@ function years(
 ): (text: string) => string {
   if (!delta) return text => text
   if (!NumberConstructor || !numberFormat)
-    throw new RangeError('Extended Gregorian dates require Intl.NumberFormat')
+    throw new RangeErrorConstructor(
+      'Extended Gregorian dates require Intl.NumberFormat'
+    )
   const options = resolved.call(value.formatter),
     formatter = new NumberConstructor(options.locale, {
       numberingSystem: options.numberingSystem,

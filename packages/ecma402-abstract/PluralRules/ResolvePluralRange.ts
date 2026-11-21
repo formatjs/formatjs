@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import type {IntlMathematicalValue} from '#packages/ecma402-abstract/ToIntlMathematicalValue.js'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {
@@ -57,7 +58,7 @@ export function ResolvePluralRange(
     ('value' in x ? x.value : x).isNaN() ||
     ('value' in y ? y.value : y).isNaN()
   ) {
-    throw new RangeError(
+    throw new RangeErrorConstructor(
       'selectRange requires start and end values not to be NaN'
     )
   }

@@ -1,4 +1,8 @@
-import {numberFrom} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+  numberFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import type {TemporalDateTimeValue} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
@@ -127,7 +131,7 @@ export function legacyDateTimeProjection(
   const proxy = new Proxy(createObject(null), {
     get(_target, key) {
       if (source === undefined) {
-        if (options === null) throw new TypeError('Invalid options')
+        if (options === null) throw new TypeErrorConstructor('Invalid options')
         source = options === undefined ? createObject(null) : Object(options)
       }
       if (typeof key !== 'string') return source![key]
@@ -138,7 +142,9 @@ export function legacyDateTimeProjection(
           value.kind === 'ZonedDateTime' &&
           raw !== undefined
         )
-          throw new TypeError('timeZone option conflicts with ZonedDateTime')
+          throw new TypeErrorConstructor(
+            'timeZone option conflicts with ZonedDateTime'
+          )
         snapshot[key] = legacyDateTimeOption(key, raw)
       }
       return key === 'timeZone' && value.kind === 'ZonedDateTime'
@@ -157,7 +163,9 @@ export function legacyDateTimeProjection(
       value.kind === 'PlainYearMonth' ||
       value.kind === 'PlainMonthDay')
   )
-    throw new RangeError('Temporal calendar does not match DateTimeFormat')
+    throw new RangeErrorConstructor(
+      'Temporal calendar does not match DateTimeFormat'
+    )
   const date = ['weekday', 'year', 'month', 'day']
   const time = [
     'dayPeriod',
@@ -202,7 +210,9 @@ export function legacyDateTimeProjection(
         value.kind !== 'PlainTime' &&
         timeStyle !== undefined))
   )
-    throw new TypeError('DateTimeFormat style conflicts with required type')
+    throw new TypeErrorConstructor(
+      'DateTimeFormat style conflicts with required type'
+    )
   if (dateStyle !== undefined || timeStyle !== undefined) {
     const plainDate =
       value.kind === 'PlainDate' ||
@@ -212,7 +222,7 @@ export function legacyDateTimeProjection(
       (plainDate && dateStyle === undefined) ||
       (value.kind === 'PlainTime' && timeStyle === undefined)
     )
-      throw new TypeError(
+      throw new TypeErrorConstructor(
         'DateTimeFormat styles do not overlap the Temporal type'
       )
     const styleFields = legacyStyleFields(
@@ -237,7 +247,7 @@ export function legacyDateTimeProjection(
         !instant &&
         [...date, ...time].some(key => snapshot[key] !== undefined)
       )
-        throw new TypeError(
+        throw new TypeErrorConstructor(
           'DateTimeFormat options do not overlap the Temporal type'
         )
       const defaults =

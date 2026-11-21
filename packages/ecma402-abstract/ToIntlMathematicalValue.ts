@@ -1,3 +1,4 @@
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {Decimal} from '@formatjs/bigdecimal'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
 
@@ -20,7 +21,7 @@ export function ToIntlMathematicalValue(input: unknown): IntlMathematicalValue {
     }
   }
   if (typeof primitive === 'symbol') {
-    throw new TypeError('Cannot convert a Symbol value to a number')
+    throw new TypeErrorConstructor('Cannot convert a Symbol value to a number')
   }
   const rounded = +(primitive as any)
   let value = new Decimal(rounded)

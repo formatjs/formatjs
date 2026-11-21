@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathMin,
   numberFrom,
@@ -128,7 +130,7 @@ export interface PlainDateTimeConstructor {
 }
 function read(item: unknown): DateTimeSlot {
   const slot = getDateTimeSlot(item as object)
-  if (!slot) throw new TypeError('Invalid PlainDateTime receiver')
+  if (!slot) throw new TypeErrorConstructor('Invalid PlainDateTime receiver')
   return slot
 }
 const NativePlainDateTime = function (
@@ -208,7 +210,7 @@ export function toPlainDateTimeSlot(
     }
   }
   if (typeof item !== 'string')
-    throw new TypeError('Expected date/time string or object')
+    throw new TypeErrorConstructor('Expected date/time string or object')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native) {
     if (options !== undefined) prepareDateTimeString(item, options)
@@ -263,7 +265,8 @@ function difference(
   since: boolean
 ): DurationObject {
   const end = toPlainDateTimeSlot(other)
-  if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
+  if (slot.calendar !== end.calendar)
+    throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit,
     largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
@@ -277,7 +280,7 @@ function difference(
       ? names[mathMin(3, smallIndex)]
       : unitOption(largestText)!
   if (names.indexOf(largest) > smallIndex)
-    throw new RangeError('Largest unit smaller than smallest unit')
+    throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return (
@@ -343,7 +346,7 @@ class PlainDateTimeValue {
     _nanosecond?: unknown,
     _calendar?: unknown
   ) {
-    throw new TypeError('Use exported PlainDateTime constructor')
+    throw new TypeErrorConstructor('Use exported PlainDateTime constructor')
   }
   static from(
     item: unknown,
@@ -388,7 +391,8 @@ class PlainDateTimeValue {
   }
   withCalendar(calendar: unknown): PlainDateTimeObject {
     const slot = read(this)
-    if (calendar === undefined) throw new TypeError('Calendar required')
+    if (calendar === undefined)
+      throw new TypeErrorConstructor('Calendar required')
     return createPlainDateTime(slot.epochNanoseconds, calendarId(calendar))
   }
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
@@ -442,7 +446,8 @@ class PlainDateTimeValue {
   }
   round(roundTo: unknown): PlainDateTimeObject {
     const slot = read(this)
-    if (roundTo === undefined) throw new TypeError('roundTo required')
+    if (roundTo === undefined)
+      throw new TypeErrorConstructor('roundTo required')
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? Object.assign(createObject(null), {smallestUnit: roundTo})
@@ -465,7 +470,8 @@ class PlainDateTimeValue {
     const clock = timeOf(slot.epochNanoseconds)
     let rounded: bigint
     if (unit === 'day') {
-      if (increment !== 1) throw new RangeError('Invalid day increment')
+      if (increment !== 1)
+        throw new RangeErrorConstructor('Invalid day increment')
       rounded = roundInstant(clock, nsPerDay, mode)
     } else rounded = roundTime(clock, timeUnit(unit), increment, mode)
     return createPlainDateTime(
@@ -482,7 +488,7 @@ class PlainDateTimeValue {
       mode = roundingMode(resolved.roundingMode, 'trunc'),
       raw = unitOption(resolved.smallestUnit)
     if (raw !== undefined && timeUnit(raw) === 'hour')
-      throw new RangeError('Cannot format hours only')
+      throw new RangeErrorConstructor('Cannot format hours only')
     const precision: Precision =
       raw === 'minute'
         ? 'minute'
@@ -531,7 +537,9 @@ class PlainDateTimeValue {
     return format(read(this))
   }
   valueOf(): never {
-    throw new TypeError('Cannot convert Temporal.PlainDateTime to primitive')
+    throw new TypeErrorConstructor(
+      'Cannot convert Temporal.PlainDateTime to primitive'
+    )
   }
 }
 if (import.meta.formatjsTemporalNativeData === true)

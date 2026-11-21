@@ -1,3 +1,4 @@
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 
 /**
@@ -54,12 +55,12 @@ export function ToDateTimeOptions(
     needDefaults = false
   }
   if (required === 'date' && options.timeStyle) {
-    throw new TypeError(
+    throw new TypeErrorConstructor(
       'Intl.DateTimeFormat date was required but timeStyle was included'
     )
   }
   if (required === 'time' && options.dateStyle) {
-    throw new TypeError(
+    throw new TypeErrorConstructor(
       'Intl.DateTimeFormat time was required but dateStyle was included'
     )
   }

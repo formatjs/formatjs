@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathTrunc,
   numberFrom,
@@ -77,7 +79,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
       : {date: toPlainDateSlot(value)}
   }
   if (!object(value))
-    throw new TypeError('relativeTo must be a string or object')
+    throw new TypeErrorConstructor('relativeTo must be a string or object')
   const calendar = calendarFromObject(value),
     prepared = createObject(null) as Record<string, unknown>
   const names = dateFieldNames(calendar, true, 'date', ['offset', 'timeZone'])
@@ -89,7 +91,7 @@ export function toRelativeTo(value: unknown): RelativeTo | undefined {
     else if (key === 'offset') {
       const primitive = object(raw) ? ToPrimitive(raw, 'string') : raw
       if (typeof primitive !== 'string')
-        throw new TypeError('Offset must be a string')
+        throw new TypeErrorConstructor('Offset must be a string')
       parseOffsetNanoseconds(primitive)
       prepared[key] = primitive
     } else prepared[key] = dateFieldValue(key, raw)
@@ -118,7 +120,7 @@ export function relativeEndpoint(
     normalized <= -maxDurationNanoseconds ||
     normalized >= maxDurationNanoseconds
   )
-    throw new RangeError('Duration out of range')
+    throw new RangeErrorConstructor('Duration out of range')
   // Clock carry must keep target date in range.
   dayCheck(epochDayOf(end))
   return end
@@ -175,7 +177,7 @@ export function relativeTotal(
       const value =
         bigIntFrom(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
       if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
-        throw new RangeError('Duration out of range')
+        throw new RangeErrorConstructor('Duration out of range')
       dayCheck(epochDayOf(relativeOrigin(relative) + value))
       return durationTotalNumber(value, factors[unit])
     }

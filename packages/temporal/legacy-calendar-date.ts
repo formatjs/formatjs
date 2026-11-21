@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   floor,
   mathAbs,
   numberIsFinite,
@@ -70,7 +72,9 @@ function number(
   const existing = cache.get(digits)
   if (existing) return existing
   if (!NumberConstructor || !numberFormat)
-    throw new RangeError('Extended calendar dates require Intl.NumberFormat')
+    throw new RangeErrorConstructor(
+      'Extended calendar dates require Intl.NumberFormat'
+    )
   const result = numberFormat.call(
     new NumberConstructor(options.locale, {
       numberingSystem: options.numberingSystem,
@@ -106,17 +110,20 @@ function representative(
         'reject'
       )
     } catch (error) {
-      if (error instanceof RangeError) continue
+      if (error instanceof RangeErrorConstructor) continue
       throw error
     }
     representatives.set(key, epoch)
     return epoch
   }
-  throw new RangeError('No host calendar label example')
+  throw new RangeErrorConstructor('No host calendar label example')
 }
 function firstPart(parts: Intl.DateTimeFormatPart[], type: string): string {
   const value = parts.find(part => part.type === type)
-  if (!value) throw new RangeError(`Unsupported host calendar pattern: ${type}`)
+  if (!value)
+    throw new RangeErrorConstructor(
+      `Unsupported host calendar pattern: ${type}`
+    )
   return value.value
 }
 function eraOptions(
@@ -168,7 +175,7 @@ function eraWidth(
       return width
     }
   }
-  throw new RangeError('Unsupported host era width')
+  throw new RangeErrorConstructor('Unsupported host era width')
 }
 function eraLabel(
   source: Intl.DateTimeFormat,
@@ -268,7 +275,10 @@ export function legacyCalendarParts(
       if (lunar) return correctLunisolarParts(value, raw, resolved)
       labels = calendarLabelFormatter(value.formatter, options, raw)
     } catch (error) {
-      if (!(error instanceof RangeError) && !(error instanceof TypeError))
+      if (
+        !(error instanceof RangeErrorConstructor) &&
+        !(error instanceof TypeErrorConstructor)
+      )
         throw error
       epoch ??= legacyISOEpochDay(options.timeZone, value.milliseconds)
       // Some host calendars fail at valid Date bounds; retain their clock and zone via Gregorian fields.
@@ -459,7 +469,10 @@ export function legacyCalendarRangeParts(
       )
         return undefined
     } catch (error) {
-      if (!(error instanceof RangeError) && !(error instanceof TypeError))
+      if (
+        !(error instanceof RangeErrorConstructor) &&
+        !(error instanceof TypeErrorConstructor)
+      )
         throw error
     }
   }

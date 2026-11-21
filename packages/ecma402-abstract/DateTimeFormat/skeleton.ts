@@ -1,3 +1,4 @@
+import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type Formats,
   type RangePatternPart,
@@ -108,7 +109,9 @@ function matchSkeletonPattern(
     // Quarter
     case 'q':
     case 'Q':
-      throw new RangeError('`w/Q` (quarter) patterns are not supported')
+      throw new RangeErrorConstructor(
+        '`w/Q` (quarter) patterns are not supported'
+      )
     // Month
     case 'M':
     case 'L':
@@ -121,7 +124,9 @@ function matchSkeletonPattern(
     // Week
     case 'w':
     case 'W':
-      throw new RangeError('`w/W` (week of year) patterns are not supported')
+      throw new RangeErrorConstructor(
+        '`w/W` (week of year) patterns are not supported'
+      )
     case 'd':
       result.day = ['numeric', '2-digit'][len - 1] as 'numeric'
       return '{day}'
@@ -195,7 +200,7 @@ function matchSkeletonPattern(
     case 'j':
     case 'J':
     case 'C':
-      throw new RangeError(
+      throw new RangeErrorConstructor(
         '`j/J/C` (hour) patterns are not supported, use `h/H/K/k` instead'
       )
     // Minute
@@ -279,7 +284,7 @@ function skeletonTokenToTable2(c: string): TABLE_2 {
     case 'A':
       return 'second'
     default:
-      throw new RangeError('Invalid range pattern token')
+      throw new RangeErrorConstructor('Invalid range pattern token')
   }
 }
 

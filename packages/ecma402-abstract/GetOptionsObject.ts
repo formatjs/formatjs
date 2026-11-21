@@ -1,3 +1,4 @@
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 
 /**
@@ -14,5 +15,5 @@ export function GetOptionsObject<T extends object>(options?: T): T {
   if (IsObject(options)) {
     return options
   }
-  throw new TypeError('Options must be an object')
+  throw new TypeErrorConstructor('Options must be an object')
 }

@@ -1,4 +1,6 @@
 import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
   bigIntFrom,
   mathAbs,
   numberFrom,
@@ -84,7 +86,7 @@ export function validateDuration(fields: DurationFields): DurationFields {
       !numberIsInteger(value) ||
       (value !== 0 && (value < 0 ? -1 : 1) !== sign)
     )
-      throw new RangeError('Invalid duration fields')
+      throw new RangeErrorConstructor('Invalid duration fields')
     fields[key] = value || 0
   }
   if (
@@ -92,20 +94,21 @@ export function validateDuration(fields: DurationFields): DurationFields {
     mathAbs(fields.months) >= 4294967296 ||
     mathAbs(fields.weeks) >= 4294967296
   )
-    throw new RangeError('Calendar duration out of range')
+    throw new RangeErrorConstructor('Calendar duration out of range')
   const time = durationNanoseconds(fields)
   if (time <= -maxDurationNanoseconds || time >= maxDurationNanoseconds)
-    throw new RangeError('Duration out of range')
+    throw new RangeErrorConstructor('Duration out of range')
   return fields
 }
 export function integralDurationNumber(value: unknown): number {
   const number = +(value as number)
   if (!numberIsInteger(number))
-    throw new RangeError('Duration fields must be integral')
+    throw new RangeErrorConstructor('Duration fields must be integral')
   return number || 0
 }
 export function partialDuration(value: unknown): Partial<DurationFields> {
-  if (!IsObject(value)) throw new TypeError('Duration fields must be an object')
+  if (!IsObject(value))
+    throw new TypeErrorConstructor('Duration fields must be an object')
   const result: Partial<DurationFields> = createObject(null)
   let found = false
   for (let index = 0; index < durationFieldReadOrder.length; index++) {
@@ -116,7 +119,7 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
       found = true
     }
   }
-  if (!found) throw new TypeError('Duration fields required')
+  if (!found) throw new TypeErrorConstructor('Duration fields required')
   return result
 }
 export function parseDurationString(value: string): DurationFields {
@@ -136,7 +139,7 @@ export function parseDurationString(value: string): DurationFields {
       (match[8] !== undefined || match[10] !== undefined)) ||
     (match[9] !== undefined && match[10] !== undefined)
   )
-    throw new RangeError('Invalid duration string')
+    throw new RangeErrorConstructor('Invalid duration string')
   const result = zeroDuration()
   const parsedFields = [
     [2, 'years'],

@@ -1,3 +1,7 @@
+import {
+  RangeErrorConstructor,
+  TypeErrorConstructor,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {TimeClip} from '#packages/ecma262-abstract/TimeClip.js'
 import type Decimal from '@formatjs/bigdecimal'
 import type {IntlDateTimeFormatInternal} from '#packages/ecma402-abstract/types/date-time.js'
@@ -26,7 +30,7 @@ export function HandleDateTimeValue(
   if (!isTemporalDateTimeValue(value)) {
     // HandleDateTimeOthers clips Number inputs before creating the record.
     const clipped = TimeClip(value)
-    if (clipped.isNaN()) throw new RangeError('Invalid time')
+    if (clipped.isNaN()) throw new RangeErrorConstructor('Invalid time')
     return {
       format: slots,
       epochNanoseconds: BigInt(clipped.toNumber()) * BigInt(1000000),
@@ -34,7 +38,7 @@ export function HandleDateTimeValue(
     }
   }
   if (value.kind === 'ZonedDateTime') {
-    throw new TypeError(
+    throw new TypeErrorConstructor(
       'Temporal.ZonedDateTime is not supported by DateTimeFormat'
     )
   }
@@ -45,7 +49,9 @@ export function HandleDateTimeValue(
       value.kind === 'PlainYearMonth' ||
       value.kind === 'PlainMonthDay')
   ) {
-    throw new RangeError('Temporal calendar does not match DateTimeFormat')
+    throw new RangeErrorConstructor(
+      'Temporal calendar does not match DateTimeFormat'
+    )
   }
   return {
     format: slots.getTemporalFormat!(value.kind),

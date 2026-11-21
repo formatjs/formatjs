@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   bigIntFrom,
   numberFrom,
   numberIsSafeInteger,
@@ -25,10 +26,11 @@ export function lunisolarMonthSerial(epoch: number): number {
 }
 
 export function lunisolarMonthEpoch(serial: number): number {
-  if (!numberIsSafeInteger(serial)) throw new RangeError('Invalid month count')
+  if (!numberIsSafeInteger(serial))
+    throw new RangeErrorConstructor('Invalid month count')
   const epoch = floor(moonEpoch + bigIntFrom(serial) * month, day) - 719163n
   if (epoch < -110000400n || epoch > 110000400n)
-    throw new RangeError('Calendar month out of range')
+    throw new RangeErrorConstructor('Calendar month out of range')
   return numberFrom(epoch)
 }
 

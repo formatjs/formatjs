@@ -1,4 +1,5 @@
 import {
+  RangeErrorConstructor,
   bigIntFrom,
   mathAbs,
   mathMax,
@@ -55,7 +56,7 @@ function floorDivide(value: bigint, divisor: bigint): bigint {
 
 function checkInstant(value: bigint): bigint {
   if (value < -limit || value > limit)
-    throw new RangeError('Instant out of range')
+    throw new RangeErrorConstructor('Instant out of range')
   return value
 }
 
@@ -83,7 +84,7 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     date > 31 ||
     time.some((value, i) => value < 0 || value > bounds[i])
   ) {
-    throw new RangeError('Invalid ISO fields')
+    throw new RangeErrorConstructor('Invalid ISO fields')
   }
   const leap = DaysInYear(year) === 366
   const maximum =
@@ -94,7 +95,7 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
       : month === 4 || month === 6 || month === 9 || month === 11
         ? 30
         : 31
-  if (date > maximum) throw new RangeError('Invalid ISO date')
+  if (date > maximum) throw new RangeErrorConstructor('Invalid ISO date')
   const epochDay =
     DayFromYear(year) +
     monthStarts[month - 1] +
@@ -107,7 +108,7 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     bigIntFrom(time[3] * 1_000_000 + time[4] * 1000 + time[5])
   // Local fields may lie one offset beyond the instant range.
   if (value <= -limit - day || value >= limit + day)
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
   return value
 }
 
@@ -119,7 +120,7 @@ export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
     return native!.epochNanosecondsToISO(value)
   // L62: the valid-Instant domain is contained in this wider local-time domain.
   if (value <= -limit - day || value >= limit + day)
-    throw new RangeError('Local date out of range')
+    throw new RangeErrorConstructor('Local date out of range')
   // L64: exact day/clock division equals the spec's integral-millisecond split.
   // Valid-Instant milliseconds fit exactly below 2**53; no rounding is needed here.
   const days = floorDivide(value, day)
@@ -166,7 +167,8 @@ export function addISODays(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.addISODays(fields, days)
-  if (!numberIsSafeInteger(days)) throw new RangeError('Invalid day count')
+  if (!numberIsSafeInteger(days))
+    throw new RangeErrorConstructor('Invalid day count')
   return epochNanosecondsToISO(
     isoToEpochNanoseconds(fields) + bigIntFrom(days) * day
   )
@@ -282,11 +284,11 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     disambiguation: Disambiguation = 'compatible'
   ): bigint => {
     if (!['compatible', 'earlier', 'later', 'reject'].includes(disambiguation))
-      throw new RangeError('Invalid disambiguation')
+      throw new RangeErrorConstructor('Invalid disambiguation')
     const candidates = possibleInstants(fields)
     if (candidates.length === 1) return candidates[0]
     if (disambiguation === 'reject')
-      throw new RangeError('Ambiguous or nonexistent local time')
+      throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
     const local = isoToEpochNanoseconds(fields)
@@ -314,7 +316,7 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
       }
       event = zoneTransition(data, event, 'next')
     }
-    throw new RangeError('No matching instant')
+    throw new RangeErrorConstructor('No matching instant')
   }
   return {
     offsetNanoseconds,
