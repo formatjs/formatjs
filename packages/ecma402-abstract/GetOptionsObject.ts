@@ -1,3 +1,5 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
+
 /**
  * ECMA-262 §7.3.36 GetOptionsObject, steps 2–3.
  * https://tc39.es/ecma262/#sec-getoptionsobject
@@ -6,14 +8,10 @@
  * @returns
  */
 export function GetOptionsObject<T extends object>(options?: T): T {
-  if (typeof options === 'undefined') {
+  if (options === undefined) {
     return Object.create(null)
   }
-  // Functions are Objects; null is not.
-  if (
-    options !== null &&
-    (typeof options === 'object' || typeof options === 'function')
-  ) {
+  if (IsObject(options)) {
     return options
   }
   throw new TypeError('Options must be an object')
