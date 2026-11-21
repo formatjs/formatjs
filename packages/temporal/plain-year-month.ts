@@ -120,9 +120,7 @@ export function toYearMonthSlot(item: unknown, options?: unknown): DateSlot {
   }
   if (typeof item !== 'string')
     throw new TypeError('Expected year-month string or object')
-  const slot = parseShortSlot(item, 'year-month')
-  overflowOption(options)
-  return slot
+  return parseShortSlot(item, 'year-month', options)
 }
 function add(
   slot: DateSlot,
