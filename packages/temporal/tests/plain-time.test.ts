@@ -175,3 +175,170 @@ it.each([
     )
   }
 })
+
+it.each(['complete', 'partial'] as const)(
+  'reads and coerces %s clock fields once, before overflow options',
+  completeness => {
+    const events: string[] = []
+    const supplied: Record<string, number> = {
+      hour: 2.9,
+      microsecond: 6.9,
+      millisecond: 5.9,
+      minute: 3.9,
+      nanosecond: 7.9,
+      second: 4.9,
+    }
+    const input = new Proxy(Object.create(null), {
+      has() {
+        throw new Error('Unexpected HasProperty')
+      },
+      ownKeys() {
+        throw new Error('Unexpected enumeration')
+      },
+      get(_target, key) {
+        events.push(`get ${String(key)}`)
+        if (key === 'calendar' || key === 'timeZone') return undefined
+        if (typeof key !== 'string' || !(key in supplied))
+          throw new Error(`Unexpected property ${String(key)}`)
+        return {
+          [Symbol.toPrimitive](hint: string) {
+            events.push(`coerce ${key} ${hint}`)
+            return supplied[key]
+          },
+        }
+      },
+    })
+    const options = {
+      get overflow() {
+        events.push('get overflow')
+        return 'reject'
+      },
+    }
+    const value =
+      completeness === 'complete'
+        ? PlainTime.from(input, options)
+        : new PlainTime(12, 34, 56, 123, 456, 789).with(input, options)
+    expect(value.toJSON()).toBe('02:03:04.005006007')
+    expect(events).toEqual([
+      ...(completeness === 'partial' ? ['get calendar', 'get timeZone'] : []),
+      'get hour',
+      'coerce hour number',
+      'get microsecond',
+      'coerce microsecond number',
+      'get millisecond',
+      'coerce millisecond number',
+      'get minute',
+      'coerce minute number',
+      'get nanosecond',
+      'coerce nanosecond number',
+      'get second',
+      'coerce second number',
+      'get overflow',
+    ])
+  }
+)
+
+it.each([
+  ['hour', '01:00:00', '01:34:56.123456789'],
+  ['minute', '00:01:00', '12:01:56.123456789'],
+  ['second', '00:00:01', '12:34:01.123456789'],
+  ['millisecond', '00:00:00.001', '12:34:56.001456789'],
+  ['microsecond', '00:00:00.000001', '12:34:56.123001789'],
+  ['nanosecond', '00:00:00.000000001', '12:34:56.123456001'],
+])('retains missing defaults around supplied %s', (name, complete, partial) => {
+  const inherited = Object.create({[name]: 1.9})
+  expect(PlainTime.from(inherited).toJSON()).toBe(complete)
+  expect(
+    new PlainTime(12, 34, 56, 123, 456, 789).with(inherited).toJSON()
+  ).toBe(partial)
+})
+
+it.each(['complete', 'partial'] as const)(
+  'rejects %s fields only after all undefined Gets; zero still counts',
+  completeness => {
+    const reads: PropertyKey[] = []
+    const convert = (input: unknown, options?: unknown) =>
+      completeness === 'complete'
+        ? PlainTime.from(input, options)
+        : new PlainTime(12, 34, 56, 123, 456, 789).with(input, options)
+    const input = new Proxy(Object.create(null), {
+      get(_target, key) {
+        reads.push(key)
+        return undefined
+      },
+    })
+    expect(() =>
+      convert(input, {
+        get overflow() {
+          throw new Error('Options reached before missing-field rejection')
+        },
+      })
+    ).toThrow(TypeError)
+    expect(reads).toEqual([
+      ...(completeness === 'partial' ? ['calendar', 'timeZone'] : []),
+      'hour',
+      'microsecond',
+      'millisecond',
+      'minute',
+      'nanosecond',
+      'second',
+    ])
+    expect(convert({hour: -0.9}).toJSON()).toBe(
+      completeness === 'complete' ? '00:00:00' : '00:34:56.123456789'
+    )
+  }
+)
+
+it.each(['complete', 'partial'] as const)(
+  'stops %s field conversion at the exact getter or coercion throw',
+  completeness => {
+    const order = [
+      'hour',
+      'microsecond',
+      'millisecond',
+      'minute',
+      'nanosecond',
+      'second',
+    ]
+    for (let stop = 0; stop < order.length; stop++) {
+      for (const stage of ['get', 'coerce']) {
+        const events: string[] = []
+        const failure = {stop, stage}
+        const input = new Proxy(Object.create(null), {
+          get(_target, key) {
+            if (key === 'calendar' || key === 'timeZone') return undefined
+            events.push(`get ${String(key)}`)
+            if (key === order[stop] && stage === 'get') throw failure
+            return {
+              [Symbol.toPrimitive](hint: string) {
+                events.push(`coerce ${String(key)} ${hint}`)
+                if (key === order[stop]) throw failure
+                return 1
+              },
+            }
+          },
+        })
+        let actual: unknown
+        try {
+          const options = {
+            get overflow() {
+              throw new Error('Options reached after field failure')
+            },
+          }
+          if (completeness === 'complete') PlainTime.from(input, options)
+          else new PlainTime(12).with(input, options)
+        } catch (error) {
+          actual = error
+        }
+        expect(actual).toBe(failure)
+        const expected: string[] = []
+        for (let index = 0; index <= stop; index++) {
+          expected.push(`get ${order[index]}`)
+          if (index < stop || stage === 'coerce')
+            expected.push(`coerce ${order[index]} number`)
+        }
+        expect(events).toEqual(expected)
+      }
+    }
+  }
+)

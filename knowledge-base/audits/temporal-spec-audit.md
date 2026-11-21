@@ -557,6 +557,28 @@ Current pass:
   six public package assemblies pass. No exclusions added; Temporal's documented
   Intl data discrepancies remain visible in the accepted-failure gates.
 
+- ToTemporalTimeRecord field reading, `plaintime.html` lines 733–758.
+  Implementation: `timeFields` in [plain-time.ts](../../packages/temporal/plain-time.ts).
+  Source comments map each Get, undefined guard, integer conversion and supplied
+  flag to its numbered line. Private indexed lists fix the alphabetical order;
+  coercion finishes before the next Get and propagates the exact abrupt value.
+  A supplied zero counts; all six undefined Gets finish before TypeError and
+  before overflow options. Complete conversion defaults missing fields to zero;
+  with() retains receiver values through its existing fused merge.
+  New public Node and installed native Hermes controls cover all six fields,
+  inherited values, number hints, no HasProperty/enumeration, every getter and
+  coercion failure position, and option suppression after failure.
+  No runtime defect was found in this loop. The separate
+  [spec issue log](temporal-spec-issues.md) records the producer's `~unset~`
+  versus with()'s `undefined` tests, confirmed in upstream source. Initialization,
+  returned-record representation and caller merge clauses stay open. This pass
+  adds 26 independent substeps, bringing new Temporal traces to 197; no complete
+  public operation is signed off. Nine focused gates pass: 25 Node time tests
+  including 12 new cases (with all getter/coercion failure positions), source/test
+  typechecks, installed native Hermes and all five PlainTime Test262 backend
+  gates. Existing ICU controls still check 25,269 fields, 7,740 rounds and
+  2,934 differences. No exclusions or accepted-failure baselines changed.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -579,9 +601,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [private clock lists and regulation audit](https://github.com/formatjs/formatjs/pull/8082),
 [private list search intrinsics](https://github.com/formatjs/formatjs/pull/8083),
 [locale-list input coercion](https://github.com/formatjs/formatjs/pull/8084),
-[private Locale brand readers](https://github.com/formatjs/formatjs/pull/8085).
+[private Locale brand readers](https://github.com/formatjs/formatjs/pull/8085),
+[time-record field conversion audit](https://github.com/formatjs/formatjs/pull/8086).
 
-New traces: 171 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 197 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -610,7 +633,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | [plaindate](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html)           |                   272 |                       41 |                         231 |
 | [plaindatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html)   |                   315 |                       20 |                         295 |
 | [plainmonthday](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html)   |                   103 |                        6 |                          97 |
-| [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                       36 |                         249 |
+| [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                       62 |                         223 |
 | [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        6 |                         177 |
 | [temporal](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html)             |                    29 |                        0 |                          29 |
 | [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                       16 |                         116 |
@@ -1517,7 +1540,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-createtemporaltime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L697)
   - Open: [709–712](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L709-L712).
 - [`sec-temporal-totemporaltimerecord`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L716)
-  - Open: [728–759](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L728-L759).
+  - Traced: [733–758](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L733-L758).
+  - Open: [728–732](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L728-L732), [759](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L759).
 - [`sec-temporal-timerecordtostring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L804)
   - Open: [816–817](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L816-L817).
 - [`sec-temporal-comparetimerecord`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L821)
