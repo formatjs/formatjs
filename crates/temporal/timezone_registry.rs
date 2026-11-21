@@ -147,6 +147,8 @@ impl TimeZone for ResolvedTimeZone<'_> {
         self.provider.transition(instant, direction)
     }
 }
+// Minute-precision zone identifiers are a subset of ECMA-262 §21.4.1.33 UTCOffset.
+// https://tc39.es/ecma262/#sec-time-zone-offset-strings
 fn offset_identifier(value: &str) -> Result<(i32, [u8; 6]), Error> {
     let bytes = value.as_bytes();
     let (hours, minutes) = match bytes {

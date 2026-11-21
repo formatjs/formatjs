@@ -603,6 +603,25 @@ int main(int argc, char **argv) {
         } finally { Object.defineProperty(String.prototype, 'padEnd', original); }
         check(actual === expected);
       }
+      for (const key of ['exec', 'test', 'String', 'padStart']) {
+        const target = key === 'String' ? globalThis : key === 'padStart' ? String.prototype : RegExp.prototype;
+        const original = Object.getOwnPropertyDescriptor(target, key);
+        let actual;
+        try {
+          Object.defineProperty(target, key, {configurable:true, get() { throw new Error('Private offset grammar hook reached'); }});
+          actual = new Temporal.ZonedDateTime(0n, '+02:03').timeZoneId;
+        } finally { Object.defineProperty(target, key, original); }
+        check(actual === '+02:03');
+      }
+      for (const [body, expected] of [['00',0n],['23',82800000000000n],['2359',86340000000000n],['23:59',86340000000000n],['235959',86399000000000n],['23:59:59',86399000000000n],['23:59:59.1',86399100000000n],['235959,000000001',86399000000001n],['23:59:59.999999999',86399999999999n]]) {
+        check(Temporal.Instant.from('1970-01-01T00:00:00+' + body).epochNanoseconds === -expected);
+        check(Temporal.Instant.from('1970-01-01T00:00:00-' + body).epochNanoseconds === expected);
+      }
+      for (const offset of ['+000000','+00:00:00','+010203.1','+01:02:03,000000001','+24','+01:60','−01','+١٢','+01\n']) {
+        let rejected = false;
+        try { new Temporal.ZonedDateTime(0n, offset); } catch (error) { rejected = error instanceof RangeError; }
+        check(rejected);
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');
