@@ -10,10 +10,7 @@ import {
   createPlainDateTime,
   type PlainDateTimeObject,
 } from '#packages/temporal/plain-date-time.js'
-import {
-  PlainTime,
-  toTimeRecordOrMidnight,
-} from '#packages/temporal/plain-time.js'
+import {toTimeRecordOrMidnight} from '#packages/temporal/plain-time.js'
 import {
   createPlainYearMonth,
   type PlainYearMonthObject,
@@ -31,7 +28,6 @@ import {
   getZonedDateTimeSlot,
   setDateSlot,
   getDateTimeSlot,
-  getTimeSlot,
   type DateSlot,
 } from '#packages/temporal/plain-slots.js'
 import {parsePlainDateTimeString} from '#packages/temporal/instant-string.js'
@@ -354,15 +350,43 @@ class PlainDateValue {
     return a.epochDay === b.epochDay && a.calendar === b.calendar
   }
   toZonedDateTime(item: unknown): ZonedDateTimeObject {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L445-L465
+    // L445: use this as the date.
+    // L446: check its slot before inspecting item.
     const slot = read(this)
     let zone: unknown = item,
       time: unknown
+    // L447: only objects can be property bags.
     if (object(item)) {
+      // L448: read timeZone exactly once.
       const raw = item.timeZone
-      zone = timeZoneIdentifier(raw === undefined ? item : raw)
-      time = item.plainTime
-    } else zone = timeZoneIdentifier(item)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+      // L449: a missing timeZone selects the identifier-object path.
+      if (raw === undefined) {
+        // L450: a ZonedDateTime can supply its internal zone directly.
+        zone = timeZoneIdentifier(item)
+        // L451: leave time undefined; do not get item.plainTime.
+      } else {
+        // L452: a defined timeZone selects the property-bag path.
+        // L453: validate the zone before reading the clock.
+        zone = timeZoneIdentifier(raw)
+        // L454: only this path gets plainTime.
+        time = item.plainTime
+      }
+    } else {
+      // L455: non-objects go directly to identifier conversion.
+      // L456: convert the supplied identifier.
+      zone = timeZoneIdentifier(item)
+      // L457: no clock is supplied in this form.
+    }
+    // L458: preserve absence independently of the numeric midnight value.
+    // L459: the start flag requests the first instant of the date.
+    // L460: an explicit time uses wall-clock resolution instead.
+    // L461: convert it without consulting PlainTime.from.
+    const clock = toTimeRecordOrMidnight(time)
+    // L462: combine the ISO date and clock.
+    // L463: epochNanosecondsToISO in zonedFromLocal checks local bounds.
+    // L464: resolve explicit times with compatible disambiguation.
+    // L465: create the result in the selected zone and original calendar.
     return zonedFromLocal(
       BigInt(slot.epochDay) * nsPerDay + clock,
       zone,

@@ -68,6 +68,21 @@ int main(int argc, char **argv) {
       check(Temporal.PlainDate.from('-271821-04-19').toLocaleString('en', {year:'numeric'}) === '271822');
       check(beforeTemporalFormatter.format(Temporal.PlainDate.from('2020-02-29')) === '02/29/2020');
       check(Temporal.PlainTime.from('12:34:56.123456789').nanosecond === 789);
+      const originalTimeFrom = Temporal.PlainTime.from;
+      try {
+        Temporal.PlainTime.from = () => { throw new Error('Public PlainTime.from observed'); };
+        const date = new Temporal.PlainDate(2000, 1, 2);
+        const zone = new Temporal.ZonedDateTime(123456789n, '-04:00');
+        Object.defineProperty(zone, 'plainTime', {get() { throw new Error('Unexpected plainTime read'); }});
+        check(date.toPlainDateTime('05:30').hour === 5);
+        check(date.toPlainDateTime().withPlainTime({minute: 31}).minute === 31);
+        check(date.toZonedDateTime(zone).hour === 0);
+        check(date.toZonedDateTime({timeZone: 'UTC', plainTime: '03:00'}).hour === 3);
+        check(zone.withPlainTime('05:30').day === 31);
+        check(zone.toPlainTime().toString() === '20:00:00.123456789');
+      } finally {
+        Temporal.PlainTime.from = originalTimeFrom;
+      }
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));

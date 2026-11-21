@@ -13,7 +13,8 @@ import {
   type InstantObject,
 } from '#packages/temporal/instant.js'
 import {
-  PlainTime,
+  createPlainTime,
+  toTimeRecordOrMidnight,
   roundTime,
   type PlainTimeObject,
 } from '#packages/temporal/plain-time.js'
@@ -29,7 +30,6 @@ import {
 import {
   getZonedSlot,
   setZonedSlot,
-  getTimeSlot,
   type ZonedSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -914,16 +914,29 @@ class ZonedDateTimeValue {
     )
   }
   withPlainTime(time: unknown = undefined): ZonedDateTimeObject {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L542-L553
+    // L542: use this as the zoned receiver.
+    // L543: require its initialized slot.
+    // L544: the slot carries its time zone.
+    // L545: the slot also carries the calendar.
     const slot = read(this)
+    // L546: use the local date in both branches, not the UTC date.
+    // L547: omission means start of day, not an explicit midnight.
+    // L548: allow a zone transition to move the start past 00:00.
+    // L549: otherwise combine with the supplied clock.
+    // L550: convert the argument internally.
+    // L551: keep the receiver's local ISO day.
+    // L552: resolve with compatible disambiguation.
     const value =
       time === undefined
         ? startOfDay(slot)
         : zonedKernel(slot.timeZone).resolve(
             epochNanosecondsToISO(
               BigInt(epochDayOf(local(slot))) * nsPerDay +
-                getTimeSlot(PlainTime.from(time))!
+                toTimeRecordOrMidnight(time)
             )
           )
+    // L553: retain the receiver's zone and calendar.
     return createZonedDateTime(value, slot.timeZone, slot.calendar)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
@@ -990,7 +1003,12 @@ class ZonedDateTimeValue {
     return createPlainDate(epochDayOf(local(slot)), slot.calendar)
   }
   toPlainTime(): PlainTimeObject {
-    return PlainTime.from(epochNanosecondsToISO(local(read(this))))
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L809-L812
+    // L809: take this as the receiver.
+    // L810: require its ZonedDateTime slot.
+    // L811: project the instant into its own time zone.
+    // L812: create a fresh PlainTime from the local clock.
+    return createPlainTime(timeOf(local(read(this))))
   }
   toString(options: unknown = undefined): string {
     return format(read(this), options)

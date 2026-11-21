@@ -1,6 +1,6 @@
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
-import {expect, it} from 'vitest'
+import {expect, it, vi} from 'vitest'
 import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
@@ -271,5 +271,38 @@ it('rounds repeated civil dates to earliest midnight boundaries', () => {
           .epochNanoseconds
       )
     }
+  }
+})
+
+it('does not read plainTime when the argument itself supplies the zone', () => {
+  const date = new Temporal.PlainDate(2020, 1, 2)
+  const zone = new Temporal.ZonedDateTime(0n, '-04:00')
+  Object.defineProperty(zone, 'plainTime', {
+    get() {
+      throw new Error('unexpected plainTime')
+    },
+  })
+  expect(date.toZonedDateTime(zone).toString()).toBe(
+    '2020-01-02T00:00:00-04:00[-04:00]'
+  )
+})
+
+it('converts zoned wall clocks without calling public PlainTime.from', () => {
+  const from = vi.spyOn(Temporal.PlainTime, 'from').mockImplementation(() => {
+    throw new Error('public PlainTime.from called')
+  })
+  try {
+    const zdt = new Temporal.ZonedDateTime(123456789n, '-04:00')
+    expect(zdt.toPlainTime().toString()).toBe('20:00:00.123456789')
+    expect(zdt.withPlainTime('05:30').toString()).toBe(
+      '1969-12-31T05:30:00-04:00[-04:00]'
+    )
+    const date = new Temporal.PlainDate(2020, 1, 2)
+    expect(
+      date.toZonedDateTime({timeZone: 'UTC', plainTime: {hour: 5}}).hour
+    ).toBe(5)
+    expect(from).not.toHaveBeenCalled()
+  } finally {
+    from.mockRestore()
   }
 })
