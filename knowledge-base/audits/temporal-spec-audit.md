@@ -318,6 +318,42 @@ Current pass:
   Temporal, DateTimeFormat and DurationFormat package assembly passes. Existing
   exclusions and accepted-failure baselines are unchanged.
 
+- Private-list predicates: [shared captures](../../packages/ecma262-abstract/intrinsics.ts)
+  retain Array.prototype.every, Array.prototype.some and Reflect.apply. Replace
+  51 predicate-method calls across 20 Temporal and formatter/foundation modules:
+  ISO validation, duration parsing/comparison, calendar signs, locale projections,
+  DateTimeFormat patterns/options/ranges, DurationFormat validation/partitioning,
+  NumberFormat range affixes, canonical variant aliases and locale-cache checks.
+  Locale matcher's existing dependency direction is preserved with a local capture.
+  Internal Lists no longer look up those mutable Array.prototype properties.
+  Calling the original methods also preserves callback ordering, short-circuiting
+  and array traversal semantics without adding a mutable call/apply lookup.
+  Six regressions failed before their fixes: two public Temporal mutation cases,
+  two owned-formatter cases, canonical variant aliases and cached locale matching.
+  Owned formatter cases cover DateTimeFormat.format/formatRange plus Temporal
+  date/duration locale methods. Temporal/formatter cases also replace Reflect.apply; installed
+  native Hermes replaces both predicates and Reflect.apply simultaneously.
+  Other array methods/iterators and full intrinsic isolation remain open. No
+  complete public operation is signed off by this fix.
+  All 95 validation targets pass: six mutation regressions and changed test
+  typechecks, all 40 Temporal class Test262 backend gates, native Hermes,
+  Rust/kernel controls, Intl consumer units and accepted-failure gates, locale
+  gates and ICU oracles. Temporal, DateTimeFormat, DurationFormat,
+  getCanonicalLocales and locale-matcher package assembly passes. Existing
+  exclusions and accepted-failure baselines are unchanged.
+
+- Forward ISO arithmetic review: compare the TS DayFromYear/month-offset formula
+  and Rust March-based 400-year formula with GetUTCEpochNanoseconds' day/clock
+  composition. New controls use builtin UTC dates for all 292,194 days across two
+  Gregorian eras around year zero, including a fixed 13:14:15.987654321 clock.
+  These expected dates come from the builtin oracle, independently of the
+  implementation's reverse conversion; existing negative-epoch, leap-day and
+  extreme-instant controls remain in place.
+  GetUTCEpochNanoseconds, mainadditions.html lines 355–359, stays open: arithmetic
+  checks do not finish the converter's fused range/caller review or the upstream
+  MakeDay precision/domain question. Existing range-policy spec issues remain
+  separate. No new line signoffs in this pass; the 103 new traces above are intact.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -332,7 +368,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [exact rounding audit](https://github.com/formatjs/formatjs/pull/8072),
 [captured numeric floor](https://github.com/formatjs/formatjs/pull/8073),
 [numeric intrinsics and ISO reverse conversion](https://github.com/formatjs/formatjs/pull/8074),
-[intrinsic exceptions and integer coercion](https://github.com/formatjs/formatjs/pull/8075).
+[intrinsic exceptions and integer coercion](https://github.com/formatjs/formatjs/pull/8075),
+[private-list predicates](https://github.com/formatjs/formatjs/pull/8076).
 
 New traces: 103 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.

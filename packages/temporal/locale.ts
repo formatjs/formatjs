@@ -1,6 +1,8 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayEvery,
+  arraySome,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
@@ -232,7 +234,7 @@ export function legacyDateTimeProjection(
       timeStyle,
       intrinsics.formatToParts
     )
-    if (Object.keys(styleFields).some(key => !allowed.includes(key))) {
+    if (arraySome(Object.keys(styleFields), key => !allowed.includes(key))) {
       for (const key of allowed) selected[key] = styleFields[key]
       if (styleFields.hour !== undefined && allowed.includes('hour'))
         selected.hourCycle = resolved.hourCycle
@@ -242,10 +244,10 @@ export function legacyDateTimeProjection(
     }
   } else {
     for (const key of allowed) selected[key] = snapshot[key]
-    if (required.every(key => snapshot[key] === undefined)) {
+    if (arrayEvery(required, key => snapshot[key] === undefined)) {
       if (
         !instant &&
-        [...date, ...time].some(key => snapshot[key] !== undefined)
+        arraySome([...date, ...time], key => snapshot[key] !== undefined)
       )
         throw new TypeErrorConstructor(
           'DateTimeFormat options do not overlap the Temporal type'
@@ -348,7 +350,8 @@ function legacyStyleFields(
         [key]: width,
       } as Intl.DateTimeFormatOptions)
       if (
-        probes.every(
+        arrayEvery(
+          probes,
           (probe, index) =>
             text(formatToParts.call(candidate, probe), key) ===
             text(parts[index], key)

@@ -1,5 +1,6 @@
 import {
   RangeErrorConstructor,
+  arraySome,
   floor,
   numberFrom,
   numberIsInteger,
@@ -142,7 +143,7 @@ export function calendarLabelFormatter(
     if (
       !options.dateStyle &&
       !options.year &&
-      raw.some(part => ['relatedYear', 'yearName'].includes(part.type))
+      arraySome(raw, part => ['relatedYear', 'yearName'].includes(part.type))
     )
       projected.year = 'numeric'
     result = new Constructor!(options.locale, projected)
@@ -205,7 +206,7 @@ export function correctLunisolarParts(
     calendar = options.calendar
   if (
     (calendar !== 'chinese' && calendar !== 'dangi') ||
-    !raw.some(part => dateTypes.has(part.type))
+    !arraySome(raw, part => dateTypes.has(part.type))
   )
     return raw
   const iso =
@@ -232,13 +233,16 @@ export function correctLunisolarParts(
     return raw
   const labels = calendarLabelFormatter(value.formatter, options, raw),
     changes = new Map<string, string>()
-  if (actual.day !== expected.day && raw.some(part => part.type === 'day')) {
+  if (
+    actual.day !== expected.day &&
+    arraySome(raw, part => part.type === 'day')
+  ) {
     const data = catalog(calendar, 'M01')
     changes.set('day', part(labels, data.full! + expected.day - 1, 'day'))
   }
   if (
     actual.monthCode !== expected.monthCode &&
-    raw.some(part => part.type === 'month')
+    arraySome(raw, part => part.type === 'month')
   )
     changes.set('month', monthLabel(labels, calendar, expected.monthCode))
   if (actual.year !== expected.year) {

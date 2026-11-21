@@ -1,4 +1,7 @@
-import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  arraySome,
+} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type Formats,
   type RangePatternPart,
@@ -487,7 +490,7 @@ export function parseDateTimeSkeleton(
           const range = patterns[field]!.patternParts.map(
             part => part.pattern
           ).join('')
-          if (yearFields.some(yearField => !range.includes(yearField))) {
+          if (arraySome(yearFields, yearField => !range.includes(yearField))) {
             delete patterns[field]
           }
         }

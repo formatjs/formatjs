@@ -1,6 +1,8 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arrayEvery,
+  arraySome,
   floor,
   mathAbs,
   numberIsFinite,
@@ -265,7 +267,7 @@ export function legacyCalendarParts(
     try {
       raw = parts.call(value.formatter, value.milliseconds)
       if (
-        !raw.some(part =>
+        !arraySome(raw, part =>
           ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'].includes(
             part.type
           )
@@ -323,7 +325,7 @@ export function legacyCalendarParts(
       floor((value.milliseconds - 946684800000) / cycle) * cycle,
     raw = parts.call(value.formatter, surrogate)
   if (
-    !raw.some(part =>
+    !arraySome(raw, part =>
       ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'].includes(
         part.type
       )
@@ -368,7 +370,7 @@ function restoreCalendarParts(
     short = (value: number): string =>
       Array.from(formatTwo(value)).slice(-2).join(''),
     changes = new Map<string, string>()
-  if (raw.some(part => part.type === 'year')) {
+  if (arraySome(raw, part => part.type === 'year')) {
     const sampleText = firstPart(controls, 'year'),
       two =
         options.year === '2-digit' ||
@@ -388,13 +390,13 @@ function restoreCalendarParts(
         firstPart(parts.call(value.formatter, value.milliseconds), 'year')
       )
   }
-  if (raw.some(part => part.type === 'month'))
+  if (arraySome(raw, part => part.type === 'month'))
     changes.set('month', firstPart(controls, 'month'))
-  if (raw.some(part => part.type === 'day')) {
+  if (arraySome(raw, part => part.type === 'day')) {
     const two = firstPart(controls, 'day') === formatTwo(3)
     changes.set('day', two ? formatTwo(date.day) : format(date.day))
   }
-  if (era && raw.some(part => part.type === 'era'))
+  if (era && arraySome(raw, part => part.type === 'era'))
     changes.set(
       'era',
       eraLabel(
@@ -414,7 +416,8 @@ function restoreCalendarParts(
       )
     )
   if (
-    raw.every(
+    arrayEvery(
+      raw,
       part => !changes.has(part.type) || changes.get(part.type) === part.value
     )
   )
@@ -459,7 +462,8 @@ export function legacyCalendarRangeParts(
         two: Intl.DateTimeFormatPart[]
       ): boolean =>
         one.length === two.length &&
-        one.every(
+        arrayEvery(
+          one,
           (part, index) =>
             part.type === two[index].type && part.value === two[index].value
         )

@@ -336,3 +336,48 @@ test('Duration locale formatting ignores shadowed public fields', () => {
     value.toLocaleString('en', {style: 'digital', fractionalDigits: 9})
   ).toBe('1:02:03.004005006')
 })
+
+test.each(['every', 'some'] as const)(
+  'owned formatters ignore replaced private-list %s predicates',
+  name => {
+    const start = new Temporal.PlainDate(2024, 2, 29)
+    const end = new Temporal.PlainDate(2024, 3, 1)
+    const rangeFormatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+    const expectedRange = rangeFormatter.formatRange(start, end)
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, name)!
+    const originalApply = Reflect.apply
+    const failure = {message: 'Mutable provider array predicate reached'}
+    let actual: unknown
+    try {
+      Reflect.apply = function () {
+        throw failure
+      }
+      Object.defineProperty(Array.prototype, name, {
+        ...original,
+        value: function () {
+          throw failure
+        },
+      })
+      const date = new Temporal.PlainDate(2024, 2, 29)
+      actual = [
+        new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'}).format(
+          date
+        ),
+        date.toLocaleString('en', {year: 'numeric'}),
+        new Temporal.Duration(0, 0, 0, 0, 2).toLocaleString('en', {
+          style: 'long',
+        }),
+        rangeFormatter.formatRange(start, end),
+      ]
+    } finally {
+      Reflect.apply = originalApply
+      Object.defineProperty(Array.prototype, name, original)
+    }
+    expect(actual).toEqual(['2024', '2024', '2 hours', expectedRange])
+  }
+)
