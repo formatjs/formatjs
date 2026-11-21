@@ -4,6 +4,71 @@ use serde_json::Value;
 use std::ptr;
 const EN: &str = include_str!(env!("FORMATJS_DATETIME_EN"));
 const HEBREW: &str = include_str!(env!("FORMATJS_HEBREW_EN"));
+
+#[test]
+fn nonpositive_calendar_display_years_follow_the_pattern_rule() {
+    use formatjs_intl_datetimeformat::{
+        DateTimeValue, Runtime,
+        fields::{Components, NumericWidth},
+        registry::ResolutionOptions,
+        selection::Options,
+    };
+    use formatjs_intl_datetimeformat_calendars::{
+        Provider,
+        calendar::{Calendar, Overflow},
+    };
+    let runtime = Runtime::default();
+    runtime.add_locale_data(EN).unwrap();
+    runtime
+        .add_calendar_locale_data(include_str!(env!("FORMATJS_BUDDHIST_EN")))
+        .unwrap();
+    Provider::arithmetic("buddhist").unwrap().register(&runtime);
+    let calendar = Calendar::from_name("buddhist").unwrap();
+    for width in [NumericWidth::Numeric, NumericWidth::TwoDigit] {
+        let construction = runtime.begin();
+        let resolution = construction
+            .resolve(
+                &["en".into()],
+                &ResolutionOptions {
+                    calendar: Some("buddhist".into()),
+                    ..ResolutionOptions::default()
+                },
+            )
+            .unwrap();
+        assert_eq!(resolution.calendar, "buddhist");
+        let zone = construction.time_zone(Some("UTC")).unwrap();
+        let config = construction
+            .capture(
+                resolution,
+                Components {
+                    year: Some(width),
+                    ..Components::default()
+                },
+            )
+            .unwrap()
+            .select(&Options::default())
+            .unwrap();
+        let formatter = construction.finish(config, zone);
+        for (year, numeric, two_digit) in [(-1, "2", "02"), (0, "1", "01"), (1, "1", "01")] {
+            let value = DateTimeValue::Number(
+                (calendar.to_epoch_day(year, 1, 1, Overflow::Reject).unwrap() * 86_400_000) as f64,
+            );
+            let expected = match width {
+                NumericWidth::Numeric => numeric,
+                NumericWidth::TwoDigit => two_digit,
+            };
+            let parts = serde_json::to_value(formatter.format_to_parts(&value).unwrap()).unwrap();
+            assert!(
+                parts
+                    .as_array()
+                    .unwrap()
+                    .contains(&serde_json::json!({"type":"year","value":expected})),
+                "year={year}, parts={parts}"
+            );
+        }
+    }
+}
+
 unsafe fn info(registry: *const DateTimeRegistry) -> Value {
     let mut bytes = DateTimeBytes {
         data: ptr::null_mut(),

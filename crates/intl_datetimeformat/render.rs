@@ -305,7 +305,15 @@ impl RenderData {
                     let (field, kind, value) = match name {
                         "weekday" => (Field::Weekday, PartKind::Weekday, i32::from(civil.weekday)),
                         "era" => (Field::Era, PartKind::Era, 0),
-                        "year" => (Field::Year, PartKind::Year, fields.year),
+                        "year" => {
+                            // ECMA-402 §11.5.4 step 15.f.iv applies to every calendar.
+                            let year = if fields.year <= 0 {
+                                1_i32.checked_sub(fields.year).ok_or(Error::InvalidDate)?
+                            } else {
+                                fields.year
+                            };
+                            (Field::Year, PartKind::Year, year)
+                        }
                         "month" => (
                             Field::Month,
                             PartKind::Month,

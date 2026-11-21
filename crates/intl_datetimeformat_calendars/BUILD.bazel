@@ -112,12 +112,14 @@ formatjs_rust_test(
     srcs = ["ffi.test.rs"],
     compile_data = [
         "//crates/intl_datetimeformat:locale-data/en.json",
+        "//packages/intl-datetimeformat-calendar-buddhist:locale-data-json/en.json",
         "//packages/intl-datetimeformat-calendar-hebrew:locale-data-json/en.json",
     ],
     crate_name = "intl_datetimeformat_calendars_test",
     edition = "2024",
     rustc_env = {
         "FORMATJS_DATETIME_EN": "$(execpath //crates/intl_datetimeformat:locale-data/en.json)",
+        "FORMATJS_BUDDHIST_EN": "$(execpath //packages/intl-datetimeformat-calendar-buddhist:locale-data-json/en.json)",
         "FORMATJS_HEBREW_EN": "$(execpath //packages/intl-datetimeformat-calendar-hebrew:locale-data-json/en.json)",
     },
     deps = [
