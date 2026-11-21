@@ -193,3 +193,111 @@ it('reads string overflow after syntax and calendar but before range checks', ()
     })
   ).toThrow(reached)
 })
+
+it('extracts calendars from valid strings outside the Temporal date range', () => {
+  const date = Temporal.PlainDate.from('2020-02-29')
+  const datetime = Temporal.PlainDateTime.from('2020-02-29T12:34')
+  const zoned = Temporal.ZonedDateTime.from('2020-02-29T12:34[UTC]')
+  for (const text of [
+    '+999999-01-01',
+    '-999999-12-31T23:59:60.123456789Z[Unknown/Zone]',
+    '+275760-09-14T12:34+23:59[u-ca=ISO8601]',
+  ]) {
+    expect(date.withCalendar(text).toString(), text).toBe('2020-02-29')
+    expect(datetime.withCalendar(text).toString(), text).toBe(
+      '2020-02-29T12:34:00'
+    )
+    expect(zoned.withCalendar(text).toString(), text).toBe(
+      '2020-02-29T12:34:00+00:00[UTC]'
+    )
+    expect(
+      Temporal.PlainDate.from({
+        calendar: text,
+        year: 2020,
+        month: 2,
+        day: 29,
+      }).toString(),
+      text
+    ).toBe('2020-02-29')
+  }
+  expect(date.withCalendar('+999999-01-01[u-ca=gregory]').calendarId).toBe(
+    'gregory'
+  )
+  for (const text of [
+    '+999999-02-29',
+    '-000000-01-01',
+    '+999999-01-01T24:00',
+    '+999999-01-01[u-ca=unknown]',
+    '+999999-01-01[!unknown=value]',
+  ])
+    expect(() => date.withCalendar(text), text).toThrow(RangeError)
+})
+
+it('uses calendar slots and defaults only field-bag calendars', () => {
+  const date = new Temporal.PlainDate(2020, 2, 29)
+  const datetime = new Temporal.PlainDateTime(2020, 2, 29)
+  const zoned = new Temporal.ZonedDateTime(0n, 'UTC')
+  for (const calendar of [
+    new Temporal.PlainDate(2020, 2, 29, 'gregory'),
+    Temporal.PlainDateTime.from('2020-02-29T12:34[u-ca=gregory]'),
+    new Temporal.PlainYearMonth(2020, 2, 'gregory'),
+    new Temporal.PlainMonthDay(2, 29, 'gregory', 2020),
+    new Temporal.ZonedDateTime(0n, 'UTC', 'gregory'),
+  ]) {
+    for (const key of [
+      'calendar',
+      'calendarId',
+      'toString',
+      Symbol.toPrimitive,
+    ]) {
+      Object.defineProperty(calendar, key, {
+        get() {
+          throw new Error('Public calendar read')
+        },
+      })
+    }
+    for (const value of [date, datetime, zoned]) {
+      expect(value.withCalendar(calendar).calendarId).toBe('gregory')
+    }
+    expect(
+      Temporal.PlainDate.from({calendar, year: 2020, month: 2, day: 29})
+        .calendarId
+    ).toBe('gregory')
+  }
+  for (const value of [date, datetime, zoned]) {
+    for (const calendar of [
+      undefined,
+      null,
+      1,
+      1n,
+      true,
+      Symbol('calendar'),
+      {
+        toString() {
+          throw new Error('Coercion reached')
+        },
+      },
+    ]) {
+      expect(() => value.withCalendar(calendar)).toThrow(TypeError)
+    }
+    expect(() => Reflect.apply(value.withCalendar, value, [])).toThrow(
+      TypeError
+    )
+  }
+  let reads = 0
+  expect(
+    Temporal.PlainDate.from({
+      year: 2020,
+      month: 2,
+      day: 29,
+      get calendar() {
+        reads++
+        return undefined
+      },
+    }).calendarId
+  ).toBe('iso8601')
+  expect(reads).toBe(1)
+  expect(
+    Temporal.PlainDateTime.from({year: 2020, month: 2, day: 29}).calendarId
+  ).toBe('iso8601')
+})
