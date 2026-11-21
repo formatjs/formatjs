@@ -33,7 +33,6 @@ import {
   createDataProperty,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
-import Decimal from '@formatjs/bigdecimal'
 import {FormatDateTime} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTime.js'
 import {FormatDateTimeRange} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRange.js'
 import {FormatDateTimeRangeToParts} from '#packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.js'
@@ -56,6 +55,8 @@ import {
   type RawCalendarLocaleData,
   type RawDateTimeLocaleData,
 } from '#packages/intl-datetimeformat/types.js'
+
+const now = Date.now
 
 const UPPERCASED_LINKS = Object.keys(links).reduce(
   (all: Record<string, string>, l) => {
@@ -119,9 +120,9 @@ const formatDescriptor = {
     if (boundFormat === undefined) {
       // https://tc39.es/proposal-unified-intl-numberformat/section11/numberformat_diff_out.html#sec-number-format-functions
       boundFormat = (date?: Date | number | TemporalDateTimeInput) => {
-        let x: Decimal | TemporalDateTimeValue
+        let x: number | TemporalDateTimeValue
         if (date === undefined) {
-          x = new Decimal(Date.now())
+          x = now()
         } else {
           x = ToDateTimeFormattable(date)
         }
@@ -363,9 +364,9 @@ const {formatToParts} = {
     date?: number | Date | TemporalDateTimeInput
   ) {
     getInternalSlots(this)
-    let x: Decimal | TemporalDateTimeValue
+    let x: number | TemporalDateTimeValue
     if (date === undefined) {
-      x = new Decimal(Date.now())
+      x = now()
     } else {
       x = ToDateTimeFormattable(date)
     }

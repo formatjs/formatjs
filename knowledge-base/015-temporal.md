@@ -8,6 +8,13 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The [numeric timestamp clipping audit](audits/temporal-timeclip-audit.md) maps
+all TimeClip steps to TS/Rust. DateTimeFormat keeps numeric timestamps as primitive
+Numbers through clipping; private Decimal coercion cannot intercept them.
+Temporal records keep their existing nanosecond path. Legacy formatter projection
+passes primitive milliseconds, while omitted numeric dates use captured Date.now.
+Full input-brand and formatter algorithms remain separate audit work.
+
 The shared [UTC date arithmetic audit](audits/temporal-date-operations-audit.md)
 provides twelve ECMA-262 section mappings, branch and numeric-bound proofs, plus
 builtin UTC controls for a full Gregorian cycle's month boundaries. Its scope is
