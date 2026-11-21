@@ -22,6 +22,7 @@ formatjs_library(
         "canonicalizer.ts",
         "emitter.ts",
         "index.ts",
+        "locale-brand.ts",
         "parser.ts",
         "polyfill.ts",
         "polyfill-force.ts",
@@ -198,6 +199,7 @@ rolldown_bundle(
     format = "iife",
     target = "es2020",
     visibility = [
+        "//packages/intl-locale:__pkg__",
         "//packages/temporal:__pkg__",
         "//tools/test262:__pkg__",
     ],

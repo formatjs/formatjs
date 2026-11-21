@@ -21,6 +21,7 @@ formatjs_library(
     srcs = [
         "get_internal_slots.ts",
         "index.ts",
+        "locale-brand.ts",
         "polyfill.ts",
         "polyfill-force.ts",
         "preference-data.ts",
@@ -71,17 +72,25 @@ formatjs_library(
 formatjs_test(
     name = "intl-locale_test",
     srcs = [
+        "tests/canonicalization-brand.test.ts",
         "tests/index.test.ts",
         "tests/info-spec.test.ts",
         "tests/likely-subtags.test.ts",
         "tests/minimize.test.ts",
     ],
+    data = [
+        ":test262-polyfill.js",
+        "//packages/intl-getcanonicallocales:test262-polyfill.js",
+    ],  # keep: independent bundles loaded through runfiles
     no_copy_to_bin = [
         "//:package.json",
     ],
+    tsconfig_types = ["node"],
     deps = [
         ":intl-locale",
+        "//:node_modules/@bazel/runfiles",
         "//:node_modules/@formatjs/intl-getcanonicallocales",
+        "//:node_modules/@types/node",
         "//:node_modules/vitest",
     ],
 )
