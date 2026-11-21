@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -219,6 +220,10 @@ export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
 }
 export function isoDay(year: number, month: number, day: number): number {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L505
+  // L505: hour 12 plus own-only zero defaults form noon, with zero day carry.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L890
+  // L890: combine the ISO date with that noon clock before checking local limits.
   return epochDayOf(isoToEpochNanoseconds({year, month, day, hour: 12}))
 }
 const dateSnapshots = new WeakMap<
@@ -768,7 +773,7 @@ function unroundedDifference(
   calendar: string,
   largest: string
 ): DurationFields {
-  if (Object.hasOwn(timeUnitNanoseconds, largest))
+  if (HasOwnProperty(timeUnitNanoseconds, largest))
     return balanceDurationTime(
       end - start,
       clockNames.indexOf(largest as TimeUnit) + 4

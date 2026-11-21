@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -85,7 +86,7 @@ export function unitOption(value: unknown): string | undefined {
   return unit
 }
 export function timeUnit(unit: string | undefined): TimeUnit {
-  if (unit === undefined || !Object.hasOwn(timeUnitNanoseconds, unit))
+  if (unit === undefined || !HasOwnProperty(timeUnitNanoseconds, unit))
     throw new RangeErrorConstructor('Expected a time unit')
   return unit as TimeUnit
 }

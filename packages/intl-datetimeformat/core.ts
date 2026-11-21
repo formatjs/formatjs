@@ -1,3 +1,4 @@
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
@@ -665,13 +666,10 @@ function updateAvailableCalendars(data: DateTimeFormatLocaleInternalData) {
     .get(data)!
     .filter(
       calendar =>
-        Object.prototype.hasOwnProperty.call(data.formats, calendar) &&
+        HasOwnProperty(data.formats, calendar) &&
         (calendar === 'gregory' ||
           calendar === 'iso8601' ||
-          Object.prototype.hasOwnProperty.call(
-            DateTimeFormat.calendarData,
-            calendar
-          ))
+          HasOwnProperty(DateTimeFormat.calendarData, calendar))
     )
 }
 

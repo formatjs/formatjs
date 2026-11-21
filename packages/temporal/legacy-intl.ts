@@ -3,7 +3,7 @@ import {
   TypeErrorConstructor,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {createObject} from '#packages/temporal/intrinsics.js'
+import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
 import {
   registerTemporalDateTimeNamespace,
   ToDateTimeFormattable,
@@ -137,7 +137,7 @@ export function installLegacyDateTimeFormat(
   ): Intl.DateTimeFormat {
     let source: Record<PropertyKey, unknown> | undefined
     const snapshot: Record<string, unknown> = createObject(null)
-    const tracked = new Proxy(createObject(null), {
+    const tracked = createProxy(createObject(null), {
       get(_target, key) {
         if (source === undefined) {
           if (options === null)

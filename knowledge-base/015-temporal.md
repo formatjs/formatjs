@@ -80,6 +80,17 @@ ambiguity is recorded in the separate spec-issues document.
 Zoned string conversion now reads disambiguation, offset and overflow before
 representability checks. Native field parsing validates syntax/ISO fields and
 defers epoch-range conversion until those JS option reads complete.
+Private ISO clock defaults use own-field checks in JS and native adapters;
+missing fields cannot observe inherited prototype getters. Public field bags
+retain inherited Get semantics. Constructor wrappers bound private argument
+reads by the dense Proxy argument list length. All ten private Proxy handlers
+have null prototypes, using captured Proxy/Object.setPrototypeOf. Shared own-field
+checks retain a bound hasOwnProperty intrinsic; locale matcher captures locally
+to preserve dependency layering. Other intrinsic dependencies remain open.
+ZonedDateTime constructors now validate epoch representability before timezone
+and calendar arguments, preserving RangeError precedence. Noon/date combination
+and the first four zoned-constructor steps gain six individual spec-line traces;
+dependent range calls, allocation and identifier parsing remain open.
 
 ## Native performance direction
 
