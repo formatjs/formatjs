@@ -1,5 +1,11 @@
 # Temporal implementation
 
+The [display-year audit](audits/temporal-calendar-year-audit.md) applies published
+ECMA-402 §11.5.4 step 15.f.iv to every calendar. Nonpositive provider years become
+`1 - year` before numeric or two-digit rendering in TS/Rust. Buddhist year-zero
+controls differ from native ICU; that disagreement is documented separately.
+Calendar arithmetic and full ToLocalTime contracts remain open.
+
 The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)
 adds fractional-offset cancellation at nanosecond boundaries near both timestamp
 limits. A deliberate premature Number conversion fails the new regression;

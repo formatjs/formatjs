@@ -46,6 +46,29 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test.each([
+  [-544, '2'],
+  [-543, '1'],
+  [-542, '1'],
+] as const)(
+  'normalizes Buddhist display years for owned Temporal year %i',
+  (year, displayYear) => {
+    const date = new Temporal.PlainDate(year, 1, 1)
+    const options = {
+      calendar: 'buddhist',
+      year: 'numeric',
+      timeZone: 'UTC',
+    } as const
+    const formatter = new DateTimeFormat('en', options)
+    expect(formatter.resolvedOptions().calendar).toBe('buddhist')
+    expect(formatter.formatToParts(date as any)).toContainEqual({
+      type: 'year',
+      value: displayYear,
+    })
+    expect(date.toLocaleString('en', options)).toBe(`${displayYear} BE`)
+  }
+)
+
 test('creates Temporal format parts without mutable Array.from', () => {
   const value = new Temporal.PlainDate(2020, 2, 3)
   const formatter = new DateTimeFormat('en', {

@@ -2,6 +2,7 @@
 //:rust_datetime_pattern_test
 //crates/intl_datetimeformat/tests:icu4j_conformance_snapshot_test
 //crates/intl_datetimeformat:intl_datetimeformat_test
+//crates/intl_datetimeformat_calendars:intl_datetimeformat_calendars_test
 //crates/temporal:context_test
 //crates/temporal:ffi_test
 //crates/temporal:identifiers_test

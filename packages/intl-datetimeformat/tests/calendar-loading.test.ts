@@ -2,6 +2,7 @@ import {expect, test} from 'vitest'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import hebrew from '#packages/intl-datetimeformat/calendars/implementations/hebrew.js'
 import chinese from '#packages/intl-datetimeformat/calendars/implementations/chinese.js'
+import buddhist from '#packages/intl-datetimeformat/calendars/implementations/buddhist.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import type {
   RawDateTimeLocaleData,
@@ -31,6 +32,40 @@ const formatter = (calendar: string) =>
     month: 'long',
     day: 'numeric',
   })
+
+test.each([
+  ['-000544-01-01T00:00:00Z', '2', '02'],
+  ['-000543-01-01T00:00:00Z', '1', '01'],
+  ['-000542-01-01T00:00:00Z', '1', '01'],
+])(
+  'normalizes nonpositive Buddhist display years for %s',
+  (iso, numeric, twoDigit) => {
+    DateTimeFormat.__addLocaleData(base)
+    DateTimeFormat.__addCalendarLocaleData(patch('buddhist'))
+    DateTimeFormat.__addCalendarData(buddhist)
+    const date = new Date(iso)
+    for (const [width, year] of [
+      ['numeric', numeric],
+      ['2-digit', twoDigit],
+    ] as const) {
+      const options = {
+        calendar: 'buddhist',
+        year: width,
+        timeZone: 'UTC',
+      } as const
+      const actual = new DateTimeFormat('en', options)
+      expect(actual.resolvedOptions().calendar).toBe('buddhist')
+      const native = new Intl.DateTimeFormat('en', options).formatToParts(date)
+      expect(
+        actual.formatToParts(date),
+        JSON.stringify({native})
+      ).toContainEqual({
+        type: 'year',
+        value: year,
+      })
+    }
+  }
+)
 
 test('calendar arithmetic and locale patterns load independently in either order', () => {
   DateTimeFormat.__addLocaleData(base)

@@ -60,6 +60,20 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- [Calendar display-year normalization #8106](https://github.com/formatjs/formatjs/pull/8106):
+  [Source audit](temporal-calendar-year-audit.md) for
+  ECMA-402 §11.5.4 step 15.f.iv applies without a calendar guard in TS/Rust.
+  Real Buddhist-provider controls reproduce the previous −1/0 output and require
+  the published 2/1 result before numeric and two-digit rendering. Native ICU's
+  disagreement is recorded separately; no specification defect is inferred.
+  Complete calendar and ToLocalTime contracts remain open. Four focused gates
+  pass, followed by the isolated full 42-case pattern oracle and 170/171 targets
+  in the expanded consumer matrix (65 executed, 106 cached). Sole failure matches
+  both existing raw ListFormat constructor-realm baseline keys/messages exactly;
+  the baseline-aware gate passes. Eight package assemblies build, all 40 Temporal
+  backend/class gates pass, and the ICU snapshot passes unchanged. No baseline,
+  exclusions or timeout changes. Owned Temporal integration passes 22 cases.
+
 - [Local-offset precision #8105](https://github.com/formatjs/formatjs/pull/8105):
   [Precision evidence](temporal-local-offset-precision-audit.md) for
   ECMA-402 §11.5.11 steps 1–3 retain partial status. Thirty-six new boundary
@@ -69,6 +83,9 @@ Current pass:
   and two compiler gates to the inventory (170 targets); this does not imply
   that the full expanded matrix has been rerun. All six focused runtime/compiler
   gates pass (four executed, two cached). No baseline, exclusion or timeout changes.
+  Exact-head checkpoint 7d7ea217fd123459189e7e6f7d6f2cbaad068591: hooks,
+  [all-target tests](https://formatjs.buildbuddy.io/invocation/869731c6-62d4-4dea-a1c1-7429d368c664),
+  cross-build and native smoke statuses are successful.
 
 - [Date pattern producer #8104](https://github.com/formatjs/formatjs/pull/8104): [ECMA-402 §11.5.4 step map](temporal-date-pattern-audit.md)
   records every top-level step and separates reviewed record/numeric paths from
