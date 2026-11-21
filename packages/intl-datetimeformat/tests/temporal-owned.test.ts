@@ -46,6 +46,44 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test.each(['get', 'set'] as const)(
+  'formats owned Temporal values without WeakMap.prototype.%s',
+  method => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    } as const
+    for (const warm of [false, true]) {
+      const formatter = new DateTimeFormat('en', options)
+      if (warm) formatter.formatToParts(value as any)
+      const original = WeakMap.prototype[method]
+      let actual: string[] | undefined, error: unknown
+      try {
+        WeakMap.prototype[method] = () => {
+          throw new Error(`Mutable WeakMap.${method}`)
+        }
+        actual = [
+          formatter.format(value as any),
+          formatter
+            .formatToParts(value as any)
+            .map(part => part.value)
+            .join(''),
+          value.toLocaleString('en', options),
+        ]
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(WeakMap.prototype, method, {value: original})
+      }
+      expect(error, `warm=${warm}: ${(error as Error)?.stack}`).toBeUndefined()
+      expect(actual).toEqual(Array(3).fill('01/02/2024'))
+    }
+  }
+)
+
 test.each([
   [-544, '2'],
   [-543, '1'],

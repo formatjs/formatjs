@@ -6,10 +6,16 @@ Implements UTS #35 locale matching algorithms: Lookup matcher and BestFit matche
 
 ## ECMA-402 Conformance
 
-- **Section 9.1** — `ResolveLocale` abstract operation
+- **Section 9.2.8** — `ResolveLocale` abstract operation
 - **UTS #35 Section 4.4** — Language Matching (CLDR distance-based algorithm)
 
 ## Design Decisions
+
+Private available-locale and prepared-match WeakMap caches capture get/set during
+module initialization. Public DateTimeFormat controls cover both lookup and
+best-fit matching after WeakMap methods are replaced. The
+[formatter-cache audit](audits/temporal-private-format-cache-audit.md) records the
+actual constructor traces; complete matching algorithms remain separate work.
 
 ### ICU best-fit matching
 

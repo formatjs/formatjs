@@ -4,6 +4,12 @@
 
 ## Purpose
 
+Private slot access captures WeakMap get/set/has. Number-pattern caches also
+capture get/set and the constructor used by nested composition maps. The
+[formatter-cache audit](audits/temporal-private-format-cache-audit.md) records the
+DateTimeFormat consumer trace and native controls. Compact-magnitude indexes and
+complete NumberFormat contracts retain separate audit status.
+
 Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 657 locales.
 
 Single-value parts use shared CreatePartsArray for ordered private-list projection
