@@ -188,6 +188,43 @@ Current pass:
   (`OrdinaryHasInstance` and formatter facades) and mutable intrinsic dependencies
   remain open. No new line signoffs.
 
+- Exact rounding arithmetic: [TypeScript](../../packages/temporal/rounding.ts)
+  and [Rust](../../crates/temporal/rounding.rs) now carry individual pinned-line
+  explanations for 40 source lines. Newly traced: NegateRoundingMode (300–304),
+  GetUnsignedRoundingMode (819), ApplyUnsignedRoundingMode (932–947) and
+  RoundNumberToIncrement (964–975). The six already indexed
+  RoundNumberToIncrementAsIfPositive lines (996–1001) are reverified, not counted
+  as new. All 18 signed table entries were compared with the positive-column
+  branches and directional-mode reversal.
+  Exact quotient/remainder arithmetic replaces fractional division; a nonzero
+  remainder brackets the quotient. Comparing twice that remainder with quantum
+  compares both distances without division. Tie parity uses the lower quotient;
+  testing `lower % 2 != 0` preserves parity for negative Euclidean quotients too.
+  Signed rounding applies the same core to the absolute numerator and reverses
+  only ceil/floor and halfCeil/halfFloor; outer sign restoration commutes with
+  multiplication by the positive increment. Calendar callers can represent their
+  rational quotient with an integer numerator and positive span; caller endpoint
+  selection/scaling and option/range validation remain separate open work.
+  The Rust i64 fast path widens quotient/remainder before addition and product,
+  retaining results across signed-64-bit boundaries. Temporal's validated bounds
+  fit i128; this signoff does not claim arbitrary unbounded Rust integer inputs.
+  Existing independent ICU oracles cover all nine modes, both signs, exact
+  multiples, midpoint neighbors, even/odd quotient ties and wide values. The
+  exact-time oracle shifts by an even quantum multiple before ICU rounding;
+  the duration oracle uses signed ICU rounding directly. No algorithm defect
+  found in these reviewed arithmetic steps. Production executable tokens are unchanged.
+  Fixture review exposed a coverage gap: existing half-even midpoint rows all
+  rounded to zero. Extended ICU sample inputs with three-half/five-half quanta and
+  Instant limit-adjacent midpoints; expected outputs still come from ICU. Current
+  fixtures contain 3,987 Instant rows and 7,130 signed Duration rounding/total rows.
+  Both now include nonzero half-even results for each sign/parity combination.
+  Updated the shared duration-oracle count and current Rust coverage summary;
+  historical WASM measurement records retain their original counts.
+  All ten validation targets pass: TS ICU/public clock/relative controls, the
+  Rust public suite, full Node Instant/Duration Test262, installed Hermes and
+  native ISO/Duration ICU oracles in source and optimized bytecode modes.
+  No exclusions or accepted-failure baselines changed.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -198,9 +235,11 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [internal property reads](https://github.com/formatjs/formatjs/pull/8068),
 [primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069),
 [host-exotic objects](https://github.com/formatjs/formatjs/pull/8070),
-[provider host objects](https://github.com/formatjs/formatjs/pull/8071).
+[provider host objects](https://github.com/formatjs/formatjs/pull/8071),
+[exact rounding audit](https://github.com/formatjs/formatjs/pull/8072).
 
-New traces: 47 source lines. All other baseline traces retain their linked PR status.
+New traces: 81 source lines. The six existing RoundNumberToIncrementAsIfPositive
+traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
 
@@ -218,7 +257,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       23 |                         418 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       57 |                         384 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                       12 |                         207 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       42 |                         660 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
@@ -249,7 +288,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-gettemporaldisambiguationoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L270)
   - Open: [281–285](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L281-L285).
 - [`sec-temporal-negateroundingmode`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L289)
-  - Open: [300–304](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L300-L304).
+  - Traced: [300–304](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L300-L304).
 - [`sec-temporal-gettemporaloffsetoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L308)
   - Open: [320–328](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L320-L328).
 - [`sec-temporal-gettemporalshowcalendarnameoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L332)
@@ -288,11 +327,11 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-formattimestring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L774)
   - Open: [795–801](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L795-L801).
 - [`sec-getunsignedroundingmode`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L807)
-  - Open: [819](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L819).
+  - Traced: [819](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L819).
 - [`sec-applyunsignedroundingmode`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L918)
-  - Open: [932–947](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L932-L947).
+  - Traced: [932–947](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L932-L947).
 - [`sec-temporal-roundnumbertoincrement`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L951)
-  - Open: [964–975](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L964-L975).
+  - Traced: [964–975](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L964-L975).
 - [`sec-temporal-roundnumbertoincrementasifpositive`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L979)
   - Traced: [996–1001](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L996-L1001).
 - [`sec-temporal-iso8601grammar`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1005)

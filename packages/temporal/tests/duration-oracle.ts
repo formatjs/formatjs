@@ -67,7 +67,7 @@ export function checkDurationOracle(
     }
     scalarCount++
   }
-  equal(scalarCount, 5430, 'Scalar ICU controls')
+  equal(scalarCount, 7130, 'Scalar ICU controls')
   const plainCounts = checkPlainRelativeOracle(
     Temporal,
     plain,

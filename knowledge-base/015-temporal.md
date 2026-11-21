@@ -40,6 +40,14 @@ host-object identity; owned DurationFormat accepts their options and duration
 fields, including through Temporal's locale method. Other helpers and cross-realm
 allocation remain open.
 
+Exact signed and exact-time rounding now have individual TS/Rust traces for
+40 pinned spec lines: 34 newly signed off, six existing traces reverified. Integer
+quotient/remainder arithmetic preserves midpoint and parity behavior without
+floating-point division. Caller option, calendar-scaling and range checks remain
+separate audit work; production executable code is unchanged. ICU fixtures now
+include nonzero half-even results for both signs and both lower-quotient parities:
+3,987 Instant rounding rows and 7,130 signed Duration rounding/total rows.
+
 ## Native performance direction
 
 Goal: native Rust faster than TS; pure TS faster than both references across
