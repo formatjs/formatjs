@@ -76,6 +76,7 @@ assertions. Gazelle, audit ledger integrity and source-link bounds pass.
 
 Full CI on parent #8097 separately exposed stale DateTimeFormat package metadata
 and two composite typecheck gates from the numeric timestamp change. These were
-outside the earlier matrix and remain pending repair; local consumer results do
+outside the earlier matrix; the [timestamp integration follow-up](temporal-timeclip-audit.md#composite-build-and-package-integration)
+repairs them and expands validation to 116 targets. Local consumer results do
 not establish full CI success. No new specification issue identified; historical
 Temporal source-line credits remain unchanged.
