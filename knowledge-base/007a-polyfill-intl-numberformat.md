@@ -6,6 +6,12 @@
 
 Full polyfill for `Intl.NumberFormat` supporting decimal, currency, percent, unit, and compact notation formatting across 657 locales.
 
+Single-value parts use shared CreatePartsArray for ordered private-list projection
+and own data properties. This implements the result-building steps of ECMA-402
+§16.5.6 without iterator/push/index-setter hooks. PartitionNumberPattern and public
+method contracts retain separate audit status; see the
+[parts-result audit](audits/temporal-parts-result-audit.md).
+
 ## Dependencies
 
 - `@formatjs/ecma402-abstract` — Core ECMA-402 operations
