@@ -362,6 +362,12 @@ class PlainDateTimeValue {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toPlainDateTimeSlot(one).epochNanoseconds,
       b = toPlainDateTimeSlot(two).epochNanoseconds
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L920-L922
+    // L920: epoch-day order equals ISO-date order; each clock lies within one day.
+    // L921: different dates dominate the entire clock remainder.
+    // L922: on equal dates, exact nanoseconds compare the six clock fields.
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L78
+    // L78: return the private date-time comparison as a Number sign.
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateTimeObject {

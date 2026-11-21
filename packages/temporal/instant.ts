@@ -95,6 +95,8 @@ const getSlot =
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
 export function validateInstant(value: bigint): bigint {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
+  // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
   if (value < -limit || value > limit)
     throw new RangeErrorConstructor('Instant out of range')
   return value
@@ -220,6 +222,12 @@ class InstantValue implements InstantObject {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const left = toInstant(one),
       right = toInstant(two)
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L435-L437
+    // L435: a greater first epoch returns 1.
+    // L436: a lesser first epoch returns -1.
+    // L437: equal epochs return 0.
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L85
+    // L85: compare the private epochs and return a Number sign.
     return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
