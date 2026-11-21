@@ -279,8 +279,14 @@ function findBoundary(
 
     // Abbreviations cannot suppress mandatory paragraph boundaries (SB4).
     if (breaks && ruleKey !== '4') {
+      const textBeforeBreak = stringBeforeBreak.trim()
       for (const suppression of mergedSegmentationTypeValue.suppressions) {
-        if (stringBeforeBreak.trim().endsWith(suppression)) {
+        // The abbreviation must be a whole word: `S.` suppresses the break in
+        // `S. Smith`, but not after `AWS.`.
+        if (
+          textBeforeBreak.endsWith(suppression) &&
+          !endsWithWordCharacter(textBeforeBreak.slice(0, -suppression.length))
+        ) {
           return breaksAtResult(false, '0.4')
         }
       }
@@ -295,6 +301,13 @@ function findBoundary(
 function isSegmentWordLike(segment: string): boolean {
   wordCharacters ??= new RegExp(SegmentationRules.root.word.wordCharacters)
   return wordCharacters.test(segment)
+}
+
+function endsWithWordCharacter(text: string): boolean {
+  // The last two code units hold the last code point, whether or not it is
+  // a surrogate pair.
+  const lastCodePoint = Array.from(text.slice(-2)).pop()
+  return lastCodePoint !== undefined && isSegmentWordLike(lastCodePoint)
 }
 
 const createSegmentDataObject = (

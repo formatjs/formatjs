@@ -51,3 +51,30 @@ it('uses root rules for Serbian and language tailorings for regional locales', (
     Segmenter.supportedLocalesOf(['sr', 'en-US'], {localeMatcher: 'lookup'})
   ).toEqual(['sr', 'en-US'])
 })
+
+it('only applies abbreviation suppressions to whole words', () => {
+  const segmenter = new Segmenter('en', {granularity: 'sentence'})
+  const split = (input: string) =>
+    Array.from(segmenter.segment(input)).map(part => part.segment)
+
+  // `S.`, `A.`, `I.` and `O.` are en suppressions, but here they end a longer word.
+  expect(split('We use AWS. It works.')).toEqual(['We use AWS. ', 'It works.'])
+  expect(split('It is in the USA. We went.')).toEqual([
+    'It is in the USA. ',
+    'We went.',
+  ])
+  expect(split('Ask the FBI. They know.')).toEqual([
+    'Ask the FBI. ',
+    'They know.',
+  ])
+  expect(split('He shouted NO. Then left.')).toEqual([
+    'He shouted NO. ',
+    'Then left.',
+  ])
+
+  // Whole-word abbreviations still suppress the break.
+  expect(split('He met Mr. Smith.')).toEqual(['He met Mr. Smith.'])
+  expect(split('Ask K. Smith.')).toEqual(['Ask K. Smith.'])
+  expect(split('(Mr. Smith) left.')).toEqual(['(Mr. Smith) left.'])
+  expect(split('Visit the U.S. Capitol.')).toEqual(['Visit the U.S. Capitol.'])
+})
