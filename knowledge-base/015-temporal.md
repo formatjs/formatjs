@@ -8,6 +8,12 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The shared [UTC date arithmetic audit](audits/temporal-date-operations-audit.md)
+provides twelve ECMA-262 section mappings, branch and numeric-bound proofs, plus
+builtin UTC controls for a full Gregorian cycle's month boundaries. Its scope is
+supported finite time values and needed Gregorian year origins. Executable code
+is unchanged; MakeDay's witness ambiguity and public caller algorithms stay open.
+
 UTC-offset recognition and parsing follow published
 [ECMA-262 §21.4.1.33](https://tc39.es/ecma262/#sec-time-zone-offset-strings),
 §21.4.1.33.1 and §21.4.1.33.2. The bounded ASCII scanner validates complete
