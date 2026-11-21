@@ -1,6 +1,30 @@
 import {expect, it} from 'vitest'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 
+it('accepts Symbol keys and preserves descriptor-trap failures', () => {
+  const key = Symbol('own')
+  const record = Object.create({[key]: 1})
+  expect(HasOwnProperty(record, key)).toBe(false)
+  Object.defineProperty(record, key, {value: 2})
+  expect(HasOwnProperty(record, key)).toBe(true)
+  const failure = Object.freeze({message: 'descriptor stopped'})
+  const proxy = new Proxy(
+    {},
+    {
+      getOwnPropertyDescriptor() {
+        throw failure
+      },
+    }
+  )
+  let error: unknown
+  try {
+    HasOwnProperty(proxy, key)
+  } catch (caught) {
+    error = caught
+  }
+  expect(error).toBe(failure)
+})
+
 it.each([
   ['hasOwnProperty', Object.prototype, 'hasOwnProperty'],
   ['call', Function.prototype, 'call'],

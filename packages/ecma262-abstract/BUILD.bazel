@@ -29,6 +29,7 @@ formatjs_test(
         "tests/has-own-property.test.ts",
         "tests/host-exotic.test.ts",
         "tests/list-search.test.ts",
+        "tests/object-contracts.test.ts",
         "tests/ordinary-has-instance.test.ts",
     ],
     tsconfig_types = ["node"],

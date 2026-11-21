@@ -8,6 +8,13 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+The [foundation object audit](audits/temporal-object-contract-audit.md) maps
+ArrayCreate, SameValue, HasOwnProperty, ToObject and language-type classification
+to current ECMA-262 sections. Captured native array allocation preserves holes,
+length bounds and custom prototypes; pure equality avoids mutable Object.is.
+Temporal formatToParts and Locale numeric-collation controls cover the visible
+hooks. Other formatter iteration/appending operations remain open.
+
 Shared [primitive Number conversion](audits/temporal-number-conversion-audit.md)
 now maps the complete ECMA-262 §7.1.4 helper contract through native unary plus.
 DurationFormat integrality retains primitive Numbers, validates with captured
