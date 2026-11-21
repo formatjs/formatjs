@@ -618,7 +618,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_cli"
-version = "1.12.0"
+version = "1.12.1"
 dependencies = [
  "anyhow",
  "base64",
@@ -941,7 +941,7 @@ version = "0.2.0"
 
 [[package]]
 name = "formatjs_temporal"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
  "formatjs_intl_datetimeformat_calendars",
  "serde_json",

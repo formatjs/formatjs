@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v2.0.0...formatjs-hermes-intl_v2.0.1) (2026-11-21)
+
+
+### Bug Fixes
+
+* **@formatjs/temporal:** never throw from Temporal.Now.timeZoneId() ([#8050](https://github.com/formatjs/formatjs/issues/8050)) ([d52bef4](https://github.com/formatjs/formatjs/commit/d52bef495ad4d76b722f47b41680e053694f9631))
+
 ## [2.0.0](https://github.com/formatjs/formatjs/compare/formatjs-hermes-intl_v1.1.0...formatjs-hermes-intl_v2.0.0) (2026-11-19)
 
 
