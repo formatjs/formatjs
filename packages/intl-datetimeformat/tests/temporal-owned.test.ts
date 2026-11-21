@@ -46,6 +46,26 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test('constructs and formats Temporal values without mutable isPrototypeOf', () => {
+  const value = new Temporal.PlainDate(2020, 2, 3)
+  const options = {timeZone: 'UTC'}
+  const expected = new DateTimeFormat('en', options).format(value as any)
+  const original = Object.prototype.isPrototypeOf
+  let actual: unknown, error: unknown
+  try {
+    Object.prototype.isPrototypeOf = () => {
+      throw new Error('Mutable prototype helper reached')
+    }
+    actual = new DateTimeFormat('en', options).format(value as any)
+  } catch (caught) {
+    error = caught
+  } finally {
+    Object.prototype.isPrototypeOf = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toBe(expected)
+})
+
 test('owned namespace brands work without replacing global Temporal', () => {
   const date = new Temporal.PlainDate(2020, 2, 3)
   const formatter = new DateTimeFormat('en', {timeZone: 'UTC'})

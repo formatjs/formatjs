@@ -3,6 +3,7 @@ import {setFlagsFromString} from 'node:v8'
 import {expect, it} from 'vitest'
 import {Type} from '#packages/ecma262-abstract/Type.js'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
+import {OrdinaryHasInstance} from '#packages/ecma262-abstract/OrdinaryHasInstance.js'
 
 type HostExotic = Record<PropertyKey, unknown> &
   ((...args: unknown[]) => unknown)
@@ -15,6 +16,18 @@ function createHostExotic(): HostExotic {
     setFlagsFromString('--no-allow-natives-syntax')
   }
 }
+
+it('uses host objects as callable constructors, instances and prototypes', () => {
+  const host = createHostExotic()
+  const prototype = {}
+  host.prototype = prototype
+  expect(OrdinaryHasInstance(host, Object.create(prototype))).toBe(true)
+  function Constructor() {}
+  Object.setPrototypeOf(host, Constructor.prototype)
+  expect(OrdinaryHasInstance(Constructor, host)).toBe(true)
+  Object.defineProperty(Constructor, 'prototype', {value: host})
+  expect(OrdinaryHasInstance(Constructor, Object.create(host))).toBe(true)
+})
 
 it('classifies undetectable host values as objects', () => {
   const value = createHostExotic()

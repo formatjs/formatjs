@@ -4,6 +4,10 @@
 
 ## Purpose
 
+Constructor instance checks use the captured realm intrinsic rather than mutable
+Object.prototype.isPrototypeOf. Shared ECMA-262 §7.3.21 mapping and consumer
+coverage live in the [Temporal dependency audit](audits/temporal-instance-check-audit.md).
+
 Historical timezone names retain direct CLDR standard/daylight overrides, including
 London's British Summer Time before 1970. Only metazone-derived names use the
 1970 cutoff. Localized GMT fallback preserves offset seconds in TS and Rust.

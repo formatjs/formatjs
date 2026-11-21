@@ -28,6 +28,7 @@ The historical/provisional Temporal inventory above remains unchanged.
 | [§7.1.1 ToPrimitive](https://tc39.es/ecma262/#sec-toprimitive)                                   | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#toprimitive), including fused GetMethod, all hints, abrupt completions and realms. Temporal callers remain open.     |
 | [§7.1.1.1 OrdinaryToPrimitive](https://tc39.es/ecma262/#sec-ordinarytoprimitive)                 | Reviewed helper             | [Complete step mapping](temporal-coercion-contract-audit.md#ordinarytoprimitive), callable/host boundaries and ordered Get/Call traces. Browser document.all run remains absent. |
 | [§7.1.19 ToString](https://tc39.es/ecma262/#sec-tostring)                                        | Reviewed helper             | [Twelve-step delegation proof](temporal-coercion-contract-audit.md#tostring) through captured %String%, excluding its primitive-Symbol exception. Caller contracts remain open.  |
+| [§7.3.21 OrdinaryHasInstance](https://tc39.es/ecma262/#sec-ordinaryhasinstance)                  | Reviewed helper             | [All six steps via captured intrinsic](temporal-instance-check-audit.md). Bound slots, host Objects and mutation controls; full formatter callers remain open.                   |
 | [§21.4.1.33 UTCOffset grammar](https://tc39.es/ecma262/#sec-time-zone-offset-strings)            | Reviewed grammar            | [Production mapping, ASCII bounds and full-input recognition](temporal-offset-grammar-audit.md). Other ISO productions remain open.                                              |
 | [§21.4.1.33.1 IsTimeZoneOffsetString](https://tc39.es/ecma262/#sec-istimezoneoffsetstring)       | Reviewed operation          | All three steps mapped to TS/Rust recognition; caller contracts remain open.                                                                                                     |
 | [§21.4.1.33.2 ParseTimeZoneOffsetString](https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring) | Reviewed operation          | All 17 top-level steps and substeps mapped to TS/Rust parsing and exact arithmetic. Caller algorithms remain open.                                                               |
@@ -39,6 +40,16 @@ The historical/provisional Temporal inventory above remains unchanged.
 ## Historical passes and current fixes
 
 Current pass:
+
+- Shared constructor checks: [ECMA-262 §7.3.21 step mapping](temporal-instance-check-audit.md)
+  replaces manual traversal with captured §20.2.3.6 delegation. Actual bound
+  functions and host Objects follow engine internal slots; replacing mutable
+  Object.prototype.isPrototypeOf no longer breaks Temporal formatter creation.
+  Three helper regressions and one public formatter regression reproduced before
+  the fix. All 110 consumer targets and five package assemblies pass (33 executed,
+  77 cached). Parent full CI separately exposed pending numeric-layer composite
+  typecheck and package-manifest gaps; these results do not establish full CI success.
+  Full constructor callers remain open; no historical line credit added.
 
 - Shared primitive conversion: [ECMA-262 §7.1.1, §7.1.1.1 and §7.1.19](temporal-coercion-contract-audit.md)
   now have complete helper mappings, including GetMethod fusion and captured
@@ -802,7 +813,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [UTC-offset grammar and operation audit](https://github.com/formatjs/formatjs/pull/8094),
 [shared UTC date arithmetic audit](https://github.com/formatjs/formatjs/pull/8095),
 [primitive numeric timestamp clipping](https://github.com/formatjs/formatjs/pull/8096),
-[shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097).
+[shared primitive conversion contracts](https://github.com/formatjs/formatjs/pull/8097),
+[intrinsic constructor instance checks](https://github.com/formatjs/formatjs/pull/8098).
 
 New traces: 252 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
