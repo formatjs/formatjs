@@ -277,6 +277,9 @@ export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
 }
 function validateIncrement(unit: TimeUnit, increment: number): void {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
+  // L432-L434: all six L722 maxima exceed one; strict cap is dividend - 1.
+  // L435-L437: positive integer input must fit that cap and divide the dividend.
   const maximum = maxima[arrayIndexOf(names, unit)]
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeErrorConstructor('Invalid time rounding increment')

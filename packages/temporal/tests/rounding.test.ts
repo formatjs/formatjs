@@ -285,3 +285,176 @@ it('preserves one unit Get, string coercion and the exact abrupt completion', ()
   expect(actual).toBe(failure)
   expect(events).toEqual(['get', 'string'])
 })
+
+it.each([
+  ['hour', 24],
+  ['minute', 60],
+  ['second', 60],
+  ['millisecond', 1000],
+  ['microsecond', 1000],
+  ['nanosecond', 1000],
+] as const)(
+  'uses strict divisor bounds for clock %s increments',
+  (unit, maximum) => {
+    const value = new Temporal.PlainTime()
+    const duration = new Temporal.Duration()
+    for (const increment of [1, 2.9, maximum / 2]) {
+      expect(
+        value.round({smallestUnit: unit, roundingIncrement: increment}).hour
+      ).toBe(0)
+      expect(
+        value.until(value, {smallestUnit: unit, roundingIncrement: increment})
+          .blank
+      ).toBe(true)
+      expect(
+        duration.round({smallestUnit: unit, roundingIncrement: increment}).blank
+      ).toBe(true)
+    }
+    for (const increment of [0, 7, maximum - 1, maximum, maximum + 1]) {
+      expect(() =>
+        duration.round({smallestUnit: unit, roundingIncrement: increment})
+      ).toThrow(RangeError)
+      expect(
+        () => value.round({smallestUnit: unit, roundingIncrement: increment}),
+        String(increment)
+      ).toThrow(RangeError)
+      expect(() =>
+        value.until(value, {smallestUnit: unit, roundingIncrement: increment})
+      ).toThrow(RangeError)
+    }
+  }
+)
+
+it.each([
+  ['hour', 24],
+  ['minute', 1440],
+  ['second', 86_400],
+  ['millisecond', 86_400_000],
+] as const)(
+  'allows the inclusive day divisor for Instant %s rounding',
+  (unit, maximum) => {
+    const value = new Temporal.Instant(0n)
+    expect(
+      value.round({smallestUnit: unit, roundingIncrement: maximum})
+        .epochNanoseconds
+    ).toBe(0n)
+    for (const increment of [7, maximum + 1])
+      expect(() =>
+        value.round({smallestUnit: unit, roundingIncrement: increment})
+      ).toThrow(RangeError)
+  }
+)
+
+it.each(['year', 'month', 'week', 'day'])(
+  'has no fixed time-unit increment cap for calendar %s',
+  unit => {
+    const anchor = new Temporal.PlainDate(2020, 1, 1)
+    expect(
+      new Temporal.Duration().round({
+        largestUnit: unit,
+        smallestUnit: unit,
+        roundingIncrement: 1001,
+        relativeTo: anchor,
+      }).blank
+    ).toBe(true)
+  }
+)
+
+it.each([
+  [undefined, 1_500_000_001n],
+  [true, 1_500_000_001n],
+  [1.9, 1_500_000_001n],
+  [2.9, 1_500_000_002n],
+  ['2.9', 1_500_000_002n],
+  [1_000_000_000, 2_000_000_000n],
+  [1_000_000_000.9, 2_000_000_000n],
+])(
+  'gets and truncates rounding increment %s before its numeric bounds',
+  (raw, expected) => {
+    const events: string[] = []
+    const actual = new Temporal.Instant(1_500_000_001n).round({
+      get roundingIncrement() {
+        events.push('increment')
+        return raw
+      },
+      get roundingMode() {
+        events.push('mode')
+        return undefined
+      },
+      get smallestUnit() {
+        events.push('unit')
+        return 'nanosecond'
+      },
+    })
+    expect(actual.epochNanoseconds).toBe(expected)
+    expect(events).toEqual(['increment', 'mode', 'unit'])
+  }
+)
+
+it.each([
+  [0, RangeError],
+  [-0, RangeError],
+  [-1, RangeError],
+  [0.9, RangeError],
+  [NaN, RangeError],
+  [Infinity, RangeError],
+  [-Infinity, RangeError],
+  [1_000_000_001, RangeError],
+  [1_080_000_000, RangeError],
+  [Number.MAX_VALUE, RangeError],
+  [1n, TypeError],
+  [Symbol('increment'), TypeError],
+])(
+  'rejects invalid rounding increment %s before later options',
+  (raw, ErrorType) => {
+    const events: string[] = []
+    expect(() =>
+      new Temporal.Instant(0n).round({
+        get roundingIncrement() {
+          events.push('increment')
+          return raw
+        },
+        get roundingMode() {
+          throw new Error('Later roundingMode Get reached')
+        },
+        get smallestUnit() {
+          throw new Error('Later smallestUnit Get reached')
+        },
+      })
+    ).toThrow(ErrorType)
+    expect(events).toEqual(['increment'])
+  }
+)
+
+it('uses one number-hint conversion and propagates an abrupt increment exactly', () => {
+  const events: string[] = []
+  const value = new Temporal.Instant(1_500_000_001n)
+  const increment = {
+    [Symbol.toPrimitive](hint: string) {
+      events.push(hint)
+      return '2.9'
+    },
+  }
+  expect(
+    value.round({roundingIncrement: increment, smallestUnit: 'nanosecond'})
+      .epochNanoseconds
+  ).toBe(1_500_000_002n)
+  expect(events).toEqual(['number'])
+  const failure = {}
+  let actual: unknown
+  try {
+    value.round({
+      roundingIncrement: {
+        [Symbol.toPrimitive]() {
+          throw failure
+        },
+      },
+      get roundingMode() {
+        throw new Error('Later option reached')
+      },
+    })
+  } catch (error) {
+    actual = error
+  }
+  expect(actual).toBe(failure)
+})

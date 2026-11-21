@@ -3227,3 +3227,103 @@ fn exact_clock_difference_vectors_and_component_boundaries() {
         assert!(Duration::new(fields).is_err());
     }
 }
+
+#[test]
+fn rounding_increment_caps_distinguish_time_and_instant() {
+    use formatjs_temporal::{DateTimeUnit, Duration, PlainTime, RoundingMode, TimeUnit};
+    let time = PlainTime::new(0, 0, 0, 0).unwrap();
+    let duration = Duration::new([0; 10]).unwrap();
+    let instant = Instant::from_epoch_nanoseconds(0).unwrap();
+    for (unit, maximum) in [
+        (TimeUnit::Hour, 24),
+        (TimeUnit::Minute, 60),
+        (TimeUnit::Second, 60),
+        (TimeUnit::Millisecond, 1000),
+        (TimeUnit::Microsecond, 1000),
+        (TimeUnit::Nanosecond, 1000),
+    ] {
+        for increment in [1, 2, maximum / 2] {
+            assert_eq!(
+                time.round(unit, increment, RoundingMode::HalfExpand)
+                    .unwrap(),
+                time
+            );
+            assert_eq!(
+                duration
+                    .round(
+                        unit.into(),
+                        unit.into(),
+                        increment,
+                        RoundingMode::HalfExpand
+                    )
+                    .unwrap(),
+                duration
+            );
+        }
+        for increment in [0, 7, maximum - 1, maximum, maximum + 1] {
+            assert!(
+                time.round(unit, increment, RoundingMode::HalfExpand)
+                    .is_err()
+            );
+            assert!(
+                duration
+                    .round(
+                        unit.into(),
+                        unit.into(),
+                        increment,
+                        RoundingMode::HalfExpand
+                    )
+                    .is_err()
+            );
+        }
+    }
+    for (unit, maximum) in [
+        (TimeUnit::Hour, 24),
+        (TimeUnit::Minute, 1440),
+        (TimeUnit::Second, 86_400),
+        (TimeUnit::Millisecond, 86_400_000),
+    ] {
+        assert_eq!(
+            instant
+                .round(unit, maximum, RoundingMode::HalfExpand)
+                .unwrap(),
+            instant
+        );
+        for increment in [7, maximum + 1] {
+            assert!(
+                instant
+                    .round(unit, increment, RoundingMode::HalfExpand)
+                    .is_err()
+            );
+        }
+    }
+    assert!(
+        instant
+            .round(
+                TimeUnit::Nanosecond,
+                1_000_000_000,
+                RoundingMode::HalfExpand
+            )
+            .is_ok()
+    );
+    assert!(
+        instant
+            .round(
+                TimeUnit::Nanosecond,
+                1_080_000_000,
+                RoundingMode::HalfExpand
+            )
+            .is_err()
+    );
+    assert_eq!(
+        duration
+            .round(
+                DateTimeUnit::Day,
+                DateTimeUnit::Day,
+                1001,
+                RoundingMode::HalfExpand
+            )
+            .unwrap(),
+        duration
+    );
+}

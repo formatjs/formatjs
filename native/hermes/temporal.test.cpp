@@ -511,6 +511,55 @@ int main(int argc, char **argv) {
         check(results.join('|') === '120000000000|35|35|946816500000000000|2|90|2|2');
         check(hints.join('|') === 'string|string|string|string|string|string|string|string');
       }
+      const incrementTime = new Temporal.PlainTime();
+      const incrementDuration = new Temporal.Duration();
+      const incrementInstant = new Temporal.Instant(0n);
+      const incrementRejects = (run, ErrorType) => {
+        let rejected = false;
+        try { run(); } catch (error) { rejected = error instanceof ErrorType; }
+        check(rejected);
+      };
+      for (const [unit, maximum] of [['hour',24],['minute',60],['second',60],['millisecond',1000],['microsecond',1000],['nanosecond',1000]]) {
+        for (const increment of [1, 2.9, maximum / 2]) {
+          const options = {smallestUnit: unit, roundingIncrement: increment};
+          check(incrementTime.round(options).hour === 0);
+          check(incrementTime.until(incrementTime, options).blank);
+          check(incrementDuration.round(options).blank);
+        }
+        for (const increment of [0, 7, maximum - 1, maximum, maximum + 1]) {
+          const options = {smallestUnit: unit, roundingIncrement: increment};
+          incrementRejects(() => incrementTime.round(options), RangeError);
+          incrementRejects(() => incrementTime.until(incrementTime, options), RangeError);
+          incrementRejects(() => incrementDuration.round(options), RangeError);
+        }
+      }
+      for (const [unit, maximum] of [['hour',24],['minute',1440],['second',86400],['millisecond',86400000]]) {
+        check(incrementInstant.round({smallestUnit: unit, roundingIncrement: maximum}).epochNanoseconds === 0n);
+        for (const increment of [7, maximum + 1])
+          incrementRejects(() => incrementInstant.round({smallestUnit: unit, roundingIncrement: increment}), RangeError);
+      }
+      for (const unit of ['year','month','week','day'])
+        check(incrementDuration.round({smallestUnit: unit, largestUnit: unit, roundingIncrement: 1001, relativeTo: new Temporal.PlainDate(2020,1,1)}).blank);
+      check(new Temporal.Instant(1500000001n).round({smallestUnit:'nanosecond', roundingIncrement:1000000000.9}).epochNanoseconds === 2000000000n);
+      for (const [raw, ErrorType] of [[NaN,RangeError],[Infinity,RangeError],[1080000000,RangeError],[1n,TypeError],[Symbol('increment'),TypeError]]) {
+        let reads = 0;
+        incrementRejects(() => incrementInstant.round({
+          get roundingIncrement() { reads++; return raw; },
+          get roundingMode() { throw new Error('Later increment option reached'); },
+        }), ErrorType);
+        check(reads === 1);
+      }
+      const incrementHints = [];
+      check(new Temporal.Instant(1500000001n).round({smallestUnit:'nanosecond', roundingIncrement:{
+        [Symbol.toPrimitive](hint) { incrementHints.push(hint); return '2.9'; }
+      }}).epochNanoseconds === 1500000002n);
+      check(incrementHints.join('|') === 'number');
+      const incrementFailure = {};
+      let incrementCaught;
+      try { incrementInstant.round({roundingIncrement:{[Symbol.toPrimitive]() { throw incrementFailure; }},
+        get roundingMode() { throw new Error('Later increment option reached'); }
+      }); } catch (error) { incrementCaught = error; }
+      check(incrementCaught === incrementFailure);
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');
