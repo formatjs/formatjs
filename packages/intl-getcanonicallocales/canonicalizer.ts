@@ -1,3 +1,4 @@
+import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
 import {appendToList} from '#packages/intl-getcanonicallocales/appendToList.js'
 import {
   extensionAlias,
@@ -170,7 +171,9 @@ export function canonicalizeUnicodeLanguageId(
   const matches = ({type}: LanguageAliasRule) =>
     (!type.script || type.script === finalLangAst.script) &&
     (!type.region || type.region === finalLangAst.region) &&
-    type.variants.every(variant => finalLangAst.variants.includes(variant))
+    arrayEvery(type.variants, variant =>
+      finalLangAst.variants.includes(variant)
+    )
   const languageRule = languageAliasRules[finalLangAst.lang]?.find(matches)
   const undRule =
     finalLangAst.lang === 'und'

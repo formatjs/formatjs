@@ -18,3 +18,22 @@ export const numberIsSafeInteger: typeof Number.isSafeInteger =
 export const ErrorConstructor: typeof Error = Error
 export const TypeErrorConstructor: typeof TypeError = TypeError
 export const RangeErrorConstructor: typeof RangeError = RangeError
+
+const arrayApply = Reflect.apply
+const every = Array.prototype.every
+const some = Array.prototype.some
+
+// Specification Lists do not consult mutable Array.prototype methods.
+export function arrayEvery<T>(
+  values: readonly T[],
+  predicate: (value: T, index: number, array: readonly T[]) => unknown
+): boolean {
+  return arrayApply(every, values, [predicate])
+}
+
+export function arraySome<T>(
+  values: readonly T[],
+  predicate: (value: T, index: number, array: readonly T[]) => unknown
+): boolean {
+  return arrayApply(some, values, [predicate])
+}

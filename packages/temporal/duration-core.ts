@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arraySome,
   bigIntFrom,
   mathAbs,
   numberFrom,
@@ -133,8 +134,9 @@ export function parseDurationString(value: string): DurationFields {
   if (
     !match ||
     match[0] !== value ||
-    ![2, 3, 4, 5, 6, 8, 10].some(i => match[i] !== undefined) ||
-    (/[Tt]/.test(value) && ![6, 8, 10].some(i => match[i] !== undefined)) ||
+    !arraySome([2, 3, 4, 5, 6, 8, 10], i => match[i] !== undefined) ||
+    (/[Tt]/.test(value) &&
+      !arraySome([6, 8, 10], i => match[i] !== undefined)) ||
     (match[7] !== undefined &&
       (match[8] !== undefined || match[10] !== undefined)) ||
     (match[9] !== undefined && match[10] !== undefined)

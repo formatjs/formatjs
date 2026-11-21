@@ -1,3 +1,4 @@
+import {arrayEvery, arraySome} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type DateTimeFormat,
   type DateTimeFormatLocaleInternalData,
@@ -237,8 +238,9 @@ export function FormatDateTimePattern(
   // ECMA-402 11.5.5, step 15.f.x: https://tc39.es/ecma402/#sec-formatdatetimepattern
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1419
   const contextParts = rangeFormatOptions?.patternParts || patternParts
-  const hasMonth = contextParts.some(part => part.type === 'month')
-  const hasOtherDateFields = contextParts.some(
+  const hasMonth = arraySome(contextParts, part => part.type === 'month')
+  const hasOtherDateFields = arraySome(
+    contextParts,
     part =>
       part.type === 'day' ||
       part.type === 'year' ||
@@ -257,8 +259,9 @@ export function FormatDateTimePattern(
   const isWeekdayStandalone =
     format?.weekdayStandalone ??
     internalSlots.format?.weekdayStandalone ??
-    (contextParts.some(part => part.type === 'weekday') &&
-      contextParts.every(
+    (arraySome(contextParts, part => part.type === 'weekday') &&
+      arrayEvery(
+        contextParts,
         part => part.type === 'weekday' || part.type === 'literal'
       ))
 

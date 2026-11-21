@@ -1,6 +1,7 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arraySome,
   floor,
   mathAbs,
   mathMax,
@@ -458,7 +459,7 @@ function addCalendarEpochDay(
     duration.weeks ?? 0,
     duration.days ?? 0,
   ].map(integer)
-  if (values.some(x => x < 0) && values.some(x => x > 0))
+  if (arraySome(values, x => x < 0) && arraySome(values, x => x > 0))
     throw new RangeErrorConstructor('Mixed duration signs')
   const {year, month} = addYearMonth(
     calendar,

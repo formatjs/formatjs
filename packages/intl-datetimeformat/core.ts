@@ -1,3 +1,4 @@
+import {arrayEvery} from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
   CalendarRegistry,
@@ -550,7 +551,8 @@ function findIntervalFormat(
     )
       continue
     if (
-      DATE_TIME_PROPS.every(
+      arrayEvery(
+        DATE_TIME_PROPS,
         field =>
           (target[field] !== undefined) === (candidate[field] !== undefined)
       )
