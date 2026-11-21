@@ -79,6 +79,20 @@ int main(int argc, char **argv) {
       Object.defineProperty(anchor, 'hour', {get() { throw new Error('Unexpected hour read'); }});
       check(Temporal.Duration.compare('P1M', 'P29D', {relativeTo: anchor}) === 0);
       check(Temporal.Duration.from('P1M').total({relativeTo: anchor, unit: 'day'}) === 29);
+      for (const relativeTo of ['+275760-08-13', '+275760-08-13T00:00[UTC]']) {
+        let failure;
+        try { Temporal.Duration.from('P1M').total({relativeTo, unit: 'month'}); }
+        catch (error) { failure = error; }
+        check(failure instanceof RangeError);
+      }
+      const totalLimit = new Temporal.ZonedDateTime(8640000000000000000000n, 'UTC');
+      for (const unit of ['year', 'month', 'week']) {
+        let failure;
+        try { new Temporal.Duration().total({relativeTo: totalLimit, unit}); }
+        catch (error) { failure = error; }
+        check(failure instanceof RangeError);
+        check(new Temporal.Duration().total({relativeTo: '+275760-09-13', unit}) === 0);
+      }
       check(new Date(123).toTemporalInstant().epochNanoseconds === 123000000n);
       check(!Object.prototype.hasOwnProperty.call(globalThis, '__formatjsTemporalISOQuery'));
       check(!Object.prototype.hasOwnProperty.call(globalThis, 'FormatJSTemporalInstaller'));

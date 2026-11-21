@@ -2979,3 +2979,52 @@ fn system_time_zone_falls_back_to_utc() {
         "UTC"
     );
 }
+
+#[test]
+fn exact_calendar_totals_validate_the_full_window() {
+    use formatjs_temporal::{DateTimeUnit, Duration, FixedOffset, PlainDate, ZonedDateTime};
+    for (date, duration, unit) in [
+        ("+275759-09-13", "P1Y", DateTimeUnit::Year),
+        ("+275760-08-13", "P1M", DateTimeUnit::Month),
+        ("+275760-09-06", "P1W", DateTimeUnit::Week),
+        ("-271821-05-20", "-P1M", DateTimeUnit::Month),
+    ] {
+        let plain: PlainDate = date.parse().unwrap();
+        let duration: Duration = duration.parse().unwrap();
+        assert!(
+            plain.total_duration(duration, unit).is_err(),
+            "{date} {unit:?}"
+        );
+        let zoned = ZonedDateTime::new(
+            format!("{date}T00:00Z").parse().unwrap(),
+            FixedOffset::new(0).unwrap(),
+        );
+        assert!(
+            zoned.total_duration(duration, unit).is_err(),
+            "{date} {unit:?}"
+        );
+    }
+}
+
+#[test]
+fn zero_calendar_totals_depend_on_anchor_kind() {
+    use formatjs_temporal::{DateTimeUnit, Duration, FixedOffset, PlainDate, ZonedDateTime};
+    let zero: Duration = "PT0S".parse().unwrap();
+    let maximum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    let minimum = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    for unit in [DateTimeUnit::Year, DateTimeUnit::Month, DateTimeUnit::Week] {
+        assert!(maximum.total_duration(zero, unit).is_err(), "{unit:?}");
+        assert_eq!(minimum.total_duration(zero, unit), Ok(0.0));
+        for text in ["+275760-09-13", "-271821-04-19"] {
+            let plain: PlainDate = text.parse().unwrap();
+            assert_eq!(plain.total_duration(zero, unit), Ok(0.0));
+        }
+    }
+    assert_eq!(maximum.total_duration(zero, DateTimeUnit::Hour), Ok(0.0));
+}
