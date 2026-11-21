@@ -7,6 +7,10 @@ A polyfill for Intl.ListFormat tested by the [official ECMAScript Conformance te
 
 This package implements `Intl.ListFormat`. See the [conformance report](https://github.com/formatjs/formatjs/blob/main/knowledge-base/014-test262-conformance.md) for tested coverage and known limitations.
 
+Internal locale-pattern parsing follows [ECMA-402 §9.2.15](https://tc39.es/ecma402/#sec-partitionpattern)
+using captured string operations. Complete formatter conformance remains tracked
+in the report above.
+
 ### ✅ Implemented Features
 
 #### Core Methods

@@ -50,12 +50,23 @@ and Record contract. Producers and complete public methods remain open.
 
 | Section                                                                             | Status                             | Evidence or gap                                                                                                                                 |
 | ----------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)           | Reviewed for valid Pattern Strings | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                   |
 | [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open. |
 | [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                           |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Shared Pattern String parser #8103](https://github.com/formatjs/formatjs/pull/8103): [ECMA-402 §9.2.15](temporal-pattern-partition-audit.md)
+  now maps every step to source lines. Captured String operations and private
+  own-property appends remove four reproduced mutable-hook regressions. Twenty
+  focused gates pass. Expanded validation finished: 164/165 targets pass; the sole
+  failure is raw ListFormat strict diagnostics matching both existing baseline
+  constructor failures exactly. All eight package assemblies build. No baseline
+  or exclusion changed. The `{literal}` prose
+  inconsistency is [recorded separately](temporal-spec-issues.md#partitionpattern-literal-placeholder-versus-result-description).
+  Caller and producer audits remain open; Temporal historical line credit unchanged.
 
 - [Single-value formatter parts #8102](https://github.com/formatjs/formatjs/pull/8102): [ECMA-402 §11.5.7 / §16.5.6 source mapping](temporal-parts-result-audit.md)
   traces producer delegation and moves shared result construction to CreatePartsArray.
