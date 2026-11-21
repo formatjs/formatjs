@@ -234,6 +234,8 @@ impl PlainTime {
         })
     }
 }
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
+// L432-L437: L722 maxima exceed one; reject non-divisors and the dividend itself.
 fn validate_increment(unit: TimeUnit, increment: u32) -> Result<(), Error> {
     let maximum = match unit {
         TimeUnit::Hour => 24,

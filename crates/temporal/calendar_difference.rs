@@ -318,6 +318,8 @@ pub(crate) fn validate_options(
     if largest > smallest || increment == 0 || increment > 1_000_000_000 {
         return Err(Error::InvalidRoundingOptions);
     }
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722
+    // Date units have no fixed cap; time rows use strict L432-L437 validation.
     if let Some(time) = smallest.time() {
         let maximum = match time {
             TimeUnit::Hour => 24,
