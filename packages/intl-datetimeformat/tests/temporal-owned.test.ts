@@ -337,8 +337,8 @@ test('Duration locale formatting ignores shadowed public fields', () => {
   ).toBe('1:02:03.004005006')
 })
 
-test.each(['every', 'some'] as const)(
-  'owned formatters ignore replaced private-list %s predicates',
+test.each(['every', 'some', 'includes', 'indexOf'] as const)(
+  'owned formatters ignore replaced private-list %s operations',
   name => {
     const start = new Temporal.PlainDate(2024, 2, 29)
     const end = new Temporal.PlainDate(2024, 3, 1)

@@ -37,3 +37,20 @@ export function arraySome<T>(
 ): boolean {
   return arrayApply(some, values, [predicate])
 }
+
+const includes = Array.prototype.includes
+const indexOf = Array.prototype.indexOf
+
+export function arrayIncludes(
+  values: readonly unknown[],
+  search: unknown
+): boolean {
+  return arrayApply(includes, values, [search])
+}
+
+export function arrayIndexOf(
+  values: readonly unknown[],
+  search: unknown
+): number {
+  return arrayApply(indexOf, values, [search])
+}

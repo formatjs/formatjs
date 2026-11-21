@@ -2,6 +2,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayEvery,
+  arrayIncludes,
   arraySome,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
@@ -56,7 +57,7 @@ function matchRangeWidths(
   for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
     const range = ranges[field]
     const zoneWidth = range.timeZoneName?.startsWith('long') ? 'long' : 'short'
-    const timeZoneName = ['era', 'year', 'month', 'day'].includes(field)
+    const timeZoneName = arrayIncludes(['era', 'year', 'month', 'day'], field)
       ? format.timeZoneName
       : range.timeZoneName && format.timeZoneName
         ? (`${zoneWidth}${
@@ -632,7 +633,7 @@ export function InitializeDateTimeFormat(
       }
       const conflicting = arraySome(
         DATE_TIME_PROPS,
-        key => bestFormat[key] !== undefined && !allowed.includes(key)
+        key => bestFormat[key] !== undefined && !arrayIncludes(allowed, key)
       )
       selectedOptions.hour12 =
         temporalHourCycle === 'h11' || temporalHourCycle === 'h12'

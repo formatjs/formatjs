@@ -1,4 +1,7 @@
-import {RangeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  RangeErrorConstructor,
+  arrayIndexOf,
+} from '#packages/ecma262-abstract/intrinsics.js'
 /**
  * https://tc39.es/ecma402/#sec-getstringorbooleanoption
  * @param opts
@@ -38,7 +41,7 @@ export function GetStringOrBooleanOption<T extends object, K extends keyof T>(
     return fallback
   }
 
-  if ((values || []).indexOf(value) === -1) {
+  if (arrayIndexOf(values || [], value) === -1) {
     throw new RangeErrorConstructor(`Invalid value ${value}`)
   }
 
