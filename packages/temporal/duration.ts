@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -80,11 +81,7 @@ export function toNativeDurationFields(
   const existing = getSlot(value as object)
   if (existing) return existing
   if (typeof value === 'string') return parseDurationString(value)
-  if (
-    value === null ||
-    (typeof value !== 'object' && typeof value !== 'function')
-  )
-    throw new TypeError('Duration fields must be an object')
+  if (!IsObject(value)) throw new TypeError('Duration fields must be an object')
   const fields = zeroDuration()
   let found = false
   for (let index = 0; index < durationFieldReadOrder.length; index++) {
@@ -406,10 +403,7 @@ export const Duration: DurationConstructor = new Proxy(DurationValue, {
     validateDuration(fields)
     const prototype = newTarget.prototype
     const value = createObject(
-      prototype !== null &&
-        (typeof prototype === 'object' || typeof prototype === 'function')
-        ? prototype
-        : target.prototype
+      IsObject(prototype) ? prototype : target.prototype
     )
     setSlot(value, fields)
     return value

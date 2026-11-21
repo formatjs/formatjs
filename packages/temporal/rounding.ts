@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
@@ -53,11 +54,7 @@ const units = [
 ]
 export function optionsObject(value: unknown): Record<string, unknown> {
   if (value === undefined) return createObject(null)
-  if (
-    value === null ||
-    (typeof value !== 'object' && typeof value !== 'function')
-  )
-    throw new TypeError('Options must be an object')
+  if (!IsObject(value)) throw new TypeError('Options must be an object')
   return value as Record<string, unknown>
 }
 export function roundingMode(

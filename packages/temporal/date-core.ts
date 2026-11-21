@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {
   nativeTemporal,
@@ -80,9 +81,7 @@ export const clockFactors: readonly bigint[] = [
   1n,
 ]
 export function object(value: unknown): value is Record<string, unknown> {
-  return (
-    value !== null && (typeof value === 'object' || typeof value === 'function')
-  )
+  return IsObject(value)
 }
 export function integer(value: unknown): number {
   const result = Math.trunc(+(value as number))

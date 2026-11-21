@@ -31,7 +31,11 @@ Constructor prototype reads and Temporal formatter option proxies use direct
 property access, preserving getter receivers without mutable `Reflect.get`.
 Shared ECMA-262 primitive/string conversion captures its realm intrinsics and
 traverses the private fallback list by index. User conversion hooks retain their
-standard receiver, hint and ordering. Other helpers/host-exotic paths remain open.
+standard receiver, hint and ordering. Shared object classification includes
+`document.all`-style host exotic objects despite their `typeof` result. Temporal
+field bags, options and constructor prototypes use the same object check.
+Ordinary primitive conversion recognizes callable host objects without invoking
+them to test callability. Other helpers and cross-realm allocation remain open.
 
 ## Native performance direction
 

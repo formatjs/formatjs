@@ -136,8 +136,30 @@ Current pass:
   controls, legacy Intl host and eight shared Intl consumer suites. Package
   assembly passes. Existing exclusions and data-conflict records are unchanged.
   These auxiliary ECMA-262 operations are outside the 14-file line-count index.
-  No new Temporal line signoffs. Other intrinsic dependencies and browser-only
-  host-exotic object classification remain open.
+  No new Temporal line signoffs. Other intrinsic dependencies remain open;
+  host-exotic object classification is addressed below.
+
+- Host-exotic object classification: [IsObject](../../packages/ecma262-abstract/IsObject.ts),
+  [Type](../../packages/ecma262-abstract/Type.ts) and
+  [ToPrimitive](../../packages/ecma262-abstract/ToPrimitive.ts) preserve object
+  semantics for `document.all`-style values. ECMA-262
+  [Annex B.3.6](https://tc39.es/ecma262/multipage/additional-ecmascript-features-for-web-browsers.html#sec-IsHTMLDDA-internal-slot)
+  changes Boolean, loose-equality and `typeof` behavior, not object identity.
+  Temporal field-bag, options and constructor-prototype checks share this
+  classification. Formatter option-source caches use strict undefined checks.
+  Ordinary conversion recognizes callable host objects through a captured
+  `Function.prototype.toString`, without invoking the candidate or reading its
+  public properties. Host objects returned from conversion hooks remain objects,
+  so exotic conversion rejects them and ordinary conversion continues fallback.
+  Tests use V8's real undetectable callable object, created through its test
+  intrinsic; native-syntax access is disabled before invoking implementation code.
+  Three initial shared-helper regressions failed before the fix. Public checks
+  cover all seven field-bag conversions, Duration.with, options, Instant coercion
+  and all eight constructor prototypes. All 60 focused, typecheck, full class,
+  locale, installed native Hermes and shared Intl consumer test targets pass;
+  package assembly passes. No exclusions changed. Full prototype/cross-realm allocation
+  lines remain open. Formatter-provider object checks remain open.
+  No new line signoffs.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -147,7 +169,8 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [calendar-string bounds](https://github.com/formatjs/formatjs/pull/8066),
 [intrinsic object allocation](https://github.com/formatjs/formatjs/pull/8067),
 [internal property reads](https://github.com/formatjs/formatjs/pull/8068),
-[primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069).
+[primitive coercion intrinsics](https://github.com/formatjs/formatjs/pull/8069),
+[host-exotic objects](https://github.com/formatjs/formatjs/pull/8070).
 
 New traces: 47 source lines. All other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is

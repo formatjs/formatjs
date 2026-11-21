@@ -1,3 +1,4 @@
+import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 export const durationFieldNames = [
@@ -98,11 +99,7 @@ export function integralDurationNumber(value: unknown): number {
   return number || 0
 }
 export function partialDuration(value: unknown): Partial<DurationFields> {
-  if (
-    value === null ||
-    (typeof value !== 'object' && typeof value !== 'function')
-  )
-    throw new TypeError('Duration fields must be an object')
+  if (!IsObject(value)) throw new TypeError('Duration fields must be an object')
   const result: Partial<DurationFields> = createObject(null)
   let found = false
   for (let index = 0; index < durationFieldReadOrder.length; index++) {

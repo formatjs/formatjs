@@ -987,6 +987,7 @@ sh_test(
             "instant_test",
             [
                 "tests/instant.test.ts",
+                "tests/host-exotic.test.ts",
                 "tests/rounding.test.ts",
                 "tests/duration.test.ts",
                 "tests/instant-strings.json",
