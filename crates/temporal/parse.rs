@@ -70,6 +70,8 @@ impl<'a> Cursor<'a> {
         }
         Ok((hour as u8, minute as u8, second.min(59) as u8, fraction))
     }
+    // ECMA-262 §21.4.1.33.2 steps 3–17; time() enforces UTCOffset components.
+    // https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
     fn offset(&mut self, sub_minute: bool) -> Result<i128, Error> {
         let negative = self.take(b'-');
         if !negative && !self.take(b'+') {
@@ -82,6 +84,8 @@ impl<'a> Cursor<'a> {
     }
 }
 
+// ECMA-262 §21.4.1.33.1 steps 1–3: reject any unconsumed code units.
+// https://tc39.es/ecma262/#sec-istimezoneoffsetstring
 #[cfg(feature = "ffi")]
 pub(crate) fn offset_nanoseconds(value: &str) -> Result<i128, Error> {
     let mut input = Cursor::new(value);

@@ -54,6 +54,7 @@ import {
 import {
   parseZonedDateTimeString,
   parseOffsetNanoseconds,
+  isTimeZoneOffsetString,
 } from '#packages/temporal/instant-string.js'
 import {
   epochNanosecondsToISO,
@@ -1087,8 +1088,10 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
       // L33: omitted and non-String timezone arguments are rejected without coercion.
       if (typeof zoneArgument !== 'string')
         throw new TypeErrorConstructor('Timezone must be a string')
-      if (
-        !/^(?:[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*|[+-]\d{2}(?::?\d{2})?)$/.test(
+      if (isTimeZoneOffsetString(zoneArgument))
+        parseOffsetNanoseconds(zoneArgument, true)
+      else if (
+        !/^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*$/.test(
           zoneArgument
         )
       )
