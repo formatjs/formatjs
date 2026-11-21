@@ -72,8 +72,8 @@ impl<'a> TimeZoneRegistry<'a> {
     }
     /// SystemTimeZoneIdentifier: always a primary or offset zone, never an error.
     /// https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier
-    /// Hosts can report no zone or one this registry can't resolve; treat those
-    /// like a UTC-only host (step 1).
+    /// Steps 2–3 use the normalized host identifier. Step 1 requires UTC for a
+    /// UTC-only implementation; UTC on failed discovery is our fallback policy.
     pub fn system(&self, host: Option<&str>) -> ResolvedTimeZone<'a> {
         host.and_then(|value| self.resolve(value).ok())
             .and_then(|zone| self.resolve(zone.primary_identifier()).ok())

@@ -82,6 +82,7 @@ const getSlot =
 const setSlot = slots.set.bind(slots)
 const limit = 8_640_000_000_000_000_000_000n
 export function validateInstant(value: bigint): bigint {
+  // IsValidEpochNanoseconds 1: both limits are inclusive.
   if (value < -limit || value > limit)
     throw new RangeError('Instant out of range')
   return value
@@ -208,38 +209,55 @@ class InstantValue implements InstantObject {
     throw new TypeError('Use the exported Instant constructor')
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L80-L85
+    // Instant.compare 1: convert the left operand before touching the right.
     const left = toInstant(one),
+      // Step 2: convert the right operand only after step 1 succeeds.
       right = toInstant(two)
+    // Step 3: compare the two slot values, returning a Number, not a BigInt.
     return left < right ? -1 : left > right ? 1 : 0
   }
   static from(item: unknown): InstantObject {
+    // Instant.from 1: ToTemporalInstant returns a new Instant even for an Instant input.
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(toInstant(item))
     return createInstant(toInstant(item))
   }
   static fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject {
+    // Instant.fromEpochNanoseconds 1: ToBigInt (not BigInt(number)).
+    // Steps 2–3: createInstant validates the inclusive range before publishing the value.
     return createInstant(toBigInt(epochNanoseconds))
   }
   static fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject {
-    // Unary + is ToNumber; unlike BigInt(), it rejects BigInt/Symbol input.
+    // Instant.fromEpochMilliseconds 1: unary + is ToNumber; reject BigInt/Symbol.
     const milliseconds = +(epochMilliseconds as number)
+    // Steps 2–3: reject non-integral Numbers, then scale as BigInt without rounding.
+    // Steps 4–5: createInstant checks the range and creates the result.
     return createInstant(BigInt(milliseconds) * 1_000_000n)
   }
   toZonedDateTimeISO(timeZone: unknown): ZonedDateTimeObject {
+    // Instant.prototype.toZonedDateTimeISO 1–2: brand-check this before zone conversion.
     const value = read(this)
+    // Steps 3–4: convert the explicit zone and construct with the ISO calendar.
     return createZonedDateTime(value, timeZoneIdentifier(timeZone), 'iso8601')
   }
   get epochNanoseconds(): bigint {
+    // epochNanoseconds 1–3: read(this) checks the brand and returns the slot.
     return read(this)
   }
   get epochMilliseconds(): number {
+    // epochMilliseconds 1–3: check the receiver and read its epoch nanoseconds.
     const value = read(this)
+    // Steps 4–5: BigInt division truncates; adjust negative remainders for floor,
+    // then convert the integral milliseconds to Number.
     const truncated = value / 1_000_000n
     return Number(
       value < 0n && value % 1_000_000n !== 0n ? truncated - 1n : truncated
     )
   }
   equals(other: unknown): boolean {
+    // Instant.prototype.equals 1–2: check this first; 3: convert other;
+    // 4–5: compare epoch nanoseconds, not object identity.
     return read(this) === toInstant(other)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
@@ -288,16 +306,29 @@ class InstantValue implements InstantObject {
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
   toString(options: unknown = undefined): string {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L232-L247
+    // L232: take this as the receiver.
+    // L233: reject an unbranded receiver before reading options.
     const value = read(this)
+    // L234: accept an object or default to an empty one.
     const resolved = optionsObject(options)
+    // L235: property access and independent validation are interleaved.
+    // L236: read fractionalSecondDigits first.
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
+    // L237: omitted roundingMode means trunc.
     const mode = roundingMode(resolved.roundingMode, 'trunc')
-    const unit = unitOption(resolved.smallestUnit)
+    // L238: "auto" is recognized here; unknown strings already throw.
+    const unit = unitOption(resolved.smallestUnit, true)
+    // L239: read timeZone before rejecting recognized but disallowed units.
     const zoneOption = resolved.timeZone
+    // L240: allow only time units or unset, not "auto".
+    // L241: hour is also invalid for string precision.
     if (unit !== undefined && timeUnit(unit) === 'hour')
       throw new RangeError('Cannot serialize with hour precision')
     const native = nativeTemporal()
     let identifier: string | undefined
+    // L242: omitted timeZone skips conversion.
+    // L243: both backends convert the supplied zone before rounding.
     if (native && zoneOption !== undefined) {
       const zoned = getZonedSlot(zoneOption as object)
       if (!zoned && typeof zoneOption !== 'string')
@@ -310,6 +341,7 @@ class InstantValue implements InstantObject {
       zoneOption !== undefined
         ? resolveTimeZone(zoneOption)
         : undefined
+    // L244: smallestUnit takes precedence over fractionalSecondDigits.
     const precision: Precision =
       unit === 'minute'
         ? 'minute'
@@ -336,7 +368,10 @@ class InstantValue implements InstantObject {
         mode,
         identifier
       )
+    // L245: round epoch time before looking up the output zone offset.
     const rounded = roundInstant(value, quantum, mode)
+    // L246: only the rounded instant's slot is needed, not an observable wrapper.
+    // L247: format with the offset at the rounded instant.
     return instantString(rounded, precision, zone?.offsetNanoseconds(rounded))
   }
   toLocaleString(
@@ -352,9 +387,12 @@ class InstantValue implements InstantObject {
     )
   }
   toJSON(): string {
+    // Instant.prototype.toJSON 1–2: require the Instant slot on this;
+    // 3: format with no explicit zone and automatic precision, without calling this.toString.
     return instantString(read(this))
   }
   valueOf(): never {
+    // Instant.prototype.valueOf 1: throw unconditionally, even for an unbranded receiver.
     throw new TypeError('Cannot convert Temporal.Instant to primitive')
   }
 }

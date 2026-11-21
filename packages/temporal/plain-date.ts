@@ -64,7 +64,6 @@ import {
   type DurationObject,
 } from '#packages/temporal/duration.js'
 import {durationNanoseconds} from '#packages/temporal/duration-core.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   optionsObject,
   unitOption,
@@ -219,17 +218,16 @@ function difference(
   const end = toPlainDateSlot(other)
   if (slot.calendar !== end.calendar) throw new RangeError('Calendars differ')
   const resolved = optionsObject(options)
-  const largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1863-L1868
+  // Reject unknown names now; validate the date unit group after reading the options.
+  const largestOption = unitOption(resolved.largestUnit, true) ?? 'auto'
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'day'
   const names = ['year', 'month', 'week', 'day'],
     smallIndex = names.indexOf(smallest)
   const largest =
-    largestText === 'auto'
-      ? names[Math.min(3, smallIndex)]
-      : unitOption(largestText)!
+    largestOption === 'auto' ? names[Math.min(3, smallIndex)] : largestOption
   if (
     smallIndex < 0 ||
     !names.includes(largest) ||
@@ -401,6 +399,7 @@ class PlainDateValue {
     return format(read(this))
   }
   valueOf(): never {
+    // PlainDate.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.PlainDate to primitive')
   }
 }

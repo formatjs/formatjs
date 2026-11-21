@@ -15,6 +15,7 @@ export function installTemporal(force = false): void {
     },
     date = Date.prototype as Date & {toTemporalInstant?: () => unknown},
     replace = force || needsTemporal()
+  // The global's initial Temporal property refers to the same namespace object.
   if (replace)
     Object.defineProperty(target, 'Temporal', {
       value: Temporal,

@@ -5,6 +5,20 @@ import packed from '@formatjs_generated/tz/all-tz.js'
 import {Temporal} from '#packages/temporal/index.js'
 import {epochNanosecondsToISO} from '#packages/temporal/kernel.js'
 
+it('reads timeZoneName before rejecting auto string precision', () => {
+  const zoned = new Temporal.ZonedDateTime(0n, 'UTC')
+  const failure = new Error('timeZoneName getter')
+  const options = (smallestUnit: string) => ({
+    smallestUnit,
+    get timeZoneName(): never {
+      throw failure
+    },
+  })
+  expect(() => zoned.toString(options('auto'))).toThrow(failure)
+  expect(() => zoned.toString(options('autos'))).toThrow(RangeError)
+  expect(() => zoned.toString({smallestUnit: 'auto'})).toThrow(RangeError)
+})
+
 it('matches independent ICU offsets and local fields through future transitions', () => {
   const file = runfiles.resolve(
     `${process.env.TEST_WORKSPACE || '_main'}/conformance-tests/icu4j/temporal-timezone-fixtures.tsv`

@@ -518,6 +518,7 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   valueOf(): never {
+    // PlainTime.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.PlainTime to primitive')
   }
 }

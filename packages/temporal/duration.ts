@@ -188,16 +188,22 @@ class DurationValue {
     return createNativeDuration(toDurationFields(value))
   }
   get sign(): number {
+    // sign 1–2: brand-check this; 3: return DurationSign as a Number.
     return durationSign(read(this))
   }
   get blank(): boolean {
+    // blank 1–2: brand-check this; 3–4: true exactly when DurationSign is zero.
     return durationSign(read(this)) === 0
   }
   with(fields: unknown): DurationObject {
+    // Duration.with 1–2: validate the receiver before reading fields.
     const original = read(this)
+    // 3: partialDuration omits undefined fields. 4–23: its own keys override
+    // exactly those slots, keeping the rest. 24: create and validate a fresh duration.
     return createDuration({...original, ...partialDuration(fields)})
   }
   negated(): DurationObject {
+    // negated 1–2: read the branded receiver; 3: create a fresh negated duration.
     const fields = read(this)
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeDuration(
@@ -213,6 +219,7 @@ class DurationValue {
     return createDuration(result)
   }
   abs(): DurationObject {
+    // abs 1–2: read the branded receiver; 3: create from the ten absolute values.
     const fields = read(this)
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeDuration(
@@ -389,6 +396,7 @@ class DurationValue {
     return formatDuration(read(this))
   }
   valueOf(): never {
+    // Duration.prototype.valueOf 1: throw without reading this or its slots.
     throw new TypeError('Cannot convert Temporal.Duration to primitive')
   }
 }
@@ -417,6 +425,8 @@ export const Duration: DurationConstructor = new Proxy(DurationValue, {
 defineGetters(
   DurationValue.prototype,
   durationFieldNames,
+  // years through nanoseconds, steps 1–3 of each getter: take this, check
+  // [[InitializedTemporalDuration]], then return the matching slot as a Number.
   (receiver, field) => read(receiver)[field]
 )
 Object.defineProperties(DurationValue.prototype, {

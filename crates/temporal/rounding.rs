@@ -66,9 +66,12 @@ impl FromStr for RoundingMode {
     }
 }
 pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i128 {
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L996-L1001
     if quantum == 1 {
         return value;
     }
+    // L996: carry the exact fractional quotient as a remainder.
+    // L998: Euclidean division produces the lower neighbor for either sign.
     let (lower, remainder) = if value >= i128::from(i64::MIN)
         && value <= i128::from(i64::MAX)
         && quantum > 1
@@ -86,6 +89,9 @@ pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i
     if remainder == 0 {
         return value;
     }
+    // L997: use the positive interpretation even when the instant precedes the epoch.
+    // L999: the upper neighbor is lower + 1.
+    // L1000: choose between the neighbors without converting to floating point.
     let up = match mode {
         RoundingMode::Ceil | RoundingMode::Expand => true,
         RoundingMode::Floor | RoundingMode::Trunc => false,
@@ -94,6 +100,7 @@ pub(crate) fn round_instant(value: i128, quantum: i128, mode: RoundingMode) -> i
         RoundingMode::HalfEven => lower % 2 != 0,
         _ => false,
     };
+    // L1001: return nanoseconds, not the unit count.
     (lower + i128::from(up)) * quantum
 }
 impl Instant {

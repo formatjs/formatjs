@@ -5,6 +5,27 @@ import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Temporal} from '#packages/temporal/index.js'
 import {checkPlainArithmeticOracle} from '#packages/temporal/tests/plain-arithmetic-oracle.js'
 
+it('validates largestUnit before reading roundingIncrement in differences', () => {
+  const next = new Error('roundingIncrement getter')
+  const options = (largestUnit: string) => ({
+    largestUnit,
+    get roundingIncrement(): never {
+      throw next
+    },
+  })
+  for (const date of [
+    new Temporal.PlainDate(2000, 1, 1),
+    new Temporal.PlainDateTime(2000, 1, 1),
+    new Temporal.ZonedDateTime(0n, 'UTC'),
+  ]) {
+    expect(() => date.until(date, options('unknown'))).toThrow(RangeError)
+    expect(() => date.since(date, options('unknown'))).toThrow(RangeError)
+    expect(() => date.until(date, options('auto'))).toThrow(next)
+  }
+  const date = new Temporal.PlainDate(2000, 1, 1)
+  expect(() => date.until(date, options('hour'))).toThrow(next)
+})
+
 it('matches independent ICU arithmetic, metadata and clock carry', () => {
   const fixture = (name: string) =>
     readFileSync(

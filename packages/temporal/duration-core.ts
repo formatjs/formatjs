@@ -51,11 +51,14 @@ export function zeroDuration(): DurationFields {
   }
 }
 export function durationSign(fields: DurationFields): -1 | 0 | 1 {
+  // DurationSign 1: walk slots from years to nanoseconds, not property-read order.
   for (let index = 0; index < durationFieldNames.length; index++) {
     const key = durationFieldNames[index]
+    // 1.a–b: the first nonzero slot determines the sign.
     if (fields[key] < 0) return -1
     if (fields[key] > 0) return 1
   }
+  // 2: all ten slots were zero.
   return 0
 }
 export function durationNanoseconds(
@@ -97,13 +100,19 @@ export function integralDurationNumber(value: unknown): number {
   return number || 0
 }
 export function partialDuration(value: unknown): Partial<DurationFields> {
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1225-L1250
+  // 1: callable objects are objects too; null is not.
   if (
     value === null ||
     (typeof value !== 'object' && typeof value !== 'function')
   )
     throw new TypeError('Duration fields must be an object')
+  // 2: absent own keys represent the record's undefined fields.
   const result: Partial<DurationFields> = Object.create(null)
   let found = false
+  // 3–23: each pair of steps gets and converts one field before the next get:
+  // days, hours, microseconds, milliseconds, minutes, months, nanoseconds,
+  // seconds, weeks, years. Do not batch reads ahead of coercions.
   for (let index = 0; index < durationFieldReadOrder.length; index++) {
     const field = durationFieldReadOrder[index]
     const number = (value as Record<string, unknown>)[field]
@@ -112,6 +121,7 @@ export function partialDuration(value: unknown): Partial<DurationFields> {
       found = true
     }
   }
+  // 24: reject an empty record, but not a supplied zero. 25: return the record.
   if (!found) throw new TypeError('Duration fields required')
   return result
 }
