@@ -48,15 +48,34 @@ The historical/provisional Temporal inventory above remains unchanged.
 Projection review below assumes the partition producer's specified private List
 and Record contract. Producers and complete public methods remain open.
 
-| Section                                                                             | Status                             | Evidence or gap                                                                                                                                 |
-| ----------------------------------------------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)           | Reviewed for valid Pattern Strings | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                   |
-| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open. |
-| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                           |
+| Section                                                                             | Status                                                                | Evidence or gap                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)           | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                   |
+| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern) | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                    |
+| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open. |
+| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                           |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Date pattern producer #8104](https://github.com/formatjs/formatjs/pull/8104): [ECMA-402 §11.5.4 step map](temporal-date-pattern-audit.md)
+  records every top-level step and separates reviewed record/numeric paths from
+  open dependencies. TS now uses indexed traversal, own List writes, captured
+  floor and private Unicode truncation. TS/Rust retain required unknown fields
+  using identical exact-epoch fallback text. Nine TS controls and one Rust witness
+  reproduced before fixes; five focused gates pass. All 166 regression targets
+  pass across the broad run and an isolated 42-case pattern replay after a timeout.
+  The 167th target is raw ListFormat strict diagnostics matching both existing
+  baseline failures. Eight package assemblies build; no baseline, exclusion or
+  test timeout changed.
+  No new specification issue or Temporal historical line credit.
+
+- Parent CI checkpoints: #8102 at 1cb4aa456ba5d1af0db2c3ebeab7dad2a6280659
+  ([all-target tests](https://formatjs.buildbuddy.io/invocation/671df843-c583-4530-8fd4-9f05dfc70667))
+  and #8103 at 83b453070eae4cb972799825018bb1c85ce09696
+  ([all-target tests](https://formatjs.buildbuddy.io/invocation/fc26c998-053f-4519-9608-4ccc7625d8f5))
+  passed tests, cross-build, native smoke and hooks. Later heads retain their own CI gate.
 
 - [Shared Pattern String parser #8103](https://github.com/formatjs/formatjs/pull/8103): [ECMA-402 §9.2.15](temporal-pattern-partition-audit.md)
   now maps every step to source lines. Captured String operations and private

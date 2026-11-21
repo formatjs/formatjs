@@ -80,7 +80,7 @@ failing as detailed below (42 executed, 123 cached). All eight package assemblie
 built: Temporal, DateTimeFormat, Collator, DurationFormat, NumberFormat, Locale,
 RelativeTimeFormat and ListFormat. The `{literal}` description conflict is recorded as a
 [separate specification issue](temporal-spec-issues.md#partitionpattern-literal-placeholder-versus-result-description). This review does not close mutable
-hooks in FormatDateTimePattern, PartitionDateTimeRangePattern, MakePartsList or
+hooks in FormatDateTimePattern's dependencies, PartitionDateTimeRangePattern, MakePartsList or
 ListFormat's deconstructPattern. It adds no Temporal chapter/line credit.
 
 The expanded inventory includes `//packages/intl-listformat:test262-strict`
