@@ -97,3 +97,24 @@ mainadditions.html line 355 and plaindatetime.html line 763 open. Independent
 clock/composition/range substeps can be reviewed under their valid intermediate
 contracts. This is a specification ambiguity, not evidence of an implementation
 arithmetic defect. No upstream issue or PR was filed by this audit.
+
+## CompareTimeRecord description reverses the algorithm's signs
+
+Status: editorial inconsistency in pinned Temporal revision
+`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`; also present in the
+[current rendered clause](https://tc39.es/proposal-temporal/#sec-temporal-comparetimerecord)
+when checked on 2026-11-21.
+
+The [description](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L830)
+assigns -1 when the second clock is earlier and 1 when the first is earlier.
+The [numbered algorithm](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L833-L845)
+assigns 1 when the first clock is later, -1 when it is earlier. These disagree.
+For example, first hour 12 and second hour 11 returns 1 at the first step;
+the description implies -1.
+
+Audit decision: preserve the numbered algorithm's chronological ordering,
+consistent with CompareISODate and CompareEpochNanoseconds. This is a prose sign
+error, not an implementation comparison bug. TS, Rust and native Hermes controls
+check both directions and equality, including every lower-field carry boundary.
+Input conversion remains separate audit work. No upstream issue or PR was filed
+by this audit.

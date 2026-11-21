@@ -98,10 +98,16 @@ impl fmt::Display for Error {
 impl core::error::Error for Error {}
 
 /// Exact nanoseconds since the Unix epoch, bounded to Temporal's instant range.
+// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L435-L437
+// L435: a greater first epoch returns 1.
+// L436: a lesser first epoch returns -1.
+// L437: equal epochs return 0.
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Instant(i128);
 impl Instant {
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
+        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
+        // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
         if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&value) {
             return Err(Error::OutOfRange);
         }

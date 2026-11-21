@@ -771,6 +771,12 @@ class ZonedDateTimeValue {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toZonedDateTimeSlot(one).epochNanoseconds,
       b = toZonedDateTimeSlot(two).epochNanoseconds
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L435-L437
+    // L435: a greater first epoch returns 1.
+    // L436: a lesser first epoch returns -1.
+    // L437: equal epochs return 0.
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L74
+    // L74: compare private epochs; timezone and calendar do not affect the sign.
     return a < b ? -1 : a > b ? 1 : 0
   }
   get epochNanoseconds(): bigint {
