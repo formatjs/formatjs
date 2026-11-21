@@ -349,10 +349,53 @@ Current pass:
   These expected dates come from the builtin oracle, independently of the
   implementation's reverse conversion; existing negative-epoch, leap-day and
   extreme-instant controls remain in place.
-  GetUTCEpochNanoseconds, mainadditions.html lines 355–359, stays open: arithmetic
-  checks do not finish the converter's fused range/caller review or the upstream
-  MakeDay precision/domain question. Existing range-policy spec issues remain
-  separate. No new line signoffs in this pass; the 103 new traces above are intact.
+  The range/caller review below now traces clock/composition substeps and the
+  independent limit conditions. MakeDay's witness range and its call from the
+  limit predicate stay open; the boundary ambiguity is documented separately.
+
+- Zoned string option ordering: `ToTemporalZonedDateTime`, zoneddatetime.html
+  lines 992–995, now has individual traces in
+  [zoned-date-time.ts](../../packages/temporal/zoned-date-time.ts). Parse syntax,
+  time-zone and calendar identifiers first; resolve options and validate
+  disambiguation, offset and overflow before local epoch/range conversion.
+  [Native field parsing](../../crates/temporal/ffi.rs) now calls separate ISO
+  field validation rather than converting to a representable local epoch.
+  Invalid dates still fail before option getters; valid far-future/past fields
+  survive parsing so options can run first. Native backend contract comments
+  make this distinction explicit.
+  Seven public getter/abrupt-completion cases, native Hermes checks and the Rust
+  FFI regression failed before the fix and pass afterward. Controls preserve
+  malformed-date/unknown-identifier precedence, minimum-Instant parsing and
+  strict PlainDateTime limits through string, bag and constructor inputs.
+  Other ToTemporalZonedDateTime steps remain open.
+
+- Forward arithmetic/range traces: mainadditions.html lines 356–359 are mapped
+  individually in [TS](../../packages/temporal/kernel.ts) and
+  [Rust](../../crates/temporal/iso.rs). Valid clock fields make each MakeTime
+  product/sum exact. For day-range candidates, the millisecond intermediate has
+  magnitude below (100000002 * 86400000), which is below 2**53. Bigint/i128
+  composition then preserves all sub-millisecond digits. Native transport packs
+  each 0..999 digit into its checked subsecond field without rounding.
+  ISODateTimeWithinLimits lines 762 and 764–766 are mapped in those converters
+  and [prepared-epoch validation](../../packages/temporal/date-core.ts).
+  Write n = d*D + t, D = nsPerDay, 0 <= t < D. If |d| > 100000001, the final
+  interval necessarily rejects n; computing exact private arithmetic before
+  that rejection has no user callbacks. Thus the fused guard subsumes the early
+  day predicate. Equality at either local boundary is rejected; success maps to
+  true, while the actual callers turn false into RangeError. Assert-only callers
+  already require representable input. Producer calendar/time-zone algorithms
+  retain their own open status.
+  MakeDay line 355 and the dependent UTC-conversion call at line 763 remain open:
+  the minimum-Instant month-start witness exposes an upstream range ambiguity,
+  recorded in [spec issues](temporal-spec-issues.md#makeday-witness-range-at-the-minimum-instant).
+  Preserve exact intended minimum behavior; do not claim the ambiguous calls
+  are signed off. These eight arithmetic/range traces plus four option traces
+  add 12 source lines, without signing off complete public methods.
+  All 105 test gates pass: focused option/boundary tests and typechecks, every
+  Rust Temporal test, all 40 Temporal class Test262 backend gates, native Hermes,
+  kernel/ICU controls, locale profiles and Intl consumer/baseline gates. Five
+  package assemblies pass. Arithmetic tokens and the extracted validation
+  predicates are unchanged. Exclusions and accepted-failure baselines stay intact.
 
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
@@ -369,9 +412,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [captured numeric floor](https://github.com/formatjs/formatjs/pull/8073),
 [numeric intrinsics and ISO reverse conversion](https://github.com/formatjs/formatjs/pull/8074),
 [intrinsic exceptions and integer coercion](https://github.com/formatjs/formatjs/pull/8075),
-[private-list predicates](https://github.com/formatjs/formatjs/pull/8076).
+[private-list predicates](https://github.com/formatjs/formatjs/pull/8076),
+[zoned string option order and range audit](https://github.com/formatjs/formatjs/pull/8077).
 
-New traces: 103 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 115 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -382,7 +426,8 @@ Pinned revision: [`b038883fe9c6aa871ccab3238c90daf9eb5e9b17`](https://github.com
 
 Standards-policy inconsistencies are recorded in [spec issues](temporal-spec-issues.md);
 external test/data conflicts are recorded in [conformance discrepancies](temporal-conformance-discrepancies.md).
-No specification algorithm defect is confirmed in the current pass.
+No unambiguous new algorithm defect is claimed; the MakeDay witness ambiguity
+is documented separately and its dependent lines stay open.
 
 Implementation: [Now, Instant and option reads](https://github.com/formatjs/formatjs/pull/8055/files); [Duration.compare, TypeScript and Rust](https://github.com/formatjs/formatjs/pull/8056/files). The `Now` and Date bridge review uses some grouped comments, so those lines are not automatically marked traced here.
 
@@ -395,15 +440,15 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       42 |                         660 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       46 |                         111 |
 | [intl](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/intl.html)                     |                   736 |                        0 |                         736 |
-| [mainadditions](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html)   |                   160 |                        9 |                         151 |
+| [mainadditions](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html)   |                   160 |                       13 |                         147 |
 | [plaindate](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html)           |                   272 |                       32 |                         240 |
-| [plaindatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html)   |                   315 |                       12 |                         303 |
+| [plaindatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html)   |                   315 |                       16 |                         299 |
 | [plainmonthday](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainmonthday.html)   |                   103 |                        6 |                          97 |
 | [plaintime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html)           |                   285 |                        3 |                         282 |
 | [plainyearmonth](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plainyearmonth.html) |                   183 |                        6 |                         177 |
 | [temporal](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/temporal.html)             |                    29 |                        0 |                          29 |
 | [timezone](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html)             |                   132 |                       16 |                         116 |
-| [zoneddatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html)   |                   487 |                       30 |                         457 |
+| [zoneddatetime](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html)   |                   487 |                       34 |                         453 |
 
 ## `abstractops`
 
@@ -917,7 +962,8 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
   - Traced: [319–323](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L319-L323).
 - [`sec-overview-of-date-objects-and-definitions-of-abstract-operations`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L330)
 - [`sec-getutcepochnanoseconds`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L335)
-  - Open: [355–359](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L355-L359).
+  - Traced: [356–359](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L356-L359).
+  - Open: [355](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L355).
 - [`sec-time-zone-identifiers`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L363)
 - [`sec-getnamedtimezoneepochnanoseconds`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L401)
   - Open: [430–432](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L430-L432).
@@ -1155,7 +1201,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-combineisodateandtimerecord`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L726)
   - Open: [740–741](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L740-L741).
 - [`sec-temporal-isodatetimewithinlimits`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L745)
-  - Open: [762–766](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766).
+  - Traced: [762](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762).
+  - Traced: [764–766](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L764-L766).
+  - Open: [763](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L763).
 - [`sec-temporal-interprettemporaldatetimefields`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L770)
   - Open: [783–785](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L783-L785).
 - [`sec-temporal-totemporaldatetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L789)
@@ -1583,7 +1631,9 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-interpretisodatetimeoffset`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L883)
   - Open: [910–935](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L910-L935).
 - [`sec-temporal-totemporalzoneddatetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L939)
-  - Open: [953–1008](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L953-L1008).
+  - Traced: [992–995](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L992-L995).
+  - Open: [953–991](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L953-L991).
+  - Open: [996–1008](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L996-L1008).
 - [`sec-temporal-createtemporalzoneddatetime`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L1012)
   - Open: [1026–1032](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L1026-L1032).
 - [`sec-temporal-temporalzoneddatetimetostring`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L1036)

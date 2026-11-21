@@ -104,13 +104,22 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     numberFrom(month > 2 && leap) +
     date -
     1
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L356-L359
+  // L356: valid clock fields give exact hour/minute/second/millisecond sums.
+  // L357: day and clock terms equal MakeDate's millisecond composition.
+  // L358: candidates admitted by the day bound have integral |ms| < 2**53.
+  // L359: bigint composition retains all microsecond/nanosecond digits.
   const value =
     bigIntFrom(epochDay) * day +
     bigIntFrom(time[0] * 3600 + time[1] * 60 + time[2]) * second +
     bigIntFrom(time[3] * 1_000_000 + time[4] * 1000 + time[5])
-  // Local fields may lie one offset beyond the instant range.
+  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766
+  // L762: for valid clocks, this interval also implies |epochDay| <= 100000001.
+  // L764: equality at the lower local boundary is rejected.
+  // L765: equality at the upper local boundary is rejected.
   if (value <= -limit - day || value >= limit + day)
     throw new RangeErrorConstructor('Local date out of range')
+  // L766: successful return represents the predicate's true result.
   return value
 }
 

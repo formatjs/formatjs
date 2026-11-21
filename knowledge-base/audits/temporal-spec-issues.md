@@ -4,8 +4,8 @@ Reviewed: 2026-11-21.
 
 Implementation gaps stay in [the audit ledger](temporal-spec-audit.md).
 [Test/data conflicts](temporal-conformance-discrepancies.md) are separate from
-specification algorithm defects. No algorithm defect confirmed in this pass;
-editorial inconsistencies are recorded below.
+specification algorithm defects. Normative ambiguities and editorial
+inconsistencies are recorded below.
 
 ## Published Zone-primary rule versus pending legacy-POSIX policy
 
@@ -26,7 +26,7 @@ published rule therefore differ for the pinned data.
 Audit decision: follow the published rule and pinned data. Keep the upstream
 policy question open; reassess when the normative text changes. Do not silently
 implement unpublished alias policy merely to satisfy the older Test262 fixture.
-No external issue or PR was filed by this audit.
+No upstream issue or PR was filed by this audit.
 
 ## Range-guard removal note versus lower-bound offset behavior
 
@@ -63,4 +63,37 @@ Audit decision: retain the pinned rejection. Node
 [pinned bound controls](../../crates/temporal/zoned_string.test.rs) preserve the
 four-mode distinction. This is an editorial-removal claim needing qualification,
 not permission to change the current algorithm or a claim about how #1087 will
-be resolved. No external issue or PR was filed by this audit.
+be resolved. No upstream issue or PR was filed by this audit.
+
+## MakeDay witness range at the minimum Instant
+
+Status: unresolved witness-range wording, related to open
+[ECMA-262 #1087](https://github.com/tc39/ecma262/issues/1087). Rechecked 2026-11-21.
+
+Pinned [GetUTCEpochNanoseconds](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L355-L359)
+uses MakeDay, then asserts an integral millisecond result. Frozen ECMA-262
+[MakeDay's witness step](https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34685)
+asks for a finite time value on the first day of the month. Its
+[supported time-value range](https://github.com/tc39/ecma262/blob/b7865f0eed2021720f84d561289401bc414874d0/spec.html#L34073-L34075)
+is ±8,640,000,000,000,000 milliseconds.
+
+The minimum Instant is -271821-04-20, epoch day -100000000. April 1 of that
+month is day -100000019, or -8640001641600000 milliseconds. Every millisecond
+on April 1 lies below the supported range. A reading that restricts the witness
+to that range finds none, so MakeDay returns NaN and the later assertion fails.
+The earlier [CheckISODaysRange](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L416-L417)
+accepts April 20 and does not address this month-start witness.
+
+An extended-intermediate reading permits the witness and produces the intended
+minimum. TS and Rust use exact arithmetic and retain that behavior:
+
+```js
+Temporal.ZonedDateTime.from('-271821-04-20T00:00Z[UTC]').epochNanoseconds
+// -8640000000000000000000n
+```
+
+Audit decision: preserve valid minimum parsing, document both readings, and keep
+mainadditions.html line 355 and plaindatetime.html line 763 open. Independent
+clock/composition/range substeps can be reviewed under their valid intermediate
+contracts. This is a specification ambiguity, not evidence of an implementation
+arithmetic defect. No upstream issue or PR was filed by this audit.
