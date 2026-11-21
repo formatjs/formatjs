@@ -1,5 +1,7 @@
 # Changelog
 
+## [1.0.36](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-arm64-musl@1.0.35...@formatjs/cli-native-linux-arm64-musl@1.0.36) (2026-11-21)
+
 ## [1.0.35](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-arm64-musl@1.0.34...@formatjs/cli-native-linux-arm64-musl@1.0.35) (2026-11-17)
 
 ## [1.0.34](https://github.com/formatjs/formatjs/compare/@formatjs/cli-native-linux-arm64-musl@1.0.33...@formatjs/cli-native-linux-arm64-musl@1.0.34) (2026-11-17)
