@@ -129,7 +129,7 @@ it('compares exact instants, coercing left before right', () => {
   expect(Instant.compare('19700101T00Z', new Instant(0n))).toBe(0)
 })
 
-it('allocates Temporal objects without observing mutable Object.create', () => {
+it('creates Temporal objects without mutable allocation or reflection helpers', () => {
   const cases: [string, () => {toString(): string}, string][] = [
     ['Instant constructor', () => new Instant(0n), '1970-01-01T00:00:00Z'],
     [
@@ -188,21 +188,77 @@ it('allocates Temporal objects without observing mutable Object.create', () => {
       '1970-01-01T00:00:00+00:00[UTC]',
     ],
   ]
-  const original = Object.create
-  const failure = new Error('Mutable Object.create reached')
-  for (const [name, create, expected] of cases) {
-    let result: {toString(): string} | undefined, error: unknown
-    try {
-      Object.create = () => {
-        throw failure
+  const failure = new Error('Mutable helper reached')
+  const overrides: [string, () => () => void][] = [
+    [
+      'Object.create',
+      () => {
+        const original = Object.create
+        Object.create = () => {
+          throw failure
+        }
+        return () => {
+          Object.create = original
+        }
+      },
+    ],
+    [
+      'Reflect.get',
+      () => {
+        const original = Reflect.get
+        Reflect.get = () => {
+          throw failure
+        }
+        return () => {
+          Reflect.get = original
+        }
+      },
+    ],
+  ]
+  for (const [intrinsic, override] of overrides) {
+    for (const [name, create, expected] of cases) {
+      let result: {toString(): string} | undefined, error: unknown
+      const restore = override()
+      try {
+        result = create()
+      } catch (caught) {
+        error = caught
+      } finally {
+        restore()
       }
-      result = create()
-    } catch (caught) {
-      error = caught
-    } finally {
-      Object.create = original
+      expect(error, `${intrinsic}: ${name}`).toBeUndefined()
+      expect(result!.toString(), `${intrinsic}: ${name}`).toBe(expected)
     }
-    expect(error, name).toBeUndefined()
-    expect(result!.toString(), name).toBe(expected)
   }
+})
+
+it('reads locale options with their original receiver without mutable Reflect.get', () => {
+  const value = new Temporal.PlainDate(2020, 2, 29)
+  const expected = value.toLocaleString('en', {year: 'numeric'})
+  let reads = 0,
+    correctReceiver = false,
+    result: string | undefined,
+    error: unknown
+  const options = {
+    get year() {
+      reads++
+      correctReceiver = this === options
+      return 'numeric' as const
+    },
+  }
+  const original = Reflect.get
+  try {
+    Reflect.get = () => {
+      throw new Error('Mutable Reflect.get reached')
+    }
+    result = value.toLocaleString('en', options)
+  } catch (caught) {
+    error = caught
+  } finally {
+    Reflect.get = original
+  }
+  expect(error).toBeUndefined()
+  expect(result).toBe(expected)
+  expect(correctReceiver).toBe(true)
+  expect(reads).toBe(1)
 })

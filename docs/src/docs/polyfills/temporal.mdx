@@ -53,6 +53,8 @@ This preserves an existing Temporal implementation. Use
 The namespace exports `Instant`, `Duration`, `PlainDate`, `PlainDateTime`,
 `PlainMonthDay`, `PlainTime`, `PlainYearMonth`, `ZonedDateTime`, and `Now`.
 Temporal uses a captured `Object.create` for its own internal allocations.
+Its constructor prototype reads and formatter option reads use ordinary property
+access without consulting a replaced `Reflect.get`.
 
 ## Calendars and time-zone data
 

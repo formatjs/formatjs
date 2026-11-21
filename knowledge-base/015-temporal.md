@@ -27,6 +27,8 @@ Constructors, factories, option records and Intl adapters avoid observing later
 replacement of that property. Native transport keeps its existing capture.
 Formatter-provider allocations, other intrinsic dependencies and full cross-realm
 allocation remain open.
+Constructor prototype reads and Temporal formatter option proxies use direct
+property access, preserving getter receivers without mutable `Reflect.get`.
 
 ## Native performance direction
 
