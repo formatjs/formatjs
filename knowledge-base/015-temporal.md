@@ -8,6 +8,13 @@ outputs and reports per-workload samples; native timings exclude binding costs.
 
 ## Specification audit
 
+Shared [primitive Number conversion](audits/temporal-number-conversion-audit.md)
+now maps the complete ECMA-262 §7.1.4 helper contract through native unary plus.
+DurationFormat integrality retains primitive Numbers, validates with captured
+Number.isInteger and normalizes zero under ECMA-402 §13.5.2. Private Decimal
+construction no longer interrupts duration field conversion. Full caller and
+Temporal brand-conversion algorithms remain separate audit work.
+
 The [timestamp integration follow-up](audits/temporal-timeclip-audit.md#composite-build-and-package-integration)
 repairs standalone DateTimeFormat compiler gates and synchronizes its generated
 manifest and lockfile. Captured BigInt builds the millisecond scale without a
