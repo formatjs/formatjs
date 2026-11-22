@@ -43,6 +43,9 @@ const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
   .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const hostParts = Constructor?.prototype.formatToParts
+const queryTemporalTimeZoneKey = Symbol.for(
+  '@formatjs/intl-datetimeformat/queryTemporalTimeZone'
+)
 const timeZoneDataGenerationKey = Symbol.for(
   '@formatjs/intl-datetimeformat/timeZoneDataGeneration'
 )
@@ -84,6 +87,10 @@ function createHostTimeZoneProvider(
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
   dataGeneration?: () => object
+  ownedTransition?: (
+    instant: bigint,
+    direction: 'next' | 'previous'
+  ) => bigint | null | undefined
 } {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
@@ -108,10 +115,24 @@ function createHostTimeZoneProvider(
     parts,
     timeZoneDataGenerationKey
   )?.value as (() => object) | undefined
+  const queryTemporalTimeZone = getOwnPropertyDescriptor(
+    parts,
+    queryTemporalTimeZoneKey
+  )?.value as
+    | ((
+        this: Intl.DateTimeFormat,
+        instant: bigint,
+        direction?: 'next' | 'previous'
+      ) => bigint | null | undefined)
+    | undefined
   let offsetGeneration: object | undefined
   const offsetNanoseconds = (instant: bigint): bigint => {
     // Proposal comparison §11.1.9 step 3: decode host ISO clock fields into offset nanoseconds.
     check(instant)
+    if (queryTemporalTimeZone) {
+      const owned = apply(queryTemporalTimeZone, formatter, [instant])
+      if (typeof owned === 'bigint') return owned
+    }
     // Proposal comparison §11.1.9 step 3: expire offsets when the data changes.
     if (dataGeneration) {
       const generation = dataGeneration()
@@ -182,6 +203,10 @@ function createHostTimeZoneProvider(
   return {
     offsetNanoseconds,
     dataGeneration,
+    ownedTransition: queryTemporalTimeZone
+      ? (instant, direction) =>
+          apply(queryTemporalTimeZone, formatter, [instant, direction])
+      : undefined,
     ownedCandidates:
       parts === hostParts && checkHostTemporalCandidates
         ? (local, direction) =>
@@ -199,7 +224,7 @@ export function createHostTimeZoneOffset(
 }
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
-  const {offsetNanoseconds, ownedCandidates, dataGeneration} =
+  const {offsetNanoseconds, ownedCandidates, ownedTransition, dataGeneration} =
     createHostTimeZoneProvider(timeZone)
 
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
@@ -287,6 +312,9 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     direction: 'next' | 'previous'
   ): bigint | null => {
     check(instant)
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: use exact owned boundaries.
+    const owned = ownedTransition?.(instant, direction)
+    if (owned !== undefined) return owned
     // Proposal comparison §6.3.46 steps 9.a and 10.b: expire transitions when the data changes.
     if (dataGeneration) {
       const generation = dataGeneration()

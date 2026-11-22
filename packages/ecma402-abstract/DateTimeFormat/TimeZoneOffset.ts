@@ -1,6 +1,8 @@
 import {
+  bigIntFrom,
   floor,
   mathMax,
+  mathMin,
   numberFrom,
   numberIsInteger,
 } from '#packages/ecma262-abstract/intrinsics.js'
@@ -158,4 +160,83 @@ export function VisitTimeZoneBoundaries(
     visitFuture((TimeZoneRuleTransition(year, end) - daylightOffset) * 1000)
   }
   return true
+}
+
+const instantLimitMilliseconds = 8_640_000_000_000_000
+const gregorianCycleMilliseconds = 146_097 * 86_400_000
+const nearbyMilliseconds = 366 * 86_400_000
+
+// Proposal comparison §6.3.46 steps 9.a and 10.b, §§11.1.3–4.
+// Search actual offset changes in the packed rows and their TZif footer.
+export function TimeZoneTransition(
+  instant: bigint,
+  direction: 'next' | 'previous',
+  data: UnpackedTimeZoneData
+): bigint | null | undefined {
+  const next = direction === 'next'
+  const millisecond = bigIntFrom(1_000_000)
+  let milliseconds = instant / millisecond
+  if (instant < 0 && instant % millisecond) milliseconds--
+  const origin = numberFrom(milliseconds)
+  const lower = -instantLimitMilliseconds - 1
+  const upper = instantLimitMilliseconds
+  const cutoff = data[data.length - 1][0] * 1000
+
+  const changesOffset = (boundary: number): boolean =>
+    TimeZoneOffset(boundary, data)[0] !== TimeZoneOffset(boundary - 1, data)[0]
+
+  const scanExplicit = (): bigint | null => {
+    const index = transitionIndex(origin / 1000, data)
+    const first = index + numberFrom(next)
+    const step = next ? 1 : -1
+    for (let row = first; row > 0 && row < data.length; row += step) {
+      const boundary = data[row][0] * 1000
+      if (boundary <= lower || boundary > upper) return null
+      const candidate = bigIntFrom(boundary) * millisecond
+      if ((next || candidate < instant) && changesOffset(boundary))
+        return candidate
+    }
+    return null
+  }
+
+  const scanFooter = (
+    first: number,
+    last: number
+  ): bigint | null | undefined => {
+    if (first >= last) return null
+    let best: bigint | null = null
+    const covered = VisitTimeZoneBoundaries(first, last, data, boundary => {
+      if (boundary <= lower || boundary > upper) return
+      const candidate = bigIntFrom(boundary) * millisecond
+      if (next ? candidate <= instant : candidate >= instant) return
+      if (best !== null && (next ? candidate >= best : candidate <= best))
+        return
+      if (changesOffset(boundary)) best = candidate
+    })
+    return covered ? best : undefined
+  }
+
+  if (next) {
+    const explicit = scanExplicit()
+    if (explicit !== null) return explicit
+  }
+  if (data.future) {
+    // The footer's offset pattern repeats every 400 Gregorian years. Search
+    // the nearest year first and include the explicit/footer seam if reachable.
+    const anchor = next ? mathMax(origin, cutoff) : origin
+    const first = next
+      ? anchor
+      : mathMax(lower, cutoff, anchor - gregorianCycleMilliseconds - 1)
+    const last = next
+      ? mathMin(upper, anchor + gregorianCycleMilliseconds + 1)
+      : anchor
+    const split = next
+      ? mathMin(last, anchor + nearbyMilliseconds)
+      : mathMax(first, anchor - nearbyMilliseconds)
+    const nearby = next ? scanFooter(first, split) : scanFooter(split, last)
+    if (nearby !== null) return nearby
+    const remaining = next ? scanFooter(split, last) : scanFooter(first, split)
+    if (remaining !== null) return remaining
+  }
+  return next ? null : scanExplicit()
 }

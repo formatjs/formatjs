@@ -304,9 +304,10 @@ Nine focused Bazel targets pass.
 
 Source review of the fixed helper inventory is complete. Behavioral review
 still has 60 conditional Temporal steps. Both exact owned candidate lookup
-and gap disambiguation now pass public packed-data regressions. Other Intl
-profiles retain candidate and gap-boundary premises. The published ECMA-402 range-collapse
-regression is fixed and validated.
+and gap disambiguation now pass public packed-data regressions. Owned next
+and previous transition lookup uses exact decoded boundaries. Other Intl
+profiles retain candidate, gap and transition coverage premises. The published
+ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
 matching numeric months and numeric days with verified endpoint parts.
 Exact layout selection for other corrected fallback parts remains open.

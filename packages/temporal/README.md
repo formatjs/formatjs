@@ -219,4 +219,6 @@ excluded. Historical WASM results remain in the benchmark records.
 For standalone and Rust namespaces, legacy host formatting compares host and
 owned offsets. Stale or missing host rules use owned local fields with a localized
 numeric offset label. Default TS follows installed Intl timezone data.
+With FormatJS DateTimeFormat installed, it reads offsets and transitions
+directly from that formatter's packed data.
 Reversed Date and Temporal formatter ranges retain their input endpoint order.

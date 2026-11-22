@@ -54,6 +54,7 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {
   TimeZoneOffset,
+  TimeZoneTransition,
   VisitTimeZoneBoundaries,
   VisitTimeZoneOffsets,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
@@ -507,6 +508,29 @@ Object.defineProperty(
       return direction
         ? resolveTemporalGap(local, zone, direction)
         : temporalCandidates(local, zone)
+    },
+  }
+)
+
+Object.defineProperty(
+  formatToParts,
+  Symbol.for('@formatjs/intl-datetimeformat/queryTemporalTimeZone'),
+  {
+    value(
+      this: Intl.DateTimeFormat,
+      instant: bigint,
+      direction?: 'next' | 'previous'
+    ): bigint | null | undefined {
+      const {timeZone} = getInternalSlots(this)
+      const zone = DateTimeFormat.tzData[timeZone]
+      if (!zone?.length || instant < -instantLimit || instant > instantLimit)
+        return undefined
+      if (direction) return TimeZoneTransition(instant, direction, zone)
+      // Proposal comparison §11.1.9 step 3: read the same rows at millisecond precision.
+      const [offset] = TimeZoneOffset(temporalLocalMilliseconds(instant), zone)
+      return validTemporalOffset(offset)
+        ? bigIntFrom(offset) * candidateSecond
+        : undefined
     },
   }
 )

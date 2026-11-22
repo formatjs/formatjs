@@ -175,6 +175,36 @@ values, the local hour, and both transition directions after reload.
 - Reload before-fix log SHA-256 `f6981566d05596a97351a02f97e3a09355e2ecdf359b4ac06524f16ffb192266`
 - Reload after-fix log SHA-256 `bafa7b15ec3cb402d20bf215dcc1316b1c13f84cc7b546ae959534773473c858`
 
+## Exact owned next and previous transition
+
+A six-hour packed offset pulse returned null from either side even though
+each transition was within the supported Instant range. Equal sampled offsets
+hid the pulse. With a discontinuous custom footer, the old adapter observed
+the switch at the next second. The same formatter used the footer from the
+first millisecond after its last explicit row.
+
+The owned path walks the sorted explicit rows from the indexed query
+position, then considers recurring footer events and the footer handoff.
+It compares offsets on both sides of each boundary. Direction is strict at
+nanosecond precision and both Instant limits are inclusive. The offset
+reader uses those same decoded rows at floored epoch milliseconds.
+[Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
+[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L515).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L315).
+[Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
+The implementation-defined boundary contract is in
+[§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
+and [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
+
+The public regression checks the pulse, both Instant limits, a handoff at
++1 ms, and seasonal recurrence. Eight focused Bazel targets passed. Other
+Intl providers need data evidence for their sampled transition path.
+Explicit `__addTZData` replacement changes the provider input. Stability
+across such replacements is separate from immutable-provider correctness.
+
+- Short transition before-fix log SHA-256 `105496d7dd204f19499193797e1a4bad8fda66075cde062caf779b7d4563a10c`
+- Owned transition after-fix log SHA-256 `260f79fceb44720c8f60f3aad23337831257420b884e4d5867b87ff05a8e5186`
+
 ## Reproduce analysis
 
 Use `bazel cquery --output=files` for the three targets above; do not guess

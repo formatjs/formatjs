@@ -33801,7 +33801,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "9ce9220fd4498d71c0721fd1bdfba4fe9b422ae6bb73bea4e44e580b1fdb0117",
+    "packages/temporal/host-timezone.ts": "c572a4b22eede2706c56d93cc56763b0eff7736ae071f71d54dc2b672ce4db8c",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -34425,10 +34425,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "createHostTimeZoneProvider",
-        "start_line": 80,
-        "end_line": 191,
-        "anchor_line": 79,
-        "source_sha256": "9ce9220fd4498d71c0721fd1bdfba4fe9b422ae6bb73bea4e44e580b1fdb0117",
+        "start_line": 83,
+        "end_line": 216,
+        "anchor_line": 82,
+        "source_sha256": "c572a4b22eede2706c56d93cc56763b0eff7736ae071f71d54dc2b672ce4db8c",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
           "11.1.13/algorithm-1/step-3.a",
@@ -34439,10 +34439,10 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "temporalCandidates",
-        "start_line": 410,
-        "end_line": 435,
-        "anchor_line": 409,
-        "source_sha256": "def3fd9cb6ae2055a18124691fd53df69b868d0c33e254267d8a2fdcc5e13794",
+        "start_line": 411,
+        "end_line": 436,
+        "anchor_line": 410,
+        "source_sha256": "958459374d2080399b6e4bf10a1be2f5a5dbc7c316555e781c20f5fa27446ae4",
         "spec_row_ids": [
           "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
@@ -34452,10 +34452,10 @@
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
         "symbol": "VisitTimeZoneOffsets",
-        "start_line": 97,
-        "end_line": 115,
-        "anchor_line": 96,
-        "source_sha256": "8147bd8b8208fb85d062021a807240f45bbb920f0c1ac4545a65165c273ed4c8",
+        "start_line": 99,
+        "end_line": 117,
+        "anchor_line": 98,
+        "source_sha256": "45e94b799a18ff8b838440ad86b0c80d7205b69db16a818eca0f72827ef88c55",
         "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
         "scope": "Bound active offsets to historical records and reachable future rules."
       }
@@ -34464,10 +34464,10 @@
       {
         "file": "packages/intl-datetimeformat/core.ts",
         "symbol": "resolveTemporalGap",
-        "start_line": 443,
-        "end_line": 492,
-        "anchor_line": 442,
-        "source_sha256": "def3fd9cb6ae2055a18124691fd53df69b868d0c33e254267d8a2fdcc5e13794",
+        "start_line": 444,
+        "end_line": 493,
+        "anchor_line": 443,
+        "source_sha256": "958459374d2080399b6e4bf10a1be2f5a5dbc7c316555e781c20f5fa27446ae4",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7",
@@ -34489,15 +34489,34 @@
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
         "symbol": "VisitTimeZoneBoundaries",
-        "start_line": 118,
-        "end_line": 161,
-        "anchor_line": 117,
-        "source_sha256": "8147bd8b8208fb85d062021a807240f45bbb920f0c1ac4545a65165c273ed4c8",
+        "start_line": 120,
+        "end_line": 163,
+        "anchor_line": 119,
+        "source_sha256": "45e94b799a18ff8b838440ad86b0c80d7205b69db16a818eca0f72827ef88c55",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7"
         ],
         "scope": "Enumerate explicit and future rule boundaries intersecting the UTC gap search."
+      }
+    ],
+    "owned_host_transition_lookup": [
+      {
+        "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
+        "symbol": "TimeZoneTransition",
+        "start_line": 171,
+        "end_line": 242,
+        "anchor_line": 169,
+        "source_sha256": "45e94b799a18ff8b838440ad86b0c80d7205b69db16a818eca0f72827ef88c55",
+        "spec_row_ids": [
+          "6.3.46/algorithm-1/step-9.a",
+          "6.3.46/algorithm-1/step-10.b",
+          "11.1.3/prose-2",
+          "11.1.3/prose-3",
+          "11.1.4/prose-2",
+          "11.1.4/prose-3"
+        ],
+        "scope": "Read nearest actual owned offset change across explicit rows, the footer seam and recurring rules."
       }
     ]
   }

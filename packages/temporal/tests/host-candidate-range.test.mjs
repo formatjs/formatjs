@@ -59,6 +59,21 @@ try {
   })
   const {Temporal} = await load(temporal, 'index.js')
 
+  const transition = (zone, instant, direction) =>
+    new Temporal.ZonedDateTime(instant, zone).getTimeZoneTransition(direction)
+      ?.epochNanoseconds ?? null
+
+  // Both endpoints of a host probe can have the same offset during a pulse.
+  assert.deepEqual(
+    [
+      transition(pulse, -1n, 'next'),
+      transition(pulse, 0n, 'next'),
+      transition(pulse, 6n * hour, 'previous'),
+      transition(pulse, 6n * hour + 1n, 'previous'),
+    ],
+    [0n, 6n * hour, 0n, 6n * hour]
+  )
+
   const upperLocal = maxNanoseconds + 30n * 60n * second
   const lowerLocal = -maxNanoseconds + 30n * 60n * second
   for (const disambiguation of ['compatible', 'earlier', 'later', 'reject']) {
@@ -230,6 +245,51 @@ try {
     ],
     ['+01:00', '+01:00', 1, 20_000n * second, 20_000n * second]
   )
+
+  // Keep the last explicit row until the footer actually takes over.
+  formatter.__addTZData({
+    abbrvs: 'TEST',
+    offsets: '0|2s0',
+    zones: [
+      `${reloadZone}|${packedRow(null, 0)}|${packedRow(0n, 0)}`,
+      `${upperControl}|${packedRow(null, 0)}|${packedRow(maxSeconds, 1)}`,
+      `${lowerControl}|${packedRow(null, 0)}|${packedRow(-maxSeconds, 1)}`,
+      `${pulse}|${packedRow(null, 0)}|${packedRow(0n, 0)}`,
+    ],
+    future: {
+      [reloadZone]: {standardOffset: 3600},
+      [pulse]: {
+        standardOffset: 0,
+        daylightOffset: 3600,
+        start: {kind: 'month', month: 3, week: 2, weekday: 0, seconds: 7200},
+        end: {kind: 'month', month: 11, week: 1, weekday: 0, seconds: 7200},
+      },
+    },
+  })
+  const seam = 1_000_000n
+  assert.equal(transition(reloadZone, 0n, 'next'), seam)
+  assert.equal(transition(reloadZone, seam, 'previous'), null)
+  assert.equal(transition(reloadZone, seam + 1n, 'previous'), seam)
+  assert.equal(
+    new Temporal.ZonedDateTime(seam - 1n, reloadZone).offset,
+    '+00:00'
+  )
+  assert.equal(new Temporal.ZonedDateTime(seam, reloadZone).offset, '+01:00')
+  assert.equal(
+    transition(upperControl, maxNanoseconds - 1n, 'next'),
+    maxNanoseconds
+  )
+  assert.equal(transition(upperControl, maxNanoseconds, 'next'), null)
+  assert.equal(
+    transition(lowerControl, -maxNanoseconds + 1n, 'previous'),
+    -maxNanoseconds
+  )
+  assert.equal(transition(lowerControl, -maxNanoseconds, 'previous'), null)
+  const spring = 1_710_036_000n * second // 2024-03-10T02:00Z
+  const autumn = 1_730_595_600n * second // 2024-11-03T01:00Z
+  assert.equal(transition(pulse, spring - 1n, 'next'), spring)
+  assert.equal(transition(pulse, spring, 'next'), autumn)
+  assert.equal(transition(pulse, autumn, 'previous'), spring)
 } finally {
   hooks.deregister()
 }
