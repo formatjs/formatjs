@@ -435,6 +435,13 @@ impl TimeZone for TransitionZone<'_> {
                 }
             }
         }
+        // Proposal comparison §6.3.46 steps 9.a and 10.b: Include the footer handoff.
+        if self.future.is_some()
+            && let Some(last) = self.transitions.last()
+            && let Some(seam) = last.epoch_seconds.checked_add(1)
+        {
+            consider(seam);
+        }
         let explicit = best;
         let Some(future) = self.future else {
             return best;

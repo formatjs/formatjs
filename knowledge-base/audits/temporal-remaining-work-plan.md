@@ -56,7 +56,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,015 mapped, 33 candidate/dependency assignments, 21 unmapped (including 4 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,014 mapped, 33 candidate/dependency assignments, 22 unmapped (including 5 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -124,8 +124,8 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. The 33 candidate assignments and 21 unmapped identities all have
-reviewed dispositions, including four retired callbacks.
+separately. The 33 candidate assignments and 22 unmapped identities all have
+reviewed dispositions, including five retired callbacks.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
 Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
@@ -230,14 +230,14 @@ validates that extra week on the certified profiles. Published assertion and
 retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
-retains 1,069 identities, including 1,065 live bindings and four retired callbacks.
+retains 1,069 identities, including 1,064 live bindings and five retired callbacks.
 [1,008 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
 996 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states are 1,015 mapped,
-33 candidate and 21 unmapped, including four retired identities. Annotation
-presence is 988 direct, 26 enclosing, 51 without a direct anchor, and 4 retired. These are
+inline caller/dependency links. Current mapping states are 1,014 mapped,
+33 candidate and 22 unmapped, including five retired identities. Annotation
+presence is 987 direct, 26 enclosing, 51 without a direct anchor, and 5 retired. These are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -444,6 +444,11 @@ reachable local time across intersecting transitions within an unclipped
 interval. Its date-only callers pass the requested date explicitly.
 [Gap replay](temporal-timezone-boundary-proof/README.md#shifted-clock-still-inside-a-gap).
 [Day-start replay](temporal-timezone-boundary-proof/README.md#start-of-day-after-intersecting-transitions).
+The compact provider now uses the owned formatter's transition search, and
+borrowed Rust checks its footer handoff at the second its offset actually
+changes. The day-start proof now also covers a clipped upper search when
+the nearest result bounds every competing instant inside the range.
+[Footer handoff proof](temporal-timezone-boundary-proof/README.md#fixed-footer-handoff-in-loaded-zones).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).
@@ -467,6 +472,9 @@ From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
 final two batches in that interval each landed a validated local correction
 in about eight minutes, with 16 in-scope conditions still open. The earlier
 closure rate cannot estimate publication or unbound-provider dependencies.
+From 18:22:55 to 18:44:03 UTC, nine audit commits landed, five with runtime
+fixes. The patch rate measures local work. None of the 15 remaining
+conditional rows closed in that interval, so it gives no full signoff date.
 
 Full pinned Node Test262 passed all 9,090 executions across the eight Temporal
 class targets at `5654ccf78` with Node 26.8.1 and Test262

@@ -5,7 +5,11 @@ import {
   compactTimeZoneNames,
   unpackCompactTimeZone,
 } from '#packages/temporal/compact-timezone.js'
-import {createTimeZone, startOfTimeZoneDay} from '#packages/temporal/kernel.js'
+import {
+  createTimeZone,
+  isoToEpochNanoseconds,
+  startOfTimeZoneDay,
+} from '#packages/temporal/kernel.js'
 
 it('reconstructs every finite IANA offset event, final cutoff and future rule', () => {
   const original = UnpackTimeZoneData(packed),
@@ -61,14 +65,42 @@ it('reconstructs every finite IANA offset event, final cutoff and future rule', 
 }, 60000)
 
 it('finds the first local clock after midnight across overlapping transitions', () => {
+  const hour = 3_600_000_000_000n
+  for (const fields of [
+    {year: 1970, month: 1, day: 1},
+    {year: 275760, month: 9, day: 11},
+  ]) {
+    const midnight = isoToEpochNanoseconds(fields)
+    const origin = midnight / 1_000_000_000n
+    const first = (origin - 18_000n).toString(36)
+    const second = (origin - 10_800n).toString(36)
+    const zone = createTimeZone(
+      UnpackTimeZoneData({
+        abbrvs: 'TEST',
+        offsets: 'dw0|-dw0|b40',
+        zones: [`Test/Gap|,0,0,0|${first},0,1,0|${second},0,2,0`],
+      })['Test/Gap']
+    )
+    expect(zone.resolve(fields)).toBe(midnight - 6n * hour)
+    expect(startOfTimeZoneDay(midnight, zone)).toBe(midnight - 3n * hour)
+  }
+})
+
+it('finds the first millisecond of a discontinuous fixed footer', () => {
+  const name = 'Test/Cutoff'
   const zone = createTimeZone(
     UnpackTimeZoneData({
       abbrvs: 'TEST',
-      offsets: 'dw0|-dw0|b40',
-      zones: ['Test/Gap|,0,0,0|-dw0,0,1,0|-8c0,0,2,0'],
-    })['Test/Gap']
+      offsets: '0',
+      zones: [name + '|,0,0,0|0,0,0,0'],
+      future: {[name]: {standardOffset: 3600}},
+    })[name]
   )
-  const hour = 3_600_000_000_000n
-  expect(zone.resolve({year: 1970, month: 1, day: 1})).toBe(-6n * hour)
-  expect(startOfTimeZoneDay(0n, zone)).toBe(-3n * hour)
+  const seam = 1_000_000n
+  expect(zone.offsetNanoseconds(seam - 1n)).toBe(0n)
+  expect(zone.offsetNanoseconds(seam)).toBe(3_600_000_000_000n)
+  expect(zone.transition(seam - 1n, 'next')).toBe(seam)
+  expect(zone.transition(seam + 1n, 'previous')).toBe(seam)
+  expect(zone.transition(seam, 'next')).toBeNull()
+  expect(zone.transition(seam, 'previous')).toBeNull()
 })

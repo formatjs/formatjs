@@ -30,7 +30,7 @@ offset premise used by the ordered comparison, for successfully resolved
 candidates. No transition enumeration completeness claim follows.
 [Compact reconstruction](../../packages/temporal/compact-timezone.ts#L43)
 [Native offset lookup](../../crates/temporal/timezone.rs#L282)
-[Native candidate resolution](../../crates/temporal/zoned.rs#L401).
+[Native candidate resolution](../../crates/temporal/zoned.rs#L407).
 
 This data binding inherits the calendar round-trip and fixed-prefix
 composition premises in the accompanying day-window proof. It covers

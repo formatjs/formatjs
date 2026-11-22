@@ -442,6 +442,7 @@ reader uses those same decoded rows at floored epoch milliseconds.
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L557).
 [Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L360).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
+
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
 and [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
@@ -454,6 +455,23 @@ across such replacements is separate from immutable-provider correctness.
 
 - Short transition before-fix log SHA-256 `105496d7dd204f19499193797e1a4bad8fda66075cde062caf779b7d4563a10c`
 - Owned transition after-fix log SHA-256 `260f79fceb44720c8f60f3aad23337831257420b884e4d5867b87ff05a8e5186`
+
+### Fixed-footer handoff in loaded zones
+
+Both loaded kernels previously read the new offset at a discontinuous
+fixed-footer handoff but missed the boundary in next and previous
+queries. Compact TypeScript now delegates to the packed formatter's
+transition search. Its offset reader switches at the first millisecond
+after the explicit cutoff. Rust's borrowed offset reader switches at the
+first whole second after the cutoff, and its transition search now checks
+that same instant. Both tests query one nanosecond before and after the
+handoff and verify strict direction at the handoff itself.
+
+[Compact delegation](../../../packages/temporal/kernel.ts#L265).
+[Rust handoff check](../../../crates/temporal/timezone.rs#L438).
+
+- Before-fix Bazel SHA-256 `4413a6ddc2e8a0fd563f9cf390be32878f5b00d727670e5133be548ab37a1bd5`
+- Combined nine-target Bazel SHA-256 `78daf4411c68153d468dc61a45cdaca6e8dd00582929d7ee9cb880def95fa8d0`
 
 ## Finite future history in native Intl
 
@@ -529,8 +547,8 @@ list. When the comparison's singleton and shifted-list assumptions fail,
 existing gap behavior supplies the fallback. Clipped limits and host
 provider completeness retain their separate evidence.
 
-- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L424).
-- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L457).
+- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L353).
+- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L463).
 - [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
 
 Five focused Bazel gates pass. Before-fix log SHA-256 `060e0dabd0f0a411c115def738840bf7e89fbd85f74c900101fd1614b8e09331`.
@@ -589,15 +607,22 @@ the forward scan projects each transition to local time. UTC midnight
 plus one day projects above midnight and within two local days. Any
 earlier reachable wall time must occur less than three epoch days past
 midnight. The scan tightens that bound when it finds a nearer local
-time, then checks for a sole round-trip candidate. The existing clipped
-endpoint path still applies near the Instant limits.
-[TypeScript scan](../../../packages/temporal/kernel.ts#L72).
+time, then checks for a sole round-trip candidate. At the upper limit it
+can also accept a clipped scan when the best local time plus one day
+is at most the maximum Instant. Any later epoch would project above
+that local time. The translated September 11, 275760 fixture confirms
+this bound across packaged, compact and Rust paths. The fallback remains
+for a clipped lower search or an upper search that cannot prove the
+closest local clock.
+[TypeScript scan](../../../packages/temporal/kernel.ts#L68).
 [Rust scan](../../../crates/temporal/zoned.rs#L366).
 
 - Before-fix TypeScript Bazel SHA-256 `7a8d461a2e1b4cad672a83f634c8a67ea2ecf1ec6038ed31998b42ea46cdb650`
 - Before-fix Rust Bazel SHA-256 `fb73f1d84265386c0963821cf5f63f8efec592efb9d045adfd2da26c29361189`
 - Combined nine-target Bazel SHA-256 `c51b8181552a78383751b901b35637d34f906014c8000ec86c686baba53697c2`
 - Passing public replay SHA-256 `1b46c8e3f99ffadea3b5c64f917f8c3fb4ca072d40f395875b9a4d83c6970867`
+- Upper bound before-fix Bazel SHA-256 `dc419ed72442997425fd11e35ac552f812eaef7b469bf2f9d0e9e83d4e82f6d7`
+- Combined upper bound and handoff Bazel SHA-256 `78daf4411c68153d468dc61a45cdaca6e8dd00582929d7ee9cb880def95fa8d0`
 
 ### Borrowed mixed-range candidate
 
@@ -623,7 +648,7 @@ raw offset is ignored. The controls keep their one valid candidate on
 both sides. Unknown providers retain bounded enumeration by default and
 the existing provider applicability condition.
 
-- [Compact matching and range check](../../../packages/temporal/kernel.ts#L363).
+- [Compact matching and range check](../../../packages/temporal/kernel.ts#L292).
 - [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L369).
 - [Rust candidate validation](../../../crates/temporal/zoned.rs#L321).
 - [Rust explicit offset matching](../../../crates/temporal/zoned_string.rs#L124).

@@ -6,10 +6,7 @@ import {
   arraySome,
   bigIntFrom,
   mathAbs,
-  mathMax,
-  mathMin,
   numberFrom,
-  numberIsFinite,
   numberIsInteger,
   numberIsSafeInteger,
   setDataProperty,
@@ -19,11 +16,10 @@ import {nativeTemporal} from '#packages/temporal/native.js'
 import {
   DayFromYear,
   DaysInYear,
-  YearFromTime,
 } from '#packages/ecma262-abstract/DateOperations.js'
 import {
   TimeZoneOffset,
-  TimeZoneRuleTransition,
+  TimeZoneTransition,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {ArithmeticGregorianFromEpochDay} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 import type {UnpackedTimeZoneData} from '#packages/ecma402-abstract/types/date-time.js'
@@ -71,7 +67,9 @@ export function startOfTimeZoneDay(
 
   const lower = midnight - day
   let upper = midnight + 3n * day
-  if (lower >= -limit && upper <= limit) {
+  const clipped = upper > limit
+  if (clipped) upper = limit
+  if (lower >= -limit && midnight + day < limit) {
     let cursor = lower
     let nearest: bigint | undefined
     // Proposal comparison §11.1.14 step 5. At midnight plus one day,
@@ -89,13 +87,14 @@ export function startOfTimeZoneDay(
         if (nearest + day < upper) upper = nearest + day
       }
     }
-    if (nearest !== undefined) {
+    // Proposal comparison §11.1.14 step 5: Exclude earlier local times beyond the scan.
+    if (nearest !== undefined && (!clipped || nearest + day <= limit)) {
       const after = possible(nearest)
       if (after.length === 1) return after[0]
     }
   }
 
-  // Keep existing treatment at the Instant limits and for unsupported neighbors.
+  // Preserve fallback behavior when the bounded search cannot confirm the nearest local time.
   let event: bigint | null = zone.resolve(epochNanosecondsToISO(midnight))
   while (event !== null && event >= lower) {
     if (event > -limit) {
@@ -262,83 +261,13 @@ export function addISODays(
 }
 
 // Temporal comparison §6.3.46 steps 9.a and 10.b.
-// Find the strict neighboring offset change in the loaded zone data.
+// Use the packed formatter's exact transition search, including the footer handoff.
 function zoneTransition(
   data: UnpackedTimeZoneData,
   instant: bigint,
   direction: 'next' | 'previous'
 ): bigint | null {
-  const next = direction === 'next'
-  let best: bigint | null = null
-  // Temporal comparison §11.1.3 and §11.1.4 transition requirements.
-  // Keep only the nearer in-range candidate that changes the offset.
-  const consider = (seconds: number): void => {
-    if (!numberIsFinite(seconds)) return
-    const candidate = bigIntFrom(seconds) * second
-    if (
-      candidate < -limit ||
-      candidate > limit ||
-      (next ? candidate <= instant : candidate >= instant)
-    )
-      return
-    if (best !== null && (next ? candidate >= best : candidate <= best)) return
-    if (
-      TimeZoneOffset(seconds * 1000 - 1, data)[0] ===
-      TimeZoneOffset(seconds * 1000, data)[0]
-    )
-      return
-    best = candidate
-  }
-  let low = 0,
-    high = data.length
-  while (low < high) {
-    const middle = (low + high) >>> 1,
-      candidate = data[middle][0]
-    if (candidate <= numberFrom(floorDivide(instant, second))) low = middle + 1
-    else high = middle
-  }
-  // Compare exact nanoseconds after finding the neighboring second.
-  let index = mathMax(0, mathMin(data.length - 1, low - 1))
-  if (next) {
-    for (; index < data.length; index++) {
-      consider(data[index][0])
-      if (best !== null) break
-    }
-  } else {
-    for (; index > 0; index--) {
-      consider(data[index][0])
-      if (best !== null) break
-    }
-  }
-  const future = data.future,
-    cutoff = data[data.length - 1][0]
-  if (
-    !future?.start ||
-    !future.end ||
-    future.daylightOffset === undefined ||
-    future.daylightOffset === future.standardOffset ||
-    (!next && numberFrom(instant / second) < cutoff)
-  )
-    return best
-  if (next && best !== null && best <= bigIntFrom(cutoff) * second) return best
-  const base = YearFromTime(numberFrom(floorDivide(instant, 1_000_000n)))
-  const edgeYear = numberIsFinite(cutoff) ? YearFromTime(cutoff * 1000) : base
-  const year = next ? mathMax(base, edgeYear) : base
-  // Gregorian POSIX rules repeat every 400 years. Include adjacent years for extended times.
-  let recurringFound = false
-  for (let distance = -1; distance <= 401; distance++) {
-    const y = year + (next ? distance : -distance)
-    const begin =
-      TimeZoneRuleTransition(y, future.start) - future.standardOffset
-    const end = TimeZoneRuleTransition(y, future.end) - future.daylightOffset
-    const previous: bigint | null = best
-    if (begin > cutoff) consider(begin)
-    if (end > cutoff) consider(end)
-    recurringFound ||= previous !== best
-    if (distance >= 1 && recurringFound) break
-    if (!next && numberIsFinite(cutoff) && y < edgeYear - 1) break
-  }
-  return best
+  return TimeZoneTransition(instant, direction, data) ?? null
 }
 
 // Temporal comparison §11.1.9 step 3 and §11.1.13 step 3.a.

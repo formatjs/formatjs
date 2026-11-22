@@ -50,7 +50,7 @@ entire local-field conversion or provider implementation.
 ## Matching order and syntax
 
 TS returns the first matching candidate. Its
-[fallback producer:285](../../packages/temporal/kernel.ts#L342) checks candidate
+[fallback producer:285](../../packages/temporal/kernel.ts#L271) checks candidate
 epoch bounds and local round trips, then sorts the list ascending at line 293.
 Under that sorted-candidate contract, first match is earliest. Native and host
 candidate producers retain separate completeness/order obligations.

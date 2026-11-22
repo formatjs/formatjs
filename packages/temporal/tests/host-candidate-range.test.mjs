@@ -445,30 +445,35 @@ try {
       RangeError
     )
 
-  formatter.__addTZData({
-    abbrvs: 'TEST',
-    offsets: 'dw0|-dw0|b40',
-    zones: [
-      `${pulse}|${packedRow(null, 0)}|${packedRow(-18_000n, 1)}|${packedRow(-10_800n, 2)}`,
-    ],
-  })
-  const midnight = `1970-01-01T00:00[${pulse}]`
-  assert.equal(
-    Temporal.ZonedDateTime.from(midnight).epochNanoseconds,
-    -6n * hour
-  )
-  const dayStart = -3n * hour
-  const value = new Temporal.ZonedDateTime(-2n * hour, pulse)
-  assert.equal(value.startOfDay().epochNanoseconds, dayStart)
-  assert.equal(
-    Temporal.ZonedDateTime.from(`1970-01-01[${pulse}]`).epochNanoseconds,
-    dayStart
-  )
-  assert.equal(
-    Temporal.PlainDate.from('1970-01-01').toZonedDateTime(pulse)
-      .epochNanoseconds,
-    dayStart
-  )
+  for (const [date, origin] of [
+    ['1970-01-01', 0n],
+    ['+275760-09-11', maxSeconds - 2n * 86_400n],
+  ]) {
+    formatter.__addTZData({
+      abbrvs: 'TEST',
+      offsets: 'dw0|-dw0|b40',
+      zones: [
+        `${pulse}|${packedRow(null, 0)}|${packedRow(origin - 18_000n, 1)}|${packedRow(origin - 10_800n, 2)}`,
+      ],
+    })
+    const midnight = `${date}T00:00[${pulse}]`
+    const center = origin * second
+    assert.equal(
+      Temporal.ZonedDateTime.from(midnight).epochNanoseconds,
+      center - 6n * hour
+    )
+    const dayStart = center - 3n * hour
+    const value = new Temporal.ZonedDateTime(center - 2n * hour, pulse)
+    assert.equal(value.startOfDay().epochNanoseconds, dayStart)
+    assert.equal(
+      Temporal.ZonedDateTime.from(`${date}[${pulse}]`).epochNanoseconds,
+      dayStart
+    )
+    assert.equal(
+      Temporal.PlainDate.from(date).toZonedDateTime(pulse).epochNanoseconds,
+      dayStart
+    )
+  }
 } finally {
   hooks.deregister()
 }

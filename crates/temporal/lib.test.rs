@@ -46,30 +46,41 @@ fn day_start_uses_nearest_local_after_overlapping_transitions() {
         OffsetTransition, PlainDate, PlainTime, TransitionZone, ZonedDateTime,
     };
     let hour = 3_600_000_000_000;
-    let events = [
-        OffsetTransition {
-            epoch_seconds: -18_000,
-            offset_seconds: -18_000,
-        },
-        OffsetTransition {
-            epoch_seconds: -10_800,
-            offset_seconds: 14_400,
-        },
-    ];
-    let zone = TransitionZone::new(18_000, &events, None).unwrap();
-    let date = PlainDate::new(1970, 1, 1).unwrap();
-    let explicit_midnight = date
-        .to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
-        .unwrap();
-    assert_eq!(explicit_midnight.instant().epoch_nanoseconds(), -6 * hour);
-    let date_start = date.to_zoned_date_time(zone, None).unwrap();
-    assert_eq!(date_start.instant().epoch_nanoseconds(), -3 * hour);
-    let instant = Instant::from_epoch_nanoseconds(-2 * hour).unwrap();
-    let zoned = ZonedDateTime::new(instant, zone);
-    assert_eq!(
-        zoned.start_of_day().unwrap().instant(),
-        date_start.instant()
-    );
+    let max_day = (MAX_EPOCH_NANOSECONDS / NANOSECONDS_PER_DAY) as i64;
+    for day in [0, max_day - 2] {
+        let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
+        let seconds = (midnight / 1_000_000_000) as i64;
+        let events = [
+            OffsetTransition {
+                epoch_seconds: seconds - 18_000,
+                offset_seconds: -18_000,
+            },
+            OffsetTransition {
+                epoch_seconds: seconds - 10_800,
+                offset_seconds: 14_400,
+            },
+        ];
+        let zone = TransitionZone::new(18_000, &events, None).unwrap();
+        let date = PlainDate::from_epoch_day(day).unwrap();
+        let explicit_midnight = date
+            .to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+            .unwrap();
+        assert_eq!(
+            explicit_midnight.instant().epoch_nanoseconds(),
+            midnight - 6 * hour
+        );
+        let date_start = date.to_zoned_date_time(zone, None).unwrap();
+        assert_eq!(
+            date_start.instant().epoch_nanoseconds(),
+            midnight - 3 * hour
+        );
+        let instant = Instant::from_epoch_nanoseconds(midnight - 2 * hour).unwrap();
+        let zoned = ZonedDateTime::new(instant, zone);
+        assert_eq!(
+            zoned.start_of_day().unwrap().instant(),
+            date_start.instant()
+        );
+    }
 }
 
 #[test]
@@ -4258,4 +4269,31 @@ fn duration_comparison_validates_calendar_prefix_without_plain_clock_endpoints()
         Less
     );
     assert_eq!(zoned.compare_durations(one, one).unwrap(), Equal);
+}
+
+#[test]
+fn transition_detects_discontinuous_fixed_footer() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionZone,
+    };
+    let rows = [OffsetTransition {
+        epoch_seconds: 0,
+        offset_seconds: 0,
+    }];
+    let zone = TransitionZone::new(0, &rows, Some(FutureRule::new(3600, None).unwrap())).unwrap();
+    let seam = Instant::from_epoch_nanoseconds(1_000_000_000).unwrap();
+    let earlier = Instant::from_epoch_nanoseconds(999_999_999).unwrap();
+    let later = Instant::from_epoch_nanoseconds(1_000_000_001).unwrap();
+    assert_eq!(zone.offset_nanoseconds(earlier), 0);
+    assert_eq!(zone.offset_nanoseconds(seam), 3_600_000_000_000);
+    assert_eq!(
+        zone.transition(earlier, TransitionDirection::Next),
+        Some(seam)
+    );
+    assert_eq!(
+        zone.transition(later, TransitionDirection::Previous),
+        Some(seam)
+    );
+    assert_eq!(zone.transition(seam, TransitionDirection::Next), None);
+    assert_eq!(zone.transition(seam, TransitionDirection::Previous), None);
 }

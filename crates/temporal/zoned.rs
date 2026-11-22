@@ -365,7 +365,11 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     }
     let lower = midnight - NANOSECONDS_PER_DAY;
     let mut upper = midnight + 3 * NANOSECONDS_PER_DAY;
-    if lower >= -crate::MAX_EPOCH_NANOSECONDS && upper <= crate::MAX_EPOCH_NANOSECONDS {
+    let clipped = upper > crate::MAX_EPOCH_NANOSECONDS;
+    upper = upper.min(crate::MAX_EPOCH_NANOSECONDS);
+    if lower >= -crate::MAX_EPOCH_NANOSECONDS
+        && midnight + NANOSECONDS_PER_DAY < crate::MAX_EPOCH_NANOSECONDS
+    {
         let mut cursor = Instant::from_epoch_nanoseconds(lower)?;
         let mut nearest = None;
         // Proposal comparison §11.1.14 step 5. At midnight plus one day,
@@ -386,14 +390,16 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
                 upper = upper.min(local + NANOSECONDS_PER_DAY);
             }
         }
+        // Proposal comparison §11.1.14 step 5: Exclude earlier local times beyond the scan.
         if let Some(local) = nearest
+            && (!clipped || local + NANOSECONDS_PER_DAY <= crate::MAX_EPOCH_NANOSECONDS)
             && let Some((first, last)) = local_candidate_bounds(local, zone)?
             && first == last
         {
             return Instant::from_epoch_nanoseconds(first);
         }
     }
-    // Keep existing treatment at the Instant limits and for unsupported neighbors.
+    // Preserve fallback behavior when the bounded search cannot confirm the nearest local time.
     let candidate = resolve_local_nanoseconds(midnight, zone, Disambiguation::Compatible)?;
     if candidate.epoch_nanoseconds() + zone.offset_nanoseconds(candidate) == midnight {
         return Ok(candidate);

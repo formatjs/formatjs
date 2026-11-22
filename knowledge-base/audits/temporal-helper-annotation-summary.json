@@ -4,19 +4,19 @@
   "active_rebound_rows": 1065,
   "retired_replaced_callbacks": 4,
   "mapping_status": {
-    "mapped": 1015,
+    "mapped": 1014,
     "candidate": 33,
-    "unmapped": 21
+    "unmapped": 22
   },
   "annotation_coverage": {
-    "direct_numbered": 988,
+    "direct_numbered": 987,
     "no_numbered_anchor": 51,
     "enclosing_numbered": 26,
-    "retired_callback": 4
+    "retired_callback": 5
   },
   "direct_with_step_wording": 869,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 988
+    "overlap": 987
   },
   "no_numbered_anchor_by_kind": {
     "function": 17,
@@ -72,10 +72,10 @@
       "rows": 240,
       "files": 24,
       "coverage": {
-        "direct_numbered": 217,
+        "direct_numbered": 216,
         "no_numbered_anchor": 5,
         "enclosing_numbered": 15,
-        "retired_callback": 3
+        "retired_callback": 4
       }
     }
   },
@@ -106,10 +106,10 @@
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
-    "crates/temporal/timezone.rs": "40588eff315aa93b4f604a7644a860dd71053fd2843e2f65207dc45d90ff2b89",
+    "crates/temporal/timezone.rs": "20553bd79f5b3cc69615c90e9c8a4cb4ff1f7810a9fa2598c7b51fc4fa34984a",
     "crates/temporal/timezone_identity.rs": "c695d9488a24ac563b414695fa68b7a8ee65d8780895b0eb852dddcf776e4272",
     "crates/temporal/timezone_registry.rs": "9c8a37cc6b36970226abd320da9072c3a2acc88d47ce83c291733126249c966e",
-    "crates/temporal/zoned.rs": "7c4f0f809f185e731c8efd04a006b7d83cdd63f540de02b2c130289ed9bc0dcd",
+    "crates/temporal/zoned.rs": "e133b891db973e7ef8fdd7e32bf8736b795b66e3d7d3ef12788b899a68f5dff4",
     "crates/temporal/zoned_difference.rs": "7f61d43aedd2fa256912144d69ded838456f28245c2caad44f6355a73831ca6d",
     "crates/temporal/zoned_string.rs": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
     "packages/temporal/accessors.ts": "4d6cc7204e5451cb19339c90e5aa9f9624817317dd44683140d0272091f19a7a",
@@ -132,7 +132,7 @@
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
-    "packages/temporal/kernel.ts": "16c846ab0d8a674b9c403f9bd3f508427e5a21b6fed1fb8f5c3c64c3118c9237",
+    "packages/temporal/kernel.ts": "56e2731215a02f58e82c42258974b21827ae2099073f7530d93168182bbba548",
     "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
@@ -773,10 +773,12 @@
       "rows": 15,
       "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
       "mapping_status": {
-        "mapped": 15
+        "mapped": 14,
+        "unmapped": 1
       },
       "coverage": {
-        "direct_numbered": 15
+        "direct_numbered": 14,
+        "retired_callback": 1
       }
     },
     {
