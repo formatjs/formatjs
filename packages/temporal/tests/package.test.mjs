@@ -31,6 +31,78 @@ const dateBefore = Object.getOwnPropertyDescriptor(
   'toTemporalInstant'
 )
 const owned = await load('index.js')
+const otherEntry = await load('standalone.js')
+const epoch = 1_234_567_890_123_456_789n
+for (const [source, target] of [
+  [owned.Temporal, otherEntry.Temporal],
+  [otherEntry.Temporal, owned.Temporal],
+]) {
+  const foreignInstant = source.Instant.fromEpochNanoseconds(epoch)
+  const foreignZoned = new source.ZonedDateTime(epoch, '+00:00', 'gregory')
+  for (const value of [foreignInstant, foreignZoned]) {
+    const trace = []
+    Object.setPrototypeOf(value, null)
+    Object.defineProperty(value, Symbol.toPrimitive, {
+      get() {
+        trace.push(Symbol.toPrimitive)
+        throw new Error('Unexpected conversion')
+      },
+    })
+    Object.freeze(value)
+    const copy = target.Instant.from(value)
+    assert.notEqual(copy, value)
+    assert.equal(Object.getPrototypeOf(copy), target.Instant.prototype)
+    assert.equal(copy.epochNanoseconds, epoch)
+    assert.deepEqual(trace, [])
+
+    const hooks = []
+    const proxy = new Proxy(value, {
+      get(_, key) {
+        hooks.push(key)
+        throw new Error('Expected conversion')
+      },
+    })
+    assert.throws(() => target.Instant.from(proxy), /Expected conversion/)
+    assert.deepEqual(hooks, [Symbol.toPrimitive])
+  }
+
+  const prototype = {}
+  const trace = []
+  const newTarget = new Proxy(function () {}, {
+    get(target, key, receiver) {
+      trace.push(key)
+      return key === 'prototype'
+        ? prototype
+        : Reflect.get(target, key, receiver)
+    },
+  })
+  const epochInput = {
+    [Symbol.toPrimitive](hint) {
+      trace.push(hint)
+      return epoch
+    },
+  }
+  const custom = Reflect.construct(
+    source.ZonedDateTime,
+    [epochInput, 'America/New_York', 'gregory'],
+    newTarget
+  )
+  assert.deepEqual(trace, ['number', 'prototype'])
+  assert.equal(Object.getPrototypeOf(custom), prototype)
+  assert.equal(target.Instant.from(custom).epochNanoseconds, epoch)
+
+  trace.length = 0
+  assert.throws(
+    () =>
+      Reflect.construct(
+        source.ZonedDateTime,
+        [epochInput, '+00:00', 'unknown'],
+        newTarget
+      ),
+    RangeError
+  )
+  assert.deepEqual(trace, ['number'])
+}
 assert.deepEqual(
   Object.getOwnPropertyDescriptor(globalThis, 'Temporal'),
   before

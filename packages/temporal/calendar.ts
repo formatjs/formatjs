@@ -27,7 +27,6 @@ import {
 } from '#packages/temporal/calendar-table.js'
 
 import {
-  arithmeticCalendars,
   ArithmeticCalendarStartOfYear,
   ArithmeticCalendarMonthsInYear,
   ArithmeticCalendarDaysInMonth,
@@ -42,13 +41,8 @@ import {
 } from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 export {arithmeticCalendars} from '#packages/ecma402-abstract/Calendar/Arithmetic.js'
 
-export const calendarIds: readonly (
-  | (typeof arithmeticCalendars)[number]
-  | 'chinese'
-  | 'dangi'
-  | 'islamic-umalqura'
-)[] = [...arithmeticCalendars, 'chinese', 'dangi', 'islamic-umalqura']
-export type CalendarId = (typeof calendarIds)[number]
+import {calendarIds, type CalendarId} from '#packages/temporal/calendar-ids.js'
+export {calendarIds, type CalendarId} from '#packages/temporal/calendar-ids.js'
 export type Overflow = 'constrain' | 'reject'
 export interface CalendarFields {
   year: number

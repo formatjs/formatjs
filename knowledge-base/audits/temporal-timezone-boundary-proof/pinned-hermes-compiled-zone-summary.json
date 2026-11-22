@@ -24,5 +24,6 @@
     "target": "//packages/temporal:host_calendar_hermes_test",
     "result": "PASSED",
     "logSha256": "fe8762916c001b86469faa54d9544f4af6ffd85af411449481955dbed9ccf9cb"
-  }
+  },
+  "sourceRevision": "1eeccaab5"
 }

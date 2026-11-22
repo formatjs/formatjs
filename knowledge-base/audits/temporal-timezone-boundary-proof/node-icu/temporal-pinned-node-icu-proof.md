@@ -47,11 +47,23 @@ The existing proof methods apply to both providers with independent scans.
 [Six-day method](temporal-node-icu-six-day-spread-proof.md).
 [Retained week proof](../../temporal-retained-week-endpoint-validity.md).
 
-Bazel's `//packages/temporal:host_timezone_reference_node26_test` passed.
-The manual strict Node 24 test compared host tzdata 2025c with the ICU
-2026e fixture and reported 290 mismatches. This provider certificate
-asserts endpoint and spread bounds for the loaded data. Exact fixture
-equality is a separate check.
+Both pinned Bazel reference targets pass. An additional run compared
+17,640 offsets on each binary with its raw Intl formatter and reproduced
+all adapter differences from the ICU 2026e fixture. The complete mismatch
+lists also match the independent `temporal-polyfill` reference across
+offsets, fractional cases, and gaps and folds. Node 24 loads 2025c and
+reports 290 differences. Node 26 loads 2026c and reports 40.
+The manual strict target retains exact fixture equality.
+[Replay source](../host-runtime-oracle-replay.mjs).
+[Replay evidence](../host-runtime-oracle-replay-summary.json).
+
+Run the replay on the `_main` directory in a built
+`host_timezone_reference_node24_test` runfiles tree.
+
+```sh
+"$node_bin" --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --preserve-symlinks \
+  ../host-runtime-oracle-replay.mjs "$runfiles"
+```
 
 ## Compiled Hermes formatter
 

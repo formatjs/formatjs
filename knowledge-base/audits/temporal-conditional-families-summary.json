@@ -1,23 +1,23 @@
 {
-  "algorithm_rows": 77,
-  "core_rows": 46,
+  "algorithm_rows": 76,
+  "core_rows": 45,
   "amendment_rows": 31,
   "families": 9,
   "classification_counts": {
-    "confirmed_implementation_gap": 20,
+    "confirmed_implementation_gap": 19,
     "published_spec_issue": 54,
     "dependency_reconciliation": 2,
     "profile_applicability": 1
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. No status changes or fresh implementation audit. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "e1f36a16fc0e3e0276697ebd44b0cea1bf155b630d2085673a85619853e7675b",
-    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "b9c3e43b0db5062696d90841bbc985ea87c183aa1788d439e71a233a3804aecf"
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "d6127573e079443bc6f665c0aab3357f53043833dd1ea359dad4ecbb58053589",
+    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "fea79df97ded8932d32a5fcb2f393a3a4eaee157f773022a897db827e263843e"
   },
   "scope_decision": {
     "deferred_family": "constructor-realm-fallback",
     "deferred_algorithm_rows": 16,
-    "active_conditional_algorithm_rows": 61,
+    "active_conditional_algorithm_rows": 60,
     "deferred_requirement_ids": [
       "3.1.1/algorithm-1/step-10",
       "3.5.3/algorithm-1/step-3",

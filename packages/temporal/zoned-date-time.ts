@@ -19,6 +19,7 @@ import {
 } from '#packages/temporal/intrinsics.js'
 import {defineGetters} from '#packages/temporal/accessors.js'
 import {
+  allocateZonedDateTime,
   nativeTemporal,
   type NativeTemporal,
   type NativeDateSnapshot,
@@ -219,6 +220,7 @@ const NativeZonedDateTime = function (
 ) {
   setZonedSlot(this, slot)
 }
+// Temporal comparison §6.5.3 steps 1–7. Allocate with the local ZonedDateTime prototype.
 export function createZonedDateTime(
   input: bigint | ZonedSlot,
   timeZone: string,
@@ -233,14 +235,23 @@ export function createZonedDateTime(
     ) => ZonedDateTimeObject)(input)
   const epochNanoseconds =
     typeof input === 'bigint' ? input : input.epochNanoseconds
+  const slot =
+    typeof input === 'bigint' ? {epochNanoseconds, timeZone, calendar} : input
+  if (
+    import.meta.formatjsTemporalNativeData !== true &&
+    nativeTemporal() === undefined
+  )
+    return allocateZonedDateTime(
+      ZonedDateTimeValue.prototype,
+      epochNanoseconds,
+      slot.timeZone,
+      slot.calendar
+    ) as ZonedDateTimeObject
   validateInstant(epochNanoseconds)
   const result = createObject(
     ZonedDateTimeValue.prototype
   ) as ZonedDateTimeObject
-  setZonedSlot(
-    result,
-    typeof input === 'bigint' ? {epochNanoseconds, timeZone, calendar} : input
-  )
+  setZonedSlot(result, slot)
   return result
 }
 function option<T extends string>(
@@ -1228,8 +1239,13 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
         throw new RangeErrorConstructor('Invalid timezone identifier')
       const zone = timeZoneIdentifier(zoneArgument),
         calendar = constructorCalendar(argumentAt(args, 2))
-      const prototype = constructorPrototype(newTarget, target),
-        result = createObject(prototype)
+      const prototype = constructorPrototype(newTarget, target)
+      if (
+        import.meta.formatjsTemporalNativeData !== true &&
+        nativeTemporal() === undefined
+      )
+        return allocateZonedDateTime(prototype, value, zone, calendar)
+      const result = createObject(prototype)
       setZonedSlot(result, {epochNanoseconds: value, timeZone: zone, calendar})
       return result
     },

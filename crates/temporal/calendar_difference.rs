@@ -18,6 +18,7 @@ pub enum DateTimeUnit {
     Nanosecond,
 }
 impl DateTimeUnit {
+    // Proposal comparison §13.23 step 1: select the fixed clock-unit entry.
     pub(crate) fn time(self) -> Option<TimeUnit> {
         match self {
             Self::Hour => Some(TimeUnit::Hour),
@@ -32,6 +33,7 @@ impl DateTimeUnit {
 }
 impl core::str::FromStr for DateTimeUnit {
     type Err = Error;
+    // Proposal comparison §13.17 step 9: map a prepared singular or plural unit name.
     fn from_str(value: &str) -> Result<Self, Error> {
         match value.strip_suffix('s').unwrap_or(value) {
             "year" => Ok(Self::Year),
@@ -49,6 +51,7 @@ impl core::str::FromStr for DateTimeUnit {
     }
 }
 impl From<TimeUnit> for DateTimeUnit {
+    // Proposal comparison §13.17 step 9: retain the selected clock unit in typed settings.
     fn from(value: TimeUnit) -> Self {
         match value {
             TimeUnit::Hour => Self::Hour,
@@ -66,14 +69,17 @@ pub(crate) trait RelativeAnchor {
     const ZONED: bool;
     fn origin(&self) -> i128;
     fn date_at(&self, value: i128) -> Result<i64, Error>;
+    // Proposal comparison §5.5.12 step 3: supply the plain clock remainder.
     fn clock_at(&self, value: i128) -> Result<i128, Error> {
         Ok(value.rem_euclid(NANOSECONDS_PER_DAY))
     }
     fn endpoint(&self, fields: [i128; 10]) -> Result<i128, Error>;
 }
+// Proposal comparison §7.5.33 steps 8.a, 9: delegate calendar window endpoint construction.
 fn endpoint<A: RelativeAnchor>(start: &A, fields: [i128; 10]) -> Result<i128, Error> {
     start.endpoint(fields)
 }
+// Proposal comparison §5.5.12 step 9: obtain the calendar date portion.
 fn date_until<A: RelativeAnchor>(
     anchor: &A,
     start: i64,
@@ -104,6 +110,7 @@ fn date_until<A: RelativeAnchor>(
         0,
     ])
 }
+// Proposal comparison §5.5.12 steps 3–11: split an exact span into date and clock parts.
 pub(crate) fn unrounded<A: RelativeAnchor>(
     start: &A,
     end: i128,
@@ -165,6 +172,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
     fields[4..].copy_from_slice(&time[4..]);
     Ok(fields)
 }
+// Proposal comparison §7.5.38 steps 5.a, 6.a, 7.a, 9.b: select typed rounding paths.
 pub(crate) fn difference<A: RelativeAnchor>(
     start: &A,
     end: i128,
@@ -324,6 +332,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
     Duration::new(fields)
 }
 
+// Proposal comparison §13.14 steps 3–4: validate typed rounding caps and divisibility.
 pub(crate) fn validate_options(
     largest: DateTimeUnit,
     smallest: DateTimeUnit,

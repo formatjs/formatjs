@@ -10,7 +10,6 @@ import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   argumentAt,
   constructorPrototype,
-  createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
 import {localeDateTime} from '#packages/temporal/locale.js'
@@ -50,7 +49,13 @@ import {
 import {resolveTimeZone} from '#packages/temporal/zones.js'
 import {parseTimeZoneString} from '#packages/temporal/instant-string.js'
 import {parseInstantString} from '#packages/temporal/instant-string.js'
-import {nativeTemporal} from '#packages/temporal/native.js'
+import {
+  allocateInstant,
+  getSharedInstantSlot,
+  nativeTemporal,
+  validateInstant,
+} from '#packages/temporal/native.js'
+export {validateInstant} from '#packages/temporal/native.js'
 
 function instantString(
   value: bigint,
@@ -87,24 +92,12 @@ export interface InstantConstructor {
   fromEpochNanoseconds(epochNanoseconds: unknown): InstantObject
   fromEpochMilliseconds(epochMilliseconds: unknown): InstantObject
 }
-const slots = new WeakMap<object, bigint>()
 let nativeInstantSlot: (value: object) => bigint | undefined
 let nativeInstantPrototype: (value: object, prototype: object) => void
 const getSlot =
   import.meta.formatjsTemporalNativeData === true
     ? (value: object) => nativeInstantSlot(value)
-    : slots.get.bind(slots)
-const setSlot = slots.set.bind(slots)
-const limit = 8_640_000_000_000_000_000_000n
-// Proposal comparison §8.4.1: inclusive Instant range.
-// https://tc39.es/proposal-temporal/#sec-temporal-instant-range
-export function validateInstant(value: bigint): bigint {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
-  // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
-  if (value < -limit || value > limit)
-    throw new RangeErrorConstructor('Instant out of range')
-  return value
-}
+    : getSharedInstantSlot
 function toBigInt(value: unknown): bigint {
   const primitive = ToPrimitive(value, 'number')
   if (
@@ -144,14 +137,15 @@ function createNativeInstant(value: bigint): InstantObject {
     value
   )
 }
+// Temporal comparison §8.5.2 steps 1–5. Allocate with the local Instant prototype.
 export function createInstant(value: bigint): InstantObject {
   if (import.meta.formatjsTemporalNativeData === true)
     return createNativeInstant(validateInstant(value))
-  const result = createObject(InstantValue.prototype) as InstantObject
-  setSlot(result, validateInstant(value))
-  return result
+  return allocateInstant(InstantValue.prototype, value) as InstantObject
 }
 function toInstant(item: unknown): bigint {
+  // Temporal comparison §8.5.3 step 1.a: copy recognized private epoch slots.
+  // https://tc39.es/proposal-temporal/#sec-temporal-totemporalinstant
   const existing =
     getZonedSlot(item as object)?.epochNanoseconds ?? getSlot(item as object)
   if (existing !== undefined) return existing
@@ -443,9 +437,7 @@ export const Instant: InstantConstructor = createProxy(
           nativeInstantPrototype(result, prototype)
         return result
       }
-      const result = createObject(prototype)
-      setSlot(result, value)
-      return result
+      return allocateInstant(prototype, value)
     },
   }
 )

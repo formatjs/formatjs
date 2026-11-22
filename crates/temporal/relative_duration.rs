@@ -4,6 +4,7 @@ use crate::{
 };
 
 impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
+    // Proposal comparison §7.3.21 steps 12.e–f: add the duration and total the zoned span.
     pub fn total_duration(&self, duration: Duration, unit: ZonedUnit) -> Result<f64, Error> {
         // Zero zoned calendar totals still require the next nudge endpoint.
         if duration.sign() == 0 && unit > ZonedUnit::Day {
@@ -13,6 +14,7 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
         let finish = end.instant().epoch_nanoseconds();
         total(self, finish, unit)
     }
+    // Proposal comparison §7.3.20 steps 27.e–f: form the zoned duration rounding target.
     pub fn round_duration(
         &self,
         duration: Duration,
@@ -35,6 +37,7 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
         )
     }
 
+    // Proposal comparison §7.2.3 steps 5.a, 12.c–g: compare zoned endpoints.
     pub fn compare_durations(
         &self,
         one: Duration,
@@ -62,6 +65,7 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     }
 }
 
+// Proposal comparison §7.5.39 steps 1.b–c, 3: total the typed relative span.
 pub(crate) fn total<A: RelativeAnchor>(
     start: &A,
     finish: i128,
@@ -117,6 +121,7 @@ pub(crate) fn total<A: RelativeAnchor>(
         span,
     ))
 }
+// Proposal comparison §7.5.38 step 5.a: round the retained week prefix or delegate.
 pub(crate) fn round<A: RelativeAnchor>(
     start: &A,
     finish: i128,

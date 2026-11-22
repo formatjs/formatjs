@@ -1,0 +1,43 @@
+{
+  "profiles": {
+    "24.14.0": {
+      "node": "v24.14.0",
+      "icu": "78.2",
+      "tz": "2025c",
+      "oracle": "# ICU tzdb 2026e",
+      "checkedRawOffsets": 17640,
+      "rawMismatches": 105,
+      "counts": {
+        "identities": 597,
+        "offsets": 17640,
+        "gapsAndFolds": 1900
+      },
+      "fixtureDifferenceCount": 290,
+      "adapterAndIndependentPolyfillMismatchListsEqual": true,
+      "rawIntlIntegralOffsetMismatchListEqual": true,
+      "rawReplaySha256": "7115892e4d919fc59e7e430e362b733ca01f3090c18630bea67ba625d70f76f8",
+      "bazelTarget": "//packages/temporal:host_timezone_reference_node24_test",
+      "result": "PASSED"
+    },
+    "26.8.1": {
+      "node": "v26.8.1",
+      "icu": "78.3",
+      "tz": "2026c",
+      "oracle": "# ICU tzdb 2026e",
+      "checkedRawOffsets": 17640,
+      "rawMismatches": 20,
+      "counts": {
+        "identities": 597,
+        "offsets": 17640,
+        "gapsAndFolds": 1900
+      },
+      "fixtureDifferenceCount": 40,
+      "adapterAndIndependentPolyfillMismatchListsEqual": true,
+      "rawIntlIntegralOffsetMismatchListEqual": true,
+      "rawReplaySha256": "a90b21f47429b7b6559412abf99c1fdac6f8e2057e3c6257ca0cf7f630bddc5d",
+      "bazelTarget": "//packages/temporal:host_timezone_reference_node26_test",
+      "result": "PASSED"
+    }
+  },
+  "script": "host-runtime-oracle-replay.mjs"
+}

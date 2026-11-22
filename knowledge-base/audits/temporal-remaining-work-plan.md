@@ -28,7 +28,7 @@ satisfy this requirement.
 
 Realm-specific work is deferred at the user's direction. Preserve all realm
 findings and keep the 16 shared constructor-realm steps in the fixed ledger.
-61 of 77 conditional numbered steps remain in scope. The ordinary
+60 of 76 conditional numbered steps remain in scope. The ordinary
 `index.js` and `standalone.js` failures reproduced inside one realm stay in
 scope. Full audit completion uses the active scope and records the realm
 deferral explicitly.
@@ -49,7 +49,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 446 mapped, 246 candidate/dependency assignments, 377 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 488 mapped, 220 candidate/dependency assignments, 361 unmapped (including 3 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -117,7 +117,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 377 unresolved
+separately. Candidate source assignments require confirmation; 361 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -125,11 +125,11 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states:235 conditional and90 comparison-issue rows. No reviewed
+Remaining core states:234 conditional and90 comparison-issue rows. No reviewed
 or partial rows remain. Amendments:61 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-77 conditional steps (46 core,31 amendment), each with exact source ranges
+76 conditional steps (45 core,31 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -176,16 +176,18 @@ pass public controls. Best-fit key parsing, private cache state, native Locale
 maximization and partition scoring pass. Fresh memoizer storage, captured
 locale invariants and generated-table fallbacks now pass as well. §15.11.1.1
 step 3 and its three containing clause gates are verified under the supplied
-provider contract. The queue now holds 77 conditional steps across nine
-families. [Fresh constructor evidence](temporal-duration-fresh-constructor-closure-evidence.json).
+provider contract. [Fresh constructor evidence](temporal-duration-fresh-constructor-closure-evidence.json).
 Generated profiles, both configured Linux x64 Node binaries, and the tested
-Hermes compiled formatter supply endpoint and spread proofs. The manual
-strict Node24 test reports 290 differences against newer ICU fixtures.
+Hermes compiled formatter supply endpoint and spread proofs. Both pinned runtime-relative tests pass. The manual strict Node24 test reports
+290 fixture differences reproduced by its own Intl data and the independent
+reference.
 Other host profiles remain conditional.
 [Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-pinned-node-icu-proof.md). Helper annotation
 work remains separately tracked. An ETA for full in-scope compliance remains unresolved. Published-comparison
 conflicts need reconciliation, and same-realm package failures need a validated
-fix. Annotation timing estimates cover the numbered source comments.
+fix. The [same-loader epoch fix](temporal-cross-copy-brand/same-loader-epoch-fix.md) closes §8.5.3 step 1.a.
+Three Plain calendar-slot steps remain. Annotation timing estimates cover
+the numbered source comments.
 Recalculate annotation and local-correction estimates from completed batches.
 
 All eight directly revoked Proxy cases pass. Bound chains that revoke
@@ -206,13 +208,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[291 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[337 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-279 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:446 mapped,246 candidate,
-377 unmapped, including three retired identities. Annotation presence alone
-is356 direct,13 enclosing,697 without numbered anchors,3 retired; these are
+325 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:488 mapped,220 candidate,
+361 unmapped, including three retired identities. Annotation presence alone
+is400 direct,13 enclosing,653 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -235,6 +237,9 @@ Another 35 mappings cover Rust arithmetic calendar conversions and bounds.
 [Calendar core evidence](temporal-calendar-core35-annotation-source-proof.json).
 The next 38 mappings cover Rust date, time, short date and zoned strings.
 [Date and time evidence](temporal-native-date38-annotation-source-proof.json).
+Added 41 native Duration and relative arithmetic mappings and reconciled five
+TypeScript epoch helper references. [Native evidence](temporal-native-duration41-annotation-source-proof.json).
+[Epoch mappings](temporal-epoch-annotation-proof.json).
 Keep the 3–5 hour annotation estimate provisional because review time
 varies by source and the timezone timing excludes its preliminary review.
 

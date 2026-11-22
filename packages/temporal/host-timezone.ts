@@ -7,8 +7,7 @@ import {
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {steps} from '@formatjs_generated/tz/temporal-names.js'
-import links from '@formatjs_generated/tz/links.js'
-import primary from '@formatjs_generated/tz/primary.js'
+import {timeZoneMetadata} from '#packages/temporal/native.js'
 import {
   isoToEpochNanoseconds,
   type ISODateTime,
@@ -202,10 +201,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     if (after <= before) throw new RangeErrorConstructor('No matching instant')
     return check(local - (disambiguation === 'earlier' ? after : before))
   }
-  const canonical =
-    (links as Record<string, string>)[timeZone] ??
-    (primary as Record<string, string>)[timeZone] ??
-    timeZone
+  const {links, primary} = timeZoneMetadata()
+  const canonical = links[timeZone] ?? primary[timeZone] ?? timeZone
   // Host tzdata can contain transitions absent from our generated metadata.
   const step = bigIntFrom(
     mathMin(steps[timeZone] ?? steps[canonical] ?? 7 * 86400, 7 * 86400)

@@ -1,6 +1,7 @@
-import type {
-  NativeDateSnapshot,
-  NativeTimeResult,
+import {
+  getSharedZonedSlot,
+  type NativeDateSnapshot,
+  type NativeTimeResult,
 } from '#packages/temporal/native.js'
 import {zonedKernel} from '#packages/temporal/zones.js'
 import type {CalendarDate} from '#packages/temporal/calendar.js'
@@ -74,8 +75,11 @@ export interface ZonedSlot extends DateTimeSlot {
   readonly timeZone: string
 }
 const zonedDates = new WeakMap<object, ZonedSlot>()
+const getLocalZonedSlot = zonedDates.get.bind(zonedDates)
 export const getZonedSlot: (value: object) => ZonedSlot | undefined =
-  zonedDates.get.bind(zonedDates)
+  import.meta.formatjsTemporalNativeData === true
+    ? getLocalZonedSlot
+    : value => getLocalZonedSlot(value) ?? getSharedZonedSlot(value)
 export const setZonedSlot: (value: object, slot: ZonedSlot) => unknown =
   zonedDates.set.bind(zonedDates)
 

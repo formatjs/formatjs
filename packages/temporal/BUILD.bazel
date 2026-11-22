@@ -27,6 +27,7 @@ formatjs_library(
     srcs = [
         "accessors.ts",
         "calendar.ts",
+        "calendar-ids.ts",
         "calendar-table.ts",
         "compact-timezone.ts",
         "date-bridge.ts",
@@ -36,6 +37,7 @@ formatjs_library(
         "duration.ts",
         "duration-core.ts",
         "duration-format.ts",
+        "epoch-slots.ts",
         "fallback-data.ts",
         "format-digits.ts",
         "host-calendar.ts",
@@ -3256,48 +3258,35 @@ sh_test(
     ],
 )
 
-formatjs_test(
-    name = "host_timezone_reference_node26_test",
-    srcs = [
-        "tests/host-timezone-icu.test.ts",
-        "tests/host-timezone-oracle.ts",
-    ],
-    data = [
-        "//conformance-tests/icu4j:temporal_timezone_fixtures",
-        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
-    ],
-    node_toolchain = "//tools/test262:node-runtime",
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        ":lib",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
-    ],
-)
-
-formatjs_test(
-    name = "host_timezone_icu_test",
-    srcs = [
-        "tests/host-timezone-icu.test.ts",
-        "tests/host-timezone-oracle.ts",
-    ],
-    data = [
-        "//conformance-tests/icu4j:temporal_timezone_fixtures",
-        "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
-    ],
-    env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"},
-    tags = ["manual"],
-    tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
-    deps = [
-        ":lib",
-        "//:node_modules/@bazel/runfiles",
-        "//:node_modules/@types/node",
-        "//:node_modules/temporal-polyfill",
-        "//:node_modules/vitest",
-    ],
-)
+[
+    formatjs_test(
+        name = name,
+        srcs = [
+            "tests/host-timezone-icu.test.ts",
+            "tests/host-timezone-oracle.ts",
+        ],
+        data = [
+            "//conformance-tests/icu4j:temporal_timezone_fixtures",
+            "//conformance-tests/icu4j:temporal_timezone_identity_fixtures",
+        ],
+        env = {"FORMATJS_TEMPORAL_HOST_TIMEZONE_STRICT": "1"} if strict else {},
+        node_toolchain = toolchain,
+        tags = ["manual"] if strict else [],
+        tsconfig = packages_tsconfig(ESNEXT_TSCONFIG),
+        deps = [
+            ":lib",
+            "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@types/node",
+            "//:node_modules/temporal-polyfill",
+            "//:node_modules/vitest",
+        ],
+    )
+    for name, toolchain, strict in [
+        ("host_timezone_reference_node24_test", None, False),
+        ("host_timezone_reference_node26_test", "//tools/test262:node-runtime", False),
+        ("host_timezone_icu_test", None, True),
+    ]
+]
 
 rolldown_bundle(
     name = "compact-timezone-host",

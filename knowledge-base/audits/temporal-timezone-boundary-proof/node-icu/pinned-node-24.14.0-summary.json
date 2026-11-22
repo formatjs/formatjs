@@ -66,5 +66,24 @@
     "hostTzdata": "2025c",
     "mismatches": 290,
     "logSha256": "fe8762916c001b86469faa54d9544f4af6ffd85af411449481955dbed9ccf9cb"
+  },
+  "runtimeRelativeValidation": {
+    "node": "v24.14.0",
+    "icu": "78.2",
+    "tz": "2025c",
+    "oracle": "# ICU tzdb 2026e",
+    "checkedRawOffsets": 17640,
+    "rawMismatches": 105,
+    "counts": {
+      "identities": 597,
+      "offsets": 17640,
+      "gapsAndFolds": 1900
+    },
+    "fixtureDifferenceCount": 290,
+    "adapterAndIndependentPolyfillMismatchListsEqual": true,
+    "rawIntlIntegralOffsetMismatchListEqual": true,
+    "rawReplaySha256": "7115892e4d919fc59e7e430e362b733ca01f3090c18630bea67ba625d70f76f8",
+    "bazelTarget": "//packages/temporal:host_timezone_reference_node24_test",
+    "result": "PASSED"
   }
 }

@@ -62,5 +62,24 @@
     "target": "//packages/temporal:host_timezone_reference_node26_test",
     "result": "PASSED",
     "logSha256": "d8bd60521e1f65f3ae4fba7bf9f637d120181b018908ae76eaf1f4ce5769ba12"
+  },
+  "runtimeRelativeValidation": {
+    "node": "v26.8.1",
+    "icu": "78.3",
+    "tz": "2026c",
+    "oracle": "# ICU tzdb 2026e",
+    "checkedRawOffsets": 17640,
+    "rawMismatches": 20,
+    "counts": {
+      "identities": 597,
+      "offsets": 17640,
+      "gapsAndFolds": 1900
+    },
+    "fixtureDifferenceCount": 40,
+    "adapterAndIndependentPolyfillMismatchListsEqual": true,
+    "rawIntlIntegralOffsetMismatchListEqual": true,
+    "rawReplaySha256": "a90b21f47429b7b6559412abf99c1fdac6f8e2057e3c6257ca0cf7f630bddc5d",
+    "bazelTarget": "//packages/temporal:host_timezone_reference_node26_test",
+    "result": "PASSED"
   }
 }

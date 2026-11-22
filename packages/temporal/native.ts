@@ -1,4 +1,12 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
+export {
+  allocateInstant,
+  allocateZonedDateTime,
+  getSharedInstantSlot,
+  getSharedZonedSlot,
+  timeZoneMetadata,
+  validateInstant,
+} from '#packages/temporal/epoch-slots.js'
 import type {
   DateSlot,
   DateTimeSlot,

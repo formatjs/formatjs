@@ -1,0 +1,227 @@
+{
+  "scope": "Five fixed helper annotations updated for the shared same-loader epoch storage. One helper is relocated.",
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "added_epoch_slot_functions": [
+    {
+      "symbol": "validateEpoch",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 45,
+      "end_line": 49
+    },
+    {
+      "symbol": "allocateInstant",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 53,
+      "end_line": 61
+    },
+    {
+      "symbol": "getSharedInstantSlot",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 64,
+      "end_line": 66
+    },
+    {
+      "symbol": "timeZoneMetadata",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 77,
+      "end_line": 84
+    },
+    {
+      "symbol": "supportedTimeZone",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 88,
+      "end_line": 107
+    },
+    {
+      "symbol": "allocateZonedDateTime",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 111,
+      "end_line": 129
+    },
+    {
+      "symbol": "getSharedZonedSlot",
+      "source": "packages/temporal/epoch-slots.ts",
+      "start_line": 132,
+      "end_line": 134
+    }
+  ],
+  "sources": {
+    "packages/temporal/epoch-slots.ts": "4f35c0173aebcdf1eacd3c95b9a3223205cd102e92ee77f2ab0dfdd8c6ae1704",
+    "packages/temporal/fallback-data.ts": "16171b1425316c0af6c0bcd7863d6617038afb30f5756f1ad652cda78d28f067",
+    "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
+    "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72"
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 663,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/fallback-data.ts",
+        "symbol": "fallbackTimeZoneIdentifiers",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "file": "packages/temporal/fallback-data.ts",
+        "start_line": "42",
+        "end_line": "48",
+        "comparison_sections": "11.1.1",
+        "section_ids": "sec-getavailablenamedtimezoneidentifier",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-getavailablenamedtimezoneidentifier",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_same_loader_epoch_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "16171b1425316c0af6c0bcd7863d6617038afb30f5756f1ad652cda78d28f067"
+      },
+      "spec_row_ids": ["11.1.1/algorithm-1/step-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 41,
+      "annotation": "// Temporal comparison \u00a711.1.1 step 1. Supply the generated zone identifiers and aliases.",
+      "evidence": "Supplies existing generated named and alias metadata through the shared data owner. Native data continues to use its own provider."
+    },
+    {
+      "inventory_row": 730,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "validateInstant",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "file": "packages/temporal/epoch-slots.ts",
+        "start_line": "38",
+        "end_line": "42",
+        "comparison_sections": "8.5.1|8.4.1",
+        "section_ids": "sec-temporal-isvalidepochnanoseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isvalidepochnanoseconds",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_epoch_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "4f35c0173aebcdf1eacd3c95b9a3223205cd102e92ee77f2ab0dfdd8c6ae1704"
+      },
+      "spec_row_ids": ["8.5.1/algorithm-1/step-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 36,
+      "annotation": "// Temporal comparison \u00a78.4.1 and \u00a78.5.1 step 1. Check inclusive Instant bounds.",
+      "evidence": "Moved the exact inclusive BigInt range predicate and its RangeError transport into the common allocator module. The original inventory row keeps its identity."
+    },
+    {
+      "inventory_row": 734,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "createInstant",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "file": "packages/temporal/instant.ts",
+        "start_line": "141",
+        "end_line": "145",
+        "comparison_sections": "8.5.2",
+        "section_ids": "sec-temporal-createtemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_epoch_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952"
+      },
+      "spec_row_ids": [
+        "8.5.2/algorithm-1/step-1",
+        "8.5.2/algorithm-1/step-2",
+        "8.5.2/algorithm-1/step-3",
+        "8.5.2/algorithm-1/step-4",
+        "8.5.2/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 140,
+      "annotation": "// Temporal comparison \u00a78.5.2 steps 1\u20135. Allocate with the local Instant prototype.",
+      "evidence": "Selects the local intrinsic prototype and existing backend storage. Fresh allocation uses the common validated path for regular packaged entry points."
+    },
+    {
+      "inventory_row": 735,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant.ts",
+        "symbol": "toInstant",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "file": "packages/temporal/instant.ts",
+        "start_line": "146",
+        "end_line": "158",
+        "comparison_sections": "8.5.3",
+        "section_ids": "sec-temporal-totemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_epoch_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952"
+      },
+      "spec_row_ids": ["8.5.3/algorithm-1/step-1.a"],
+      "annotation_placement": "inline",
+      "annotation_line": 147,
+      "annotation": "// Temporal comparison \u00a78.5.3 step 1.a: copy recognized private epoch slots.",
+      "evidence": "Copy branch uses the local or shared epoch slot before the existing string-hint conversion path. Packaged index and standalone both return the exact BigInt with no public hooks."
+    },
+    {
+      "inventory_row": 1032,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/zoned-date-time.ts",
+        "symbol": "createZonedDateTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "file": "packages/temporal/zoned-date-time.ts",
+        "start_line": "224",
+        "end_line": "256",
+        "comparison_sections": "6.5.3",
+        "section_ids": "sec-temporal-createtemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "candidate_operation_correspondence",
+        "mapping_basis": "reviewed_exact_same_loader_epoch_allocation_contract",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-cross-copy-brand/README.md",
+        "unresolved_mapping": "",
+        "source_sha256": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72"
+      },
+      "spec_row_ids": [
+        "6.5.3/algorithm-1/step-1",
+        "6.5.3/algorithm-1/step-2",
+        "6.5.3/algorithm-1/step-3",
+        "6.5.3/algorithm-1/step-4",
+        "6.5.3/algorithm-1/step-5",
+        "6.5.3/algorithm-1/step-6",
+        "6.5.3/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 223,
+      "annotation": "// Temporal comparison \u00a76.5.3 steps 1\u20137. Allocate with the local ZonedDateTime prototype.",
+      "evidence": "Uses the local ZonedDateTime prototype for fresh allocation. Native storage and optional snapshot data retain their existing branch."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//packages/temporal:package_test",
+      "//packages/temporal:instant_test",
+      "//packages/temporal:zoned_test"
+    ],
+    "log_sha256": "a2309fd25898add89803d564bbfae2f945f21ef1afcf718eb90d334f31a3f4e8",
+    "result": "14 Bazel targets passed in the same validation batch."
+  }
+}
