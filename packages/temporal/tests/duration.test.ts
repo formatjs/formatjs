@@ -335,3 +335,84 @@ it.each([1, -1])(
     )
   }
 )
+
+it.each(['BigInt.prototype.toString', 'Reflect.apply'])(
+  'totals private nanoseconds without observing %s',
+  hook => {
+    expect(nativeTemporal()).toBeUndefined()
+    const cases = [
+      ['PT0.000000001S', 'day', 1 / 86400000000000],
+      ['-PT0.000000001S', 'day', -1 / 86400000000000],
+      ['PT9007199.254740993S', 'nanosecond', 9007199254740992],
+      ['PT9007199.254740995S', 'nanosecond', 9007199254740996],
+      ['-PT9007199.254740995S', 'nanosecond', -9007199254740996],
+      ['PT9007199254740991.999999999S', 'second', 9007199254740992],
+    ] as const
+    const durations = cases.map(([text]) => Duration.from(text))
+    const owner = hook === 'Reflect.apply' ? Reflect : BigInt.prototype
+    const key = hook === 'Reflect.apply' ? 'apply' : 'toString'
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const sentinel = new Error('Observable duration total method')
+    const actual: number[] = []
+    let error: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...descriptor,
+        value() {
+          throw sentinel
+        },
+      })
+      for (let index = 0; index < cases.length; index++)
+        actual[index] = durations[index].total(cases[index][1])
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(cases.map(entry => entry[2]))
+  }
+)
+
+it('rounds duration strings without observing array search', () => {
+  expect(nativeTemporal()).toBeUndefined()
+  const positive = Duration.from('PT1.2345S')
+  const negative = Duration.from('-PT1.2345S')
+  const unbalanced = Duration.from('PT66M71.50040904S')
+  const zero = Duration.from('PT0S')
+  const descriptor = Object.getOwnPropertyDescriptor(
+    Array.prototype,
+    'findIndex'
+  )!
+  const sentinel = new Error('Observable duration field search')
+  const actual: string[] = []
+  let hooks = 0
+  try {
+    Object.defineProperty(Array.prototype, 'findIndex', {
+      configurable: true,
+      get() {
+        hooks++
+        throw sentinel
+      },
+    })
+    actual.push(
+      positive.toString(),
+      positive.toString({fractionalSecondDigits: 9}),
+      positive.toString({fractionalSecondDigits: 3}),
+      negative.toString({fractionalSecondDigits: 3, roundingMode: 'floor'}),
+      unbalanced.toString({fractionalSecondDigits: 3}),
+      zero.toString({fractionalSecondDigits: 3})
+    )
+  } finally {
+    Object.defineProperty(Array.prototype, 'findIndex', descriptor)
+  }
+  expect(hooks).toBe(0)
+  expect(actual).toEqual([
+    'PT1.2345S',
+    'PT1.234500000S',
+    'PT1.234S',
+    '-PT1.235S',
+    'PT67M11.500S',
+    'PT0.000S',
+  ])
+})

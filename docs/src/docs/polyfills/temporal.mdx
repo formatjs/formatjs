@@ -60,6 +60,8 @@ public option getters and string coercion hooks still run normally.
 Duration strings parse without calling mutable RegExp or String methods or
 changing legacy RegExp match state. Fractions preserve all nine digits, including
 fractional hours and minutes.
+Duration totals and fixed-precision strings also avoid replaced BigInt string
+conversion and array search methods during private calculations.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

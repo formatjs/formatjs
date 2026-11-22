@@ -1,5 +1,11 @@
 # Temporal implementation
 
+Duration totals retain original BigInt string conversion for private bit lengths;
+fixed-precision formatting scans private field names by index. The
+[bounded total proof](audits/temporal-duration-private-operations-audit.md) covers
+nearest-even binary64 conversion and caller limits, without signing off all
+rounded-difference intermediates.
+
 ZonedDateTime rounding to one nanosecond returns a fresh equivalent value after
 option validation, including Instant bounds whose local clock triggers the
 local-date resolution guard. The [identity audit](audits/temporal-zoned-identity-rounding-audit.md)
