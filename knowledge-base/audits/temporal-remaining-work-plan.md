@@ -305,7 +305,8 @@ Source review of the fixed helper inventory is complete. Behavioral review
 still has 58 conditional Temporal steps. The owned candidate correction
 exposed a separate completeness premise for unbound Intl offset sampling. The published ECMA-402 range-collapse
 regression is fixed and validated.
-The numeric-year and era path now reuses a validated host range layout.
+The numeric-year and era path reuses a validated host layout, including
+explicit numeric months whose values match the owned endpoints.
 Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 

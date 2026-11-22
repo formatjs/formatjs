@@ -165,7 +165,52 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
     checked++
   }
 }
-assert.equal(checked, 132)
+for (const locale of ['en', 'en-u-nu-mathsans']) {
+  const options = {
+    calendar: 'buddhist',
+    year: 'numeric',
+    month: 'numeric',
+    era: 'short',
+    timeZone: 'UTC',
+  }
+  const first = samples[1]
+  const last = samples[2]
+  const firstMilliseconds = first.instant.epochMilliseconds
+  const lastMilliseconds = last.instant.epochMilliseconds
+  const year = new Intl.NumberFormat(locale, {useGrouping: false}).format(1)
+  const expected = new NativeDateTimeFormat(locale, options)
+    .formatRangeToParts(firstMilliseconds, lastMilliseconds)
+    .map(part => (part.type === 'year' ? {...part, value: year} : part))
+  const formatter = new Intl.DateTimeFormat(locale, options)
+  for (const [start, end] of [
+    [firstMilliseconds, lastMilliseconds],
+    [first.date, last.date],
+  ]) {
+    assert.deepEqual(formatter.formatRangeToParts(start, end), expected)
+    assert.equal(
+      formatter.formatRange(start, end),
+      expected.map(part => part.value).join('')
+    )
+    checked++
+  }
+}
+
+// A host interval can contain stale fields even when Year selects the pattern.
+const withDay = new Intl.DateTimeFormat('en', {
+  calendar: 'buddhist',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  era: 'short',
+  timeZone: 'UTC',
+})
+const days = withDay
+  .formatRangeToParts(samples[1].date, samples[2].date)
+  .filter(part => part.type === 'day')
+assert.ok(days.length > 0)
+assert.ok(days.every(part => part.value === '1'))
+checked++
+assert.equal(checked, 137)
 console.log(
-  '132 native bridge display-year controls, including cold/warm and range paths'
+  '137 native bridge display-year controls, including cold/warm and range paths'
 )

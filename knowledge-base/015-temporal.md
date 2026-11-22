@@ -893,8 +893,9 @@ and locale methods share this path. Host formatters supply labels in the request
 locale and numbering system; original weekday, clock and timezone fields survive.
 Safe host month examples supply localized month/day labels. Related years and
 sexagenary names are restored separately. Captured intrinsics avoid recursion
-after installation. Ranges whose corrected fields invalidate native collapsing
-use complete endpoint patterns with a captured host range separator.
+after installation. Validated numeric Year ranges reuse the native layout,
+including numeric month parts that match the corrected endpoints. Other
+corrected ranges use complete endpoint patterns and a captured host separator.
 
 All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes
 source/bytecode through the legacy adapter, with zero tracked failures. This

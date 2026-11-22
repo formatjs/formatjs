@@ -33808,7 +33808,7 @@
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
     "packages/temporal/kernel.ts": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
-    "packages/temporal/legacy-calendar-date.ts": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
+    "packages/temporal/legacy-calendar-date.ts": "bd651cc7e999145fa95974aceae366e7c9757acd01e39346ce39bcf178ce6fe4",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
     "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
@@ -34399,26 +34399,26 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "matchesNumericRangeYear",
-        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
-        "start_line": 514,
-        "end_line": 531,
-        "anchor_line": 513,
+        "source_sha256": "bd651cc7e999145fa95974aceae366e7c9757acd01e39346ce39bcf178ce6fe4",
+        "start_line": 516,
+        "end_line": 535,
+        "anchor_line": 515,
         "section": "11.5.8",
         "steps": ["15.d"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
-        "scope": "Endpoint compatibility check for native range selection."
+        "scope": "Validate unchanged localized month payloads against the owned ordinal before reusing the host selection."
       },
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "restoreNumericRangeYears",
-        "source_sha256": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
-        "start_line": 533,
-        "end_line": 555,
-        "anchor_line": 551,
+        "source_sha256": "bd651cc7e999145fa95974aceae366e7c9757acd01e39346ce39bcf178ce6fe4",
+        "start_line": 537,
+        "end_line": 566,
+        "anchor_line": 562,
         "section": "11.5.8",
         "steps": ["19.b", "19.c", "19.d", "19.e", "19.f"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
-        "scope": "Replace selected Year text while retaining provider pattern and source tags."
+        "scope": "Check each numeric month against its tagged endpoint, then replace Year text while preserving native layout."
       }
     ],
     "owned_host_candidate_validation": [

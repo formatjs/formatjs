@@ -34,6 +34,7 @@ interface NumericRangeYear {
   era: string
   raw: string
   corrected: string
+  month: string | undefined
 }
 
 interface CalendarRangeFields {
@@ -453,6 +454,7 @@ function restoreCalendarParts(
           era: era.era,
           raw: hostYear,
           corrected: display,
+          month: options.month === 'numeric' ? format(date.month) : undefined,
         }
     }
     if (
@@ -523,9 +525,11 @@ function matchesNumericRangeYear(
     arrayEvery(raw, ({type, value}, index) => {
       const after = corrected[index]
       if (type !== after.type) return false
-      return type === 'year'
-        ? value === year.raw && after.value === year.corrected
-        : (type === 'era' || type === 'literal') && value === after.value
+      if (type === 'year')
+        return value === year.raw && after.value === year.corrected
+      if (value !== after.value) return false
+      if (type === 'month') return value === year.month
+      return type === 'era' || type === 'literal'
     })
   )
 }
@@ -540,6 +544,13 @@ function restoreNumericRangeYears(
   for (let index = 0; index < parts.length; index++) {
     const part = parts[index]
     if (part.type === 'era' || part.type === 'literal') continue
+    if (part.type === 'month') {
+      if (part.source !== 'endRange' && part.value !== first.month)
+        return undefined
+      if (part.source !== 'startRange' && part.value !== last.month)
+        return undefined
+      continue
+    }
     if (part.type !== 'year') return undefined
     if (part.source === 'startRange' && !start && part.value === first.raw)
       start = part

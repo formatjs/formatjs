@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L432)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L433)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L651) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L662) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -145,3 +145,22 @@ All seven focused Bazel targets passed.
 
 - Before-fix log SHA-256 `8fbf1aaa7aad5b04e1e0a847e48bb9e035b288538df5f3b1330c07794a060d80`
 - After-fix log SHA-256 `d66ed1c98879697a5a6cbefb6dd18bce3270ecfa285579f1b13b0d45de424740`
+
+### Numeric months in the selected range
+
+The year-zero and year-one Buddhist endpoints also reproduced duplicated era
+labels with an explicit numeric month. Both months are January. The host
+selects a native Year range pattern with one shared era. The bridge now keeps
+that layout when the raw and corrected endpoint months agree with the owned
+localized ordinal. Each range month must match its source endpoint. A shared
+month must match both endpoints.
+
+The regression compares full range parts and string output for Number and
+PlainDate inputs in Latin and mathematical digits. The control with a stale
+native day verifies that the fallback still supplies the corrected day.
+The full range-part assertion failed before the fix. All seven final Bazel
+targets passed.
+[ECMA-402 §11.5.8 steps 15.d and 19](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Numeric-month before-fix log SHA-256 `4a17efe6e24309168402c1ca59232a7dd0fce7e6d9ee96536cf657a77b4ce29a`
+- Numeric-month after-fix log SHA-256 `281532f210f656c27c3eb227b9d080b67264e5ae80949e18fa1182638de2c297`
