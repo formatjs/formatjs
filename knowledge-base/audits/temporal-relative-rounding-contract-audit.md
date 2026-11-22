@@ -182,7 +182,7 @@ uses an effective offset within the same bounds. The two controls verify
 the signed retry for this branch. The wider provider/window and published
 assertion issues remain in the ledger.
 [Signed retry](../../crates/temporal/calendar_difference.rs#L270).
-[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3978).
+[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L4035).
 [Temporal comparison §7.5.34 steps 5–6, 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 The PlainDate caller passes both exact UTC midnight scalars, calendar,
@@ -273,7 +273,7 @@ zero. Whole-window assertions stay conditional for the remaining
 providers and published comparison.
 [TypeScript retry](../../packages/temporal/date-core.ts#L1112).
 [Rust retry](../../crates/temporal/calendar_difference.rs#L358).
-[Public Rust fold](../../crates/temporal/lib.test.rs#L4030).
+[Public Rust fold](../../crates/temporal/lib.test.rs#L4087).
 [Temporal comparison §7.5.34 steps 5–6 and 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 A Gregorian borrowed zone can put the first week endpoint at maximum

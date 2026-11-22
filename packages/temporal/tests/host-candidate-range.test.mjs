@@ -475,9 +475,8 @@ try {
     )
   }
   const minimum = -maxNanoseconds
-  const minimumSecond = minimum / second
-  const firstDate = '-271821-04-20'
-  const installMinimumZone = (offsets, events) =>
+  const dayBeforeMaximum = maxNanoseconds - 24n * hour
+  const installBoundaryZone = (origin, offsets, events) =>
     formatter.__addTZData({
       abbrvs: 'TEST',
       offsets: offsets.map(offset => (offset * 3600).toString(36)).join('|'),
@@ -487,31 +486,43 @@ try {
           [
             packedRow(null, 0),
             ...events.map((offset, index) =>
-              packedRow(minimumSecond + offset * 3600n, index + 1)
+              packedRow(origin / second + offset * 3600n, index + 1)
             ),
           ].join('|'),
       ],
     })
-  for (const [offsets, events, start] of [
-    [[0, 1], [0n], minimum],
-    [[-1, -11, -2], [1n, 3n], minimum + 3n * hour],
+  for (const [date, origin, offsets, events, start] of [
+    ['-271821-04-20', minimum, [0, 1], [0n], minimum],
+    ['-271821-04-20', minimum, [-1, -11, -2], [1n, 3n], minimum + 3n * hour],
+    [
+      '+275760-09-12',
+      dayBeforeMaximum,
+      [5, -5, 4],
+      [-5n, -3n],
+      dayBeforeMaximum - 3n * hour,
+    ],
+    ['+275760-09-13', maxNanoseconds, [-1, 1], [0n], maxNanoseconds],
   ]) {
-    installMinimumZone(offsets, events)
-    const value = new Temporal.ZonedDateTime(start + 1n, pulse)
+    installBoundaryZone(origin, offsets, events)
+    const value = new Temporal.ZonedDateTime(start, pulse)
     assert.equal(value.startOfDay().epochNanoseconds, start)
     assert.equal(
-      Temporal.ZonedDateTime.from(`${firstDate}[${pulse}]`).epochNanoseconds,
+      Temporal.ZonedDateTime.from(`${date}[${pulse}]`).epochNanoseconds,
       start
     )
     assert.equal(
-      Temporal.PlainDate.from(firstDate).toZonedDateTime(pulse)
-        .epochNanoseconds,
+      Temporal.PlainDate.from(date).toZonedDateTime(pulse).epochNanoseconds,
       start
     )
   }
-  installMinimumZone([0, 5], [-4n])
+  installBoundaryZone(minimum, [0, 5], [-4n])
   assert.throws(
-    () => Temporal.ZonedDateTime.from(`${firstDate}[${pulse}]`),
+    () => Temporal.ZonedDateTime.from(`-271821-04-20[${pulse}]`),
+    RangeError
+  )
+  installBoundaryZone(maxNanoseconds, [-1, 23], [1n])
+  assert.throws(
+    () => Temporal.ZonedDateTime.from(`+275760-09-13[${pulse}]`),
     RangeError
   )
 } finally {

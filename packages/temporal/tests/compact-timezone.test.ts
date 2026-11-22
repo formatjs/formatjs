@@ -134,12 +134,13 @@ it('finds the first millisecond of a discontinuous fixed footer', () => {
   expect(zone.transition(seam, 'previous')).toBeNull()
 })
 
-it('finds a day start when the raw search extends below the minimum Instant', () => {
-  const name = 'Test/MinimumDay'
+it('finds a day start when the raw search extends beyond the Instant range', () => {
+  const name = 'Test/BoundaryDay'
   const hour = 3_600_000_000_000n
   const minimum = isoToEpochNanoseconds({year: -271821, month: 4, day: 20})
-  const minimumSecond = minimum / 1_000_000_000n
-  const create = (offsets: number[], events: bigint[]) =>
+  const maximum = -minimum
+  const dayBeforeMaximum = maximum - 24n * hour
+  const create = (origin: bigint, offsets: number[], events: bigint[]) =>
     createTimeZone(
       UnpackTimeZoneData({
         abbrvs: 'TEST',
@@ -150,17 +151,31 @@ it('finds a day start when the raw search extends below the minimum Instant', ()
             events
               .map(
                 (offset, index) =>
-                  `${(minimumSecond + offset * 3600n).toString(36)},0,${index + 1},0`
+                  `${(origin / 1_000_000_000n + offset * 3600n).toString(36)},0,${index + 1},0`
               )
               .join('|'),
         ],
       })[name]
     )
-  expect(startOfTimeZoneDay(minimum, create([0, 1], [0n]))).toBe(minimum)
-  expect(startOfTimeZoneDay(minimum, create([-1, -11, -2], [1n, 3n]))).toBe(
-    minimum + 3n * hour
+  expect(startOfTimeZoneDay(minimum, create(minimum, [0, 1], [0n]))).toBe(
+    minimum
   )
-  expect(() => startOfTimeZoneDay(minimum, create([0, 5], [-4n]))).toThrow(
-    'Instant out of range'
+  expect(
+    startOfTimeZoneDay(minimum, create(minimum, [-1, -11, -2], [1n, 3n]))
+  ).toBe(minimum + 3n * hour)
+  expect(() =>
+    startOfTimeZoneDay(minimum, create(minimum, [0, 5], [-4n]))
+  ).toThrow('Instant out of range')
+  expect(
+    startOfTimeZoneDay(
+      dayBeforeMaximum,
+      create(dayBeforeMaximum, [5, -5, 4], [-5n, -3n])
+    )
+  ).toBe(dayBeforeMaximum - 3n * hour)
+  expect(startOfTimeZoneDay(maximum, create(maximum, [-1, 1], [0n]))).toBe(
+    maximum
   )
+  expect(() =>
+    startOfTimeZoneDay(maximum, create(maximum, [-1, 23], [1n]))
+  ).toThrow('Instant out of range')
 })

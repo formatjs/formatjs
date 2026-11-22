@@ -34,7 +34,7 @@ providers use their exact rules near the limits.
 `TimeZone::nearest_local_after(local_nanoseconds)` provides the first reachable
 local time after a gap when the provider covers raw epochs outside Instant.
 Borrowed and registered transition zones supply it for a day-start search
-clipped at the minimum Instant. The default retains the bounded fallback.
+clipped at an Instant limit. The default retains the bounded fallback.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.

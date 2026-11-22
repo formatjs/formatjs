@@ -47,7 +47,7 @@ fn day_start_uses_nearest_local_after_overlapping_transitions() {
     };
     let hour = 3_600_000_000_000;
     let max_day = (MAX_EPOCH_NANOSECONDS / NANOSECONDS_PER_DAY) as i64;
-    for day in [0, max_day - 2] {
+    for day in [0, max_day - 2, max_day - 1, max_day] {
         let midnight = i128::from(day) * NANOSECONDS_PER_DAY;
         let seconds = (midnight / 1_000_000_000) as i64;
         let events = [
@@ -173,6 +173,63 @@ fn minimum_day_start_rejects_an_earlier_raw_footer_candidate() {
         Error::OutOfRange
     );
     assert_eq!(valid_later.start_of_day().unwrap_err(), Error::OutOfRange);
+}
+
+#[test]
+fn maximum_day_start_checks_the_first_raw_candidate() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, OffsetTransition, PlainDate, PlainTime, TransitionZone,
+        ZonedDateTime,
+    };
+    let midnight = MAX_EPOCH_NANOSECONDS;
+    let seconds = (midnight / 1_000_000_000) as i64;
+    let hour = 3_600_000_000_000;
+    let date = PlainDate::new(275760, 9, 13).unwrap();
+    let jump = [OffsetTransition {
+        epoch_seconds: seconds,
+        offset_seconds: 3600,
+    }];
+    let zone = TransitionZone::new(-3600, &jump, None).unwrap();
+    assert_eq!(
+        date.to_zoned_date_time(zone, Some(PlainTime::new(0, 0, 0, 0).unwrap()))
+            .unwrap_err(),
+        Error::OutOfRange,
+    );
+    let start = date.to_zoned_date_time(zone, None).unwrap().instant();
+    assert_eq!(start.epoch_nanoseconds(), midnight);
+    let zoned = ZonedDateTime::new(Instant::from_epoch_nanoseconds(midnight).unwrap(), zone);
+    assert_eq!(zoned.start_of_day().unwrap().instant(), start);
+
+    let overlap = [
+        OffsetTransition {
+            epoch_seconds: seconds - 18_000,
+            offset_seconds: -18_000,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds - 10_800,
+            offset_seconds: 14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: seconds,
+            offset_seconds: 14_400,
+        },
+    ];
+    let footer = FutureRule::new(0, None).unwrap();
+    let zone = TransitionZone::new(18_000, &overlap, Some(footer)).unwrap();
+    // The footer starts at MAX+1s and projects before the in-range 01:00 clock.
+    let first_wall = IsoDateTime::from_epoch_nanoseconds(midnight + 1_000_000_000).unwrap();
+    assert_eq!(
+        ZonedDateTime::from_local(first_wall, zone, Disambiguation::Reject).unwrap_err(),
+        Error::OutOfRange,
+    );
+    let later = Instant::from_epoch_nanoseconds(midnight - 3 * hour).unwrap();
+    let zoned = ZonedDateTime::new(later, zone);
+    assert_eq!(zoned.local().unwrap().time().fields(), (1, 0, 0, 0));
+    assert_eq!(
+        date.to_zoned_date_time(zone, None).unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(zoned.start_of_day().unwrap_err(), Error::OutOfRange);
 }
 
 #[test]

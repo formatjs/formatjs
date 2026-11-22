@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27359,
+  "whole_selected_source_lines": 27368,
   "whole_selected_source_lines_by_language": {
-    "rust": 11252,
-    "typescript": 16107
+    "rust": 11258,
+    "typescript": 16110
   },
-  "nonoverlapping_callable_lines": 17755,
+  "nonoverlapping_callable_lines": 17761,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8355,
+    "rust": 8361,
     "typescript": 9400
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17412,
+    "mapped": 17418,
     "candidate": 159,
     "unmapped": 184
   },
@@ -520,10 +520,10 @@
     },
     {
       "file": "crates/temporal/zoned.rs",
-      "source_lines": 523,
+      "source_lines": 529,
       "callable_rows": 31,
-      "nonoverlapping_callable_lines": 412,
-      "sha256": "479823233db8eeb16c8cf9c6e44d4acfabdcc06a75b77050f3d23c3f66befc30",
+      "nonoverlapping_callable_lines": 418,
+      "sha256": "6150063ce996816c9ebce0b6aa1c42bf4079b69367a2f4d9ea7019c2d8892f6d",
       "unresolved_callable_rows": 1
     },
     {
@@ -712,10 +712,10 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 417,
+      "source_lines": 420,
       "callable_rows": 15,
       "nonoverlapping_callable_lines": 265,
-      "sha256": "edb4d6a3005801c403d23cec51f7f3896b230318975ae5350bb80a2d7db69c5e",
+      "sha256": "35438c5f7dba8322105a415e5f2636762f0c6a9478c3387c557a40572fd70636",
       "unresolved_callable_rows": 1
     },
     {

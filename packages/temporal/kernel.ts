@@ -96,14 +96,17 @@ export function startOfTimeZoneDay(
     }
   }
 
-  if (lower < -limit) {
-    // Proposal comparison §11.1.14 steps 5–7: Check the raw lower boundary before returning its instant.
+  if (lower < -limit || clipped) {
+    // Proposal comparison §11.1.14 steps 5–7: Resolve the first reachable raw wall time.
     const nearest = zone.nearestLocalAfter?.(midnight)
     if (
       nearest !== undefined &&
       nearest > midnight &&
       nearest < midnight + 2n * day
     ) {
+      // Every supported offset is shorter than one day.
+      if (nearest >= limit + day)
+        throw new RangeErrorConstructor('Instant out of range')
       const after = possible(nearest)
       if (after.length === 1) return after[0]
     }

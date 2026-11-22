@@ -375,11 +375,9 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     let mut upper = midnight + 3 * NANOSECONDS_PER_DAY;
     let clipped = upper > crate::MAX_EPOCH_NANOSECONDS;
     upper = upper.min(crate::MAX_EPOCH_NANOSECONDS);
-    let nearest = if lower < -crate::MAX_EPOCH_NANOSECONDS {
-        // Proposal comparison §11.1.14 step 5: Include raw starts before the minimum Instant.
-        zone.nearest_local_after(midnight)
-            .filter(|&local| midnight < local && local < midnight + 2 * NANOSECONDS_PER_DAY)
-    } else if midnight + NANOSECONDS_PER_DAY < crate::MAX_EPOCH_NANOSECONDS {
+    let nearest = if lower >= -crate::MAX_EPOCH_NANOSECONDS
+        && midnight + NANOSECONDS_PER_DAY < crate::MAX_EPOCH_NANOSECONDS
+    {
         let mut cursor = Instant::from_epoch_nanoseconds(lower)?;
         let mut nearest = None;
         // Proposal comparison §11.1.14 step 5. At midnight plus one day,
@@ -406,6 +404,14 @@ pub(crate) fn day_boundary<Z: TimeZone>(day: i64, zone: &Z) -> Result<Instant, E
     } else {
         None
     };
+    // Proposal comparison §11.1.14 step 5: Include raw starts when either limit clips the search.
+    let nearest = nearest.or_else(|| {
+        if lower >= -crate::MAX_EPOCH_NANOSECONDS && !clipped {
+            return None;
+        }
+        zone.nearest_local_after(midnight)
+            .filter(|&local| midnight < local && local < midnight + 2 * NANOSECONDS_PER_DAY)
+    });
     // Proposal comparison §11.1.14 steps 6–7: Return the sole candidate if representable.
     if let Some(local) = nearest
         && let Some((first, last)) = local_candidate_bounds(local, zone)?

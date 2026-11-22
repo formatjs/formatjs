@@ -458,6 +458,9 @@ The regression verifies valid nearest candidates and all four modes.
 Owned, compact and Rust providers can now prove a missing-midnight
 day start near the minimum using raw boundaries.
 [Lower day-start proof](temporal-timezone-boundary-proof/README.md#exact-start-of-day-at-the-minimum-instant).
+The same raw-provider query now handles upper day starts that a clipped
+scan cannot prove, including a first valid instant equal to the maximum.
+[Upper day-start proof](temporal-timezone-boundary-proof/README.md#exact-start-of-day-at-the-maximum-instant).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).
