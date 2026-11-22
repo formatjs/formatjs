@@ -68,6 +68,8 @@ export interface ToLocalTimeImplDetails {
 // ECMA-402 §11.5.11 steps 1–3: add the offset before computing calendar fields.
 // Table 17 in §11.5.12 projects integer milliseconds from epoch nanoseconds.
 // https://tc39.es/ecma402/#sec-tolocaltime
+// Temporal amendment §15.6.23: project exact epoch nanoseconds into calendar fields.
+// https://tc39.es/proposal-temporal/#sec-tolocaltime
 export function ToLocalTime(
   epochNanoseconds: bigint,
   calendar: string,

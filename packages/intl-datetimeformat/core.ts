@@ -134,6 +134,8 @@ const formatDescriptor = {
     // ECMA-402 §11.3.3 steps 4–5 cache an anonymous, one-argument function.
     // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
     if (internalSlots.boundFormat === undefined) {
+      // Temporal amendment §15.6.3: convert the argument and format the prepared value.
+      // https://tc39.es/proposal-temporal/#sec-datetime-format-functions
       internalSlots.boundFormat = (
         date?: Date | number | TemporalDateTimeInput
       ) => {

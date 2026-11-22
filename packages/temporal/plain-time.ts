@@ -184,6 +184,8 @@ function object(value: unknown): value is Record<string, unknown> {
 }
 // ECMA-262 preview §22.3.15.13 steps 1–17: read and coerce each present field.
 // https://tc39.es/ecma262/pr/3966/#sec-topartialtimerecord
+// ECMA-262 preview §22.3.15.12: require at least one supplied clock field.
+// https://tc39.es/ecma262/pr/3966/#sec-partial-time-records
 function timeFields(
   item: Record<string, unknown>,
   initial = [0, 0, 0, 0, 0, 0]

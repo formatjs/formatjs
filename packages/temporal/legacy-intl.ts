@@ -218,6 +218,8 @@ export function installLegacyDateTimeFormat(
       const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
       if (!state.bound) {
+        // Temporal amendment §15.6.3: convert the argument and format the prepared value.
+        // https://tc39.es/proposal-temporal/#sec-datetime-format-functions
         state.bound = (input?: unknown): string => {
           // ECMA-402 §11.3.3 steps 4.a.i–ii: Prepare the bound call input and
           // return its formatted value.

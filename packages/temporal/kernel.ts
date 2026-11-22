@@ -29,6 +29,8 @@ const arraySort = Array.prototype.sort
 const apply = Reflect.apply
 const second = 1_000_000_000n
 const day = 86400n * second
+// ECMA-262 preview §22.3.6: bound exact epoch nanoseconds at both ends.
+// https://tc39.es/ecma262/pr/3966/#sec-epoch-nanoseconds
 const limit = 100_000_000n * day
 const monthStarts = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
 
@@ -217,6 +219,8 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
 // Line tags below refer to this pinned timezone.html.
 // Temporal comparison §11.1.2 steps 2–16.
 // Project the epoch into exact Gregorian date and clock fields.
+// ECMA-262 preview §22.3.10: return the ISO date and time in a flat record.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-date-time-records
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)

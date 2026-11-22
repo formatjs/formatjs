@@ -181,9 +181,13 @@ export function resolveTimeZone(
   return timeZone(identifier)
 }
 
+// ECMA-262 preview §22.2.8: reuse the fixed spelling table for both hits and misses.
+// https://tc39.es/ecma262/pr/3966/#sec-available-named-time-zone-identifier-return-record
 let spellings: Map<string, string> | undefined
 // ECMA-262 preview §22.2.10 steps 1–9: read a zoned slot or normalize a zone string.
 // https://tc39.es/ecma262/pr/3966/#sec-totemporaltimezoneidentifier
+// ECMA-262 preview §22.2: validate and normalize named and offset identifiers.
+// https://tc39.es/ecma262/pr/3966/#sec-time-zone-identifiers
 export function timeZoneIdentifier(value: unknown): string {
   const slot = getZonedSlot(value as object)
   if (slot) return slot.timeZone

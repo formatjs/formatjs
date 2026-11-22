@@ -161,6 +161,8 @@ export function getSharedDateTimeSlot(
   return slot?.kind === 'date-time' ? slot : undefined
 }
 
+// ECMA-262 preview §22.2.5: store names and primary mappings, with identity as the default.
+// https://tc39.es/ecma262/pr/3966/#sec-time-zone-identifier-record
 interface TimeZoneMetadata {
   readonly names: readonly string[]
   readonly primary: Readonly<Partial<Record<string, string>>>

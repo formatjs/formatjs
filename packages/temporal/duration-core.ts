@@ -35,6 +35,8 @@ export const durationFieldReadOrder = [
 ] as const
 export type DurationField = (typeof durationFieldNames)[number]
 export type DurationFields = Record<DurationField, number>
+// ECMA-262 preview §22.3.14: use an exclusive magnitude limit one above MaxTimeDuration.
+// https://tc39.es/ecma262/pr/3966/#sec-time-durations
 export const maxDurationNanoseconds = 9_007_199_254_740_992_000_000_000n
 const timeFactors = [
   86_400_000_000_000n,
@@ -87,6 +89,8 @@ export function durationSign(fields: DurationFields): -1 | 0 | 1 {
 // §7.5.21 step4: a millisecond contributes 1000 microseconds.
 // §7.5.21 step5: a microsecond contributes 1000 nanoseconds.
 // §7.5.21 step7: return the exact integer sum. Caller owns the step6 bound assertion.
+// ECMA-262 preview §22.3.7: fold the time components into a bigint while retaining the date fields.
+// https://tc39.es/ecma262/pr/3966/#sec-internal-duration-records
 export function durationNanoseconds(
   fields: DurationFields,
   includeDays = true
@@ -135,6 +139,8 @@ export function integralDurationNumber(value: unknown): number {
 }
 // ECMA-262 preview §22.15.5.10 steps 1–24: alphabetic property reads and immediate integer conversion.
 // https://tc39.es/ecma262/pr/3966/#sec-topartialdurationrecord
+// ECMA-262 preview §22.15.5.9: require a nonempty subset of integral duration fields.
+// https://tc39.es/ecma262/pr/3966/#sec-partial-duration-records
 export function partialDuration(value: unknown): Partial<DurationFields> {
   if (!IsObject(value))
     throw new TypeErrorConstructor('Duration fields must be an object')

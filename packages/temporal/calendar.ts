@@ -106,6 +106,8 @@ export function cachedISODateFields(
   return fields
 }
 
+// ECMA-262 preview §22.3.4: store date units, with omitted magnitudes treated as zero.
+// https://tc39.es/ecma262/pr/3966/#sec-date-duration-records
 export interface DateDuration {
   years?: number
   months?: number
@@ -433,6 +435,8 @@ export function calendarFromEpochDayRaw(
 }
 // Temporal comparison §9.5.4 steps 1, 2, §12.3.7 step 2.a.
 // Balance the prepared ISO or non-ISO year and month.
+// ECMA-262 preview §22.13.5.6: balance a year-month pair separately from the ISO day.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-year-month-records
 function addYearMonth(
   calendar: CalendarId,
   original: Readonly<CalendarDate>,

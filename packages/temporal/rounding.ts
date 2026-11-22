@@ -13,6 +13,8 @@ import {createObject} from '#packages/temporal/intrinsics.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {nativeTemporal} from '#packages/temporal/native.js'
 
+// ECMA-262 preview §22.3.13: enumerate the supported rounding modes.
+// https://tc39.es/ecma262/pr/3966/#sec-rounding-modes-and-increments
 export type RoundingMode =
   | 'ceil'
   | 'floor'
@@ -55,6 +57,8 @@ const modes = [
 // Temporal comparison §13.17 step1: singular/plural unit table.
 // https://tc39.es/proposal-temporal/#sec-temporal-gettemporalunitvaluedoption
 // §13.17 step1: private pairs encode every normal singular/plural unit name; auto is separate.
+// ECMA-262 preview §22.3.16: keep units in order with their singular and plural spellings.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-units
 const units = [
   ['year', 'years'],
   ['month', 'months'],

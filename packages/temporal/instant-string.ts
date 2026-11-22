@@ -498,6 +498,8 @@ function isValidDate(year: string, month: string, day: string): boolean {
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum
 }
 
+// ECMA-262 preview §22.4.4: carry validated ISO components and the calendar annotation.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-date-time-parse-records
 export interface ParsedDateFields extends Required<ISODateTime> {
   calendar: string
 }
@@ -629,6 +631,8 @@ export function parsePlainTimeString(value: string): bigint {
 
 // Temporal comparison §13.38 steps1–8: prefer annotation, then Z, then numeric offset
 // https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaltimezonestring
+// ECMA-262 preview §22.4.3: separate named identifiers from minute-precision offsets.
+// https://tc39.es/ecma262/pr/3966/#sec-time-zone-identifier-parse-records
 export function parseTimeZoneString(value: string): string {
   if (isTimeZoneOffsetString(value)) {
     parseOffsetNanoseconds(value, true)
@@ -696,6 +700,8 @@ export function parseTimeZoneString(value: string): string {
 
 // Temporal comparison §13.35 steps24–29: retain annotation and raw offset beside local fields
 // https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime
+// ECMA-262 preview §22.4.2: carry the zone annotation and distinguish Z from a numeric offset.
+// https://tc39.es/ecma262/pr/3966/#sec-rfc9557-time-zone-parse-records
 export function parseZonedDateTimeString(value: string): {
   fields: ParsedDateFields
   timeZone: string

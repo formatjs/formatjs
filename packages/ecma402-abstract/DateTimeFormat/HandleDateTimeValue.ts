@@ -15,7 +15,8 @@ export function isTemporalDateTimeValue(
   return typeof value !== 'number'
 }
 
-/** https://tc39.es/proposal-temporal/#sec-temporal-value-format-records */
+// Temporal amendment §15.6.14: carry the pattern and exact epoch nanoseconds.
+// https://tc39.es/proposal-temporal/#sec-datetimeformat-value-format-records
 export interface ValueFormatRecord {
   format: IntlDateTimeFormatInternal
   epochNanoseconds: bigint

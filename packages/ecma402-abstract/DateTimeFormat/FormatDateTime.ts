@@ -7,6 +7,8 @@ import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeForma
  * @param dtf DateTimeFormat
  * @param x
  */
+// Temporal amendment §15.6.6: format the prepared value.
+// https://tc39.es/proposal-temporal/#sec-formatdatetime
 export function FormatDateTime(
   dtf: Intl.DateTimeFormat | DateTimeFormat,
   x: DateTimeFormattable,

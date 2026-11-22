@@ -5,6 +5,8 @@ import {type FormatDateTimePatternImplDetails} from '#packages/ecma402-abstract/
 import {PartitionDateTimeRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.js'
 import {type ToLocalTimeImplDetails} from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 
+// Temporal amendment §15.6.10: project parts from the prepared range.
+// https://tc39.es/proposal-temporal/#sec-formatdatetimerangetoparts
 export function FormatDateTimeRangeToParts(
   dtf: Intl.DateTimeFormat,
   x: DateTimeFormattable,

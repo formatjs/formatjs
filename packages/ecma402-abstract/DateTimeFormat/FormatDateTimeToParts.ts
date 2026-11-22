@@ -4,6 +4,8 @@ import type {DateTimeFormattable} from '#packages/ecma402-abstract/DateTimeForma
 import {PartitionDateTimePattern} from '#packages/ecma402-abstract/DateTimeFormat/PartitionDateTimePattern.js'
 
 /** ECMA-402 §11.5.7. */
+// Temporal amendment §15.6.7: project parts from the prepared value.
+// https://tc39.es/proposal-temporal/#sec-formatdatetimetoparts
 export function FormatDateTimeToParts(
   dtf: Intl.DateTimeFormat,
   x: DateTimeFormattable,

@@ -264,6 +264,8 @@ export function epochDayOf(value: bigint): number {
 export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
 }
+// ECMA-262 preview §22.3.9: encode a valid ISO date as its epoch day.
+// https://tc39.es/ecma262/pr/3966/#sec-iso-date-records
 export function isoDay(year: number, month: number, day: number): number {
   // Temporal comparison §4.5.4 step1: NoonTimeRecord.
   // https://tc39.es/proposal-temporal/#sec-temporal-noontimerecord
@@ -370,6 +372,8 @@ export function dayFromFields(
 }
 // Temporal comparison §4.5.8 steps1–3: regulate prepared time fields before exact composition
 // https://tc39.es/proposal-temporal/#sec-temporal-regulatetime
+// ECMA-262 preview §22.3.15: pack the six clock fields into nanoseconds.
+// https://tc39.es/ecma262/pr/3966/#sec-time-records
 export function clockNanoseconds(
   fields: Record<string, unknown>,
   overflow: Overflow
@@ -433,6 +437,8 @@ export function dateFieldNames(
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
   if (key === 'monthCode') {
+    // ECMA-262 preview §22.3.11: validate the month-code grammar.
+    // https://tc39.es/ecma262/pr/3966/#sec-month-codes
     // Temporal comparison §12.2.1 steps1–3.
     // https://tc39.es/proposal-temporal/#sec-temporal-parsemonthcode
     // §12.2.1 step1: use the string hint without coercing a primitive to String.
@@ -517,6 +523,8 @@ function readISODateFields(
 
 // Temporal comparison §12.3.3 steps6–9.c/10–11: ordered Gets and immediate conversion
 // https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields
+// ECMA-262 preview §22.3.1.2: collect present fields into a private sparse record.
+// https://tc39.es/ecma262/pr/3966/#sec-calendar-fields-records
 export function readDateFields(
   item: Record<string, unknown>,
   withTime: boolean,
@@ -726,6 +734,8 @@ export const datePropertyNames = [
 ] as const
 // Temporal comparison §12.3.26 steps1–2: project calendar fields lazily; providers own their data
 // https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate
+// ECMA-262 preview §22.3.1.1: project the requested field from private calendar metadata.
+// https://tc39.es/ecma262/pr/3966/#sec-calendar-date-records
 export function dateProperty(
   slot: DateSlot,
   key: string,
@@ -819,6 +829,8 @@ export function dateProperty(
             cal === 'islamic-umalqura'
               ? 355
               : 366)
+    // ECMA-262 preview §22.3.8.4: derive the week number and ISO week-year together.
+    // https://tc39.es/ecma262/pr/3966/#sec-year-week-record
     case 'weekOfYear':
     case 'yearOfWeek': {
       if (slot.calendar !== 'iso8601') return undefined
@@ -1018,6 +1030,8 @@ export function roundRelativeDifference(
   }
   const sign = end < start ? -1 : 1,
     physicalSign = bigIntFrom(sign)
+  // ECMA-262 preview §22.15.5.11: carry the nudge duration, endpoint and expansion flag in locals.
+  // https://tc39.es/ecma262/pr/3966/#sec-duration-nudge-result-records
   let result = anchor.unrounded(end),
     rounded = end,
     expanded = false
