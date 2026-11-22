@@ -398,6 +398,10 @@ need their own proof. The native Intl candidate path now appends private
 candidates without calling inherited index setters.
 [Legacy dataset proof](temporal-timezone-boundary-proof/README.md#released-formatter-with-its-shipped-data).
 [Host regression](../../packages/temporal/tests/host-timezone.test.ts#L98).
+The Debian JavaScriptCoreGTK 2.54.3 and ICU 76.1 binding now has exact
+candidate, gap, endpoint and six-day spread bounds, plus public controls.
+Other JavaScriptCore builds remain conditional.
+[Debian JSC proof](temporal-timezone-boundary-proof/jsc-provider-audit.md).
 Three exact helper comments now cover the Object branch, cached ISO projection
 and canonical packed zone selection. The fixed inventory records 54 reviewed
 helpers without a numbered anchor.

@@ -58,6 +58,8 @@ keep their own boundary premise. The full row stays conditional.
 
 [Chromium 156 resource replay and browser comparison](chromium-provider-audit.md)
 record additional 2026e evidence for a browser profile.
+[Debian JavaScriptCoreGTK replay](jsc-provider-audit.md) binds a separate
+JavaScript engine and its loaded ICU 76.1 timezone profile.
 
 ## Unbound host Intl provider
 

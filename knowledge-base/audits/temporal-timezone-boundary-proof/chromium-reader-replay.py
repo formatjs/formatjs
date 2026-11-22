@@ -214,9 +214,10 @@ parser.add_argument("scratch", type=Path)
 parser.add_argument("--pplx", type=Path, default=Path("/opt/pplx-chromium/chrome"))
 parser.add_argument("--debian", type=Path, default=Path("/usr/lib/chromium/chromium"))
 parser.add_argument("--endpoint-projection", action="store_true")
-args = parser.parse_args()
-if args.operation == "prepare":
-    prepare(args.scratch.resolve(), args.endpoint_projection)
-else:
-    verifier = verify_endpoints if args.endpoint_projection else verify
-    verifier(args.scratch, {"pplx": args.pplx, "debian": args.debian})
+if __name__ == "__main__":
+    args = parser.parse_args()
+    if args.operation == "prepare":
+        prepare(args.scratch.resolve(), args.endpoint_projection)
+    else:
+        verifier = verify_endpoints if args.endpoint_projection else verify
+        verifier(args.scratch, {"pplx": args.pplx, "debian": args.debian})
