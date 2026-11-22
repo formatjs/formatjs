@@ -483,7 +483,7 @@ nanosecond above the minimum, both test zones return the minimum as
 their previous transition. The strict query from the minimum returns
 null. An unchanged offset at the same timestamp returns null too.
 [Rust offset check](../../../crates/temporal/timezone.rs#L484).
-[Regression](../../../crates/temporal/lib.test.rs#L4512).
+[Regression](../../../crates/temporal/lib.test.rs#L4559).
 [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
 
 - Before-fix Bazel SHA-256 `18fa17e034ea575ab2d357c25f1845f3f30750f429669e65d1682362a61b45d4`

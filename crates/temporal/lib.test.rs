@@ -4145,6 +4145,53 @@ fn day_rounding_retries_toward_origin_when_first_bound_overshoots() {
 }
 
 #[test]
+fn day_rounding_retries_a_rebased_lower_bound() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let march: Instant = "2024-03-01T00:00Z".parse().unwrap();
+    let epoch = march.epoch_nanoseconds();
+    let hour = 3_600_000_000_000;
+    let seconds = (epoch / 1_000_000_000) as i64;
+    let transitions = [(9, 0), (20, 16), (39, -22)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 3_600,
+        offset_seconds: offset * 3_600,
+    });
+    let zone = TransitionZone::new(-23 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new("2024-02-01T23:00Z".parse().unwrap(), zone);
+    let target = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(epoch + 33 * hour).unwrap(),
+        zone,
+    );
+    for (duration, hours) in [("P27D", -25), ("P30D", 46), ("P1M", 45)] {
+        assert_eq!(
+            origin
+                .checked_add(duration.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            epoch + hours * hour,
+            "{duration}"
+        );
+    }
+    for (mode, expected) in [
+        (RoundingMode::Floor, "P27D"),
+        (RoundingMode::Trunc, "P27D"),
+        (RoundingMode::Ceil, "P1M"),
+        (RoundingMode::HalfExpand, "P1M"),
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Month, DateTimeUnit::Day, 3, mode)
+                .unwrap()
+                .to_string(),
+            expected,
+            "{mode:?}"
+        );
+    }
+}
+
+#[test]
 fn day_rounding_crosses_both_early_occurrences_in_a_wide_fold() {
     use formatjs_temporal::{
         DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,

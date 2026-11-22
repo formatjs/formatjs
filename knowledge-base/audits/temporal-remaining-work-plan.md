@@ -26,9 +26,8 @@ satisfy this requirement.
 
 ## Current scope
 
-Realm-specific work is out of scope. The fixed ledger records the 16 shared
-constructor-realm steps for reference. They do not count toward completion
-or the remaining estimate.
+Exclude realm-specific behavior from fixes, verification and estimates. The
+fixed ledger retains 16 historical constructor-realm steps under `out_of_scope`.
 15 of 31 conditional numbered steps remain in scope. Of those, nine track
 published comparison conflicts, two track relative-window premises and four
 track timezone-provider applicability. The ordinary `index.js` and
@@ -223,7 +222,11 @@ is recorded separately from the two nonexact-window conditions. The
 the packed, compact and native day subdomain under its calendar and endpoint
 contracts. The [shared nonexact proof](temporal-year-month-week-nonexact-window.md)
 extends that result to week, month and year and incorporates the exact
-Node ICU host spread certificate. The retained-prefix week shortcut reaches
+Node ICU host spacing certificate. Transition-table validation alone cannot
+prove the effective offset bound. A three-transition packed and borrowed zone
+put both retained-prefix day bounds past the target. The TypeScript and Rust
+retry now rechecks the rebased lower endpoint after compatible resolution.
+The retained-prefix week shortcut reaches
 337/336 in a New York fold. Its public result matches the intended retry
 on the certified valid endpoints. The [endpoint proof](temporal-retained-week-endpoint-validity.md)
 validates that extra week on the certified profiles. Published assertion and

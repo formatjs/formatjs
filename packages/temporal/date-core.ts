@@ -1060,8 +1060,8 @@ export function roundRelativeDifference(
         if (smallest !== 'week') {
           const upperDay = anchor.nominalDay(rebasedUpper)
           const lowerDay = anchor.nominalDay(prefix)
-          // Offsets differ by less than two days. An overshoot can only
-          // reverse the selected anchor one nominal day beyond this bound.
+          // Seed the retry with the nominal bound for ordinary offsets.
+          // Compatible gap resolution can move past that estimate.
           const lastDay = upperDay + sign
           if (smallest === 'day') {
             truncated =
@@ -1090,6 +1090,13 @@ export function roundRelativeDifference(
           }
           prefix[key] = truncated
           a = anchor.endpoint(prefix)
+          // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii: check the
+          // lower bound after gap resolution. Retreat by whole increments.
+          while (truncated * sign > 0 && (end - a) * physicalSign < 0n) {
+            truncated -= stride
+            prefix[key] = truncated
+            a = anchor.endpoint(prefix)
+          }
         } else {
           a = anchor.endpoint(prefix)
           // Offsets can shorten the week stride by less than two days.

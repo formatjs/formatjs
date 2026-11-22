@@ -296,8 +296,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
                     let lower = date
                         .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
                         .epoch_day();
-                    // Offsets differ by less than two days. An overshoot can only
-                    // reverse the selected anchor one nominal day beyond this bound.
+                    // Estimate the inward quantum using the raw offset bound.
                     let last_day = upper + sign as i64;
                     if smallest == DateTimeUnit::Day {
                         truncated =
@@ -334,6 +333,13 @@ pub(crate) fn difference<A: RelativeAnchor>(
                     }
                     prefix[index] = truncated;
                     a = endpoint(start, prefix)?;
+                    // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii require a bracket.
+                    // Gap shifts can exceed the raw offset bound. Check the rebased endpoint.
+                    while truncated * sign > 0 && (end - a) * sign < 0 {
+                        truncated -= stride;
+                        prefix[index] = truncated;
+                        a = endpoint(start, prefix)?;
+                    }
                 } else {
                     a = endpoint(start, prefix)?;
                     // Offsets can shorten the week stride by less than two days.

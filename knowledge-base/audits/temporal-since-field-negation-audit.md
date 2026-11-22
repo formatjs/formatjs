@@ -18,7 +18,7 @@ request a public enumeration operation there.
 | [§9.5.7 DifferenceTemporalPlainYearMonth](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplainyearmonth)       | Rounded year/month cases enter the engine; exact month/increment 1 has a separate fixed-field shortcut.        |
 | [§6.5.9 DifferenceTemporalZonedDateTime](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime)         | Date-largest rounding enters roundRelativeDifference; time-largest and exact nanosecond routes return earlier. |
 
-[Shared final negation:1055](../../packages/temporal/date-core.ts#L1139)
+[Shared final negation:1055](../../packages/temporal/date-core.ts#L1146)
 now indexes the private unit list, negates all ten own fields and canonicalizes
 zero. It cannot call replaced `Object.keys` or an array iterator. The existing
 zoned nanosecond identity branch has its own indexed negation. Time-largest

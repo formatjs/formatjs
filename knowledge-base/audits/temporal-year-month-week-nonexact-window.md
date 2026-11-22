@@ -5,7 +5,7 @@
 The current TypeScript and Rust engines both repair a first endpoint that
 overshoots and keep advancing a last endpoint that falls short. The proof
 covers successful nonexact internal calendar rounding windows for plain
-anchors and supported zoned providers. It applies to date-unit
+anchors and the zoned profiles bound below. It applies to date-unit
 `until` and `since`, relative `Duration.round`, and the retained-prefix
 week shortcut after its bracket check. Relative `Duration.total` has its
 own equivalent final-bound checks. [TypeScript shared rounding](../../packages/temporal/date-core.ts#L1029),
@@ -26,14 +26,18 @@ throwing path. [Calendar date difference contract](temporal-calendar-date-until-
 [table chronology](temporal-table-provider-chronology-audit.md).
 
 A nominal zoned endpoint differs from its resolved instant by its effective
-offset, whose magnitude is less than D. This holds for a compatible fold
-candidate, a gap shifted using its effective offset, and the preserved exact
-origin for zero date fields. Thus two origin-clock nominal dates at least 2D apart
-have strictly ordered resolved instants in either travel direction. Plain
-endpoints use zero offset. The proof uses this bound for generated or
-certified named-zone profiles and validated borrowed transition zones with
-stable lookup. Host or custom providers require the same chronology,
-offset, and endpoint contracts. [Timezone provider evidence](temporal-timezone-boundary-proof/README.md).
+offset. This proof assumes its magnitude is less than D. Ordinary and folded
+clocks use a real offset. A single forward transition with no interfering
+change resolves a compatible gap using its old offset. Plain endpoints use
+zero, and zero date fields preserve the exact origin. Two fixed-clock
+nominal dates at least 2D apart therefore order strictly in either travel
+direction. The generated timezone spacing certificate separates changes
+by more than six days, so the exact gap search and shifted candidate have
+the single-transition geometry. The certified native Intl host paths use a
+checked subday offset from their gap probe. Matching calendar and endpoint
+contracts still apply to each profile. [Generated and pinned Node spacing](temporal-timezone-boundary-proof/relative-window-sampler.md).
+[JavaScriptCore provider](temporal-timezone-boundary-proof/jsc-provider-audit.md).
+[SpiderMonkey provider](temporal-timezone-boundary-proof/spidermonkey-provider-audit.md).
 
 ### Inward repair
 
@@ -116,6 +120,61 @@ The exact Apia case can still have A=B=T. Both source kernels validate
 the original adjacent endpoint and return the exact first count without
 division. This leaves the published distinctness assertion false and its
 progress undefined for that case. [Exact Apia controls](temporal-day-window-engine-audit.md).
+
+## Overlapping gaps and retained day prefixes
+
+Arbitrary exact providers can resolve a nominal gap by more than D, even
+when all their actual offsets are shorter than D. With offsets −23h, 0h
+and −22h separated by transitions at epoch hours +9 and +39, nominal
+midnight has distinct singleton neighbors. Their shift is +23h. The
+shifted clock has two candidates, hours +23 and +45. Compatible chooses
++45, so the effective offset is −45h. Even this profile's six-day spread
+of 23h satisfies the spread bound. Transition spacing or an independent
+effective-offset proof is also needed.
+
+Add a +16h segment from epoch hours +20 to +39. Use March 1, 2024 at
+00:00 UTC as epoch hour zero, and start at February 1 at local midnight.
+The target is hour +33, and its unrounded difference is `P1M2DT1H`.
+One month adds back to hour +45. Its original three-day upper endpoint
+adds back to hour +94. With smallest unit day and increment three, the
+old inward repair borrowed one month and used `P30D` at hour +46 as its
+lower endpoint. Both endpoints were beyond the target and the literal
+progress of that source window was 13. `floor` and `trunc` returned the
+wrong-side `P30D`. Retreating one requested day increment gives `P27D`
+at hour −25. The retained upper duration `P1M` remains at hour +45.
+The checked bracket selects `P27D` for floor/trunc and `P1M` for
+ceil/half-even on this witness.
+[Packaged replay](temporal-timezone-boundary-proof/relative-window-overlapping-gap-replay.mjs).
+
+For an exact shifted gap, effective displacement is the shift minus the
+chosen shifted candidate's real offset, so its magnitude is less than
+2D. A fallback that directly subtracts a real offset remains below D.
+The wider bound still orders two same-prefix year, month or week endpoints
+separated nominally by at least 5D. It does not establish the one-day
+offset premise for the old zero-component inward repair. The updated day
+and month retry checks its candidate against the target, retreating one
+requested quantum while needed. Count zero is the shortened base, at
+least 5D in signed nominal distance toward the origin from the overshooting
+prefix. The target local clock is at or beyond the accepted nominal date,
+which is past that prefix. The target's real offset is less than D, so
+the wider 2D bound still puts the shortened base strictly before the target
+in signed order. Zero date fields preserve the origin. The retry therefore
+reaches a lower bound or propagates an endpoint validation failure without
+crossing the shortened prefix. The week retry checks each candidate it
+accepts. The covered generated and pinned host profiles retain the preceding
+proof. Unbound chronology and timezone resolution remain provider premises.
+
+Build the four packages with Bazel and run the standalone replay on pinned
+Node 26.8.1. [Package-path commands](temporal-timezone-boundary-proof/README.md#wide-transition-rounding-replay).
+
+```sh
+node knowledge-base/audits/temporal-timezone-boundary-proof/relative-window-overlapping-gap-replay.mjs \
+  "$(pkg temporal)" "$(pkg intl-datetimeformat)" \
+  "$(pkg intl-localematcher)" "$(pkg fast-memoize)"
+```
+
+Packaged replay output SHA-256
+`418ba0a53ad89a68c302de93e36caff6f7a9bc178fa9b726cdfd0e2420711efa`.
 
 ## Earlier one-retry proof
 

@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27416,
+  "whole_selected_source_lines": 27429,
   "whole_selected_source_lines_by_language": {
-    "rust": 11306,
-    "typescript": 16110
+    "rust": 11312,
+    "typescript": 16117
   },
-  "nonoverlapping_callable_lines": 17782,
+  "nonoverlapping_callable_lines": 17795,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8382,
-    "typescript": 9400
+    "rust": 8388,
+    "typescript": 9407
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17439,
+    "mapped": 17452,
     "candidate": 159,
     "unmapped": 184
   },
@@ -352,10 +352,10 @@
     },
     {
       "file": "crates/temporal/calendar_difference.rs",
-      "source_lines": 496,
+      "source_lines": 502,
       "callable_rows": 9,
-      "nonoverlapping_callable_lines": 448,
-      "sha256": "97c01d5fd964c8eb73dca16a1f07286a032e7c87f561947e4a6142589328b39b",
+      "nonoverlapping_callable_lines": 454,
+      "sha256": "3df4135da7bc1070120968e6307dfc83ab4b2ddf74da8a37b3d3daf008e3ae4e",
       "unresolved_callable_rows": 0
     },
     {
@@ -584,10 +584,10 @@
     },
     {
       "file": "packages/temporal/date-core.ts",
-      "source_lines": 1234,
+      "source_lines": 1241,
       "callable_rows": 38,
-      "nonoverlapping_callable_lines": 980,
-      "sha256": "b97c25e2002e2c9edc7dcb5f3107d3f88031a38f243dc9597d41a7dc5ad0b8b7",
+      "nonoverlapping_callable_lines": 987,
+      "sha256": "183dc35ec9588de76c3e1fe8714af698990eadd4462370f5f837b97636b6c40f",
       "unresolved_callable_rows": 1
     },
     {

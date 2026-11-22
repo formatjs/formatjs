@@ -525,6 +525,35 @@ try {
     () => Temporal.ZonedDateTime.from(`+275760-09-13[${pulse}]`),
     RangeError
   )
+
+  const wideGap = BigInt(Date.UTC(2024, 2, 1)) * 1_000_000n
+  installBoundaryZone(wideGap, [-23, 0, 16, -22], [9n, 20n, 39n])
+  const origin = Temporal.ZonedDateTime.from(`2024-02-01T00:00[${pulse}]`)
+  const target = new Temporal.ZonedDateTime(wideGap + 33n * hour, pulse)
+  assert.equal(origin.add({months: 1}).epochNanoseconds, wideGap + 45n * hour)
+  assert.equal(origin.add({days: 30}).epochNanoseconds, wideGap + 46n * hour)
+  assert.equal(
+    origin.until(target, {largestUnit: 'month'}).toString(),
+    'P1M2DT1H'
+  )
+  for (const [roundingMode, expected, targetHour] of [
+    ['floor', 'P27D', -25n],
+    ['trunc', 'P27D', -25n],
+    ['ceil', 'P1M', 45n],
+    ['halfEven', 'P1M', 45n],
+  ]) {
+    const rounded = origin.until(target, {
+      largestUnit: 'month',
+      smallestUnit: 'day',
+      roundingIncrement: 3,
+      roundingMode,
+    })
+    assert.equal(rounded.toString(), expected)
+    assert.equal(
+      origin.add(rounded).epochNanoseconds,
+      wideGap + targetHour * hour
+    )
+  }
 } finally {
   hooks.deregister()
 }

@@ -102,8 +102,8 @@ signed day. The next endpoint keeps the original clock even if the previous
 endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
-[TypeScript signed day](../../packages/temporal/date-core.ts#L1167).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L409).
+[TypeScript signed day](../../packages/temporal/date-core.ts#L1174).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L415).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L530).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L309).
 
@@ -271,9 +271,9 @@ through the owned TypeScript host path. The two-day endpoint at hour
 72 bounds target hour 61 from origin hour 24, so truncation gives
 zero. Whole-window assertions stay conditional for the remaining
 providers and published comparison.
-[TypeScript retry](../../packages/temporal/date-core.ts#L1112).
-[Rust retry](../../crates/temporal/calendar_difference.rs#L358).
-[Public Rust fold](../../crates/temporal/lib.test.rs#L4148).
+[TypeScript retry](../../packages/temporal/date-core.ts#L1119).
+[Rust retry](../../crates/temporal/calendar_difference.rs#L364).
+[Public Rust fold](../../crates/temporal/lib.test.rs#L4195).
 [Temporal comparison §7.5.34 steps 5–6 and 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 A Gregorian borrowed zone can put the first week endpoint at maximum
@@ -380,7 +380,7 @@ selected date prefix, plus the bounded compatible-offset contract.
 Published step 13 still fails for the exact collapsed Apia witness.
 Step 17 and general provider applicability remain conditional.
 [TypeScript lower grid](../../packages/temporal/date-core.ts#L1065).
-[Rust lower grid](../../crates/temporal/calendar_difference.rs#L301).
+[Rust lower grid](../../crates/temporal/calendar_difference.rs#L300).
 [Rust public regression](../../crates/temporal/calendar.test.rs#L230).
 [Owned public replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
 [Public Rust regression](../../crates/temporal/calendar.test.rs#L168).
@@ -408,7 +408,7 @@ hour 134 as its second. Those bounds are distinct and bracket hour 148.
 For `until` and relative `Duration.round`, floor and expand select
 `-P32D` at hour 134. The other modes select `-P31D` at hour 158.
 These are the results of the window computation before bubbling.
-[TypeScript rounding](../../packages/temporal/date-core.ts#L1112).
+[TypeScript rounding](../../packages/temporal/date-core.ts#L1119).
 
 The retry marks expansion and enters the larger-unit check under
 §7.5.38 step 9. The month branch of §7.5.37 step 6.b.ii forms
@@ -420,8 +420,8 @@ comparison is zero and also accepts it. As a result the public floor
 returns hour 158, which is later than its target. The source applies the
 same local crossing test in both kernels. [§7.5.37](https://tc39.es/proposal-temporal/#sec-temporal-bubblerelativeduration).
 [§7.5.38](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration).
-[TypeScript bubbling](../../packages/temporal/date-core.ts#L1209).
-[Rust bubbling](../../crates/temporal/calendar_difference.rs#L449).
+[TypeScript bubbling](../../packages/temporal/date-core.ts#L1216).
+[Rust bubbling](../../crates/temporal/calendar_difference.rs#L455).
 
 The packaged owned replay observes `-P1M` from `until` and relative
 `Duration.round` in all nine modes and `P1M` from `since`.

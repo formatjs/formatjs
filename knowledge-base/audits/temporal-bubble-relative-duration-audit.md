@@ -12,8 +12,8 @@ not substituted authority or complete caller signoff.
 Compared [§7.5.38 step9](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration)
 bubbles only after a nudge reports expansion, with smallestUnit replaced by the
 larger of actual smallest and day; week smallest unit excludes bubbling. TS
-[date-core.ts:1040](../../packages/temporal/date-core.ts#L1124) and Rust
-[calendar_difference.rs:302](../../crates/temporal/calendar_difference.rs#L436)
+[date-core.ts:1040](../../packages/temporal/date-core.ts#L1131) and Rust
+[calendar_difference.rs:302](../../crates/temporal/calendar_difference.rs#L442)
 use expanded && smallest!=week and min(smallestIndex,dayIndex). This reproduces
 entry-unit selection; it does not prove every producer sets expanded correctly.
 
@@ -45,8 +45,8 @@ arithmetic structure, not JS coercion, public option order or complete adapters.
 
 ## Numbered comparison map
 
-TS anchor: [date-core.ts:1039–1054](../../packages/temporal/date-core.ts#L1123).
-Rust anchor: [calendar_difference.rs:302–318](../../crates/temporal/calendar_difference.rs#L436).
+TS anchor: [date-core.ts:1039–1054](../../packages/temporal/date-core.ts#L1130).
+Rust anchor: [calendar_difference.rs:302–318](../../crates/temporal/calendar_difference.rs#L442).
 The effective smallest index below already includes the caller's day cap.
 
 | Compared step                | TS                        | Rust                           | Result / premise                                                                                                            |
