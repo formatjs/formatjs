@@ -1,5 +1,11 @@
 # Temporal implementation
 
+The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)
+adds fractional-offset cancellation at nanosecond boundaries near both timestamp
+limits. A deliberate premature Number conversion fails the new regression;
+the existing BigInt and Decimal paths pass. Full conversion and caller review
+remain open.
+
 The central date-pattern loop uses private indexed traversal and own List writes.
 Fractional seconds use captured floor; two-digit fields use private Unicode
 truncation without mutable array methods. TS and Rust preserve

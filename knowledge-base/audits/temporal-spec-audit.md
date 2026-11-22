@@ -48,16 +48,27 @@ The historical/provisional Temporal inventory above remains unchanged.
 Projection review below assumes the partition producer's specified private List
 and Record contract. Producers and complete public methods remain open.
 
-| Section                                                                             | Status                                                                | Evidence or gap                                                                                                                                 |
-| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)           | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                   |
-| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern) | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                    |
-| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open. |
-| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                           |
+| Section                                                                             | Status                                                                | Evidence or gap                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)           | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                                                   |
+| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern) | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                                                    |
+| [§11.5.11 ToLocalTime](https://tc39.es/ecma402/#sec-tolocaltime)                    | Precision vectors reviewed; complete operation open                   | [Fractional-offset boundary and deliberate-loss controls](temporal-local-offset-precision-audit.md); parser, range/brand callers and complete calendar computation remain open. |
+| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts) | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open.                                 |
+| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)    | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                                                           |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Local-offset precision #8105](https://github.com/formatjs/formatjs/pull/8105):
+  [Precision evidence](temporal-local-offset-precision-audit.md) for
+  ECMA-402 §11.5.11 steps 1–3 retain partial status. Thirty-six new boundary
+  vectors pass with the existing runtime; deliberately converting nanoseconds
+  through Number before Decimal construction fails the new test while the four
+  prior target tests pass. Runtime restored unchanged. Added timezone runtime
+  and two compiler gates to the inventory (170 targets); this does not imply
+  that the full expanded matrix has been rerun. All six focused runtime/compiler
+  gates pass (four executed, two cached). No baseline, exclusion or timeout changes.
 
 - [Date pattern producer #8104](https://github.com/formatjs/formatjs/pull/8104): [ECMA-402 §11.5.4 step map](temporal-date-pattern-audit.md)
   records every top-level step and separates reviewed record/numeric paths from
