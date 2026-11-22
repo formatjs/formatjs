@@ -606,8 +606,8 @@ class PlainDateTimeValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
-    // Temporal comparison §5.3.35 steps 1–3.
-    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tolocalestring
+    // Temporal Intl §15.11.4.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plaindatetime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainDateTime', ...slot},

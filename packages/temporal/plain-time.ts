@@ -302,7 +302,8 @@ export function validateTimeIncrement(unit: TimeUnit, increment: number): void {
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeErrorConstructor('Invalid time rounding increment')
 }
-// Temporal comparison §4.5.16 steps 1–8. Round within the next larger clock unit.
+// ECMA-262 preview §22.3.15.10 steps 1–8: round within the parent clock unit.
+// https://tc39.es/ecma262/pr/3966/#sec-roundtime
 export function roundTime(
   value: bigint,
   unit: TimeUnit,
@@ -321,7 +322,8 @@ export function roundTime(
     roundInstant(value - base, factors[index] * bigIntFrom(increment), mode)
   )
 }
-// Temporal comparison §4.5.17 steps 1–9. Convert, round, and balance the time difference.
+// ECMA-262 preview §22.12.5.4 steps 1–9: convert, round, and balance the time difference.
+// https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplaintime
 function difference(
   value: bigint | number,
   other: unknown,
@@ -368,16 +370,8 @@ function difference(
         mode
       )
     )
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L529-L537
-  // L529: subtract encoded hour contributions.
-  // L530: subtract encoded minute contributions.
-  // L531: subtract encoded second contributions.
-  // L532: subtract encoded millisecond contributions.
-  // L533: subtract encoded microsecond contributions.
-  // L534: subtract encoded nanosecond contributions.
-  // L535: linearity makes their weighted sum equal end minus value.
-  // L536: both clocks lie in [0, day), so their difference has magnitude below day.
-  // L537: pass that exact duration onward; since uses the reversed operand order.
+  // ECMA-262 preview §22.3.15.5: exact encoded subtraction equals field-wise subtraction.
+  // https://tc39.es/ecma262/pr/3966/#sec-differencetime
   return createDuration(
     balanceDurationTime(
       roundDuration(
@@ -389,7 +383,8 @@ function difference(
     )
   )
 }
-// Temporal comparison §4.5.18 steps 1–5. Apply the signed time portion and wrap the clock.
+// ECMA-262 preview §22.12.5.3 steps 1–5: add the signed time fields and wrap the clock.
+// https://tc39.es/ecma262/pr/3966/#sec-adddurationtotime
 function add(
   value: bigint | number,
   other: unknown,
@@ -619,8 +614,8 @@ class PlainTimeValue implements PlainTimeObject {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
-    // Temporal comparison §4.3.17 steps 1–3.
-    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tolocalestring
+    // Temporal Intl §15.11.6.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plaintime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainTime', epochNanoseconds: slot},

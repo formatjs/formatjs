@@ -28,7 +28,8 @@ export function HandleDateTimeValue(
   value: DateTimeFormattable
 ): ValueFormatRecord {
   if (!isTemporalDateTimeValue(value)) {
-    // HandleDateTimeOthers clips Number inputs before creating the record.
+    // Temporal Intl §15.6.21 steps 1–5 clip Number inputs before making the record.
+    // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimeothers
     const clipped = TimeClip(value)
     if (clipped !== clipped) throw new RangeErrorConstructor('Invalid time')
     return {
@@ -42,6 +43,9 @@ export function HandleDateTimeValue(
       'Temporal.ZonedDateTime is not supported by DateTimeFormat'
     )
   }
+  // Temporal Intl §§15.6.16–17 step 1 require an exact calendar match for short dates.
+  // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporalyearmonth
+  // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporalmonthday
   if (
     value.calendar !== undefined &&
     value.calendar !== slots.calendar &&
@@ -53,6 +57,9 @@ export function HandleDateTimeValue(
       'Temporal calendar does not match DateTimeFormat'
     )
   }
+  // For short dates, epochNanoseconds already includes noon (steps 2–3).
+  // Temporal Intl §15.6.20 steps 1–2 keep the Instant's exact epoch and mark it non-plain.
+  // https://tc39.es/proposal-temporal/#sec-temporal-handledatetimetemporalinstant
   return {
     format: slots.getTemporalFormat!(value.kind),
     epochNanoseconds: value.epochNanoseconds,

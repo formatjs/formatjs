@@ -393,8 +393,8 @@ class PlainYearMonthValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
-    // Temporal comparison §9.3.20 steps 1–3.
-    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tolocalestring
+    // Temporal Intl §15.11.7.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plainyearmonth.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {

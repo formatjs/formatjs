@@ -199,8 +199,8 @@ class PlainMonthDayValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
-    // Temporal comparison §10.3.9 steps 1–3.
-    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tolocalestring
+    // Temporal Intl §15.11.5.1 steps 1–4: check the receiver and format its value.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plainmonthday.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {

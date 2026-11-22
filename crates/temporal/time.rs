@@ -150,13 +150,14 @@ impl PlainTime {
             (value % 1_000_000_000) as u32,
         )
     }
-    // Proposal comparison §4.5.18 steps 3–5: add the clock span modulo one day.
+    // ECMA-262 preview §22.12.5.3 steps 3–5: add the clock span modulo one day.
+    // https://tc39.es/ecma262/pr/3966/#sec-adddurationtotime
     pub fn checked_add(self, duration: Duration) -> Result<Self, Error> {
         Ok(Self(
             (self.0 + duration.time_nanoseconds(false)?).rem_euclid(NANOSECONDS_PER_DAY),
         ))
     }
-    // Proposal comparison §4.5.18 step 2: negate duration fields before adding the clock span.
+    // ECMA-262 preview §22.12.5.3 step 2: negate the duration before addition.
     pub fn checked_subtract(self, duration: Duration) -> Result<Self, Error> {
         self.checked_add(duration.negated())
     }
@@ -167,7 +168,8 @@ impl PlainTime {
                 .rem_euclid(NANOSECONDS_PER_DAY),
         ))
     }
-    // Proposal comparison §4.5.16 steps 1.a, 2.a, 3.a, 4.a, 5.a, 6.b, 7, 8. Select the parent-unit remainder and round at the requested increment.
+    // ECMA-262 preview §22.3.15.10 steps 1–8: round within the parent clock unit.
+    // https://tc39.es/ecma262/pr/3966/#sec-roundtime
     pub(crate) fn rounded_nanoseconds(
         self,
         unit: TimeUnit,
@@ -191,7 +193,8 @@ impl PlainTime {
                 mode,
             ))
     }
-    // Proposal comparison §4.5.17 steps 4–7: round the exact clock difference.
+    // ECMA-262 preview §22.12.5.4 steps 4–7: round the exact clock difference.
+    // https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplaintime
     pub fn until(
         self,
         other: Self,
@@ -204,16 +207,8 @@ impl PlainTime {
         if largest.nanoseconds() < smallest.nanoseconds() {
             return Err(Error::InvalidRoundingOptions);
         }
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L529-L537
-        // L529: subtract encoded hour contributions.
-        // L530: subtract encoded minute contributions.
-        // L531: subtract encoded second contributions.
-        // L532: subtract encoded millisecond contributions.
-        // L533: subtract encoded microsecond contributions.
-        // L534: subtract encoded nanosecond contributions.
-        // L535: linearity makes their weighted sum equal other minus self.
-        // L536: both clocks lie in [0, one day); their difference cannot reach one day.
-        // L537: forward the exact difference to rounding and decomposition.
+        // ECMA-262 preview §22.3.15.5: exact encoded subtraction equals field-wise subtraction.
+        // https://tc39.es/ecma262/pr/3966/#sec-differencetime
         Duration::from_time_nanoseconds(
             round_duration(
                 other.0 - self.0,
@@ -223,7 +218,7 @@ impl PlainTime {
             largest,
         )
     }
-    // Proposal comparison §4.5.17 step 8: reverse the typed clock difference for since.
+    // ECMA-262 preview §22.12.5.4 steps 4–8: reversing operands gives the same signed rounding for since.
     pub fn since(
         self,
         other: Self,

@@ -79,6 +79,8 @@ export function PartitionDateTimeRangePattern(
 ): IntlDateTimeFormatPart[] {
   // Temporal §15.6.8 step 7 rejects mismatched Temporal endpoint types.
   // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
+  // §15.6.13 steps 1–7 compare the types identified by their internal slots.
+  // https://tc39.es/proposal-temporal/#sec-temporal-sametemporaltype
   const firstTemporal = isTemporalDateTimeValue(x)
   const secondTemporal = isTemporalDateTimeValue(y)
   if (
