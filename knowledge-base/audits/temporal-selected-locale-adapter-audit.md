@@ -63,7 +63,19 @@ supply the assembled intervals.
 [Literal substitution](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L30).
 [Private interval assembly](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L46).
 [Component guard](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L568).
-[Public constructor tests](../../packages/intl-datetimeformat/tests/index.test.ts#L477).
+[Public constructor tests](../../packages/intl-datetimeformat/tests/index.test.ts#L495).
+
+### Combined-style alternate records
+
+Three more public cases exercise branches outside the default style pair.
+The opposite hour cycle copies components into the existing matcher without
+an Array iterator. A Japanese numeric medium date selects the first
+`yMd` fallback by index. Its private fallback record keeps an inherited
+`weekdayStandalone` getter from becoming an input. All eleven combined-style
+controls preserve date and time range parts. Five Bazel targets pass.
+[Hour-cycle field copy](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L141).
+[Numeric medium fallback](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L224).
+[Public controls](../../packages/intl-datetimeformat/tests/index.test.ts#L467).
 
 ## Scope and evidence
 

@@ -670,7 +670,7 @@ own undefined option. Their private records now keep a null prototype.
 The public option still allows one inherited getter read when the caller
 provides it. Three constructor regressions failed before the correction.
 [Basic matcher record](../../packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.ts#L119).
-[Combined style record](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L179).
+[Combined style record](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L178).
 [Constructor controls](../../packages/intl-datetimeformat/tests/index.test.ts#L425).
 [ECMA-402 CreateDateTimeFormat §11.1.2](https://tc39.es/ecma402/#sec-createdatetimeformat).
 

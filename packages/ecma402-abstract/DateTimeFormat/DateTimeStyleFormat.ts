@@ -138,15 +138,14 @@ function getTimeStyleFormat(
     return timeFormat
   }
 
-  // Spec: ECMA-402 11.5.1 DateTimeStyleFormat selects the locale style record.
-  // FormatJS impl detail: our data has separate 12/24-hour format records, so
-  // use the implementation-defined matcher from 11.5.3 when 11.1.2 resolves
-  // hour12 to the opposite hc from the default timeStyle pattern.
+  // ECMA-402 §11.5.1 step 2.b selects the locale style record.
+  // Adapt its hour cycle through implementation-defined §11.5.3 matching.
   const matcherOptions = {
     __proto__: null,
     hour12,
   } as Intl.DateTimeFormatOptions
-  for (const prop of DATE_TIME_PROPS) {
+  for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+    const prop = DATE_TIME_PROPS[index]
     const value = timeFormat[prop]
     if (value !== undefined) {
       matcherOptions[prop] = value as never
@@ -217,16 +216,22 @@ export function DateTimeStyleFormat(
       format.pattern12 = pattern12
     }
 
-    const rangeDateFormat =
+    let rangeDateFormat = dateFormat!
+    if (
       dateStyle === 'medium' &&
       (dateFormat!.month === 'numeric' || dateFormat!.month === '2-digit')
-        ? {
-            ...dateFormat!,
-            pattern:
-              formats.find(format => format.skeleton === 'yMd')?.pattern ||
-              dateFormat!.pattern,
-          }
-        : dateFormat!
+    ) {
+      // ECMA-402 §11.5.1 steps 4.h–j: prepare the numeric-date interval input.
+      let pattern = dateFormat!.pattern
+      for (let index = 0; index < formats.length; index++) {
+        const candidate = formats[index]
+        if (candidate.skeleton === 'yMd') {
+          pattern = candidate.pattern || pattern
+          break
+        }
+      }
+      rangeDateFormat = {__proto__: null, ...dateFormat!, pattern} as Formats
+    }
     // Merge rangePatterns from timeFormat (for time-related differences)
     // This is needed for formatRange to work with dateStyle/timeStyle
     // See: https://github.com/formatjs/formatjs/issues/4168

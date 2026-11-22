@@ -34498,6 +34498,20 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "datetime_alternate_time_style": [
+      {
+        "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
+        "symbol": "getTimeStyleFormat",
+        "source_sha256": "e0aeda9d7afec296604443a6fd0ba2dc829d5635585b9b1d77fad489390ed852",
+        "start_line": 119,
+        "end_line": 155,
+        "anchor_line": 141,
+        "section": "11.5.1",
+        "steps": ["2.b"],
+        "spec_url": "https://tc39.es/ecma402/#sec-datetimestyleformat",
+        "scope": "Select the locale time style and adapt a differing hour cycle through the existing matcher."
+      }
+    ],
     "legacy_extended_part_lists": [
       {
         "file": "packages/temporal/legacy-extended-date.ts",
@@ -34552,7 +34566,7 @@
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
         "symbol": "replaceStyleToken",
-        "source_sha256": "0360bf00206d723e40607cda9e8558cc338c75cc62bba52e00b27c5678d6e3ba",
+        "source_sha256": "e0aeda9d7afec296604443a6fd0ba2dc829d5635585b9b1d77fad489390ed852",
         "start_line": 25,
         "end_line": 37,
         "anchor_line": 30,
@@ -34564,7 +34578,7 @@
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
         "symbol": "combineStyleRanges",
-        "source_sha256": "0360bf00206d723e40607cda9e8558cc338c75cc62bba52e00b27c5678d6e3ba",
+        "source_sha256": "e0aeda9d7afec296604443a6fd0ba2dc829d5635585b9b1d77fad489390ed852",
         "start_line": 39,
         "end_line": 117,
         "anchor_line": 46,

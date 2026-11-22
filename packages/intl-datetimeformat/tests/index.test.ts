@@ -473,15 +473,42 @@ describe('Intl.DateTimeFormat', function () {
     ['Array iterator', Array.prototype, Symbol.iterator],
     ['String.replace', String.prototype, 'replace'],
     ['String @@replace', String.prototype, Symbol.replace],
+    [
+      'opposite hour-cycle iterator',
+      Array.prototype,
+      Symbol.iterator,
+      'en',
+      'short',
+      'h23',
+    ],
+    ['numeric medium date lookup', Array.prototype, 'find', 'ja', 'medium'],
+    [
+      'numeric medium date inherited weekday',
+      Object.prototype,
+      'weekdayStandalone',
+      'ja',
+      'medium',
+      undefined,
+      true,
+    ],
   ] as const)(
     'keeps combined style construction private from %s',
-    (_name, target, key) => {
+    (
+      _name,
+      target,
+      key,
+      locale = 'en',
+      dateStyle: 'short' | 'medium' = 'short',
+      hourCycle?: 'h23',
+      getter = false
+    ) => {
       const fields = {
         timeZone: 'UTC',
-        dateStyle: 'short',
+        dateStyle,
         timeStyle: 'short',
+        hourCycle,
       } as const
-      const baseline = new DateTimeFormat('en', fields)
+      const baseline = new DateTimeFormat(locale, fields)
       const expectedDate = baseline.formatRangeToParts(0, 86400000)
       const expectedTime = baseline.formatRangeToParts(0, 3600000)
       const original = Object.getOwnPropertyDescriptor(target, key)
@@ -491,18 +518,19 @@ describe('Intl.DateTimeFormat', function () {
         actual: Intl.DateTimeFormat | undefined,
         error: unknown
       try {
-        actual = new DateTimeFormat('en', {
+        actual = new DateTimeFormat(locale, {
           timeZone: 'UTC',
-          dateStyle: 'short',
+          dateStyle,
+          hourCycle,
           get timeStyle() {
             reads++
+            const reject = () => {
+              calls++
+              throw sentinel
+            }
             Object.defineProperty(target, key, {
               configurable: true,
-              ...original,
-              value() {
-                calls++
-                throw sentinel
-              },
+              ...(getter ? {get: reject} : {...original, value: reject}),
             })
             return 'short' as const
           },
