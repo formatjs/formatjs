@@ -39,6 +39,310 @@ export function parseOffsetNanoseconds(
   return bigIntFrom(result)
 }
 
+type DatePrefix = {
+  year: string
+  separator: string
+  month: string
+  day: string
+  end: number
+}
+type TimePrefix = {
+  hour: string
+  separator: string | undefined
+  minute: string | undefined
+  second: string | undefined
+  fraction: string | undefined
+  end: number
+}
+
+function stringPart(value: string, start: number, end = value.length): string {
+  let result = ''
+  for (let index = start; index < end; index++) result += value[index]
+  return result
+}
+function bracketIndex(value: string): number {
+  for (let index = 0; index < value.length; index++)
+    if (value[index] === '[') return index
+  return -1
+}
+function decimalAt(value: string, index: number): boolean {
+  return index < value.length && value[index] >= '0' && value[index] <= '9'
+}
+function digitsAt(value: string, index: number, count: number): boolean {
+  if (index + count > value.length) return false
+  for (let digit = 0; digit < count; digit++)
+    if (!decimalAt(value, index + digit)) return false
+  return true
+}
+function datePrefix(value: string): DatePrefix | undefined {
+  let index = 0
+  if (value.length !== 0 && (value[0] === '+' || value[0] === '-')) index++
+  const width = index ? 6 : 4
+  if (!digitsAt(value, index, width)) return undefined
+  index += width
+  const year = stringPart(value, 0, index)
+  const separator = index < value.length && value[index] === '-' ? '-' : ''
+  if (separator) index++
+  if (!digitsAt(value, index, 2)) return undefined
+  const month = stringPart(value, index, index + 2)
+  index += 2
+  if (separator) {
+    if (index === value.length || value[index] !== '-') return undefined
+    index++
+  }
+  if (!digitsAt(value, index, 2)) return undefined
+  const day = stringPart(value, index, index + 2)
+  return {year, separator, month, day, end: index + 2}
+}
+function timeMarker(value: string, index: number): boolean {
+  return (
+    index < value.length &&
+    (value[index] === 'T' || value[index] === 't' || value[index] === ' ')
+  )
+}
+function hasTimeMarker(value: string): boolean {
+  for (let index = 0; index < value.length; index++)
+    if (timeMarker(value, index)) return true
+  return false
+}
+function isZ(value: string | undefined): boolean {
+  return value === 'Z' || value === 'z'
+}
+function endsInZ(value: string): boolean {
+  return value.length !== 0 && isZ(value[value.length - 1])
+}
+function withoutZ(value: string): string {
+  return endsInZ(value) ? stringPart(value, 0, value.length - 1) : value
+}
+function timePrefix(value: string, start: number): TimePrefix | undefined {
+  if (!digitsAt(value, start, 2)) return undefined
+  const hour = stringPart(value, start, start + 2)
+  let index = start + 2
+  let separator: string | undefined
+  let minute: string | undefined
+  let second: string | undefined
+  let fraction: string | undefined
+  const extended = index < value.length && value[index] === ':'
+  const minuteStart = index + (extended ? 1 : 0)
+  if (digitsAt(value, minuteStart, 2)) {
+    separator = extended ? ':' : ''
+    minute = stringPart(value, minuteStart, minuteStart + 2)
+    index = minuteStart + 2
+    const secondStart = index + (extended ? 1 : 0)
+    if (
+      (!extended || (index < value.length && value[index] === ':')) &&
+      digitsAt(value, secondStart, 2)
+    ) {
+      second = stringPart(value, secondStart, secondStart + 2)
+      index = secondStart + 2
+      if (
+        index < value.length &&
+        (value[index] === '.' || value[index] === ',') &&
+        decimalAt(value, index + 1)
+      ) {
+        const fractionStart = ++index
+        while (index - fractionStart < 9 && decimalAt(value, index)) index++
+        fraction = stringPart(value, fractionStart, index)
+      }
+    }
+  }
+  return {hour, separator, minute, second, fraction, end: index}
+}
+function offsetEnd(value: string, start: number): number | undefined {
+  if (start === value.length || (value[start] !== '+' && value[start] !== '-'))
+    return undefined
+  if (!digitsAt(value, start + 1, 2)) return undefined
+  let index = start + 3
+  const extended = index < value.length && value[index] === ':'
+  const minuteStart = index + (extended ? 1 : 0)
+  if (digitsAt(value, minuteStart, 2)) {
+    index = minuteStart + 2
+    const secondStart = index + (extended ? 1 : 0)
+    if (
+      (!extended || (index < value.length && value[index] === ':')) &&
+      digitsAt(value, secondStart, 2)
+    ) {
+      index = secondStart + 2
+      if (
+        index < value.length &&
+        (value[index] === '.' || value[index] === ',') &&
+        decimalAt(value, index + 1)
+      ) {
+        const fractionStart = ++index
+        while (index - fractionStart < 9 && decimalAt(value, index)) index++
+      }
+    }
+  }
+  return index
+}
+function isoMatch(value: string, instant = false): string[] | null {
+  const date = datePrefix(value)
+  if (!date) return null
+  let index = date.end
+  let time: TimePrefix | undefined
+  let offset: string | undefined
+  if (timeMarker(value, index)) {
+    time = timePrefix(value, index + 1)
+    if (time) index = time.end
+    else if (instant) return null
+  } else if (instant) return null
+  if (time) {
+    if (instant && index < value.length && isZ(value[index]))
+      offset = value[index++]
+    else {
+      const end = offsetEnd(value, index)
+      if (end !== undefined) {
+        offset = stringPart(value, index, end)
+        index = end
+      }
+    }
+  }
+  if (instant && offset === undefined) return null
+  return [
+    value,
+    date.year,
+    date.separator,
+    date.month,
+    date.day,
+    time?.hour,
+    time?.separator,
+    time?.minute,
+    time?.second,
+    time?.fraction,
+    offset,
+    stringPart(value, index),
+  ] as string[]
+}
+function yearMonthMatch(value: string): string[] | null {
+  let index = 0
+  if (value.length !== 0 && (value[0] === '+' || value[0] === '-')) index++
+  const width = index ? 6 : 4
+  if (!digitsAt(value, index, width)) return null
+  index += width
+  const year = stringPart(value, 0, index)
+  if (index < value.length && value[index] === '-') index++
+  if (!digitsAt(value, index, 2) || index + 2 !== value.length) return null
+  return [value, year, stringPart(value, index)]
+}
+function monthDayMatch(value: string): string[] | null {
+  let index = value.length >= 2 && value[0] === '-' && value[1] === '-' ? 2 : 0
+  if (!digitsAt(value, index, 2)) return null
+  const month = stringPart(value, index, index + 2)
+  index += 2
+  if (index < value.length && value[index] === '-') index++
+  if (!digitsAt(value, index, 2) || index + 2 !== value.length) return null
+  return [value, month, stringPart(value, index)]
+}
+function dateTimePrefixMatch(value: string): string[] | null {
+  const date = datePrefix(value)
+  if (!date || !timeMarker(value, date.end)) return null
+  return [
+    stringPart(value, 0, date.end + 1),
+    date.year,
+    date.separator,
+    date.month,
+    date.day,
+  ]
+}
+function dateBodyMatch(value: string): string[] | null {
+  const date = datePrefix(value)
+  if (!date) return null
+  if (date.end === value.length)
+    return [
+      value,
+      date.year,
+      date.separator,
+      date.month,
+      date.day,
+      undefined,
+    ] as string[]
+  if (!timeMarker(value, date.end) || date.end + 1 === value.length) return null
+  return [
+    value,
+    date.year,
+    date.separator,
+    date.month,
+    date.day,
+    stringPart(value, date.end + 1),
+  ]
+}
+function timeMatch(value: string, allowZ = false): string[] | null {
+  const time = timePrefix(value, 0)
+  if (!time) return null
+  let index = time.end
+  let offset: string | undefined
+  if (allowZ && index < value.length && isZ(value[index]))
+    offset = value[index++]
+  else {
+    const end = offsetEnd(value, index)
+    if (end !== undefined) {
+      offset = stringPart(value, index, end)
+      index = end
+    }
+  }
+  if (index !== value.length) return null
+  return [
+    value,
+    time.hour,
+    time.separator,
+    time.minute,
+    time.second,
+    time.fraction,
+    offset,
+  ] as string[]
+}
+function zoneName(value: string): boolean {
+  let first = true
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    const leading =
+      (character >= 'A' && character <= 'Z') ||
+      (character >= 'a' && character <= 'z') ||
+      character === '.' ||
+      character === '_'
+    if (character === '/') {
+      if (first) return false
+      first = true
+    } else {
+      if (
+        !leading &&
+        (first ||
+          (!decimalAt(value, index) && character !== '+' && character !== '-'))
+      )
+        return false
+      first = false
+    }
+  }
+  return !first
+}
+function isoCalendar(value: string): boolean {
+  return (
+    value.length === 7 &&
+    (value[0] === 'i' || value[0] === 'I') &&
+    (value[1] === 's' || value[1] === 'S') &&
+    (value[2] === 'o' || value[2] === 'O') &&
+    value[3] === '8' &&
+    value[4] === '6' &&
+    value[5] === '0' &&
+    value[6] === '1'
+  )
+}
+function calendarDatePrefix(value: string): boolean {
+  const date = datePrefix(value)
+  return (
+    date !== undefined &&
+    (date.end === value.length || timeMarker(value, date.end))
+  )
+}
+function suffixOffset(value: string): string | undefined {
+  for (let index = 0; index < value.length; index++) {
+    if (isZ(value[index]) && index + 1 === value.length) return value[index]
+    if (offsetEnd(value, index) === value.length)
+      return stringPart(value, index)
+  }
+  return undefined
+}
+
 function validateAnnotations(value: string): {
   timeZone?: string
   calendar?: string
@@ -47,24 +351,68 @@ function validateAnnotations(value: string): {
   let calendarSeen = false,
     criticalCalendar = false,
     annotationSeen = false,
-    zoneSeen = false
-  while (value) {
-    const match = /^\[(!?)([^[\]]+)\]/.exec(value)
-    if (!match) throw new RangeErrorConstructor('Invalid annotation')
-    const critical = match[1] === '!'
-    const text = match[2]
-    if (text.includes('=')) {
-      const annotation =
-        /^([a-z_][a-z_0-9-]*)=([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*)$/.exec(text)
-      if (!annotation || annotation[0] !== text)
+    zoneSeen = false,
+    index = 0
+  while (index < value.length) {
+    if (value[index++] !== '[')
+      throw new RangeErrorConstructor('Invalid annotation')
+    const critical = index < value.length && value[index] === '!'
+    if (critical) index++
+    const start = index
+    let equals = -1
+    while (index < value.length && value[index] !== ']') {
+      if (value[index] === '[')
         throw new RangeErrorConstructor('Invalid annotation')
+      if (value[index] === '=') {
+        if (equals !== -1) throw new RangeErrorConstructor('Invalid annotation')
+        equals = index
+      }
+      index++
+    }
+    if (index === value.length || index === start)
+      throw new RangeErrorConstructor('Invalid annotation')
+    const text = stringPart(value, start, index++)
+    if (equals !== -1) {
+      const key = stringPart(value, start, equals)
+      if (key.length === 0)
+        throw new RangeErrorConstructor('Invalid annotation')
+      for (let position = 0; position < key.length; position++) {
+        const character = key[position]
+        const lower =
+          (character >= 'a' && character <= 'z') || character === '_'
+        if (
+          !lower &&
+          (position === 0 || (!decimalAt(key, position) && character !== '-'))
+        )
+          throw new RangeErrorConstructor('Invalid annotation')
+      }
+      const contents = stringPart(value, equals + 1, index - 1)
+      let segment = false
+      for (let position = 0; position < contents.length; position++) {
+        const character = contents[position]
+        if (character === '-') {
+          if (!segment) throw new RangeErrorConstructor('Invalid annotation')
+          segment = false
+        } else {
+          if (
+            !(
+              (character >= 'a' && character <= 'z') ||
+              (character >= 'A' && character <= 'Z') ||
+              decimalAt(contents, position)
+            )
+          )
+            throw new RangeErrorConstructor('Invalid annotation')
+          segment = true
+        }
+      }
+      if (!segment) throw new RangeErrorConstructor('Invalid annotation')
       annotationSeen = true
-      if (annotation[1] === 'u-ca') {
+      if (key === 'u-ca') {
         if (calendarSeen && (critical || criticalCalendar))
           throw new RangeErrorConstructor(
             'Duplicate critical calendar annotation'
           )
-        calendar ??= annotation[2]
+        calendar ??= contents
         calendarSeen = true
         criticalCalendar ||= critical
       } else if (critical)
@@ -74,15 +422,10 @@ function validateAnnotations(value: string): {
         throw new RangeErrorConstructor('Unexpected timezone annotation')
       zoneSeen = true
       timeZone = text
-      if (/^[+-]/.test(text)) parseOffsetNanoseconds(text, true)
-      else if (
-        !/^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*(?![\s\S])/.test(
-          text
-        )
-      )
+      if (text[0] === '+' || text[0] === '-') parseOffsetNanoseconds(text, true)
+      else if (!zoneName(text))
         throw new RangeErrorConstructor('Invalid timezone annotation')
     }
-    value = value.slice(match[0].length)
   }
   return {timeZone, calendar}
 }
@@ -91,10 +434,7 @@ export function parseInstantString(value: string): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parseInstant(value)
-  const match =
-    /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})[Tt ](\d{2})(?:(:?)(\d{2})(?:\6(\d{2})(?:[.,](\d{1,9}))?)?)?([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)([\s\S]*)$/.exec(
-      value
-    )
+  const match = isoMatch(value, true)
   if (!match || match[1] === '-000000')
     throw new RangeErrorConstructor('Invalid instant string')
   validateAnnotations(match[11])
@@ -107,13 +447,11 @@ export function parseInstantString(value: string): bigint {
     hour: +match[5],
     minute: +(match[7] ?? 0),
     second: second === 60 ? 59 : second,
-    millisecond: +fraction.slice(0, 3),
-    microsecond: +fraction.slice(3, 6),
-    nanosecond: +fraction.slice(6, 9),
+    millisecond: +stringPart(fraction, 0, 3),
+    microsecond: +stringPart(fraction, 3, 6),
+    nanosecond: +stringPart(fraction, 6, 9),
   })
-  return (
-    local - (/^[Zz]$/.test(match[10]) ? 0n : parseOffsetNanoseconds(match[10]))
-  )
+  return local - (isZ(match[10]) ? 0n : parseOffsetNanoseconds(match[10]))
 }
 
 function isValidDate(year: string, month: string, day: string): boolean {
@@ -130,10 +468,7 @@ export interface ParsedDateFields extends Required<ISODateTime> {
   calendar: string
 }
 export function parseISODateParts(value: string): ParsedDateFields {
-  const match =
-    /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ](\d{2})(?:(:?)(\d{2})(?:\6(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?)?([\s\S]*)$/.exec(
-      value
-    )
+  const match = isoMatch(value)
   if (!match || !isValidDate(match[1], match[3], match[4]))
     throw new RangeErrorConstructor('Invalid ISO date/time')
   const annotations = validateAnnotations(match[11])
@@ -151,9 +486,9 @@ export function parseISODateParts(value: string): ParsedDateFields {
     hour,
     minute,
     second: mathMin(59, second),
-    millisecond: +fraction.slice(0, 3),
-    microsecond: +fraction.slice(3, 6),
-    nanosecond: +fraction.slice(6, 9),
+    millisecond: +stringPart(fraction, 0, 3),
+    microsecond: +stringPart(fraction, 3, 6),
+    nanosecond: +stringPart(fraction, 6, 9),
     calendar: annotations.calendar ?? 'iso8601',
   }
 }
@@ -161,18 +496,15 @@ export function parseShortDateString(
   value: string,
   kind: 'year-month' | 'month-day'
 ): {year: number; month: number; day: number; calendar: string} {
-  const index = value.indexOf('['),
-    body = index < 0 ? value : value.slice(0, index)
-  const annotation = validateAnnotations(index < 0 ? '' : value.slice(index))
+  const index = bracketIndex(value),
+    body = index < 0 ? value : stringPart(value, 0, index)
+  const annotation = validateAnnotations(
+    index < 0 ? '' : stringPart(value, index)
+  )
   const short =
-    kind === 'year-month'
-      ? /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body)
-      : /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+    kind === 'year-month' ? yearMonthMatch(body) : monthDayMatch(body)
   if (short) {
-    if (
-      annotation.calendar !== undefined &&
-      annotation.calendar.toLowerCase() !== 'iso8601'
-    )
+    if (annotation.calendar !== undefined && !isoCalendar(annotation.calendar))
       throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
     const year = kind === 'year-month' ? short[1] : '1972',
       month = kind === 'year-month' ? short[2] : short[1],
@@ -184,23 +516,22 @@ export function parseShortDateString(
   return parseISODateParts(value)
 }
 export function parseCalendarString(value: string): string {
-  const index = value.indexOf('['),
-    body = index < 0 ? value : value.slice(0, index)
-  const annotation = validateAnnotations(index < 0 ? '' : value.slice(index))
-  const ym = /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body),
-    md = /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+  const index = bracketIndex(value),
+    body = index < 0 ? value : stringPart(value, 0, index)
+  const annotation = validateAnnotations(
+    index < 0 ? '' : stringPart(value, index)
+  )
+  const ym = yearMonthMatch(body),
+    md = monthDayMatch(body)
   if (
     (ym && isValidDate(ym[1], ym[2], '01')) ||
     (md && isValidDate('1972', md[1], md[2]))
   ) {
-    if (
-      annotation.calendar !== undefined &&
-      annotation.calendar.toLowerCase() !== 'iso8601'
-    )
+    if (annotation.calendar !== undefined && !isoCalendar(annotation.calendar))
       throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
-  } else if (/^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]|$)/.test(body))
+  } else if (calendarDatePrefix(body))
     // ParseTemporalCalendarString 1619: parse fields without creating a bounded date.
-    parseISODateParts(body.replace(/[Zz]$/, ''))
+    parseISODateParts(withoutZ(body))
   else parsePlainTimeString(body)
   return annotation.calendar ?? 'iso8601'
 }
@@ -209,28 +540,29 @@ export function parsePlainTimeString(value: string): bigint {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parsePlainTime(value)
-  const index = value.indexOf('[')
-  let body = index < 0 ? value : value.slice(0, index)
-  validateAnnotations(index < 0 ? '' : value.slice(index))
-  const date = /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})[Tt ]/.exec(body)
+  const index = bracketIndex(value)
+  let body = index < 0 ? value : stringPart(value, 0, index)
+  validateAnnotations(index < 0 ? '' : stringPart(value, index))
+  const date = dateTimePrefixMatch(body)
   if (date) {
     if (!isValidDate(date[1], date[3], date[4]))
       throw new RangeErrorConstructor('Invalid ISO date')
-    body = body.slice(date[0].length)
-  } else if (/^[Tt]/.test(body)) body = body.slice(1)
+    body = stringPart(body, date[0].length)
+  } else if (body.length !== 0 && (body[0] === 'T' || body[0] === 't'))
+    body = stringPart(body, 1)
   else {
-    const ym = /^(\d{4})-?(\d{2})$/.exec(body)
-    const md = /^(\d{2})-?(\d{2})$/.exec(body)
+    const ym =
+      body.length !== 0 && body[0] !== '+' && body[0] !== '-'
+        ? yearMonthMatch(body)
+        : null
+    const md = body.length !== 0 && body[0] !== '-' ? monthDayMatch(body) : null
     if (
       (ym && isValidDate(ym[1], ym[2], '01')) ||
       (md && isValidDate('1972', md[1], md[2]))
     )
       throw new RangeErrorConstructor('Ambiguous ISO time')
   }
-  const match =
-    /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2})(?:[.,](\d{1,9}))?)?)?([+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?$/.exec(
-      body
-    )
+  const match = timeMatch(body)
   if (
     !match ||
     match[0] !== body ||
@@ -254,25 +586,21 @@ export function parseTimeZoneString(value: string): string {
     parseOffsetNanoseconds(value, true)
     return value
   }
-  if (
-    /^[A-Za-z._][A-Za-z._0-9+-]*(?:\/[A-Za-z._][A-Za-z._0-9+-]*)*(?![\s\S])/.test(
-      value
-    )
+  if (zoneName(value)) return value
+  const index = bracketIndex(value)
+  const body = index < 0 ? value : stringPart(value, 0, index)
+  const annotations = validateAnnotations(
+    index < 0 ? '' : stringPart(value, index)
   )
-    return value
-  const index = value.indexOf('[')
-  const body = index < 0 ? value : value.slice(0, index)
-  const annotations = validateAnnotations(index < 0 ? '' : value.slice(index))
   let time: string | undefined, offset: string | undefined
-  const date =
-    /^([+-]\d{6}|\d{4})(-?)(\d{2})\2(\d{2})(?:[Tt ]([\s\S]+))?$/.exec(body)
+  const date = dateBodyMatch(body)
   if (date && date[0] === body) {
     if (!isValidDate(date[1], date[3], date[4]))
       throw new RangeErrorConstructor('Invalid ISO date')
     time = date[5]
   } else {
-    let yearMonth = /^([+-]\d{6}|\d{4})-?(\d{2})$/.exec(body)
-    let monthDay = /^(?:--)?(\d{2})-?(\d{2})$/.exec(body)
+    let yearMonth = yearMonthMatch(body)
+    let monthDay = monthDayMatch(body)
     if (yearMonth && !isValidDate(yearMonth[1], yearMonth[2], '01'))
       yearMonth = null
     if (monthDay && !isValidDate('1972', monthDay[1], monthDay[2]))
@@ -283,16 +611,17 @@ export function parseTimeZoneString(value: string): string {
     ) {
       if (
         annotations.calendar !== undefined &&
-        annotations.calendar.toLowerCase() !== 'iso8601'
+        !isoCalendar(annotations.calendar)
       )
         throw new RangeErrorConstructor('Short ISO date requires ISO calendar')
-    } else time = /^[Tt]/.test(body) ? body.slice(1) : body
+    } else
+      time =
+        body.length !== 0 && (body[0] === 'T' || body[0] === 't')
+          ? stringPart(body, 1)
+          : body
   }
   if (time !== undefined) {
-    const match =
-      /^(\d{2})(?:(:?)(\d{2})(?:\2(\d{2})(?:[.,](\d{1,9}))?)?)?([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)?$/.exec(
-        time
-      )
+    const match = timeMatch(time, true)
     if (
       !match ||
       match[0] !== time ||
@@ -302,12 +631,12 @@ export function parseTimeZoneString(value: string): string {
     )
       throw new RangeErrorConstructor('Invalid ISO time')
     offset = match[6]
-    if (offset && !/^[Zz]$/.test(offset)) parseOffsetNanoseconds(offset)
-    if (!date && offset && /^[Zz]$/.test(offset))
+    if (offset && !isZ(offset)) parseOffsetNanoseconds(offset)
+    if (!date && offset && isZ(offset))
       throw new RangeErrorConstructor('Time-only string cannot use Z')
   }
   if (annotations.timeZone !== undefined) return annotations.timeZone
-  if (offset && /^[Zz]$/.test(offset)) return 'UTC'
+  if (offset && isZ(offset)) return 'UTC'
   if (offset !== undefined) {
     parseOffsetNanoseconds(offset, true)
     return offset
@@ -327,23 +656,20 @@ export function parseZonedDateTimeString(value: string): {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parseZonedFields(value)
-  const index = value.indexOf('[')
+  const index = bracketIndex(value)
   if (index < 0) throw new RangeErrorConstructor('Timezone annotation required')
-  const body = value.slice(0, index),
-    annotations = validateAnnotations(value.slice(index))
+  const body = stringPart(value, 0, index),
+    annotations = validateAnnotations(stringPart(value, index))
   if (annotations.timeZone === undefined)
     throw new RangeErrorConstructor('Timezone annotation required')
-  const offset =
-    /([Zz]|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:[.,]\d{1,9})?)?)?)$/.exec(body)?.[1]
+  const offset = suffixOffset(body)
   // Keep local fields independent of any supplied UTC offset.
-  if (/[Zz]$/.test(body) && !/[Tt ]/.test(body))
+  if (endsInZ(body) && !hasTimeMarker(body))
     throw new RangeErrorConstructor('Offset requires time')
-  const fields = parseISODateParts(
-    body.replace(/[Zz]$/, '') + value.slice(index)
-  )
+  const fields = parseISODateParts(withoutZ(body) + stringPart(value, index))
   return {
     fields,
     timeZone: annotations.timeZone,
-    offset: /[Tt ]/.test(body) ? offset : undefined,
+    offset: hasTimeMarker(body) ? offset : undefined,
   }
 }

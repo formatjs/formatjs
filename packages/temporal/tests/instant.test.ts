@@ -1,3 +1,11 @@
+import {
+  parseCalendarString,
+  parseISODateParts,
+  parseShortDateString,
+  parseTimeZoneString,
+  parseZonedDateTimeString,
+} from '#packages/temporal/instant-string.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import strings from '#packages/temporal/tests/instant-strings.json' with {type: 'json'}
 import {expect, it} from 'vitest'
 import {Instant, Temporal} from '#packages/temporal/index.js'
@@ -937,5 +945,202 @@ it.each(unitShorthandCases)(
       }
     }
     expect(actual).toEqual(expected)
+  }
+)
+
+const indexedParserCases = [
+  {
+    name: 'public Instant',
+    run: () =>
+      Instant.from(
+        '1970-01-01T00:00:00.000000001Z[!Made/Up][u-ca=unknown][x=Some-Value]'
+      ).epochNanoseconds,
+    expected: 1n,
+    reject: () => Instant.from('1970-01-01T00Z[u-ca=iso8601][!u-ca=hebrew]'),
+  },
+  {
+    name: 'public PlainTime',
+    run: () => Temporal.PlainTime.from('00:00:00.000000001[UTC]').nanosecond,
+    expected: 1,
+    reject: () => Temporal.PlainTime.from('12:34[!x=abc]'),
+  },
+  {
+    name: 'ISO fields',
+    run: () => {
+      const fields = parseISODateParts(
+        '2000-02-29T12:34:56,123456789[UTC][u-ca=iso8601]'
+      )
+      return [
+        fields.year,
+        fields.month,
+        fields.day,
+        fields.hour,
+        fields.minute,
+        fields.second,
+        fields.millisecond,
+        fields.microsecond,
+        fields.nanosecond,
+        fields.calendar,
+      ]
+    },
+    expected: [2000, 2, 29, 12, 34, 56, 123, 456, 789, 'iso8601'],
+    reject: () => parseISODateParts('2000-02-30[UTC]'),
+  },
+  {
+    name: 'short year-month',
+    run: () => parseShortDateString('2000-02[u-ca=ISO8601]', 'year-month'),
+    expected: {year: 2000, month: 2, day: 1, calendar: 'iso8601'},
+    reject: () => parseShortDateString('2000-02[u-ca=hebrew]', 'year-month'),
+  },
+  {
+    name: 'short month-day',
+    run: () => parseShortDateString('--02-29[u-ca=iso8601]', 'month-day'),
+    expected: {year: 1972, month: 2, day: 29, calendar: 'iso8601'},
+    reject: () => parseShortDateString('--02-30', 'month-day'),
+  },
+  {
+    name: 'calendar string',
+    run: () => parseCalendarString('2000-02-29T12:34:56Z[u-ca=ISO8601]'),
+    expected: 'ISO8601',
+    reject: () => parseCalendarString('2000-02-29[x=]'),
+  },
+  {
+    name: 'timezone string',
+    run: () => parseTimeZoneString('2000-02-29T12:34:56Z[UTC]'),
+    expected: 'UTC',
+    reject: () => parseTimeZoneString('12:34Z'),
+  },
+  {
+    name: 'zoned fields',
+    run: () => {
+      const parsed = parseZonedDateTimeString(
+        '2000-02-29T12:34:56.000000001+00:00[UTC][u-ca=iso8601]'
+      )
+      return [
+        parsed.fields.year,
+        parsed.fields.nanosecond,
+        parsed.timeZone,
+        parsed.offset,
+      ]
+    },
+    expected: [2000, 1, 'UTC', '+00:00'],
+    reject: () => parseZonedDateTimeString('2000-01-01T00[u-ca=iso8601]'),
+  },
+]
+
+it.each([
+  [RegExp.prototype, 'exec'],
+  [RegExp.prototype, 'test'],
+  [String.prototype, 'slice'],
+  [String.prototype, 'indexOf'],
+  [String.prototype, 'includes'],
+  [String.prototype, 'replace'],
+  [String.prototype, 'toLowerCase'],
+] as const)(
+  'parses valid and invalid ISO strings without mutable %s.%s',
+  (owner, key) => {
+    expect(nativeTemporal()).toBeUndefined()
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const sentinel = new Error('Observable ISO parser method')
+    const actual: unknown[] = []
+    const failures: unknown[] = []
+    const rejected: unknown[] = []
+    let hooks = 0
+    try {
+      Object.defineProperty(owner, key, {
+        configurable: true,
+        get() {
+          hooks++
+          throw sentinel
+        },
+      })
+      for (let index = 0; index < indexedParserCases.length; index++) {
+        try {
+          actual.push(indexedParserCases[index].run())
+        } catch (error) {
+          failures.push(error)
+        }
+        try {
+          indexedParserCases[index].reject()
+          rejected.push(undefined)
+        } catch (error) {
+          rejected.push(error)
+        }
+      }
+    } finally {
+      Object.defineProperty(owner, key, descriptor)
+    }
+    expect(hooks).toBe(0)
+    expect(failures).toEqual([])
+    expect(actual).toEqual(indexedParserCases.map(entry => entry.expected))
+    expect(rejected).toHaveLength(indexedParserCases.length)
+    for (const error of rejected) expect(error).toBeInstanceOf(RangeError)
+  }
+)
+
+it('preserves legacy RegExp state across valid and invalid ISO parser entrypoints', () => {
+  expect(nativeTemporal()).toBeUndefined()
+  ;/(ISO parser marker)/.exec('ISO parser marker')
+  const expected = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  const failures: unknown[] = []
+  const rejected: unknown[] = []
+  for (let index = 0; index < indexedParserCases.length; index++) {
+    try {
+      indexedParserCases[index].run()
+    } catch (error) {
+      failures.push(error)
+    }
+    try {
+      indexedParserCases[index].reject()
+      rejected.push(undefined)
+    } catch (error) {
+      rejected.push(error)
+    }
+  }
+  const actual = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  expect(actual).toEqual(expected)
+  expect(failures).toEqual([])
+  for (const error of rejected) expect(error).toBeInstanceOf(RangeError)
+})
+
+it.each([
+  ['19700101T000000.123456790+000000.123456789', 1n],
+  ['19691231T235959.876543210-000000.123456789', -1n],
+] as const)(
+  'cancels basic clock and offset fractions exactly for %s',
+  (input, expected) => {
+    expect(Instant.from(input).epochNanoseconds).toBe(expected)
+  }
+)
+
+it('retains the first noncritical calendar when short-date policy consumes it', () => {
+  expect(
+    parseShortDateString('2000-02[u-ca=ISO8601][u-ca=hebrew]', 'year-month')
+  ).toEqual({year: 2000, month: 2, day: 1, calendar: 'iso8601'})
+  expect(() =>
+    parseShortDateString('2000-02[u-ca=hebrew][u-ca=iso8601]', 'year-month')
+  ).toThrow(RangeError)
+})
+
+it('validates a timezone body offset before an annotation takes precedence', () => {
+  expect(parseTimeZoneString('2000-01-01T12+01[UTC]')).toBe('UTC')
+  expect(() => parseTimeZoneString('2000-01-01T12+24[UTC]')).toThrow(RangeError)
+})
+
+it('accepts annotation key boundaries and requires nonempty value components', () => {
+  expect(Instant.from('1970-01-01T00Z[_x-0=Ab9-C0]').epochNanoseconds).toBe(0n)
+  for (const input of ['1970-01-01T00Z[_x-0=-Ab]', '1970-01-01T00Z[_x-0=Ab-]'])
+    expect(() => Instant.from(input)).toThrow(RangeError)
+})
+
+it.each([
+  ['1', 100_000_000n],
+  ['00000001', 10n],
+] as const)(
+  'scales a %s clock fraction to exact nanoseconds',
+  (fraction, expected) => {
+    expect(
+      Instant.from('1970-01-01T00:00:00.' + fraction + 'Z').epochNanoseconds
+    ).toBe(expected)
   }
 )

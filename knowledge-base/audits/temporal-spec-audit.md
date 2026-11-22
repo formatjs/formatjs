@@ -88,6 +88,13 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- ISO string parser: [indexed scanner audit](temporal-iso-parser-audit.md) maps
+  seven parser exports and both short-date shapes. Seven mutation regressions
+  and a legacy RegExp-state regression reproduced before correction. Indexed
+  date/time/annotation readers retain exact fractional arithmetic and shared
+  UTC-offset conversion. All 60 expanded tests and both package assemblies pass.
+  Complete caller contracts and API authority remain open.
+
 - Zoned clock rounding: [raw-offset source audit](temporal-zoned-round-raw-offset-audit.md)
   removes offset formatting/reparsing while preserving exact matching, shared
   string caller semantics and TS provider-query order. Five public regressions
@@ -102,7 +109,7 @@ Current pass:
   gates, all 53 expanded tests and six owning timezone oracle/typecheck gates pass;
   Temporal/DurationFormat assemblies pass. Full providers/calendar/parsers remain open.
 
-- Landing: first 15 audit PRs merged through [#8075](https://github.com/formatjs/formatjs/pull/8075).
+- Landing: first 16 audit PRs merged through [#8076](https://github.com/formatjs/formatjs/pull/8076).
   Remaining stack rebased onto main. Timestamp compiler/package fixes now belong
   to earliest affected #8096; calendar oracle normalization belongs to #8109.
   All five owning gates pass there. Final stack tree is unchanged; fresh CI
