@@ -60,6 +60,8 @@ keep their own boundary premise. The full row stays conditional.
 record additional 2026e evidence for a browser profile.
 [Debian JavaScriptCoreGTK replay](jsc-provider-audit.md) binds a separate
 JavaScript engine and its loaded ICU 76.1 timezone profile.
+[Debian SpiderMonkey replay](spidermonkey-provider-audit.md) binds the shell's
+hidden bundled ICU 73 reader and 2025a timezone resource.
 
 ## Unbound host Intl provider
 
@@ -124,6 +126,21 @@ cannot bind the dataset used by the installed formatter. An exact adapter
 would need an explicit contract for installed constructor identity, row
 interpretation, and data replacement.
 
+The replay also warms the legacy provider with fixed UTC offset for Chicago,
+then installs a single +01:00 jump at epoch zero in Chicago and Los Angeles.
+The raw formatter sees the jump. The cold Los Angeles query resolves
+00:30 to −30 min for `earlier` and +30 min for `later` and `compatible`,
+and throws for `reject`. The warm Chicago query returns +30 min in every
+mode because the fallback offset cache retains the earlier data. This
+failure is separate from overlapping transitions and TimeClip. The installed
+7.8.1 constructor declares `tzData` and replaces it on `__addTZData`.
+The host adapter's existing observations do not read this property.
+Polling it would add observable constructor descriptor accesses. Scoping
+generationless caches to a single operation avoids those accesses and lets
+subsequent operations read replaced data, at the cost of losing cross-call
+offset and transition reuse on native Intl. The owned formatter already
+provides its own generation hook.
+
 The legacy replay checks that all four public single and range formatting
 methods reject Number inputs just outside TimeClip and reject BigInt
 inputs. The captured Temporal readers require branded values. Instant and
@@ -141,10 +158,10 @@ replay=knowledge-base/audits/temporal-timezone-boundary-proof/legacy-provider-re
 replay_dir=$(mktemp -d)
 npm install --prefix "$replay_dir" --ignore-scripts --no-audit --no-fund \
   --save-exact @formatjs/intl-datetimeformat@7.8.1
-temporal_pkg=$(bazel cquery --output=files //packages/temporal:pkg)
-datetime_pkg=$(bazel cquery --output=files //packages/intl-datetimeformat:pkg)
-matcher_pkg=$(bazel cquery --output=files //packages/intl-localematcher:pkg)
-memoize_pkg=$(bazel cquery --output=files //packages/fast-memoize:pkg)
+temporal_pkg=$(bazel cquery 'config(//packages/temporal:pkg, target)' --output=files)
+datetime_pkg=$(bazel cquery 'config(//packages/intl-datetimeformat:pkg, target)' --output=files)
+matcher_pkg=$(bazel cquery 'config(//packages/intl-localematcher:pkg, target)' --output=files)
+memoize_pkg=$(bazel cquery 'config(//packages/fast-memoize:pkg, target)' --output=files)
 node "$replay" legacy "$replay_dir/node_modules/@formatjs/intl-datetimeformat" "$temporal_pkg"
 node "$replay" owned "$datetime_pkg" "$temporal_pkg" "$matcher_pkg" "$memoize_pkg"
 ```

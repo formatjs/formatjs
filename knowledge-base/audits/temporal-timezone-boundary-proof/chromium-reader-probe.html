@@ -131,6 +131,7 @@
       result.checks.endpoints++
       if (observed !== offset) problem('intl', id, t, offset, observed)
     }
+    if (typeof Temporal === 'undefined') continue
     let zoned
     try {
       zoned = new Temporal.ZonedDateTime(-BigInt(max) * millis, id)

@@ -1,10 +1,12 @@
-const [fixtures, entry, publicResults] = globalThis.arguments
+const [fixtures, entry, publicResults] =
+  globalThis.scriptArgs ?? globalThis.arguments
+const readFile = globalThis.readFile ?? globalThis.read
 const {Temporal} = await import(entry)
 const {
   zones: {unsupported},
-} = JSON.parse(globalThis.readFile(publicResults))
+} = JSON.parse(readFile(publicResults))
 const skipped = new Set(unsupported)
-const rows = JSON.parse(globalThis.readFile(fixtures))
+const rows = JSON.parse(readFile(fixtures))
 const summary = {
   offsets: 0,
   folds: 0,

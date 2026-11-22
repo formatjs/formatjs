@@ -196,3 +196,31 @@ assert.deepEqual(
         lower: Array(4).fill(epoch(-max + 1800n)),
       }
 )
+
+if (mode === 'legacy') {
+  const warm = 'America/Chicago'
+  const cold = 'America/Los_Angeles'
+  const local = zone => `1970-01-01T00:30[${zone}]`
+  const reload = gap => ({
+    abbrvs: 'TEST',
+    offsets: '0|2s0',
+    zones: [warm, cold].map(zone =>
+      [zone, packed(null, 0), ...(gap ? [packed(0n, 1)] : [])].join('|')
+    ),
+  })
+  formatter.__addTZData(reload(false))
+  const stale = Array(4).fill(epoch(hour / 2n))
+  assert.deepEqual(outcomes(local(warm)), stale)
+  const original = formatter.tzData
+  formatter.__addTZData(reload(true))
+  assert.notEqual(formatter.tzData, original)
+  assert.deepEqual([offset(warm, -1n), offset(warm, 0n)], [0, 3600])
+  assert.deepEqual(outcomes(local(cold)), [
+    epoch(-hour / 2n),
+    epoch(hour / 2n),
+    epoch(hour / 2n),
+    rejected,
+  ])
+  // Record the legacy cache failure for the previously queried zone.
+  assert.deepEqual(outcomes(local(warm)), stale)
+}
