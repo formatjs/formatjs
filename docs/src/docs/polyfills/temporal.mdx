@@ -90,6 +90,9 @@ Clock rounding carries across a shorter local-day window even when its time
 quantity stays unchanged. Nanosecond rounding
 with increment 1 retains its identity path. Duration totals and rounds use the
 original local clock when a timezone gap shifts an intermediate date.
+Duration rounding to weeks with a year/month largest unit also validates the
+following week endpoint for exact results. Nanosecond identity and plain-zero
+equality retain their shortcuts.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

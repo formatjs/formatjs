@@ -266,11 +266,16 @@ export function relativeRound(
     const count = full.weeks + mathTrunc(full.days / 7)
     result.weeks = count
     const a = relativeEndpoint(relative, result)
-    if (a === end) return result
+    if ('date' in relative && start === end) return result
     const sign = end < start ? -1 : 1
     result.weeks = count + sign
     const b = relativeEndpoint(relative, result),
       span = (b - a) * bigIntFrom(sign)
+    // Exact calendar results still validate the next nudge endpoint.
+    if (a === end) {
+      result.weeks = count
+      return result
+    }
     result.weeks = numberFrom(
       roundDuration(bigIntFrom(count) * span + end - a, span, mode) / span
     )

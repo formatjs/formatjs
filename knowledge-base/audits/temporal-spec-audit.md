@@ -88,6 +88,12 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- [Duration.round contract](temporal-duration-round-contract-audit.md) maps all
+  34 public comparison steps and caller branches. Exact year/month-to-week
+  rounding now checks the next endpoint before returning; TS/native regressions
+  reproduced. Plain-zero equality and nanosecond identity remain covered.
+  Full provider, realm and dependency proofs remain open.
+
 - [Shared day-window correction](temporal-day-window-engine-audit.md) removes
   Duration preflight overvalidation across gaps, repairs required rounding
   windows and fold carry, and preserves public equality after validation. Six
