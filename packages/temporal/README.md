@@ -24,7 +24,8 @@ data version. UTC and numeric offsets work without Intl. Timezone aliases retain
 their spelling separately from primary identity. Update host or installed
 polyfill data when timezone laws change. When the installed FormatJS formatter supplies
 its private candidate lookup, named-zone resolution enumerates candidates
-from the installed transitions and validates them at the Instant limits.
+from the installed transitions and validates them at the Instant limits. The
+same provider resolves interior gaps from the nearest reachable local times.
 
 ## Installation
 

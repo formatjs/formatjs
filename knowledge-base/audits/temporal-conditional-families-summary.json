@@ -1,23 +1,23 @@
 {
-  "algorithm_rows": 74,
-  "core_rows": 43,
+  "algorithm_rows": 76,
+  "core_rows": 45,
   "amendment_rows": 31,
-  "families": 9,
+  "families": 10,
   "classification_counts": {
     "confirmed_implementation_gap": 16,
     "published_spec_issue": 54,
     "dependency_reconciliation": 2,
-    "profile_applicability": 2
+    "profile_applicability": 4
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. No status changes or fresh implementation audit. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "04c00895b0a24954fb1fc7490c80263bf129f2942ef05e61b2724762b4261445",
-    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "7cbe384bd9de17ace2d58c5c8922f2734c40df197d35d92436a6db0c730aff71"
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "9db9480ede3836a5cc3ab13bfb2d1f0a8c47f5f56af027825c7ce47a06ebe875",
+    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "87a7fda9f927d97437a21585d7d7b83ae54694ef0422b6dd9f9031afd33e5eda"
   },
   "scope_decision": {
     "deferred_family": "constructor-realm-fallback",
     "deferred_algorithm_rows": 16,
-    "active_conditional_algorithm_rows": 58,
+    "active_conditional_algorithm_rows": 60,
     "deferred_requirement_ids": [
       "3.1.1/algorithm-1/step-10",
       "3.5.3/algorithm-1/step-3",

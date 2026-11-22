@@ -54,6 +54,7 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 import {
   TimeZoneOffset,
+  VisitTimeZoneBoundaries,
   VisitTimeZoneOffsets,
 } from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
@@ -395,41 +396,117 @@ const localLimit =
   bigIntFrom(8_640_000_000_000_000 + dayMilliseconds) * candidateMillisecond
 const instantLimit = bigIntFrom(8_640_000_000_000_000) * candidateMillisecond
 
+function temporalLocalMilliseconds(local: bigint): number {
+  let milliseconds = local / candidateMillisecond
+  if (local < 0 && local % candidateMillisecond) milliseconds--
+  return numberFrom(milliseconds)
+}
+
+function validTemporalOffset(offset: number): boolean {
+  return numberIsInteger(offset) && offset > -86_400 && offset < 86_400
+}
+
+// Proposal comparison §11.1.13 steps 3.a and 4.a: collect and range-check actual candidates.
+function temporalCandidates(
+  local: bigint,
+  zone: UnpackedTimeZoneData
+): bigint[] {
+  // At these bounds, whole milliseconds and sub-day offsets fit in Number.
+  const localMilliseconds = temporalLocalMilliseconds(local)
+  const candidates: bigint[] = []
+  VisitTimeZoneOffsets(
+    localMilliseconds - dayMilliseconds,
+    localMilliseconds + dayMilliseconds,
+    zone,
+    offset => {
+      if (!validTemporalOffset(offset)) return
+      const instant = local - bigIntFrom(offset) * candidateSecond
+      if (
+        arrayIncludes(candidates, instant) ||
+        TimeZoneOffset(localMilliseconds - offset * 1_000, zone)[0] !== offset
+      )
+        return
+      if (instant < -instantLimit || instant > instantLimit)
+        throw new RangeErrorConstructor('Instant out of range')
+      setDataProperty(candidates, candidates.length, instant)
+    }
+  )
+  return candidates
+}
+
+const gapWindowMilliseconds = 3 * dayMilliseconds
+const gapWindow = bigIntFrom(gapWindowMilliseconds) * candidateMillisecond
+const gapDay = bigIntFrom(dayMilliseconds) * candidateMillisecond
+const oneNanosecond = bigIntFrom(1)
+
+// Proposal comparison §11.1.12 steps 6–14: recover the nearest reachable local boundaries.
+function resolveTemporalGap(
+  local: bigint,
+  zone: UnpackedTimeZoneData,
+  direction: 'earlier' | 'later'
+): bigint | undefined {
+  if (local < -instantLimit + gapWindow || local >= instantLimit - gapWindow)
+    return undefined
+  const milliseconds = temporalLocalMilliseconds(local)
+  let before: bigint | undefined
+  let after: bigint | undefined
+  let validOffsets = true
+  const covered = VisitTimeZoneBoundaries(
+    milliseconds - gapWindowMilliseconds,
+    milliseconds + gapWindowMilliseconds,
+    zone,
+    boundary => {
+      const instant = bigIntFrom(boundary) * candidateMillisecond
+      const oldOffset = TimeZoneOffset(boundary - 1, zone)[0]
+      const newOffset = TimeZoneOffset(boundary, zone)[0]
+      if (!validTemporalOffset(oldOffset) || !validTemporalOffset(newOffset)) {
+        validOffsets = false
+        return
+      }
+      const end =
+        instant - oneNanosecond + bigIntFrom(oldOffset) * candidateSecond
+      const start = instant + bigIntFrom(newOffset) * candidateSecond
+      if (end < local && (before === undefined || end > before)) before = end
+      if (start > local && (after === undefined || start < after)) after = start
+    }
+  )
+  if (!covered || !validOffsets || before === undefined || after === undefined)
+    return undefined
+  const beforeCandidates = temporalCandidates(before, zone)
+  const afterCandidates = temporalCandidates(after, zone)
+  if (beforeCandidates.length !== 1 || afterCandidates.length !== 1)
+    return undefined
+  const shift = after - afterCandidates[0] - (before - beforeCandidates[0])
+  // Keep the existing fallback when the comparison's gap assumptions fail.
+  if (!shift || shift < -gapDay || shift > gapDay) return undefined
+
+  // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25: requery and select the first or last instant.
+  const earlier = direction === 'earlier'
+  const shifted = temporalCandidates(local + (earlier ? -shift : shift), zone)
+  let instant = shifted[0]
+  for (let index = 1; index < shifted.length; index++) {
+    const candidate = shifted[index]
+    if (earlier ? candidate < instant : candidate > instant) instant = candidate
+  }
+  return instant
+}
+
 Object.defineProperty(
   formatToParts,
   Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates'),
   {
-    // Proposal comparison §11.1.13 steps 3.a and 4.a: collect and range-check actual candidates.
-    value(this: Intl.DateTimeFormat, local: bigint): bigint[] | undefined {
+    value(
+      this: Intl.DateTimeFormat,
+      local: bigint,
+      direction?: 'earlier' | 'later'
+    ): bigint[] | bigint | undefined {
       const {timeZone} = getInternalSlots(this)
       const zone = DateTimeFormat.tzData[timeZone]
       if (!zone?.length || local <= -localLimit || local >= localLimit)
         return undefined
-      let milliseconds = local / candidateMillisecond
-      if (local < 0 && local % candidateMillisecond) milliseconds--
-      // At these bounds, whole milliseconds and sub-day offsets fit in Number.
-      const localMilliseconds = numberFrom(milliseconds)
-      const candidates: bigint[] = []
-      VisitTimeZoneOffsets(
-        localMilliseconds - dayMilliseconds,
-        localMilliseconds + dayMilliseconds,
-        zone,
-        offset => {
-          if (!numberIsInteger(offset) || offset <= -86_400 || offset >= 86_400)
-            return
-          const instant = local - bigIntFrom(offset) * candidateSecond
-          if (
-            arrayIncludes(candidates, instant) ||
-            TimeZoneOffset(localMilliseconds - offset * 1_000, zone)[0] !==
-              offset
-          )
-            return
-          if (instant < -instantLimit || instant > instantLimit)
-            throw new RangeErrorConstructor('Instant out of range')
-          setDataProperty(candidates, candidates.length, instant)
-        }
-      )
-      return candidates
+      return direction
+        ? resolveTemporalGap(local, zone, direction)
+        : temporalCandidates(local, zone)
     },
   }
 )

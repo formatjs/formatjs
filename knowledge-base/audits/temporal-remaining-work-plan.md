@@ -28,7 +28,7 @@ satisfy this requirement.
 
 Realm-specific work is deferred at the user's direction. Preserve all realm
 findings and keep the 16 shared constructor-realm steps in the fixed ledger.
-58 of 74 conditional numbered steps remain in scope. The ordinary
+60 of 76 conditional numbered steps remain in scope. The ordinary
 `index.js` and `standalone.js` failures reproduced inside one realm are now
 verified with shared private epoch and calendar slots. Full audit completion uses the active scope and records the realm
 deferral explicitly.
@@ -129,7 +129,7 @@ Remaining core states:231 conditional and90 comparison-issue rows. No reviewed
 or partial rows remain. Amendments:61 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-74 conditional steps (43 core,31 amendment), each with exact source ranges
+76 conditional steps (45 core,31 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -303,8 +303,9 @@ Nine focused Bazel targets pass.
 [Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
 
 Source review of the fixed helper inventory is complete. Behavioral review
-still has 58 conditional Temporal steps. The owned candidate correction
-exposed a separate completeness premise for unbound Intl offset sampling. The published ECMA-402 range-collapse
+still has 60 conditional Temporal steps. Both exact owned candidate lookup
+and gap disambiguation now pass public packed-data regressions. Other Intl
+profiles retain candidate and gap-boundary premises. The published ECMA-402 range-collapse
 regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
 explicit numeric months whose values match the owned endpoints.

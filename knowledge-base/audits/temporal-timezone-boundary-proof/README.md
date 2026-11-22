@@ -90,7 +90,7 @@ actual candidate is outside the Instant limits.
 
 The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
 the installed formatter's private candidate check within one day of either
-limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L403)
+limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L410)
 enumerates decoded historical and recurring offsets and round-trips each
 outside instant through the same `TimeZoneOffset` reader. It uses bigint
 for the candidate and rounds down to an exact integer millisecond for the
@@ -115,7 +115,7 @@ and a forward gap.
 
 The [candidate interval search](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L92)
 visits the first active historical offset, every intersecting transition,
-and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L403)
+and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L410)
 subtracts each candidate offset from exact local nanoseconds and confirms
 it through the same provider. Subtracting an integral offset commutes with
 flooring to milliseconds, and the lookup interval stays below 2^53 ms.
@@ -128,6 +128,36 @@ All six focused Bazel targets pass.
 
 - Interior before-fix log SHA-256 `b4c0d818d2de119ffcd850e4cb68c868826e8389a239fd88e1628bb3834a1cbf`
 - Interior after-fix log SHA-256 `8b8cd9b46bf696acace232da4e47cb9942e752d062c885f0b2410411ed40c2d9`
+
+## Owned FormatJS gap disambiguation
+
+The short four-hour offset pulse makes local 01:00 unreachable. Its nearest
+reachable locals are −1 ns and 04:00, with offsets 0 and +04:00. Sampling a
+day on either side sees zero twice and formerly throws for every mode.
+The exact path returns 21:00 UTC on the previous day for earlier and 01:00
+UTC for later and compatible. Local 03:00 also tests the shifted query: local 07:00 is a fold
+with two candidates. Later and compatible select 07:00 UTC.
+
+The [owned resolver](../../../packages/intl-datetimeformat/core.ts#L443) enumerates
+UTC boundaries around the gap and projects the last nanosecond before and
+first nanosecond after each boundary. With offsets under one day, reachable
+locals within two days bound the nearest choices. Candidate instants for
+those choices are therefore within three days. The resolver confirms
+singleton boundary candidates, shifts by their offset difference, and
+re-queries the exact list. The fallback still handles native Intl and
+cases without a complete interior window.
+
+A separate +12-hour pulse lasting six hours yields a zero shift because both
+nearest boundaries have offset zero. The requery remains empty, so the
+comparison assertions in steps 16.f and 24 fail for this synthetic provider.
+The existing fallback remains in place for such a window.
+
+The public Bazel regression failed before the correction. All six focused
+Temporal and DateTimeFormat targets passed afterward.
+[Proposal comparison §11.1.12](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+- Short gap before-fix log SHA-256 `7288268ca20ea81bb86fb36202b71d137564ffa9d682b5715b65600ce3e9fa19`
+- Short gap after-fix log SHA-256 `75cc28d542197b2824625daa410711a4424f4693a38835a97291048e596d3469`
 
 ## Reproduce analysis
 

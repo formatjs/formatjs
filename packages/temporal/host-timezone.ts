@@ -41,13 +41,16 @@ const mapIteratorNext = Object.getPrototypeOf(new MapConstructor().keys())
   .next as () => IteratorResult<number>
 const Constructor = globalThis.Intl?.DateTimeFormat
 const hostParts = Constructor?.prototype.formatToParts
+type OwnedTimeZoneQuery = (
+  this: Intl.DateTimeFormat,
+  local: bigint,
+  direction?: 'earlier' | 'later'
+) => bigint[] | bigint | undefined
 const checkHostTemporalCandidates = hostParts
   ? (Object.getOwnPropertyDescriptor(
       hostParts,
       Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
-    )?.value as
-      | ((this: Intl.DateTimeFormat, local: bigint) => bigint[] | undefined)
-      | undefined)
+    )?.value as OwnedTimeZoneQuery | undefined)
   : undefined
 const nowMilliseconds = Date.now
 const second = 1000000000n
@@ -74,7 +77,7 @@ function createHostTimeZoneProvider(
   intrinsics: HostTimeZoneIntrinsics = {Constructor, parts: hostParts}
 ): {
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
-  ownedCandidates?: (local: bigint) => bigint[] | undefined
+  ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
 } {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
@@ -161,7 +164,8 @@ function createHostTimeZoneProvider(
     offsetNanoseconds,
     ownedCandidates:
       parts === hostParts && checkHostTemporalCandidates
-        ? local => apply(checkHostTemporalCandidates, formatter, [local])
+        ? (local, direction) =>
+            apply(checkHostTemporalCandidates, formatter, [local, direction])
         : undefined,
   }
 }
@@ -181,7 +185,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
     // Proposal comparison §11.1.13 steps 3.a and 4.a: use exact owned candidates.
-    const owned = ownedCandidates?.(local)
+    const query = ownedCandidates?.(local)
+    const owned = typeof query === 'bigint' ? undefined : query
     const candidates = owned ?? []
     if (!owned) {
       const before = offsetNanoseconds(clamp(local - day)),
@@ -230,6 +235,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       throw new RangeErrorConstructor('Ambiguous or nonexistent local time')
     if (candidates.length)
       return candidates[disambiguation === 'later' ? candidates.length - 1 : 0]
+    // Proposal comparison §11.1.12 steps 6–25: Resolve owned gaps through exact timezone data.
+    const exact = ownedCandidates?.(
+      local,
+      disambiguation === 'earlier' ? 'earlier' : 'later'
+    )
+    if (typeof exact === 'bigint') return exact
     const before = offsetNanoseconds(clamp(local - day)),
       after = offsetNanoseconds(clamp(local + day))
     if (after <= before) throw new RangeErrorConstructor('No matching instant')
