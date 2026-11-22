@@ -18,6 +18,13 @@ ISO year padding uses existing zeroPadDecimal. Public controls cover poisoned
 hooks, normal bag getters and exact nanoseconds across TS/native Hermes.
 [Validation targets](audits/temporal-plain-date-conversion-validation-targets.txt).
 
+MonthDay parsing validates original non-ISO date bounds before reference-date
+canonicalization, reusing existing TS/Rust guards. Parsed and destination fields
+use null prototypes; Chinese/Dangi leap-code handling uses indexed characters.
+Shared TS/native Hermes controls preserve public year inheritance, overflow order
+and valid endpoints. [13 targets](audits/temporal-month-day-validation-targets.txt) pass.
+Source-only findings stay in the [review queue](audits/temporal-open-candidates.md).
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

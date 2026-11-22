@@ -25,8 +25,8 @@ numbered steps, including 760 amendment steps whose applicability is pending.
 [amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
-algorithm rows. Numbered passes now reconcile 1,452 rows across chapters
-1, 2, 3, 4, 8 and 9; 3,334 core rows await reconciliation, 110 remain conditional.
+algorithm rows. Numbered passes now reconcile 2,089 rows across chapters
+1, 2, 3, 4, 5, 8, 9 and 10; 2,697 core rows await reconciliation, 172 remain conditional.
 Local verified steps do not imply complete caller compliance.
 
 Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
@@ -70,6 +70,23 @@ current source ranges are in the core checklist. All 10 focused targets pass
 Shared public controls preserve
 ordinary bag getter order and nanosecond precision.
 [Validation targets](temporal-plain-date-conversion-validation-targets.txt).
+
+## MonthDay and PlainDateTime numbered pass, 2026-11-22
+
+Another 637 rows reconciled: PlainDateTime 470, MonthDay 167. Four MonthDay
+failures reproduced before correction: private destination fields, original
+non-ISO date bounds, parsed era inheritance and mutable leap-code string hooks.
+Private null-prototype snapshots, existing dayCheck/PlainDate bounds and indexed
+code handling close those gaps. Shared controls preserve public inherited year,
+overflow ordering, valid endpoints and constrained leap behavior. All 13 focused
+targets pass (10 executed, three cached), including Rust and MonthDay/YearMonth
+TS/native Hermes source/bytecode.
+[Target manifest](temporal-month-day-validation-targets.txt).
+
+PlainDateTime source/precision proofs reuse prior evidence; its two newly found
+source candidates await reproduction in the [review queue](temporal-open-candidates.md).
+Foreign-realm fallback remains consistently conditional across constructors.
+No transitive chapter or complete Temporal signoff.
 
 ## Private difference preparation, 2026-11-22
 

@@ -150,6 +150,7 @@ class PlainMonthDayValue {
         native!.monthDayToDate(
           slot,
           resolveCalendarYear(slot.calendar, {
+            __proto__: null,
             monthCode: fields.monthCode,
             day: fields.day,
             ...prepared,
@@ -160,7 +161,12 @@ class PlainMonthDayValue {
     return createPlainDate(
       dayFromFields(
         slot.calendar,
-        {monthCode: fields.monthCode, day: fields.day, ...prepared},
+        {
+          __proto__: null,
+          monthCode: fields.monthCode,
+          day: fields.day,
+          ...prepared,
+        },
         'constrain'
       ),
       slot.calendar

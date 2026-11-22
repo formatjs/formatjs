@@ -3,20 +3,20 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 23480,
+  "whole_selected_source_lines": 23475,
   "whole_selected_source_lines_by_language": {
-    "rust": 10333,
-    "typescript": 13147
+    "rust": 10334,
+    "typescript": 13141
   },
-  "nonoverlapping_callable_lines": 16680,
+  "nonoverlapping_callable_lines": 16668,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8112,
-    "typescript": 8568
+    "rust": 8113,
+    "typescript": 8555
   },
   "disjoint_callable_line_assignment": {
     "candidate": 7373,
-    "unmapped": 4954,
-    "mapped": 4353
+    "unmapped": 4955,
+    "mapped": 4340
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
@@ -480,10 +480,10 @@
     },
     {
       "file": "crates/temporal/short_dates.rs",
-      "source_lines": 609,
+      "source_lines": 610,
       "callable_rows": 56,
-      "nonoverlapping_callable_lines": 534,
-      "sha256": "f2b7763f12c8ae13ecc3fad0ca7bcb9a119bcfc03b222cac1280dbab58ebcce8",
+      "nonoverlapping_callable_lines": 535,
+      "sha256": "7ef674e7b79b51519a7fa3d0af14abda7015dbcf431796eef2c36a890410b3d4",
       "unresolved_callable_rows": 46
     },
     {
@@ -808,10 +808,10 @@
     },
     {
       "file": "packages/temporal/plain-month-day.ts",
-      "source_lines": 238,
+      "source_lines": 244,
       "callable_rows": 3,
       "nonoverlapping_callable_lines": 30,
-      "sha256": "98d32275aa5973e41fe5a7c7f65b8700ea904efa56e33833c098a26f75f1ca31",
+      "sha256": "a062ad6aab23db07e408b45ddf8ec6c25f87f7bb4c09c66560b0dc8d53d91c26",
       "unresolved_callable_rows": 1
     },
     {
@@ -872,10 +872,10 @@
     },
     {
       "file": "packages/temporal/short-date-core.ts",
-      "source_lines": 300,
+      "source_lines": 288,
       "callable_rows": 8,
-      "nonoverlapping_callable_lines": 267,
-      "sha256": "f1f2b407a4ac730720a76bb5746a4a81e9ba8ddd3dbdb58ebc691521fd6e15c3",
+      "nonoverlapping_callable_lines": 254,
+      "sha256": "cc8f29380dff00ae58f829037509b49f5bcc006807c383c2485be16b8f0443c3",
       "unresolved_callable_rows": 1
     },
     {

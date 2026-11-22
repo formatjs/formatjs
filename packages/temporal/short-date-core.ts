@@ -13,6 +13,7 @@ import {
   cachedISODateFields,
   calendarToEpochDayRaw,
   daysInMonth,
+  dayCheck,
   calendarStartOfYear,
   type CalendarId,
   type Overflow,
@@ -129,7 +130,7 @@ export function monthDayFields(
       throw new RangeErrorConstructor('Day out of range')
     day = mathMin(day, 30)
     if (
-      code!.endsWith('L') &&
+      code![code!.length - 1] === 'L' &&
       (code === 'M01L' ||
         code === 'M12L' ||
         (day === 30 &&
@@ -137,7 +138,7 @@ export function monthDayFields(
     ) {
       if (overflow === 'reject')
         throw new RangeErrorConstructor('Invalid month-day')
-      code = code!.slice(0, -1)
+      code = code![0] + code![1] + code![2]
     }
   }
   let best: number | undefined,
@@ -243,25 +244,12 @@ export function parseShortSlot(
     }
   }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
-  if (kind === 'year-month') {
-    checkYearMonth(epochDay)
-    return yearMonthFields(
-      calendar,
-      dateFields({epochDay, calendar}, true) as unknown as Record<
-        string,
-        unknown
-      >,
-      'constrain'
-    )
-  }
-  return monthDayFields(
-    calendar,
-    dateFields({epochDay, calendar}, true) as unknown as Record<
-      string,
-      unknown
-    >,
-    'constrain'
-  )
+  if (kind === 'year-month') checkYearMonth(epochDay)
+  else dayCheck(epochDay)
+  const fields = {__proto__: null, ...dateFields({epochDay, calendar}, true)}
+  return kind === 'year-month'
+    ? yearMonthFields(calendar, fields, 'constrain')
+    : monthDayFields(calendar, fields, 'constrain')
 }
 export function formatShortDate(
   slot: DateSlot,

@@ -1,0 +1,13 @@
+//packages/temporal:month_day_test262_full
+//packages/temporal:sdk_hermes_monthday_bytecode_test262
+//packages/temporal:sdk_hermes_monthday_source_test262
+//packages/temporal:sdk_hermes_yearmonth_bytecode_test262
+//packages/temporal:sdk_hermes_yearmonth_source_test262
+//packages/temporal:ts_hermes_monthday_bytecode_test262
+//packages/temporal:ts_hermes_monthday_source_test262
+//packages/temporal:ts_hermes_yearmonth_bytecode_test262
+//packages/temporal:ts_hermes_yearmonth_source_test262
+//packages/temporal:short_date_test
+//packages/temporal:native_date_output_hermes_oracle_test
+//packages/temporal:typecheck_typecheck_test
+//crates/temporal:temporal_test

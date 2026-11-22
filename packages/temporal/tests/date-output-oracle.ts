@@ -120,6 +120,131 @@ export function checkPlainDateYearFormatting(
     )
 }
 
+export function checkMonthDayPrivateMerge(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const monthDay = new Temporal.PlainMonthDay(5, 2)
+  for (const key of ['month', 'era', 'eraYear']) {
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let result: ReturnType<typeof monthDay.toPlainDate> | undefined
+    Object.defineProperty(Object.prototype, key, {
+      configurable: true,
+      get() {
+        throw new Error('Inherited private month-day field')
+      },
+    })
+    try {
+      result = monthDay.toPlainDate({year: 2020})
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, key, original)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    equal(result!.toString(), '2020-05-02', 'Private month-day destination')
+  }
+  let reads = 0
+  const inherited = Object.create({
+    get year() {
+      reads++
+      return 2021
+    },
+  })
+  equal(
+    monthDay.toPlainDate(inherited).toString(),
+    '2021-05-02',
+    'Public inherited year'
+  )
+  equal(reads, 1, 'Public year read once')
+}
+
+export function checkMonthDayOriginalDateLimits(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  for (const text of [
+    '+275760-09-14[u-ca=gregory]',
+    '-271821-04-18[u-ca=gregory]',
+  ]) {
+    for (const options of [undefined, {overflow: 'constrain'}]) {
+      let error: unknown
+      try {
+        Temporal.PlainMonthDay.from(text, options)
+      } catch (caught) {
+        error = caught
+      }
+      equal(
+        error instanceof RangeError,
+        true,
+        'Original month-day date limit ' + text
+      )
+    }
+  }
+  for (const text of [
+    '+275760-09-13[u-ca=gregory]',
+    '-271821-04-19[u-ca=gregory]',
+  ]) {
+    const result = Temporal.PlainMonthDay.from(text)
+    equal(result.calendarId, 'gregory', 'Original month-day endpoint valid')
+    equal(result.day, text.includes('09-13') ? 13 : 19, 'Original endpoint day')
+  }
+}
+
+export function checkShortDatePrivateEra(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  for (const key of ['era', 'eraYear']) {
+    const original = Object.getOwnPropertyDescriptor(Object.prototype, key)
+    let monthDay: ReturnType<typeof Temporal.PlainMonthDay.from> | undefined,
+      yearMonth: ReturnType<typeof Temporal.PlainYearMonth.from> | undefined
+    Object.defineProperty(Object.prototype, key, {
+      configurable: true,
+      get() {
+        throw new Error('Inherited parsed era field')
+      },
+    })
+    try {
+      monthDay = Temporal.PlainMonthDay.from('2020-05-02[u-ca=gregory]')
+      yearMonth = Temporal.PlainYearMonth.from('2020-05-02[u-ca=gregory]')
+    } finally {
+      if (original) Object.defineProperty(Object.prototype, key, original)
+      else Reflect.deleteProperty(Object.prototype, key)
+    }
+    equal(monthDay!.monthCode, 'M05', 'Parsed private month-day')
+    equal(yearMonth!.year, 2020, 'Parsed private year-month')
+  }
+}
+
+export function checkMonthDayLeapCodeHooks(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  for (const method of ['endsWith', 'slice'] as const) {
+    const original = String.prototype[method]
+    let regular: ReturnType<typeof Temporal.PlainMonthDay.from> | undefined,
+      constrained: ReturnType<typeof Temporal.PlainMonthDay.from> | undefined
+    String.prototype[method] = () => {
+      throw new Error('Public leap month string hook')
+    }
+    try {
+      regular = Temporal.PlainMonthDay.from({
+        calendar: 'chinese',
+        monthCode: 'M01',
+        day: 1,
+      })
+      constrained = Temporal.PlainMonthDay.from({
+        calendar: 'chinese',
+        monthCode: 'M01L',
+        day: 1,
+      })
+    } finally {
+      String.prototype[method] = original
+    }
+    equal(regular!.monthCode, 'M01', 'Regular month code')
+    equal(constrained!.monthCode, 'M01', 'Constrained leap code')
+  }
+}
+
 export function checkDateOutputOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
@@ -129,6 +254,10 @@ export function checkDateOutputOracle(
   checkPlainDateZoneBranch(Temporal, equal)
   checkPlainDateShortFields(Temporal, equal)
   checkPlainDateYearFormatting(Temporal, equal)
+  checkMonthDayPrivateMerge(Temporal, equal)
+  checkMonthDayOriginalDateLimits(Temporal, equal)
+  checkShortDatePrivateEra(Temporal, equal)
+  checkMonthDayLeapCodeHooks(Temporal, equal)
   let count = 0
   const rejects = (run: () => unknown, context: string) => {
     let rejected = false

@@ -119,6 +119,11 @@ properties and use internal time conversion even when `PlainTime.from` changes.
 Direct branded timezone inputs skip unused `plainTime` getters. ISO year padding
 remains independent of later changes to `String.prototype.padStart`.
 
+Non-ISO `PlainMonthDay` strings validate their original date range before
+selecting a reference year. Short-date parsing and `toPlainDate` keep private
+fields separate from inherited properties; Chinese/Dangi leap-code handling
+remains independent of replaced string methods.
+
 Without Intl, default `Temporal.Now` timezone offsets remain independent of
 later replacements of `String` or `String.prototype.padStart`.
 

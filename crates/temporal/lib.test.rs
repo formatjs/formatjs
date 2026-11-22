@@ -661,6 +661,12 @@ fn independent_icu_short_dates() {
 #[test]
 fn short_date_reference_fields_and_parser_limits() {
     use formatjs_temporal::{Overflow, PlainMonthDay, PlainYearMonth};
+    for text in ["+275760-09-14[u-ca=gregory]", "-271821-04-18[u-ca=gregory]"] {
+        assert!(text.parse::<PlainMonthDay>().is_err(), "{text}");
+    }
+    for text in ["+275760-09-13[u-ca=gregory]", "-271821-04-19[u-ca=gregory]"] {
+        assert!(text.parse::<PlainMonthDay>().is_ok(), "{text}");
+    }
     assert!(PlainYearMonth::new(-271821, 4, 1).is_ok());
     assert!(PlainYearMonth::new(-271821, 3, 31).is_err());
     assert!(PlainYearMonth::new(275760, 9, 30).is_ok());
