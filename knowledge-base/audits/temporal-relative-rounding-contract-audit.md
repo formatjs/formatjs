@@ -393,3 +393,66 @@ fix and the range error afterward. Twelve integrated Bazel targets pass.
 - Before-fix replay SHA-256 `35a679ab728f216ad2601b1c9db82acf8d6057c19b1408ddce0878c10963a17a`
 - Passing replay SHA-256 `9e90d0ae0ad3e0f1bf3b2c5c89f246626cabdc36cf21d28a1429ef1840970d03`
 - Integration log SHA-256 `32cf9982daabbf211fba8cee9c28e6b83668d4140e656afc68cd8a1e742ca2df`
+
+## Bubbling can reverse the directed result
+
+The owned replay installs synthetic `America/Halifax` data with offset −16h
+until UTC hour 145, +2h until hour 724, then +11h. The Gregorian origin is hour 875 and
+the target is hour 148. The unrounded month difference is
+`-P30DT16H`. The 30-day endpoint is hour 164. The 31-day endpoint
+is hour 158 because compatible resolution shifts a gap forward.
+The 32-day endpoint is hour 134.
+
+The implemented day retry takes hour 158 as its new first bound and
+hour 134 as its second. Those bounds are distinct and bracket hour 148.
+For `until` and relative `Duration.round`, floor and expand select
+`-P32D` at hour 134. The other modes select `-P31D` at hour 158.
+These are the results of the window computation before bubbling.
+[TypeScript rounding](../../packages/temporal/date-core.ts#L1112).
+
+The retry marks expansion and enters the larger-unit check under
+§7.5.38 step 9. The month branch of §7.5.37 step 6.b.ii forms
+`-P1M`, and steps 6.b.iv–vii resolve its endpoint to hour 158.
+For floor or expand, step 6.b.viii subtracts 158 from the nudged hour 134
+and obtains a negative result. Steps 6.b.ix–x accept that month candidate
+because its sign equals the travel sign. For the other modes the
+comparison is zero and also accepts it. As a result the public floor
+returns hour 158, which is later than its target. The source applies the
+same local crossing test in both kernels. [§7.5.37](https://tc39.es/proposal-temporal/#sec-temporal-bubblerelativeduration).
+[§7.5.38](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration).
+[TypeScript bubbling](../../packages/temporal/date-core.ts#L1209).
+[Rust bubbling](../../crates/temporal/calendar_difference.rs#L449).
+
+The packaged owned replay observes `-P1M` from `until` and relative
+`Duration.round` in all nine modes and `P1M` from `since`.
+This establishes a directed-result conflict after a valid source
+bracket. The rendered day retry ignores additional shift, so its
+earlier bracket assertion remains a separate conflict. The output is
+recorded as current behavior pending a contract for bubbling across
+a nonmonotone zoned boundary.
+[Owned public replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+The replay passed on Node 26.8.1 with package index SHA-256
+`da61a787bea39ad1106aa618f3cd12cc24536d092d93a72d46d61e124a904891`.
+The output SHA-256 is
+`648d95d42f816e8d347a7622029fb267a8eb156a1d60d1a30c4cae2173728295`.
+
+## Retained week count under finite calendar projection
+
+After the constrained retained year and month prefix, let its ISO day be
+`S`, with retained weeks `w` and days `d`. For an unrounded difference that
+adds back on the calendar, the nominal target is `S + 7w + d`. With
+same-signed fields, both `S` and `S + d` lie within the closed nominal
+interval between origin and target. A calendar covering that interval can
+project both dates. Week difference over that last segment is
+`trunc(d / 7)`. The window therefore uses `w + trunc(d / 7)`.
+
+Both kernels use that count directly. The TypeScript day count is well
+within the safe-integer limit. A nonintegral quotient stays at least
+`1/7` from an integer, larger than the Number division error at the
+supported day bounds. Rust integer division truncates exactly.
+This proves the finite week count for a covered calendar interval. The
+literal zero-month ISO search in the comparison still needs resolution.
+[§7.5.33 step 3.d](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
+[TypeScript week count](../../packages/temporal/date-core.ts#L1027).
+[Rust week count](../../crates/temporal/calendar_difference.rs#L255).

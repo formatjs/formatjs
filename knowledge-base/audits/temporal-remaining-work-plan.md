@@ -435,6 +435,11 @@ The owned formatter's Temporal hooks now follow the same canonical timezone
 rows as Intl formatting after reload. The packaged regression covers an alias
 whose custom row conflicts with the canonical data zone.
 [Alias reload proof](temporal-timezone-boundary-proof/README.md#canonical-timezone-rows-after-an-alias-reload).
+The finite retained-week count now has an explicit provider-bound proof.
+A separate public replay isolates the month bubbling policy after a valid
+directed rounding window. The numbered conditions keep their current scope.
+[Week count](temporal-relative-rounding-contract-audit.md#retained-week-count-under-finite-calendar-projection).
+[Bubbling](temporal-relative-rounding-contract-audit.md#bubbling-can-reverse-the-directed-result).
 Three exact helper comments now cover the Object branch, cached ISO projection
 and canonical packed zone selection. A fourth now maps native zoned offset
 transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preserves

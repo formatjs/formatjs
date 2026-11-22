@@ -27,7 +27,22 @@ const row = (hours, index) =>
   ',0'
 Intl.DateTimeFormat.__addTZData({
   abbrvs: 'TEST',
-  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n, 2n, -18n, -21n, 0n]
+  offsets: [
+    23n,
+    -23n,
+    17n,
+    12n,
+    -5n,
+    21n,
+    16n,
+    -20n,
+    2n,
+    -18n,
+    -21n,
+    0n,
+    -16n,
+    11n,
+  ]
     .map(offset => (offset * 3600n).toString(36))
     .join('|'),
   zones: [
@@ -37,6 +52,7 @@ Intl.DateTimeFormat.__addTZData({
     'America/New_York|' + [row(null, 4), row(max / hour - 33n, 5)].join('|'),
     'America/Los_Angeles|' + [row(null, 6), row(max / hour - 50n, 7)].join('|'),
     'America/Detroit|' + [row(null, 4), row(159, 5)].join('|'),
+    'America/Halifax|' + [row(null, 12), row(145, 8), row(724, 13)].join('|'),
     'America/Winnipeg|' + [row(null, 11), row(-30, 0), row(0, 1)].join('|'),
     'America/Chicago|' +
       [row(null, 8), row(-234, 9), row(46, 5), row(62, 10), row(111, 3)].join(
@@ -290,6 +306,50 @@ console.log(
   JSON.stringify({
     exactFirstReversedSpan: exactZone,
     endpointHours: [2, -20],
+    roundingModes: modes.length,
+  })
+)
+
+const bubbleZone = 'America/Halifax'
+const bubbleOrigin = new Temporal.ZonedDateTime(
+  875n * hour,
+  bubbleZone,
+  'gregory'
+)
+const bubbleTarget = new Temporal.ZonedDateTime(
+  148n * hour,
+  bubbleZone,
+  'gregory'
+)
+const bubbleElapsed = Temporal.Duration.from({hours: -727})
+assert.equal(bubbleOrigin.add(bubbleElapsed).epochNanoseconds, 148n * hour)
+assert.equal(
+  bubbleOrigin.until(bubbleTarget, {largestUnit: 'month'}).toString(),
+  '-P30DT16H'
+)
+for (const [fields, endpoint] of [
+  [{days: -30}, 164n],
+  [{days: -31}, 158n],
+  [{days: -32}, 134n],
+  [{months: -1}, 158n],
+]) {
+  assert.equal(bubbleOrigin.add(fields).epochNanoseconds, endpoint * hour)
+}
+for (const roundingMode of modes) {
+  const options = {largestUnit: 'month', smallestUnit: 'day', roundingMode}
+  assert.equal(bubbleOrigin.until(bubbleTarget, options).toString(), '-P1M')
+  assert.equal(bubbleOrigin.since(bubbleTarget, options).toString(), 'P1M')
+  assert.equal(
+    bubbleElapsed.round({...options, relativeTo: bubbleOrigin}).toString(),
+    '-P1M'
+  )
+}
+console.log(
+  JSON.stringify({
+    bubbledCalendarEndpoint: bubbleZone,
+    targetHour: 148,
+    roundedFloorHour: 134,
+    returnedHour: 158,
     roundingModes: modes.length,
   })
 )

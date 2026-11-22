@@ -28,6 +28,12 @@ the retry, violating §7.5.34 step 13 and leaving steps 14–17 undefined. The
 [nonexact generated-zone proof](temporal-zoned-day-window-spread-proof.md) binds
 the day subdomain to packed, compact and native offset data. Other profiles remain open.
 
+[Directed rounding after bubbling](temporal-relative-rounding-contract-audit.md#bubbling-can-reverse-the-directed-result)
+records a valid source bracket whose floor endpoint is hour 134 for target
+hour 148. The subsequent month check under §7.5.37 steps 6.b.viii–x accepts a
+duration that adds back to hour 158. This composition issue is distinct from
+the published retry and zero-span assertions.
+
 [Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
 range comparison timezones (§15.6.8) and duplicate digital Duration group appends
 (§15.9.8). These remain separate from runtime defects and pending candidate tests.
