@@ -664,6 +664,7 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
     )
     if (import.meta.formatjsTemporalNativeData === true) {
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
+      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
       const prototype = newTarget.prototype
       const result = createObject(
         object(prototype) ? prototype : target.prototype
@@ -672,6 +673,7 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
       return result
     }
     const value = regulate(values, false)
+    // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
     const prototype = newTarget.prototype
     const result = createObject(
       object(prototype) ? prototype : target.prototype

@@ -123,6 +123,97 @@ export function checkPlainDateShortFields(
   equal(reads, 1, 'Public day read once')
 }
 
+function checkCalendarEraLookup(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void,
+  key: 'indexOf' | typeof Symbol.iterator
+): void {
+  const calendar = key === 'indexOf' ? 'gregory' : 'japanese',
+    fields = {
+      calendar,
+      era: calendar === 'gregory' ? 'ce' : 'reiwa',
+      eraYear: calendar === 'gregory' ? 2020 : 2,
+      month: 2,
+      day: 3,
+    },
+    control = {calendar, year: 2020, month: 2, day: 3},
+    original = Object.getOwnPropertyDescriptor(Array.prototype, key)!
+  // Warm the selected provider before changing the private lookup hook.
+  Temporal.PlainDate.from(fields)
+  Temporal.PlainDate.from(control)
+  let calls = 0,
+    converted: ReturnType<typeof Temporal.PlainDate.from> | undefined,
+    unchanged: ReturnType<typeof Temporal.PlainDate.from> | undefined
+  Object.defineProperty(Array.prototype, key, {
+    ...original,
+    value() {
+      calls++
+      throw new Error('Public array era lookup reached')
+    },
+  })
+  try {
+    unchanged = Temporal.PlainDate.from(control)
+    converted = Temporal.PlainDate.from(fields)
+  } finally {
+    Object.defineProperty(Array.prototype, key, original)
+  }
+  const expected =
+    calendar === 'gregory'
+      ? '2020-02-03[u-ca=gregory]'
+      : '2020-02-03[u-ca=japanese]'
+  equal(unchanged!.toString(), expected, 'Calendar year control')
+  equal(converted!.toString(), expected, 'Private era conversion')
+  equal(calls, 0, 'Private era lookup avoids public hooks')
+}
+
+export function checkCalendarEraIndexOf(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  checkCalendarEraLookup(Temporal, equal, 'indexOf')
+}
+
+export function checkJapaneseEraIterator(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  checkCalendarEraLookup(Temporal, equal, Symbol.iterator)
+  const date = new Temporal.PlainDate(2020, 2, 3, 'japanese'),
+    control = new Temporal.PlainDate(2020, 2, 3, 'gregory'),
+    original = Object.getOwnPropertyDescriptor(
+      Array.prototype,
+      Symbol.iterator
+    )!
+  // Warm the selected providers before reading private era metadata.
+  void date.era
+  void control.era
+  let calls = 0,
+    era: string | undefined,
+    eraYear: number | undefined,
+    controlEra: string | undefined,
+    controlYear: number | undefined
+  Object.defineProperty(Array.prototype, Symbol.iterator, {
+    ...original,
+    value() {
+      calls++
+      throw new Error('Public Japanese era output iterator reached')
+    },
+  })
+  try {
+    controlEra = control.era
+    controlYear = control.eraYear
+    era = date.era
+    eraYear = date.eraYear
+  } finally {
+    Object.defineProperty(Array.prototype, Symbol.iterator, original)
+  }
+  equal(controlEra, 'ce', 'Gregorian era control')
+  equal(controlYear, 2020, 'Gregorian era-year control')
+  equal(era, 'reiwa', 'Private Japanese era output')
+  equal(eraYear, 2, 'Private Japanese era-year output')
+  equal(calls, 0, 'Private Japanese era output avoids public iteration')
+}
+
 export function checkPlainDateYearFormatting(
   Temporal: typeof TemporalNamespace,
   equal: (actual: unknown, expected: unknown, context: string) => void
@@ -301,6 +392,8 @@ export function checkDateOutputOracle(
   checkPlainDateTimeConversion(Temporal, equal)
   checkPlainDateZoneBranch(Temporal, equal)
   checkPlainDateShortFields(Temporal, equal)
+  checkCalendarEraIndexOf(Temporal, equal)
+  checkJapaneseEraIterator(Temporal, equal)
   checkPlainDateYearFormatting(Temporal, equal)
   checkMonthDayPrivateMerge(Temporal, equal)
   checkMonthDayOriginalDateLimits(Temporal, equal)

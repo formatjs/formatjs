@@ -2,6 +2,7 @@ import {
   RangeErrorConstructor,
   TypeErrorConstructor,
   arrayIncludes,
+  arrayIndexOf,
   arraySome,
   floor,
   mathAbs,
@@ -630,9 +631,13 @@ export function calendarYearFromEra(
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.calendarYearFromEra(calendar, era, eraYear)
+  // Temporal comparison §12.3.31 step2.a / §12.3.30: normalize private era data.
+  // https://tc39.es/proposal-temporal/#sec-temporal-nonisoresolvefields
   if (calendar === 'japanese')
-    for (const [, name, offset] of japaneseEras)
-      if (era === name) return yearCheck(eraYear + offset)
+    for (let index = 0; index < japaneseEras.length; index++) {
+      const entry = japaneseEras[index]
+      if (era === entry[1]) return yearCheck(eraYear + entry[2])
+    }
   if (calendar === 'ethiopic' && era === 'aa') return yearCheck(eraYear - 5500)
   const names: Partial<Record<CalendarId, readonly string[]>> = {
     gregory: ['ce', 'bce'],
@@ -654,7 +659,8 @@ export function calendarYearFromEra(
     (era === 'ad' || era === 'bc')
   )
     era = era === 'ad' ? 'ce' : 'bce'
-  const index = names[calendar]?.indexOf(era) ?? -1
+  const eras = names[calendar],
+    index = eras ? arrayIndexOf(eras, era) : -1
   if (index < 0) throw new RangeErrorConstructor('Invalid era')
   return yearCheck(index === 1 ? 1 - eraYear : eraYear)
 }

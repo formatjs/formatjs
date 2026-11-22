@@ -7,6 +7,8 @@ import {
   checkPlainDateTimeConversion,
   checkPlainDateZoneBranch,
   checkPlainDateShortFields,
+  checkCalendarEraIndexOf,
+  checkJapaneseEraIterator,
   checkPlainDateYearFormatting,
 } from '#packages/temporal/tests/date-output-oracle.js'
 import {checkDateOutputOracle} from '#packages/temporal/tests/date-output-oracle.js'
@@ -243,6 +245,8 @@ for (const check of [
   checkPlainDateTimeConversion,
   checkPlainDateZoneBranch,
   checkPlainDateShortFields,
+  checkCalendarEraIndexOf,
+  checkJapaneseEraIterator,
   checkPlainDateYearFormatting,
 ]) {
   it(check.name, () =>

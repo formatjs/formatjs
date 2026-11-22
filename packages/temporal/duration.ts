@@ -505,6 +505,7 @@ export const Duration: DurationConstructor = createProxy(DurationValue, {
           ? 0
           : integralDurationNumber(argumentAt(args, i))
     validateDuration(fields)
+    // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
     const prototype = newTarget.prototype
     const value = createObject(
       IsObject(prototype) ? prototype : target.prototype

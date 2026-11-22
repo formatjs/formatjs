@@ -2,8 +2,10 @@
 
 Updated 2026-11-22. Existing working polyfill is the baseline. Goal remains full
 Temporal spec compliance, including observable ordering, precision, grammar,
-attributes, supported backends and Temporal-specific Intl integration. This is an
-audit and correction of existing code, not a fresh implementation.
+attributes, supported backends and Temporal-specific Intl integration. Require
+numbered spec section/step comments beside audited code, synchronized with code
+ranges and the audit ledger. This is an audit and correction of existing code,
+not a fresh implementation.
 
 Required inline evidence: add concise numbered spec section/step comments beside
 audited implementation paths, including corrected code. Use official rendered
@@ -32,7 +34,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                              |
 
-Code maps cover 82 distinct selected source files and 24,513 physical lines.
+Code maps cover 82 distinct selected source files and 24,549 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -104,23 +106,31 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states:348 conditional,90 comparison-issue rows and one partial
-gate. Amendments:105 conditional and11 comparison-issue rows. Counts include
+Remaining core states:307 conditional,90 comparison-issue rows and one partial
+gate. Amendments:91 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-190 conditional steps (120 core,70 amendment), each with exact source ranges
+173 conditional steps (115 core,58 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
 
 Measured first pass:03:06–04:04 UTC, about58minutes for5,865 rows with parallel
 review, prior-proof reuse, corrections and backend checks (about101rows/minute).
-First review pass is complete. The next correction batch closes69 conditional numbered steps and11 clause gates;190 steps remain in33 shared-premise families. All268 mapped public entries now have numbered inline section anchors; helper/backend annotation remains part of completion. Current estimate:2–4hours for queued candidate
-reproductions, fixes, inline comment migration and affected validation. Full
-signoff additionally requires actual remaining contracts and documented
-comparison inconsistencies reconciled; first-pass completion alone is not that
-signoff. Recalculate after each bounded correction batch. Earlier review-only
-forecasts are retired; do not infer compliance from citation/PR/source-line counts.
+First review pass is complete. Landed timezone/Intl corrections closed69 numbered
+steps; the reader/calendar batch closes another17. Remaining173 steps form30
+shared-premise families. All268 public entries have numbered inline anchors;
+helper/backend annotation remains part of completion. Confirmed constructor realm
+fallback gap spans16 rows across eight constructors; it is not a spec issue.
+
+Next work: remaining owned Intl producer/state/facade corrections, then reconcile
+caller conditions against established calendar/zone/parser contracts. Estimate
+2–4hours for those local corrections, propagation, annotation and validation,
+subject to actual regression results. Full compliance ETA remains unresolved:
+constructor realm fallback needs a correct runtime bridge or installation design,
+and published-comparison conflicts need reconciliation. Review throughput cannot
+bound either. Recalculate after each correction batch; do not infer compliance
+from citation, PR or source-line counts.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

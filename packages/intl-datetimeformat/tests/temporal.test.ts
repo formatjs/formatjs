@@ -1,3 +1,4 @@
+import {ToDateTimeFormattable} from '#packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.js'
 import {DateTimeFormat} from '#packages/intl-datetimeformat/core.js'
 import en from '#packages/intl-datetimeformat/tests/locale-data/en.json' with {type: 'json'}
 import {runInNewContext} from 'node:vm'
@@ -429,6 +430,74 @@ test.each(['String', 'BigInt', 'Number', 'indexOf', 'slice'] as const)(
       error = caught
     } finally {
       define(owner, hook, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(calls).toBe(0)
+    expect(actual).toEqual(expected)
+  }
+)
+
+test.each(['iterator', 'call'] as const)(
+  'reads six native Temporal brands without private %s lookup',
+  hook => {
+    const values = [
+      new Temporal.PlainDate(1970, 1, 1),
+      new Temporal.PlainYearMonth(1970, 1, 'gregory'),
+      new Temporal.PlainMonthDay(1, 1, 'gregory'),
+      new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
+      new Temporal.PlainDateTime(1970, 1, 1, 12, 34, 56, 123, 456, 789),
+      new Temporal.Instant(-1n),
+    ]
+    const expected = [
+      {
+        kind: 'PlainDate',
+        calendar: 'iso8601',
+        epochNanoseconds: 43_200_000_000_000n,
+      },
+      {
+        kind: 'PlainYearMonth',
+        calendar: 'gregory',
+        epochNanoseconds: 43_200_000_000_000n,
+      },
+      {
+        kind: 'PlainMonthDay',
+        calendar: 'gregory',
+        epochNanoseconds: 63_115_200_000_000_000n,
+      },
+      {
+        kind: 'PlainTime',
+        calendar: undefined,
+        epochNanoseconds: 45_296_123_456_789n,
+      },
+      {
+        kind: 'PlainDateTime',
+        calendar: 'iso8601',
+        epochNanoseconds: 45_296_123_456_789n,
+      },
+      {kind: 'Instant', epochNanoseconds: -1n},
+    ]
+    expect(values.map(value => ToDateTimeFormattable(value))).toEqual(expected)
+    const owner = hook === 'call' ? Function.prototype : Array.prototype
+    const key = hook === 'call' ? 'call' : Symbol.iterator
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    const actual: unknown[] = []
+    let error: unknown,
+      calls = 0
+    try {
+      define(owner, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('Mutable private brand iterator')
+        },
+      })
+      for (let index = 0; index < values.length; index++)
+        actual[index] = ToDateTimeFormattable(values[index])
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
     }
     expect(error).toBeUndefined()
     expect(calls).toBe(0)

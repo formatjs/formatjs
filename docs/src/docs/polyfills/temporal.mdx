@@ -233,7 +233,9 @@ Temporal.PlainDate.from('2026-11-17').toLocaleString('en', {
 
 Date/time locale methods use the installed DateTimeFormat; Duration uses
 DurationFormat. Without the corresponding formatter, locale methods return an
-ISO representation. See [DateTimeFormat](/docs/polyfills/intl-datetimeformat) and
+ISO representation. Fractional Duration formatting retains exact decimal arithmetic,
+including nanoseconds and large integral seconds; precision regressions cover
+positive and negative values. See [DateTimeFormat](/docs/polyfills/intl-datetimeformat) and
 [DurationFormat](/docs/polyfills/intl-durationformat) for data loading.
 
 Global installation registers Temporal with FormatJS formatters and adapts legacy

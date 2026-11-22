@@ -71,7 +71,10 @@ export function ToTemporalDurationRecord(
     input !== null &&
     (typeof input === 'object' || typeof input === 'function')
   ) {
-    for (const reader of readers) {
+    // Temporal comparison §15.10.1 / §15.10.2 step3: brand probes use a private List.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+    for (let index = 0; index < readers.length; index++) {
+      const reader = readers[index]
       let years: number
       try {
         years = apply(reader.getters[0], input, [])

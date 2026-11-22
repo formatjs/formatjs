@@ -5,18 +5,26 @@ implementation defects or missing code. Existing implementation/tests remain the
 baseline. Numbers refer to the pinned Temporal comparison, with the requested
 ECMA-262 authority distinction retained in the execution plan.
 
-- **Calendar era lookup**, §12.3.30/31: Gregorian era conversion may consult
-  replaced Array.indexOf; Japanese era metadata may consult Array iteration.
-  Separate public regression patches prepared; runtime reproduction pending.
-- **Temporal/Intl private reader lists**, §15.6.11 and §15.10.1/2 step3:
-  scalar/string snapshots now use captured operations, but reader-list iteration
-  still needs its own contract regression. Duration formatting also retains
-  named owned private-list iteration; supplied Intl engines are separate.
+- **Cold Duration formatter constructors**, §§15.10.1–2: privately owned
+  formatting still obtains NumberFormat/ListFormat from live globals on cache
+  miss. Cold-key public regressions and provider-snapshot proposal prepared;
+  runtime reproduction and compatibility checks pending.
+- **Intl producer/state/facade operations**, §§15.6.4–10: exact owned private
+  options, lexical hooks, selected-kind records and range projection remain in
+  the numbered-step queue. Reuse supplied formatter engines.
 
-Shared foreign-realm constructor fallback is a named conditional contract in the
-core register. Default/local construction and explicitly supplied object
-prototypes do not establish foreign intrinsic fallback. No engine replacement
-is proposed.
+**Confirmed constructor realm gap:** eight public revoked-newTarget/primitive
+prototype witnesses fail required TypeError. Sixteen rows stay conditional;
+foreign intrinsic fallback also remains unresolved. [Reproducer and rejected
+partial bridges](temporal-constructor-realm-proof.md). This is an implementation
+gap, not an applicability exclusion or published-text inconsistency.
+
+Closed reader/calendar batch: direct native-brand reader iteration/call hooks,
+Duration ordinary-bag/sign/validation hooks, private formatting Lists and three
+witnessed BigDecimal normalization tuples. Gregorian/Japanese era input,
+Japanese era output and native-Intl private option Lists also corrected. Exact
+precision and ordinary public bag ordering remain covered. Ten focused targets
+pass; finite chronology/host joins reuse actual chosen runtime/Intl contracts.
 
 Closed in current correction: plain relative lower destination total/round,
 PlainDateTime source formatting and withPlainTime public dispatch. Public
@@ -34,4 +42,4 @@ constructor/species), required locale style error ordering, scalar/string
 serialization hooks, private Duration record allocation and own final part units.
 YearMonth.toPlainDate now uses private null-prototype fields. Public regressions
 failed before corrections;12 focused/backend targets pass plus final host
-species/typecheck controls. Remaining reader iteration is explicitly separate.
+species/typecheck controls. Reader iteration is closed by the subsequent reader/calendar batch.

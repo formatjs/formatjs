@@ -62,6 +62,7 @@ const temporal = (
 if (temporal) registerTemporalDateTimeNamespace(temporal)
 const stringOptions = {__proto__: null, calendarName: 'always'}
 const dateGetTime = Date.prototype.getTime
+const apply = Reflect.apply
 const stringIndexOf = Function.prototype.call.bind(
   String.prototype.indexOf
 ) as (value: string, search: string) => number
@@ -82,16 +83,19 @@ export function ToDateTimeFormattable(
   if (value !== null && typeof value === 'object' && readers.length) {
     let isDate = false
     try {
-      dateGetTime.call(value)
+      apply(dateGetTime, value, [])
       isDate = true
     } catch {
       // A non-Date may still carry a Temporal brand.
     }
     if (isDate) return +(value as unknown as number)
-    for (const {kind, read} of readers) {
+    // Temporal comparison §15.6.11 step1: private brand probes add no iterator Get.
+    // https://tc39.es/proposal-temporal/#sec-todatetimeformattable
+    for (let index = 0; index < readers.length; index++) {
+      const {kind, read} = readers[index]
       let result: string | bigint
       try {
-        result = read.call(value, stringOptions)
+        result = apply(read, value, [stringOptions])
       } catch {
         continue
       }

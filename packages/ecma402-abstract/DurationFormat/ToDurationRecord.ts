@@ -10,6 +10,19 @@ import {
 import {IsValidDurationRecord} from '#packages/ecma402-abstract/DurationFormat/IsValidDurationRecord.js'
 import {ToIntegerIfIntegral} from '#packages/ecma402-abstract/DurationFormat/ToIntegerIfIntegral.js'
 
+const durationPropertyNames = [
+  'days',
+  'hours',
+  'microseconds',
+  'milliseconds',
+  'minutes',
+  'months',
+  'nanoseconds',
+  'seconds',
+  'weeks',
+  'years',
+] as const
+
 export function ToDurationRecord(input: DurationInput): DurationRecord {
   if (!IsObject(input)) {
     if (typeof input === 'string') {
@@ -34,18 +47,8 @@ export function ToDurationRecord(input: DurationInput): DurationRecord {
   // https://tc39.es/ecma402/#sec-todurationrecord
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L495-L517
   let anyDefined = false
-  for (const field of [
-    'days',
-    'hours',
-    'microseconds',
-    'milliseconds',
-    'minutes',
-    'months',
-    'nanoseconds',
-    'seconds',
-    'weeks',
-    'years',
-  ] as const) {
+  for (let index = 0; index < durationPropertyNames.length; index++) {
+    const field = durationPropertyNames[index]
     const value = input[field]
     if (value !== undefined) {
       anyDefined = true

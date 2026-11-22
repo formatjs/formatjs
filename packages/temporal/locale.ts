@@ -195,6 +195,17 @@ export function legacyDateTimeProjection(
     'second',
     'fractionalSecondDigits',
   ]
+  const dateTime = [
+    'weekday',
+    'year',
+    'month',
+    'day',
+    'dayPeriod',
+    'hour',
+    'minute',
+    'second',
+    'fractionalSecondDigits',
+  ]
   const required =
     value.kind === 'PlainDate'
       ? date
@@ -204,22 +215,28 @@ export function legacyDateTimeProjection(
           ? ['month', 'day']
           : value.kind === 'PlainTime'
             ? time
-            : [...date, ...time]
-  const allowed = [...required]
+            : dateTime
+  // Proposal comparison §15.4.1 steps 45.f–j: private option Lists.
+  const allowed: string[] = []
+  for (let index = 0; index < required.length; index++)
+    allowed[index] = required[index]
   if (value.kind !== 'PlainTime' && value.kind !== 'PlainMonthDay')
     allowed.push('era')
   const instant = value.kind === 'Instant' || value.kind === 'ZonedDateTime'
   if (instant) allowed.push('timeZoneName')
   const selected: Record<string, unknown> = createObject(null)
-  for (const key of [
+  const optionKeys = [
     'calendar',
     'numberingSystem',
     'localeMatcher',
     'hour12',
     'hourCycle',
     'formatMatcher',
-  ])
+  ]
+  for (let index = 0; index < optionKeys.length; index++) {
+    const key = optionKeys[index]
     selected[key] = snapshot[key]
+  }
   selected.timeZone = instant ? resolved.timeZone : 'UTC'
   if (dateStyle !== undefined || timeStyle !== undefined) {
     const plainDate =
@@ -243,7 +260,10 @@ export function legacyDateTimeProjection(
     if (
       arraySome(objectKeys(styleFields), key => !arrayIncludes(allowed, key))
     ) {
-      for (const key of allowed) selected[key] = styleFields[key]
+      for (let index = 0; index < allowed.length; index++) {
+        const key = allowed[index]
+        selected[key] = styleFields[key]
+      }
       if (styleFields.hour !== undefined && arrayIncludes(allowed, 'hour'))
         selected.hourCycle = resolved.hourCycle
     } else {
@@ -251,12 +271,12 @@ export function legacyDateTimeProjection(
       selected.timeStyle = timeStyle
     }
   } else {
-    for (const key of allowed) selected[key] = snapshot[key]
+    for (let index = 0; index < allowed.length; index++) {
+      const key = allowed[index]
+      selected[key] = snapshot[key]
+    }
     if (arrayEvery(required, key => snapshot[key] === undefined)) {
-      if (
-        !instant &&
-        arraySome([...date, ...time], key => snapshot[key] !== undefined)
-      )
+      if (!instant && arraySome(dateTime, key => snapshot[key] !== undefined))
         throw new TypeErrorConstructor(
           'DateTimeFormat options do not overlap the Temporal type'
         )
@@ -268,7 +288,8 @@ export function legacyDateTimeProjection(
             : value.kind === 'PlainYearMonth' || value.kind === 'PlainMonthDay'
               ? required
               : ['year', 'month', 'day', 'hour', 'minute', 'second']
-      for (const key of defaults) selected[key] = 'numeric'
+      for (let index = 0; index < defaults.length; index++)
+        selected[defaults[index]] = 'numeric'
       if (value.kind === 'ZonedDateTime' && selected.timeZoneName === undefined)
         selected.timeZoneName = 'short'
     }

@@ -229,3 +229,72 @@ console.log(
     assert.equal(actual, expected, key)
   }
 }
+
+// Proposal comparison §15.4.1 steps 45.f–j: private option Lists have no iterators.
+{
+  const date = new Temporal.PlainDate(2020, 1, 2)
+  const yearMonth = new Temporal.PlainYearMonth(2020, 1, 'gregory')
+  const samples = [
+    [date, {dateStyle: 'full'}, {dateStyle: 'full'}, 'style'],
+    [
+      yearMonth,
+      {calendar: 'gregory', dateStyle: 'full'},
+      {calendar: 'gregory', year: 'numeric', month: 'long'},
+      'narrowed style',
+    ],
+    [
+      date,
+      {year: 'numeric', month: 'long'},
+      {year: 'numeric', month: 'long'},
+      'components',
+    ],
+    [
+      date,
+      undefined,
+      {year: 'numeric', month: 'numeric', day: 'numeric'},
+      'defaults',
+    ],
+  ].map(([value, options, reference, label]) => ({
+    value,
+    options,
+    label,
+    expected: new Native('en', {...reference, timeZone: 'UTC'}).format(
+      Date.UTC(2020, 0, 2, 12)
+    ),
+  }))
+  const iteratorPrototype = Object.getPrototypeOf([][Symbol.iterator]())
+  for (const [target, key, label] of [
+    [Array.prototype, Symbol.iterator, 'Array.iterator'],
+    [iteratorPrototype, 'next', 'ArrayIterator.next'],
+  ]) {
+    const descriptor = Object.getOwnPropertyDescriptor(target, key)
+    let calls = 0,
+      actual,
+      error
+    try {
+      Object.defineProperty(target, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('Mutable private option iterator')
+        },
+      })
+      actual = []
+      for (let index = 0; index < samples.length; index++) {
+        const sample = samples[index]
+        actual[index] = sample.value.toLocaleString('en', sample.options)
+      }
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(target, key, descriptor)
+    }
+    assert.equal(error, undefined, `${label}: ${error?.stack}`)
+    assert.equal(calls, 0, label)
+    assert.deepEqual(
+      actual,
+      samples.map(sample => sample.expected),
+      label
+    )
+  }
+}

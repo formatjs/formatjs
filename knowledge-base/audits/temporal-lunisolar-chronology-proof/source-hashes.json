@@ -1,0 +1,9 @@
+{
+  "packages/temporal/lunisolar.ts": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+  "packages/temporal/host-calendar.ts": "4d098f9f90bc84c245e63ffa41b56d4b2f7878c87466515403b97603f9acc616",
+  "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
+  "packages/temporal/calendar-table.ts": "863686a31b4e3b7055a72a49a75ce06853eb9311b830027e704f9d4a310671b5",
+  "packages/temporal/calendar.ts": "b225e88560d5b4a75eaee4fb9ec7741c2d984e2cfa0a99db5a262f53770e1aec",
+  "packages/ecma262-abstract/DateOperations.ts": "89d0e7089a5abe61032b574a6b68374ede53c68dd8acb3fd93c99e7bd67ce15d",
+  "packages/intl-datetimeformat/scripts/calendar-data/host_lunisolar.rs": "a1ae2b34e111dc6dfc5c22d1b45d6bc4115603cab0493b7a81d04e80c693ccae"
+}

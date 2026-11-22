@@ -1,0 +1,677 @@
+[
+  {
+    "text": "function ranges(calendar: 'chinese' | 'dangi'): Range[] {\n  let result = apply(mapGet, cache, [calendar]) as Range[] | undefined\n  if (!result) {\n    result = []\n    const values = calendar === 'chinese' ? chinese : dangi\n    for (let index = 0; index < values.length; index++) {\n      const range = values[index]\n      const starts = [range.startDay]\n      for (let index = 0; index < range.years.length; index++) {\n        const packed = range.years[index]\n        let days = (packed >>> 13 ? 13 : 12) * 29,\n          bits = packed & 8191\n        while (bits) {\n          days++\n          bits &= bits - 1\n        }\n        setDataProperty(starts, starts.length, starts[starts.length - 1] + days)\n      }\n      setDataProperty(result, result.length, {\n        firstYear: range.firstYear,\n        years: range.years,\n        starts,\n      })\n    }\n    apply(mapSet, cache, [calendar, result])\n  }\n  return result\n}",
+    "range": {
+      "byteOffset": {"start": 543, "end": 1458},
+      "start": {"line": 18, "column": 0},
+      "end": {"line": 45, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar-data.ts",
+    "lines": "function ranges(calendar: 'chinese' | 'dangi'): Range[] {\n  let result = apply(mapGet, cache, [calendar]) as Range[] | undefined\n  if (!result) {\n    result = []\n    const values = calendar === 'chinese' ? chinese : dangi\n    for (let index = 0; index < values.length; index++) {\n      const range = values[index]\n      const starts = [range.startDay]\n      for (let index = 0; index < range.years.length; index++) {\n        const packed = range.years[index]\n        let days = (packed >>> 13 ? 13 : 12) * 29,\n          bits = packed & 8191\n        while (bits) {\n          days++\n          bits &= bits - 1\n        }\n        setDataProperty(starts, starts.length, starts[starts.length - 1] + days)\n      }\n      setDataProperty(result, result.length, {\n        firstYear: range.firstYear,\n        years: range.years,\n        starts,\n      })\n    }\n    apply(mapSet, cache, [calendar, result])\n  }\n  return result\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function ranges(calendar: 'chinese' | 'dangi'): Range[] {\n  let result = apply(mapGet, cache, [calendar]) as Range[] | undefined\n  if (!result) {\n    result = []\n    const values = calendar === 'chinese' ? chinese : dangi\n    for (let index = 0; index < values.length; index++) {\n      const range = values[index]\n      const starts = [range.startDay]\n      for (let index = 0; index < range.years.length; index++) {\n        const packed = range.years[index]\n        let days = (packed >>> 13 ? 13 : 12) * 29,\n          bits = packed & 8191\n        while (bits) {\n          days++\n          bits &= bits - 1\n        }\n        setDataProperty(starts, starts.length, starts[starts.length - 1] + days)\n      }\n      setDataProperty(result, result.length, {\n        firstYear: range.firstYear,\n        years: range.years,\n        starts,\n      })\n    }\n    apply(mapSet, cache, [calendar, result])\n  }\n  return result\n}",
+        "range": {
+          "byteOffset": {"start": 543, "end": 1458},
+          "start": {"line": 18, "column": 0},
+          "end": {"line": 45, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function compactCalendarYear(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): CalendarYearData | undefined {\n  const values = ranges(calendar)\n  for (let offset = 0; offset < values.length; offset++) {\n    const range = values[offset]\n    const index = year - range.firstYear\n    if (index < 0 || index >= range.years.length) continue\n    const packed = range.years[index],\n      leap = packed >>> 13,\n      count = leap ? 13 : 12,\n      starts = [range.starts[index]]\n    for (let month = 0; month < count - 1; month++)\n      setDataProperty(\n        starts,\n        starts.length,\n        starts[month] + 29 + ((packed >>> month) & 1)\n      )\n    return {starts, end: range.starts[index + 1], leap}\n  }\n  return undefined\n}",
+    "range": {
+      "byteOffset": {"start": 1467, "end": 2195},
+      "start": {"line": 47, "column": 7},
+      "end": {"line": 69, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar-data.ts",
+    "lines": "export function compactCalendarYear(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): CalendarYearData | undefined {\n  const values = ranges(calendar)\n  for (let offset = 0; offset < values.length; offset++) {\n    const range = values[offset]\n    const index = year - range.firstYear\n    if (index < 0 || index >= range.years.length) continue\n    const packed = range.years[index],\n      leap = packed >>> 13,\n      count = leap ? 13 : 12,\n      starts = [range.starts[index]]\n    for (let month = 0; month < count - 1; month++)\n      setDataProperty(\n        starts,\n        starts.length,\n        starts[month] + 29 + ((packed >>> month) & 1)\n      )\n    return {starts, end: range.starts[index + 1], leap}\n  }\n  return undefined\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function compactCalendarYear(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): CalendarYearData | undefined {\n  const values = ranges(calendar)\n  for (let offset = 0; offset < values.length; offset++) {\n    const range = values[offset]\n    const index = year - range.firstYear\n    if (index < 0 || index >= range.years.length) continue\n    const packed = range.years[index],\n      leap = packed >>> 13,\n      count = leap ? 13 : 12,\n      starts = [range.starts[index]]\n    for (let month = 0; month < count - 1; month++)\n      setDataProperty(\n        starts,\n        starts.length,\n        starts[month] + 29 + ((packed >>> month) & 1)\n      )\n    return {starts, end: range.starts[index + 1], leap}\n  }\n  return undefined\n}",
+        "range": {
+          "byteOffset": {"start": 1467, "end": 2195},
+          "start": {"line": 47, "column": 7},
+          "end": {"line": 69, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function floor(value: bigint, divisor: bigint): bigint {\n  return value / divisor - (value < 0n && value % divisor !== 0n ? 1n : 0n)\n}",
+    "range": {
+      "byteOffset": {"start": 579, "end": 713},
+      "start": {"line": 17, "column": 0},
+      "end": {"line": 19, "column": 1}
+    },
+    "file": "packages/temporal/lunisolar.ts",
+    "lines": "function floor(value: bigint, divisor: bigint): bigint {\n  return value / divisor - (value < 0n && value % divisor !== 0n ? 1n : 0n)\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function floor(value: bigint, divisor: bigint): bigint {\n  return value / divisor - (value < 0n && value % divisor !== 0n ? 1n : 0n)\n}",
+        "range": {
+          "byteOffset": {"start": 579, "end": 713},
+          "start": {"line": 17, "column": 0},
+          "end": {"line": 19, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function onOrBefore(date: bigint, base: bigint, period: bigint): bigint {\n  return base + floor(date * day - base + day - 1n, period) * period\n}",
+    "range": {
+      "byteOffset": {"start": 714, "end": 858},
+      "start": {"line": 20, "column": 0},
+      "end": {"line": 22, "column": 1}
+    },
+    "file": "packages/temporal/lunisolar.ts",
+    "lines": "function onOrBefore(date: bigint, base: bigint, period: bigint): bigint {\n  return base + floor(date * day - base + day - 1n, period) * period\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function onOrBefore(date: bigint, base: bigint, period: bigint): bigint {\n  return base + floor(date * day - base + day - 1n, period) * period\n}",
+        "range": {
+          "byteOffset": {"start": 714, "end": 858},
+          "start": {"line": 20, "column": 0},
+          "end": {"line": 22, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function lunisolarMonthSerial(epoch: number): number {\n  return numberFrom(floor(bigIntFrom(epoch + 719178) * day - moonEpoch, month))\n}",
+    "range": {
+      "byteOffset": {"start": 867, "end": 1003},
+      "start": {"line": 24, "column": 7},
+      "end": {"line": 26, "column": 1}
+    },
+    "file": "packages/temporal/lunisolar.ts",
+    "lines": "export function lunisolarMonthSerial(epoch: number): number {\n  return numberFrom(floor(bigIntFrom(epoch + 719178) * day - moonEpoch, month))\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function lunisolarMonthSerial(epoch: number): number {\n  return numberFrom(floor(bigIntFrom(epoch + 719178) * day - moonEpoch, month))\n}",
+        "range": {
+          "byteOffset": {"start": 867, "end": 1003},
+          "start": {"line": 24, "column": 7},
+          "end": {"line": 26, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function lunisolarMonthEpoch(serial: number): number {\n  if (!numberIsSafeInteger(serial))\n    throw new RangeErrorConstructor('Invalid month count')\n  const epoch = floor(moonEpoch + bigIntFrom(serial) * month, day) - 719163n\n  if (epoch < -110000400n || epoch > 110000400n)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  return numberFrom(epoch)\n}",
+    "range": {
+      "byteOffset": {"start": 1012, "end": 1383},
+      "start": {"line": 28, "column": 7},
+      "end": {"line": 35, "column": 1}
+    },
+    "file": "packages/temporal/lunisolar.ts",
+    "lines": "export function lunisolarMonthEpoch(serial: number): number {\n  if (!numberIsSafeInteger(serial))\n    throw new RangeErrorConstructor('Invalid month count')\n  const epoch = floor(moonEpoch + bigIntFrom(serial) * month, day) - 719163n\n  if (epoch < -110000400n || epoch > 110000400n)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  return numberFrom(epoch)\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function lunisolarMonthEpoch(serial: number): number {\n  if (!numberIsSafeInteger(serial))\n    throw new RangeErrorConstructor('Invalid month count')\n  const epoch = floor(moonEpoch + bigIntFrom(serial) * month, day) - 719163n\n  if (epoch < -110000400n || epoch > 110000400n)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  return numberFrom(epoch)\n}",
+        "range": {
+          "byteOffset": {"start": 1012, "end": 1383},
+          "start": {"line": 28, "column": 7},
+          "end": {"line": 35, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function approximateLunisolarYear(\n  calendar: 'chinese' | 'dangi',\n  relatedYear: number\n): CalendarYearData {\n  const offset =\n    relatedYear < 1900\n      ? 27940000n\n      : calendar === 'chinese'\n        ? 28800000n\n        : 32400000n\n  let solar = onOrBefore(\n    bigIntFrom(DayFromYear(relatedYear) + 719162),\n    730110n * day + 27840000n + offset,\n    year\n  )\n  let moon = onOrBefore(\n      floor(solar, day),\n      730125n * day + 65640000n + offset,\n      month\n    ),\n    nextMoon = moon + month,\n    solarTerm = -2,\n    hadLeap = false\n  while (\n    solarTerm < 0 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) hadLeap = true\n    else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const newYear = floor(moon, day),\n    lengths: number[] = []\n  let leap = 0\n  while (\n    solarTerm < 12 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    const index = solarTerm + numberFrom(leap !== 0)\n    if (index < 13)\n      setDataProperty(\n        lengths,\n        index,\n        numberFrom(floor(nextMoon, day) - floor(moon, day))\n      )\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) {\n      hadLeap = true\n      leap = solarTerm\n    } else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const earliest = DayFromYear(relatedYear) + 18,\n    starts = [\n      earliest + numberFrom((newYear - bigIntFrom(earliest + 719163)) & 63n),\n    ],\n    count = leap ? 13 : 12\n  let end = starts[0]\n  for (let index = 0; index < count; index++) {\n    if (index > 0) setDataProperty(starts, index, end)\n    end += lengths[index]\n  }\n  return {starts, end, leap}\n}",
+    "range": {
+      "byteOffset": {"start": 1392, "end": 3165},
+      "start": {"line": 37, "column": 7},
+      "end": {"line": 107, "column": 1}
+    },
+    "file": "packages/temporal/lunisolar.ts",
+    "lines": "export function approximateLunisolarYear(\n  calendar: 'chinese' | 'dangi',\n  relatedYear: number\n): CalendarYearData {\n  const offset =\n    relatedYear < 1900\n      ? 27940000n\n      : calendar === 'chinese'\n        ? 28800000n\n        : 32400000n\n  let solar = onOrBefore(\n    bigIntFrom(DayFromYear(relatedYear) + 719162),\n    730110n * day + 27840000n + offset,\n    year\n  )\n  let moon = onOrBefore(\n      floor(solar, day),\n      730125n * day + 65640000n + offset,\n      month\n    ),\n    nextMoon = moon + month,\n    solarTerm = -2,\n    hadLeap = false\n  while (\n    solarTerm < 0 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) hadLeap = true\n    else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const newYear = floor(moon, day),\n    lengths: number[] = []\n  let leap = 0\n  while (\n    solarTerm < 12 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    const index = solarTerm + numberFrom(leap !== 0)\n    if (index < 13)\n      setDataProperty(\n        lengths,\n        index,\n        numberFrom(floor(nextMoon, day) - floor(moon, day))\n      )\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) {\n      hadLeap = true\n      leap = solarTerm\n    } else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const earliest = DayFromYear(relatedYear) + 18,\n    starts = [\n      earliest + numberFrom((newYear - bigIntFrom(earliest + 719163)) & 63n),\n    ],\n    count = leap ? 13 : 12\n  let end = starts[0]\n  for (let index = 0; index < count; index++) {\n    if (index > 0) setDataProperty(starts, index, end)\n    end += lengths[index]\n  }\n  return {starts, end, leap}\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function approximateLunisolarYear(\n  calendar: 'chinese' | 'dangi',\n  relatedYear: number\n): CalendarYearData {\n  const offset =\n    relatedYear < 1900\n      ? 27940000n\n      : calendar === 'chinese'\n        ? 28800000n\n        : 32400000n\n  let solar = onOrBefore(\n    bigIntFrom(DayFromYear(relatedYear) + 719162),\n    730110n * day + 27840000n + offset,\n    year\n  )\n  let moon = onOrBefore(\n      floor(solar, day),\n      730125n * day + 65640000n + offset,\n      month\n    ),\n    nextMoon = moon + month,\n    solarTerm = -2,\n    hadLeap = false\n  while (\n    solarTerm < 0 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) hadLeap = true\n    else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const newYear = floor(moon, day),\n    lengths: number[] = []\n  let leap = 0\n  while (\n    solarTerm < 12 ||\n    (floor(nextMoon, day) <= floor(solar, day) && !hadLeap)\n  ) {\n    const index = solarTerm + numberFrom(leap !== 0)\n    if (index < 13)\n      setDataProperty(\n        lengths,\n        index,\n        numberFrom(floor(nextMoon, day) - floor(moon, day))\n      )\n    if (floor(nextMoon, day) <= floor(solar, day) && !hadLeap) {\n      hadLeap = true\n      leap = solarTerm\n    } else {\n      solarTerm++\n      solar += term\n    }\n    moon = nextMoon\n    nextMoon += month\n  }\n  const earliest = DayFromYear(relatedYear) + 18,\n    starts = [\n      earliest + numberFrom((newYear - bigIntFrom(earliest + 719163)) & 63n),\n    ],\n    count = leap ? 13 : 12\n  let end = starts[0]\n  for (let index = 0; index < count; index++) {\n    if (index > 0) setDataProperty(starts, index, end)\n    end += lengths[index]\n  }\n  return {starts, end, leap}\n}",
+        "range": {
+          "byteOffset": {"start": 1392, "end": 3165},
+          "start": {"line": 37, "column": 7},
+          "end": {"line": 107, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function remember(key: string, value: CalendarYearData): CalendarYearData {\n  if (apply(mapSize, years, []) >= 128) {\n    const iterator = apply(mapKeys, years, [])\n    const first = apply(mapNext, iterator, []) as IteratorResult<string>\n    apply(mapDelete, years, [first.value])\n  }\n  apply(mapSet, years, [key, value])\n  return value\n}",
+    "range": {
+      "byteOffset": {"start": 1200, "end": 1538},
+      "start": {"line": 35, "column": 0},
+      "end": {"line": 43, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "function remember(key: string, value: CalendarYearData): CalendarYearData {\n  if (apply(mapSize, years, []) >= 128) {\n    const iterator = apply(mapKeys, years, [])\n    const first = apply(mapNext, iterator, []) as IteratorResult<string>\n    apply(mapDelete, years, [first.value])\n  }\n  apply(mapSet, years, [key, value])\n  return value\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function remember(key: string, value: CalendarYearData): CalendarYearData {\n  if (apply(mapSize, years, []) >= 128) {\n    const iterator = apply(mapKeys, years, [])\n    const first = apply(mapNext, iterator, []) as IteratorResult<string>\n    apply(mapDelete, years, [first.value])\n  }\n  apply(mapSet, years, [key, value])\n  return value\n}",
+        "range": {
+          "byteOffset": {"start": 1200, "end": 1538},
+          "start": {"line": 35, "column": 0},
+          "end": {"line": 43, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function fields(calendar: HostTableCalendar, day: number) {\n  if (!numberIsInteger(day) || mathAbs(day) > limit)\n    throw new RangeErrorConstructor('Host Intl calendar date out of range')\n  if (!Constructor || !parts || !resolved)\n    throw new RangeErrorConstructor(\n      'Temporal requires Intl.DateTimeFormat calendar support'\n    )\n  let formatter = apply(mapGet, formatters, [calendar]) as\n    | Intl.DateTimeFormat\n    | undefined\n  if (!formatter) {\n    formatter = new Constructor('en-US-u-nu-latn', {\n      __proto__: null,\n      calendar,\n      timeZone: 'UTC',\n      year: 'numeric',\n      month: 'numeric',\n      day: 'numeric',\n    } as Intl.DateTimeFormatOptions)\n    if (apply(resolved, formatter, []).calendar !== calendar)\n      throw new RangeErrorConstructor(`Host Intl does not support ${calendar}`)\n    apply(mapSet, formatters, [calendar, formatter])\n  }\n  let year = NaN,\n    date = NaN\n  const values = apply(parts, formatter, [day * dayMilliseconds])\n  for (let index = 0; index < values.length; index++) {\n    const part = values[index]\n    const type: string = part.type\n    if (type === 'relatedYear' || type === 'year') year = numberFrom(part.value)\n    else if (type === 'day') date = numberFrom(part.value)\n  }\n  if (!numberIsSafeInteger(year) || !(date >= 1 && date <= 30))\n    throw new RangeErrorConstructor('Unsupported host Intl calendar fields')\n  return {year, day: date}\n}",
+    "range": {
+      "byteOffset": {"start": 1540, "end": 2953},
+      "start": {"line": 45, "column": 0},
+      "end": {"line": 80, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "function fields(calendar: HostTableCalendar, day: number) {\n  if (!numberIsInteger(day) || mathAbs(day) > limit)\n    throw new RangeErrorConstructor('Host Intl calendar date out of range')\n  if (!Constructor || !parts || !resolved)\n    throw new RangeErrorConstructor(\n      'Temporal requires Intl.DateTimeFormat calendar support'\n    )\n  let formatter = apply(mapGet, formatters, [calendar]) as\n    | Intl.DateTimeFormat\n    | undefined\n  if (!formatter) {\n    formatter = new Constructor('en-US-u-nu-latn', {\n      __proto__: null,\n      calendar,\n      timeZone: 'UTC',\n      year: 'numeric',\n      month: 'numeric',\n      day: 'numeric',\n    } as Intl.DateTimeFormatOptions)\n    if (apply(resolved, formatter, []).calendar !== calendar)\n      throw new RangeErrorConstructor(`Host Intl does not support ${calendar}`)\n    apply(mapSet, formatters, [calendar, formatter])\n  }\n  let year = NaN,\n    date = NaN\n  const values = apply(parts, formatter, [day * dayMilliseconds])\n  for (let index = 0; index < values.length; index++) {\n    const part = values[index]\n    const type: string = part.type\n    if (type === 'relatedYear' || type === 'year') year = numberFrom(part.value)\n    else if (type === 'day') date = numberFrom(part.value)\n  }\n  if (!numberIsSafeInteger(year) || !(date >= 1 && date <= 30))\n    throw new RangeErrorConstructor('Unsupported host Intl calendar fields')\n  return {year, day: date}\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function fields(calendar: HostTableCalendar, day: number) {\n  if (!numberIsInteger(day) || mathAbs(day) > limit)\n    throw new RangeErrorConstructor('Host Intl calendar date out of range')\n  if (!Constructor || !parts || !resolved)\n    throw new RangeErrorConstructor(\n      'Temporal requires Intl.DateTimeFormat calendar support'\n    )\n  let formatter = apply(mapGet, formatters, [calendar]) as\n    | Intl.DateTimeFormat\n    | undefined\n  if (!formatter) {\n    formatter = new Constructor('en-US-u-nu-latn', {\n      __proto__: null,\n      calendar,\n      timeZone: 'UTC',\n      year: 'numeric',\n      month: 'numeric',\n      day: 'numeric',\n    } as Intl.DateTimeFormatOptions)\n    if (apply(resolved, formatter, []).calendar !== calendar)\n      throw new RangeErrorConstructor(`Host Intl does not support ${calendar}`)\n    apply(mapSet, formatters, [calendar, formatter])\n  }\n  let year = NaN,\n    date = NaN\n  const values = apply(parts, formatter, [day * dayMilliseconds])\n  for (let index = 0; index < values.length; index++) {\n    const part = values[index]\n    const type: string = part.type\n    if (type === 'relatedYear' || type === 'year') year = numberFrom(part.value)\n    else if (type === 'day') date = numberFrom(part.value)\n  }\n  if (!numberIsSafeInteger(year) || !(date >= 1 && date <= 30))\n    throw new RangeErrorConstructor('Unsupported host Intl calendar fields')\n  return {year, day: date}\n}",
+        "range": {
+          "byteOffset": {"start": 1540, "end": 2953},
+          "start": {"line": 45, "column": 0},
+          "end": {"line": 80, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function hostCalendarYear(\n  calendar: HostTableCalendar,\n  year: number\n): CalendarYearData {\n  if (!numberIsSafeInteger(year))\n    throw new RangeErrorConstructor('Invalid calendar year')\n  const key = `${calendar}:${year}`,\n    cached = apply(mapGet, years, [key]) as CalendarYearData | undefined\n  if (cached) return cached\n  if (calendar !== 'islamic-umalqura') {\n    const compact = compactCalendarYear(calendar, year)\n    return remember(key, compact ?? approximateLunisolarYear(calendar, year))\n  }\n  let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)\n  if (mathAbs(probe) > limit - 800)\n    throw new RangeErrorConstructor(\n      'Host Intl calendar year requires boundary data'\n    )\n  probe += 400\n  let value = fields(calendar, probe)\n  // Find the following year, then walk back by actual host month boundaries.\n  for (let attempts = 0; value.year <= year; attempts++) {\n    if (attempts >= 3)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    probe += 400\n    value = fields(calendar, probe)\n  }\n  const starts: number[] = []\n  let end = NaN\n  for (let attempts = 0; value.year >= year; attempts++) {\n    if (attempts >= 40)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    const start = probe - value.day + 1\n    if (value.year === year) {\n      setDataProperty(starts, starts.length, start)\n    } else end = start\n    probe = start - 1\n    value = fields(calendar, probe)\n  }\n  for (let index = 0; index < floor(starts.length / 2); index++) {\n    const opposite = starts.length - index - 1,\n      value = starts[index]\n    starts[index] = starts[opposite]\n    starts[opposite] = value\n  }\n  if (starts.length !== 12)\n    throw new RangeErrorConstructor('Unsupported host calendar year')\n  return remember(key, {starts, end, leap: 0})\n}",
+    "range": {
+      "byteOffset": {"start": 2962, "end": 4784},
+      "start": {"line": 82, "column": 7},
+      "end": {"line": 130, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "export function hostCalendarYear(\n  calendar: HostTableCalendar,\n  year: number\n): CalendarYearData {\n  if (!numberIsSafeInteger(year))\n    throw new RangeErrorConstructor('Invalid calendar year')\n  const key = `${calendar}:${year}`,\n    cached = apply(mapGet, years, [key]) as CalendarYearData | undefined\n  if (cached) return cached\n  if (calendar !== 'islamic-umalqura') {\n    const compact = compactCalendarYear(calendar, year)\n    return remember(key, compact ?? approximateLunisolarYear(calendar, year))\n  }\n  let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)\n  if (mathAbs(probe) > limit - 800)\n    throw new RangeErrorConstructor(\n      'Host Intl calendar year requires boundary data'\n    )\n  probe += 400\n  let value = fields(calendar, probe)\n  // Find the following year, then walk back by actual host month boundaries.\n  for (let attempts = 0; value.year <= year; attempts++) {\n    if (attempts >= 3)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    probe += 400\n    value = fields(calendar, probe)\n  }\n  const starts: number[] = []\n  let end = NaN\n  for (let attempts = 0; value.year >= year; attempts++) {\n    if (attempts >= 40)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    const start = probe - value.day + 1\n    if (value.year === year) {\n      setDataProperty(starts, starts.length, start)\n    } else end = start\n    probe = start - 1\n    value = fields(calendar, probe)\n  }\n  for (let index = 0; index < floor(starts.length / 2); index++) {\n    const opposite = starts.length - index - 1,\n      value = starts[index]\n    starts[index] = starts[opposite]\n    starts[opposite] = value\n  }\n  if (starts.length !== 12)\n    throw new RangeErrorConstructor('Unsupported host calendar year')\n  return remember(key, {starts, end, leap: 0})\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function hostCalendarYear(\n  calendar: HostTableCalendar,\n  year: number\n): CalendarYearData {\n  if (!numberIsSafeInteger(year))\n    throw new RangeErrorConstructor('Invalid calendar year')\n  const key = `${calendar}:${year}`,\n    cached = apply(mapGet, years, [key]) as CalendarYearData | undefined\n  if (cached) return cached\n  if (calendar !== 'islamic-umalqura') {\n    const compact = compactCalendarYear(calendar, year)\n    return remember(key, compact ?? approximateLunisolarYear(calendar, year))\n  }\n  let probe = -492148 + 354 * (year - 1) + floor((3 + 11 * year) / 30)\n  if (mathAbs(probe) > limit - 800)\n    throw new RangeErrorConstructor(\n      'Host Intl calendar year requires boundary data'\n    )\n  probe += 400\n  let value = fields(calendar, probe)\n  // Find the following year, then walk back by actual host month boundaries.\n  for (let attempts = 0; value.year <= year; attempts++) {\n    if (attempts >= 3)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    probe += 400\n    value = fields(calendar, probe)\n  }\n  const starts: number[] = []\n  let end = NaN\n  for (let attempts = 0; value.year >= year; attempts++) {\n    if (attempts >= 40)\n      throw new RangeErrorConstructor('Unsupported host calendar year')\n    const start = probe - value.day + 1\n    if (value.year === year) {\n      setDataProperty(starts, starts.length, start)\n    } else end = start\n    probe = start - 1\n    value = fields(calendar, probe)\n  }\n  for (let index = 0; index < floor(starts.length / 2); index++) {\n    const opposite = starts.length - index - 1,\n      value = starts[index]\n    starts[index] = starts[opposite]\n    starts[opposite] = value\n  }\n  if (starts.length !== 12)\n    throw new RangeErrorConstructor('Unsupported host calendar year')\n  return remember(key, {starts, end, leap: 0})\n}",
+        "range": {
+          "byteOffset": {"start": 2962, "end": 4784},
+          "start": {"line": 82, "column": 7},
+          "end": {"line": 130, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function hostCalendarDate(\n  calendar: HostTableCalendar,\n  epoch: number\n): {year: number; month: number; day: number} {\n  let year =\n    calendar === 'islamic-umalqura'\n      ? fields(calendar, epoch).year\n      : YearFromTime(epoch * dayMilliseconds)\n  let data = hostCalendarYear(calendar, year)\n  if (epoch < data.starts[0]) data = hostCalendarYear(calendar, --year)\n  else if (epoch >= data.end) data = hostCalendarYear(calendar, ++year)\n  let month = data.starts.length\n  while (data.starts[month - 1] > epoch) month--\n  return {year, month, day: epoch - data.starts[month - 1] + 1}\n}",
+    "range": {
+      "byteOffset": {"start": 4793, "end": 5384},
+      "start": {"line": 132, "column": 7},
+      "end": {"line": 146, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "export function hostCalendarDate(\n  calendar: HostTableCalendar,\n  epoch: number\n): {year: number; month: number; day: number} {\n  let year =\n    calendar === 'islamic-umalqura'\n      ? fields(calendar, epoch).year\n      : YearFromTime(epoch * dayMilliseconds)\n  let data = hostCalendarYear(calendar, year)\n  if (epoch < data.starts[0]) data = hostCalendarYear(calendar, --year)\n  else if (epoch >= data.end) data = hostCalendarYear(calendar, ++year)\n  let month = data.starts.length\n  while (data.starts[month - 1] > epoch) month--\n  return {year, month, day: epoch - data.starts[month - 1] + 1}\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function hostCalendarDate(\n  calendar: HostTableCalendar,\n  epoch: number\n): {year: number; month: number; day: number} {\n  let year =\n    calendar === 'islamic-umalqura'\n      ? fields(calendar, epoch).year\n      : YearFromTime(epoch * dayMilliseconds)\n  let data = hostCalendarYear(calendar, year)\n  if (epoch < data.starts[0]) data = hostCalendarYear(calendar, --year)\n  else if (epoch >= data.end) data = hostCalendarYear(calendar, ++year)\n  let month = data.starts.length\n  while (data.starts[month - 1] > epoch) month--\n  return {year, month, day: epoch - data.starts[month - 1] + 1}\n}",
+        "range": {
+          "byteOffset": {"start": 4793, "end": 5384},
+          "start": {"line": 132, "column": 7},
+          "end": {"line": 146, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function hostCalendarAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  delta: number\n): {year: number; month: number} {\n  if (!numberIsSafeInteger(delta))\n    throw new RangeErrorConstructor('Invalid month count')\n  const target =\n    lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +\n    delta\n  year = YearFromTime(lunisolarMonthEpoch(target) * dayMilliseconds)\n  for (;;) {\n    const data = hostCalendarYear(calendar, year),\n      index = target - lunisolarMonthSerial(data.starts[0])\n    if (index < 0) year--\n    else if (index >= data.starts.length) year++\n    else return {year, month: index + 1}\n  }\n}",
+    "range": {
+      "byteOffset": {"start": 5393, "end": 6056},
+      "start": {"line": 148, "column": 7},
+      "end": {"line": 167, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "export function hostCalendarAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  delta: number\n): {year: number; month: number} {\n  if (!numberIsSafeInteger(delta))\n    throw new RangeErrorConstructor('Invalid month count')\n  const target =\n    lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +\n    delta\n  year = YearFromTime(lunisolarMonthEpoch(target) * dayMilliseconds)\n  for (;;) {\n    const data = hostCalendarYear(calendar, year),\n      index = target - lunisolarMonthSerial(data.starts[0])\n    if (index < 0) year--\n    else if (index >= data.starts.length) year++\n    else return {year, month: index + 1}\n  }\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function hostCalendarAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  delta: number\n): {year: number; month: number} {\n  if (!numberIsSafeInteger(delta))\n    throw new RangeErrorConstructor('Invalid month count')\n  const target =\n    lunisolarMonthSerial(hostCalendarYear(calendar, year).starts[month - 1]) +\n    delta\n  year = YearFromTime(lunisolarMonthEpoch(target) * dayMilliseconds)\n  for (;;) {\n    const data = hostCalendarYear(calendar, year),\n      index = target - lunisolarMonthSerial(data.starts[0])\n    if (index < 0) year--\n    else if (index >= data.starts.length) year++\n    else return {year, month: index + 1}\n  }\n}",
+        "range": {
+          "byteOffset": {"start": 5393, "end": 6056},
+          "start": {"line": 148, "column": 7},
+          "end": {"line": 167, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function hostCalendarMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return (\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, twoYear).starts[twoMonth - 1]\n    ) -\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, oneYear).starts[oneMonth - 1]\n    )\n  )\n}",
+    "range": {
+      "byteOffset": {"start": 6065, "end": 6433},
+      "start": {"line": 169, "column": 7},
+      "end": {"line": 184, "column": 1}
+    },
+    "file": "packages/temporal/host-calendar.ts",
+    "lines": "export function hostCalendarMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return (\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, twoYear).starts[twoMonth - 1]\n    ) -\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, oneYear).starts[oneMonth - 1]\n    )\n  )\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function hostCalendarMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return (\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, twoYear).starts[twoMonth - 1]\n    ) -\n    lunisolarMonthSerial(\n      hostCalendarYear(calendar, oneYear).starts[oneMonth - 1]\n    )\n  )\n}",
+        "range": {
+          "byteOffset": {"start": 6065, "end": 6433},
+          "start": {"line": 169, "column": 7},
+          "end": {"line": 184, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {\n  return calendar === 'chinese' || calendar === 'dangi'\n}",
+    "range": {
+      "byteOffset": {"start": 815, "end": 946},
+      "start": {"line": 30, "column": 7},
+      "end": {"line": 32, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {\n  return calendar === 'chinese' || calendar === 'dangi'\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function isLunisolar(calendar: string): calendar is 'chinese' | 'dangi' {\n  return calendar === 'chinese' || calendar === 'dangi'\n}",
+        "range": {
+          "byteOffset": {"start": 815, "end": 946},
+          "start": {"line": 30, "column": 7},
+          "end": {"line": 32, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function data(calendar: 'chinese' | 'dangi') {\n  return fallbackLunisolar(calendar)\n}",
+    "range": {
+      "byteOffset": {"start": 947, "end": 1032},
+      "start": {"line": 33, "column": 0},
+      "end": {"line": 35, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "function data(calendar: 'chinese' | 'dangi') {\n  return fallbackLunisolar(calendar)\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function data(calendar: 'chinese' | 'dangi') {\n  return fallbackLunisolar(calendar)\n}",
+        "range": {
+          "byteOffset": {"start": 947, "end": 1032},
+          "start": {"line": 33, "column": 0},
+          "end": {"line": 35, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function pattern(calendar: 'chinese' | 'dangi', year: number): number {\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)\n    throw new RangeErrorConstructor('Calendar year out of range')\n  return table.dictionary[\n    apply(stringIndexOf, alphabet, [table.years[index * 2]]) * 64 +\n      apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])\n  ]\n}",
+    "range": {
+      "byteOffset": {"start": 1033, "end": 1484},
+      "start": {"line": 36, "column": 0},
+      "end": {"line": 45, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "function pattern(calendar: 'chinese' | 'dangi', year: number): number {\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)\n    throw new RangeErrorConstructor('Calendar year out of range')\n  return table.dictionary[\n    apply(stringIndexOf, alphabet, [table.years[index * 2]]) * 64 +\n      apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])\n  ]\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function pattern(calendar: 'chinese' | 'dangi', year: number): number {\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (!numberIsInteger(index) || index < 0 || index * 2 >= table.years.length)\n    throw new RangeErrorConstructor('Calendar year out of range')\n  return table.dictionary[\n    apply(stringIndexOf, alphabet, [table.years[index * 2]]) * 64 +\n      apply(stringIndexOf, alphabet, [table.years[index * 2 + 1]])\n  ]\n}",
+        "range": {
+          "byteOffset": {"start": 1033, "end": 1484},
+          "start": {"line": 36, "column": 0},
+          "end": {"line": 45, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function length(packed: number): number {\n  let days = (packed >>> 13 ? 13 : 12) * 29,\n    bits = packed & 8191\n  while (bits) {\n    days++\n    bits &= bits - 1\n  }\n  return days\n}",
+    "range": {
+      "byteOffset": {"start": 1485, "end": 1665},
+      "start": {"line": 46, "column": 0},
+      "end": {"line": 54, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "function length(packed: number): number {\n  let days = (packed >>> 13 ? 13 : 12) * 29,\n    bits = packed & 8191\n  while (bits) {\n    days++\n    bits &= bits - 1\n  }\n  return days\n}",
+    "charCount": {"leading": 0, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function length(packed: number): number {\n  let days = (packed >>> 13 ? 13 : 12) * 29,\n    bits = packed & 8191\n  while (bits) {\n    days++\n    bits &= bits - 1\n  }\n  return days\n}",
+        "range": {
+          "byteOffset": {"start": 1485, "end": 1665},
+          "start": {"line": 46, "column": 0},
+          "end": {"line": 54, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableLeapMonth(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): number {\n  if (hostCalendarData) return hostCalendarYear(calendar, year).leap\n  return pattern(calendar, year) >>> 13\n}",
+    "range": {
+      "byteOffset": {"start": 1673, "end": 1868},
+      "start": {"line": 55, "column": 7},
+      "end": {"line": 61, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableLeapMonth(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): number {\n  if (hostCalendarData) return hostCalendarYear(calendar, year).leap\n  return pattern(calendar, year) >>> 13\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableLeapMonth(\n  calendar: 'chinese' | 'dangi',\n  year: number\n): number {\n  if (hostCalendarData) return hostCalendarYear(calendar, year).leap\n  return pattern(calendar, year) >>> 13\n}",
+        "range": {
+          "byteOffset": {"start": 1673, "end": 1868},
+          "start": {"line": 55, "column": 7},
+          "end": {"line": 61, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableYearStart(\n  calendar: TableCalendarId,\n  year: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1601))\n      return undefined\n    return hostCalendarYear(calendar, year).starts[0]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.startDays.length\n      ? ummAlQura.startDays[index]\n      : undefined\n  }\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (index === table.years.length / 2) return table.endDay\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let start = table.checkpoints[block]\n  for (let i = block * 64; i < index; i++)\n    start += length(pattern(calendar, table.firstYear + i))\n  return start\n}",
+    "range": {
+      "byteOffset": {"start": 1876, "end": 2739},
+      "start": {"line": 62, "column": 7},
+      "end": {"line": 87, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableYearStart(\n  calendar: TableCalendarId,\n  year: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1601))\n      return undefined\n    return hostCalendarYear(calendar, year).starts[0]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.startDays.length\n      ? ummAlQura.startDays[index]\n      : undefined\n  }\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (index === table.years.length / 2) return table.endDay\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let start = table.checkpoints[block]\n  for (let i = block * 64; i < index; i++)\n    start += length(pattern(calendar, table.firstYear + i))\n  return start\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableYearStart(\n  calendar: TableCalendarId,\n  year: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1601))\n      return undefined\n    return hostCalendarYear(calendar, year).starts[0]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.startDays.length\n      ? ummAlQura.startDays[index]\n      : undefined\n  }\n  const table = data(calendar),\n    index = year - table.firstYear\n  if (index === table.years.length / 2) return table.endDay\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let start = table.checkpoints[block]\n  for (let i = block * 64; i < index; i++)\n    start += length(pattern(calendar, table.firstYear + i))\n  return start\n}",
+        "range": {
+          "byteOffset": {"start": 1876, "end": 2739},
+          "start": {"line": 62, "column": 7},
+          "end": {"line": 87, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableMonthLength(\n  calendar: TableCalendarId,\n  year: number,\n  month: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1600))\n      return undefined\n    const data = hostCalendarYear(calendar, year)\n    return (data.starts[month] ?? data.end) - data.starts[month - 1]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.monthLengths.length\n      ? 29 + ((ummAlQura.monthLengths[index] >>> (month - 1)) & 1)\n      : undefined\n  }\n  return 29 + ((pattern(calendar, year) >>> (month - 1)) & 1)\n}",
+    "range": {
+      "byteOffset": {"start": 2747, "end": 3447},
+      "start": {"line": 88, "column": 7},
+      "end": {"line": 107, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableMonthLength(\n  calendar: TableCalendarId,\n  year: number,\n  month: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1600))\n      return undefined\n    const data = hostCalendarYear(calendar, year)\n    return (data.starts[month] ?? data.end) - data.starts[month - 1]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.monthLengths.length\n      ? 29 + ((ummAlQura.monthLengths[index] >>> (month - 1)) & 1)\n      : undefined\n  }\n  return 29 + ((pattern(calendar, year) >>> (month - 1)) & 1)\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableMonthLength(\n  calendar: TableCalendarId,\n  year: number,\n  month: number\n): number | undefined {\n  if (hostCalendarData) {\n    if (calendar === 'islamic-umalqura' && (year < 1300 || year > 1600))\n      return undefined\n    const data = hostCalendarYear(calendar, year)\n    return (data.starts[month] ?? data.end) - data.starts[month - 1]\n  }\n  if (calendar === 'islamic-umalqura') {\n    const ummAlQura = fallbackUmmAlQura()\n    const index = year - ummAlQura.firstYear\n    return index >= 0 && index < ummAlQura.monthLengths.length\n      ? 29 + ((ummAlQura.monthLengths[index] >>> (month - 1)) & 1)\n      : undefined\n  }\n  return 29 + ((pattern(calendar, year) >>> (month - 1)) & 1)\n}",
+        "range": {
+          "byteOffset": {"start": 2747, "end": 3447},
+          "start": {"line": 88, "column": 7},
+          "end": {"line": 107, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableMonthSerial(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number\n): number {\n  if (hostCalendarData)\n    return hostCalendarMonthDifference(calendar, 1970, 1, year, month)\n  const table = data(calendar),\n    index = year - table.firstYear\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let serial = table.monthCheckpoints[block]\n  for (let i = block * 64; i < index; i++)\n    serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12\n  return serial + month - 1\n}",
+    "range": {
+      "byteOffset": {"start": 3455, "end": 3968},
+      "start": {"line": 108, "column": 7},
+      "end": {"line": 123, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableMonthSerial(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number\n): number {\n  if (hostCalendarData)\n    return hostCalendarMonthDifference(calendar, 1970, 1, year, month)\n  const table = data(calendar),\n    index = year - table.firstYear\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let serial = table.monthCheckpoints[block]\n  for (let i = block * 64; i < index; i++)\n    serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12\n  return serial + month - 1\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableMonthSerial(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number\n): number {\n  if (hostCalendarData)\n    return hostCalendarMonthDifference(calendar, 1970, 1, year, month)\n  const table = data(calendar),\n    index = year - table.firstYear\n  pattern(calendar, year)\n  const block = floor(index / 64)\n  let serial = table.monthCheckpoints[block]\n  for (let i = block * 64; i < index; i++)\n    serial += tableLeapMonth(calendar, table.firstYear + i) ? 13 : 12\n  return serial + month - 1\n}",
+        "range": {
+          "byteOffset": {"start": 3455, "end": 3968},
+          "start": {"line": 108, "column": 7},
+          "end": {"line": 123, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableYearMonth(\n  calendar: 'chinese' | 'dangi',\n  serial: number\n): {year: number; month: number} {\n  if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)\n  const table = data(calendar),\n    checkpoints = table.monthCheckpoints\n  if (!numberIsSafeInteger(serial) || serial < 0)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= serial) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = serial - checkpoints[low]\n  for (;;) {\n    const count = tableLeapMonth(calendar, year) ? 13 : 12\n    if (remaining < count) return {year, month: remaining + 1}\n    remaining -= count\n    year++\n  }\n}",
+    "range": {
+      "byteOffset": {"start": 3976, "end": 4795},
+      "start": {"line": 124, "column": 7},
+      "end": {"line": 148, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableYearMonth(\n  calendar: 'chinese' | 'dangi',\n  serial: number\n): {year: number; month: number} {\n  if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)\n  const table = data(calendar),\n    checkpoints = table.monthCheckpoints\n  if (!numberIsSafeInteger(serial) || serial < 0)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= serial) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = serial - checkpoints[low]\n  for (;;) {\n    const count = tableLeapMonth(calendar, year) ? 13 : 12\n    if (remaining < count) return {year, month: remaining + 1}\n    remaining -= count\n    year++\n  }\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableYearMonth(\n  calendar: 'chinese' | 'dangi',\n  serial: number\n): {year: number; month: number} {\n  if (hostCalendarData) return hostCalendarAddMonths(calendar, 1970, 1, serial)\n  const table = data(calendar),\n    checkpoints = table.monthCheckpoints\n  if (!numberIsSafeInteger(serial) || serial < 0)\n    throw new RangeErrorConstructor('Calendar month out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= serial) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = serial - checkpoints[low]\n  for (;;) {\n    const count = tableLeapMonth(calendar, year) ? 13 : 12\n    if (remaining < count) return {year, month: remaining + 1}\n    remaining -= count\n    year++\n  }\n}",
+        "range": {
+          "byteOffset": {"start": 3976, "end": 4795},
+          "start": {"line": 124, "column": 7},
+          "end": {"line": 148, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableDate(\n  calendar: 'chinese' | 'dangi',\n  epoch: number\n): {year: number; month: number; day: number} {\n  if (hostCalendarData) return hostCalendarDate(calendar, epoch)\n  const table = data(calendar),\n    checkpoints = table.checkpoints\n  if (epoch < checkpoints[0] || epoch >= table.endDay)\n    throw new RangeErrorConstructor('Calendar date out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= epoch) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = epoch - checkpoints[low]\n  while (remaining >= length(pattern(calendar, year)))\n    remaining -= length(pattern(calendar, year++))\n  let month = 1\n  while (remaining >= tableMonthLength(calendar, year, month)!)\n    remaining -= tableMonthLength(calendar, year, month++)!\n  return {year, month, day: remaining + 1}\n}",
+    "range": {
+      "byteOffset": {"start": 4803, "end": 5727},
+      "start": {"line": 149, "column": 7},
+      "end": {"line": 173, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableDate(\n  calendar: 'chinese' | 'dangi',\n  epoch: number\n): {year: number; month: number; day: number} {\n  if (hostCalendarData) return hostCalendarDate(calendar, epoch)\n  const table = data(calendar),\n    checkpoints = table.checkpoints\n  if (epoch < checkpoints[0] || epoch >= table.endDay)\n    throw new RangeErrorConstructor('Calendar date out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= epoch) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = epoch - checkpoints[low]\n  while (remaining >= length(pattern(calendar, year)))\n    remaining -= length(pattern(calendar, year++))\n  let month = 1\n  while (remaining >= tableMonthLength(calendar, year, month)!)\n    remaining -= tableMonthLength(calendar, year, month++)!\n  return {year, month, day: remaining + 1}\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableDate(\n  calendar: 'chinese' | 'dangi',\n  epoch: number\n): {year: number; month: number; day: number} {\n  if (hostCalendarData) return hostCalendarDate(calendar, epoch)\n  const table = data(calendar),\n    checkpoints = table.checkpoints\n  if (epoch < checkpoints[0] || epoch >= table.endDay)\n    throw new RangeErrorConstructor('Calendar date out of range')\n  let low = 0,\n    high = checkpoints.length\n  while (low + 1 < high) {\n    const mid = floor((low + high) / 2)\n    if (checkpoints[mid] <= epoch) low = mid\n    else high = mid\n  }\n  let year = table.firstYear + low * 64,\n    remaining = epoch - checkpoints[low]\n  while (remaining >= length(pattern(calendar, year)))\n    remaining -= length(pattern(calendar, year++))\n  let month = 1\n  while (remaining >= tableMonthLength(calendar, year, month)!)\n    remaining -= tableMonthLength(calendar, year, month++)!\n  return {year, month, day: remaining + 1}\n}",
+        "range": {
+          "byteOffset": {"start": 4803, "end": 5727},
+          "start": {"line": 149, "column": 7},
+          "end": {"line": 173, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  months: number\n): {year: number; month: number} {\n  return hostCalendarData\n    ? hostCalendarAddMonths(calendar, year, month, months)\n    : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)\n}",
+    "range": {
+      "byteOffset": {"start": 5736, "end": 6046},
+      "start": {"line": 175, "column": 7},
+      "end": {"line": 184, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  months: number\n): {year: number; month: number} {\n  return hostCalendarData\n    ? hostCalendarAddMonths(calendar, year, month, months)\n    : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableAddMonths(\n  calendar: 'chinese' | 'dangi',\n  year: number,\n  month: number,\n  months: number\n): {year: number; month: number} {\n  return hostCalendarData\n    ? hostCalendarAddMonths(calendar, year, month, months)\n    : tableYearMonth(calendar, tableMonthSerial(calendar, year, month) + months)\n}",
+        "range": {
+          "byteOffset": {"start": 5736, "end": 6046},
+          "start": {"line": 175, "column": 7},
+          "end": {"line": 184, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  },
+  {
+    "text": "function tableMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return hostCalendarData\n    ? hostCalendarMonthDifference(\n        calendar,\n        oneYear,\n        oneMonth,\n        twoYear,\n        twoMonth\n      )\n    : tableMonthSerial(calendar, twoYear, twoMonth) -\n        tableMonthSerial(calendar, oneYear, oneMonth)\n}",
+    "range": {
+      "byteOffset": {"start": 6055, "end": 6473},
+      "start": {"line": 186, "column": 7},
+      "end": {"line": 203, "column": 1}
+    },
+    "file": "packages/temporal/calendar-table.ts",
+    "lines": "export function tableMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return hostCalendarData\n    ? hostCalendarMonthDifference(\n        calendar,\n        oneYear,\n        oneMonth,\n        twoYear,\n        twoMonth\n      )\n    : tableMonthSerial(calendar, twoYear, twoMonth) -\n        tableMonthSerial(calendar, oneYear, oneMonth)\n}",
+    "charCount": {"leading": 7, "trailing": 0},
+    "language": "TypeScript",
+    "ruleId": "callable",
+    "severity": "hint",
+    "note": null,
+    "message": "",
+    "labels": [
+      {
+        "text": "function tableMonthDifference(\n  calendar: 'chinese' | 'dangi',\n  oneYear: number,\n  oneMonth: number,\n  twoYear: number,\n  twoMonth: number\n): number {\n  return hostCalendarData\n    ? hostCalendarMonthDifference(\n        calendar,\n        oneYear,\n        oneMonth,\n        twoYear,\n        twoMonth\n      )\n    : tableMonthSerial(calendar, twoYear, twoMonth) -\n        tableMonthSerial(calendar, oneYear, oneMonth)\n}",
+        "range": {
+          "byteOffset": {"start": 6055, "end": 6473},
+          "start": {"line": 186, "column": 7},
+          "end": {"line": 203, "column": 1}
+        },
+        "style": "primary"
+      }
+    ]
+  }
+]

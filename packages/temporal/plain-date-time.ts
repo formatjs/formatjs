@@ -642,6 +642,7 @@ export const PlainDateTime: PlainDateTimeConstructor = createProxy(
             : integer(argumentAt(args, index + 3))
       const calendar = constructorCalendar(argumentAt(args, 9))
       const value = isoToEpochNanoseconds({year, month, day, ...clock})
+      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
       const prototype = newTarget.prototype
       const result = createObject(
         object(prototype) ? prototype : target.prototype

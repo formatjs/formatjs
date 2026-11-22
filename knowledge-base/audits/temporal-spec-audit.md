@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-348 core and105 amendment rows remain conditional; the separate queue contains
-190 conditional numbered steps in33 shared-premise families. Aggregate counts are not independent defects.
+307 core and91 amendment rows remain conditional; the separate queue contains
+173 conditional numbered steps in30 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.
@@ -41,6 +41,30 @@ Scope: Temporal APIs and dependencies they actually exercise. This is not an
 audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
+
+## Reader, precision and calendar correction, 2026-11-22
+
+[Ten focused targets](temporal-reader-calendar-validation-targets.txt) pass
+(four executed, six cached). Captured brand readers and indexed private Lists
+remove extra iterator/call hooks. Ordinary Duration bag Gets remain alphabetical,
+with immediate coercion and abrupt completion. Existing BigDecimal arithmetic is
+unchanged; three private normalization tuples use indexed projection. Exact
+positive/negative fractions, negative leading zero and MAX_SAFE seconds plus
+nanoseconds remain covered by real NumberFormat/ListFormat output.
+
+Gregorian/Japanese era input and Japanese era output use private indexed metadata.
+Legacy native-Intl option projection removes private array spreads/iteration.
+Public regressions fail before corrections and pass afterward. Finite chosen
+Chinese/Dangi chronology and actual host Umm/civil handoffs now supply their
+provider contracts; no independent calendar engine is introduced. The batch
+closes17 numbered conditions and reconciles corresponding helper gates.
+[Evidence and remaining conditions](temporal-reader-calendar-private-operations-audit.md).
+
+Constructor realm fallback is a confirmed implementation gap: all eight public
+revoked-newTarget/primitive-prototype witnesses fail required TypeError. Object
+prototype controls succeed. All16 affected rows remain conditional, with explicit
+inline comments and a [preserved reproduction](temporal-constructor-realm-proof.md).
+Cold Duration NumberFormat/ListFormat constructor lookup remains separately open.
 
 ## First numbered pass, 2026-11-22
 

@@ -339,8 +339,12 @@ export function ArithmeticCalendarEra(
     case 'islamic-tbla':
       return {era: year > 0 ? 'ah' : 'bh', eraYear: year > 0 ? year : 1 - year}
     case 'japanese':
-      for (const [start, era, offset] of JapaneseEras)
-        if (epoch >= start) return {era, eraYear: year - offset}
+      // Temporal comparison §12.3.25 / §12.3.1 Table18: project private era data.
+      // https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate
+      for (let index = 0; index < JapaneseEras.length; index++) {
+        const entry = JapaneseEras[index]
+        if (epoch >= entry[0]) return {era: entry[1], eraYear: year - entry[2]}
+      }
   }
   return {era: year > 0 ? 'ce' : 'bce', eraYear: year > 0 ? year : 1 - year}
 }

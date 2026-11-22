@@ -499,6 +499,7 @@ export const PlainDate: PlainDateConstructor = createProxy(PlainDateValue, {
       day = integer(argumentAt(args, 2)),
       calendar = constructorCalendar(argumentAt(args, 3))
     const epochDay = isoDay(year, month, day)
+    // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
     const prototype = newTarget.prototype
     const result = createObject(
       object(prototype) ? prototype : target.prototype

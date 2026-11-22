@@ -44,10 +44,21 @@ Generated candidate lists and host caches use captured runtime operations;
 transition removal avoids ArraySpeciesCreate. YearMonth.toPlainDate merges a
 null-prototype private field record. Locale style validation precedes calendar
 mismatch; DurationFormat creates own part-unit properties. Scalar/string
-serialization uses captured conversions. Private reader iteration remains in
-[the queue](audits/temporal-open-candidates.md).
+serialization uses captured conversions. Private reader iteration is corrected in the subsequent batch below.
 [12 focused/backend targets](audits/temporal-zone-intl-yearmonth-validation-targets.txt)
 pass; final host constructor/species and typecheck controls also pass.
+
+Captured native-brand readers and indexed private Duration Lists avoid public
+iterator/call hooks. Ordinary bags preserve alphabetical Gets and immediate
+coercion; validators reuse captured runtime operations. BigDecimal arithmetic
+stays exact; three witnessed tuple projections use indices. Public controls
+cover nanosecond fractions, negative leading zero and MAX_SAFE seconds.
+Era input/output and legacy native-Intl option Lists use private indexed data.
+[Ten targets](audits/temporal-reader-calendar-validation-targets.txt) pass.
+[Provider proof](audits/temporal-lunisolar-chronology-proof/proof.md) and
+[host Umm joins](audits/temporal-host-umm-joins-proof.md) supply chosen calendar
+chronology. Constructor realm fallback remains a
+[confirmed gap](audits/temporal-constructor-realm-proof.md), not a spec exemption.
 
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth

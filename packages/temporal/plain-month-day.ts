@@ -247,6 +247,7 @@ export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
       const epochDay = isoReferenceDay(year, month, day)
       if (epochDay < -100000001 || epochDay > 100000000)
         throw new RangeErrorConstructor('Month-day out of range')
+      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
       const prototype = newTarget.prototype,
         result = createObject(object(prototype) ? prototype : target.prototype)
       setMonthDaySlot(result, {epochDay, calendar})

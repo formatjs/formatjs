@@ -346,8 +346,10 @@ export class DurationFormat implements DurationFormatType {
     const record = ToTemporalDurationRecord(duration)
     const parts = PartitionDurationFormatPattern(this, record)
     let result = ''
-    for (const {value} of parts) {
-      result += value
+    // Temporal comparison §15.10.1 steps6–6.a: concatenate the private part List.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+    for (let index = 0; index < parts.length; index++) {
+      result += parts[index].value
     }
     return result
   }

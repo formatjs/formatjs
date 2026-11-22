@@ -1,0 +1,29 @@
+{
+  "query": "bazel cquery --output=files set(//packages/intl-datetimeformat/scripts/calendar-data:host_chinese_data //packages/intl-datetimeformat/scripts/calendar-data:host_dangi_data)",
+  "artifacts": [
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-opt/bin/packages/intl-datetimeformat/scripts/calendar-data/host-chinese.ts",
+      "sha256": "030595d260c92b371c5a1278bb9ab19ce132b71bbb588a76beed8522e574a5ee"
+    },
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-fastbuild/bin/packages/intl-datetimeformat/scripts/calendar-data/host-chinese.ts",
+      "sha256": "030595d260c92b371c5a1278bb9ab19ce132b71bbb588a76beed8522e574a5ee"
+    },
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-opt-exec/bin/packages/intl-datetimeformat/scripts/calendar-data/host-chinese.ts",
+      "sha256": "030595d260c92b371c5a1278bb9ab19ce132b71bbb588a76beed8522e574a5ee"
+    },
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-opt/bin/packages/intl-datetimeformat/scripts/calendar-data/host-dangi.ts",
+      "sha256": "a0511ec2cad736716547cdd3e3ec8b4256b48134ff0af596ad2bdef78c8fc323"
+    },
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-fastbuild/bin/packages/intl-datetimeformat/scripts/calendar-data/host-dangi.ts",
+      "sha256": "a0511ec2cad736716547cdd3e3ec8b4256b48134ff0af596ad2bdef78c8fc323"
+    },
+    {
+      "bazel_cquery_output": "bazel-out/local_linux_gnu-opt-exec/bin/packages/intl-datetimeformat/scripts/calendar-data/host-dangi.ts",
+      "sha256": "a0511ec2cad736716547cdd3e3ec8b4256b48134ff0af596ad2bdef78c8fc323"
+    }
+  ]
+}

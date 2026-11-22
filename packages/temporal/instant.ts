@@ -435,6 +435,7 @@ export const Instant: InstantConstructor = createProxy(
     // https://tc39.es/proposal-temporal/#sec-temporal.instant
     construct(target, args, newTarget) {
       const value = validateInstant(toBigInt(argumentAt(args, 0)))
+      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
       const prototype = newTarget.prototype
       if (import.meta.formatjsTemporalNativeData === true) {
         const result = createNativeInstant(value)

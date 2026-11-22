@@ -17,6 +17,12 @@ import {
   type DurationRecord,
 } from '#packages/intl-durationformat/types.js'
 
+const apply = Reflect.apply
+const stringListIterator = Array.prototype[Symbol.iterator]
+const stringListIteratorNext = Object.getPrototypeOf(
+  apply(stringListIterator, [], [])
+).next
+
 export function PartitionDurationFormatPattern(
   df: DurationFormat,
   duration: DurationRecord
@@ -192,23 +198,38 @@ export function PartitionDurationFormatPattern(
   lfOpts.style = listStyle
   const lf = createMemoizedListFormat(internalSlots.locale, lfOpts)
   const strings: string[] = []
-  for (const parts of result) {
+  // ECMA-402 §13.5.15: traverse private part Lists by index.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+  for (let index = 0; index < result.length; index++) {
+    const parts = result[index]
     let string = ''
-    for (const {value} of parts) {
-      string += value
+    for (let partIndex = 0; partIndex < parts.length; partIndex++) {
+      string += parts[partIndex].value
     }
     setDataProperty(strings, `${strings.length}`, string)
   }
+  // ECMA-402 §13.5.15: delegate a private List without public iterator lookup.
+  // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
+  setDataProperty(strings, Symbol.iterator, () => {
+    const iterator = apply(stringListIterator, strings, [])
+    return {
+      __proto__: null,
+      next() {
+        return apply(stringListIteratorNext, iterator, [])
+      },
+    }
+  })
   let formatted = lf.formatToParts(strings)
   let resultIndex = 0
   let resultLength = result.length
   const flattened: DurationFormatPart[] = []
-  for (const {type, value} of formatted) {
+  for (let index = 0; index < formatted.length; index++) {
+    const {type, value} = formatted[index]
     if (type === 'element') {
       invariant(resultIndex < resultLength, 'Index out of bounds')
       let parts = result[resultIndex]
-      for (const part of parts) {
-        setDataProperty(flattened, `${flattened.length}`, part)
+      for (let index = 0; index < parts.length; index++) {
+        setDataProperty(flattened, `${flattened.length}`, parts[index])
       }
       resultIndex++
     } else {
