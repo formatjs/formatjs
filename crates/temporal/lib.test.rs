@@ -1791,6 +1791,45 @@ fn minimum_gap_uses_the_transition_at_the_instant_limit() {
 }
 
 #[test]
+fn local_gap_below_minimum_uses_the_minimum_transition() {
+    use formatjs_temporal::{
+        Disambiguation, Error, OffsetTransition, TransitionZone, ZonedDateTime,
+    };
+    let minimum = -MAX_EPOCH_NANOSECONDS;
+    let seconds = (minimum / 1_000_000_000) as i64;
+    let minute = 60_000_000_000;
+    let events = [(0, -3), (1, -27), (3, -23), (15, 0)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 60,
+        offset_seconds: offset * 60,
+    });
+    let zone = TransitionZone::new(-26 * 60, &events, None).unwrap();
+    let resolve = |local, mode| {
+        ZonedDateTime::from_local(
+            IsoDateTime::from_epoch_nanoseconds(local).unwrap(),
+            zone,
+            mode,
+        )
+        .map(|value| value.instant().epoch_nanoseconds())
+    };
+    assert_eq!(
+        resolve(minimum - 8 * minute - 1, Disambiguation::Reject),
+        Ok(minimum + 15 * minute - 1)
+    );
+    assert_eq!(
+        resolve(minimum - 3 * minute, Disambiguation::Reject),
+        Ok(minimum)
+    );
+    for (mode, expected) in [
+        (Disambiguation::Compatible, Ok(minimum + 15 * minute)),
+        (Disambiguation::Later, Ok(minimum + 15 * minute)),
+        (Disambiguation::Earlier, Ok(minimum + 2 * minute)),
+        (Disambiguation::Reject, Err(Error::InvalidDateTime)),
+    ] {
+        assert_eq!(resolve(minimum - 5 * minute, mode), expected, "{mode:?}");
+    }
+}
+
+#[test]
 fn borrowed_zones_resolve_nearest_gap_boundaries() {
     use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
     let minute = 60_000_000_000i128;
@@ -4141,6 +4180,55 @@ fn day_rounding_retries_toward_origin_when_first_bound_overshoots() {
                 expected
             );
         }
+    }
+}
+
+#[test]
+fn week_rounding_finds_an_exact_rebased_bound_in_a_wide_gap() {
+    use formatjs_temporal::calendar::Calendar;
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let epoch = "2024-09-11T00:00Z"
+        .parse::<Instant>()
+        .unwrap()
+        .epoch_nanoseconds();
+    let hour = 3_600_000_000_000;
+    let seconds = (epoch / 1_000_000_000) as i64;
+    let transitions = [(-20, 22), (17, -18), (47, 6)].map(|(when, offset)| OffsetTransition {
+        epoch_seconds: seconds + when * 3_600,
+        offset_seconds: offset * 3_600,
+    });
+    let zone = TransitionZone::new(-23 * 3_600, &transitions, None).unwrap();
+    let at_hour = |value: i128| {
+        ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(epoch + value * hour).unwrap(),
+            zone,
+        )
+        .with_calendar(Calendar::Coptic)
+    };
+    let origin = at_hour(-97);
+    let target = at_hour(10);
+    assert_eq!(
+        origin
+            .checked_add("P1W".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant(),
+        target.instant()
+    );
+    for mode in [
+        RoundingMode::Floor,
+        RoundingMode::Ceil,
+        RoundingMode::HalfEven,
+    ] {
+        assert_eq!(
+            origin
+                .until(&target, DateTimeUnit::Month, DateTimeUnit::Week, 1, mode)
+                .unwrap()
+                .to_string(),
+            "P1W",
+            "{mode:?}"
+        );
     }
 }
 

@@ -554,6 +554,43 @@ try {
       wideGap + targetHour * hour
     )
   }
+
+  for (const [originDay, upperDay, offsets, events, targetHour, sign, full] of [
+    [6, 11, [-23, 22, -18, 6], [-20n, 17n, 47n], 10n, 1, 'P1M1DT8H'],
+    [11, 6, [-21, 3, 20, -19, 5], [-41n, -36n, -16n, 14n], -5n, -1, '-P1M1D'],
+  ]) {
+    const center = BigInt(Date.UTC(2024, 8, upperDay)) * 1_000_000n
+    installBoundaryZone(center, offsets, events)
+    const originDate = `2024-09-${String(originDay).padStart(2, '0')}`
+    const weekOrigin = Temporal.ZonedDateTime.from(
+      `${originDate}T00:00[${pulse}][u-ca=coptic]`
+    )
+    const weekTarget = new Temporal.ZonedDateTime(
+      center + targetHour * hour,
+      pulse,
+      'coptic'
+    )
+    const unroundedWeek = weekOrigin.until(weekTarget, {largestUnit: 'month'})
+    assert.equal(unroundedWeek.toString(), full)
+    assert.equal(
+      weekOrigin.add({weeks: sign}).epochNanoseconds,
+      weekTarget.epochNanoseconds
+    )
+    const expected = sign > 0 ? 'P1W' : '-P1W'
+    const expectedSince = sign > 0 ? '-P1W' : 'P1W'
+    for (const roundingMode of ['floor', 'ceil', 'halfEven']) {
+      const options = {largestUnit: 'month', smallestUnit: 'week', roundingMode}
+      assert.equal(weekOrigin.until(weekTarget, options).toString(), expected)
+      assert.equal(
+        weekOrigin.since(weekTarget, options).toString(),
+        expectedSince
+      )
+      assert.equal(
+        unroundedWeek.round({...options, relativeTo: weekOrigin}).toString(),
+        expected
+      )
+    }
+  }
 } finally {
   hooks.deregister()
 }

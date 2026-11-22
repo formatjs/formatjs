@@ -47,7 +47,7 @@ round beyond the input interval; the quotient still stays below `1.201e9`.
 Both bounds are exactly representable. The separately balanced remainder is
 below one day.
 
-[Rust:277](../../crates/temporal/calendar_difference.rs#L417) performs the same
+[Rust:277](../../crates/temporal/calendar_difference.rs#L420) performs the same
 calculation in i128 and reconstructs the remainder at hour. Provided the calendar
 day field has the required bounded integer value, its intermediate f64
 conversion is exact as well. This does not establish that provider arithmetic selected the correct day count.

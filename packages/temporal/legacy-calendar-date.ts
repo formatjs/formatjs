@@ -324,11 +324,14 @@ export function legacyCalendarParts(
       // ECMA-402 §11.5.7 step 1: ask the host for the original partition.
       raw = parts.call(value.formatter, value.milliseconds)
       if (
-        !arraySome(raw, part =>
-          arrayIncludes(
-            ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
-            part.type
-          )
+        !arraySome(
+          raw,
+          // ECMA-402 §11.5.7 step 4.b: inspect host-emitted date part types.
+          part =>
+            arrayIncludes(
+              ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
+              part.type
+            )
         )
       )
         return raw
@@ -370,13 +373,16 @@ export function legacyCalendarParts(
       surrogate = local - floor((local - 946684800000) / cycle) * cycle
       // ECMA-402 §11.5.4 steps 13–15: use surrogate labels and retain the real
       // clock parts.
-      raw = parts
-        .call(labels, surrogate)
-        .map(part =>
+      raw = parts.call(labels, surrogate).map(
+        // ECMA-402 §11.5.7 steps 4.b–c: retain types and restore real clock values.
+        part =>
           clockTypes.has(part.type)
-            ? (clockParts.find(item => item.type === part.type) ?? part)
+            ? (clockParts.find(
+                // ECMA-402 §11.5.7 step 4.b: match the host clock part type.
+                item => item.type === part.type
+              ) ?? part)
             : part
-        )
+      )
     }
     // Keep the original local day when labels use a UTC surrogate.
     if (lunar)
@@ -404,11 +410,14 @@ export function legacyCalendarParts(
       floor((value.milliseconds - 946684800000) / cycle) * cycle,
     raw = parts.call(value.formatter, surrogate)
   if (
-    !arraySome(raw, part =>
-      arrayIncludes(
-        ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
-        part.type
-      )
+    !arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: inspect surrogate date part types.
+      part =>
+        arrayIncludes(
+          ['year', 'month', 'day', 'era', 'relatedYear', 'yearName'],
+          part.type
+        )
     )
   )
     return raw
@@ -465,7 +474,13 @@ function restoreCalendarParts(
     short = (value: number): string =>
       Array.from(formatTwo(value)).slice(-2).join(''),
     changes = new Map<string, string>()
-  if (arraySome(raw, part => part.type === 'year')) {
+  if (
+    arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: restore text only for an emitted year part.
+      part => part.type === 'year'
+    )
+  ) {
     // ECMA-402 §11.5.8 step 15.d.v: keep the year before formatting it.
     if (rangeFields) rangeFields.year = rawYear
     const sampleText = firstPart(controls, 'year'),
@@ -524,7 +539,13 @@ function restoreCalendarParts(
     if (rangeFields && calendar === 'buddhist' && options.month === 'narrow')
       rangeFields.narrowMonth = date.month
   }
-  if (arraySome(raw, part => part.type === 'day')) {
+  if (
+    arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: restore text only for an emitted day part.
+      part => part.type === 'day'
+    )
+  ) {
     // ECMA-402 §11.5.4 steps 15.f.viii–ix: preserve the host day width.
     const two = firstPart(controls, 'day') === formatTwo(3)
     const corrected = two ? formatTwo(date.day) : format(date.day)
@@ -571,6 +592,7 @@ function restoreCalendarParts(
   if (
     arrayEvery(
       raw,
+      // ECMA-402 §11.5.7 steps 4.b–c: compare corrected and emitted part values.
       part => !changes.has(part.type) || changes.get(part.type) === part.value
     )
   )
@@ -922,6 +944,7 @@ export function legacyCalendarRangeParts(
     arraySome(start, part => part.type === 'month' || part.type === 'day')
   if (!clipped(first) && !clipped(last)) {
     try {
+      // ECMA-402 §11.5.7 steps 4.b–c: compare host part records before reuse.
       const same = (
         one: Intl.DateTimeFormatPart[],
         two: Intl.DateTimeFormatPart[]
@@ -929,6 +952,7 @@ export function legacyCalendarRangeParts(
         one.length === two.length &&
         arrayEvery(
           one,
+          // ECMA-402 §11.5.7 steps 4.b–c: compare the emitted type and value.
           (part, index) =>
             part.type === two[index].type && part.value === two[index].value
         )

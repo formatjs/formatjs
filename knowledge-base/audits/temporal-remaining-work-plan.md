@@ -226,6 +226,8 @@ Node ICU host spacing certificate. Transition-table validation alone cannot
 prove the effective offset bound. A three-transition packed and borrowed zone
 put both retained-prefix day bounds past the target. The TypeScript and Rust
 retry now rechecks the rebased lower endpoint after compatible resolution.
+The separate [inward week and minimum local gap review](temporal-retained-week-local-limit-audit.md)
+records the latest exact-provider fixes and 17 additional source anchors.
 The retained-prefix week shortcut reaches
 337/336 in a New York fold. Its public result matches the intended retry
 on the certified valid endpoints. The [endpoint proof](temporal-retained-week-endpoint-validity.md)
@@ -233,14 +235,14 @@ validates that extra week on the certified profiles. Published assertion and
 retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
-retains 1,069 identities, including 1,064 live bindings and five retired callbacks.
+retains 1,069 identities, including 1,063 live bindings and six retired callbacks.
 [Earlier mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-That checkpoint includes 996 reviewed local scopes and 12 narrow transport caller links. Current mapping states are 1,023 mapped,
-24 candidate and 22 unmapped, including five retired identities. Annotation
-presence is 1,011 direct, 11 enclosing,
-42 without a numbered anchor, and 5 retired. These are
+That checkpoint includes 996 reviewed local scopes and 12 narrow transport caller links. Current mapping states are 1,034 mapped,
+12 candidate and 23 unmapped, including six retired identities. Annotation
+presence is 1,028 direct, five enclosing,
+30 without a numbered anchor, and six retired. These are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -488,7 +490,7 @@ transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preser
 wall, UTC, minute and exact classifications for the caller. Two more comments
 bind the prepared calendar Number predicate and captured Proxy construction to
 their ECMA-262 algorithms. The [inline owner review](temporal-inline-owner-batch-audit.md) mapped 24
-more callbacks and helpers directly. The residual register retains 42
+more callbacks and helpers directly. The residual register retains 30
 helper owners with their current locations.
 [Residual helper owners](temporal-helper-residual-owners.tsv).
 [Number predicate](https://tc39.es/ecma262/#sec-number.issafeinteger).

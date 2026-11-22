@@ -98,7 +98,7 @@ function years(
     // ECMA-402 §11.5.4 step 15.f.iv: convert each signed year to display year.
     original = format(year <= 0 ? 1 - year : year),
     replacement = format(surrogate <= 0 ? 1 - surrogate : surrogate)
-  // A 400-year shift preserves month/day/weekday and two-digit years.
+  // ECMA-402 §11.5.4 step 15.f.iv: restore only the surrogate year label.
   return text => (text === replacement ? original : text)
 }
 
@@ -116,6 +116,7 @@ export function legacyDateTimeParts(
         resolved
       ),
       'timeZoneName',
+      // ECMA-402 §11.5.4 step 15.e.v: use the projected zone label.
       () => value[legacyTimeZoneName]!
     )
   const calendar = legacyCalendarParts(value, parts, resolved)
@@ -133,6 +134,7 @@ export function legacyDateTimeParts(
   return replacePartValues(
     parts.call(value.formatter, value.milliseconds + delta),
     'year',
+    // ECMA-402 §11.5.7 step 4.c: restore the returned year value.
     part => rewrite(part.value)
   )
 }
@@ -218,6 +220,7 @@ export function legacyDateTimeRangeParts(
       last.milliseconds + end
     ),
     'year',
+    // ECMA-402 §11.5.8 steps 19.c–e: choose the rewrite by part source.
     part => (part.source === 'endRange' ? rewriteEnd : rewriteStart)(part.value)
   )
 }

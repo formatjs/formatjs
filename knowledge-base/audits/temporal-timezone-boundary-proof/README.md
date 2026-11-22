@@ -468,7 +468,7 @@ that same instant. Both tests query one nanosecond before and after the
 handoff and verify strict direction at the handoff itself.
 
 [Compact delegation](../../../packages/temporal/kernel.ts#L283).
-[Rust handoff check](../../../crates/temporal/timezone.rs#L507).
+[Rust handoff check](../../../crates/temporal/timezone.rs#L508).
 
 - Before-fix Bazel SHA-256 `4413a6ddc2e8a0fd563f9cf390be32878f5b00d727670e5133be548ab37a1bd5`
 - Combined nine-target Bazel SHA-256 `78daf4411c68153d468dc61a45cdaca6e8dd00582929d7ee9cb880def95fa8d0`
@@ -482,8 +482,8 @@ epoch seconds on each side, then returns the valid boundary. At one
 nanosecond above the minimum, both test zones return the minimum as
 their previous transition. The strict query from the minimum returns
 null. An unchanged offset at the same timestamp returns null too.
-[Rust offset check](../../../crates/temporal/timezone.rs#L484).
-[Regression](../../../crates/temporal/lib.test.rs#L4559).
+[Rust offset check](../../../crates/temporal/timezone.rs#L485).
+[Regression](../../../crates/temporal/lib.test.rs#L4647).
 [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
 
 - Before-fix Bazel SHA-256 `18fa17e034ea575ab2d357c25f1845f3f30750f429669e65d1682362a61b45d4`

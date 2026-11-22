@@ -1,7 +1,7 @@
 {
   "scope": "1008 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
-  "live_rebound_rows": 1064,
+  "live_rebound_rows": 1063,
   "retired_identities": [
     {
       "inventory_row": 746,
@@ -66,6 +66,16 @@
       "original_callable_sha256": "d9612316f301ac2370d2a17d289facbc2a3d93a90a143e17b06a59ca202acbc8",
       "removed_by_commit": "574608815",
       "stale_queue_range": [43, 43]
+    },
+    {
+      "inventory_row": 790,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-extended-date.ts",
+        "symbol": "anonymous@113",
+        "kind": "callback"
+      },
+      "reason": "Commit 849f13dc7 replaced part-value extraction with the numbered joinPartValues loop."
     }
   ],
   "reviewed_rows": [
@@ -33896,35 +33906,35 @@
   "fresh_annotation_presence_summary": {
     "inventory_rows": 1069,
     "files": 75,
-    "active_rebound_rows": 1065,
-    "retired_replaced_callbacks": 4,
+    "active_rebound_rows": 1063,
+    "retired_replaced_callbacks": 6,
     "mapping_status": {
-      "mapped": 1023,
-      "candidate": 24,
-      "unmapped": 22
+      "mapped": 1034,
+      "candidate": 12,
+      "unmapped": 23
     },
     "annotation_coverage": {
-      "direct_numbered": 1011,
-      "no_numbered_anchor": 42,
-      "enclosing_numbered": 11,
-      "retired_callback": 5
+      "direct_numbered": 1028,
+      "no_numbered_anchor": 30,
+      "enclosing_numbered": 5,
+      "retired_callback": 6
     },
-    "direct_with_step_wording": 893,
+    "direct_with_step_wording": 910,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 1011
+      "overlap": 1028
     },
     "no_numbered_anchor_by_kind": {
       "function": 17,
-      "named-function": 14,
-      "callback": 11
+      "named-function": 12,
+      "callback": 1
     },
     "role_review_bundles": {
       "time_zone_and_zoned_algorithm_review": {
         "rows": 180,
         "files": 12,
         "coverage": {
-          "direct_numbered": 171,
-          "no_numbered_anchor": 7,
+          "direct_numbered": 173,
+          "no_numbered_anchor": 5,
           "enclosing_numbered": 2
         }
       },
@@ -33932,9 +33942,9 @@
         "rows": 247,
         "files": 19,
         "coverage": {
-          "direct_numbered": 226,
-          "no_numbered_anchor": 17,
-          "enclosing_numbered": 3,
+          "direct_numbered": 235,
+          "no_numbered_anchor": 9,
+          "enclosing_numbered": 2,
           "retired_callback": 1
         }
       },
@@ -33958,8 +33968,8 @@
         "rows": 9,
         "files": 5,
         "coverage": {
-          "no_numbered_anchor": 5,
-          "direct_numbered": 3,
+          "direct_numbered": 5,
+          "no_numbered_anchor": 3,
           "enclosing_numbered": 1
         }
       },
@@ -33967,10 +33977,9 @@
         "rows": 240,
         "files": 24,
         "coverage": {
-          "direct_numbered": 226,
+          "direct_numbered": 230,
           "no_numbered_anchor": 5,
-          "retired_callback": 4,
-          "enclosing_numbered": 5
+          "retired_callback": 5
         }
       }
     }
@@ -33985,7 +33994,7 @@
     "crates/intl_datetimeformat_calendars/provider.rs": "612bdd5d09dfaa9d29685d7320a236979291ca4a136c8e1de2fb1825c1b13384",
     "crates/intl_datetimeformat_calendars/table_calendar.rs": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
     "crates/intl_datetimeformat_calendars/tables.rs": "25a5677bccc6a4aa4c56d9579e4146777164e0f3773fc50aaaa4096934e0ac66",
-    "crates/temporal/calendar_difference.rs": "3df4135da7bc1070120968e6307dfc83ab4b2ddf74da8a37b3d3daf008e3ae4e",
+    "crates/temporal/calendar_difference.rs": "edf3806e23a94890f8bb0e9711a42893b22601f6d1ef3584ac19277b7c5b7f76",
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
     "crates/temporal/calendar_registry.rs": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70",
     "crates/temporal/context.rs": "d424868bd51364e82419be034038517318875cd7ba9a803b6a5aeff28f7911a9",
@@ -34002,18 +34011,18 @@
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
-    "crates/temporal/timezone.rs": "53ac45f9b1e054653cf8f3331f5e0c9cfe943f252d80872bc9942fe655fe9bf6",
+    "crates/temporal/timezone.rs": "04043ddb8e3a6f5d078ada98beff0e66b38d193f98152cfdac18d662ac3810ec",
     "crates/temporal/timezone_identity.rs": "93bb14d5d0ba17d3dc97dffac128c6d5f30a57bd7aefd400c549814cfd781a99",
     "crates/temporal/timezone_registry.rs": "b02c1a900fe73b7ed2450150c218840b4d770e7eeb8297fad30424e9071bade3",
     "crates/temporal/zoned.rs": "8d5a778f084fde8f0610f275096aaa5741aef5713fa2b42de197273891a9f97c",
     "crates/temporal/zoned_difference.rs": "7f61d43aedd2fa256912144d69ded838456f28245c2caad44f6355a73831ca6d",
     "crates/temporal/zoned_string.rs": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
-    "packages/temporal/accessors.ts": "4d6cc7204e5451cb19339c90e5aa9f9624817317dd44683140d0272091f19a7a",
+    "packages/temporal/accessors.ts": "c9d2ac97f2b847f3b996a03064440e48990faab92e6e3ea740a0b1a9de172d5f",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "683575e3b74028ba84d13e24406540ba1fbc6a00b8b74fd96eedea0f0358f002",
     "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
     "packages/temporal/date-bridge.ts": "0c4e032747e8006f9794fef18d45fd5cb0520a40a535aa15bc5ef00f80989afc",
-    "packages/temporal/date-core.ts": "183dc35ec9588de76c3e1fe8714af698990eadd4462370f5f837b97636b6c40f",
+    "packages/temporal/date-core.ts": "84d2d4b906f3f0fa76ec1b0ffcf4faf52d9bfb4e5a4dda50c4b37f3932bf8d32",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
     "packages/temporal/duration-core.ts": "43e47619a66f517a844a06aac2db7b62219a3010dd45052cceb339c20ff74981",
     "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
@@ -34029,12 +34038,12 @@
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
     "packages/temporal/kernel.ts": "35438c5f7dba8322105a415e5f2636762f0c6a9478c3387c557a40572fd70636",
-    "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
+    "packages/temporal/legacy-calendar-date.ts": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
-    "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
+    "packages/temporal/legacy-extended-date.ts": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
     "packages/temporal/legacy-intl.ts": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
     "packages/temporal/legacy-lunisolar-date.ts": "9ec4e149635d856efd881559eabdb25db6dbda07b712ef65ca41797f38fba88f",
-    "packages/temporal/legacy-zoned-date.ts": "9f49bdcba14c32c76c04ace7b49e9580d9fb4b0988bb1cbb361d390a27b3d15a",
+    "packages/temporal/legacy-zoned-date.ts": "c6ab86ca4b9e4c6303b726ad01e73f380489c0e80c120005aa1875bddff5b9a3",
     "packages/temporal/locale.ts": "ead3cfcdc26ec20db99ff0a539f65c3b3deb9ba34cea92b8ce985418d003f95b",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
     "packages/temporal/native.ts": "129514cbb0cd9dc4f92d4f5a6d84876aeceab06a776b661cfce100569e1dfa23",
@@ -34777,7 +34786,7 @@
       {
         "file": "packages/temporal/legacy-extended-date.ts",
         "symbol": "replacePartValues",
-        "source_sha256": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
+        "source_sha256": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
         "start_line": 37,
         "end_line": 52,
         "anchor_line": 36,
@@ -34789,7 +34798,7 @@
       {
         "file": "packages/temporal/legacy-extended-date.ts",
         "symbol": "replacePartValues",
-        "source_sha256": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
+        "source_sha256": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
         "start_line": 37,
         "end_line": 52,
         "anchor_line": 36,
@@ -34801,7 +34810,7 @@
       {
         "file": "packages/temporal/legacy-extended-date.ts",
         "symbol": "joinPartValues",
-        "source_sha256": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
+        "source_sha256": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
         "start_line": 55,
         "end_line": 59,
         "anchor_line": 54,
@@ -34813,7 +34822,7 @@
       {
         "file": "packages/temporal/legacy-extended-date.ts",
         "symbol": "joinPartValues",
-        "source_sha256": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
+        "source_sha256": "231d2b176b2d5bfb2622a049ccb5e71f124a71a4fec6c8eea29e5a2f3efc339a",
         "start_line": 55,
         "end_line": 59,
         "anchor_line": 54,
@@ -34853,7 +34862,7 @@
       {
         "file": "crates/temporal/timezone.rs",
         "symbol": "offset_seconds",
-        "source_sha256": "53ac45f9b1e054653cf8f3331f5e0c9cfe943f252d80872bc9942fe655fe9bf6",
+        "source_sha256": "04043ddb8e3a6f5d078ada98beff0e66b38d193f98152cfdac18d662ac3810ec",
         "start_line": 303,
         "end_line": 317,
         "anchor_line": 302,
@@ -34865,7 +34874,7 @@
       {
         "file": "crates/temporal/timezone.rs",
         "symbol": "visit_offset_seconds_window",
-        "source_sha256": "53ac45f9b1e054653cf8f3331f5e0c9cfe943f252d80872bc9942fe655fe9bf6",
+        "source_sha256": "04043ddb8e3a6f5d078ada98beff0e66b38d193f98152cfdac18d662ac3810ec",
         "start_line": 320,
         "end_line": 338,
         "anchor_line": 319,
@@ -34877,7 +34886,7 @@
       {
         "file": "crates/temporal/timezone.rs",
         "symbol": "has_out_of_range_candidate",
-        "source_sha256": "53ac45f9b1e054653cf8f3331f5e0c9cfe943f252d80872bc9942fe655fe9bf6",
+        "source_sha256": "04043ddb8e3a6f5d078ada98beff0e66b38d193f98152cfdac18d662ac3810ec",
         "start_line": 379,
         "end_line": 398,
         "anchor_line": 378,
@@ -34905,7 +34914,7 @@
       {
         "file": "crates/temporal/calendar_difference.rs",
         "symbol": "resolve_compatible",
-        "source_sha256": "3df4135da7bc1070120968e6307dfc83ab4b2ddf74da8a37b3d3daf008e3ae4e",
+        "source_sha256": "edf3806e23a94890f8bb0e9711a42893b22601f6d1ef3584ac19277b7c5b7f76",
         "start_line": 77,
         "end_line": 79,
         "anchor_line": 76,
@@ -34931,10 +34940,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "matchesNumericRangeYear",
-        "source_sha256": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
-        "start_line": 585,
-        "end_line": 623,
-        "anchor_line": 584,
+        "source_sha256": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae",
+        "start_line": 607,
+        "end_line": 645,
+        "anchor_line": 606,
         "section": "11.5.8",
         "steps": ["15.d"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -34943,10 +34952,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "restoreNumericRangeYears",
-        "source_sha256": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
-        "start_line": 642,
-        "end_line": 727,
-        "anchor_line": 713,
+        "source_sha256": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae",
+        "start_line": 664,
+        "end_line": 749,
+        "anchor_line": 735,
         "section": "11.5.8",
         "steps": ["19.b", "19.c", "19.d", "19.e", "19.f"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -34955,10 +34964,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "correctedRangeDay",
-        "source_sha256": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
-        "start_line": 626,
-        "end_line": 640,
-        "anchor_line": 625,
+        "source_sha256": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae",
+        "start_line": 648,
+        "end_line": 662,
+        "anchor_line": 647,
         "section": "11.5.8",
         "steps": ["19.e"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -35081,10 +35090,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "projectedBuddhistRange",
-        "start_line": 795,
-        "end_line": 858,
-        "source_sha256": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
-        "anchor_line": 836,
+        "start_line": 817,
+        "end_line": 880,
+        "source_sha256": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae",
+        "anchor_line": 858,
         "section": "11.5.8",
         "steps": ["7", "8", "15.d", "19.e"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -35111,10 +35120,10 @@
         "steps": ["19.e", "19.f"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
         "scope": "Replace verified tagged endpoint days at the selected width and retain corresponding native month and year labels.",
-        "start_line": 729,
-        "end_line": 793,
-        "anchor_line": 788,
-        "source_sha256": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2"
+        "start_line": 751,
+        "end_line": 815,
+        "anchor_line": 810,
+        "source_sha256": "db38ab70e2c93539fce6f928accbad1193e8a40422431c6378fe2d6e57038dae"
       },
       {
         "file": "packages/temporal/legacy-lunisolar-date.ts",

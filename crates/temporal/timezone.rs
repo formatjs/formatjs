@@ -404,7 +404,8 @@ impl TimeZone for TransitionZone<'_> {
 
     // Proposal comparison §11.1.12 steps 6–7: Project adjacent raw offset segments.
     fn nearest_gap_boundaries(&self, local: i128) -> Option<(i128, i128)> {
-        if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&local) {
+        // The local clock can lie outside the Instant range.
+        if crate::iso::check_local(local).is_err() {
             return None;
         }
         // Epochs one day away project to opposite sides within two local days.

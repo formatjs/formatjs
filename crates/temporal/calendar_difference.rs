@@ -287,15 +287,15 @@ pub(crate) fn difference<A: RelativeAnchor>(
                     0
                 };
                 prefix[unit] -= sign;
+                let calendar = start.calendar();
+                let date = PlainDate::from_epoch_day_in(start.date_at(origin)?, calendar)?;
+                let upper = date
+                    .checked_add(Duration::new(upper_prefix)?, Overflow::Constrain)?
+                    .epoch_day();
+                let lower = date
+                    .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
+                    .epoch_day();
                 if smallest != DateTimeUnit::Week {
-                    let calendar = start.calendar();
-                    let date = PlainDate::from_epoch_day_in(start.date_at(origin)?, calendar)?;
-                    let upper = date
-                        .checked_add(Duration::new(upper_prefix)?, Overflow::Constrain)?
-                        .epoch_day();
-                    let lower = date
-                        .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
-                        .epoch_day();
                     // Estimate the inward quantum using the raw offset bound.
                     let last_day = upper + sign as i64;
                     if smallest == DateTimeUnit::Day {
@@ -342,16 +342,19 @@ pub(crate) fn difference<A: RelativeAnchor>(
                     }
                 } else {
                     a = endpoint(start, prefix)?;
-                    // Offsets can shorten the week stride by less than two days.
-                    let min_stride = (7 * i128::from(increment) - 2) * NANOSECONDS_PER_DAY;
-                    while (end - a) * sign > min_stride {
-                        prefix[index] = truncated + stride;
+                    // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+                    // Each compatible gap endpoint can move by up to two days.
+                    // A nominal week four days past the retained upper bound cannot fit.
+                    let mut next_count = truncated + stride;
+                    while a != end && (i128::from(lower - upper) + 7 * next_count) * sign < 4 {
+                        prefix[index] = next_count;
                         let next = endpoint(start, prefix)?;
                         if (end - next) * sign < 0 {
                             break;
                         }
-                        truncated += stride;
+                        truncated = next_count;
                         a = next;
+                        next_count += stride;
                     }
                 }
             } else {

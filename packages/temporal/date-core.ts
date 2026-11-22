@@ -1057,9 +1057,9 @@ export function roundRelativeDifference(
               ? 'months'
               : 'years'
         prefix[unit] -= sign
+        const upperDay = anchor.nominalDay(rebasedUpper)
+        const lowerDay = anchor.nominalDay(prefix)
         if (smallest !== 'week') {
-          const upperDay = anchor.nominalDay(rebasedUpper)
-          const lowerDay = anchor.nominalDay(prefix)
           // Seed the retry with the nominal bound for ordinary offsets.
           // Compatible gap resolution can move past that estimate.
           const lastDay = upperDay + sign
@@ -1099,14 +1099,20 @@ export function roundRelativeDifference(
           }
         } else {
           a = anchor.endpoint(prefix)
-          // Offsets can shorten the week stride by less than two days.
-          const minStride = (7n * bigIntFrom(increment) - 2n) * nsPerDay
-          while ((end - a) * physicalSign > minStride) {
-            prefix[key] = truncated + stride
+          // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+          // Each compatible gap endpoint can move by up to two days.
+          // A nominal week four days past the retained upper bound cannot fit.
+          let nextCount = truncated + stride
+          while (
+            a !== end &&
+            (lowerDay + 7 * nextCount - upperDay) * sign < 4
+          ) {
+            prefix[key] = nextCount
             const next = anchor.endpoint(prefix)
             if ((end - next) * physicalSign < 0n) break
-            truncated += stride
+            truncated = nextCount
             a = next
+            nextCount += stride
           }
         }
       } else {

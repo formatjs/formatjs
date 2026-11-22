@@ -89,7 +89,7 @@ covered by the explicit spec-derived tests above.
 
 The separate native bridge still formatted raw provider era years, bypassing the
 TS/Rust pattern producers above. The same published §11.5.4 step 15.f.iv therefore
-required a correction in [restoreCalendarParts:361–384](../../packages/temporal/legacy-calendar-date.ts#L361).
+required a correction in [restoreCalendarParts:361–384](../../packages/temporal/legacy-calendar-date.ts#L364).
 It selects the existing era-year/date-year representation, converts a nonpositive
 year to `1 - year`, then applies numeric or two-digit rendering. Calendar fields,
 era labels, month/day and RelatedYear/YearName branches are unchanged. Built-in

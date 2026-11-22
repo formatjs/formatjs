@@ -69,7 +69,13 @@ export function legacyZonedProjection(
   } as Intl.DateTimeFormatOptions)
   const probe = parts.call(formatter, 0)
   let timeZoneName: string | undefined
-  if (arraySome(probe, part => part.type === 'timeZoneName')) {
+  if (
+    arraySome(
+      probe,
+      // ECMA-402 §11.5.7 step 4.b: detect an emitted timezone-name part.
+      part => part.type === 'timeZoneName'
+    )
+  ) {
     const long =
       selected.timeZoneName === 'long' ||
       selected.timeZoneName === 'longOffset' ||
@@ -106,7 +112,10 @@ function offsetName(
         }),
         0
       )
-      .find(part => part.type === 'timeZoneName')!.value
+      .find(
+        // ECMA-402 §11.5.7 step 4.b: select the host timezone-name part.
+        part => part.type === 'timeZoneName'
+      )!.value
   // ECMA-402 §11.5.4 step 15.e.iv: Build the localized offset label from host
   // controls.
   if (offset === 0n) return label('Etc/GMT', long)
