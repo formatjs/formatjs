@@ -2,7 +2,7 @@
   "scope": "Numbered comment presence for each public-map section; does not establish whole API verification or full helper/backend comment coverage. Step counts reviewed against frozen comparison snapshot.",
   "public_rows": 268,
   "source_files": {
-    "packages/temporal/duration.ts": "f51ed2fe9190e2dd385c003e2664ce006a5a486f3d7317776a3750a1c9dbca6d",
+    "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
     "packages/temporal/index.ts": "eff29c356b773d0906c77a7b2b9b1232ccf51ad4c3fd91a031551a72152f9eae",
     "packages/temporal/instant.ts": "fa0e6bece9070ac35936d434631414b1aab193aeff0c9efba617e00944e75952",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",
@@ -926,151 +926,151 @@
     {
       "section": "7.1.1",
       "spec_anchor": "sec-temporal.duration",
-      "comment_locations": ["packages/temporal/duration.ts:500"]
+      "comment_locations": ["packages/temporal/duration.ts:512"]
     },
     {
       "section": "7.2.1",
       "spec_anchor": "sec-temporal.duration.prototype",
-      "comment_locations": ["packages/temporal/duration.ts:496"]
+      "comment_locations": ["packages/temporal/duration.ts:508"]
     },
     {
       "section": "7.2.2",
       "spec_anchor": "sec-temporal.duration.from",
-      "comment_locations": ["packages/temporal/duration.ts:233"]
+      "comment_locations": ["packages/temporal/duration.ts:245"]
     },
     {
       "section": "7.2.3",
       "spec_anchor": "sec-temporal.duration.compare",
       "comment_locations": [
-        "packages/temporal/duration.ts:166",
-        "packages/temporal/duration.ts:177",
-        "packages/temporal/duration.ts:194"
+        "packages/temporal/duration.ts:178",
+        "packages/temporal/duration.ts:189",
+        "packages/temporal/duration.ts:206"
       ]
     },
     {
       "section": "7.3.1",
       "spec_anchor": "sec-temporal.duration.prototype.constructor",
-      "comment_locations": ["packages/temporal/duration.ts:541"]
+      "comment_locations": ["packages/temporal/duration.ts:553"]
     },
     {
       "section": "7.3.2",
       "spec_anchor": "sec-temporal.duration.prototype-%symbol.tostringtag%",
-      "comment_locations": ["packages/temporal/duration.ts:544"]
+      "comment_locations": ["packages/temporal/duration.ts:556"]
     },
     {
       "section": "7.3.3",
       "spec_anchor": "sec-get-temporal.duration.prototype.years",
-      "comment_locations": ["packages/temporal/duration.ts:515"]
+      "comment_locations": ["packages/temporal/duration.ts:527"]
     },
     {
       "section": "7.3.4",
       "spec_anchor": "sec-get-temporal.duration.prototype.months",
-      "comment_locations": ["packages/temporal/duration.ts:517"]
+      "comment_locations": ["packages/temporal/duration.ts:529"]
     },
     {
       "section": "7.3.5",
       "spec_anchor": "sec-get-temporal.duration.prototype.weeks",
-      "comment_locations": ["packages/temporal/duration.ts:519"]
+      "comment_locations": ["packages/temporal/duration.ts:531"]
     },
     {
       "section": "7.3.6",
       "spec_anchor": "sec-get-temporal.duration.prototype.days",
-      "comment_locations": ["packages/temporal/duration.ts:521"]
+      "comment_locations": ["packages/temporal/duration.ts:533"]
     },
     {
       "section": "7.3.7",
       "spec_anchor": "sec-get-temporal.duration.prototype.hours",
-      "comment_locations": ["packages/temporal/duration.ts:523"]
+      "comment_locations": ["packages/temporal/duration.ts:535"]
     },
     {
       "section": "7.3.8",
       "spec_anchor": "sec-get-temporal.duration.prototype.minutes",
-      "comment_locations": ["packages/temporal/duration.ts:525"]
+      "comment_locations": ["packages/temporal/duration.ts:537"]
     },
     {
       "section": "7.3.9",
       "spec_anchor": "sec-get-temporal.duration.prototype.seconds",
-      "comment_locations": ["packages/temporal/duration.ts:527"]
+      "comment_locations": ["packages/temporal/duration.ts:539"]
     },
     {
       "section": "7.3.10",
       "spec_anchor": "sec-get-temporal.duration.prototype.milliseconds",
-      "comment_locations": ["packages/temporal/duration.ts:529"]
+      "comment_locations": ["packages/temporal/duration.ts:541"]
     },
     {
       "section": "7.3.11",
       "spec_anchor": "sec-get-temporal.duration.prototype.microseconds",
-      "comment_locations": ["packages/temporal/duration.ts:531"]
+      "comment_locations": ["packages/temporal/duration.ts:543"]
     },
     {
       "section": "7.3.12",
       "spec_anchor": "sec-get-temporal.duration.prototype.nanoseconds",
-      "comment_locations": ["packages/temporal/duration.ts:533"]
+      "comment_locations": ["packages/temporal/duration.ts:545"]
     },
     {
       "section": "7.3.13",
       "spec_anchor": "sec-get-temporal.duration.prototype.sign",
-      "comment_locations": ["packages/temporal/duration.ts:244"]
+      "comment_locations": ["packages/temporal/duration.ts:256"]
     },
     {
       "section": "7.3.14",
       "spec_anchor": "sec-get-temporal.duration.prototype.blank",
-      "comment_locations": ["packages/temporal/duration.ts:249"]
+      "comment_locations": ["packages/temporal/duration.ts:261"]
     },
     {
       "section": "7.3.15",
       "spec_anchor": "sec-temporal.duration.prototype.with",
-      "comment_locations": ["packages/temporal/duration.ts:254"]
+      "comment_locations": ["packages/temporal/duration.ts:266"]
     },
     {
       "section": "7.3.16",
       "spec_anchor": "sec-temporal.duration.prototype.negated",
-      "comment_locations": ["packages/temporal/duration.ts:260"]
+      "comment_locations": ["packages/temporal/duration.ts:272"]
     },
     {
       "section": "7.3.17",
       "spec_anchor": "sec-temporal.duration.prototype.abs",
-      "comment_locations": ["packages/temporal/duration.ts:277"]
+      "comment_locations": ["packages/temporal/duration.ts:289"]
     },
     {
       "section": "7.3.18",
       "spec_anchor": "sec-temporal.duration.prototype.add",
-      "comment_locations": ["packages/temporal/duration.ts:294"]
+      "comment_locations": ["packages/temporal/duration.ts:306"]
     },
     {
       "section": "7.3.19",
       "spec_anchor": "sec-temporal.duration.prototype.subtract",
-      "comment_locations": ["packages/temporal/duration.ts:299"]
+      "comment_locations": ["packages/temporal/duration.ts:311"]
     },
     {
       "section": "7.3.20",
       "spec_anchor": "sec-temporal.duration.prototype.round",
-      "comment_locations": ["packages/temporal/duration.ts:304"]
+      "comment_locations": ["packages/temporal/duration.ts:316"]
     },
     {
       "section": "7.3.21",
       "spec_anchor": "sec-temporal.duration.prototype.total",
-      "comment_locations": ["packages/temporal/duration.ts:385"]
+      "comment_locations": ["packages/temporal/duration.ts:397"]
     },
     {
       "section": "7.3.22",
       "spec_anchor": "sec-temporal.duration.prototype.tostring",
-      "comment_locations": ["packages/temporal/duration.ts:423"]
+      "comment_locations": ["packages/temporal/duration.ts:435"]
     },
     {
       "section": "7.3.23",
       "spec_anchor": "sec-temporal.duration.prototype.tojson",
-      "comment_locations": ["packages/temporal/duration.ts:480"]
+      "comment_locations": ["packages/temporal/duration.ts:492"]
     },
     {
       "section": "7.3.24",
       "spec_anchor": "sec-temporal.duration.prototype.tolocalestring",
-      "comment_locations": ["packages/temporal/duration.ts:472"]
+      "comment_locations": ["packages/temporal/duration.ts:484"]
     },
     {
       "section": "7.3.25",
       "spec_anchor": "sec-temporal.duration.prototype.valueof",
-      "comment_locations": ["packages/temporal/duration.ts:485"]
+      "comment_locations": ["packages/temporal/duration.ts:497"]
     },
     {
       "section": "8.1.1",

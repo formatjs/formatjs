@@ -82,17 +82,23 @@ export interface DurationConstructor {
 const slots = new WeakMap<object, DurationFields>()
 const getSlot = slots.get.bind(slots),
   setSlot = slots.set.bind(slots)
+// Temporal comparison §7.3.18 step 2, §7.3.19 step 2.
+// Read the private Duration record for receiver methods.
 function read(value: unknown): DurationFields {
   const fields = getSlot(value as object)
   if (!fields) throw new TypeErrorConstructor('Invalid Duration receiver')
   return fields
 }
+// Temporal comparison §7.5.12 steps 1.a, 2.b, 4.
+// Copy a branded record, parse a string, or prepare public fields.
 export function toDurationFields(value: unknown): DurationFields {
   const existing = getSlot(value as object)
   if (existing) return {...existing}
   if (typeof value === 'string') return parseDurationString(value)
   return toNativeDurationFields(value)
 }
+// Temporal comparison §7.5.12 steps 1–14.
+// Prepare duration fields for native operations.
 /** @internal Validate before options getters; no-options operations defer to Rust. */
 export function toNativeDurationFields(
   value: unknown,
@@ -117,16 +123,22 @@ export function toNativeDurationFields(
   return validate ? validateDuration(fields) : fields
 }
 // Fields must already be normalized and validated.
+// Temporal comparison §7.5.19 steps 2–14.
+// Allocate the default Duration from a validated native record.
 export function createNativeDuration(fields: DurationFields): DurationObject {
   const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, fields)
   return value
 }
+// Temporal comparison §7.5.19 steps 1–14.
+// Validate and store a fresh Duration result record.
 export function createDuration(fields: DurationFields): DurationObject {
   const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))
   return value
 }
+// Temporal comparison §7.5.41 steps 1–11.
+// Add or subtract durations on the prepared 24-hour-day path.
 function addDurations(
   one: DurationFields,
   other: unknown,

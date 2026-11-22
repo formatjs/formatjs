@@ -49,7 +49,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                       |
 | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                 |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 908 mapped, 87 candidate/dependency assignments, 74 unmapped (including 3 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 925 mapped, 87 candidate/dependency assignments, 57 unmapped (including 3 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                  |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                          |
 
@@ -117,7 +117,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. Candidate source assignments require confirmation; 74 unresolved
+separately. Candidate source assignments require confirmation; 57 unresolved
 helper mappings are a mapping queue, not missing functions.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -207,13 +207,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[797 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[832 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-785 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:908 mapped,87 candidate,
-74 unmapped, including three retired identities. Annotation presence alone
-is 855 direct, 15 enclosing, 196 without numbered anchors, 3 retired; these are
+820 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:925 mapped,87 candidate,
+57 unmapped, including three retired identities. Annotation presence alone
+is 874 direct, 15 enclosing, 177 without numbered anchors, 3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -272,8 +272,16 @@ structural or transport rows. Every Rust row in the fixed inventory now has a
 numbered reference or a documented structural disposition. Five focused Bazel
 targets pass. [Rust proof](temporal-native-remainder17-annotation-source-proof.json).
 
-Estimated time to triage 173 unreviewed TypeScript helpers without anchors is
-35–85 minutes at the measured review rate. Behavioral review still has
+The next 35 mappings cover Duration conversion and host formatting, date and
+calendar helpers, and exact Date-to-Instant conversion. Nineteen helpers gained
+numbered anchors and two TypeScript casts received structural dispositions.
+Six focused Bazel targets pass.
+[Duration proof](temporal-ts-duration23-annotation-source-proof.json).
+[Date proof](temporal-ts-date-helpers12-annotation-source-proof.json).
+
+209 TypeScript helpers still need review, including 152 without anchors and
+57 with existing comments whose scope needs reconciliation. Estimated time
+for source review is 35–90 minutes at the measured review rate. Behavioral review still has
 57 conditional Temporal steps. The published ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path now reuses a validated host range layout.
 Exact layout selection for other corrected fallback parts remains open.

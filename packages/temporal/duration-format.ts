@@ -13,6 +13,8 @@ import {
   type DurationFields,
 } from '#packages/temporal/duration-core.js'
 
+// Temporal comparison §7.5.40 steps 12–17.
+// Serialize prepared duration fields and the exact seconds fraction.
 export function formatDuration(
   fields: DurationFields,
   digits: number | 'auto' = 'auto'

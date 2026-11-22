@@ -126,6 +126,7 @@ export function overflowOption(options: unknown): Overflow {
     throw new RangeErrorConstructor('Invalid overflow')
   return value
 }
+// Proposal comparison §12.3.11 steps 1 and 1.a: Find a stored calendar on the five supported slot types.
 function calendarSlot(value: object): {calendar: string} | undefined {
   return (
     getZonedSlot(value) ??
@@ -141,6 +142,7 @@ export function calendarFromObject(item: Record<string, unknown>): string {
   // Step3: undefined defaults to ISO in calendarId.
   return calendarSlot(item)?.calendar ?? calendarId(item.calendar)
 }
+// Proposal comparison §13.36 steps 1 and 3–5: Choose the bare calendar identifier fast path.
 function bareCalendarIdentifier(value: string): boolean {
   if (value.length === 0) return false
   if (
@@ -184,6 +186,7 @@ export function constructorCalendar(value: unknown = 'iso8601'): string {
     throw new TypeErrorConstructor('Calendar must be a string')
   return supportedCalendar(stringToLowerCase(value))
 }
+// Proposal comparison §3.5.4 steps 4 and 7–9 and §5.5.6 steps 4 and 8–10: Parse and canonicalize before reading overflow.
 export function prepareDateTimeString(
   value: string,
   options: unknown
@@ -194,6 +197,7 @@ export function prepareDateTimeString(
   overflowOption(options)
   return fields
 }
+// Proposal comparison §12.1.1 steps 2–3: Check supported calendar IDs and resolve known aliases.
 function supportedCalendar(value: string): CalendarId {
   const id =
     value === 'islamicc'
@@ -253,6 +257,7 @@ export function epochDayOf(value: bigint): number {
   if (value < 0n && value % nsPerDay !== 0n) days--
   return numberFrom(days)
 }
+// Proposal comparison §7.5.33 steps 8.b and 10: Extract the anchor clock for relative endpoints.
 export function timeOf(value: bigint): bigint {
   return ((value % nsPerDay) + nsPerDay) % nsPerDay
 }
@@ -269,6 +274,7 @@ const dateSnapshots = new WeakMap<
   DateSlot,
   {owner: NativeTemporal; value: NativeDateSnapshot}
 >()
+// Proposal comparison §12.3.26 steps 1.b and 2: Reuse or request native calendar projection for a date slot.
 export function nativeDateSnapshot(
   slot: DateSlot,
   extended = false,
@@ -412,6 +418,7 @@ export function dateFieldNames(
   }
   return result
 }
+// Proposal comparison §12.3.3 steps 9.c.iii.1, 9.c.iv.1, 9.c.v.1 and 9.c.vii.1: Convert prepared date field values.
 export function dateFieldValue(key: string, value: unknown): string | number {
   if (key === 'era') return ToString(value)
   if (key === 'monthCode') {
@@ -892,7 +899,9 @@ export function roundedDateTimeDifference(
     since,
     {
       zoned: false,
+      // Proposal comparison §5.5.13 step 3: Supply unrounded ISO date-time differences for relative rounding.
       unrounded: value => unroundedDifference(start, value, calendar, largest),
+      // Proposal comparison §7.5.33 steps 8.a–8.c.i and 9–11.a: Add constrained date fields and preserve the anchor clock.
       endpoint: fields =>
         bigIntFrom(
           addDate({epochDay: epochDayOf(start), calendar}, fields, 'constrain')

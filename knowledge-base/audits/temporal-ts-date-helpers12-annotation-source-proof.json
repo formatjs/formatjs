@@ -1,0 +1,485 @@
+{
+  "scope": "12 numbered date helpers and two TypeScript type adapters reviewed. No realm or requirement status changes.",
+  "source_comparison": "Frozen Temporal proposal via durable core and amendment checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "packages/temporal/date-core.ts",
+      "before_sha256": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+      "after_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c",
+      "verified_callable_count": 38,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    },
+    {
+      "file": "packages/temporal/date-bridge.ts",
+      "before_sha256": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
+      "after_sha256": "b39e22687c45e53927dbca8142ee747ca3c9f811db569ed5d132e3f4cbda296c",
+      "verified_callable_count": 2,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    },
+    {
+      "file": "packages/temporal/short-date-core.ts",
+      "before_sha256": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+      "after_sha256": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+      "verified_callable_count": 8,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    602, 606, 608, 611, 612, 616, 618, 622, 623, 624, 638, 639
+  ],
+  "structural_inventory_rows": [613, 1020],
+  "reused_inline_annotations": [622, 623],
+  "review_timing": {
+    "scope": "Patch and evidence assembly after initial source/proposal review.",
+    "elapsed_seconds": 10
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 606,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "calendarSlot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "130",
+        "end_line": "138",
+        "comparison_sections": "12.3.11",
+        "section_ids": "sec-temporal-gettemporalcalendarslotvaluewithisodefault",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporalcalendarslotvaluewithisodefault",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-entry-annotation-proof.json|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.11/algorithm-1/step-1",
+        "12.3.11/algorithm-1/step-1.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 129,
+      "annotation": "// Proposal comparison \u00a712.3.11 steps 1 and 1.a: Find a stored calendar on the five supported slot types.",
+      "evidence": "Checks the private ZonedDateTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay slots, yielding a record with the stored calendar. The caller returns the calendar or continues to property Get and ISO default. This mapping concerns slot routing only."
+    },
+    {
+      "inventory_row": 608,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "bareCalendarIdentifier",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "146",
+        "end_line": "167",
+        "comparison_sections": "13.36",
+        "section_ids": "sec-temporal-parsetemporalcalendarstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "13.36/algorithm-1/step-1",
+        "13.36/algorithm-1/step-3",
+        "13.36/algorithm-1/step-4",
+        "13.36/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 145,
+      "annotation": "// Proposal comparison \u00a713.36 steps 1 and 3\u20135: Choose the bare calendar identifier fast path.",
+      "evidence": "Recognizes a narrow ASCII identifier shape and routes leading time-like T/t plus digit to full calendar-string parsing. The following supported-calendar check validates bare values. This predicate is a parse dispatch dependency, not standalone AnnotationValue grammar."
+    },
+    {
+      "inventory_row": 611,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "prepareDateTimeString",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "190",
+        "end_line": "199",
+        "comparison_sections": "3.5.4|5.5.6",
+        "section_ids": "sec-temporal-totemporaldate|sec-temporal-totemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldate|https://tc39.es/proposal-temporal/#sec-temporal-totemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-coercion-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "3.5.4/algorithm-1/step-4",
+        "3.5.4/algorithm-1/step-7",
+        "3.5.4/algorithm-1/step-8",
+        "3.5.4/algorithm-1/step-9",
+        "5.5.6/algorithm-1/step-4",
+        "5.5.6/algorithm-1/step-8",
+        "5.5.6/algorithm-1/step-9",
+        "5.5.6/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 189,
+      "annotation": "// Proposal comparison \u00a73.5.4 steps 4 and 7\u20139 and \u00a75.5.6 steps 4 and 8\u201310: Parse and canonicalize before reading overflow.",
+      "evidence": "Calls the ISO parser, canonicalizes the parsed calendar, then reads/validates overflow. Receives primitive strings already selected by callers. Scalar limits and construction stay in those callers."
+    },
+    {
+      "inventory_row": 612,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "supportedCalendar",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "201",
+        "end_line": "211",
+        "comparison_sections": "12.1.1",
+        "section_ids": "sec-temporal-canonicalizecalendar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-canonicalizecalendar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-entry-annotation-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.1.1/algorithm-1/step-2",
+        "12.1.1/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 200,
+      "annotation": "// Proposal comparison \u00a712.1.1 steps 2\u20133: Check supported calendar IDs and resolve known aliases.",
+      "evidence": "Receives an already lowered candidate, normalizes islamicc and ethiopic-amete-alem, checks the package\u2019s calendar list and throws if absent. This maps the selected provider list and aliases rather than all implementation-defined calendars or general CanonicalizeUValue."
+    },
+    {
+      "inventory_row": 616,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "timeOf",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "261",
+        "end_line": "263",
+        "comparison_sections": "7.5.33",
+        "section_ids": "sec-temporal-computenudgewindow",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "7.5.33/algorithm-1/step-8.b",
+        "7.5.33/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 260,
+      "annotation": "// Proposal comparison \u00a77.5.33 steps 8.b and 10: Extract the anchor clock for relative endpoints.",
+      "evidence": "Signed bigint remainder normalized to [0, nsPerDay) preserves exact clock nanoseconds for negative as well as positive local epochs. Relative endpoints combine this clock with the updated calendar day."
+    },
+    {
+      "inventory_row": 618,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "nativeDateSnapshot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "278",
+        "end_line": "308",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 277,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b and 2: Reuse or request native calendar projection for a date slot.",
+      "evidence": "Exits for an absent backend; otherwise validates the requested ordinary or extended range before reusing same-owner slot/WeakMap snapshots, or requests properties through NativeTemporal.calendarProperties. Projection behavior belongs to the backend. This is a slot-scoped cache dependency."
+    },
+    {
+      "inventory_row": 622,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "clockNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "364",
+        "end_line": "378",
+        "comparison_sections": "4.5.8",
+        "section_ids": "sec-temporal-regulatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-regulatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "4.5.8/algorithm-1/step-1",
+        "4.5.8/algorithm-1/step-1.a",
+        "4.5.8/algorithm-1/step-1.b",
+        "4.5.8/algorithm-1/step-1.c",
+        "4.5.8/algorithm-1/step-1.d",
+        "4.5.8/algorithm-1/step-1.e",
+        "4.5.8/algorithm-1/step-1.f",
+        "4.5.8/algorithm-1/step-2",
+        "4.5.8/algorithm-1/step-2.a",
+        "4.5.8/algorithm-1/step-2.b",
+        "4.5.8/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 362,
+      "annotation": "// Temporal comparison \u00a74.5.8 steps1\u20133: regulate prepared time fields before exact composition",
+      "evidence": "Existing leading annotation covers bounded prepared clock fields. Applies constrain or reject per time component, then combines the six fields as exact nanoseconds. The nanosecond scalar represents the regulated Time Record for callers."
+    },
+    {
+      "inventory_row": 623,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "dateFieldNames",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "398",
+        "end_line": "420",
+        "comparison_sections": "12.3.3",
+        "section_ids": "sec-temporal-preparecalendarfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-record-copy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": ["12.3.3/algorithm-1/step-8"],
+      "annotation_placement": "inline",
+      "annotation_line": 416,
+      "annotation": "// Temporal comparison \u00a712.3.3 step8: private List entries are own data.",
+      "evidence": "Existing inline step 8 annotation applies to appending selected keys to the private list. The loop visits a preordered literal list and selects calendar, shape and extra keys. It does not itself execute Get, conversion, or record allocation."
+    },
+    {
+      "inventory_row": 624,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "dateFieldValue",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "422",
+        "end_line": "455",
+        "comparison_sections": "12.3.3",
+        "section_ids": "sec-temporal-preparecalendarfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.3/algorithm-1/step-9.c.iii.1",
+        "12.3.3/algorithm-1/step-9.c.iv.1",
+        "12.3.3/algorithm-1/step-9.c.v.1",
+        "12.3.3/algorithm-1/step-9.c.vii.1"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 421,
+      "annotation": "// Proposal comparison \u00a712.3.3 steps 9.c.iii.1, 9.c.iv.1, 9.c.v.1 and 9.c.vii.1: Convert prepared date field values.",
+      "evidence": "Dispatches era to ToString, validates monthCode via ToPrimitive/string grammar, and uses integer conversion plus positivity for numbered month/day. Property order and insertion remain in the reading callers. Offset and timezone conversion use separate paths."
+    },
+    {
+      "inventory_row": 638,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "anonymous@854",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "903",
+        "end_line": "903",
+        "comparison_sections": "5.5.13",
+        "section_ids": "sec-temporal-differenceplaindatetimewithrounding",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differenceplaindatetimewithrounding",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": ["5.5.13/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 902,
+      "annotation": "// Proposal comparison \u00a75.5.13 step 3: Supply unrounded ISO date-time differences for relative rounding.",
+      "evidence": "Closes over start, calendar and largest unit; forwards the candidate endpoint to unroundedDifference. No endpoint arithmetic or settings processing is owned by this callback."
+    },
+    {
+      "inventory_row": 639,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "anonymous@855",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "905",
+        "end_line": "910",
+        "comparison_sections": "7.5.33",
+        "section_ids": "sec-temporal-computenudgewindow",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "7.5.33/algorithm-1/step-8.a",
+        "7.5.33/algorithm-1/step-8.b",
+        "7.5.33/algorithm-1/step-8.c.i",
+        "7.5.33/algorithm-1/step-9",
+        "7.5.33/algorithm-1/step-10",
+        "7.5.33/algorithm-1/step-11.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 904,
+      "annotation": "// Proposal comparison \u00a77.5.33 steps 8.a\u20138.c.i and 9\u201311.a: Add constrained date fields and preserve the anchor clock.",
+      "evidence": "The callback adds date fields using the selected calendar and constrain, then composes the resulting exact epoch day with timeOf(start). Scope is plain date-time nudge endpoints without a timezone."
+    },
+    {
+      "inventory_row": 602,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-bridge.ts",
+        "symbol": "toTemporalInstant",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "8",
+        "end_line": "10",
+        "comparison_sections": "14.9.1",
+        "section_ids": "sec-date.prototype.totemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-date.prototype.totemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-legacy-bridge-state-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b39e22687c45e53927dbca8142ee747ca3c9f811db569ed5d132e3f4cbda296c"
+      },
+      "spec_row_ids": [
+        "14.9.1/algorithm-1/step-2",
+        "14.9.1/algorithm-1/step-3",
+        "14.9.1/algorithm-1/step-4",
+        "14.9.1/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 7,
+      "annotation": "// Proposal comparison \u00a714.9.1 steps 2\u20135: Read Date milliseconds and create an exact Instant.",
+      "evidence": "Captured Date.prototype.getTime performs the receiver slot check and reads its milliseconds. BigInt converts the integer Date value, rejects NaN, and scales by one million exactly. The supplied create function owns object construction. Realm is outside this mapping."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//packages/temporal:package_test",
+      "//packages/temporal:duration_test262",
+      "//packages/temporal:plain_date_test262",
+      "//packages/temporal:legacy_durationformat_host_test",
+      "//packages/temporal:duration_hermes_test262_strict",
+      "//packages/temporal:host_calendar_hermes_test"
+    ],
+    "log_sha256": "94fa574ddc73045286efb4cb919163a604fe4926bd150fa56699a5b8bff4fa7b",
+    "result": "6 Bazel targets passed in the same validation batch."
+  },
+  "structural_dispositions": [
+    {
+      "inventory_row": 613,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "baseCalendar",
+        "kind": "named-function"
+      },
+      "source": {
+        "start_line": "212",
+        "end_line": "214",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "disposition": "typescript_type_adapter",
+      "callable_sha256": "6908fb451cf1060942749bc70e230d2ac03bdce5f09228a84264fc28202e31cf",
+      "evidence": "One erased assertion narrows an already selected calendar string to CalendarId. Emits no conversion, validation, provider lookup, or other specification operation.",
+      "current_location": "packages/temporal/date-core.ts:212-214",
+      "current_source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+    },
+    {
+      "inventory_row": 1020,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/short-date-core.ts",
+        "symbol": "shortCalendar",
+        "kind": "named-function"
+      },
+      "source": {
+        "start_line": "33",
+        "end_line": "35",
+        "source_sha256": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc"
+      },
+      "disposition": "typescript_type_adapter",
+      "callable_sha256": "b476f92221269590ec026db2d7772f4890d303514be63fe17dbabb4667306274",
+      "evidence": "One erased assertion narrows an already selected short-date calendar string to CalendarId. Calendar and provider logic belong to its callers.",
+      "current_location": "packages/temporal/short-date-core.ts:33-35",
+      "current_source_sha256": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc"
+    }
+  ]
+}

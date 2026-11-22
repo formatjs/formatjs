@@ -1,5 +1,5 @@
 {
-  "scope": "797 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
+  "scope": "832 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
   "live_rebound_rows": 1066,
   "retired_identities": [
@@ -25892,6 +25892,1386 @@
       "annotation_line": 143,
       "annotation": "// Proposal comparison \u00a711.1.8 steps 5 and 9: Display the normalized resolved zone identifier.",
       "evidence": "Rust Display forwards the string produced by the typed identifier accessor. It does not redo normalization, resolve aliases, or produce a zoned bracket annotation."
+    },
+    {
+      "inventory_row": 642,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "zeroDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "51",
+        "end_line": "64",
+        "comparison_sections": "7.5.12",
+        "section_ids": "sec-temporal-totemporalduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 49,
+      "base_ast_end_line": 62,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "d193909e0e3bed47a639495c971f06fe6041705b49388ae4abb3b6ba8942b649",
+      "spec_row_ids": ["7.5.12/algorithm-1/step-3"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 49,
+      "annotation": "// Temporal comparison \u00a77.5.12 step 3.\n// Initialize all ten fields of the private duration record to zero.",
+      "local_scope": "Private field initialization",
+      "evidence": "Returns a fresh record with ten explicit own zero values. toNativeDurationFields uses it for the zero-defaulted record before copying supplied fields. Also reused by parser and balancing paths."
+    },
+    {
+      "inventory_row": 643,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "durationSign",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "67",
+        "end_line": "74",
+        "comparison_sections": "7.5.13",
+        "section_ids": "sec-durationsign",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-durationsign",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 65,
+      "base_ast_end_line": 72,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "a333318e517f32f391df40152538b70d9455c5d3a23d8271ed2ce1b5c7d3fbbe",
+      "spec_row_ids": [
+        "7.5.13/algorithm-1/step-1",
+        "7.5.13/algorithm-1/step-1.a",
+        "7.5.13/algorithm-1/step-1.b",
+        "7.5.13/algorithm-1/step-2"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 65,
+      "annotation": "// Temporal comparison \u00a77.5.13 steps1\u20132: return the first nonzero component sign",
+      "local_scope": "Private numeric operation",
+      "evidence": "Traverses the canonical years-to-nanoseconds list and returns the sign of the first nonzero field, or zero. All fields are already prepared."
+    },
+    {
+      "inventory_row": 644,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "durationNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "84",
+        "end_line": "92",
+        "comparison_sections": "7.5.21",
+        "section_ids": "sec-temporal-timedurationfromcomponents",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timedurationfromcomponents",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 82,
+      "base_ast_end_line": 90,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "cbb3331381d072dec3ebbb506dc506647ddbe492444f97054b5502fb6caec6ef",
+      "spec_row_ids": [
+        "7.5.21/algorithm-1/step-1",
+        "7.5.21/algorithm-1/step-2",
+        "7.5.21/algorithm-1/step-3",
+        "7.5.21/algorithm-1/step-4",
+        "7.5.21/algorithm-1/step-5",
+        "7.5.21/algorithm-1/step-7"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 81,
+      "annotation": "// \u00a77.5.21 step4: a millisecond contributes 1000 microseconds.",
+      "local_scope": "Private exact arithmetic",
+      "evidence": "BigInt coefficients expand each unit directly into nanoseconds. includeDays=false is the time-only fold. The optional day coefficient belongs to 24-hour composition. No bound assertion is made in this helper."
+    },
+    {
+      "inventory_row": 645,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "validateDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "95",
+        "end_line": "117",
+        "comparison_sections": "7.5.16",
+        "section_ids": "sec-isvalidduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isvalidduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 93,
+      "base_ast_end_line": 115,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "11c8459945133904fc35354b15e85e2feec46ebd47b7838af3acbabbcc10aee9",
+      "spec_row_ids": [
+        "7.5.16/algorithm-1/step-1",
+        "7.5.16/algorithm-1/step-2",
+        "7.5.16/algorithm-1/step-2.a",
+        "7.5.16/algorithm-1/step-2.b",
+        "7.5.16/algorithm-1/step-2.b.i",
+        "7.5.16/algorithm-1/step-2.c",
+        "7.5.16/algorithm-1/step-2.c.i",
+        "7.5.16/algorithm-1/step-3",
+        "7.5.16/algorithm-1/step-4",
+        "7.5.16/algorithm-1/step-5",
+        "7.5.16/algorithm-1/step-6",
+        "7.5.16/algorithm-1/step-8",
+        "7.5.16/algorithm-1/step-9"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 93,
+      "annotation": "// Temporal comparison \u00a77.5.16 steps1\u20139: reject mixed signs, excessive calendar counts or exact time total",
+      "local_scope": "Private validation",
+      "evidence": "Identifies sign, rejects nonintegral and opposite-sign fields, normalizes signed zero, limits calendar magnitudes below 2^32, uses the exact BigInt total with days, and enforces the strict 2^53-second limit. Failure becomes RangeError under callers' CreateTemporalDuration contract."
+    },
+    {
+      "inventory_row": 646,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "integralDurationNumber",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "120",
+        "end_line": "125",
+        "comparison_sections": "14.5.1.1",
+        "section_ids": "sec-tointegerifintegral",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-tointegerifintegral",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 118,
+      "base_ast_end_line": 123,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "0d1e6168275a79ad8799c6d4bfd0b558db3af9f5fce416e4be7f000f449b654e",
+      "spec_row_ids": [
+        "14.5.1.1/algorithm-1/step-1",
+        "14.5.1.1/algorithm-1/step-2",
+        "14.5.1.1/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 118,
+      "annotation": "// Temporal comparison \u00a714.5.1.1 steps1\u20133: native numeric coercion and finite integrality",
+      "local_scope": "Numeric coercion dependency",
+      "evidence": "Unary plus applies ToNumber semantics, including BigInt/Symbol failure. Captured Number.isInteger rejects nonfinite and nonintegral results. The final fallback normalizes negative zero to the mathematical integer zero."
+    },
+    {
+      "inventory_row": 647,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "partialDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "128",
+        "end_line": "143",
+        "comparison_sections": "7.5.18",
+        "section_ids": "sec-temporal-totemporalpartialdurationrecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalpartialdurationrecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 126,
+      "base_ast_end_line": 141,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "f765e1488eff7f49c9dda1588222faa58405ced73cc503495b73dbde303b7cea",
+      "spec_row_ids": [
+        "7.5.18/algorithm-1/step-1",
+        "7.5.18/algorithm-1/step-2",
+        "7.5.18/algorithm-1/step-4",
+        "7.5.18/algorithm-1/step-5",
+        "7.5.18/algorithm-1/step-6",
+        "7.5.18/algorithm-1/step-7",
+        "7.5.18/algorithm-1/step-8",
+        "7.5.18/algorithm-1/step-9",
+        "7.5.18/algorithm-1/step-10",
+        "7.5.18/algorithm-1/step-11",
+        "7.5.18/algorithm-1/step-12",
+        "7.5.18/algorithm-1/step-13",
+        "7.5.18/algorithm-1/step-14",
+        "7.5.18/algorithm-1/step-15",
+        "7.5.18/algorithm-1/step-16",
+        "7.5.18/algorithm-1/step-17",
+        "7.5.18/algorithm-1/step-18",
+        "7.5.18/algorithm-1/step-19",
+        "7.5.18/algorithm-1/step-20",
+        "7.5.18/algorithm-1/step-21",
+        "7.5.18/algorithm-1/step-22",
+        "7.5.18/algorithm-1/step-23",
+        "7.5.18/algorithm-1/step-24",
+        "7.5.18/algorithm-1/step-25"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 126,
+      "annotation": "// Temporal comparison \u00a77.5.18 steps1\u201325: alphabetic Gets with immediate independent conversion",
+      "local_scope": "Public conversion dependency",
+      "evidence": "Checks objectness, creates a private null-prototype partial result, visits the canonical read order, coerces each non-undefined field immediately, and rejects all-undefined input. Missing keys represent unset slots in this private record."
+    },
+    {
+      "inventory_row": 648,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "parseDurationString",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "146",
+        "end_line": "242",
+        "comparison_sections": "13.37",
+        "section_ids": "sec-temporal-parsetemporaldurationstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaldurationstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 144,
+      "base_ast_end_line": 240,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "ee49743d7609c680339f251ed8bcdf2376e3617854c3e469ce8194db67f7ef9e",
+      "spec_row_ids": [
+        "13.37/algorithm-1/step-1",
+        "13.37/algorithm-1/step-2",
+        "13.37/algorithm-1/step-3",
+        "13.37/algorithm-1/step-23.d",
+        "13.37/algorithm-1/step-25.d",
+        "13.37/algorithm-1/step-28.c",
+        "13.37/algorithm-1/step-30",
+        "13.37/algorithm-1/step-31",
+        "13.37/algorithm-1/step-32.a",
+        "13.37/algorithm-1/step-34",
+        "13.37/algorithm-1/step-35",
+        "13.37/algorithm-1/step-36",
+        "13.37/algorithm-1/step-37",
+        "13.37/algorithm-1/step-38",
+        "13.37/algorithm-1/step-39",
+        "13.37/algorithm-1/step-40",
+        "13.37/algorithm-1/step-41",
+        "13.37/algorithm-1/step-42",
+        "13.37/algorithm-1/step-43",
+        "13.37/algorithm-1/step-44"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Temporal comparison \u00a713.37 steps1\u201344: ordered grammar fields and exact fractional carry",
+      "local_scope": "Parser dependency",
+      "evidence": "The native provider owns its parse branch. The JS branch scans ASCII signs, ordered date/time designators and fractional precision, scales fractional hours/minutes/seconds as BigInt, then splits and signs the fields. CreateTemporalDuration object publication happens downstream."
+    },
+    {
+      "inventory_row": 649,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "invalid@137",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "150",
+        "end_line": "152",
+        "comparison_sections": "13.37",
+        "section_ids": "sec-temporal-parsetemporaldurationstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaldurationstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 148,
+      "base_ast_end_line": 150,
+      "base_ast_columns_zero_based": [18, 3],
+      "callable_text_sha256": "a553485c6aaea2e9b2861b755a8a1d901266094d9708e3df111ba1121bf12a9d",
+      "spec_row_ids": ["13.37/algorithm-1/step-2"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "enclosing",
+      "annotation_line": 144,
+      "annotation": "// Temporal comparison \u00a713.37 steps1\u201344: ordered grammar fields and exact fractional carry",
+      "local_scope": "Parser rejection dependency",
+      "evidence": "The zero-argument local callback always throws captured RangeError. Only invalid grammar branches invoke it. Existing enclosing number is enough for exact mapping."
+    },
+    {
+      "inventory_row": 650,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "balanceDurationTime",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "245",
+        "end_line": "255",
+        "comparison_sections": "7.5.8",
+        "section_ids": "sec-temporal-temporaldurationfrominternal",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporaldurationfrominternal",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 243,
+      "base_ast_end_line": 253,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "bae6831077df89027212036629d2cb5ff4e48f4fa95e6e9da93cb0fb03da1a6b",
+      "spec_row_ids": [
+        "7.5.8/algorithm-1/step-1",
+        "7.5.8/algorithm-1/step-4.a",
+        "7.5.8/algorithm-1/step-4.b",
+        "7.5.8/algorithm-1/step-4.i",
+        "7.5.8/algorithm-1/step-4.j",
+        "7.5.8/algorithm-1/step-4.k",
+        "7.5.8/algorithm-1/step-4.l",
+        "7.5.8/algorithm-1/step-5.i",
+        "7.5.8/algorithm-1/step-5.j",
+        "7.5.8/algorithm-1/step-12"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 243,
+      "annotation": "// Temporal comparison \u00a77.5.8 steps1\u201312: decompose exact time into signed component fields",
+      "local_scope": "Private numeric dependency",
+      "evidence": "Starts with zero fields and divides an exact signed magnitude from the chosen first unit, retaining BigInt remainders until each output field. Calendar date-duration composition and public allocation are separate."
+    },
+    {
+      "inventory_row": 651,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "largestDurationField",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "258",
+        "end_line": "262",
+        "comparison_sections": "7.5.17",
+        "section_ids": "sec-temporal-defaulttemporallargestunit",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-defaulttemporallargestunit",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 256,
+      "base_ast_end_line": 260,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "1d51ce878b2ce587e3c7d5a65ea3a2cf308d60c6d7a742e99746c6050db6ae3c",
+      "spec_row_ids": [
+        "7.5.17/algorithm-1/step-1",
+        "7.5.17/algorithm-1/step-2",
+        "7.5.17/algorithm-1/step-3",
+        "7.5.17/algorithm-1/step-4",
+        "7.5.17/algorithm-1/step-5",
+        "7.5.17/algorithm-1/step-6",
+        "7.5.17/algorithm-1/step-7",
+        "7.5.17/algorithm-1/step-8",
+        "7.5.17/algorithm-1/step-9",
+        "7.5.17/algorithm-1/step-10"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 256,
+      "annotation": "// Temporal comparison \u00a77.5.17 steps1\u201310: select the first nonzero unit, else nanosecond",
+      "local_scope": "Private unit selection",
+      "evidence": "Returns indices from the ordered units list rather than unit strings. Index nine represents nanosecond for zero duration."
+    },
+    {
+      "inventory_row": 652,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-core.ts",
+        "symbol": "durationTotalNumber",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "270",
+        "end_line": "298",
+        "comparison_sections": "7.5.31",
+        "section_ids": "sec-temporal-totaltimeduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totaltimeduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8"
+      },
+      "base_ast_start_line": 268,
+      "base_ast_end_line": 296,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "c5ed95ebf14e5e6b836da87aed527cb77ca1e6ffa04d27f37aaaca915de753aa",
+      "spec_row_ids": ["7.5.31/algorithm-1/step-3"],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 268,
+      "annotation": "// Temporal comparison \u00a77.5.31 step3: divide exact integers before final Number rounding",
+      "local_scope": "Private exact arithmetic",
+      "evidence": "Uses BigInt shifts/comparison to select exponent and retains quotient remainder to round the binary64 mantissa to nearest with ties to even. The divisor and publicly selected unit come from the caller."
+    },
+    {
+      "inventory_row": 653,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration-format.ts",
+        "symbol": "formatDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "18",
+        "end_line": "56",
+        "comparison_sections": "7.5.40",
+        "section_ids": "sec-temporal-temporaldurationtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporaldurationtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636"
+      },
+      "base_ast_start_line": 16,
+      "base_ast_end_line": 54,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "09b14ffd981c716f396d0862be4c7591bf79b5a19c6168754670ee7037ae08bd",
+      "spec_row_ids": [
+        "7.5.40/algorithm-1/step-1",
+        "7.5.40/algorithm-1/step-3.a",
+        "7.5.40/algorithm-1/step-4.a",
+        "7.5.40/algorithm-1/step-5.a",
+        "7.5.40/algorithm-1/step-6.a",
+        "7.5.40/algorithm-1/step-8.a",
+        "7.5.40/algorithm-1/step-9.a",
+        "7.5.40/algorithm-1/step-11",
+        "7.5.40/algorithm-1/step-12",
+        "7.5.40/algorithm-1/step-13",
+        "7.5.40/algorithm-1/step-13.a",
+        "7.5.40/algorithm-1/step-13.b",
+        "7.5.40/algorithm-1/step-13.c",
+        "7.5.40/algorithm-1/step-14",
+        "7.5.40/algorithm-1/step-15",
+        "7.5.40/algorithm-1/step-16.a",
+        "7.5.40/algorithm-1/step-17"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 16,
+      "annotation": "// Temporal comparison \u00a77.5.40 steps 12\u201317.\n// Serialize prepared duration fields and the exact seconds fraction.",
+      "local_scope": "Formatting dependency",
+      "evidence": "The adapter delegates to a configured native formatter or assembles signed designators and time fields. Seconds and fraction are split in BigInt; only the bounded subsecond remainder is converted to Number."
+    },
+    {
+      "inventory_row": 654,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "read",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "87",
+        "end_line": "91",
+        "comparison_sections": "7.3.18|7.3.19",
+        "section_ids": "sec-temporal.duration.prototype.add|sec-temporal.duration.prototype.subtract",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.add|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.subtract",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 85,
+      "base_ast_end_line": 89,
+      "base_ast_columns_zero_based": [0, 1],
+      "callable_text_sha256": "1451204b3d1162c4a1e8fd7945ce928c1c0d3511adfafea99f0315b2a38fc133",
+      "spec_row_ids": [
+        "7.3.18/algorithm-1/step-2",
+        "7.3.19/algorithm-1/step-2"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 85,
+      "annotation": "// Temporal comparison \u00a77.3.18 step 2, \u00a77.3.19 step 2.\n// Read the private Duration record for receiver methods.",
+      "local_scope": "Receiver brand dependency",
+      "evidence": "Bound WeakMap lookup rejects before consumers access argument fields. Add and subtract call it before delegate conversion. The helper never probes a public property."
+    },
+    {
+      "inventory_row": 655,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "toDurationFields",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "94",
+        "end_line": "99",
+        "comparison_sections": "7.5.12",
+        "section_ids": "sec-temporal-totemporalduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 90,
+      "base_ast_end_line": 95,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "36e585365bc1bff7b89ac0b3a576044fc2da5250d7016b0d1efd484972c1db7b",
+      "spec_row_ids": [
+        "7.5.12/algorithm-1/step-1.a",
+        "7.5.12/algorithm-1/step-2.b",
+        "7.5.12/algorithm-1/step-4"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 92,
+      "annotation": "// Temporal comparison \u00a77.5.12 steps 1.a, 2.b, 4.\n// Copy a branded record, parse a string, or prepare public fields.",
+      "local_scope": "Conversion dependency",
+      "evidence": "Returns an owned record copy or delegates parsing or ordered object conversion. Public object creation belongs to a separate helper/caller."
+    },
+    {
+      "inventory_row": 656,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "toNativeDurationFields",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "103",
+        "end_line": "124",
+        "comparison_sections": "7.5.12|7.5.18",
+        "section_ids": "sec-temporal-totemporalduration|sec-temporal-totemporalpartialdurationrecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalduration|https://tc39.es/proposal-temporal/#sec-temporal-totemporalpartialdurationrecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 97,
+      "base_ast_end_line": 118,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "c53f681dad1193581503fa5835e90cde01eeb4fb310af64f5bacf332d47e5641",
+      "spec_row_ids": [
+        "7.5.12/algorithm-1/step-1",
+        "7.5.12/algorithm-1/step-2.a",
+        "7.5.12/algorithm-1/step-2.b",
+        "7.5.12/algorithm-1/step-3",
+        "7.5.12/algorithm-1/step-4",
+        "7.5.12/algorithm-1/step-5",
+        "7.5.12/algorithm-1/step-6",
+        "7.5.12/algorithm-1/step-7",
+        "7.5.12/algorithm-1/step-8",
+        "7.5.12/algorithm-1/step-9",
+        "7.5.12/algorithm-1/step-10",
+        "7.5.12/algorithm-1/step-11",
+        "7.5.12/algorithm-1/step-12",
+        "7.5.12/algorithm-1/step-13",
+        "7.5.12/algorithm-1/step-14",
+        "7.5.18/algorithm-1/step-24"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 100,
+      "annotation": "// Temporal comparison \u00a77.5.12 steps 1\u201314.\n// Prepare duration fields for native operations.",
+      "local_scope": "Conversion dependency",
+      "evidence": "The branded path returns private data and the string path delegates parsing. Objects populate a zero-initialized record in the frozen read order and reject no supplied field. validate=false defers validation to the native caller, which owns the remaining creation contract."
+    },
+    {
+      "inventory_row": 657,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "createNativeDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "128",
+        "end_line": "132",
+        "comparison_sections": "7.5.19",
+        "section_ids": "sec-temporal-createtemporalduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 120,
+      "base_ast_end_line": 124,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "0570551479f2637f9185d54db4e0dfde2c977471b0a59c8d73e0ca038f4e11c4",
+      "spec_row_ids": [
+        "7.5.19/algorithm-1/step-2",
+        "7.5.19/algorithm-1/step-3",
+        "7.5.19/algorithm-1/step-4",
+        "7.5.19/algorithm-1/step-5",
+        "7.5.19/algorithm-1/step-6",
+        "7.5.19/algorithm-1/step-7",
+        "7.5.19/algorithm-1/step-8",
+        "7.5.19/algorithm-1/step-9",
+        "7.5.19/algorithm-1/step-10",
+        "7.5.19/algorithm-1/step-11",
+        "7.5.19/algorithm-1/step-12",
+        "7.5.19/algorithm-1/step-13",
+        "7.5.19/algorithm-1/step-14"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 126,
+      "annotation": "// Temporal comparison \u00a77.5.19 steps 2\u201314.\n// Allocate the default Duration from a validated native record.",
+      "local_scope": "Private result allocation",
+      "evidence": "Uses the local default prototype and stores the supplied prepared record directly. Native caller establishes validation; no custom constructor case is involved."
+    },
+    {
+      "inventory_row": 658,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "createDuration",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "135",
+        "end_line": "139",
+        "comparison_sections": "7.5.19",
+        "section_ids": "sec-temporal-createtemporalduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporalduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 125,
+      "base_ast_end_line": 129,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "6aa4d18d3fa4ff003818b40e99659e3f51d9c13fd9734d96b06723520e346b3e",
+      "spec_row_ids": [
+        "7.5.19/algorithm-1/step-1",
+        "7.5.19/algorithm-1/step-2",
+        "7.5.19/algorithm-1/step-3",
+        "7.5.19/algorithm-1/step-4",
+        "7.5.19/algorithm-1/step-5",
+        "7.5.19/algorithm-1/step-6",
+        "7.5.19/algorithm-1/step-7",
+        "7.5.19/algorithm-1/step-8",
+        "7.5.19/algorithm-1/step-9",
+        "7.5.19/algorithm-1/step-10",
+        "7.5.19/algorithm-1/step-11",
+        "7.5.19/algorithm-1/step-12",
+        "7.5.19/algorithm-1/step-13",
+        "7.5.19/algorithm-1/step-14"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 133,
+      "annotation": "// Temporal comparison \u00a77.5.19 steps 1\u201314.\n// Validate and store a fresh Duration result record.",
+      "local_scope": "Private result allocation",
+      "evidence": "Allocates using the local default prototype and validates an owned field copy before slot installation/publication. This helper has no newTarget argument or observable prototype lookup. It does not claim general constructor ordering."
+    },
+    {
+      "inventory_row": 659,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/duration.ts",
+        "symbol": "addDurations",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "142",
+        "end_line": "167",
+        "comparison_sections": "7.5.41",
+        "section_ids": "sec-temporal-adddurations",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurations",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363"
+      },
+      "base_ast_start_line": 130,
+      "base_ast_end_line": 155,
+      "base_ast_columns_zero_based": [0, 1],
+      "callable_text_sha256": "ee40fa14bf3bd2e9f0cc1a94b57648652a825f5ed01f5e49aba6d43a7400f464",
+      "spec_row_ids": [
+        "7.5.41/algorithm-1/step-1",
+        "7.5.41/algorithm-1/step-2",
+        "7.5.41/algorithm-1/step-3",
+        "7.5.41/algorithm-1/step-4",
+        "7.5.41/algorithm-1/step-5",
+        "7.5.41/algorithm-1/step-6",
+        "7.5.41/algorithm-1/step-7",
+        "7.5.41/algorithm-1/step-8",
+        "7.5.41/algorithm-1/step-9",
+        "7.5.41/algorithm-1/step-10",
+        "7.5.41/algorithm-1/step-11"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 140,
+      "annotation": "// Temporal comparison \u00a77.5.41 steps 1\u201311.\n// Add or subtract durations on the prepared 24-hour-day path.",
+      "local_scope": "Arithmetic and dispatch dependency",
+      "evidence": "Converts the other operand, delegates to native when present, or picks the largest index, rejects calendar units, combines exact BigInt nanoseconds with selected sign, then balances the result fields."
+    },
+    {
+      "inventory_row": 668,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/format-digits.ts",
+        "symbol": "zeroPadDecimal",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "6",
+        "end_line": "10",
+        "comparison_sections": "13.25",
+        "section_ids": "sec-temporal-formatfractionalseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatfractionalseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac"
+      },
+      "base_ast_start_line": 6,
+      "base_ast_end_line": 10,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "6bdc880b2f7c0b473f734985a02a56fdfe8a9ad956fe43268b1349dfc0844ea0",
+      "spec_row_ids": [
+        "13.25/algorithm-1/step-1.b",
+        "13.25/algorithm-1/step-2.b"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 4,
+      "annotation": "// Temporal comparison \u00a713.25 steps1.b/2.b: decimal padding for the bounded fractional field",
+      "local_scope": "Formatting dependency",
+      "evidence": "Uses intrinsic string conversion of a prepared Number and prefixes ASCII zeros. FormatFractionalSeconds always passes nine digits for bounded fractional nanoseconds."
+    },
+    {
+      "inventory_row": 669,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/format-digits.ts",
+        "symbol": "formatFractionalSeconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "14",
+        "end_line": "30",
+        "comparison_sections": "13.25",
+        "section_ids": "sec-temporal-formatfractionalseconds",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatfractionalseconds",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac"
+      },
+      "base_ast_start_line": 14,
+      "base_ast_end_line": 30,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "b2529a4d5cf9e786ad5b8262c782cfe031c93e2c8adebda88b107e7214220e01",
+      "spec_row_ids": [
+        "13.25/algorithm-1/step-1.a",
+        "13.25/algorithm-1/step-1.b",
+        "13.25/algorithm-1/step-1.c",
+        "13.25/algorithm-1/step-2.a",
+        "13.25/algorithm-1/step-2.b",
+        "13.25/algorithm-1/step-2.c",
+        "13.25/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "leading",
+      "annotation_line": 12,
+      "annotation": "// Temporal comparison \u00a713.25 steps1\u20133.",
+      "local_scope": "Private formatting operation",
+      "evidence": "Zero auto or explicit zero precision returns empty. Otherwise pads to nine, trims trailing zeros only for auto, copies the requested prefix and supplies the full stop."
+    },
+    {
+      "inventory_row": 778,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-durationformat.ts",
+        "symbol": "installLegacyDurationFormat",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "10",
+        "end_line": "52",
+        "comparison_sections": "15.10.1|15.10.2",
+        "section_ids": "sec-Intl.DurationFormat.prototype.format|sec-Intl.DurationFormat.prototype.formatToParts",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format|https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.formatToParts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb"
+      },
+      "base_ast_start_line": 8,
+      "base_ast_end_line": 48,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "4bc8f45d8eed5e70622278285fd9e298287cc8f06721f60d7d56647747670bbe",
+      "spec_row_ids": [
+        "15.10.1/algorithm-1/step-3",
+        "15.10.2/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 8,
+      "annotation": "// Temporal amendment comparison \u00a715.10.1 step 3, \u00a715.10.2 step 3.\n// Install the Temporal duration adapter for legacy host formatters.",
+      "local_scope": "Compatibility installation dependency",
+      "evidence": "Registers captured namespace readers and wraps host methods only when the implementation lacks the adapter marker. Installation is repository plumbing that supports the two formatting callers; there is no equivalent normative installation step."
+    },
+    {
+      "inventory_row": 779,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/legacy-durationformat.ts",
+        "symbol": "anonymous@36",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "40",
+        "end_line": "43",
+        "comparison_sections": "15.10.1|15.10.2",
+        "section_ids": "sec-Intl.DurationFormat.prototype.format|sec-Intl.DurationFormat.prototype.formatToParts",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format|https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.formatToParts",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb"
+      },
+      "base_ast_start_line": 36,
+      "base_ast_end_line": 39,
+      "base_ast_columns_zero_based": [6, 7],
+      "callable_text_sha256": "6f4907a81d3f084174d8f8115f442012e0d709d5fec8bcf2919990b89df6f77b",
+      "spec_row_ids": [
+        "15.10.1/algorithm-1/step-2",
+        "15.10.1/algorithm-1/step-3",
+        "15.10.2/algorithm-1/step-2",
+        "15.10.2/algorithm-1/step-3"
+      ],
+      "frozen_checklists": ["amendment"],
+      "annotation_placement": "leading",
+      "annotation_line": 38,
+      "annotation": "// Temporal amendment comparison \u00a715.10.1 and \u00a715.10.2 steps 2\u20133.\n// Check the host receiver before converting duration input.",
+      "local_scope": "Compatibility bridge dependency",
+      "evidence": "Calls captured host resolvedOptions to exercise the receiver brand before ToTemporalDurationRecord reads or parses input. Then forwards the record to the original host method for parts/formatting. Host integrity remains a provider premise."
+    },
+    {
+      "inventory_row": 988,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/plain-time.ts",
+        "symbol": "toPlainTimeNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "241",
+        "end_line": "246",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-duration-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849"
+      },
+      "base_ast_start_line": 241,
+      "base_ast_end_line": 246,
+      "base_ast_columns_zero_based": [7, 1],
+      "callable_text_sha256": "9330b6af06ebd4e517185a378ab55a7896349a26ed125793f029ea5539376da5",
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-2.a.iii",
+        "4.5.6/algorithm-1/step-2.b.iii",
+        "4.5.6/algorithm-1/step-2.c.iv",
+        "4.5.6/algorithm-1/step-2.g",
+        "4.5.6/algorithm-1/step-3.b",
+        "4.5.6/algorithm-1/step-3.d"
+      ],
+      "frozen_checklists": ["core"],
+      "annotation_placement": "inline",
+      "annotation_line": 242,
+      "annotation": "// Temporal comparison \u00a74.5.6: reuse internal conversion in both backends.",
+      "local_scope": "Clock conversion dependency",
+      "evidence": "Selects the native result adapter or JS ToTemporalTime path, returning only prepared clock nanoseconds. BigInt converts a bounded exact native Number clock directly. Callers own public object creation."
+    },
+    {
+      "inventory_row": 606,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "calendarSlot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "130",
+        "end_line": "138",
+        "comparison_sections": "12.3.11",
+        "section_ids": "sec-temporal-gettemporalcalendarslotvaluewithisodefault",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporalcalendarslotvaluewithisodefault",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-calendar-entry-annotation-proof.json|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.11/algorithm-1/step-1",
+        "12.3.11/algorithm-1/step-1.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 129,
+      "annotation": "// Proposal comparison \u00a712.3.11 steps 1 and 1.a: Find a stored calendar on the five supported slot types.",
+      "evidence": "Checks the private ZonedDateTime, PlainDate, PlainDateTime, PlainYearMonth and PlainMonthDay slots, yielding a record with the stored calendar. The caller returns the calendar or continues to property Get and ISO default. This mapping concerns slot routing only."
+    },
+    {
+      "inventory_row": 608,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "bareCalendarIdentifier",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "146",
+        "end_line": "167",
+        "comparison_sections": "13.36",
+        "section_ids": "sec-temporal-parsetemporalcalendarstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "13.36/algorithm-1/step-1",
+        "13.36/algorithm-1/step-3",
+        "13.36/algorithm-1/step-4",
+        "13.36/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 145,
+      "annotation": "// Proposal comparison \u00a713.36 steps 1 and 3\u20135: Choose the bare calendar identifier fast path.",
+      "evidence": "Recognizes a narrow ASCII identifier shape and routes leading time-like T/t plus digit to full calendar-string parsing. The following supported-calendar check validates bare values. This predicate is a parse dispatch dependency, not standalone AnnotationValue grammar."
+    },
+    {
+      "inventory_row": 611,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "prepareDateTimeString",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "190",
+        "end_line": "199",
+        "comparison_sections": "3.5.4|5.5.6",
+        "section_ids": "sec-temporal-totemporaldate|sec-temporal-totemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldate|https://tc39.es/proposal-temporal/#sec-temporal-totemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-coercion-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "3.5.4/algorithm-1/step-4",
+        "3.5.4/algorithm-1/step-7",
+        "3.5.4/algorithm-1/step-8",
+        "3.5.4/algorithm-1/step-9",
+        "5.5.6/algorithm-1/step-4",
+        "5.5.6/algorithm-1/step-8",
+        "5.5.6/algorithm-1/step-9",
+        "5.5.6/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 189,
+      "annotation": "// Proposal comparison \u00a73.5.4 steps 4 and 7\u20139 and \u00a75.5.6 steps 4 and 8\u201310: Parse and canonicalize before reading overflow.",
+      "evidence": "Calls the ISO parser, canonicalizes the parsed calendar, then reads/validates overflow. Receives primitive strings already selected by callers. Scalar limits and construction stay in those callers."
+    },
+    {
+      "inventory_row": 612,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "supportedCalendar",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "201",
+        "end_line": "211",
+        "comparison_sections": "12.1.1",
+        "section_ids": "sec-temporal-canonicalizecalendar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-canonicalizecalendar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md|knowledge-base/audits/temporal-calendar-entry-annotation-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.1.1/algorithm-1/step-2",
+        "12.1.1/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 200,
+      "annotation": "// Proposal comparison \u00a712.1.1 steps 2\u20133: Check supported calendar IDs and resolve known aliases.",
+      "evidence": "Receives an already lowered candidate, normalizes islamicc and ethiopic-amete-alem, checks the package\u2019s calendar list and throws if absent. This maps the selected provider list and aliases rather than all implementation-defined calendars or general CanonicalizeUValue."
+    },
+    {
+      "inventory_row": 616,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "timeOf",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "261",
+        "end_line": "263",
+        "comparison_sections": "7.5.33",
+        "section_ids": "sec-temporal-computenudgewindow",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "7.5.33/algorithm-1/step-8.b",
+        "7.5.33/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 260,
+      "annotation": "// Proposal comparison \u00a77.5.33 steps 8.b and 10: Extract the anchor clock for relative endpoints.",
+      "evidence": "Signed bigint remainder normalized to [0, nsPerDay) preserves exact clock nanoseconds for negative as well as positive local epochs. Relative endpoints combine this clock with the updated calendar day."
+    },
+    {
+      "inventory_row": 618,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "nativeDateSnapshot",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "278",
+        "end_line": "308",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-native-ffi45-annotation-source-proof.json|knowledge-base/audits/temporal-arithmetic-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 277,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b and 2: Reuse or request native calendar projection for a date slot.",
+      "evidence": "Exits for an absent backend; otherwise validates the requested ordinary or extended range before reusing same-owner slot/WeakMap snapshots, or requests properties through NativeTemporal.calendarProperties. Projection behavior belongs to the backend. This is a slot-scoped cache dependency."
+    },
+    {
+      "inventory_row": 622,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "clockNanoseconds",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "364",
+        "end_line": "378",
+        "comparison_sections": "4.5.8",
+        "section_ids": "sec-temporal-regulatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-regulatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "4.5.8/algorithm-1/step-1",
+        "4.5.8/algorithm-1/step-1.a",
+        "4.5.8/algorithm-1/step-1.b",
+        "4.5.8/algorithm-1/step-1.c",
+        "4.5.8/algorithm-1/step-1.d",
+        "4.5.8/algorithm-1/step-1.e",
+        "4.5.8/algorithm-1/step-1.f",
+        "4.5.8/algorithm-1/step-2",
+        "4.5.8/algorithm-1/step-2.a",
+        "4.5.8/algorithm-1/step-2.b",
+        "4.5.8/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 362,
+      "annotation": "// Temporal comparison \u00a74.5.8 steps1\u20133: regulate prepared time fields before exact composition",
+      "evidence": "Existing leading annotation covers bounded prepared clock fields. Applies constrain or reject per time component, then combines the six fields as exact nanoseconds. The nanosecond scalar represents the regulated Time Record for callers."
+    },
+    {
+      "inventory_row": 623,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "dateFieldNames",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "398",
+        "end_line": "420",
+        "comparison_sections": "12.3.3",
+        "section_ids": "sec-temporal-preparecalendarfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md|knowledge-base/audits/temporal-record-copy-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": ["12.3.3/algorithm-1/step-8"],
+      "annotation_placement": "inline",
+      "annotation_line": 416,
+      "annotation": "// Temporal comparison \u00a712.3.3 step8: private List entries are own data.",
+      "evidence": "Existing inline step 8 annotation applies to appending selected keys to the private list. The loop visits a preordered literal list and selects calendar, shape and extra keys. It does not itself execute Get, conversion, or record allocation."
+    },
+    {
+      "inventory_row": 624,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "dateFieldValue",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "422",
+        "end_line": "455",
+        "comparison_sections": "12.3.3",
+        "section_ids": "sec-temporal-preparecalendarfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-coercion-contract-audit.md|knowledge-base/audits/temporal-record-copy-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "12.3.3/algorithm-1/step-9.c.iii.1",
+        "12.3.3/algorithm-1/step-9.c.iv.1",
+        "12.3.3/algorithm-1/step-9.c.v.1",
+        "12.3.3/algorithm-1/step-9.c.vii.1"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 421,
+      "annotation": "// Proposal comparison \u00a712.3.3 steps 9.c.iii.1, 9.c.iv.1, 9.c.v.1 and 9.c.vii.1: Convert prepared date field values.",
+      "evidence": "Dispatches era to ToString, validates monthCode via ToPrimitive/string grammar, and uses integer conversion plus positivity for numbered month/day. Property order and insertion remain in the reading callers. Offset and timezone conversion use separate paths."
+    },
+    {
+      "inventory_row": 638,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "anonymous@854",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "903",
+        "end_line": "903",
+        "comparison_sections": "5.5.13",
+        "section_ids": "sec-temporal-differenceplaindatetimewithrounding",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-differenceplaindatetimewithrounding",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": ["5.5.13/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 902,
+      "annotation": "// Proposal comparison \u00a75.5.13 step 3: Supply unrounded ISO date-time differences for relative rounding.",
+      "evidence": "Closes over start, calendar and largest unit; forwards the candidate endpoint to unroundedDifference. No endpoint arithmetic or settings processing is owned by this callback."
+    },
+    {
+      "inventory_row": 639,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-core.ts",
+        "symbol": "anonymous@855",
+        "kind": "callback"
+      },
+      "mapping_updates": {
+        "start_line": "905",
+        "end_line": "910",
+        "comparison_sections": "7.5.33",
+        "section_ids": "sec-temporal-computenudgewindow",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-relative-rounding-contract-audit.md|knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c"
+      },
+      "spec_row_ids": [
+        "7.5.33/algorithm-1/step-8.a",
+        "7.5.33/algorithm-1/step-8.b",
+        "7.5.33/algorithm-1/step-8.c.i",
+        "7.5.33/algorithm-1/step-9",
+        "7.5.33/algorithm-1/step-10",
+        "7.5.33/algorithm-1/step-11.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 904,
+      "annotation": "// Proposal comparison \u00a77.5.33 steps 8.a\u20138.c.i and 9\u201311.a: Add constrained date fields and preserve the anchor clock.",
+      "evidence": "The callback adds date fields using the selected calendar and constrain, then composes the resulting exact epoch day with timeOf(start). Scope is plain date-time nudge endpoints without a timezone."
+    },
+    {
+      "inventory_row": 602,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/date-bridge.ts",
+        "symbol": "toTemporalInstant",
+        "kind": "method"
+      },
+      "mapping_updates": {
+        "start_line": "8",
+        "end_line": "10",
+        "comparison_sections": "14.9.1",
+        "section_ids": "sec-date.prototype.totemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-date.prototype.totemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-legacy-bridge-state-audit.md|knowledge-base/audits/temporal-local-offset-precision-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "b39e22687c45e53927dbca8142ee747ca3c9f811db569ed5d132e3f4cbda296c"
+      },
+      "spec_row_ids": [
+        "14.9.1/algorithm-1/step-2",
+        "14.9.1/algorithm-1/step-3",
+        "14.9.1/algorithm-1/step-4",
+        "14.9.1/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 7,
+      "annotation": "// Proposal comparison \u00a714.9.1 steps 2\u20135: Read Date milliseconds and create an exact Instant.",
+      "evidence": "Captured Date.prototype.getTime performs the receiver slot check and reads its milliseconds. BigInt converts the integer Date value, rejects NaN, and scales by one million exactly. The supplied create function owns object construction. Realm is outside this mapping."
     }
   ],
   "comment_only_source_evidence": [
@@ -25956,26 +27336,26 @@
     "active_rebound_rows": 1066,
     "retired_replaced_callbacks": 3,
     "mapping_status": {
-      "mapped": 908,
+      "mapped": 925,
       "candidate": 87,
-      "unmapped": 74
+      "unmapped": 57
     },
     "annotation_coverage": {
-      "direct_numbered": 855,
-      "no_numbered_anchor": 196,
+      "direct_numbered": 874,
+      "no_numbered_anchor": 177,
       "enclosing_numbered": 15,
       "retired_callback": 3
     },
-    "direct_with_step_wording": 734,
+    "direct_with_step_wording": 754,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 836,
-      "no_overlap_or_no_prior_mapping": 19
+      "overlap": 860,
+      "no_overlap_or_no_prior_mapping": 14
     },
     "no_numbered_anchor_by_kind": {
       "function": 18,
-      "named-function": 115,
-      "callback": 55,
-      "method": 8
+      "named-function": 100,
+      "callback": 52,
+      "method": 7
     },
     "role_review_bundles": {
       "time_zone_and_zoned_algorithm_review": {
@@ -26023,8 +27403,8 @@
         "rows": 240,
         "files": 24,
         "coverage": {
-          "no_numbered_anchor": 103,
-          "direct_numbered": 125,
+          "no_numbered_anchor": 84,
+          "direct_numbered": 144,
           "enclosing_numbered": 9,
           "retired_callback": 3
         }
@@ -26068,12 +27448,12 @@
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "a08e6fceab90c6ef59fd202f0f258235062572c42a704a21cab6507a507f24f5",
     "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
-    "packages/temporal/date-bridge.ts": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
-    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+    "packages/temporal/date-bridge.ts": "b39e22687c45e53927dbca8142ee747ca3c9f811db569ed5d132e3f4cbda296c",
+    "packages/temporal/date-core.ts": "b601a02b6e9b86de4663f5564225c817903e0e8f53ee048a048812523036716c",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
-    "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
-    "packages/temporal/duration-format.ts": "19ee165b3aa085e22dd2778fa9bbebc25ecb7099134cf314cfcdcdaff526c3bc",
-    "packages/temporal/duration.ts": "f51ed2fe9190e2dd385c003e2664ce006a5a486f3d7317776a3750a1c9dbca6d",
+    "packages/temporal/duration-core.ts": "645b47154b7e69bcfadffab8b2cea530f8e0aff824fd15e79c1a520f411ba5b8",
+    "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
+    "packages/temporal/duration.ts": "9419211db7c1ad11db3de8b74df490f586119267edbfc92dad4875421ab44363",
     "packages/temporal/fallback-data.ts": "16171b1425316c0af6c0bcd7863d6617038afb30f5756f1ad652cda78d28f067",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
@@ -26086,7 +27466,7 @@
     "packages/temporal/intrinsics.ts": "e85f0adcc6b7d2b56173ff70b45d7a12ac53d0361e7dd92c00d60e5c87d5502e",
     "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
     "packages/temporal/legacy-calendar-date.ts": "e59618bf05ac4f0a017d9b31b5bdf7e8209328a7bda2c6e75351de9e119ec2a3",
-    "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
+    "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "9b4d1c655f572a2a278005672e03077e45ea0298193caead0b22df5fc8997aef",
     "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
     "packages/temporal/legacy-lunisolar-date.ts": "b7f7694605270006a4791c8dd42a7254db9078913b446e7490098c8099edf496",
@@ -26424,6 +27804,13 @@
     "native_remainder17": [
       21, 22, 23, 50, 68, 69, 326, 327, 328, 329, 330, 331, 332, 333, 482, 488,
       493
+    ],
+    "ts_duration23": [
+      642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 654, 655, 656,
+      657, 658, 659, 668, 669, 778, 779, 988
+    ],
+    "ts_date_helpers12": [
+      606, 608, 611, 612, 616, 618, 622, 623, 624, 638, 639, 602
     ]
   },
   "inline_caller_dependency_link_reviews": [

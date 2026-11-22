@@ -46,6 +46,8 @@ const timeFactors = [
   1n,
 ]
 
+// Temporal comparison §7.5.12 step 3.
+// Initialize all ten fields of the private duration record to zero.
 export function zeroDuration(): DurationFields {
   return {
     years: 0,
