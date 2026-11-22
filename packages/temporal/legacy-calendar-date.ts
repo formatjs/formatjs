@@ -1012,7 +1012,8 @@ export function legacyCalendarRangeParts(
               last,
               lunarStart,
               lunarEnd,
-              rangeParts
+              rangeParts,
+              arraySome(start, part => part.type === 'month')
             )
           : restoreLunisolarRangeDays(
               first,

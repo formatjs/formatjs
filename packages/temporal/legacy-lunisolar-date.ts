@@ -4,6 +4,7 @@ import {
   arrayIncludes,
   arraySome,
   floor,
+  mathTrunc,
   numberFrom,
   numberIsInteger,
   numberIsSafeInteger,
@@ -29,7 +30,19 @@ const dayMilliseconds = 86400000
 const probes = new Map<string, Intl.DateTimeFormat>()
 const positiveEras = new WeakMap<Intl.DateTimeFormat, string>()
 const dateTypes = new Set(['year', 'relatedYear', 'yearName', 'month', 'day'])
-const stableRangeFields = ['day', 'year', 'relatedYear', 'yearName', 'literal']
+const stableRangeFields = [
+  'day',
+  'year',
+  'relatedYear',
+  'yearName',
+  'hour',
+  'minute',
+  'second',
+  'fractionalSecond',
+  'dayPeriod',
+  'timeZoneName',
+  'literal',
+]
 interface Catalog {
   months: Map<string, number>
   cursor: number
@@ -109,7 +122,7 @@ function fields(
   calendar: Calendar | 'iso8601',
   timeZone: string,
   milliseconds: number
-) {
+): {year: number; month: number; day: number; monthCode: string} {
   const formatter = probe(calendar, timeZone)
   // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type/value fields.
   const values = new Map<string, string>(
@@ -203,8 +216,9 @@ export function lunisolarUtcLeapMonthRange(
   last: LegacyDateTimeProjection,
   left: LunisolarRangeEndpoint,
   right: LunisolarRangeEndpoint,
-  rangeParts: RangeParts
-): Intl.DateTimeFormatRangePart[] | undefined {
+  rangeParts: RangeParts,
+  displaysMonth: boolean
+): Intl.DateTimeRangeFormatPart[] | undefined {
   const sample = (
     projection: LegacyDateTimeProjection,
     {expected, original}: LunisolarRangeEndpoint,
@@ -218,6 +232,10 @@ export function lunisolarUtcLeapMonthRange(
       actual.day !== day
     )
       return undefined
+    // ECMA-262 §21.4.1.31 step 3 and §21.4.1.4 step 1: carry the clipped
+    // UTC clock into each representative, including dates before the epoch.
+    const time = mathTrunc(projection.milliseconds)
+    const clock = time - floor(time / dayMilliseconds) * dayMilliseconds
     const monthCount = monthsInYear(calendar, year)
     for (
       let month = expected.month + direction;
@@ -236,7 +254,7 @@ export function lunisolarUtcLeapMonthRange(
         candidate.day !== day
       )
         continue
-      const milliseconds = epochDay * dayMilliseconds
+      const milliseconds = epochDay * dayMilliseconds + clock
       const host = fields(calendar, 'UTC', milliseconds)
       if (
         host.year === year &&
@@ -258,7 +276,8 @@ export function lunisolarUtcLeapMonthRange(
   const starts = rangeParts.call(first.formatter, first.milliseconds, endSample)
   const ends = rangeParts.call(first.formatter, startSample, last.milliseconds)
   // ECMA-402 §11.5.8 steps 19.c–f: keep the weekday of each tagged endpoint.
-  // Both controls must agree on the other date fields and interval literals.
+  // Both controls must agree on the other date and clock fields and literals.
+  // If the base displays Month, require its label at both endpoints.
   if (
     starts.length !== ends.length ||
     !arrayEvery(starts, (part, index) => {
@@ -274,11 +293,14 @@ export function lunisolarUtcLeapMonthRange(
     }) ||
     !arraySome(
       starts,
-      part => part.type === 'month' && part.source === 'startRange'
+      part =>
+        part.source === 'startRange' &&
+        (!displaysMonth || part.type === 'month')
     ) ||
     !arraySome(
       starts,
-      part => part.type === 'month' && part.source === 'endRange'
+      part =>
+        part.source === 'endRange' && (!displaysMonth || part.type === 'month')
     )
   )
     return undefined

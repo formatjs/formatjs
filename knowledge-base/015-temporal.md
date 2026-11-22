@@ -900,7 +900,7 @@ including verified numeric widths, weekday labels and Buddhist textual months.
 Verified UTC Chinese and Dangi Year, Month, and Day intervals retain native
 source tags while restoring corrected days. Regular and leap months retain
 both endpoint labels when shown. Verified leap ranges reuse the native Month
-layout, including both month labels, related years and tagged weekdays.
+layout, including month labels, related years, clock widths and tagged weekdays.
 Other corrected ranges use complete endpoint patterns and a captured host
 separator.
 

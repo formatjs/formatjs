@@ -299,6 +299,29 @@ for (const [calendar, dates, years, monthCodes, oldDays, days] of [
   }
 }
 
+function leapRangeParts(
+  native,
+  [startControl, start, end, endControl],
+  monthSources = ['startRange', 'endRange']
+) {
+  const startParts = native.formatRangeToParts(start, endControl)
+  const endParts = native.formatRangeToParts(startControl, end)
+  assert.equal(startParts.length, endParts.length)
+  const expected = startParts.map((part, index) => {
+    const other = endParts[index]
+    assert.equal(part.type, other.type)
+    assert.equal(part.source, other.source)
+    if (part.type === 'literal' || part.source === 'shared')
+      assert.equal(part.value, other.value)
+    return part.source === 'endRange' ? other : part
+  })
+  assert.deepEqual(
+    expected.filter(part => part.type === 'month').map(part => part.source),
+    monthSources
+  )
+  return expected
+}
+
 for (const calendar of ['chinese', 'dangi']) {
   for (const dates of [
     ['2020-03-24', '2020-04-23', '2020-05-23', '2020-06-21'],
@@ -306,9 +329,7 @@ for (const calendar of ['chinese', 'dangi']) {
     ['1933-04-24', '1933-06-22', '1933-07-22', '1933-09-19'],
     ['1909-06-17', '1909-03-21', '1909-03-22', '1909-04-20'],
   ]) {
-    const [startControl, start, end, endControl] = dates.map(date =>
-      Date.parse(`${date}T00:00Z`)
-    )
+    const numbers = dates.map(date => Date.parse(`${date}T00:00Z`))
     const plain = dates
       .slice(1, 3)
       .map(date => Temporal.PlainDate.from(date).withCalendar(calendar))
@@ -323,22 +344,66 @@ for (const calendar of ['chinese', 'dangi']) {
       const options = {calendar, timeZone: 'UTC', ...fields}
       const native = new Native(locale, options)
       const formatter = new Intl.DateTimeFormat(locale, options)
-      const startParts = native.formatRangeToParts(start, endControl)
-      const endParts = native.formatRangeToParts(startControl, end)
-      assert.equal(startParts.length, endParts.length)
-      const expected = startParts.map((part, index) => {
-        const other = endParts[index]
-        assert.equal(part.type, other.type)
-        assert.equal(part.source, other.source)
-        if (part.type === 'literal' || part.source === 'shared')
-          assert.equal(part.value, other.value)
-        return part.source === 'endRange' ? other : part
-      })
-      assert.deepEqual(
-        expected.filter(part => part.type === 'month').map(part => part.source),
-        ['startRange', 'endRange']
+      const expected = leapRangeParts(native, numbers)
+      for (const inputs of [numbers.slice(1, 3), plain]) {
+        assert.deepEqual(formatter.formatRangeToParts(...inputs), expected)
+        assert.equal(
+          formatter.formatRange(...inputs),
+          expected.map(part => part.value).join('')
+        )
+        checked++
+      }
+    }
+  }
+  for (const dates of [
+    ['2020-03-24', '2020-04-23', '2020-05-23', '2020-06-21'],
+    ['1933-04-24', '1933-06-22', '1933-07-22', '1933-09-19'],
+  ]) {
+    const times = dates.map(
+      (date, index) => `${date}T${index < 2 ? '09:15:03.123' : '16:45:10.456'}`
+    )
+    const numbers = times.map(time => Date.parse(`${time}Z`))
+    const fractional = numbers
+      .slice(1, 3)
+      .map(time => time + Math.sign(time) * 0.75)
+    const plain = times
+      .slice(1, 3)
+      .map(time => Temporal.PlainDateTime.from(time).withCalendar(calendar))
+    for (const [locale, fields, monthSources] of [
+      ['en', {day: 'numeric', hour: 'numeric', minute: '2-digit'}],
+      ['zh', {dateStyle: 'full', timeStyle: 'short'}],
+      [
+        'fr',
+        {
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+          fractionalSecondDigits: 3,
+        },
+        [],
+      ],
+      [
+        'fr',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+          fractionalSecondDigits: 3,
+        },
+      ],
+    ]) {
+      const options = {calendar, timeZone: 'UTC', ...fields}
+      const formatter = new Intl.DateTimeFormat(locale, options)
+      const expected = leapRangeParts(
+        new Native(locale, options),
+        numbers,
+        monthSources
       )
-      for (const inputs of [[start, end], plain]) {
+      for (const inputs of [fractional, plain]) {
         assert.deepEqual(formatter.formatRangeToParts(...inputs), expected)
         assert.equal(
           formatter.formatRange(...inputs),

@@ -111,7 +111,7 @@ nonpositive year for display.
 
 [Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L469)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L1072) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L1073) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -235,7 +235,7 @@ with one. June and July both abbreviate to English narrow `J`. The
 ordinal check keeps the existing fallback when native July and owned June
 produce the same text. Number and PlainDate controls exercise both paths.
 Seven focused Bazel targets and all 161 controls on pinned Node 26.8.1 pass.
-[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L69).
+[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L82).
 [Range label check](../../packages/temporal/legacy-calendar-date.ts#L664).
 [ECMA-402 §11.5.4 step 15.f.x](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
@@ -333,7 +333,7 @@ The public checks compare full strings and tagged parts for Number and
 PlainDate on both pinned Nodes. Seven focused Bazel targets pass. The
 Node 26.8.1 replay passed 17,886 formatting checks, with 8,708 independent
 fixture rows and 34 existing native data differences.
-[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L185).
+[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L198).
 [Range day restoration](../../packages/temporal/legacy-calendar-date.ts#L788).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -391,8 +391,8 @@ existing fallback applies. Explicit-year and full-date layouts are verified belo
 Number and PlainDate regressions cover both calendars, equal and differing day
 fields, four locales and two pinned Node versions. Seven focused Bazel targets
 pass. Node 26.8.1 passes 17,932 formatting checks.
-[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L252).
-[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L260).
+[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L270).
+[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L278).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `380b322870e13b0504f30d727201b1d6547d6db29777fbe96488c62dc9397f5f`
@@ -414,9 +414,8 @@ without duplicating a closing parenthesis in the start endpoint.
 
 Number and PlainDate regressions cover both calendars and equal and differing
 day fields on pinned Node 24 and 26. Seven focused Bazel targets pass.
-Node 26.8.1 passes 17,948 formatting checks. Date-only layouts without two
-verified controls and styles with time fields retain their fallback.
-[Endpoint sources](../../packages/temporal/legacy-lunisolar-date.ts#L251).
+Node 26.8.1 passes 17,948 formatting checks. Layouts without two verified controls retain their fallback.
+[Endpoint sources](../../packages/temporal/legacy-lunisolar-date.ts#L278).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `41f5ff591565108593b7f63c4c0af85312871acacaf89852723bd9fb8a92424a`
@@ -445,8 +444,8 @@ the 1933 and 1909 fixtures, with 17,996 formatting checks on Node 26.8.1.
 Eight focused Bazel targets pass. If the host cannot supply both controls or
 the outputs disagree about shared parts, the existing fallback applies.
 
-[Same-year search](../../packages/temporal/legacy-lunisolar-date.ts#L252).
-[Argument order](../../packages/temporal/legacy-lunisolar-date.ts#L254).
+[Same-year search](../../packages/temporal/legacy-lunisolar-date.ts#L270).
+[Argument order](../../packages/temporal/legacy-lunisolar-date.ts#L272).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Day-30 before-fix log SHA-256 `4b93a68c85a682364e6667b58856d402c43019eadfd0a324aeb7a57f3c814be0`
@@ -454,3 +453,46 @@ the outputs disagree about shared parts, the existing fallback applies.
 - After-fix log SHA-256 `fba386617202f791151b9578bf5c43e4ba26d922208c9c565d6ae2b2e77a8c3e`
 - Node 26 packaged test SHA-256 `a30ee3119fd8d0dfdec6e6ca5fc8fed1ecc681501bff23e7dcce6c2fe5f5e4f6`
 - Public replay hashes `fa7225c1cac7c6bd591207f2f32861b8dfed1a3c68ea366e754f5e32cbf1221e` and `92f48054bc8317cc787fc67bf9ed2ea7e4a0ffa60bbc821a2184a7be5c592e3a`
+
+### UTC leap-month clock ranges
+
+English day/hour/minute ranges lost both month labels. Chinese full date
+plus short time used the base date's day glyph instead of the selected
+interval's numeric day. French fractional ranges used an unpadded start
+hour. The French Month pattern can omit month tokens when the base displays
+only day and time. The bridge accepts that verified layout with both
+endpoint sources. It requires two month labels when the base displays Month.
+
+Same-year controls carry the endpoint clock after TimeClip, including the
+nonnegative UTC time-within-day for pre-epoch dates. The selected layouts
+must agree on the clock, day, other shared fields and literals. Source tags
+and contextual widths come from the native controls.
+
+Numeric Date and PlainDateTime public regressions check both calendars,
+2020 and pre-epoch 1933, three locales, fractional numeric inputs and distinct
+endpoint times including .123 and .456 seconds. The package declaration
+gate and eight runtime targets pass. Pinned Node 26.8.1 passes 18,028
+formatting checks. Other projection profiles and layouts lacking verified
+controls remain conditional.
+
+[Clock projection](../../packages/temporal/legacy-lunisolar-date.ts#L235).
+[Range part sources and widths](../../packages/temporal/legacy-lunisolar-date.ts#L278).
+[ECMA-262 §21.4.1.31 step 3](https://tc39.es/ecma262/#sec-timeclip).
+[ECMA-262 §21.4.1.4 step 1](https://tc39.es/ecma262/#sec-timewithinday).
+[ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+The PlainDateTime full-date and short-time fixture retains the related year
+and cyclical year. The rendered comparison allows Year for this kind and
+retains the base style when no field conflicts. The pinned Node 26 native
+PlainDateTime projection drops both ICU skeleton symbols; V8 main includes
+them. The fixture uses paired native Numeric Date controls for the retained
+style. [Temporal comparison §15.4.1 step 45.j](https://tc39.es/proposal-temporal/#sec-createdatetimeformat).
+[Temporal comparison §15.6.2 steps 1–3](https://tc39.es/proposal-temporal/#sec-adjustdatetimestyleformat).
+[Bridge style selection](../../packages/temporal/locale.ts#L267).
+[Pinned V8 whitelist](https://github.com/nodejs/node/blob/v26.8.1/deps/v8/src/objects/js-date-time-format.cc#L1445-L1457).
+[V8 main whitelist](https://github.com/v8/v8/blob/main/src/objects/js-date-time-format.cc#L1469-L1481).
+
+- Before-fix clock log SHA-256 `7e15002d25cd0311e3de4bce4930c95477e74e92f21e10bfebac08711a49f85b`
+- Before-fix French log SHA-256 `3ac6b7cda215b3bde84dd1bf4c5f98a9948985e0e465ff56b6f984a640e0c7c9`
+- After-fix Bazel log SHA-256 `40c7ceb6dc655f6a9d1cc4b34bb1e200c57db8efd34870ca612cc2048d04dd4e`
+- Node 26 packaged test SHA-256 `43a5781551d322c36c731eface3f7c541f8dcd65a9de00eabc8b91d95b595330`

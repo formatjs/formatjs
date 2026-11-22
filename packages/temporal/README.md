@@ -96,8 +96,8 @@ Chinese/Dangi date fields use the same calendar arithmetic as Temporal, includin
 numeric Date inputs when host ICU data differs. Verified UTC Year, Month, and Day
 intervals keep the host layout while restoring corrected days. Regular and
 leap months keep both endpoint labels when shown. Verified leap ranges reuse
-the native Month layout, including punctuation and tagged weekdays. Captured
-host formatters supply localized labels. Validated numeric Year ranges keep
+the native Month layout, including clock fields, punctuation and tagged weekdays.
+Captured host formatters supply localized labels. Validated numeric Year ranges keep
 their numeric month and day widths, verified weekday labels and Buddhist month
 text with matching ordinals. Other corrected ranges use complete endpoint patterns.
 All supported non-Gregorian plain values also format beyond Date TimeClip.

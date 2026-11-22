@@ -330,7 +330,8 @@ year-boundary labels retain their layout. Regular and leap months stay
 distinct at Month or Day precision. Verified UTC day-only leap ranges reuse
 the Month pattern. Verified explicit-year and full-date ranges keep native
 punctuation and tagged weekdays. Same-year searches cover skipped and reversed
-controls. Layouts without verified controls remain open.
+controls. Verified UTC layouts with clock fields also retain native widths
+and source tags. Layouts without verified controls remain open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 The zoned locale bridge keeps warm host-offset cache lookups private under
 replaced collection methods. [Cache proof](temporal-legacy-bridge-state-audit.md#zoned-locale-offset-cache).
