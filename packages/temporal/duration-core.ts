@@ -1,7 +1,6 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
-  arraySome,
   bigIntFrom,
   mathAbs,
   numberFrom,
@@ -135,39 +134,85 @@ export function parseDurationString(value: string): DurationFields {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parseDuration(value)
-  const match =
-    /^([+-])?P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)([.,]\d{1,9})?H)?(?:(\d+)([.,]\d{1,9})?M)?(?:(\d+)([.,]\d{1,9})?S)?)?$/i.exec(
-      value
-    )
-  if (
-    !match ||
-    match[0] !== value ||
-    !arraySome([2, 3, 4, 5, 6, 8, 10], i => match[i] !== undefined) ||
-    (/[Tt]/.test(value) &&
-      !arraySome([6, 8, 10], i => match[i] !== undefined)) ||
-    (match[7] !== undefined &&
-      (match[8] !== undefined || match[10] !== undefined)) ||
-    (match[9] !== undefined && match[10] !== undefined)
-  )
+  const invalid = (): never => {
     throw new RangeErrorConstructor('Invalid duration string')
-  const result = zeroDuration()
-  const parsedFields = [
-    [2, 'years'],
-    [3, 'months'],
-    [4, 'weeks'],
-    [5, 'days'],
-    [6, 'hours'],
-    [8, 'minutes'],
-    [10, 'seconds'],
-  ] as const
-  for (let index = 0; index < parsedFields.length; index++) {
-    const pair = parsedFields[index]
-    result[pair[1]] = +(match[pair[0]] ?? 0)
   }
-  const fraction = (text: string | undefined): bigint =>
-    bigIntFrom((text?.slice(1) ?? '').padEnd(9, '0'))
-  let extra =
-    fraction(match[7]) * 3600n + fraction(match[9]) * 60n + fraction(match[11])
+  let index = 0
+  const first = value.length === 0 ? '' : value[0]
+  const negative = first === '-'
+  if (negative || first === '+') index++
+  if (index >= value.length || (value[index] !== 'P' && value[index] !== 'p'))
+    invalid()
+  index++
+  const result = zeroDuration()
+  let inTime = false
+  let found = false
+  let nextField = 0
+  let extra = 0n
+  while (index < value.length) {
+    if (value[index] === 'T' || value[index] === 't') {
+      if (inTime || index + 1 === value.length) invalid()
+      inTime = true
+      nextField = 4
+      index++
+      continue
+    }
+    const start = index
+    let whole = 0
+    while (index < value.length && value[index] >= '0' && value[index] <= '9') {
+      whole = whole * 10 + +value[index]
+      index++
+    }
+    if (index === start) invalid()
+    let fraction = 0
+    let digits = 0
+    if (
+      index < value.length &&
+      (value[index] === '.' || value[index] === ',')
+    ) {
+      index++
+      while (
+        index < value.length &&
+        value[index] >= '0' &&
+        value[index] <= '9'
+      ) {
+        if (digits === 9) invalid()
+        fraction = fraction * 10 + +value[index]
+        digits++
+        index++
+      }
+      if (digits === 0) invalid()
+      for (let padded = digits; padded < 9; padded++) fraction *= 10
+    }
+    if (index === value.length) return invalid()
+    const unit = value[index++]
+    const field = inTime
+      ? unit === 'H' || unit === 'h'
+        ? 4
+        : unit === 'M' || unit === 'm'
+          ? 5
+          : unit === 'S' || unit === 's'
+            ? 6
+            : -1
+      : unit === 'Y' || unit === 'y'
+        ? 0
+        : unit === 'M' || unit === 'm'
+          ? 1
+          : unit === 'W' || unit === 'w'
+            ? 2
+            : unit === 'D' || unit === 'd'
+              ? 3
+              : -1
+    if (field === -1 || field < nextField) return invalid()
+    if (digits !== 0 && (!inTime || index !== value.length)) invalid()
+    result[durationFieldNames[field]] = whole
+    nextField = field + 1
+    found = true
+    if (digits !== 0)
+      extra =
+        bigIntFrom(fraction) * (field === 4 ? 3600n : field === 5 ? 60n : 1n)
+  }
+  if (!found) invalid()
   result.minutes += numberFrom(extra / 60_000_000_000n)
   extra %= 60_000_000_000n
   result.seconds += numberFrom(extra / 1_000_000_000n)
@@ -175,7 +220,7 @@ export function parseDurationString(value: string): DurationFields {
   result.milliseconds = numberFrom(extra / 1_000_000n)
   result.microseconds = numberFrom((extra / 1000n) % 1000n)
   result.nanoseconds = numberFrom(extra % 1000n)
-  if (match[1] === '-')
+  if (negative)
     for (let index = 0; index < durationFieldNames.length; index++) {
       const field = durationFieldNames[index]
       result[field] = -result[field] || 0

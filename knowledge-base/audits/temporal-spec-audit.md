@@ -87,7 +87,17 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Local-time conversion hooks: [bounded audit](temporal-local-time-intrinsics-audit.md)
+- Duration string parsing: [grammar/arithmetic and hook audit](temporal-duration-parser-audit.md)
+  maps the TS/Rust parser contracts without adding Temporal chapter credit.
+  Indexed ASCII scanning removes mutable RegExp/String methods and legacy RegExp
+  state changes. Five regressions failed before correction; three focused gates
+  pass with exact calendar/time limits and malformed-input prototype controls.
+  Expanded validation passes all 45 tests (44 executed, one cached), including
+  all 40 Temporal class/backend gates; Temporal and DurationFormat assemblies
+  pass. No baseline, exclusions or timeout changes. Complete callers and
+  authoritative Temporal API section mapping stay open; no new spec issue.
+
+- [Local-time conversion hooks #8112](https://github.com/formatjs/formatjs/pull/8112): [bounded audit](temporal-local-time-intrinsics-audit.md)
   traces Temporal Instant formatting to ECMA-402 §11.5.11 step 3. Captured
   conversions and indexed tuple reads remove extra public hooks; three direct
   regressions failed before correction. Ten focused gates and DateTimeFormat
@@ -975,7 +985,7 @@ Current pass:
   input integer fits below 2**47, preserving one-nanosecond transport precision.
   TimeDurationFromComponents arithmetic/return lines 1327–1331 and 1333 in
   duration.html are traced to the time-only terms of
-  [TS durationNanoseconds](../../packages/temporal/duration-core.ts#L80)
+  [TS durationNanoseconds](../../packages/temporal/duration-core.ts#L79)
   and [Rust Duration::time_nanoseconds](../../crates/temporal/duration.rs#L138). Their weighted sum expands the specified
   successive 60/60/1000/1000/1000 fold. Optional days are a separate term.
   The caller-bound assertion at 1332 and complete caller algorithms remain open.

@@ -57,6 +57,10 @@ Singular and plural unit names use exact private matching. Replacing
 `String.prototype.endsWith` or `slice` does not intercept that matching;
 public option getters and string coercion hooks still run normally.
 
+Duration strings parse without calling mutable RegExp or String methods or
+changing legacy RegExp match state. Fractions preserve all nine digits, including
+fractional hours and minutes.
+
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`
 or inherited option getters/setters. Object-form options retain inherited

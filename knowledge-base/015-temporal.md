@@ -1,5 +1,10 @@
 # Temporal implementation
 
+`Duration.from(string)` uses indexed ASCII grammar scanning. It avoids mutable
+RegExp/String methods and legacy RegExp match-state changes. The
+[parser audit](audits/temporal-duration-parser-audit.md) records exact accepted
+integer/fraction bounds; complete callers and authoritative API mapping stay open.
+
 Temporal Instant formatting uses captured local-time Number conversions and
 indexed private tuple reads. The [conversion-hook audit](audits/temporal-local-time-intrinsics-audit.md)
 keeps fractional Decimal internals and complete public iterator isolation open.

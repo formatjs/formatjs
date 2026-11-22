@@ -3,7 +3,169 @@ import {readFileSync} from 'node:fs'
 import {expect, it} from 'vitest'
 import {Temporal as reference} from 'temporal-polyfill/implementation'
 import {Duration, Instant} from '#packages/temporal/index.js'
+import {nativeTemporal} from '#packages/temporal/native.js'
 import {roundDuration, type RoundingMode} from '#packages/temporal/rounding.js'
+
+it.each([
+  {owner: RegExp.prototype, key: 'exec'},
+  {owner: RegExp.prototype, key: 'test'},
+  {owner: String.prototype, key: 'slice'},
+  {owner: String.prototype, key: 'padEnd'},
+  {owner: Reflect, key: 'apply'},
+])('parses duration strings without observing $key', ({owner, key}) => {
+  expect(nativeTemporal()).toBeUndefined()
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+  const sentinel = new Error('Observable duration parser method')
+  const inputs = [
+    'PT0,123456789S',
+    '-PT1.000000001H',
+    'PT0.000000001M',
+    'PT1S',
+    'p1dt2h',
+  ]
+  const invalid = [
+    'PT1.1234567890S',
+    'PT1.0H0M',
+    'PT1.0M0S',
+    'P',
+    'PT',
+    'P1DT',
+    'PT1S\n',
+  ]
+  const parsed: ReturnType<typeof Duration.from>[] = []
+  const failures: unknown[] = []
+  const invalidErrors: unknown[] = []
+  let hooks = 0
+  try {
+    Object.defineProperty(owner, key, {
+      configurable: true,
+      get() {
+        hooks++
+        throw sentinel
+      },
+    })
+    for (let index = 0; index < inputs.length; index++) {
+      try {
+        parsed.push(Duration.from(inputs[index]))
+      } catch (error) {
+        failures.push(error)
+      }
+    }
+    for (let index = 0; index < invalid.length; index++) {
+      try {
+        Duration.from(invalid[index])
+        invalidErrors.push(undefined)
+      } catch (error) {
+        invalidErrors.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(owner, key, descriptor)
+  }
+  expect(hooks).toBe(0)
+  expect(failures).toEqual([])
+  expect(
+    parsed.map(value => [
+      value.days,
+      value.hours,
+      value.minutes,
+      value.seconds,
+      value.milliseconds,
+      value.microseconds,
+      value.nanoseconds,
+    ])
+  ).toEqual([
+    [0, 0, 0, 0, 123, 456, 789],
+    [0, -1, 0, 0, 0, -3, -600],
+    [0, 0, 0, 0, 0, 0, 60],
+    [0, 0, 0, 1, 0, 0, 0],
+    [1, 2, 0, 0, 0, 0, 0],
+  ])
+  expect(invalidErrors).toHaveLength(invalid.length)
+  for (const error of invalidErrors) expect(error).toBeInstanceOf(RangeError)
+})
+
+it('does not change legacy RegExp state when parsing duration strings', () => {
+  ;/(duration marker)/.exec('duration marker')
+  const expected = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  const value = Duration.from('PT0.123456789S')
+  const actual = [RegExp.$1, RegExp.lastMatch, RegExp.input]
+  expect(actual).toEqual(expected)
+  expect(value.nanoseconds).toBe(789)
+})
+
+it.each([
+  ['', '0'],
+  ['+', '1'],
+  ['P1', '2'],
+  ['PT1', '3'],
+  ['PT1.2', '5'],
+])(
+  'rejects incomplete duration %j without reading inherited character %s',
+  (text, key) => {
+    const descriptor = Object.getOwnPropertyDescriptor(String.prototype, key)
+    let hooks = 0,
+      error: unknown
+    try {
+      Object.defineProperty(String.prototype, key, {
+        configurable: true,
+        get() {
+          hooks++
+          return 'D'
+        },
+      })
+      try {
+        Duration.from(text)
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      if (descriptor) Object.defineProperty(String.prototype, key, descriptor)
+      else Reflect.deleteProperty(String.prototype, key)
+    }
+    expect(hooks).toBe(0)
+    expect(error).toBeInstanceOf(RangeError)
+  }
+)
+
+it('preserves exact duration parsing at calendar and nanosecond bounds', () => {
+  for (const sign of [1, -1]) {
+    const prefix = sign < 0 ? '-' : ''
+    const value = Duration.from(`${prefix}PT9007199254740991.999999999S`)
+    expect([
+      value.seconds,
+      value.milliseconds,
+      value.microseconds,
+      value.nanoseconds,
+    ]).toEqual([sign * 9007199254740991, sign * 999, sign * 999, sign * 999])
+    expect(Duration.from(`${prefix}P4294967295Y`).years).toBe(sign * 4294967295)
+    expect(() => Duration.from(`${prefix}PT9007199254740992S`)).toThrow(
+      RangeError
+    )
+    expect(() => Duration.from(`${prefix}P4294967296Y`)).toThrow(RangeError)
+  }
+  expect(Duration.from('p0001w02dt0003h').toString()).toBe('P1W2DT3H')
+  expect(Object.is(Duration.from('-PT0S').seconds, -0)).toBe(false)
+  for (const text of [
+    'P1.0D',
+    'PT.1S',
+    'PT1.S',
+    'P1D1Y',
+    'PT1M1H',
+    'PT1S1S',
+    'PTT1S',
+    'P1H',
+    'P1DT',
+    'PT1S\r',
+    'PT1S\u2028',
+    'PT1S\u2029',
+    'PT1S\0',
+    'PT1S ',
+    '−PT1S',
+    'PT１S',
+  ])
+    expect(() => Duration.from(text), JSON.stringify(text)).toThrow(RangeError)
+})
 
 it('does not observe array sorting while reading duration fields', () => {
   const value = Duration.from('P1DT2H')
