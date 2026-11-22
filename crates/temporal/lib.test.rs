@@ -2959,6 +2959,46 @@ fn zoned_clock_rounding_preserves_folds_and_resolves_gaps() {
 }
 
 #[test]
+fn zoned_clock_rounding_validates_the_local_date_and_all_candidates() {
+    use formatjs_temporal::{
+        Error, FixedOffset, OffsetTransition, RoundingMode, TransitionZone, ZonedDateTime,
+        ZonedUnit,
+    };
+
+    let minimum = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let value = ZonedDateTime::new(minimum, FixedOffset::new(-3_600_000_000_000).unwrap());
+    assert_eq!(
+        value
+            .round(ZonedUnit::Hour, 1, RoundingMode::HalfExpand)
+            .map(|rounded| rounded.instant()),
+        Err(Error::OutOfRange)
+    );
+    assert_eq!(
+        value
+            .round(ZonedUnit::Nanosecond, 1, RoundingMode::HalfExpand)
+            .unwrap()
+            .instant(),
+        minimum
+    );
+
+    let maximum_seconds = (MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64;
+    let transitions = [OffsetTransition {
+        epoch_seconds: maximum_seconds - 1800,
+        offset_seconds: 0,
+    }];
+    let fold = TransitionZone::new(3600, &transitions, None).unwrap();
+    // Local 00:15 occurs at max − 45m and again at max + 15m.
+    let first = Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS - 2_700_000_000_000).unwrap();
+    let value = ZonedDateTime::new(first, fold);
+    assert_eq!(
+        value
+            .round(ZonedUnit::Minute, 1, RoundingMode::HalfExpand)
+            .map(|rounded| rounded.instant()),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
 fn repeated_timezone_offsets_do_not_repeat_resolution_candidates() {
     use formatjs_temporal::{OffsetTransition, TimeZone, TransitionZone};
     let events: Vec<_> = (0..400)

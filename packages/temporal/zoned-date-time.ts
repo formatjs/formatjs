@@ -1038,6 +1038,9 @@ class ZonedDateTimeValue {
     if (unit === 'day') {
       const start = startOfDay(slot),
         end = startOfDay(slot, epochDayOf(local(slot)) + 1)
+      // ECMA-262 preview §22.9.3.39 step 18.f clamps a repeated civil date.
+      // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.round
+      // https://github.com/tc39/proposal-temporal/issues/3312
       const current =
         slot.epochNanoseconds < end ? slot.epochNanoseconds : end - 1n
       value = start + roundInstant(current - start, end - start, mode)

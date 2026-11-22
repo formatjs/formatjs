@@ -432,6 +432,15 @@ export function checkZonedArithmeticOracle(
     overlapEnd.epochNanoseconds,
     'New York zero-date addition keeps the chosen fold instant'
   )
+  const minimum = new Temporal.ZonedDateTime(
+    -8_640_000_000_000_000_000_000n,
+    '-01:00'
+  )
+  equal(
+    minimum.round('nanosecond').epochNanoseconds,
+    minimum.epochNanoseconds,
+    'zoned nanosecond round preserves the minimum Instant'
+  )
   // UTC's maximum Instant cannot supply a following local-day window.
   const maximum = new Temporal.ZonedDateTime(
     8_640_000_000_000_000_000_000n,
@@ -444,6 +453,10 @@ export function checkZonedArithmeticOracle(
   const zeroDuration = new Temporal.Duration()
   const exactMinute = {largestUnit: 'day', smallestUnit: 'minute'}
   for (const [context, operation] of [
+    [
+      'zoned hour round rejects a local date below the Instant day range',
+      () => minimum.round('hour'),
+    ],
     [
       'zero zoned day duration round requires next day',
       () =>

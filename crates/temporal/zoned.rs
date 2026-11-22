@@ -242,6 +242,7 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             / 3_600_000_000_000.0)
     }
     // Proposal comparison §6.3.39 steps 19.c, 19.e, 19.i and 20.a–20.c: Supply typed zoned rounding branches.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.round
     pub fn round(
         &self,
         unit: crate::DateTimeUnit,
@@ -255,6 +256,8 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
             let day = self.local()?.date().epoch_day();
             let start = self.day_boundary(day)?.epoch_nanoseconds();
             let end = self.day_boundary(day + 1)?.epoch_nanoseconds();
+            // ECMA-262 preview §22.9.3.39 step 18.f clamps a repeated civil date.
+            // https://github.com/tc39/proposal-temporal/issues/3312
             let current = self.instant.epoch_nanoseconds().min(end - 1);
             Instant::from_epoch_nanoseconds(
                 start + crate::rounding::round_instant(current - start, end - start, mode),
@@ -262,23 +265,24 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> ZonedDateTime<Z, C> {
         } else {
             let time = unit.time().ok_or(Error::InvalidRoundingOptions)?;
             crate::time::validate_increment(time, increment)?;
+            // Proposal §6.3.39 step 14 returns the original instant for an exact round.
+            if time == crate::TimeUnit::Nanosecond && increment == 1 {
+                return Ok(self.clone());
+            }
             let rounded = self.local()?.round(time, increment, mode)?;
             let offset = self.time_zone.offset_nanoseconds(self.instant);
-            let preferred = Instant::from_epoch_nanoseconds(rounded.epoch_nanoseconds() - offset);
-            if let Ok(value) = preferred {
-                if self.time_zone.offset_nanoseconds(value) == offset {
-                    return Ok(Self::new_in_calendar(
-                        value,
-                        self.time_zone.clone(),
-                        self.calendar,
-                    ));
-                }
-            }
-            resolve_local(
+            // Proposal §6.3.39 step 20.c uses offset prefer with exact matching.
+            // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.round
+            return Self::from_local_with_offset(
                 rounded.fields(),
-                &self.time_zone,
-                Disambiguation::Compatible,
-            )?
+                self.time_zone.clone(),
+                self.calendar,
+                OffsetInput::Exact(offset),
+                ZonedParseOptions {
+                    disambiguation: Disambiguation::Compatible,
+                    offset: OffsetOption::Prefer,
+                },
+            );
         };
         Ok(Self::new_in_calendar(
             instant,
