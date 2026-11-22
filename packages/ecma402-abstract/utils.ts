@@ -216,6 +216,46 @@ export function getListFormatProvider(): typeof Intl.ListFormat {
   return listFormatProvider
 }
 
+// Temporal comparison §§15.10.1–2 step4; §15.4.1: retain selected real parts methods.
+// https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+const getFormatterPrototype = Object.getPrototypeOf
+const formatterPartsMethods = new WeakMap<object, unknown>()
+const formatterPartsOwners = new WeakMap<object, unknown>()
+const getPartsMethod = formatterPartsMethods.get.bind(formatterPartsMethods)
+const setPartsMethod = formatterPartsMethods.set.bind(formatterPartsMethods)
+const getPartsOwner = formatterPartsOwners.get.bind(formatterPartsOwners)
+const setPartsOwner = formatterPartsOwners.set.bind(formatterPartsOwners)
+function findFormatterPartsMethod(Constructor: object): unknown {
+  const cached = getPartsMethod(Constructor)
+  if (cached) return cached
+  let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')?.value
+  while (prototype != null) {
+    const inherited = getPartsOwner(prototype)
+    if (inherited) {
+      setPartsMethod(Constructor, inherited)
+      return inherited
+    }
+    const descriptor = getOwnPropertyDescriptor(prototype, 'formatToParts')
+    const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+    if (value && typeof value.value === 'function') {
+      setPartsMethod(Constructor, value.value)
+      setPartsOwner(prototype, value.value)
+      return value.value
+    }
+    prototype = getFormatterPrototype(prototype)
+  }
+}
+export function getFormatterPartsMethod<T>(Constructor: object): T {
+  const method = findFormatterPartsMethod(Constructor)
+  if (!method)
+    throw new TypeErrorConstructor('Missing supplied formatter parts method')
+  return method as T
+}
+if (typeof numberFormatProvider === 'function')
+  findFormatterPartsMethod(numberFormatProvider)
+if (typeof listFormatProvider === 'function')
+  findFormatterPartsMethod(listFormatProvider)
+
 const numberFormatMemoizers = new WeakMap<
   typeof Intl.NumberFormat,
   typeof createMemoizedNumberFormat

@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-235 core and91 amendment rows remain conditional; the separate queue contains
-104 conditional numbered steps in14 shared-premise families. Aggregate counts are not independent defects.
+235 core and71 amendment rows remain conditional; the separate queue contains
+84 conditional numbered steps in11 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.
@@ -41,6 +41,17 @@ Scope: Temporal APIs and dependencies they actually exercise. This is not an
 audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
+
+## Owned Intl invocation correction, 2026-11-22
+
+[Producer/facade evidence](temporal-intl-producer-state-facade-audit.md) closes21
+numbered steps; six selected-kind rows retain a named helper contract. Four
+previously verified numeric rows needed corrected provider getter capture.
+[Duration invocation](temporal-duration-invocation-private-operations-audit.md)
+closes three method/group gates while reopening one actual fresh-constructor
+step and three containing clauses. Eighteen targets pass, including precision,
+legacy provider installation and TS/native Hermes. Conditional queue104 to84;
+source mapping and annotation remain separate completion requirements.
 
 ## Memoizer execution and settings reconciliation, 2026-11-22
 

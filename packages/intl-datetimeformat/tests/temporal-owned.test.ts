@@ -543,3 +543,378 @@ test('Temporal format slots bypass inherited setters', () => {
   }
   expect(actual).toBe(expected)
 })
+
+test.each([false, true])(
+  'Temporal numeric producer uses private options, warm=%s',
+  warm => {
+    const value = new Temporal.PlainDateTime(2024, 2, 29, 12, 34, 56, 789)
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      hourCycle: 'h23',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      fractionalSecondDigits: 3,
+    })
+    if (warm) formatter.formatToParts(value)
+    const original = Object.create
+    let actual: unknown, error: unknown
+    try {
+      Object.create = () => {
+        throw new Error('Mutable producer Object.create')
+      }
+      actual = formatter.formatToParts(value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.create = original
+    }
+    if (error) throw error
+    expect(actual).toEqual([
+      {type: 'hour', value: '12'},
+      {type: 'literal', value: ':'},
+      {type: 'minute', value: '34'},
+      {type: 'literal', value: ':'},
+      {type: 'second', value: '56'},
+      {type: 'literal', value: '.'},
+      {type: 'fractionalSecond', value: '789'},
+    ])
+  }
+)
+
+test.each([false, true])(
+  'Temporal numeric producer avoids late NumberFormat getters, warm=%s',
+  warm => {
+    const numberingSystem = warm ? 'mathdbl' : 'mathsans'
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      year: 'numeric',
+      numberingSystem,
+    })
+    const value = new Temporal.PlainDate(2024, 2, 29)
+    if (warm) formatter.formatToParts(value)
+    const descriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
+    const define = Object.defineProperty
+    let actual: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(Intl, 'NumberFormat', {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Mutable producer NumberFormat getter')
+        },
+      })
+      actual = formatter.formatToParts(value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(Intl, 'NumberFormat', descriptor)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(actual).toEqual([{type: 'year', value: warm ? '𝟚𝟘𝟚𝟜' : '𝟤𝟢𝟤𝟦'}])
+  }
+)
+
+// Real engine providers; observable digit output checks lazy provider selection and profile reuse.
+test('Temporal numeric producers retain late supplied providers after first rendering', () => {
+  const Original = Intl.NumberFormat
+  const descriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
+  class FirstProvider extends Original {
+    constructor(
+      locales?: Intl.LocalesArgument,
+      options?: Intl.NumberFormatOptions
+    ) {
+      super(locales, {...options, numberingSystem: 'arab'})
+    }
+  }
+  class SecondProvider extends Original {
+    constructor(
+      locales?: Intl.LocalesArgument,
+      options?: Intl.NumberFormatOptions
+    ) {
+      super(locales, {...options, numberingSystem: 'latn'})
+    }
+  }
+  const value = new Temporal.PlainDate(2024, 2, 29)
+  const first = new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'})
+  const second = new DateTimeFormat('en', {timeZone: 'UTC', year: 'numeric'})
+  let firstText: string | undefined,
+    secondText: string | undefined,
+    retainedText: string | undefined
+  try {
+    Intl.NumberFormat = FirstProvider
+    firstText = first.format(value)
+    Intl.NumberFormat = SecondProvider
+    secondText = second.format(value)
+    retainedText = first.format(value)
+  } finally {
+    Object.defineProperty(Intl, 'NumberFormat', descriptor)
+  }
+  expect(firstText).toBe('٢٠٢٤')
+  expect(secondText).toBe('2024')
+  expect(retainedText).toBe('٢٠٢٤')
+})
+
+test('Temporal day periods ignore mutable Array.find', () => {
+  const formatter = new DateTimeFormat('en', {
+    timeZone: 'UTC',
+    dayPeriod: 'long',
+  })
+  const exact = new Temporal.PlainTime(12)
+  const interval = new Temporal.PlainTime(18)
+  const original = Array.prototype.find
+  let actual: unknown, error: unknown
+  try {
+    Array.prototype.find = () => {
+      throw new Error('Mutable producer Array.find')
+    }
+    actual = [formatter.formatToParts(exact), formatter.formatToParts(interval)]
+  } catch (caught) {
+    error = caught
+  } finally {
+    Array.prototype.find = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toEqual([
+    [{type: 'dayPeriod', value: 'noon'}],
+    [{type: 'dayPeriod', value: 'in the evening'}],
+  ])
+})
+
+test.each([
+  'replace',
+  'split',
+  'indexOf',
+  'lastIndexOf',
+  'slice',
+  'replaceAll',
+  Symbol.split,
+] as const)('Temporal GMT producer ignores mutable String.%s', method => {
+  const positive = new DateTimeFormat('en', {
+    timeZone: '+05:30',
+    timeZoneName: 'longOffset',
+  })
+  const negative = new DateTimeFormat('en', {
+    timeZone: '-01:00',
+    timeZoneName: 'shortOffset',
+  })
+  const value = new Temporal.Instant(0n)
+  const original = Object.getOwnPropertyDescriptor(String.prototype, method)
+  let actual: Intl.DateTimeFormatPart[][] | undefined, error: unknown
+  try {
+    Object.defineProperty(String.prototype, method, {
+      configurable: true,
+      writable: true,
+      ...original,
+      value() {
+        throw new Error('Mutable GMT string method')
+      },
+    })
+    actual = [positive.formatToParts(value), negative.formatToParts(value)]
+  } catch (caught) {
+    error = caught
+  } finally {
+    if (original) Object.defineProperty(String.prototype, method, original)
+    else Reflect.deleteProperty(String.prototype, method)
+  }
+  expect(error).toBeUndefined()
+  expect(
+    actual!.map(parts => parts.filter(part => part.type === 'timeZoneName'))
+  ).toEqual([
+    [{type: 'timeZoneName', value: 'GMT+05:30'}],
+    [{type: 'timeZoneName', value: 'GMT-1'}],
+  ])
+})
+
+test('Temporal leap month producer ignores mutable String.replace', () => {
+  const formatter = new DateTimeFormat('en-u-ca-chinese', {
+    timeZone: 'UTC',
+    month: 'long',
+  })
+  const value = new Temporal.Instant(1_679_443_200_000_000_000n)
+  expect(formatter.resolvedOptions().calendar).toBe('chinese')
+  const original = String.prototype.replace
+  let actual: unknown, error: unknown
+  try {
+    String.prototype.replace = () => {
+      throw new Error('Mutable leap month replacement')
+    }
+    actual = formatter.formatToParts(value)
+  } catch (caught) {
+    error = caught
+  } finally {
+    String.prototype.replace = original
+  }
+  expect(error).toBeUndefined()
+  expect(actual).toEqual([{type: 'month', value: 'Second Monthbis'}])
+})
+
+test.each(['exec', Symbol.replace] as const)(
+  'Temporal GMT producer ignores mutable RegExp %s',
+  key => {
+    const formatter = new DateTimeFormat('en', {
+      timeZone: '+05:30',
+      timeZoneName: 'shortOffset',
+    })
+    const value = new Temporal.Instant(0n)
+    const original = Object.getOwnPropertyDescriptor(RegExp.prototype, key)!
+    let actual: Intl.DateTimeFormatPart[] | undefined, error: unknown
+    try {
+      Object.defineProperty(RegExp.prototype, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable GMT RegExp operation')
+        },
+      })
+      actual = formatter.formatToParts(value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(RegExp.prototype, key, original)
+    }
+    expect(error).toBeUndefined()
+    expect(actual!.filter(part => part.type === 'timeZoneName')).toEqual([
+      {type: 'timeZoneName', value: 'GMT+5:30'},
+    ])
+  }
+)
+
+test.each([false, true])(
+  'Temporal numeric fields retain bound NumberFormat format getters, warm=%s',
+  warm => {
+    const Original = Intl.NumberFormat
+    class FreshNumericProvider extends Original {}
+    const providerDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const formatDescriptor = Object.getOwnPropertyDescriptor(
+      Original.prototype,
+      'format'
+    )!
+    const define = Object.defineProperty
+    const value = new Temporal.PlainDateTime(2024, 1, 2, 3, 4, 5, 6)
+    const chineseValue = new Temporal.PlainDate(2024, 2, 10)
+    let text: string | undefined,
+      parts: Intl.DateTimeFormatPart[] | undefined,
+      related: Intl.DateTimeFormatPart[] | undefined,
+      error: unknown,
+      hooks = 0
+    try {
+      define(Intl, 'NumberFormat', {
+        ...providerDescriptor,
+        value: FreshNumericProvider,
+      })
+      const formatter = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        fractionalSecondDigits: 3,
+        hourCycle: 'h23',
+      })
+      const chinese = new DateTimeFormat('en', {
+        timeZone: 'UTC',
+        calendar: 'chinese',
+        year: 'numeric',
+      })
+      if (warm) {
+        formatter.formatToParts(value)
+        chinese.formatToParts(chineseValue)
+      }
+      define(Original.prototype, 'format', {
+        ...formatDescriptor,
+        get() {
+          hooks++
+          throw new Error('Mutable numeric format getter')
+        },
+      })
+      text = formatter.format(value)
+      parts = formatter.formatToParts(value)
+      related = chinese.formatToParts(chineseValue)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(Original.prototype, 'format', formatDescriptor)
+      define(Intl, 'NumberFormat', providerDescriptor)
+    }
+    if (error) throw error
+    expect(hooks).toBe(0)
+    expect(text).toBe('01/02/2024, 03:04:05.006')
+    expect(parts).toEqual([
+      {type: 'month', value: '01'},
+      {type: 'literal', value: '/'},
+      {type: 'day', value: '02'},
+      {type: 'literal', value: '/'},
+      {type: 'year', value: '2024'},
+      {type: 'literal', value: ', '},
+      {type: 'hour', value: '03'},
+      {type: 'literal', value: ':'},
+      {type: 'minute', value: '04'},
+      {type: 'literal', value: ':'},
+      {type: 'second', value: '05'},
+      {type: 'literal', value: '.'},
+      {type: 'fractionalSecond', value: '006'},
+    ])
+    expect(related!.filter(part => part.type === 'relatedYear')).toEqual([
+      {type: 'relatedYear', value: '2024'},
+    ])
+  }
+)
+
+test.each(['parts', 'includes', 'replaceAll', 'find', Symbol.replace] as const)(
+  'cold Temporal fractional-second pattern ignores private %s lookup',
+  key => {
+    const options = {
+      timeZone: 'UTC',
+      hourCycle: 'h23',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      fractionalSecondDigits: 3,
+    } as const
+    const value = new Temporal.PlainTime(12, 34, 56, 789)
+    const reference = new DateTimeFormat('en', options)
+    const expectedParts = reference.formatToParts(value)
+    const formatter = new DateTimeFormat('en', options)
+    const owner =
+      key === 'parts'
+        ? Intl.NumberFormat.prototype
+        : key === 'find'
+          ? Array.prototype
+          : String.prototype
+    const property = key === 'parts' ? 'formatToParts' : key
+    const descriptor = Object.getOwnPropertyDescriptor(owner, property)
+    const define = Object.defineProperty
+    let text: string | undefined,
+      parts: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(owner, property, {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Private fractional-second pattern lookup')
+        },
+      })
+      text = formatter.format(value)
+      parts = formatter.formatToParts(value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (descriptor) define(owner, property, descriptor)
+      else Reflect.deleteProperty(owner, property)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe('12:34:56.789')
+    expect(parts).toEqual(expectedParts)
+  }
+)

@@ -504,3 +504,172 @@ test.each(['iterator', 'call'] as const)(
     expect(actual).toEqual(expected)
   }
 )
+
+test.each(['get', 'set'] as const)(
+  'Temporal selected-kind profiles retain private Map.%s',
+  method => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    for (const warm of [false, true]) {
+      let reads = 0
+      const dtf = formatter({
+        get year() {
+          reads++
+          return 'numeric'
+        },
+        month: '2-digit',
+        day: '2-digit',
+      })
+      if (warm) dtf.formatToParts(value)
+      const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, method)!
+      const original = descriptor.value
+      const apply = Reflect.apply
+      let actual: unknown,
+        error: unknown,
+        hooks = 0
+      try {
+        Object.defineProperty(Map.prototype, method, {
+          ...descriptor,
+          value(this: Map<unknown, unknown>, ...args: unknown[]) {
+            if (args[0] === 'PlainDate') {
+              hooks++
+              throw new Error('Mutable Temporal kind cache')
+            }
+            return apply(original, this, args)
+          },
+        })
+        actual = dtf.formatToParts(value)
+      } catch (caught) {
+        error = caught
+      } finally {
+        Object.defineProperty(Map.prototype, method, descriptor)
+      }
+      expect(error, `warm=${warm}`).toBeUndefined()
+      expect(hooks).toBe(0)
+      expect(reads).toBe(1)
+      expect(actual).toEqual([
+        {type: 'month', value: '01'},
+        {type: 'literal', value: '/'},
+        {type: 'day', value: '02'},
+        {type: 'literal', value: '/'},
+        {type: 'year', value: '2024'},
+      ])
+    }
+  }
+)
+
+test.each(['format', 'formatRange'] as const)(
+  'Temporal %s concatenates private rendered Lists without iteration',
+  method => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const dtf = formatter({year: 'numeric', month: '2-digit', day: '2-digit'})
+    // Warm the real producer, not the fresh result List created by each call.
+    dtf.formatToParts(value)
+    dtf.formatRangeToParts(value, value)
+    const descriptor = Object.getOwnPropertyDescriptor(
+      Array.prototype,
+      Symbol.iterator
+    )!
+    const original = descriptor.value
+    const apply = Reflect.apply
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      Object.defineProperty(Array.prototype, Symbol.iterator, {
+        ...descriptor,
+        value(this: any[]) {
+          // Pattern tokens have undefined field values; rendered range Lists
+          // acquire source only after endpoint production/annotation completes.
+          const first = this[0]
+          if (
+            first?.type === 'month' &&
+            first.value === '01' &&
+            (method === 'format' || typeof first.source === 'string')
+          ) {
+            hooks++
+            throw new Error('Mutable rendered-part iterator')
+          }
+          return apply(original, this, [])
+        },
+      })
+      actual =
+        method === 'format' ? dtf.format(value) : dtf.formatRange(value, value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(Array.prototype, Symbol.iterator, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toBe('01/02/2024')
+  }
+)
+
+test.each(['push', 'index'] as const)(
+  'Temporal range parts project own records without inherited %s',
+  hook => {
+    const value = new Temporal.PlainDate(2024, 1, 2)
+    const dtf = formatter({year: 'numeric', month: '2-digit', day: '2-digit'})
+    dtf.formatRangeToParts(value, value)
+    const key = hook === 'push' ? 'push' : '0'
+    const descriptor = Object.getOwnPropertyDescriptor(Array.prototype, key)
+    const define = Object.defineProperty
+    let actual: any[] | undefined,
+      error: unknown,
+      hooks = 0
+    try {
+      define(
+        Array.prototype,
+        key,
+        hook === 'push'
+          ? {
+              configurable: true,
+              writable: true,
+              value() {
+                hooks++
+                throw new Error('Mutable range parts push')
+              },
+            }
+          : {
+              configurable: true,
+              set() {
+                hooks++
+                throw new Error('Inherited range parts index')
+              },
+            }
+      )
+      actual = dtf.formatRangeToParts(value, value)
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (descriptor) define(Array.prototype, key, descriptor)
+      else delete (Array.prototype as any)[key]
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toEqual([
+      {type: 'month', value: '01', source: 'shared'},
+      {type: 'literal', value: '/', source: 'shared'},
+      {type: 'day', value: '02', source: 'shared'},
+      {type: 'literal', value: '/', source: 'shared'},
+      {type: 'year', value: '2024', source: 'shared'},
+    ])
+    for (let index = 0; index < actual!.length; index++) {
+      expect(Object.getOwnPropertyDescriptor(actual!, `${index}`)).toEqual({
+        value: actual![index],
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      })
+      expect(Object.getPrototypeOf(actual![index])).toBe(Object.prototype)
+      expect(Object.keys(actual![index])).toEqual(['type', 'value', 'source'])
+      for (const field of ['type', 'value', 'source'])
+        expect(Object.getOwnPropertyDescriptor(actual![index], field)).toEqual({
+          value: actual![index][field],
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        })
+    }
+  }
+)

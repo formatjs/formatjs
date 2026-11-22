@@ -1,5 +1,6 @@
 import {
   arraySome,
+  bigIntFrom,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {BigDecimal} from '@formatjs/bigdecimal'
@@ -8,6 +9,7 @@ import {
   createMemoizedListFormatForConstructor,
   createMemoizedNumberFormatForConstructor,
   getListFormatProvider,
+  getFormatterPartsMethod,
   getNumberFormatProvider,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
@@ -19,36 +21,7 @@ import {
   type DurationRecord,
 } from '#packages/intl-durationformat/types.js'
 
-const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
-const getPrototypeOf = Object.getPrototypeOf
 const apply = Reflect.apply
-
-// Temporal comparison §§15.10.1–2 step4: retain supplied internal formatter methods.
-// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
-const partsMethods = new WeakMap<object, unknown>()
-const getPartsMethod = partsMethods.get.bind(partsMethods)
-const setPartsMethod = partsMethods.set.bind(partsMethods)
-function formatterPartsMethod<T>(Constructor: object): T {
-  const cached = getPartsMethod(Constructor)
-  if (cached) return cached as T
-  let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')!.value
-  while (prototype !== null) {
-    const descriptor = getOwnPropertyDescriptor(prototype, 'formatToParts')
-    const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
-    if (value && typeof value.value === 'function') {
-      setPartsMethod(Constructor, value.value)
-      return value.value as T
-    }
-    prototype = getPrototypeOf(prototype)
-  }
-  throw new TypeError('Missing supplied formatter parts method')
-}
-const initialNumberFormat = getNumberFormatProvider()
-const initialListFormat = getListFormatProvider()
-if (typeof initialNumberFormat === 'function')
-  formatterPartsMethod(initialNumberFormat)
-if (typeof initialListFormat === 'function')
-  formatterPartsMethod(initialListFormat)
 
 const stringListIterator = Array.prototype[Symbol.iterator]
 const stringListIteratorNext = Object.getPrototypeOf(
@@ -77,8 +50,8 @@ export function initializeDurationFormatProviders(df: DurationFormat): void {
   setFormatterProviders(df, {
     numberFormat: createMemoizedNumberFormatForConstructor(NumberFormat),
     listFormat: createMemoizedListFormatForConstructor(ListFormat),
-    numberFormatToParts: formatterPartsMethod(NumberFormat),
-    listFormatToParts: formatterPartsMethod(ListFormat),
+    numberFormatToParts: getFormatterPartsMethod(NumberFormat),
+    listFormatToParts: getFormatterPartsMethod(ListFormat),
   })
 }
 
@@ -116,7 +89,8 @@ export function PartitionDurationFormatPattern(
     // Number.toString() may instead produce a shorter, rounded decimal.
     // https://tc39.es/ecma402/#sec-tointegerifintegral
     // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L475
-    let value = new BigDecimal(BigInt(duration[row.valueField]))
+    // Temporal comparison §§15.10.1–2 step4: private integer conversion keeps runtime intrinsic.
+    let value = new BigDecimal(bigIntFrom(duration[row.valueField]))
     const style = internalSlots[row.styleSlot]
     const display = internalSlots[row.displaySlot]
     const {unit, numberFormatUnit} = row
@@ -138,18 +112,38 @@ export function PartitionDurationFormatPattern(
       if (nextStyle === 'numeric' || nextStyle === 'fractional') {
         if (unit === 'seconds') {
           value = value
-            .plus(new BigDecimal(BigInt(duration.milliseconds)).div(1000))
-            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1_000_000))
             .plus(
-              new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000_000)
+              new BigDecimal(bigIntFrom(duration.milliseconds)).div(
+                bigIntFrom(1000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.microseconds)).div(
+                bigIntFrom(1_000_000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+                bigIntFrom(1_000_000_000)
+              )
             )
         } else if (unit === 'milliseconds') {
           value = value
-            .plus(new BigDecimal(BigInt(duration.microseconds)).div(1000))
-            .plus(new BigDecimal(BigInt(duration.nanoseconds)).div(1_000_000))
+            .plus(
+              new BigDecimal(bigIntFrom(duration.microseconds)).div(
+                bigIntFrom(1000)
+              )
+            )
+            .plus(
+              new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+                bigIntFrom(1_000_000)
+              )
+            )
         } else {
           value = value.plus(
-            new BigDecimal(BigInt(duration.nanoseconds)).div(1000)
+            new BigDecimal(bigIntFrom(duration.nanoseconds)).div(
+              bigIntFrom(1000)
+            )
           )
         }
         if (internalSlots.fractionalDigits === undefined) {

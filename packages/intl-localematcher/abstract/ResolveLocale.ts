@@ -100,7 +100,7 @@ export function ResolveLocale<K extends string, D extends {[k in K]: any}>(
   // whose fields can invoke setters inherited from Object.prototype.
   // https://tc39.es/ecma402/#sec-resolvelocale
   // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/negotiation.html#L242
-  const result: ResolveLocaleResult = Object.create(null)
+  const result = {__proto__: null} as unknown as ResolveLocaleResult
   result.locale = 'en'
   result.dataLocale = foundLocale
   let components

@@ -76,8 +76,20 @@ public field Gets, coercion and getter receivers. [Twelve targets](audits/tempor
 pass. [Batch evidence](audits/temporal-duration-provider-private-operations-audit.md)
 records that checkpoint. The [memoizer correction](audits/temporal-duration-memoizer-private-operations-audit.md)
 then fixes two public serialization failures while preserving custom serializers
-and public argument toJSON; ten targets pass. Three Duration gates remain
-conditional on owned private-slot access and constructor-cache operations.
+and public argument toJSON; ten targets pass. At that checkpoint, three Duration
+gates remained conditional on owned private-slot access and constructor caches.
+
+The next owned-adapter correction captures Duration slot/cache access, constructor
+unit lists, numbering-system discovery and private option validation. Subsecond
+scaling passes exact bigint divisors to the existing BigDecimal engine. Shared
+provider snapshots retain real formatToParts methods; DateTimeFormat numeric
+profiles retain bound format functions. Cold fractional pattern adaptation and
+private string/range-parts facades preserve real Intl/CLDR output.
+[Eighteen targets](audits/temporal-intl-producer-state-facade-validation-targets.txt)
+pass; [row evidence](audits/temporal-intl-producer-state-facade-audit.md) closes21
+numbered steps while retaining six selected-kind helper conditions. Fresh Duration construction still has an owned locale-matcher
+dependency; selected-kind initialization retains a matchRangeWidths helper
+premise. These are separate from precreated formatter invocation.
 
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth

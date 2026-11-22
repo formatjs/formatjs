@@ -1,9 +1,13 @@
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
+  arraySome,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
+
+const optionApply = Reflect.apply
+const optionJoin = Array.prototype.join
 
 /**
  * https://tc39.es/ecma402/#sec-getoption
@@ -37,9 +41,9 @@ export function GetOption<T extends object, K extends keyof T, F>(
     if (type === 'string') {
       value = ToString(value)
     }
-    if (values !== undefined && !values.filter(val => val == value).length) {
+    if (values !== undefined && !arraySome(values, val => val == value)) {
       throw new RangeErrorConstructor(
-        `${value} is not within ${values.join(', ')}`
+        `${value} is not within ${optionApply(optionJoin, values, [', '])}`
       )
     }
     return value

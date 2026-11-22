@@ -11,8 +11,9 @@ export function FormatDateTimeRange(
 ): string {
   const parts = PartitionDateTimeRangePattern(dtf, x, y, implDetails)
   let result = ''
-  for (const part of parts) {
-    result += part.value
+  // Temporal comparison §15.6.9 steps3–3.a: concatenate a private List.
+  for (let index = 0; index < parts.length; index++) {
+    result += parts[index].value
   }
   return result
 }

@@ -20,6 +20,7 @@ import {
   type LegacyDateTimeProjection,
 } from '#packages/temporal/legacy-extended-date.js'
 
+const apply = Reflect.apply
 const dateUTC = Date.UTC
 const objectKeys = Object.keys
 
@@ -83,9 +84,13 @@ export function localeDuration(
   fallback: () => string
 ): string {
   if (!durationConstructor || !formatDuration) return fallback()
-  return formatDuration.call(new durationConstructor(locales, options), {
-    ...fields,
-  })
+  // Temporal comparison §15.11.1.1 steps3–4: invoke the selected intrinsic formatter.
+  // https://tc39.es/proposal-temporal/#sup-temporal.duration.prototype.tolocalestring
+  return apply(formatDuration, new durationConstructor(locales, options), [
+    {
+      ...fields,
+    },
+  ])
 }
 
 export function localeDateTime(

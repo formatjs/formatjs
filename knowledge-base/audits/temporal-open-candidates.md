@@ -5,14 +5,16 @@ implementation defects or missing code. Existing implementation/tests remain the
 baseline. Numbers refer to the pinned Temporal comparison, with the requested
 ECMA-262 authority distinction retained in the execution plan.
 
-- **Owned Duration slot access**, §§15.10.1–2: memoizer JSON.stringify and
-  inherited toJSON failures are corrected. Actual getInternalSlots still reads
-  live WeakMap.get/set and Object.create; constructor numbering-system cache has
-  the same live operations. Public slot witness prepared; execution pending.
-  Three parent gates remain conditional. Reuse captured runtime operations.
-- **Intl producer/state/facade operations**, §§15.6.4–10: exact owned private
-  options, lexical hooks, selected-kind records and range projection remain in
-  the numbered-step queue. Reuse supplied formatter engines.
+- **Fresh Duration construction**, §15.11.1.1 step3: slot/cache and precreated
+  invocation corrections pass18targets. Fresh construction retains the exact
+  owned locale-matcher List/string/cache dependency. Three invocation gates
+  close; actual construction step and containing clauses remain conditional.
+  [Current evidence](temporal-duration-invocation-private-operations-audit.md).
+- **Selected Temporal kind profiles**, §§15.6.5/15.6.7: Map/field Lists and cold
+  explicit-pattern corrections pass. Six caller rows retain matchRangeWidths
+  Object.keys/map/private iteration/String suffix operations. Producer and
+  facade corrections close21 other steps; real Intl/CLDR remains supplied.
+  [Current evidence](temporal-intl-producer-state-facade-audit.md).
 
 **Confirmed constructor realm gap:** eight public revoked-newTarget/primitive
 prototype witnesses fail required TypeError. Sixteen rows stay conditional;

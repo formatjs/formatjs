@@ -17,7 +17,10 @@ export function BestFitMatcher(
 ): LookupMatcherResult {
   let foundLocale: string | undefined
   let extension: string | undefined
-  const noExtensionLocaleMap: Record<string, string> = Object.create(null)
+  const noExtensionLocaleMap = {__proto__: null} as unknown as Record<
+    string,
+    string
+  >
   const noExtensionLocales = requestedLocales.map(l => {
     const {locale: noExtensionLocale} = splitUnicodeExtension(l)
     noExtensionLocaleMap[noExtensionLocale] ??= l

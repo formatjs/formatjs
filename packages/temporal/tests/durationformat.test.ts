@@ -815,3 +815,376 @@ it.each(['stringify', 'toJSON'] as const)(
     ])
   }
 )
+
+it('reads owned Duration formatter slots without mutable WeakMap.get', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const formatter = new DurationFormat('en', {style: 'long'})
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  const expected = [
+    {type: 'integer', value: '1', unit: 'minute'},
+    {type: 'literal', value: ' ', unit: 'minute'},
+    {type: 'unit', value: 'minute', unit: 'minute'},
+  ]
+  expect(formatter.format(duration)).toBe('1 minute')
+  expect(formatter.formatToParts(duration)).toEqual(expected)
+  const descriptor = Object.getOwnPropertyDescriptor(WeakMap.prototype, 'get')!
+  const define = Object.defineProperty
+  let text: string | undefined,
+    parts: unknown,
+    error: unknown,
+    calls = 0
+  try {
+    define(WeakMap.prototype, 'get', {
+      ...descriptor,
+      value() {
+        calls++
+        throw new Error('Mutable private Duration slot lookup')
+      },
+    })
+    text = formatter.format(duration)
+    parts = formatter.formatToParts(duration)
+  } catch (caught) {
+    error = caught
+  } finally {
+    define(WeakMap.prototype, 'get', descriptor)
+  }
+  if (error) throw error
+  expect(calls).toBe(0)
+  expect(text).toBe('1 minute')
+  expect(parts).toEqual(expected)
+})
+
+it.each(['get', 'create'] as const)(
+  'initializes owned Duration formatting without mutable private %s',
+  key => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const owner = key === 'get' ? WeakMap.prototype : Object
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    let text: string | undefined,
+      error: unknown,
+      calls = 0
+    try {
+      define(owner, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('Mutable private Duration initialization')
+        },
+      })
+      text = new DurationFormat('en', {style: 'long'}).format(duration)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe('1 minute')
+  }
+)
+
+it.each(['filter', 'forEach', 'resolvedOptions'] as const)(
+  'initializes cold owned Duration formatting without private %s lookup',
+  key => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const Original = Intl.NumberFormat
+    class Provider extends Original {}
+    const providerDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationFormatDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )!
+    const owner =
+      key === 'resolvedOptions' ? Original.prototype : Array.prototype
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    let text: string | undefined,
+      error: unknown,
+      calls = 0
+    try {
+      Intl.NumberFormat = Provider
+      define(Intl, 'DurationFormat', {
+        ...durationFormatDescriptor,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(owner, key, {
+        ...descriptor,
+        value() {
+          calls++
+          throw new Error('Private Duration initialization hook')
+        },
+      })
+      text = duration.toLocaleString('en', {
+        localeMatcher: 'lookup',
+        style: 'long',
+      })
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+      define(Intl, 'NumberFormat', providerDescriptor)
+      define(Intl, 'DurationFormat', durationFormatDescriptor)
+      configureLocaleFormatting()
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe('1 minute')
+  }
+)
+
+it('formats branded Duration precision without a replacement BigInt', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const samples = [
+    {
+      formatter: new DurationFormat('en', {style: 'long'}),
+      duration: new Temporal.Duration(0, 0, 0, 0, 0, 1),
+      text: '1 minute',
+    },
+    {
+      formatter: new DurationFormat('en', {
+        style: 'digital',
+        fractionalDigits: 9,
+      }),
+      duration: new Temporal.Duration(0, 0, 0, 0, 0, 0, 1, 473, 5, 6),
+      text: '0:00:01.473005006',
+    },
+  ]
+  const expectedParts = samples.map(sample =>
+    sample.formatter.formatToParts(sample.duration)
+  )
+  for (const sample of samples)
+    expect(sample.formatter.format(sample.duration)).toBe(sample.text)
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'BigInt')!
+  const define = Object.defineProperty
+  const texts: string[] = [],
+    parts: unknown[] = []
+  let error: unknown,
+    calls = 0
+  try {
+    define(globalThis, 'BigInt', {
+      ...descriptor,
+      value() {
+        calls++
+        throw new Error('Private Duration BigInt conversion')
+      },
+    })
+    for (let index = 0; index < samples.length; index++) {
+      const sample = samples[index]
+      texts[index] = sample.formatter.format(sample.duration)
+      parts[index] = sample.formatter.formatToParts(sample.duration)
+    }
+  } catch (caught) {
+    error = caught
+  } finally {
+    define(globalThis, 'BigInt', descriptor)
+  }
+  if (error) throw error
+  expect(calls).toBe(0)
+  expect(texts).toEqual(['1 minute', '0:00:01.473005006'])
+  expect(parts).toEqual(expectedParts)
+})
+
+it('invokes owned Duration locale formatting without mutable Function.call', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  const durationFormatDescriptor = Object.getOwnPropertyDescriptor(
+    Intl,
+    'DurationFormat'
+  )!
+  const descriptor = Object.getOwnPropertyDescriptor(
+    Function.prototype,
+    'call'
+  )!
+  const define = Object.defineProperty
+  let text: string | undefined,
+    error: unknown,
+    calls = 0
+  try {
+    define(Intl, 'DurationFormat', {
+      ...durationFormatDescriptor,
+      value: DurationFormat,
+    })
+    configureLocaleFormatting()
+    define(Function.prototype, 'call', {
+      ...descriptor,
+      value() {
+        calls++
+        throw new Error('Private Duration locale call')
+      },
+    })
+    text = duration.toLocaleString('en', {
+      localeMatcher: 'lookup',
+      style: 'long',
+    })
+  } catch (caught) {
+    error = caught
+  } finally {
+    define(Function.prototype, 'call', descriptor)
+    define(Intl, 'DurationFormat', durationFormatDescriptor)
+    configureLocaleFormatting()
+  }
+  if (error) throw error
+  expect(calls).toBe(0)
+  expect(text).toBe('1 minute')
+})
+
+it.each(['test', 'exec', 'isNaN', 'floor', 'getCanonicalLocales'] as const)(
+  'constructs cold Duration locale profile without mutable %s',
+  hook => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 1, 2, 3, 4)
+    const Original = Intl.NumberFormat
+    class FreshProvider extends Original {}
+    const numberDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const owner =
+      hook === 'test' || hook === 'exec'
+        ? RegExp.prototype
+        : hook === 'floor'
+          ? Math
+          : hook === 'isNaN'
+            ? globalThis
+            : Intl
+    const key = hook
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      define(Intl, 'NumberFormat', {...numberDescriptor, value: FreshProvider})
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(
+        owner,
+        key,
+        hook === 'getCanonicalLocales'
+          ? {
+              configurable: true,
+              get() {
+                hooks++
+                throw new Error('Mutable duration canonicalizer lookup')
+              },
+            }
+          : {
+              ...descriptor,
+              value() {
+                hooks++
+                throw new Error('Mutable duration initialization hook')
+              },
+            }
+      )
+      actual = duration.toLocaleString('en', {
+        localeMatcher: 'lookup',
+        style: 'digital',
+        numberingSystem: 'latn',
+        fractionalDigits: 3,
+      })
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+      define(Intl, 'NumberFormat', numberDescriptor)
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else delete (Intl as any).DurationFormat
+      configureLocaleFormatting()
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toBe('1:02:03.004')
+  }
+)
+
+it.each(['constructor', 'hasInstance'] as const)(
+  'Duration locale initialization avoids public %s guard lookup',
+  hook => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const owner =
+      hook === 'constructor' ? DurationFormat.prototype : DurationFormat
+    const key = hook === 'constructor' ? 'constructor' : Symbol.hasInstance
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const define = Object.defineProperty
+    let actual: unknown,
+      error: unknown,
+      hooks = 0
+    try {
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(owner, key, {
+        configurable: true,
+        get() {
+          hooks++
+          throw new Error('Mutable duration constructor guard')
+        },
+      })
+      actual = duration.toLocaleString('en', {
+        localeMatcher: 'lookup',
+        style: 'long',
+      })
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (descriptor) define(owner, key, descriptor)
+      else delete (owner as any)[key]
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else delete (Intl as any).DurationFormat
+      configureLocaleFormatting()
+    }
+    expect(error).toBeUndefined()
+    expect(hooks).toBe(0)
+    expect(actual).toBe('1 minute')
+  }
+)
+
+it('Duration construction adopts a later data-valued canonicalizer provider', () => {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    Intl,
+    'getCanonicalLocales'
+  )!
+  const original = descriptor.value
+  const apply = Reflect.apply
+  let calls = 0
+  try {
+    Object.defineProperty(Intl, 'getCanonicalLocales', {
+      ...descriptor,
+      value(locales: Intl.LocalesArgument) {
+        calls++
+        return apply(original, Intl, [locales])
+      },
+    })
+    const formatter = new DurationFormat('en', {
+      localeMatcher: 'lookup',
+      style: 'long',
+    })
+    expect(formatter.format({minutes: 1})).toBe('1 minute')
+    expect(calls).toBeGreaterThan(0)
+  } finally {
+    Object.defineProperty(Intl, 'getCanonicalLocales', descriptor)
+  }
+})

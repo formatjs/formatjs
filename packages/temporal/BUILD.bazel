@@ -234,10 +234,14 @@ js_test(
         args = [
             "$(rlocationpath :pkg)",
             mode,
+            "$(rlocationpath //packages/intl-numberformat:pkg)",
         ],
         data = [
             ":pkg",
             "//:node_modules/@bazel/runfiles",
+            "//:node_modules/@formatjs/bigdecimal",
+            "//:node_modules/@formatjs/intl-localematcher",
+            "//packages/intl-numberformat:pkg",
         ],
         entry_point = "tests/partial-intl.test.mjs",
     )
@@ -245,6 +249,8 @@ js_test(
         "",
         "empty",
         "absent",
+        "numberformat_parts",
+        "listformat_parts",
     ]
 ]
 

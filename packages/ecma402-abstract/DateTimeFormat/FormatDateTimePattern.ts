@@ -1,5 +1,7 @@
 import {
   arrayEvery,
+  mathAbs,
+  mathTrunc,
   arrayIndexOf,
   arraySome,
   bigIntFrom,
@@ -13,13 +15,61 @@ import {
   type IntlDateTimeFormatPart,
   type RangePatterns,
 } from '#packages/ecma402-abstract/types/date-time.js'
-import {createMemoizedNumberFormat} from '#packages/ecma402-abstract/utils.js'
+import {
+  createMemoizedNumberFormatForConstructor,
+  getNumberFormatProvider,
+} from '#packages/ecma402-abstract/utils.js'
 
 import {
   ToLocalTime,
   type ToLocalTimeImplDetails,
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
+
+const apply = Reflect.apply
+const find = Array.prototype.find
+const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
+const stringIndexOf = Function.prototype.call.bind(
+  String.prototype.indexOf
+) as (value: string, search: string, position?: number) => number
+const stringLastIndexOf = Function.prototype.call.bind(
+  String.prototype.lastIndexOf
+) as (value: string, search: string) => number
+const regexpExec = RegExp.prototype.exec
+const regexpReplace = RegExp.prototype[Symbol.replace]
+
+// Proposal comparison §15.6.4 steps 16.d–f: private locale text uses runtime intrinsics.
+function privatePattern(pattern: RegExp, global = false): RegExp {
+  setDataProperty(pattern, 'exec', regexpExec)
+  setDataProperty(pattern, 'flags', global ? 'g' : '')
+  setDataProperty(pattern, 'global', global)
+  setDataProperty(pattern, 'unicode', false)
+  setDataProperty(pattern, 'unicodeSets', false)
+  return pattern
+}
+const separatorPattern = /H+([^Hm]*)m+/
+const hourPairPattern = privatePattern(/HH/)
+const hourPattern = privatePattern(/H/)
+const minutePairPattern = privatePattern(/mm/)
+const minutePattern = privatePattern(/m/)
+const secondPairPattern = privatePattern(/ss/)
+const hourRunPattern = privatePattern(/H+/)
+const minuteRunPattern = privatePattern(/m+/)
+const secondRunPattern = privatePattern(/s+/)
+const substitutionPattern = privatePattern(/\{0\}/)
+const leftMarkPattern = privatePattern(/\u200e\u200e/g, true)
+const rightMarkPattern = privatePattern(/\u200f\u200f/g, true)
+function replacePattern(
+  value: string,
+  pattern: RegExp,
+  replacement: string | ((match: string) => string)
+): string {
+  return apply(regexpReplace, pattern, [value, replacement])
+}
 
 export function getDayPeriodName(
   data: DateTimeFormatLocaleInternalData,
@@ -43,15 +93,17 @@ export function getDayPeriodName(
   // https://unicode.org/reports/tr35/tr35-dates.html#Variable_periods
   // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L1360-L1375
   const rule =
-    rules.find(rule => rule.at === value) ||
-    rules.find(
-      rule =>
+    apply(find, rules, [
+      (rule: NonNullable<typeof rules>[number]) => rule.at === value,
+    ]) ||
+    apply(find, rules, [
+      (rule: NonNullable<typeof rules>[number]) =>
         rule.from !== undefined &&
         rule.before !== undefined &&
         (rule.from < rule.before
           ? value >= rule.from && value < rule.before
-          : value >= rule.from || value < rule.before)
-    )
+          : value >= rule.from || value < rule.before),
+    ])
   return (
     (rule && data.dayPeriods?.[width][rule.name]) ||
     (time.hour < 12 ? data.am : data.pm)
@@ -62,7 +114,7 @@ function pad(n: number): string {
   if (n < 10) {
     return `0${n}`
   }
-  return String(n)
+  return `${n}`
 }
 
 function offsetToGmtString(
@@ -71,45 +123,60 @@ function offsetToGmtString(
   offsetInMs: number,
   style: 'long' | 'short'
 ) {
-  const absoluteSeconds = Math.abs(Math.trunc(offsetInMs / 1000))
+  const absoluteSeconds = mathAbs(mathTrunc(offsetInMs / 1000))
   const seconds = absoluteSeconds % 60
-  const mins = Math.floor(absoluteSeconds / 60) % 60
-  const hours = Math.floor(absoluteSeconds / 3600)
-  const [positivePattern, negativePattern] = hourFormat.split(';')
+  const mins = floor(absoluteSeconds / 60) % 60
+  const hours = floor(absoluteSeconds / 3600)
+  // CLDR hourFormat has positive;negative patterns. Keep only first two fields.
+  const firstSeparator = stringIndexOf(hourFormat, ';')
+  const secondSeparator =
+    firstSeparator < 0 ? -1 : stringIndexOf(hourFormat, ';', firstSeparator + 1)
+  const positivePattern =
+    firstSeparator < 0 ? hourFormat : stringSlice(hourFormat, 0, firstSeparator)
+  const negativePattern =
+    firstSeparator < 0
+      ? undefined
+      : stringSlice(
+          hourFormat,
+          firstSeparator + 1,
+          secondSeparator < 0 ? undefined : secondSeparator
+        )
 
   let offsetStr = ''
-  let pattern = offsetInMs < 0 ? negativePattern : positivePattern
+  let pattern = (offsetInMs < 0 ? negativePattern : positivePattern)!
   if (seconds) {
-    const separator = /H+([^Hm]*)m+/.exec(pattern)?.[1] ?? ':'
-    pattern = pattern.replace(/m+/, match => match + separator + 'ss')
+    const separator = apply(regexpExec, separatorPattern, [pattern])?.[1] ?? ':'
+    pattern = replacePattern(
+      pattern,
+      minuteRunPattern,
+      match => match + separator + 'ss'
+    )
   }
   if (style === 'long') {
-    offsetStr = pattern
-      .replace('HH', pad(hours))
-      .replace('H', String(hours))
-      .replace('mm', pad(mins))
-      .replace('m', String(mins))
-      .replace('ss', pad(seconds))
+    offsetStr = replacePattern(pattern, hourPairPattern, pad(hours))
+    offsetStr = replacePattern(offsetStr, hourPattern, `${hours}`)
+    offsetStr = replacePattern(offsetStr, minutePairPattern, pad(mins))
+    offsetStr = replacePattern(offsetStr, minutePattern, `${mins}`)
+    offsetStr = replacePattern(offsetStr, secondPairPattern, pad(seconds))
   } else {
     if (!mins && !seconds) {
-      const start = pattern.indexOf('m')
+      const start = stringIndexOf(pattern, 'm')
       if (start >= 0) {
         let end = start
         while (pattern[end] === 'm') end++
         pattern =
-          pattern.slice(0, pattern.lastIndexOf('H') + 1) + pattern.slice(end)
+          stringSlice(pattern, 0, stringLastIndexOf(pattern, 'H') + 1) +
+          stringSlice(pattern, end)
       }
     }
-    offsetStr = pattern
-      .replace(/H+/, String(hours))
-      .replace(/m+/, pad(mins))
-      .replace(/s+/, pad(seconds))
+    offsetStr = replacePattern(pattern, hourRunPattern, `${hours}`)
+    offsetStr = replacePattern(offsetStr, minuteRunPattern, pad(mins))
+    offsetStr = replacePattern(offsetStr, secondRunPattern, pad(seconds))
   }
 
-  return gmtFormat
-    .replace('{0}', offsetStr)
-    .replaceAll('\u200e\u200e', '\u200e')
-    .replaceAll('\u200f\u200f', '\u200f')
+  let result = replacePattern(gmtFormat, substitutionPattern, offsetStr)
+  result = replacePattern(result, leftMarkPattern, '\u200e')
+  return replacePattern(result, rightMarkPattern, '\u200f')
 }
 
 // ECMA-402 §11.5.4, step 15.f.ix: preserve the final two code points.
@@ -146,11 +213,45 @@ export interface FormatDateTimePatternImplDetails {
   }
 }
 
-type NumberFormatters = {
-  nf: Intl.NumberFormat
-  nf2: Intl.NumberFormat
-  nf3: Intl.NumberFormat | undefined
+type NumericFormat = (value: number) => string
+const numericDescriptor = Object.getOwnPropertyDescriptor
+const numericPrototype = Object.getPrototypeOf
+const numericFormatGetters = new WeakMap<
+  object,
+  (this: Intl.NumberFormat) => NumericFormat
+>()
+const getNumericFormatGetter =
+  numericFormatGetters.get.bind(numericFormatGetters)
+const setNumericFormatGetter =
+  numericFormatGetters.set.bind(numericFormatGetters)
+
+function numericFormatGetter(Constructor: typeof Intl.NumberFormat) {
+  let prototype = Constructor.prototype
+  while (prototype !== null) {
+    const cached = getNumericFormatGetter(prototype)
+    if (cached) return cached
+    const descriptor = numericDescriptor(prototype, 'format')
+    const getter = descriptor && numericDescriptor(descriptor, 'get')?.value
+    if (typeof getter === 'function') {
+      setNumericFormatGetter(prototype, getter)
+      return getter as (this: Intl.NumberFormat) => NumericFormat
+    }
+    prototype = numericPrototype(prototype)
+  }
+  return undefined
 }
+const initialNumericProvider = getNumberFormatProvider()
+if (typeof initialNumericProvider === 'function')
+  numericFormatGetter(initialNumericProvider)
+
+type NumberFormatters = {
+  nf: NumericFormat
+  nf2: NumericFormat
+  nf3: NumericFormat | undefined
+}
+// Proposal comparison §15.6.4 steps2,6,11.b: private option records.
+// https://tc39.es/proposal-temporal/#sec-formatdatetimepattern
+const createOptions = Object.create
 const numberFormattersCache = new WeakMap<
   IntlDateTimeFormatInternal,
   Pick<
@@ -178,23 +279,32 @@ function createNumberFormatters(
     cached.fractionalSecondDigits === fractionalSecondDigits
   )
     return cached.formatters
-  const nfOptions = Object.create(null)
+  // Comparison §15.6.4 steps5,10,11.f: preserve lazy supplied-provider selection.
+  const NumberFormat = getNumberFormatProvider()
+  const createNumberFormat =
+    createMemoizedNumberFormatForConstructor(NumberFormat)
+  // Temporal comparison §15.6.4 steps16.c.iv,16.f.viii.1,16.f.ix.1,16.h.ii:
+  // FormatNumeric uses the selected provider's intrinsic bound format getter.
+  const formatGetter = numericFormatGetter(NumberFormat)!
+  const boundFormat = (formatter: Intl.NumberFormat): NumericFormat =>
+    apply(formatGetter, formatter, [])
+  const nfOptions = createOptions(null)
   nfOptions.numberingSystem = internalSlots.numberingSystem
   nfOptions.useGrouping = false
 
-  const nf = createMemoizedNumberFormat(locale, nfOptions)
-  const nf2Options = Object.create(null)
+  const nf = boundFormat(createNumberFormat(locale, nfOptions))
+  const nf2Options = createOptions(null)
   nf2Options.minimumIntegerDigits = 2
   nf2Options.numberingSystem = internalSlots.numberingSystem
   nf2Options.useGrouping = false
-  const nf2 = createMemoizedNumberFormat(locale, nf2Options)
-  let nf3: Intl.NumberFormat | undefined
+  const nf2 = boundFormat(createNumberFormat(locale, nf2Options))
+  let nf3: NumericFormat | undefined
   if (fractionalSecondDigits !== undefined) {
-    const nf3Options = Object.create(null)
+    const nf3Options = createOptions(null)
     nf3Options.minimumIntegerDigits = fractionalSecondDigits
     nf3Options.numberingSystem = internalSlots.numberingSystem
     nf3Options.useGrouping = false
-    nf3 = createMemoizedNumberFormat(locale, nf3Options)
+    nf3 = boundFormat(createNumberFormat(locale, nf3Options))
   }
   const formatters = {nf, nf2, nf3}
   setNumberFormatters(internalSlots, {
@@ -302,7 +412,7 @@ export function FormatDateTimePattern(
       )
       setDataProperty(result, `${result.length}`, {
         type: 'fractionalSecond',
-        value: nf3!.format(v),
+        value: nf3!(v),
       })
     } else if (p === 'dayPeriod') {
       setDataProperty(result, `${result.length}`, {
@@ -401,9 +511,9 @@ export function FormatDateTimePattern(
         v = 24
       }
       if (f === 'numeric') {
-        fv = nf.format(v)
+        fv = nf(v)
       } else if (f === '2-digit') {
-        fv = nf2.format(v)
+        fv = nf2(v)
         if (fv.length > 2) {
           // ECMA-402 §11.5.4, steps 15.f.ix.2–4: keep the last two code points.
           // https://tc39.es/ecma402/#sec-formatdatetimepattern
@@ -436,7 +546,7 @@ export function FormatDateTimePattern(
           f === 'numeric' || f === '2-digit'
             ? patterns.numeric
             : (isMonthStandalone ? patterns.standalone : patterns.format)[f]
-        fv = leapPattern.replace('{0}', fv)
+        fv = replacePattern(leapPattern, substitutionPattern, fv)
       }
       setDataProperty(result, `${result.length}`, {
         type: p as Intl.DateTimeFormatPartTypes,
@@ -457,7 +567,7 @@ export function FormatDateTimePattern(
     } else if (p === 'relatedYear') {
       const v = tm.relatedYear
       // @ts-ignore
-      const fv = nf.format(v)
+      const fv = nf(v)
       setDataProperty(result, `${result.length}`, {
         // @ts-ignore TODO: Fix TS type
         type: 'relatedYear',

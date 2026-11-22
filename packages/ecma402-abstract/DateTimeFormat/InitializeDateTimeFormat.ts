@@ -24,7 +24,9 @@ import {
 } from '#packages/ecma402-abstract/types/date-time.js'
 import {
   invariant,
-  createMemoizedNumberFormat,
+  createMemoizedNumberFormatForConstructor,
+  getNumberFormatProvider,
+  getFormatterPartsMethod,
 } from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {BasicFormatMatcher} from '#packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.js'
@@ -33,6 +35,11 @@ import {DateTimeStyleFormat} from '#packages/ecma402-abstract/DateTimeFormat/Dat
 import {CoerceOptionsToObject} from '#packages/ecma402-abstract/CoerceOptionsToObject.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 
+const TemporalFormatMap = Map
+const temporalFormatMapGet = Map.prototype.get
+const temporalFormatMapSet = Map.prototype.set
+const temporalFormatApply = Reflect.apply
+
 function matchRangeWidths(
   ranges: Formats['rangePatterns'],
   format: IntlDateTimeFormatInternal,
@@ -40,7 +47,9 @@ function matchRangeWidths(
 ): Formats['rangePatterns'] {
   // CLDR matching adjusts textual date fields; interval time widths stay independent.
   // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
-  const widths = Object.create(null) as Partial<RangePatterns>
+  // Temporal comparison §15.4.1 step46.m: adapt private selected-format records.
+  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+  const widths = {__proto__: null} as unknown as Partial<RangePatterns>
   for (const field of ['weekday', 'month'] as const) {
     const width = format[field]
     if (width === 'narrow' || width === 'short' || width === 'long')
@@ -54,7 +63,7 @@ function matchRangeWidths(
     options.fractionalSecondDigits === undefined
   )
     return ranges
-  const result = Object.create(null) as Formats['rangePatterns']
+  const result = {__proto__: null} as unknown as Formats['rangePatterns']
   for (const field of Object.keys(ranges) as Array<TABLE_2 | 'default'>) {
     const range = ranges[field]
     const zoneWidth = range.timeZoneName?.startsWith('long') ? 'long' : 'short'
@@ -137,6 +146,20 @@ function resolveHourCycle(
   return hc == null ? data.hourCycle : hc
 }
 
+const createTimePatternOptions = Object.create
+const timePatternIndexOf = String.prototype.indexOf
+const timePatternExec = RegExp.prototype.exec
+const timePatternReplace = RegExp.prototype[Symbol.replace]
+function timeReplacementPattern(pattern: RegExp): RegExp {
+  setDataProperty(pattern, 'exec', timePatternExec)
+  setDataProperty(pattern, 'global', true)
+  setDataProperty(pattern, 'unicode', false)
+  setDataProperty(pattern, 'unicodeSets', false)
+  return pattern
+}
+const secondPlaceholder = timeReplacementPattern(/\{second\}/g)
+const dayPeriodPlaceholder = timeReplacementPattern(/\{ampm\}/g)
+
 function applyExplicitTimePatternOptions(
   pattern: string,
   opt: Opt,
@@ -145,28 +168,51 @@ function applyExplicitTimePatternOptions(
 ) {
   if (
     opt.fractionalSecondDigits !== undefined &&
-    pattern.includes('{second}') &&
-    !pattern.includes('{fractionalSecondDigits}')
+    temporalFormatApply(timePatternIndexOf, pattern, ['{second}']) >= 0 &&
+    temporalFormatApply(timePatternIndexOf, pattern, [
+      '{fractionalSecondDigits}',
+    ]) < 0
   ) {
     // LDML matching skeletons: append the locale's decimal separator before S.
     // https://unicode.org/reports/tr35/tr35-dates.html#Matching_Skeletons
     // https://github.com/unicode-org/cldr/blob/acd6d88ae493633240e19a87a721076a8a75c310/docs/ldml/tr35-dates.md#L834
-    const numberOptions = Object.create(null)
+    // Temporal comparison §15.4.1 step46.m: adapt the selected CLDR time pattern.
+    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+    const numberOptions = createTimePatternOptions(null)
     numberOptions.numberingSystem = numberingSystem
-    const decimal = createMemoizedNumberFormat(locale, numberOptions)
-      .formatToParts(1.1)
-      .find(part => part.type === 'decimal')?.value
+    const NumberFormat = getNumberFormatProvider()
+    const numberFormat = createMemoizedNumberFormatForConstructor(NumberFormat)(
+      locale,
+      numberOptions
+    )
+    const partsMethod =
+      getFormatterPartsMethod<Intl.NumberFormat['formatToParts']>(NumberFormat)
+    const parts = temporalFormatApply(
+      partsMethod,
+      numberFormat,
+      [1.1]
+    ) as Intl.NumberFormatPart[]
+    let decimal: string | undefined
+    for (let index = 0; index < parts.length; index++) {
+      if (parts[index].type === 'decimal') {
+        decimal = parts[index].value
+        break
+      }
+    }
     invariant(
       decimal !== undefined,
       'Missing decimal separator for fractional seconds'
     )
-    pattern = pattern.replaceAll(
-      '{second}',
-      `{second}${decimal}{fractionalSecondDigits}`
-    )
+    pattern = temporalFormatApply(timePatternReplace, secondPlaceholder, [
+      pattern,
+      `{second}${decimal}{fractionalSecondDigits}`,
+    ])
   }
   if (opt.dayPeriod !== undefined) {
-    pattern = pattern.replaceAll('{ampm}', '{dayPeriod}')
+    pattern = temporalFormatApply(timePatternReplace, dayPeriodPlaceholder, [
+      pattern,
+      '{dayPeriod}',
+    ])
   }
   return pattern
 }
@@ -576,12 +622,15 @@ export function InitializeDateTimeFormat(
   // component record. Cache variants without rereading the caller's options.
   // https://tc39.es/proposal-temporal/#sec-getdatetimeformat
   // https://tc39.es/proposal-temporal/#sec-adjustdatetimestyleformat
-  const temporalFormats = new Map<
+  const temporalFormats = new TemporalFormatMap<
     TemporalDateTimeKind,
     IntlDateTimeFormatInternal
   >()
   internalSlots.getTemporalFormat = kind => {
-    const cached = temporalFormats.get(kind)
+    // Temporal comparison §§15.6.5 steps5–9, 15.6.7 step1: private kind state.
+    const cached = temporalFormatApply(temporalFormatMapGet, temporalFormats, [
+      kind,
+    ]) as IntlDateTimeFormatInternal | undefined
     if (cached) return cached
     const dateFields = ['weekday', 'year', 'month', 'day'] as const
     const timeFields = [
@@ -591,16 +640,26 @@ export function InitializeDateTimeFormat(
       'second',
       'fractionalSecondDigits',
     ] as const
-    const allFields = [...dateFields, ...timeFields]
+    const allFields = [
+      'weekday',
+      'year',
+      'month',
+      'day',
+      'dayPeriod',
+      'hour',
+      'minute',
+      'second',
+      'fractionalSecondDigits',
+    ] as const
     const required =
       kind === 'PlainDate'
-        ? [...dateFields]
+        ? dateFields
         : kind === 'PlainYearMonth'
           ? (['year', 'month'] as const)
           : kind === 'PlainMonthDay'
             ? (['month', 'day'] as const)
             : kind === 'PlainTime'
-              ? [...timeFields]
+              ? timeFields
               : allFields
     const defaults =
       kind === 'PlainDate'
@@ -610,10 +669,14 @@ export function InitializeDateTimeFormat(
           : kind === 'PlainYearMonth' || kind === 'PlainMonthDay'
             ? required
             : (['year', 'month', 'day', 'hour', 'minute', 'second'] as const)
-    const allowed: Array<keyof Opt> = [...required]
-    if (kind !== 'PlainTime' && kind !== 'PlainMonthDay') allowed.push('era')
-    if (kind === 'Instant') allowed.push('timeZoneName')
-    const selectedOptions: Opt = Object.create(null)
+    const allowed: Array<keyof Opt> = []
+    for (let index = 0; index < required.length; index++)
+      setDataProperty(allowed, `${index}`, required[index])
+    if (kind !== 'PlainTime' && kind !== 'PlainMonthDay')
+      setDataProperty(allowed, `${allowed.length}`, 'era')
+    if (kind === 'Instant')
+      setDataProperty(allowed, `${allowed.length}`, 'timeZoneName')
+    const selectedOptions = {__proto__: null} as unknown as Opt
     let selected: Formats
     if (dateStyle !== undefined || timeStyle !== undefined) {
       if (
@@ -627,7 +690,8 @@ export function InitializeDateTimeFormat(
           'DateTimeFormat styles do not overlap the Temporal type'
         )
       }
-      for (const key of allowed) {
+      for (let index = 0; index < allowed.length; index++) {
+        const key = allowed[index]
         setDataProperty(selectedOptions, key, bestFormat[key as keyof Formats])
       }
       const conflicting = arraySome(
@@ -642,8 +706,10 @@ export function InitializeDateTimeFormat(
           ? BasicFormatMatcher(selectedOptions, formats)
           : BestFitFormatMatcher(selectedOptions, formats)
     } else {
-      for (const key of allowed)
+      for (let index = 0; index < allowed.length; index++) {
+        const key = allowed[index]
         setDataProperty(selectedOptions, key, temporalOptions[key])
+      }
       if (arrayEvery(required, key => temporalOptions[key] === undefined)) {
         if (
           kind !== 'Instant' &&
@@ -653,8 +719,8 @@ export function InitializeDateTimeFormat(
             'DateTimeFormat options do not overlap the Temporal type'
           )
         }
-        for (const key of defaults)
-          setDataProperty(selectedOptions, key, 'numeric')
+        for (let index = 0; index < defaults.length; index++)
+          setDataProperty(selectedOptions, defaults[index], 'numeric')
         if (
           kind === 'Instant' &&
           localeTimeZone !== undefined &&
@@ -670,7 +736,8 @@ export function InitializeDateTimeFormat(
           : BestFitFormatMatcher(selectedOptions, formats)
     }
     const slots = {...internalSlots}
-    for (const key of DATE_TIME_PROPS) {
+    for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+      const key = DATE_TIME_PROPS[index]
       setDataProperty(slots, key, selected[key])
     }
     if (selectedOptions.dayPeriod !== undefined)
@@ -693,7 +760,7 @@ export function InitializeDateTimeFormat(
       selectedOptions
     )
     slots.format = selected
-    temporalFormats.set(kind, slots)
+    temporalFormatApply(temporalFormatMapSet, temporalFormats, [kind, slots])
     return slots
   }
   return dtf as Intl.DateTimeFormat // TODO: remove this when https://github.com/microsoft/TypeScript/pull/50402 is merged
