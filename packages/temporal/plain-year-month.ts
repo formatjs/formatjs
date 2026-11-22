@@ -37,6 +37,7 @@ import {
 import {
   addNormalizedCalendarDate,
   calendarToEpochDayRaw,
+  dayCheck,
 } from '#packages/temporal/calendar.js'
 import {
   createPlainDate,
@@ -50,6 +51,7 @@ import {
   createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
+import {durationFieldNames} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
   unitOption,
@@ -147,8 +149,8 @@ function add(
     return createPlainYearMonth(
       native!.addPlainYearMonth(slot, fields, sign < 0, overflowOption(options))
     )
-  const keys = Object.keys(fields) as (keyof typeof fields)[]
-  for (let index = 0; index < keys.length; index++) fields[keys[index]] *= sign
+  for (let index = 0; index < durationFieldNames.length; index++)
+    fields[durationFieldNames[index]] *= sign
   const overflow = overflowOption(options)
   if (
     fields.weeks ||
@@ -169,6 +171,7 @@ function add(
   if (firstDay < -100000001 || firstDay > 100000000)
     throw new RangeErrorConstructor('Reference date out of range')
   const result = addNormalizedCalendarDate(cal, start, fields, overflow)
+  dayCheck(result.epochDay)
   return createPlainYearMonth({
     epochDay: checkYearMonth(result.epochDay),
     calendar: slot.calendar,

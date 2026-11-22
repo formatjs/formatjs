@@ -88,6 +88,14 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- Plain addition contracts: [PlainDate](temporal-plain-date-add-subtract-contract-audit.md),
+  [PlainDateTime](temporal-plain-date-time-add-contract-audit.md),
+  [PlainYearMonth](temporal-year-month-add-contract-audit.md) map every compared
+  helper step and public/native route. Private field processing now avoids
+  replaced enumeration/iteration. YearMonth addition checks the added full-date
+  range before its wider result range; TS/native/Rust regressions reproduced.
+  Calendar-provider, conversion and realm proofs remain explicit dependencies.
+
 - Since result construction now negates fixed private fields without mutable
   enumeration; nested zoned endpoint addition uses the same fixed field list.
   [Caller/negation audit](temporal-since-field-negation-audit.md) records public

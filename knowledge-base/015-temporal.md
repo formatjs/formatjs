@@ -1,5 +1,13 @@
 # Temporal implementation
 
+PlainDate, PlainDateTime and PlainYearMonth add/subtract process fixed private
+Duration fields without mutable enumeration or iteration. YearMonth arithmetic
+checks the added full date before accepting its wider YearMonth result range.
+Constructor/with reference dates retain their separate bounds. Full caller maps:
+[date](audits/temporal-plain-date-add-subtract-contract-audit.md),
+[date-time](audits/temporal-plain-date-time-add-contract-audit.md),
+[year-month](audits/temporal-year-month-add-contract-audit.md).
+
 Calendar-relative `since` negates fixed private Duration fields without calling
 mutable `Object.keys`; zoned intermediate additions use fixed fields too.
 See [caller audit](audits/temporal-since-field-negation-audit.md) and

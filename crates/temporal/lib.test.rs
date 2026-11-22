@@ -3873,3 +3873,40 @@ fn day_window_maximum_exact_nanosecond() {
         [0, 0, 0, 0, 0, -1, 0, 0, 0, 0]
     );
 }
+
+#[test]
+fn year_month_addition_checks_intermediate_full_date_range() {
+    use formatjs_temporal::calendar::Calendar;
+    use formatjs_temporal::{DateFields, Duration, Overflow, PlainYearMonth};
+    let origin = PlainYearMonth::new(275760, 8, 22)
+        .unwrap()
+        .with_calendar(Calendar::IslamicCivil)
+        .unwrap();
+    let target = PlainYearMonth::new(275760, 9, 21)
+        .unwrap()
+        .with_calendar(Calendar::IslamicCivil)
+        .unwrap();
+    assert_eq!(origin.epoch_day(), 99_999_978);
+    assert_eq!(target.epoch_day(), 100_000_008);
+    assert_eq!(
+        origin
+            .with_fields(
+                DateFields {
+                    month: Some(6),
+                    ..DateFields::default()
+                },
+                Overflow::Constrain
+            )
+            .unwrap()
+            .epoch_day(),
+        100_000_008
+    );
+    let forward: Duration = "P1M".parse().unwrap();
+    let backward: Duration = "-P1M".parse().unwrap();
+    assert!(origin.checked_add(forward, Overflow::Constrain).is_err());
+    assert!(
+        origin
+            .checked_subtract(backward, Overflow::Constrain)
+            .is_err()
+    );
+}
