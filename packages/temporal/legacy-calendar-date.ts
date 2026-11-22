@@ -30,18 +30,21 @@ type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
 
+type NumericWidths = [numeric: string, twoDigit: string]
+
+interface NumericRangeDay {
+  raw: NumericWidths | undefined
+  corrected: NumericWidths
+  single: string
+  identify: (text: string) => NumericWidths | undefined
+}
+
 interface NumericRangeYear {
   era: string
   raw: string
   corrected: string
-  month: string | undefined
-  day:
-    | {
-        raw: string | undefined
-        corrected: string
-        isNumeric: (text: string) => boolean
-      }
-    | undefined
+  month: NumericWidths | undefined
+  day: NumericRangeDay | undefined
 }
 
 interface CalendarRangeFields {
@@ -54,7 +57,6 @@ const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
   NumberConstructor &&
   Object.getOwnPropertyDescriptor(NumberConstructor.prototype, 'format')?.get
-const singleDigitDays = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 const dayMilliseconds = 86400000
 const limit = 8640000000000000
 const cycle = 146097 * dayMilliseconds
@@ -462,7 +464,10 @@ function restoreCalendarParts(
           era: era.era,
           raw: hostYear,
           corrected: display,
-          month: options.month === 'numeric' ? format(date.month) : undefined,
+          month:
+            options.month === 'numeric' || options.month === '2-digit'
+              ? [format(date.month), formatTwo(date.month)]
+              : undefined,
           day: undefined,
         }
     }
@@ -488,15 +493,20 @@ function restoreCalendarParts(
     const corrected = two ? formatTwo(date.day) : format(date.day)
     changes.set('day', corrected)
     const year = rangeFields?.numericYear
-    if (year && options.day === 'numeric' && !two) {
+    if (year && (options.day === 'numeric' || options.day === '2-digit')) {
       year.day = {
         raw: undefined,
-        corrected,
-        isNumeric: text =>
-          arraySome(
-            singleDigitDays,
-            day => format(day) === text && formatTwo(day) !== text
-          ),
+        corrected: [format(date.day), formatTwo(date.day)],
+        single: corrected,
+        identify: text => {
+          for (let day = 1; day <= 9; day++) {
+            const numeric = format(day)
+            const padded = formatTwo(day)
+            if (text === numeric || text === padded) return [numeric, padded]
+          }
+          if (text === corrected) return [text, text]
+          return undefined
+        },
       }
     }
   }
@@ -553,17 +563,35 @@ function matchesNumericRangeYear(
         const day = year.day
         // Check the original endpoint's text. Plain formatting may have used
         // a different year as its surrogate.
-        if (!day || after.value !== day.corrected) return false
-        if (value !== day.corrected && !day.isNumeric(value)) return false
-        if (day.raw !== undefined && value !== day.raw) return false
-        day.raw = value
+        if (!day || after.value !== day.single) return false
+        const widths = day.identify(value)
+        if (!widths || (day.raw && day.raw[0] !== widths[0])) return false
+        day.raw = widths
         return true
       }
       if (value !== after.value) return false
-      if (type === 'month') return value === year.month
+      if (type === 'month')
+        return year.month !== undefined && arrayIncludes(year.month, value)
       return type === 'era' || type === 'literal'
     })
   )
+}
+
+// ECMA-402 §11.5.8 step 19.e: the selected range pattern sets its own width.
+function correctedRangeDay(
+  day: NumericRangeDay | undefined,
+  value: string
+): string | undefined {
+  if (!day?.raw) return undefined
+  const numeric = day.raw[0]
+  const padded = day.raw[1]
+  if (value === numeric) {
+    if (numeric === padded && day.corrected[0] !== day.corrected[1])
+      return undefined
+    return day.corrected[0]
+  }
+  if (value === padded) return day.corrected[1]
+  return undefined
 }
 
 function restoreNumericRangeYears(
@@ -578,20 +606,25 @@ function restoreNumericRangeYears(
     const part = parts[index]
     if (part.type === 'era' || part.type === 'literal') continue
     if (part.type === 'month') {
-      if (part.source !== 'endRange' && part.value !== first.month)
+      if (
+        part.source !== 'endRange' &&
+        (!first.month || !arrayIncludes(first.month, part.value))
+      )
         return undefined
-      if (part.source !== 'startRange' && part.value !== last.month)
+      if (
+        part.source !== 'startRange' &&
+        (!last.month || !arrayIncludes(last.month, part.value))
+      )
         return undefined
       continue
     }
     if (part.type === 'day') {
       const day = part.source === 'endRange' ? last.day : first.day
+      const corrected = correctedRangeDay(day, part.value)
       if (
-        !day ||
-        part.value !== day.raw ||
+        corrected === undefined ||
         (part.source === 'shared' &&
-          (part.value !== last.day?.raw ||
-            day.corrected !== last.day?.corrected))
+          corrected !== correctedRangeDay(last.day, part.value))
       )
         return undefined
       hasDays = true
@@ -612,9 +645,10 @@ function restoreNumericRangeYears(
     for (let index = 0; index < parts.length; index++) {
       const part = parts[index]
       if (part.type === 'day')
-        part.value = (
-          part.source === 'endRange' ? last.day : first.day
-        )!.corrected
+        part.value = correctedRangeDay(
+          part.source === 'endRange' ? last.day : first.day,
+          part.value
+        )!
     }
   }
   return parts

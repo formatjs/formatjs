@@ -896,7 +896,7 @@ locale and numbering system; original weekday, clock and timezone fields survive
 Safe host month examples supply localized month/day labels. Related years and
 sexagenary names are restored separately. Captured intrinsics avoid recursion
 after installation. Validated numeric Year ranges reuse the native layout,
-including matching numeric months and verified numeric day parts. Other
+including verified month and day widths from the selected range pattern. Other
 corrected ranges use complete endpoint patterns and a captured host separator.
 
 All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes

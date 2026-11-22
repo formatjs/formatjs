@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L441)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L443)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L716) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L750) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -180,3 +180,24 @@ passed after it.
 
 - Numeric-day before-fix log SHA-256 `61cd4dc6e86ebae853eb18b57aabea5ccc258c24f47dbb1632c41e92e5f84bb5`
 - Numeric-day after-fix log SHA-256 `5bf4ad81c58769725c7568fcb1ab4c1162db9a0bd7a563699ad6db601936fd21`
+
+### Numeric width in the selected range
+
+Pinned Node 24 and 26 reproduce padded Buddhist month and day in the
+English single-value pattern and unpadded month and day in the range.
+The bridge used complete endpoint patterns and repeated the common era.
+The selected interval now keeps its own width. The original endpoint
+labels establish the source day. The native range label identifies its
+width before the corrected day is rendered. Month labels must match the
+corrected ordinal. Shared parts must pass both endpoint checks.
+
+German padded intervals and English mathematical digits exercise both
+widths. Raw day 11 with corrected day 5 keeps the full endpoint fallback
+because the native label has the same text at either width. Seven focused
+Bazel targets pass.
+[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L581).
+[ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+[ECMA-402 §11.5.4 steps 15.f.v and 15.f.viii–ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
+
+- Width before-fix log SHA-256 `0589dc3806aaa0a58d2439d09e2a2a4c26ea569ee7731035ec2b8d58bfcde019`
+- Width after-fix log SHA-256 `a5ff8d542bbfdfd08ffe899390e2945aa4b1ddebb7c5c3936774e3ce71327231`

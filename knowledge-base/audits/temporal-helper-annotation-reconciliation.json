@@ -33808,7 +33808,7 @@
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
     "packages/temporal/kernel.ts": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
-    "packages/temporal/legacy-calendar-date.ts": "42b7f100e5e4505ae0f1fb0fda4e4751b320eca5313cb2d902eee287fa7c6723",
+    "packages/temporal/legacy-calendar-date.ts": "73a3bcbbef8712aa3245b16e8d07effa685f60c5b73a1e6ab902a5eabda80822",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
     "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
@@ -34399,26 +34399,38 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "matchesNumericRangeYear",
-        "source_sha256": "42b7f100e5e4505ae0f1fb0fda4e4751b320eca5313cb2d902eee287fa7c6723",
-        "start_line": 538,
-        "end_line": 567,
-        "anchor_line": 537,
+        "source_sha256": "73a3bcbbef8712aa3245b16e8d07effa685f60c5b73a1e6ab902a5eabda80822",
+        "start_line": 548,
+        "end_line": 578,
+        "anchor_line": 547,
         "section": "11.5.8",
         "steps": ["15.d"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
-        "scope": "Validate localized month and day parts against the original endpoint before reusing the host selection."
+        "scope": "Match original and corrected endpoint fields before reusing the native selection. Accept numeric month fields in either localized width."
       },
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "restoreNumericRangeYears",
-        "source_sha256": "42b7f100e5e4505ae0f1fb0fda4e4751b320eca5313cb2d902eee287fa7c6723",
-        "start_line": 569,
-        "end_line": 621,
-        "anchor_line": 608,
+        "source_sha256": "73a3bcbbef8712aa3245b16e8d07effa685f60c5b73a1e6ab902a5eabda80822",
+        "start_line": 597,
+        "end_line": 655,
+        "anchor_line": 641,
         "section": "11.5.8",
         "steps": ["19.b", "19.c", "19.d", "19.e", "19.f"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
-        "scope": "Check each numeric month and day against its tagged endpoint before restoring year and day text in the native layout."
+        "scope": "Verify each tagged month and day, then restore year and day text using the selected pattern\u2019s widths and source tags."
+      },
+      {
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "correctedRangeDay",
+        "source_sha256": "73a3bcbbef8712aa3245b16e8d07effa685f60c5b73a1e6ab902a5eabda80822",
+        "start_line": 581,
+        "end_line": 595,
+        "anchor_line": 580,
+        "section": "11.5.8",
+        "steps": ["19.e"],
+        "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "scope": "Identify the width using the native range part and return the corresponding corrected day text when that width is unambiguous."
       }
     ],
     "owned_host_candidate_validation": [

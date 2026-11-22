@@ -314,7 +314,7 @@ Intl search now preserves known finite future history before skipping recurring
 years, verified by the pinned Casablanca and El_Aaiun regressions. The published
 ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
-matching numeric months and numeric days with verified endpoint parts.
+numeric month and day widths verified against the selected range parts.
 Exact layout selection for other corrected fallback parts remains open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
