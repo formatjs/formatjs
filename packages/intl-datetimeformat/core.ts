@@ -514,6 +514,14 @@ function resolveTemporalGap(
   return instant
 }
 
+// ECMA-262 §21.4.1.20–21: Read the same named-zone rows as the formatter.
+function temporalTimeZoneData(
+  formatter: Intl.DateTimeFormat
+): UnpackedTimeZoneData | undefined {
+  const {dataTimeZone, timeZone} = getInternalSlots(formatter)
+  return DateTimeFormat.tzData[dataTimeZone ?? timeZone]
+}
+
 Object.defineProperty(
   formatToParts,
   Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates'),
@@ -523,8 +531,7 @@ Object.defineProperty(
       local: bigint,
       direction?: 'earlier' | 'later'
     ): bigint[] | bigint | undefined {
-      const {timeZone} = getInternalSlots(this)
-      const zone = DateTimeFormat.tzData[timeZone]
+      const zone = temporalTimeZoneData(this)
       if (!zone?.length || local <= -localLimit || local >= localLimit)
         return undefined
       return direction
@@ -543,8 +550,7 @@ Object.defineProperty(
       instant: bigint,
       direction?: 'next' | 'previous'
     ): bigint | null | undefined {
-      const {timeZone} = getInternalSlots(this)
-      const zone = DateTimeFormat.tzData[timeZone]
+      const zone = temporalTimeZoneData(this)
       if (!zone?.length || !validTemporalInstant(instant)) return undefined
       if (direction) return TimeZoneTransition(instant, direction, zone)
       // Proposal comparison §11.1.9 step 3: read the same rows at millisecond precision.

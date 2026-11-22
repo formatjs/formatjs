@@ -11,8 +11,8 @@
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. Per-step local verification removes only the rows with independent evidence. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "8cd1a6da472e226b9dcb7610cdaf5b72837bc105e3985a763749e73d8f5ed4fe",
-    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "1508498e7b7cc7ec66cc5a89e75877cc216560f044125fd88bd97d4a586bb4f9"
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "89f648fced8f428f6cbcbb02b18c9a8835a76cca92a6f4a43b2426ca7199cce5",
+    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "551cc3dbce8947ac0185e8c11cfcfd25c98b970fa991c64fe18148f5a9f46695"
   },
   "scope_decision": {
     "deferred_family": "constructor-realm-fallback",

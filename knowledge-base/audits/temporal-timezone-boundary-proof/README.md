@@ -393,6 +393,23 @@ values, the local hour, and both transition directions after reload.
 - Reload before-fix log SHA-256 `f6981566d05596a97351a02f97e3a09355e2ecdf359b4ac06524f16ffb192266`
 - Reload after-fix log SHA-256 `bafa7b15ec3cb402d20bf215dcc1316b1c13f84cc7b546ae959534773473c858`
 
+### Canonical timezone rows after an alias reload
+
+Intl preserves the display identifier while reading its canonical data
+zone. Both private Temporal hooks now use that same data-zone slot. A warm
+`US/Eastern` lookup previously missed an overlap and two transitions after
+the reload supplied only `America/New_York`. It returned 15:00 UTC for local
+15:00, whose first real candidate was 03:00 UTC. With a conflicting alias
+row, the old hooks could return +01:00 while Intl showed +04:00.
+
+The packaged regression checks the exact earlier overlap candidate,
+rejection, both transition directions, the formatter offset, and both gap
+directions across reloads. Temporal retains the public alias identifier.
+
+- Packaged before-fix result SHA-256 `e406db75a1b80294a60395fca2abf51d3f630d212c2076d13ec09e5154e2711f`
+- Packaged after-fix result SHA-256 `0080eac6c3a4e4db32fe079506cfe62cc217de4a78d0a7d79626cdd3c362372a`
+- Six-target Bazel log SHA-256 `4e87cead8a895b596c9ef7876b053e27a5482cc48368f3ae502334ec32ddc61b`
+
 ## Exact owned next and previous transition
 
 A six-hour packed offset pulse returned null from either side even though
@@ -407,7 +424,7 @@ It compares offsets on both sides of each boundary. Direction is strict at
 nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
-[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
+[Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L546).
 [Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L350).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in

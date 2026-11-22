@@ -34602,6 +34602,30 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "owned_temporal_data_zone": [
+      {
+        "file": "packages/intl-datetimeformat/core.ts",
+        "symbol": "temporalTimeZoneData",
+        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
+        "start_line": 518,
+        "end_line": 523,
+        "anchor_line": 517,
+        "section": "21.4.1.20",
+        "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneepochnanoseconds",
+        "scope": "Select the same canonical data-zone rows as the formatter before owned Temporal lookup."
+      },
+      {
+        "file": "packages/intl-datetimeformat/core.ts",
+        "symbol": "temporalTimeZoneData",
+        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
+        "start_line": 518,
+        "end_line": 523,
+        "anchor_line": 517,
+        "section": "21.4.1.21",
+        "spec_url": "https://tc39.es/ecma262/#sec-getnamedtimezoneoffsetnanoseconds",
+        "scope": "Select the same canonical data-zone rows as the formatter before owned Temporal lookup."
+      }
+    ],
     "ecma262_named_zone_contracts": [
       {
         "file": "packages/temporal/host-timezone.ts",
@@ -34903,7 +34927,7 @@
         "start_line": 416,
         "end_line": 439,
         "anchor_line": 415,
-        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
+        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
         "spec_row_ids": [
           "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
@@ -34928,7 +34952,7 @@
         "start_line": 459,
         "end_line": 515,
         "anchor_line": 458,
-        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
+        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
         "spec_row_ids": [
           "11.1.12/algorithm-1/step-6",
           "11.1.12/algorithm-1/step-7",
@@ -35064,7 +35088,7 @@
         "start_line": 442,
         "end_line": 452,
         "anchor_line": 441,
-        "source_sha256": "79ad643d6c28987485a98a07aec2d4ed49d8dc34dde2ac8c2514acb4946c1b03",
+        "source_sha256": "bcc04beb986c4868749d4497c127c1606f2bc538a267dd8a2816834bcaa212d9",
         "spec_row_ids": ["11.1.13/algorithm-1/step-4.a"],
         "scope": "Reject actual out-of-range candidates for the initial and shifted public queries."
       }

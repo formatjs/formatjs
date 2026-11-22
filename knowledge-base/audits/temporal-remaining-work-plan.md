@@ -431,6 +431,10 @@ hides formatter source behind a bytecode placeholder.
 [Debian SpiderMonkey proof](temporal-timezone-boundary-proof/spidermonkey-provider-audit.md).
 [Legacy reload replay](temporal-timezone-boundary-proof/README.md#legacy-reload-after-installing-temporal).
 [Source reflection replay](temporal-timezone-boundary-proof/README.md#function-source-recognition-for-direct-imports).
+The owned formatter's Temporal hooks now follow the same canonical timezone
+rows as Intl formatting after reload. The packaged regression covers an alias
+whose custom row conflicts with the canonical data zone.
+[Alias reload proof](temporal-timezone-boundary-proof/README.md#canonical-timezone-rows-after-an-alias-reload).
 Three exact helper comments now cover the Object branch, cached ISO projection
 and canonical packed zone selection. A fourth now maps native zoned offset
 transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preserves

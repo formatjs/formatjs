@@ -246,6 +246,53 @@ try {
     ['+01:00', '+01:00', 1, 20_000n * second, 20_000n * second]
   )
 
+  const alias = 'US/Eastern'
+  const aliasInstant = new Temporal.ZonedDateTime(3n * hour, alias)
+  const aliasFormatter = new formatter('en', {
+    timeZone: alias,
+    timeZoneName: 'longOffset',
+  })
+  assert.equal(aliasInstant.offset, '+01:00')
+  const registerAliasPulse = (offset, extraRows = []) =>
+    formatter.__addTZData({
+      abbrvs: 'TEST',
+      offsets: '0|2s0|b40|xc0',
+      zones: [
+        `${reloadZone}|${packedRow(null, 0)}|${packedRow(0n, offset)}|${packedRow(21_600n, 0)}`,
+        ...extraRows,
+      ],
+    })
+  registerAliasPulse(3)
+  const aliasFold = `1970-01-01T15:00[${alias}]`
+  assert.equal(
+    Temporal.ZonedDateTime.from(aliasFold).epochNanoseconds,
+    3n * hour
+  )
+  assert.throws(
+    () => Temporal.ZonedDateTime.from(aliasFold, {disambiguation: 'reject'}),
+    RangeError
+  )
+  assert.equal(transition(alias, -1n, 'next'), 0n)
+  assert.equal(transition(alias, 6n * hour + 1n, 'previous'), 6n * hour)
+
+  registerAliasPulse(2, [`${alias}|${packedRow(null, 1)}`])
+  const aliasOffset = aliasFormatter
+    .formatToParts(3 * 3_600_000)
+    .find(part => part.type === 'timeZoneName').value
+  assert.equal(aliasOffset, 'GMT+04:00')
+  assert.equal(aliasInstant.offset, '+04:00')
+  assert.equal(aliasInstant.timeZoneId, alias)
+  const aliasGap = `1970-01-01T01:00[${alias}]`
+  for (const [disambiguation, expected] of [
+    ['earlier', -3n * hour],
+    ['later', hour],
+  ]) {
+    assert.equal(
+      Temporal.ZonedDateTime.from(aliasGap, {disambiguation}).epochNanoseconds,
+      expected
+    )
+  }
+
   // Keep the last explicit row until the footer actually takes over.
   formatter.__addTZData({
     abbrvs: 'TEST',
