@@ -578,7 +578,8 @@ export function differenceZonedDuration(
     throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options),
     largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw),
+    largestOption = largestText === 'auto' ? undefined : unitOption(largestText)
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc'),
     smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
@@ -596,9 +597,7 @@ export function differenceZonedDuration(
     ],
     smallIndex = arrayIndexOf(names, smallest)
   const largest =
-    largestText === 'auto'
-      ? names[mathMin(4, smallIndex)]
-      : unitOption(largestText)!
+    largestText === 'auto' ? names[mathMin(4, smallIndex)] : largestOption!
   const largeIndex = arrayIndexOf(names, largest)
   if (largeIndex > smallIndex)
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')

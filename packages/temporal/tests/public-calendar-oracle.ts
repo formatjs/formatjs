@@ -115,6 +115,170 @@ function checkLargeCalendarFields(
   }
 }
 
+export function checkDateDifferenceUnitGroup(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const date = Temporal.PlainDate.from('2020-01-01')
+  for (const method of ['until', 'since'] as const) {
+    const original = Object.getOwnPropertyDescriptor(Array.prototype, '-1')
+    let hooks = 0
+    let error: unknown
+    try {
+      Object.defineProperty(Array.prototype, '-1', {
+        configurable: true,
+        get() {
+          hooks++
+          throw new Error('Private negative unit index')
+        },
+      })
+      try {
+        date[method](date, {largestUnit: 'auto', smallestUnit: 'hour'})
+      } catch (caught) {
+        error = caught
+      }
+    } finally {
+      if (original) Object.defineProperty(Array.prototype, '-1', original)
+      else delete (Array.prototype as unknown as Record<string, unknown>)['-1']
+    }
+    equal(hooks, 0, `PlainDate.${method} private unit index`)
+    equal(error instanceof RangeError, true, `PlainDate.${method} unit group`)
+  }
+}
+
+export function checkDifferenceOptionOrder(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const pairs = [
+    [
+      'PlainDate',
+      Temporal.PlainDate.from('2020-01-01'),
+      Temporal.PlainDate.from('2020-01-02'),
+    ],
+    [
+      'PlainDateTime',
+      Temporal.PlainDateTime.from('2020-01-01T00:00'),
+      Temporal.PlainDateTime.from('2020-01-02T00:00'),
+    ],
+    [
+      'ZonedDateTime',
+      Temporal.ZonedDateTime.from('2020-01-01T00:00Z[UTC]'),
+      Temporal.ZonedDateTime.from('2020-01-02T00:00Z[UTC]'),
+    ],
+    [
+      'PlainYearMonth',
+      Temporal.PlainYearMonth.from('2020-01'),
+      Temporal.PlainYearMonth.from('2020-02'),
+    ],
+    [
+      'PlainTime',
+      Temporal.PlainTime.from('00:00'),
+      Temporal.PlainTime.from('01:00'),
+    ],
+    [
+      'Instant',
+      Temporal.Instant.from('2020-01-01T00:00Z'),
+      Temporal.Instant.from('2020-01-02T00:00Z'),
+    ],
+  ] as const
+  const sentinel = new Error('Later difference option read')
+  for (const [name, first, last] of pairs) {
+    for (const end of [first, last]) {
+      for (const method of ['until', 'since'] as const) {
+        for (const spelling of ['bogus', 'Years', 'autoS', '']) {
+          const trace: string[] = []
+          let error: unknown
+          try {
+            first[method](end, {
+              get largestUnit() {
+                trace.push('get largestUnit')
+                return {
+                  [Symbol.toPrimitive](hint: string) {
+                    trace.push(`coerce ${hint}`)
+                    return spelling
+                  },
+                }
+              },
+              get roundingIncrement() {
+                trace.push('get roundingIncrement')
+                throw sentinel
+              },
+            })
+          } catch (caught) {
+            error = caught
+          }
+          const context = `${name}.${method} invalid ${spelling}`
+          equal(error instanceof RangeError, true, context)
+          equal(trace.join(','), 'get largestUnit,coerce string', context)
+        }
+        const trace: string[] = []
+        let error: unknown
+        const largestUnit =
+          name === 'PlainDate' || name === 'PlainYearMonth' ? 'hours' : 'years'
+        try {
+          first[method](end, {
+            largestUnit,
+            get roundingIncrement() {
+              trace.push('get roundingIncrement')
+              return {
+                valueOf() {
+                  trace.push('coerce increment')
+                  return 1
+                },
+              }
+            },
+            get roundingMode() {
+              trace.push('get roundingMode')
+              return {
+                toString() {
+                  trace.push('coerce mode')
+                  return 'trunc'
+                },
+              }
+            },
+            get smallestUnit() {
+              trace.push('get smallestUnit')
+              throw sentinel
+            },
+          })
+        } catch (caught) {
+          error = caught
+        }
+        equal(
+          error,
+          sentinel,
+          `${name}.${method} reads smallest before group validation`
+        )
+        equal(
+          trace.join(','),
+          'get roundingIncrement,coerce increment,get roundingMode,coerce mode,get smallestUnit',
+          `${name}.${method} independent option order`
+        )
+        // Recognized spellings pass independent validation before unit-group checks.
+        for (const largestUnit of [undefined, 'auto', 'nanoseconds']) {
+          let error: unknown
+          try {
+            first[method](end, {
+              largestUnit,
+              get roundingIncrement() {
+                throw sentinel
+              },
+            })
+          } catch (caught) {
+            error = caught
+          }
+          equal(
+            error,
+            sentinel,
+            `${name}.${method} deferred unit group ${largestUnit}`
+          )
+        }
+      }
+    }
+  }
+}
+
 export function checkCalendarDifferencePolicy(
   Temporal: typeof TemporalNamespace,
   equal: (actual: unknown, expected: unknown, context: string) => void
