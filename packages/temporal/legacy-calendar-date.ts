@@ -338,7 +338,8 @@ export function legacyCalendarParts(
   )
     return undefined
   if (value.plain !== true) {
-    // ECMA-262 §21.4.1.31 steps 1–2: leave invalid Number inputs to the host.
+    // ECMA-402 §11.5.5 steps 1–2: leave invalid Number inputs to host TimeClip.
+    // https://tc39.es/ecma402/#sec-partitiondatetimepattern
     if (
       !numberIsFinite(value.milliseconds) ||
       mathAbs(value.milliseconds) > limit
@@ -384,6 +385,9 @@ export function legacyCalendarParts(
         !(error instanceof TypeErrorConstructor)
       )
         throw error
+      // ECMA-402 §11.5.11 steps 3–5 use the original local day even when the
+      // host's calendar formatter rejects an otherwise valid time value.
+      // https://tc39.es/ecma402/#sec-tolocaltime
       epoch ??= legacyISOEpochDay(options.timeZone, value.milliseconds)
       // Some host calendars fail at valid Date bounds; retain their clock and zone via Gregorian fields.
       let clock = apply(weakMapGet, clockFormatters, [value.formatter]) as

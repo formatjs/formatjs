@@ -106,6 +106,87 @@ const formatters = new Map(
     new Intl.DateTimeFormat('en-US-u-nu-latn', {calendar, ...numericOptions}),
   ])
 )
+// ECMA-402 §11.5.5 steps 1–4 and §11.5.11 steps 3–5.
+// https://tc39.es/ecma402/#sec-partitiondatetimepattern
+{
+  const max = 8_640_000_000_000_000
+  for (const [timeZone, firstISO, lastISO, hour] of [
+    ['UTC', '-271821-04-20', '+275760-09-13', '00'],
+    ['Etc/GMT+12', '-271821-04-19', '+275760-09-12', '12'],
+    ['Etc/GMT-14', '-271821-04-20', '+275760-09-13', '14'],
+  ]) {
+    for (const calendar of ['chinese', 'dangi']) {
+      const formatter = new Intl.DateTimeFormat('en-US-u-nu-latn', {
+        ...numericOptions,
+        calendar,
+        timeZone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        fractionalSecondDigits: 3,
+        hourCycle: 'h23',
+      })
+      const endpoints = new Map()
+      for (const [milliseconds, iso] of [
+        [-max, firstISO],
+        [max, lastISO],
+      ]) {
+        const date = Temporal.PlainDate.from(iso).withCalendar(calendar)
+        const parts = formatter.formatToParts(milliseconds)
+        const actual = map(parts)
+        const expected = {
+          relatedYear: String(date.year),
+          month:
+            String(Number(date.monthCode.slice(1, 3))) +
+            (date.monthCode.endsWith('L') ? 'bis' : ''),
+          day: String(date.day),
+          hour,
+          minute: '00',
+          second: '00',
+          fractionalSecond: '000',
+        }
+        for (const [type, value] of Object.entries(expected))
+          assert.equal(
+            actual[type],
+            value,
+            `${calendar} ${timeZone} ${iso} ${type}`
+          )
+        assert.equal(
+          formatter.format(milliseconds),
+          parts.map(part => part.value).join('')
+        )
+        assert.throws(
+          () => formatter.formatToParts(milliseconds + Math.sign(milliseconds)),
+          RangeError
+        )
+        endpoints.set(milliseconds, actual)
+      }
+      for (const [start, end] of [
+        [-max, max],
+        [max, -max],
+      ]) {
+        const range = formatter.formatRangeToParts(start, end)
+        for (const [source, milliseconds] of [
+          ['startRange', start],
+          ['endRange', end],
+        ]) {
+          const actual = map(range.filter(part => part.source === source))
+          const expected = endpoints.get(milliseconds)
+          for (const type of ['relatedYear', 'month', 'day'])
+            assert.equal(actual[type], expected[type])
+        }
+        assert.equal(
+          formatter.formatRange(start, end),
+          range.map(part => part.value).join('')
+        )
+      }
+      assert.throws(
+        () => formatter.formatRangeToParts(max, max + 1),
+        RangeError
+      )
+    }
+  }
+}
 let checked = 0
 for (const row of rows) {
   const milliseconds = +row[2] * 86400000
