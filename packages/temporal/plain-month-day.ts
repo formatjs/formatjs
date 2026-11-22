@@ -108,9 +108,13 @@ class PlainMonthDayValue {
     item: unknown,
     options: unknown = undefined
   ): PlainMonthDayObject {
+    // Temporal comparison §10.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.from
     return createPlainMonthDay(toMonthDaySlot(item, options))
   }
   with(item: unknown, options: unknown = undefined): PlainMonthDayObject {
+    // Temporal comparison §10.3.6 steps 1–11.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.with
     const slot = read(this),
       partial = readDateFields(
         partialObject(item),
@@ -135,13 +139,18 @@ class PlainMonthDayValue {
     )
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §10.3.7 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.equals
     const a = read(this),
       b = toMonthDaySlot(other)
     return a.epochDay === b.epochDay && a.calendar === b.calendar
   }
   toPlainDate(item: unknown): PlainDateObject {
+    // Temporal comparison §10.3.12 steps 1–9.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.toplaindate
     const slot = read(this)
     if (!object(item)) throw new TypeErrorConstructor('Expected date fields')
+    // Temporal comparison §10.3.12 steps7–8: merge only prepared private fields.
     const prepared = readDateFields(item, false, false, 'year', slot.calendar),
       fields = dateFields(slot, true)
     const native = nativeTemporal()
@@ -173,6 +182,8 @@ class PlainMonthDayValue {
     )
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §10.3.8 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tostring
     const slot = read(this)
     return formatShortDate(
       slot,
@@ -184,6 +195,8 @@ class PlainMonthDayValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal comparison §10.3.9 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {
@@ -198,9 +211,13 @@ class PlainMonthDayValue {
     )
   }
   toJSON(): string {
+    // Temporal comparison §10.3.10 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.tojson
     return formatShortDate(read(this), 'month-day')
   }
   valueOf(): never {
+    // Temporal comparison §10.3.11 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.valueof
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.PlainMonthDay to primitive'
     )
@@ -212,10 +229,14 @@ Object.defineProperty(PlainMonthDayValue, 'name', {
   value: 'PlainMonthDay',
   configurable: true,
 })
+// Temporal comparison §10.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype
 export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
   PlainMonthDayValue,
   {
     construct(target, args, newTarget) {
+      // Temporal comparison §10.1.1 steps 1–11.
+      // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday
       const month = integer(argumentAt(args, 0)),
         day = integer(argumentAt(args, 1)),
         calendar = constructorCalendar(argumentAt(args, 2)),
@@ -234,9 +255,19 @@ export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
   }
 ) as unknown as PlainMonthDayConstructor
 Object.defineProperties(PlainMonthDayValue.prototype, {
+  // Temporal comparison §10.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.constructor
   constructor: {value: PlainMonthDay, writable: true, configurable: true},
+  // Temporal comparison §10.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainMonthDay', configurable: true},
 })
+// Temporal comparison §10.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainmonthday.prototype.calendarid
+// Temporal comparison §10.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainmonthday.prototype.monthcode
+// Temporal comparison §10.3.5 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainmonthday.prototype.day
 defineGetters(
   PlainMonthDayValue.prototype,
   ['calendarId', 'monthCode', 'day'],

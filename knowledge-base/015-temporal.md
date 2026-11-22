@@ -31,6 +31,14 @@ lower midnight rejects; adjacent1ns and equal-zero shortcuts remain. PlainDateTi
 withPlainTime reuses internal conversion; private ISO output uses captured runtime
 slice. [16 focused targets](audits/temporal-plain-relative-validation-targets.txt) pass.
 
+Duration.compare retains only full-field equality as an addition shortcut.
+Zoned date components require both endpoint additions. Plain comparison adds the
+years/months/weeks prefix, then compares exact fixed days/time without a final
+destination-date bound. [Nine targets](audits/temporal-duration-compare-validation-targets.txt)
+pass, including shared TS/native and literal Rust boundary controls. First-pass
+registers cover all5,865 rows; [remaining steps](audits/temporal-remaining-condition-steps.tsv)
+and required inline comments stay explicit.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

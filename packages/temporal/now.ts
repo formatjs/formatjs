@@ -110,6 +110,7 @@ let systemClock: SystemClock = {
     // Hosts without Intl expose the current system offset through Date.
     const minutes = -hostOffset(new HostDate())
     if (minutes === 0) return 'UTC'
+    // Temporal comparison §2.2.1 step1: return the private system-zone identifier.
     const absolute = mathAbs(minutes)
     return (
       (minutes < 0 ? '-' : '+') +

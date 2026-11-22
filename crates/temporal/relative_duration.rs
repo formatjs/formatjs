@@ -42,7 +42,15 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     ) -> Result<core::cmp::Ordering, Error> {
         let left = one.fields();
         let right = two.fields();
-        if left[..4] == right[..4] {
+        // Temporal comparison §7.2.3 steps5/12: only full equality skips date additions.
+        if left == right {
+            return Ok(core::cmp::Ordering::Equal);
+        }
+        if left[..4]
+            .iter()
+            .chain(right[..4].iter())
+            .all(|field| *field == 0)
+        {
             return Ok(one
                 .time_nanoseconds(false)?
                 .cmp(&two.time_nanoseconds(false)?));

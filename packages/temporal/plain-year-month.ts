@@ -282,14 +282,20 @@ class PlainYearMonthValue {
     item: unknown,
     options: unknown = undefined
   ): PlainYearMonthObject {
+    // Temporal comparison §9.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.from
     return createPlainYearMonth(toYearMonthSlot(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §9.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.compare
     const a = toYearMonthSlot(one).epochDay,
       b = toYearMonthSlot(two).epochDay
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainYearMonthObject {
+    // Temporal comparison §9.3.13 steps 1–11.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.with
     const slot = read(this),
       partial = readDateFields(
         partialObject(item),
@@ -314,26 +320,38 @@ class PlainYearMonthValue {
     )
   }
   add(duration: unknown, options: unknown = undefined): PlainYearMonthObject {
+    // Temporal comparison §9.3.14 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.add
     return add(read(this), duration, options, 1)
   }
   subtract(
     duration: unknown,
     options: unknown = undefined
   ): PlainYearMonthObject {
+    // Temporal comparison §9.3.15 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.subtract
     return add(read(this), duration, options, -1)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §9.3.16 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.until
     return difference(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §9.3.17 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.since
     return difference(read(this), other, options, true)
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §9.3.18 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.equals
     const a = read(this),
       b = toYearMonthSlot(other)
     return a.epochDay === b.epochDay && a.calendar === b.calendar
   }
   toPlainDate(item: unknown): PlainDateObject {
+    // Temporal comparison §9.3.23 steps 1–9.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.toplaindate
     const slot = read(this)
     if (!object(item)) throw new TypeErrorConstructor('Expected date fields')
     const raw = item.day
@@ -353,6 +371,8 @@ class PlainYearMonthValue {
     )
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §9.3.19 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tostring
     const slot = read(this)
     return formatShortDate(
       slot,
@@ -364,6 +384,8 @@ class PlainYearMonthValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal comparison §9.3.20 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {
@@ -378,9 +400,13 @@ class PlainYearMonthValue {
     )
   }
   toJSON(): string {
+    // Temporal comparison §9.3.21 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.tojson
     return formatShortDate(read(this), 'year-month')
   }
   valueOf(): never {
+    // Temporal comparison §9.3.22 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.valueof
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.PlainYearMonth to primitive'
     )
@@ -392,10 +418,14 @@ Object.defineProperty(PlainYearMonthValue, 'name', {
   value: 'PlainYearMonth',
   configurable: true,
 })
+// Temporal comparison §9.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype
 export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
   PlainYearMonthValue,
   {
     construct(target, args, newTarget) {
+      // Temporal comparison §9.1.1 steps 1–11.
+      // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth
       const year = integer(argumentAt(args, 0)),
         month = integer(argumentAt(args, 1)),
         calendar = constructorCalendar(argumentAt(args, 2)),
@@ -412,9 +442,33 @@ export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
   }
 ) as unknown as PlainYearMonthConstructor
 Object.defineProperties(PlainYearMonthValue.prototype, {
+  // Temporal comparison §9.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.constructor
   constructor: {value: PlainYearMonth, writable: true, configurable: true},
+  // Temporal comparison §9.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainYearMonth', configurable: true},
 })
+// Temporal comparison §9.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.calendarid
+// Temporal comparison §9.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era
+// Temporal comparison §9.3.5 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.erayear
+// Temporal comparison §9.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.year
+// Temporal comparison §9.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.month
+// Temporal comparison §9.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.monthcode
+// Temporal comparison §9.3.9 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinyear
+// Temporal comparison §9.3.10 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinmonth
+// Temporal comparison §9.3.11 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.monthsinyear
+// Temporal comparison §9.3.12 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.inleapyear
 defineGetters(
   PlainYearMonthValue.prototype,
   [

@@ -1,3 +1,4 @@
+import {checkDurationCompareBoundaries} from '#packages/temporal/tests/plain-relative-oracle.js'
 import {checkPlainRelativeEndpointBounds} from '#packages/temporal/tests/plain-relative-oracle.js'
 import {checkPlainRelativeOracle} from '#packages/temporal/tests/plain-relative-oracle.js'
 import {runfiles} from '@bazel/runfiles'
@@ -88,6 +89,12 @@ it('balances rounded differences across both plain date limits', () => {
 
 it('rejects the excluded lower destination midnight but preserves adjacent values and zero', () => {
   checkPlainRelativeEndpointBounds(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
+})
+
+it('preserves comparison range checks without inventing plain destination bounds', () => {
+  checkDurationCompareBoundaries(Temporal, (actual, expected, context) =>
     expect(actual, context).toBe(expected)
   )
 })

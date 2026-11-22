@@ -3,20 +3,20 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 23484,
+  "whole_selected_source_lines": 23895,
   "whole_selected_source_lines_by_language": {
-    "rust": 10337,
-    "typescript": 13147
+    "rust": 10350,
+    "typescript": 13545
   },
-  "nonoverlapping_callable_lines": 16672,
+  "nonoverlapping_callable_lines": 16694,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8116,
-    "typescript": 8556
+    "rust": 8129,
+    "typescript": 8565
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 7376,
-    "unmapped": 4955,
-    "mapped": 4341
+    "candidate": 7388,
+    "unmapped": 4956,
+    "mapped": 4350
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
@@ -456,18 +456,18 @@
     },
     {
       "file": "crates/temporal/plain_relative.rs",
-      "source_lines": 186,
+      "source_lines": 196,
       "callable_rows": 13,
-      "nonoverlapping_callable_lines": 165,
-      "sha256": "7c3a5af38f7871b2736d409fa7a0c2c9cfe3bba53ba665cbd151c445a5a2abe8",
+      "nonoverlapping_callable_lines": 175,
+      "sha256": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/relative_duration.rs",
-      "source_lines": 156,
+      "source_lines": 158,
       "callable_rows": 5,
-      "nonoverlapping_callable_lines": 147,
-      "sha256": "806106f992a8b70e4b76c4543f97edd67a813fd9d9167a572a8e315f5ab360ab",
+      "nonoverlapping_callable_lines": 149,
+      "sha256": "2b15e94315fe8fbe2f3ae8986b94e64d68f50015a67f3f3241eb0de166f085cb",
       "unresolved_callable_rows": 0
     },
     {
@@ -480,10 +480,10 @@
     },
     {
       "file": "crates/temporal/short_dates.rs",
-      "source_lines": 610,
+      "source_lines": 611,
       "callable_rows": 56,
-      "nonoverlapping_callable_lines": 535,
-      "sha256": "7ef674e7b79b51519a7fa3d0af14abda7015dbcf431796eef2c36a890410b3d4",
+      "nonoverlapping_callable_lines": 536,
+      "sha256": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
       "unresolved_callable_rows": 46
     },
     {
@@ -584,10 +584,10 @@
     },
     {
       "file": "packages/temporal/date-core.ts",
-      "source_lines": 1063,
+      "source_lines": 1064,
       "callable_rows": 38,
-      "nonoverlapping_callable_lines": 853,
-      "sha256": "e8bded4e96fb9e4bae70f0e25b93c03bf01d19933ed50a3f37d984f77e2f59c4",
+      "nonoverlapping_callable_lines": 854,
+      "sha256": "381de18a2e42681d2d6644775ea8991a53e09e9fdc2ea2338966417d417687dd",
       "unresolved_callable_rows": 12
     },
     {
@@ -624,10 +624,10 @@
     },
     {
       "file": "packages/temporal/duration.ts",
-      "source_lines": 460,
+      "source_lines": 548,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 69,
-      "sha256": "286c3fc3292f33c515a1e3a028b2d652e1f4dde7c0f5293b0fe7e8ec087df231",
+      "sha256": "c773cc7956fd611d40b6a9e2dab900d7f9331d28678ecab0fed12eead15bf9f3",
       "unresolved_callable_rows": 1
     },
     {
@@ -792,26 +792,26 @@
     },
     {
       "file": "packages/temporal/plain-date-time.ts",
-      "source_lines": 632,
+      "source_lines": 724,
       "callable_rows": 7,
-      "nonoverlapping_callable_lines": 205,
-      "sha256": "b5a649bded7e4eb0bb9abb850bba978764dc06d7a36af45c3c7c7190b0a16da4",
+      "nonoverlapping_callable_lines": 206,
+      "sha256": "b0bf07a01d60d992610834a4f4cf0353df3164551fa2448fce98c47c03da1923",
       "unresolved_callable_rows": 2
     },
     {
       "file": "packages/temporal/plain-date.ts",
-      "source_lines": 473,
+      "source_lines": 552,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 156,
-      "sha256": "5d215d31f7f75c7ab491dd0b04ab11f624e6f88a479828730feee6368532a945",
+      "sha256": "2b55f665f70ce6d01f5d8ea80ca26f904ab20fd6f67b1775883a2cf345638325",
       "unresolved_callable_rows": 1
     },
     {
       "file": "packages/temporal/plain-month-day.ts",
-      "source_lines": 244,
+      "source_lines": 275,
       "callable_rows": 3,
       "nonoverlapping_callable_lines": 30,
-      "sha256": "a062ad6aab23db07e408b45ddf8ec6c25f87f7bb4c09c66560b0dc8d53d91c26",
+      "sha256": "4f461bd62b2bd2443db6b4f4370276aa905815946c7e7ba69ed07c9acdbacb49",
       "unresolved_callable_rows": 1
     },
     {
@@ -824,18 +824,18 @@
     },
     {
       "file": "packages/temporal/plain-time.ts",
-      "source_lines": 660,
+      "source_lines": 707,
       "callable_rows": 20,
-      "nonoverlapping_callable_lines": 314,
-      "sha256": "5f7f24d0b64d6095483c804e28f11b1b356258174747240cb8f0081e3089cd00",
+      "nonoverlapping_callable_lines": 315,
+      "sha256": "22363aa68148e2b1f48ed739db88e5b86e4ad75624c07293fe1d2611883031b0",
       "unresolved_callable_rows": 7
     },
     {
       "file": "packages/temporal/plain-year-month.ts",
-      "source_lines": 433,
+      "source_lines": 487,
       "callable_rows": 5,
       "nonoverlapping_callable_lines": 164,
-      "sha256": "6d171d21210ef7a94d25e59104b234d917d574eac7693df3cdcfb53b9f568efc",
+      "sha256": "0ea4813deca4a8d58d8d7f24c834cf257ce12297edda5fbc7230c3b1abca86c8",
       "unresolved_callable_rows": 1
     },
     {
@@ -856,10 +856,10 @@
     },
     {
       "file": "packages/temporal/relative-duration.ts",
-      "source_lines": 317,
+      "source_lines": 320,
       "callable_rows": 6,
-      "nonoverlapping_callable_lines": 262,
-      "sha256": "61718076520482e086b08660584fa2f795fbef7e5d792780c3b4a39e265459e0",
+      "nonoverlapping_callable_lines": 265,
+      "sha256": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
       "unresolved_callable_rows": 1
     },
     {
@@ -872,10 +872,10 @@
     },
     {
       "file": "packages/temporal/short-date-core.ts",
-      "source_lines": 288,
+      "source_lines": 291,
       "callable_rows": 8,
-      "nonoverlapping_callable_lines": 254,
-      "sha256": "cc8f29380dff00ae58f829037509b49f5bcc006807c383c2485be16b8f0443c3",
+      "nonoverlapping_callable_lines": 257,
+      "sha256": "db9a82aef14c112fda12239dba15b4fd0a769dedf7c523549dd464b809850f89",
       "unresolved_callable_rows": 1
     },
     {

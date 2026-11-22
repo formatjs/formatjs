@@ -179,12 +179,14 @@ export function relativeTotal(
         bigIntFrom(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
       if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
         throw new RangeErrorConstructor('Duration out of range')
+      // Temporal comparison §5.5.14 step2 precedes fixed-unit total arithmetic.
       checkDateTime(relativeOrigin(relative) + value)
       return durationTotalNumber(value, factors[unit])
     }
   }
   const start = relativeOrigin(relative),
     end = relativeEndpoint(relative, fields)
+  // Temporal comparison §5.5.14 steps1–2 preserve equality before endpoint limits.
   if ('date' in relative && end !== start) checkDateTime(end)
   if (
     unit !== 'year' &&
@@ -246,6 +248,7 @@ export function relativeRound(
   const start = relativeOrigin(relative)
   if (durationSign(fields) && 'date' in relative) checkDateTime(start)
   const end = relativeEndpoint(relative, fields)
+  // Temporal comparison §5.5.13 steps1–2 preserve equal-zero shortcuts.
   if ('date' in relative && end !== start) checkDateTime(end)
   if (smallest === 'week' && (largest === 'year' || largest === 'month')) {
     const full =

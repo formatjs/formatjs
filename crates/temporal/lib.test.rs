@@ -3935,3 +3935,45 @@ fn year_month_addition_checks_intermediate_full_date_range() {
             .is_err()
     );
 }
+
+#[test]
+fn duration_comparison_validates_calendar_prefix_without_plain_clock_endpoints() {
+    use core::cmp::Ordering::{Equal, Less};
+    use formatjs_temporal::{Duration, FixedOffset, PlainDate, ZonedDateTime};
+    let maximum: PlainDate = "+275760-09-13".parse().unwrap();
+    assert!(
+        maximum
+            .compare_durations("P1YT1H".parse().unwrap(), "P1YT2H".parse().unwrap())
+            .is_err()
+    );
+    assert_eq!(
+        maximum
+            .compare_durations("P1D".parse().unwrap(), "P2D".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    let prefix: PlainDate = "+275760-08-13".parse().unwrap();
+    assert_eq!(
+        prefix
+            .compare_durations("P1M1D".parse().unwrap(), "P1M2D".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    let one: Duration = "P1D".parse().unwrap();
+    let zoned = ZonedDateTime::new(
+        Instant::from_epoch_nanoseconds(MAX_EPOCH_NANOSECONDS).unwrap(),
+        FixedOffset::new(0).unwrap(),
+    );
+    assert!(
+        zoned
+            .compare_durations("P1DT1H".parse().unwrap(), "P1DT2H".parse().unwrap())
+            .is_err()
+    );
+    assert_eq!(
+        zoned
+            .compare_durations("PT1H".parse().unwrap(), "PT2H".parse().unwrap())
+            .unwrap(),
+        Less
+    );
+    assert_eq!(zoned.compare_durations(one, one).unwrap(), Equal);
+}

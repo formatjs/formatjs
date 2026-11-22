@@ -132,6 +132,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             if value <= -MAX_DURATION_NANOSECONDS || value >= MAX_DURATION_NANOSECONDS {
                 return Err(Error::InvalidDuration);
             }
+            // Temporal comparison §5.5.14 step2 also guards the fixed-unit fast path.
             PlainDateTime::from_epoch_nanoseconds(anchor.origin() + value)?;
             let divisor = unit
                 .time()
@@ -139,6 +140,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             return Ok(crate::duration::rational_to_f64(value, divisor));
         }
         let end = anchor.endpoint(fields)?;
+        // Temporal comparison §5.5.14 steps1–2: equality precedes endpoint limits.
         if end != anchor.origin() {
             PlainDateTime::from_epoch_nanoseconds(end)?;
         }
@@ -163,6 +165,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             PlainDateTime::from_epoch_nanoseconds(anchor.origin())?;
         }
         let end = anchor.endpoint(duration.fields())?;
+        // Temporal comparison §5.5.13 steps1–2 retain equal-zero shortcuts.
         if end != anchor.origin() {
             PlainDateTime::from_epoch_nanoseconds(end)?;
         }
@@ -173,14 +176,21 @@ impl<C: CalendarProvider> PlainDate<C> {
         one: Duration,
         two: Duration,
     ) -> Result<core::cmp::Ordering, Error> {
-        if one.fields()[..4] == two.fields()[..4] {
-            return Ok(one
-                .time_nanoseconds(false)?
-                .cmp(&two.time_nanoseconds(false)?));
+        if one == two {
+            return Ok(core::cmp::Ordering::Equal);
         }
-        let anchor = PlainAnchor::from(self);
-        Ok(anchor
-            .endpoint(one.fields())?
-            .cmp(&anchor.endpoint(two.fields())?))
+        // Temporal comparison §7.5.29 steps1–7: bound only the Y/M/W prefix.
+        let value = |duration: Duration| -> Result<i128, Error> {
+            let mut fields = duration.fields();
+            if fields[..3].iter().any(|field| *field != 0) {
+                let mut prefix = fields;
+                prefix[3..].fill(0);
+                let later = self.checked_add(Duration::new(prefix)?, Overflow::Constrain)?;
+                fields[..3].fill(0);
+                fields[3] += i128::from(later.epoch_day() - self.epoch_day());
+            }
+            Duration::new(fields)?.time_nanoseconds(true)
+        };
+        Ok(value(one)?.cmp(&value(two)?))
     }
 }

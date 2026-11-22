@@ -20,14 +20,19 @@ contains 1,069 existing callables, with mapping status separate from review and
 implementation defects. Existing working behavior is the baseline.
 
 Pinned comparison scope: 654 numbered clauses; 484 active algorithms and 4,085
-numbered steps, including 760 amendment steps whose applicability is pending.
+numbered steps, including 760 amendment steps with explicit applicability.
 [Core rows](temporal-core-requirement-checklist.tsv) and
 [amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
-algorithm rows. Numbered passes now reconcile 3,804 rows across chapters
-1–11; 982 core rows await reconciliation, 302 remain conditional.
+algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
+403 core and130 amendment rows remain conditional; the separate queue contains
+259 conditional numbered steps. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
+
+Inline numbered section/step comments are also required beside audited code.
+Keep those anchors synchronized with this ledger and source maps; historical
+GitHub line comments alone do not meet that requirement.
 
 Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
 Add code only for a demonstrated Temporal-specific gap; do not reimplement the
@@ -104,6 +109,28 @@ use captured runtime slice on private text. Public regressions fail before
 correction. All16 focused targets pass (10 executed, six cached), including
 Rust, full Duration/PlainDateTime Test262 and TS/native Hermes source/bytecode.
 [Target manifest](temporal-plain-relative-validation-targets.txt).
+
+## First-pass reconciliation complete, 2026-11-22
+
+Calendar361 and shared643 rows complete the fixed core pass. All1,057 amendment
+rows now record applicability and local semantic/callee correspondence. Ordinary
+JS/Intl behavior remains delegated. Runtime defects, named conditional contracts,
+editorial content and comparison inconsistencies retain separate states.
+[Numbered condition queue](temporal-remaining-condition-steps.tsv) and
+[amendment source manifest](temporal-amendment-review-source-manifest.json).
+
+Duration.compare boundary failures reproduced in both directions. Equal date
+prefixes no longer hide required calendar/zoned range errors; fixed plain days
+and residual time no longer acquire an invalid destination-date requirement.
+Existing date-add and exact BigInt/i128 operations supply the required branches.
+Eight shared public branch controls and literal Rust controls preserve full
+equality, clock-only, fixed-day and normalized-magnitude behavior. All9 focused
+targets pass (six executed, three cached).
+[Target manifest](temporal-duration-compare-validation-targets.txt).
+
+Inline numbered section/step comments now accompany recent TS/Rust corrections.
+Broader annotation continues; complete compliance and comment coverage are not
+claimed by the first-pass row count.
 
 ## Private difference preparation, 2026-11-22
 

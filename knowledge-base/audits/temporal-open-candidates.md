@@ -5,11 +5,6 @@ implementation defects or missing code. Existing implementation/tests remain the
 baseline. Numbers refer to the pinned Temporal comparison, with the requested
 ECMA-262 authority distinction retained in the execution plan.
 
-- **Duration compare common date prefix**, §7.2.3 step12.c–d:
-  comparing `{days:1,hours:1}` with `{days:1,hours:2}`, relative to
-  `+275760-09-13T00:00Z[UTC]`, may skip required out-of-range additions.
-  Plain calendar counterpart uses common `years:1` relative to
-  `+275760-09-13`. Reconcile existing compare evidence before correction.
 - **ZonedDateTime private conversion/formatting**, §6.3.32 step7.a,
   §6.3.49 step4 and toString/toJSON formatting dependencies:
   withPlainTime/toPlainTime may dispatch public PlainTime.from; private ISO
@@ -42,3 +37,13 @@ Closed in current correction: plain relative lower destination total/round,
 PlainDateTime source formatting and withPlainTime public dispatch. Public
 regressions failed before correction. Adjacent1ns, equal zero and normal bag
 behavior preserved; 16 focused targets pass.
+
+Duration comparison boundary candidate is corrected and validated: required
+calendar/zoned additions remain observable as errors; fixed plain days/time
+avoid unnecessary destination guards. Nine focused targets pass.
+
+Additional owned Intl source families awaiting public reproduction: captured
+Temporal serialization scalar/string hooks; legacy locale style/calendar error
+order and private style-probe hooks; private Duration record creation and final
+DurationFormat parts collection/data-property appends. Corresponding test-first
+patches are prepared; no runtime failure claim until root executes them.

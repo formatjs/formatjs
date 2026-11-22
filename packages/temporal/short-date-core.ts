@@ -124,6 +124,7 @@ export function monthDayFields(
     day = normalized.day
   } else if (code === undefined)
     throw new TypeErrorConstructor('monthCode or year required')
+  // Temporal comparison §10.5.1 steps2.f/15: private month-code normalization.
   const lunisolar = calendar === 'chinese' || calendar === 'dangi'
   if (lunisolar) {
     if (day > 30 && overflow === 'reject')
@@ -244,8 +245,10 @@ export function parseShortSlot(
     }
   }
   const epochDay = isoReferenceDay(parsed.year, parsed.month, parsed.day)
+  // Temporal comparison §10.5.1 step12: validate the original non-ISO date.
   if (kind === 'year-month') checkYearMonth(epochDay)
   else dayCheck(epochDay)
+  // Temporal comparison §10.5.1 step15: calendar preparation uses private fields.
   const fields = {__proto__: null, ...dateFields({epochDay, calendar}, true)}
   return kind === 'year-month'
     ? yearMonthFields(calendar, fields, 'constrain')

@@ -632,6 +632,7 @@ export function formatISODate(
   const month = twoDigitDateParts[fields.month],
     day = twoDigitDateParts[fields.day]
   if (kind === 'month-day') return month + '-' + day
+  // Temporal comparison §3.5.10 steps1–4: decimal padding observes no public hooks.
   const year =
     fields.year >= 1000 && fields.year <= 9999
       ? ToString(fields.year)

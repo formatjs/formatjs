@@ -1,3 +1,4 @@
+import {addDate, nsPerDay} from '#packages/temporal/date-core.js'
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   RangeErrorConstructor,
@@ -31,6 +32,7 @@ import {
   durationFieldNames,
   durationFieldReadOrder,
   durationNanoseconds,
+  maxDurationNanoseconds,
   durationTotalNumber,
   durationSign,
   integralDurationNumber,
@@ -160,6 +162,8 @@ class DurationValue {
     two: unknown,
     options: unknown = undefined
   ): -1 | 0 | 1 {
+    // Temporal comparison §7.2.3 steps 1–17.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.compare
     const left = toDurationFields(one),
       right = toDurationFields(two)
     const resolved = optionsObject(options)
@@ -169,18 +173,46 @@ class DurationValue {
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true || native)
       return native!.compareDuration(left, right, relative)
-    if (relative) {
-      const sameDate =
-        left.years === right.years &&
-        left.months === right.months &&
-        left.weeks === right.weeks &&
-        left.days === right.days
-      const a = sameDate
-          ? durationNanoseconds(left, false)
-          : relativeEndpoint(relative, left),
-        b = sameDate
-          ? durationNanoseconds(right, false)
-          : relativeEndpoint(relative, right)
+    // Temporal comparison §7.2.3 step12: date components require both additions.
+    if (
+      relative &&
+      'zoned' in relative &&
+      (left.years ||
+        left.months ||
+        left.weeks ||
+        left.days ||
+        right.years ||
+        right.months ||
+        right.weeks ||
+        right.days)
+    ) {
+      const a = relativeEndpoint(relative, left),
+        b = relativeEndpoint(relative, right)
+      return a < b ? -1 : a > b ? 1 : 0
+    }
+    // Temporal comparison §7.2.3 steps13–16 and §7.5.29: add only Y/M/W to dates.
+    if (relative && 'date' in relative) {
+      const value = (fields: DurationFields): bigint => {
+        let days = fields.days
+        if (fields.years || fields.months || fields.weeks) {
+          const prefix = zeroDuration()
+          prefix.years = fields.years
+          prefix.months = fields.months
+          prefix.weeks = fields.weeks
+          days +=
+            addDate(relative.date, prefix, 'constrain') - relative.date.epochDay
+        }
+        const result =
+          durationNanoseconds(fields, false) + bigIntFrom(days) * nsPerDay
+        if (
+          result <= -maxDurationNanoseconds ||
+          result >= maxDurationNanoseconds
+        )
+          throw new RangeErrorConstructor('Duration out of range')
+        return result
+      }
+      const a = value(left),
+        b = value(right)
       return a < b ? -1 : a > b ? 1 : 0
     }
     if (
@@ -197,6 +229,8 @@ class DurationValue {
     return a < b ? -1 : a > b ? 1 : 0
   }
   static from(value: unknown): DurationObject {
+    // Temporal comparison §7.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.from
     if (import.meta.formatjsTemporalNativeData === true) {
       const fields = getSlot(value as object)
       if (fields) return createNativeDuration(fields)
@@ -206,16 +240,24 @@ class DurationValue {
     return createNativeDuration(toDurationFields(value))
   }
   get sign(): number {
+    // Temporal comparison §7.3.13 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.sign
     return durationSign(read(this))
   }
   get blank(): boolean {
+    // Temporal comparison §7.3.14 steps 1–4.
+    // https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.blank
     return durationSign(read(this)) === 0
   }
   with(fields: unknown): DurationObject {
+    // Temporal comparison §7.3.15 steps 1–24.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.with
     const original = read(this)
     return createDuration({...original, ...partialDuration(fields)})
   }
   negated(): DurationObject {
+    // Temporal comparison §7.3.16 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.negated
     const fields = read(this)
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeDuration(
@@ -231,6 +273,8 @@ class DurationValue {
     return createDuration(result)
   }
   abs(): DurationObject {
+    // Temporal comparison §7.3.17 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.abs
     const fields = read(this)
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeDuration(
@@ -246,12 +290,18 @@ class DurationValue {
     return createDuration(result)
   }
   add(other: unknown): DurationObject {
+    // Temporal comparison §7.3.18 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.add
     return addDurations(read(this), other, 1)
   }
   subtract(other: unknown): DurationObject {
+    // Temporal comparison §7.3.19 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.subtract
     return addDurations(read(this), other, -1)
   }
   round(roundTo: unknown): DurationObject {
+    // Temporal comparison §7.3.20 steps 1–34.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.round
     const fields = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
@@ -331,6 +381,8 @@ class DurationValue {
     )
   }
   total(options: unknown): number {
+    // Temporal comparison §7.3.21 steps 1–15.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.total
     const fields = read(this)
     if (options === undefined)
       throw new TypeErrorConstructor('totalOf is required')
@@ -367,6 +419,8 @@ class DurationValue {
     return durationTotalNumber(durationNanoseconds(fields), factors[unit])
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §7.3.22 steps 1–18.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.tostring
     const fields = read(this),
       resolved = optionsObject(options)
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
@@ -414,15 +468,21 @@ class DurationValue {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal comparison §7.3.24 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.tolocalestring
     const fields = read(this)
     return localeDuration(fields, locales, options, () =>
       formatDuration(fields)
     )
   }
   toJSON(): string {
+    // Temporal comparison §7.3.23 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.tojson
     return formatDuration(read(this))
   }
   valueOf(): never {
+    // Temporal comparison §7.3.25 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.valueof
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.Duration to primitive'
     )
@@ -432,8 +492,12 @@ Object.defineProperty(DurationValue, 'name', {
   value: 'Duration',
   configurable: true,
 })
+// Temporal comparison §7.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype
 export const Duration: DurationConstructor = createProxy(DurationValue, {
   construct(target, args, newTarget) {
+    // Temporal comparison §7.1.1 steps 1–12.
+    // https://tc39.es/proposal-temporal/#sec-temporal.duration
     const fields = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++)
       fields[durationFieldNames[i]] =
@@ -449,12 +513,36 @@ export const Duration: DurationConstructor = createProxy(DurationValue, {
     return value
   },
 }) as unknown as DurationConstructor
+// Temporal comparison §7.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.years
+// Temporal comparison §7.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.months
+// Temporal comparison §7.3.5 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.weeks
+// Temporal comparison §7.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.days
+// Temporal comparison §7.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.hours
+// Temporal comparison §7.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.minutes
+// Temporal comparison §7.3.9 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.seconds
+// Temporal comparison §7.3.10 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.milliseconds
+// Temporal comparison §7.3.11 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.microseconds
+// Temporal comparison §7.3.12 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.duration.prototype.nanoseconds
 defineGetters(
   DurationValue.prototype,
   durationFieldNames,
   (receiver, field) => read(receiver)[field]
 )
 Object.defineProperties(DurationValue.prototype, {
+  // Temporal comparison §7.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.constructor
   constructor: {value: Duration, writable: true, configurable: true},
+  // Temporal comparison §7.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.Duration', configurable: true},
 })

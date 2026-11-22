@@ -14,6 +14,18 @@ completed audit sections. Pinned revision/line references preserve historical
 evidence; technical comparisons use rendered clauses. ECMA-402 citations retain
 their own published authority for demonstrated shared dependencies.
 
+## Additional numbered-pass comparisons
+
+[Week retry](temporal-week-retry-spec-issue.md) records reachable New York fold
+input where §7.5.33 step3.f ignores additionalShift and §7.5.34 step5.a.ii fails
+its bracket assertion. Current engine shifts the week correctly. The companion
+[week bound](temporal-week-window-bounds-proof.md) proves successful week spans
+strictly exceed five days without a global timezone sweep.
+
+[Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
+range comparison timezones (§15.6.8) and duplicate digital Duration group appends
+(§15.9.8). These remain separate from runtime defects and pending candidate tests.
+
 ## Published Zone-primary rule versus pending legacy-POSIX policy
 
 Status: open standards-policy inconsistency; upstream

@@ -3,7 +3,7 @@
   "snapshot_retrieved": "2026-11-21",
   "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
   "selected_scope": "amendments",
-  "scope_note": "Core chapters1\u201313 and amendments14\u201315 are finite comparison sections; amendment applicability remains pending.",
+  "scope_note": "All fixed amendment rows classified and reconciled for owned Temporal deltas or supplied engine/Intl contracts; conditional rows remain open.",
   "selected_clauses": 101,
   "core_clauses": 0,
   "amendment_clauses": 101,
@@ -36,11 +36,37 @@
     "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
   ],
   "review_status_counts": {
-    "unreconciled": 1030,
-    "existing_evidence_pending": 27
+    "conditional": 130,
+    "informative": 79,
+    "verified_local_step": 589,
+    "verified": 109,
+    "existing_contract_reused": 131,
+    "not_applicable": 8,
+    "spec_issue": 11
   },
-  "status_note": "Applicability and existing evidence reconciliation pending; no missing implementation inferred.",
-  "checklist_rows_with_implementation_locations": 39,
+  "status_note": "Applicable owned/shared/runtime paths reviewed locally; existing_contract_reused is supplied Intl behavior, not full formatter internals signoff. Spec issues and conditional contracts remain explicit.",
+  "checklist_rows_with_implementation_locations": 1057,
   "implementation_status_note": "present records a source binding or helper correspondence, not verified behavior. mapping_unresolved never means implementation missing.",
-  "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger."
+  "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger.",
+  "applicability_counts": {
+    "applicable_shared_dependency": 467,
+    "not_applicable": 71,
+    "owned_temporal_bridge": 433,
+    "runtime_delegated": 86
+  },
+  "latest_reconciliation": {
+    "rows": 1057,
+    "semantic_owned_rows": 433,
+    "semantic_shared_runtime_rows": 553,
+    "scope": "Temporal-specific deltas and actual JS/Intl contracts; no wholesale ECMA262/402 reimplementation or unsupported full formatter signoff."
+  },
+  "status_definitions": {
+    "verified_local_step": "Local Temporal-specific requirement reviewed under stated callee contract.",
+    "verified": "Local clause or supplied engine contract reviewed; no transitive whole-Intl claim.",
+    "existing_contract_reused": "Unchanged named Intl/formatter contract supplied; actual Temporal delta reviewed separately.",
+    "conditional": "Actual named unresolved bridge/provider/realm premise or source-only candidate.",
+    "informative": "Non-normative introduction/note/illustration; no compliance credit.",
+    "not_applicable": "Excluded relocation/editorial placeholder with recorded concrete reason.",
+    "spec_issue": "Rendered comparison inconsistency, separate from implementation gaps."
+  }
 }

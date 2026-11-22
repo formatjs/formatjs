@@ -94,6 +94,7 @@ import {
   type Precision,
 } from '#packages/temporal/rounding.js'
 
+// Private ISO formatting retains the original runtime method.
 const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
   value: string,
   start: number,
@@ -352,6 +353,7 @@ function format(
       'trunc',
       show
     )
+  // Temporal comparison §5.3.36 step3: format private ISO fields without public hooks.
   return (
     stringSlice(formatInstant(value, precision), 0, -1) +
     calendarAnnotation(slot.calendar, show)
@@ -376,10 +378,14 @@ class PlainDateTimeValue {
     item: unknown,
     options: unknown = undefined
   ): PlainDateTimeObject {
+    // Temporal comparison §5.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.from
     const slot = toPlainDateTimeSlot(item, options)
     return createPlainDateTime(slot, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §5.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.compare
     const a = toPlainDateTimeSlot(one).epochNanoseconds,
       b = toPlainDateTimeSlot(two).epochNanoseconds
     // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L920-L922
@@ -391,6 +397,8 @@ class PlainDateTimeValue {
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.25 steps 1–17.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.with
     const slot = read(this),
       partial = readDateFields(
         partialObject(item),
@@ -420,12 +428,17 @@ class PlainDateTimeValue {
     )
   }
   withCalendar(calendar: unknown): PlainDateTimeObject {
+    // Temporal comparison §5.3.27 steps 1–4.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withcalendar
     const slot = read(this)
     if (calendar === undefined)
       throw new TypeErrorConstructor('Calendar required')
     return createPlainDateTime(slot.epochNanoseconds, calendarId(calendar))
   }
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.26 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withplaintime
+    // Temporal comparison §5.3.26 step3: private ToTimeRecordOrMidnight conversion.
     const slot = read(this)
     const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(
@@ -434,21 +447,31 @@ class PlainDateTimeValue {
     )
   }
   add(duration: unknown, options: unknown = undefined): PlainDateTimeObject {
+    // Temporal comparison §5.3.28 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.add
     return add(read(this), duration, options, 1)
   }
   subtract(
     duration: unknown,
     options: unknown = undefined
   ): PlainDateTimeObject {
+    // Temporal comparison §5.3.29 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.subtract
     return add(read(this), duration, options, -1)
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §5.3.30 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.until
     return difference(read(this), other, options, false)
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §5.3.31 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.since
     return difference(read(this), other, options, true)
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §5.3.33 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.equals
     const a = read(this),
       b = toPlainDateTimeSlot(other)
     return (
@@ -459,6 +482,8 @@ class PlainDateTimeValue {
     timeZone: unknown,
     options: unknown = undefined
   ): ZonedDateTimeObject {
+    // Temporal comparison §5.3.38 steps 1–7.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tozoneddatetime
     const slot = read(this)
     return zonedFromLocal(
       slot.epochNanoseconds,
@@ -468,13 +493,19 @@ class PlainDateTimeValue {
     )
   }
   toPlainDate(): PlainDateObject {
+    // Temporal comparison §5.3.39 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaindate
     const slot = read(this)
     return createPlainDate(epochDayOf(slot.epochNanoseconds), slot.calendar)
   }
   toPlainTime(): PlainTimeObject {
+    // Temporal comparison §5.3.40 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaintime
     return createPlainTime(timeOf(read(this).epochNanoseconds))
   }
   round(roundTo: unknown): PlainDateTimeObject {
+    // Temporal comparison §5.3.32 steps 1–16.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.round
     const slot = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
@@ -513,6 +544,8 @@ class PlainDateTimeValue {
     )
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §5.3.34 steps 1–14.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tostring
     const slot = read(this),
       resolved = optionsObject(options)
     const show = calendarNameOption(resolved.calendarName)
@@ -552,12 +585,15 @@ class PlainDateTimeValue {
     const value =
       bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
       roundInstant(timeOf(slot.epochNanoseconds), quantum, mode)
+    // Temporal comparison §5.3.34 step14: combine private ISO text and annotation.
     return stringSlice(formatInstant(value, precision), 0, -1) + suffix
   }
   toLocaleString(
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal comparison §5.3.35 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainDateTime', ...slot},
@@ -567,9 +603,13 @@ class PlainDateTimeValue {
     )
   }
   toJSON(): string {
+    // Temporal comparison §5.3.36 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tojson
     return format(read(this))
   }
   valueOf(): never {
+    // Temporal comparison §5.3.37 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.valueof
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.PlainDateTime to primitive'
     )
@@ -583,10 +623,14 @@ Object.defineProperty(PlainDateTimeValue, 'name', {
   value: 'PlainDateTime',
   configurable: true,
 })
+// Temporal comparison §5.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype
 export const PlainDateTime: PlainDateTimeConstructor = createProxy(
   PlainDateTimeValue,
   {
     construct(target, args, newTarget) {
+      // Temporal comparison §5.1.1 steps 1–19.
+      // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime
       const year = integer(argumentAt(args, 0)),
         month = integer(argumentAt(args, 1)),
         day = integer(argumentAt(args, 2))
@@ -608,9 +652,57 @@ export const PlainDateTime: PlainDateTimeConstructor = createProxy(
   }
 ) as unknown as PlainDateTimeConstructor
 Object.defineProperties(PlainDateTimeValue.prototype, {
+  // Temporal comparison §5.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.constructor
   constructor: {value: PlainDateTime, writable: true, configurable: true},
+  // Temporal comparison §5.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainDateTime', configurable: true},
 })
+// Temporal comparison §5.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.calendarid
+// Temporal comparison §5.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.era
+// Temporal comparison §5.3.5 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.erayear
+// Temporal comparison §5.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.year
+// Temporal comparison §5.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.month
+// Temporal comparison §5.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.monthcode
+// Temporal comparison §5.3.9 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.day
+// Temporal comparison §5.3.10 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.hour
+// Temporal comparison §5.3.11 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.minute
+// Temporal comparison §5.3.12 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.second
+// Temporal comparison §5.3.13 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.millisecond
+// Temporal comparison §5.3.14 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.microsecond
+// Temporal comparison §5.3.15 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.nanosecond
+// Temporal comparison §5.3.16 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.dayofweek
+// Temporal comparison §5.3.17 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.dayofyear
+// Temporal comparison §5.3.18 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.weekofyear
+// Temporal comparison §5.3.19 steps 1–5.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.yearofweek
+// Temporal comparison §5.3.20 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinweek
+// Temporal comparison §5.3.21 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinmonth
+// Temporal comparison §5.3.22 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.daysinyear
+// Temporal comparison §5.3.23 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.monthsinyear
+// Temporal comparison §5.3.24 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.inleapyear
 defineGetters(
   PlainDateTimeValue.prototype,
   [...datePropertyNames, ...clockNames],

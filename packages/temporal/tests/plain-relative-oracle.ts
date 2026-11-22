@@ -48,6 +48,75 @@ export function checkPlainRelativeEndpointBounds(
   )
 }
 
+export function checkDurationCompareBoundaries(
+  Temporal: typeof TemporalNamespace,
+  equal: (
+    actual: string | number,
+    expected: string | number,
+    context: string
+  ) => void
+): void {
+  const actual: (string | number)[] = []
+  for (const run of [
+    () =>
+      Temporal.Duration.compare(
+        {days: 1, hours: 1},
+        {days: 1, hours: 2},
+        {relativeTo: '+275760-09-13T00:00Z[UTC]'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {years: 1, hours: 1},
+        {years: 1, hours: 2},
+        {relativeTo: '+275760-09-13'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {years: 1, seconds: Number.MAX_SAFE_INTEGER},
+        {years: 2, seconds: Number.MAX_SAFE_INTEGER},
+        {relativeTo: '2020-01-01'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {days: 1},
+        {days: 2},
+        {relativeTo: '+275760-09-13'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {months: 1, days: 1},
+        {months: 1, days: 2},
+        {relativeTo: '+275760-08-13'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {hours: 1},
+        {hours: 2},
+        {relativeTo: '+275760-09-13T00:00Z[UTC]'}
+      ),
+    () =>
+      Temporal.Duration.compare(
+        {days: 1},
+        {days: 1},
+        {relativeTo: '+275760-09-13T00:00Z[UTC]'}
+      ),
+    () => Temporal.Duration.compare({years: 1}, {years: 1}),
+  ]) {
+    try {
+      actual.push(run())
+    } catch (error) {
+      actual.push(
+        error instanceof RangeError ? 'RangeError' : 'UnexpectedError'
+      )
+    }
+  }
+  equal(
+    actual.join(','),
+    'RangeError,RangeError,RangeError,-1,-1,-1,0,0',
+    'Required range checks, fixed plain days, clock-only and equality shortcuts'
+  )
+}
+
 export function checkPlainRelativeOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
@@ -57,6 +126,7 @@ export function checkPlainRelativeOracle(
     context: string
   ) => void
 ): {rounds: number; totals: number; dates: number; comparisons: number} {
+  checkDurationCompareBoundaries(Temporal, equal)
   checkPlainRelativeEndpointBounds(Temporal, equal)
   const plainDate = Temporal.PlainDate.from('2020-01-01')
   const otherDate = Temporal.PlainDate.from('2020-01-03')

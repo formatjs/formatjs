@@ -5,6 +5,13 @@ Temporal spec compliance, including observable ordering, precision, grammar,
 attributes, supported backends and Temporal-specific Intl integration. This is an
 audit and correction of existing code, not a fresh implementation.
 
+Required inline evidence: add concise numbered spec section/step comments beside
+audited implementation paths, including corrected code. Use official rendered
+section links where useful; retain the requested-authority/comparison distinction.
+Keep comments, source ranges and the audit ledger synchronized after edits.
+Existing GitHub source-line comments are historical evidence, not a substitute
+for current numbered section/step anchors.
+
 ## Source and finite scope
 
 Requested authority: [ECMA-262](https://tc39.es/ecma262/), cited by section and
@@ -23,9 +30,9 @@ scope update, not an automatic restart.
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                     |
 | [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 existing callables: 175 explicit target assignments, 495 candidate/dependency assignments, 399 unresolved mappings |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
-| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability pending                                 |
+| [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                              |
 
-Code maps cover 82 distinct selected source files and 23,727 physical lines.
+Code maps cover 82 distinct selected source files and 24,139 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -51,7 +58,7 @@ numeric support when needed rather than inventing another arithmetic layer.
 
 ## Tracking and completion rule
 
-Each spec row records section/step, current source ranges, existing evidence and
+Each spec row records section/step, current source ranges, inline comment anchors, existing evidence and
 review status. Maintain implementation, review and fix states separately:
 
 - **Implementation:** present, confirmed missing, or mapping unresolved.
@@ -81,7 +88,8 @@ repository protection rules; record any rejected push. Batch related fixes. Keep
 silently implement contradictory text or report an unresolved issue as compliant.
 
 Completion requires every applicable normative obligation reconciled and verified
-against landed code, with backend coverage and remaining standards issues stated
+against landed code, with numbered section/step comments beside audited code,
+backend coverage and remaining standards issues stated
 explicitly. Mapping or passing tests alone does not establish completion.
 
 ## Progress and estimate
@@ -91,30 +99,35 @@ conditional obligations, confirmed implementation gaps and unlanded corrections
 separately. Candidate source assignments require confirmation; 399 unresolved
 helper mappings are a mapping queue, not 399 missing functions.
 
-Numbered passes reconcile 3,804 rows across chapters 1–11. Current core
-register: 982 rows await reconciliation, 302 conditional rows, 56 rows with
-existing spec issues, one partial. Informative rows and propagated gates are
-included; these are not compliance percentages. MonthDay correction is pushed
-at 07b1fafbc; the next three demonstrated gaps are corrected and validated.
-[Candidate queue](temporal-open-candidates.md) separates remaining source findings
-from runtime-confirmed defects.
+First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
+Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
+86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
+and existing Intl contracts are reused, not reimplemented.
 
-Measured review interval: 03:06:12–03:44:27 UTC on 2026-11-22. Parallel review,
-existing-proof reconciliation, nine initial gap corrections and validation
-covered 3,804 rows in about38 minutes, roughly100 rows/minute. Current three
-corrections complete the next batch. Remaining982 core plus1,057 amendment rows
-would take about20 minutes at that aggregate rate. Plan30–60 minutes for the
-remaining first pass, allowing applicability and slower shared operations.
-This replaces the earlier3–6-hour first-pass forecast. Fixing queued candidates
-and closing named conditional premises remain separate work; the first pass is
-not the full compliance deadline. Recalculate after the next batch. Do not use
-citation growth, PR counts or source-line extrapolation as review throughput.
+Remaining core states:403 conditional,90 comparison-issue rows and one partial
+gate. Amendments:130 conditional and11 comparison-issue rows. Counts include
+propagated clauses/prose; they are not independent bugs or compliance percentages.
+The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
+259 conditional steps (175 core,84 amendment), each with exact source ranges
+and named premise. [Source candidates](temporal-open-candidates.md) remain
+separate from confirmed runtime gaps. Existing contract reuse is a supplied
+callee contract, not a fresh full Intl audit.
+
+Measured first pass:03:06–04:04 UTC, about58minutes for5,865 rows with parallel
+review, prior-proof reuse, corrections and backend checks (about101rows/minute).
+First review pass is complete. Current estimate:2–4hours for queued candidate
+reproductions, fixes, inline comment migration and affected validation. Full
+signoff additionally requires actual remaining contracts and documented
+comparison inconsistencies reconciled; first-pass completion alone is not that
+signoff. Recalculate after each bounded correction batch. Earlier review-only
+forecasts are retired; do not infer compliance from citation/PR/source-line counts.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),
 [helper scope](temporal-helper-code-spec-map-summary.json),
 [core extraction/reconciliation](temporal-core-requirement-checklist-summary.json),
-[amendments](temporal-amendment-requirement-checklist-summary.json).
+[amendments](temporal-amendment-requirement-checklist-summary.json),
+[amendment source versions](temporal-amendment-review-source-manifest.json).
 
 ## Register provenance
 
@@ -171,3 +184,12 @@ internal time conversion and a captured runtime slice method for private ISO
 formatting. All16 focused targets pass (10 executed, six cached), including
 full Duration/PlainDateTime Test262 and both Hermes backends/source forms.
 [Validation targets](temporal-plain-relative-validation-targets.txt).
+
+Duration comparison correction follows §7.2.3 branches: full equality retains its
+shortcut; zoned date components perform both required additions; plain comparison
+bounds only years/months/weeks prefix, then combines fixed days/time exactly.
+Boundary controls reproduce both missed RangeErrors and wrongly rejected valid
+fixed-day cases. All9 focused targets pass (six executed, three cached).
+[Validation targets](temporal-duration-compare-validation-targets.txt).
+Numbered comments added beside recent TS/Rust corrections; broader public/helper
+comment migration continues and remains part of completion.

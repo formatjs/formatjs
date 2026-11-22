@@ -473,6 +473,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             return Err(Error::OutOfRange);
         }
         let epoch = epoch_day_from_iso(fields.year, fields.month, fields.day);
+        // Temporal comparison §10.5.1 step12 checks the original date before projection.
         PlainDate::from_epoch_day(epoch)?;
         let date = calendar.date_extended(epoch).map_err(error)?;
         Self::from_calendar_fields(calendar, date_fields(date), Overflow::Constrain)

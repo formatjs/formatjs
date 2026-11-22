@@ -229,6 +229,7 @@ function toTime(value: unknown, options?: unknown): bigint {
   return result
 }
 export function toPlainTimeNanoseconds(value: unknown): bigint {
+  // Temporal comparison §4.5.6: reuse internal conversion in both backends.
   return import.meta.formatjsTemporalNativeData === true
     ? bigIntFrom(toNativeTime(value).nanoseconds)
     : toTime(value)
@@ -443,11 +444,15 @@ class PlainTimeValue implements PlainTimeObject {
   declare readonly microsecond: number
   declare readonly nanosecond: number
   static from(item: unknown, options: unknown = undefined): PlainTimeObject {
+    // Temporal comparison §4.2.2 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.from
     if (import.meta.formatjsTemporalNativeData === true)
       return create(toNativeTime(item, options))
     return create(toTime(item, options))
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
+    // Temporal comparison §4.2.3 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.compare
     // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L833-L845
     // L833: a greater hour dominates every lower clock field.
     // L834: a lesser hour dominates every lower clock field.
@@ -474,6 +479,8 @@ class PlainTimeValue implements PlainTimeObject {
     return left < right ? -1 : left > right ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainTimeObject {
+    // Temporal comparison §4.3.11 steps 1–20.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.with
     const value =
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -503,6 +510,8 @@ class PlainTimeValue implements PlainTimeObject {
     return create(regulate(values, overflow(options)))
   }
   add(duration: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.9 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.add
     return add(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -512,6 +521,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   subtract(duration: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.10 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.subtract
     return add(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -521,6 +532,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   until(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §4.3.12 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.until
     return difference(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -531,6 +544,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   since(other: unknown, options: unknown = undefined): DurationObject {
+    // Temporal comparison §4.3.13 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.since
     return difference(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -541,11 +556,15 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   equals(other: unknown): boolean {
+    // Temporal comparison §4.3.15 steps 1–5.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.equals
     if (import.meta.formatjsTemporalNativeData === true)
       return nativeTime(this).nanoseconds === toNativeTime(other).nanoseconds
     return read(this) === toTime(other)
   }
   round(roundTo: unknown): PlainTimeObject {
+    // Temporal comparison §4.3.14 steps 1–15.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.round
     const value =
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -569,6 +588,8 @@ class PlainTimeValue implements PlainTimeObject {
     return create(roundTime(value as bigint, unit, increment, mode))
   }
   toString(options: unknown = undefined): string {
+    // Temporal comparison §4.3.16 steps 1–12.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tostring
     const value =
         import.meta.formatjsTemporalNativeData === true
           ? nativeTime(this).nanoseconds
@@ -597,6 +618,8 @@ class PlainTimeValue implements PlainTimeObject {
     locales: unknown = undefined,
     options: unknown = undefined
   ): string {
+    // Temporal comparison §4.3.17 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {kind: 'PlainTime', epochNanoseconds: slot},
@@ -606,6 +629,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   toJSON(): string {
+    // Temporal comparison §4.3.18 steps 1–3.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tojson
     return format(
       import.meta.formatjsTemporalNativeData === true
         ? nativeTime(this).nanoseconds
@@ -613,6 +638,8 @@ class PlainTimeValue implements PlainTimeObject {
     )
   }
   valueOf(): never {
+    // Temporal comparison §4.3.19 step 1.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.valueof
     throw new TypeErrorConstructor(
       'Cannot convert Temporal.PlainTime to primitive'
     )
@@ -624,8 +651,12 @@ Object.defineProperty(PlainTimeValue, 'name', {
   value: 'PlainTime',
   configurable: true,
 })
+// Temporal comparison §4.2.1.
+// https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype
 export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   construct(target, args, newTarget) {
+    // Temporal comparison §4.1.1 steps 1–10.
+    // https://tc39.es/proposal-temporal/#sec-temporal.plaintime
     const values = clockValues(index =>
       argumentAt(args, index) === undefined
         ? 0
@@ -650,9 +681,25 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   },
 })
 Object.defineProperties(PlainTimeValue.prototype, {
+  // Temporal comparison §4.3.1.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.constructor
   constructor: {value: PlainTime, writable: true, configurable: true},
+  // Temporal comparison §4.3.2.
+  // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype-%symbol.tostringtag%
   [Symbol.toStringTag]: {value: 'Temporal.PlainTime', configurable: true},
 })
+// Temporal comparison §4.3.3 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.hour
+// Temporal comparison §4.3.4 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.minute
+// Temporal comparison §4.3.5 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.second
+// Temporal comparison §4.3.6 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.millisecond
+// Temporal comparison §4.3.7 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.microsecond
+// Temporal comparison §4.3.8 steps 1–3.
+// https://tc39.es/proposal-temporal/#sec-get-temporal.plaintime.prototype.nanosecond
 defineGetters(PlainTimeValue.prototype, names, (receiver, _name, index) =>
   import.meta.formatjsTemporalNativeData === true
     ? nativeTime(receiver as object).fields[index]
