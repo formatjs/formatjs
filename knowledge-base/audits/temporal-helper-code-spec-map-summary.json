@@ -3,36 +3,37 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24281,
+  "whole_selected_source_lines": 24311,
   "whole_selected_source_lines_by_language": {
-    "rust": 10356,
-    "typescript": 13925
+    "rust": 10367,
+    "typescript": 13944
   },
-  "nonoverlapping_callable_lines": 16804,
+  "nonoverlapping_callable_lines": 16806,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8135,
-    "typescript": 8669
+    "rust": 8136,
+    "typescript": 8670
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 7415,
+    "candidate": 7416,
     "unmapped": 5003,
-    "mapped": 4386
+    "mapped": 4387
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 495,
-    "unmapped": 399,
-    "mapped": 175
+    "candidate": 484,
+    "unmapped": 384,
+    "mapped": 201
   },
   "by_language": {
     "typescript": {
-      "candidate": 173,
-      "mapped": 175,
-      "unmapped": 172
+      "candidate": 168,
+      "mapped": 191,
+      "unmapped": 161
     },
     "rust": {
-      "candidate": 322,
-      "unmapped": 227
+      "candidate": 316,
+      "unmapped": 223,
+      "mapped": 10
     }
   },
   "direct_target_assignments": [
@@ -213,13 +214,13 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 445,
-    "typed_public_operation_candidate": 50
+    "implementation_dependency": 435,
+    "typed_public_operation_candidate": 49
   },
-  "proposal_core_section_ids": 161,
+  "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
-  "shared_published_dependency_ids": 8,
-  "proposal_core_numbered_step_rows": 1899,
+  "shared_published_dependency_ids": 9,
+  "proposal_core_numbered_step_rows": 1991,
   "proposal_amendment_numbered_step_rows": 22,
   "numbered_step_count_caveat": "linked clause inventory only; deduplicated by section ID; no evidence subtraction or remaining-review claim; spec_target owns requirement checklist",
   "related_audit_rows": 883,
@@ -404,7 +405,7 @@
       "callable_rows": 54,
       "nonoverlapping_callable_lines": 1704,
       "sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
-      "unresolved_callable_rows": 52
+      "unresolved_callable_rows": 48
     },
     {
       "file": "crates/temporal/format.rs",
@@ -472,10 +473,10 @@
     },
     {
       "file": "crates/temporal/rounding.rs",
-      "source_lines": 178,
+      "source_lines": 189,
       "callable_rows": 6,
-      "nonoverlapping_callable_lines": 137,
-      "sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "nonoverlapping_callable_lines": 138,
+      "sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
       "unresolved_callable_rows": 0
     },
     {
@@ -776,10 +777,10 @@
     },
     {
       "file": "packages/temporal/lunisolar.ts",
-      "source_lines": 108,
+      "source_lines": 119,
       "callable_rows": 5,
       "nonoverlapping_callable_lines": 88,
-      "sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
       "unresolved_callable_rows": 0
     },
     {
@@ -788,7 +789,7 @@
       "callable_rows": 91,
       "nonoverlapping_callable_lines": 870,
       "sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
-      "unresolved_callable_rows": 78
+      "unresolved_callable_rows": 70
     },
     {
       "file": "packages/temporal/plain-date-time.ts",
@@ -864,11 +865,11 @@
     },
     {
       "file": "packages/temporal/rounding.ts",
-      "source_lines": 255,
+      "source_lines": 263,
       "callable_rows": 10,
-      "nonoverlapping_callable_lines": 164,
-      "sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
-      "unresolved_callable_rows": 3
+      "nonoverlapping_callable_lines": 165,
+      "sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/short-date-core.ts",
@@ -910,5 +911,8 @@
       "sha256": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
       "unresolved_callable_rows": 15
     }
-  ]
+  ],
+  "retired_callback_identities": 3,
+  "live_rebound_inventory_rows": 1066,
+  "annotation_mapping_reconciliation": "temporal-helper-annotation-reconciliation.json"
 }

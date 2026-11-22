@@ -1,0 +1,1026 @@
+{
+  "inventory_rows": 1069,
+  "files": 74,
+  "active_rebound_rows": 1066,
+  "retired_replaced_callbacks": 3,
+  "mapping_status": {
+    "candidate": 484,
+    "unmapped": 384,
+    "mapped": 201
+  },
+  "annotation_coverage": {
+    "no_numbered_anchor": 954,
+    "direct_numbered": 95,
+    "enclosing_numbered": 17,
+    "retired_callback": 3
+  },
+  "direct_with_step_wording": 89,
+  "direct_numbered_vs_inventory_sections": {
+    "no_overlap_or_no_prior_mapping": 25,
+    "overlap": 70
+  },
+  "no_numbered_anchor_by_kind": {
+    "function": 536,
+    "named-function": 252,
+    "callback": 158,
+    "method": 8
+  },
+  "role_review_bundles": {
+    "calendar_provider_and_algorithm_review": {
+      "rows": 247,
+      "files": 19,
+      "coverage": {
+        "no_numbered_anchor": 241,
+        "direct_numbered": 6
+      }
+    },
+    "generic_runtime_or_installation_review": {
+      "rows": 9,
+      "files": 5,
+      "coverage": {
+        "no_numbered_anchor": 9
+      }
+    },
+    "native_transport_with_temporal_adapters_review": {
+      "rows": 145,
+      "files": 2,
+      "coverage": {
+        "no_numbered_anchor": 144,
+        "direct_numbered": 1
+      }
+    },
+    "rust_value_parser_arithmetic_algorithm_review": {
+      "rows": 248,
+      "files": 13,
+      "coverage": {
+        "no_numbered_anchor": 236,
+        "direct_numbered": 12
+      }
+    },
+    "time_zone_and_zoned_algorithm_review": {
+      "rows": 180,
+      "files": 12,
+      "coverage": {
+        "no_numbered_anchor": 164,
+        "direct_numbered": 8,
+        "enclosing_numbered": 8
+      }
+    },
+    "typescript_value_parser_arithmetic_algorithm_review": {
+      "rows": 240,
+      "files": 23,
+      "coverage": {
+        "no_numbered_anchor": 160,
+        "direct_numbered": 68,
+        "enclosing_numbered": 9,
+        "retired_callback": 3
+      }
+    }
+  },
+  "source_hashes": {
+    "crates/intl_datetimeformat/timezone.rs": "e9aadad30d1ca73153e54aee7634b6069868ac8d87ef1fa22cd6b1d1ac9a07ff",
+    "crates/intl_datetimeformat_calendars/arithmetic.rs": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
+    "crates/intl_datetimeformat_calendars/compiled.rs": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
+    "crates/intl_datetimeformat_calendars/core.rs": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+    "crates/intl_datetimeformat_calendars/date_math.rs": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
+    "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
+    "crates/intl_datetimeformat_calendars/provider.rs": "9e9babca20cf719ed0e4a5b64f7d0213371f5654f4be89dc8c80cda21e3603b0",
+    "crates/intl_datetimeformat_calendars/table_calendar.rs": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
+    "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
+    "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
+    "crates/temporal/calendar_provider.rs": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+    "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
+    "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
+    "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
+    "crates/temporal/duration.rs": "e3ff55c7752266faa900d31d6a04d92293200084744971bac14aae81103de711",
+    "crates/temporal/ffi.rs": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+    "crates/temporal/format.rs": "2e45803ba32dc197970cfa9ccd96a6d2b412a419f5e133814c4b8fae09998b4c",
+    "crates/temporal/iso.rs": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
+    "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
+    "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
+    "crates/temporal/parse.rs": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
+    "crates/temporal/plain_relative.rs": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
+    "crates/temporal/relative_duration.rs": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
+    "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+    "crates/temporal/time.rs": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
+    "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
+    "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
+    "crates/temporal/timezone_registry.rs": "669a333d0bfe8894cacb20bfaf24b14418958e23e1ec9d9758b5f54f359d9c1c",
+    "crates/temporal/zoned.rs": "9152152a6fbda5ff016c37d32fbe786d306290ee9730582e8845cfe1e96436db",
+    "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
+    "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+    "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
+    "packages/temporal/calendar-table.ts": "863686a31b4e3b7055a72a49a75ce06853eb9311b830027e704f9d4a310671b5",
+    "packages/temporal/calendar.ts": "6989f4ef43f5fac774a77fb59e146514b675122309bf6ab325ef0226a4debf87",
+    "packages/temporal/compact-timezone.ts": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
+    "packages/temporal/date-bridge.ts": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
+    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+    "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
+    "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
+    "packages/temporal/duration-format.ts": "19ee165b3aa085e22dd2778fa9bbebc25ecb7099134cf314cfcdcdaff526c3bc",
+    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/fallback-data.ts": "52c397aa0ec202d294d59425df03961197230ac1ccf0b610460934466f487aa1",
+    "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
+    "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
+    "packages/temporal/host-calendar.ts": "4d098f9f90bc84c245e63ffa41b56d4b2f7878c87466515403b97603f9acc616",
+    "packages/temporal/host-timezone.ts": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
+    "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
+    "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
+    "packages/temporal/instant-string.ts": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/intrinsics.ts": "18a11f9ecd563060e7d6e4c7d844831077c9cd6a7afb1e91f28137ceb08d88d6",
+    "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
+    "packages/temporal/legacy-calendar-date.ts": "50eb13b1b9a5a6244fbb33fb206e199b93d028e9b62fc0eddf66e6b9e7e20975",
+    "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
+    "packages/temporal/legacy-extended-date.ts": "d78ec44737949e1de760d1b0ab08c7a0800b16ca2b62ba4b1b847cd1a94e917b",
+    "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
+    "packages/temporal/legacy-lunisolar-date.ts": "b44c13f66e70dde84d4724d719bf46f2239278ef43278caecbad3bf8e48e9e61",
+    "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
+    "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
+    "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+    "packages/temporal/native.ts": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+    "packages/temporal/plain-month-day.ts": "8047790b7818b8cc8bb09aedefa4e4ba39f9f49c112e51965f2c31d55b1a7ec1",
+    "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+    "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+    "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f",
+    "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176"
+  },
+  "files_queue": [
+    {
+      "file": "crates/intl_datetimeformat/timezone.rs",
+      "rows": 20,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 20
+      },
+      "coverage": {
+        "no_numbered_anchor": 20
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/arithmetic.rs",
+      "rows": 2,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/compiled.rs",
+      "rows": 1,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 1
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/core.rs",
+      "rows": 36,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 36
+      },
+      "coverage": {
+        "no_numbered_anchor": 36
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+      "rows": 8,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 8
+      },
+      "coverage": {
+        "no_numbered_anchor": 8
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/ffi.rs",
+      "rows": 2,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/provider.rs",
+      "rows": 5,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 5
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/table_calendar.rs",
+      "rows": 31,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 31
+      },
+      "coverage": {
+        "no_numbered_anchor": 31
+      }
+    },
+    {
+      "file": "crates/intl_datetimeformat_calendars/tables.rs",
+      "rows": 6,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "crates/temporal/calendar_difference.rs",
+      "rows": 9,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 9
+      },
+      "coverage": {
+        "no_numbered_anchor": 9
+      }
+    },
+    {
+      "file": "crates/temporal/calendar_provider.rs",
+      "rows": 24,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 24
+      },
+      "coverage": {
+        "no_numbered_anchor": 24
+      }
+    },
+    {
+      "file": "crates/temporal/calendar_registry.rs",
+      "rows": 7,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 7
+      },
+      "coverage": {
+        "no_numbered_anchor": 7
+      }
+    },
+    {
+      "file": "crates/temporal/context.rs",
+      "rows": 9,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 9
+      },
+      "coverage": {
+        "no_numbered_anchor": 9
+      }
+    },
+    {
+      "file": "crates/temporal/date.rs",
+      "rows": 63,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 51,
+        "candidate": 12
+      },
+      "coverage": {
+        "no_numbered_anchor": 63
+      }
+    },
+    {
+      "file": "crates/temporal/duration.rs",
+      "rows": 27,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 16,
+        "candidate": 11
+      },
+      "coverage": {
+        "no_numbered_anchor": 27
+      }
+    },
+    {
+      "file": "crates/temporal/ffi.rs",
+      "rows": 54,
+      "work_bundle": "native_transport_with_temporal_adapters_review",
+      "mapping_status": {
+        "unmapped": 48,
+        "mapped": 4,
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 54
+      }
+    },
+    {
+      "file": "crates/temporal/format.rs",
+      "rows": 14,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 14
+      },
+      "coverage": {
+        "no_numbered_anchor": 14
+      }
+    },
+    {
+      "file": "crates/temporal/iso.rs",
+      "rows": 6,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "crates/temporal/lib.rs",
+      "rows": 8,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 8
+      },
+      "coverage": {
+        "no_numbered_anchor": 8
+      }
+    },
+    {
+      "file": "crates/temporal/now.rs",
+      "rows": 6,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "crates/temporal/parse.rs",
+      "rows": 17,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 17
+      },
+      "coverage": {
+        "no_numbered_anchor": 16,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "crates/temporal/plain_relative.rs",
+      "rows": 13,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 13
+      },
+      "coverage": {
+        "no_numbered_anchor": 10,
+        "direct_numbered": 3
+      }
+    },
+    {
+      "file": "crates/temporal/relative_duration.rs",
+      "rows": 5,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 4,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "crates/temporal/rounding.rs",
+      "rows": 6,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 6
+      },
+      "coverage": {
+        "direct_numbered": 6
+      }
+    },
+    {
+      "file": "crates/temporal/short_dates.rs",
+      "rows": 56,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 46,
+        "candidate": 10
+      },
+      "coverage": {
+        "no_numbered_anchor": 55,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "crates/temporal/time.rs",
+      "rows": 18,
+      "work_bundle": "rust_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 12,
+        "candidate": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 18
+      }
+    },
+    {
+      "file": "crates/temporal/timezone.rs",
+      "rows": 16,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 16
+      },
+      "coverage": {
+        "no_numbered_anchor": 16
+      }
+    },
+    {
+      "file": "crates/temporal/timezone_identity.rs",
+      "rows": 10,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 10
+      },
+      "coverage": {
+        "no_numbered_anchor": 10
+      }
+    },
+    {
+      "file": "crates/temporal/timezone_registry.rs",
+      "rows": 21,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 21
+      },
+      "coverage": {
+        "no_numbered_anchor": 20,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "crates/temporal/zoned.rs",
+      "rows": 31,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "unmapped": 27,
+        "candidate": 4
+      },
+      "coverage": {
+        "no_numbered_anchor": 31
+      }
+    },
+    {
+      "file": "crates/temporal/zoned_difference.rs",
+      "rows": 8,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 8
+      },
+      "coverage": {
+        "no_numbered_anchor": 8
+      }
+    },
+    {
+      "file": "crates/temporal/zoned_string.rs",
+      "rows": 10,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 10
+      },
+      "coverage": {
+        "no_numbered_anchor": 10
+      }
+    },
+    {
+      "file": "packages/temporal/accessors.ts",
+      "rows": 3,
+      "work_bundle": "generic_runtime_or_installation_review",
+      "mapping_status": {
+        "candidate": 3
+      },
+      "coverage": {
+        "no_numbered_anchor": 3
+      }
+    },
+    {
+      "file": "packages/temporal/calendar-table.ts",
+      "rows": 12,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 12
+      },
+      "coverage": {
+        "no_numbered_anchor": 12
+      }
+    },
+    {
+      "file": "packages/temporal/calendar.ts",
+      "rows": 33,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "mapped": 25,
+        "unmapped": 8
+      },
+      "coverage": {
+        "no_numbered_anchor": 32,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/compact-timezone.ts",
+      "rows": 3,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 3
+      },
+      "coverage": {
+        "no_numbered_anchor": 3
+      }
+    },
+    {
+      "file": "packages/temporal/date-bridge.ts",
+      "rows": 2,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 1,
+        "unmapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/date-core.ts",
+      "rows": 38,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 26,
+        "unmapped": 12
+      },
+      "coverage": {
+        "no_numbered_anchor": 17,
+        "direct_numbered": 21
+      }
+    },
+    {
+      "file": "packages/temporal/detect.ts",
+      "rows": 1,
+      "work_bundle": "generic_runtime_or_installation_review",
+      "mapping_status": {
+        "unmapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 1
+      }
+    },
+    {
+      "file": "packages/temporal/duration-core.ts",
+      "rows": 11,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 10,
+        "unmapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 1,
+        "direct_numbered": 9,
+        "enclosing_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/duration-format.ts",
+      "rows": 1,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 1
+      }
+    },
+    {
+      "file": "packages/temporal/duration.ts",
+      "rows": 6,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "packages/temporal/fallback-data.ts",
+      "rows": 8,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 8
+      },
+      "coverage": {
+        "no_numbered_anchor": 8
+      }
+    },
+    {
+      "file": "packages/temporal/format-digits.ts",
+      "rows": 2,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 1
+      },
+      "coverage": {
+        "direct_numbered": 2
+      }
+    },
+    {
+      "file": "packages/temporal/host-calendar-data.ts",
+      "rows": 2,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/host-calendar.ts",
+      "rows": 6,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "packages/temporal/host-timezone.ts",
+      "rows": 13,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 13
+      },
+      "coverage": {
+        "no_numbered_anchor": 2,
+        "direct_numbered": 3,
+        "enclosing_numbered": 8
+      }
+    },
+    {
+      "file": "packages/temporal/install.ts",
+      "rows": 2,
+      "work_bundle": "generic_runtime_or_installation_review",
+      "mapping_status": {
+        "unmapped": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/instant-format.ts",
+      "rows": 2,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 1,
+        "unmapped": 1
+      },
+      "coverage": {
+        "direct_numbered": 1,
+        "enclosing_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/instant-string.ts",
+      "rows": 34,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 24,
+        "mapped": 10
+      },
+      "coverage": {
+        "direct_numbered": 12,
+        "no_numbered_anchor": 22
+      }
+    },
+    {
+      "file": "packages/temporal/instant.ts",
+      "rows": 8,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 7,
+        "unmapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 7,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/intrinsics.ts",
+      "rows": 2,
+      "work_bundle": "generic_runtime_or_installation_review",
+      "mapping_status": {
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/kernel.ts",
+      "rows": 15,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 9,
+        "mapped": 6
+      },
+      "coverage": {
+        "no_numbered_anchor": 15
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-calendar-date.ts",
+      "rows": 24,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 24
+      },
+      "coverage": {
+        "no_numbered_anchor": 24
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-durationformat.ts",
+      "rows": 2,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-extended-date.ts",
+      "rows": 22,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 22
+      },
+      "coverage": {
+        "no_numbered_anchor": 22
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-intl.ts",
+      "rows": 14,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 14
+      },
+      "coverage": {
+        "no_numbered_anchor": 14
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-lunisolar-date.ts",
+      "rows": 26,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "candidate": 26
+      },
+      "coverage": {
+        "no_numbered_anchor": 26
+      }
+    },
+    {
+      "file": "packages/temporal/legacy-zoned-date.ts",
+      "rows": 7,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "candidate": 7
+      },
+      "coverage": {
+        "no_numbered_anchor": 7
+      }
+    },
+    {
+      "file": "packages/temporal/locale.ts",
+      "rows": 16,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 16
+      },
+      "coverage": {
+        "no_numbered_anchor": 3,
+        "direct_numbered": 3,
+        "enclosing_numbered": 7,
+        "retired_callback": 3
+      }
+    },
+    {
+      "file": "packages/temporal/lunisolar.ts",
+      "rows": 5,
+      "work_bundle": "calendar_provider_and_algorithm_review",
+      "mapping_status": {
+        "mapped": 5
+      },
+      "coverage": {
+        "direct_numbered": 5
+      }
+    },
+    {
+      "file": "packages/temporal/native.ts",
+      "rows": 91,
+      "work_bundle": "native_transport_with_temporal_adapters_review",
+      "mapping_status": {
+        "unmapped": 70,
+        "mapped": 21
+      },
+      "coverage": {
+        "no_numbered_anchor": 90,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/plain-date-time.ts",
+      "rows": 7,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 2,
+        "mapped": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 6,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/plain-date.ts",
+      "rows": 6,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 6
+      }
+    },
+    {
+      "file": "packages/temporal/plain-month-day.ts",
+      "rows": 3,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 3
+      }
+    },
+    {
+      "file": "packages/temporal/plain-slots.ts",
+      "rows": 2,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "candidate": 2
+      },
+      "coverage": {
+        "no_numbered_anchor": 2
+      }
+    },
+    {
+      "file": "packages/temporal/plain-time.ts",
+      "rows": 20,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 7,
+        "mapped": 13
+      },
+      "coverage": {
+        "no_numbered_anchor": 19,
+        "direct_numbered": 1
+      }
+    },
+    {
+      "file": "packages/temporal/plain-year-month.ts",
+      "rows": 5,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 4
+      },
+      "coverage": {
+        "no_numbered_anchor": 5
+      }
+    },
+    {
+      "file": "packages/temporal/relative-duration.ts",
+      "rows": 6,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 5
+      },
+      "coverage": {
+        "no_numbered_anchor": 4,
+        "direct_numbered": 2
+      }
+    },
+    {
+      "file": "packages/temporal/rounding.ts",
+      "rows": 10,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "mapped": 10
+      },
+      "coverage": {
+        "direct_numbered": 10
+      }
+    },
+    {
+      "file": "packages/temporal/short-date-core.ts",
+      "rows": 8,
+      "work_bundle": "typescript_value_parser_arithmetic_algorithm_review",
+      "mapping_status": {
+        "unmapped": 1,
+        "mapped": 7
+      },
+      "coverage": {
+        "no_numbered_anchor": 3,
+        "direct_numbered": 5
+      }
+    },
+    {
+      "file": "packages/temporal/should-polyfill.ts",
+      "rows": 1,
+      "work_bundle": "generic_runtime_or_installation_review",
+      "mapping_status": {
+        "unmapped": 1
+      },
+      "coverage": {
+        "no_numbered_anchor": 1
+      }
+    },
+    {
+      "file": "packages/temporal/zoned-date-time.ts",
+      "rows": 19,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "unmapped": 5,
+        "mapped": 14
+      },
+      "coverage": {
+        "no_numbered_anchor": 17,
+        "direct_numbered": 2
+      }
+    },
+    {
+      "file": "packages/temporal/zones.ts",
+      "rows": 22,
+      "work_bundle": "time_zone_and_zoned_algorithm_review",
+      "mapping_status": {
+        "mapped": 7,
+        "unmapped": 15
+      },
+      "coverage": {
+        "no_numbered_anchor": 20,
+        "direct_numbered": 2
+      }
+    }
+  ],
+  "interpretation": "Direct/enclosing anchor counts measure presence only. Owner, applicable step scope and shared-callee contracts still require review. Native transport12 have mapping-only evidence; inline links remain pending. Frozen IDs/order retained; retired callbacks are not live callable locations.",
+  "evidence": "temporal-helper-annotation-reconciliation.json",
+  "reviewed_mapping_rows_this_batch": 33
+}

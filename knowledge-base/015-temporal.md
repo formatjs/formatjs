@@ -6,6 +6,13 @@ and Intl contracts; distinguish implementation gaps from unreconciled evidence.
 Public bindings, helper/backend ranges and fixed step checklists retain source
 hashes and prior review references.
 
+[Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
+1,069 fixed identities, with three retired callbacks explicit. A comment-only
+batch reconciles33 mappings for rounding, lunisolar dependencies and native
+Duration transport. Transport12 still need inline caller links; numbered anchor
+presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
+binds source hashes and unchanged noncomment code.
+
 First numbered pass reconciles 641 namespace/Now/Instant/YearMonth rows; local
 step proofs retain named dependencies. No-Intl Now host offsets reuse existing
 zeroPadDecimal, preserving default-zone calls when String or padStart changes.

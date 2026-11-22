@@ -66,13 +66,16 @@ const units = [
   ['nanosecond', 'nanoseconds'],
 ] as const
 
+// ECMA-262 §7.3.36 steps1–3: absent options create a null-prototype object.
+// https://tc39.es/ecma262/#sec-getoptionsobject
 export function optionsObject(value: unknown): Record<string, unknown> {
   if (value === undefined) return createObject(null)
   if (!IsObject(value))
     throw new TypeErrorConstructor('Options must be an object')
   return value as Record<string, unknown>
 }
-// String shorthand creates a private null-prototype record with one own data property.
+// Proposal comparison §8.3.9 steps4.a–4.c: private string-shorthand record.
+// Other callers select their own property name; this helper performs no option reads.
 export function unitOptions(
   value: string,
   key: 'smallestUnit' | 'unit' = 'smallestUnit'
@@ -82,6 +85,7 @@ export function unitOptions(
   return result
 }
 // Temporal comparison §14.5.2.2 steps1–4: validate the already-read rounding mode
+// Caller performs Get; this kernel supplies fallback, ToString and table validation.
 // https://tc39.es/proposal-temporal/#sec-temporal-getroundingmodeoption
 export function roundingMode(
   value: unknown,
@@ -94,6 +98,7 @@ export function roundingMode(
   return mode as RoundingMode
 }
 // Temporal comparison §13.17 steps6–7/9: convert the already-read singular/plural unit spelling
+// Restricted normal-unit kernel: callers handle auto, defaults and property Get.
 // https://tc39.es/proposal-temporal/#sec-temporal-gettemporalunitvaluedoption
 export function unitOption(value: unknown): string | undefined {
   if (value === undefined) return undefined
@@ -106,6 +111,8 @@ export function unitOption(value: unknown): string | undefined {
   }
   throw new RangeErrorConstructor('Invalid temporal unit')
 }
+// Proposal comparison §13.18 steps3/5/6: accept the time category only.
+// Required-unit callers also reject unset here; §13.18 step1 is not this contract.
 export function timeUnit(unit: string | undefined): TimeUnit {
   if (unit === undefined || !HasOwnProperty(timeUnitNanoseconds, unit))
     throw new RangeErrorConstructor('Expected a time unit')
@@ -206,6 +213,7 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
   if (bigIntFrom(increment) > maximum || maximum % bigIntFrom(increment) !== 0n)
     throw new RangeErrorConstructor('Rounding increment must divide a day')
   const native = nativeTemporal()
+  // Proposal comparison §8.5.7 steps1–3: form the quantum, then delegate rounding.
   return (native ? native.roundInstant : roundInstant)(
     value,
     bigIntFrom(increment) * timeUnitNanoseconds[unit],

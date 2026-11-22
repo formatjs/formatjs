@@ -42,6 +42,15 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
 
+## Inline ownership mapping, 2026-11-22
+
+[Current helper annotation queue](temporal-helper-annotation-queue.tsv) retains all
+1,069 fixed identities, including three retired callbacks. Thirty-three mappings
+reconciled:21 local inline scopes and12 native transport mappings whose inline
+caller links remain pending. Source changes are comments only; noncomment source
+is identical. [Evidence](temporal-helper-annotation-reconciliation.json) separates
+mapping, anchor presence and behavior verification. No checklist closure credit.
+
 ## Owned Intl invocation correction, 2026-11-22
 
 [Producer/facade evidence](temporal-intl-producer-state-facade-audit.md) closes21

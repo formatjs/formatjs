@@ -1,0 +1,1426 @@
+{
+  "scope": "33 exact helper mapping dispositions; three source files receive numbered comments only. No behavior/checklist closure credit.",
+  "fixed_inventory_rows": 1069,
+  "live_rebound_rows": 1066,
+  "retired_identities": [
+    {
+      "inventory_row": 859,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/locale.ts",
+        "symbol": "anonymous@314",
+        "kind": "callback"
+      },
+      "reason": "Replaced by direct captured formatToParts/indexed loops; no live callable. Historical ranges only; retain identity."
+    },
+    {
+      "inventory_row": 861,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/locale.ts",
+        "symbol": "anonymous@333",
+        "kind": "callback"
+      },
+      "reason": "Replaced by direct captured formatToParts/indexed loops; no live callable. Historical ranges only; retain identity."
+    },
+    {
+      "inventory_row": 862,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/locale.ts",
+        "symbol": "anonymous@334",
+        "kind": "callback"
+      },
+      "reason": "Replaced by direct captured formatToParts/indexed loops; no live callable. Historical ranges only; retain identity."
+    }
+  ],
+  "reviewed_rows": [
+    {
+      "inventory_row": 1010,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "optionsObject",
+      "original_mapping_status": "unmapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "direct_shared_ecma262_operation",
+      "comparison_sections": "7.3.36",
+      "section_ids": "sec-getoptionsobject",
+      "spec_urls": "https://tc39.es/ecma262/#sec-getoptionsobject",
+      "numbered_step_mappings": [
+        {
+          "authority": "ECMA-262",
+          "section": "7.3.36",
+          "steps": "1\u20133",
+          "section_id": "sec-getoptionsobject"
+        }
+      ],
+      "evidence": "Direct GetOptionsObject; undefined creates null-prototype object, objects retain identity, other values throw. Captured IsObject/createObject/TypeError contracts remain dependencies.",
+      "base_locations": ["packages/temporal/rounding.ts:69-74"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:71-76"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "optionsObject",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1011,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "unitOptions",
+      "original_mapping_status": "unmapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "caller_record_construction_helper",
+      "comparison_sections": "8.3.9",
+      "section_ids": "sec-temporal.instant.prototype.round",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.round",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.3.9",
+          "steps": "4.a\u20134.c",
+          "section_id": "sec-temporal.instant.prototype.round"
+        }
+      ],
+      "evidence": "Shared null-prototype record helper; exact Instant caller shorthand correspondence. Other callers choose unit/smallestUnit and retain their own numbered method steps; no standalone Temporal abstract operation invented.",
+      "base_locations": ["packages/temporal/rounding.ts:76-83"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:79-86"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "unitOptions",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1012,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "roundingMode",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_option_value_kernel",
+      "comparison_sections": "14.5.2.2",
+      "section_ids": "sec-temporal-getroundingmodeoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getroundingmodeoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "14.5.2.2",
+          "steps": "1\u20134",
+          "section_id": "sec-temporal-getroundingmodeoption"
+        }
+      ],
+      "evidence": "Rounding-mode table, fallback, ToString and validation kernel. Caller reads roundingMode before entry; source does not itself perform complete GetOption property access.",
+      "base_locations": ["packages/temporal/rounding.ts:86-95"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:90-99"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "roundingMode",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1013,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "unitOption",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_restricted_option_value_kernel",
+      "comparison_sections": "13.17",
+      "section_ids": "sec-temporal-gettemporalunitvaluedoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporalunitvaluedoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.17",
+          "steps": "1,6\u20137,9",
+          "section_id": "sec-temporal-gettemporalunitvaluedoption"
+        }
+      ],
+      "evidence": "Normal singular/plural spellings only. Property Get, required/default handling and auto branch belong to callers. Do not map this helper to full \u00a713.17 including auto step8.",
+      "base_locations": ["packages/temporal/rounding.ts:98-108"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:103-113"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "unitOption",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1014,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "timeUnit",
+      "original_mapping_status": "unmapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_category_validation_with_required_caller",
+      "comparison_sections": "13.18|8.3.9",
+      "section_ids": "sec-temporal-validatetemporalunitvaluedoption|sec-temporal.instant.prototype.round",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-validatetemporalunitvaluedoption|https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.round",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.18",
+          "steps": "3,5\u20136",
+          "section_id": "sec-temporal-validatetemporalunitvaluedoption"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.3.9",
+          "steps": "9\u201310",
+          "section_id": "sec-temporal.instant.prototype.round"
+        }
+      ],
+      "evidence": "Accepts six time units; rejects non-time names. Undefined throws because this fused helper also serves required-unit callers; full \u00a713.18 step1 returns on unset and is explicitly excluded.",
+      "base_locations": ["packages/temporal/rounding.ts:109-113"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:116-120"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "timeUnit",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1015,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "roundingIncrement",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_option_value_kernel",
+      "comparison_sections": "14.5.2.3",
+      "section_ids": "sec-temporal-getroundingincrementoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getroundingincrementoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "14.5.2.3",
+          "steps": "2\u20135",
+          "section_id": "sec-temporal-getroundingincrementoption"
+        }
+      ],
+      "evidence": "Caller owns property Get step1. Kernel defaults undefined then unary-plus Number coercion, truncation, finite/range check and integer return, using trusted captured runtime arithmetic.",
+      "base_locations": ["packages/temporal/rounding.ts:116-122"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:123-129"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "roundingIncrement",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1016,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "fractionalSecondDigits",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_option_value_kernel",
+      "comparison_sections": "13.15",
+      "section_ids": "sec-temporal-gettemporalfractionalseconddigitsoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporalfractionalseconddigitsoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.15",
+          "steps": "2\u20137",
+          "section_id": "sec-temporal-gettemporalfractionalseconddigitsoption"
+        }
+      ],
+      "evidence": "Caller owns property Get step1. Kernel maps undefined/auto and numeric finite floor 0..9. Computing floor before finite check adds no visible coercion because numeric branch already primitive.",
+      "base_locations": ["packages/temporal/rounding.ts:125-136"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:132-143"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "fractionalSecondDigits",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1017,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "roundInstant",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_exact_integer_algorithm",
+      "comparison_sections": "13.27|13.28|13.30",
+      "section_ids": "sec-getunsignedroundingmode|sec-applyunsignedroundingmode|sec-temporal-roundnumbertoincrementasifpositive",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-getunsignedroundingmode|https://tc39.es/proposal-temporal/#sec-applyunsignedroundingmode|https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrementasifpositive",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.27",
+          "steps": "1/table22",
+          "section_id": "sec-getunsignedroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.28",
+          "steps": "1\u201316",
+          "section_id": "sec-applyunsignedroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.30",
+          "steps": "1\u20136",
+          "section_id": "sec-temporal-roundnumbertoincrementasifpositive"
+        }
+      ],
+      "evidence": "Exact BigInt quotient/remainder equivalent under positive quantum and validated rounding mode. Correct floor for negative quotient, exact distances/ties/parity. \u00a78.5.7 quantum construction belongs to roundInstantOptions/callers, not this kernel.",
+      "base_locations": ["packages/temporal/rounding.ts:144-186"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:151-193"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "roundInstant",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1018,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "roundInstantOptions",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_method_body_after_brand_validation",
+      "comparison_sections": "8.3.9|8.5.7",
+      "section_ids": "sec-temporal.instant.prototype.round|sec-temporal-roundtemporalinstant",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.round|https://tc39.es/proposal-temporal/#sec-temporal-roundtemporalinstant",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.3.9",
+          "steps": "3\u201318",
+          "section_id": "sec-temporal.instant.prototype.round"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.5.7",
+          "steps": "1\u20133",
+          "section_id": "sec-temporal-roundtemporalinstant"
+        }
+      ],
+      "evidence": "Requires already extracted Instant slot. Owns shorthand/options, ordered option reads, time unit validation, inclusive day divisibility, quantum construction and dispatch. Public brand/slot and result construction remain caller responsibilities. Native backend equivalence remains established dependency, not inferred from this mapping.",
+      "base_locations": ["packages/temporal/rounding.ts:189-214"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:196-222"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "roundInstantOptions",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 1019,
+      "file": "packages/temporal/rounding.ts",
+      "symbol": "roundDuration",
+      "original_mapping_status": "mapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_exact_integer_algorithm",
+      "comparison_sections": "13.8|13.29",
+      "section_ids": "sec-temporal-negateroundingmode|sec-temporal-roundnumbertoincrement",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-negateroundingmode|https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrement",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.8",
+          "steps": "1\u20135",
+          "section_id": "sec-temporal-negateroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.29",
+          "steps": "1\u20139",
+          "section_id": "sec-temporal-roundnumbertoincrement"
+        }
+      ],
+      "evidence": "Signed exact integer rounding implemented via sign reversal and shared positive-mode core; positive quantum and validated mode preconditions. No claim of arbitrary mathematical real input API: private representation is BigInt.",
+      "base_locations": ["packages/temporal/rounding.ts:220-255"],
+      "base_source_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "proposed_source_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/rounding.ts:228-263"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/rounding.ts",
+        "symbol": "roundDuration",
+        "kind": "named-function"
+      },
+      "bundle": "rounding"
+    },
+    {
+      "inventory_row": 374,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "impl TimeUnit::nanoseconds",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "typed_table_dependency",
+      "comparison_sections": "8.5.7",
+      "section_ids": "sec-temporal-roundtemporalinstant",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-roundtemporalinstant",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.5.7",
+          "steps": "1/table21",
+          "section_id": "sec-temporal-roundtemporalinstant"
+        }
+      ],
+      "evidence": "Typed TimeUnit length table; direct table dependency, not full RoundTemporalInstant.",
+      "base_locations": ["crates/temporal/rounding.rs:14-23"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:15-24"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "impl TimeUnit::nanoseconds",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 375,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "impl FromStr for TimeUnit::from_str",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "typed_parser_for_restricted_unit_kernel",
+      "comparison_sections": "13.17|13.18",
+      "section_ids": "sec-temporal-gettemporalunitvaluedoption|sec-temporal-validatetemporalunitvaluedoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-gettemporalunitvaluedoption|https://tc39.es/proposal-temporal/#sec-temporal-validatetemporalunitvaluedoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.17",
+          "steps": "9",
+          "section_id": "sec-temporal-gettemporalunitvaluedoption"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.18",
+          "steps": "3,5\u20136",
+          "section_id": "sec-temporal-validatetemporalunitvaluedoption"
+        }
+      ],
+      "evidence": "Normal singular/plural six time-unit strings; strip_suffix accepts exact singular/plural only. No auto/default/unset/property Get or ECMAScript coercion ownership.",
+      "base_locations": ["crates/temporal/rounding.rs:27-37"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:30-40"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "impl FromStr for TimeUnit::from_str",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 376,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "impl FromStr for RoundingMode::from_str",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "typed_parser_for_rounding_mode_kernel",
+      "comparison_sections": "14.5.2.2",
+      "section_ids": "sec-temporal-getroundingmodeoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getroundingmodeoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "14.5.2.2",
+          "steps": "1,3\u20134/table28",
+          "section_id": "sec-temporal-getroundingmodeoption"
+        }
+      ],
+      "evidence": "Exact nine string-to-enum mappings; caller supplies primitive Rust string, ECMAScript coercion/read/fallback remain external.",
+      "base_locations": ["crates/temporal/rounding.rs:53-66"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:58-71"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "impl FromStr for RoundingMode::from_str",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 377,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "module::round_instant",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_exact_integer_rounding_core",
+      "comparison_sections": "13.27|13.28|13.30",
+      "section_ids": "sec-getunsignedroundingmode|sec-applyunsignedroundingmode|sec-temporal-roundnumbertoincrementasifpositive",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-getunsignedroundingmode|https://tc39.es/proposal-temporal/#sec-applyunsignedroundingmode|https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrementasifpositive",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.27",
+          "steps": "1/table22",
+          "section_id": "sec-getunsignedroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.28",
+          "steps": "1\u201316",
+          "section_id": "sec-applyunsignedroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.30",
+          "steps": "1\u20136",
+          "section_id": "sec-temporal-roundnumbertoincrementasifpositive"
+        }
+      ],
+      "evidence": "Positive-sign quotient/remainder arithmetic; i64 fast path uses guarded representable operands and Euclidean division, i128 path otherwise. Quantum1 shortcut exact. Existing caller/domain arithmetic proofs reused; mapping does not promise unrestricted all-i128 values/quanta avoid overflow.",
+      "base_locations": ["crates/temporal/rounding.rs:72-126"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:78-132"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "module::round_instant",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 378,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "impl Instant::round",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_typed_instant_rounding_adapter",
+      "comparison_sections": "8.5.7|13.14|14.5.2.3",
+      "section_ids": "sec-temporal-roundtemporalinstant|sec-validatetemporalroundingincrement|sec-temporal-getroundingincrementoption",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-roundtemporalinstant|https://tc39.es/proposal-temporal/#sec-validatetemporalroundingincrement|https://tc39.es/proposal-temporal/#sec-temporal-getroundingincrementoption",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "8.5.7",
+          "steps": "1\u20133",
+          "section_id": "sec-temporal-roundtemporalinstant"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.14",
+          "steps": "1.a,3\u20135",
+          "section_id": "sec-validatetemporalroundingincrement"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "14.5.2.3",
+          "steps": "4",
+          "section_id": "sec-temporal-getroundingincrementoption"
+        }
+      ],
+      "evidence": "Typed Instant/unit/mode input means public brand, ToNumber, Get and fallback are outside adapter. Enforces nonzero<=1e9 increment, inclusive day bound/divisibility then exact quantum/core and Instant range constructor. Does not claim complete JS Instant.round method.",
+      "base_locations": ["crates/temporal/rounding.rs:128-144"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:136-153"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "impl Instant::round",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 379,
+      "file": "crates/temporal/rounding.rs",
+      "symbol": "module::round_duration",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "owned_exact_integer_signed_rounding_core",
+      "comparison_sections": "13.8|13.29",
+      "section_ids": "sec-temporal-negateroundingmode|sec-temporal-roundnumbertoincrement",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-negateroundingmode|https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrement",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.8",
+          "steps": "1\u20135",
+          "section_id": "sec-temporal-negateroundingmode"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.29",
+          "steps": "1\u20139",
+          "section_id": "sec-temporal-roundnumbertoincrement"
+        }
+      ],
+      "evidence": "Signed numerator handling with exact mode reversal. Reuses unsigned core; positive bounded quantum and safely negatable values are caller/domain premises, not unrestricted i128 contract.",
+      "base_locations": ["crates/temporal/rounding.rs:149-178"],
+      "base_source_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "proposed_source_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["crates/temporal/rounding.rs:160-189"],
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/rounding.rs",
+        "symbol": "module::round_duration",
+        "kind": "function"
+      },
+      "bundle": "rust-rounding"
+    },
+    {
+      "inventory_row": 865,
+      "file": "packages/temporal/lunisolar.ts",
+      "symbol": "floor",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "relationship": "implementation_dependency",
+      "mapping_basis": "reviewed_exact_provider_or_callee_contract_dependency",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "generic_arithmetic_helper",
+      "comparison_sections": "12.3.25|13.42",
+      "section_ids": "sec-temporal-nonisocalendarisotodate|sec-temporal-isodatetofields",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "12.3.25",
+          "steps": "implementation-defined processing",
+          "section_id": "sec-temporal-nonisocalendarisotodate",
+          "ownership": "dependency_only"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.42",
+          "steps": "2 (caller dependency)",
+          "section_id": "sec-temporal-isodatetofields",
+          "ownership": "dependency_only"
+        }
+      ],
+      "direct_owned_normative_steps": [],
+      "evidence": "Exact floor of BigInt numerator divided by positive divisor; division truncates toward zero, subtract1 exactly iff negative nonmultiple. Dependency of period coordinate and approximation helpers; no standalone Temporal operation or step owner.",
+      "existing_proof": "knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+      "base_locations": ["packages/temporal/lunisolar.ts:18-20"],
+      "base_source_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "proposed_source_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/lunisolar.ts:20-22"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/lunisolar.ts",
+        "symbol": "floor",
+        "kind": "named-function"
+      },
+      "bundle": "lunisolar"
+    },
+    {
+      "inventory_row": 866,
+      "file": "packages/temporal/lunisolar.ts",
+      "symbol": "onOrBefore",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "relationship": "implementation_dependency",
+      "mapping_basis": "reviewed_exact_provider_or_callee_contract_dependency",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "provider_period_coordinate_helper",
+      "comparison_sections": "12.3.25|13.42",
+      "section_ids": "sec-temporal-nonisocalendarisotodate|sec-temporal-isodatetofields",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "12.3.25",
+          "steps": "implementation-defined processing",
+          "section_id": "sec-temporal-nonisocalendarisotodate",
+          "ownership": "dependency_only"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.42",
+          "steps": "2 (caller dependency)",
+          "section_id": "sec-temporal-isodatetofields",
+          "ownership": "dependency_only"
+        }
+      ],
+      "direct_owned_normative_steps": [],
+      "evidence": "Computes greatest base+k*period <= date*day+day-1, positive period; exact BigInt floor dependency. Private chosen-model coordinate; no normative astronomy or independent Temporal operation claimed.",
+      "existing_proof": "knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+      "base_locations": ["packages/temporal/lunisolar.ts:21-23"],
+      "base_source_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "proposed_source_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/lunisolar.ts:25-27"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/lunisolar.ts",
+        "symbol": "onOrBefore",
+        "kind": "named-function"
+      },
+      "bundle": "lunisolar"
+    },
+    {
+      "inventory_row": 867,
+      "file": "packages/temporal/lunisolar.ts",
+      "symbol": "lunisolarMonthSerial",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "relationship": "implementation_dependency",
+      "mapping_basis": "reviewed_exact_provider_or_callee_contract_dependency",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "provider_month_coordinate_helper",
+      "comparison_sections": "12.3.6",
+      "section_ids": "sec-temporal-nonisodateadd",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-nonisodateadd",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "12.3.6",
+          "steps": "implementation-defined processing",
+          "section_id": "sec-temporal-nonisodateadd",
+          "ownership": "dependency_only"
+        }
+      ],
+      "direct_owned_normative_steps": [],
+      "evidence": "Private consecutive month serial for hostCalendarAddMonths and hostCalendarMonthDifference. Existing finite proof establishes serial adjacency for compact+approximate months and exact Number conversion over supported domain. Links NonISODateAdd implementation-defined provider dependency, not complete date addition.",
+      "existing_proof": "knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+      "base_locations": ["packages/temporal/lunisolar.ts:25-27"],
+      "base_source_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "proposed_source_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/lunisolar.ts:31-33"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/lunisolar.ts",
+        "symbol": "lunisolarMonthSerial",
+        "kind": "named-function"
+      },
+      "bundle": "lunisolar"
+    },
+    {
+      "inventory_row": 868,
+      "file": "packages/temporal/lunisolar.ts",
+      "symbol": "lunisolarMonthEpoch",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "relationship": "implementation_dependency",
+      "mapping_basis": "reviewed_exact_provider_or_callee_contract_dependency",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "provider_bounded_inverse_estimate_helper",
+      "comparison_sections": "12.3.6",
+      "section_ids": "sec-temporal-nonisodateadd",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-nonisodateadd",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "12.3.6",
+          "steps": "implementation-defined processing",
+          "section_id": "sec-temporal-nonisodateadd",
+          "ownership": "dependency_only"
+        }
+      ],
+      "direct_owned_normative_steps": [],
+      "evidence": "Safe-integer serial guard, exact BigInt composition, explicit integral epoch guard \u00b1110000400 before exact Number conversion. Supplies Gregorian year estimate to hostCalendarAddMonths; caller corrects to containing calendar year. Not exact inverse to arbitrary epoch or complete NonISODateAdd.",
+      "existing_proof": "knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+      "base_locations": ["packages/temporal/lunisolar.ts:29-36"],
+      "base_source_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "proposed_source_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/lunisolar.ts:37-44"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/lunisolar.ts",
+        "symbol": "lunisolarMonthEpoch",
+        "kind": "named-function"
+      },
+      "bundle": "lunisolar"
+    },
+    {
+      "inventory_row": 869,
+      "file": "packages/temporal/lunisolar.ts",
+      "symbol": "approximateLunisolarYear",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "relationship": "implementation_dependency",
+      "mapping_basis": "reviewed_exact_provider_or_callee_contract_dependency",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "provider_implementation_defined_data_policy",
+      "comparison_sections": "12.3.25|13.42",
+      "section_ids": "sec-temporal-nonisocalendarisotodate|sec-temporal-isodatetofields",
+      "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate|https://tc39.es/proposal-temporal/#sec-temporal-isodatetofields",
+      "numbered_step_mappings": [
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "12.3.25",
+          "steps": "implementation-defined processing",
+          "section_id": "sec-temporal-nonisocalendarisotodate",
+          "ownership": "dependency_only"
+        },
+        {
+          "authority": "Temporal proposal comparison",
+          "section": "13.42",
+          "steps": "2 (caller dependency)",
+          "section_id": "sec-temporal-isodatetofields",
+          "ownership": "dependency_only"
+        }
+      ],
+      "direct_owned_normative_steps": [],
+      "evidence": "Chosen Chinese/Dangi fallback CalendarYearData partition; hostCalendarYear prefers compact years. Existing finite chronology/precision proof and generated-data joins supply structural contract for NonISOCalendarISOToDate through ISODateToFields step2; does not implement complete date/era field conversion or assert astronomy/ICU parity.",
+      "existing_proof": "knowledge-base/audits/temporal-lunisolar-chronology-proof/proof.md",
+      "base_locations": ["packages/temporal/lunisolar.ts:38-108"],
+      "base_source_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "proposed_source_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/lunisolar.ts:49-119"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/lunisolar.ts",
+        "symbol": "approximateLunisolarYear",
+        "kind": "named-function"
+      },
+      "bundle": "lunisolar"
+    },
+    {
+      "inventory_row": 258,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/ffi.rs",
+        "symbol": "module::duration",
+        "kind": "function"
+      },
+      "symbol": "module::duration",
+      "file": "crates/temporal/ffi.rs",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.5.16",
+        "section_ids": "sec-isvalidduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isvalidduration",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Extracts request.duration JSON field then delegates fixed-field decoding. Private wire property access is not public Temporal field-bag Get; semantics/range checked by Duration::new.",
+      "base_locations": ["crates/temporal/ffi.rs:206-208"],
+      "base_source_sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "caller_locations": "packages/temporal/native.ts:992-1042",
+      "semantic_owner_locations": "crates/temporal/ffi.rs:209-215; crates/temporal/duration.rs:63-83",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 259,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/ffi.rs",
+        "symbol": "module::duration_value",
+        "kind": "function"
+      },
+      "symbol": "module::duration_value",
+      "file": "crates/temporal/ffi.rs",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.5.16",
+        "section_ids": "sec-isvalidduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isvalidduration",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Decodes all ten fixed DURATION_FIELDS using decimal into i128 array, then Duration::new. Decimal-string TS transport preserves exact Number-representable integer value; validation and normalized Number-representable field invariant remain actual Rust owner. No public coercion semantics assigned to serde JSON reads.",
+      "base_locations": ["crates/temporal/ffi.rs:209-215"],
+      "base_source_sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "caller_locations": "crates/temporal/ffi.rs:206-208; crates/temporal/ffi.rs:1228-1302",
+      "semantic_owner_locations": "crates/temporal/duration.rs:63-83",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 260,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/ffi.rs",
+        "symbol": "module::duration_record",
+        "kind": "function"
+      },
+      "symbol": "module::duration_record",
+      "file": "crates/temporal/ffi.rs",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.5.16",
+        "section_ids": "sec-isvalidduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isvalidduration",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Serializes the same ten fixed fields to JSON numbers. Duration::new normalizes stored fields to Number-representable integers, so i128->f64 matches JS field representation. TS createDuration installs brand/result; serializer itself does not implement CreateTemporalDuration or claim public getters/descriptors.",
+      "base_locations": ["crates/temporal/ffi.rs:216-225"],
+      "base_source_sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "caller_locations": "crates/temporal/ffi.rs:1228-1302",
+      "semantic_owner_locations": "crates/temporal/duration.rs:63-83; packages/temporal/duration.ts:119-127",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 294,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/ffi.rs",
+        "symbol": "module::duration_operation",
+        "kind": "function"
+      },
+      "symbol": "module::duration_operation",
+      "file": "crates/temporal/ffi.rs",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "13.37|7.5.16|7.5.20|7.5.40|7.5.41|7.2.3|7.3.20|7.3.21",
+        "section_ids": "sec-temporal-parsetemporaldurationstring|sec-isvalidduration|sec-temporal-createnegatedtemporalduration|sec-temporal-temporaldurationtostring|sec-temporal-adddurations|sec-temporal.duration.compare|sec-temporal.duration.prototype.round|sec-temporal.duration.prototype.total",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaldurationstring|https://tc39.es/proposal-temporal/#sec-isvalidduration|https://tc39.es/proposal-temporal/#sec-temporal-createnegatedtemporalduration|https://tc39.es/proposal-temporal/#sec-temporal-temporaldurationtostring|https://tc39.es/proposal-temporal/#sec-temporal-adddurations|https://tc39.es/proposal-temporal/#sec-temporal.duration.compare|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.round|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.total",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Finite dispatcher owns transport policy: parseDuration bypasses duration input decode; other operations validate duration first; optional relative anchor decodes before operation switch; round decodes largest/smallest/increment/mode; total selects anchored/time/day; subtract boolean chooses checked_subtract. Public callback order belongs TS caller; actual arithmetic/parser owners named separately. No normative algorithm step transplanted onto request dispatch.",
+      "base_locations": ["crates/temporal/ffi.rs:1228-1302"],
+      "base_source_sha256": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+      "caller_locations": "packages/temporal/native.ts:992-1042",
+      "semantic_owner_locations": "crates/temporal/duration.rs:63-245; crates/temporal/ffi.rs:1190-1226",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 919,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "transformDuration@992",
+        "kind": "callback"
+      },
+      "symbol": "transformDuration@992",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.3.16|7.3.17|7.5.20",
+        "section_ids": "sec-temporal.duration.prototype.negated|sec-temporal.duration.prototype.abs|sec-temporal-createnegatedtemporalduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.negated|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.abs|https://tc39.es/proposal-temporal/#sec-temporal-createnegatedtemporalduration",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Transports already-branded ten-field values plus absolute boolean to typed invoke or FFI; negated/absolute field arithmetic remains Duration::negated/abs. It does not own receiver branding or public construction.",
+      "base_locations": ["packages/temporal/native.ts:992-998"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:254-284",
+      "semantic_owner_locations": "crates/temporal/duration.rs:124-136",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 920,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "parseDuration@999",
+        "kind": "callback"
+      },
+      "symbol": "parseDuration@999",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "13.37",
+        "section_ids": "sec-temporal-parsetemporaldurationstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parsetemporaldurationstring",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Forwards unchanged prepared primitive string to direct parser or FFI parseDuration; public ToString/ToTemporalDuration dispatch occurs before this adapter. Rust FromStr owns grammar, fraction and sign policy.",
+      "base_locations": ["packages/temporal/native.ts:999-1002"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration-core.ts:143-147",
+      "semantic_owner_locations": "crates/temporal/duration.rs:341-435",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 921,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "validateDuration@1003",
+        "kind": "callback"
+      },
+      "symbol": "validateDuration@1003",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.5.16",
+        "section_ids": "sec-isvalidduration",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isvalidduration",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Support entrypoint transports a prepared field record through Duration::new and drops successful null result. Current TS Temporal callers validate locally via duration-core.validateDuration; no native validateDuration callsite exists. Interface presence grants no public compliance coverage.",
+      "base_locations": ["packages/temporal/native.ts:1003-1005"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/native.ts:270-270; packages/temporal/duration-core.ts:93-118",
+      "semantic_owner_locations": "crates/temporal/duration.rs:63-83",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 922,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "formatDuration@1006",
+        "kind": "callback"
+      },
+      "symbol": "formatDuration@1006",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.3.22|7.5.40",
+        "section_ids": "sec-temporal.duration.prototype.tostring|sec-temporal-temporaldurationtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.tostring|https://tc39.es/proposal-temporal/#sec-temporal-temporaldurationtostring",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Forwards already-resolved fields/precision/mode; Rust Duration::format owns rounding and FormattedDuration Display owns output. Public options read/validation ordering stays duration.ts; no duplicate ToString algorithm claimed.",
+      "base_locations": ["packages/temporal/native.ts:1006-1013"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:416-465",
+      "semantic_owner_locations": "crates/temporal/duration.rs:84-113; crates/temporal/duration.rs:508-517",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 923,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "addDuration@1014",
+        "kind": "callback"
+      },
+      "symbol": "addDuration@1014",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.3.18|7.3.19|7.5.41",
+        "section_ids": "sec-temporal.duration.prototype.add|sec-temporal.duration.prototype.subtract|sec-temporal-adddurations",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.add|https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.subtract|https://tc39.es/proposal-temporal/#sec-temporal-adddurations",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Transports one/two validated durations and subtract boolean without inspecting user bags. Rust checked_add/checked_subtract owns arithmetic/range; TS frontend owns ToTemporalDuration order and result creation.",
+      "base_locations": ["packages/temporal/native.ts:1014-1021"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:129-148",
+      "semantic_owner_locations": "crates/temporal/duration.rs:217-245",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 924,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "compareDuration@1022",
+        "kind": "callback"
+      },
+      "symbol": "compareDuration@1022",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.2.3",
+        "section_ids": "sec-temporal.duration.compare",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.compare",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Transports exact fields plus private tagged relative anchor. FFI chooses DurationAnchor::compare or compare_time; zone/calendar/date comparison dependencies remain existing owned algorithms, not generic FFI exemption.",
+      "base_locations": ["packages/temporal/native.ts:1022-1027"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:161-180",
+      "semantic_owner_locations": "crates/temporal/ffi.rs:1190-1226; crates/temporal/duration.rs:166-180",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 925,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "totalDuration@1028",
+        "kind": "callback"
+      },
+      "symbol": "totalDuration@1028",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.3.21",
+        "section_ids": "sec-temporal.duration.prototype.total",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.total",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Transports prepared unit and optional relative anchor; no reordering of public option Gets. FFI selects anchored total, exact fixed time total or day total. Result is deliberate mathematical total represented as JS Number, not field integer serialization.",
+      "base_locations": ["packages/temporal/native.ts:1028-1033"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:378-404; packages/temporal/relative-duration.ts:143-152",
+      "semantic_owner_locations": "crates/temporal/ffi.rs:1200-1205; crates/temporal/duration.rs:181-195",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    },
+    {
+      "inventory_row": 926,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/native.ts",
+        "symbol": "roundDuration@1034",
+        "kind": "callback"
+      },
+      "symbol": "roundDuration@1034",
+      "file": "packages/temporal/native.ts",
+      "bundle": "native-duration-transport",
+      "mapping_updates": {
+        "comparison_sections": "7.3.20",
+        "section_ids": "sec-temporal.duration.prototype.round",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.round",
+        "mapping_status": "mapped",
+        "relationship": "native_transport_for_operation",
+        "mapping_basis": "caller_transport_source_trace",
+        "review_status": "caller_transport_reviewed",
+        "unresolved_mapping": ""
+      },
+      "disposition": "dependency_owner_links_no_inline_algorithm_claim",
+      "evidence": "Transports already-resolved largest/smallest/increment/mode and private anchor. FFI selects anchored or no-relative round; owning TS frontend handles user options ordering, Rust rounding engine handles arithmetic/window obligations.",
+      "base_locations": ["packages/temporal/native.ts:1034-1042"],
+      "base_source_sha256": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+      "caller_locations": "packages/temporal/duration.ts:301-367; packages/temporal/relative-duration.ts:225-251",
+      "semantic_owner_locations": "crates/temporal/ffi.rs:1206-1220; crates/temporal/duration.rs:196-216",
+      "behavioral_audit_status_unchanged": true,
+      "mapping_only": true,
+      "inline_annotation_completion_claimed": false
+    }
+  ],
+  "comment_only_source_evidence": [
+    {
+      "file": "packages/temporal/rounding.ts",
+      "before_sha256": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+      "after_sha256": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+      "noncomment_source_sha256": "e65a4c7cfa4f5fe8ab984ac63b475d9f5b1223668d4d410f65be295f6aa69f6b",
+      "noncomment_source_identical": true
+    },
+    {
+      "file": "crates/temporal/rounding.rs",
+      "before_sha256": "57e2d5f42d9a889fa16ca0e483cf04e00db9d503f5690d62b8debc622b3fd7e2",
+      "after_sha256": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+      "noncomment_source_sha256": "6294c5a832e6c8648236eb3f59339dc191ef9a6fcd82026e079e6b4cd491e3a5",
+      "noncomment_source_identical": true
+    },
+    {
+      "file": "packages/temporal/lunisolar.ts",
+      "before_sha256": "9f77deca5edaeb1af3faf2f70e67dcc8dc2364584597c87b97f0e1c7088f037b",
+      "after_sha256": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+      "noncomment_source_sha256": "b219e4595ef1b67a81f5d70800f0e639ca50bad4ebdfdd1df07c521433023a44",
+      "noncomment_source_identical": true
+    }
+  ],
+  "native_transport_inline_annotation_completion_claimed": false,
+  "fresh_annotation_presence_summary": {
+    "inventory_rows": 1069,
+    "files": 74,
+    "active_rebound_rows": 1066,
+    "retired_replaced_callbacks": 3,
+    "mapping_status": {
+      "candidate": 484,
+      "unmapped": 384,
+      "mapped": 201
+    },
+    "annotation_coverage": {
+      "no_numbered_anchor": 954,
+      "direct_numbered": 95,
+      "enclosing_numbered": 17,
+      "retired_callback": 3
+    },
+    "direct_with_step_wording": 89,
+    "direct_numbered_vs_inventory_sections": {
+      "no_overlap_or_no_prior_mapping": 25,
+      "overlap": 70
+    },
+    "no_numbered_anchor_by_kind": {
+      "function": 536,
+      "named-function": 252,
+      "callback": 158,
+      "method": 8
+    },
+    "role_review_bundles": {
+      "calendar_provider_and_algorithm_review": {
+        "rows": 247,
+        "files": 19,
+        "coverage": {
+          "no_numbered_anchor": 241,
+          "direct_numbered": 6
+        }
+      },
+      "generic_runtime_or_installation_review": {
+        "rows": 9,
+        "files": 5,
+        "coverage": {
+          "no_numbered_anchor": 9
+        }
+      },
+      "native_transport_with_temporal_adapters_review": {
+        "rows": 145,
+        "files": 2,
+        "coverage": {
+          "no_numbered_anchor": 144,
+          "direct_numbered": 1
+        }
+      },
+      "rust_value_parser_arithmetic_algorithm_review": {
+        "rows": 248,
+        "files": 13,
+        "coverage": {
+          "no_numbered_anchor": 236,
+          "direct_numbered": 12
+        }
+      },
+      "time_zone_and_zoned_algorithm_review": {
+        "rows": 180,
+        "files": 12,
+        "coverage": {
+          "no_numbered_anchor": 164,
+          "direct_numbered": 8,
+          "enclosing_numbered": 8
+        }
+      },
+      "typescript_value_parser_arithmetic_algorithm_review": {
+        "rows": 240,
+        "files": 23,
+        "coverage": {
+          "no_numbered_anchor": 160,
+          "direct_numbered": 68,
+          "enclosing_numbered": 9,
+          "retired_callback": 3
+        }
+      }
+    }
+  },
+  "current_source_sha256": {
+    "crates/intl_datetimeformat/timezone.rs": "e9aadad30d1ca73153e54aee7634b6069868ac8d87ef1fa22cd6b1d1ac9a07ff",
+    "crates/intl_datetimeformat_calendars/arithmetic.rs": "e66f3ba273c4101b6c3203afa40557178dabbb7be1806942c890418a13a0f75c",
+    "crates/intl_datetimeformat_calendars/compiled.rs": "3f566cef3f11727ac6cc554f99df8abd6c213754679cf7a00a719481331d5eb4",
+    "crates/intl_datetimeformat_calendars/core.rs": "37f88fd15cb3eac034fb1c28f4fbb2cb0490ee082d21773c6a46a69beae382b5",
+    "crates/intl_datetimeformat_calendars/date_math.rs": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
+    "crates/intl_datetimeformat_calendars/ffi.rs": "262b9edc47f204a0c3365f315a41eb44f6d16162622125269779116098ce951e",
+    "crates/intl_datetimeformat_calendars/provider.rs": "9e9babca20cf719ed0e4a5b64f7d0213371f5654f4be89dc8c80cda21e3603b0",
+    "crates/intl_datetimeformat_calendars/table_calendar.rs": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
+    "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
+    "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
+    "crates/temporal/calendar_provider.rs": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+    "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
+    "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
+    "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
+    "crates/temporal/duration.rs": "e3ff55c7752266faa900d31d6a04d92293200084744971bac14aae81103de711",
+    "crates/temporal/ffi.rs": "aa4e112a3c801c46949872717336044f4b9f4e61a633c1fa91605aa80b051e7a",
+    "crates/temporal/format.rs": "2e45803ba32dc197970cfa9ccd96a6d2b412a419f5e133814c4b8fae09998b4c",
+    "crates/temporal/iso.rs": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
+    "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
+    "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
+    "crates/temporal/parse.rs": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
+    "crates/temporal/plain_relative.rs": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
+    "crates/temporal/relative_duration.rs": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
+    "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
+    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+    "crates/temporal/time.rs": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
+    "crates/temporal/timezone.rs": "b188340b4d913be0e3cd219dab9f03cae0d43cdd31fe7e5e30cc926f4f9ecf9d",
+    "crates/temporal/timezone_identity.rs": "04e2620d630e9e6942f95616d8a3548893ca803d8b5ba6497d9d609ae5fe85e9",
+    "crates/temporal/timezone_registry.rs": "669a333d0bfe8894cacb20bfaf24b14418958e23e1ec9d9758b5f54f359d9c1c",
+    "crates/temporal/zoned.rs": "9152152a6fbda5ff016c37d32fbe786d306290ee9730582e8845cfe1e96436db",
+    "crates/temporal/zoned_difference.rs": "61346edc1dcebfec4bf7f32a0a53f0ab2120ebba6309edeeaef1324e22125fe4",
+    "crates/temporal/zoned_string.rs": "76cb362390da33f12a857f38a84afeffb784282bbde80ad6ae9475a8c024ac12",
+    "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
+    "packages/temporal/calendar-table.ts": "863686a31b4e3b7055a72a49a75ce06853eb9311b830027e704f9d4a310671b5",
+    "packages/temporal/calendar.ts": "6989f4ef43f5fac774a77fb59e146514b675122309bf6ab325ef0226a4debf87",
+    "packages/temporal/compact-timezone.ts": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
+    "packages/temporal/date-bridge.ts": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
+    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+    "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
+    "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
+    "packages/temporal/duration-format.ts": "19ee165b3aa085e22dd2778fa9bbebc25ecb7099134cf314cfcdcdaff526c3bc",
+    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/fallback-data.ts": "52c397aa0ec202d294d59425df03961197230ac1ccf0b610460934466f487aa1",
+    "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
+    "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
+    "packages/temporal/host-calendar.ts": "4d098f9f90bc84c245e63ffa41b56d4b2f7878c87466515403b97603f9acc616",
+    "packages/temporal/host-timezone.ts": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
+    "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
+    "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
+    "packages/temporal/instant-string.ts": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/intrinsics.ts": "18a11f9ecd563060e7d6e4c7d844831077c9cd6a7afb1e91f28137ceb08d88d6",
+    "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
+    "packages/temporal/legacy-calendar-date.ts": "50eb13b1b9a5a6244fbb33fb206e199b93d028e9b62fc0eddf66e6b9e7e20975",
+    "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
+    "packages/temporal/legacy-extended-date.ts": "d78ec44737949e1de760d1b0ab08c7a0800b16ca2b62ba4b1b847cd1a94e917b",
+    "packages/temporal/legacy-intl.ts": "347cdf144659808c8bb599e136321509e3752068f3ad05f41d4f536105e77b91",
+    "packages/temporal/legacy-lunisolar-date.ts": "b44c13f66e70dde84d4724d719bf46f2239278ef43278caecbad3bf8e48e9e61",
+    "packages/temporal/legacy-zoned-date.ts": "2792e3f7e0a6f8afe72e383bb49e441fa0ee46fdac54a8c1fedf5b749d66f52e",
+    "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
+    "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
+    "packages/temporal/native.ts": "a9930bcb7bf15abb048e23151ad1d7b9386a19baedffdc96a3c925d931781be0",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+    "packages/temporal/plain-month-day.ts": "8047790b7818b8cc8bb09aedefa4e4ba39f9f49c112e51965f2c31d55b1a7ec1",
+    "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
+    "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+    "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f",
+    "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176"
+  },
+  "interpretation": "Direct/enclosing anchor counts measure presence only. Owner, applicable step scope and shared-callee contracts still require review. Native transport12 have mapping-only evidence; inline links remain pending. Frozen IDs/order retained; retired callbacks are not live callable locations.",
+  "measurement": {
+    "parallel_review_seconds": 438,
+    "integration_preparation_seconds": 211,
+    "root_application_started_utc": "2026-11-22 06:19:41 UTC",
+    "root_application_evidence_finished_utc": "2026-11-22 06:22:06 UTC",
+    "root_commit_and_hooks_excluded": true,
+    "sample_bias": "Proof-rich rounding/provider/transport samples; not general full-compliance throughput."
+  }
+}

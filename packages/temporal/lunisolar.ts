@@ -15,17 +15,25 @@ const month = (day * 295305888531n) / 10000000000n
 const year = (day * 146097n) / 400n
 const term = year / 12n
 const moonEpoch = 730125n * day + 65640000n
+// Euclidean floor for positive divisors; shared lunisolar arithmetic.
+// Proposal comparison §12.3.25 / §13.42 step2: provider arithmetic dependency.
 function floor(value: bigint, divisor: bigint): bigint {
   return value / divisor - (value < 0n && value % divisor !== 0n ? 1n : 0n)
 }
+// Last period boundary before the end of this integral epoch day.
+// Proposal comparison §12.3.25 / §13.42 step2: provider period dependency.
 function onOrBefore(date: bigint, base: bigint, period: bigint): bigint {
   return base + floor(date * day - base + day - 1n, period) * period
 }
 
+// Proposal comparison §12.3.6: private month-coordinate dependency.
+// Used by hostCalendarAddMonths and hostCalendarMonthDifference.
 export function lunisolarMonthSerial(epoch: number): number {
   return numberFrom(floor(bigIntFrom(epoch + 719178) * day - moonEpoch, month))
 }
 
+// Proposal comparison §12.3.6: bounded inverse-estimate dependency.
+// hostCalendarAddMonths locates the containing year.
 export function lunisolarMonthEpoch(serial: number): number {
   if (!numberIsSafeInteger(serial))
     throw new RangeErrorConstructor('Invalid month count')
@@ -35,6 +43,9 @@ export function lunisolarMonthEpoch(serial: number): number {
   return numberFrom(epoch)
 }
 
+// Proposal comparison §12.3.25: chosen Chinese/Dangi fallback year partition.
+// Provider data dependency of §13.42 step2, not the complete date conversion.
+// https://tc39.es/proposal-temporal/#sec-temporal-nonisocalendarisotodate
 export function approximateLunisolarYear(
   calendar: 'chinese' | 'dangi',
   relatedYear: number
