@@ -38,6 +38,10 @@ pnpm add @formatjs/intl-getcanonicallocales
 
 ## Usage
 
+Array-like locale lists read and coerce `length` once. Non-Locale object entries use
+the string coercion hint, including `document.all`-style host objects. BigInt or
+Symbol lengths throw `TypeError`; NaN and negative lengths produce an empty list.
+
 ### Via polyfill-fastly.io
 
 You can use [polyfill-fastly.io URL Builder](https://polyfill-fastly.io/) to create a polyfill script tag for `Intl.GetCanonicalLocales`. For example:

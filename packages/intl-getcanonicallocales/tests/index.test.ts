@@ -377,3 +377,90 @@ it('canonicalizes variant aliases without a mutable array predicate', () => {
   }
   expect(actual!).toEqual(['hyw', 'ja-Latn-alalc97'])
 })
+
+it.each([
+  ['floor', Math, 'floor'],
+  ['min', Math, 'min'],
+  ['max', Math, 'max'],
+  ['trunc', Math, 'trunc'],
+  ['isNaN', globalThis, 'isNaN'],
+] as const)(
+  'converts locale-list length without mutable %s',
+  (_name, owner, key) => {
+    const original = Object.getOwnPropertyDescriptor(owner, key)!
+    const reads: string[] = []
+    const length = {
+      [Symbol.toPrimitive](hint: string) {
+        reads.push(hint)
+        return 1.9
+      },
+    }
+    let actual: unknown
+    try {
+      Object.defineProperty(owner, key, {
+        ...original,
+        value() {
+          throw new Error('Mutable locale length helper reached')
+        },
+      })
+      actual = getCanonicalLocales({
+        0: 'en',
+        1: 'fr',
+        get length() {
+          reads.push('length')
+          return length
+        },
+      } as any)
+    } finally {
+      Object.defineProperty(owner, key, original)
+    }
+    expect(actual).toEqual(['en'])
+    expect(reads).toEqual(['length', 'number'])
+  }
+)
+
+it('boxes locale-list inputs without the mutable Object constructor', () => {
+  const define = Object.defineProperty
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'Object')!
+  let actual: unknown
+  try {
+    define(globalThis, 'Object', {
+      ...original,
+      value() {
+        throw new Error('Mutable locale Object constructor reached')
+      },
+    })
+    actual = [
+      getCanonicalLocales(7 as any),
+      getCanonicalLocales({length: 0} as any),
+    ]
+  } finally {
+    define(globalThis, 'Object', original)
+  }
+  expect(actual).toEqual([[], []])
+})
+
+it('uses intrinsic TypeError for invalid locale-list entries and null input', () => {
+  const Expected = TypeError
+  const original = Object.getOwnPropertyDescriptor(globalThis, 'TypeError')!
+  const errors: unknown[] = []
+  try {
+    Object.defineProperty(globalThis, 'TypeError', {
+      ...original,
+      value: function () {
+        throw new Error('Mutable locale TypeError constructor reached')
+      },
+    })
+    for (const input of [null, [1], [Symbol()]]) {
+      try {
+        getCanonicalLocales(input as any)
+      } catch (error) {
+        errors.push(error)
+      }
+    }
+  } finally {
+    Object.defineProperty(globalThis, 'TypeError', original)
+  }
+  expect(errors).toHaveLength(3)
+  for (const error of errors) expect(error).toBeInstanceOf(Expected)
+})

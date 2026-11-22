@@ -1,4 +1,7 @@
-import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
+import {
+  TypeErrorConstructor,
+  objectFrom,
+} from '#packages/ecma262-abstract/intrinsics.js'
 /**
  * https://tc39.es/ecma262/#sec-toobject
  */
@@ -10,5 +13,5 @@ export function ToObject<T>(
       'undefined/null cannot be converted to object'
     )
   }
-  return Object(arg)
+  return objectFrom(arg)
 }

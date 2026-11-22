@@ -781,7 +781,7 @@ sh_test(
             "//packages/ecma262-abstract",
             "//packages/ecma402-abstract/DateTimeFormat",
             "//packages/ecma402-abstract/types",
-        ],
+        ] + (["//:node_modules/@formatjs/intl-getcanonicallocales"] if name == "instant_test" else []),
     )
     for name, sources, data in [
         (
