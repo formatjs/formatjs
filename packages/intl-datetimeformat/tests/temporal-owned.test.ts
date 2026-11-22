@@ -46,6 +46,50 @@ afterAll(() => {
 })
 const epoch = 1_580_725_840_321
 
+test.each(['aMeRiCa/nEw_YoRk', '+0530'])(
+  'constructs a Temporal formatter for %s without mutable lookup hooks',
+  timeZone => {
+    const instant = new Temporal.Instant(0n)
+    const reference = new DateTimeFormat('en', {timeZone})
+    const hooks = [
+      [String.prototype, 'charCodeAt'],
+      [String.prototype, 'toUpperCase'],
+      [RegExp.prototype, 'test'],
+      [RegExp.prototype, 'exec'],
+      [Array.prototype, 'map'],
+      [Array.prototype, 'forEach'],
+      [Object, 'keys'],
+      [globalThis, 'parseInt'],
+    ] as const
+    const define = Object.defineProperty
+    const descriptors = hooks.map(([owner, key]) =>
+      Object.getOwnPropertyDescriptor(owner, key)!
+    )
+    let formatter
+    try {
+      for (let index = 0; index < hooks.length; index++) {
+        const [owner, key] = hooks[index]
+        define(owner, key, {
+          ...descriptors[index],
+          value() {
+            throw new Error(`Unexpected timezone lookup hook ${key}`)
+          },
+        })
+      }
+      formatter = new DateTimeFormat('en', {timeZone})
+    } finally {
+      for (let index = 0; index < hooks.length; index++) {
+        const [owner, key] = hooks[index]
+        define(owner, key, descriptors[index])
+      }
+    }
+    expect(formatter.resolvedOptions().timeZone).toBe(
+      reference.resolvedOptions().timeZone
+    )
+    expect(formatter.format(instant)).toBe(reference.format(instant))
+  }
+)
+
 test('caches the bound formatter without a mutable Object.defineProperty hook', () => {
   const options = {timeZone: 'UTC'}
   const instant = new Temporal.Instant(0n)

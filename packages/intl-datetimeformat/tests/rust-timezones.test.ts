@@ -114,7 +114,7 @@ it.each(['all', 'golden'])(
       expect(actual[index].samples!.length).toBe(entry.instants.length)
       for (let position = 0; position < entry.instants.length; position++) {
         const instant = BigInt(entry.instants[position])
-        const expected = ToLocalTime(instant, 'gregory', canonical, {tzData})
+        const expected = ToLocalTime(instant, 'gregory', canonical!, {tzData})
         const nanosecond = Number(
           ((instant % 1_000_000_000n) + 1_000_000_000n) % 1_000_000_000n
         )
@@ -191,7 +191,7 @@ it('matches aliases, ASCII case folding, fixed offsets and invalid names', () =>
       const expected = ToLocalTime(
         BigInt(entry.instants[position]),
         'gregory',
-        canonical,
+        canonical!,
         {tzData}
       )
       expect(actual[index].samples![position]!.slice(-2), entry.name).toEqual([

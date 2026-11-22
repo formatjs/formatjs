@@ -40,7 +40,8 @@ const temporalFormatMapGet = Map.prototype.get
 const temporalFormatMapSet = Map.prototype.set
 const temporalFormatApply = Reflect.apply
 
-const rangePatternKeys = Object.keys
+const objectKeys = Object.keys
+const timeZoneUpperCase = String.prototype.toUpperCase
 const rangePatternStartsWith = String.prototype.startsWith
 const rangePatternEndsWith = String.prototype.endsWith
 const rangeTextWidthFields = ['weekday', 'month'] as const
@@ -65,14 +66,14 @@ function matchRangeWidths(
   }
   if (format.era === 'narrow') widths.era = 'narrow'
   if (
-    !rangePatternKeys(widths).length &&
+    !objectKeys(widths).length &&
     format.timeZoneName === undefined &&
     options.dayPeriod === undefined &&
     options.fractionalSecondDigits === undefined
   )
     return ranges
   const result = {__proto__: null} as unknown as Formats['rangePatterns']
-  const fields = rangePatternKeys(ranges) as Array<TABLE_2 | 'default'>
+  const fields = objectKeys(ranges) as Array<TABLE_2 | 'default'>
   for (let index = 0; index < fields.length; index++) {
     const field = fields[index]
     const range = ranges[field]
@@ -357,6 +358,8 @@ export function InitializeDateTimeFormat(
   internalSlots.numberingSystem = r.nu
   const {dataLocale} = r
   internalSlots.dataLocale = dataLocale
+  // Temporal §15.4.1 steps 27–32 resolve the named or fixed-offset identifier.
+  // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   let {timeZone} = options
   if (timeZone !== undefined) {
     if (localeTimeZone !== undefined)
@@ -366,7 +369,7 @@ export function InitializeDateTimeFormat(
     timeZone = ToString(timeZone)
     if (
       !IsValidTimeZoneName(timeZone, {
-        zoneNamesFromData: Object.keys(tzData),
+        zoneNamesFromData: objectKeys(tzData),
         uppercaseLinks,
       })
     ) {
@@ -377,13 +380,15 @@ export function InitializeDateTimeFormat(
   }
   const dataTimeZone =
     CanonicalizeTimeZoneName(timeZone, {
-      zoneNames: Object.keys(tzData),
+      zoneNames: objectKeys(tzData),
       uppercaseLinks,
     }) ?? timeZone
   // Temporal preserves the supplied identifier; formatting uses its target data.
   // https://tc39.es/proposal-temporal/#sec-intl.datetimeformat
   internalSlots.timeZone =
-    uppercaseIdentifiers[timeZone.toUpperCase()] ?? dataTimeZone
+    uppercaseIdentifiers[
+      temporalFormatApply(timeZoneUpperCase, timeZone, [])
+    ] ?? dataTimeZone
   internalSlots.dataTimeZone = dataTimeZone
 
   // Temporal §15.4.1 step 35 creates the format options record.
