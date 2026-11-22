@@ -26,7 +26,7 @@ import {
   type DateProperties,
 } from '#packages/temporal/plain-date.js'
 import {
-  PlainTime,
+  toPlainTimeNanoseconds,
   createPlainTime,
   roundTime,
   type PlainTimeObject,
@@ -36,7 +36,6 @@ import {
   getZonedDateTimeSlot,
   getDateTimeSlot,
   setDateTimeSlot,
-  getTimeSlot,
   type DateTimeSlot,
 } from '#packages/temporal/plain-slots.js'
 import {
@@ -94,6 +93,12 @@ import {
   roundInstant,
   type Precision,
 } from '#packages/temporal/rounding.js'
+
+const stringSlice = Function.prototype.call.bind(String.prototype.slice) as (
+  value: string,
+  start: number,
+  end?: number
+) => string
 
 export interface PlainDateTimeObject extends DateProperties {
   readonly [Symbol.toStringTag]: 'Temporal.PlainDateTime'
@@ -348,7 +353,7 @@ function format(
       show
     )
   return (
-    formatInstant(value, precision).slice(0, -1) +
+    stringSlice(formatInstant(value, precision), 0, -1) +
     calendarAnnotation(slot.calendar, show)
   )
 }
@@ -422,7 +427,7 @@ class PlainDateTimeValue {
   }
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
     const slot = read(this)
-    const clock = time === undefined ? 0n : getTimeSlot(PlainTime.from(time))!
+    const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(
       bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay + clock,
       slot.calendar
@@ -547,7 +552,7 @@ class PlainDateTimeValue {
     const value =
       bigIntFrom(epochDayOf(slot.epochNanoseconds)) * nsPerDay +
       roundInstant(timeOf(slot.epochNanoseconds), quantum, mode)
-    return formatInstant(value, precision).slice(0, -1) + suffix
+    return stringSlice(formatInstant(value, precision), 0, -1) + suffix
   }
   toLocaleString(
     locales: unknown = undefined,

@@ -124,6 +124,11 @@ selecting a reference year. Short-date parsing and `toPlainDate` keep private
 fields separate from inherited properties; Chinese/Dangi leap-code handling
 remains independent of replaced string methods.
 
+Plain relative Duration totals and rounds reject destinations outside
+PlainDateTime bounds before rounding. Exact adjacent values and zero-duration
+shortcuts remain supported. PlainDateTime time replacement and serialization
+remain independent of later changes to PlainTime.from and String.prototype.slice.
+
 Without Intl, default `Temporal.Now` timezone offsets remain independent of
 later replacements of `String` or `String.prototype.padStart`.
 

@@ -2072,6 +2072,25 @@ fn plain_relative_test262_range_and_prefix_cases() {
     use formatjs_temporal::{
         DateTimeUnit as U, Duration, PlainDate, PlainDateTime, RoundingMode as R,
     };
+    let near_min: PlainDate = "-271821-04-20".parse().unwrap();
+    let negative_day: Duration = "-P1D".parse().unwrap();
+    assert!(near_min.total_duration(negative_day, U::Hour).is_err());
+    assert!(
+        near_min
+            .round_duration(negative_day, U::Day, U::Hour, 1, R::HalfExpand)
+            .is_err()
+    );
+    let adjacent: Duration = "-PT23H59M59.999999999S".parse().unwrap();
+    assert_eq!(
+        near_min.total_duration(adjacent, U::Hour).unwrap(),
+        -86_399_999_999_999.0 / 3_600_000_000_000.0
+    );
+    assert_eq!(
+        near_min
+            .round_duration(adjacent, U::Hour, U::Nanosecond, 1, R::HalfExpand)
+            .unwrap(),
+        adjacent
+    );
     let zero = Duration::new([0; 10]).unwrap();
     let earliest: PlainDate = "-271821-04-19".parse().unwrap();
     let latest: PlainDate = "+275760-09-13".parse().unwrap();

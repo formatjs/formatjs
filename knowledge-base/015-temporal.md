@@ -25,6 +25,12 @@ Shared TS/native Hermes controls preserve public year inheritance, overflow orde
 and valid endpoints. [13 targets](audits/temporal-month-day-validation-targets.txt) pass.
 Source-only findings stay in the [review queue](audits/temporal-open-candidates.md).
 
+Plain relative Duration totals and rounds validate unequal synthetic endpoints
+against PlainDateTime bounds before ratio conversion or rounding. The excluded
+lower midnight rejects; adjacent1ns and equal-zero shortcuts remain. PlainDateTime
+withPlainTime reuses internal conversion; private ISO output uses captured runtime
+slice. [16 focused targets](audits/temporal-plain-relative-validation-targets.txt) pass.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

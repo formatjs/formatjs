@@ -179,12 +179,13 @@ export function relativeTotal(
         bigIntFrom(fields.weeks) * 7n * nsPerDay + durationNanoseconds(fields)
       if (value <= -maxDurationNanoseconds || value >= maxDurationNanoseconds)
         throw new RangeErrorConstructor('Duration out of range')
-      dayCheck(epochDayOf(relativeOrigin(relative) + value))
+      checkDateTime(relativeOrigin(relative) + value)
       return durationTotalNumber(value, factors[unit])
     }
   }
   const start = relativeOrigin(relative),
     end = relativeEndpoint(relative, fields)
+  if ('date' in relative && end !== start) checkDateTime(end)
   if (
     unit !== 'year' &&
     unit !== 'month' &&
@@ -192,7 +193,6 @@ export function relativeTotal(
     (unit !== 'day' || 'date' in relative)
   )
     return durationTotalNumber(end - start, factors[unit])
-  if ('date' in relative) checkDateTime(end)
   const difference =
     'zoned' in relative
       ? unroundedZonedDifference(relative.zoned, end, unit)
@@ -246,6 +246,7 @@ export function relativeRound(
   const start = relativeOrigin(relative)
   if (durationSign(fields) && 'date' in relative) checkDateTime(start)
   const end = relativeEndpoint(relative, fields)
+  if ('date' in relative && end !== start) checkDateTime(end)
   if (smallest === 'week' && (largest === 'year' || largest === 'month')) {
     const full =
       'zoned' in relative

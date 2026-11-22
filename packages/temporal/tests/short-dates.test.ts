@@ -1,4 +1,5 @@
 import {
+  checkPlainDateTimeFormattingHooks,
   checkMonthDayPrivateMerge,
   checkMonthDayOriginalDateLimits,
   checkShortDatePrivateEra,
@@ -234,6 +235,7 @@ it('reads short-date overflow once and keeps constrained string normalization', 
 })
 
 for (const check of [
+  checkPlainDateTimeFormattingHooks,
   checkMonthDayPrivateMerge,
   checkMonthDayOriginalDateLimits,
   checkShortDatePrivateEra,

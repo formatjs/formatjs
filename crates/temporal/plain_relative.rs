@@ -132,14 +132,14 @@ impl<C: CalendarProvider> PlainDate<C> {
             if value <= -MAX_DURATION_NANOSECONDS || value >= MAX_DURATION_NANOSECONDS {
                 return Err(Error::InvalidDuration);
             }
-            PlainDate::from_epoch_day(anchor.date_at(anchor.origin() + value)?)?;
+            PlainDateTime::from_epoch_nanoseconds(anchor.origin() + value)?;
             let divisor = unit
                 .time()
                 .map_or(NANOSECONDS_PER_DAY, |time| time.nanoseconds());
             return Ok(crate::duration::rational_to_f64(value, divisor));
         }
         let end = anchor.endpoint(fields)?;
-        if unit <= DateTimeUnit::Week {
+        if end != anchor.origin() {
             PlainDateTime::from_epoch_nanoseconds(end)?;
         }
         if unit == DateTimeUnit::Day {
@@ -163,6 +163,9 @@ impl<C: CalendarProvider> PlainDate<C> {
             PlainDateTime::from_epoch_nanoseconds(anchor.origin())?;
         }
         let end = anchor.endpoint(duration.fields())?;
+        if end != anchor.origin() {
+            PlainDateTime::from_epoch_nanoseconds(end)?;
+        }
         crate::relative_duration::round(&anchor, end, largest, smallest, increment, mode)
     }
     pub fn compare_durations(

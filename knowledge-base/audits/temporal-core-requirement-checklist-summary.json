@@ -35,13 +35,13 @@
     "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
   ],
   "review_status_counts": {
-    "verified": 103,
-    "informative": 121,
-    "verified_local_step": 1651,
-    "conditional": 172,
-    "spec_issue": 45,
-    "unreconciled": 1622,
-    "existing_evidence_pending": 1075,
+    "verified": 151,
+    "informative": 179,
+    "verified_local_step": 3119,
+    "conditional": 302,
+    "spec_issue": 56,
+    "unreconciled": 560,
+    "existing_evidence_pending": 422,
     "partial": 1,
     "reviewed": 18
   },
@@ -122,7 +122,7 @@
     "complete_operations_claimed": 0,
     "verification_note": "Existing working polyfill remains baseline; local reviewed steps do not erase conditional premises or verify complete methods"
   },
-  "checklist_rows_with_implementation_locations": 3934,
+  "checklist_rows_with_implementation_locations": 4373,
   "implementation_status_note": "present records a source binding or helper correspondence, not verified behavior. mapping_unresolved never means implementation missing.",
   "fix_status_note": "not_reconciled preserves historical corrections and in-progress PRs for row-level import; it does not mean no defects or no fixes exist. Current fixes and validation remain in the linked audit ledger.",
   "status_definitions": {
@@ -137,18 +137,18 @@
     "spec_issue": "Existing published inconsistency, including propagated gates; recorded separately from implementation defects."
   },
   "latest_numbered_pass": {
-    "chapters": ["5", "10"],
-    "rows_reviewed": 637,
-    "step_rows_reviewed": 418,
-    "new_confirmed_gaps": 4,
-    "gap_state": "Four MonthDay gaps reproduced and corrected; two PlainDateTime source candidates await reproduction.",
-    "validation_targets": 13,
+    "chapters": ["6", "7", "11"],
+    "rows_reviewed": 1715,
+    "step_rows_reviewed": 1321,
+    "new_confirmed_gaps": 3,
+    "gap_state": "Plain relative lower destination, PlainDateTime formatting hook and withPlainTime hook reproduced and corrected; remaining source candidates queued.",
+    "validation_targets": 16,
     "validation_executed": 10,
-    "validation_cached": 3
+    "validation_cached": 6
   },
   "numbered_pass_totals": {
-    "chapters": ["1", "2", "3", "4", "5", "8", "9", "10"],
-    "rows_reviewed": 2089,
-    "note": "Includes informative text and propagated gates; constructor realm, parser/provider, and published spec premises stay explicit."
+    "chapters": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
+    "rows_reviewed": 3804,
+    "note": "Caller-local proofs retain actual realm, parser/provider, window and published spec premises; informative rows/gates included."
   }
 }

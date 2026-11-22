@@ -7,7 +7,8 @@ export function checkPlainDateTimeConversion(
   const date = new Temporal.PlainDate(2020, 2, 29),
     time = new Temporal.PlainTime(12, 34, 56, 123, 456, 789),
     original = Temporal.PlainTime.from
-  let plain: ReturnType<typeof date.toPlainDateTime> | undefined,
+  let changed: ReturnType<typeof date.toPlainDateTime> | undefined,
+    plain: ReturnType<typeof date.toPlainDateTime> | undefined,
     zoned: ReturnType<typeof date.toZonedDateTime> | undefined
   Temporal.PlainTime.from = () => {
     throw new Error('Public PlainTime.from reached')
@@ -15,9 +16,15 @@ export function checkPlainDateTimeConversion(
   try {
     plain = date.toPlainDateTime(time)
     zoned = date.toZonedDateTime({timeZone: 'UTC', plainTime: time})
+    changed = date.toPlainDateTime().withPlainTime(time)
   } finally {
     Temporal.PlainTime.from = original
   }
+  equal(
+    changed!.toString(),
+    '2020-02-29T12:34:56.123456789',
+    'Private date-time replacement'
+  )
   equal(
     plain!.toString(),
     '2020-02-29T12:34:56.123456789',
@@ -245,6 +252,26 @@ export function checkMonthDayLeapCodeHooks(
   }
 }
 
+export function checkPlainDateTimeFormattingHooks(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const value = new Temporal.PlainDateTime(2020, 1, 2, 3, 4),
+    original = String.prototype.slice
+  let text: string | undefined, json: string | undefined
+  String.prototype.slice = () => {
+    throw new Error('Private date-time slice reached')
+  }
+  try {
+    text = value.toString()
+    json = value.toJSON()
+  } finally {
+    String.prototype.slice = original
+  }
+  equal(text, '2020-01-02T03:04:00', 'PlainDateTime string private formatting')
+  equal(json, text, 'PlainDateTime JSON private formatting')
+}
+
 export function checkDateOutputOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
@@ -258,6 +285,7 @@ export function checkDateOutputOracle(
   checkMonthDayOriginalDateLimits(Temporal, equal)
   checkShortDatePrivateEra(Temporal, equal)
   checkMonthDayLeapCodeHooks(Temporal, equal)
+  checkPlainDateTimeFormattingHooks(Temporal, equal)
   let count = 0
   const rejects = (run: () => unknown, context: string) => {
     let rejected = false

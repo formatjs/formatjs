@@ -1,3 +1,4 @@
+import {checkPlainRelativeEndpointBounds} from '#packages/temporal/tests/plain-relative-oracle.js'
 import {checkPlainRelativeOracle} from '#packages/temporal/tests/plain-relative-oracle.js'
 import {runfiles} from '@bazel/runfiles'
 import {readFileSync} from 'node:fs'
@@ -83,4 +84,10 @@ it('balances rounded differences across both plain date limits', () => {
           .toString()
       ).toBe(result)
     }
+})
+
+it('rejects the excluded lower destination midnight but preserves adjacent values and zero', () => {
+  checkPlainRelativeEndpointBounds(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
 })

@@ -25,8 +25,8 @@ numbered steps, including 760 amendment steps whose applicability is pending.
 [amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
-algorithm rows. Numbered passes now reconcile 2,089 rows across chapters
-1, 2, 3, 4, 5, 8, 9 and 10; 2,697 core rows await reconciliation, 172 remain conditional.
+algorithm rows. Numbered passes now reconcile 3,804 rows across chapters
+1–11; 982 core rows await reconciliation, 302 remain conditional.
 Local verified steps do not imply complete caller compliance.
 
 Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
@@ -87,6 +87,23 @@ PlainDateTime source/precision proofs reuse prior evidence; its two newly found
 source candidates await reproduction in the [review queue](temporal-open-candidates.md).
 Foreign-realm fallback remains consistently conditional across constructors.
 No transitive chapter or complete Temporal signoff.
+
+## Duration, ZonedDateTime and timezone numbered pass, 2026-11-22
+
+Another1,715 rows reconciled: Duration883, ZonedDateTime646, timezone186.
+Exact Duration integer/rational arithmetic reuses existing BigInt/i128 and
+nearest-even ratio proofs. Caller-local source mappings retain named calendar,
+zone-window, parser, realm and published-comparison premises. Source candidates
+remain in the separate review queue until reproduced.
+
+Three demonstrated gaps corrected. Plain relative total and round reject the
+excluded lower PlainDateTime midnight before arithmetic/rounding, reusing
+existing TS/Rust guards. Adjacent1ns and equal-zero shortcuts remain valid.
+PlainDateTime withPlainTime reuses the private time adapter; toString/toJSON
+use captured runtime slice on private text. Public regressions fail before
+correction. All16 focused targets pass (10 executed, six cached), including
+Rust, full Duration/PlainDateTime Test262 and TS/native Hermes source/bytecode.
+[Target manifest](temporal-plain-relative-validation-targets.txt).
 
 ## Private difference preparation, 2026-11-22
 

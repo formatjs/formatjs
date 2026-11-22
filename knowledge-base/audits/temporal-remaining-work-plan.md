@@ -25,7 +25,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                      |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability pending                                 |
 
-Code maps cover 82 distinct selected source files and 23,718 physical lines.
+Code maps cover 82 distinct selected source files and 23,727 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -91,24 +91,24 @@ conditional obligations, confirmed implementation gaps and unlanded corrections
 separately. Candidate source assignments require confirmation; 399 unresolved
 helper mappings are a mapping queue, not 399 missing functions.
 
-Numbered passes reconcile 2,089 rows across chapters 1, 2, 3, 4, 5, 8, 9 and 10.
-Current core register: 2,697 rows await reconciliation, 172 conditional,
-45 rows retain existing spec issues, one partial. Local decisions are not
-whole-operation signoff. Now fallback correction is pushed to main at ae94b3059.
-Four reproduced PlainDate gaps are corrected, with focused validation below.
-Four MonthDay gaps are also corrected; 13 focused targets pass.
-Duration/ZonedDateTime review continues; [candidate queue](temporal-open-candidates.md)
-keeps source findings separate from confirmed gaps.
+Numbered passes reconcile 3,804 rows across chapters 1–11. Current core
+register: 982 rows await reconciliation, 302 conditional rows, 56 rows with
+existing spec issues, one partial. Informative rows and propagated gates are
+included; these are not compliance percentages. MonthDay correction is pushed
+at 07b1fafbc; the next three demonstrated gaps are corrected and validated.
+[Candidate queue](temporal-open-candidates.md) separates remaining source findings
+from runtime-confirmed defects.
 
-Pilot interval: 03:06:12–03:21:57 UTC on 2026-11-22, including parallel review,
-one correction and validation: about 41 rows/minute. Remaining 2,697 core plus
-1,057 amendment rows would take about 92 minutes at that pilot rate. Plan 3–6 hours
-for the remaining first review pass, allowing slower shared algorithms and
-amendment applicability review. This is a review-pass estimate, not a full
-compliance deadline: 172 conditional rows (including propagated gates), confirmed fixes and external
-spec issues need separate closure. Recalculate after the next disjoint batch;
-row costs vary. Do not derive progress from citations, PR counts or source lines.
-Earlier 7–14-day forecast is retired.
+Measured review interval: 03:06:12–03:44:27 UTC on 2026-11-22. Parallel review,
+existing-proof reconciliation, nine initial gap corrections and validation
+covered 3,804 rows in about38 minutes, roughly100 rows/minute. Current three
+corrections complete the next batch. Remaining982 core plus1,057 amendment rows
+would take about20 minutes at that aggregate rate. Plan30–60 minutes for the
+remaining first pass, allowing applicability and slower shared operations.
+This replaces the earlier3–6-hour first-pass forecast. Fixing queued candidates
+and closing named conditional premises remain separate work; the first pass is
+not the full compliance deadline. Recalculate after the next batch. Do not use
+citation growth, PR counts or source-line extrapolation as review throughput.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),
@@ -163,3 +163,11 @@ and parsed fields have null prototypes; leap-code handling uses indexed
 characters. All 13 focused targets pass (10 executed, three cached), including
 MonthDay and shared YearMonth TS/native Hermes source and bytecode.
 [Validation targets](temporal-month-day-validation-targets.txt).
+
+Plain relative total/round now validate unequal synthetic destinations with
+existing PlainDateTime guards, including the exact lower excluded midnight.
+One-nanosecond-inside and equal-zero controls remain valid. PlainDateTime reuses
+internal time conversion and a captured runtime slice method for private ISO
+formatting. All16 focused targets pass (10 executed, six cached), including
+full Duration/PlainDateTime Test262 and both Hermes backends/source forms.
+[Validation targets](temporal-plain-relative-validation-targets.txt).
