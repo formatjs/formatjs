@@ -1,0 +1,479 @@
+{
+  "scope": "16 local TS parser and caller-dependency mappings. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "packages/temporal/instant-string.ts",
+      "before_sha256": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
+      "after_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a",
+      "verified_callable_count": 34,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    695, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711,
+    712
+  ],
+  "review_timing": {
+    "scope": "Full source review and integration time was not measured.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 695,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "fractionDigits",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "19",
+        "end_line": "22",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-19.b"],
+      "annotation_placement": "leading",
+      "annotation_line": 18,
+      "annotation": "// Proposal comparison \u00a713.35 step 19.b: pad the consumed fraction to nine digits.",
+      "evidence": "The caller reads only the first nine digits. Appending zeros up to width nine yields the same three subfields as appending a full nine zeros. A missing fraction yields zero for all three fields."
+    },
+    {
+      "inventory_row": 698,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "stringPart",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "60",
+        "end_line": "64",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 59,
+      "annotation": "// Proposal comparison \u00a713.35 step 7: copy bounded field spans from the source string.",
+      "evidence": "Token readers pass bounded spans of the original string. Indexed code-unit copies preserve source text for ASCII numeric fields. This generic helper also serves suffix and annotation callers."
+    },
+    {
+      "inventory_row": 699,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "bracketIndex",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "66",
+        "end_line": "70",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-4.a.i"],
+      "annotation_placement": "leading",
+      "annotation_line": 65,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.i: split the lexical body from its bracket suffix.",
+      "evidence": "The first left bracket locates where the full suffix starts for the short/date/calendar/time parsing callers. validateAnnotations checks the remaining bracket syntax."
+    },
+    {
+      "inventory_row": 700,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "decimalAt",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "72",
+        "end_line": "74",
+        "comparison_sections": "13.31",
+        "section_ids": "sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 71,
+      "annotation": "// Proposal comparison \u00a713.31 DecimalDigit: recognize one ASCII digit at a bounded index.",
+      "evidence": "Index upper bound and ordered string comparisons delimit exactly ASCII 0 through 9 for token-reader indices."
+    },
+    {
+      "inventory_row": 701,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "digitsAt",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "76",
+        "end_line": "81",
+        "comparison_sections": "13.31",
+        "section_ids": "sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 75,
+      "annotation": "// Proposal comparison \u00a713.31 Date and Time: check fixed-width ASCII digit spans.",
+      "evidence": "Reject overlong reads, then apply DecimalDigit membership to each code unit. Numeric field ranges and end-of-input checks belong to the calling parser."
+    },
+    {
+      "inventory_row": 702,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "datePrefix",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "83",
+        "end_line": "102",
+        "comparison_sections": "13.31|13.35",
+        "section_ids": "sec-temporal-iso8601grammar|sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar|https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1", "13.35/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 82,
+      "annotation": "// Proposal comparison \u00a713.31 DateSpec: read year, separators, month and day.",
+      "evidence": "Read four unsigned or six signed year digits and two-digit month/day fields, with consistently present or absent date separators. Negative-zero and Gregorian validity are separate checks."
+    },
+    {
+      "inventory_row": 703,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "timeMarker",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "104",
+        "end_line": "109",
+        "comparison_sections": "13.31",
+        "section_ids": "sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 103,
+      "annotation": "// Proposal comparison \u00a713.31 DateTimeSeparator: accept space, T or t at this index.",
+      "evidence": "Bounded membership test implements the exact lexical separator alternatives. Caller establishes this is the separator position."
+    },
+    {
+      "inventory_row": 704,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "hasTimeMarker",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "111",
+        "end_line": "115",
+        "comparison_sections": "13.31",
+        "section_ids": "sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 110,
+      "annotation": "// Proposal comparison \u00a713.31 DateTime: locate the marker in a parsed zoned body.",
+      "evidence": "The zoned caller uses the lexical separator predicate to distinguish date-only and time-bearing bodies after splitting annotations. Final structural validation stays in parseISODateParts."
+    },
+    {
+      "inventory_row": 705,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "isZ",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "117",
+        "end_line": "119",
+        "comparison_sections": "13.31",
+        "section_ids": "sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 116,
+      "annotation": "// Proposal comparison \u00a713.31 UTCDesignator: recognize Z or z.",
+      "evidence": "Strict equality recognizes the two designator alternatives. The calling goal establishes where a designator may occur."
+    },
+    {
+      "inventory_row": 706,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "endsInZ",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "121",
+        "end_line": "123",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-26",
+        "13.35/algorithm-1/step-26.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 120,
+      "annotation": "// Proposal comparison \u00a713.35 steps 26\u201326.a: detect a trailing UTC designator in the body.",
+      "evidence": "After splitting annotations, inspect the final code unit as the possible UTCDesignator. The zoned caller checks the time requirement and assembles its result."
+    },
+    {
+      "inventory_row": 707,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "withoutZ",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "125",
+        "end_line": "127",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-26"],
+      "annotation_placement": "leading",
+      "annotation_line": 124,
+      "annotation": "// Proposal comparison \u00a713.35 step 26: strip a detected designator before field parsing.",
+      "evidence": "Conditional suffix removal is an implementation dependency for reuse of the date-time field scanner in zoned and calendar entrypoints. Callers own grammar acceptance and UTC interpretation."
+    },
+    {
+      "inventory_row": 708,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "timePrefix",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "129",
+        "end_line": "162",
+        "comparison_sections": "13.31|13.35",
+        "section_ids": "sec-temporal-iso8601grammar|sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar|https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1", "13.35/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 128,
+      "annotation": "// Proposal comparison \u00a713.31 TimeSpec: capture clock fields, separators and fraction digits.",
+      "evidence": "Read two-digit clock fields with consistent basic/extended separators, accept comma or point for a nonempty seconds fraction, and stop at nine fraction digits. Caller enforces field ranges and rejects excess suffix."
+    },
+    {
+      "inventory_row": 709,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "offsetEnd",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "164",
+        "end_line": "190",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-27.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 163,
+      "annotation": "// Proposal comparison \u00a713.35 step 27.a: find the end of the numeric offset span.",
+      "evidence": "Locate a signed offset token with two-digit fields and optional fraction, without interpreting it as an offset value. The shared UTCOffsetNanoseconds scanner validates ranges and complete syntax."
+    },
+    {
+      "inventory_row": 710,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "isoMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "192",
+        "end_line": "229",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.i",
+        "13.35/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 191,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.i: scan a date-time prefix and keep its suffix.",
+      "evidence": "Collect candidate date/time and offset fields and retain the trailing source for validation. Instant mode requires both clock and offset. This scanner does not decide full parse-goal acceptance."
+    },
+    {
+      "inventory_row": 711,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "yearMonthMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "231",
+        "end_line": "241",
+        "comparison_sections": "13.31|13.35",
+        "section_ids": "sec-temporal-iso8601grammar|sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar|https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1", "13.35/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 230,
+      "annotation": "// Proposal comparison \u00a713.31 DateSpecYearMonth: capture the complete short-date body.",
+      "evidence": "Read signed six-digit or unsigned four-digit year and two-digit month, allowing the optional hyphen and requiring end of body. Calendar and month validity are checked by callers."
+    },
+    {
+      "inventory_row": 712,
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/instant-string.ts",
+        "symbol": "monthDayMatch",
+        "kind": "named-function"
+      },
+      "mapping_updates": {
+        "start_line": "243",
+        "end_line": "251",
+        "comparison_sections": "13.31|13.35",
+        "section_ids": "sec-temporal-iso8601grammar|sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar|https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a"
+      },
+      "spec_row_ids": ["13.31/grammar-1", "13.35/algorithm-1/step-7"],
+      "annotation_placement": "leading",
+      "annotation_line": 242,
+      "annotation": "// Proposal comparison \u00a713.31 DateSpecMonthDay: capture the complete month-day body.",
+      "evidence": "Consume optional double-hyphen prefix, two-digit month, optional separator and two-digit day with end-of-body requirement. Caller handles Gregorian validity, calendar restrictions and PlainTime ambiguity."
+    }
+  ]
+}

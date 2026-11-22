@@ -1604,3 +1604,134 @@ it.each([
     'get:fractionalDigits',
   ])
 })
+
+it.each(['en', 'zz'] as const)(
+  'fresh Duration lookup keeps the absent extension private for %s',
+  locale => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const available = DurationFormat.availableLocales
+    const fresh = new Set(['en'])
+    const define = Object.defineProperty
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const extensionDescriptor = Object.getOwnPropertyDescriptor(
+      Object.prototype,
+      'extension'
+    )
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    let actual: string | undefined
+    let inheritedReads = 0
+    try {
+      DurationFormat.availableLocales = fresh
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(Object.prototype, 'extension', {
+        configurable: true,
+        get() {
+          inheritedReads++
+          return undefined
+        },
+      })
+      actual = duration.toLocaleString(locale, {
+        localeMatcher: 'lookup',
+        style: 'long',
+      })
+    } finally {
+      if (extensionDescriptor)
+        define(Object.prototype, 'extension', extensionDescriptor)
+      else Reflect.deleteProperty(Object.prototype, 'extension')
+      DurationFormat.availableLocales = available
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else Reflect.deleteProperty(Intl, 'DurationFormat')
+      configureLocaleFormatting()
+    }
+    expect(actual).toBe('1 minute')
+    expect(inheritedReads).toBe(0)
+  }
+)
+
+it.each([
+  ['snapshot copy', Array.prototype, Symbol.iterator],
+  ['snapshot freeze', Object, 'freeze'],
+  ['snapshot mark', WeakSet.prototype, 'add'],
+  ['snapshot check', WeakSet.prototype, 'has'],
+  ['requested locale List', Array.prototype, 'map'],
+] as const)(
+  'fresh Duration best fit keeps %s private',
+  (_label, owner, key) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    expect(DurationFormat.localeData.de).toBeDefined()
+    expect(DurationFormat.localeData.en).toBeDefined()
+    const available = DurationFormat.availableLocales
+    const fresh = new Set(['en', 'de'])
+    const Original = Intl.NumberFormat
+    class BestFitNumberFormat extends Original {}
+    const define = Object.defineProperty
+    const numberDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const apply = Reflect.apply
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const options = {localeMatcher: 'best fit', style: 'long'} as const
+    const locale = 'de-AT-u-nu-arab'
+    let actual: string | undefined
+    let hooks = 0
+    try {
+      DurationFormat.availableLocales = fresh
+      define(Intl, 'NumberFormat', {
+        ...numberDescriptor,
+        value: BestFitNumberFormat,
+      })
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      const poison = () => {
+        hooks++
+        throw new Error('Mutable private Duration best-fit operation')
+      }
+      define(
+        owner,
+        key,
+        key === Symbol.iterator || key === 'map'
+          ? {
+              ...descriptor,
+              value(this: readonly unknown[], ...args: unknown[]) {
+                if (
+                  key === 'map'
+                    ? this.length === 1 && this[0] === locale
+                    : this.length === 2 && this[0] === 'en' && this[1] === 'de'
+                )
+                  poison()
+                return apply(descriptor.value, this, args)
+              },
+            }
+          : {configurable: true, get: poison}
+      )
+      actual = duration.toLocaleString(locale, options)
+    } finally {
+      define(owner, key, descriptor)
+      DurationFormat.availableLocales = available
+      define(Intl, 'NumberFormat', numberDescriptor)
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else Reflect.deleteProperty(Intl, 'DurationFormat')
+      configureLocaleFormatting()
+    }
+    expect(hooks).toBe(0)
+    expect(actual).toBe('١ Minute')
+  }
+)

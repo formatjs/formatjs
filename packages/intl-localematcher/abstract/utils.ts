@@ -1,6 +1,7 @@
 import {
   arrayFind,
   arrayIncludes,
+  setDataProperty,
   splitLocaleSubtags,
 } from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
@@ -8,7 +9,7 @@ import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
 
 const apply = Reflect.apply
 const some = Array.prototype.some
-const localeArrayFrom = Array.from
+const freezeLocaleList = Object.freeze
 
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
@@ -31,7 +32,8 @@ export function splitUnicodeExtension(locale: string): {
     for (let j = i; j < end; j++) extension += '-' + subtags[j]
     return {locale: base, extension}
   }
-  return {locale}
+  // ECMA-402 §9.2.3 step 1.a: the private extension field starts empty.
+  return {locale, extension: undefined}
 }
 
 /**
@@ -357,13 +359,21 @@ const supportedCache = new WeakMap<readonly string[], Supported>()
 const getSupported = supportedCache.get.bind(supportedCache)
 const setSupported = supportedCache.set.bind(supportedCache)
 const immutableLocaleLists = new WeakSet<readonly string[]>()
+const markLocaleListImmutable =
+  immutableLocaleLists.add.bind(immutableLocaleLists)
+const isLocaleListImmutable =
+  immutableLocaleLists.has.bind(immutableLocaleLists)
 let paradigms: Set<string> | undefined
 
 export function createLocaleListSnapshot(
-  locales: Iterable<string>
+  locales: readonly string[]
 ): readonly string[] {
-  const snapshot = Object.freeze(localeArrayFrom(locales))
-  immutableLocaleLists.add(snapshot)
+  // ECMA-402 §9.2.7 step 2.a: snapshot the private available locale List.
+  const snapshot: string[] = []
+  for (let index = 0; index < locales.length; index++) {
+    setDataProperty(snapshot, `${index}`, locales[index])
+  }
+  markLocaleListImmutable(freezeLocaleList(snapshot))
   return snapshot
 }
 
@@ -373,7 +383,7 @@ function equivalentKey(lsr: LSR): string {
 
 function prepare(locales: readonly string[]): Supported {
   // Frozen caller arrays may have getters; only our own snapshots are stable.
-  const immutable = immutableLocaleLists.has(locales)
+  const immutable = isLocaleListImmutable(locales)
   let result = getSupported(locales)
   if (
     result &&

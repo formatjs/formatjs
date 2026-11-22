@@ -13,7 +13,8 @@ export function LookupMatcher(
   requestedLocales: readonly string[],
   getDefaultLocale: () => string
 ): LookupMatcherResult {
-  const result: LookupMatcherResult = {locale: ''}
+  // ECMA-402 §9.2.3 step 1.d.i: the returned Record owns its extension field.
+  const result: LookupMatcherResult = {locale: '', extension: undefined}
   // ECMA-402 §9.2.3 step 1: visit the private List in order.
   for (let i = 0; i < requestedLocales.length; i++) {
     const locale = requestedLocales[i]

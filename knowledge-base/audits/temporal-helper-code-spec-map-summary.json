@@ -3,10 +3,10 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24361,
+  "whole_selected_source_lines": 24377,
   "whole_selected_source_lines_by_language": {
     "rust": 10373,
-    "typescript": 13988
+    "typescript": 14004
   },
   "nonoverlapping_callable_lines": 16824,
   "nonoverlapping_callable_lines_by_language": {
@@ -14,20 +14,20 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 6733,
+    "candidate": 6551,
     "unmapped": 4838,
-    "mapped": 5253
+    "mapped": 5435
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 454,
+    "candidate": 438,
     "unmapped": 384,
-    "mapped": 231
+    "mapped": 247
   },
   "by_language": {
     "typescript": {
-      "candidate": 138,
-      "mapped": 221,
+      "candidate": 122,
+      "mapped": 237,
       "unmapped": 161
     },
     "rust": {
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 405,
+    "implementation_dependency": 389,
     "typed_public_operation_candidate": 49
   },
   "proposal_core_section_ids": 170,
@@ -689,10 +689,10 @@
     },
     {
       "file": "packages/temporal/instant-string.ts",
-      "source_lines": 693,
+      "source_lines": 709,
       "callable_rows": 34,
       "nonoverlapping_callable_lines": 626,
-      "sha256": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
+      "sha256": "339910c26878d2a62c395fdb3c8ab7ecbe4cb1aa605335404bd1c5dcda16d77a",
       "unresolved_callable_rows": 0
     },
     {

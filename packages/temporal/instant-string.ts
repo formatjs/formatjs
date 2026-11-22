@@ -15,6 +15,7 @@ import {nativeTemporal} from '#packages/temporal/native.js'
 // ECMA-262 §21.4.1.33.2 steps 15.a, 16.b–16.d:
 // https://tc39.es/ecma262/#sec-parsetimezoneoffsetstring
 // Parsers supply at most nine ASCII digits; absent fractions represent zero.
+// Proposal comparison §13.35 step 19.b: pad the consumed fraction to nine digits.
 function fractionDigits(value = ''): string {
   while (value.length < 9) value += '0'
   return value
@@ -55,25 +56,30 @@ type TimePrefix = {
   end: number
 }
 
+// Proposal comparison §13.35 step 7: copy bounded field spans from the source string.
 function stringPart(value: string, start: number, end = value.length): string {
   let result = ''
   for (let index = start; index < end; index++) result += value[index]
   return result
 }
+// Proposal comparison §13.35 step 4.a.i: split the lexical body from its bracket suffix.
 function bracketIndex(value: string): number {
   for (let index = 0; index < value.length; index++)
     if (value[index] === '[') return index
   return -1
 }
+// Proposal comparison §13.31 DecimalDigit: recognize one ASCII digit at a bounded index.
 function decimalAt(value: string, index: number): boolean {
   return index < value.length && value[index] >= '0' && value[index] <= '9'
 }
+// Proposal comparison §13.31 Date and Time: check fixed-width ASCII digit spans.
 function digitsAt(value: string, index: number, count: number): boolean {
   if (index + count > value.length) return false
   for (let digit = 0; digit < count; digit++)
     if (!decimalAt(value, index + digit)) return false
   return true
 }
+// Proposal comparison §13.31 DateSpec: read year, separators, month and day.
 function datePrefix(value: string): DatePrefix | undefined {
   let index = 0
   if (value.length !== 0 && (value[0] === '+' || value[0] === '-')) index++
@@ -94,26 +100,32 @@ function datePrefix(value: string): DatePrefix | undefined {
   const day = stringPart(value, index, index + 2)
   return {year, separator, month, day, end: index + 2}
 }
+// Proposal comparison §13.31 DateTimeSeparator: accept space, T or t at this index.
 function timeMarker(value: string, index: number): boolean {
   return (
     index < value.length &&
     (value[index] === 'T' || value[index] === 't' || value[index] === ' ')
   )
 }
+// Proposal comparison §13.31 DateTime: locate the marker in a parsed zoned body.
 function hasTimeMarker(value: string): boolean {
   for (let index = 0; index < value.length; index++)
     if (timeMarker(value, index)) return true
   return false
 }
+// Proposal comparison §13.31 UTCDesignator: recognize Z or z.
 function isZ(value: string | undefined): boolean {
   return value === 'Z' || value === 'z'
 }
+// Proposal comparison §13.35 steps 26–26.a: detect a trailing UTC designator in the body.
 function endsInZ(value: string): boolean {
   return value.length !== 0 && isZ(value[value.length - 1])
 }
+// Proposal comparison §13.35 step 26: strip a detected designator before field parsing.
 function withoutZ(value: string): string {
   return endsInZ(value) ? stringPart(value, 0, value.length - 1) : value
 }
+// Proposal comparison §13.31 TimeSpec: capture clock fields, separators and fraction digits.
 function timePrefix(value: string, start: number): TimePrefix | undefined {
   if (!digitsAt(value, start, 2)) return undefined
   const hour = stringPart(value, start, start + 2)
@@ -148,6 +160,7 @@ function timePrefix(value: string, start: number): TimePrefix | undefined {
   }
   return {hour, separator, minute, second, fraction, end: index}
 }
+// Proposal comparison §13.35 step 27.a: find the end of the numeric offset span.
 function offsetEnd(value: string, start: number): number | undefined {
   if (start === value.length || (value[start] !== '+' && value[start] !== '-'))
     return undefined
@@ -175,6 +188,7 @@ function offsetEnd(value: string, start: number): number | undefined {
   }
   return index
 }
+// Proposal comparison §13.35 step 4.a.i: scan a date-time prefix and keep its suffix.
 function isoMatch(value: string, instant = false): string[] | null {
   const date = datePrefix(value)
   if (!date) return null
@@ -213,6 +227,7 @@ function isoMatch(value: string, instant = false): string[] | null {
     stringPart(value, index),
   ] as string[]
 }
+// Proposal comparison §13.31 DateSpecYearMonth: capture the complete short-date body.
 function yearMonthMatch(value: string): string[] | null {
   let index = 0
   if (value.length !== 0 && (value[0] === '+' || value[0] === '-')) index++
@@ -224,6 +239,7 @@ function yearMonthMatch(value: string): string[] | null {
   if (!digitsAt(value, index, 2) || index + 2 !== value.length) return null
   return [value, year, stringPart(value, index)]
 }
+// Proposal comparison §13.31 DateSpecMonthDay: capture the complete month-day body.
 function monthDayMatch(value: string): string[] | null {
   let index = value.length >= 2 && value[0] === '-' && value[1] === '-' ? 2 : 0
   if (!digitsAt(value, index, 2)) return null
