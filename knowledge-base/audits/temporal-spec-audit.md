@@ -86,7 +86,15 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Exact clock-unit differences: [precision audit](temporal-difference-precision-audit.md)
+- Conversion boundary controls: [Duration.from field bags](temporal-duration-from-caller-audit.md)
+  and [zoned offset matching](temporal-zoned-offset-match-audit.md) add independent
+  public/typed evidence for inherited Get/coercion ordering, abrupt completion,
+  signed minute ties, earliest fold matching and exclusive day bounds. No runtime
+  defect found in these slices. All six gates pass (four executed, two cached),
+  including historical Monrovia TS/native Hermes source/bytecode controls. Complete callers and
+  provider/realm contracts remain open; no historical/Temporal chapter credit.
+
+- [Exact clock-unit differences #8116](https://github.com/formatjs/formatjs/pull/8116): [precision audit](temporal-difference-precision-audit.md)
   rounds original integer epoch spans before Number-valued Duration construction
   in TS/Rust PlainDateTime and ZonedDateTime until/since. Both backends reproduced
   the wrong 10 ns tie above 2**53 before correction. All 49 expanded tests pass

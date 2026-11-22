@@ -77,6 +77,27 @@ export function checkZonedArithmeticOracle(
       )
     }
   }
+  // IANA 2026f africa: Monrovia used -00:44:30 from 1919 to 1972.
+  // https://data.iana.org/time-zones/tzdb-2026f/africa
+  for (const offset of ['-00:45', '-00:44:30']) {
+    equal(
+      Temporal.ZonedDateTime.from(
+        `1970-01-01T00:00${offset}[Africa/Monrovia]`,
+        {offset: 'reject'}
+      ).epochNanoseconds,
+      2_670_000_000_000n,
+      `Monrovia matching offset ${offset}`
+    )
+  }
+  let rejectedSeconds = false
+  try {
+    Temporal.ZonedDateTime.from('1970-01-01T00:00-00:45:00[Africa/Monrovia]', {
+      offset: 'reject',
+    })
+  } catch (error) {
+    rejectedSeconds = error instanceof RangeError
+  }
+  equal(rejectedSeconds, true, 'Monrovia mismatched seconds offset')
   equal(differences, 19440, 'Complete ICU zoned difference fixture')
   equal(days, 5292, 'Complete ICU zoned day fixture')
   return {differences, days}

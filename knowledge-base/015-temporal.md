@@ -1,5 +1,12 @@
 # Temporal implementation
 
+Duration.from field-bag controls verify inherited Get receivers, immediate numeric
+coercion, abrupt short-circuiting and zero normalization. Zoned conversion controls
+verify signed half-minute boundaries, earliest fold matching and historical
+Monrovia minute/exact syntax. See the [field-bag audit](audits/temporal-duration-from-caller-audit.md)
+and [offset-match audit](audits/temporal-zoned-offset-match-audit.md); complete
+methods, realm behavior and provider contracts remain open.
+
 PlainDateTime and ZonedDateTime clock-unit differences round the original integer
 epoch span before constructing Number-valued Duration fields. The
 [difference precision audit](audits/temporal-difference-precision-audit.md) records
