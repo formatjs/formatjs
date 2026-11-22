@@ -1,6 +1,7 @@
 import {
   arrayFind,
   arrayIncludes,
+  splitLocaleSubtags,
 } from '#packages/intl-localematcher/abstract/intrinsics.js'
 import {memoize} from '@formatjs/fast-memoize'
 import {matchingData} from '@formatjs_generated/cldr.core/matching.js'
@@ -17,16 +18,18 @@ export function splitUnicodeExtension(locale: string): {
   locale: string
   extension?: string
 } {
-  const subtags = locale.split('-')
+  const subtags = splitLocaleSubtags(locale)
   for (let i = 1; i < subtags.length; i++) {
     if (subtags[i] === 'x') break
     if (subtags[i] !== 'u') continue
     let end = i + 1
     while (end < subtags.length && subtags[end].length > 1) end++
-    return {
-      locale: [...subtags.slice(0, i), ...subtags.slice(end)].join('-'),
-      extension: '-' + subtags.slice(i, end).join('-'),
-    }
+    let base = subtags[0]
+    for (let j = 1; j < i; j++) base += '-' + subtags[j]
+    for (let j = end; j < subtags.length; j++) base += '-' + subtags[j]
+    let extension = ''
+    for (let j = i; j < end; j++) extension += '-' + subtags[j]
+    return {locale: base, extension}
   }
   return {locale}
 }

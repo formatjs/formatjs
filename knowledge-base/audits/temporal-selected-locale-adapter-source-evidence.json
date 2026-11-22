@@ -49,5 +49,14 @@
     "15.6.5/algorithm-1/step-8.a",
     "15.6.5/algorithm-1/step-9.a",
     "15.6.7/algorithm-1/step-1"
-  ]
+  ],
+  "wider_hermes_validation": {
+    "commit": "63a94b021ce97afe8b414f7e4301777ff59e9ac5",
+    "targets": [
+      "//packages/temporal:locale_intl_compat_hermes_test262",
+      "//packages/temporal:locale_intl_compat_hermes_bytecode_test262"
+    ],
+    "result": "Executed 0 out of 2 tests: 2 tests pass.",
+    "log_sha256": "53a75bf8db9b575293d417aa8d6697d0d9ddd4a0630112d9123a3c4c607bd2fc"
+  }
 }

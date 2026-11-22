@@ -15,6 +15,7 @@ import {
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   argumentAt,
+  constructorPrototype,
   createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
@@ -664,20 +665,14 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
     )
     if (import.meta.formatjsTemporalNativeData === true) {
       const value = nativeTemporal()!.regulatePlainTimeResult(values, false)
-      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-      const prototype = newTarget.prototype
-      const result = createObject(
-        object(prototype) ? prototype : target.prototype
-      )
+      const prototype = constructorPrototype(newTarget, target)
+      const result = createObject(prototype)
       setNativeTimeSlot(result, value)
       return result
     }
     const value = regulate(values, false)
-    // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-    const prototype = newTarget.prototype
-    const result = createObject(
-      object(prototype) ? prototype : target.prototype
-    )
+    const prototype = constructorPrototype(newTarget, target)
+    const result = createObject(prototype)
     setSlot(result, value)
     return result
   },

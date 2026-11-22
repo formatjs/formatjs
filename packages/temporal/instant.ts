@@ -9,6 +9,7 @@ import {
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   argumentAt,
+  constructorPrototype,
   createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
@@ -435,18 +436,14 @@ export const Instant: InstantConstructor = createProxy(
     // https://tc39.es/proposal-temporal/#sec-temporal.instant
     construct(target, args, newTarget) {
       const value = validateInstant(toBigInt(argumentAt(args, 0)))
-      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-      const prototype = newTarget.prototype
+      const prototype = constructorPrototype(newTarget, target)
       if (import.meta.formatjsTemporalNativeData === true) {
         const result = createNativeInstant(value)
-        const selected = IsObject(prototype) ? prototype : target.prototype
-        if (selected !== NativeInstant!.prototype)
-          nativeInstantPrototype(result, selected)
+        if (prototype !== NativeInstant!.prototype)
+          nativeInstantPrototype(result, prototype)
         return result
       }
-      const result = createObject(
-        IsObject(prototype) ? prototype : target.prototype
-      )
+      const result = createObject(prototype)
       setSlot(result, value)
       return result
     },

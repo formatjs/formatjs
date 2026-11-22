@@ -1,3 +1,18 @@
+import {
+  stringLastIndexOf,
+  stringSlice,
+} from '#packages/intl-localematcher/abstract/intrinsics.js'
+
+const LocaleSet = Set
+const setAdd = Function.prototype.call.bind(Set.prototype.add) as (
+  set: Set<string>,
+  value: string
+) => void
+const setHas = Function.prototype.call.bind(Set.prototype.has) as (
+  set: Set<string>,
+  value: string
+) => boolean
+
 // Cache for Set conversions to avoid repeated array->Set conversions
 const availableLocalesSetCache = new WeakMap<readonly string[], Set<string>>()
 const getAvailableLocales = availableLocalesSetCache.get.bind(
@@ -8,7 +23,7 @@ const setAvailableLocales = availableLocalesSetCache.set.bind(
 )
 
 /**
- * https://tc39.es/ecma402/#sec-bestavailablelocale
+ * https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix
  * @param availableLocales
  * @param locale
  */
@@ -16,25 +31,29 @@ export function BestAvailableLocale(
   availableLocales: readonly string[],
   locale: string
 ): string | undefined {
-  // Fast path: use Set for O(1) lookups instead of O(n) indexOf
+  // ECMA-402 §9.2.3 step 1.d.i: index the dense available locale List once.
   let availableSet = getAvailableLocales(availableLocales)
   if (!availableSet) {
-    availableSet = new Set(availableLocales)
+    availableSet = new LocaleSet<string>()
+    for (let i = 0; i < availableLocales.length; i++) {
+      setAdd(availableSet, availableLocales[i])
+    }
     setAvailableLocales(availableLocales, availableSet)
   }
 
   let candidate = locale
   while (true) {
-    if (availableSet.has(candidate)) {
+    if (setHas(availableSet, candidate)) {
       return candidate
     }
-    let pos = candidate.lastIndexOf('-')
+    // ECMA-402 §9.2.3 steps 1.d.ii–iv: truncate at a subtag boundary.
+    let pos = stringLastIndexOf(candidate, '-')
     if (!~pos) {
       return undefined
     }
     if (pos >= 2 && candidate[pos - 2] === '-') {
       pos -= 2
     }
-    candidate = candidate.slice(0, pos)
+    candidate = stringSlice(candidate, 0, pos)
   }
 }

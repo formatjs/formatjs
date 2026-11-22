@@ -117,10 +117,10 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 and existing Intl contracts are reused, not reimplemented.
 
 Remaining core states:235 conditional and90 comparison-issue rows. No reviewed
-or partial rows remain. Amendments:71 conditional and11 comparison-issue rows. Counts include
+or partial rows remain. Amendments:65 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-84 conditional steps (46 core,38 amendment), each with exact source ranges
+78 conditional steps (46 core,32 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -160,8 +160,8 @@ and [Intl adapters](temporal-intl-producer-state-facade-audit.md) bind scope.
 Selected-kind matching, range widths and lazy interval initialization now
 reconcile six more steps. The queue holds 78 conditional steps across ten
 families. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
-returned passing cached results for these sources. Fresh Duration lookup,
-Unicode extension and later best-fit adapters remain open. Generated timezone
+returned passing cached results for these sources. Fresh Duration prefix lookup and Unicode extension adapters pass public
+controls. Best-fit and inherited optional extension fields remain open. Generated timezone
 profiles supply the endpoint-window proof. Host data and its boundary property
 remain a separate premise. [Adapter evidence](temporal-selected-locale-adapter-audit.md)
 and [timezone evidence](temporal-timezone-boundary-proof/README.md) record the scope. Helper annotation
@@ -171,14 +171,23 @@ and published-comparison conflicts need reconciliation. Measured review rates
 cannot bound those decisions; they are not thousands of missing implementations.
 Recalculate annotation and local-correction estimates from completed batches.
 
+All eight witnessed revoked Proxy constructor cases now reject, preserving the
+single prototype read and object-prototype branch. Bound target unwrapping and
+foreign intrinsic fallback keep the 16 realm steps conditional.
+[Realm proof](temporal-constructor-realm-proof.md).
+The [Apia exact-target assertion conflict](temporal-apia-exact-target-spec-issue.md)
+is recorded separately from the two nonexact-window conditions. The
+[packed-zone spread proof](temporal-zoned-day-window-spread-proof.md) supplies
+the day subdomain under its stated calendar and endpoint contracts.
+
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[Fifty-one mapping dispositions](temporal-helper-annotation-reconciliation.json)
-cover TS/Rust rounding, calendar providers and native Duration transport.
-Thirty-nine receive reviewed local inline scope;12 transport rows now have narrow
-inline caller/dependency links. Current mapping states:219 mapped,466 candidate,
+[Sixty-three mapping dispositions](temporal-helper-annotation-reconciliation.json)
+cover TS/Rust rounding, calendar and timezone providers, and native Duration transport.
+Fifty-one receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:231 mapped,454 candidate,
 384 unmapped, including three retired identities. Annotation presence alone
-is125 direct,17 enclosing,924 without numbered anchors,3 retired; these are
+is134 direct,13 enclosing,919 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -188,7 +197,9 @@ three parallel reviewers plus root integration, assuming comparable review cost.
 Additional measured reviews:130seconds for18 calendar-provider mappings,131seconds
 for12 existing transport caller links. Both reuse established semantic proofs;
 root integration overlaps runtime work and is not assigned an invented duration.
-Recalibrate against the next zone batch; this is not a full-compliance ETA.
+Twelve timezone mappings took 35 seconds to apply and rebind after preliminary
+review. Keep the 3–5 hour annotation estimate provisional because review time
+varies by source and the timezone timing excludes its preliminary review.
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

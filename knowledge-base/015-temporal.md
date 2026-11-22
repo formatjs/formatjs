@@ -8,18 +8,22 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit. A comment-only
-batch reconciles51 mappings for rounding, calendar providers and native Duration
+batch reconciles63 mappings for rounding, calendar and timezone providers, and native Duration
 transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has125
-direct anchors,17 enclosing anchors,924 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has134
+direct anchors,13 enclosing anchors,919 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup
-corrects keyword find and outer Set/list adapters; its later constructor chain
-remains explicit audit work. Shared DateTimeFormat constants use captured BigInt
+corrects keyword find, outer Set/list adapters, prefix lookup and Unicode
+extension handling. Best-fit and inherited optional fields remain open. Shared DateTimeFormat constants use captured BigInt
 conversion for ES2019 source compatibility, preserving exact bigint composition.
 [Batch evidence](audits/temporal-selected-locale-adapter-audit.md).
+
+All eight constructors reject directly revoked newTarget proxies on the
+primitive-prototype branch. Bound target unwrapping and foreign intrinsic
+fallback remain open. [Realm proof](audits/temporal-constructor-realm-proof.md).
 
 First numbered pass reconciles 641 namespace/Now/Instant/YearMonth rows; local
 step proofs retain named dependencies. No-Intl Now host offsets reuse existing

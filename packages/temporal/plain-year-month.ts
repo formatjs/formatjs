@@ -5,6 +5,7 @@ import {
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   argumentAt,
+  constructorPrototype,
   createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
@@ -433,11 +434,8 @@ export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
         day =
           argumentAt(args, 3) === undefined ? 1 : integer(argumentAt(args, 3))
       const epochDay = checkYearMonth(isoReferenceDay(year, month, day)),
-        // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-        prototype = newTarget.prototype
-      const result = createObject(
-        object(prototype) ? prototype : target.prototype
-      )
+        prototype = constructorPrototype(newTarget, target)
+      const result = createObject(prototype)
       setYearMonthSlot(result, {epochDay, calendar})
       return result
     },

@@ -1,0 +1,107 @@
+{
+  "comparison_step": "Temporal comparison §15.11.1.1 step 3 (fresh formatter construction); retain conditional when best-fit path remains unverified",
+  "scope": "Captured owned lookup and Unicode extension operations. Existing String, Set, Intl canonicalization and token order reused.",
+  "source_sha256": {
+    "packages/intl-localematcher/abstract/BestAvailableLocale.ts": "8214408076123172b19fcab632843dd9e6ae723e4509f05bedd0db2b2c614a75",
+    "packages/intl-localematcher/abstract/CanonicalizeLocaleList.ts": "83945910a4d07b3d76d783ed8319c3f945e61854c947b378eecf55e2b83a83d3",
+    "packages/intl-localematcher/abstract/CanonicalizeUValue.ts": "a522fc190dea6c4e5e541be1eb25b90616fb28f6de9d071ec06ec585e2b0d403",
+    "packages/intl-localematcher/abstract/CanonicalizeUnicodeLocaleId.ts": "b0528b080c7cc16e2d01e4ae34d0ca801e842f49d55f41636cd1d36b5e88ae74",
+    "packages/intl-localematcher/abstract/InsertUnicodeExtensionAndCanonicalize.ts": "ce7c10fd5690dfc93b51241a36ac1a067332e511d3642351987cefd2455ece4a",
+    "packages/intl-localematcher/abstract/LookupMatcher.ts": "14a32384e98cf7e1eb61693ed4296845fd2d856aec71e5374ea1346babec454e",
+    "packages/intl-localematcher/abstract/UnicodeExtensionComponents.ts": "b1d015647cbfabde8862503c16d5ba20a6792f5af8aec6bea4e04018a9fd7769",
+    "packages/intl-localematcher/abstract/intrinsics.ts": "5df1662eecfdb9dbee539d2a412a44fe6b74d340e810d995b9899a15a7ca615f",
+    "packages/intl-localematcher/abstract/utils.ts": "9a98cde562d1da2f436054f2745a33f822ec0e31583278c21d768be5da145fbe",
+    "packages/temporal/tests/durationformat.test.ts": "2f752688249e05a83ce1a281d196b491db53bee03d8cdde1f443d39c1586fa2f"
+  },
+  "source_locations": [
+    {
+      "file": "packages/intl-localematcher/abstract/intrinsics.ts",
+      "function": "splitLocaleSubtags",
+      "start_line": 68,
+      "end_line": 70
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/LookupMatcher.ts",
+      "function": "LookupMatcher",
+      "start_line": 11,
+      "end_line": 33
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/CanonicalizeLocaleList.ts",
+      "function": "ownCanonicalizer",
+      "start_line": 5,
+      "end_line": 9
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/CanonicalizeLocaleList.ts",
+      "function": "CanonicalizeLocaleList",
+      "start_line": 17,
+      "end_line": 26
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/CanonicalizeUnicodeLocaleId.ts",
+      "function": "CanonicalizeUnicodeLocaleId",
+      "start_line": 3,
+      "end_line": 6
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/CanonicalizeUValue.ts",
+      "function": "CanonicalizeUValue",
+      "start_line": 16,
+      "end_line": 39
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/BestAvailableLocale.ts",
+      "function": "BestAvailableLocale",
+      "start_line": 30,
+      "end_line": 59
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/InsertUnicodeExtensionAndCanonicalize.ts",
+      "function": "InsertUnicodeExtensionAndCanonicalize",
+      "start_line": 12,
+      "end_line": 47
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/UnicodeExtensionComponents.ts",
+      "function": "UnicodeExtensionComponents",
+      "start_line": 12,
+      "end_line": 61
+    },
+    {
+      "file": "packages/intl-localematcher/abstract/utils.ts",
+      "function": "splitUnicodeExtension",
+      "start_line": 17,
+      "end_line": 35
+    }
+  ],
+  "red": {
+    "tests_failed": 13,
+    "tests_passed": 50,
+    "log_sha256": "33290aaccde2f6349df9e6d2a39607e4e273ed1f4213a0d71e7570017bffc013"
+  },
+  "green": {
+    "tests_passed": 63,
+    "public_test_log_sha256": "a3c1612408b7bf2ff2b421141df50a01d8da850974028b1639ab98a2c865d1a8",
+    "bazel_result": "Executed 3 out of 4 tests: 4 tests pass.",
+    "log_sha256": "fbf1d77e7742bafb3bf83ed020b0723d92365d65706601984f932d466f3d5ce3"
+  },
+  "validation_targets": [
+    "//packages/temporal:durationformat_test",
+    "//packages/intl-localematcher:intl-localematcher_test",
+    "//packages/intl-localematcher:typecheck_typecheck_test",
+    "//packages/intl-durationformat:intl-durationformat_test"
+  ],
+  "gazelle_log_sha256": "181b6c9bd2a60799cb7f8901abf2d14f84c854c6d77a117f65c3762dd5c3f9c4",
+  "public_control": "Cold Set and NumberFormat subclass; requested en-XX-u-attr-nu-arab with ARAB option; returns ١ minute and exact existing locale/option read and coercion order.",
+  "references": [
+    "https://tc39.es/ecma402/#sec-lookupmatchinglocalebyprefix",
+    "https://tc39.es/ecma402/#sec-unicodeextensioncomponents",
+    "https://tc39.es/ecma402/#sec-insertunicodeextensionandcanonicalize",
+    "https://tc39.es/ecma402/#sec-canonicalizeuvalue"
+  ],
+  "remaining": [
+    "Best-fit adapter operations and runtime dependencies",
+    "Review optional extension field lookup on private Records in no-extension/fallback paths before claiming whole lookup closure."
+  ]
+}

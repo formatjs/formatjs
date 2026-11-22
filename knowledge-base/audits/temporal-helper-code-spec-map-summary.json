@@ -3,31 +3,31 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24343,
+  "whole_selected_source_lines": 24359,
   "whole_selected_source_lines_by_language": {
     "rust": 10373,
-    "typescript": 13970
+    "typescript": 13986
   },
-  "nonoverlapping_callable_lines": 16815,
+  "nonoverlapping_callable_lines": 16822,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 8678
+    "typescript": 8685
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 6873,
+    "candidate": 6733,
     "unmapped": 4838,
-    "mapped": 5104
+    "mapped": 5251
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 466,
+    "candidate": 454,
     "unmapped": 384,
-    "mapped": 219
+    "mapped": 231
   },
   "by_language": {
     "typescript": {
-      "candidate": 150,
-      "mapped": 209,
+      "candidate": 138,
+      "mapped": 221,
       "unmapped": 161
     },
     "rust": {
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 417,
+    "implementation_dependency": 405,
     "typed_public_operation_candidate": 49
   },
   "proposal_core_section_ids": 170,
@@ -569,10 +569,10 @@
     },
     {
       "file": "packages/temporal/compact-timezone.ts",
-      "source_lines": 53,
+      "source_lines": 56,
       "callable_rows": 3,
-      "nonoverlapping_callable_lines": 34,
-      "sha256": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
+      "nonoverlapping_callable_lines": 35,
+      "sha256": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
       "unresolved_callable_rows": 0
     },
     {
@@ -625,10 +625,10 @@
     },
     {
       "file": "packages/temporal/duration.ts",
-      "source_lines": 549,
+      "source_lines": 547,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 69,
-      "sha256": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+      "sha256": "f51ed2fe9190e2dd385c003e2664ce006a5a486f3d7317776a3750a1c9dbca6d",
       "unresolved_callable_rows": 1
     },
     {
@@ -665,10 +665,10 @@
     },
     {
       "file": "packages/temporal/host-timezone.ts",
-      "source_lines": 309,
+      "source_lines": 318,
       "callable_rows": 13,
-      "nonoverlapping_callable_lines": 259,
-      "sha256": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
+      "nonoverlapping_callable_lines": 265,
+      "sha256": "a4009f04e8c86b694e36594d76abcda78b1bb1cace385e30ec6b0d008d162e3b",
       "unresolved_callable_rows": 0
     },
     {
@@ -697,18 +697,18 @@
     },
     {
       "file": "packages/temporal/instant.ts",
-      "source_lines": 485,
+      "source_lines": 482,
       "callable_rows": 8,
       "nonoverlapping_callable_lines": 114,
-      "sha256": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+      "sha256": "c3ab0a706c4ef740ec59f22a3ba128d0edfc27029aa9fc3beee55fcc5dec53bd",
       "unresolved_callable_rows": 1
     },
     {
       "file": "packages/temporal/intrinsics.ts",
-      "source_lines": 19,
+      "source_lines": 39,
       "callable_rows": 2,
       "nonoverlapping_callable_lines": 10,
-      "sha256": "18a11f9ecd563060e7d6e4c7d844831077c9cd6a7afb1e91f28137ceb08d88d6",
+      "sha256": "5e73a52605116615d9f492c0e7270ffb330bcc6f1a172ad381d2f2eafeb243e2",
       "unresolved_callable_rows": 0
     },
     {
@@ -793,18 +793,18 @@
     },
     {
       "file": "packages/temporal/plain-date-time.ts",
-      "source_lines": 725,
+      "source_lines": 723,
       "callable_rows": 7,
       "nonoverlapping_callable_lines": 206,
-      "sha256": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+      "sha256": "b73fe57fbcfeba8eb1e20ce5651ac0d01dbe30a8f05c5552a803c07d658248a3",
       "unresolved_callable_rows": 2
     },
     {
       "file": "packages/temporal/plain-date.ts",
-      "source_lines": 553,
+      "source_lines": 551,
       "callable_rows": 6,
       "nonoverlapping_callable_lines": 156,
-      "sha256": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+      "sha256": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
       "unresolved_callable_rows": 1
     },
     {
@@ -812,7 +812,7 @@
       "source_lines": 276,
       "callable_rows": 3,
       "nonoverlapping_callable_lines": 30,
-      "sha256": "8047790b7818b8cc8bb09aedefa4e4ba39f9f49c112e51965f2c31d55b1a7ec1",
+      "sha256": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
       "unresolved_callable_rows": 1
     },
     {
@@ -825,18 +825,18 @@
     },
     {
       "file": "packages/temporal/plain-time.ts",
-      "source_lines": 709,
+      "source_lines": 704,
       "callable_rows": 20,
       "nonoverlapping_callable_lines": 315,
-      "sha256": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+      "sha256": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
       "unresolved_callable_rows": 7
     },
     {
       "file": "packages/temporal/plain-year-month.ts",
-      "source_lines": 489,
+      "source_lines": 487,
       "callable_rows": 5,
       "nonoverlapping_callable_lines": 164,
-      "sha256": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+      "sha256": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
       "unresolved_callable_rows": 1
     },
     {
@@ -900,7 +900,7 @@
       "source_lines": 1288,
       "callable_rows": 19,
       "nonoverlapping_callable_lines": 599,
-      "sha256": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f",
+      "sha256": "2ad61af9ab2200bc4981261c6c2d111ed9f829b9711f3dd1449dc9958a18ebe2",
       "unresolved_callable_rows": 5
     },
     {

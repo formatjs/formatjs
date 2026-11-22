@@ -22,6 +22,12 @@ its bracket assertion. Current engine shifts the week correctly. The companion
 [week bound](temporal-week-window-bounds-proof.md) proves successful week spans
 strictly exceed five days without a global timezone sweep.
 
+[Apia exact target](temporal-apia-exact-target-spec-issue.md) records two
+adjacent day endpoints that both equal the target. The inclusive bracket skips
+the retry, violating §7.5.34 step 13 and leaving steps 14–17 undefined. The
+[nonexact packed-zone proof](temporal-zoned-day-window-spread-proof.md) binds
+the day subdomain to the shipped offset data. Other profiles remain open.
+
 [Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
 range comparison timezones (§15.6.8) and duplicate digital Duration group appends
 (§15.9.8). These remain separate from runtime defects and pending candidate tests.

@@ -4,49 +4,43 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 466,
+    "candidate": 454,
     "unmapped": 384,
-    "mapped": 219
+    "mapped": 231
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 924,
-    "direct_numbered": 125,
-    "enclosing_numbered": 17,
+    "no_numbered_anchor": 919,
+    "direct_numbered": 134,
+    "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 97,
+  "direct_with_step_wording": 15,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 100,
-    "no_overlap_or_no_prior_mapping": 25
+    "overlap": 107,
+    "no_overlap_or_no_prior_mapping": 27
   },
   "no_numbered_anchor_by_kind": {
     "function": 532,
-    "named-function": 234,
-    "callback": 150,
+    "named-function": 231,
+    "callback": 148,
     "method": 8
   },
   "role_review_bundles": {
+    "time_zone_and_zoned_algorithm_review": {
+      "rows": 180,
+      "files": 12,
+      "coverage": {
+        "no_numbered_anchor": 159,
+        "direct_numbered": 17,
+        "enclosing_numbered": 4
+      }
+    },
     "calendar_provider_and_algorithm_review": {
       "rows": 247,
       "files": 19,
       "coverage": {
         "no_numbered_anchor": 223,
         "direct_numbered": 24
-      }
-    },
-    "generic_runtime_or_installation_review": {
-      "rows": 9,
-      "files": 5,
-      "coverage": {
-        "no_numbered_anchor": 9
-      }
-    },
-    "native_transport_with_temporal_adapters_review": {
-      "rows": 145,
-      "files": 2,
-      "coverage": {
-        "no_numbered_anchor": 132,
-        "direct_numbered": 13
       }
     },
     "rust_value_parser_arithmetic_algorithm_review": {
@@ -57,13 +51,19 @@
         "direct_numbered": 12
       }
     },
-    "time_zone_and_zoned_algorithm_review": {
-      "rows": 180,
-      "files": 12,
+    "native_transport_with_temporal_adapters_review": {
+      "rows": 145,
+      "files": 2,
       "coverage": {
-        "no_numbered_anchor": 164,
-        "direct_numbered": 8,
-        "enclosing_numbered": 8
+        "no_numbered_anchor": 132,
+        "direct_numbered": 13
+      }
+    },
+    "generic_runtime_or_installation_review": {
+      "rows": 9,
+      "files": 5,
+      "coverage": {
+        "no_numbered_anchor": 9
       }
     },
     "typescript_value_parser_arithmetic_algorithm_review": {
@@ -113,23 +113,23 @@
     "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
     "packages/temporal/calendar.ts": "6989f4ef43f5fac774a77fb59e146514b675122309bf6ab325ef0226a4debf87",
-    "packages/temporal/compact-timezone.ts": "e72841bb8369af3c7f448e42e60d767bc8fe835ae4e44f88356b39fcfd4b8800",
+    "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
     "packages/temporal/date-bridge.ts": "4a0f658aad39cc9d155d7cd61dc8cba876974751c9ebb30a6c9cacf1b8d5b427",
     "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
     "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
     "packages/temporal/duration-format.ts": "19ee165b3aa085e22dd2778fa9bbebc25ecb7099134cf314cfcdcdaff526c3bc",
-    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/duration.ts": "f51ed2fe9190e2dd385c003e2664ce006a5a486f3d7317776a3750a1c9dbca6d",
     "packages/temporal/fallback-data.ts": "52c397aa0ec202d294d59425df03961197230ac1ccf0b610460934466f487aa1",
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "01a84331a1ebe015e6e028512c9f38ef8b4b8351dadb39cc0bff32135c145230",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "c4c532ee13ed681ea89701ff6d7a1c4b6d4d07233423d04bf99c88a0a360b05a",
+    "packages/temporal/host-timezone.ts": "a4009f04e8c86b694e36594d76abcda78b1bb1cace385e30ec6b0d008d162e3b",
     "packages/temporal/install.ts": "69fc239b605413593e01a7105132ebdfc30fb84bb387ba8ff09aeb359bb0499e",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
-    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
-    "packages/temporal/intrinsics.ts": "18a11f9ecd563060e7d6e4c7d844831077c9cd6a7afb1e91f28137ceb08d88d6",
+    "packages/temporal/instant.ts": "c3ab0a706c4ef740ec59f22a3ba128d0edfc27029aa9fc3beee55fcc5dec53bd",
+    "packages/temporal/intrinsics.ts": "5e73a52605116615d9f492c0e7270ffb330bcc6f1a172ad381d2f2eafeb243e2",
     "packages/temporal/kernel.ts": "263580c3efecba97e0cd3940f88bc5087f43ffc901b6630b72643f8ff4d2ea4e",
     "packages/temporal/legacy-calendar-date.ts": "50eb13b1b9a5a6244fbb33fb206e199b93d028e9b62fc0eddf66e6b9e7e20975",
     "packages/temporal/legacy-durationformat.ts": "8afb5875257579392d8b23e1080ffa5b888cde20fb606072cce99297d0fc1489",
@@ -140,17 +140,17 @@
     "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
     "packages/temporal/native.ts": "b9795d3b01d0a8f4228e4fef0937b6d6742ca8a606033c53570ee579a3ac3c3a",
-    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
-    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
-    "packages/temporal/plain-month-day.ts": "8047790b7818b8cc8bb09aedefa4e4ba39f9f49c112e51965f2c31d55b1a7ec1",
+    "packages/temporal/plain-date-time.ts": "b73fe57fbcfeba8eb1e20ce5651ac0d01dbe30a8f05c5552a803c07d658248a3",
+    "packages/temporal/plain-date.ts": "ac07072869eee090ed45fac7af65590776954f270c7162b6ea0ffcdd4b13fe86",
+    "packages/temporal/plain-month-day.ts": "af1a02119f94ebdf4149318e330d24d9012d0525eef8c086b6f4a8b814a402b2",
     "packages/temporal/plain-slots.ts": "f811de1571d0063e42ec11ca73ab54047d5e2affb15249f9637ea925bdb1c21a",
-    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
-    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/plain-time.ts": "19bfc8c47c1fc28697b8bfbf4efe13a5bf450f02ad95f54611c57852f5549046",
+    "packages/temporal/plain-year-month.ts": "a07bb9982dac43842b830732a3e8a407193736bfea137b1d4fec15e080c6c6bd",
     "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
-    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f",
+    "packages/temporal/zoned-date-time.ts": "2ad61af9ab2200bc4981261c6c2d111ed9f829b9711f3dd1449dc9958a18ebe2",
     "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176"
   },
   "files_queue": [
@@ -559,10 +559,11 @@
       "rows": 3,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "candidate": 3
+        "mapped": 3
       },
       "coverage": {
-        "no_numbered_anchor": 3
+        "direct_numbered": 2,
+        "enclosing_numbered": 1
       }
     },
     {
@@ -688,12 +689,12 @@
       "rows": 13,
       "work_bundle": "time_zone_and_zoned_algorithm_review",
       "mapping_status": {
-        "candidate": 13
+        "mapped": 9,
+        "candidate": 4
       },
       "coverage": {
-        "no_numbered_anchor": 2,
-        "direct_numbered": 3,
-        "enclosing_numbered": 8
+        "direct_numbered": 10,
+        "enclosing_numbered": 3
       }
     },
     {
@@ -1023,8 +1024,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 51,
-  "reviewed_mapping_rows_this_batch": 18,
+  "reviewed_mapping_rows_cumulative": 63,
+  "reviewed_mapping_rows_this_batch": 12,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

@@ -62,3 +62,7 @@ and `--output` paths. Then run `node host.mjs GENERATED_JSON HOST_JSON` on a
 runtime supplying native Temporal. Scripts only read supplied data/runtime and
 write requested analysis output. They do not execute the production polyfill or
 replace Bazel conformance tests. Recheck on timezone-data/runtime changes.
+
+The source hashes above bind the original proof. Later numbered comments in
+the two TypeScript providers preserve their source behavior, as shown by the
+[comment evidence](../temporal-timezone-provider12-annotation-source-proof.json).

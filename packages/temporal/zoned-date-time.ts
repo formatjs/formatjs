@@ -13,6 +13,7 @@ import {
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   argumentAt,
+  constructorPrototype,
   createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
@@ -1227,9 +1228,8 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
         throw new RangeErrorConstructor('Invalid timezone identifier')
       const zone = timeZoneIdentifier(zoneArgument),
         calendar = constructorCalendar(argumentAt(args, 2))
-      // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-      const prototype = newTarget.prototype,
-        result = createObject(object(prototype) ? prototype : target.prototype)
+      const prototype = constructorPrototype(newTarget, target),
+        result = createObject(prototype)
       setZonedSlot(result, {epochNanoseconds: value, timeZone: zone, calendar})
       return result
     },

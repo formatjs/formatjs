@@ -16,10 +16,12 @@ const sortRows = Function.prototype.call.bind(Array.prototype.sort) as (
   ) => number
 ) => void
 
+// Proposal comparison §11.1.1 step 1: supply generated zone names to the identifier table.
 export function compactTimeZoneNames(): string[] {
   return objectKeys(compact.zones)
 }
 
+// Proposal comparison §11.1.9 step 3: decode compact rows for named-zone offset lookup.
 export function unpackCompactTimeZone(name: string): UnpackedTimeZoneData {
   const entry = HasOwnProperty(compact.zones, name)
     ? compact.zones[name]
@@ -47,6 +49,7 @@ export function unpackCompactTimeZone(name: string): UnpackedTimeZoneData {
         compact.offsets[spans[index + 3]],
         false,
       ])
+  // Proposal comparison §11.1.9 step 3: order transition rows before offset lookup.
   sortRows(data, (one, two) => one[0] - two[0])
   if (future >= 0) setDataProperty(data, 'future', compact.futures[future])
   return data

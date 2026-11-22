@@ -46,14 +46,17 @@ const nowMilliseconds = Date.now
 const second = 1000000000n
 const day = 86400n * second
 const limit = 100000000n * day
+// Proposal comparison §8.5.1 step 1: enforce inclusive Instant bounds before host calls.
 function check(instant: bigint): bigint {
   if (instant < -limit || instant > limit)
     throw new RangeErrorConstructor('Instant out of range')
   return instant
 }
+// Proposal comparison §11.1.13 step 3.a: keep private offset probes within Instant bounds.
 const clamp = (instant: bigint): bigint =>
   instant < -limit ? -limit : instant > limit ? limit : instant
 
+// Proposal comparison §11.1.9 step 3: prepare the host Intl formatter for named offsets.
 export function createHostTimeZoneOffset(
   timeZone: string,
   intrinsics: {
@@ -81,6 +84,7 @@ export function createHostTimeZoneOffset(
   // https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor
   const offsets = new MapConstructor<number, bigint>()
   const offsetNanoseconds = (instant: bigint): bigint => {
+    // Proposal comparison §11.1.9 step 3: decode host ISO clock fields into offset nanoseconds.
     check(instant)
     const epochSecond =
         instant / second - (instant < 0n && instant % second !== 0n ? 1n : 0n),
@@ -166,10 +170,12 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
         candidates[candidates.length] = instant
     }
     return apply(arraySort, candidates, [
+      // Proposal comparison §11.1.13 step 3.a: sort collected candidates by epoch nanoseconds.
       (one: bigint, two: bigint) => (one < two ? -1 : one > two ? 1 : 0),
     ])
   }
   const possibleInstants = (fields: ISODateTime): bigint[] =>
+    // Proposal comparison §11.1.13 step 3.a: pass the ISO local time as epoch nanoseconds.
     candidatesFor(isoToEpochNanoseconds(fields))
   const resolve = (
     fields: ISODateTime,
@@ -218,6 +224,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     check(instant)
     const known = apply(arrayFind, transitions, [
       (row: (typeof transitions)[number]) =>
+        // Proposal comparison §6.3.46 steps 9.a, 10.b: reuse a cached result for this direction and instant.
         row.direction === direction &&
         instant >= row.first &&
         instant <= row.last,
@@ -225,6 +232,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     if (known) return known.value
     const next = direction === 'next'
     const floorSecond = (value: bigint) =>
+      // Proposal comparison §6.3.46 steps 9.a, 10.b: floor negative and positive probes to whole seconds.
       value / second - (value < 0n && value % second ? 1n : 0n)
     const earliest = -5364662400n // IANA transitions begin after 1800.
     const horizon = 3n * 366n * 86400n
@@ -242,6 +250,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     while (next ? cursor < boundary : cursor > boundary) {
       const observed = apply(arrayFind, unchanged, [
         (row: (typeof unchanged)[number]) =>
+          // Proposal comparison §6.3.46 steps 9.a, 10.b: test the directional cached span.
           next
             ? row.first <= cursor && cursor < row.last
             : row.first < cursor && cursor <= row.last,

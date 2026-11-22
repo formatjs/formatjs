@@ -66,4 +66,5 @@ partition contracts after validation of the private matching and lazy interval
 operations. This reconciliation covers the actual selected-kind callers. Locale
 registration, range zone policy and fresh Duration construction retain their
 separate obligations. The 21-target run recovered cached passing results.
-The wider Hermes Intl compatibility run has no recoverable final result.
+A separate run on the landed checkpoint recovered cached passes for both wider
+Hermes Intl compatibility targets (source and bytecode).

@@ -44,3 +44,27 @@ export function setDataProperty(
   }
   defineProperty(target, key, descriptor)
 }
+
+export const stringSlice = Function.prototype.call.bind(
+  String.prototype.slice
+) as (value: string, start: number, end?: number) => string
+
+export const stringIndexOf = Function.prototype.call.bind(
+  String.prototype.indexOf
+) as (value: string, search: string, start?: number) => number
+
+export const stringLastIndexOf = Function.prototype.call.bind(
+  String.prototype.lastIndexOf
+) as (value: string, search: string) => number
+
+export const stringLowerCase = Function.prototype.call.bind(
+  String.prototype.toLowerCase
+) as (value: string) => string
+
+const split = String.prototype.split
+// A private separator supplies "-" without a mutable @@split lookup.
+const hyphen = {__proto__: null, toString: () => '-'}
+
+export function splitLocaleSubtags(value: string): string[] {
+  return apply(split, value, [hyphen])
+}

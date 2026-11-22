@@ -14,6 +14,7 @@ import {
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {
   argumentAt,
+  constructorPrototype,
   createObject,
   createProxy,
 } from '#packages/temporal/intrinsics.js'
@@ -505,11 +506,8 @@ export const Duration: DurationConstructor = createProxy(DurationValue, {
           ? 0
           : integralDurationNumber(argumentAt(args, i))
     validateDuration(fields)
-    // ECMA-262 §10.1.14 steps 5–6: primitive fallback still lacks realm lookup.
-    const prototype = newTarget.prototype
-    const value = createObject(
-      IsObject(prototype) ? prototype : target.prototype
-    )
+    const prototype = constructorPrototype(newTarget, target)
+    const value = createObject(prototype)
     setSlot(value, fields)
     return value
   },

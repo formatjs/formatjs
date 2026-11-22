@@ -1,0 +1,17 @@
+{
+  "packed_sha256": "c62e83781c612170917463fac92be16e174510edfc6a84c66bcec67dc10beb0d",
+  "zones": 457,
+  "explicit_rows": 20111,
+  "future_profiles": 431,
+  "explicit_footer_seams": 431,
+  "window_seconds": 518400,
+  "maximum_offset_spread_seconds": 86400,
+  "maximum_witness": {
+    "zone": "America/Adak",
+    "first_epoch": -3225223727,
+    "last_epoch": -3225223727,
+    "low_offset": -42398,
+    "high_offset": 44002
+  },
+  "failures": []
+}

@@ -1,14 +1,14 @@
 # Constructor realm fallback: finite unresolved obligation
 
-All 16 `constructor-realm-fallback` rows remain conditional. Existing code supports ordinary local fallback and supplied object prototypes. Missing runtime realm access prevents signoff; this is an observable semantic gap, not an applicability exclusion.
+All 16 `constructor-realm-fallback` rows remain conditional. The direct revoked-proxy cases now pass. Existing code supports ordinary local fallback and supplied object prototypes. Missing runtime realm access prevents signoff; this is an observable semantic gap, not an applicability exclusion.
 
 ## Required runtime behavior
 
 [ECMA-262 §10.1.14](https://tc39.es/ecma262/#sec-getprototypefromconstructor) steps 2–3 read `newTarget.prototype` once, returning an Object immediately. Step 5 obtains the constructor realm; step 6 selects that realm's intrinsic fallback. [§7.3.24](https://tc39.es/ecma262/#sec-getfunctionrealm) step 2 unwraps bound functions; step 3.a validates a Proxy, then step 3.d recurses through its target. [§10.1.13](https://tc39.es/ecma262/#sec-ordinarycreatefromconstructor) delegates prototype selection to this operation.
 
-## Current source and smallest public witness
+## Original witness and verified correction
 
-AST `newTarget.prototype` matches: instant.ts:439; duration.ts:509; plain-date.ts:503; plain-date-time.ts:646; plain-time.ts:668/677; plain-year-month.ts:437; plain-month-day.ts:251; zoned-date-time.ts:1231, all under packages/temporal. Every branch substitutes local `target.prototype` for primitive prototype. Hashes: `temporal-constructor-realm-source-hashes.json`.
+Before the correction, AST `newTarget.prototype` matches: instant.ts:439; duration.ts:509; plain-date.ts:503; plain-date-time.ts:646; plain-time.ts:668/677; plain-year-month.ts:437; plain-month-day.ts:251; zoned-date-time.ts:1231, all under packages/temporal. Every branch substitutes local `target.prototype` for primitive prototype. Hashes: `temporal-constructor-realm-source-hashes.json`.
 
 ```js
 const pair = Proxy.revocable(function Target() {}, {
@@ -21,9 +21,21 @@ const pair = Proxy.revocable(function Target() {}, {
 Reflect.construct(Temporal.Instant, [0n], pair.proxy)
 ```
 
-Required: TypeError during fallback realm lookup. Current source: succeeds with local Instant.prototype. Positive control: return `{}` instead of null; construction must succeed with that exact prototype despite revocation. Original receiver remains `pair.proxy`; exactly one Get. No constructor body call.
+Required: TypeError during fallback realm lookup. Before the correction, construction succeeded with local Instant.prototype. Positive control: return `{}` instead of null; construction must succeed with that exact prototype despite revocation. Original receiver remains `pair.proxy`; exactly one Get. No constructor body call.
 
-`temporal-constructor-realm-reproduction.patch` supplies these two branches across eight public constructors plus one descriptor-observation control. Applied through Bazel instant_test: all eight revoked/primitive witnesses failed as predicted;288 existing/positive controls passed. Object-prototype branch ran before primitive branch in every constructor case. Reproduction patch retained separately; gap remains open and is not counted as a passing conformance gate. Existing `host-exotic` Bazel test wiring is packages/temporal/BUILD.bazel:1007.
+`temporal-constructor-realm-reproduction.patch` supplies these two branches across eight public constructors plus one descriptor-observation control. Applied through Bazel instant_test: all eight revoked/primitive witnesses failed as predicted;288 existing/positive controls passed. Object-prototype branch ran before primitive branch in every constructor case. The same cases now run in the owning suite. All 296 controls pass after the correction, and the nine focused Bazel targets pass, including strict Instant Test262 on Hermes source and bytecode.
+
+The shared constructor helper returns an object prototype before any further
+work. For a primitive prototype, captured Array.isArray rejects revoked Proxy
+chains through [ECMA-262 §7.2.2 step 3](https://tc39.es/ecma262/#sec-isarray).
+It traverses Proxy targets without property reads or descriptor traps. The
+resulting TypeError supplies the revocation part of §7.3.24. The boolean result
+is unused. [Current source ranges and validation](temporal-constructor-revocation-validation.json).
+
+IsArray stops at a bound function. GetFunctionRealm unwraps it under §7.3.24
+step 2. A bound constructor around a revoked Proxy can therefore still succeed
+incorrectly. A live foreign constructor with primitive prototype still needs
+the intrinsic prototype from its realm. Existing `host-exotic` Bazel test wiring is packages/temporal/BUILD.bazel:1007.
 
 ## Rejected partial runtime fix
 
@@ -37,7 +49,7 @@ Read-only Node v26.5.1 probe with a node:vm foreign ordinary constructor having 
 
 Engine realm records and intrinsic tables lack general JavaScript reflection. Prototype-chain/global/eval inference adds user hooks and cannot reliably recover them. Capturing native Temporal allocation could delegate correctly on engines already supplying compatible native classes, but current NativeInstant is a private JavaScript facade, not native Temporal.Instant. Brand, provider, installation, and duplicate-Get behavior need a separately bounded design. Cooperative realm registration/host hooks would require an explicit contract; none assumed here.
 
-Thus no safe shared-helper patch identified within existing runtime interface. Both revoked-proxy subcase and foreign intrinsic selection remain open. Runtime support or agreed installation architecture required; no whole-family promotion.
+Unwrapping bound functions and selecting the foreign intrinsic remain open within the current runtime interface. Runtime support or agreed installation architecture required; no whole-family promotion.
 
 ## Affected checklist IDs
 

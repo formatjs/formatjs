@@ -1479,3 +1479,128 @@ it.each([
     ])
   }
 )
+
+it.each([
+  ['requested locale List', Array.prototype, Symbol.iterator],
+  ['locale split', String.prototype, 'split'],
+  ['split dispatch', String.prototype, Symbol.split],
+  ['available locale Set population', Set.prototype, 'add'],
+  ['available locale membership', Set.prototype, 'has'],
+  ['locale prefix truncation', String.prototype, 'lastIndexOf'],
+  ['locale substring', String.prototype, 'slice'],
+  ['extension subtag search', String.prototype, 'indexOf'],
+  ['extension case validation', String.prototype, 'toLowerCase'],
+  ['extension attribute and keyword appends', Array.prototype, 'push'],
+  ['option case decoding', String.prototype, 'charCodeAt'],
+  ['option case encoding', String, 'fromCharCode'],
+  ['extension reinsertion canonicalization', Intl, 'getCanonicalLocales'],
+] as const)('fresh Duration lookup keeps %s private', (_label, owner, key) => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const available = DurationFormat.availableLocales
+  const fresh = new Set(['en'])
+  const Original = Intl.NumberFormat
+  class LookupNumberFormat extends Original {}
+  const define = Object.defineProperty
+  const numberDescriptor = Object.getOwnPropertyDescriptor(
+    Intl,
+    'NumberFormat'
+  )!
+  const durationDescriptor = Object.getOwnPropertyDescriptor(
+    Intl,
+    'DurationFormat'
+  )
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key)
+  const reads: string[] = []
+  const tag = 'en-XX-u-attr-nu-arab'
+  const locales = [tag]
+  define(locales, '0', {
+    get() {
+      reads[reads.length] = 'locale:0'
+      return tag
+    },
+  })
+  const options = new Proxy(
+    {},
+    {
+      get(_target, option) {
+        reads[reads.length] = `get:${String(option)}`
+        if (option === 'numberingSystem') return 'ARAB'
+        if (option === 'localeMatcher' || option === 'style')
+          return {
+            toString() {
+              reads[reads.length] = `coerce:${option}`
+              return option === 'style' ? 'long' : 'lookup'
+            },
+          }
+        return undefined
+      },
+    }
+  )
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  let actual: string | undefined
+  let error: unknown
+  let hooks = 0
+  try {
+    DurationFormat.availableLocales = fresh
+    define(Intl, 'NumberFormat', {
+      ...numberDescriptor,
+      value: LookupNumberFormat,
+    })
+    define(Intl, 'DurationFormat', {
+      configurable: true,
+      writable: true,
+      value: DurationFormat,
+    })
+    configureLocaleFormatting()
+    define(owner, key, {
+      configurable: true,
+      get() {
+        hooks++
+        throw new Error('Mutable private Duration lookup operation')
+      },
+    })
+    actual = duration.toLocaleString(locales, options)
+  } catch (caught) {
+    error = caught
+  } finally {
+    if (descriptor) define(owner, key, descriptor)
+    else Reflect.deleteProperty(owner, key)
+    DurationFormat.availableLocales = available
+    define(Intl, 'NumberFormat', numberDescriptor)
+    if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+    else Reflect.deleteProperty(Intl, 'DurationFormat')
+    configureLocaleFormatting()
+  }
+  if (error) throw error
+  expect(hooks).toBe(0)
+  expect(actual).toBe('١ minute')
+  expect(reads).toEqual([
+    'locale:0',
+    'get:localeMatcher',
+    'coerce:localeMatcher',
+    'get:numberingSystem',
+    'get:style',
+    'coerce:style',
+    'get:years',
+    'get:yearsDisplay',
+    'get:months',
+    'get:monthsDisplay',
+    'get:weeks',
+    'get:weeksDisplay',
+    'get:days',
+    'get:daysDisplay',
+    'get:hours',
+    'get:hoursDisplay',
+    'get:minutes',
+    'get:minutesDisplay',
+    'get:seconds',
+    'get:secondsDisplay',
+    'get:milliseconds',
+    'get:millisecondsDisplay',
+    'get:microseconds',
+    'get:microsecondsDisplay',
+    'get:nanoseconds',
+    'get:nanosecondsDisplay',
+    'get:fractionalDigits',
+  ])
+})
