@@ -18,7 +18,12 @@ Full polyfill for `Intl.DateTimeFormat` with timezone, calendar, and skeleton su
 
 ## Dependencies
 
-- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`, `@formatjs/bigdecimal`
+- `@formatjs/ecma402-abstract`, `@formatjs/intl-localematcher`
+
+Numeric timestamps stay primitive through TimeClip. The direct bigdecimal
+dependency is removed from BUILD metadata, generated manifest and lockfile;
+shared arithmetic dependencies remain transitive. Standalone DateTimeFormat
+composite typechecks and package_json_sync_test are required integration gates.
 
 ## CLDR Data Pipeline
 

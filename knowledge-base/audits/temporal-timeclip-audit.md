@@ -6,6 +6,53 @@ All three steps are mapped below for the full Number input domain. The Rust
 adapter represents the invalid-date result as an error rather than a JS NaN.
 Temporal object conversion and complete Intl formatter algorithms remain open.
 
+## Composite build and package integration
+
+Full CI for the timestamp layer exposed gates missing from the earlier focused
+matrix: DateTimeFormat-esm_typecheck_test, DateTimeFormat:typecheck_typecheck_test,
+and intl-datetimeformat:package_json_sync_test. All three failures reproduced
+locally. This corrects the validation scope; earlier 98-target results remain
+evidence for those targets only.
+
+[HandleDateTimeValue.ts:36](../../packages/ecma402-abstract/DateTimeFormat/HandleDateTimeValue.ts#L36)
+now creates the exact million-nanosecond scale through captured BigInt rather
+than a BigInt literal, preserving the composite package's ES2018 compiler
+target. Both constructor arguments are primitive finite integers; neither
+conversion invokes object hooks. The exact arithmetic and TimeClip bounds are
+unchanged.
+
+[TemporalDateTime.ts:80](../../packages/ecma402-abstract/DateTimeFormat/TemporalDateTime.ts#L80)
+casts through unknown before the numeric assertion. Unary plus still performs
+the same engine ToNumber operation on the original Date object; emitted runtime
+behavior is unchanged. The cast accommodates the narrower Object type used by
+the standalone composite project's strict checks.
+
+Bazel package_json_sync regenerates DateTimeFormat's checked-in manifest after
+removal of the direct bigdecimal BUILD dependency. pnpm install --lockfile-only
+updates only the corresponding three-line lockfile dependency entry. Shared
+formatter arithmetic still uses its existing transitive dependencies. Inspection
+of the cquery-located package found no external bigdecimal import in its 664
+JavaScript files; AST checks covered static, dynamic and CommonJS imports.
+
+The checked-in [consumer target list](temporal-validation-targets.txt) now includes
+these three integration gates plus package metadata/export validation. Reproduce
+with the repository's Bazel command:
+
+```bash
+bazel test $(cat knowledge-base/audits/temporal-validation-targets.txt) \
+  //packages/temporal:pkg //packages/intl-datetimeformat:pkg \
+  //packages/intl-collator:pkg //packages/intl-durationformat:pkg \
+  //packages/intl-numberformat:pkg --test_output=errors
+```
+
+This is a focused consumer matrix; full repository CI remains a separate gate.
+Post-repair validation: all 116 declared targets and five package assemblies
+pass. This includes both previously failing standalone compiler gates, package
+manifest sync, package metadata/exports, release manifests, all Temporal backend
+profiles and four Intl consumers. The frozen lockfile check passes. Full CI on
+the published stack head still needs its own result; these are local results.
+No new historical Temporal line credit assigned.
+
 ## Defect and fix
 
 DateTimeFormat converted a numeric timestamp into a private Decimal, then
