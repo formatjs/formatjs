@@ -1,6 +1,4 @@
-// Type-only circular import
-// eslint-disable-next-line import/no-cycle
-
+import {TypeErrorConstructor} from '#packages/ecma262-abstract/intrinsics.js'
 import {
   type DateTimeFormat,
   type IntlDateTimeFormatInternal,
@@ -25,12 +23,12 @@ export default function getInternalSlots(
     internalSlots = createObject(null) as IntlDateTimeFormatInternal
     writeInternalSlots(x, internalSlots)
   }
-  // ECMA-402 §11.3.3, step 3: require the receiver's internal brand.
-  // Only constructor initialization may allocate slots.
-  // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1033-L1037
+  // ECMA-262 §10.1.15 steps 1–2 reject receivers without the required slot.
+  // https://tc39.es/ecma262/#sec-requireinternalslot
   if (!internalSlots) {
-    throw new TypeError('Receiver is not an initialized Intl.DateTimeFormat')
+    throw new TypeErrorConstructor(
+      'Receiver is not an initialized Intl.DateTimeFormat'
+    )
   }
   return internalSlots
 }

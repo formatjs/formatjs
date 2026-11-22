@@ -116,6 +116,35 @@ test('rejects missing range endpoints with the intrinsic TypeError', () => {
   for (const error of errors) expect(error).toBeInstanceOf(OriginalTypeError)
 })
 
+test.each(['formatRange', 'formatRangeToParts'] as const)(
+  '%s rejects an uninitialized receiver before converting endpoints',
+  method => {
+    const originalTypeError = TypeError
+    let converted = false
+    const endpoint = {
+      [Symbol.toPrimitive]() {
+        converted = true
+        return 0
+      },
+    }
+    let actual: unknown
+    try {
+      globalThis.TypeError = new Proxy(originalTypeError, {
+        construct() {
+          return new Error('Unexpected global TypeError')
+        },
+      })
+      Reflect.apply(DateTimeFormat.prototype[method], {}, [endpoint, 0])
+    } catch (error) {
+      actual = error
+    } finally {
+      globalThis.TypeError = originalTypeError
+    }
+    expect(actual).toBeInstanceOf(originalTypeError)
+    expect(converted).toBe(false)
+  }
+)
+
 test('compares PlainDateTime ranges in the display zone across a formatter DST fold', () => {
   const formatter = new DateTimeFormat('en', {
     timeZone: 'America/New_York',

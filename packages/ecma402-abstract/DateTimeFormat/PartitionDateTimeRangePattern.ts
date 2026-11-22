@@ -77,6 +77,8 @@ export function PartitionDateTimeRangePattern(
   y: DateTimeFormattable,
   implDetails: FormatDateTimePatternImplDetails & ToLocalTimeImplDetails
 ): IntlDateTimeFormatPart[] {
+  // Temporal §15.6.8 step 7 rejects mismatched Temporal endpoint types.
+  // https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern
   const firstTemporal = isTemporalDateTimeValue(x)
   const secondTemporal = isTemporalDateTimeValue(y)
   if (
@@ -88,8 +90,10 @@ export function PartitionDateTimeRangePattern(
     )
   }
   const slots = implDetails.getInternalSlots(dtf)
+  // Steps 8–11 prepare each endpoint and retain its epoch nanoseconds.
   const first = HandleDateTimeValue(slots, x)
   const second = HandleDateTimeValue(slots, y)
+  // Step 15 uses the first endpoint's format for the range.
   const internalSlots = first.format
   implDetails = {...implDetails, getInternalSlots: () => internalSlots}
   const {tzData, calendarData, localeData} = implDetails
@@ -162,7 +166,6 @@ export function PartitionDateTimeRangePattern(
   // equal ranges. Use fallback intervals through displayed precision;
   // smaller undisplayed fields must not make the endpoints differ.
   // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
-  // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1537-L1577
   let rangePattern: RangePatterns | undefined
   for (let index = 0; index <= lastField; index++) {
     const field = TABLE_2_FIELDS[index]
@@ -311,7 +314,7 @@ export function PartitionDateTimeRangePattern(
     const {source} = part
     // Steps 19.a and 19.f use each pattern without changing locale data.
     // Resolve fallback placeholders per call; other formatters share records.
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1577-L1587
+    // https://tc39.es/ecma402/#sec-partitiondatetimerangepattern
     const partPattern =
       part.pattern === '{0}' || part.pattern === '{1}' ? pattern : part.pattern
     if (!stringIncludes(partPattern, '{')) {

@@ -610,13 +610,13 @@ const {formatRangeToParts} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.5 steps 2–3: validate before converting endpoints.
-    // https://tc39.es/ecma402/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1072-L1077
+    // Temporal §15.7.3 steps 2–3 validate before converting endpoints.
+    // https://tc39.es/proposal-temporal/#sec-Intl.DateTimeFormat.prototype.formatRangeToParts
     getInternalSlots(dtf)
     if (startDate === undefined || endDate === undefined)
       throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
 
+    // Steps 4–6 convert left to right, then format the range parts.
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRangeToParts(
@@ -640,12 +640,12 @@ const {formatRange} = {
   ) {
     // oxlint-disable-next-line no-this-alias
     const dtf = this
-    // ECMA-402 §11.3.4 steps 2–3: validate before converting endpoints.
-    // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.formatRange
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/datetimeformat.html#L1057-L1062
+    // Temporal §15.7.2 steps 2–3 validate before converting endpoints.
+    // https://tc39.es/proposal-temporal/#sec-intl.datetimeformat.prototype.formatRange
     getInternalSlots(dtf)
     if (startDate === undefined || endDate === undefined)
       throw new TypeErrorConstructor('startDate/endDate cannot be undefined')
+    // Steps 4–6 convert left to right, then format the range.
     const x = ToDateTimeFormattable(startDate)
     const y = ToDateTimeFormattable(endDate)
     return FormatDateTimeRange(dtf, x, y, getDateTimeImplementationDetails())
