@@ -1580,6 +1580,119 @@ fn borrowed_zones_resolve_nearest_gap_boundaries() {
 }
 
 #[test]
+fn borrowed_and_registered_zones_reject_mixed_instant_bounds() {
+    use formatjs_temporal::{
+        Disambiguation, Error, FutureRule, NamedTimeZone, OffsetOption, OffsetTransition,
+        PlainDate, TimeZoneRecord, TimeZoneRegistry, TransitionZone, ZonedDateTime,
+        ZonedParseOptions,
+    };
+    let second = 1_000_000_000i128;
+    let limit = (MAX_EPOCH_NANOSECONDS / second) as i64;
+    let lower = [OffsetTransition {
+        epoch_seconds: -limit,
+        offset_seconds: 0,
+    }];
+    let upper = [OffsetTransition {
+        epoch_seconds: limit,
+        offset_seconds: 7200,
+    }];
+    let lower_zone = TransitionZone::new(7200, &lower, None).unwrap();
+    let upper_zone =
+        TransitionZone::new(7200, &upper, Some(FutureRule::new(0, None).unwrap())).unwrap();
+    let records = [
+        TimeZoneRecord::new("America/Denver", lower_zone).unwrap(),
+        TimeZoneRecord::new("America/New_York", upper_zone).unwrap(),
+    ];
+    let registry = TimeZoneRegistry::new(&records).unwrap();
+    let modes = [
+        Disambiguation::Earlier,
+        Disambiguation::Later,
+        Disambiguation::Compatible,
+        Disambiguation::Reject,
+    ];
+    for (zone, name, limit, source, used) in [
+        (
+            lower_zone,
+            "America/Denver",
+            -MAX_EPOCH_NANOSECONDS,
+            "-271821-04-20T00:30+00:00[America/Denver]",
+            -MAX_EPOCH_NANOSECONDS + 1800 * second,
+        ),
+        (
+            upper_zone,
+            "America/New_York",
+            MAX_EPOCH_NANOSECONDS,
+            "+275760-09-13T00:30+02:00[America/New_York]",
+            MAX_EPOCH_NANOSECONDS - 5400 * second,
+        ),
+    ] {
+        let local = IsoDateTime::from_epoch_nanoseconds(limit + 1800 * second).unwrap();
+        let named = NamedTimeZone::new(name, zone).unwrap();
+        for mode in modes {
+            assert_eq!(
+                ZonedDateTime::from_local(local, zone, mode).unwrap_err(),
+                Error::OutOfRange,
+                "borrowed {name} {mode:?}"
+            );
+            assert_eq!(
+                ZonedDateTime::from_local(local, named, mode).unwrap_err(),
+                Error::OutOfRange,
+                "named {name} {mode:?}"
+            );
+        }
+        for offset in [
+            OffsetOption::Prefer,
+            OffsetOption::Reject,
+            OffsetOption::Ignore,
+        ] {
+            let options = ZonedParseOptions {
+                offset,
+                ..Default::default()
+            };
+            assert_eq!(
+                ZonedDateTime::parse(source, registry, options).unwrap_err(),
+                Error::OutOfRange,
+                "registered {name} {offset:?}"
+            );
+        }
+        let options = ZonedParseOptions {
+            offset: OffsetOption::Use,
+            ..Default::default()
+        };
+        let exact = ZonedDateTime::parse(source, registry, options).unwrap();
+        assert_eq!(exact.instant().epoch_nanoseconds(), used);
+    }
+    assert_eq!(
+        PlainDate::new(-271821, 4, 20)
+            .unwrap()
+            .to_zoned_date_time(lower_zone, None)
+            .unwrap_err(),
+        Error::OutOfRange
+    );
+}
+
+#[test]
+fn ignores_out_of_range_probes_with_inapplicable_offsets() {
+    use formatjs_temporal::{Disambiguation, OffsetTransition, TransitionZone, ZonedDateTime};
+    let second = 1_000_000_000i128;
+    let limit = (MAX_EPOCH_NANOSECONDS / second) as i64;
+    for (initial, lead, offset, local) in [
+        (0, -limit + 3600, 7200, -limit + 1800),
+        (-7200, limit - 3600, 0, limit - 1800),
+    ] {
+        let events = [OffsetTransition {
+            epoch_seconds: lead,
+            offset_seconds: offset,
+        }];
+        let zone = TransitionZone::new(initial, &events, None).unwrap();
+        let epoch = i128::from(local) * second;
+        let fields = IsoDateTime::from_epoch_nanoseconds(epoch).unwrap();
+        let result = ZonedDateTime::from_local(fields, zone, Disambiguation::Reject).unwrap();
+        assert_eq!(result.instant().epoch_nanoseconds(), epoch);
+    }
+}
+
+#[test]
 fn recurring_leap_only_changes_and_adjacent_gaps() {
     use formatjs_temporal::{
         Disambiguation, FutureRule, OffsetTransition, Overflow, TimeZone, TransitionDirection,
@@ -2509,6 +2622,9 @@ fn bounded_offset_visits_match_full_history_at_gaps_folds_and_bounds() {
         }
         fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
             self.0.visit_offsets(visitor);
+        }
+        fn has_out_of_range_candidate(&self, local: i128) -> bool {
+            self.0.has_out_of_range_candidate(local)
         }
         fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant> {
             self.0.transition(instant, direction)

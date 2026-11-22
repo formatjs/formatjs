@@ -164,6 +164,68 @@ fn zoned_total_checks_initial_week_endpoint_before_retreating() {
     );
 }
 
+#[test]
+fn zoned_week_rounding_validates_rebased_endpoint() {
+    use formatjs_temporal::{Disambiguation, Error, MAX_EPOCH_NANOSECONDS};
+
+    let hour = 3_600_000_000_000;
+    let limit = MAX_EPOCH_NANOSECONDS;
+    let transitions = [OffsetTransition {
+        epoch_seconds: ((limit - 50 * hour) / 1_000_000_000) as i64,
+        offset_seconds: -20 * 3_600,
+    }];
+    let zone = TransitionZone::new(16 * 3_600, &transitions, None).unwrap();
+    let origin = ZonedDateTime::new_in_calendar(
+        Instant::from_epoch_nanoseconds(limit - 1_131 * hour).unwrap(),
+        zone,
+        Calendar::Gregory,
+    );
+    let duration = "PT1082H".parse::<Duration>().unwrap();
+    let target = origin.checked_add(duration, Overflow::Constrain).unwrap();
+    assert_eq!(target.instant().epoch_nanoseconds(), limit - 49 * hour);
+    assert_eq!(
+        origin
+            .until(
+                &target,
+                DateTimeUnit::Month,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+            .unwrap()
+            .to_string(),
+        "P1M12DT50H"
+    );
+    let upper = origin
+        .checked_add("P1M2W".parse().unwrap(), Overflow::Constrain)
+        .unwrap();
+    assert_eq!(upper.instant().epoch_nanoseconds(), limit - 51 * hour);
+    let later = ZonedDateTime::from_local_in_calendar(
+        upper.local().unwrap().fields(),
+        zone,
+        Disambiguation::Later,
+        Calendar::Gregory,
+    )
+    .unwrap();
+    assert_eq!(later.instant().epoch_nanoseconds(), limit - 15 * hour);
+    assert_eq!(
+        origin
+            .checked_add("P1M3W".parse().unwrap(), Overflow::Constrain)
+            .unwrap_err(),
+        Error::OutOfRange
+    );
+    assert_eq!(
+        origin.round_duration(
+            duration,
+            DateTimeUnit::Month,
+            DateTimeUnit::Week,
+            1,
+            RoundingMode::Ceil,
+        ),
+        Err(Error::OutOfRange)
+    );
+}
+
 fn unit(text: &str) -> DateTimeUnit {
     text.parse().unwrap()
 }

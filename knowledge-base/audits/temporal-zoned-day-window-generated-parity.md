@@ -29,8 +29,8 @@ match active offsets at the candidate epoch. That supplies the effective
 offset premise used by the ordered comparison, for successfully resolved
 candidates. No transition enumeration completeness claim follows.
 [Compact reconstruction](../../packages/temporal/compact-timezone.ts#L43)
-[Native offset lookup](../../crates/temporal/timezone.rs#L280)
-[Native candidate resolution](../../crates/temporal/zoned.rs#L353).
+[Native offset lookup](../../crates/temporal/timezone.rs#L282)
+[Native candidate resolution](../../crates/temporal/zoned.rs#L367).
 
 This data binding inherits the calendar round-trip and fixed-prefix
 composition premises in the accompanying day-window proof. It covers

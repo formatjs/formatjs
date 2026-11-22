@@ -121,16 +121,9 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
                     return Err(Error::OutOfRange);
                 }
                 let mut candidate: Option<Instant> = None;
-                zone.visit_offsets_at(local, &mut |actual| {
-                    if actual <= -NANOSECONDS_PER_DAY || actual >= NANOSECONDS_PER_DAY {
-                        return;
-                    }
-                    let Ok(instant) = Instant::from_epoch_nanoseconds(local - actual) else {
-                        return;
-                    };
-                    if zone.offset_nanoseconds(instant) != actual {
-                        return;
-                    }
+                // Proposal comparison §6.5.1 steps 8–10: Validate candidates before matching offsets.
+                crate::zoned::visit_possible_nanoseconds(local, &zone, &mut |instant| {
+                    let actual = local - instant.epoch_nanoseconds();
                     let rounded = crate::format::offset_minutes(actual) * 60_000_000_000;
                     if (provided == actual
                         || matches!(offset, OffsetInput::Minute(_)) && provided == rounded)
@@ -138,7 +131,7 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
                     {
                         candidate = Some(instant);
                     }
-                });
+                })?;
                 match candidate {
                     Some(instant) => instant,
                     None if options.offset == OffsetOption::Reject => {

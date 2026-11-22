@@ -359,8 +359,8 @@ list. When the comparison's singleton and shifted-list assumptions fail,
 existing gap behavior supplies the fallback. Clipped limits and host
 provider completeness retain their separate evidence.
 
-- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L366).
-- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L409).
+- [Compact TypeScript lookup](../../../packages/temporal/kernel.ts#L367).
+- [Borrowed Rust lookup](../../../crates/temporal/zoned.rs#L423).
 - [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
 
 Five focused Bazel gates pass. Before-fix log SHA-256 `060e0dabd0f0a411c115def738840bf7e89fbd85f74c900101fd1614b8e09331`.
@@ -368,16 +368,37 @@ Passing log SHA-256 `fcf449ff0ddbe8ef681dcb22a4a0f280df62199c84cac58c334fea1b35c
 
 ### Borrowed mixed-range candidate
 
-A borrowed initial offset of +02:00 changes to zero exactly at the lower
-Instant limit. A local clock 30 minutes above the limit has two raw
-candidates, one 90 minutes before the limit and one 30 minutes after.
-At the upper limit, an explicit +02:00 row followed by a zero footer
-gives the corresponding mixed pair. The Rust borrowed visitor clips the
-offset search and accepts the visible candidate. The compact TypeScript
-reader filters invalid proposals before raw offset round-trip. The owned
-formatter rejects both mixed pairs. Resolving this requirement still
-needs an exact raw candidate lookup for the borrowed and compact paths.
-[Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+An initial offset of +02:00 changes to zero at the lower Instant limit.
+A local clock 30 minutes above that limit has raw candidates 90 minutes
+before and 30 minutes after it. At the upper limit an explicit +02:00 row
+followed by a zero footer gives the corresponding mixed pair. Both original
+kernels accepted the one visible candidate. Compact TypeScript and borrowed
+Rust now reject both pairs under every disambiguation mode.
+
+Compact TypeScript reuses the packed offset lookup at the proposed raw
+epoch. Its reachable raw window extends at most three days past either
+Instant limit after a gap shift and offset subtraction. Flooring to
+milliseconds remains exact below 2⁵³. Rust uses the same transition and
+footer rules for both checked and raw offsets. It widens the candidate
+window before checking for an exact round trip, then rejects a genuine
+invalid candidate before selection. Registered zones reuse the check.
+The FFI list, day boundary and explicit-offset matching use the same
+validation. The explicit `use` path retains its direct offset calculation.
+
+An offset that proposes an invalid epoch but does not match the actual
+raw offset is ignored. The controls keep their one valid candidate on
+both sides. Unknown providers retain bounded enumeration by default and
+the existing provider applicability condition.
+
+- [Compact matching and range check](../../../packages/temporal/kernel.ts#L306).
+- [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L369).
+- [Rust candidate validation](../../../crates/temporal/zoned.rs#L321).
+- [Rust explicit offset matching](../../../crates/temporal/zoned_string.rs#L124).
+- [Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+
+Failing compact log SHA-256 `23a7f7077a3f27dd2e0aa840a4217143c107106eeaa7f84bdf17c6b86e71f2b2`.
+Failing Rust log SHA-256 `886cac7f06c00a56bf15c5a9961f44dc4c4e0d2610aff8366618a93b172c22e8`.
+Passing Rust provider log SHA-256 `fd0754773c991efd3e187de679010c007078ec828fbcee9a0f36c8b6185a2f22`.
 
 ### Wide-transition rounding replay
 

@@ -286,10 +286,13 @@ export function relativeRound(
       result.weeks = count
       return result
     }
-    result.weeks = numberFrom(
-      roundDuration(bigIntFrom(count) * span + end - a, span, mode) / span
-    )
-    return result
+    // Proposal comparison §7.5.34 steps 5–6: Resolve the next endpoint if the upper bound falls short.
+    if ((end - b) * bigIntFrom(sign) <= 0n) {
+      result.weeks = numberFrom(
+        roundDuration(bigIntFrom(count) * span + end - a, span, mode) / span
+      )
+      return result
+    }
   }
   if ('zoned' in relative) {
     const result = toDurationFields(

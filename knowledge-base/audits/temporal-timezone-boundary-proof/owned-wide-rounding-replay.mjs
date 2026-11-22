@@ -27,7 +27,7 @@ const row = (hours, index) =>
   ',0'
 Intl.DateTimeFormat.__addTZData({
   abbrvs: 'TEST',
-  offsets: [23n, -23n, 17n, 12n, -5n, 21n]
+  offsets: [23n, -23n, 17n, 12n, -5n, 21n, 16n, -20n]
     .map(offset => (offset * 3600n).toString(36))
     .join('|'),
   zones: [
@@ -35,6 +35,7 @@ Intl.DateTimeFormat.__addTZData({
     'America/Boise|' + [row(null, 1), row(-22, 2)].join('|'),
     'America/Denver|' + [row(null, 1), row(42, 3)].join('|'),
     'America/New_York|' + [row(null, 4), row(max / hour - 33n, 5)].join('|'),
+    'America/Los_Angeles|' + [row(null, 6), row(max / hour - 50n, 7)].join('|'),
   ],
 })
 
@@ -104,3 +105,33 @@ assert.throws(
   RangeError
 )
 console.log(JSON.stringify({weekTotal: 'RangeError'}))
+
+const retainedOrigin = new Temporal.ZonedDateTime(
+  max - 1131n * hour,
+  'America/Los_Angeles',
+  'gregory'
+)
+const retainedDuration = Temporal.Duration.from('PT1082H')
+const retainedTarget = retainedOrigin.add(retainedDuration)
+assert.equal(retainedTarget.epochNanoseconds, max - 49n * hour)
+assert.equal(
+  retainedOrigin.until(retainedTarget, {largestUnit: 'month'}).toString(),
+  'P1M12DT50H'
+)
+const retainedUpper = retainedOrigin.add({months: 1, weeks: 2})
+assert.equal(retainedUpper.epochNanoseconds, max - 51n * hour)
+assert.equal(
+  Temporal.ZonedDateTime.from(retainedUpper.toString({offset: 'never'}), {
+    disambiguation: 'later',
+  }).epochNanoseconds,
+  max - 15n * hour
+)
+assert.throws(() => retainedOrigin.add({months: 1, weeks: 3}), RangeError)
+const retainedOptions = {
+  relativeTo: retainedOrigin,
+  largestUnit: 'month',
+  smallestUnit: 'week',
+  roundingMode: 'ceil',
+}
+assert.throws(() => retainedDuration.round(retainedOptions), RangeError)
+console.log(JSON.stringify({retainedWeekRound: 'RangeError'}))

@@ -301,26 +301,27 @@ export function createTimeZone(data: UnpackedTimeZoneData): TimeZoneKernel {
     if (data.future.daylightOffset !== undefined)
       addOffset(data.future.daylightOffset)
   }
-  // Temporal comparison §11.1.9 step 3.
-  // Look up the named-zone offset at the exact epoch and scale to nanoseconds.
-  const offsetNanoseconds = (instant: bigint): bigint => {
-    checkInstant(instant)
-    return (
-      bigIntFrom(
-        TimeZoneOffset(numberFrom(floorDivide(instant, 1_000_000n)), data)[0]
-      ) * second
-    )
-  }
-  // Temporal comparison §11.1.13 steps 3.a, 5, §14.6.3 prose.
+  // Temporal comparison §11.1.9 step 3. The packed table also covers the
+  // candidate window just outside either Instant limit.
+  const offsetAt = (instant: bigint): bigint =>
+    bigIntFrom(
+      TimeZoneOffset(numberFrom(floorDivide(instant, 1_000_000n)), data)[0]
+    ) * second
+  const offsetNanoseconds = (instant: bigint): bigint =>
+    offsetAt(checkInstant(instant))
+  // Temporal comparison §11.1.13 steps 3.a, 4.a and 5, §14.6.3 prose.
   // Collect round-tripping named-zone candidates and sort the private list.
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const candidates: bigint[] = []
     for (let index = 0; index < offsets.length; index++) {
-      const offset = offsets[index]
-      const instant = local - bigIntFrom(offset) * second
-      if (instant < -limit || instant > limit) continue
-      if (instant + offsetNanoseconds(instant) === local)
-        setDataProperty(candidates, `${candidates.length}`, instant)
+      const offset = bigIntFrom(offsets[index]) * second
+      const instant = local - offset
+      if (offsetAt(instant) === offset)
+        setDataProperty(
+          candidates,
+          `${candidates.length}`,
+          checkInstant(instant)
+        )
     }
     return apply(arraySort, candidates, [
       // Temporal comparison §11.1.13 step 5, §14.6.3 prose.

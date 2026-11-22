@@ -43,7 +43,7 @@ maxima 24/60/60/1000/1000/1000 and exact divisibility. Its positive-integer inpu
 contract is established by roundingIncrement before this call. Other PlainTime
 callers keep their checks. No new unit algorithm or rounding formula is added.
 
-[Rust:219](../../crates/temporal/zoned.rs#L219) reuses
+[Rust:219](../../crates/temporal/zoned.rs#L227) reuses
 [validate_increment:239](../../crates/temporal/time.rs#L239) before local().
 Typed Rust additionally rejects zero directly. Existing local/time validation
 remains as defense for other callers. Day validation already preceded local work.

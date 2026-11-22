@@ -55,7 +55,7 @@ epoch bounds and local round trips, then sorts the list ascending at line 293.
 Under that sorted-candidate contract, first match is earliest. Native and host
 candidate producers retain separate completeness/order obligations.
 
-[Rust:131](../../crates/temporal/zoned_string.rs#L131) keeps a match only if no
+[Rust:131](../../crates/temporal/zoned_string.rs#L126) keeps a match only if no
 previous match exists or its instant is earlier. Its result is therefore earliest
 regardless of visitor order. Exact matching also takes precedence naturally when
 the same candidate satisfies both comparisons; a later exact match does not

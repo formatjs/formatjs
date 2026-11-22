@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 26890,
+  "whole_selected_source_lines": 26947,
   "whole_selected_source_lines_by_language": {
-    "rust": 10994,
-    "typescript": 15896
+    "rust": 11047,
+    "typescript": 15900
   },
-  "nonoverlapping_callable_lines": 17593,
+  "nonoverlapping_callable_lines": 17598,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8212,
-    "typescript": 9381
+    "rust": 8213,
+    "typescript": 9385
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17222,
+    "mapped": 17227,
     "candidate": 154,
     "unmapped": 217
   },
@@ -464,10 +464,10 @@
     },
     {
       "file": "crates/temporal/relative_duration.rs",
-      "source_lines": 170,
+      "source_lines": 174,
       "callable_rows": 5,
-      "nonoverlapping_callable_lines": 156,
-      "sha256": "b2ac0ac4da285b7138059c0f7399ee295e5f1e14a2e6621e701335d03786d988",
+      "nonoverlapping_callable_lines": 160,
+      "sha256": "c751d01356c855a909f41e6e58f805f6d03a2e250f3599bf0819bc9b22d77c39",
       "unresolved_callable_rows": 0
     },
     {
@@ -496,34 +496,34 @@
     },
     {
       "file": "crates/temporal/timezone.rs",
-      "source_lines": 495,
+      "source_lines": 528,
       "callable_rows": 16,
-      "nonoverlapping_callable_lines": 428,
-      "sha256": "c0b893bf02ad337802360dada23b111ecf51a86c6aca7f88c2734a9231ed0ac2",
+      "nonoverlapping_callable_lines": 421,
+      "sha256": "40588eff315aa93b4f604a7644a860dd71053fd2843e2f65207dc45d90ff2b89",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/timezone_identity.rs",
-      "source_lines": 80,
+      "source_lines": 84,
       "callable_rows": 10,
       "nonoverlapping_callable_lines": 46,
-      "sha256": "36979305f6e2284cb47a13649b2528e8ea68efe845787e7e1ee35244c8209790",
+      "sha256": "c695d9488a24ac563b414695fa68b7a8ee65d8780895b0eb852dddcf776e4272",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/timezone_registry.rs",
-      "source_lines": 229,
+      "source_lines": 234,
       "callable_rows": 21,
       "nonoverlapping_callable_lines": 147,
-      "sha256": "b91bb00f54db1926d83eacd94d275d0d8d2a59847bc047dbe7259f4c7a60adb1",
+      "sha256": "9c8a37cc6b36970226abd320da9072c3a2acc88d47ce83c291733126249c966e",
       "unresolved_callable_rows": 0
     },
     {
       "file": "crates/temporal/zoned.rs",
-      "source_lines": 455,
+      "source_lines": 469,
       "callable_rows": 31,
-      "nonoverlapping_callable_lines": 347,
-      "sha256": "d30826aba609cc53c81c6d9b03f538af7afab6a06e9a58f4d25a177481ae0e12",
+      "nonoverlapping_callable_lines": 358,
+      "sha256": "e18669c60bcefbaad3026e91634d68f651a5b5398d21fc4fab7cac8728d9d0f0",
       "unresolved_callable_rows": 1
     },
     {
@@ -536,10 +536,10 @@
     },
     {
       "file": "crates/temporal/zoned_string.rs",
-      "source_lines": 292,
+      "source_lines": 285,
       "callable_rows": 10,
-      "nonoverlapping_callable_lines": 208,
-      "sha256": "c883ba2ab73f4fbdbe827862c3e1307a4f246c42a90beccd343d25d402aabb57",
+      "nonoverlapping_callable_lines": 201,
+      "sha256": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
       "unresolved_callable_rows": 0
     },
     {
@@ -712,10 +712,10 @@
     },
     {
       "file": "packages/temporal/kernel.ts",
-      "source_lines": 416,
+      "source_lines": 417,
       "callable_rows": 15,
-      "nonoverlapping_callable_lines": 335,
-      "sha256": "075b00965719f20dc5f486c42417332b05a4627158bbb4024219e112712ec850",
+      "nonoverlapping_callable_lines": 336,
+      "sha256": "bf048962fb3f60fa6d2c542e6d46f467e0c40aaa9fc3d16de7b04aef31e8ba6e",
       "unresolved_callable_rows": 0
     },
     {
@@ -856,10 +856,10 @@
     },
     {
       "file": "packages/temporal/relative-duration.ts",
-      "source_lines": 326,
+      "source_lines": 329,
       "callable_rows": 6,
-      "nonoverlapping_callable_lines": 267,
-      "sha256": "6af27eb579722f446e27c6f437f57172ec202104877ceacc5b9e7d7cf339412a",
+      "nonoverlapping_callable_lines": 270,
+      "sha256": "2f125db6facdd941e1626053507918f9128e5adaa87b6697cc06927fbd026150",
       "unresolved_callable_rows": 0
     },
     {

@@ -51,6 +51,14 @@ pub trait TimeZone {
     fn visit_offsets_at(&self, _local_nanoseconds: i128, visitor: &mut dyn FnMut(i128)) {
         self.visit_offsets(visitor);
     }
+    /// Return whether an exact round-trip candidate lies outside the Instant range.
+    ///
+    /// Called with supported local times and their disambiguation shifts.
+    /// Providers that can look up offsets beyond either limit can override
+    /// this method. The default preserves bounded candidate enumeration.
+    fn has_out_of_range_candidate(&self, _local_nanoseconds: i128) -> bool {
+        false
+    }
     fn transition(&self, instant: Instant, direction: TransitionDirection) -> Option<Instant>;
 }
 
@@ -307,15 +315,17 @@ pub(crate) fn visit_possible_instants<Z: TimeZone>(
     zone: &Z,
     visitor: &mut dyn FnMut(Instant),
 ) -> Result<(), Error> {
-    visit_possible_nanoseconds(fields.to_epoch_nanoseconds()?, zone, visitor);
-    Ok(())
+    visit_possible_nanoseconds(fields.to_epoch_nanoseconds()?, zone, visitor)
 }
-// Proposal comparison §11.1.13 step 3.a: Keep in-range candidates whose provider offset round-trips.
-fn visit_possible_nanoseconds<Z: TimeZone>(
+// Proposal comparison §11.1.13 steps 3.a, 4.a: Check all candidate ranges before selection.
+pub(crate) fn visit_possible_nanoseconds<Z: TimeZone>(
     local: i128,
     zone: &Z,
     visitor: &mut dyn FnMut(Instant),
-) {
+) -> Result<(), Error> {
+    if zone.has_out_of_range_candidate(local) {
+        return Err(Error::OutOfRange);
+    }
     zone.visit_offsets_at(local, &mut |offset| {
         if offset <= -NANOSECONDS_PER_DAY || offset >= NANOSECONDS_PER_DAY {
             return;
@@ -327,19 +337,23 @@ fn visit_possible_nanoseconds<Z: TimeZone>(
             }
         }
     });
+    Ok(())
 }
 
 // Proposal comparison §11.1.12 steps 2, 3.a–3.b, 9 and 11.
 // Track the first and last distinct candidate instants.
-fn local_candidate_bounds<Z: TimeZone>(local: i128, zone: &Z) -> Option<(i128, i128)> {
+fn local_candidate_bounds<Z: TimeZone>(
+    local: i128,
+    zone: &Z,
+) -> Result<Option<(i128, i128)>, Error> {
     let mut first: Option<i128> = None;
     let mut last: Option<i128> = None;
     visit_possible_nanoseconds(local, zone, &mut |instant| {
         let candidate = instant.epoch_nanoseconds();
         first = Some(first.map_or(candidate, |old| old.min(candidate)));
         last = Some(last.map_or(candidate, |old| old.max(candidate)));
-    });
-    first.zip(last)
+    })?;
+    Ok(first.zip(last))
 }
 
 // Proposal comparison §11.1.14 steps 1–3, 5 and 7: Resolve midnight or find the containing forward transition.
@@ -385,7 +399,7 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     zone: &Z,
     disambiguation: Disambiguation,
 ) -> Result<Instant, Error> {
-    if let Some((first, last)) = local_candidate_bounds(local, zone) {
+    if let Some((first, last)) = local_candidate_bounds(local, zone)? {
         if first != last && disambiguation == Disambiguation::Reject {
             return Err(Error::InvalidDateTime);
         }
@@ -431,7 +445,7 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
     // Proposal comparison §11.1.12 steps 8–15. Derive the shift from
     // the actual singleton candidates at both local boundaries.
     if let (Some(before), Some(after)) = (before, after) {
-        if let (Some((left, left_last)), Some((right, right_last))) = (
+        if let (Ok(Some((left, left_last))), Ok(Some((right, right_last)))) = (
             local_candidate_bounds(before, zone),
             local_candidate_bounds(after, zone),
         ) {
@@ -444,7 +458,7 @@ pub(crate) fn resolve_local_nanoseconds<Z: TimeZone>(
                 // Proposal comparison §11.1.12 steps 16.e–16.g and 22–25.
                 // The shifted local time can itself have multiple candidates.
                 let shifted = local + if earlier { -shift } else { shift };
-                if let Some((first, last)) = local_candidate_bounds(shifted, zone) {
+                if let Some((first, last)) = local_candidate_bounds(shifted, zone)? {
                     return Instant::from_epoch_nanoseconds(if earlier { first } else { last });
                 }
             }

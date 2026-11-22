@@ -33,6 +33,43 @@ uses that lookup when it reaches an unequal field, then supplies the fallback
 if needed. The comparison also uses the presence value on earlier equal
 fields to control the cutoff. That scheduling and selection stay open.
 
+### Hidden AmPm prevents a record-only reconciliation
+
+The current published
+[ECMA-402 §11.5.8 steps15.c–d](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern)
+retains the same cutoff and mandatory AmPm comparison as
+[Temporal comparison §15.6.8 steps23.c–d](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
+Both were checked on 2026-11-22. This issue also reaches numeric Date inputs;
+it does not depend on Plain timezone projection.
+
+Use one `new DateTimeFormat('ja', {timeZone: 'UTC', dayPeriod: 'long'})`.
+The selected owned pattern is `{dayPeriod}`; its raw interval map has only
+`default`, with `{0}～{1}` endpoint parts. On 2024-01-01:
+
+- `00:00:00Z` to `23:00:00Z`: both singles are `夜中`. Owned and pinned
+  Node 24.14.0 native Intl return one shared `夜中` part.
+- `00:00:00Z` to `04:00:00Z`: singles are `夜中` and `朝`. Owned returns
+  `夜中～朝`, with distinct endpoint sources. Native returns shared `夜中`.
+
+No fixed presence layout can make the literal comparison reproduce both
+owned decisions. For the first pair to collapse, the cutoff must disable
+comparison before AmPm: its hours necessarily give different am/pm values.
+Both pairs have identical date fields and the same fixed interval map, so
+the cutoff state through AmPm is identical. That cutoff would also skip
+DayPeriod for the second pair and collapse it. Keeping comparison enabled
+instead forces the first pair to remain distinct. Changing interval strings
+cannot change this flag contradiction.
+
+Filling sparse records with fallback entries therefore cannot, by itself,
+justify the existing loop. A comparison-policy change is needed to preserve
+both owned outputs. This proof does not choose a normative replacement
+output or promote native Intl to the specification. Remaining row statuses
+stay unchanged. Hindi and Russian give the same cross-AmPm/same-AmPm
+counterexample shape.
+[Public replay](temporal-range-dayperiod-replay.mjs) records both providers;
+the raw selected-record diagnostic was read-only, with one scratch export
+of the existing slot accessor.
+
 ## Duplicate digital Duration group
 
 [§15.9.8 steps4.e.i–iii](https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern)

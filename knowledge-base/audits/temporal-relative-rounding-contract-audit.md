@@ -105,7 +105,7 @@ at step 5 remains open.
 [TypeScript signed day](../../packages/temporal/date-core.ts#L1091).
 [Rust signed day](../../crates/temporal/calendar_difference.rs#L321).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
-[Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
+[Rust compatible resolution](../../crates/temporal/zoned.rs#L294).
 
 Nine focused Bazel targets passed. The TypeScript plain relative, zoned
 difference and relative Duration gates use the existing signed and precision
@@ -182,7 +182,7 @@ uses an effective offset within the same bounds. The two controls verify
 the signed retry for this branch. The wider provider/window and published
 assertion issues remain in the ledger.
 [Signed retry](../../crates/temporal/calendar_difference.rs#L269).
-[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3727).
+[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3843).
 [Temporal comparison §7.5.34 steps 5–6, 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 The PlainDate caller passes both exact UTC midnight scalars, calendar,
@@ -273,7 +273,7 @@ zero. Whole-window assertions stay conditional for the remaining
 providers and published comparison.
 [TypeScript retry](../../packages/temporal/date-core.ts#L1037).
 [Rust retry](../../crates/temporal/calendar_difference.rs#L276).
-[Public Rust fold](../../crates/temporal/lib.test.rs#L3779).
+[Public Rust fold](../../crates/temporal/lib.test.rs#L3895).
 [Temporal comparison §7.5.34 steps 5–6 and 13–17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
 A Gregorian borrowed zone can put the first week endpoint at maximum
@@ -294,3 +294,31 @@ Seven Bazel targets pass across TypeScript, Rust, FFI and Hermes.
 - Passing integration log SHA-256 `8c619151998ab2b63cf99c7b20bbd902f7abcceea34146afe735057a4e5fb932`
 - Public package before-fix replay SHA-256 `faf2c1a065b4a48d397d75ec57c0fa11cdd65707c8b5afb7aff50e4ef85c3635`
 - Public package passing replay SHA-256 `80e47e7d297a654a887aef69688e4ac361b69d492022bddcf65f1f30f239c0d5`
+
+## Retained-week upper bound
+
+A Gregorian borrowed zone changes from +16:00 to −20:00 at maximum
+Instant minus 50 hours. The origin is maximum minus 1,131 hours and
+`PT1082H` reaches maximum minus 49 hours. The unrounded month
+difference is `P1M12DT50H`. The two-week upper endpoint is maximum
+minus 51 hours and its later twin is maximum minus 15 hours. Both
+candidates are valid. The three-week endpoint cannot be constructed.
+
+The former retained-week shortcut returned `P1M3W` for ceil after
+the first upper endpoint fell short. Both kernels now delegate that
+case to the existing shared retry. The next endpoint is checked before
+rounding proceeds. Exact first endpoints still perform the initial
+validation. Lower-side retained-prefix behavior and the separate
+published window assertions remain open.
+[TypeScript retained-week branch](../../packages/temporal/relative-duration.ts#L289).
+[Rust retained-week branch](../../crates/temporal/relative_duration.rs#L166).
+[Public Rust regression](../../crates/temporal/calendar.test.rs#L168).
+[Temporal comparison §7.5.34 steps 5–6 and §7.5.38 step 5.a](https://tc39.es/proposal-temporal/#sec-temporal-roundrelativeduration).
+
+The assembled owned replay reproduces the invalid duration before the
+fix and the range error afterward. Twelve integrated Bazel targets pass.
+[Public package replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs).
+
+- Before-fix replay SHA-256 `35a679ab728f216ad2601b1c9db82acf8d6057c19b1408ddce0878c10963a17a`
+- Passing replay SHA-256 `9e90d0ae0ad3e0f1bf3b2c5c89f246626cabdc36cf21d28a1429ef1840970d03`
+- Integration log SHA-256 `32cf9982daabbf211fba8cee9c28e6b83668d4140e656afc68cd8a1e742ca2df`

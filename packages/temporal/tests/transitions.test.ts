@@ -141,6 +141,42 @@ it('resolves gaps from the nearest reachable local boundaries', () => {
   }
 })
 
+it('validates matching compact zone candidates at both Instant limits', () => {
+  const limitSeconds = 8_640_000_000_000
+  const second = 1_000_000_000n
+  const upper: UnpackedTimeZoneData = [
+    [-Infinity, '', 7200, false],
+    [limitSeconds, '', 7200, false],
+  ]
+  upper.future = {standardOffset: 0}
+  const unrelated: UnpackedTimeZoneData = [
+    [-Infinity, '', 0, false],
+    [0, '', 7200, false],
+  ]
+  for (const [data, localSeconds, validSeconds] of [
+    [
+      [
+        [-Infinity, '', 7200, false],
+        [-limitSeconds, '', 0, false],
+      ],
+      -limitSeconds + 1800,
+      -limitSeconds + 1800,
+    ],
+    [upper, limitSeconds + 1800, limitSeconds - 5400],
+  ] satisfies [UnpackedTimeZoneData, number, number][]) {
+    const fields = epochNanosecondsToISO(BigInt(localSeconds) * second)
+    const mixed = createTimeZone(data)
+    expect(() => mixed.possibleInstants(fields)).toThrow(RangeError)
+    const control = createTimeZone(unrelated)
+    const valid = BigInt(validSeconds) * second
+    expect(control.possibleInstants(fields)).toEqual([valid])
+    for (const mode of ['earlier', 'later', 'compatible', 'reject'] as const) {
+      expect(() => mixed.resolve(fields, mode)).toThrow(RangeError)
+      expect(control.resolve(fields, mode)).toBe(valid)
+    }
+  }
+})
+
 it('finds leap-only recurring changes across a non-leap century', () => {
   const data: UnpackedTimeZoneData = [[-Infinity, '', 3600, true]]
   data.future = {

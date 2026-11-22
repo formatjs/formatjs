@@ -27,6 +27,10 @@ rule offsets. NamedTimeZone and ResolvedTimeZone forward this optional optimizat
 Validated offsets are strictly smaller than one day, so this window includes all
 candidate instants and both sides of any containing gap/fold. No data or cache is
 added. `visit_offsets` retains full-history behavior.
+`TimeZone::has_out_of_range_candidate(local_nanoseconds)` lets providers check
+whether a local time round-trips to an instant outside the supported range.
+The default retains bounded enumeration. Borrowed and registered transition
+providers use their exact rules near the limits.
 See the [completion audit](../../knowledge-base/015a-temporal-completion-audit.md)
 for current verification. Later sections retain historical implementation stages;
 their pending-work statements describe those stages.

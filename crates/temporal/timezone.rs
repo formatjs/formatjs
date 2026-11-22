@@ -1,4 +1,6 @@
-use crate::{Error, Instant, MAX_EPOCH_NANOSECONDS, TimeZone, TransitionDirection};
+use crate::{
+    Error, Instant, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, TimeZone, TransitionDirection,
+};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TransitionRule {
@@ -287,6 +289,44 @@ impl<'a> TransitionZone<'a> {
             .last()
             .map_or(i64::MIN, |event| event.epoch_seconds)
     }
+
+    // ECMA-262 §21.4.1.21: Read the named-zone offset at raw epoch seconds.
+    fn offset_seconds(&self, seconds: i64) -> i32 {
+        if seconds > self.cutoff() {
+            if let Some(future) = &self.future {
+                return future.offset(seconds);
+            }
+        }
+        let index = self
+            .transitions
+            .partition_point(|event| event.epoch_seconds <= seconds);
+        if index == 0 {
+            self.initial
+        } else {
+            self.transitions[index - 1].offset_seconds
+        }
+    }
+
+    // ECMA-262 §21.4.1.20: Include initial, explicit and footer candidate offsets.
+    fn visit_offset_seconds_window(&self, lower: i128, upper: i128, visitor: &mut dyn FnMut(i128)) {
+        let first = self
+            .transitions
+            .partition_point(|event| i128::from(event.epoch_seconds) <= lower);
+        let last = self
+            .transitions
+            .partition_point(|event| i128::from(event.epoch_seconds) <= upper);
+        let initial = if first == 0 {
+            self.initial
+        } else {
+            self.transitions[first - 1].offset_seconds
+        };
+        let future = if upper > i128::from(self.cutoff()) {
+            self.future
+        } else {
+            None
+        };
+        visit_distinct_offsets(initial, &self.transitions[first..last], future, visitor);
+    }
 }
 impl TimeZone for TransitionZone<'_> {
     // Proposal comparison §11.1.9 step 3: Look up a named-zone offset with exact instant boundaries.
@@ -307,19 +347,7 @@ impl TimeZone for TransitionZone<'_> {
                 }
             }
         };
-        if seconds > self.cutoff() {
-            if let Some(future) = &self.future {
-                return i128::from(future.offset(seconds)) * 1_000_000_000;
-            }
-        }
-        let index = self
-            .transitions
-            .partition_point(|event| event.epoch_seconds <= seconds);
-        i128::from(if index == 0 {
-            self.initial
-        } else {
-            self.transitions[index - 1].offset_seconds
-        }) * 1_000_000_000
+        i128::from(self.offset_seconds(seconds)) * 1_000_000_000
     }
     // Proposal comparison §11.1.13 step 3.a: Supply the full offset list for named-zone candidate checks.
     fn visit_offsets(&self, visitor: &mut dyn FnMut(i128)) {
@@ -335,24 +363,29 @@ impl TimeZone for TransitionZone<'_> {
             self.visit_offsets(visitor);
             return;
         }
-        // Every valid offset is strictly less than one day in magnitude.
-        let first = self
-            .transitions
-            .partition_point(|event| i128::from(event.epoch_seconds) <= lower);
-        let last = self
-            .transitions
-            .partition_point(|event| i128::from(event.epoch_seconds) <= upper);
-        let initial = if first == 0 {
-            self.initial
-        } else {
-            self.transitions[first - 1].offset_seconds
-        };
-        let future = if upper > i128::from(self.cutoff()) {
-            self.future
-        } else {
-            None
-        };
-        visit_distinct_offsets(initial, &self.transitions[first..last], future, visitor);
+        self.visit_offset_seconds_window(lower, upper, visitor);
+    }
+
+    // Proposal comparison §11.1.13 steps 3.a, 4.a: Verify the raw candidate before checking its range.
+    fn has_out_of_range_candidate(&self, local: i128) -> bool {
+        let limit = MAX_EPOCH_NANOSECONDS;
+        // A supported local time and its gap shift can each extend one day past an Instant limit.
+        let bound = limit + 2 * NANOSECONDS_PER_DAY;
+        if !(-bound..=bound).contains(&local)
+            || (-limit + NANOSECONDS_PER_DAY..=limit - NANOSECONDS_PER_DAY).contains(&local)
+        {
+            return false;
+        }
+        let seconds = local.div_euclid(1_000_000_000);
+        let mut found = false;
+        self.visit_offset_seconds_window(seconds - 86_400, seconds + 86_400, &mut |offset| {
+            let candidate = local - offset;
+            if !found && !(-limit..=limit).contains(&candidate) {
+                let seconds = candidate.div_euclid(1_000_000_000) as i64;
+                found = i128::from(self.offset_seconds(seconds)) * 1_000_000_000 == offset;
+            }
+        });
+        found
     }
 
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Search strict next or previous offset changes.

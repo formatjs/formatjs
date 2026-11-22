@@ -374,10 +374,15 @@ separate. Nine Bazel targets pass.
 [Caller arguments](temporal-relative-rounding-contract-audit.md#plain-and-zoned-caller-arguments).
 Wide-transition controls now verify repeated outward retries, inward rounding
 and initial weekly total endpoint validation. Overlapping gaps use their
-nearest reachable local boundaries. The mixed-range borrowed candidate
-capability and comparison assertions remain open.
+nearest reachable local boundaries.
 [Wide windows](temporal-relative-rounding-contract-audit.md#wide-transitions-and-initial-total-validation).
 [Owned gap boundaries](temporal-timezone-boundary-proof/README.md#overlapping-owned-gap-boundaries).
+Borrowed Rust and compact TypeScript now reject exact mixed-range candidates
+at both Instant limits. Retained-week rounding validates its later endpoint
+after an outward retry. Unbound provider capability, lower-side prefix behavior
+and the published assertions remain open.
+[Mixed-range candidates](temporal-timezone-boundary-proof/README.md#borrowed-mixed-range-candidate).
+[Retained-week upper bound](temporal-relative-rounding-contract-audit.md#retained-week-upper-bound).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),
