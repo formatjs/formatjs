@@ -8,8 +8,8 @@ This proof establishes civil and Instant bounds for generated timezone data,
 fixed offsets, and the identified Node ICU provider under the existing
 calendar and local-resolution contracts.
 
-- Retained-prefix branch [TypeScript](../../packages/temporal/relative-duration.ts#L253-L286) and [Rust](../../crates/temporal/relative_duration.rs#L132-L161).
-- Unrounded fixed-clock anchors [TypeScript](../../packages/temporal/zoned-date-time.ts#L521-L567) and [Rust](../../crates/temporal/calendar_difference.rs#L111-L204).
+- Retained-prefix branch [TypeScript](../../packages/temporal/relative-duration.ts#L255-L288) and [Rust](../../crates/temporal/relative_duration.rs#L133-L162).
+- Unrounded fixed-clock anchors [TypeScript](../../packages/temporal/zoned-date-time.ts#L521-L567) and [Rust](../../crates/temporal/calendar_difference.rs#L111-L205).
 - Fixed year/month prefix and integral day tail [TypeScript](../../packages/temporal/calendar.ts#L451-L479) and [Rust](../../crates/intl_datetimeformat_calendars/date_math.rs#L37-L59).
 - [NudgeToCalendarUnit §7.5.34 step 5.a](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit)
   and [ComputeNudgeWindow §7.5.33 steps 3.f–g](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
@@ -84,7 +84,7 @@ The exact-endpoint replay checks 756 combinations of sign, timezone,
 retained prefix, largest unit and rounding mode. Each origin adds back to
 the selected Instant limit. Both the Bazel package and pinned Node 26.8.1
 reject every boundary case and accept its control 14 days inside the
-limit. The [TypeScript path](../../packages/temporal/relative-duration.ts#L280)
+limit. The [TypeScript path](../../packages/temporal/relative-duration.ts#L282)
 constructs the adjacent endpoint before returning an exact rounded result.
 [Replay source](temporal-timezone-boundary-proof/retained-week-exact-endpoint-probe.mjs).
 

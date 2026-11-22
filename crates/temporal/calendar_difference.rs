@@ -142,6 +142,7 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             day -= sign as i64;
             remainder += sign * NANOSECONDS_PER_DAY;
         }
+        // Proposal comparison §5.5.12 step 9 uses the adjusted ISO date.
         let mut fields = date_until(start, begin, day, largest)?;
         fields[4..].copy_from_slice(
             &Duration::from_time_nanoseconds(remainder, TimeUnit::Hour)?.fields()[4..],
@@ -242,6 +243,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
         }
         return Duration::new(fields);
     }
+    // Proposal comparison §6.5.7 step 5 uses these fields and the original anchor.
     let mut expanded = false;
     let rounded;
     if smallest < DateTimeUnit::Day || A::ZONED && smallest == DateTimeUnit::Day {

@@ -18,6 +18,10 @@ if (mode === 'legacy') {
       '6b0cf18a501f61f6ef5c63de741ea1e0b41b006c39c2d86c2d68f697001ac34f',
     ],
     [
+      'index.js',
+      '1dcd6ab11ec9f951c77fcb941850b1edead7ed1ff48e856f77fa8ccd831a2005',
+    ],
+    [
       'locale-data/en.js',
       'ae2440a6911c42179833ade1c4a10bfc87c8411b1569e0553386e7a61a196cd2',
     ],
@@ -43,10 +47,34 @@ if (mode === 'legacy') {
     },
   })
 }
-await load(formatterPackage, 'polyfill-force.js')
+const installation = await load(formatterPackage, 'polyfill-force.js')
 await load(formatterPackage, 'locale-data/en.js')
 const formatter = Intl.DateTimeFormat
 assert.notEqual(formatter, native)
+const ponyfill =
+  mode === 'legacy'
+    ? (await load(formatterPackage, 'index.js')).DateTimeFormat
+    : undefined
+const initialData = formatter.tzData
+if (ponyfill) {
+  assert.deepEqual(Object.keys(installation), [])
+  assert.notEqual(ponyfill, formatter)
+  assert.notEqual(
+    ponyfill.prototype.formatToParts,
+    formatter.prototype.formatToParts
+  )
+  assert.deepEqual(Reflect.ownKeys(formatter.prototype.formatToParts), [
+    'length',
+    'name',
+  ])
+  assert.deepEqual(Object.getOwnPropertyDescriptor(formatter, 'tzData'), {
+    value: initialData,
+    writable: true,
+    enumerable: true,
+    configurable: true,
+  })
+  assert.notEqual(ponyfill.tzData, initialData)
+}
 const ownsQuery =
   typeof Object.getOwnPropertyDescriptor(
     formatter.prototype.formatToParts,
@@ -73,6 +101,33 @@ formatter.__addTZData({
     `${lower}|${packed(null, 3)}|${packed(-max - 900n, 0)}`,
   ],
 })
+if (ponyfill) {
+  assert.notEqual(formatter.tzData, initialData)
+  assert.equal(Object.hasOwn(ponyfill.tzData, fold), false)
+
+  const clipped = new formatter('en', {timeZone: upper})
+  const maxMs = Number(max) * 1000
+  for (const method of ['format', 'formatToParts']) {
+    assert.throws(() => clipped[method](maxMs + 1), RangeError)
+    assert.throws(() => clipped[method](-maxMs - 1), RangeError)
+    assert.throws(() => clipped[method](0n), TypeError)
+  }
+  for (const method of ['formatRange', 'formatRangeToParts']) {
+    assert.throws(() => clipped[method](maxMs, maxMs + 1), RangeError)
+    assert.throws(() => clipped[method](-maxMs - 1, -maxMs), RangeError)
+    assert.throws(() => clipped[method](0n, 1n), TypeError)
+  }
+  for (const outside of [max * second + 1n, -max * second - 1n]) {
+    assert.throws(
+      () => globalThis.Temporal.Instant.fromEpochNanoseconds(outside),
+      RangeError
+    )
+    assert.throws(
+      () => new globalThis.Temporal.ZonedDateTime(outside, upper),
+      RangeError
+    )
+  }
+}
 const offset = (timeZone, t) => {
   const label = new formatter('en', {timeZone, timeZoneName: 'longOffset'})
     .formatToParts(Number(t) * 1000)

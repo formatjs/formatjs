@@ -31,8 +31,8 @@ Source anchors include the week-window correction below.
 | 23 unit order                     | [duration.ts:293](../../packages/temporal/duration.ts#L293): largest cannot be smaller than smallest.                                                                                                                                                                                                       |
 | 24–25 increment maximum           | [duration.ts:298](../../packages/temporal/duration.ts#L298): clock maxima 24/60/60/1000/1000/1000; strict cap and divisor. Date units have no fixed cap.                                                                                                                                                    |
 | 26 date increment coupling        | [duration.ts:303](../../packages/temporal/duration.ts#L303): date smallest with larger largest requires increment 1.                                                                                                                                                                                        |
-| 27.a–h zoned                      | [duration.ts:307](../../packages/temporal/duration.ts#L307), [relativeRound:228](../../packages/temporal/relative-duration.ts#L228): actual zoned target, required rounding difference, fresh result; native dispatch precedes TS arithmetic. Special week route correction below validates both endpoints. |
-| 28.a–j plain                      | [relativeRound:246](../../packages/temporal/relative-duration.ts#L246): midnight origin, constrained calendar add and clock carry, rounded plain difference. Plain equal-endpoint shortcut has its own contract.                                                                                            |
+| 27.a–h zoned                      | [duration.ts:307](../../packages/temporal/duration.ts#L307), [relativeRound:228](../../packages/temporal/relative-duration.ts#L230): actual zoned target, required rounding difference, fresh result; native dispatch precedes TS arithmetic. Special week route correction below validates both endpoints. |
+| 28.a–j plain                      | [relativeRound:246](../../packages/temporal/relative-duration.ts#L248): midnight origin, constrained calendar add and clock carry, rounded plain difference. Plain equal-endpoint shortcut has its own contract.                                                                                            |
 | 29 no-relative calendar rejection | [duration.ts:316](../../packages/temporal/duration.ts#L316): nonzero years/months/weeks or calendar largest rejects. Native earlier dispatch owns equivalent validation.                                                                                                                                    |
 | 30 smallest not calendar          | [duration.ts:293](../../packages/temporal/duration.ts#L293): order plus largest calendar rejection implies this assertion.                                                                                                                                                                                  |
 | 31 normalize 24h days             | [duration.ts:325](../../packages/temporal/duration.ts#L325): exact BigInt days/time sum; no calendar fields survive.                                                                                                                                                                                        |
@@ -49,7 +49,7 @@ values do not bypass preparation. Helper audits provide selected coercion and
 preparation evidence; this review did not execute a complete five-option abrupt
 completion matrix.
 
-With relativeTo, [relativeRound:236](../../packages/temporal/relative-duration.ts#L236)
+With relativeTo, [relativeRound:236](../../packages/temporal/relative-duration.ts#L238)
 selects native dispatch or obtains the actual endpoint before branching.
 [Native adapter:1034](../../packages/temporal/native.ts#L1034) receives prepared
 fields/unit/anchor; typed Rust does not implement JS coercion. Without relativeTo,
@@ -68,8 +68,8 @@ A shared helper's zero behavior alone cannot establish either public caller.
 
 ## Exact week-window correction
 
-The [special week branch:249](../../packages/temporal/relative-duration.ts#L249)
-and [Rust counterpart:124](../../crates/temporal/relative_duration.rs#L124)
+The [special week branch:249](../../packages/temporal/relative-duration.ts#L251)
+and [Rust counterpart:124](../../crates/temporal/relative_duration.rs#L125)
 previously returned when the first endpoint equaled the target, before validating
 the next week endpoint. That bypassed
 [comparison §7.5.33 ComputeNudgeWindow](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow)

@@ -644,6 +644,8 @@ export function differenceZonedDuration(
     return createDuration(zeroDuration())
   }
   const native = nativeTemporal()
+  // Proposal comparison §6.5.9 step 9 forwards both instants, the receiver
+  // zone and calendar, and the prepared rounding settings.
   if (import.meta.formatjsTemporalNativeData === true || native)
     return createDuration(
       native!.differenceZonedDateTime(
@@ -669,6 +671,7 @@ export function differenceZonedDuration(
         zoned: true,
         // Proposal comparison §6.5.7 step 2: pass the prepared endpoints to the zoned difference.
         unrounded: value => unroundedZonedDifference(start, value, largest),
+        // Step 5 uses the original local clock, zone and calendar.
         endpoint: fields => addZonedDuration(start, fields),
       }
     )

@@ -34,7 +34,7 @@ Lines 882–889 take the time-largest branch before creating balanced Number fie
 compute the original epoch difference, apply the `since` sign, round in BigInt,
 then balance the rounded integer once into final Number fields.
 
-[Rust difference:177](../../crates/temporal/calendar_difference.rs#L211)
+[Rust difference:177](../../crates/temporal/calendar_difference.rs#L212)
 retains `validate_options` before the equal-endpoint return. Lines 182–187 use
 the original i128 difference, round it, then construct the final Duration.
 Validated unit ordering ensures that a time largest unit also has a time smallest

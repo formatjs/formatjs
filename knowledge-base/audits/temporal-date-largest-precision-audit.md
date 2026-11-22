@@ -23,7 +23,7 @@ anchor are bounded instants; the overshoot sentinel at line 515 is also bounded
 by the epoch limit plus one day. Therefore the remainder's magnitude is below
 `1.729e22 ns`, and its hour quotient is below `4.81e9`, well below `2**53`.
 Subsequent fields have the same small remainder bounds. Rust's
-[anchor/sentinel path:145](../../crates/temporal/calendar_difference.rs#L155)
+[anchor/sentinel path:145](../../crates/temporal/calendar_difference.rs#L156)
 and hour balance at line 164 satisfy the same coarse bound.
 
 Thus the Number/f64 conversions in these hour-balanced clock fields lose no
@@ -38,7 +38,7 @@ field itself exceeded `2**53` before rounding.
 ## Plain fixed-day rounding
 
 With plain date/day largest units and time/day smallest units, the
-[TS fixed-length branch:1016](../../packages/temporal/date-core.ts#L1016) combines
+[TS fixed-length branch:1016](../../packages/temporal/date-core.ts#L1017) combines
 integer day and clock fields through BigInt. After exact rounding, line 987
 converts only the quotient by one day back to Number. For time smallest units,
 bounded public endpoints and sub-day rounding keep that day quotient below
@@ -47,7 +47,7 @@ round beyond the input interval; the quotient still stays below `1.201e9`.
 Both bounds are exactly representable. The separately balanced remainder is
 below one day.
 
-[Rust:277](../../crates/temporal/calendar_difference.rs#L319) performs the same
+[Rust:277](../../crates/temporal/calendar_difference.rs#L321) performs the same
 calculation in i128 and reconstructs the remainder at hour. Provided the calendar
 day field has the required bounded integer value, its intermediate f64
 conversion is exact as well. This does not establish that provider arithmetic selected the correct day count.
@@ -70,7 +70,7 @@ The truncated product and adjacent increment are bounded integers below
 `2**35`, so multiplication/addition remain exact. The quotient used for half-even
 parity is then an exact integer. Division by seven in week preparation obeys the
 same argument. Rust uses i128 division/products directly in
-[lines 199–208](../../crates/temporal/calendar_difference.rs#L242).
+[lines 199–208](../../crates/temporal/calendar_difference.rs#L243).
 
 Both implementations compare irregular rounding distances and endpoint spans
 with BigInt/i128, preserving nanoseconds at half boundaries. Endpoint production

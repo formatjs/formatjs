@@ -28,6 +28,11 @@ representation or resolution of the cutoff rule.
 [Temporal comparison §15.6.8 steps 23.b–d and 24](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 [Source and endpoint evidence](temporal-pattern-partition-audit.md#day-period-values-and-private-interval-metadata).
 
+The prepared lookup itself returns the own interval or undefined. Source
+uses that lookup when it reaches an unequal field, then supplies the fallback
+if needed. The comparison also uses the presence value on earlier equal
+fields to control the cutoff. That scheduling and selection stay open.
+
 ## Duplicate digital Duration group
 
 [§15.9.8 steps4.e.i–iii](https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern)

@@ -203,6 +203,8 @@ export function relativeTotal(
     'zoned' in relative
       ? unroundedZonedDifference(relative.zoned, end, unit)
       : dateUntil(relative.date, epochDayOf(end), unit)
+  // Proposal comparison §6.5.8 step 4 uses the unrounded count, exact
+  // endpoints and original anchor for the zoned total.
   let count = difference[(unit + 's') as keyof DurationFields]
   const candidate = zeroDuration()
   candidate[(unit + 's') as keyof DurationFields] = count

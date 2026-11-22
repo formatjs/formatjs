@@ -869,8 +869,8 @@ function unroundedDifference(
     lastDay -= sign
     time += bigIntFrom(sign) * nsPerDay
   }
-  // Proposal comparison §5.5.12 step 9: use the adjusted date for the calendar
-  // difference.
+  // Proposal comparison §5.5.12 step 9: pass both ISO dates, the calendar
+  // and the date-largest unit after clock borrow.
   const result = dateUntil(
     {epochDay: epochDayOf(start), calendar},
     lastDay,
@@ -1000,6 +1000,7 @@ export function roundRelativeDifference(
     }
     return result
   }
+  // Proposal comparison §6.5.7 step 5 enters rounding with the unrounded fields.
   // Proposal comparison §7.5.38 steps 1–7: Select calendar, zoned-clock, or
   // fixed-day rounding.
   const irregular = smallIndex < 3 || (anchor.zoned && smallIndex === 3)

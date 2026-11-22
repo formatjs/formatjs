@@ -72,15 +72,15 @@ balancing clock fields. Fold fixtures distinguish earlier and later candidates.
 The choice of intermediate remains a separate open step.
 [Temporal comparison §6.5.6 steps 11.c–d](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 [TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L592).
-[Rust subtraction](../../crates/temporal/calendar_difference.rs#L205).
+[Rust subtraction](../../crates/temporal/calendar_difference.rs#L206).
 
 The date-unit caller uses the unrounded zoned difference with the original
 endpoints, zone and calendar and the prepared largest unit. If either backend
 uses an identical-endpoint shortcut, it takes the callee's zero-result case.
 The relative rounding call remains separately conditional.
 [Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
-[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L670).
-[Rust dispatch](../../crates/temporal/calendar_difference.rs#L235).
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L672).
+[Rust dispatch](../../crates/temporal/calendar_difference.rs#L236).
 
 ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
 Step 12.a uses the adjacent signed count, which lies strictly farther from
@@ -90,10 +90,10 @@ takes the next count in that direction. Both backends therefore take the
 nonzero date-add path and resolve the original local clock compatibly at
 these endpoints. Prefix choice and the retry stay separately open.
 [Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
-[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1021).
-[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1024).
-[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L260).
-[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L263).
+[TypeScript first endpoint](../../packages/temporal/date-core.ts#L1022).
+[TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1025).
+[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L262).
+[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L265).
 
 NudgeToZonedTime step 6 adds the duration sign to a day component that has
 that sign or is zero. The resulting date duration is nonzero. Calendar
@@ -102,8 +102,8 @@ signed day. The next endpoint keeps the original clock even if the previous
 endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
-[TypeScript signed day](../../packages/temporal/date-core.ts#L1082).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L317).
+[TypeScript signed day](../../packages/temporal/date-core.ts#L1083).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L319).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
 
@@ -135,8 +135,8 @@ local-date hull and do not have the borrowed-table boundary in this case.
 
 The new public regression fails with the original implementation. All
 three Rust Bazel targets pass afterward.
-[Calendar field selection](../../crates/temporal/calendar_difference.rs#L168).
-[Compatible zone resolution](../../crates/temporal/zoned_difference.rs#L102).
+[Calendar field selection](../../crates/temporal/calendar_difference.rs#L169).
+[Compatible zone resolution](../../crates/temporal/zoned_difference.rs#L103).
 [Public borrowed-table regression](../../crates/temporal/calendar.test.rs#L22).
 [Temporal comparison §6.5.6 steps 11.c and 14](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 
@@ -161,7 +161,7 @@ the call step under the selected-day and CalendarDateUntil contracts. The
 reverse-fold choice and published ISO calendar discrepancy remain open.
 
 [Same-day path](../../crates/temporal/calendar_difference.rs#L134).
-[Selected day](../../crates/temporal/calendar_difference.rs#L197).
+[Selected day](../../crates/temporal/calendar_difference.rs#L198).
 [Borrowed-calendar regressions](../../crates/temporal/calendar.test.rs#L37).
 [Temporal comparison §6.5.6 steps 4.a–b](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 
@@ -181,7 +181,7 @@ exceeds the difference of two valid offsets. Compatible gap resolution
 uses an effective offset within the same bounds. The two controls verify
 the signed retry for this branch. The wider provider/window and published
 assertion issues remain in the ledger.
-[Signed retry](../../crates/temporal/calendar_difference.rs#L267).
+[Signed retry](../../crates/temporal/calendar_difference.rs#L269).
 [Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3685).
 [Temporal comparison §7.5.34 steps 5–6, 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
@@ -201,3 +201,54 @@ requirements.
 - Failing same-day Bazel log SHA-256 `114a46c49f496e185ec882ade0408ddeb47ba9bc8fea1c41c5ae24e2fb276f6f`
 - Failing uncovered-origin Bazel log SHA-256 `744fd6d9152f9038a77749430e86d9b7b734a4275530245684d64a91d8feab78`
 - Passing Rust, TypeScript and Hermes Bazel log SHA-256 `c3ff9ef95b71eebdeec8970b1bd1c8d9d6d668b6ce7301aecf243df3959bf330`
+
+## Plain and zoned caller arguments
+
+PlainDateTime clock borrow moves the end ISO day one day toward the start
+only when the clock remainder opposes the date direction. Both engines pass
+that day, the original ISO start day, calendar and largest date unit to
+calendar difference. For time-largest units, the signed day adjustment
+subtracts the same exact day that it adds to the clock remainder. The fused
+epoch subtraction therefore gives the same result on the supplied
+terminating day-difference contract. The published ISO loop issue remains
+separate.
+[TypeScript adjusted day](../../packages/temporal/date-core.ts#L872).
+[Rust adjusted day](../../crates/temporal/calendar_difference.rs#L145).
+[Temporal comparison §5.5.12 step 9](https://tc39.es/proposal-temporal/#sec-temporal-differenceisodatetime).
+
+For unequal zoned instants and date-largest units, the public difference
+passes both exact instants, the receiver's zone and calendar, both units,
+increment and rounding mode. The FFI forwards the same values. Reversing
+the result for since is equivalent to switching ceil with floor and
+halfCeil with halfFloor under negation. Other modes are invariant under
+that conjugation, including halfEven's absolute parity check.
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L647).
+[Rust dispatch](../../crates/temporal/zoned_difference.rs#L51).
+[Native dispatch](../../crates/temporal/ffi.rs#L1189).
+[Temporal comparison §6.5.9 step 9](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime).
+
+The zoned rounding entry uses the unrounded fields after the time-unit
+and exact-nanosecond exits. Both exact instants, the original base clock
+and calendar, the zone, and the prepared rounding settings stay available
+to the fused rounding path. Endpoint construction recovers the base clock
+from the receiver. This verifies argument transport while the round
+window, fold choice and published retry text stay separately governed.
+[TypeScript rounding entry](../../packages/temporal/date-core.ts#L1003).
+[Rust rounding entry](../../crates/temporal/calendar_difference.rs#L246).
+[Temporal comparison §6.5.7 step 5](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
+
+Zoned date-unit total uses the same exact endpoints, original receiver
+and date-unit difference. The requested total unit is also the largest
+unit, so no larger date field contributes a prefix. An unrounded week
+difference has fewer than seven residual days. The fused window can use
+the selected count with the exact endpoints to represent the remaining
+fraction. Its endpoint retries and final quotient retain their separate
+requirements.
+[TypeScript total inputs](../../packages/temporal/relative-duration.ts#L206).
+[Rust total inputs](../../crates/temporal/relative_duration.rs#L90).
+[Temporal comparison §6.5.8 step 4](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithtotal).
+
+Nine focused Bazel targets pass across TypeScript, public Rust, FFI and
+Hermes plain, zoned and duration paths.
+
+- Passing Bazel log SHA-256 `371268cb3578192ae42c258e196c5653b13802650b8a60fd5b215b6898050a4b`

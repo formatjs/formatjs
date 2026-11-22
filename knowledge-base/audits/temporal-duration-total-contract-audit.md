@@ -20,7 +20,7 @@ No historical algorithm-line credit or complete operation signoff.
 | 12 zoned relative  | [347](../../packages/temporal/duration.ts#L347), [relativeTotal:143](../../packages/temporal/relative-duration.ts#L143)  | Native dispatch or exact added endpoint, elapsed time total or recomputed calendar/day window. Full addition/provider contract remains prerequisite.                        |
 | 13 plain relative  | Same dispatch, [169](../../packages/temporal/relative-duration.ts#L169)                                                  | Midnight anchor, constrained calendar addition plus elapsed clock carry. Fixed-unit shortcut preserves date/span checks. Calendar-provider equivalence remains conditional. |
 | 14 no relative     | [348](../../packages/temporal/duration.ts#L348)                                                                          | Native dispatch or reject calendar fields/calendar target; days are 24 hours. Sum remains BigInt through final division.                                                    |
-| 15 Number          | [367](../../packages/temporal/duration.ts#L367), [relative ratio:225](../../packages/temporal/relative-duration.ts#L225) | One correctly rounded binary64 ratio. Existing private-ratio proof requires valid endpoints, positive span and bounded exact count.                                         |
+| 15 Number          | [367](../../packages/temporal/duration.ts#L367), [relative ratio:225](../../packages/temporal/relative-duration.ts#L227) | One correctly rounded binary64 ratio. Existing private-ratio proof requires valid endpoints, positive span and bounded exact count.                                         |
 
 ## Relative branch obligations
 
@@ -54,7 +54,7 @@ and [§7.5.39](https://tc39.es/proposal-temporal/#sec-temporal-totalrelativedura
 requires provider progress, unrounded decomposition and skipped-date retry policy;
 existing Apia spec issue remains unresolved.
 
-[Fraction:224](../../packages/temporal/relative-duration.ts#L224): with sign ±1,
+[Fraction:224](../../packages/temporal/relative-duration.ts#L226): with sign ±1,
 span=(b−a)×sign must be positive. Result is
 (count×span + end−a)/span, computed exactly before final Number conversion.
 For negative direction, count and residual are negative. Under validated shipped

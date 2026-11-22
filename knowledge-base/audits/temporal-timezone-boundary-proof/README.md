@@ -113,6 +113,21 @@ synthetic custom data accepted by the released formatter. The shipped IANA
 data and the other certified profiles retain their own evidence.
 [Replay fixture](legacy-provider-replay.mjs).
 
+The 7.8.1 root export and `polyfill-force.js` create different constructors,
+`formatToParts` functions, and timezone registries. The force entry installs
+its constructor without exporting it. Registration replaces that
+constructor's writable `tzData` property, and the separately imported root
+constructor retains its own table. Importing the root export therefore
+cannot bind the dataset used by the installed formatter. An exact adapter
+would need an explicit contract for installed constructor identity, row
+interpretation, and data replacement.
+
+The legacy replay checks that all four public single and range formatting
+methods reject Number inputs just outside TimeClip and reject BigInt
+inputs. The captured Temporal readers require branded values. Instant and
+ZonedDateTime construction rejects epochs one nanosecond outside the same
+limits, so those public inputs have the same endpoint constraint.
+
 - Legacy result SHA-256 `1652f3f5071c91146bfe455a82feb8c2cdf6f42e69c83152ad0275a2c97747df`
 - Owned result SHA-256 `56efd3a337c89b3c71339ffb887fe847bc8dc01e4ff9e09304c788e98092b1a8`
 

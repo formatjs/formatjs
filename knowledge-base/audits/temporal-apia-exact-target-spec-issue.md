@@ -25,8 +25,8 @@ The TypeScript and Rust rounders return −1 day, and their total paths validate
 the second endpoint before returning −1. These observations record FormatJS's
 current behavior while the published assertion remains unresolved.
 [TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L545)
-[TS rounding](../../packages/temporal/date-core.ts#L1024)
-[Rust rounding](../../crates/temporal/calendar_difference.rs#L261)
+[TS rounding](../../packages/temporal/date-core.ts#L1025)
+[Rust rounding](../../crates/temporal/calendar_difference.rs#L263)
 [TS total](../../packages/temporal/relative-duration.ts#L198)
 [Rust total](../../crates/temporal/relative_duration.rs#L77).
 

@@ -1,23 +1,23 @@
 {
-  "algorithm_rows": 36,
-  "core_rows": 30,
+  "algorithm_rows": 32,
+  "core_rows": 26,
   "amendment_rows": 6,
-  "families": 10,
+  "families": 9,
   "classification_counts": {
     "confirmed_implementation_gap": 16,
-    "published_spec_issue": 14,
+    "published_spec_issue": 10,
     "dependency_reconciliation": 2,
     "profile_applicability": 4
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. Per-step local verification removes only the rows with independent evidence. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "e3f0a7e8e69e569f6dfe6195fffc8296f3172a74fcef07199e7ca36d64fff8b8",
-    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "bf7c4dc06ade2556c9a1221794e4a65a9ac0399500f44c6175acc135319378cc"
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "1189a85478597de5b268ab527c49c428bcbe74eddf693b1c759e74b7eaf4ab49",
+    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "fca205e0c42ce8d0faa9b617ce522ac625cb3b8f52992cd607cf31215ed72340"
   },
   "scope_decision": {
     "deferred_family": "constructor-realm-fallback",
     "deferred_algorithm_rows": 16,
-    "active_conditional_algorithm_rows": 20,
+    "active_conditional_algorithm_rows": 16,
     "deferred_requirement_ids": [
       "3.1.1/algorithm-1/step-10",
       "3.5.3/algorithm-1/step-3",

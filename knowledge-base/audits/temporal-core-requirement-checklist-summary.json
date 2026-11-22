@@ -37,8 +37,8 @@
   "review_status_counts": {
     "verified": 152,
     "informative": 234,
-    "verified_local_step": 4109,
-    "conditional": 219,
+    "verified_local_step": 4113,
+    "conditional": 215,
     "spec_issue": 94
   },
   "status_note": "unreconciled means review evidence not yet entered into this register, not missing implementation. existing_evidence_pending preserves current audit references; reviewed/conditional record exact local-step reconciliation, not whole-method compliance.",

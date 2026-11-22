@@ -87,6 +87,7 @@ pub(crate) fn total<A: RelativeAnchor>(
         RoundingMode::Trunc,
         false,
     )?;
+    // Proposal comparison §6.5.8 step 4 uses the unrounded count, exact endpoints and zone.
     let mut count = difference.fields()[unit as usize];
     let mut fields = [0; 10];
     fields[unit as usize] = count;

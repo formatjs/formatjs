@@ -48,6 +48,7 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
         if self.instant() == other.instant() {
             return Duration::new([0; 10]);
         }
+        // Proposal comparison §6.5.9 step 9 forwards the receiver, target and settings.
         difference(
             self,
             other.instant().epoch_nanoseconds(),
