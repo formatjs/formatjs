@@ -50,19 +50,41 @@ The historical/provisional Temporal inventory above remains unchanged.
 Projection review below assumes the partition producer's specified private List
 and Record contract. Producers and complete public methods remain open.
 
-| Section                                                                                         | Status                                                                | Evidence or gap                                                                                                                                                                                  |
-| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)                       | Reviewed for valid Pattern Strings                                    | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                                                                    |
-| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern)             | Record appends and selected numeric steps reviewed; dependencies open | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                                                                     |
-| [§11.5.5 PartitionDateTimePattern](https://tc39.es/ecma402/#sec-partitiondatetimepattern)       | Numeric steps mapped; dependencies open                               | [Eight-step correspondence and cache proof](temporal-private-format-cache-audit.md); constructor selection and complete producer remain open.                                                    |
-| [§11.5.11 ToLocalTime](https://tc39.es/ecma402/#sec-tolocaltime)                                | Bounded Gregorian records/precision reviewed; complete operation open | [Gregorian record mapping](temporal-local-time-record-audit.md) and [precision controls](temporal-local-offset-precision-audit.md); parser, range/brand callers and other calendars remain open. |
-| [§11.5.12 ToLocalTime Records](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records) | Bounded Gregorian correspondence reviewed                             | [All twelve fields mapped](temporal-local-time-record-audit.md); named-zone data policy and non-Gregorian contracts remain open.                                                                 |
-| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts)             | Projection reviewed; producer open                                    | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open.                                                  |
-| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)                | Projection reviewed; producer open                                    | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                                                                            |
+| Section                                                                                         | Status                                                                     | Evidence or gap                                                                                                                                                                                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [§9.2.15 PartitionPattern](https://tc39.es/ecma402/#sec-partitionpattern)                       | Reviewed for valid Pattern Strings                                         | [Complete seven-step helper mapping](temporal-pattern-partition-audit.md); caller schemas and complete producers remain open.                                                                                                                                                                                               |
+| [§11.5.4 FormatDateTimePattern](https://tc39.es/ecma402/#sec-formatdatetimepattern)             | Record appends and selected numeric steps reviewed; dependencies open      | [Producer step map](temporal-date-pattern-audit.md); constructor, calendar and locale-data work remain open.                                                                                                                                                                                                                |
+| [§11.5.5 PartitionDateTimePattern](https://tc39.es/ecma402/#sec-partitiondatetimepattern)       | Numeric steps mapped; dependencies open                                    | [Eight-step correspondence and cache proof](temporal-private-format-cache-audit.md); constructor selection and complete producer remain open.                                                                                                                                                                               |
+| [§11.5.11 ToLocalTime](https://tc39.es/ecma402/#sec-tolocaltime)                                | Bounded Gregorian records/offset parsing reviewed; complete operation open | [Gregorian record mapping](temporal-local-time-record-audit.md), [shared offset parsing](temporal-offset-grammar-audit.md#shared-scanner-and-datetimeformat-integration) and [precision controls](temporal-local-offset-precision-audit.md); public input preparation, range/brand callers and other calendars remain open. |
+| [§11.5.12 ToLocalTime Records](https://tc39.es/ecma402/#sec-datetimeformat-tolocaltime-records) | Bounded Gregorian correspondence reviewed                                  | [All twelve fields mapped](temporal-local-time-record-audit.md); named-zone data policy and non-Gregorian contracts remain open.                                                                                                                                                                                            |
+| [§11.5.7 FormatDateTimeToParts](https://tc39.es/ecma402/#sec-formatdatetimetoparts)             | Projection reviewed; producer open                                         | [Five-step source mapping](temporal-parts-result-audit.md) and protected type/value result construction. PartitionDateTimePattern remains open.                                                                                                                                                                             |
+| [§16.5.6 FormatNumericToParts](https://tc39.es/ecma402/#sec-formatnumbertoparts)                | Projection reviewed; producer open                                         | Same shared projection; PartitionNumberPattern and public input handling remain open.                                                                                                                                                                                                                                       |
 
 ## Historical passes and current fixes
 
 Current pass:
+
+- [Shared UTC-offset scanner #8111](https://github.com/formatjs/formatjs/pull/8111):
+  [Grammar/integration audit](temporal-offset-grammar-audit.md#shared-scanner-and-datetimeformat-integration)
+  connects ECMA-262 §21.4.1.33–§21.4.1.33.2 with ECMA-402 §11.5.11 step 1/1.a.
+  Temporal and ToLocalTime now use the same leaf scanner; its audited body is
+  unchanged. This fixes comma fractions being treated as zero offset by the
+  independent formatter scanner. Expanded 72-vector cancellation matrix passes,
+  including both signs and both Date limits. Original epoch Decimal path and
+  public minute-only timezone option validation stay unchanged. Eight focused
+  gates pass; original/provisional Temporal chapter credit stays unchanged.
+  Full 42-case pattern replay passes in isolation (322.3 seconds). Expanded run:
+  205/207 pass (99 executed, 108 cached); raw ListFormat/PluralRules failures
+  exactly match existing constructor-realm baseline keys/messages across 162/106
+  scenarios. Both baseline-aware gates pass. All ten package assemblies, all 40
+  Temporal class/backend gates, unchanged 12,808-case ICU snapshot and native
+  DateTimeFormat comparison (9,440 cases / 40,284 assertions per source/bytecode
+  run) pass. The formerly missed extended-calendar Hermes gate also passes all
+  300 checks in source/bytecode. No baseline, exclusions or timeout changes.
+  Named-zone policy and complete callers remain open; no new specification issue.
+  Parent #8110 at 7b1e3aae9cc634b61910f580f3af66c3e41eb0b4 passes hooks,
+  cross-build, native smoke and
+  [all-target CI](https://formatjs.buildbuddy.io/invocation/bdcb3592-cc5d-4187-b5ef-7028751980ca).
 
 - [Gregorian local-time records #8110](https://github.com/formatjs/formatjs/pull/8110):
   [Record audit](temporal-local-time-record-audit.md) maps ECMA-402 §11.5.11 steps

@@ -16,6 +16,7 @@ formatjs_library(
         "ToPrimitive.ts",
         "ToString.ts",
         "Type.ts",
+        "UTCOffsetNanoseconds.ts",
         "intrinsics.ts",
     ],
     visibility = ["//visibility:public"],

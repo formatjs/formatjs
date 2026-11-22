@@ -1,5 +1,10 @@
 # Temporal implementation
 
+UTC-offset recognition/parsing now shares the leaf `UTCOffsetNanoseconds` scanner
+between Temporal and DateTimeFormat. The [grammar integration audit](audits/temporal-offset-grammar-audit.md#shared-scanner-and-datetimeformat-integration)
+covers comma fractions and exact bounded nanosecond accumulation; the epoch
+Decimal path and public minute-only timezone option rules stay unchanged.
+
 The [local-time record audit](audits/temporal-local-time-record-audit.md) maps
 published ECMA-402 §11.5.11–12 to TS/Rust. Builtin Gregorian/ISO formatter records
 retain signed years; pattern rendering applies era-year normalization separately.

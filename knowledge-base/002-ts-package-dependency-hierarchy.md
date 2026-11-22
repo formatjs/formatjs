@@ -14,6 +14,10 @@ Packages are organized by their depth in the internal dependency graph. Each lay
 | `@formatjs/intl-getcanonicallocales` | Polyfill for `Intl.getCanonicalLocales`                                                        |
 | `@formatjs/ecma376`                  | ECMA-376 number format generation                                                              |
 
+UTC-offset scanning lives in `ecma262-abstract/UTCOffsetNanoseconds.ts`.
+Temporal wrappers and ECMA-402 DateTimeFormat consume that leaf helper directly;
+formatters do not import Temporal to parse offsets.
+
 ### Layer 1 — Core Infrastructure
 
 | Package                            | Internal Dependencies                                          | Notes                                                                                                                                                      |
