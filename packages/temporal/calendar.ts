@@ -495,9 +495,19 @@ function addCalendarEpochDay(
   ]
   for (let index = 0; index < values.length; index++)
     values[index] = integer(values[index])
-  // Temporal comparison §7.5.9 step 1, §7.5.16 steps 2.b and 2.c.
-  // Check both signs in the prepared date-duration fields.
-  if (arraySome(values, x => x < 0) && arraySome(values, x => x > 0))
+  // Temporal comparison §7.5.9 step 1. Reject mixed signs.
+  if (
+    arraySome(
+      values,
+      // Temporal comparison §7.5.16 step 2.b. Find a negative field.
+      x => x < 0
+    ) &&
+    arraySome(
+      values,
+      // Temporal comparison §7.5.16 step 2.c. Find a positive field.
+      x => x > 0
+    )
+  )
     throw new RangeErrorConstructor('Mixed duration signs')
   const {year, month} = addYearMonth(
     calendar,

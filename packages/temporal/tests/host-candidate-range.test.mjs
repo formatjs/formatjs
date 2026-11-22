@@ -555,6 +555,69 @@ try {
     )
   }
 
+  for (const [
+    month,
+    offsets,
+    events,
+    targetHour,
+    daysPastMonth,
+    increment,
+    roundedDays,
+    full,
+  ] of [
+    [1, [-23, 0, 16, -22], [9n, 20n, 39n], 32n, 2, 3, 33, 'P1M2D'],
+    [
+      4,
+      [-23, 1, 23, -23, 23, -1],
+      [9n, 20n, 46n, 70n, 74n],
+      25n,
+      3,
+      3,
+      33,
+      'P1M2D',
+    ],
+    [1, [-22, 2, 23, -23, 19], [9n, 45n, 47n, 54n], 45n, 3, 2, 34, 'P1M1DT23H'],
+  ]) {
+    const center = BigInt(Date.UTC(2024, month, 1)) * 1_000_000n
+    installBoundaryZone(center, offsets, events)
+    const originMonth = String(month).padStart(2, '0')
+    const dayOrigin = Temporal.ZonedDateTime.from(
+      `2024-${originMonth}-01T00:00[${pulse}]`
+    )
+    const dayTarget = new Temporal.ZonedDateTime(
+      center + targetHour * hour,
+      pulse
+    )
+    assert.equal(
+      dayOrigin.until(dayTarget, {largestUnit: 'month'}).toString(),
+      full
+    )
+    assert.equal(
+      dayOrigin.add({months: 1, days: daysPastMonth}).epochNanoseconds,
+      dayTarget.epochNanoseconds
+    )
+    assert.equal(
+      dayOrigin.add({days: roundedDays}).epochNanoseconds,
+      dayTarget.epochNanoseconds
+    )
+    for (const roundingMode of ['floor', 'ceil', 'halfEven']) {
+      const options = {
+        largestUnit: 'month',
+        smallestUnit: 'day',
+        roundingIncrement: increment,
+        roundingMode,
+      }
+      assert.equal(
+        dayOrigin.until(dayTarget, options).toString(),
+        `P${roundedDays}D`
+      )
+      assert.equal(
+        dayOrigin.since(dayTarget, options).toString(),
+        `-P${roundedDays}D`
+      )
+    }
+  }
+
   for (const [originDay, upperDay, offsets, events, targetHour, sign, full] of [
     [6, 11, [-23, 22, -18, 6], [-20n, 17n, 47n], 10n, 1, 'P1M1DT8H'],
     [11, 6, [-21, 3, 20, -19, 5], [-41n, -36n, -16n, 14n], -5n, -1, '-P1M1D'],
@@ -590,6 +653,43 @@ try {
         expected
       )
     }
+  }
+
+  const nearLimitDayOptions = {
+    largestUnit: 'month',
+    smallestUnit: 'day',
+    roundingIncrement: 2,
+    roundingMode: 'floor',
+  }
+  for (const [distance, startDay, expected] of [
+    [3n, 10, 'P34D'],
+    [2n, 11, 'P32D'],
+  ]) {
+    const center = maxNanoseconds - distance * 24n * hour
+    installBoundaryZone(center, [-22, 2, 23, -23, 19], [9n, 45n, 47n, 54n])
+    const nearLimitOrigin = Temporal.ZonedDateTime.from(
+      `+275760-08-${startDay}T00:00[${pulse}]`
+    )
+    const nearLimitTarget = new Temporal.ZonedDateTime(
+      center + 45n * hour,
+      pulse
+    )
+    assert.equal(
+      nearLimitOrigin.add({months: 1, days: 2}).epochNanoseconds,
+      center + 46n * hour
+    )
+    if (distance === 3n) {
+      assert.equal(
+        nearLimitOrigin.add({days: 34}).epochNanoseconds,
+        nearLimitTarget.epochNanoseconds
+      )
+    } else {
+      assert.throws(() => nearLimitOrigin.add({days: 34}), RangeError)
+    }
+    assert.equal(
+      nearLimitOrigin.until(nearLimitTarget, nearLimitDayOptions).toString(),
+      expected
+    )
   }
 } finally {
   hooks.deregister()

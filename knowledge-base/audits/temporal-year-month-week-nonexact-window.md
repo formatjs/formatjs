@@ -252,7 +252,7 @@ within each actual year. The checked constrain fallback for absent leap
 codes moves the mapped ordinal by at most one under the named formulas.
 [TS month-code decode](../../packages/temporal/calendar.ts#L224)
 [TS constrained addition](../../packages/temporal/calendar.ts#L451)
-[TS raw prefix decomposition](../../packages/temporal/calendar.ts#L533)
+[TS raw prefix decomposition](../../packages/temporal/calendar.ts#L543)
 [Rust prefix decomposition](../../crates/intl_datetimeformat_calendars/date_math.rs#L60),
 [Rust month-code fallback](../../crates/intl_datetimeformat_calendars/table_calendar.rs#L267).
 For Chinese and Dangi, an absent leap code is constrained to its ordinary

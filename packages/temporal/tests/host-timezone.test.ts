@@ -126,6 +126,24 @@ it('reads only own data properties for host timezone capabilities', () => {
   expect(calls).toBe(0)
 })
 
+it.each(['queryTemporalTimeZone', 'timeZoneDataGeneration'])(
+  'ignores a non-callable %s capability',
+  capability => {
+    const parts = Intl.DateTimeFormat.prototype.formatToParts
+    const key = Symbol.for(`@formatjs/intl-datetimeformat/${capability}`)
+    const original = Object.getOwnPropertyDescriptor(parts, key)
+    try {
+      Object.defineProperty(parts, key, {configurable: true, value: {}})
+      expect(createHostTimeZone('Asia/Kathmandu').offsetNanoseconds(0n)).toBe(
+        19800000000000n
+      )
+    } finally {
+      if (original) Object.defineProperty(parts, key, original)
+      else Reflect.deleteProperty(parts, key)
+    }
+  }
+)
+
 it('collects fold candidates without invoking inherited index setters', () => {
   const zone = createHostTimeZone('America/New_York')
   const local = {year: 2020, month: 11, day: 1, hour: 1, minute: 30}

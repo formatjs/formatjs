@@ -67,9 +67,10 @@ function hostTimeZoneCapability(
   key: symbol
 ): unknown {
   const descriptor = method && getOwnPropertyDescriptor(method, key)
-  return descriptor && HasOwnProperty(descriptor, 'value')
-    ? descriptor.value
-    : undefined
+  if (!descriptor || !HasOwnProperty(descriptor, 'value')) return undefined
+  // ECMA-262 §7.2.3 step 2: A capability must be callable.
+  const value = descriptor.value
+  return typeof value === 'function' ? value : undefined
 }
 
 const checkHostTemporalCandidates = hostTimeZoneCapability(

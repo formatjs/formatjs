@@ -4233,6 +4233,88 @@ fn week_rounding_finds_an_exact_rebased_bound_in_a_wide_gap() {
 }
 
 #[test]
+fn day_rounding_finds_exact_rebased_endpoints_across_wide_gaps() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let residual_day = [(9, 0), (20, 16), (39, -22)];
+    let past_adjacent = [(9, 2), (45, 23), (47, -23), (54, 19)];
+    for (initial, events, start, center, end, increment, expected) in [
+        (
+            -23,
+            &residual_day[..],
+            "2024-01-01T23:00Z",
+            "2024-02-01T00:00Z",
+            32,
+            3,
+            "P33D",
+        ),
+        (
+            -22,
+            &past_adjacent[..],
+            "2024-01-01T22:00Z",
+            "2024-02-01T00:00Z",
+            45,
+            2,
+            "P34D",
+        ),
+        (
+            -22,
+            &past_adjacent[..],
+            "+275760-08-10T22:00Z",
+            "+275760-09-10T00:00Z",
+            45,
+            2,
+            "P34D",
+        ),
+    ] {
+        let epoch = center.parse::<Instant>().unwrap().epoch_nanoseconds();
+        let seconds = (epoch / 1_000_000_000) as i64;
+        let transitions: Vec<_> = events
+            .iter()
+            .map(|&(when, offset)| OffsetTransition {
+                epoch_seconds: seconds + when * 3_600,
+                offset_seconds: offset * 3_600,
+            })
+            .collect();
+        let zone = TransitionZone::new(initial * 3_600, &transitions, None).unwrap();
+        let origin = ZonedDateTime::new(start.parse().unwrap(), zone);
+        let target = ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(epoch + end * hour).unwrap(),
+            zone,
+        );
+        assert_eq!(
+            origin
+                .checked_add(expected.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant(),
+            target.instant()
+        );
+        for mode in [
+            RoundingMode::Floor,
+            RoundingMode::Ceil,
+            RoundingMode::HalfEven,
+        ] {
+            assert_eq!(
+                origin
+                    .until(
+                        &target,
+                        DateTimeUnit::Month,
+                        DateTimeUnit::Day,
+                        increment,
+                        mode
+                    )
+                    .unwrap()
+                    .to_string(),
+                expected,
+                "{mode:?}"
+            );
+        }
+    }
+}
+
+#[test]
 fn day_rounding_retries_a_rebased_lower_bound() {
     use formatjs_temporal::{
         DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,

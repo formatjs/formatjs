@@ -97,6 +97,21 @@ constrain any replacement rule without establishing full table equivalence.
 [Source coverage](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L119).
 [Source selection](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L209).
 
+An independent numeric UTC control isolates the assignment in ECMA-402
+step 15.d.i and Temporal comparison step 23.d.i. Use locale `en`,
+`hourCycle: 'h23'`, and numeric hour, minute and second. Format the
+numeric range 3723000 to 3724000 milliseconds. The owned formatter
+selects `{hour}:{minute}:{second}` and reports interval records for Era,
+Year, Month, Day and Default. With that map the literal loop stores the
+Day record even when Day compares equal. The absent AmPm record then
+disables later comparisons and the range collapses to `01:02:03`.
+The owned formatter and pinned Node 24.14.0 both show the two endpoints.
+This records the observable effect of moving the selected record assignment
+past field comparison. It leaves the proper prepared interval representation
+and comparison rule open.
+[ECMA-402 §11.5.8 step 15.d.i](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+[Temporal comparison §15.6.8 step 23.d.i](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
+
 ## Duplicate digital Duration group
 
 [§15.9.8 steps4.e.i–iii](https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern)

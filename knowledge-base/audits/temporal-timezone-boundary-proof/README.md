@@ -282,7 +282,7 @@ and loads the synthetic upper and lower folds. Before the fix,
 disambiguation modes. The comparison requires RangeError when either
 actual candidate is outside the Instant limits.
 
-The [offset provider](../../../packages/temporal/host-timezone.ts#L93) reuses
+The [offset provider](../../../packages/temporal/host-timezone.ts#L94) reuses
 the installed formatter's private candidate check within one day of either
 limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L442)
 enumerates decoded historical and recurring offsets and round-trips each
@@ -440,7 +440,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L214).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L558).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L374).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L375).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The implementation-defined boundary contract is in
@@ -483,7 +483,7 @@ nanosecond above the minimum, both test zones return the minimum as
 their previous transition. The strict query from the minimum returns
 null. An unchanged offset at the same timestamp returns null too.
 [Rust offset check](../../../crates/temporal/timezone.rs#L485).
-[Regression](../../../crates/temporal/lib.test.rs#L4647).
+[Regression](../../../crates/temporal/lib.test.rs#L4729).
 [§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
 
 - Before-fix Bazel SHA-256 `18fa17e034ea575ab2d357c25f1845f3f30750f429669e65d1682362a61b45d4`
@@ -522,7 +522,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L400).
+[Host search](../../../packages/temporal/host-timezone.ts#L401).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -546,8 +546,8 @@ unchanged interval. Both used the captured Array push, which still calls an
 inherited index setter. Both now append an own data property to the private
 array. The first and repeated lookups return the transition at the exact
 nanosecond in both cases.
-[Host cache writes](../../../packages/temporal/host-timezone.ts#L456).
-[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L434).
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L457).
+[Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L452).
 
 ## Reproduce analysis
 
@@ -681,7 +681,7 @@ The +20h shift then returns M−19h for earlier and rejects M+1h for
 compatible and later. Both compact profiles reject the original gap in
 reject mode.
 [Owned Intl gap lookup](../../../packages/intl-datetimeformat/core.ts#L490).
-[Host day samples](../../../packages/temporal/host-timezone.ts#L348).
+[Host day samples](../../../packages/temporal/host-timezone.ts#L349).
 [Compact gap lookup](../../../packages/temporal/kernel.ts#L386).
 
 A clipped retry can reproduce the compact result in the second profile

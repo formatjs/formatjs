@@ -4,23 +4,22 @@
   "active_rebound_rows": 1063,
   "retired_replaced_callbacks": 6,
   "mapping_status": {
-    "mapped": 1034,
+    "mapped": 1035,
     "candidate": 12,
-    "unmapped": 23
+    "unmapped": 22
   },
   "annotation_coverage": {
-    "direct_numbered": 1028,
-    "no_numbered_anchor": 30,
-    "enclosing_numbered": 5,
+    "direct_numbered": 1034,
+    "no_numbered_anchor": 29,
     "retired_callback": 6
   },
-  "direct_with_step_wording": 910,
+  "direct_with_step_wording": 916,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 1028
+    "overlap": 1034
   },
   "no_numbered_anchor_by_kind": {
     "function": 17,
-    "named-function": 12,
+    "named-function": 11,
     "callback": 1
   },
   "role_review_bundles": {
@@ -28,18 +27,16 @@
       "rows": 180,
       "files": 12,
       "coverage": {
-        "direct_numbered": 173,
-        "no_numbered_anchor": 5,
-        "enclosing_numbered": 2
+        "direct_numbered": 175,
+        "no_numbered_anchor": 5
       }
     },
     "calendar_provider_and_algorithm_review": {
       "rows": 247,
       "files": 19,
       "coverage": {
-        "direct_numbered": 235,
+        "direct_numbered": 237,
         "no_numbered_anchor": 9,
-        "enclosing_numbered": 2,
         "retired_callback": 1
       }
     },
@@ -63,9 +60,8 @@
       "rows": 9,
       "files": 5,
       "coverage": {
-        "direct_numbered": 5,
-        "no_numbered_anchor": 3,
-        "enclosing_numbered": 1
+        "direct_numbered": 7,
+        "no_numbered_anchor": 2
       }
     },
     "typescript_value_parser_arithmetic_algorithm_review": {
@@ -88,7 +84,7 @@
     "crates/intl_datetimeformat_calendars/provider.rs": "612bdd5d09dfaa9d29685d7320a236979291ca4a136c8e1de2fb1825c1b13384",
     "crates/intl_datetimeformat_calendars/table_calendar.rs": "3cbffb523a5ea9551060714c7af34d63d7cfe2cdf7ec42a23d4842ad4561b60b",
     "crates/intl_datetimeformat_calendars/tables.rs": "25a5677bccc6a4aa4c56d9579e4146777164e0f3773fc50aaaa4096934e0ac66",
-    "crates/temporal/calendar_difference.rs": "edf3806e23a94890f8bb0e9711a42893b22601f6d1ef3584ac19277b7c5b7f76",
+    "crates/temporal/calendar_difference.rs": "1a5031f00c06d0e34173fd3dd8d109386ad6a94e53b7690f7775b7a14013afad",
     "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
     "crates/temporal/calendar_registry.rs": "08ba604ac9d9c2c566eb3854cbc64e0aea90aecd6d2f49f43846fe25cd1c3d70",
     "crates/temporal/context.rs": "d424868bd51364e82419be034038517318875cd7ba9a803b6a5aeff28f7911a9",
@@ -113,10 +109,10 @@
     "crates/temporal/zoned_string.rs": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
     "packages/temporal/accessors.ts": "c9d2ac97f2b847f3b996a03064440e48990faab92e6e3ea740a0b1a9de172d5f",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
-    "packages/temporal/calendar.ts": "683575e3b74028ba84d13e24406540ba1fbc6a00b8b74fd96eedea0f0358f002",
-    "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
+    "packages/temporal/calendar.ts": "8aa9316688ff5346159ebb8a0b6641a48f6419dd97d60e70ff825b3ca3b229d3",
+    "packages/temporal/compact-timezone.ts": "a87154d171390f7f6a122bfe42ce38a212f676a266022feba3357eb4725283d1",
     "packages/temporal/date-bridge.ts": "0c4e032747e8006f9794fef18d45fd5cb0520a40a535aa15bc5ef00f80989afc",
-    "packages/temporal/date-core.ts": "84d2d4b906f3f0fa76ec1b0ffcf4faf52d9bfb4e5a4dda50c4b37f3932bf8d32",
+    "packages/temporal/date-core.ts": "6feb2a722c95356245e7a268e24cb6b75bdbc1eb6facefdf5ba387ddcdcb7371",
     "packages/temporal/detect.ts": "28d4724c5edf3d73b54772ee37ab98206fe0eaee4dc0edf1fb0a7477d5afd4ab",
     "packages/temporal/duration-core.ts": "43e47619a66f517a844a06aac2db7b62219a3010dd45052cceb339c20ff74981",
     "packages/temporal/duration-format.ts": "eb473243ae16d7448d085c08b6ecee5ff15a8bbd45c82dfb2c31584a1b9f1636",
@@ -125,8 +121,8 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "1b50d99ae2958fb10fcc446936d893e01cfb9e0a7c70dd9798eefdf8114750ed",
-    "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
+    "packages/temporal/host-timezone.ts": "5426bab93a9f76d692c1ab0a2fa71773d7f93822e189830b59b7384f8d74e82b",
+    "packages/temporal/install.ts": "bcbfc0a1393f3599e2904080c83faa52affca5215c721af09c458268f3ccad82",
     "packages/temporal/instant-format.ts": "4972839b7f72d44bef6f6e5895b9b252dcbba26036ae9b42f40f9b54b0f9cc71",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
@@ -561,9 +557,8 @@
         "unmapped": 2
       },
       "coverage": {
-        "direct_numbered": 27,
-        "no_numbered_anchor": 4,
-        "enclosing_numbered": 2
+        "direct_numbered": 29,
+        "no_numbered_anchor": 4
       }
     },
     {
@@ -574,8 +569,7 @@
         "mapped": 3
       },
       "coverage": {
-        "direct_numbered": 2,
-        "enclosing_numbered": 1
+        "direct_numbered": 3
       }
     },
     {
@@ -702,8 +696,7 @@
         "mapped": 13
       },
       "coverage": {
-        "direct_numbered": 12,
-        "enclosing_numbered": 1
+        "direct_numbered": 13
       }
     },
     {
@@ -711,12 +704,10 @@
       "rows": 2,
       "work_bundle": "generic_runtime_or_installation_review",
       "mapping_status": {
-        "unmapped": 1,
-        "mapped": 1
+        "mapped": 2
       },
       "coverage": {
-        "no_numbered_anchor": 1,
-        "enclosing_numbered": 1
+        "direct_numbered": 2
       }
     },
     {
@@ -1038,6 +1029,6 @@
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0,
   "no_numbered_anchor_by_disposition": {
-    "examined_no_exact_step_anchor_established": 30
+    "examined_no_exact_step_anchor_established": 29
   }
 }

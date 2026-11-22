@@ -268,6 +268,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
         // Proposal comparison §7.5.34 steps 5–6 require a bracket. A borrowed
         // zone can make the first endpoint overshoot after count truncation.
         if (end - a) * sign < 0 {
+            let adjacent = b;
             b = a;
             if A::ZONED
                 && truncated == 0
@@ -296,15 +297,41 @@ pub(crate) fn difference<A: RelativeAnchor>(
                     .checked_add(Duration::new(prefix)?, Overflow::Constrain)?
                     .epoch_day();
                 if smallest != DateTimeUnit::Week {
-                    // Estimate the inward quantum using the raw offset bound.
-                    let last_day = upper + sign as i64;
+                    let mut probed_lower = None;
                     if smallest == DateTimeUnit::Day {
+                        // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+                        // Gap resolution moves an endpoint by less than two days. A day
+                        // four nominal days beyond the retained upper bound cannot fit.
+                        let retained_days = i128::from(upper - lower);
+                        let checked_days = if retained_days % i128::from(increment) == 0
+                            && (end - adjacent) * sign >= 0
+                        {
+                            stride
+                        } else if count == 0 {
+                            sign
+                        } else {
+                            count
+                        };
                         truncated =
-                            i128::from(last_day - lower) * sign / i128::from(increment) * stride;
-                        if truncated == i128::from(upper - lower) {
+                            (retained_days + checked_days) * sign / i128::from(increment) * stride;
+                        if truncated == retained_days {
                             truncated -= stride;
                         }
+                        let outer = (retained_days * sign + 3) / i128::from(increment) * stride;
+                        if outer != retained_days && (outer - truncated) * sign > 0 {
+                            prefix[index] = outer;
+                            match endpoint(start, prefix) {
+                                Ok(candidate) if (end - candidate) * sign >= 0 => {
+                                    truncated = outer;
+                                    probed_lower = Some(candidate);
+                                }
+                                // An extra probe can fall outside the civil or Instant range.
+                                Ok(_) | Err(Error::OutOfRange | Error::InvalidDateTime) => {}
+                                Err(error) => return Err(error),
+                            }
+                        }
                     } else {
+                        let last_day = upper + sign as i64;
                         let month_start = |day| {
                             calendar
                                 .date_extended(day)
@@ -332,7 +359,10 @@ pub(crate) fn difference<A: RelativeAnchor>(
                         }
                     }
                     prefix[index] = truncated;
-                    a = endpoint(start, prefix)?;
+                    a = match probed_lower {
+                        Some(value) => value,
+                        None => endpoint(start, prefix)?,
+                    };
                     // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii require a bracket.
                     // Gap shifts can exceed the raw offset bound. Check the rebased endpoint.
                     while truncated * sign > 0 && (end - a) * sign < 0 {

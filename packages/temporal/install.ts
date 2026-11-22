@@ -16,6 +16,7 @@ export function installTemporal(force = false): void {
     date = Date.prototype as Date & {toTemporalInstant?: () => unknown},
     replace = force || needsTemporal()
   if (replace)
+    // ECMA-262 §20.1.2.4 steps 2–4. Define the selected namespace property.
     Object.defineProperty(target, 'Temporal', {
       value: Temporal,
       writable: true,
@@ -51,7 +52,10 @@ export function installTemporal(force = false): void {
       value:
         target.Temporal === Temporal
           ? toTemporalInstant
-          : createDateToTemporalInstant(ns => new Constructor(ns)),
+          : createDateToTemporalInstant(
+              // Temporal comparison §14.9.1 step 5. Construct through the installed provider.
+              ns => new Constructor(ns)
+            ),
       enumerable: false,
       writable: true,
       configurable: true,

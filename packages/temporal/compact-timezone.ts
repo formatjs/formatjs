@@ -49,8 +49,11 @@ export function unpackCompactTimeZone(name: string): UnpackedTimeZoneData {
         compact.offsets[spans[index + 3]],
         false,
       ])
-  // Proposal comparison §11.1.9 step 3: order transition rows before offset lookup.
-  sortRows(data, (one, two) => one[0] - two[0])
+  sortRows(
+    data,
+    // Proposal comparison §11.1.9 step 3. Order rows for the named offset lookup.
+    (one, two) => one[0] - two[0]
+  )
   if (future >= 0) setDataProperty(data, 'future', compact.futures[future])
   return data
 }

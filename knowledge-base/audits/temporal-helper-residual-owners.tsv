@@ -19,11 +19,10 @@ inventory_row	current_location	symbol	classification	semantic_owner
 568	packages/temporal/calendar.ts:125-129	yearCheck	prepared_input_provider_guard	Coarse provider-year guard
 570	packages/temporal/calendar.ts:137-140	calendarCheck	prepared_input_provider_guard	Prepared calendar-ID membership guard
 571	packages/temporal/calendar.ts:141-144	overflowCheck	prepared_input_provider_guard	Prepared overflow enum guard
-592	packages/temporal/calendar.ts:548-557	calendarDaysUntil	test_only_current_caller	Serial epoch-day subtraction; current caller only tests
+592	packages/temporal/calendar.ts:558-567	calendarDaysUntil	test_only_current_caller	Serial epoch-day subtraction; current caller only tests
 613	packages/temporal/date-core.ts:213-215	baseCalendar	erased_typescript_cast	Erased calendar-ID type assertion
 641	packages/temporal/detect.ts:19-29	needsTemporal	implementation_extension_or_transport	Temporal capability detection
 660	packages/temporal/fallback-data.ts:24-28	unavailable	implementation_extension_or_transport	Missing native-backend error sentinel
-691	packages/temporal/install.ts:12-60	installTemporal	implementation_extension_or_transport	Global Temporal and Intl installation
 784	packages/temporal/legacy-extended-date.ts:82-82	anonymous@53	host_compatibility_helper	Identity year-label transform for zero shift
 802	packages/temporal/legacy-intl.ts:47-344	installLegacyDateTimeFormat	host_compatibility_helper	Captured native Intl bridge installation
 849	packages/temporal/locale.ts:56-79	configureLocaleFormatting	provider_configuration_or_accessor	Locale formatting-service capture

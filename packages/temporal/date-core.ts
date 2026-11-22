@@ -1038,6 +1038,7 @@ export function roundRelativeDifference(
     // Proposal comparison §7.5.34 steps 5.a and 6.a require a bracket.
     // Shift inward if the first endpoint overshoots.
     if ((end - a) * physicalSign < 0n) {
+      const adjacent = b
       b = a
       if (
         anchor.zoned &&
@@ -1060,14 +1061,38 @@ export function roundRelativeDifference(
         const upperDay = anchor.nominalDay(rebasedUpper)
         const lowerDay = anchor.nominalDay(prefix)
         if (smallest !== 'week') {
-          // Seed the retry with the nominal bound for ordinary offsets.
-          // Compatible gap resolution can move past that estimate.
-          const lastDay = upperDay + sign
+          let probedLower: bigint | undefined
           if (smallest === 'day') {
+            // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii.
+            // Gap resolution moves an endpoint by less than two days. A day
+            // four nominal days beyond the retained upper bound cannot fit.
+            const retainedDays = upperDay - lowerDay
+            const checkedDays =
+              retainedDays % increment === 0 &&
+              (end - adjacent) * physicalSign >= 0n
+                ? stride
+                : result.days || sign
             truncated =
-              mathTrunc(((lastDay - lowerDay) * sign) / increment) * stride
-            if (truncated === upperDay - lowerDay) truncated -= stride
+              mathTrunc(((retainedDays + checkedDays) * sign) / increment) *
+              stride
+            if (truncated === retainedDays) truncated -= stride
+            const outer =
+              mathTrunc((retainedDays * sign + 3) / increment) * stride
+            if (outer !== retainedDays && (outer - truncated) * sign > 0) {
+              prefix[key] = outer
+              try {
+                const candidate = anchor.endpoint(prefix)
+                if ((end - candidate) * physicalSign >= 0n) {
+                  truncated = outer
+                  probedLower = candidate
+                }
+              } catch (error) {
+                // An extra probe can fall outside the civil or Instant range.
+                if (!(error instanceof RangeErrorConstructor)) throw error
+              }
+            }
           } else {
+            const lastDay = upperDay + sign
             const calendar = baseCalendar(anchor.calendar)
             const monthStart = (day: number): number =>
               day - calendarFromEpochDayRaw(calendar, day).day + 1
@@ -1089,7 +1114,7 @@ export function roundRelativeDifference(
               truncated -= stride
           }
           prefix[key] = truncated
-          a = anchor.endpoint(prefix)
+          a = probedLower ?? anchor.endpoint(prefix)
           // Proposal comparison §7.5.34 steps 5.a.ii and 6.a.ii: check the
           // lower bound after gap resolution. Retreat by whole increments.
           while (truncated * sign > 0 && (end - a) * physicalSign < 0n) {
