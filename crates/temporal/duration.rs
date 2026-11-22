@@ -127,6 +127,14 @@ impl Duration {
     pub fn abs(self) -> Self {
         Self(self.0.map(i128::abs))
     }
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1327-L1333
+    // Time-only terms expand the component fold; optional days are separate.
+    // L1327: an hour contributes 60 minutes.
+    // L1328: a minute contributes 60 seconds.
+    // L1329: a second contributes 1000 milliseconds.
+    // L1330: a millisecond contributes 1000 microseconds.
+    // L1331: a microsecond contributes 1000 nanoseconds.
+    // L1333: return the exact integer sum. Caller-bound assertion L1332 remains open.
     pub fn time_nanoseconds(self, include_days: bool) -> Result<i128, Error> {
         let mut sum = 0i128;
         for index in (if include_days { 3 } else { 4 })..10 {

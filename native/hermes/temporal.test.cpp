@@ -454,6 +454,35 @@ int main(int argc, char **argv) {
         }
       }
       check(unitResults.join('|') === '120000000000|12:35:00|2000-01-02T12:35:00|946816500000000000|PT2H|90');
+      const differenceOne = Temporal.PlainTime.from('12:34:56.123456789');
+      const differenceTwo = Temporal.PlainTime.from('13:33:55.122455788');
+      for (const value of [differenceOne, differenceTwo]) {
+        for (const key of ['hour', 'minute', 'second', 'millisecond', 'microsecond', 'nanosecond', 'toString', 'valueOf', Symbol.toPrimitive]) {
+          Object.defineProperty(value, key, {get() { throw new Error('Public difference clock read'); }});
+        }
+      }
+      check(differenceOne.until(differenceTwo).toJSON() === 'PT58M58.998998999S');
+      check(differenceOne.since(differenceTwo).toJSON() === '-PT58M58.998998999S');
+      const differenceLast = Temporal.PlainTime.from('23:59:59.999999999');
+      const differenceMidnight = new Temporal.PlainTime();
+      check(differenceLast.until(differenceMidnight).toJSON() === '-PT23H59M59.999999999S');
+      check(differenceMidnight.until(differenceLast).toJSON() === 'PT23H59M59.999999999S');
+      const differenceWide = Temporal.PlainTime.from('00:59:59.999999999').until('23:00', {largestUnit: 'nanosecond'});
+      check(differenceWide.nanoseconds === 79200000000001);
+      const differenceZero = differenceLast.since(differenceLast);
+      for (const field of ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds', 'milliseconds', 'microseconds', 'nanoseconds']) {
+        check(Object.is(differenceZero[field], 0));
+      }
+      for (const sign of [1, -1]) {
+        const fields = {hours: sign * 2501999792983, minutes: sign * 36, seconds: sign * 31, milliseconds: sign * 999, microseconds: sign * 999, nanoseconds: sign * 999};
+        const duration = Temporal.Duration.from(fields);
+        check(duration.toJSON() === (sign < 0 ? '-' : '') + 'PT2501999792983H36M31.999999999S');
+        check(duration.total('nanoseconds') === sign * 9007199254740992000000000);
+        let failure;
+        try { Temporal.Duration.from({...fields, nanoseconds: sign * 1000}); }
+        catch (error) { failure = error; }
+        check(failure instanceof RangeError);
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');
