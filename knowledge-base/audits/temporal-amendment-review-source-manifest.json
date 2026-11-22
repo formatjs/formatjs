@@ -46,7 +46,7 @@
     "packages/temporal/plain-year-month.ts": "7c109f36d1d3e207298814c04e46f7d758583a85b28b04a89e557925c9240bf7",
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/zoned-date-time.ts": "39061a635858e3d4d95e20b081e46a115df1ab048c6ab8c977cb9cb7639e8b72",
-    "packages/temporal/zones.ts": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
+    "packages/temporal/zones.ts": "8a8fa402f2a3f05e66fe2a3734a958d49a3e00734ef519d535e85982c13c0c6f",
     "packages/ecma402-abstract/utils.ts": "9f8bb9ecf7f5ab086520c004df189158cfe19221fc5516ba36e8aae110c6c7ea",
     "packages/fast-memoize/index.ts": "7dfb76c808a731a5a47892d1d32d756aa0c3411a2909929d3b861a7e04b0826a",
     "packages/temporal/tests/durationformat.test.ts": "a67f07f78a18b5123bc1f899fcea1fbcb72fa415b4421ad9f1aeeb94fa2466c9",

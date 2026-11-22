@@ -8,12 +8,13 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 737 mappings across parsers, arithmetic,
+Comment-only batches reconcile 780 mappings across parsers, arithmetic,
 providers, transport, and legacy DateTimeFormat. Twelve transport mappings
 identify narrow caller dependencies. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
 binds comments to source hashes and verifies that executable code is unchanged.
-The inventory has 798 direct anchors, 13 enclosing anchors, 255 helpers awaiting
-anchor review, and three retired callbacks.
+The inventory has 838 direct anchors, 15 enclosing anchors, 213 helpers without
+numbered anchors, and three retired callbacks. Eleven of those 213 have a recorded
+review with no exact step established.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup

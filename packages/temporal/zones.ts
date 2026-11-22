@@ -88,12 +88,15 @@ function typescriptTimeZone(name: string): TimeZoneKernel {
   }
   return zone
 }
+// Proposal comparison §11.1.9 steps 2–3 and §11.1.13 steps 2.d and 3.a: Route zone queries to active data.
 function withNativeZone(
   identifier: string,
   fallback: () => TimeZoneKernel
 ): TimeZoneKernel {
   let resolved: TimeZoneKernel | undefined
+  // Proposal comparison §11.1.9 steps 2–3: Lazily retain the fallback offset provider.
   const fallbackKernel = (): TimeZoneKernel => (resolved ??= fallback())
+  // Proposal comparison §11.1.13 steps 2.d and 3.a: Forward candidate lookup to the active provider.
   const possibleInstants = (fields: ISODateTime): bigint[] => {
     const native = nativeTemporal()
     return import.meta.formatjsTemporalNativeData === true || native
@@ -101,6 +104,7 @@ function withNativeZone(
       : fallbackKernel().possibleInstants(fields)
   }
   return {
+    // Proposal comparison §11.1.9 steps 2–3: Forward the exact instant to the active offset provider.
     offsetNanoseconds: value => {
       const native = nativeTemporal()
       return import.meta.formatjsTemporalNativeData === true || native
@@ -108,6 +112,7 @@ function withNativeZone(
         : fallbackKernel().offsetNanoseconds(value)
     },
     possibleInstants,
+    // Proposal comparison §11.1.13 steps 2.d and 3.a: Adapt local nanoseconds for candidate lookup.
     possibleInstantsFromEpochNanoseconds: local => {
       if (import.meta.formatjsTemporalNativeData === true || nativeTemporal())
         return possibleInstants(epochNanosecondsToISO(local))
@@ -119,12 +124,14 @@ function withNativeZone(
         zone.possibleInstants(epochNanosecondsToISO(local))
       )
     },
+    // Proposal comparison §11.1.11 steps 1–2: Forward local fields and disambiguation to the provider.
     resolve: (fields, disambiguation = 'compatible') => {
       const native = nativeTemporal()
       return import.meta.formatjsTemporalNativeData === true || native
         ? native!.timeZoneResolve(identifier, fields, disambiguation)
         : fallbackKernel().resolve(fields, disambiguation)
     },
+    // Proposal comparison §6.3.46 steps 8, 9.a, 10.b and 11: Forward transition direction and instant.
     transition: (value, direction) => {
       const native = nativeTemporal()
       return import.meta.formatjsTemporalNativeData === true || native
@@ -142,6 +149,7 @@ export function timeZone(name: string): TimeZoneKernel {
     throw new RangeErrorConstructor('Expected named timezone')
   let zone = mapGet(namedKernels, identifier)
   if (!zone) {
+    // Proposal comparison §11.1.9 step 3: Supply the TypeScript provider for the resolved name.
     zone = withNativeZone(identifier, () => typescriptTimeZone(identifier))
     mapSet(namedKernels, identifier, zone)
   }
@@ -212,6 +220,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
   const existing = mapGet(fixedKernels, key)
   if (existing) return existing
   const offset = utc ? 0n : parseOffsetNanoseconds(identifier, true)
+  // Proposal comparison §8.5.1 step 1: Check inclusive Instant bounds for fixed kernels.
   const check = (value: bigint): bigint => {
     if (
       value < -8_640_000_000_000_000_000_000n ||
@@ -220,6 +229,7 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       throw new RangeErrorConstructor('Instant out of range')
     return value
   }
+  // Proposal comparison §11.1.13 steps 2.a, 2.c and 2.d: Compute the private fixed-offset candidate.
   const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
     const value = local - offset
     return value < -8_640_000_000_000_000_000_000n ||
@@ -228,19 +238,24 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
       : [value]
   }
   const result: TimeZoneKernel = {
+    // Proposal comparison §6.3.46 steps 8 and 11: Return no transition for a constant-offset provider.
     transition: instant => {
       check(instant)
       return null
     },
+    // Proposal comparison §11.1.9 steps 2–3: Return the exact precomputed fixed or UTC offset.
     offsetNanoseconds: instant => {
       check(instant)
       return offset
     },
+    // Proposal comparison §11.1.13 steps 2.a, 2.c and 2.d: Convert local ISO fields for fixed candidate lookup.
     possibleInstants: fields =>
       possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields)),
     possibleInstantsFromEpochNanoseconds,
+    // Proposal comparison §11.1.11 steps 1–2: Resolve and range-check the sole fixed-offset result.
     resolve: fields => check(isoToEpochNanoseconds(fields) - offset),
   }
+  // Proposal comparison §11.1.9 steps 2–3: Supply the prebuilt fixed or UTC fallback.
   const zone = withNativeZone(key, () => result)
   mapSet(fixedKernels, key, zone)
   return zone

@@ -3,32 +3,32 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 25570,
+  "whole_selected_source_lines": 25637,
   "whole_selected_source_lines_by_language": {
     "rust": 10877,
-    "typescript": 14693
+    "typescript": 14760
   },
-  "nonoverlapping_callable_lines": 17090,
+  "nonoverlapping_callable_lines": 17108,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8137,
-    "typescript": 8953
+    "typescript": 8971
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 14941,
+    "mapped": 15069,
     "candidate": 1017,
-    "unmapped": 1132
+    "unmapped": 1022
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "mapped": 871,
+    "mapped": 891,
     "candidate": 96,
-    "unmapped": 102
+    "unmapped": 82
   },
   "by_language": {
     "typescript": {
       "candidate": 79,
-      "mapped": 357,
-      "unmapped": 84
+      "mapped": 377,
+      "unmapped": 64
     },
     "rust": {
       "mapped": 514,
@@ -560,11 +560,11 @@
     },
     {
       "file": "packages/temporal/calendar.ts",
-      "source_lines": 660,
+      "source_lines": 712,
       "callable_rows": 33,
-      "nonoverlapping_callable_lines": 573,
-      "sha256": "734ed5e56762376bcbc9af39773d3c14dd561050fba95d4a8e2791a0cce1363d",
-      "unresolved_callable_rows": 8
+      "nonoverlapping_callable_lines": 577,
+      "sha256": "a08e6fceab90c6ef59fd202f0f258235062572c42a704a21cab6507a507f24f5",
+      "unresolved_callable_rows": 3
     },
     {
       "file": "packages/temporal/compact-timezone.ts",
@@ -904,11 +904,11 @@
     },
     {
       "file": "packages/temporal/zones.ts",
-      "source_lines": 264,
+      "source_lines": 279,
       "callable_rows": 22,
-      "nonoverlapping_callable_lines": 205,
-      "sha256": "2e301295644d2b9c8244cc5ee5e55603900000b1af0d770043d7443dd0f5d176",
-      "unresolved_callable_rows": 15
+      "nonoverlapping_callable_lines": 219,
+      "sha256": "8a8fa402f2a3f05e66fe2a3734a958d49a3e00734ef519d535e85982c13c0c6f",
+      "unresolved_callable_rows": 0
     },
     {
       "file": "packages/temporal/epoch-slots.ts",
