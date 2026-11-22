@@ -142,6 +142,8 @@ function createNativeInstant(value: bigint): InstantObject {
   )
 }
 // Temporal comparison §8.5.2 steps 1–5. Allocate with the local Instant prototype.
+// ECMA-262 preview §22.8.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-instant-instances
 export function createInstant(value: bigint): InstantObject {
   if (import.meta.formatjsTemporalNativeData === true)
     return createNativeInstant(validateInstant(value))
@@ -433,6 +435,10 @@ Object.defineProperty(InstantValue, 'name', {
 // A normal JS constructor allocates before its body; Temporal coerces first.
 // Proposal comparison §8.2.1 descriptor.
 // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype
+// ECMA-262 preview §22.8.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-instant-constructor
+// ECMA-262 preview §22.8.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-instant-constructor
 export const Instant: InstantConstructor = createProxy(
   import.meta.formatjsTemporalNativeData === true
     ? (NativeInstant! as unknown as typeof InstantValue)
@@ -457,6 +463,8 @@ export const Instant: InstantConstructor = createProxy(
 // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.constructor
 // Proposal comparison §8.3.2 descriptor.
 // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype-%symbol.tostringtag%
+// ECMA-262 preview §22.8.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-instant-prototype-object
 Object.defineProperties(InstantValue.prototype, {
   constructor: {value: Instant, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.Instant', configurable: true},

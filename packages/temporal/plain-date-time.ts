@@ -159,6 +159,8 @@ const NativePlainDateTime = function (
   setNativeDateTimeSlot(this, slot)
 }
 // Temporal comparison §5.5.8 steps 1–5. Allocate with the local prototype.
+// ECMA-262 preview §22.10.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaindatetime-instances
 export function createPlainDateTime(
   input: bigint | DateTimeSlot,
   calendar: string
@@ -645,6 +647,10 @@ Object.defineProperty(PlainDateTimeValue, 'name', {
 })
 // Temporal comparison §5.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype
+// ECMA-262 preview §22.10.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindatetime-constructor
+// ECMA-262 preview §22.10.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindatetime-constructor
 export const PlainDateTime: PlainDateTimeConstructor = createProxy(
   PlainDateTimeValue,
   {
@@ -667,6 +673,8 @@ export const PlainDateTime: PlainDateTimeConstructor = createProxy(
     },
   }
 ) as unknown as PlainDateTimeConstructor
+// ECMA-262 preview §22.10.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindatetime-prototype-object
 Object.defineProperties(PlainDateTimeValue.prototype, {
   // Temporal comparison §5.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.constructor

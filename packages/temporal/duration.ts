@@ -132,6 +132,8 @@ export function createNativeDuration(fields: DurationFields): DurationObject {
 }
 // ECMA-262 preview §22.15.5.1: validate, allocate and initialize a fresh Duration.
 // https://tc39.es/ecma262/pr/3966/#sec-createtemporalduration
+// ECMA-262 preview §22.15.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-duration-instances
 export function createDuration(fields: DurationFields): DurationObject {
   const value = createObject(DurationValue.prototype) as DurationObject
   setSlot(value, validateDuration({...fields}))
@@ -518,6 +520,10 @@ Object.defineProperty(DurationValue, 'name', {
 })
 // Temporal comparison §7.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype
+// ECMA-262 preview §22.15.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-duration-constructor
+// ECMA-262 preview §22.15.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-duration-constructor
 export const Duration: DurationConstructor = createProxy(DurationValue, {
   construct(target, args, newTarget) {
     // Temporal comparison §7.1.1 steps 1–12.
@@ -560,6 +566,8 @@ defineGetters(
   durationFieldNames,
   (receiver, field) => read(receiver)[field]
 )
+// ECMA-262 preview §22.15.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-duration-prototype-object
 Object.defineProperties(DurationValue.prototype, {
   // Temporal comparison §7.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.duration.prototype.constructor

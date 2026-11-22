@@ -74,6 +74,8 @@ function read(item: unknown): DateSlot {
 }
 // ECMA-262 preview §22.14.5.1 steps 1–6: validate the reference date and store it with its calendar.
 // https://tc39.es/ecma262/pr/3966/#sec-createtemporalmonthday
+// ECMA-262 preview §22.14.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plainmonthday-instances
 export function createPlainMonthDay(slot: DateSlot): PlainMonthDayObject {
   if (slot.epochDay < -100000001 || slot.epochDay > 100000000)
     throw new RangeErrorConstructor('Month-day out of range')
@@ -237,6 +239,10 @@ Object.defineProperty(PlainMonthDayValue, 'name', {
 })
 // Temporal comparison §10.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype
+// ECMA-262 preview §22.14.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plainmonthday-constructor
+// ECMA-262 preview §22.14.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainmonthday-constructor
 export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
   PlainMonthDayValue,
   {
@@ -258,6 +264,8 @@ export const PlainMonthDay: PlainMonthDayConstructor = createProxy(
     },
   }
 ) as unknown as PlainMonthDayConstructor
+// ECMA-262 preview §22.14.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainmonthday-prototype-object
 Object.defineProperties(PlainMonthDayValue.prototype, {
   // Temporal comparison §10.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.plainmonthday.prototype.constructor

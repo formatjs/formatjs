@@ -114,6 +114,8 @@ function read(item: unknown): DateSlot {
 }
 // ECMA-262 preview §22.13.5.1 steps 1–6: validate the ISO month and store it with its calendar.
 // https://tc39.es/ecma262/pr/3966/#sec-createtemporalyearmonth
+// ECMA-262 preview §22.13.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plainyearmonth-instances
 export function createPlainYearMonth(slot: DateSlot): PlainYearMonthObject {
   checkYearMonth(slot.epochDay)
   return allocateYearMonth(
@@ -431,6 +433,10 @@ Object.defineProperty(PlainYearMonthValue, 'name', {
 })
 // Temporal comparison §9.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype
+// ECMA-262 preview §22.13.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plainyearmonth-constructor
+// ECMA-262 preview §22.13.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainyearmonth-constructor
 export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
   PlainYearMonthValue,
   {
@@ -448,6 +454,8 @@ export const PlainYearMonth: PlainYearMonthConstructor = createProxy(
     },
   }
 ) as unknown as PlainYearMonthConstructor
+// ECMA-262 preview §22.13.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plainyearmonth-prototype-object
 Object.defineProperties(PlainYearMonthValue.prototype, {
   // Temporal comparison §9.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.plainyearmonth.prototype.constructor

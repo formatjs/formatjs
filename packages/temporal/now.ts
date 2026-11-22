@@ -37,21 +37,17 @@ export interface SystemClock {
   timeZoneId(): string
 }
 const limit = 8_640_000_000_000_000_000_000n
-// Proposal comparison §2.3.1 steps 1–2.
-// https://tc39.es/proposal-temporal/#sec-hostsystemutcepochnanoseconds
-// Proposal comparison §2.3.3 steps 1–3.
-// https://tc39.es/proposal-temporal/#sec-temporal-systemutcepochnanoseconds
-// Proposal comparison §2.3.4 steps 1–4.
-// https://tc39.es/proposal-temporal/#sec-temporal-systemdatetime
 export function createNow(clock: SystemClock): NowObject {
+  // ECMA-262 preview §22.7.3.2 step 2: read the supplied host clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-systemutcepochnanoseconds
+  // ECMA-262 preview §22.1.1.27: keep the result within epoch bounds.
+  // https://tc39.es/ecma262/pr/3966/#sec-hostsystemutcepochnanoseconds
   function instant(): bigint {
     const value = clock.epochNanoseconds()
     return value < -limit ? -limit : value > limit ? limit : value
   }
-  // SystemTimeZoneIdentifier returns a primary or offset identifier and has no
-  // throw path: https://tc39.es/proposal-temporal/#sec-systemtimezoneidentifier
-  // Hosts can still report undefined (seen on Windows) or a name we don't
-  // know, so treat those like a UTC-only host (step 1).
+  // ECMA-262 preview §22.2.7 steps 1–3: normalize the host zone or use UTC.
+  // https://tc39.es/ecma262/pr/3966/#sec-systemtimezoneidentifier
   function systemZone(): string {
     const value: unknown = clock.timeZoneId()
     if (typeof value === 'string')
@@ -60,43 +56,49 @@ export function createNow(clock: SystemClock): NowObject {
       } catch {}
     return 'UTC'
   }
+  // ECMA-262 preview §22.7.3.1 steps 1–2: resolve the time zone.
+  // https://tc39.es/ecma262/pr/3966/#sec-systemdatetime
   function zone(value: unknown): string {
     return value === undefined ? systemZone() : timeZoneIdentifier(value)
   }
+  // ECMA-262 preview §22.7.3.1 steps 3–4: project the clock into that zone.
+  // https://tc39.es/ecma262/pr/3966/#sec-systemdatetime
   function local(value: unknown): bigint {
     const name = zone(value),
       ns = instant()
     return ns + zonedKernel(name).offsetNanoseconds(ns)
   }
+  // ECMA-262 preview §22.7: ordinary namespace object.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal-now-object
   const result: NowObject = {
-    // Proposal comparison §2.2.1 step 1.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.timezoneid
+    // ECMA-262 preview §22.7.2.1 step 1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.timezoneid
     timeZoneId() {
       return zone(undefined)
     },
-    // Proposal comparison §2.2.2 steps 1–2.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.instant
+    // ECMA-262 preview §22.7.2.2 steps 1–2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.instant
     instant() {
       return createInstant(instant())
     },
-    // Proposal comparison §2.2.3 steps 1–2.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaindatetimeiso
+    // ECMA-262 preview §22.7.2.3 steps 1–2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.plaindatetimeiso
     plainDateTimeISO(timeZone = undefined) {
       return createPlainDateTime(local(timeZone), 'iso8601')
     },
-    // Proposal comparison §2.2.4 steps 1–4.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.zoneddatetimeiso
+    // ECMA-262 preview §22.7.2.4 steps 1–4.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.zoneddatetimeiso
     zonedDateTimeISO(timeZone = undefined) {
       const name = zone(timeZone)
       return createZonedDateTime(instant(), name, 'iso8601')
     },
-    // Proposal comparison §2.2.5 steps 1–2.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaindateiso
+    // ECMA-262 preview §22.7.2.5 steps 1–2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.plaindateiso
     plainDateISO(timeZone = undefined) {
       return createPlainDate(epochDayOf(local(timeZone)), 'iso8601')
     },
-    // Proposal comparison §2.2.6 steps 1–2.
-    // https://tc39.es/proposal-temporal/#sec-temporal.now.plaintimeiso
+    // ECMA-262 preview §22.7.2.6 steps 1–2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.plaintimeiso
     plainTimeISO(timeZone = undefined) {
       return createPlainTime(timeOf(local(timeZone)))
     },
@@ -104,8 +106,8 @@ export function createNow(clock: SystemClock): NowObject {
   const names = Object.keys(result)
   for (let i = 0; i < names.length; i++)
     Object.defineProperty(result, names[i], {enumerable: false})
-  // Proposal comparison §2.1.1 descriptor.
-  // https://tc39.es/proposal-temporal/#sec-temporal-now-%symbol.tostringtag%
+  // ECMA-262 preview §22.7.1.1.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.now.%symbol.tostringtag%
   Object.defineProperty(result, Symbol.toStringTag, {
     value: 'Temporal.Now',
     configurable: true,

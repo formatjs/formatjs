@@ -17,6 +17,8 @@ export function installTemporal(force = false): void {
     replace = force || needsTemporal()
   if (replace)
     // ECMA-262 §20.1.2.4 steps 2–4. Define the selected namespace property.
+    // ECMA-262 preview §22.6: initial global Temporal value.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-object
     Object.defineProperty(target, 'Temporal', {
       value: Temporal,
       writable: true,

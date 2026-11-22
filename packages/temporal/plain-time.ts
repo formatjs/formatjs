@@ -291,6 +291,8 @@ function create(value: bigint | NativeTimeResult): PlainTimeObject {
   return result
 }
 // Temporal comparison §4.5.11 steps 1–4. Create a local PlainTime from exact nanoseconds.
+// ECMA-262 preview §22.12.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaintime-instances
 export function createPlainTime(value: bigint): PlainTimeObject {
   return create(value)
 }
@@ -659,6 +661,10 @@ Object.defineProperty(PlainTimeValue, 'name', {
 })
 // Temporal comparison §4.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype
+// ECMA-262 preview §22.12.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plaintime-constructor
+// ECMA-262 preview §22.12.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaintime-constructor
 export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
   construct(target, args, newTarget) {
     // Temporal comparison §4.1.1 steps 1–10.
@@ -682,6 +688,8 @@ export const PlainTime: PlainTimeConstructor = createProxy(PlainTimeValue, {
     return result
   },
 })
+// ECMA-262 preview §22.12.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaintime-prototype-object
 Object.defineProperties(PlainTimeValue.prototype, {
   // Temporal comparison §4.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.constructor

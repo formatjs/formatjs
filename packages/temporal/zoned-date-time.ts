@@ -229,6 +229,8 @@ const NativeZonedDateTime = function (
   setZonedSlot(this, slot)
 }
 // Temporal comparison §6.5.3 steps 1–7. Allocate with the local ZonedDateTime prototype.
+// ECMA-262 preview §22.9.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-zoneddatetime-instances
 export function createZonedDateTime(
   input: bigint | ZonedSlot,
   timeZone: string,
@@ -1275,6 +1277,10 @@ if (import.meta.formatjsTemporalNativeData === true)
 // L30: ordinary calls reach the class target, which rejects missing NewTarget.
 // Proposal comparison §6.2.1 descriptor.
 // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype
+// ECMA-262 preview §22.9.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-zoneddatetime-constructor
+// ECMA-262 preview §22.9.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-zoneddatetime-constructor
 export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
   ZonedDateTimeValue,
   {
@@ -1319,6 +1325,8 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
 // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.constructor
 // Proposal comparison §6.3.2 descriptor.
 // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype-%symbol.tostringtag%
+// ECMA-262 preview §22.9.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-zoneddatetime-prototype-object
 Object.defineProperties(ZonedDateTimeValue.prototype, {
   constructor: {value: ZonedDateTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.ZonedDateTime', configurable: true},

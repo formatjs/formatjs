@@ -71,6 +71,8 @@ export type {
   DurationConstructor,
   DurationObject,
 } from '#packages/temporal/duration.js'
+// ECMA-262 preview §22.6: ordinary namespace object.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-object
 export const Temporal: {
   Now: NowObject
   ZonedDateTime: ZonedDateTimeConstructor
@@ -84,35 +86,35 @@ export const Temporal: {
 } = Object.defineProperties(
   {},
   {
-    // Temporal comparison §1.3.1: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-now
+    // ECMA-262 preview §22.6.3.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.now
     Now: {value: Now, writable: true, configurable: true},
-    // Temporal comparison §1.2.8: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-zoneddatetime
+    // ECMA-262 preview §22.6.2.8.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-zoneddatetime
     ZonedDateTime: {value: ZonedDateTime, writable: true, configurable: true},
-    // Temporal comparison §1.2.1: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-instant
+    // ECMA-262 preview §22.6.2.2.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-instant
     Instant: {value: Instant, writable: true, configurable: true},
-    // Temporal comparison §1.2.7: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-duration
+    // ECMA-262 preview §22.6.2.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-duration
     Duration: {value: Duration, writable: true, configurable: true},
-    // Temporal comparison §1.2.4: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-plaintime
+    // ECMA-262 preview §22.6.2.6.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaintime
     PlainTime: {value: PlainTime, writable: true, configurable: true},
-    // Temporal comparison §1.2.2: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-plaindatetime
+    // ECMA-262 preview §22.6.2.4.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindatetime
     PlainDateTime: {value: PlainDateTime, writable: true, configurable: true},
-    // Temporal comparison §1.2.3: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-plaindate
+    // ECMA-262 preview §22.6.2.3.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindate
     PlainDate: {value: PlainDate, writable: true, configurable: true},
-    // Temporal comparison §1.2.5: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-plainyearmonth
+    // ECMA-262 preview §22.6.2.7.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plainyearmonth
     PlainYearMonth: {value: PlainYearMonth, writable: true, configurable: true},
-    // Temporal comparison §1.2.6: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-plainmonthday
+    // ECMA-262 preview §22.6.2.5.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-plainmonthday
     PlainMonthDay: {value: PlainMonthDay, writable: true, configurable: true},
-    // Temporal comparison §1.1.1: namespace property attributes.
-    // https://tc39.es/proposal-temporal/#sec-temporal-%symbol.tostringtag%
+    // ECMA-262 preview §22.6.1.1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal-%symbol.tostringtag%
     [Symbol.toStringTag]: {value: 'Temporal', configurable: true},
   }
 ) as {

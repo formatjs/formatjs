@@ -144,6 +144,8 @@ function read(item: unknown): DateSlot {
   return slot
 }
 // Temporal comparison §3.5.3 steps 1–5. Allocate with the local prototype.
+// ECMA-262 preview §22.11.4: ordinary instances hold private slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-temporal-plaindate-instances
 export function createPlainDate(
   value: number | DateSlot,
   calendar: string
@@ -515,6 +517,10 @@ Object.defineProperty(PlainDateValue, 'name', {
 })
 // Temporal comparison §3.2.1.
 // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype
+// ECMA-262 preview §22.11.1: class target rejects calls and supports subclassing.
+// https://tc39.es/ecma262/pr/3966/#sec-temporal-plaindate-constructor
+// ECMA-262 preview §22.11.2: inherits Function.prototype.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindate-constructor
 export const PlainDate: PlainDateConstructor = createProxy(PlainDateValue, {
   construct(target, args, newTarget) {
     // Temporal comparison §3.1.1 steps 1–10.
@@ -528,6 +534,8 @@ export const PlainDate: PlainDateConstructor = createProxy(PlainDateValue, {
     return allocateDate(prototype, {epochDay, calendar})
   },
 }) as unknown as PlainDateConstructor
+// ECMA-262 preview §22.11.3: ordinary prototype without instance slots.
+// https://tc39.es/ecma262/pr/3966/#sec-properties-of-the-temporal-plaindate-prototype-object
 Object.defineProperties(PlainDateValue.prototype, {
   // Temporal comparison §3.3.1.
   // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.constructor
