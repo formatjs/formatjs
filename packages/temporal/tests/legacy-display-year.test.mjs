@@ -165,7 +165,7 @@ for (const locale of ['en', 'en-u-nu-mathsans']) {
     checked++
   }
 }
-for (const [locale, month, day] of [
+for (const [locale, month, day, weekday] of [
   ['en', 'numeric', undefined],
   ['en', 'numeric', 'numeric'],
   ['en-u-nu-mathsans', 'numeric', undefined],
@@ -174,12 +174,15 @@ for (const [locale, month, day] of [
   ['en', '2-digit', '2-digit'],
   ['en-u-nu-mathsans', '2-digit', '2-digit'],
   ['de', '2-digit', '2-digit'],
+  ['en', 'numeric', 'numeric', 'short'],
+  ['en-u-nu-mathsans', '2-digit', '2-digit', 'long'],
 ]) {
   const options = {
     calendar: 'buddhist',
     year: 'numeric',
     month,
     day,
+    weekday,
     era: 'short',
     timeZone: 'UTC',
   }
@@ -252,7 +255,7 @@ const days = withDay
 assert.ok(days.length > 0)
 assert.ok(days.every(part => part.value === '5'))
 checked++
-assert.equal(checked, 149)
+assert.equal(checked, 153)
 console.log(
-  '149 native bridge display-year controls, including cold/warm and range paths'
+  '153 native bridge display-year controls, including cold/warm and range paths'
 )

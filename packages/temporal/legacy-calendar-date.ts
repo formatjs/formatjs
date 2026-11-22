@@ -45,6 +45,7 @@ interface NumericRangeYear {
   corrected: string
   month: NumericWidths | undefined
   day: NumericRangeDay | undefined
+  weekday: string | undefined
 }
 
 interface CalendarRangeFields {
@@ -469,6 +470,7 @@ function restoreCalendarParts(
               ? [format(date.month), formatTwo(date.month)]
               : undefined,
           day: undefined,
+          weekday: undefined,
         }
     }
     if (
@@ -570,6 +572,11 @@ function matchesNumericRangeYear(
         return true
       }
       if (value !== after.value) return false
+      if (type === 'weekday') {
+        if (year.weekday !== undefined && year.weekday !== value) return false
+        year.weekday = value
+        return true
+      }
       if (type === 'month')
         return year.month !== undefined && arrayIncludes(year.month, value)
       return type === 'era' || type === 'literal'
@@ -605,6 +612,14 @@ function restoreNumericRangeYears(
   for (let index = 0; index < parts.length; index++) {
     const part = parts[index]
     if (part.type === 'era' || part.type === 'literal') continue
+    if (part.type === 'weekday') {
+      // ECMA-402 §11.5.8 step 19.e: keep a weekday verified at its source.
+      if (part.source !== 'endRange' && part.value !== first.weekday)
+        return undefined
+      if (part.source !== 'startRange' && part.value !== last.weekday)
+        return undefined
+      continue
+    }
     if (part.type === 'month') {
       if (
         part.source !== 'endRange' &&

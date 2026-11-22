@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L443)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L444)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L750) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L765) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -195,9 +195,29 @@ German padded intervals and English mathematical digits exercise both
 widths. Raw day 11 with corrected day 5 keeps the full endpoint fallback
 because the native label has the same text at either width. Seven focused
 Bazel targets pass.
-[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L581).
+[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L588).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.4 steps 15.f.v and 15.f.viii–ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
 - Width before-fix log SHA-256 `0589dc3806aaa0a58d2439d09e2a2a4c26ea569ee7731035ec2b8d58bfcde019`
 - Width after-fix log SHA-256 `a5ff8d542bbfdfd08ffe899390e2945aa4b1ddebb7c5c3936774e3ce71327231`
+
+### Verified weekday labels in the selected range
+
+English Buddhist ranges with short weekday and numeric year, month and day
+printed the common era twice. The original endpoints and corrected parts
+agree on their Thursday and Saturday labels. The bridge retains the selected
+Year pattern when each weekday matches its tagged endpoint. A shared weekday
+must match both endpoints. Weekday is a renderable field in the selected
+pattern, while Year still determines the range pattern.
+[ECMA-402 §11.2.3.2 Table 6](https://tc39.es/ecma402/#table-datetime-range-pattern-record).
+[ECMA-402 §11.5.8 steps 15.d and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+[Weekday source check](../../packages/temporal/legacy-calendar-date.ts#L616).
+
+Number and PlainDate tests check full strings and tagged range parts.
+The original path fails the regression. Seven focused Bazel targets and
+the Node 26.8.1 replay pass.
+
+- Weekday before-fix log SHA-256 `9e9243ec53ba046475085ea887ff4d6bbe4ce9ec2cd4c0573f172952e1533e0a`
+- Weekday after-fix log SHA-256 `8168999da92cc8d785fdd21a10fa0401caca5e46db63eceb6f6d6d712f973a25`
+- Node 26 replay log SHA-256 `49e341188e2698974422f833efca36c462b53914949679dfadc507a29cf5d0c9`

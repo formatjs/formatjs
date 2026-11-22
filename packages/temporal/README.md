@@ -65,9 +65,11 @@ Default accepts native Intl or installed FormatJS polyfills; no formatter packag
 is imported, so no circular runtime dependency. Install Intl before importing
 Temporal, which captures its intrinsics. ICU oracles verify offsets, gap/fold
 resolution and transitions on Hermes. Node also compares host-data results with
-`temporal-polyfill`. Intl exposes no transition enumeration: default searches
-offset changes from 1800 through three years beyond the later of now and input.
-Previous-transition searches probe nearby future years before historical data.
+`temporal-polyfill`. Native Intl exposes offset queries. Forward searches
+probe from 1800 or the input, whichever is later, through three years beyond
+the latest of the input, current date and shipped last explicit transition.
+Previous searches probe nearby future years before resuming at the padded
+finite-history bound.
 Generated intervals account for closely spaced IANA transitions and recurring
 rules, capped at seven days because host tzdata may differ. Two host transitions
 within one probe interval can still be missed; Intl provides no exhaustive search.
@@ -93,7 +95,8 @@ are inferred through captured `formatToParts` operations before host matching.
 Chinese/Dangi date fields use the same calendar arithmetic as Temporal, including
 numeric Date inputs when host ICU data differs. Captured host formatters supply
 localized labels. Validated numeric Year ranges keep their numeric month and
-day widths. Other corrected ranges use complete endpoint patterns.
+day widths and verified weekday labels. Other corrected ranges use complete
+endpoint patterns.
 All supported non-Gregorian plain values also format beyond Date TimeClip.
 Safe Gregorian-cycle surrogates preserve weekday/clock; Temporal restores calendar
 fields and eras. Host Intl supplies month and era labels, with compact CLDR
