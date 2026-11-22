@@ -106,7 +106,7 @@
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
     "crates/temporal/short_dates.rs": "7c50e9bf57c6c52e096c6c37300e353162e22aa1cdde31d72cf6d1d1dcde2fab",
     "crates/temporal/time.rs": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
-    "crates/temporal/timezone.rs": "20553bd79f5b3cc69615c90e9c8a4cb4ff1f7810a9fa2598c7b51fc4fa34984a",
+    "crates/temporal/timezone.rs": "fa1c2baeeabd52da9697aa6c8015baf77ea20f4c3a74435a9b4289feda3abc8f",
     "crates/temporal/timezone_identity.rs": "c695d9488a24ac563b414695fa68b7a8ee65d8780895b0eb852dddcf776e4272",
     "crates/temporal/timezone_registry.rs": "9c8a37cc6b36970226abd320da9072c3a2acc88d47ce83c291733126249c966e",
     "crates/temporal/zoned.rs": "e133b891db973e7ef8fdd7e32bf8736b795b66e3d7d3ef12788b899a68f5dff4",

@@ -449,6 +449,9 @@ borrowed Rust checks its footer handoff at the second its offset actually
 changes. The day-start proof now also covers a clipped upper search when
 the nearest result bounds every competing instant inside the range.
 [Footer handoff proof](temporal-timezone-boundary-proof/README.md#fixed-footer-handoff-in-loaded-zones).
+Borrowed Rust now returns an explicit or recurring previous transition at
+the minimum Instant. Raw predecessor offsets provide the comparison.
+[Minimum transition](temporal-timezone-boundary-proof/README.md#rust-transition-at-the-minimum-instant).
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).

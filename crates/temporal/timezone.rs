@@ -112,19 +112,17 @@ impl FutureRule {
         ))
     }
     // Proposal comparison §6.3.46 steps 9.a and 10.b: Check whether a footer event changes the offset.
-    fn changes_at(self, instant: Instant, before: Instant) -> bool {
+    fn changes_at(self, seconds: i64) -> bool {
         let Some((offset, _, _)) = self.daylight else {
             return false;
         };
         if offset == self.standard {
             return false;
         }
-        let seconds = (instant.epoch_nanoseconds() / 1_000_000_000) as i64;
         let (year, month, day) = crate::calendar::iso_fields(seconds.div_euclid(86_400));
         // January 1 can put the two instants in different rule-year windows.
         if month == 1 && day == 1 && seconds.rem_euclid(86_400) == 0 {
-            return self.offset(instant.epoch_nanoseconds().div_euclid(1_000_000_000) as i64)
-                != self.offset(before.epoch_nanoseconds().div_euclid(1_000_000_000) as i64);
+            return self.offset(seconds) != self.offset(seconds - 1);
         }
         let mut previous = i64::MIN;
         let mut current = i64::MIN;
@@ -407,13 +405,11 @@ impl TimeZone for TransitionZone<'_> {
             }) {
                 return false;
             }
-            let (Ok(candidate), Ok(before)) = (
-                Instant::from_epoch_nanoseconds(raw),
-                Instant::from_epoch_nanoseconds(raw - 1),
-            ) else {
+            let Ok(candidate) = Instant::from_epoch_nanoseconds(raw) else {
                 return false;
             };
-            if self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before) {
+            // ECMA-262 §21.4.1.21: Use raw offsets on both sides of the boundary.
+            if self.offset_seconds(seconds) != self.offset_seconds(seconds - 1) {
                 best = Some(candidate);
                 return true;
             }
@@ -469,10 +465,7 @@ impl TimeZone for TransitionZone<'_> {
                     continue;
                 }
                 let raw = i128::from(event) * 1_000_000_000;
-                let (Ok(candidate), Ok(before)) = (
-                    Instant::from_epoch_nanoseconds(raw),
-                    Instant::from_epoch_nanoseconds(raw - 1),
-                ) else {
+                let Ok(candidate) = Instant::from_epoch_nanoseconds(raw) else {
                     continue;
                 };
                 if (if next { raw > value } else { raw < value })
@@ -484,9 +477,9 @@ impl TimeZone for TransitionZone<'_> {
                         }
                     })
                     && (if event > self.cutoff() + 1 {
-                        future.changes_at(candidate, before)
+                        future.changes_at(event)
                     } else {
-                        self.offset_nanoseconds(candidate) != self.offset_nanoseconds(before)
+                        self.offset_seconds(event) != self.offset_seconds(event - 1)
                     })
                 {
                     recurring = Some(candidate);

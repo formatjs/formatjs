@@ -4297,3 +4297,61 @@ fn transition_detects_discontinuous_fixed_footer() {
     assert_eq!(zone.transition(seam, TransitionDirection::Next), None);
     assert_eq!(zone.transition(seam, TransitionDirection::Previous), None);
 }
+
+#[test]
+fn previous_transition_includes_minimum_instant() {
+    use formatjs_temporal::{
+        FutureRule, OffsetTransition, TimeZone, TransitionDirection, TransitionRule,
+        TransitionZone, ZonedDateTime,
+    };
+
+    let minimum = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS).unwrap();
+    let next_nanosecond = Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + 1).unwrap();
+    let rows = [OffsetTransition {
+        epoch_seconds: (-MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64,
+        offset_seconds: 3600,
+    }];
+    let footer = FutureRule::new(
+        0,
+        Some((
+            3600,
+            TransitionRule::Day {
+                day: 109,
+                seconds: 0,
+            },
+            TransitionRule::Day {
+                day: 300,
+                seconds: 0,
+            },
+        )),
+    )
+    .unwrap();
+    for (name, zone) in [
+        ("explicit", TransitionZone::new(0, &rows, None).unwrap()),
+        ("footer", TransitionZone::new(0, &[], Some(footer)).unwrap()),
+    ] {
+        assert_eq!(
+            zone.offset_nanoseconds(minimum),
+            3_600_000_000_000,
+            "{name}"
+        );
+        let zoned = ZonedDateTime::new(next_nanosecond, zone);
+        assert_eq!(
+            zoned
+                .transition(TransitionDirection::Previous)
+                .map(|value| value.instant()),
+            Some(minimum),
+            "{name}"
+        );
+        assert_eq!(
+            zone.transition(minimum, TransitionDirection::Previous),
+            None,
+            "{name}"
+        );
+    }
+    let no_change = TransitionZone::new(3600, &rows, None).unwrap();
+    assert_eq!(
+        no_change.transition(next_nanosecond, TransitionDirection::Previous),
+        None
+    );
+}

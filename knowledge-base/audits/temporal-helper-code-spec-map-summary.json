@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27259,
+  "whole_selected_source_lines": 27252,
   "whole_selected_source_lines_by_language": {
-    "rust": 11183,
+    "rust": 11176,
     "typescript": 16076
   },
-  "nonoverlapping_callable_lines": 17745,
+  "nonoverlapping_callable_lines": 17738,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8348,
+    "rust": 8341,
     "typescript": 9397
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17402,
+    "mapped": 17395,
     "candidate": 159,
     "unmapped": 184
   },
@@ -496,10 +496,10 @@
     },
     {
       "file": "crates/temporal/timezone.rs",
-      "source_lines": 535,
+      "source_lines": 528,
       "callable_rows": 16,
-      "nonoverlapping_callable_lines": 428,
-      "sha256": "20553bd79f5b3cc69615c90e9c8a4cb4ff1f7810a9fa2598c7b51fc4fa34984a",
+      "nonoverlapping_callable_lines": 421,
+      "sha256": "fa1c2baeeabd52da9697aa6c8015baf77ea20f4c3a74435a9b4289feda3abc8f",
       "unresolved_callable_rows": 0
     },
     {

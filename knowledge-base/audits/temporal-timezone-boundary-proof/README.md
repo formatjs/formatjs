@@ -468,10 +468,26 @@ that same instant. Both tests query one nanosecond before and after the
 handoff and verify strict direction at the handoff itself.
 
 [Compact delegation](../../../packages/temporal/kernel.ts#L265).
-[Rust handoff check](../../../crates/temporal/timezone.rs#L438).
+[Rust handoff check](../../../crates/temporal/timezone.rs#L434).
 
 - Before-fix Bazel SHA-256 `4413a6ddc2e8a0fd563f9cf390be32878f5b00d727670e5133be548ab37a1bd5`
 - Combined nine-target Bazel SHA-256 `78daf4411c68153d468dc61a45cdaca6e8dd00582929d7ee9cb880def95fa8d0`
+
+### Rust transition at the minimum Instant
+
+The explicit and recurring Rust searches used two typed Instants to
+compare offsets across a boundary. A transition at the minimum Instant
+has a predecessor outside that type's range. The search now reads raw
+epoch seconds on each side, then returns the valid boundary. At one
+nanosecond above the minimum, both test zones return the minimum as
+their previous transition. The strict query from the minimum returns
+null. An unchanged offset at the same timestamp returns null too.
+[Rust offset check](../../../crates/temporal/timezone.rs#L411).
+[Regression](../../../crates/temporal/lib.test.rs#L4302).
+[§11.1.4](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezoneprevioustransition).
+
+- Before-fix Bazel SHA-256 `18fa17e034ea575ab2d357c25f1845f3f30750f429669e65d1682362a61b45d4`
+- Six-target Bazel SHA-256 `61797368758b5479318f96850fcdbf44ae11fa739a7b66870aca64831bb742a5`
 
 ## Finite future history in native Intl
 
@@ -620,7 +636,7 @@ proof. The existing fallback remains scoped policy, and these witnesses
 leave the rendered comparison conditional. The explicit post-limit rows
 are valid packed Intl inputs. Borrowed Rust TransitionZone rejects such
 explicit rows, so this replay establishes no Rust parity result.
-[Rust transition table validation](../../../crates/temporal/timezone.rs#L258).
+[Rust transition table validation](../../../crates/temporal/timezone.rs#L256).
 [Package replay](owned-wide-rounding-replay.mjs).
 
 Node 26.8.1 public replay output SHA-256
@@ -687,7 +703,7 @@ both sides. Unknown providers retain bounded enumeration by default and
 the existing provider applicability condition.
 
 - [Compact matching and range check](../../../packages/temporal/kernel.ts#L292).
-- [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L369).
+- [Borrowed raw lookup](../../../crates/temporal/timezone.rs#L367).
 - [Rust candidate validation](../../../crates/temporal/zoned.rs#L321).
 - [Rust explicit offset matching](../../../crates/temporal/zoned_string.rs#L124).
 - [Temporal comparison §11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
