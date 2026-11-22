@@ -15,9 +15,9 @@ each have three steps:
 
 | Compared step        | Current code and result                                                                                                                                                           |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 receiver           | [plain-date.ts:367](../../packages/temporal/plain-date.ts#L367), [subtract:370](../../packages/temporal/plain-date.ts#L370): retain this for private read.                        |
+| 1 receiver           | [plain-date.ts:366](../../packages/temporal/plain-date.ts#L366), [subtract:369](../../packages/temporal/plain-date.ts#L369): retain this for private read.                        |
 | 2 brand              | [read:140](../../packages/temporal/plain-date.ts#L140): private slot lookup; captured TypeError before duration/options access. Proxy wrapper does not inherit its target's slot. |
-| 3 delegate operation | [plain-date.ts:368](../../packages/temporal/plain-date.ts#L368), [subtract:371](../../packages/temporal/plain-date.ts#L371): common helper with sign +1 or −1.                    |
+| 3 delegate operation | [plain-date.ts:367](../../packages/temporal/plain-date.ts#L367), [subtract:370](../../packages/temporal/plain-date.ts#L370): common helper with sign +1 or −1.                    |
 
 ## AddDurationToDate steps
 
@@ -100,7 +100,7 @@ four iterator failures; native control passed. All nine focused gates pass.
 These results establish the mutation defect and native control, not complete
 calendar/API compliance.
 
-Existing [shared public calendar oracle:326](../../packages/temporal/tests/public-calendar-oracle.ts#L326)
+Existing [shared public calendar oracle:490](../../packages/temporal/tests/public-calendar-oracle.ts#L490)
 checks public constrained addition and expected boundary rejections across
 calendars. Both public-calendars.test.ts and public-calendar-host.ts invoke that
 checker. These fixtures do not prove every duration/overflow abrupt completion,

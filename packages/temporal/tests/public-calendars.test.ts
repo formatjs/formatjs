@@ -5,6 +5,8 @@ import {Temporal} from '#packages/temporal/index.js'
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkDifferenceOptionOrder,
+  checkDateDifferenceUnitGroup,
 } from '#packages/temporal/tests/public-calendar-oracle.js'
 
 it('exposes ICU calendar fields, inverse bags and arithmetic through public classes', () => {
@@ -292,6 +294,18 @@ it('keeps rounded month quanta while unrounded month-end differences keep days',
 
 it('keeps leap-month difference policy separate from constrained year addition', () => {
   checkCalendarDifferencePolicy(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
+})
+
+it('validates difference unit spellings before later option getters', () => {
+  checkDifferenceOptionOrder(Temporal, (actual, expected, context) =>
+    expect(actual, context).toBe(expected)
+  )
+})
+
+it('rejects date unit groups without reading a private negative array index', () => {
+  checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) =>
     expect(actual, context).toBe(expected)
   )
 })

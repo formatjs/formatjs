@@ -1,5 +1,12 @@
 # Temporal implementation
 
+PlainDate, PlainDateTime and ZonedDateTime differences reject unknown largest-unit
+spellings before later option getters. Date-only invalid smallest units reject
+before default-largest indexing, keeping inherited negative array keys private.
+[Option-order audit](audits/temporal-difference-option-order-audit.md) separates
+vocabulary validation from later unit-group checks; six public difference APIs
+share source/Hermes/native regressions.
+
 [Date-difference operation map](audits/temporal-calendar-date-until-contract-audit.md)
 and [ISO prefix proof](audits/temporal-iso-date-until-prefix-proof-audit.md) separate
 maximal unregulated year/month prefixes from constrained addition. Literal

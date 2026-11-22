@@ -57,6 +57,11 @@ Singular and plural unit names use exact private matching. Replacing
 `String.prototype.endsWith` or `slice` does not intercept that matching;
 public option getters and string coercion hooks still run normally.
 
+Difference options read `largestUnit`, `roundingIncrement`, `roundingMode`, then
+`smallestUnit`. An unrecognized largest-unit spelling throws before later option
+getters run. Recognized units are checked against the method's allowed units
+after those reads.
+
 Shared ISO string parsing also avoids mutable RegExp/String methods and legacy
 RegExp match-state changes. Clock fractions retain all nine digits. Calendar and
 timezone preparation outside the parser retains its separate validation.

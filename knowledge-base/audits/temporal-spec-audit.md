@@ -22,6 +22,19 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Difference option validation, 2026-11-22
+
+[Option-order audit](temporal-difference-option-order-audit.md) records two
+reproduced public failures. PlainDate, PlainDateTime and ZonedDateTime now reject
+unknown largest-unit spellings before reading roundingIncrement. PlainDate also
+rejects invalid smallest-unit groups before indexing the default-largest list;
+a poisoned inherited array `-1` getter no longer runs. Shared controls cover all
+six difference APIs, both until/since, equal/unequal inputs, string coercion and
+recognized-unit timing. All 83 expanded tests pass (70 executed, 13 cached), plus
+both package builds; [manifest](temporal-difference-option-validation-targets.txt). Broader caller/realm/provider
+contracts and requested Temporal API authority remain open; no historical count
+credit.
+
 ## Calendar date-difference operation map, 2026-11-22
 
 [Complete numbered comparison map](temporal-calendar-date-until-contract-audit.md)

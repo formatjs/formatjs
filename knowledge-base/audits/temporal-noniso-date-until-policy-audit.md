@@ -43,7 +43,7 @@ This proves decomposition invariants conditional on provider conversion/order co
 
 ## Public policy controls
 
-[Shared public controls](../../packages/temporal/tests/public-calendar-oracle.ts#L118)
+[Shared public controls](../../packages/temporal/tests/public-calendar-oracle.ts#L282)
 isolate retained-year leap policy in source TS/Hermes and native bridge profiles:
 
 - Chinese/Dangi: 2023 M02L day29 to 2024 M02 day29, largest year. Expected 0 years, 12 months, 0 days, despite adding one constrained year reaching the target. Original M02L sorts after target M02, so the year prefix is not retained. Existing `table-calendars.test.ts:30` proves the add-year fallback, not this difference decomposition.

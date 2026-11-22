@@ -278,16 +278,15 @@ function difference(
     throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw),
+    largestOption = largestText === 'auto' ? undefined : unitOption(largestText)
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'nanosecond'
   const names = ['year', 'month', 'week', 'day', ...clockNames]
   const smallIndex = arrayIndexOf(names, smallest)
   const largest =
-    largestText === 'auto'
-      ? names[mathMin(3, smallIndex)]
-      : unitOption(largestText)!
+    largestText === 'auto' ? names[mathMin(3, smallIndex)] : largestOption!
   if (arrayIndexOf(names, largest) > smallIndex)
     throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
   const native = nativeTemporal()

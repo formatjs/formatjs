@@ -240,18 +240,17 @@ function difference(
     throw new RangeErrorConstructor('Calendars differ')
   const resolved = optionsObject(options)
   const largestRaw = resolved.largestUnit,
-    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw)
+    largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw),
+    largestOption = largestText === 'auto' ? undefined : unitOption(largestText)
   const increment = roundingIncrement(resolved.roundingIncrement),
     mode = roundingMode(resolved.roundingMode, 'trunc')
   const smallest = unitOption(resolved.smallestUnit) ?? 'day'
   const names = ['year', 'month', 'week', 'day'],
     smallIndex = arrayIndexOf(names, smallest)
+  if (smallIndex < 0) throw new RangeErrorConstructor('Invalid date units')
   const largest =
-    largestText === 'auto'
-      ? names[mathMin(3, smallIndex)]
-      : unitOption(largestText)!
+    largestText === 'auto' ? names[mathMin(3, smallIndex)] : largestOption!
   if (
-    smallIndex < 0 ||
     !arrayIncludes(names, largest) ||
     arrayIndexOf(names, largest) > smallIndex
   )

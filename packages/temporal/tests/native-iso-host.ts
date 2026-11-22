@@ -14,6 +14,8 @@ import {
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkDifferenceOptionOrder,
+  checkDateDifferenceUnitGroup,
 } from '#packages/temporal/tests/public-calendar-oracle.js'
 import {
   configureNativeTemporal,
@@ -60,6 +62,12 @@ check(
   'Legacy clock responses must balance midnight'
 )
 configureNativeTemporal(query)
+checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDifferenceOptionOrder(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
 checkCalendarDifferencePolicy(Temporal, (actual, expected, context) =>
   check(actual === expected, context)
 )

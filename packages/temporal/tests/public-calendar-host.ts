@@ -2,11 +2,19 @@ import {Temporal} from '#packages/temporal/index.js'
 import {
   checkPublicCalendarOracle,
   checkCalendarDifferencePolicy,
+  checkDifferenceOptionOrder,
+  checkDateDifferenceUnitGroup,
 } from '#packages/temporal/tests/public-calendar-oracle.js'
 declare function print(value: string): void
 const fixture = (
   globalThis as unknown as {__formatjsArithmeticCalendarOracle: string}
 ).__formatjsArithmeticCalendarOracle
+checkDateDifferenceUnitGroup(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
+checkDifferenceOptionOrder(Temporal, (actual, expected, context) => {
+  if (actual !== expected) throw new Error(context)
+})
 checkCalendarDifferencePolicy(Temporal, (actual, expected, context) => {
   if (actual !== expected)
     throw new Error(`${context}: ${actual} !== ${expected}`)
