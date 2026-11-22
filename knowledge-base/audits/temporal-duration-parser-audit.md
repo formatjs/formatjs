@@ -37,7 +37,7 @@ normalization preserve it. The rejection boundaries are exact powers of two:
 rounding a larger positive integer cannot move it below those bounds. Rust's
 checked decimal accumulation can overflow only for inputs already outside them.
 
-[TS fractional expansion](../../packages/temporal/duration-core.ts#L167) and
+[TS fractional expansion](../../packages/temporal/duration-core.ts#L168) and
 [Rust expansion](../../crates/temporal/duration.rs#L399) scale 1–9 digits to an
 integer billionth, multiply fractional hours/minutes by 3600/60, then distribute
 exact integer quotients and remainders. Generated lower fields remain small.
@@ -61,16 +61,16 @@ scaling then uses BigInt before distribution into bounded lower fields.
 - [Sign/prefix:140](../../packages/temporal/duration-core.ts#L140) checks bounds
   before reading a character. Empty and sign-only inputs cannot read inherited
   numeric String properties.
-- [Time marker:152](../../packages/temporal/duration-core.ts#L152) permits one T,
+- [Time marker:152](../../packages/temporal/duration-core.ts#L153) permits one T,
   requires following text and switches the unit order to hours/minutes/seconds.
-- [Whole digits:160](../../packages/temporal/duration-core.ts#L160) require at least
+- [Whole digits:160](../../packages/temporal/duration-core.ts#L161) require at least
   one ASCII digit. Signs, whitespace and Unicode digits cannot enter a field.
-- [Fraction:167](../../packages/temporal/duration-core.ts#L167) requires 1–9 digits
+- [Fraction:167](../../packages/temporal/duration-core.ts#L168) requires 1–9 digits
   after dot/comma; the tenth digit rejects rather than truncating.
-- [Unit/order:187](../../packages/temporal/duration-core.ts#L187) requires an actual
+- [Unit/order:187](../../packages/temporal/duration-core.ts#L188) requires an actual
   in-range designator and increasing field index. A fractional field must be a
   time field and consume the entire remaining input, including its unit.
-- [Validation:215](../../packages/temporal/duration-core.ts#L215) requires a field,
+- [Validation:215](../../packages/temporal/duration-core.ts#L216) requires a field,
   expands the fraction, applies the overall sign and runs existing range checks.
 
 No scanner operation invokes RegExp, mutable String methods or an iterator.

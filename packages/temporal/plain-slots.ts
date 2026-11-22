@@ -122,6 +122,7 @@ export function allocateDateTime(
 export const getTimeSlot: (value: object) => bigint | undefined =
   import.meta.formatjsTemporalNativeData === true
     ? value => {
+        // Temporal comparison §4.3.3 step 3. Decode the clock slot exactly.
         const slot = nativeTimeLookup(value)
         if (typeof slot === 'bigint' || slot === undefined) return slot
         return (

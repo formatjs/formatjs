@@ -54,6 +54,7 @@ let durationConstructor = (
 let formatDuration = durationConstructor?.prototype.format
 
 export function configureLocaleFormatting(): void {
+  // Refresh captured host formatters after installation.
   dateTimeConstructor = globalThis.Intl?.DateTimeFormat as
     | DateTimeConstructor
     | undefined
@@ -142,6 +143,8 @@ export function legacyDateTimeProjection(
   const snapshot: Record<string, unknown> = createObject(null)
   const proxy = createProxy(createObject(null), {
     get(_target, key) {
+      // Temporal comparison §15.4.1 step 3 and ECMA-262 §7.3.2: coerce options
+      // lazily, then capture each string option's Get and conversion once.
       if (source === undefined) {
         if (options === null) throw new TypeErrorConstructor('Invalid options')
         source = options === undefined ? createObject(null) : Object(options)
@@ -265,7 +268,11 @@ export function legacyDateTimeProjection(
       intrinsics.formatToParts
     )
     if (
-      arraySome(objectKeys(styleFields), key => !arrayIncludes(allowed, key))
+      arraySome(
+        objectKeys(styleFields),
+        // Temporal comparison §15.6.2 step 2.b: detect a conflicting style field.
+        key => !arrayIncludes(allowed, key)
+      )
     ) {
       for (let index = 0; index < allowed.length; index++) {
         const key = allowed[index]
@@ -282,8 +289,21 @@ export function legacyDateTimeProjection(
       const key = allowed[index]
       selected[key] = snapshot[key]
     }
-    if (arrayEvery(required, key => snapshot[key] === undefined)) {
-      if (!instant && arraySome(dateTime, key => snapshot[key] !== undefined))
+    if (
+      arrayEvery(
+        required,
+        // Temporal comparison §15.6.1 steps 15–17: no required field was supplied.
+        key => snapshot[key] === undefined
+      )
+    ) {
+      if (
+        !instant &&
+        arraySome(
+          dateTime,
+          // Temporal comparison §15.6.1 steps 13–14.a and 17.a: detect explicit fields.
+          key => snapshot[key] !== undefined
+        )
+      )
         throw new TypeErrorConstructor(
           'DateTimeFormat options do not overlap the Temporal type'
         )
@@ -341,6 +361,7 @@ function legacyStyleFields(
     dateUTC(2006, 10, 22, 7, 8, 9),
     dateUTC(1991, 1, 3, 17, 18, 19),
   ]
+  // Host metadata for Temporal comparison §15.4.1 step 45.e: map year part names.
   const field = (type: string): string =>
     type === 'relatedYear' || type === 'yearName' ? 'year' : type
   // Proposal comparison §15.4.1 step 45.e: style selection uses private Lists.
@@ -366,6 +387,7 @@ function legacyStyleFields(
     if (defaults[key] !== undefined) seed[key] = defaults[key]
   }
   const text = (values: Intl.DateTimeFormatPart[], key: string): string => {
+    // Host metadata for Temporal comparison §15.4.1 step 45.e: collect one label.
     let result = ''
     for (let index = 0; index < values.length; index++) {
       const part = values[index]
@@ -399,6 +421,7 @@ function legacyStyleFields(
       if (
         arrayEvery(
           probes,
+          // Host metadata for Temporal comparison §15.4.1 step 45.e: compare widths.
           (probe, index) =>
             text(formatToParts.call(candidate, probe), key) ===
             text(parts[index], key)

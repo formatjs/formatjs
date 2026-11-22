@@ -234,13 +234,13 @@ retry conflicts and unexamined provider premises stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains 1,069 identities, including 1,064 live bindings and five retired callbacks.
-[1,008 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[Earlier mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-996 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states are 1,014 mapped,
-33 candidate and 22 unmapped, including five retired identities. Annotation
-presence is 987 direct, 26 enclosing, 51 without a direct anchor, and 5 retired. These are
+That checkpoint includes 996 reviewed local scopes and 12 narrow transport caller links. Current mapping states are 1,023 mapped,
+24 candidate and 22 unmapped, including five retired identities. Annotation
+presence is 1,011 direct, 11 enclosing,
+42 without a numbered anchor, and 5 retired. These are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -487,8 +487,9 @@ and canonical packed zone selection. A fourth now maps native zoned offset
 transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preserves
 wall, UTC, minute and exact classifications for the caller. Two more comments
 bind the prepared calendar Number predicate and captured Proxy construction to
-their ECMA-262 algorithms. The 51 remaining helpers without a direct anchor
-have recorded owners, including seven with narrower enclosing caller links.
+their ECMA-262 algorithms. The [inline owner review](temporal-inline-owner-batch-audit.md) mapped 24
+more callbacks and helpers directly. The residual register retains 42
+helper owners with their current locations.
 [Residual helper owners](temporal-helper-residual-owners.tsv).
 [Number predicate](https://tc39.es/ecma262/#sec-number.issafeinteger).
 [Proxy construction](https://tc39.es/ecma262/#sec-proxy-target-handler).

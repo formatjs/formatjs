@@ -333,7 +333,7 @@ The public checks compare full strings and tagged parts for Number and
 PlainDate on both pinned Nodes. Seven focused Bazel targets pass. The
 Node 26.8.1 replay passed 17,886 formatting checks, with 8,708 independent
 fixture rows and 34 existing native data differences.
-[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L198).
+[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L199).
 [Range day restoration](../../packages/temporal/legacy-calendar-date.ts#L788).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -391,8 +391,8 @@ existing fallback applies. Explicit-year and full-date layouts are verified belo
 Number and PlainDate regressions cover both calendars, equal and differing day
 fields, four locales and two pinned Node versions. Seven focused Bazel targets
 pass. Node 26.8.1 passes 17,932 formatting checks.
-[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L270).
-[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L278).
+[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L271).
+[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L279).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `380b322870e13b0504f30d727201b1d6547d6db29777fbe96488c62dc9397f5f`
@@ -415,7 +415,7 @@ without duplicating a closing parenthesis in the start endpoint.
 Number and PlainDate regressions cover both calendars and equal and differing
 day fields on pinned Node 24 and 26. Seven focused Bazel targets pass.
 Node 26.8.1 passes 17,948 formatting checks. Layouts without two verified controls retain their fallback.
-[Endpoint sources](../../packages/temporal/legacy-lunisolar-date.ts#L278).
+[Endpoint sources](../../packages/temporal/legacy-lunisolar-date.ts#L279).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `41f5ff591565108593b7f63c4c0af85312871acacaf89852723bd9fb8a92424a`
@@ -444,8 +444,8 @@ the 1933 and 1909 fixtures, with 17,996 formatting checks on Node 26.8.1.
 Eight focused Bazel targets pass. If the host cannot supply both controls or
 the outputs disagree about shared parts, the existing fallback applies.
 
-[Same-year search](../../packages/temporal/legacy-lunisolar-date.ts#L270).
-[Argument order](../../packages/temporal/legacy-lunisolar-date.ts#L272).
+[Same-year search](../../packages/temporal/legacy-lunisolar-date.ts#L271).
+[Argument order](../../packages/temporal/legacy-lunisolar-date.ts#L273).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Day-30 before-fix log SHA-256 `4b93a68c85a682364e6667b58856d402c43019eadfd0a324aeb7a57f3c814be0`
@@ -475,8 +475,8 @@ gate and eight runtime targets pass. Pinned Node 26.8.1 passes 18,028
 formatting checks. Other projection profiles and layouts lacking verified
 controls remain conditional.
 
-[Clock projection](../../packages/temporal/legacy-lunisolar-date.ts#L235).
-[Range part sources and widths](../../packages/temporal/legacy-lunisolar-date.ts#L278).
+[Clock projection](../../packages/temporal/legacy-lunisolar-date.ts#L236).
+[Range part sources and widths](../../packages/temporal/legacy-lunisolar-date.ts#L279).
 [ECMA-262 §21.4.1.31 step 3](https://tc39.es/ecma262/#sec-timeclip).
 [ECMA-262 §21.4.1.4 step 1](https://tc39.es/ecma262/#sec-timewithinday).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
@@ -488,7 +488,7 @@ PlainDateTime projection drops both ICU skeleton symbols; V8 main includes
 them. The fixture uses paired native Numeric Date controls for the retained
 style. [Temporal comparison §15.4.1 step 45.j](https://tc39.es/proposal-temporal/#sec-createdatetimeformat).
 [Temporal comparison §15.6.2 steps 1–3](https://tc39.es/proposal-temporal/#sec-adjustdatetimestyleformat).
-[Bridge style selection](../../packages/temporal/locale.ts#L267).
+[Bridge style selection](../../packages/temporal/locale.ts#L270).
 [Pinned V8 whitelist](https://github.com/nodejs/node/blob/v26.8.1/deps/v8/src/objects/js-date-time-format.cc#L1445-L1457).
 [V8 main whitelist](https://github.com/v8/v8/blob/main/src/objects/js-date-time-format.cc#L1469-L1481).
 

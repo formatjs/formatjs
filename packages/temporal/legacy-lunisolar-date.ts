@@ -124,11 +124,11 @@ function fields(
   milliseconds: number
 ): {year: number; month: number; day: number; monthCode: string} {
   const formatter = probe(calendar, timeZone)
-  // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type/value fields.
   const values = new Map<string, string>(
-    nativeParts!
-      .call(formatter, milliseconds)
-      .map(part => [part.type, part.value])
+    nativeParts!.call(formatter, milliseconds).map(
+      // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type and value.
+      part => [part.type, part.value]
+    )
   )
   // ECMA-402 §11.5.4 steps 15.f.iii and 15.h.i: recover year and related year.
   const year = numberFrom(
@@ -151,9 +151,10 @@ function fields(
   if (calendar === 'iso8601') {
     let positive = positiveEras.get(formatter)
     if (positive === undefined) {
-      positive = nativeParts!
-        .call(formatter, 0)
-        .find(part => part.type === 'era')?.value
+      positive = nativeParts!.call(formatter, 0).find(
+        // ECMA-402 §11.5.7 step 4.b: find the era type on the host control.
+        part => part.type === 'era'
+      )?.value
       if (!positive)
         throw new RangeErrorConstructor('Unsupported host Gregorian era')
       positiveEras.set(formatter, positive)
@@ -353,8 +354,10 @@ export function calendarLabelFormatter(
     if (
       !options.dateStyle &&
       !options.year &&
-      arraySome(raw, part =>
-        arrayIncludes(['relatedYear', 'yearName'], part.type)
+      arraySome(
+        raw,
+        // ECMA-402 §11.5.4 steps 15.h.iii and 15.i.iii: detect emitted lunar year types.
+        part => arrayIncludes(['relatedYear', 'yearName'], part.type)
       )
     )
       projected.year = 'numeric'
@@ -378,9 +381,10 @@ function part(
   type: string
 ): string {
   // ECMA-402 §11.5.7 step 1: get the requested label from a native partition.
-  const value = nativeParts!
-    .call(source, epoch * dayMilliseconds)
-    .find(part => part.type === type)
+  const value = nativeParts!.call(source, epoch * dayMilliseconds).find(
+    // ECMA-402 §11.5.7 step 4.b: select the emitted type.
+    part => part.type === type
+  )
   if (!value)
     throw new RangeErrorConstructor(
       `Unsupported host calendar pattern: ${type}`
@@ -423,7 +427,11 @@ export function correctLunisolarParts(
     calendar = options.calendar
   if (
     (calendar !== 'chinese' && calendar !== 'dangi') ||
-    !arraySome(raw, part => dateTypes.has(part.type))
+    !arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: check host part types before correction.
+      part => dateTypes.has(part.type)
+    )
   )
     return raw
   const iso =
@@ -460,7 +468,11 @@ export function correctLunisolarParts(
     changes = new Map<string, string>()
   if (
     actual.day !== expected.day &&
-    arraySome(raw, part => part.type === 'day')
+    arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: restore only an emitted day part.
+      part => part.type === 'day'
+    )
   ) {
     // ECMA-402 §11.5.4 steps 15.f.iii and 15.f.viii: restore the day from a
     // control.
@@ -469,7 +481,11 @@ export function correctLunisolarParts(
   }
   if (
     actual.monthCode !== expected.monthCode &&
-    arraySome(raw, part => part.type === 'month')
+    arraySome(
+      raw,
+      // ECMA-402 §11.5.7 step 4.b: restore only an emitted month part.
+      part => part.type === 'month'
+    )
   )
     // ECMA-402 §11.5.4 step 15.f.x: restore the month label for the true month
     // code.
@@ -514,12 +530,13 @@ export function correctLunisolarParts(
       }
     }
   }
-  // ECMA-402 §11.5.7 steps 4.b–c: preserve type while replacing corrected text.
   return changes.size
-    ? raw.map(item =>
-        changes.has(item.type)
-          ? {...item, value: changes.get(item.type)!}
-          : item
+    ? raw.map(
+        // ECMA-402 §11.5.7 steps 4.b–c: keep the type and restore the text.
+        item =>
+          changes.has(item.type)
+            ? {...item, value: changes.get(item.type)!}
+            : item
       )
     : raw
 }
@@ -560,8 +577,18 @@ export function joinCalendarRangeParts(
 ): Intl.DateTimeRangeFormatPart[] {
   if (
     allowCollapse &&
-    start.map(part => part.value).join('') ===
-      end.map(part => part.value).join('')
+    start
+      .map(
+        // ECMA-402 §11.5.6 step 3.a: compose start text for the fallback check.
+        part => part.value
+      )
+      .join('') ===
+      end
+        .map(
+          // ECMA-402 §11.5.6 step 3.a: compose end text for the fallback check.
+          part => part.value
+        )
+        .join('')
   )
     // ECMA-402 §11.5.8 step 16.c: tag the collapsed fallback parts as shared.
     return start.map(part => ({...part, source: 'shared'}))
@@ -570,21 +597,33 @@ export function joinCalendarRangeParts(
     // ECMA-402 §11.5.8 steps 18–19: sample a separator for the compatibility
     // fallback.
     const sample = parts.call(formatter, 946718033000, 1025966286000),
-      end = sample.findIndex(part => part.source === 'endRange')
+      end = sample.findIndex(
+        // ECMA-402 §11.5.10 step 4.d: read the host sample's endpoint tag.
+        part => part.source === 'endRange'
+      )
     let start = end - 1
     while (start >= 0 && sample[start].source !== 'startRange') start--
     if (start < 0 || end < 0)
       throw new RangeErrorConstructor('Unsupported host calendar range pattern')
     separator = sample
       .slice(start + 1, end)
-      .map(part => part.value)
+      .map(
+        // ECMA-402 §11.5.10 step 4.c: read the host sample's separator text.
+        part => part.value
+      )
       .join('')
     separators.set(formatter, separator)
   }
-  // ECMA-402 §11.5.8 step 19.f.i: keep start, shared and end source labels.
+  // ECMA-402 §11.5.8 step 19.f.i: carry source labels into the fallback parts.
   return [
-    ...start.map(part => ({...part, source: 'startRange' as const})),
+    ...start.map(
+      // ECMA-402 §11.5.10 steps 4.b–d: preserve start parts and tag their source.
+      part => ({...part, source: 'startRange' as const})
+    ),
     {type: 'literal', value: separator, source: 'shared'},
-    ...end.map(part => ({...part, source: 'endRange' as const})),
+    ...end.map(
+      // ECMA-402 §11.5.10 steps 4.b–d: preserve end parts and tag their source.
+      part => ({...part, source: 'endRange' as const})
+    ),
   ]
 }

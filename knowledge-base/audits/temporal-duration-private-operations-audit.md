@@ -9,13 +9,13 @@ those chapters. No historical line credit is added.
 
 ## Observable hooks
 
-[Bit lengths:258](../../packages/temporal/duration-core.ts#L258) now invoke captured
+[Bit lengths:258](../../packages/temporal/duration-core.ts#L259) now invoke captured
 BigInt.prototype.toString through captured Reflect.apply. Primitive BigInt
 receivers and radix 2 need no user coercion. The fresh argument array has own
 indices; no iterator is consulted. Capture occurs before untrusted post-import
 mutation, matching the package's initialization contract.
 
-[largestDurationField:241](../../packages/temporal/duration-core.ts#L241) now scans
+[largestDurationField:241](../../packages/temporal/duration-core.ts#L242) now scans
 the private dense field-name array by index. First nonzero field wins; zero falls
 back to index 9. This preserves the former findIndex result without looking up
 Array.prototype.findIndex. Public field-bag getters/coercions run before these
@@ -32,7 +32,7 @@ minute/second carry and zero. Descriptors restore before assertions.
 
 ## Exact-ratio rounding
 
-[durationTotalNumber:251](../../packages/temporal/duration-core.ts#L251) converts
+[durationTotalNumber:251](../../packages/temporal/duration-core.ts#L252) converts
 integer N divided by positive integer D. Zero returns positive zero. For A=abs(N)>0,
 let L=bitLength(A)-bitLength(D). The exact exponent e=floor(log2(A/D)) is L or L-1;
 the integer shift comparison selects it exactly.

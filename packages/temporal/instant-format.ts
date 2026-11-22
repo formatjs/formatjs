@@ -18,6 +18,8 @@ export function formatInstant(
   offset?: bigint
 ): string {
   const fields = epochNanosecondsToISO(value + (offset ?? 0n))
+  // Temporal comparison §3.5.10 steps 1 and 3, §5.5.9 steps 2 and 3,
+  // §13.26 steps 2, 3 and 5. Pad the magnitude to the requested width.
   const pad = (value: number, length = 2): string =>
     zeroPadDecimal(value, length)
   const year =

@@ -147,6 +147,7 @@ export function parseDurationString(value: string): DurationFields {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.parseDuration(value)
+  // Temporal comparison §13.37 step 2. Reject invalid duration grammar.
   const invalid = (): never => {
     throw new RangeErrorConstructor('Invalid duration string')
   }

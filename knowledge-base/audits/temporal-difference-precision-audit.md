@@ -14,7 +14,7 @@ For a 10 ns quantum, it is exactly halfway between
 `9_007_199_254_741_000` and `9_007_199_254_741_010`. Positive half-expand selects
 the latter. Both final integers are exactly representable as binary64 Numbers.
 
-Before the fix, [TS time balancing](../../packages/temporal/duration-core.ts#L230)
+Before the fix, [TS time balancing](../../packages/temporal/duration-core.ts#L231)
 converted the span to Number `9_007_199_254_741_004` before rounding. Converting
 that field back to BigInt put the value below the halfway boundary, selecting
 `9_007_199_254_741_000`. [Rust unrounded](../../crates/temporal/calendar_difference.rs#L117)

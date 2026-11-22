@@ -62,7 +62,7 @@
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
     "packages/temporal/legacy-intl.ts": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
-    "packages/temporal/locale.ts": "d8fb1861ecc5b6818e539320ba7a7221e50236dc317289af1e6c2a6248395f5e",
+    "packages/temporal/locale.ts": "ead3cfcdc26ec20db99ff0a539f65c3b3deb9ba34cea92b8ce985418d003f95b",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",
     "packages/temporal/plain-date-time.ts": "c9143c5d6005425be85ab1ab0729b815c8388c0e5c398582cb9ffc41e5cb3b78",
     "packages/temporal/plain-date.ts": "14265e0e7f2bb1ca3894adf272b3bf83a9113b716196ff2d428ba664e0e61a5f",
