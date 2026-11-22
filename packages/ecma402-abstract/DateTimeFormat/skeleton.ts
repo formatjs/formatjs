@@ -52,15 +52,17 @@ export function expandIntervalFormatTemplates(
 }
 
 const patternFields = new WeakMap<Formats, Intl.DateTimeFormatOptions>()
+const readPatternFields = patternFields.get.bind(patternFields)
+const writePatternFields = patternFields.set.bind(patternFields)
 
 export function getDateTimePatternFields(
   format: Formats
 ): Intl.DateTimeFormatOptions {
-  const cached = patternFields.get(format)
+  const cached = readPatternFields(format)
   if (cached) return cached
   const fields: Intl.DateTimeFormatOptions = Object.create(null)
   processDateTimePattern(format.rawPattern, fields)
-  patternFields.set(format, fields)
+  writePatternFields(format, fields)
   return fields
 }
 
@@ -398,7 +400,7 @@ export function parseDateTimeSkeleton(
   replaceDateTimeTokens(skeleton, result)
   const fields: Intl.DateTimeFormatOptions = Object.create(null)
   const [pattern, pattern12] = processDateTimePattern(rawPattern, fields)
-  patternFields.set(result, fields)
+  writePatternFields(result, fields)
   result.pattern = pattern
   result.pattern12 = pattern12
   for (const field of ['monthStandalone', 'weekdayStandalone'] as const) {

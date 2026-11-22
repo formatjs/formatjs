@@ -346,6 +346,8 @@ interface Supported {
   best: Map<string, {index: number; distance: number}>
 }
 const supportedCache = new WeakMap<readonly string[], Supported>()
+const getSupported = supportedCache.get.bind(supportedCache)
+const setSupported = supportedCache.set.bind(supportedCache)
 const immutableLocaleLists = new WeakSet<readonly string[]>()
 let paradigms: Set<string> | undefined
 
@@ -364,7 +366,7 @@ function equivalentKey(lsr: LSR): string {
 function prepare(locales: readonly string[]): Supported {
   // Frozen caller arrays may have getters; only our own snapshots are stable.
   const immutable = immutableLocaleLists.has(locales)
-  let result = supportedCache.get(locales)
+  let result = getSupported(locales)
   if (
     result &&
     !immutable &&
@@ -382,7 +384,7 @@ function prepare(locales: readonly string[]): Supported {
       orders: new Map(),
       best: new Map(),
     }
-    supportedCache.set(locales, result)
+    setSupported(locales, result)
   }
   return result
 }
