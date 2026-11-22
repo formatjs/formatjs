@@ -667,6 +667,17 @@ Current pass:
   Existing Intl data discrepancies remain visible; exclusions and failure
   baselines are unchanged.
 
+- Rounding-increment validation: `abstractops.html` lines 430–437 and 722.
+  Strict time-unit limits, inclusive Instant day divisors and all ten maximum
+  duration increment rows match the pinned specification. Source comments map
+  the distributed TS/Rust validators; the [increment audit](temporal-rounding-increment-audit.md)
+  records the positive-integer contract and table evidence. No runtime change.
+  Thirty-four new Node cases, one Rust matrix and native Hermes controls pass;
+  22 focused/unit/typecheck/Test262 targets pass, including cached backend gates.
+  The inherited increment coercion trace is rechecked without new trace credit.
+  Nine new Temporal traces bring this audit's total to 243. Full callers, option
+  ordering beyond these controls, other table columns and realm requirements stay open.
+
 Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/8060),
 [relativeTo slots](https://github.com/formatjs/formatjs/pull/8061),
 [calendar-total bounds](https://github.com/formatjs/formatjs/pull/8063),
@@ -694,9 +705,10 @@ Published layers: [MonthCode grammar](https://github.com/formatjs/formatjs/pull/
 [string unit option records](https://github.com/formatjs/formatjs/pull/8087),
 [private formatter record copies](https://github.com/formatjs/formatjs/pull/8088),
 [exact clock difference audit](https://github.com/formatjs/formatjs/pull/8089),
-[private unit-name matching](https://github.com/formatjs/formatjs/pull/8090).
+[private unit-name matching](https://github.com/formatjs/formatjs/pull/8090),
+[rounding-increment validation audit](https://github.com/formatjs/formatjs/pull/8091).
 
-New traces: 234 source lines. The six existing RoundNumberToIncrementAsIfPositive
+New traces: 243 source lines. The six existing RoundNumberToIncrementAsIfPositive
 traces are reverified here; other baseline traces retain their linked PR status.
 Ledger integrity checked across all 14 pinned spec files: every numbered line is
 indexed, counts match the table, and traced/open sets are disjoint.
@@ -716,7 +728,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 
 | Spec file                                                                                                                          | Numbered source lines | Individually traced here | Not individually signed off |
 | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------: | -----------------------: | --------------------------: |
-| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       65 |                         376 |
+| [abstractops](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html)       |                   441 |                       74 |                         367 |
 | [calendar](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/calendar.html)             |                   219 |                       12 |                         207 |
 | [duration](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html)             |                   702 |                       56 |                         646 |
 | [instant](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html)               |                   157 |                       51 |                         106 |
@@ -759,7 +771,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-getdirectionoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L397)
   - Open: [408–410](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L408-L410).
 - [`sec-validatetemporalroundingincrement`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L414)
-  - Open: [430–437](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437).
+  - Traced: [430–437](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437).
 - [`sec-temporal-gettemporalfractionalseconddigitsoption`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L441)
   - Traced: [452–460](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L452-L460).
 - [`sec-temporal-tosecondsstringprecisionrecord`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L464)
@@ -779,7 +791,7 @@ Time conversion stack, bottom to top: [plain dates and internal clock conversion
 - [`sec-temporal-temporalunitcategory`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L696)
   - Open: [707](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L707).
 - [`sec-temporal-maximumtemporaldurationroundingincrement`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L711)
-  - Open: [722](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722).
+  - Traced: [722](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722).
 - [`sec-temporal-ispartialtemporalobject`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L726)
   - Open: [737–743](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L737-L743).
 - [`sec-temporal-formatfractionalseconds`](https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L747)

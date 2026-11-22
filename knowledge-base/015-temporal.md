@@ -26,6 +26,10 @@ Normal unit names match explicit private singular/plural pairs, avoiding mutable
 String.prototype.endsWith and slice. The [unit audit](audits/temporal-unit-option-audit.md)
 compares the pinned table's value/name columns and lists all 24 helper callsites.
 Auto/default policies, group validation and complete callers remain open.
+The [increment audit](audits/temporal-rounding-increment-audit.md) maps strict
+clock limits, inclusive Instant divisors and all ten duration maximum rows to
+TS/Rust validators. Coercion truncates before the 1e9 bound; calendar rows have
+no fixed time-unit maximum. No runtime behavior changed in this pass.
 
 String shorthand in Instant/PlainTime/PlainDateTime/ZonedDateTime/Duration
 round() and Duration.total() builds a fresh null-prototype record through
