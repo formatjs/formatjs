@@ -22,6 +22,16 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## ISO date-difference comparison defect, 2026-11-22
+
+Separate [zero-month shortcut issue](temporal-isodatesurpasses-zero-month-spec-issue.md)
+records a finite witness: compared ISODateSurpasses §3.5.6 step 5 ignores nonzero
+weeks/days. CalendarDateUntil §12.3.9 day/week candidate loops cannot terminate
+for adjacent unequal ISO dates. Existing source uses bounded day residuals;
+arithmetic difference controls include epoch0 to epoch1 in both largest units
+and pass. No runtime arithmetic or baseline changes. Full operation mapping
+continues; this issue does not supply missing authoritative ECMA-262 API clauses.
+
 ## Bounded ISO calendar arithmetic, 2026-11-22
 
 [Gregorian conversion proof](temporal-calendar-gregorian-closure-audit.md)
