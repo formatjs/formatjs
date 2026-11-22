@@ -22,6 +22,26 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Calendar provider chronology, 2026-11-22
+
+[Arithmetic proof](temporal-arithmetic-provider-chronology-audit.md) records
+positive year/month partitions, canonical identity, bounded inverse correction
+and binary64 correspondence over raw±110million-day inputs. Exact-integer finite
+analysis is preserved in a [proof notebook](temporal-arithmetic-provider-proof-notebook.md),
+separate from production conformance evidence. Gregorian/era results reuse the
+existing Gregorian proof; Hebrew and other arithmetic calendars have explicit
+finite-domain/period arguments.
+
+[Table proof](temporal-table-provider-chronology-audit.md) separates trusted
+bundled TS metadata from Rust structural validation. Monotone day/month prefixes
+justify checkpoint lookup and inverse termination. [Shipped Umm joins](temporal-umm-shipped-joins-audit.md)
+align exactly with civil fallback; six literal public/typed controls exercise
+both boundaries. A synthetic 65-year pack checks month movement across block64
+and rejection outside table months. All nine focused targets pass (two executed,
+seven cached in the final run); [manifest](temporal-provider-closure-validation-targets.txt). Runtime arithmetic and
+historical trace counts unchanged. External calendar accuracy, host approximation,
+public caller/realm contracts and requested Temporal API authority remain open.
+
 ## Difference option validation, 2026-11-22
 
 [Option-order audit](temporal-difference-option-order-audit.md) records two

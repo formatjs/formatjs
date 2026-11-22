@@ -100,7 +100,7 @@ four iterator failures; native control passed. All nine focused gates pass.
 These results establish the mutation defect and native control, not complete
 calendar/API compliance.
 
-Existing [shared public calendar oracle:490](../../packages/temporal/tests/public-calendar-oracle.ts#L490)
+Existing [shared public calendar oracle:533](../../packages/temporal/tests/public-calendar-oracle.ts#L533)
 checks public constrained addition and expected boundary rejections across
 calendars. Both public-calendars.test.ts and public-calendar-host.ts invoke that
 checker. These fixtures do not prove every duration/overflow abrupt completion,

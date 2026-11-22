@@ -115,6 +115,49 @@ function checkLargeCalendarFields(
   }
 }
 
+export function checkUmmAlQuraJoins(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const calendar = 'islamic-umalqura'
+  for (const [iso, year, month, monthCode, day] of [
+    ['1881-11-22', 1298, 12, 'M12', 29],
+    ['1881-11-23', 1299, 1, 'M01', 1],
+    ['1881-11-24', 1299, 1, 'M01', 2],
+    ['2176-11-02', 1602, 12, 'M12', 29],
+    ['2176-11-03', 1603, 1, 'M01', 1],
+    ['2176-11-04', 1603, 1, 'M01', 2],
+  ] as const) {
+    const value = Temporal.PlainDate.from(iso).withCalendar(calendar)
+    equal(value.year, year, `${iso} join year`)
+    equal(value.month, month, `${iso} join month`)
+    equal(value.monthCode, monthCode, `${iso} join month code`)
+    equal(value.day, day, `${iso} join day`)
+    equal(
+      Temporal.PlainDate.from(
+        {calendar, year, monthCode, day},
+        {overflow: 'reject'}
+      ).toString({calendarName: 'never'}),
+      iso,
+      `${iso} join inverse`
+    )
+  }
+  for (const [before, after] of [
+    ['1881-11-22', '1881-11-23'],
+    ['2176-11-02', '2176-11-03'],
+  ]) {
+    const first = Temporal.PlainDate.from(before).withCalendar(calendar),
+      last = Temporal.PlainDate.from(after).withCalendar(calendar)
+    equal(first.add({days: 1}).equals(last), true, `${before} cross join`)
+    equal(last.subtract({days: 1}).equals(first), true, `${after} reverse join`)
+    equal(
+      first.until(last, {largestUnit: 'day'}).toString(),
+      'P1D',
+      `${before} join difference`
+    )
+  }
+}
+
 export function checkDateDifferenceUnitGroup(
   Temporal: typeof TemporalNamespace,
   equal: (actual: unknown, expected: unknown, context: string) => void
