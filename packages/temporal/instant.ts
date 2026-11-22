@@ -292,7 +292,9 @@ class InstantValue implements InstantObject {
   since(other: unknown, options: unknown = undefined): DurationObject {
     return difference(read(this), other, options, true)
   }
-  // ECMA-262 preview §22.8.5.4: reject date units, then add the clock duration.
+  // ECMA-262 preview §22.8.3.5 steps 1–3: check the receiver before converting duration.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.instant.prototype.add
+  // §22.8.5.4 rejects date units, then adds the clock duration.
   // https://tc39.es/ecma262/pr/3966/#sec-adddurationtoinstant
   add(other: unknown): InstantObject {
     const value = read(this),
