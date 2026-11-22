@@ -7,6 +7,73 @@ export function checkPlainArithmeticOracle(
   durationRows: string[][],
   equal: (actual: unknown, expected: unknown, context: string) => void
 ): {arithmetic: number; rounds: number; dayRounds: number} {
+  const privateDate = Temporal.PlainDate.from('2020-01-31')
+  const privateDateTime = Temporal.PlainDateTime.from('2020-01-31T23:30')
+  const privateYearMonth = Temporal.PlainYearMonth.from('2020-01')
+  const month = Temporal.Duration.from({months: 1})
+  const monthHour = Temporal.Duration.from({months: 1, hours: 1})
+  let overflowReads = 0
+  const privateOptions = {
+    get overflow() {
+      overflowReads++
+      return 'constrain'
+    },
+  }
+  const privateCases = [
+    [() => privateDate.add(month, privateOptions), '2020-02-29'],
+    [() => privateDate.subtract(month, privateOptions), '2019-12-31'],
+    [
+      () => privateDateTime.add(monthHour, privateOptions),
+      '2020-03-01T00:30:00',
+    ],
+    [
+      () => privateDateTime.subtract(monthHour, privateOptions),
+      '2019-12-31T22:30:00',
+    ],
+    [() => privateYearMonth.add(month, privateOptions), '2020-02'],
+    [() => privateYearMonth.subtract(month, privateOptions), '2019-12'],
+  ] as const
+  const privateFailures: string[] = []
+  for (const hook of ['keys', 'iterator']) {
+    for (const [run, expected] of privateCases) {
+      const originalKeys = Object.keys
+      const originalIterator = Array.prototype[Symbol.iterator]
+      let hooks = 0
+      let result: {toString(): string} | undefined
+      let error: unknown
+      overflowReads = 0
+      const fail = () => {
+        hooks++
+        throw new Error('Observable private addition fields')
+      }
+      try {
+        if (hook === 'keys') Object.keys = fail
+        else Array.prototype[Symbol.iterator] = fail
+        try {
+          result = run()
+        } catch (caught) {
+          error = caught
+        }
+      } finally {
+        Object.keys = originalKeys
+        Array.prototype[Symbol.iterator] = originalIterator
+      }
+      if (error || hooks) privateFailures.push(`${hook}: ${expected}`)
+      else {
+        equal(
+          result!.toString(),
+          expected,
+          'Plain addition retains calendar arithmetic'
+        )
+        equal(
+          overflowReads,
+          1,
+          'Plain addition still reads public overflow once'
+        )
+      }
+    }
+  }
+  equal(privateFailures.join(', '), '', 'Plain addition avoids private hooks')
   const day = 86_400_000_000_000n
   const clock = (value: ReturnType<typeof Temporal.PlainDateTime.from>) =>
     BigInt(value.hour) * 3_600_000_000_000n +
@@ -123,6 +190,52 @@ export function checkPlainArithmeticOracle(
       'ICU day rounding'
     )
     dayRounds++
+  }
+  const yearMonthOrigin = new Temporal.PlainYearMonth(
+    275760,
+    8,
+    'islamic-civil',
+    22
+  )
+  const yearMonthTarget = new Temporal.PlainYearMonth(
+    275760,
+    9,
+    'islamic-civil',
+    21
+  )
+  equal(
+    yearMonthOrigin.toString(),
+    '+275760-08-22[u-ca=islamic-civil]',
+    'year-month addition starts at supported full date'
+  )
+  equal(
+    yearMonthTarget.toString(),
+    '+275760-09-21[u-ca=islamic-civil]',
+    'year-month representation permits reference date beyond PlainDate limit'
+  )
+  equal(
+    yearMonthOrigin.with({month: 6}).toString(),
+    '+275760-09-21[u-ca=islamic-civil]',
+    'year-month field replacement permits reference date beyond PlainDate limit'
+  )
+  // Islamic civil 283583-M05-01/06-01 are epoch days 99999978/100000008.
+  for (const [context, operation] of [
+    [
+      'year-month add validates added full date',
+      () => yearMonthOrigin.add({months: 1}),
+    ],
+    [
+      'year-month subtract validates added full date',
+      () => yearMonthOrigin.subtract({months: -1}),
+    ],
+  ] as const) {
+    let rangeError = false
+    try {
+      operation()
+    } catch (error) {
+      rangeError = error instanceof RangeError
+    }
+    equal(rangeError, true, context)
   }
   equal(arithmetic, 840, 'Complete ICU arithmetic fixture')
   return {arithmetic, rounds, dayRounds}

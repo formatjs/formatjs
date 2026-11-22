@@ -79,7 +79,10 @@ import {
   toNativeDurationFields,
   type DurationObject,
 } from '#packages/temporal/duration.js'
-import {durationNanoseconds} from '#packages/temporal/duration-core.js'
+import {
+  durationFieldNames,
+  durationNanoseconds,
+} from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
   unitOptions,
@@ -251,8 +254,8 @@ function add(
       ),
       slot.calendar
     )
-  for (const key of Object.keys(fields) as (keyof typeof fields)[])
-    fields[key] *= sign
+  for (let index = 0; index < durationFieldNames.length; index++)
+    fields[durationFieldNames[index]] *= sign
   const overflow = overflowOption(options)
   const time =
     timeOf(slot.epochNanoseconds) + durationNanoseconds(fields, false)

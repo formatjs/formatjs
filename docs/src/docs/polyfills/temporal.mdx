@@ -95,6 +95,9 @@ following week endpoint for exact results. Nanosecond identity and plain-zero
 equality retain their shortcuts.
 Calendar-relative `since` and zoned intermediate additions keep private Duration
 field processing independent of a replaced `Object.keys`.
+PlainDate, PlainDateTime and PlainYearMonth add/subtract also keep private fields
+independent of replaced `Object.keys` and array iteration. YearMonth addition
+validates the added full date before constructing its YearMonth result.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

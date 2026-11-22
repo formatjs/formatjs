@@ -78,7 +78,10 @@ import {
   createNativeDuration,
   type DurationObject,
 } from '#packages/temporal/duration.js'
-import {durationNanoseconds} from '#packages/temporal/duration-core.js'
+import {
+  durationFieldNames,
+  durationNanoseconds,
+} from '#packages/temporal/duration-core.js'
 import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   optionsObject,
@@ -217,8 +220,8 @@ function add(
       ),
       value.calendar
     )
-  for (const key of Object.keys(fields) as (keyof typeof fields)[])
-    fields[key] *= sign
+  for (let index = 0; index < durationFieldNames.length; index++)
+    fields[durationFieldNames[index]] *= sign
   const time = durationNanoseconds(fields, false)
   fields.days += numberFrom(time / nsPerDay)
   return createPlainDate(

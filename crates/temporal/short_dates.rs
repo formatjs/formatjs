@@ -184,6 +184,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             .calendar
             .add_extended(first, duration, calendar_overflow(overflow))
             .map_err(error)?;
+        PlainDate::from_epoch_day(epoch)?;
         Self::from_epoch_day_in(epoch, self.calendar)
     }
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
