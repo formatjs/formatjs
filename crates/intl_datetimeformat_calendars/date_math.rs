@@ -112,8 +112,12 @@ pub(crate) trait NumericCalendar: Copy {
             }
             anchor = self.add_raw(one, result, Overflow::Constrain)?;
         }
-        // Proposal comparison §3.5.6 steps 12–13: With nonzero ISO months, the
-        // first signed day past the target is one step beyond this residual.
+        // ECMA-262 preview §22.3.3.3 steps 3.g and 3.j count whole weeks and days
+        // up to the target. Subtract epoch days to compute that residual directly.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardateuntil
+        // §22.3.8.2 step 5 corrects the zero-month guard for these searches.
+        // https://tc39.es/ecma262/pr/3966/#sec-isodatesurpasses
+        // https://github.com/tc39/proposal-temporal/issues/3340
         result.days = two - anchor;
         if largest == DateUnit::Week {
             result.weeks = result.days / 7;

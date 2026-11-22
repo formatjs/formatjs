@@ -1022,11 +1022,14 @@ export function roundRelativeDifference(
       const key = `${differenceUnits[index]}s` as keyof DurationFields
       prefix[key] = result[key]
     }
-    const key = `${smallest}s` as keyof DurationFields,
-      count =
-        smallest === 'week'
-          ? result.weeks + mathTrunc(result.days / 7)
-          : result[key]
+    const key = `${smallest}s` as keyof DurationFields
+    // ECMA-262 preview §22.15.5.12 steps 3.c–3.e: the signed day delta
+    // contributes one whole week per seven days before increment rounding.
+    // https://tc39.es/ecma262/pr/3966/#sec-computenudgewindow
+    const count =
+      smallest === 'week'
+        ? result.weeks + mathTrunc(result.days / 7)
+        : result[key]
     let truncated = mathTrunc(count / increment) * increment
     const stride = sign * increment
     prefix[key] = truncated

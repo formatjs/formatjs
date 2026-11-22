@@ -620,7 +620,6 @@ export function calendarDateUntilRaw(
     )
     // Temporal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
     // https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses
-    // https://github.com/tc39/proposal-temporal/issues/3340
     return (
       sign *
         (candidate.year - last.year ||
@@ -653,8 +652,12 @@ export function calendarDateUntilRaw(
       'reject'
     )
   }
-  // Temporal comparison §3.5.6 steps 12–13: With nonzero ISO months, the
-  // first signed day past the target is one step beyond this residual.
+  // ECMA-262 preview §22.3.3.3 steps 3.g and 3.j count whole weeks and days
+  // up to the target. Subtract epoch days to compute that residual directly.
+  // https://tc39.es/ecma262/pr/3966/#sec-calendardateuntil
+  // §22.3.8.2 step 5 corrects the zero-month guard for these searches.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatesurpasses
+  // https://github.com/tc39/proposal-temporal/issues/3340
   result.days = two - anchor
   if (largest === 'week') {
     result.weeks = mathTrunc(result.days / 7) || 0

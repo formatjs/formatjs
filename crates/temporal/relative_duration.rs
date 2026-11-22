@@ -148,6 +148,9 @@ pub(crate) fn round<A: RelativeAnchor>(
         .fields();
         let mut fields = [0; 10];
         fields[..2].copy_from_slice(&full[..2]);
+        // ECMA-262 preview §22.15.5.12 steps 3.c–3.e: count whole weeks
+        // in the signed day remainder after retaining years and months.
+        // https://tc39.es/ecma262/pr/3966/#sec-computenudgewindow
         let count = full[2] + full[3] / 7;
         fields[2] = count;
         let a = start.endpoint(fields)?;

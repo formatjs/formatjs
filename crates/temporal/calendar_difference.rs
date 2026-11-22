@@ -227,6 +227,9 @@ pub(crate) fn difference<A: RelativeAnchor>(
         prefix[largest as usize..smallest as usize]
             .copy_from_slice(&fields[largest as usize..smallest as usize]);
         let index = smallest as usize;
+        // ECMA-262 preview §22.15.5.12 steps 3.c–3.e: the signed day delta
+        // contributes one whole week per seven days before increment rounding.
+        // https://tc39.es/ecma262/pr/3966/#sec-computenudgewindow
         let count = if smallest == DateTimeUnit::Week {
             fields[2] + fields[3] / 7
         } else {

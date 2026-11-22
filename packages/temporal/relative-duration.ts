@@ -275,6 +275,9 @@ export function relativeRound(
     const result = zeroDuration()
     result.years = full.years
     result.months = full.months
+    // ECMA-262 preview §22.15.5.12 steps 3.c–3.e: count whole weeks
+    // in the signed day remainder after retaining years and months.
+    // https://tc39.es/ecma262/pr/3966/#sec-computenudgewindow
     const count = full.weeks + mathTrunc(full.days / 7)
     result.weeks = count
     const a = relativeEndpoint(relative, result)
