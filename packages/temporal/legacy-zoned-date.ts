@@ -18,6 +18,10 @@ type ZoneCache = Map<string, HostTimeZone['offsetNanoseconds'] | undefined>
 // ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
 // https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
+const arrayFind = Array.prototype.find
+const regexpExec = RegExp.prototype.exec
+const stringIndexOf = String.prototype.indexOf
+const stringSlice = String.prototype.slice
 const MapConstructor = Map
 const mapGet = MapConstructor.prototype.get
 const mapHas = MapConstructor.prototype.has
@@ -101,10 +105,10 @@ function offsetName(
   long: boolean,
   parts: Parts
 ): string {
-  const label = (timeZone: string, long: boolean, latin = false): string =>
+  const label = (timeZone: string, long: boolean, latin = false): string => {
     // ECMA-402 §11.5.4 step 15.e.iv: Sample the host zone label at the
     // requested width.
-    apply(
+    const values = apply(
       parts,
       new Constructor(resolved.locale, {
         timeZone,
@@ -113,17 +117,23 @@ function offsetName(
         hour: 'numeric',
       }),
       [0]
-    ).find(
+    )
+    const name = apply(arrayFind, values, [
       // ECMA-402 §11.5.7 step 4.b: select the host timezone-name part.
-      part => part.type === 'timeZoneName'
-    )!.value
+      (part: Intl.DateTimeFormatPart) => part.type === 'timeZoneName',
+    ]) as Intl.DateTimeFormatPart | undefined
+    return name!.value
+  }
   // ECMA-402 §11.5.4 step 15.e.iv: Build the localized offset label from host
   // controls.
+  // https://tc39.es/ecma402/#sec-formatdatetimepattern
   if (offset === 0n) return label('Etc/GMT', long)
   const pattern = label(offset < 0n ? 'Etc/GMT+1' : 'Etc/GMT-1', long, true)
-  const separator = /01(\D+)00/.exec(label('Etc/GMT-1', true, true))?.[1] ?? ':'
+  const separator =
+    apply(regexpExec, /01(\D+)00/, [label('Etc/GMT-1', true, true)])?.[1] ?? ':'
   const numberingSystem =
-    resolved.numberingSystem === 'latn' || /01/.test(label('Etc/GMT-1', true))
+    resolved.numberingSystem === 'latn' ||
+    apply(stringIndexOf, label('Etc/GMT-1', true), ['01']) >= 0
       ? 'latn'
       : resolved.numberingSystem
   const seconds = numberFrom((offset < 0n ? -offset : offset) / 1_000_000_000n)
@@ -153,5 +163,11 @@ function offsetName(
     number(hour) +
     (long || minute || second ? separator + two(minute) : '') +
     (second ? separator + two(second) : '')
-  return pattern.replace(/0?1(?:\D+00)?/, replacement)
+  const match = apply(regexpExec, /0?1(?:\D+00)?/, [pattern])
+  if (!match) return pattern
+  return (
+    apply(stringSlice, pattern, [0, match.index]) +
+    replacement +
+    apply(stringSlice, pattern, [match.index + match[0].length])
+  )
 }

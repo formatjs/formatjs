@@ -1,4 +1,5 @@
 import {legacyZonedProjection} from '#packages/temporal/legacy-zoned-date.js'
+import {legacyTimeZoneName} from '#packages/temporal/legacy-extended-date.js'
 import {expect, it, vi} from 'vitest'
 import {createHostTimeZone} from '#packages/temporal/host-timezone.js'
 import {
@@ -429,6 +430,56 @@ it('copies legacy zoned options without mutable Object.assign', () => {
   }
   expect(actual).toBe('01/01/1970')
 })
+
+it.each([
+  [-2_670_000_000_000n, 'GMT-00:44:30'],
+  [20_700_000_000_000n, 'GMT+05:45'],
+] as const)(
+  'formats a fallback offset label for %s with private operations',
+  (offset, expected) => {
+    const Constructor = Intl.DateTimeFormat
+    const resolved = new Constructor('en', {timeZone: 'UTC'}).resolvedOptions()
+    const parts = Constructor.prototype.formatToParts
+    const hooks = [
+      [Array.prototype, 'find'],
+      [RegExp.prototype, 'exec'],
+      [RegExp.prototype, 'test'],
+      [String.prototype, 'replace'],
+      [String.prototype, 'slice'],
+    ] as const
+    const define = Object.defineProperty
+    const descriptors = hooks.map(([owner, key]) =>
+      Object.getOwnPropertyDescriptor(owner, key)!
+    )
+    let label
+    try {
+      for (let index = 0; index < hooks.length; index++) {
+        const [owner, key] = hooks[index]
+        define(owner, key, {
+          ...descriptors[index],
+          value() {
+            throw new Error(`Unexpected offset label hook ${key}`)
+          },
+        })
+      }
+      const result = legacyZonedProjection(
+        Constructor,
+        resolved,
+        {hour: 'numeric', timeZoneName: 'longOffset'},
+        offset,
+        offset,
+        parts
+      )
+      label = result[legacyTimeZoneName]
+    } finally {
+      for (let index = 0; index < hooks.length; index++) {
+        const [owner, key] = hooks[index]
+        define(owner, key, descriptors[index])
+      }
+    }
+    expect(label).toBe(expected)
+  }
+)
 
 it('keeps host offset cache hits, misses and FIFO eviction private', () => {
   for (const method of ['get', 'set', 'delete', 'keys'] as const) {
