@@ -2,6 +2,13 @@
 // Main
 //
 
+const apply = Reflect.apply
+const bind = Function.prototype.bind
+const slice = Array.prototype.slice
+const stringify = JSON.stringify
+const create = Object.create
+const setPrototypeOf = Object.setPrototypeOf
+
 type Func = (...args: any[]) => any
 
 export interface Cache<K, V> {
@@ -78,7 +85,7 @@ function monadic<F extends Func>(
 
   let computedValue = cache.get(cacheKey)
   if (typeof computedValue === 'undefined') {
-    computedValue = fn.call(this, arg)
+    computedValue = apply(fn, this, [arg])
     cache.set(cacheKey, computedValue)
   }
 
@@ -91,12 +98,15 @@ function variadic<F extends Func>(
   cache: DefaultCache<string, ReturnType<F>>,
   serializer: Serializer
 ) {
-  const args = Array.prototype.slice.call(arguments, 3)
+  const args = apply(slice, arguments, [3])
+  // Temporal comparison §§15.10.1–2 step4: private cache Lists expose no hooks.
+  // https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+  if (serializer === serializerDefault) setPrototypeOf(args, null)
   const cacheKey = serializer(args)
 
   let computedValue = cache.get(cacheKey)
   if (typeof computedValue === 'undefined') {
-    computedValue = fn.apply(this, args)
+    computedValue = apply(fn, this, args)
     cache.set(cacheKey, computedValue)
   }
 
@@ -110,7 +120,7 @@ function assemble<F extends Func>(
   cache: DefaultCache<string, ReturnType<F>>,
   serialize: Serializer
 ): F {
-  return strategy.bind(context, fn, cache, serialize) as F
+  return apply(bind, strategy, [context, fn, cache, serialize]) as F
 }
 
 function strategyDefault<F extends Func>(
@@ -156,7 +166,8 @@ function strategyMonadic<F extends Func>(
 //
 
 const serializerDefault: Serializer = function (): string {
-  return JSON.stringify(arguments)
+  setPrototypeOf(arguments, null)
+  return stringify(arguments)
 }
 
 //
@@ -167,7 +178,7 @@ class ObjectWithoutPrototypeCache {
   private cache: Record<string, any>
 
   constructor() {
-    this.cache = Object.create(null) as Record<string, any>
+    this.cache = create(null) as Record<string, any>
   }
 
   get(key: string) {

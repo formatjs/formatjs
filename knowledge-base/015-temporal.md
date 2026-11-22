@@ -74,8 +74,10 @@ providers; existing instances keep theirs. Accessor replacements are not invoked
 Calendar field-name Lists create own elements with setDataProperty, preserving
 public field Gets, coercion and getter receivers. [Twelve targets](audits/temporal-duration-provider-validation-targets.txt)
 pass. [Batch evidence](audits/temporal-duration-provider-private-operations-audit.md)
-keeps shared memoizer execution/serialization as a separate source candidate;
-three Duration gates remain conditional.
+records that checkpoint. The [memoizer correction](audits/temporal-duration-memoizer-private-operations-audit.md)
+then fixes two public serialization failures while preserving custom serializers
+and public argument toJSON; ten targets pass. Three Duration gates remain
+conditional on owned private-slot access and constructor-cache operations.
 
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth

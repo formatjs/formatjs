@@ -757,3 +757,61 @@ it.each(['NumberFormat', 'ListFormat'] as const)(
     expect(localeText).toBe(expectedText)
   }
 )
+
+it.each(['stringify', 'toJSON'] as const)(
+  'formats cold branded Duration profiles without private %s hooks',
+  key => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const Original = Intl.NumberFormat
+    const providerDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    // Fresh real provider gives this public profile an independent constructor cache.
+    class Provider extends Original {}
+    let formatter: DurationFormat
+    try {
+      Intl.NumberFormat = Provider
+      formatter = new DurationFormat('en-u-nu-fullwide', {style: 'long'})
+    } finally {
+      Object.defineProperty(Intl, 'NumberFormat', providerDescriptor)
+    }
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1, 2)
+    const owner = key === 'stringify' ? JSON : Object.prototype
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)
+    const define = Object.defineProperty
+    let text: string | undefined,
+      parts: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(owner, key, {
+        configurable: true,
+        writable: true,
+        value() {
+          calls++
+          throw new Error('Private formatter cache serialization hook')
+        },
+      })
+      text = formatter!.format(duration)
+      parts = formatter!.formatToParts(duration)
+    } catch (caught) {
+      error = caught
+    } finally {
+      if (descriptor) define(owner, key, descriptor)
+      else Reflect.deleteProperty(owner, key)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe('１ minute, ２ seconds')
+    expect(parts).toEqual([
+      {type: 'integer', value: '１', unit: 'minute'},
+      {type: 'literal', value: ' ', unit: 'minute'},
+      {type: 'unit', value: 'minute', unit: 'minute'},
+      {type: 'literal', value: ', '},
+      {type: 'integer', value: '２', unit: 'second'},
+      {type: 'literal', value: ' ', unit: 'second'},
+      {type: 'unit', value: 'seconds', unit: 'second'},
+    ])
+  }
+)

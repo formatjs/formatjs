@@ -109,8 +109,8 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states:236 conditional,90 comparison-issue rows and one partial
-gate. Amendments:91 conditional and11 comparison-issue rows. Counts include
+Remaining core states:235 conditional and90 comparison-issue rows. No reviewed
+or partial rows remain. Amendments:91 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
 104 conditional steps (46 core,58 amendment), each with exact source ranges
@@ -135,11 +135,14 @@ Duration constructor/method capture and private calendar field-name append now
 pass [12 targets](temporal-duration-provider-validation-targets.txt). New formatters
 adopt late supplied data-valued providers; existing instances retain theirs.
 [Evidence](temporal-duration-provider-private-operations-audit.md) keeps three
-Duration gates conditional: actual fast-memoize execution/serialization hooks
-remain a source candidate awaiting public reproduction.
+Duration gates conditional at that checkpoint. The memoizer candidate now has
+two public pre-fix failures and a validated correction; [ten targets](temporal-duration-memoizer-validation-targets.txt)
+pass. Remaining exact premise: owned private-slot access and constructor cache
+operations. GetDifferenceSettings now has a complete local settings-operation
+reconciliation, separate from its difference-method callers.
 
 Next work: remaining owned Intl producer/state/facade corrections, the bounded
-Duration memoizer candidate, then reconcile
+Duration slot candidate, then reconcile
 caller conditions against established calendar/zone/parser contracts. Estimate
 2–4hours for those local corrections, propagation, annotation and validation,
 subject to actual regression results. Full compliance ETA remains unresolved:

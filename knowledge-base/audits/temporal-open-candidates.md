@@ -5,12 +5,11 @@ implementation defects or missing code. Existing implementation/tests remain the
 baseline. Numbers refer to the pinned Temporal comparison, with the requested
 ECMA-262 authority distinction retained in the execution plan.
 
-- **Duration memoizer execution**, §§15.10.1–2: constructor/method capture and
-  late-provider lifecycle controls pass. Actual fast-memoize still resolves
-  mutable slice/call/apply/bind, JSON.stringify and Object.create; private cache
-  keys may consult inherited toJSON. Source candidate, not a public red. Three
-  Duration gates remain conditional. Next: smallest owned public cold/warm
-  witness, then reuse existing runtime/cache support for any demonstrated gap.
+- **Owned Duration slot access**, §§15.10.1–2: memoizer JSON.stringify and
+  inherited toJSON failures are corrected. Actual getInternalSlots still reads
+  live WeakMap.get/set and Object.create; constructor numbering-system cache has
+  the same live operations. Public slot witness prepared; execution pending.
+  Three parent gates remain conditional. Reuse captured runtime operations.
 - **Intl producer/state/facade operations**, §§15.6.4–10: exact owned private
   options, lexical hooks, selected-kind records and range projection remain in
   the numbered-step queue. Reuse supplied formatter engines.
@@ -57,3 +56,8 @@ formatters retain supplied providers; late data-valued replacements work for new
 instances. Calendar field-name append uses own data properties, preserving public
 PlainDate.with getter receiver and conversion order. [Twelve targets](temporal-duration-provider-validation-targets.txt)
 pass. [Evidence and memoizer caveat](temporal-duration-provider-private-operations-audit.md).
+
+Closed memoizer batch: two public cold Duration serialization regressions failed
+before correction. Captured runtime operations and private wrapper isolation
+preserve custom serializers and public argument toJSON. [Ten targets](temporal-duration-memoizer-validation-targets.txt)
+pass. [Exact evidence and remaining slot premise](temporal-duration-memoizer-private-operations-audit.md).

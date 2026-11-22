@@ -1,4 +1,5 @@
 load("//tools:compile.bzl", "formatjs_library")
+load("//tools:test.bzl", "formatjs_test")
 
 formatjs_library(
     name = "fast-memoize",
@@ -26,4 +27,13 @@ formatjs_library(
     exports = {
         ".": "./index.js",
     },
+)
+
+formatjs_test(
+    name = "fast-memoize_test",
+    srcs = ["tests/index.test.ts"],
+    deps = [
+        ":fast-memoize",
+        "//:node_modules/vitest",
+    ],
 )

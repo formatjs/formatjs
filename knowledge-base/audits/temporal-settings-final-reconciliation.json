@@ -1,0 +1,494 @@
+{
+  "input_rows": 19,
+  "verified_local_step": 18,
+  "informative": 1,
+  "actual_unresolved_in_these19": [],
+  "stale_adjacent_row_not_modified": "13.43/prose-1 cites only already verified16/17/17.a; parent may reconcile separately",
+  "unchanged_other_obligations": [
+    "operand/brand/foreign-realm conversion",
+    "calendar/zone mismatch checks",
+    "relative window/prefix assertions",
+    "published ISODateSurpasses issue",
+    "public result construction"
+  ],
+  "invalid_ranges": [],
+  "source_sha256": {
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/rounding.ts": "9598f5af290dda1bca7746fdaa10b0ee7df9f00455284457e40f5a89464e3d8a",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f"
+  },
+  "proof_sha256": {
+    "knowledge-base/audits/temporal-get-difference-settings-audit.md": "4961a7444b92044c91759abe49fe5ec69720edf8f7916498dfb340b1ae9adab5",
+    "knowledge-base/audits/temporal-difference-option-order-audit.md": "13990165e12b4d7931c4c5daa55ec726caf976d634c74e8e09c590ac361d524b"
+  },
+  "updates": [
+    {
+      "id": "13.43/clause",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "complete_supplied_settings_operation_only",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43 exact settings-operation gate closes, not6 complete difference APIs. Six fixed caller parameter sets, vocabulary/ordered Gets/coercions, categories/disallowed units, defaults/order, maximum/cap selection and private record transport all reconciled.17 normative reviewed children close here;1NOTE informative;16 and17/17.a already verified by latest root increment-timing and mode-equivalence proofs. Adjacent prose1 conditional names only those now-supplied premises and is stale; not an unresolved runtime contract. Typed/internal settings record requires no public constructor/foreign realm allocation; ordinary engine coercion/intrinsic-error contract supplied. Calendar/zone operand conversion, mismatch checks, result constructors, ISO published issue and relative rounding windows belong different operations and receive no automatic closure."
+    },
+    {
+      "id": "13.43/algorithm-1/step-1",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "informative",
+      "verification_scope": "non_normative_note",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step1 explicitly NOTE. Describes alphabetical independent-validation order; no separate normative source action. Actual ordered Gets/coercions proved by numbered2\u20135 and existing4-read trace controls. Preserve row identity/kind; classify evidentiary scope informative."
+    },
+    {
+      "id": "13.43/algorithm-1/step-2",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step2: All6 callers Get largestUnit once, ToString immediately, normalize exact singular/plural vocabulary before later reads. Explicit auto/undefined take private automatic path; primitive reprocessing has no second object coercion. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-3",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step3: Following largest vocabulary check, Get roundingIncrement once; shared helper defaults1, unary+ number-hint conversion, truncation and finite1..1e9 check. BigInt/Symbol TypeError, other abrupt completion and invalid range propagate before mode/smallest Gets. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-4",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step4: Get roundingMode once after increment conversion; shared helper defaults trunc, ToString then validates9 modes before smallestUnit Get. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-5",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step5: Get smallestUnit once last, ToString and normalize exact unit spelling. Explicit auto rejects here instead of subsequent pure category validation; no later public option Get is skipped. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-6",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step6: After4 public option Gets/conversions, category restricts largest: Instant/PlainTime time; PlainDate date; PDT/Zoned datetime; YM year/month only. Pure category check reorder has no intervening user callbacks. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-7",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step7: Undefined largest follows same automatic branch as explicit auto in each6 frontend; no public Get/coercion deferred. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-7.a",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step7.a: Private unset largest represented by same automatic branch as auto. Equivalent canonical result/default selection, no observable allocation required. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-8",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step8: YM disallows recognized week/day/time largest after4 option reads; other callers category restrictions supply exact allowed sets. Unknown vocabulary rejects earlier at step2, as required. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-9",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step9: Smallest validated after4 reads against same caller unit group; undefined allowed until fallback. YM separately admits only year/month. Inputs already canonical primitive strings, so pure check order does not call user code. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-10",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step10: Undefined smallest selects caller fallback after reading all options. Explicit valid smallest retained. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-10.a",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step10.a: Fallback smallest is nanosecond for Instant/Time/PDT/Zoned, day for PlainDate, month for YM. Exact fixed literals transported to engines. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-11",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step11: YM disallows week/day/time smallest; remaining caller groups enforce their exact supported categories. Error is intrinsic RangeError on recognized disallowed values. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-12",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step12: Automatic largest is larger(smallest, caller base): Instant second; Time/Zoned hour; PlainDate/PDT day; YM year. Canonical ordered private indices compute min(baseIndex,smallIndex); category checked before any potentially invalid negative index lookup. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-13",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step13: Auto/unset largest replaced by computed default. YM year and Time hour fixed defaults already dominate every admitted smallest. PDT literal10-unit array avoids public iteration; PlainDate guards invalid smallest index. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-14",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step14: Each caller compares canonical ordering and throws if largest smaller than smallest; YM month-largest/year-smallest explicit guard equivalent. Pure primitive checks do not alter public effect order. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-15",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step15: Time maxima24/60/60/1000/1000/1000 selected by canonical smallest index; date units year/month/week/day have no fixed additional cap. Increment generic1..1e9 already supplied; actual cap/divisibility belongs independently verified step16. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    },
+    {
+      "id": "13.43/algorithm-1/step-18",
+      "implementation_locations": [
+        "packages/temporal/rounding.ts:86-95",
+        "packages/temporal/rounding.ts:98-108",
+        "packages/temporal/rounding.ts:109-113",
+        "packages/temporal/rounding.ts:116-122",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-time.ts:286-293",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/zoned-date-time.ts:574-648"
+      ],
+      "existing_evidence": [
+        "knowledge-base/audits/temporal-get-difference-settings-audit.md",
+        "knowledge-base/audits/temporal-difference-option-order-audit.md"
+      ],
+      "validation": "Fresh AST/source read of6 caller preparations and shared unit/increment/mode helpers; existing spelling/private-index/private-iterator/era-record public red/green manifests reused. No new tests/builds.",
+      "status": "verified_local_step",
+      "verification_scope": "local_numbered_settings_requirement",
+      "evidence": "Pinned rendered Temporal comparison \u00a713.43step18: Fused record transport preserves canonical smallest/largest, validated mode and bounded integer increment. Equivalent since mode/sign representation supplied by now-verified17/17.a; cap timing supplied by now-verified16. This returns/settings transport only, not downstream relative windows or difference arithmetic. Reuse complete six-caller mapping and public controls in temporal-get-difference-settings-audit.md / temporal-difference-option-order-audit.md; runtime JS coercions delegated, no language reimplementation or whole caller signoff."
+    }
+  ],
+  "additional_prose_reconciliation": {
+    "id": "13.43/prose-1",
+    "review_status": "verified_local_step",
+    "verification_scope": "supplied_settings_signature_and_record_contract",
+    "review_evidence": "Exact six-caller settings signature and private record fields reuse complete settings-operation reconciliation. Previously named step16 increment timing and step17/17.a mode/transport conditions are locally verified. No additional prose requirement remains; operand/caller/calendar/realm/result/relative-window obligations separately owned.",
+    "review_validation": "Source/AST plus existing settings/option-order proofs; no fresh tests required for this metadata reconciliation. temporal-settings-final-reconciliation.json"
+  },
+  "scope": "Exact GetDifferenceSettings operation only; no complete difference-method or transitive provider signoff."
+}

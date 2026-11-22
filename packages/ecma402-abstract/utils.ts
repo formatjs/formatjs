@@ -188,6 +188,7 @@ export const createMemoizedListFormat: (
 )
 
 const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+const formatterMemoizeStrategy = strategies.variadic
 let providerIntl = globalThis.Intl
 function ownIntlProvider(name: 'NumberFormat' | 'ListFormat'): unknown {
   const descriptor =
@@ -240,7 +241,7 @@ export function createMemoizedNumberFormatForConstructor(
     factory = memoize(
       (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
         new Constructor(args[0], args[1]) as NumberFormatLike,
-      {strategy: strategies.variadic}
+      {strategy: formatterMemoizeStrategy}
     )
     setNumberFormatMemoizer(Constructor, factory)
   }
@@ -255,7 +256,7 @@ export function createMemoizedListFormatForConstructor(
     factory = memoize(
       (...args: ConstructorParameters<typeof Intl.ListFormat>) =>
         new Constructor(args[0], args[1]),
-      {strategy: strategies.variadic}
+      {strategy: formatterMemoizeStrategy}
     )
     setListFormatMemoizer(Constructor, factory)
   }

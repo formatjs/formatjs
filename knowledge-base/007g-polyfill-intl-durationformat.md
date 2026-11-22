@@ -50,9 +50,11 @@ Constructor-keyed memoizers reuse existing memoize/cache behavior. Numbering-sys
 support follows the same selected provider. [Twelve validation targets](audits/temporal-duration-provider-validation-targets.txt)
 cover cold profiles, late provider installation and parts-method replacement.
 [Audit evidence](audits/temporal-duration-provider-private-operations-audit.md)
-keeps three Duration gates conditional: shared fast-memoize has mutable execution
-and serialization hooks, still a source candidate awaiting public reproduction.
-This does not claim complete private formatter execution closure.
+records the provider checkpoint. The subsequent [memoizer correction](audits/temporal-duration-memoizer-private-operations-audit.md)
+captures runtime operations and isolates private argument wrappers, preserving
+custom serializers and public argument toJSON. Ten targets pass. Three Duration
+gates remain conditional on owned private-slot access and constructor-cache
+operations; complete private formatter execution is not yet established.
 
 ## CLDR Data Pipeline
 

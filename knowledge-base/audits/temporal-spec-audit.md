@@ -26,7 +26,7 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-236 core and91 amendment rows remain conditional; the separate queue contains
+235 core and91 amendment rows remain conditional; the separate queue contains
 104 conditional numbered steps in14 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
@@ -42,6 +42,21 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
 
+## Memoizer execution and settings reconciliation, 2026-11-22
+
+Two public cold Duration formatting controls reproduce live JSON.stringify and
+inherited toJSON failures. Shared fast-memoize captures runtime operations and
+isolates only private argument wrappers. Custom serializer Arrays and public
+own/inherited toJSON retain their behavior. [Ten targets](temporal-duration-memoizer-validation-targets.txt)
+pass, including helper compatibility and Hermes source/bytecode.
+[Remaining owned slot premise](temporal-duration-memoizer-private-operations-audit.md)
+keeps three Duration parent gates conditional.
+
+[Exact settings reconciliation](temporal-settings-final-reconciliation.json)
+closes17 normative steps, the GetDifferenceSettings gate and stale adjacent prose;
+one numbered NOTE is informative. No reviewed/partial rows remain. Whole
+public difference methods and their separate dependencies receive no promotion.
+
 ## Duration providers and private field names, 2026-11-22
 
 DurationFormat instances retain selected NumberFormat/ListFormat constructors and
@@ -56,9 +71,9 @@ public Gregorian PlainDate.with control preserves field Gets, getter receivers,
 coercion and overflow order under an inherited numeric setter.
 [Twelve targets](temporal-duration-provider-validation-targets.txt) pass.
 [Batch evidence](temporal-duration-provider-private-operations-audit.md) retains
-three conditional Duration gates: shared fast-memoize still has mutable execution
-and serialization hooks. That is a source candidate, not a public red or full
-formatter-closure claim.
+three conditional Duration gates at that checkpoint. The subsequent memoizer
+correction closes its execution/serialization premise; owned slot access remains
+separate. No full formatter-closure claim.
 
 ## Reader, precision and calendar correction, 2026-11-22
 
@@ -83,7 +98,7 @@ revoked-newTarget/primitive-prototype witnesses fail required TypeError. Object
 prototype controls succeed. All16 affected rows remain conditional, with explicit
 inline comments and a [preserved reproduction](temporal-constructor-realm-proof.md).
 Duration provider lookup and parts-method capture are corrected above. Three
-Duration gates retain a separate shared-memoizer source candidate.
+Duration gates retain the separate owned-slot premise described above.
 
 ## Calendar caller propagation, 2026-11-22
 
