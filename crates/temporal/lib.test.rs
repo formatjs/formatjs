@@ -3410,3 +3410,200 @@ fn fixed_zone_identifiers_keep_minute_precision() {
         assert!(registry.resolve(input).is_err(), "{input:?}");
     }
 }
+
+#[test]
+fn clock_differences_round_exact_nanoseconds_before_number_fields() {
+    use formatjs_temporal::{
+        DateTimeUnit, FixedOffset, PlainDateTime, RoundingMode, ZonedDateTime, ZonedUnit,
+    };
+    // Expected values come from the adjacent multiples of ten, before Number conversion.
+    let cases: [(i128, RoundingMode, i128, i128); 10] = [
+        (
+            9_007_199_254_741_005,
+            RoundingMode::HalfExpand,
+            9_007_199_254_741_010,
+            -9_007_199_254_741_010,
+        ),
+        (
+            -9_007_199_254_741_005,
+            RoundingMode::HalfExpand,
+            -9_007_199_254_741_010,
+            9_007_199_254_741_010,
+        ),
+        (
+            9_007_199_254_741_005,
+            RoundingMode::HalfEven,
+            9_007_199_254_741_000,
+            -9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_741_015,
+            RoundingMode::HalfEven,
+            9_007_199_254_741_020,
+            -9_007_199_254_741_020,
+        ),
+        (
+            9_007_199_254_741_001,
+            RoundingMode::Ceil,
+            9_007_199_254_741_010,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_741_001,
+            RoundingMode::Floor,
+            -9_007_199_254_741_010,
+            9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_740_999,
+            RoundingMode::Floor,
+            9_007_199_254_740_990,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_740_999,
+            RoundingMode::Ceil,
+            -9_007_199_254_740_990,
+            9_007_199_254_741_000,
+        ),
+        (
+            9_007_199_254_741_005,
+            RoundingMode::Trunc,
+            9_007_199_254_741_000,
+            -9_007_199_254_741_000,
+        ),
+        (
+            -9_007_199_254_741_005,
+            RoundingMode::Trunc,
+            -9_007_199_254_741_000,
+            9_007_199_254_741_000,
+        ),
+    ];
+    let zone = FixedOffset::new(0).unwrap();
+    let zoned_start = ZonedDateTime::new(Instant::from_epoch_nanoseconds(0).unwrap(), zone);
+    let plain_start = PlainDateTime::from_epoch_nanoseconds(0).unwrap();
+    for (delta, mode, until, since) in cases {
+        let zoned_end = ZonedDateTime::new(Instant::from_epoch_nanoseconds(delta).unwrap(), zone);
+        let plain_end = PlainDateTime::from_epoch_nanoseconds(delta).unwrap();
+        let mut expected_until = [0; 10];
+        expected_until[9] = until;
+        let mut expected_since = [0; 10];
+        expected_since[9] = since;
+        assert_eq!(
+            zoned_start
+                .until(
+                    &zoned_end,
+                    ZonedUnit::Nanosecond,
+                    ZonedUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_until,
+            "zoned until: {delta} {mode:?}"
+        );
+        assert_eq!(
+            zoned_start
+                .since(
+                    &zoned_end,
+                    ZonedUnit::Nanosecond,
+                    ZonedUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_since,
+            "zoned since: {delta} {mode:?}"
+        );
+        assert_eq!(
+            plain_start
+                .until(
+                    plain_end,
+                    DateTimeUnit::Nanosecond,
+                    DateTimeUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_until,
+            "plain until: {delta} {mode:?}"
+        );
+        assert_eq!(
+            plain_start
+                .since(
+                    plain_end,
+                    DateTimeUnit::Nanosecond,
+                    DateTimeUnit::Nanosecond,
+                    10,
+                    mode
+                )
+                .unwrap()
+                .fields(),
+            expected_since,
+            "plain since: {delta} {mode:?}"
+        );
+    }
+}
+
+#[test]
+fn clock_differences_round_exact_leading_microseconds_and_milliseconds() {
+    use formatjs_temporal::{
+        DateTimeUnit, FixedOffset, PlainDateTime, RoundingMode, ZonedDateTime, ZonedUnit,
+    };
+    let zone = FixedOffset::new(0).unwrap();
+    for (plain_unit, zoned_unit, factor, field) in [
+        (
+            DateTimeUnit::Microsecond,
+            ZonedUnit::Microsecond,
+            1000i128,
+            8usize,
+        ),
+        (
+            DateTimeUnit::Millisecond,
+            ZonedUnit::Millisecond,
+            1_000_000i128,
+            7usize,
+        ),
+    ] {
+        let half_span = 9_007_199_254_741_005i128 * factor / 2;
+        let zoned_start =
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(-half_span).unwrap(), zone);
+        let zoned_end =
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(half_span).unwrap(), zone);
+        let plain_start = PlainDateTime::from_epoch_nanoseconds(-half_span).unwrap();
+        let plain_end = PlainDateTime::from_epoch_nanoseconds(half_span).unwrap();
+        let mut expected = [0; 10];
+        expected[field] = 9_007_199_254_741_010;
+        assert_eq!(
+            zoned_start
+                .until(
+                    &zoned_end,
+                    zoned_unit,
+                    zoned_unit,
+                    10,
+                    RoundingMode::HalfExpand
+                )
+                .unwrap()
+                .fields(),
+            expected,
+            "zoned {zoned_unit:?}"
+        );
+        assert_eq!(
+            plain_start
+                .until(
+                    plain_end,
+                    plain_unit,
+                    plain_unit,
+                    10,
+                    RoundingMode::HalfExpand
+                )
+                .unwrap()
+                .fields(),
+            expected,
+            "plain {plain_unit:?}"
+        );
+    }
+}

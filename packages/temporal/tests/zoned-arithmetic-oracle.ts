@@ -45,6 +45,38 @@ export function checkZonedArithmeticOracle(
     )
     days++
   }
+  // Hardcoded precision controls supplement the unchanged ICU fixtures.
+  for (const [unit, field, factor] of [
+    ['nanosecond', 'nanoseconds', 1n],
+    ['microsecond', 'microseconds', 1000n],
+    ['millisecond', 'milliseconds', 1_000_000n],
+  ] as const) {
+    const span = 9_007_199_254_741_005n * factor
+    const origin = -span / 2n
+    const start = new Temporal.ZonedDateTime(origin, 'UTC')
+    const end = new Temporal.ZonedDateTime(origin + span, 'UTC')
+    for (const [first, last, kind] of [
+      [start, end, 'ZonedDateTime'],
+      [start.toPlainDateTime(), end.toPlainDateTime(), 'PlainDateTime'],
+    ] as const) {
+      const options = {
+        largestUnit: unit,
+        smallestUnit: unit,
+        roundingIncrement: 10,
+        roundingMode: 'halfExpand',
+      }
+      equal(
+        first.until(last, options)[field],
+        9_007_199_254_741_010,
+        `${kind} exact ${unit} until`
+      )
+      equal(
+        first.since(last, options)[field],
+        -9_007_199_254_741_010,
+        `${kind} exact ${unit} since`
+      )
+    }
+  }
   equal(differences, 19440, 'Complete ICU zoned difference fixture')
   equal(days, 5292, 'Complete ICU zoned day fixture')
   return {differences, days}

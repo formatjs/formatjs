@@ -879,6 +879,15 @@ export function roundRelativeDifference(
       throw new RangeErrorConstructor('Invalid rounding increment')
   }
   if (start === end) return zeroDuration()
+  if (largeIndex >= 4) {
+    // Round the exact epoch difference before converting Duration fields to Numbers.
+    const quantum =
+      bigIntFrom(increment) * timeUnitNanoseconds[smallest as TimeUnit]
+    return balanceDurationTime(
+      roundDuration((end - start) * sinceSign, quantum, mode),
+      largeIndex
+    )
+  }
   const sign = end < start ? -1 : 1,
     physicalSign = bigIntFrom(sign)
   let result = anchor.unrounded(end),

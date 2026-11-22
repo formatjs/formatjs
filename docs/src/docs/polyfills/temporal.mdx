@@ -62,6 +62,8 @@ changing legacy RegExp match state. Fractions preserve all nine digits, includin
 fractional hours and minutes.
 Duration totals and fixed-precision strings also avoid replaced BigInt string
 conversion and array search methods during private calculations.
+PlainDateTime and ZonedDateTime differences with hour or smaller largest units
+round the exact integer span before converting final Duration fields to Numbers.
 
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`

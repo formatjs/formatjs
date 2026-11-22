@@ -86,7 +86,16 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Duration private totals/field selection: [bounded audit](temporal-duration-private-operations-audit.md)
+- Exact clock-unit differences: [precision audit](temporal-difference-precision-audit.md)
+  rounds original integer epoch spans before Number-valued Duration construction
+  in TS/Rust PlainDateTime and ZonedDateTime until/since. Both backends reproduced
+  the wrong 10 ns tie above 2**53 before correction. All 49 expanded tests pass
+  (46 executed, three cached), including 40 class/backend gates; Temporal and
+  DurationFormat assemblies pass. All five final leading-unit/native Hermes
+  validation gates pass (three executed, two cached). Calendar/day paths and complete callers remain open;
+  no historical line or authoritative Temporal section credit added.
+
+- [Duration private totals/field selection #8115](https://github.com/formatjs/formatjs/pull/8115): [bounded audit](temporal-duration-private-operations-audit.md)
   captures BigInt bit-length conversion and replaces private findIndex with an
   indexed scan. Two public regressions failed before correction. All twelve
   relevant gates pass (eight executed, four cached), including five Duration

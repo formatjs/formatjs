@@ -179,6 +179,13 @@ pub(crate) fn difference<A: RelativeAnchor>(
     if origin == end {
         return Duration::new([0; 10]);
     }
+    if let Some(time) = largest.time() {
+        // Duration fields follow Number precision; round the original span first.
+        let quantum = i128::from(increment) * smallest.time().unwrap().nanoseconds();
+        let delta = if since { origin - end } else { end - origin };
+        let rounded = round_duration_nanoseconds(delta, quantum, mode)?;
+        return Duration::from_time_nanoseconds(rounded, time);
+    }
     let sign = (end - origin).signum();
     let since_sign = if since { -1 } else { 1 };
     let mut fields = unrounded(start, end, largest)?;
