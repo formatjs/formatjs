@@ -6,7 +6,10 @@ import {
   mathMin,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {steps} from '@formatjs_generated/tz/temporal-names.js'
+import {
+  lastExplicitTransition,
+  steps,
+} from '@formatjs_generated/tz/temporal-names.js'
 import {timeZoneMetadata} from '#packages/temporal/native.js'
 import {
   isoToEpochNanoseconds,
@@ -339,16 +342,22 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     const earliest = -5364662400n // IANA transitions begin after 1800.
     const horizon = 3n * 366n * 86400n
     const now = floorSecond(bigIntFrom(nowMilliseconds()) * 1000000n)
+    const lastExplicit = bigIntFrom(lastExplicitTransition)
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: keep future calendar
+    // exceptions in the search before skipping into the recurring tail.
+    const knownEnd = now > lastExplicit ? now : lastExplicit
+    const historyEnd = knownEnd + horizon
     const original = floorSecond(next ? instant : instant - 1n)
     let cursor = next ? (original < earliest ? earliest : original) : original
-    const end = next ? (original > now ? original : now) + horizon : earliest
+    const end = next
+      ? (original > knownEnd ? original : knownEnd) + horizon
+      : earliest
     const boundary = next
       ? end > limit / second
         ? limit / second
         : end
       : earliest
     let value: bigint | null = null
-    let initial = cursor
     while (next ? cursor < boundary : cursor > boundary) {
       const observed = apply(arrayFind, unchanged, [
         (row: (typeof unchanged)[number]) =>
@@ -394,10 +403,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       cursor = probe
       // Future host rules repeat annually or settle at a fixed offset. Search
       // nearby years first, then resume the finite historical record.
-      if (!next && initial > now + horizon && initial - cursor >= horizon) {
-        cursor = now + horizon
-        initial = cursor
-      }
+      if (!next && cursor > historyEnd && original - cursor >= horizon)
+        cursor = historyEnd
     }
     if (transitions.length >= 64) apply(arrayShift, transitions, [])
     apply(arrayPush, transitions, [

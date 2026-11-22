@@ -32,6 +32,17 @@ const dateBefore = Object.getOwnPropertyDescriptor(
 )
 const owned = await load('index.js')
 const otherEntry = await load('standalone.js')
+
+// Pinned Intl retains finite Ramadan changes after the near-future window.
+const ramadanEnd = 3_703_456_800_000_000_000n // 2087-05-11T02:00Z
+for (const zone of ['Africa/Casablanca', 'Africa/El_Aaiun']) {
+  const start = owned.Temporal.ZonedDateTime.from(`2100-01-01T00:00[${zone}]`)
+  assert.equal(
+    start.getTimeZoneTransition('previous')?.epochNanoseconds,
+    ramadanEnd
+  )
+}
+
 const epoch = 1_234_567_890_123_456_789n
 for (const [source, target] of [
   [owned.Temporal, otherEntry.Temporal],

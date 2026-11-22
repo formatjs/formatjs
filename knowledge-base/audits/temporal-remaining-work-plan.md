@@ -306,7 +306,9 @@ Source review of the fixed helper inventory is complete. Behavioral review
 still has 60 conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
 and previous transition lookup uses exact decoded boundaries. Other Intl
-profiles retain candidate, gap and transition coverage premises. The published
+profiles retain candidate, gap and transition coverage premises. The native
+Intl search now preserves known finite future history before skipping recurring
+years, verified by the pinned Casablanca and El_Aaiun regressions. The published
 ECMA-402 range-collapse regression is fixed and validated.
 The numeric-year and era path reuses a validated host layout, including
 matching numeric months and numeric days with verified endpoint parts.

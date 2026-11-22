@@ -190,7 +190,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L515).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L315).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L318).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -204,6 +204,35 @@ across such replacements is separate from immutable-provider correctness.
 
 - Short transition before-fix log SHA-256 `105496d7dd204f19499193797e1a4bad8fda66075cde062caf779b7d4563a10c`
 - Owned transition after-fix log SHA-256 `260f79fceb44720c8f60f3aad23337831257420b884e4d5867b87ff05a8e5186`
+
+## Finite future history in native Intl
+
+Pinned Node 24.14.0 (ICU 78.2, tzdata 2025c) exposed a previous-transition
+lookup from 2100 in Casablanca and El_Aaiun that returned a 2029 transition.
+The exact loaded ICU previous-transition query returns 2087-05-11T02:00Z
+for both zones. The old shortcut jumped to a date near the current year,
+skipping the remaining Ramadan changes.
+
+The host adapter now includes the last explicit transition from the shipped
+TZif data in the scan before it uses the recurring-tail shortcut. The bound
+comes from the same pack as the sampling intervals. Both directions add the
+existing three-year margin. Offsets come from the installed Intl provider.
+[Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
+[Host search](../../../packages/temporal/host-timezone.ts#L346).
+[Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
+
+The package regression asserts the exact BigInt epoch through the ordinary
+Temporal entry point. Eight focused Bazel targets passed. Provider data
+outside the shipped bound or recurrence premise remain conditional.
+
+The packed maximum is 2086-10-25T23:00Z. All three bound ICU profiles have
+638 IDs, with finite rules through 2087-10-24T23:00Z and recurring joins
+through 2088-01-01. The padded bound covers the later ICU history and at
+least one full recurring year. The [ICU scanner](node-icu/temporal-node-icu-transition-separation.mjs)
+reports these inputs as `lastFinite` and `tailStarts`.
+
+- Finite future history before-fix log SHA-256 `ace686c3c2001058594d9ed9c068fbc116de86dc76a6a7f671e41f95ff760119`
+- Finite future history after-fix log SHA-256 `b2ccf02c9ced5c729d7536fb6b27219a07dfb93af3165fead6e600f129da0557`
 
 ## Reproduce analysis
 
