@@ -283,7 +283,7 @@ This arithmetic does not depend on FormatJS rounding output.
 
 [Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
 already cover this receiver. The
-[TS day branch](../../packages/temporal/zoned-date-time.ts#L1019) and
+[TS day branch](../../packages/temporal/zoned-date-time.ts#L1030) and
 [Rust day branch](../../crates/temporal/zoned.rs#L255) clamp the receiver to
 `endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;
@@ -353,3 +353,5 @@ CalendarDateUntil §12.3.9 steps 3.g/3.j consequently never terminate for ordina
 unequal ISO dates with day/week largest units. Existing bounded residual arithmetic
 stays intact; no runtime change should reproduce an infinite loop. Requested
 ECMA-262 authority and complete CalendarDateUntil audit remain open.
+[Temporal issue #3340](https://github.com/tc39/proposal-temporal/issues/3340)
+tracks the zero-month shortcut and the ISO day loop.

@@ -10,7 +10,7 @@ The rebased week adds exactly to +10h after compatible gap resolution.
 The old five-day physical gate skipped the week because the target was
 107 hours from the shortened base. The new window finds the exact
 `P1W` result. The negative control also finds `-P1W`.
-[Packaged regression](../../packages/temporal/tests/host-candidate-range.test.mjs#L621).
+[Packaged regression](../../packages/temporal/tests/host-candidate-range.test.mjs#L630).
 [Rust regression](../../crates/temporal/lib.test.rs#L4187).
 
 Compatible gap displacement has magnitude below two days on exact

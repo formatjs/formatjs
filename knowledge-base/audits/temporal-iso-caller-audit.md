@@ -41,12 +41,12 @@ Published proposal [§6.5.2 ToTemporalZonedDateTime](https://tc39.es/proposal-te
 is comparison only. Shared offset grammar remains ECMA-262
 [§21.4.1.33](https://tc39.es/ecma262/#sec-time-zone-offset-strings).
 
-[Date-only classification:397](../../packages/temporal/zoned-date-time.ts#L400)
+[Date-only classification:397](../../packages/temporal/zoned-date-time.ts#L411)
 scans until the first annotation bracket. T/t/space in the body means clock input;
 annotation contents cannot affect classification. Parsing has already succeeded,
 so required zone annotation and bounded string indices are established.
 
-[Minute classification:412](../../packages/temporal/zoned-date-time.ts#L415)
+[Minute classification:412](../../packages/temporal/zoned-date-time.ts#L426)
 uses the validated offset domain: +HH, +HHMM and +HH:MM have lengths 3, 5 and 6.
 Second-bearing forms have length 7 or 9 before any fraction; fractions require
 seconds. Absent/Z offsets cannot match. This is not a general offset recognizer.

@@ -30,7 +30,7 @@ The zoned regression exposed a second call before final negation:
 unroundedZonedDifference calls addZonedDuration, which delegates to the public
 addition implementation with a private Duration record. That implementation
 also enumerated fields through mutable `Object.keys`.
-[Zoned addition:488](../../packages/temporal/zoned-date-time.ts#L491) now indexes
+[Zoned addition:488](../../packages/temporal/zoned-date-time.ts#L502) now indexes
 the existing durationFieldNames list. Public add/subtract share this correction.
 Actual duration input conversion still precedes field processing; public getters
 retain their existing order and errors. No new generic record-copy helper added.

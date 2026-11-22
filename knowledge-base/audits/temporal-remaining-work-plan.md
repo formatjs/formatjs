@@ -28,9 +28,9 @@ satisfy this requirement.
 
 Exclude realm-specific behavior from fixes, verification and estimates. The
 fixed ledger retains 16 historical constructor-realm steps under `out_of_scope`.
-15 of 31 conditional numbered steps remain in scope. Eight track published
-comparison conflicts, one tracks the confirmed reverse-fold implementation
-divergence, two track relative-window premises, and four track timezone-provider
+16 of 32 conditional numbered steps remain in scope. Eight track published
+comparison conflicts, two track confirmed fold-anchor implementation
+divergences, two track relative-window premises, and four track timezone-provider
 applicability. The ordinary `index.js` and
 `standalone.js` cases pass with shared private epoch and calendar slots.
 
@@ -38,9 +38,9 @@ applicability. The ordinary `index.js` and
 
 Requested authority: [ECMA-262](https://tc39.es/ecma262/), cited by section and
 step. Rechecked 2026-11-22: published document has no Temporal API chapters.
-Temporal API numbers in the registers therefore explicitly identify the
-separately published [Temporal comparison](https://tc39.es/proposal-temporal/),
-not an adopted replacement authority. Keep this distinction until resolved.
+Temporal API numbers in the registers identify the separately published
+[Stage 4 Temporal draft](https://tc39.es/proposal-temporal/) dated July 27, 2026. The draft supplies the comparison while the requested ECMA-262
+Temporal chapters remain unpublished.
 The rendered ECMAScript named-zone contracts still apply to the provider
 audit. §21.4.1.20 requires every matching epoch in ascending order.
 §21.4.1.21 requires the offset in nanoseconds at the requested epoch. Both
@@ -132,11 +132,11 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states include 215 conditional and 97 comparison-issue rows. No reviewed
+Remaining core states include 216 conditional and 96 comparison-issue rows. No reviewed
 or partial rows remain. Amendments have 35 conditional and 11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-31 conditional steps (26 core, 5 amendment), each with exact source ranges
+32 conditional steps (27 core, 5 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -333,7 +333,7 @@ Nine focused Bazel targets pass.
 [Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
 
 Source review of the fixed helper inventory is complete. Behavioral review
-still has 15 in-scope conditional Temporal steps. Both exact owned candidate lookup
+still has 16 in-scope conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
 and previous transition lookup uses exact decoded boundaries. Owned gap resolution
 checks actual boundary candidates near both Instant limits.
@@ -568,9 +568,13 @@ layout; retain the rendered source when reviewing those blocks. Unclassified
 text stays explicit. Do not overwrite reconciled registers with fresh extraction:
 join on stable row IDs and preserve source mappings, evidence and decisions.
 
-Register validation: all row IDs unique, all source ranges within
-current files, source hashes checked, independent numbered-step counts agree,
-and core IDs/text unchanged when amendment extraction was added. Current runtime correction: no-Intl Now host offsets reuse existing
+Run `python3 knowledge-base/audits/temporal-validate-ledger.py` to verify
+frozen requirement text and identities, condition grouping, exact inline
+comment locations, source ranges, and manifest hashes. The full scan
+corrected 102 helper anchor records and rebound the Instant range to
+the shared slot validator. This check verifies register integrity.
+
+Earlier runtime correction: no-Intl Now host offsets reuse existing
 zeroPadDecimal. Public regression failed before correction; all 16 focused
 Bazel targets pass (10 executed, six cached), covering TS/native Hermes source
 and bytecode, Test262, installation and typechecking.

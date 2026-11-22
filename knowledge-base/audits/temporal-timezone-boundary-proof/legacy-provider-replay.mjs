@@ -183,6 +183,37 @@ const outcomes = local =>
     }
   })
 const epoch = seconds => (seconds * second).toString()
+const pulseWall = {year: 1970, month: 1, day: 1, hour: 15, timeZone: fold}
+for (const input of [
+  {...pulseWall, offset: '+12:00'},
+  `1970-01-01T15:00+12:00:00[${fold}]`,
+]) {
+  for (const [offset, hours] of [
+    ['prefer', 3n],
+    ['reject', 3n],
+    ['use', 3n],
+    ['ignore', 15n],
+  ]) {
+    assert.equal(
+      Temporal.ZonedDateTime.from(input, {offset, disambiguation: 'later'})
+        .epochNanoseconds,
+      hours * hour * second
+    )
+  }
+}
+assert.throws(
+  () => Temporal.ZonedDateTime.from({...pulseWall, offset: '+11:00'}),
+  RangeError
+)
+const minuteOffset = `1970-01-01T15:00+12:00[${fold}]`
+if (legacy) {
+  assert.throws(() => Temporal.ZonedDateTime.from(minuteOffset), RangeError)
+} else {
+  assert.equal(
+    Temporal.ZonedDateTime.from(minuteOffset).epochNanoseconds,
+    3n * hour * second
+  )
+}
 assert.deepEqual(outcomes(`1970-01-01T06:00[${shiftedFold}]`), [
   epoch(2n * hour),
   epoch(4n * hour),

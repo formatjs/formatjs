@@ -204,7 +204,7 @@ the original epoch for zero fields. If the dates differ, they differ by
 at least D and the existing ordering comparison applies. Thus A does not
 overshoot T. Only an upper bound strictly before T triggers the shared
 retry. The retry keeps that bound as its new lower endpoint.
-[TS unrounded anchor](../../packages/temporal/zoned-date-time.ts#L523)
+[TS unrounded anchor](../../packages/temporal/zoned-date-time.ts#L534)
 [TS shared rounding](../../packages/temporal/date-core.ts#L971)
 [Rust unrounded and rounding](../../crates/temporal/calendar_difference.rs#L111).
 

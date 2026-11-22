@@ -62,7 +62,7 @@ the same candidate satisfies both comparisons; a later exact match does not
 override an earlier rounded match. This review does not establish that every
 zone visitor supplies every possible candidate.
 
-[TS:412](../../packages/temporal/zoned-date-time.ts#L415) enables minute matching
+[TS:412](../../packages/temporal/zoned-date-time.ts#L426) enables minute matching
 for string offsets with hours and optional minutes, without seconds.
 [Rust parse:293](../../crates/temporal/parse.rs#L293) distinguishes UTC, wall,
 minute and exact input; consumed lengths 3/5/6 select minute precision. Those

@@ -33919,7 +33919,8 @@
     },
     "direct_with_step_wording": 916,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 1034
+      "overlap": 1032,
+      "no_overlap_or_no_prior_mapping": 2
     },
     "no_numbered_anchor_by_kind": {
       "function": 17,
@@ -34052,7 +34053,7 @@
     "packages/temporal/rounding.ts": "bb5efd7c11720a45bb8a9b82804f2bd85b9e967c28fcdf85fc78e692ed2f2325",
     "packages/temporal/short-date-core.ts": "873911e54f428df9e1218185e7b67f650581a316dcbce7b15763f9f3c8c78715",
     "packages/temporal/should-polyfill.ts": "4df16c19d9ea8cc7b626d877175716472208702f35a02f89f90871afeaeb730f",
-    "packages/temporal/zoned-date-time.ts": "8b262a59a1d04e083d0fc024634e017ec6843df1bbe2c2346d5e9a47dbb4151a",
+    "packages/temporal/zoned-date-time.ts": "c71849d91756ac4e96997605bf19f8d9dc5c06cfcffc7bb3c5b1f7420e2060de",
     "packages/temporal/zones.ts": "63e7a3b16c3290d4430e496525705b22ad9de3faadf05e49f3b989657ab683fe",
     "packages/temporal/epoch-slots.ts": "9580c5573978e5efbf0e131179be8982ec3e84810fcbdc780220be4af7b84a73"
   },

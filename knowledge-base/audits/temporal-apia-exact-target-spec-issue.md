@@ -20,11 +20,14 @@ retry. The published text supplies no result for the exact-target case.
 [§7.5.33](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow)
 [§7.5.34](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
 
+The same Pacific/Apia failure in step 13 is tracked upstream.
+[Temporal issue #3310](https://github.com/tc39/proposal-temporal/issues/3310).
+
 Current FormatJS picks the exact first endpoint before distance arithmetic.
 The TypeScript and Rust rounders return −1 day, and their total paths validate
 the second endpoint before returning −1. These observations record FormatJS's
 current behavior while the published assertion remains unresolved.
-[TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L548)
+[TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L559)
 [TS rounding](../../packages/temporal/date-core.ts#L1035)
 [Rust rounding](../../crates/temporal/calendar_difference.rs#L263)
 [TS total](../../packages/temporal/relative-duration.ts#L198)

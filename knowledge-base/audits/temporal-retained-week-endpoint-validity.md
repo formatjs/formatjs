@@ -9,7 +9,7 @@ fixed offsets, and the identified Node ICU provider under the existing
 calendar and local-resolution contracts.
 
 - Retained-prefix branch [TypeScript](../../packages/temporal/relative-duration.ts#L257-L290) and [Rust](../../crates/temporal/relative_duration.rs#L133-L162).
-- Unrounded fixed-clock anchors [TypeScript](../../packages/temporal/zoned-date-time.ts#L524-L570) and [Rust](../../crates/temporal/calendar_difference.rs#L111-L205).
+- Unrounded fixed-clock anchors [TypeScript](../../packages/temporal/zoned-date-time.ts#L535-L581) and [Rust](../../crates/temporal/calendar_difference.rs#L111-L205).
 - Fixed year/month prefix and integral day tail [TypeScript](../../packages/temporal/calendar.ts#L452-L480) and [Rust](../../crates/intl_datetimeformat_calendars/date_math.rs#L37-L59).
 - [NudgeToCalendarUnit §7.5.34 step 5.a](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit)
   and [ComputeNudgeWindow §7.5.33 steps 3.f–g](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).

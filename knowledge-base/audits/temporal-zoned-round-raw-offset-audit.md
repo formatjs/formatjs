@@ -15,8 +15,8 @@ result. Valid offsets survived that BigInt format/parse round trip exactly; this
 was not a Number precision defect. It nevertheless introduced observable String,
 padStart, replace and RegExp operations into a private numeric calculation.
 
-[Raw offset acquisition:975](../../packages/temporal/zoned-date-time.ts#L966)
-now obtains the original bigint directly. [Resolution:979](../../packages/temporal/zoned-date-time.ts#L970)
+[Raw offset acquisition:975](../../packages/temporal/zoned-date-time.ts#L977)
+now obtains the original bigint directly. [Resolution:979](../../packages/temporal/zoned-date-time.ts#L981)
 passes it with the rounded local coordinate, prepared kernel and ISO fields to
 the extracted integer resolver. No Number or Decimal conversion is introduced.
 

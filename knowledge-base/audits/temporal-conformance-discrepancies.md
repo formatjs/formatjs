@@ -74,3 +74,9 @@ two scenarios for `links.js` and two for `offset-time-zones.js`.
 These are data-version conflicts, not evidence that Temporal should discard
 current IANA/CLDR semantics. Keep the raw diagnostic failures visible. This audit
 has not added exclusions or changed accepted-failure counts.
+
+The 2026-11-22 Node baseline run at `d7b74fdc8` passed all eight full
+built-in Temporal groups. The full Intl group passed 4,078 scenarios
+and the locale Intl group passed 4,076. Both failed the same two
+`links.js` scenarios at `CST6CDT` versus `America/Chicago`. The locale
+group also reproduced both zero-offset-label fixture failures.

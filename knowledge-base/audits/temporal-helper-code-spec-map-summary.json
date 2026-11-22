@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27623,
+  "whole_selected_source_lines": 27634,
   "whole_selected_source_lines_by_language": {
     "rust": 11346,
-    "typescript": 16277
+    "typescript": 16288
   },
-  "nonoverlapping_callable_lines": 17986,
+  "nonoverlapping_callable_lines": 17997,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8421,
-    "typescript": 9565
+    "typescript": 9576
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17731,
+    "mapped": 17742,
     "unmapped": 255
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
@@ -890,10 +890,10 @@
     },
     {
       "file": "packages/temporal/zoned-date-time.ts",
-      "source_lines": 1313,
+      "source_lines": 1324,
       "callable_rows": 19,
-      "nonoverlapping_callable_lines": 600,
-      "sha256": "8b262a59a1d04e083d0fc024634e017ec6843df1bbe2c2346d5e9a47dbb4151a",
+      "nonoverlapping_callable_lines": 611,
+      "sha256": "c71849d91756ac4e96997605bf19f8d9dc5c06cfcffc7bb3c5b1f7420e2060de",
       "unresolved_callable_rows": 0
     },
     {

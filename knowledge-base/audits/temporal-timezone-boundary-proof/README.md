@@ -31,7 +31,10 @@ seconds away, beyond the 172,800-second window. No failing windows.
 [Endpoint rows](generated-endpoints.tsv) preserve each zone's bounds and rule
 identity; native records match packed endpoints/footer expressions. Compact
 analysis reuses the generator's complete reconstruction check and monotone
-same-rule Gregorian spans. [Source hashes](source-hashes.json) bind those owners.
+same-rule Gregorian spans. [Source hashes](source-hashes.json) identify the
+initial proof checkout. On the November 22 baseline, all five configured
+artifact hashes matched and rerunning the endpoint scan reproduced the
+recorded raw result hash. Current source bindings are in the audit manifests.
 
 Integral seconds, offsets and milliseconds remain below 2^53. Fractional seconds
 division need not be exact: maximum half-ULP is 0.48828125ms, below the minimum
@@ -127,6 +130,17 @@ An empty shifted list retains the existing fallback. The requery covers
 observable shifted candidates and still depends on provider sampling for
 the original gap and complete candidate lists.
 [Proposal comparison §11.1.12 steps 16.e–g and 22–25](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+
+The +12:00 pulse also checks a supplied exact offset. Local 15:00 and
+offset +12:00 identify one possible epoch, 03:00. The legacy sample
+omits it, but the point offset at 03:00 verifies it. An explicit offset
+in a property bag or a string with offset seconds now selects that epoch
+in `prefer` and `reject`. The candidate query still runs first. At least
+one day of margin from either Instant limit guarantees that every
+sub-day-offset candidate fits the range. Minute matching still requires
+the ordered list, because different actual offsets can round to the
+same minute.
+[Proposal comparison §6.5.1 steps 7–10.c](https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset).
 
 The 7.8.1 root export and `polyfill-force.js` create different constructors,
 `formatToParts` functions, and timezone registries. The force entry installs
@@ -379,7 +393,7 @@ have one valid candidate. The shifted public query still throws if any of
 its actual candidates is outside the range. The positive-limit regression
 checks that earlier succeeds while later and compatible throw for that case.
 
-[Public boundary regression](../../../packages/temporal/tests/host-candidate-range.test.mjs#L359).
+[Public boundary regression](../../../packages/temporal/tests/host-candidate-range.test.mjs#L447).
 [Exact boundary checks](../../../packages/intl-datetimeformat/core.ts#L497).
 [Public candidate validation](../../../packages/intl-datetimeformat/core.ts#L442).
 [Temporal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).

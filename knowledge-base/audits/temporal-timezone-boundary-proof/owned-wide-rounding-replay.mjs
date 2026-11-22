@@ -492,3 +492,95 @@ for (const hasOutsideReset of [false, true]) {
     })
   )
 }
+
+const clockFoldCeil = {
+  largestUnit: 'day',
+  smallestUnit: 'hour',
+  roundingMode: 'ceil',
+}
+function checkClockFold(origin, target, expected, addBack) {
+  const unrounded = origin.until(target, {largestUnit: 'day'})
+  const until = origin.until(target, clockFoldCeil)
+  const since = origin.since(target, {...clockFoldCeil, roundingMode: 'floor'})
+  const rounded = unrounded.round({...clockFoldCeil, relativeTo: origin})
+  assert.equal(until.toString(), expected)
+  assert.equal(since.toString(), `-${expected}`)
+  assert.equal(rounded.toString(), expected)
+  assert.equal(origin.add(until).epochNanoseconds, addBack)
+  assert.equal(origin.subtract(since).epochNanoseconds, addBack)
+  assert.equal(origin.add(rounded).epochNanoseconds, addBack)
+}
+
+const {Temporal: compact} = await import(moduleUrl(temporal, 'standalone.js'))
+const havanaBackends = [['compact', compact, 'P1D']]
+if (
+  globalThis.Temporal &&
+  process.versions.node === '26.8.1' &&
+  process.versions.tz === '2026c'
+)
+  havanaBackends.push(['native', globalThis.Temporal, 'PT24H'])
+for (const [backend, implementation, expected] of havanaBackends) {
+  const earlier = implementation.ZonedDateTime.from(
+    '2020-11-01T00:00-04:00[America/Havana]'
+  )
+  const later = implementation.ZonedDateTime.from(
+    '2020-11-01T00:00-05:00[America/Havana]'
+  )
+  const target = implementation.ZonedDateTime.from(
+    '2020-11-01T23:15-05:00[America/Havana]'
+  )
+  const next = implementation.ZonedDateTime.from(
+    '2020-11-02T00:00-05:00[America/Havana]'
+  )
+  assert.equal(earlier.epochNanoseconds, 1604203200000000000n)
+  assert.equal(later.epochNanoseconds, 1604206800000000000n)
+  assert.equal(target.epochNanoseconds, 1604290500000000000n)
+  assert.equal(next.epochNanoseconds, 1604293200000000000n)
+  assert.equal(later.until(target, {largestUnit: 'day'}).toString(), 'PT23H15M')
+  checkClockFold(earlier, target, 'P1D', next.epochNanoseconds)
+  checkClockFold(later, target, expected, next.epochNanoseconds)
+  console.log(JSON.stringify({clockFold: 'America/Havana', backend, expected}))
+}
+
+const clockFoldZone = 'America/Toronto'
+Intl.DateTimeFormat.__addTZData({
+  abbrvs: 'TEST',
+  offsets: [3600, 0, 1800].map(offset => offset.toString(36)).join('|'),
+  zones: [
+    `${clockFoldZone}|${row(null, 0)}|${(-1800).toString(36)},0,1,0|${row(22n, 2)}`,
+  ],
+})
+const foldClock = `1970-01-01T00:00[${clockFoldZone}]`
+const clockEarlier = Temporal.ZonedDateTime.from(foldClock, {
+  disambiguation: 'earlier',
+})
+const clockLater = Temporal.ZonedDateTime.from(foldClock, {
+  disambiguation: 'later',
+})
+const clockTarget = new Temporal.ZonedDateTime((93n * hour) / 4n, clockFoldZone)
+const clockNext = Temporal.ZonedDateTime.from(
+  `1970-01-02T00:00[${clockFoldZone}]`,
+  {disambiguation: 'reject'}
+)
+assert.equal(clockEarlier.epochNanoseconds, -hour)
+assert.equal(clockLater.epochNanoseconds, 0n)
+assert.equal(clockNext.epochNanoseconds, (47n * hour) / 2n)
+assert.ok(clockTarget.toPlainDate().equals(clockLater.toPlainDate()))
+assert.equal(
+  clockLater.until(clockTarget, {largestUnit: 'day'}).toString(),
+  'PT23H15M'
+)
+// §7.5.35 step 5's compatible anchor gives a 24.5h span. The actual receiver gives 23.5h.
+assert.equal(
+  clockNext.epochNanoseconds - clockEarlier.epochNanoseconds,
+  (49n * hour) / 2n
+)
+checkClockFold(clockLater, clockTarget, 'P1DT1H', (49n * hour) / 2n)
+assert.equal(clockLater.add('PT24H').epochNanoseconds, 24n * hour)
+console.log(
+  JSON.stringify({
+    clockFold: clockFoldZone,
+    current: 'P1DT1H',
+    published: 'PT24H',
+  })
+)

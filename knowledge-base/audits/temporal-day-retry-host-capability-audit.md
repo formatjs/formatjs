@@ -51,5 +51,5 @@ The installer has a separate anchor for its property definition.
 | 691 | [install.ts:19](../../packages/temporal/install.ts#L19)                   | Defines the selected global namespace and its property attributes with the runtime operation. |
 | 692 | [install.ts:56](../../packages/temporal/install.ts#L56)                   | Supplies the installed Instant constructor to the Date bridge.                                |
 
-[Packaged day regression](../../packages/temporal/tests/host-candidate-range.test.mjs#L558).
+[Packaged day regression](../../packages/temporal/tests/host-candidate-range.test.mjs#L567).
 [Rust day regression](../../crates/temporal/lib.test.rs#L4236).

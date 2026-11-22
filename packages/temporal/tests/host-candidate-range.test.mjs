@@ -129,6 +129,18 @@ try {
     )
   }
 
+  for (const offset of ['prefer', 'reject']) {
+    for (const local of [
+      `+275760-09-13T00:30:00+02:00:00[${upperMixed}]`,
+      `-271821-04-20T00:30:00+00:00:00[${lowerMixed}]`,
+    ]) {
+      assert.throws(
+        () => Temporal.ZonedDateTime.from(local, {offset}),
+        RangeError
+      )
+    }
+  }
+
   // A permanent forward jump keeps the usual gap disambiguation behavior.
   const gap = `1970-01-01T03:00:00[${ordinaryGap}]`
   assert.equal(

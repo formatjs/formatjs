@@ -71,7 +71,7 @@ destination. The loop tests the equivalent opposite-sign expression before
 balancing clock fields. Fold fixtures distinguish earlier and later candidates.
 The choice of intermediate remains a separate open step.
 [Temporal comparison §6.5.6 steps 11.c–d](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
-[TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L595).
+[TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L606).
 [Rust subtraction](../../crates/temporal/calendar_difference.rs#L206).
 
 The date-unit caller uses the unrounded zoned difference with the original
@@ -79,7 +79,7 @@ endpoints, zone and calendar and the prepared largest unit. If either backend
 uses an identical-endpoint shortcut, it takes the callee's zero-result case.
 The relative rounding call remains separately conditional.
 [Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
-[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L676).
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L687).
 [Rust dispatch](../../crates/temporal/calendar_difference.rs#L236).
 
 ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
@@ -104,7 +104,7 @@ at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
 [TypeScript signed day](../../packages/temporal/date-core.ts#L1205).
 [Rust signed day](../../crates/temporal/calendar_difference.rs#L448).
-[TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L530).
+[TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L541).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L309).
 
 Nine focused Bazel targets passed. The TypeScript plain relative, zoned
@@ -232,7 +232,7 @@ increment and rounding mode. The FFI forwards the same values. Reversing
 the result for since is equivalent to switching ceil with floor and
 halfCeil with halfFloor under negation. Other modes are invariant under
 that conjugation, including halfEven's absolute parity check.
-[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L650).
+[TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L661).
 [Rust dispatch](../../crates/temporal/zoned_difference.rs#L51).
 [Native dispatch](../../crates/temporal/ffi.rs#L1190).
 [Temporal comparison §6.5.9 step 9](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalzoneddatetime).

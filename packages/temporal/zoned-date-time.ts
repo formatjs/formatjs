@@ -341,7 +341,8 @@ function resolveOffsetNanoseconds(
   matchMinute: boolean
 ): bigint {
   if (behavior === 'use') return validateInstant(localTime - provided)
-  if (localTime < -8_640_000_000_000_000_000_000n)
+  const instantLimit = 8_640_000_000_000_000_000_000n
+  if (localTime < -instantLimit)
     throw new RangeErrorConstructor('Local date out of range')
   const candidates = kernel.possibleInstants(fields)
   for (let i = 0; i < candidates.length; i++) {
@@ -352,6 +353,16 @@ function resolveOffsetNanoseconds(
       60_000_000_000n
     if (provided === actual || (matchMinute && provided === rounded))
       return candidates[i]
+  }
+  // Proposal comparison §6.5.1 step 10.b: Probe the sole exact-offset match.
+  // A full day of margin keeps every possible candidate in Instant range.
+  if (
+    !matchMinute &&
+    localTime >= -instantLimit + nsPerDay &&
+    localTime <= instantLimit - nsPerDay
+  ) {
+    const candidate = localTime - provided
+    if (kernel.offsetNanoseconds(candidate) === provided) return candidate
   }
   if (behavior === 'reject')
     throw new RangeErrorConstructor('Offset does not match timezone')

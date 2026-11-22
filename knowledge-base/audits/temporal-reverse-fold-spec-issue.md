@@ -51,3 +51,28 @@ handling before applying such a change.
 
 Keep difference/nudge intermediate construction, intended invariant and requested
 Temporal authority unresolved. No implementation signoff or upstream filing.
+
+## Same-date clock rounding
+
+The clock carry has an independent confirmed comparison divergence.
+Havana's later 2020-11-01 midnight at −05:00 and its 23:15 endpoint are
+on the same local date. Both native Node 26.8.1 and FormatJS compute an
+unrounded 23h15m difference. Ceiling to hours with largest unit day
+returns `P1D` in FormatJS and `PT24H` in native Node. They add back to
+the same instant. The earlier −04:00 occurrence returns `P1D` on both.
+
+In the synthetic replay, offsets +1h, zero and +0.5h apply before
+epoch −0.5h, from −0.5h to +22h, and from +22h onward. The origin
+is the later midnight at epoch zero and the target is epoch +23.25h.
+Same-date elapsed subtraction gives +23.25h before any nudge. Both day
+spans are positive. Step 5 chooses the compatible earlier midnight
+at epoch −1h, giving a 24.5h day span and a clock-only `PT24H` result.
+The literal intermediate nudged epoch is +23h. Public addition of that
+duration to the actual origin lands at +24h. FormatJS keeps the actual
+origin, sees a 23.5h day span, carries to `P1DT1H`, and lands at +24.5h.
+
+This witness reaches the clock carry without the reverse-date probe or
+a failed day-span assertion. It leaves the choice of published behavior
+and actual-receiver anchoring open.
+[Comparison §7.5.35 step 5](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
+[Pinned replay](temporal-timezone-boundary-proof/owned-wide-rounding-replay.mjs#L496).
