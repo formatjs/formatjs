@@ -703,6 +703,43 @@ try {
       expected
     )
   }
+
+  installBoundaryZone(minimum, [2, 0], [0n])
+  const foldOrigin = new Temporal.ZonedDateTime(minimum + hour / 2n, pulse)
+  const foldSameDate = new Temporal.ZonedDateTime(minimum + hour, pulse)
+  const foldFollowingDate = new Temporal.ZonedDateTime(
+    minimum + (97n * hour) / 4n,
+    pulse
+  )
+  const calendarDifference = {largestUnit: 'day'}
+  assert.equal(
+    foldOrigin.add('PT0S').epochNanoseconds,
+    foldOrigin.epochNanoseconds
+  )
+  assert.equal(
+    foldOrigin.until(foldSameDate, calendarDifference).toString(),
+    'PT30M'
+  )
+  assert.throws(
+    () => foldOrigin.until(foldFollowingDate, calendarDifference),
+    RangeError
+  )
+  assert.throws(
+    () =>
+      foldOrigin.until(foldSameDate, {
+        ...calendarDifference,
+        smallestUnit: 'hour',
+      }),
+    RangeError
+  )
+  const reverseFoldOrigin = new Temporal.ZonedDateTime(
+    minimum + 25n * hour,
+    pulse
+  )
+  assert.throws(
+    () => reverseFoldOrigin.until(foldOrigin, calendarDifference),
+    /Instant out of range/
+  )
 } finally {
   hooks.deregister()
 }

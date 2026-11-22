@@ -1,6 +1,6 @@
 use crate::{
-    CalendarProvider, Duration, Error, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY, Overflow,
-    PlainDate, RoundingMode, TimeUnit, round_duration_nanoseconds,
+    CalendarProvider, Duration, Error, NANOSECONDS_PER_DAY, Overflow, PlainDate, RoundingMode,
+    TimeUnit, round_duration_nanoseconds,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd)]
@@ -156,53 +156,29 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
         day -= sign as i64;
     }
     if i128::from(day - begin) * sign < 0 {
-        day = begin;
+        return Ok(Duration::from_time_nanoseconds(end - origin, TimeUnit::Hour)?.fields());
     }
-    let (mut fields, anchor);
-    loop {
-        // Proposal comparison §12.3.9 step 2: Equal ISO dates need no calendar lookup.
-        if day == begin {
-            fields = [0; 10];
-            anchor = origin;
-            break;
-        }
-        let date_fields = date_until(start, begin, day, largest);
-        let candidate = match date_fields {
-            Ok(fields) => match endpoint(start, fields) {
-                Ok(value) => value,
-                Err(Error::OutOfRange | Error::InvalidDateTime) => {
-                    sign * (MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY)
-                }
-                Err(error) => return Err(error),
-            },
-            Err(error) => {
-                let calendar = start.calendar();
-                let missing_date = match calendar.date_extended(begin) {
-                    Ok(_) => matches!(
-                        calendar.date_extended(day),
-                        Err(crate::calendar::Error::OutOfRange)
-                    ),
-                    Err(crate::calendar::Error::OutOfRange) => true,
-                    Err(_) => false,
-                };
-                if !missing_date {
-                    return Err(error);
-                }
-                // Proposal comparison §6.5.6 steps 11.c and 14: Resolve an
-                // uncovered probe before deciding whether its date is needed.
-                start
-                    .resolve_compatible(i128::from(day) * NANOSECONDS_PER_DAY + origin_clock)
-                    .map_err(|_| error)?
-            }
-        };
+    let anchor = loop {
+        // Proposal comparison §6.5.6 steps 11.a–c: Resolve the raw ISO probe before calendar difference.
+        // https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime
+        let candidate =
+            start.resolve_compatible(i128::from(day) * NANOSECONDS_PER_DAY + origin_clock)?;
         if (candidate - end) * sign <= 0 {
-            // Proposal comparison §6.5.6 step 14: Keep the selected day's calendar fields.
-            fields = date_fields?;
-            anchor = candidate;
-            break;
+            break candidate;
+        }
+        if day == begin {
+            // Step 12 can fail when a midnight fold makes every compatible probe overshoot.
+            // Related backward-shift failure: https://github.com/tc39/proposal-temporal/issues/3311
+            return Ok(Duration::from_time_nanoseconds(end - origin, TimeUnit::Hour)?.fields());
         }
         day -= sign as i64;
-    }
+    };
+    // Proposal comparison §6.5.6 step 14 and §12.3.9 step 2: Use the selected date.
+    let mut fields = if day == begin {
+        [0; 10]
+    } else {
+        date_until(start, begin, day, largest)?
+    };
     // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
     let time = Duration::from_time_nanoseconds(end - anchor, TimeUnit::Hour)?.fields();
     fields[4..].copy_from_slice(&time[4..]);
@@ -401,6 +377,9 @@ pub(crate) fn difference<A: RelativeAnchor>(
             b = endpoint(start, prefix)?;
             expanded = true;
         }
+        // §7.5.34 step 13 can divide by zero across a skipped day.
+        // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
+        // https://github.com/tc39/proposal-temporal/issues/3310
         let expand = if a == end {
             false
         } else if b == end {
@@ -442,7 +421,16 @@ pub(crate) fn difference<A: RelativeAnchor>(
         let mut value = since_sign * round_duration_nanoseconds(time * since_sign, quantum, mode)?;
         let mut date = fields;
         date[4..].fill(0);
-        let base = endpoint(start, date)?;
+        // Proposal comparison §7.5.35 step 5: Resolve the origin wall clock even for zero date fields.
+        // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
+        let base = if date[..4].iter().all(|field| *field == 0) {
+            start.resolve_compatible(
+                i128::from(start.date_at(origin)?) * NANOSECONDS_PER_DAY
+                    + start.clock_at(origin)?,
+            )?
+        } else {
+            endpoint(start, date)?
+        };
         let mut next = date;
         next[3] += sign;
         // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.

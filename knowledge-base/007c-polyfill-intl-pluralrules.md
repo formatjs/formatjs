@@ -4,10 +4,7 @@
 
 ## Purpose
 
-Private slot get/set methods are captured when the module loads. DateTimeFormat's
-polyfilled NumberFormat dependency exercises this constructor path; see the
-[formatter-cache audit](audits/temporal-private-format-cache-audit.md).
-Complete PluralRules algorithms retain separate review status.
+Private slot get/set methods are captured when the module loads. Complete PluralRules algorithms retain separate review status.
 
 Polyfill for `Intl.PluralRules` — evaluates CLDR plural rules to select plural categories (zero, one, two, few, many, other) for 227 locales. Also supports ordinal rules and plural ranges (LDML-43).
 

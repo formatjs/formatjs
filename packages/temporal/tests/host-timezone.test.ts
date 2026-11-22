@@ -249,10 +249,13 @@ it('finds transitions strictly before or after nanosecond boundaries', () => {
   expect(zone.transition(8640000000000000000000n, 'next')).toBe(null)
 })
 
-it('finds host-only transitions inside a generated fixed-zone probe interval', async () => {
+it.each([
+  {year: 1800, startDay: 1},
+  {year: 2024, startDay: 8},
+])('finds host-only transitions in $year', async ({year, startDay}) => {
   const Original = Intl.DateTimeFormat
-  const first = Date.UTC(2024, 0, 8),
-    last = Date.UTC(2024, 0, 22)
+  const first = Date.UTC(year, 0, startDay),
+    last = Date.UTC(year, 0, startDay + 14)
   vi.resetModules()
   try {
     Intl.DateTimeFormat = class extends Original {
@@ -272,18 +275,16 @@ it('finds host-only transitions inside a generated fixed-zone probe interval', a
     } as typeof Original
     const {createHostTimeZone: create} =
       await import('#packages/temporal/host-timezone.js')
-    // Abidjan has no generated modern transitions. Host adds a two-week season.
+    // Host adds a two-week season to Abidjan.
     const zone = create('Africa/Abidjan')
-    const before = BigInt(Date.UTC(2024, 0, 1)) * 1000000n
-    const after = BigInt(Date.UTC(2024, 1, 1)) * 1000000n
-    expect(zone.transition(before, 'next')).toBe(BigInt(first) * 1000000n)
-    expect(zone.transition(after, 'previous')).toBe(BigInt(last) * 1000000n)
-    expect(zone.transition(BigInt(first) * 1000000n, 'next')).toBe(
-      BigInt(last) * 1000000n
-    )
-    expect(zone.transition(BigInt(last) * 1000000n, 'previous')).toBe(
-      BigInt(first) * 1000000n
-    )
+    const start = BigInt(first) * 1_000_000n
+    const end = BigInt(last) * 1_000_000n
+    expect(zone.transition(start - 1n, 'next')).toBe(start)
+    expect(zone.transition(start, 'previous')).toBeNull()
+    expect(zone.transition(start + 1n, 'previous')).toBe(start)
+    expect(zone.transition(end + 1n, 'previous')).toBe(end)
+    expect(zone.transition(start, 'next')).toBe(end)
+    expect(zone.transition(end, 'previous')).toBe(start)
   } finally {
     Intl.DateTimeFormat = Original
     vi.resetModules()

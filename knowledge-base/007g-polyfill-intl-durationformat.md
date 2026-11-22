@@ -8,10 +8,7 @@ Polyfill for `Intl.DurationFormat` — formats durations (hours, minutes, second
 
 Duration-like field conversion keeps primitive Numbers through ToIntegerIfIntegral.
 Captured Number.isInteger validates the full finite integral Number domain;
-private Decimal construction cannot interrupt consecutive field Gets. See the
-[number conversion audit](audits/temporal-number-conversion-audit.md) for numbered
-ECMA-262 §7.1.4 and ECMA-402 §13.5.2 mappings. Complete record/brand conversion
-retains its separate audit status.
+private Decimal construction cannot interrupt consecutive field Gets.
 
 ## Dependencies
 
@@ -47,14 +44,9 @@ inherited supplied methods. Initial providers are captured during module load;
 later constructors are captured when first selected.
 
 Constructor-keyed memoizers reuse existing memoize/cache behavior. Numbering-system
-support follows the same selected provider. [Twelve validation targets](audits/temporal-duration-provider-validation-targets.txt)
-cover cold profiles, late provider installation and parts-method replacement.
-[Audit evidence](audits/temporal-duration-provider-private-operations-audit.md)
-records the provider checkpoint. The subsequent [memoizer correction](audits/temporal-duration-memoizer-private-operations-audit.md)
-captures runtime operations and isolates private argument wrappers, preserving
-custom serializers and public argument toJSON. Ten targets pass. Three Duration
-gates remain conditional on owned private-slot access and constructor-cache
-operations; complete private formatter execution is not yet established.
+support follows the same selected provider. The memoizer captures runtime operations
+and isolates private argument wrappers, preserving custom serializers and public
+argument toJSON.
 
 ## CLDR Data Pipeline
 

@@ -1,6 +1,98 @@
 use formatjs_temporal::{Instant, IsoDateTime, MAX_EPOCH_NANOSECONDS, NANOSECONDS_PER_DAY};
 
 #[test]
+fn relative_fold_probes_use_compatible_time_without_changing_addition() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let events = [
+        OffsetTransition {
+            epoch_seconds: -1800,
+            offset_seconds: 0,
+        },
+        OffsetTransition {
+            epoch_seconds: 22 * 3600,
+            offset_seconds: 1800,
+        },
+    ];
+    let zone = TransitionZone::new(3600, &events, None).unwrap();
+    let zoned = |value| ZonedDateTime::new(Instant::from_epoch_nanoseconds(value).unwrap(), zone);
+    let origin = zoned(0);
+    let target = zoned(93 * hour / 4);
+    let difference = |target, smallest, mode| {
+        origin
+            .until(&target, DateTimeUnit::Day, smallest, 1, mode)
+            .unwrap()
+    };
+    assert_eq!(
+        difference(target, DateTimeUnit::Nanosecond, RoundingMode::Trunc).to_string(),
+        "PT23H15M"
+    );
+    let rounded = difference(zoned(93 * hour / 4), DateTimeUnit::Hour, RoundingMode::Ceil);
+    assert_eq!(rounded.to_string(), "PT24H");
+    assert_eq!(
+        origin
+            .checked_add(rounded, Overflow::Constrain)
+            .unwrap()
+            .instant()
+            .epoch_nanoseconds(),
+        24 * hour
+    );
+    for smallest in [DateTimeUnit::Minute, DateTimeUnit::Nanosecond] {
+        assert_eq!(
+            difference(zoned(-49 * hour / 2), smallest, RoundingMode::Trunc).to_string(),
+            "-PT23H30M"
+        );
+    }
+    assert_eq!(
+        difference(
+            zoned(-hour / 4),
+            DateTimeUnit::Nanosecond,
+            RoundingMode::Trunc
+        )
+        .to_string(),
+        "-PT15M"
+    );
+    assert_eq!(
+        origin
+            .checked_add("PT0S".parse().unwrap(), Overflow::Constrain)
+            .unwrap()
+            .instant(),
+        origin.instant()
+    );
+}
+
+#[test]
+fn relative_difference_rejects_mixed_range_nonzero_fold_probe() {
+    use formatjs_temporal::{
+        DateTimeUnit, Error, OffsetTransition, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let events = [OffsetTransition {
+        epoch_seconds: (-MAX_EPOCH_NANOSECONDS / 1_000_000_000) as i64,
+        offset_seconds: 0,
+    }];
+    let zone = TransitionZone::new(7200, &events, None).unwrap();
+    let zoned = |delta| {
+        ZonedDateTime::new(
+            Instant::from_epoch_nanoseconds(-MAX_EPOCH_NANOSECONDS + delta).unwrap(),
+            zone,
+        )
+    };
+    assert_eq!(
+        zoned(25 * hour).until(
+            &zoned(hour / 2),
+            DateTimeUnit::Day,
+            DateTimeUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc
+        ),
+        Err(Error::OutOfRange)
+    );
+}
+
+#[test]
 fn date_zoned_conversion_distinguishes_day_start_from_explicit_midnight() {
     use formatjs_temporal::{
         OffsetTransition, PlainDate, PlainTime, TimeZone, TransitionDirection, TransitionZone,

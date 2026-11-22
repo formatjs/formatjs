@@ -5,47 +5,33 @@
 ## Purpose
 
 Private formatter WeakMap methods are captured when modules load, including
-pattern, skeleton, calendar-preference and interval caches. The
-[cache and numeric-dispatch audit](audits/temporal-private-format-cache-audit.md)
-maps ECMA-402 §11.5.5 and the locale/number dependencies reached by public
-mutation controls. Broader constructor and producer contracts remain open.
+pattern, skeleton, calendar-preference and interval caches.
 
 Nonpositive calendar display years follow ECMA-402 §11.5.4 step 15.f.iv in TS/Rust:
 `1 - year` applies before numeric or two-digit rendering, for every calendar.
-The [year audit](audits/temporal-calendar-year-audit.md) records source steps,
-real Buddhist-provider controls and the disagreement with native ICU output.
 
-The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)
-checks fractional offsets near both Date limits against builtin UTC fields.
-Its fault control catches nanoseconds rounded through Number before Decimal
-construction. The existing runtime passes; complete ToLocalTime review stays open.
+Precision tests cover fractional offsets near both Date limits and catch
+nanoseconds rounded through Number before Decimal construction.
 
 The central date-pattern loop uses private indexed traversal and own List writes.
 Fractional seconds use captured floor; two-digit fields use private Unicode
 truncation without mutable array methods. TS and Rust preserve
-unknown pattern fields with matching exact-epoch fallback text. The [producer
-step map](audits/temporal-date-pattern-audit.md) retains constructor, calendar and
-locale-data dependencies as open.
+unknown pattern fields with matching exact-epoch fallback text.
 
 Shared Pattern String parsing follows ECMA-402 §9.2.15 through captured String
-operations and own private-list writes. See the [seven-step parser audit](audits/temporal-pattern-partition-audit.md)
-for source mapping and remaining formatter producer work.
+operations and own private-list writes.
 
 FormatDateTimeToParts delegates result construction to shared CreatePartsArray.
 The builder traverses private records by index and defines own array properties;
 result projection cannot invoke mutable iterators, push or numeric setters.
-See the [parts-result audit](audits/temporal-parts-result-audit.md) for all source
-steps and remaining partition-producer work.
 
 Private formatToParts result allocation follows ECMA-262 ArrayCreate through a
 captured realm constructor, preserving sparse-array semantics and avoiding
 Array.from hooks. Date-range SameValue comparisons use pure equality, including
-NaN and signed-zero rules. See the [foundation helper audit](audits/temporal-object-contract-audit.md)
-for mappings and remaining caller iteration/appending work.
+NaN and signed-zero rules.
 
 Constructor instance checks use the captured realm intrinsic rather than mutable
-Object.prototype.isPrototypeOf. Shared ECMA-262 §7.3.21 mapping and consumer
-coverage live in the [Temporal dependency audit](audits/temporal-instance-check-audit.md).
+Object.prototype.isPrototypeOf.
 
 Historical timezone names retain direct CLDR standard/daylight overrides, including
 London's British Summer Time before 1970. Only metazone-derived names use the
@@ -69,7 +55,7 @@ local time and re-queries the shifted instant candidates. A timezone data
 reload advances the cache generation for the Temporal host adapter. The
 owned formatter also exposes exact offset and transition queries from those
 rows and footer rules.
-[Endpoint audit](audits/temporal-timezone-boundary-proof/README.md#owned-formatjs-candidate-validation). Standalone DateTimeFormat
+Standalone DateTimeFormat
 composite typechecks and package_json_sync_test are required integration gates.
 
 ## CLDR Data Pipeline
@@ -382,7 +368,6 @@ conversion uses unary plus once; private Decimal objects no longer undergo a
 second observable ToPrimitive. TimeClip follows published ECMA-262 §21.4.1.31
 with captured finite/absolute/truncation operations and positive-zero
 normalization. Omitted format/formatToParts timestamps call captured Date.now.
-See the [section audit](audits/temporal-timeclip-audit.md) for TS/Rust mappings.
 
 `HandleDateTimeValue` produces the proposal's value-format record: selected format,
 exact epoch nanoseconds, and `isPlain`. Only its numeric branch applies TimeClip.
@@ -763,8 +748,7 @@ bazel run -c opt //crates/intl_datetimeformat:audit -- --benchmark --iterations=
 Integer rendering avoids Decimal for safe epoch-millisecond/offset addition and
 fractional-second truncation. Negative nanoseconds floor before Number conversion;
 fractional offsets retain Decimal addition before flooring. Numeric date fields
-also benefit from NumberFormat's exact-integer fixed-rounding path. See
-[arithmetic guards and measurements](audits/2026-10-31-datetimeformat-integer-rendering.md).
+also benefit from NumberFormat's exact-integer fixed-rounding path.
 
 ## Primary timezone identities
 

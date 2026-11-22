@@ -407,7 +407,31 @@ export function checkZonedArithmeticOracle(
       since,
       `New York overlap unchanged clock since ${smallestUnit}`
     )
+    equal(
+      overlapEnd.until(overlapStart, options).toString(),
+      '-PT23H30M',
+      `New York compatible reverse anchor until ${smallestUnit}`
+    )
+    equal(
+      overlapEnd.since(overlapStart, options).toString(),
+      'PT23H30M',
+      `New York compatible reverse anchor since ${smallestUnit}`
+    )
   }
+  const earlierFold = new Temporal.ZonedDateTime(
+    1_604_208_600_000_000_000n,
+    'America/New_York'
+  )
+  equal(
+    overlapEnd.until(earlierFold, {largestUnit: 'day'}).toString(),
+    '-PT30M',
+    'New York same-date overlap takes exact elapsed time'
+  )
+  equal(
+    overlapEnd.add('PT0S').epochNanoseconds,
+    overlapEnd.epochNanoseconds,
+    'New York zero-date addition keeps the chosen fold instant'
+  )
   // UTC's maximum Instant cannot supply a following local-day window.
   const maximum = new Temporal.ZonedDateTime(
     8_640_000_000_000_000_000_000n,

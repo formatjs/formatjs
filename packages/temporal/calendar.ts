@@ -619,6 +619,8 @@ export function calendarDateUntilRaw(
       'constrain'
     )
     // Temporal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
+    // https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses
+    // https://github.com/tc39/proposal-temporal/issues/3340
     return (
       sign *
         (candidate.year - last.year ||

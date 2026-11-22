@@ -1,5 +1,0 @@
-{
-  "packages/intl-datetimeformat/scripts/calendar-data/BUILD.bazel": "66b95744c43d533665ab3311b448e9d0842f6ae22a6406925d45a4907468096c",
-  "tools/generated.bzl": "be700a6f5f84e587bb51878d02c8fcf310494ca4d6171c4fade51879d811e642",
-  "packages/temporal/BUILD.bazel": "203faa3edef513ef3cdf773c23c0137e7ce5cbe8dbec0188433a293105769586"
-}

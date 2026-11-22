@@ -937,6 +937,7 @@ type DifferenceAnchor = {
       zoned: true
       calendar: string
       nominalDay(fields: DurationFields): number
+      compatibleOrigin(): bigint
     }
 )
 const differenceUnits = [
@@ -1155,6 +1156,9 @@ export function roundRelativeDifference(
       expanded = true
     }
     let expand = false
+    // §7.5.34 step 13 can divide by zero across a skipped day.
+    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit
+    // https://github.com/tc39/proposal-temporal/issues/3310
     if (a !== end) {
       const positive = physicalSign * sinceSign > 0n
       expand =
@@ -1200,7 +1204,12 @@ export function roundRelativeDifference(
     const date = {...result}
     for (let index = 4; index < differenceUnits.length; index++)
       date[`${differenceUnits[index]}s` as keyof DurationFields] = 0
-    const origin = anchor.endpoint(date),
+    // Proposal comparison §7.5.35 step 5: Resolve the origin wall clock even for zero date fields.
+    // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
+    const origin =
+        date.years || date.months || date.weeks || date.days
+          ? anchor.endpoint(date)
+          : anchor.compatibleOrigin(),
       next = {...date, days: date.days + sign},
       // Proposal comparison §7.5.35 step 6: The signed day step ensures compatible resolution.
       span = anchor.endpoint(next) - origin

@@ -13,9 +13,7 @@ repeated matches. Mutable best-fit arrays remain checked before cache reuse.
 matching that snapshot avoids a second validation scan. Later mutations retain
 first-match ordering and locale-data selection.
 
-[Constructor measurements](../../knowledge-base/audits/2026-10-31-numberformat-constructor-snapshots.md)
-compare warm construction with the same supported locales. Keep cold preparation,
-matching, construction and formatting measurements separate.
+Keep cold preparation, matching, construction and formatting measurements separate.
 
 ## Current measurements
 

@@ -342,6 +342,9 @@ function resolveOffsetNanoseconds(
 ): bigint {
   if (behavior === 'use') return validateInstant(localTime - provided)
   const instantLimit = 8_640_000_000_000_000_000_000n
+  // §6.5.1 step 7 checks the local date. Keep this guard while MakeDay is unresolved.
+  // https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset
+  // https://github.com/tc39/ecma262/issues/1087
   if (localTime < -instantLimit)
     throw new RangeErrorConstructor('Local date out of range')
   const candidates = kernel.possibleInstants(fields)
@@ -556,6 +559,7 @@ export function addZonedDuration(
   return getZonedSlot(add(slot, fields, undefined, 1))!.epochNanoseconds
 }
 // Proposal comparison §6.5.6 steps 1–3 and 14–15: Project endpoints and combine calendar and clock differences.
+// https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime
 export function unroundedZonedDifference(
   start: ZonedSlot,
   end: bigint,
@@ -571,38 +575,34 @@ export function unroundedZonedDifference(
     endLocal = local({...start, epochNanoseconds: end}),
     begin = epochDayOf(beginLocal),
     finish = epochDayOf(endLocal)
+  // Proposal comparison §6.5.6 steps 4.a–b: Use elapsed time on the same ISO date.
+  if (begin === finish)
+    return balanceDurationTime(end - start.epochNanoseconds, 4)
+  const originClock = timeOf(beginLocal),
+    direction = bigIntFrom(sign)
   let day = finish
-  if ((timeOf(endLocal) - timeOf(beginLocal)) * bigIntFrom(sign) < 0n)
-    day -= sign
-  if ((day - begin) * sign < 0) day = begin
-  let fields = dateUntil(
-    {epochDay: begin, calendar: start.calendar},
-    day,
-    largest
-  )
-  const anchorFor = (fields: DurationFields): bigint => {
-    try {
-      return addZonedDuration(start, fields)
-    } catch (error) {
-      if (!(error instanceof RangeErrorConstructor)) throw error
-      return bigIntFrom(sign) * 8_640_000_000_000_000_000_001n
-    }
-  }
-  let anchor = anchorFor(fields)
-  while ((anchor - end) * bigIntFrom(sign) > 0n) {
-    day -= sign
-    if ((day - begin) * sign < 0) {
-      fields = zeroDuration()
-      anchor = start.epochNanoseconds
-      break
-    }
-    fields = dateUntil(
-      {epochDay: begin, calendar: start.calendar},
-      day,
-      largest
+  if ((timeOf(endLocal) - originClock) * direction < 0n) day -= sign
+  if ((day - begin) * sign < 0)
+    return balanceDurationTime(end - start.epochNanoseconds, 4)
+  const zone = zonedKernel(start.timeZone)
+  let anchor: bigint
+  while (true) {
+    // Proposal comparison §6.5.6 steps 11.a–c: Resolve the raw ISO probe before calendar difference.
+    anchor = zone.resolve(
+      epochNanosecondsToISO(bigIntFrom(day) * nsPerDay + originClock)
     )
-    anchor = anchorFor(fields)
+    if ((anchor - end) * direction <= 0n) break
+    day -= sign
+    // Step 12 can fail when a midnight fold makes every compatible probe overshoot.
+    // Related backward-shift failure: https://github.com/tc39/proposal-temporal/issues/3311
+    if ((day - begin) * sign < 0)
+      return balanceDurationTime(end - start.epochNanoseconds, 4)
   }
+  // Proposal comparison §6.5.6 step 14 and §12.3.9 step 2: Use the selected date.
+  const fields =
+    day === begin
+      ? zeroDuration()
+      : dateUntil({epochDay: begin, calendar: start.calendar}, day, largest)
   // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
   const time = balanceDurationTime(end - anchor, 4)
   for (let i = 0; i < clockNames.length; i++) {
@@ -695,6 +695,12 @@ export function differenceZonedDuration(
           ),
         // Step 5 uses the original local clock, zone and calendar.
         endpoint: fields => addZonedDuration(start, fields),
+        // Proposal comparison §7.5.35 step 5: Resolve the zero-date clock anchor compatibly.
+        // https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime
+        compatibleOrigin: () =>
+          zonedKernel(start.timeZone).resolve(
+            epochNanosecondsToISO(local(start))
+          ),
       }
     )
   )

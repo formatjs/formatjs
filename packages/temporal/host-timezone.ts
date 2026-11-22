@@ -399,7 +399,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     const floorSecond = (value: bigint) =>
       // Proposal comparison §6.3.46 steps 9.a, 10.b: floor negative and positive probes to whole seconds.
       value / second - (value < 0n && value % second ? 1n : 0n)
-    const earliest = -5364662400n // IANA transitions begin after 1800.
+    // Proposal comparison §6.3.46 steps 9.a and 10.b: Probe the second before the 1800 floor.
+    const earliest = -5_364_662_400n - 1n
     const horizon = 3n * 366n * 86400n
     const now = floorSecond(bigIntFrom(nowMilliseconds()) * 1000000n)
     const lastExplicit = bigIntFrom(lastExplicitTransition)

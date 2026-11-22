@@ -352,6 +352,8 @@ it.each([
 )
 
 it('preserves minimum-Instant parsing despite the MakeDay witness ambiguity', () => {
+  // ECMA-262 §21.4.1.28 step 8: https://tc39.es/ecma262/#sec-makeday
+  // https://github.com/tc39/ecma262/issues/1087
   expect(
     Temporal.ZonedDateTime.from('-271821-04-20T00:00Z[UTC]').epochNanoseconds
   ).toBe(-8_640_000_000_000_000_000_000n)
