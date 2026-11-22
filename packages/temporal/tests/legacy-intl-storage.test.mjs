@@ -152,6 +152,43 @@ assert.notEqual(
   'Exercise installed native-Intl bridge'
 )
 {
+  const defineProperty = Object.defineProperty
+  const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+  const originalBound = getOwnPropertyDescriptor(Object.prototype, 'bound')
+  const [value] = cases[0].values(Temporal)
+  const formatter = new Intl.DateTimeFormat('en', cases[0].options)
+  const receiver = Object.create(Intl.DateTimeFormat.prototype)
+  const probe = Object.create(Native.prototype)
+  const chainSupported = Native.call(probe, 'en') === probe
+  let bound, chained
+  try {
+    defineProperty(Object.prototype, 'bound', {
+      configurable: true,
+      get() {
+        throw new Error('Unexpected inherited bound formatter')
+      },
+    })
+    Object.defineProperty = () => {
+      throw new Error('Unexpected mutable Object.defineProperty')
+    }
+    bound = formatter.format
+    if (chainSupported)
+      chained = Intl.DateTimeFormat.call(receiver, 'en', cases[0].options)
+  } finally {
+    Object.defineProperty = defineProperty
+    if (originalBound) defineProperty(Object.prototype, 'bound', originalBound)
+    else Reflect.deleteProperty(Object.prototype, 'bound')
+  }
+  assert.equal(bound, formatter.format, 'The bound formatter is cached')
+  assert.equal(bound.name, '')
+  assert.equal(bound.length, 1)
+  assert.equal(bound(value), cases[0].expected.text)
+  if (chainSupported) {
+    assert.equal(chained, receiver)
+    assert.equal(chained.format(value), cases[0].expected.text)
+  }
+}
+{
   const hooks = [
     [Array.prototype, 'map'],
     [Array.prototype, 'find'],

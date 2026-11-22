@@ -31,6 +31,7 @@ const now = Date.now
 // https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
 const construct = Reflect.construct
+const defineProperty = Object.defineProperty
 const WeakMapConstructor = WeakMap
 const MapConstructor = Map
 const weakMapGet = WeakMap.prototype.get
@@ -72,7 +73,7 @@ export function installLegacyDateTimeFormat(
     locale: string
     calendar: string
     options: Record<string, unknown>
-    bound?: (value?: unknown) => string
+    bound: ((value?: unknown) => string) | undefined
     projections: Map<string, Intl.DateTimeFormat>
   }
   const states = new WeakMapConstructor<object, State>()
@@ -199,6 +200,7 @@ export function installLegacyDateTimeFormat(
       locale: resolved.locale,
       calendar: resolved.calendar,
       options: snapshot,
+      bound: undefined,
       projections: new MapConstructor(),
     }
     apply(weakMapSet, states, [formatter, state])
@@ -207,8 +209,8 @@ export function installLegacyDateTimeFormat(
   }
   class LegacyDateTimeFormat {
     get format(): (value?: unknown) => string {
-      // ECMA-402 §11.3.3 steps 4–5: Reuse the native bound formatter or the
-      // cached adapter.
+      // ECMA-402 §11.3.3 steps 4–5 cache the bound formatter on the private state.
+      // https://tc39.es/ecma402/#sec-intl.datetimeformat.prototype.format
       const bound = apply(nativeFormat, this, [])
       const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
@@ -226,7 +228,6 @@ export function installLegacyDateTimeFormat(
               )
             : apply(nativeFormat, state.formatter, [])()
         }
-        Object.defineProperty(state.bound, 'name', {value: ''})
       }
       return state.bound
     }
@@ -284,12 +285,16 @@ export function installLegacyDateTimeFormat(
     // constructor target.
     const formatter = create(locales, options, new.target || DateTimeFormat)
     if (!new.target && legacySymbol && apply(hasInstance, Native, [this])) {
-      Object.defineProperty(this, legacySymbol, {
+      // ECMA-402 §11.1.1.1 step 1.a defines the private fallback symbol.
+      // https://tc39.es/ecma402/#sec-chaindatetimeformat
+      const descriptor = {
+        __proto__: null,
         value: formatter,
         writable: false,
         enumerable: false,
         configurable: false,
-      })
+      }
+      defineProperty(this, legacySymbol, descriptor)
       return this as Intl.DateTimeFormat
     }
     return formatter
