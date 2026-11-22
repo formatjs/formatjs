@@ -23,6 +23,9 @@ export interface LegacyDateTimeProjection {
 }
 const limit = 8640000000000000
 const cycle = 146097 * 86400000
+// ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
+const apply = Reflect.apply
 const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
   NumberConstructor &&
@@ -67,7 +70,7 @@ function gregorian(
   resolved: Resolved
 ): boolean {
   // ECMA-402 §11.5.11 step 4.a: identify Gregorian-style projections.
-  const calendar = resolved.call(formatter).calendar
+  const calendar = apply(resolved, formatter, []).calendar
   return calendar === 'iso8601' || calendar === 'gregory'
 }
 function shift(value: LegacyDateTimeProjection): number {
@@ -85,13 +88,13 @@ function years(
       'Extended Gregorian dates require Intl.NumberFormat'
     )
   // ECMA-402 §11.5.4 steps 1 and 3–5: preserve locale and numbering system.
-  const options = resolved.call(value.formatter),
+  const options = apply(resolved, value.formatter, []),
     formatter = new NumberConstructor(options.locale, {
       numberingSystem: options.numberingSystem,
       useGrouping: false,
       maximumFractionDigits: 0,
     }),
-    format = numberFormat.call(formatter) as (value: number) => string,
+    format = apply(numberFormat, formatter, []) as (value: number) => string,
     // ECMA-262 §21.4.1.7 step 1: find the real and surrogate years.
     year = YearFromTime(value.milliseconds),
     surrogate = YearFromTime(value.milliseconds + delta),
@@ -125,14 +128,14 @@ export function legacyDateTimeParts(
   if (!clipped(value) || !gregorian(value.formatter, resolved))
     return correctLunisolarParts(
       value,
-      parts.call(value.formatter, value.milliseconds),
+      apply(parts, value.formatter, [value.milliseconds]),
       resolved
     )
   const delta = shift(value),
     rewrite = years(value, delta, resolved)
   // ECMA-402 §11.5.7 step 1: partition the surrogate and restore its year.
   return replacePartValues(
-    parts.call(value.formatter, value.milliseconds + delta),
+    apply(parts, value.formatter, [value.milliseconds + delta]),
     'year',
     // ECMA-402 §11.5.7 step 4.c: restore the returned year value.
     part => rewrite(part.value)
@@ -152,16 +155,16 @@ export function legacyDateTimeFormat(
   // ECMA-402 §11.5.6 steps 2–4: Concatenate corrected calendar part values.
   if (calendar) return joinPartValues(calendar)
   if (!clipped(value) || !gregorian(value.formatter, resolved)) {
-    const calendar = resolved.call(value.formatter).calendar
+    const calendar = apply(resolved, value.formatter, []).calendar
     if (calendar !== 'chinese' && calendar !== 'dangi')
       // ECMA-402 §11.3.3 step 4.a.ii: forward the ordinary numeric format call.
-      return format.call(value.formatter)(value.milliseconds)
-    const raw = parts.call(value.formatter, value.milliseconds),
+      return apply(format, value.formatter, [])(value.milliseconds)
+    const raw = apply(parts, value.formatter, [value.milliseconds]),
       corrected = correctLunisolarParts(value, raw, resolved)
     // ECMA-402 §11.5.6 steps 2–4: Concatenate corrected lunar parts when the
     // host labels changed.
     return corrected === raw
-      ? format.call(value.formatter)(value.milliseconds)
+      ? apply(format, value.formatter, [])(value.milliseconds)
       : joinPartValues(corrected)
   }
   // ECMA-402 §11.5.6 steps 2–4: Concatenate restored parts for the extended
@@ -206,7 +209,10 @@ export function legacyDateTimeRangeParts(
     !gregorian(first.formatter, resolved)
   )
     // ECMA-402 §11.5.10 step 1: delegate range partitioning on the native path.
-    return parts.call(first.formatter, first.milliseconds, last.milliseconds)
+    return apply(parts, first.formatter, [
+      first.milliseconds,
+      last.milliseconds,
+    ])
   const shifts = rangeShifts(first, last),
     start = shifts[0],
     end = shifts[1],
@@ -214,11 +220,10 @@ export function legacyDateTimeRangeParts(
     rewriteEnd = years(last, end, resolved)
   // ECMA-402 §11.5.8 steps 19.c–e: choose the year rewrite by part source.
   return replacePartValues(
-    parts.call(
-      first.formatter,
+    apply(parts, first.formatter, [
       first.milliseconds + start,
-      last.milliseconds + end
-    ),
+      last.milliseconds + end,
+    ]),
     'year',
     // ECMA-402 §11.5.8 steps 19.c–e: choose the rewrite by part source.
     part => (part.source === 'endRange' ? rewriteEnd : rewriteStart)(part.value)
@@ -249,7 +254,10 @@ export function legacyDateTimeRangeFormat(
     !gregorian(first.formatter, resolved)
   )
     // ECMA-402 §11.3.4 step 6: forward the unchanged numeric range.
-    return format.call(first.formatter, first.milliseconds, last.milliseconds)
+    return apply(format, first.formatter, [
+      first.milliseconds,
+      last.milliseconds,
+    ])
   // ECMA-402 §11.5.9 steps 2–4: Concatenate the corrected extended range
   // values.
   return joinPartValues(legacyDateTimeRangeParts(first, last, parts, resolved))

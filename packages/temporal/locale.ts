@@ -174,7 +174,7 @@ export function legacyDateTimeProjection(
     },
   })
   const first = new Constructor(locales as string | string[] | undefined, proxy)
-  const resolved = intrinsics.resolvedOptions.call(first)
+  const resolved = apply(intrinsics.resolvedOptions, first, [])
   // Proposal comparison §15.4.1 steps 45.b–c: reject required-style conflicts first.
   // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   const dateStyle = snapshot.dateStyle,
@@ -371,8 +371,8 @@ function legacyStyleFields(
   // Proposal comparison §15.4.1 step 45.e: style selection uses private Lists.
   // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
   const parts = [
-    formatToParts.call(style, probes[0]),
-    formatToParts.call(style, probes[1]),
+    apply(formatToParts, style, [probes[0]]),
+    apply(formatToParts, style, [probes[1]]),
   ]
   const defaults: Record<string, string> = {
     weekday: 'long',
@@ -427,7 +427,7 @@ function legacyStyleFields(
           probes,
           // Host metadata for Temporal comparison §15.4.1 step 45.e: compare widths.
           (probe, index) =>
-            text(formatToParts.call(candidate, probe), key) ===
+            text(apply(formatToParts, candidate, [probe]), key) ===
             text(parts[index], key)
         )
       ) {

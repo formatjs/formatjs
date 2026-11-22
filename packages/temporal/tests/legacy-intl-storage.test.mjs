@@ -137,12 +137,50 @@ const {Temporal} = await load('index.js')
     assert.equal(actual, expected, label)
   }
 }
+const nativeFormatterMethods = [
+  Native.prototype.resolvedOptions,
+  Native.prototype.formatToParts,
+  Native.prototype.formatRange,
+  Native.prototype.formatRangeToParts,
+  Object.getOwnPropertyDescriptor(Native.prototype, 'format').get,
+  Object.getOwnPropertyDescriptor(Intl.NumberFormat.prototype, 'format').get,
+]
 await load('polyfill-force.js')
 assert.notEqual(
   Intl.DateTimeFormat,
   Native,
   'Exercise installed native-Intl bridge'
 )
+{
+  const [first, last] = cases[1].values(Temporal)
+  const formatter = new Intl.DateTimeFormat('en', cases[1].options)
+  const style = new Temporal.PlainYearMonth(2024, 2, 'gregory')
+  const operations = [
+    () => formatter.format(first),
+    () => formatter.formatToParts(first),
+    () => formatter.formatRange(first, last),
+    () => formatter.formatRangeToParts(first, last),
+    () => new Intl.DateTimeFormat('en', cases[1].options).format(first),
+    () => style.toLocaleString('en', {calendar: 'gregory', dateStyle: 'full'}),
+  ]
+  const expected = operations.map(run => run())
+  try {
+    for (const hook of nativeFormatterMethods) {
+      Object.defineProperty(hook, 'call', {
+        configurable: true,
+        get() {
+          throw new Error('Unexpected legacy formatter call lookup')
+        },
+      })
+    }
+    assert.deepEqual(
+      operations.map(run => run()),
+      expected
+    )
+  } finally {
+    for (const hook of nativeFormatterMethods) delete hook.call
+  }
+}
 let scenarios = 0
 for (const sample of cases) {
   const [first, last] = sample.values(Temporal)

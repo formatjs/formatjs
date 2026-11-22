@@ -20,6 +20,9 @@ import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-
 type Calendar = 'chinese' | 'dangi'
 type Resolved = typeof Intl.DateTimeFormat.prototype.resolvedOptions
 type RangeParts = typeof Intl.DateTimeFormat.prototype.formatRangeToParts
+// ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
+const apply = Reflect.apply
 const Constructor = globalThis.Intl?.DateTimeFormat
 const nativeParts = Constructor?.prototype.formatToParts
 const NumberConstructor = globalThis.Intl?.NumberFormat
@@ -85,7 +88,7 @@ export function hostBuddhistMonth(
 ): number | undefined {
   // ECMA-402 §11.5.4 steps 12 and 15.f.iii, v and viii: read the raw ordinal
   // independently of the original formatter's localized month label.
-  const parts = nativeParts!.call(probe('buddhist', timeZone), milliseconds)
+  const parts = apply(nativeParts!, probe('buddhist', timeZone), [milliseconds])
   for (let index = 0; index < parts.length; index++) {
     const {type, value} = parts[index]
     if (type !== 'month') continue
@@ -105,7 +108,7 @@ export function hostBuddhistDateMatches(
   day: number
 ): boolean {
   // ECMA-402 §11.5.11 steps 3 and 5.a: verify the host's projected date.
-  const parts = nativeParts!.call(probe('buddhist', 'UTC'), milliseconds)
+  const parts = apply(nativeParts!, probe('buddhist', 'UTC'), [milliseconds])
   let readYear: number | undefined
   let readMonth: number | undefined
   let readDay: number | undefined
@@ -125,7 +128,7 @@ function fields(
 ): {year: number; month: number; day: number; monthCode: string} {
   const formatter = probe(calendar, timeZone)
   const values = new Map<string, string>(
-    nativeParts!.call(formatter, milliseconds).map(
+    apply(nativeParts!, formatter, [milliseconds]).map(
       // ECMA-402 §11.5.7 steps 4.b–c: read the emitted type and value.
       part => [part.type, part.value]
     )
@@ -151,7 +154,7 @@ function fields(
   if (calendar === 'iso8601') {
     let positive = positiveEras.get(formatter)
     if (positive === undefined) {
-      positive = nativeParts!.call(formatter, 0).find(
+      positive = apply(nativeParts!, formatter, [0]).find(
         // ECMA-402 §11.5.7 step 4.b: find the era type on the host control.
         part => part.type === 'era'
       )?.value
@@ -274,8 +277,14 @@ export function lunisolarUtcLeapMonthRange(
   const startSample = sample(first, left, -1) ?? sample(first, left, 1)
   const endSample = sample(last, right, 1) ?? sample(last, right, -1)
   if (startSample === undefined || endSample === undefined) return undefined
-  const starts = rangeParts.call(first.formatter, first.milliseconds, endSample)
-  const ends = rangeParts.call(first.formatter, startSample, last.milliseconds)
+  const starts = apply(rangeParts, first.formatter, [
+    first.milliseconds,
+    endSample,
+  ])
+  const ends = apply(rangeParts, first.formatter, [
+    startSample,
+    last.milliseconds,
+  ])
   // ECMA-402 §11.5.8 steps 19.c–f: keep the weekday of each tagged endpoint.
   // Both controls must agree on the other date and clock fields and literals.
   // If the base displays Month, require its label at both endpoints.
@@ -381,7 +390,7 @@ function part(
   type: string
 ): string {
   // ECMA-402 §11.5.7 step 1: get the requested label from a native partition.
-  const value = nativeParts!.call(source, epoch * dayMilliseconds).find(
+  const value = apply(nativeParts!, source, [epoch * dayMilliseconds]).find(
     // ECMA-402 §11.5.7 step 4.b: select the emitted type.
     part => part.type === type
   )
@@ -423,7 +432,7 @@ export function correctLunisolarParts(
   expectedEpochDay?: number,
   rangeFields?: LunisolarRangeFields
 ): Intl.DateTimeFormatPart[] {
-  const options = resolved.call(value.formatter),
+  const options = apply(resolved, value.formatter, []),
     calendar = options.calendar
   if (
     (calendar !== 'chinese' && calendar !== 'dangi') ||
@@ -505,25 +514,29 @@ export function correctLunisolarParts(
           throw new RangeErrorConstructor(
             'Calendar year correction requires Intl.NumberFormat'
           )
-        const format = numberFormat.call(
+        const format = apply(
+            numberFormat,
             new NumberConstructor(options.locale, {
               numberingSystem: options.numberingSystem,
               useGrouping: false,
               maximumFractionDigits: 0,
-            })
+            }),
+            []
           ),
           sample = part(labels, isoDay(2001, 7, 1), item.type),
           short = sample !== format(2001)
         changes.set(
           item.type,
           short
-            ? numberFormat.call(
+            ? apply(
+                numberFormat,
                 new NumberConstructor(options.locale, {
                   numberingSystem: options.numberingSystem,
                   useGrouping: false,
                   minimumIntegerDigits: 2,
                   maximumFractionDigits: 0,
-                })
+                }),
+                []
               )(((expected.year % 100) + 100) % 100)
             : format(expected.year)
         )
@@ -547,7 +560,7 @@ export function lunisolarRangeParts(
   parts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
-  const calendar = resolved.call(first.formatter).calendar
+  const calendar = apply(resolved, first.formatter, []).calendar
   if (
     (calendar !== 'chinese' && calendar !== 'dangi') ||
     !nativeParts ||
@@ -555,13 +568,12 @@ export function lunisolarRangeParts(
   )
     return undefined
   // ECMA-402 §11.5.10 step 1: retain native range partition when fields agree.
-  const raw = parts.call(
-      first.formatter,
+  const raw = apply(parts, first.formatter, [
       first.milliseconds,
-      last.milliseconds
-    ),
-    firstRaw = nativeParts.call(first.formatter, first.milliseconds),
-    lastRaw = nativeParts.call(last.formatter, last.milliseconds),
+      last.milliseconds,
+    ]),
+    firstRaw = apply(nativeParts, first.formatter, [first.milliseconds]),
+    lastRaw = apply(nativeParts, last.formatter, [last.milliseconds]),
     start = correctLunisolarParts(first, firstRaw, resolved),
     end = correctLunisolarParts(last, lastRaw, resolved)
   if (start === firstRaw && end === lastRaw) return raw
@@ -596,7 +608,7 @@ export function joinCalendarRangeParts(
   if (separator === undefined) {
     // ECMA-402 §11.5.8 steps 18–19: sample a separator for the compatibility
     // fallback.
-    const sample = parts.call(formatter, 946718033000, 1025966286000),
+    const sample = apply(parts, formatter, [946718033000, 1025966286000]),
       end = sample.findIndex(
         // ECMA-402 §11.5.10 step 4.d: read the host sample's endpoint tag.
         part => part.source === 'endRange'

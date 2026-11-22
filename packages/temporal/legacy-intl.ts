@@ -26,6 +26,8 @@ import {
 } from '#packages/temporal/legacy-extended-date.js'
 
 const now = Date.now
+// ECMA-262 §28.1.1 step 4 invokes the captured Intl methods directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
 const construct = Reflect.construct
 const WeakMapConstructor = WeakMap
@@ -187,7 +189,7 @@ export function installLegacyDateTimeFormat(
       [locales, tracked],
       newTarget
     ) as Intl.DateTimeFormat
-    const resolved = nativeResolved.call(formatter)
+    const resolved = apply(nativeResolved, formatter, [])
     const state: State = {
       formatter,
       locale: resolved.locale,
@@ -196,14 +198,14 @@ export function installLegacyDateTimeFormat(
       projections: new MapConstructor(),
     }
     apply(weakMapSet, states, [formatter, state])
-    apply(weakMapSet, boundStates, [nativeFormat.call(formatter), state])
+    apply(weakMapSet, boundStates, [apply(nativeFormat, formatter, []), state])
     return formatter
   }
   class LegacyDateTimeFormat {
     get format(): (value?: unknown) => string {
       // ECMA-402 §11.3.3 steps 4–5: Reuse the native bound formatter or the
       // cached adapter.
-      const bound = nativeFormat.call(this)
+      const bound = apply(nativeFormat, this, [])
       const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
       if (!state.bound) {
@@ -218,7 +220,7 @@ export function installLegacyDateTimeFormat(
                 nativeParts,
                 nativeResolved
               )
-            : nativeFormat.call(state.formatter)()
+            : apply(nativeFormat, state.formatter, [])()
         }
         Object.defineProperty(state.bound, 'name', {value: ''})
       }
@@ -232,7 +234,7 @@ export function installLegacyDateTimeFormat(
       const value = single(state, input)
       return value
         ? legacyDateTimeParts(value, nativeParts, nativeResolved)
-        : nativeParts.call(state.formatter)
+        : apply(nativeParts, state.formatter, [])
     }
     formatRange(start: unknown, end: unknown): string {
       const state: State | undefined = apply(weakMapGet, states, [this])
@@ -277,7 +279,7 @@ export function installLegacyDateTimeFormat(
     // ECMA-402 §11.1.1 step 2: Create the formatter with the selected
     // constructor target.
     const formatter = create(locales, options, new.target || DateTimeFormat)
-    if (!new.target && legacySymbol && hasInstance.call(Native, this)) {
+    if (!new.target && legacySymbol && apply(hasInstance, Native, [this])) {
       Object.defineProperty(this, legacySymbol, {
         value: formatter,
         writable: false,

@@ -62,6 +62,9 @@ interface CalendarRangeFields extends LunisolarRangeFields {
   numericYear: NumericRangeYear | undefined
 }
 
+// ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
+const apply = Reflect.apply
 const Constructor = globalThis.Intl?.DateTimeFormat
 const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
@@ -115,13 +118,15 @@ function number(
     )
   // ECMA-402 §11.5.4 steps 3–5 and 7–10: reuse localized ungrouped integer
   // digits.
-  const result = numberFormat.call(
+  const result = apply(
+    numberFormat,
     new NumberConstructor(options.locale, {
       numberingSystem: options.numberingSystem,
       useGrouping: false,
       minimumIntegerDigits: digits,
       maximumFractionDigits: 0,
-    })
+    }),
+    []
   )
   cache.set(digits, result)
   return result
@@ -219,7 +224,7 @@ function eraWidth(
       options.locale,
       eraOptions(options, options.calendar, width)
     )
-    if (firstPart(parts.call(formatter, surrogate), 'era') === original) {
+    if (firstPart(apply(parts, formatter, [surrogate]), 'era') === original) {
       eraWidths.set(source, width)
       return width
     }
@@ -282,7 +287,7 @@ function eraLabel(
   )
   // ECMA-402 §11.5.4 step 15.f.x: read the host label for that era and width.
   const value = firstPart(
-    parts.call(formatter, sample * dayMilliseconds),
+    apply(parts, formatter, [sample * dayMilliseconds]),
     'era'
   )
   cache.set(key, value)
@@ -296,7 +301,7 @@ export function legacyCalendarParts(
   rangeFields?: CalendarRangeFields
 ): Intl.DateTimeFormatPart[] | undefined {
   // ECMA-402 §11.5.4 step 12: select the calendar for date-field restoration.
-  const options = resolved.call(value.formatter),
+  const options = apply(resolved, value.formatter, []),
     calendar = options.calendar as CalendarId
   if (
     calendar === 'iso8601' ||
@@ -322,7 +327,7 @@ export function legacyCalendarParts(
     let surrogate: number | undefined
     try {
       // ECMA-402 §11.5.7 step 1: ask the host for the original partition.
-      raw = parts.call(value.formatter, value.milliseconds)
+      raw = apply(parts, value.formatter, [value.milliseconds])
       if (
         !arraySome(
           raw,
@@ -363,17 +368,17 @@ export function legacyCalendarParts(
       }
       // ECMA-402 §11.5.4 steps 12 and 15.c–g: take clock and zone parts from
       // the real instant.
-      const clockParts = parts.call(clock, value.milliseconds)
+      const clockParts = apply(parts, clock, [value.milliseconds])
       labels = calendarLabelFormatter(
         value.formatter,
         options,
-        lunar ? parts.call(value.formatter, reference) : clockParts
+        lunar ? apply(parts, value.formatter, [reference]) : clockParts
       )
       const local = epoch * dayMilliseconds
       surrogate = local - floor((local - 946684800000) / cycle) * cycle
       // ECMA-402 §11.5.4 steps 13–15: use surrogate labels and retain the real
       // clock parts.
-      raw = parts.call(labels, surrogate).map(
+      raw = apply(parts, labels, [surrogate]).map(
         // ECMA-402 §11.5.7 steps 4.b–c: retain types and restore real clock values.
         part =>
           clockTypes.has(part.type)
@@ -408,7 +413,7 @@ export function legacyCalendarParts(
   const surrogate =
       value.milliseconds -
       floor((value.milliseconds - 946684800000) / cycle) * cycle,
-    raw = parts.call(value.formatter, surrogate)
+    raw = apply(parts, value.formatter, [surrogate])
   if (
     !arraySome(
       raw,
@@ -464,7 +469,7 @@ function restoreCalendarParts(
       date.monthCode,
       monthsInYear(calendar, date.year) === 13
     ),
-    controls = parts.call(labels, sample * dayMilliseconds),
+    controls = apply(parts, labels, [sample * dayMilliseconds]),
     sampleEra = calendarEra(calendar, sample, true),
     sampleYear =
       sampleEra?.eraYear ?? calendarFromEpochDayRaw(calendar, sample).year,
@@ -529,7 +534,7 @@ function restoreCalendarParts(
     )
       changes.set(
         'year',
-        firstPart(parts.call(value.formatter, value.milliseconds), 'year')
+        firstPart(apply(parts, value.formatter, [value.milliseconds]), 'year')
       )
   }
   // ECMA-402 §11.5.4 step 15.f.x: reuse the month label from the control
@@ -775,11 +780,10 @@ function restoreLunisolarRangeDays(
   const widths = (day: number): NumericWidths => [format(day), formatTwo(day)]
   const firstDay = {raw: widths(days[0][0]), corrected: widths(days[0][1])}
   const lastDay = {raw: widths(days[1][0]), corrected: widths(days[1][1])}
-  const parts = rangeParts.call(
-    first.formatter,
+  const parts = apply(rangeParts, first.formatter, [
     first.milliseconds,
-    last.milliseconds
-  )
+    last.milliseconds,
+  ])
   let start: {part: Intl.DateTimeRangeFormatPart; value: string} | undefined
   let end: {part: Intl.DateTimeRangeFormatPart; value: string} | undefined
   for (let index = 0; index < parts.length; index++) {
@@ -857,7 +861,10 @@ function projectedBuddhistRange(
 
   // ECMA-402 §11.5.8 steps 7–8, 15.d and 19.e: a common cycle preserves
   // the compared date fields. Keep the host pattern, including added fields.
-  const result = rangeParts.call(first.formatter, projectedStart, projectedEnd)
+  const result = apply(rangeParts, first.formatter, [
+    projectedStart,
+    projectedEnd,
+  ])
   const numeric = number(first.formatter, options, 1)
   const padded = number(first.formatter, options, 2)
   for (let index = 0; index < result.length; index++) {
@@ -886,7 +893,7 @@ export function legacyCalendarRangeParts(
   rangeParts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
-  const options = resolved.call(first.formatter)
+  const options = apply(resolved, first.formatter, [])
   const {calendar, timeZone} = options
   if (
     calendar === 'iso8601' ||
@@ -911,7 +918,7 @@ export function legacyCalendarRangeParts(
       legacyCalendarParts(first, parts, resolved, firstFields) ??
       correctLunisolarParts(
         first,
-        parts.call(first.formatter, first.milliseconds),
+        apply(parts, first.formatter, [first.milliseconds]),
         resolved,
         undefined,
         undefined,
@@ -921,7 +928,7 @@ export function legacyCalendarRangeParts(
       legacyCalendarParts(last, parts, resolved, lastFields) ??
       correctLunisolarParts(
         last,
-        parts.call(last.formatter, last.milliseconds),
+        apply(parts, last.formatter, [last.milliseconds]),
         resolved,
         undefined,
         undefined,
@@ -958,12 +965,12 @@ export function legacyCalendarRangeParts(
         )
       // ECMA-402 §11.5.10 step 1: keep native partitioning for unchanged
       // endpoints.
-      const rawStart = parts.call(first.formatter, first.milliseconds),
+      const rawStart = apply(parts, first.formatter, [first.milliseconds]),
         startUnchanged = same(start, rawStart)
       let rawEnd: Intl.DateTimeFormatPart[] | undefined
       let endUnchanged = false
       if (startUnchanged) {
-        rawEnd = parts.call(last.formatter, last.milliseconds)
+        rawEnd = apply(parts, last.formatter, [last.milliseconds])
         endUnchanged = same(end, rawEnd)
         // ECMA-402 §11.5.8 step 15.d.v: identical narrow labels do not
         // establish equality of the native and corrected month fields.
@@ -977,11 +984,10 @@ export function legacyCalendarRangeParts(
               lastFields.narrowMonth)
         ) {
           if (!regularLeap) return undefined
-          const raw = rangeParts.call(
-            first.formatter,
+          const raw = apply(rangeParts, first.formatter, [
             first.milliseconds,
-            last.milliseconds
-          )
+            last.milliseconds,
+          ])
           if (
             !arraySome(
               raw,
@@ -1064,7 +1070,7 @@ export function legacyCalendarRangeParts(
             firstYear.textualMonth !== lastYear.textualMonth)) &&
         matchesNumericRangeYear(rawStart, start, firstYear) &&
         matchesNumericRangeYear(
-          (rawEnd ??= parts.call(last.formatter, last.milliseconds)),
+          (rawEnd ??= apply(parts, last.formatter, [last.milliseconds])),
           end,
           lastYear
         ) &&
@@ -1076,11 +1082,10 @@ export function legacyCalendarRangeParts(
             lastYear.textualMonth)
       ) {
         const years = restoreNumericRangeYears(
-          rangeParts.call(
-            first.formatter,
+          apply(rangeParts, first.formatter, [
             first.milliseconds,
-            last.milliseconds
-          ),
+            last.milliseconds,
+          ]),
           firstYear,
           lastYear
         )

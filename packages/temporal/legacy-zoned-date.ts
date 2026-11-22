@@ -15,6 +15,8 @@ import {
 
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
 type ZoneCache = Map<string, HostTimeZone['offsetNanoseconds'] | undefined>
+// ECMA-262 §28.1.1 step 4 invokes the captured formatter directly.
+// https://tc39.es/ecma262/#sec-reflect.apply
 const apply = Reflect.apply
 const MapConstructor = Map
 const mapGet = MapConstructor.prototype.get
@@ -67,7 +69,7 @@ export function legacyZonedProjection(
     ...selected,
     timeZone: 'UTC',
   } as Intl.DateTimeFormatOptions)
-  const probe = parts.call(formatter, 0)
+  const probe = apply(parts, formatter, [0])
   let timeZoneName: string | undefined
   if (
     arraySome(
@@ -102,20 +104,19 @@ function offsetName(
   const label = (timeZone: string, long: boolean, latin = false): string =>
     // ECMA-402 §11.5.4 step 15.e.iv: Sample the host zone label at the
     // requested width.
-    parts
-      .call(
-        new Constructor(resolved.locale, {
-          timeZone,
-          timeZoneName: long ? 'long' : 'short',
-          numberingSystem: latin ? 'latn' : resolved.numberingSystem,
-          hour: 'numeric',
-        }),
-        0
-      )
-      .find(
-        // ECMA-402 §11.5.7 step 4.b: select the host timezone-name part.
-        part => part.type === 'timeZoneName'
-      )!.value
+    apply(
+      parts,
+      new Constructor(resolved.locale, {
+        timeZone,
+        timeZoneName: long ? 'long' : 'short',
+        numberingSystem: latin ? 'latn' : resolved.numberingSystem,
+        hour: 'numeric',
+      }),
+      [0]
+    ).find(
+      // ECMA-402 §11.5.7 step 4.b: select the host timezone-name part.
+      part => part.type === 'timeZoneName'
+    )!.value
   // ECMA-402 §11.5.4 step 15.e.iv: Build the localized offset label from host
   // controls.
   if (offset === 0n) return label('Etc/GMT', long)
@@ -136,13 +137,15 @@ function offsetName(
   const numeric = (digits: number): ((value: number) => string) =>
     // ECMA-402 §11.5.4 steps 3–10: Use localized integer digits in the offset
     // label.
-    numberFormat.call(
+    apply(
+      numberFormat,
       new NumberConstructor(resolved.locale, {
         numberingSystem,
         minimumIntegerDigits: digits,
         useGrouping: false,
         maximumFractionDigits: 0,
-      })
+      }),
+      []
     )
   const number = numeric(long ? 2 : 1),
     two = numeric(2)
