@@ -14,7 +14,9 @@ The Buddhist providers return signed years −1/0/1 for ISO January 1 in
 −000544/−000543/−000542. Following that step renders year parts 2/1/1.
 
 The native Intl control instead returns −1/0/1. The [year audit](temporal-calendar-year-audit.md) includes failing TS/Rust
-witnesses, the correction and exact source mapping. Native output is diagnostic
+witnesses, the corrections in TS/Rust and the native Intl bridge, and exact
+source mapping. Independent ICU fixture era years remain raw; formatting
+assertions apply the published display rule. Native output is diagnostic
 evidence, not the expected result for these tests.
 
 This is an implementation/specification disagreement, not a proven internal

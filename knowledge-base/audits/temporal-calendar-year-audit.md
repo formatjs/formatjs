@@ -86,3 +86,54 @@ passes 22 cases, including the three new locale controls. The 12,808-case ICU4J
 snapshot gate passes unchanged (44.4 seconds). Its existing classification rules
 do not turn the new year-zero native disagreement into parity; that boundary is
 covered by the explicit spec-derived tests above.
+
+## Native Intl bridge follow-up
+
+The separate native bridge still formatted raw provider era years, bypassing the
+TS/Rust pattern producers above. The same published §11.5.4 step 15.f.iv therefore
+required a correction in [restoreCalendarParts:361–384](../../packages/temporal/legacy-calendar-date.ts#L361).
+It selects the existing era-year/date-year representation, converts a nonpositive
+year to `1 - year`, then applies numeric or two-digit rendering. Calendar fields,
+era labels, month/day and RelatedYear/YearName branches are unchanged. Built-in
+years remain bounded integers, so this subtraction is exact in Number arithmetic.
+This does not establish arbitrary custom-provider numeric domains.
+
+[New packaged controls](../../packages/temporal/tests/legacy-display-year.test.mjs)
+use ISO January 1 in −544/−543/−542, independently expecting Buddhist display years
+2/1/1. They assert the raw Temporal year and eraYear remain −1/0/1. Before the fix,
+the public namespace locale method returned `-1 BE` instead of `2 BE`.
+
+The 124 controls cover English Latin and supplementary-plane mathematical digits,
+numeric/two-digit widths, namespace PlainDate/PlainDateTime/PlainYearMonth and
+ZonedDateTime locale methods, then installed DateTimeFormat with Number, Date,
+Instant and three plain date types. Formatting, parts, equal ranges and range parts
+run twice, exercising cold/warm projection and number caches. Distinct-year ranges
+require the corrected start/end year and joined range text.
+
+[Independent ICU era assertions](../../packages/temporal/tests/legacy-calendar-era-oracle.ts)
+and [extended-calendar assertions](../../packages/temporal/tests/legacy-extended-calendar.test.mjs)
+now apply the published display transformation to their raw fixture eraYear.
+Fixture files remain unchanged. RelatedYear stays signed. These are normative
+expected-output corrections, not accepted-failure baseline changes. Existing
+boundary, clock, zone, era and range checks remain active.
+
+Both single-value and range bridge paths call this shared restoration helper.
+Namespace locale methods also use the same bridge parts/format functions.
+Complete native bridge pattern selection, style inference, private collection
+operations, bootstrap/realm behavior and calendar computations remain open.
+The native ICU disagreement above remains separately recorded; no new spec issue
+or historical Temporal source-line credit is claimed.
+
+Validation: seven focused packaged/compiler/native-host/native-Hermes gates pass
+(six executed, one cached). The packaged extended-calendar gate checks 60
+independent ICU rows with 1,515 checks across all 14 non-Gregorian calendars.
+Expanded matrix: 202/204 pass (79 executed, 125 cached), with only the exact existing
+raw ListFormat/PluralRules constructor-realm diagnostics. Baseline-aware gates,
+all ten package assemblies and all 40 Temporal class/backend gates pass. The
+full 42-case pattern oracle and unchanged 12,808-case ICU snapshot pass from cache.
+Native Hermes passes 936 independent ICU-era and 24 lunar checks in both source
+and bytecode runs. The shared DateTimeFormat native comparison passes 9,440 cases
+and 40,284 assertions per run. After the broad run, a redundant year condition was
+removed from month/day oracle assertions; all five affected oracle/compiler gates
+pass on rerun (four executed, one cached). Runtime, BUILD and other tested source
+hashes remain unchanged. No baseline, exclusions, fixtures or timeout changes.
