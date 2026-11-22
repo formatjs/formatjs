@@ -360,7 +360,7 @@ The exact locale layout of every leap-month fallback remains conditional.
 The owned TS and Rust formatters compare month ordinals separately from the
 number used for rendering. The generated TS probe reports ordinals 1 and 2
 for regular Month 2 and leap Month 2 in both calendars.
-[TS range comparison](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L208).
+[TS range comparison](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L207).
 [Rust range comparison](../../crates/intl_datetimeformat/render.rs#L638).
 
 Number and PlainDate controls cover full cross-year and leap-month parts.
@@ -510,9 +510,9 @@ and the distinct local-time input. They require zero calls and the same parts
 or string. Five focused Bazel targets pass, including the owned formatter,
 shared formatter, Temporal integration, timezone range and declaration gates.
 
-[Collapsed record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L234).
-[Selected local time](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L320).
-[Endpoint record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L335).
+[Collapsed record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L237).
+[Selected local time](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L323).
+[Endpoint record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L338).
 [Public controls](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L94).
 [ECMA-402 §11.5.8 steps 16.c.i, 19.e and 19.f.i](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Temporal comparison §15.6.8 steps 24.c.i, 27.e and 27.f.i](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
@@ -544,11 +544,11 @@ own shared sources and return the private list. Step 24.b and the selection
 and collapse predicates still depend on the configured-zone comparison and
 the Plain rendering inputs. The whole algorithm remains open.
 
-[Fractional arithmetic](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L202).
-[Private collapse traversal](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L234).
-[Collapsed input record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L218).
-[Distinct input record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L293).
-[Private pattern expansion](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L66).
+[Fractional arithmetic](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L201).
+[Private collapse traversal](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L237).
+[Collapsed input record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L221).
+[Distinct input record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L296).
+[Private pattern expansion](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L65).
 [Public mutation controls](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L50).
 [ECMA-402 §11.5.8 steps 15.d.iv, 16, 18 and 19](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Temporal comparison §15.6.8](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
@@ -586,11 +586,11 @@ observable identity or order.
 Eight additional local rows are verified under those inputs and callee
 contracts. Configured-zone comparison, branch coverage and the full
 formatter selection remain conditional. Nine focused Bazel targets pass.
-[Table order](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L34).
-[Period values](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L179).
-[Fractional values](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L201).
-[Ordinary fields](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L207).
-[Collapsed allocation](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L222).
+[Table order](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L33).
+[Period values](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L178).
+[Fractional values](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L200).
+[Ordinary fields](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L206).
+[Collapsed allocation](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L225).
 [Fresh formatter list](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L378).
 [Public projection](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimeRangeToParts.ts#L16).
 [ECMA-402 Table 6](https://tc39.es/ecma402/#sec-datetimeformat-records).
@@ -615,10 +615,10 @@ On the collapsed path, the first local-time record already has the epoch,
 calendar and timezone used by the renderer. Both paths use +00:00 for Plain
 endpoints. This verifies the rendering call independently of the published
 comparison's configured-zone rule for deciding whether to collapse.
-[Range dispatch](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L175).
-[Default-width guard](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L201).
-[Unequal branch](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L211).
-[Collapsed rendering](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L219).
+[Range dispatch](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L174).
+[Default-width guard](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L200).
+[Unequal branch](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L212).
+[Collapsed rendering](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L222).
 [Private local-time reuse](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L368).
 [Temporal comparison §15.6.8 steps 23.d and 24.b](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 
@@ -646,8 +646,8 @@ English noon plus one millisecond can produce a different label in native
 Intl. This difference also occurs in single formatting. The two labels do
 not determine compliance with the comparison's implementation-dependent
 value rule.
-[First endpoint value](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L184).
-[Second endpoint value](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L190).
+[First endpoint value](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L183).
+[Second endpoint value](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L189).
 [Locale resolver](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L75).
 [Temporal comparison §15.6.8 steps 23.d.iii.1–2](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.8 steps 15.d.iii.1–2](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
@@ -661,7 +661,7 @@ selection, and date-only kinds lack the field. Constructor and matcher
 records keep optional metadata private across basic and combined style paths.
 [Set original slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L616).
 [Set selected slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L774).
-[Read selected representation](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L198).
+[Read selected representation](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L197).
 [Temporal comparison §15.6.8 step 23.d.iv.1](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 
 The basic matcher, combined style record and style hour-cycle options once
@@ -696,9 +696,31 @@ fix. Eight focused Bazel targets pass after it.
 [Parsed interval records](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L487).
 [Combined style intervals](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L59).
 [Adjusted interval records](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L99).
-[Expanded interval record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L285).
+[Expanded interval record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L288).
 [Own grammar lookup](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L396).
 [Public range regressions](../../packages/intl-datetimeformat/tests/temporal-owned.test.ts#L104).
 
 - Failing range replay SHA-256 `f66b68e0c3c60ec1292ba10b35e64a9adc98976fdbd7774c170138cb5df6d8cb`
 - Passing Bazel log SHA-256 `323aff994febee2ce4c2ed1f185931a2624569f3fc642b37b03dc78ac4049705`
+
+### Range equality and collapse
+
+A registered calendar may supply January's zero month ordinal as either
+JavaScript zero representation. The two endpoints both rendered January
+but SameValue split the range. Strict equality matches the calendar
+integers and the locale's String fields. It still distinguishes consecutive
+month ordinals. The public control checks shared output for January, and
+distinct endpoint parts for January and February.
+
+Once the comparison path processes an unequal pair, it assigns a truthy
+private interval or fallback and immediately breaks. The private interval
+therefore remains undefined exactly when every processed comparison was
+equal. The collapse test implements the Boolean flag under that input
+contract. The source still has the separate field traversal and raw
+interval cutoff question.
+[Ordinary comparison](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L207).
+[Collapse predicate](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L220).
+[Temporal comparison §15.6.8 steps 23.d.vi and 24](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
+
+- Failing signed-zero Bazel log SHA-256 `ed5ae434a94cd34d167a0c56d791b85c0df9c7640899adebfb6f8dbcec342876`
+- Passing DateTimeFormat Bazel log SHA-256 `4a14a4a617280065ee6431bbc4930bcc378ed73d355e7ef957763f194e50d51e`

@@ -72,7 +72,7 @@ balancing clock fields. Fold fixtures distinguish earlier and later candidates.
 The choice of intermediate remains a separate open step.
 [Temporal comparison §6.5.6 steps 11.c–d](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 [TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L592).
-[Rust subtraction](../../crates/temporal/calendar_difference.rs#L197).
+[Rust subtraction](../../crates/temporal/calendar_difference.rs#L205).
 
 The date-unit caller uses the unrounded zoned difference with the original
 endpoints, zone and calendar and the prepared largest unit. If either backend
@@ -80,7 +80,7 @@ uses an identical-endpoint shortcut, it takes the callee's zero-result case.
 The relative rounding call remains separately conditional.
 [Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
 [TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L670).
-[Rust dispatch](../../crates/temporal/calendar_difference.rs#L227).
+[Rust dispatch](../../crates/temporal/calendar_difference.rs#L235).
 
 ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
 Step 12.a uses the adjacent signed count, which lies strictly farther from
@@ -92,8 +92,8 @@ these endpoints. Prefix choice and the retry stay separately open.
 [Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
 [TypeScript first endpoint](../../packages/temporal/date-core.ts#L1021).
 [TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1024).
-[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L251).
-[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L254).
+[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L260).
+[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L263).
 
 NudgeToZonedTime step 6 adds the duration sign to a day component that has
 that sign or is zero. The resulting date duration is nonzero. Calendar
@@ -103,7 +103,7 @@ endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
 [TypeScript signed day](../../packages/temporal/date-core.ts#L1082).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L301).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L317).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
 
@@ -135,10 +135,69 @@ local-date hull and do not have the borrowed-table boundary in this case.
 
 The new public regression fails with the original implementation. All
 three Rust Bazel targets pass afterward.
-[Calendar field selection](../../crates/temporal/calendar_difference.rs#L158).
+[Calendar field selection](../../crates/temporal/calendar_difference.rs#L168).
 [Compatible zone resolution](../../crates/temporal/zoned_difference.rs#L102).
 [Public borrowed-table regression](../../crates/temporal/calendar.test.rs#L22).
 [Temporal comparison §6.5.6 steps 11.c and 14](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 
 - Failing Rust replay SHA-256 `61b837208bd99a844bb510b2dd7cfbf06cc2c740c813e496c62f2d21bf5b21d0`
 - Passing Rust Bazel log SHA-256 `a7281152c4feb6925b4e2d33888fcc3269ba1fef533088901b999e28550e4fcc`
+
+## Borrowed timezone rounding and plain date transport
+
+Rust now handles equal local ISO dates using exact elapsed time, before
+reading calendar dates or local clocks. A borrowed calendar may exclude
+the ISO day even when both instants are representable. Both directions,
+an identical instant and two occurrences of a folded wall clock keep
+the elapsed result.
+
+For different dates, a borrowed table can exclude either the rejected
+candidate or the origin. The correction preserves the calendar error if
+an unequal date is selected. If the gap probe is rejected and selection
+returns to the origin's ISO date, the date portion is zero without a
+calendar lookup. For an unequal selected day, each engine retains the
+calendar date difference for that day and the prepared unit. This closes
+the call step under the selected-day and CalendarDateUntil contracts. The
+reverse-fold choice and published ISO calendar discrepancy remain open.
+
+[Same-day path](../../crates/temporal/calendar_difference.rs#L134).
+[Selected day](../../crates/temporal/calendar_difference.rs#L197).
+[Borrowed-calendar regressions](../../crates/temporal/calendar.test.rs#L37).
+[Temporal comparison §6.5.6 steps 4.a–b](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
+
+A valid borrowed zone can change from −23:00 to +12:00. In the public
+positive regression, origin and target are hours 24 and 61 after the epoch.
+The two-day endpoint is hour 72 because its local clock lies inside the
+gap. The original retry moved farther from the target and returned
+`P4D` for truncation. The bracketing pair instead uses the origin and the
+two-day endpoint. Truncation returns zero, and ceil and half-expand return
+`P2D`. A second transition gives a reverse control with origin hour 125,
+target hour 53 and negative two-day endpoint hour 42.
+
+The first-bound retry now moves toward the origin. A second endpoint
+short of the target still moves away from the origin. At an increment of
+two days, successive fixed-clock local endpoints differ by 48 hours, which
+exceeds the difference of two valid offsets. Compatible gap resolution
+uses an effective offset within the same bounds. The two controls verify
+the signed retry for this branch. The wider provider/window and published
+assertion issues remain in the ledger.
+[Signed retry](../../crates/temporal/calendar_difference.rs#L267).
+[Public borrowed-zone controls](../../crates/temporal/lib.test.rs#L3685).
+[Temporal comparison §7.5.34 steps 5–6, 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
+
+The PlainDate caller passes both exact UTC midnight scalars, calendar,
+largest and smallest units, increment and signed rounding mode. Both
+engines reconstruct the date fields and zero time before rounding. Negating
+the sign for since gives the same choice as rounding with the negated mode.
+The fused day/increment-one path is on-grid with zero clock fields, so it
+returns the unchanged date duration. This verifies caller transport for
+the rounding step. CalendarDateUntil and nudge behavior retain their own
+requirements.
+[TypeScript dispatch](../../packages/temporal/plain-date.ts#L289).
+[Rust dispatch](../../crates/temporal/plain_relative.rs#L125).
+[Temporal comparison §3.5.14 step 8.e](https://tc39.es/proposal-temporal/#sec-temporal-differencetemporalplaindate).
+
+- Failing borrowed-zone Bazel log SHA-256 `a2046568eb610a40d6d44c9712079a28c4a1ea3ce2ac3daa11a94ba8326d469f`
+- Failing same-day Bazel log SHA-256 `114a46c49f496e185ec882ade0408ddeb47ba9bc8fea1c41c5ae24e2fb276f6f`
+- Failing uncovered-origin Bazel log SHA-256 `744fd6d9152f9038a77749430e86d9b7b734a4275530245684d64a91d8feab78`
+- Passing Rust, TypeScript and Hermes Bazel log SHA-256 `c3ff9ef95b71eebdeec8970b1bd1c8d9d6d668b6ce7301aecf243df3959bf330`

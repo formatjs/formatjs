@@ -28,7 +28,7 @@ satisfy this requirement.
 
 Realm-specific work is out of scope. The fixed ledger records the 16 shared
 constructor-realm steps for reference.
-24 of 40 conditional numbered steps remain in scope. Of those, 18 track
+20 of 36 conditional numbered steps remain in scope. Of those, 14 track
 published comparison conflicts, two track relative-window premises and four
 track timezone-provider applicability. The ordinary `index.js` and
 `standalone.js` cases pass with shared private epoch and calendar slots.
@@ -125,11 +125,11 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states include 221 conditional and 94 comparison-issue rows. No reviewed
-or partial rows remain. Amendments:38 conditional and11 comparison-issue rows. Counts include
+Remaining core states include 219 conditional and 94 comparison-issue rows. No reviewed
+or partial rows remain. Amendments:36 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-40 conditional steps (32 core,8 amendment), each with exact source ranges
+36 conditional steps (30 core,6 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -314,7 +314,7 @@ Nine focused Bazel targets pass.
 [Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
 
 Source review of the fixed helper inventory is complete. Behavioral review
-still has 24 conditional Temporal steps. Both exact owned candidate lookup
+still has 20 conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
 and previous transition lookup uses exact decoded boundaries. Owned gap resolution
 checks actual boundary candidates near both Instant limits.
@@ -363,6 +363,11 @@ Cold and cached range regressions cover own interval metadata. A Rust borrowed
 calendar regression fixes an early error on a discarded zoned date probe.
 [Interval metadata](temporal-pattern-partition-audit.md#day-period-values-and-private-interval-metadata).
 [Borrowed calendar boundary](temporal-relative-rounding-contract-audit.md#discarded-gap-probe-at-a-borrowed-calendar-boundary).
+Plain and zoned date transport, Intl equality and the collapse predicate now
+have numbered caller and branch evidence. Borrowed Rust providers have new
+calendar coverage and wide-gap regressions.
+[Plain and zoned proofs](temporal-relative-rounding-contract-audit.md#borrowed-timezone-rounding-and-plain-date-transport).
+[Range equality](temporal-pattern-partition-audit.md#range-equality-and-collapse).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

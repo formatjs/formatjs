@@ -172,8 +172,8 @@ options to the shared difference. Both keep the starting operand first.
 keeps the same ISO days, calendar, largest date unit and operation.
 [Temporal comparison §3.3.25 step 3](https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.until).
 [Temporal comparison §3.3.26 step 3](https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.since).
-[TypeScript until](../../packages/temporal/plain-date.ts#L415).
-[TypeScript since](../../packages/temporal/plain-date.ts#L421).
+[TypeScript until](../../packages/temporal/plain-date.ts#L417).
+[TypeScript since](../../packages/temporal/plain-date.ts#L423).
 [Rust until](../../crates/temporal/plain_relative.rs#L85).
 [Rust since](../../crates/temporal/plain_relative.rs#L96).
 

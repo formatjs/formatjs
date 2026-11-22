@@ -130,6 +130,10 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
     }
     let begin = start.date_at(origin)?;
     let finish = start.date_at(end)?;
+    // Proposal comparison §6.5.6 steps 4.a and 4.b: Use elapsed time when the ISO dates match.
+    if A::ZONED && begin == finish {
+        return Ok(Duration::from_time_nanoseconds(end - origin, TimeUnit::Hour)?.fields());
+    }
     if !A::ZONED {
         let mut day = finish;
         let mut remainder =
@@ -155,6 +159,12 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
     }
     let (mut fields, anchor);
     loop {
+        // Proposal comparison §12.3.9 step 2: Equal ISO dates need no calendar lookup.
+        if day == begin {
+            fields = [0; 10];
+            anchor = origin;
+            break;
+        }
         let date_fields = date_until(start, begin, day, largest);
         let candidate = match date_fields {
             Ok(fields) => match endpoint(start, fields) {
@@ -166,13 +176,15 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             },
             Err(error) => {
                 let calendar = start.calendar();
-                if day == begin
-                    || calendar.date_extended(begin).is_err()
-                    || !matches!(
+                let missing_date = match calendar.date_extended(begin) {
+                    Ok(_) => matches!(
                         calendar.date_extended(day),
                         Err(crate::calendar::Error::OutOfRange)
-                    )
-                {
+                    ),
+                    Err(crate::calendar::Error::OutOfRange) => true,
+                    Err(_) => false,
+                };
+                if !missing_date {
                     return Err(error);
                 }
                 // Proposal comparison §6.5.6 steps 11.c and 14: Resolve an
@@ -183,16 +195,12 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             }
         };
         if (candidate - end) * sign <= 0 {
+            // Proposal comparison §6.5.6 step 14: Keep the selected day's calendar fields.
             fields = date_fields?;
             anchor = candidate;
             break;
         }
         day -= sign as i64;
-        if i128::from(day - begin) * sign < 0 {
-            fields = [0; 10];
-            anchor = origin;
-            break;
-        }
     }
     // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
     let time = Duration::from_time_nanoseconds(end - anchor, TimeUnit::Hour)?.fields();
@@ -247,16 +255,24 @@ pub(crate) fn difference<A: RelativeAnchor>(
             fields[index]
         };
         let mut truncated = count / i128::from(increment) * i128::from(increment);
+        let stride = sign * i128::from(increment);
         prefix[index] = truncated;
         // Proposal comparison §7.5.33 step 8.d.i: Resolve compatibly when zoned and the rounded unit is nonzero.
         let mut a = endpoint(start, prefix)?;
-        prefix[index] = truncated + sign * i128::from(increment);
+        prefix[index] = truncated + stride;
         // Proposal comparison §7.5.33 step 12.a: Resolve the nonzero date endpoint compatibly when zoned.
         let mut b = endpoint(start, prefix)?;
-        if (end - a) * sign < 0 || (b - end) * sign < 0 {
-            truncated += sign * i128::from(increment);
+        // Proposal comparison §7.5.34 steps 5–6 require a bracket. A borrowed
+        // zone can make the first endpoint overshoot after count truncation.
+        if (end - a) * sign < 0 {
+            truncated -= stride;
+            b = a;
+            prefix[index] = truncated;
+            a = endpoint(start, prefix)?;
+        } else if (b - end) * sign < 0 {
+            truncated += stride;
             a = b;
-            prefix[index] = truncated + sign * i128::from(increment);
+            prefix[index] = truncated + stride;
             b = endpoint(start, prefix)?;
             expanded = true;
         }
@@ -282,7 +298,7 @@ pub(crate) fn difference<A: RelativeAnchor>(
             }
         };
         prefix[index] = if expand {
-            truncated + sign * i128::from(increment)
+            truncated + stride
         } else {
             truncated
         };

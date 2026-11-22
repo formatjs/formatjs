@@ -6,7 +6,6 @@ import {
   mathMax,
   setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
-import {SameValue} from '#packages/ecma262-abstract/SameValue.js'
 import {PartitionPattern} from '#packages/ecma402-abstract/PartitionPattern.js'
 import {
   type IntlDateTimeFormatPart,
@@ -205,8 +204,10 @@ export function PartitionDateTimeRangePattern(
         floor(tm2.millisecond * 10 ** (digits - 3))
     } else {
       // Temporal comparison §15.6.8 steps 23.d.v.1–2 read the two own fields.
-      equal = SameValue(tm1[field], tm2[field])
+      equal = tm1[field] === tm2[field]
     }
+    // Temporal comparison §15.6.8 step 23.d.vi compares the prepared values;
+    // numeric equality includes both signs of zero from calendar providers.
     if (!equal) {
       // Temporal comparison §15.6.8 step 23.d.vi.1 encodes inequality with
       // a selected pattern and ends the search.
@@ -214,6 +215,8 @@ export function PartitionDateTimeRangePattern(
       break
     }
   }
+  // Temporal comparison §15.6.8 step 24: undefined encodes no unequal
+  // encountered field; full field coverage remains a separate premise.
   if (rangePattern === undefined) {
     // ECMA-402 §11.5.8 step 16.b: pass the selected local time privately.
     // Temporal comparison §15.6.8 step 24.b reuses the rendering local time.

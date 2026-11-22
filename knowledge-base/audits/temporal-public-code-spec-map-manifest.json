@@ -12,7 +12,7 @@
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/now.ts": "0e4766a9b82c409e3134a9f0ddffdb25fa9c109645f9f3bdb49e4c25a1b1a89d",
     "packages/temporal/plain-date-time.ts": "c9143c5d6005425be85ab1ab0729b815c8388c0e5c398582cb9ffc41e5cb3b78",
-    "packages/temporal/plain-date.ts": "457f048e031f153179d1324c3afae382f603c3051f51b426227a93dda79c5de9",
+    "packages/temporal/plain-date.ts": "14265e0e7f2bb1ca3894adf272b3bf83a9113b716196ff2d428ba664e0e61a5f",
     "packages/temporal/plain-month-day.ts": "d2a347b5bbb9efa6eaf43184ae2c655d4e17d1713c108377e310d9e79d157296",
     "packages/temporal/plain-time.ts": "6934ced5f2e9263903658cea624fe318b5399fa8db016600c618d1e30164f849",
     "packages/temporal/plain-year-month.ts": "ca95004881d884a061ec664e7987cc04bb0f3361b251097e9d835b7353afcae4",

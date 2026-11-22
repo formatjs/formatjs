@@ -3682,6 +3682,58 @@ fn day_window_gap_near_maximum()
 }
 
 #[test]
+fn day_rounding_retries_toward_origin_when_first_bound_overshoots() {
+    use formatjs_temporal::{
+        DateTimeUnit, OffsetTransition, Overflow, RoundingMode, TransitionZone, ZonedDateTime,
+    };
+    let hour = 3_600_000_000_000;
+    let jump = OffsetTransition {
+        epoch_seconds: 42 * 3_600,
+        offset_seconds: 12 * 3_600,
+    };
+    let forward = [jump];
+    let backward = [
+        jump,
+        OffsetTransition {
+            epoch_seconds: 48 * 3_600,
+            offset_seconds: -23 * 3_600,
+        },
+    ];
+    for (transitions, start, end, outer, outer_hour, outward) in [
+        (&forward[..], 24, 61, "P2D", 72, RoundingMode::Ceil),
+        (&backward[..], 125, 53, "-P2D", 42, RoundingMode::Floor),
+    ] {
+        let zone = TransitionZone::new(-23 * 3_600, transitions, None).unwrap();
+        let zoned = |value| {
+            ZonedDateTime::new(Instant::from_epoch_nanoseconds(value * hour).unwrap(), zone)
+        };
+        let origin = zoned(start);
+        let target = zoned(end);
+        assert_eq!(
+            origin
+                .checked_add(outer.parse().unwrap(), Overflow::Constrain)
+                .unwrap()
+                .instant()
+                .epoch_nanoseconds(),
+            outer_hour * hour
+        );
+        for (mode, expected) in [
+            (RoundingMode::Trunc, "PT0S"),
+            (outward, outer),
+            (RoundingMode::HalfExpand, outer),
+        ] {
+            assert_eq!(
+                origin
+                    .until(&target, DateTimeUnit::Day, DateTimeUnit::Day, 2, mode)
+                    .unwrap()
+                    .to_string(),
+                expected
+            );
+        }
+    }
+}
+
+#[test]
 fn day_window_gap_literal_endpoints() {
     use formatjs_temporal::{Duration, Overflow};
     let origin = day_window_gap_near_maximum();

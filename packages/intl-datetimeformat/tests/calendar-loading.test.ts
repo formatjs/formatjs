@@ -157,6 +157,48 @@ test('a user-supplied calendar uses its registered conversion for dates and rang
   expect(formatter('custom').resolvedOptions().calendar).toBe('custom')
 })
 
+test('calendar ranges compare signed-zero month ordinals by numeric value', () => {
+  DateTimeFormat.__addCalendarLocaleData({
+    locale: 'en',
+    calendar: 'signzero',
+    formats: formats.gregory,
+    data: raw.data,
+  })
+  DateTimeFormat.__addCalendarData({
+    calendar: 'signzero',
+    dateFromTime(t) {
+      return {
+        era: 'AD',
+        year: 2024,
+        month: t === 0 ? -0 : t === 86400000 ? 0 : 1,
+        day: 1,
+      }
+    },
+  })
+  const format = new DateTimeFormat('en', {
+    calendar: 'signzero',
+    timeZone: 'UTC',
+    month: 'long',
+  })
+  expect(format.format(0)).toBe('January')
+  expect(format.format(86400000)).toBe('January')
+  expect(format.formatRange(0, 86400000)).toBe('January')
+  expect(format.formatRangeToParts(0, 86400000)).toEqual([
+    {type: 'month', value: 'January', source: 'shared'},
+  ])
+  const distinct = format.formatRangeToParts(0, 172800000)
+  expect(distinct).toContainEqual({
+    type: 'month',
+    value: 'January',
+    source: 'startRange',
+  })
+  expect(distinct).toContainEqual({
+    type: 'month',
+    value: 'February',
+    source: 'endRange',
+  })
+})
+
 test('warm formatters retain patterns but read replacement names and providers', () => {
   const fields = (year: number) => ({era: 'AD', year, month: 0, day: 1})
   const calendarPatch: RawCalendarLocaleData = {

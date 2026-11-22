@@ -83,6 +83,55 @@ suffices. The shipped and pinned profile proofs already have those guarantees.
 The default package also accepts other installed Intl providers and timezone
 resources, so the full provider premise remains open. [Default provider contract](../../../packages/temporal/README.md#L18).
 
+### Published legacy formatter replay
+
+The released FormatJS DateTimeFormat 7.8.1 installs through
+`polyfill-force.js` and its English locale entry. Its public formatter
+reads the synthetic rows supplied through `__addTZData`. Its
+`formatToParts` lacks the private candidate query used by the current
+owned formatter. The same Temporal package therefore reaches both provider
+paths without changing formatter methods. [Published formatter](https://www.npmjs.com/package/@formatjs/intl-datetimeformat/v/7.8.1).
+
+- A six-hour +12:00 pulse gives local 15:00 two actual candidates at 03:00
+  and 15:00 UTC. Legacy sampling returns 15:00 in all four modes, including
+  `reject`. This exercises §11.1.13 step 3.a.
+- A six-hour +04:00 pulse makes local 01:00 unreachable. The nearest
+  reachable locals are −1 ns and 04:00. The legacy provider throws in all
+  four modes. The owned provider returns 21:00 UTC on the previous day for
+  `earlier`, 01:00 UTC for `later` and `compatible`, and throws for
+  `reject`. This exercises §11.1.12 steps 6–7.
+- A fold straddles each Instant limit. Legacy sampling accepts the one
+  visible candidate in all four modes. The owned provider throws in every
+  mode after round-tripping the out-of-range candidate. This exercises
+  §11.1.13 step 4.a.
+
+The replay asserts raw public offset readings and TimeClip before running
+Temporal. Under a stable exact offset reader, every candidate emitted by
+the fallback list round-trips inside the Instant range. The failures are
+omissions from that list and its gap boundary probes. They concern the
+synthetic custom data accepted by the released formatter. The shipped IANA
+data and the other certified profiles retain their own evidence.
+[Replay fixture](legacy-provider-replay.mjs).
+
+- Legacy result SHA-256 `1652f3f5071c91146bfe455a82feb8c2cdf6f42e69c83152ad0275a2c97747df`
+- Owned result SHA-256 `56efd3a337c89b3c71339ffb887fe847bc8dc01e4ff9e09304c788e98092b1a8`
+
+Run with Node 26.5.1. Install the pinned release into a scratch directory
+and resolve the current package directories from the Bazel targets.
+
+```sh
+replay=knowledge-base/audits/temporal-timezone-boundary-proof/legacy-provider-replay.mjs
+replay_dir=$(mktemp -d)
+npm install --prefix "$replay_dir" --ignore-scripts --no-audit --no-fund \
+  --save-exact @formatjs/intl-datetimeformat@7.8.1
+temporal_pkg=$(bazel cquery --output=files //packages/temporal:pkg)
+datetime_pkg=$(bazel cquery --output=files //packages/intl-datetimeformat:pkg)
+matcher_pkg=$(bazel cquery --output=files //packages/intl-localematcher:pkg)
+memoize_pkg=$(bazel cquery --output=files //packages/fast-memoize:pkg)
+node "$replay" legacy "$replay_dir/node_modules/@formatjs/intl-datetimeformat" "$temporal_pkg"
+node "$replay" owned "$datetime_pkg" "$temporal_pkg" "$matcher_pkg" "$memoize_pkg"
+```
+
 ## Owned FormatJS candidate validation
 
 A public package-to-package regression installs the FormatJS DateTimeFormat

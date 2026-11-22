@@ -122,7 +122,8 @@ impl<C: CalendarProvider> PlainDate<C> {
         }
         // Proposal comparison §3.5.14 step 6, arguments only: midnight anchors
         // preserve calendar, ordered ISO days and largest unit through date_until.
-        // CalendarDateUntil's result and later rounding remain separate contracts.
+        // Step 8.e also passes both midnight anchors and the rounding settings
+        // to the shared engine. Its calendar arithmetic is a separate contract.
         difference(
             &PlainAnchor::from(self),
             PlainAnchor::from(other).origin(),

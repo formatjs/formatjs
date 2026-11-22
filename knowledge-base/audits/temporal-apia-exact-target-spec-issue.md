@@ -26,7 +26,7 @@ the second endpoint before returning −1. These observations record FormatJS's
 current behavior while the published assertion remains unresolved.
 [TS unrounded decomposition](../../packages/temporal/zoned-date-time.ts#L545)
 [TS rounding](../../packages/temporal/date-core.ts#L1024)
-[Rust rounding](../../crates/temporal/calendar_difference.rs#L252)
+[Rust rounding](../../crates/temporal/calendar_difference.rs#L261)
 [TS total](../../packages/temporal/relative-duration.ts#L198)
 [Rust total](../../crates/temporal/relative_duration.rs#L77).
 

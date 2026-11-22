@@ -1,23 +1,23 @@
 {
-  "algorithm_rows": 40,
-  "core_rows": 32,
-  "amendment_rows": 8,
+  "algorithm_rows": 36,
+  "core_rows": 30,
+  "amendment_rows": 6,
   "families": 10,
   "classification_counts": {
     "confirmed_implementation_gap": 16,
-    "published_spec_issue": 18,
+    "published_spec_issue": 14,
     "dependency_reconciliation": 2,
     "profile_applicability": 4
   },
   "methodology": "Exhaustive primary grouping of current conditional algorithm_step rows by named unresolved premise, not defect count. Every row assigned once; shared/secondary premises called out in text. Existing audit evidence reused. Per-step local verification removes only the rows with independent evidence. Already-fixed root candidates may remain stale pending exact validation reconciliation. Generic delegated-engine/Intl behavior is supplied contract; only owned adapter operations remain candidates. Comparison authority remains frozen proposal snapshot, not requested ECMA262 Temporal API authority. Updated after local correction reconciliation; family premise/action prose records original grouping; authoritative current narrowed premise is in temporal-remaining-condition-steps.tsv.",
   "input_files": {
-    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "ee91de3874deeba1349b32e06fc87bd02105ddc00dcccccccffb20e6085b6f60",
-    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "8d3f5b0fcd431566390de724669cb81d9269beb7eb7b0be125e64caa47c6874e"
+    "knowledge-base/audits/temporal-core-requirement-checklist.tsv": "e3f0a7e8e69e569f6dfe6195fffc8296f3172a74fcef07199e7ca36d64fff8b8",
+    "knowledge-base/audits/temporal-amendment-requirement-checklist.tsv": "bf7c4dc06ade2556c9a1221794e4a65a9ac0399500f44c6175acc135319378cc"
   },
   "scope_decision": {
     "deferred_family": "constructor-realm-fallback",
     "deferred_algorithm_rows": 16,
-    "active_conditional_algorithm_rows": 24,
+    "active_conditional_algorithm_rows": 20,
     "deferred_requirement_ids": [
       "3.1.1/algorithm-1/step-10",
       "3.5.3/algorithm-1/step-3",

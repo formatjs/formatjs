@@ -15,9 +15,9 @@ each have three steps:
 
 | Compared step        | Current code and result                                                                                                                                                           |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 receiver           | [plain-date.ts:366](../../packages/temporal/plain-date.ts#L366), [subtract:369](../../packages/temporal/plain-date.ts#L369): retain this for private read.                        |
+| 1 receiver           | [plain-date.ts:366](../../packages/temporal/plain-date.ts#L368), [subtract:369](../../packages/temporal/plain-date.ts#L371): retain this for private read.                        |
 | 2 brand              | [read:140](../../packages/temporal/plain-date.ts#L140): private slot lookup; captured TypeError before duration/options access. Proxy wrapper does not inherit its target's slot. |
-| 3 delegate operation | [plain-date.ts:367](../../packages/temporal/plain-date.ts#L367), [subtract:370](../../packages/temporal/plain-date.ts#L370): common helper with sign +1 or −1.                    |
+| 3 delegate operation | [plain-date.ts:367](../../packages/temporal/plain-date.ts#L369), [subtract:370](../../packages/temporal/plain-date.ts#L372): common helper with sign +1 or −1.                    |
 
 ## AddDurationToDate steps
 

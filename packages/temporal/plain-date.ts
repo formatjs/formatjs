@@ -286,6 +286,8 @@ function difference(
         since
       )
     )
+  // Temporal comparison §3.5.14 step 8.e passes midnight anchors and
+  // the prepared rounding settings to the shared plain-date engine.
   return createDuration(
     roundedDateTimeDifference(
       bigIntFrom(slot.epochDay) * nsPerDay,

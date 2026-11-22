@@ -18,25 +18,74 @@ fn zero_zone() -> FixedOffset {
     FixedOffset::new(0).unwrap()
 }
 
-#[test]
-fn zoned_difference_queries_calendar_for_selected_gap_date() {
-    // Cover March 13 but not the next day's spring-forward gap.
-    let calendar = TableCalendar::lunisolar(
+fn one_year_lunisolar_calendar(checkpoints: &'static [i64; 1]) -> TableCalendar<'static> {
+    TableCalendar::lunisolar(
         TableCalendarId::Chinese,
         LunisolarData {
             first_year: 2020,
-            end_day: 18_700,
-            checkpoints: &[18_352],
+            end_day: checkpoints[0] + 348,
+            checkpoints,
             month_checkpoints: &[0],
             dictionary: &[0],
             years: "AA",
         },
     )
-    .unwrap();
+    .unwrap()
+}
+
+#[test]
+fn zoned_difference_queries_calendar_for_selected_gap_date() {
     let transitions = [OffsetTransition {
         epoch_seconds: 1_615_705_200,
         offset_seconds: -14_400,
     }];
+    let zone = TransitionZone::new(-18_000, &transitions, None).unwrap();
+    // One table ends before March 14. The other begins on March 14.
+    for checkpoints in [&[18_352], &[18_700]] {
+        let calendar = one_year_lunisolar_calendar(checkpoints);
+        let zoned = |seconds: i128| {
+            ZonedDateTime::new_in_calendar(
+                Instant::from_epoch_nanoseconds(seconds * 1_000_000_000).unwrap(),
+                zone,
+                calendar,
+            )
+        };
+        let origin = zoned(1_615_620_600); // March 13 at 02:30.
+        let difference = |target| {
+            origin.until(
+                &zoned(target),
+                DateTimeUnit::Day,
+                DateTimeUnit::Nanosecond,
+                1,
+                RoundingMode::Trunc,
+            )
+        };
+        assert_eq!(
+            difference(1_615_705_800), // 03:10, before compatible 03:30.
+            Ok("PT23H40M".parse::<Duration>().unwrap()),
+            "{checkpoints:?}"
+        );
+        assert_eq!(
+            difference(1_615_707_000), // 03:30 requires a difference between dates.
+            Err(formatjs_temporal::Error::OutOfRange),
+            "{checkpoints:?}"
+        );
+    }
+}
+
+#[test]
+fn zoned_difference_on_same_day_needs_no_calendar_coverage() {
+    let calendar = one_year_lunisolar_calendar(&[18_352]);
+    let transitions = [
+        OffsetTransition {
+            epoch_seconds: 1_615_705_200,
+            offset_seconds: -14_400,
+        },
+        OffsetTransition {
+            epoch_seconds: 1_636_264_800,
+            offset_seconds: -18_000,
+        },
+    ];
     let zone = TransitionZone::new(-18_000, &transitions, None).unwrap();
     let zoned = |seconds: i128| {
         ZonedDateTime::new_in_calendar(
@@ -45,24 +94,28 @@ fn zoned_difference_queries_calendar_for_selected_gap_date() {
             calendar,
         )
     };
-    let origin = zoned(1_615_620_600); // March 13 at 02:30.
-    let difference = |target| {
-        origin.until(
-            &zoned(target),
+    let difference = |first, second| {
+        zoned(first).until(
+            &zoned(second),
             DateTimeUnit::Day,
             DateTimeUnit::Nanosecond,
             1,
             RoundingMode::Trunc,
         )
     };
-    assert_eq!(
-        difference(1_615_705_800).unwrap(), // 03:10, before compatible 03:30.
-        "PT23H40M".parse::<Duration>().unwrap()
-    );
-    assert_eq!(
-        difference(1_615_707_000), // 03:30 selects the uncovered date.
-        Err(formatjs_temporal::Error::OutOfRange)
-    );
+    for (first, second, expected) in [
+        (1_615_705_800, 1_615_707_000, "PT20M"),
+        (1_615_707_000, 1_615_705_800, "-PT20M"),
+        // Both instants show November 7 at 01:30, on opposite sides of the fold.
+        (1_636_263_000, 1_636_266_600, "PT1H"),
+        (1_636_266_600, 1_636_263_000, "-PT1H"),
+        (1_636_266_600, 1_636_266_600, "PT0S"),
+    ] {
+        assert_eq!(
+            difference(first, second),
+            Ok(expected.parse::<Duration>().unwrap())
+        );
+    }
 }
 
 fn unit(text: &str) -> DateTimeUnit {
