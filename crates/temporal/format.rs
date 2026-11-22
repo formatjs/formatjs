@@ -108,6 +108,8 @@ impl IsoString {
         if precision != Precision::Minute {
             self.push(b':');
             self.pair(u32::from(fields.2));
+            // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L762-L770
+            // Auto strips trailing zeroes, including the zero fraction; fixed precision truncates.
             let (value, digits) = match precision {
                 Precision::Auto => {
                     let (mut value, mut digits) = (fields.3, 9usize);

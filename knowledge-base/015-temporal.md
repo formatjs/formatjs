@@ -30,6 +30,11 @@ The [increment audit](audits/temporal-rounding-increment-audit.md) maps strict
 clock limits, inclusive Instant divisors and all ten duration maximum rows to
 TS/Rust validators. Coercion truncates before the 1e9 bound; calendar rows have
 no fixed time-unit maximum. No runtime behavior changed in this pass.
+Fractional seconds in Instant, PlainTime and Duration share `format-digits.ts`:
+auto trims trailing zeros, fixed precision retains exactly the requested prefix,
+and zero precision omits the fraction. Private digit formatting uses captured
+primitive conversion and indexed strings; replacing String or string methods
+cannot intercept these three paths. Other parser/formatter string hooks remain open.
 
 String shorthand in Instant/PlainTime/PlainDateTime/ZonedDateTime/Duration
 round() and Duration.total() builds a fresh null-prototype record through

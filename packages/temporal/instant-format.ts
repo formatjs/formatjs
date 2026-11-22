@@ -1,4 +1,8 @@
 import {
+  formatFractionalSeconds,
+  zeroPadDecimal,
+} from '#packages/temporal/format-digits.js'
+import {
   floor,
   mathAbs,
   numberFrom,
@@ -13,7 +17,7 @@ export function formatInstant(
 ): string {
   const fields = epochNanosecondsToISO(value + (offset ?? 0n))
   const pad = (value: number, length = 2): string =>
-    String(value).padStart(length, '0')
+    zeroPadDecimal(value, length)
   const year =
     fields.year >= 0 && fields.year <= 9999
       ? pad(fields.year, 4)
@@ -21,18 +25,12 @@ export function formatInstant(
   let result = `${year}-${pad(fields.month)}-${pad(fields.day)}T${pad(fields.hour)}:${pad(fields.minute)}`
   if (precision !== 'minute') {
     result += `:${pad(fields.second)}`
-    const digits = pad(
+    result += formatFractionalSeconds(
       fields.millisecond * 1_000_000 +
         fields.microsecond * 1000 +
         fields.nanosecond,
-      9
+      precision
     )
-    let length = precision === 'auto' ? digits.length : precision
-    if (precision === 'auto') {
-      while (length && digits[length - 1] === '0') length--
-    }
-    const fraction = digits.slice(0, length)
-    if (fraction) result += '.' + fraction
   }
   if (offset === undefined) return result + 'Z'
   const absolute = offset < 0n ? -offset : offset

@@ -1,3 +1,5 @@
+import {ToString} from '#packages/ecma262-abstract/ToString.js'
+import {formatFractionalSeconds} from '#packages/temporal/format-digits.js'
 import {
   RangeErrorConstructor,
   TypeErrorConstructor,
@@ -22,7 +24,6 @@ import {
   nativeTemporal,
   type NativeTimeResult,
 } from '#packages/temporal/native.js'
-import {ToString} from '#packages/ecma262-abstract/ToString.js'
 import {
   getTimeSlot as getSlot,
   getNativeTimeSlot,
@@ -409,16 +410,12 @@ function format(
   remaining %= 3_600_000_000_000
   const minute = floor(remaining / 60_000_000_000)
   remaining %= 60_000_000_000
-  const pad = (part: number): string => (part < 10 ? '0' + part : String(part))
+  const pad = (part: number): string =>
+    part < 10 ? '0' + part : ToString(part)
   let result = pad(hour) + ':' + pad(minute)
   if (precision !== 'minute') {
     result += ':' + pad(floor(remaining / 1_000_000_000))
-    const digits = String(remaining % 1_000_000_000).padStart(9, '0')
-    const fraction =
-      precision === 'auto'
-        ? digits.replace(/0+$/, '')
-        : digits.slice(0, precision)
-    if (fraction) result += '.' + fraction
+    result += formatFractionalSeconds(remaining % 1_000_000_000, precision)
   }
   return result
 }

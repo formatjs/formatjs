@@ -560,6 +560,33 @@ int main(int argc, char **argv) {
         get roundingMode() { throw new Error('Later increment option reached'); }
       }); } catch (error) { incrementCaught = error; }
       check(incrementCaught === incrementFailure);
+      const privateFormatCases = [
+        [new Temporal.Instant(1120300000n), '1970-01-01T00:00:01.1203Z'],
+        [new Temporal.PlainTime(12,34,56,120,300), '12:34:56.1203'],
+        [new Temporal.Duration(0,0,0,0,0,0,1,120,300), 'PT1.1203S'],
+      ];
+      for (const [value, expected] of privateFormatCases) {
+        for (const key of ['String','padStart','slice','replace']) {
+          const target = key === 'String' ? globalThis : String.prototype;
+          const original = Object.getOwnPropertyDescriptor(target, key);
+          let auto, fixed;
+          try {
+            Object.defineProperty(target, key, {configurable:true, get() { throw new Error('Private formatting hook reached'); }});
+            auto = value.toString();
+            fixed = value.toString({fractionalSecondDigits:4});
+          } finally { Object.defineProperty(target, key, original); }
+          check(auto === expected && fixed === expected);
+        }
+      }
+      for (const [fraction, automatic, fixed] of [[0,'','.000000000'],[1,'.000000001','.000000001'],[1000,'.000001','.000001000'],[1000000,'.001','.001000000'],[120300000,'.1203','.120300000'],[999999999,'.999999999','.999999999']]) {
+        const value = new Temporal.PlainTime(0,0,0,Math.floor(fraction / 1000000),Math.floor(fraction / 1000) % 1000,fraction % 1000);
+        const duration = new Temporal.Duration(0,0,0,0,0,0,0,Math.floor(fraction / 1000000),Math.floor(fraction / 1000) % 1000,fraction % 1000);
+        for (const [input, prefix, suffix] of [[value,'00:00:00',''],[new Temporal.Instant(BigInt(fraction)),'1970-01-01T00:00:00','Z'],[duration,'PT0','S']]) {
+          check(input.toString() === prefix + automatic + suffix);
+          for (let precision = 0; precision <= 9; precision++)
+            check(input.toString({fractionalSecondDigits:precision}) === prefix + (precision ? fixed.slice(0, precision + 1) : '') + suffix);
+        }
+      }
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');
