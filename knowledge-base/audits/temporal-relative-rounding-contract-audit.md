@@ -72,7 +72,7 @@ balancing clock fields. Fold fixtures distinguish earlier and later candidates.
 The choice of intermediate remains a separate open step.
 [Temporal comparison §6.5.6 steps 11.c–d](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
 [TypeScript subtraction](../../packages/temporal/zoned-date-time.ts#L592).
-[Rust subtraction](../../crates/temporal/calendar_difference.rs#L171).
+[Rust subtraction](../../crates/temporal/calendar_difference.rs#L197).
 
 The date-unit caller uses the unrounded zoned difference with the original
 endpoints, zone and calendar and the prepared largest unit. If either backend
@@ -80,7 +80,7 @@ uses an identical-endpoint shortcut, it takes the callee's zero-result case.
 The relative rounding call remains separately conditional.
 [Temporal comparison §6.5.7 step 2](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetimewithrounding).
 [TypeScript dispatch](../../packages/temporal/zoned-date-time.ts#L670).
-[Rust dispatch](../../crates/temporal/calendar_difference.rs#L201).
+[Rust dispatch](../../crates/temporal/calendar_difference.rs#L227).
 
 ComputeNudgeWindow step 8.d.i applies only when its first count is nonzero.
 Step 12.a uses the adjacent signed count, which lies strictly farther from
@@ -92,8 +92,8 @@ these endpoints. Prefix choice and the retry stay separately open.
 [Temporal comparison §7.5.33 steps 8.d.i and 12.a](https://tc39.es/proposal-temporal/#sec-temporal-computenudgewindow).
 [TypeScript first endpoint](../../packages/temporal/date-core.ts#L1021).
 [TypeScript adjacent endpoint](../../packages/temporal/date-core.ts#L1024).
-[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L225).
-[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L228).
+[Rust first endpoint](../../crates/temporal/calendar_difference.rs#L251).
+[Rust adjacent endpoint](../../crates/temporal/calendar_difference.rs#L254).
 
 NudgeToZonedTime step 6 adds the duration sign to a day component that has
 that sign or is zero. The resulting date duration is nonzero. Calendar
@@ -103,7 +103,7 @@ endpoint was shifted across a gap. The possible zero-date fold discrepancy
 at step 5 remains open.
 [Temporal comparison §7.5.35 steps 5–6](https://tc39.es/proposal-temporal/#sec-temporal-nudgetozonedtime).
 [TypeScript signed day](../../packages/temporal/date-core.ts#L1082).
-[Rust signed day](../../crates/temporal/calendar_difference.rs#L275).
+[Rust signed day](../../crates/temporal/calendar_difference.rs#L301).
 [TypeScript compatible resolution](../../packages/temporal/zoned-date-time.ts#L527).
 [Rust compatible resolution](../../crates/temporal/zoned.rs#L286).
 
@@ -114,3 +114,31 @@ runs the plain relative and native plain/zoned oracle targets. TypeScript
 declarations also pass. The fixture results support these source proofs.
 
 - Bazel log SHA-256 `0eb542982068c77ccaf47c7fe3714de93d24d242541616e949e6756931d2fa93`
+
+## Discarded gap probe at a borrowed calendar boundary
+
+A validated borrowed table may end before an otherwise representable local
+date. In the regression, March 13, 2021 at 02:30 is inside the table. March
+14 at 02:30 falls in the spring-forward gap and resolves to 03:30 after the
+target of 03:10. The selected intermediate date is March 13. Rust previously
+queried the uncovered March 14 calendar date even though timezone selection
+would discard it, returning `OutOfRange` instead of `PT23H40M`.
+
+When the origin projects successfully and the candidate's calendar
+projection returns `OutOfRange`, the corrected path uses the existing
+compatible timezone resolver for that raw local probe. It discards the
+calendar error only if the probe overshoots the target. At a target of
+03:30 the uncovered date is selected and still returns `OutOfRange`.
+Successful provider paths and the published reverse-fold comparison remain
+separately governed. Bundled TypeScript calendar providers cover the valid
+local-date hull and do not have the borrowed-table boundary in this case.
+
+The new public regression fails with the original implementation. All
+three Rust Bazel targets pass afterward.
+[Calendar field selection](../../crates/temporal/calendar_difference.rs#L158).
+[Compatible zone resolution](../../crates/temporal/zoned_difference.rs#L102).
+[Public borrowed-table regression](../../crates/temporal/calendar.test.rs#L22).
+[Temporal comparison §6.5.6 steps 11.c and 14](https://tc39.es/proposal-temporal/#sec-temporal-differencezoneddatetime).
+
+- Failing Rust replay SHA-256 `61b837208bd99a844bb510b2dd7cfbf06cc2c740c813e496c62f2d21bf5b21d0`
+- Passing Rust Bazel log SHA-256 `a7281152c4feb6925b4e2d33888fcc3269ba1fef533088901b999e28550e4fcc`

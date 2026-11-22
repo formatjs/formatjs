@@ -17,7 +17,7 @@ the latter. Both final integers are exactly representable as binary64 Numbers.
 Before the fix, [TS time balancing](../../packages/temporal/duration-core.ts#L230)
 converted the span to Number `9_007_199_254_741_004` before rounding. Converting
 that field back to BigInt put the value below the halfway boundary, selecting
-`9_007_199_254_741_000`. [Rust unrounded](../../crates/temporal/calendar_difference.rs#L113)
+`9_007_199_254_741_000`. [Rust unrounded](../../crates/temporal/calendar_difference.rs#L117)
 also constructed a Duration first; [Duration::new:66](../../crates/temporal/duration.rs#L66)
 round-trips fields through f64, losing the same bit despite i128 storage.
 
@@ -34,7 +34,7 @@ Lines 882–889 take the time-largest branch before creating balanced Number fie
 compute the original epoch difference, apply the `since` sign, round in BigInt,
 then balance the rounded integer once into final Number fields.
 
-[Rust difference:177](../../crates/temporal/calendar_difference.rs#L177)
+[Rust difference:177](../../crates/temporal/calendar_difference.rs#L203)
 retains `validate_options` before the equal-endpoint return. Lines 182–187 use
 the original i128 difference, round it, then construct the final Duration.
 Validated unit ordering ensures that a time largest unit also has a time smallest
@@ -59,7 +59,7 @@ The skipped time-unit unrounded paths perform epoch subtraction and private
 balancing; they do not invoke calendar arithmetic, local-time resolution or a
 zone offset provider. See [TS plain](../../packages/temporal/date-core.ts#L802),
 [TS zoned](../../packages/temporal/zoned-date-time.ts#L520) and
-[Rust](../../crates/temporal/calendar_difference.rs#L113). Avoiding those private
+[Rust](../../crates/temporal/calendar_difference.rs#L117). Avoiding those private
 intermediates skips no required input getter or provider callback. Complete
 intrinsic-mutation and realm contracts remain separate work.
 

@@ -90,9 +90,35 @@ These cases tie both native readers to the pinned explicit and recurring
 resources.
 
 The direct walks establish transition coverage through the tested cutoffs
-for the accepted names. Coverage between sampled offsets, outside TimeClip,
-and on other builds remains conditional.
+for the accepted names. The projected endpoint check below adds evidence for
+the Instant range boundary.
 [Replay hashes and counts](chromium-provider-summary.json).
+
+## Projected Instant endpoint windows
+
+The pinned Node ICU reader compares the complete upper ±11-day transition
+window to its image 400 Gregorian years earlier. The shift is 146,097 days
+or 12,622,780,800,000 ms. Its projected center is
+`+275360-09-13T00:00:00Z`, inside TimeClip. The raw and projected lists
+match for all 638 IDs, including the offsets on both sides of each change.
+The four identifiers represent two Chilean zones. Each increases by one
+hour at `+275360-09-07T04:00:00Z`, five days and 20 hours before the center.
+The raw lower ±11-day window contains no changes.
+
+Each bound Chromium build matches 6,388 Intl offset probes across the
+projected upper window and the representable lower window. Native Temporal
+checks both closed windows in both directions for its 597 accepted IDs.
+There are 1,198 next and 1,198 previous probes per build, including the
+queries that reject additional transitions inside the windows. All 8,784
+checks per build pass.
+
+A valid and invalid candidate for the same local time would differ by
+less than two days, given the offset bound. It would require a backward
+offset change within two days of an Instant limit. There are no changes in
+either raw two-day window. The browser replay confirms the representable
+projection under the bound recurrence and prehistory contracts. The
+ordinary host path keeps its provider premise for other binaries and
+timezone data. [Proposal comparison §11.1.13 step 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
 
 ## Reproduce
 
@@ -139,5 +165,16 @@ env -u ICU_TIMEZONE_FILES_DIR -u TZ "$debian_bin" --headless --no-proxy-server \
   --user-data-dir="$run_dir/debian-profile" --allow-file-access-from-files \
   --dump-dom "file://$run_dir/probe.html" >"$run_dir/debian.html"
 python3 "$proof/chromium-reader-replay.py" verify "$run_dir" \
+  --pplx "$pplx_bin" --debian "$debian_bin"
+```
+
+For the projected endpoint replay, choose a fresh `run_dir` and use the
+same Node and browser binaries. Prepare and collect the endpoint fixture,
+then rerun the two browser commands above in this directory.
+
+```sh
+python3 "$proof/chromium-reader-replay.py" prepare "$run_dir" --endpoint-projection
+(cd "$run_dir" && "$node_bin" --experimental-ffi collect.mjs 11 >reference.json)
+python3 "$proof/chromium-reader-replay.py" verify "$run_dir" --endpoint-projection \
   --pplx "$pplx_bin" --debian "$debian_bin"
 ```

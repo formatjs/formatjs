@@ -281,7 +281,7 @@ distinct-endpoint assertion would also fail if execution continued.
 The initial upper count agrees with step 4.d. On retry, the source advances
 the upper count too, while the published formula still evaluates
 `days + increment × sign`. [TypeScript retry](../../packages/temporal/date-core.ts#L1027).
-[Rust retry](../../crates/temporal/calendar_difference.rs#L227).
+[Rust retry](../../crates/temporal/calendar_difference.rs#L253).
 
 FormatJS already advances both counts for every irregular date unit. Its -2/-3
 window brackets this destination; new TS/native Hermes controls preserve that

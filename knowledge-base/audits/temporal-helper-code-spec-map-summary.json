@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 26765,
+  "whole_selected_source_lines": 26799,
   "whole_selected_source_lines_by_language": {
-    "rust": 10907,
+    "rust": 10941,
     "typescript": 15858
   },
-  "nonoverlapping_callable_lines": 17493,
+  "nonoverlapping_callable_lines": 17515,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8150,
+    "rust": 8172,
     "typescript": 9343
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17122,
+    "mapped": 17144,
     "candidate": 154,
     "unmapped": 217
   },
@@ -352,10 +352,10 @@
     },
     {
       "file": "crates/temporal/calendar_difference.rs",
-      "source_lines": 362,
+      "source_lines": 388,
       "callable_rows": 9,
-      "nonoverlapping_callable_lines": 318,
-      "sha256": "24f2ab06eaee3f2e1af5eb297774f00b57a2fd7d1fcb37d1aaaf7f62d604944f",
+      "nonoverlapping_callable_lines": 340,
+      "sha256": "06b95614e10593e4eb374ff293264248ab55f86137b71143a73df7c4749794a7",
       "unresolved_callable_rows": 0
     },
     {
@@ -528,10 +528,10 @@
     },
     {
       "file": "crates/temporal/zoned_difference.rs",
-      "source_lines": 100,
+      "source_lines": 108,
       "callable_rows": 8,
       "nonoverlapping_callable_lines": 79,
-      "sha256": "83c352ea84d48e7fbf3121946241339ff11740bd8ebb1903f178a04b1d447353",
+      "sha256": "b1817db8bd462d34dcae52502e70eeea60b59116a8f24b5735898ddbbf5c4f73",
       "unresolved_callable_rows": 0
     },
     {

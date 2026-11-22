@@ -5,6 +5,7 @@ use formatjs_temporal::{
     TemporalContext, TimeUnit, TimeZoneRegistry, TransitionDirection, TransitionZone,
     YearMonthUnit, ZonedDateTime,
     calendar::{Calendar, MonthCode},
+    table_calendar::{LunisolarData, TableCalendar, TableCalendarId},
 };
 
 fn month_code(text: &str) -> MonthCode {
@@ -16,6 +17,54 @@ fn month_code(text: &str) -> MonthCode {
 fn zero_zone() -> FixedOffset {
     FixedOffset::new(0).unwrap()
 }
+
+#[test]
+fn zoned_difference_queries_calendar_for_selected_gap_date() {
+    // Cover March 13 but not the next day's spring-forward gap.
+    let calendar = TableCalendar::lunisolar(
+        TableCalendarId::Chinese,
+        LunisolarData {
+            first_year: 2020,
+            end_day: 18_700,
+            checkpoints: &[18_352],
+            month_checkpoints: &[0],
+            dictionary: &[0],
+            years: "AA",
+        },
+    )
+    .unwrap();
+    let transitions = [OffsetTransition {
+        epoch_seconds: 1_615_705_200,
+        offset_seconds: -14_400,
+    }];
+    let zone = TransitionZone::new(-18_000, &transitions, None).unwrap();
+    let zoned = |seconds: i128| {
+        ZonedDateTime::new_in_calendar(
+            Instant::from_epoch_nanoseconds(seconds * 1_000_000_000).unwrap(),
+            zone,
+            calendar,
+        )
+    };
+    let origin = zoned(1_615_620_600); // March 13 at 02:30.
+    let difference = |target| {
+        origin.until(
+            &zoned(target),
+            DateTimeUnit::Day,
+            DateTimeUnit::Nanosecond,
+            1,
+            RoundingMode::Trunc,
+        )
+    };
+    assert_eq!(
+        difference(1_615_705_800).unwrap(), // 03:10, before compatible 03:30.
+        "PT23H40M".parse::<Duration>().unwrap()
+    );
+    assert_eq!(
+        difference(1_615_707_000), // 03:30 selects the uncovered date.
+        Err(formatjs_temporal::Error::OutOfRange)
+    );
+}
+
 fn unit(text: &str) -> DateTimeUnit {
     text.parse().unwrap()
 }

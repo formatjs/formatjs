@@ -153,7 +153,7 @@ export function PartitionDateTimeRangePattern(
         pattern: part.type === 'literal' ? part.value! : pattern,
       })
     }
-    fallback = {patternParts}
+    fallback = {__proto__: null, patternParts} as RangePatterns
   }
 
   // ECMA-402 §11.5.8, steps 15–16 compare relevant fields and collapse
@@ -179,6 +179,8 @@ export function PartitionDateTimeRangePattern(
       // Temporal comparison §15.6.8 steps 23.d.ii.1–2 encode am/pm as Booleans.
       equal = tm1.hour < 12 === tm2.hour < 12
     } else if (field === 'dayPeriod') {
+      // Temporal comparison §15.6.8 steps 23.d.iii.1–2 resolve each local
+      // day period with the selected locale and available clock fields.
       const first = getDayPeriodName(
         dataLocaleData,
         tm1,
@@ -193,6 +195,8 @@ export function PartitionDateTimeRangePattern(
       )
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
+      // Temporal comparison §15.6.8 step 23.d.iv.1 uses the requested
+      // precision carried unchanged into this selected format.
       // ECMA-402 §11.5.8 steps 15.d.iv.3–5: floor at the selected precision.
       // Temporal comparison §15.6.8 steps 23.d.iv.2, 23.d.iv.2.a and 23.d.iv.3–5.
       const digits = internalSlots.fractionalSecondDigits ?? 3
@@ -276,7 +280,11 @@ export function PartitionDateTimeRangePattern(
               : RangePatternType.startRange
       }
     }
-    rangePattern = {...rangePattern, patternParts: expanded}
+    rangePattern = {
+      __proto__: null,
+      ...rangePattern,
+      patternParts: expanded,
+    } as RangePatterns
   }
   const result: IntlDateTimeFormatPart[] = []
   const contextParts = PartitionPattern<IntlDateTimeFormatPartType>(

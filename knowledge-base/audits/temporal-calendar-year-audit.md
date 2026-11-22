@@ -14,7 +14,7 @@ years directly. Buddhist provider years −1 and 0 therefore appeared as −1 an
 instead of the algorithm's 2 and 1. The same issue can affect other providers
 that return nonpositive year fields.
 
-[TS:384](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L384)
+[TS:384](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L385)
 now tests only the field name and sign. Positive values pass through unchanged;
 nonpositive values become `1 - value` before either numeric or two-digit
 formatting. The transformation also reaches range patterns through this shared

@@ -56,7 +56,12 @@ function combineStyleRanges(
         else if (part.source === 'endRange')
           part.source = RangePatternType.startRange
       }
-    result[field] = {...fields, ...range, patternParts}
+    result[field] = {
+      __proto__: null,
+      ...fields,
+      ...range,
+      patternParts,
+    } as RangePatterns
   }
   return result
 }
@@ -88,6 +93,7 @@ function getTimeStyleFormat(
   // use the implementation-defined matcher from 11.5.3 when 11.1.2 resolves
   // hour12 to the opposite hc from the default timeStyle pattern.
   const matcherOptions = {
+    __proto__: null,
     hour12,
   } as Intl.DateTimeFormatOptions
   for (const prop of DATE_TIME_PROPS) {
@@ -120,7 +126,8 @@ export function DateTimeStyleFormat(
   }
 
   if (dateStyle !== undefined && timeStyle !== undefined) {
-    const format = {} as Formats
+    // ECMA-402 §11.5.1 steps 4.a–c combine the fields into a private record.
+    const format = {__proto__: null} as unknown as Formats
     for (const field in dateFormat) {
       if (
         field !== 'pattern' &&

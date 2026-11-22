@@ -30,7 +30,7 @@ overshoot T. Only an upper bound strictly before T triggers the shared
 retry. The retry keeps that bound as its new lower endpoint.
 [TS unrounded anchor](../../packages/temporal/zoned-date-time.ts#L520)
 [TS shared rounding](../../packages/temporal/date-core.ts#L962)
-[Rust unrounded and rounding](../../crates/temporal/calendar_difference.rs#L107).
+[Rust unrounded and rounding](../../crates/temporal/calendar_difference.rs#L111).
 
 ## Unit lengths and a second upper bound
 

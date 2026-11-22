@@ -485,13 +485,15 @@ export function parseDateTimeSkeleton(
       } as unknown as RangePatterns
       const processed = processDateTimePattern(info.pattern, intervalResult)
       result.rangePatterns[key] = {
+        __proto__: null,
         ...intervalResult,
         patternParts: splitRangePattern(processed[0]),
-      }
+      } as RangePatterns
       result.rangePatterns12[key] = {
+        __proto__: null,
         ...intervalResult,
         patternParts: splitRangePattern(processed[1]),
-      }
+      } as RangePatterns
       if (reversed) {
         const ranges = [result.rangePatterns[key], result.rangePatterns12[key]]
         for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
@@ -526,8 +528,16 @@ export function parseDateTimeSkeleton(
     }
     if (intervalFormatFallback && !result.rangePatterns.default) {
       const patternParts = splitFallbackRangePattern(intervalFormatFallback)
-      result.rangePatterns.default = {...fields, patternParts}
-      result.rangePatterns12.default = {...fields, patternParts}
+      result.rangePatterns.default = {
+        __proto__: null,
+        ...fields,
+        patternParts,
+      } as RangePatterns
+      result.rangePatterns12.default = {
+        __proto__: null,
+        ...fields,
+        patternParts,
+      } as RangePatterns
     }
     // Preserve the selected calendar's exact year field types.
     const yearFields: string[] = []

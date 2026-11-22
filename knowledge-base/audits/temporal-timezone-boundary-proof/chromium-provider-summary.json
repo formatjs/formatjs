@@ -185,6 +185,39 @@
         }
       }
     },
-    "remainingPremise": "Coverage between sampled boundaries and beyond TimeClip, untested rule readers and other host profiles."
+    "remainingPremise": "Intervals outside the sampled and projected domains, untested rule readers and other host profiles."
+  },
+  "endpointProjection": {
+    "referenceSha256": "89c844ed15b71034e54a284769113a7e0c1604eb8dca94793ea5b061a90a1485",
+    "fixtureSha256": "aead4c9869d43e85ebc525f37315e305cc7f7f9791fd8933036f4cb1c92c89e9",
+    "resultSha256BothBrowsers": "9e26fa42df70fbfffd00665cbefda72a8f016feb06bc70249c1a634563ec3d47",
+    "cycleDays": 146097,
+    "cycleMilliseconds": 12622780800000,
+    "windowMilliseconds": 950400000,
+    "projectedUpperCenter": "+275360-09-13T00:00:00Z",
+    "projectedUpperChanges": {
+      "instant": "+275360-09-07T04:00:00Z",
+      "offsetIncreaseMilliseconds": 3600000,
+      "identifiers": [
+        "America/Santiago",
+        "Chile/Continental",
+        "Chile/EasterIsland",
+        "Pacific/Easter"
+      ]
+    },
+    "rawLowerChanges": 0,
+    "rawTwoDayEndpointChanges": 0,
+    "identifierCounts": {
+      "intl": 638,
+      "nativeTemporal": 597
+    },
+    "caseCounts": {
+      "intlOffset": 6388,
+      "nativeNext": 1198,
+      "nativePrevious": 1198,
+      "totalPerBrowser": 8784
+    },
+    "mismatchesPerBrowser": 0,
+    "remainingPremise": "Recurrence and prehistory binding for other installed providers."
   }
 }

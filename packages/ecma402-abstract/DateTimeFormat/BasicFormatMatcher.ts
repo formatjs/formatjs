@@ -116,5 +116,6 @@ export function BasicFormatMatcher(
       bestFormat = format
     }
   }
-  return {...bestFormat}
+  // ECMA-402 §11.5.2 step 11 returns a private format record.
+  return {__proto__: null, ...bestFormat} as Formats
 }

@@ -17,6 +17,17 @@ required Plain output fields remain05:30/06:30. A collapsed single-value result
 cannot display both. Implementation consistently uses UTC for Plain comparison
 and display. Preserve that coherent behavior; do not adopt the mismatched zone.
 
+## Sparse range interval records
+
+English UTC h23 PlainTime 01:02:03 to 01:02:04 also exposes a separate
+range-table question. The raw interval map supplies date and default fields.
+With that map, the literal cutoff stops at missing AmPm before comparing
+Second and collapses the range. FormatJS and pinned native Intl show both
+endpoints. Whole-loop correspondence still needs a justified abstract record
+representation or resolution of the cutoff rule.
+[Temporal comparison §15.6.8 steps 23.b–d and 24](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
+[Source and endpoint evidence](temporal-pattern-partition-audit.md#day-period-values-and-private-interval-metadata).
+
 ## Duplicate digital Duration group
 
 [§15.9.8 steps4.e.i–iii](https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern)

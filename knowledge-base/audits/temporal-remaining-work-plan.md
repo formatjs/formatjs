@@ -28,7 +28,7 @@ satisfy this requirement.
 
 Realm-specific work is out of scope. The fixed ledger records the 16 shared
 constructor-realm steps for reference.
-27 of 43 conditional numbered steps remain in scope. Of those, 21 track
+24 of 40 conditional numbered steps remain in scope. Of those, 18 track
 published comparison conflicts, two track relative-window premises and four
 track timezone-provider applicability. The ordinary `index.js` and
 `standalone.js` cases pass with shared private epoch and calendar slots.
@@ -126,10 +126,10 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 and existing Intl contracts are reused, not reimplemented.
 
 Remaining core states include 221 conditional and 94 comparison-issue rows. No reviewed
-or partial rows remain. Amendments:41 conditional and11 comparison-issue rows. Counts include
+or partial rows remain. Amendments:38 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-43 conditional steps (32 core,11 amendment), each with exact source ranges
+40 conditional steps (32 core,8 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -192,7 +192,8 @@ Chromium 156 matches 3,630 browser probes. Its exact 2026e timezone resources
 pass the spacing, spread and endpoint scans on the pinned ICU reader. Controlled
 native Intl and Temporal runs bind the explicit and recurring data paths.
 Two exact Chromium builds each pass 131,471 direct reader checks across
-candidate boundaries, endpoints and native transition walks. Full provider
+candidate boundaries, endpoints and native transition walks. Two pinned builds
+pass 8,784 more checks for the projected endpoint windows. Full provider
 coverage and ordinary Node system ICU builds remain open.
 [Chromium evidence](temporal-timezone-boundary-proof/chromium-provider-audit.md).
 Other host profiles remain conditional. Numeric Intl cannot observe an outside
@@ -313,7 +314,7 @@ Nine focused Bazel targets pass.
 [Date and short dates](temporal-ts-date-final31-annotation-source-proof.json).
 
 Source review of the fixed helper inventory is complete. Behavioral review
-still has 27 conditional Temporal steps. Both exact owned candidate lookup
+still has 24 conditional Temporal steps. Both exact owned candidate lookup
 and gap disambiguation now pass public packed-data regressions. Owned next
 and previous transition lookup uses exact decoded boundaries. Owned gap resolution
 checks actual boundary candidates near both Instant limits.
@@ -357,6 +358,11 @@ Seven more local Intl steps cover field dispatch, the default-width guard,
 inequality encoding and collapsed rendering. The distinct range renderer
 also reads its optional precision from own fields. Eight Bazel targets pass.
 [Range evidence](temporal-pattern-partition-audit.md#range-dispatch-and-rendering).
+Three more local Intl steps verify day-period values and the precision slot.
+Cold and cached range regressions cover own interval metadata. A Rust borrowed
+calendar regression fixes an early error on a discarded zoned date probe.
+[Interval metadata](temporal-pattern-partition-audit.md#day-period-values-and-private-interval-metadata).
+[Borrowed calendar boundary](temporal-relative-rounding-contract-audit.md#discarded-gap-probe-at-a-borrowed-calendar-boundary).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

@@ -36,9 +36,9 @@
     "Snapshot is pinned Nov21; live TOC rechecked Nov22 separately, full-body future changes require regeneration."
   ],
   "review_status_counts": {
-    "conditional": 41,
+    "conditional": 38,
     "informative": 79,
-    "verified_local_step": 662,
+    "verified_local_step": 665,
     "verified": 125,
     "existing_contract_reused": 131,
     "not_applicable": 8,

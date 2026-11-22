@@ -39,7 +39,75 @@
       1000
     )
   }
-  for (const {id, cut, expectedBoundaries, endpoints} of fixtures) {
+  const verifyProjectedWindows = projections => {
+    const projected = {
+      zones: 0,
+      nativeZones: 0,
+      offsets: 0,
+      next: 0,
+      previous: 0,
+      mismatches: [],
+    }
+    const verifyWindow = (id, lo, hi, times, direction) => {
+      const next = direction === 'next'
+      const lower = BigInt(lo) * millis
+      const upper = BigInt(hi) * millis
+      const query = next ? (lo === -max ? lower : lower - 1n) : upper + 1n
+      let point = new Temporal.ZonedDateTime(query, id)
+      for (const t of next ? times : times.toReversed()) {
+        const observed = point.getTimeZoneTransition(direction)
+        projected[direction]++
+        if (!observed || observed.epochNanoseconds !== BigInt(t) * millis) {
+          projected.mismatches.push([
+            id,
+            direction,
+            t,
+            observed?.epochMilliseconds,
+          ])
+          return
+        }
+        point = observed
+      }
+      const extra = point.getTimeZoneTransition(direction)
+      projected[direction]++
+      if (
+        extra &&
+        (next
+          ? extra.epochNanoseconds <= upper
+          : extra.epochNanoseconds >= lower)
+      )
+        projected.mismatches.push([
+          id,
+          direction,
+          lo,
+          hi,
+          extra.epochMilliseconds,
+        ])
+    }
+    for (const {id, lower, upper, lo, hi, expected} of projections) {
+      const fmt = formatter(id)
+      projected.zones++
+      for (const [epoch, offset] of [...lower, ...upper]) {
+        const actual = offsetAt(fmt, epoch)
+        projected.offsets++
+        if (actual !== offset)
+          projected.mismatches.push([id, epoch, offset, actual])
+      }
+      try {
+        new Temporal.ZonedDateTime(0n, id)
+      } catch {
+        continue
+      }
+      projected.nativeZones++
+      for (const direction of ['next', 'previous']) {
+        verifyWindow(id, lower[0][0], lower.at(-1)[0], [], direction)
+        verifyWindow(id, lo, hi, expected, direction)
+      }
+    }
+    return projected
+  }
+  for (const {id, cut, expectedBoundaries, endpoints} of globalThis.fixtures ??
+    []) {
     let fmt
     try {
       fmt = formatter(id)
@@ -94,5 +162,9 @@
         extra.epochMilliseconds
       )
   }
-  document.querySelector('#result').textContent = JSON.stringify(result)
+  document.querySelector('#result').textContent = JSON.stringify(
+    globalThis.projections
+      ? verifyProjectedWindows(globalThis.projections)
+      : result
+  )
 </script>

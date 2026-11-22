@@ -114,6 +114,7 @@ function matchRangeWidths(
       })
     }
     result[field] = {
+      __proto__: null,
       ...range,
       ...widths,
       ...(range.weekdayStandalone && range.weekday
@@ -130,7 +131,7 @@ function matchRangeWidths(
         ? {dayPeriod: options.dayPeriod}
         : {}),
       patternParts: adjustedParts,
-    }
+    } as RangePatterns
   }
   return result
 }

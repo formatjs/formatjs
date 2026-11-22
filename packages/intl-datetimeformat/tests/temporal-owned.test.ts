@@ -101,19 +101,38 @@ test.each([
   ['distinct', 'numberFormatters', 'formatRangeToParts', 'get'],
   ['collapsed', 'fractionalSecondDigits', 'formatRangeToParts', 'get'],
   ['distinct', 'fractionalSecondDigits', 'formatRange', 'get'],
+  ['distinct', 'weekdayStandalone', 'formatRangeToParts', 'get'],
+  ['cold distinct', 'weekdayStandalone', 'formatRange', 'get'],
+  ['cold distinct', 'timeZoneName', 'formatRangeToParts', 'get'],
+  ['time distinct', 'monthStandalone', 'formatRange', 'get'],
 ] as const)(
   'formats %s Temporal ranges without inherited %s (%s, %s)',
   (kind, property, method, accessor) => {
-    const formatter = new DateTimeFormat('en', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    })
-    const start = new Temporal.PlainDate(1970, 1, 1)
+    const construct = () =>
+      new DateTimeFormat(
+        'en',
+        kind === 'time distinct'
+          ? {timeZone: 'UTC', hour: 'numeric'}
+          : {
+              timeZone: 'UTC',
+              year: 'numeric',
+              month: kind === 'cold distinct' ? 'short' : 'numeric',
+              day: 'numeric',
+            }
+      )
+    const start =
+      kind === 'time distinct'
+        ? new Temporal.PlainTime(10)
+        : new Temporal.PlainDate(1970, 1, 1)
     const end =
-      kind === 'collapsed' ? start : new Temporal.PlainDate(1970, 1, 2)
-    const expected = formatter[method](start as any, end as any)
+      kind === 'collapsed'
+        ? start
+        : kind === 'time distinct'
+          ? new Temporal.PlainTime(12)
+          : new Temporal.PlainDate(1970, 1, 2)
+    const control = construct()
+    const expected = control[method](start as any, end as any)
+    const formatter = kind === 'cold distinct' ? construct() : control
     const original = Object.getOwnPropertyDescriptor(Object.prototype, property)
     let calls = 0,
       actual: unknown,

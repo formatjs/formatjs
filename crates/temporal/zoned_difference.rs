@@ -1,7 +1,8 @@
 use crate::calendar_difference::{RelativeAnchor, difference, validate_options};
+use crate::zoned::resolve_local_nanoseconds;
 use crate::{
-    CalendarProvider, Duration, Error, Instant, Overflow, RoundingMode, TimeZone, ZonedDateTime,
-    ZonedUnit,
+    CalendarProvider, Disambiguation, Duration, Error, Instant, Overflow, RoundingMode, TimeZone,
+    ZonedDateTime, ZonedUnit,
 };
 
 impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
@@ -96,5 +97,12 @@ impl<Z: TimeZone + Clone, C: CalendarProvider> RelativeAnchor for ZonedDateTime<
         .local()?
         .time()
         .nanoseconds())
+    }
+    // Proposal comparison §6.5.6 step 11.c: apply compatible zone resolution.
+    fn resolve_compatible(&self, local: i128) -> Result<i128, Error> {
+        Ok(
+            resolve_local_nanoseconds(local, self.time_zone(), Disambiguation::Compatible)?
+                .epoch_nanoseconds(),
+        )
     }
 }

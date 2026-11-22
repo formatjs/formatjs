@@ -415,6 +415,75 @@ describe('Intl.DateTimeFormat', function () {
     expect(new DateTimeFormat('en', frozen).format(0)).toBe('1/1/1970')
   })
 
+  it.each([
+    ['basic', {year: 'numeric', formatMatcher: 'basic'}],
+    ['best fit', {year: 'numeric', formatMatcher: 'best fit'}],
+    ['date style', {dateStyle: 'short'}],
+    ['combined styles', {dateStyle: 'short', timeStyle: 'short'}],
+    ['style hour-cycle match', {timeStyle: 'short', hourCycle: 'h23'}],
+  ] as const)(
+    'keeps %s constructor precision records private',
+    (_name, fields) => {
+      const options = {
+        __proto__: null,
+        ...fields,
+        timeZone: 'UTC',
+        fractionalSecondDigits: undefined,
+      } as const
+      const expected = new DateTimeFormat('en', options).formatToParts(0)
+      const original = Object.getOwnPropertyDescriptor(
+        Object.prototype,
+        'fractionalSecondDigits'
+      )
+      let calls = 0,
+        actual: Intl.DateTimeFormat | undefined,
+        error: unknown
+      try {
+        Object.defineProperty(Object.prototype, 'fractionalSecondDigits', {
+          configurable: true,
+          get() {
+            calls++
+            throw new Error('Inherited private constructor precision')
+          },
+        })
+        actual = new DateTimeFormat('en', options)
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (original)
+          Object.defineProperty(
+            Object.prototype,
+            'fractionalSecondDigits',
+            original
+          )
+        else Reflect.deleteProperty(Object.prototype, 'fractionalSecondDigits')
+      }
+      expect(calls).toBe(0)
+      expect(error).toBeUndefined()
+      expect(actual!.formatToParts(0)).toEqual(expected)
+    }
+  )
+
+  it('reads inherited public precision once before private matching', () => {
+    let reads = 0
+    const options = Object.assign(
+      Object.create({
+        get fractionalSecondDigits() {
+          reads++
+          return 1
+        },
+      }),
+      {timeZone: 'UTC', second: 'numeric'}
+    )
+    const formatter = new DateTimeFormat('en', options)
+    expect(reads).toBe(1)
+    expect(formatter.formatToParts(123)).toContainEqual({
+      type: 'fractionalSecond',
+      value: '1',
+    })
+    expect(reads).toBe(1)
+  })
+
   it.each(['day', 'timeZone'])(
     'isolates internal records and resolved options from inherited %s setters',
     property => {

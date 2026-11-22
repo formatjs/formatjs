@@ -88,6 +88,7 @@ export function getDayPeriodName(
     timed && format.fractionalSecondDigits === undefined ? 0 : time.millisecond
   const value = ((time.hour * 60 + minute) * 60 + second) * 1000 + millisecond
   const rules = data.dayPeriodRules || []
+  // Temporal comparison §15.6.8 steps 23.d.iii.1–2 use this locale policy.
   // ECMA-402 §11.5.4, step 15.d.iii selects the localized day period and width.
   // LDML variable-period rules 2-4, 8: inclusive start, exclusive end, wrap midnight.
   // https://tc39.es/ecma402/#sec-formatdatetimepattern
@@ -392,16 +393,23 @@ export function FormatDateTimePattern(
       part.type === 'weekday' ||
       part.type === 'era'
   )
+  // Private range records and own selected-format flags carry CLDR grammar.
+  // ECMA-402 §11.5.4 step 15.f.x uses the resulting localized field string.
+  const primaryFormat = internalSlots.format
   const isMonthStandalone =
     format?.monthStandalone ??
-    internalSlots.format?.monthStandalone ??
+    (primaryFormat && HasOwnProperty(primaryFormat, 'monthStandalone')
+      ? primaryFormat.monthStandalone
+      : undefined) ??
     (hasMonth && !hasOtherDateFields)
   // Weekday is stand-alone only when it is the sole field, as in the CLDR `E`
   // skeleton (`ccc`). With a day or a time it keeps the format form (`Ed`, `EHm`).
   // https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
   const isWeekdayStandalone =
     format?.weekdayStandalone ??
-    internalSlots.format?.weekdayStandalone ??
+    (primaryFormat && HasOwnProperty(primaryFormat, 'weekdayStandalone')
+      ? primaryFormat.weekdayStandalone
+      : undefined) ??
     (arraySome(contextParts, part => part.type === 'weekday') &&
       arrayEvery(
         contextParts,

@@ -12,7 +12,7 @@ subtracts within-day clocks, then borrows one day when the remainder opposes the
 overall sign. Both clocks are in `[0, day)`, so the adjusted signed clock
 remainder has magnitude below one day. Balancing at hour starts with a quotient
 below 24; subsequent minutes/seconds are below 60 and subsecond fields below 1000. Each integer is exactly representable as Number.
-[Rust:122](../../crates/temporal/calendar_difference.rs#L122) uses the same
+[Rust:122](../../crates/temporal/calendar_difference.rs#L126) uses the same
 Euclidean day remainder and borrow, then balances at hour.
 
 [Zoned TS:562](../../packages/temporal/zoned-date-time.ts#L562) also balances at
@@ -23,7 +23,7 @@ anchor are bounded instants; the overshoot sentinel at line 515 is also bounded
 by the epoch limit plus one day. Therefore the remainder's magnitude is below
 `1.729e22 ns`, and its hour quotient is below `4.81e9`, well below `2**53`.
 Subsequent fields have the same small remainder bounds. Rust's
-[anchor/sentinel path:145](../../crates/temporal/calendar_difference.rs#L145)
+[anchor/sentinel path:145](../../crates/temporal/calendar_difference.rs#L151)
 and hour balance at line 164 satisfy the same coarse bound.
 
 Thus the Number/f64 conversions in these hour-balanced clock fields lose no
@@ -47,7 +47,7 @@ round beyond the input interval; the quotient still stays below `1.201e9`.
 Both bounds are exactly representable. The separately balanced remainder is
 below one day.
 
-[Rust:277](../../crates/temporal/calendar_difference.rs#L277) performs the same
+[Rust:277](../../crates/temporal/calendar_difference.rs#L303) performs the same
 calculation in i128 and reconstructs the remainder at hour. Provided the calendar
 day field has the required bounded integer value, its intermediate f64
 conversion is exact as well. This does not establish that provider arithmetic selected the correct day count.
@@ -70,7 +70,7 @@ The truncated product and adjacent increment are bounded integers below
 `2**35`, so multiplication/addition remain exact. The quotient used for half-even
 parity is then an exact integer. Division by seven in week preparation obeys the
 same argument. Rust uses i128 division/products directly in
-[lines 199–208](../../crates/temporal/calendar_difference.rs#L208).
+[lines 199–208](../../crates/temporal/calendar_difference.rs#L234).
 
 Both implementations compare irregular rounding distances and endpoint spans
 with BigInt/i128, preserving nanoseconds at half boundaries. Endpoint production
@@ -81,7 +81,7 @@ and window monotonicity remain separate algorithm obligations.
 - TS [calendarDateUntilRaw](../../packages/temporal/calendar.ts#L531) returns
   Number calendar counts. Their correctness and bounds across all supported
   calendars still need a separate operation proof.
-- Rust [date_until](../../crates/temporal/calendar_difference.rs#L77) promotes
+- Rust [date_until](../../crates/temporal/calendar_difference.rs#L81) promotes
   provider i64 counts to i128 exactly. The provider's
   [DateDuration fields](../../crates/intl_datetimeformat_calendars/core.rs#L50)
   permit much larger values than ordinary calendar differences. The actual

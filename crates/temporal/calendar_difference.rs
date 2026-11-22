@@ -73,6 +73,10 @@ pub(crate) trait RelativeAnchor {
     fn clock_at(&self, value: i128) -> Result<i128, Error> {
         Ok(value.rem_euclid(NANOSECONDS_PER_DAY))
     }
+    // Proposal comparison §6.5.6 step 11.c: resolve the raw local probe.
+    fn resolve_compatible(&self, local: i128) -> Result<i128, Error> {
+        Ok(local)
+    }
     fn endpoint(&self, fields: [i128; 10]) -> Result<i128, Error>;
 }
 // Proposal comparison §7.5.33 steps 8.a, 9: delegate calendar window endpoint construction.
@@ -140,24 +144,47 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
         );
         return Ok(fields);
     }
+    let end_clock = start.clock_at(end)?;
+    let origin_clock = start.clock_at(origin)?;
     let mut day = finish;
-    if (start.clock_at(end)? - start.clock_at(origin)?) * sign < 0 {
+    if (end_clock - origin_clock) * sign < 0 {
         day -= sign as i64;
     }
     if i128::from(day - begin) * sign < 0 {
         day = begin;
     }
-    let mut fields = date_until(start, begin, day, largest)?;
-    let mut anchor;
+    let (mut fields, anchor);
     loop {
-        anchor = match endpoint(start, fields) {
-            Ok(value) => value,
-            Err(Error::OutOfRange | Error::InvalidDateTime) => {
-                sign * (MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY)
+        let date_fields = date_until(start, begin, day, largest);
+        let candidate = match date_fields {
+            Ok(fields) => match endpoint(start, fields) {
+                Ok(value) => value,
+                Err(Error::OutOfRange | Error::InvalidDateTime) => {
+                    sign * (MAX_EPOCH_NANOSECONDS + NANOSECONDS_PER_DAY)
+                }
+                Err(error) => return Err(error),
+            },
+            Err(error) => {
+                let calendar = start.calendar();
+                if day == begin
+                    || calendar.date_extended(begin).is_err()
+                    || !matches!(
+                        calendar.date_extended(day),
+                        Err(crate::calendar::Error::OutOfRange)
+                    )
+                {
+                    return Err(error);
+                }
+                // Proposal comparison §6.5.6 steps 11.c and 14: Resolve an
+                // uncovered probe before deciding whether its date is needed.
+                start
+                    .resolve_compatible(i128::from(day) * NANOSECONDS_PER_DAY + origin_clock)
+                    .map_err(|_| error)?
             }
-            Err(error) => return Err(error),
         };
-        if (anchor - end) * sign <= 0 {
+        if (candidate - end) * sign <= 0 {
+            fields = date_fields?;
+            anchor = candidate;
             break;
         }
         day -= sign as i64;
@@ -166,7 +193,6 @@ pub(crate) fn unrounded<A: RelativeAnchor>(
             anchor = origin;
             break;
         }
-        fields = date_until(start, begin, day, largest)?;
     }
     // Proposal comparison §6.5.6 step 11.d: subtract the selected anchor exactly.
     let time = Duration::from_time_nanoseconds(end - anchor, TimeUnit::Hour)?.fields();
