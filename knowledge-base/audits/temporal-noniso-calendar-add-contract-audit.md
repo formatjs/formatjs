@@ -92,7 +92,7 @@ of them merely by inspecting an adapter.
 
 ## Native ownership
 
-[Native calendarAdd1088](../../packages/temporal/native.ts#L1088) copies four date
+[Native calendarAdd1088](../../packages/temporal/native.ts#L1126) copies four date
 components into a null-prototype transport record. [FFI741](../../crates/temporal/ffi.rs#L741)
 resolves original calendar fields with reject, parses date components, calls
 add_extended, then converts extended result back to normalized calendar fields.

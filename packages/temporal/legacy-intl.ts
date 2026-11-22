@@ -3,7 +3,9 @@ import {
   TypeErrorConstructor,
   numberFrom,
 } from '#packages/ecma262-abstract/intrinsics.js'
+import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {createObject, createProxy} from '#packages/temporal/intrinsics.js'
+import {registerLegacyTimeZoneProvider} from '#packages/temporal/native.js'
 import {
   registerTemporalDateTimeNamespace,
   ToDateTimeFormattable,
@@ -32,6 +34,15 @@ const weakMapGet = WeakMap.prototype.get
 const weakMapSet = WeakMap.prototype.set
 const mapGet = Map.prototype.get
 const mapSet = Map.prototype.set
+
+function staticDataValue(
+  descriptors: PropertyDescriptorMap,
+  key: string
+): unknown {
+  if (!HasOwnProperty(descriptors, key)) return undefined
+  const descriptor = descriptors[key]
+  return HasOwnProperty(descriptor, 'value') ? descriptor.value : undefined
+}
 
 export function installLegacyDateTimeFormat(
   namespace: TemporalNamespace
@@ -277,8 +288,9 @@ export function installLegacyDateTimeFormat(
     }
     return formatter
   }
+  const staticDescriptors = Object.getOwnPropertyDescriptors(Native)
   Object.defineProperties(DateTimeFormat, {
-    ...Object.getOwnPropertyDescriptors(Native),
+    ...staticDescriptors,
     __addTemporalNamespace: {value: registerTemporalDateTimeNamespace},
     __formatTemporal: {
       value(
@@ -318,4 +330,15 @@ export function installLegacyDateTimeFormat(
   })
   globalThis.Intl.DateTimeFormat =
     DateTimeFormat as unknown as Intl.DateTimeFormatConstructor
+  const legacyTimeZoneData = staticDataValue(staticDescriptors, 'tzData')
+  // Proposal comparison §11.1.9 step 3: Remember installed mutable legacy timezone data.
+  if (
+    staticDataValue(staticDescriptors, 'polyfilled') === true &&
+    typeof staticDataValue(staticDescriptors, '__addTZData') === 'function' &&
+    typeof legacyTimeZoneData === 'object' &&
+    legacyTimeZoneData !== null &&
+    typeof nativeParts === 'function'
+  ) {
+    registerLegacyTimeZoneProvider(Native, nativeParts)
+  }
 }

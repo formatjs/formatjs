@@ -61,7 +61,7 @@ is less than one day outside the Instant range. Clamping does not move
 either probe farther than one day from that scalar. Hence each success
 uses an effective offset active within one day of the candidate's
 local scalar, as required by the signed civil comparison lemma.
-[Host adapter](../../../../packages/temporal/host-timezone.ts#L151).
+[Host adapter](../../../../packages/temporal/host-timezone.ts#L163).
 
 This certifies the six-day premise for this bound built-in Intl profile.
 The calendar date-add/date-until and successful endpoint premises stay

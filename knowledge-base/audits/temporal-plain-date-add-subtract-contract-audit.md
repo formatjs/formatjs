@@ -67,7 +67,7 @@ would otherwise leave a valid date record.
 [plain-date.ts:211](../../packages/temporal/plain-date.ts#L211) dispatches only
 after duration preparation. overflowOption:219 is evaluated before native method
 entry; parsed overflow string and subtract boolean accompany validated fields.
-[Native adapter:891](../../packages/temporal/native.ts#L891) uses typed
+[Native adapter:891](../../packages/temporal/native.ts#L929) uses typed
 addPlainDate callback when supplied, otherwise addPlainDate query and dateResult.
 Result creation still enforces PlainDate epoch-day bounds/calendar.
 

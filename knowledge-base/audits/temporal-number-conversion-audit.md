@@ -20,7 +20,7 @@ zero. The internal ecma262-abstract library consequently has no Decimal dependen
 Decimal arithmetic elsewhere retains its existing ownership and audit status.
 
 The native bridge's [separate Number alias](../../packages/temporal/native.ts#L93)
-does not call this helper. Its [clock result conversion](../../packages/temporal/native.ts#L508)
+does not call this helper. Its [clock result conversion](../../packages/temporal/native.ts#L546)
 intentionally accepts a BigInt reduced to the nonnegative sub-day interval,
 whose upper bound is below 2^53. Number constructor conversion is appropriate
 there; the public abstract operation must reject BigInt. Broader native transport

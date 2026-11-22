@@ -109,6 +109,44 @@ const ToNumber = Number
 const numberText = /* @__PURE__ */ (() => Number.prototype.toString)()
 const BadRange = RangeError
 const BadType = TypeError
+type DateTimeParts = Intl.DateTimeFormat['formatToParts']
+const LegacyProviderMap = WeakMap
+const legacyProviderGet = LegacyProviderMap.prototype.get
+const legacyProviderSet = LegacyProviderMap.prototype.set
+let legacyZoneProviders:
+  | WeakMap<Intl.DateTimeFormatConstructor, WeakMap<DateTimeParts, true>>
+  | undefined
+
+// Proposal comparison §11.1.9 step 3: Keep installed legacy provider identities private.
+export function registerLegacyTimeZoneProvider(
+  constructor: Intl.DateTimeFormatConstructor,
+  parts: DateTimeParts
+): void {
+  const providers = (legacyZoneProviders ??= new LegacyProviderMap())
+  let methods = apply(legacyProviderGet, providers, [constructor]) as
+    | WeakMap<DateTimeParts, true>
+    | undefined
+  if (!methods) {
+    methods = new LegacyProviderMap()
+    apply(legacyProviderSet, providers, [constructor, methods])
+  }
+  apply(legacyProviderSet, methods, [parts, true])
+}
+
+// Proposal comparison §11.1.9 step 3: Identify the captured legacy offset reader.
+export function hasLegacyTimeZoneProvider(
+  constructor: Intl.DateTimeFormatConstructor,
+  parts: DateTimeParts
+): boolean {
+  if (!legacyZoneProviders) return false
+  const methods = apply(legacyProviderGet, legacyZoneProviders, [
+    constructor,
+  ]) as WeakMap<DateTimeParts, true> | undefined
+  return (
+    methods !== undefined && apply(legacyProviderGet, methods, [parts]) === true
+  )
+}
+
 export interface NativeDateSnapshot {
   date: CalendarDate | null
   values: Record<string, string | number | boolean | bigint | undefined>

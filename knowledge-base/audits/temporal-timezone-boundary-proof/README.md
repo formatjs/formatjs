@@ -126,7 +126,7 @@ cannot bind the dataset used by the installed formatter. An exact adapter
 would need an explicit contract for installed constructor identity, row
 interpretation, and data replacement.
 
-The replay also warms the legacy provider with fixed UTC offset for Chicago,
+The direct replay also warms the legacy provider with fixed UTC offset for Chicago,
 then installs a single +01:00 jump at epoch zero in Chicago and Los Angeles.
 The raw formatter sees the jump. The cold Los Angeles query resolves
 00:30 to −30 min for `earlier` and +30 min for `later` and `compatible`,
@@ -134,12 +134,23 @@ and throws for `reject`. The warm Chicago query returns +30 min in every
 mode because the fallback offset cache retains the earlier data. This
 failure is separate from overlapping transitions and TimeClip. The installed
 7.8.1 constructor declares `tzData` and replaces it on `__addTZData`.
-The host adapter's existing observations do not read this property.
-Polling it would add observable constructor descriptor accesses. Scoping
-generationless caches to a single operation avoids those accesses and lets
-subsequent operations read replaced data, at the cost of losing cross-call
-offset and transition reuse on native Intl. The owned formatter already
-provides its own generation hook.
+The host adapter's direct import leaves that property unread.
+
+### Legacy reload after installing Temporal
+
+The Temporal installer recognizes the captured legacy formatter using static
+data descriptors it already acquires when installing its Intl bridge.
+The host adapter then scopes offset and transition samples from that exact
+formatter and parts method to a single lookup. A reload through either the
+retained original registrar or the wrapper is visible on the next lookup.
+Native Intl still reuses samples across calls. The current owned formatter
+continues to use its generation hook.
+
+The installed replay warms the Chicago kernel before installing Temporal,
+warms both transition directions, then replaces data twice. It checks the
+offset, candidate and gap paths as well as both transitions. Direct imports
+that skip the installer still reproduce stale samples. Arbitrary custom
+data still require spacing and endpoint evidence.
 
 The legacy replay checks that all four public single and range formatting
 methods reject Number inputs just outside TimeClip and reject BigInt
@@ -148,6 +159,7 @@ ZonedDateTime construction rejects epochs one nanosecond outside the same
 limits, so those public inputs have the same endpoint constraint.
 
 - Legacy result SHA-256 `1652f3f5071c91146bfe455a82feb8c2cdf6f42e69c83152ad0275a2c97747df`
+- Installed legacy result SHA-256 `01df826851d86677d918205bf227fbf6682a16d62ac190d827336152b82264a2`
 - Owned result SHA-256 `56efd3a337c89b3c71339ffb887fe847bc8dc01e4ff9e09304c788e98092b1a8`
 
 Run with Node 26.5.1. Install the pinned release into a scratch directory
@@ -163,6 +175,7 @@ datetime_pkg=$(bazel cquery 'config(//packages/intl-datetimeformat:pkg, target)'
 matcher_pkg=$(bazel cquery 'config(//packages/intl-localematcher:pkg, target)' --output=files)
 memoize_pkg=$(bazel cquery 'config(//packages/fast-memoize:pkg, target)' --output=files)
 node "$replay" legacy "$replay_dir/node_modules/@formatjs/intl-datetimeformat" "$temporal_pkg"
+node "$replay" legacy-installed "$replay_dir/node_modules/@formatjs/intl-datetimeformat" "$temporal_pkg"
 node "$replay" owned "$datetime_pkg" "$temporal_pkg" "$matcher_pkg" "$memoize_pkg"
 ```
 
@@ -236,7 +249,7 @@ and loads the synthetic upper and lower folds. Before the fix,
 disambiguation modes. The comparison requires RangeError when either
 actual candidate is outside the Instant limits.
 
-The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
+The [offset provider](../../../packages/temporal/host-timezone.ts#L75) reuses
 the installed formatter's private candidate check within one day of either
 limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L441)
 enumerates decoded historical and recurring offsets and round-trips each
@@ -362,7 +375,7 @@ nanosecond precision and both Instant limits are inclusive. The offset
 reader uses those same decoded rows at floored epoch milliseconds.
 [Transition lookup](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L171).
 [Owned offset and transition query](../../../packages/intl-datetimeformat/core.ts#L539).
-[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L320).
+[Temporal transition dispatch](../../../packages/temporal/host-timezone.ts#L348).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 The implementation-defined boundary contract is in
 [§11.1.3](https://tc39.es/proposal-temporal/#sec-temporal-getnamedtimezonenexttransition)
@@ -390,7 +403,7 @@ TZif data in the scan before it uses the recurring-tail shortcut. The bound
 comes from the same pack as the sampling intervals. Both directions add the
 existing three-year margin. Offsets come from the installed Intl provider.
 [Generated bound](../../../packages/intl-datetimeformat/scripts/temporal-timezones.ts#L58).
-[Host search](../../../packages/temporal/host-timezone.ts#L348).
+[Host search](../../../packages/temporal/host-timezone.ts#L374).
 [Proposal comparison §6.3.46 steps 9.a and 10.b](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition).
 
 The package regression asserts the exact BigInt epoch through the ordinary
@@ -414,7 +427,7 @@ unchanged interval. Both used the captured Array push, which still calls an
 inherited index setter. Both now append an own data property to the private
 array. The first and repeated lookups return the transition at the exact
 nanosecond in both cases.
-[Host cache writes](../../../packages/temporal/host-timezone.ts#L404).
+[Host cache writes](../../../packages/temporal/host-timezone.ts#L430).
 [Native regression cases](../../../packages/temporal/tests/host-timezone.test.ts#L403).
 
 ## Reproduce analysis

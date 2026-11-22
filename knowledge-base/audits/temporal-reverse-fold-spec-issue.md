@@ -1,6 +1,6 @@
 # Reverse-fold intermediate instant
 
-Unresolved published-comparison inconsistency, reviewed 2026-11-21. Requested
+Unresolved published-comparison divergence, reviewed 2026-11-22. Requested
 ECMA-262 lacks Temporal API chapters; proposal references here do not adopt a
 replacement authority. No runtime change or disputed-value regression.
 
@@ -37,6 +37,14 @@ Read-only native Node v26.5.1 comparison returns -PT23H30M for both nanosecond a
 minute smallest units, and adding it back produces the same one-hour discrepancy.
 That observation corroborates the derivation; native output is not spec authority
 or an adopted FormatJS expectation.
+
+The packaged polyfill and Node v26.8.1 both preserve the later fold occurrence
+on zero-duration addition. Both give -PT30M for a same-local-date difference
+from the later occurrence to 1604208600000000000 ns, exercising §6.5.6 step 4.
+For the distinct-date witness above, the polyfill returns -PT24H30M and native
+returns -PT23H30M. A difference-only compatible probe can implement step 11.c
+while preserving both controls. Review every attempted probe and its range
+handling before applying such a change.
 
 Keep difference/nudge intermediate construction, intended invariant and requested
 Temporal authority unresolved. No implementation signoff or upstream filing.

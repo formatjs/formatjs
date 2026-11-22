@@ -33903,7 +33903,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "643d82b24d19dcd02a2dff7f28a79960c9190f5febe0acc2936153afc9445d4c",
+    "packages/temporal/host-timezone.ts": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -33913,12 +33913,12 @@
     "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "eaa198b02471775ff67f0461978ac9a71f1afeafde25a7d7c1b05bfb869ffb83",
-    "packages/temporal/legacy-intl.ts": "2f1f9e562a43846facfda120cd56bf8496e77fe965aaad6b60af7d8392743051",
+    "packages/temporal/legacy-intl.ts": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
     "packages/temporal/legacy-lunisolar-date.ts": "5393252c0477e79186ad81e511903dd328b6fb590f00e0009d193e7bbbfa2389",
     "packages/temporal/legacy-zoned-date.ts": "9f49bdcba14c32c76c04ace7b49e9580d9fb4b0988bb1cbb361d390a27b3d15a",
     "packages/temporal/locale.ts": "d8fb1861ecc5b6818e539320ba7a7221e50236dc317289af1e6c2a6248395f5e",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
-    "packages/temporal/native.ts": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
+    "packages/temporal/native.ts": "129514cbb0cd9dc4f92d4f5a6d84876aeceab06a776b661cfce100569e1dfa23",
     "packages/temporal/plain-date-time.ts": "c9143c5d6005425be85ab1ab0729b815c8388c0e5c398582cb9ffc41e5cb3b78",
     "packages/temporal/plain-date.ts": "14265e0e7f2bb1ca3894adf272b3bf83a9113b716196ff2d428ba664e0e61a5f",
     "packages/temporal/plain-month-day.ts": "d2a347b5bbb9efa6eaf43184ae2c655d4e17d1713c108377e310d9e79d157296",
@@ -34498,6 +34498,56 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "legacy_timezone_reload": [
+      {
+        "file": "packages/temporal/native.ts",
+        "symbol": "registerLegacyTimeZoneProvider",
+        "source_sha256": "129514cbb0cd9dc4f92d4f5a6d84876aeceab06a776b661cfce100569e1dfa23",
+        "start_line": 121,
+        "end_line": 134,
+        "anchor_line": 120,
+        "section": "11.1.9",
+        "steps": ["3"],
+        "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "scope": "Remember the captured legacy formatter and offset reader identities."
+      },
+      {
+        "file": "packages/temporal/native.ts",
+        "symbol": "hasLegacyTimeZoneProvider",
+        "source_sha256": "129514cbb0cd9dc4f92d4f5a6d84876aeceab06a776b661cfce100569e1dfa23",
+        "start_line": 137,
+        "end_line": 148,
+        "anchor_line": 136,
+        "section": "11.1.9",
+        "steps": ["3"],
+        "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "scope": "Match the captured provider without observing any public formatter property."
+      },
+      {
+        "file": "packages/temporal/host-timezone.ts",
+        "symbol": "beginOperation",
+        "source_sha256": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
+        "start_line": 137,
+        "end_line": 142,
+        "anchor_line": 136,
+        "section": "11.1.9",
+        "steps": ["3"],
+        "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "scope": "Discard prior offset samples for the registered generationless provider."
+      },
+      {
+        "file": "packages/temporal/legacy-intl.ts",
+        "symbol": "installLegacyDateTimeFormat",
+        "source_sha256": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
+        "start_line": 333,
+        "end_line": 343,
+        "anchor_line": 334,
+        "section": "11.1.9",
+        "steps": ["3"],
+        "spec_url": "https://tc39.es/proposal-temporal/#sec-temporal-getoffsetnanosecondsfor",
+        "scope": "Recognize legacy timezone registration from the existing installer descriptor snapshot."
+      }
+    ],
     "datetime_alternate_time_style": [
       {
         "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
@@ -34708,10 +34758,10 @@
       {
         "file": "packages/temporal/host-timezone.ts",
         "symbol": "createHostTimeZoneProvider",
-        "start_line": 86,
-        "end_line": 219,
-        "anchor_line": 85,
-        "source_sha256": "494d24ab2a4837fb23ad555a6febd633a34176a3646f0444da40ce91075dd4e0",
+        "start_line": 89,
+        "end_line": 236,
+        "anchor_line": 88,
+        "source_sha256": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
           "11.1.13/algorithm-1/step-3.a",

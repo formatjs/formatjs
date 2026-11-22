@@ -108,8 +108,14 @@ formatjs_library(
     entry_point_external_paths = {
         "index.ts": {"#packages/temporal/native.js": "./native.js"},
         "standalone.ts": {"#packages/temporal/native.js": "./native.js"},
-        "polyfill.ts": {"#packages/temporal/index.js": "./index.js"},
-        "polyfill-force.ts": {"#packages/temporal/index.js": "./index.js"},
+        "polyfill.ts": {
+            "#packages/temporal/index.js": "./index.js",
+            "#packages/temporal/native.js": "./native.js",
+        },
+        "polyfill-force.ts": {
+            "#packages/temporal/index.js": "./index.js",
+            "#packages/temporal/native.js": "./native.js",
+        },
     },
     entry_points = [
         "index.ts",

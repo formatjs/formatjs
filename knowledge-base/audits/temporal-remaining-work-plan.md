@@ -27,7 +27,8 @@ satisfy this requirement.
 ## Current scope
 
 Realm-specific work is out of scope. The fixed ledger records the 16 shared
-constructor-realm steps for reference.
+constructor-realm steps for reference. They do not count toward completion
+or the remaining estimate.
 15 of 31 conditional numbered steps remain in scope. Of those, nine track
 published comparison conflicts, two track relative-window premises and four
 track timezone-provider applicability. The ordinary `index.js` and
@@ -414,11 +415,12 @@ candidate, gap, endpoint and six-day spread bounds, plus public controls.
 Other JavaScriptCore builds remain conditional.
 [Debian JSC proof](temporal-timezone-boundary-proof/jsc-provider-audit.md).
 The pinned Debian SpiderMonkey shell and bundled ICU now have the same
-checked timezone bounds. A separate public replay reproduces stale sampled
-offsets after replacing data on the warm FormatJS DateTimeFormat 7.8.1 path.
-Its installed formatter lacks a generation hook. That reload gap stays open.
+checked timezone bounds. The explicit Temporal installer now refreshes
+offset and transition samples on each lookup for the captured FormatJS
+DateTimeFormat 7.8.1 formatter. The direct import still reproduces stale
+samples after reload. Provider spacing and TimeClip premises stay open.
 [Debian SpiderMonkey proof](temporal-timezone-boundary-proof/spidermonkey-provider-audit.md).
-[Legacy reload replay](temporal-timezone-boundary-proof/README.md#published-legacy-formatter-replay).
+[Legacy reload replay](temporal-timezone-boundary-proof/README.md#legacy-reload-after-installing-temporal).
 Three exact helper comments now cover the Object branch, cached ISO projection
 and canonical packed zone selection. The fixed inventory records 54 reviewed
 helpers without a numbered anchor.

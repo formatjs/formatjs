@@ -10,8 +10,10 @@ const [mode, formatterPackage, temporalPackage, localeMatcher, memoize] =
 const load = (directory, file) =>
   import(pathToFileURL(resolve(directory, file)).href)
 const native = Intl.DateTimeFormat
+const installedLegacy = mode === 'legacy-installed'
+const legacy = mode === 'legacy' || installedLegacy
 
-if (mode === 'legacy') {
+if (legacy) {
   for (const [file, hash] of [
     [
       'polyfill-force.js',
@@ -51,10 +53,9 @@ const installation = await load(formatterPackage, 'polyfill-force.js')
 await load(formatterPackage, 'locale-data/en.js')
 const formatter = Intl.DateTimeFormat
 assert.notEqual(formatter, native)
-const ponyfill =
-  mode === 'legacy'
-    ? (await load(formatterPackage, 'index.js')).DateTimeFormat
-    : undefined
+const ponyfill = legacy
+  ? (await load(formatterPackage, 'index.js')).DateTimeFormat
+  : undefined
 const initialData = formatter.tzData
 if (ponyfill) {
   assert.deepEqual(Object.keys(installation), [])
@@ -223,4 +224,60 @@ if (mode === 'legacy') {
   ])
   // Record the legacy cache failure for the previously queried zone.
   assert.deepEqual(outcomes(local(warm)), stale)
+}
+
+if (installedLegacy) {
+  const name = 'America/Chicago'
+  const local = `1970-01-01T00:30[${name}]`
+  const explicit = `1970-01-01T00:30+00:00[${name}]`
+  const payload = at => ({
+    abbrvs: 'TEST',
+    offsets: '0|2s0',
+    zones: [`${name}|${packed(null, 0)}|${packed(at, 1)}`],
+  })
+  const oldBoundary = 2n * 24n * hour
+  formatter.__addTZData(payload(oldBoundary))
+  const read = instant =>
+    Temporal.Instant.fromEpochNanoseconds(instant * second).toZonedDateTimeISO(
+      name
+    )
+  const zoned = read(hour / 2n)
+  const earlier = read(-hour)
+  const later = read(3n * 24n * hour)
+  const transition = (value, direction) =>
+    value.getTimeZoneTransition(direction)?.epochNanoseconds
+  const assertOldData = () => {
+    assert.equal(zoned.offsetNanoseconds, 0)
+    assert.deepEqual(outcomes(local), Array(4).fill(epoch(hour / 2n)))
+    assert.equal(
+      Temporal.ZonedDateTime.from(explicit).epochNanoseconds,
+      (hour / 2n) * second
+    )
+    assert.equal(transition(earlier, 'next'), oldBoundary * second)
+    assert.equal(transition(later, 'previous'), oldBoundary * second)
+  }
+  assertOldData()
+  await load(temporalPackage, 'polyfill-force.js')
+  assert.equal(globalThis.Temporal, Temporal)
+  assert.notEqual(Intl.DateTimeFormat, formatter)
+  assertOldData()
+
+  // A retained constructor still registers data even after Temporal installs the wrapper.
+  formatter.__addTZData(payload(0n))
+  assert.deepEqual([offset(name, -1n), offset(name, 0n)], [0, 3600])
+  assert.equal(zoned.offsetNanoseconds, 3600e9)
+  assert.deepEqual(outcomes(local), [
+    epoch(-hour / 2n),
+    epoch(hour / 2n),
+    epoch(hour / 2n),
+    rejected,
+  ])
+  assert.throws(() => Temporal.ZonedDateTime.from(explicit), RangeError)
+  assert.equal(transition(earlier, 'next'), 0n)
+  assert.equal(transition(later, 'previous'), 0n)
+
+  // Calls through the installed wrapper update the same raw constructor's data.
+  Intl.DateTimeFormat.__addTZData(payload(oldBoundary))
+  assertOldData()
+  console.log('Installed legacy reload assertions passed')
 }

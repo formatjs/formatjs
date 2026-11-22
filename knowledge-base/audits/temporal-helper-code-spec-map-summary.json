@@ -3,19 +3,19 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27144,
+  "whole_selected_source_lines": 27231,
   "whole_selected_source_lines_by_language": {
     "rust": 11135,
-    "typescript": 16009
+    "typescript": 16096
   },
-  "nonoverlapping_callable_lines": 17763,
+  "nonoverlapping_callable_lines": 17784,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8301,
-    "typescript": 9462
+    "typescript": 9483
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17392,
-    "candidate": 154,
+    "mapped": 17401,
+    "candidate": 166,
     "unmapped": 217
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
@@ -664,10 +664,10 @@
     },
     {
       "file": "packages/temporal/host-timezone.ts",
-      "source_lines": 429,
+      "source_lines": 455,
       "callable_rows": 13,
-      "nonoverlapping_callable_lines": 288,
-      "sha256": "643d82b24d19dcd02a2dff7f28a79960c9190f5febe0acc2936153afc9445d4c",
+      "nonoverlapping_callable_lines": 297,
+      "sha256": "b678bd2a83fedc9ffd7b8dae695fdcd7fd236359c9c4c1aaa8451594057fecf3",
       "unresolved_callable_rows": 0
     },
     {
@@ -744,10 +744,10 @@
     },
     {
       "file": "packages/temporal/legacy-intl.ts",
-      "source_lines": 321,
+      "source_lines": 344,
       "callable_rows": 14,
-      "nonoverlapping_callable_lines": 286,
-      "sha256": "2f1f9e562a43846facfda120cd56bf8496e77fe965aaad6b60af7d8392743051",
+      "nonoverlapping_callable_lines": 298,
+      "sha256": "411438a1d8b9f09a0033a2c79269ad18c83b3de93f5ee6cb9b424f71588e3d70",
       "unresolved_callable_rows": 0
     },
     {
@@ -784,10 +784,10 @@
     },
     {
       "file": "packages/temporal/native.ts",
-      "source_lines": 1448,
+      "source_lines": 1486,
       "callable_rows": 91,
       "nonoverlapping_callable_lines": 1036,
-      "sha256": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
+      "sha256": "129514cbb0cd9dc4f92d4f5a6d84876aeceab06a776b661cfce100569e1dfa23",
       "unresolved_callable_rows": 0
     },
     {

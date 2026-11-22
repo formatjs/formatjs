@@ -31,7 +31,7 @@ Negative fractional-day totals use floor plus nonnegative remainder, preserving 
 
 ## Native route
 
-[TS native dispatch](../../packages/temporal/plain-date-time.ts#L245) precedes source sign handling. The[adapter](../../packages/temporal/native.ts#L904) chooses optional direct native capability or generic native call, then normalizes its result. [FFI](../../crates/temporal/ffi.rs#L1496) reconstructs Duration and calls[Rust checked_add/subtract](../../crates/temporal/date.rs#L375). Both routes receive overflow after public preparation. Captured transport keys avoid the source enumeration defect; serialization/direct-capability ownership and calendar-result validation remain separate contracts.
+[TS native dispatch](../../packages/temporal/plain-date-time.ts#L245) precedes source sign handling. The[adapter](../../packages/temporal/native.ts#L942) chooses optional direct native capability or generic native call, then normalizes its result. [FFI](../../crates/temporal/ffi.rs#L1496) reconstructs Duration and calls[Rust checked_add/subtract](../../crates/temporal/date.rs#L375). Both routes receive overflow after public preparation. Captured transport keys avoid the source enumeration defect; serialization/direct-capability ownership and calendar-result validation remain separate contracts.
 
 ## Regression evidence
 

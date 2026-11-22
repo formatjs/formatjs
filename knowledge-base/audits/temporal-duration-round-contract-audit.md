@@ -51,7 +51,7 @@ completion matrix.
 
 With relativeTo, [relativeRound:236](../../packages/temporal/relative-duration.ts#L238)
 selects native dispatch or obtains the actual endpoint before branching.
-[Native adapter:1034](../../packages/temporal/native.ts#L1034) receives prepared
+[Native adapter:1034](../../packages/temporal/native.ts#L1072) receives prepared
 fields/unit/anchor; typed Rust does not implement JS coercion. Without relativeTo,
 [duration.ts:311](../../packages/temporal/duration.ts#L311) selects native or fixed
 24h arithmetic after public validation.

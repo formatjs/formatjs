@@ -11,7 +11,10 @@ import {
   lastExplicitTransition,
   steps,
 } from '@formatjs_generated/tz/temporal-names.js'
-import {timeZoneMetadata} from '#packages/temporal/native.js'
+import {
+  hasLegacyTimeZoneProvider,
+  timeZoneMetadata,
+} from '#packages/temporal/native.js'
 import {
   isoToEpochNanoseconds,
   type ISODateTime,
@@ -88,6 +91,8 @@ function createHostTimeZoneProvider(
   intrinsics: HostTimeZoneIntrinsics = {Constructor, parts: hostParts}
 ): {
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
+  offsetAt: HostTimeZone['offsetNanoseconds']
+  beginOperation(): boolean
   ownedCandidates?: OmitThisParameter<OwnedTimeZoneQuery>
   dataGeneration?: () => object
   ownedTransition?: (
@@ -128,6 +133,13 @@ function createHostTimeZoneProvider(
         direction?: 'next' | 'previous'
       ) => bigint | null | undefined)
     | undefined
+  // Proposal comparison §11.1.9 step 3: Read legacy timezone data afresh for each operation.
+  const beginOperation = (): boolean => {
+    if (dataGeneration || !hasLegacyTimeZoneProvider(Constructor, parts))
+      return false
+    apply(mapClear, offsets, [])
+    return true
+  }
   let offsetGeneration: object | undefined
   const offsetNanoseconds = (instant: bigint): bigint => {
     // Proposal comparison §11.1.9 step 3: decode host ISO clock fields into offset nanoseconds.
@@ -205,6 +217,11 @@ function createHostTimeZoneProvider(
   }
   return {
     offsetNanoseconds,
+    offsetAt: instant => {
+      beginOperation()
+      return offsetNanoseconds(instant)
+    },
+    beginOperation,
     dataGeneration,
     ownedTransition: queryTemporalTimeZone
       ? (instant, direction) =>
@@ -223,12 +240,18 @@ export function createHostTimeZoneOffset(
   timeZone: string,
   intrinsics?: HostTimeZoneIntrinsics
 ): HostTimeZone['offsetNanoseconds'] {
-  return createHostTimeZoneProvider(timeZone, intrinsics).offsetNanoseconds
+  return createHostTimeZoneProvider(timeZone, intrinsics).offsetAt
 }
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
-  const {offsetNanoseconds, ownedCandidates, ownedTransition, dataGeneration} =
-    createHostTimeZoneProvider(timeZone)
+  const {
+    offsetNanoseconds,
+    offsetAt,
+    beginOperation,
+    ownedCandidates,
+    ownedTransition,
+    dataGeneration,
+  } = createHostTimeZoneProvider(timeZone)
 
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
@@ -263,9 +286,13 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       (one: bigint, two: bigint) => (one < two ? -1 : one > two ? 1 : 0),
     ])
   }
+  const possibleInstantsFromEpochNanoseconds = (local: bigint): bigint[] => {
+    beginOperation()
+    return candidatesFor(local)
+  }
   const possibleInstants = (fields: ISODateTime): bigint[] =>
     // Proposal comparison §11.1.13 step 3.a: pass the ISO local time as epoch nanoseconds.
-    candidatesFor(isoToEpochNanoseconds(fields))
+    possibleInstantsFromEpochNanoseconds(isoToEpochNanoseconds(fields))
   // Proposal comparison §11.1.12 steps 2, 3.a, 3.b, 3.d and 5: Select observed candidates by disambiguation.
   const resolve = (
     fields: ISODateTime,
@@ -278,6 +305,7 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
       )
     )
       throw new RangeErrorConstructor('Invalid disambiguation')
+    beginOperation()
     const local = isoToEpochNanoseconds(fields),
       candidates = candidatesFor(local)
     if (candidates.length === 1) return candidates[0]
@@ -321,13 +349,11 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     const owned = ownedTransition?.(instant, direction)
     if (owned !== undefined) return owned
     // Proposal comparison §6.3.46 steps 9.a and 10.b: expire transitions when the data changes.
-    if (dataGeneration) {
-      const generation = dataGeneration()
-      if (generation !== transitionGeneration) {
-        transitions.length = 0
-        unchanged.length = 0
-        transitionGeneration = generation
-      }
+    const generation = dataGeneration?.()
+    if (beginOperation() || generation !== transitionGeneration) {
+      transitions.length = 0
+      unchanged.length = 0
+      transitionGeneration = generation
     }
     const known = apply(arrayFind, transitions, [
       (row: (typeof transitions)[number]) =>
@@ -420,9 +446,9 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     return value
   }
   return {
-    offsetNanoseconds,
+    offsetNanoseconds: offsetAt,
     possibleInstants,
-    possibleInstantsFromEpochNanoseconds: candidatesFor,
+    possibleInstantsFromEpochNanoseconds,
     resolve,
     transition,
   }
