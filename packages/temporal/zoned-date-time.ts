@@ -791,15 +791,15 @@ function offsetText(slot: ZonedSlot): string {
   return text
 }
 function format(slot: ZonedSlot, options?: unknown): string {
-  // §6.3.41 steps 3–12: read options in order before validating the unit category.
-  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tostring
+  // ECMA-262 preview §22.9.3.41 steps 3–12: read options before validating the unit category.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.tostring
   const resolved = optionsObject(options),
     show = calendarNameOption(resolved.calendarName),
     suffix = calendarAnnotation(slot.calendar, show)
   const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
   const offset = option(resolved.offset, 'auto', ['auto', 'never'])
   const mode = roundingMode(resolved.roundingMode, 'trunc'),
-    unit = unitOption(resolved.smallestUnit)
+    unit = unitOption(resolved.smallestUnit, true)
   const zoneName = option(resolved.timeZoneName, 'auto', [
     'auto',
     'never',

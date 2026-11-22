@@ -10,6 +10,33 @@ import strings from '#packages/temporal/tests/instant-strings.json' with {type: 
 import {expect, it} from 'vitest'
 import {Instant, Temporal} from '#packages/temporal/index.js'
 
+it('reads zone options after recognizing a unit but before rejecting its category', () => {
+  const failure = new Error('zone getter')
+  for (const [value, zoneOption] of [
+    [new Temporal.Instant(0n), 'timeZone'],
+    [new Temporal.ZonedDateTime(0n, 'UTC'), 'timeZoneName'],
+  ] as const) {
+    const reads: string[] = []
+    const options = (unit: string) => ({
+      smallestUnit: {
+        toString() {
+          reads.push('unit')
+          return unit
+        },
+      },
+      get [zoneOption]() {
+        reads.push(zoneOption)
+        throw failure
+      },
+    })
+    expect(() => value.toString(options('auto'))).toThrow(failure)
+    expect(reads.splice(0)).toEqual(['unit', zoneOption])
+    expect(() => value.toString(options('invalid'))).toThrow(RangeError)
+    expect(reads).toEqual(['unit'])
+    expect(() => value.toString({smallestUnit: 'auto'})).toThrow(RangeError)
+  }
+})
+
 it('coerces before reading newTarget.prototype, propagates abrupt completions', () => {
   const order: string[] = []
   const value = {

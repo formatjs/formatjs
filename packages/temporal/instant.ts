@@ -336,14 +336,15 @@ class InstantValue implements InstantObject {
       return createNativeInstant(roundInstantOptions(read(this), roundTo))
     return createInstant(roundInstantOptions(read(this), roundTo))
   }
-  // Proposal comparison §8.3.11 steps 1–15.
-  // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tostring
+  // ECMA-262 preview §22.8.3.11 steps 1–15.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.instant.prototype.tostring
   toString(options: unknown = undefined): string {
     const value = read(this)
     const resolved = optionsObject(options)
     const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
     const mode = roundingMode(resolved.roundingMode, 'trunc')
-    const unit = unitOption(resolved.smallestUnit)
+    // Steps 6–8: read the zone after parsing the unit, then validate its category.
+    const unit = unitOption(resolved.smallestUnit, true)
     const zoneOption = resolved.timeZone
     if (unit !== undefined && timeUnit(unit) === 'hour')
       throw new RangeErrorConstructor('Cannot serialize with hour precision')

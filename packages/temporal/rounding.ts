@@ -61,6 +61,7 @@ const units = [
   ['hour', 'hours'],
   ['minute', 'minutes'],
   ['second', 'seconds'],
+  // Preview spelling fix: https://github.com/tc39/ecma262/pull/3966#discussion_r4283713689
   ['millisecond', 'milliseconds'],
   ['microsecond', 'microseconds'],
   ['nanosecond', 'nanoseconds'],
@@ -97,12 +98,15 @@ export function roundingMode(
     throw new RangeErrorConstructor('Invalid rounding mode')
   return mode as RoundingMode
 }
-// Temporal comparison §13.17 steps6–7/9: convert the already-read singular/plural unit spelling
-// Restricted normal-unit kernel: callers handle auto, defaults and property Get.
-// https://tc39.es/proposal-temporal/#sec-temporal-gettemporalunitvaluedoption
-export function unitOption(value: unknown): string | undefined {
+// ECMA-262 preview §22.3.12.13: parse unit spelling before category validation.
+// https://tc39.es/ecma262/pr/3966/#sec-gettemporalunitvaluedoption
+export function unitOption(
+  value: unknown,
+  allowAuto = false
+): string | undefined {
   if (value === undefined) return undefined
   const unit = ToString(value)
+  if (allowAuto && unit === 'auto') return unit
   for (let index = 0; index < units.length; index++) {
     const pair = units[index]
     // Comparison §13.17 step9: normalize the validated spelling.
