@@ -51,6 +51,7 @@ function check(value: boolean, context: string): void {
 {
   const zoned = new Temporal.ZonedDateTime(0n, '-01:00')
   const date = new Temporal.PlainDate(1969, 12, 31)
+  const dateTime = new Temporal.PlainDateTime(1969, 12, 31, 23)
   const originalGet = WeakMap.prototype.get
   const originalSet = WeakMap.prototype.set
   const originalOwner = Object.getOwnPropertyDescriptor(
@@ -73,6 +74,11 @@ function check(value: boolean, context: string): void {
     check(zoned.minute === 0 && zoned.day === 31, 'Cached zoned projection')
     check(date.year === 1969, 'Cold date projection')
     check(date.day === 31, 'Cached date projection')
+    check(
+      dateTime.hour === 23 && dateTime.year === 1969,
+      'Cold date-time projection'
+    )
+    check(dateTime.day === 31, 'Cached date-time projection')
   } finally {
     WeakMap.prototype.get = originalGet
     WeakMap.prototype.set = originalSet
