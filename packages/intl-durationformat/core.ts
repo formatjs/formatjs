@@ -10,10 +10,16 @@ import {CanonicalizeLocaleList} from '#packages/ecma402-abstract/CanonicalizeLoc
 import {GetNumberOption} from '#packages/ecma402-abstract/GetNumberOption.js'
 import {GetOption} from '#packages/ecma402-abstract/GetOption.js'
 import {SupportedLocales} from '#packages/ecma402-abstract/SupportedLocales.js'
-import {invariant} from '#packages/ecma402-abstract/utils.js'
+import {
+  getNumberFormatProvider,
+  invariant,
+} from '#packages/ecma402-abstract/utils.js'
 import {ResolveLocale} from '@formatjs/intl-localematcher'
 import {GetDurationUnitOptions} from '#packages/ecma402-abstract/DurationFormat/GetDurationUnitOptions.js'
-import {PartitionDurationFormatPattern} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
+import {
+  PartitionDurationFormatPattern,
+  initializeDurationFormatProviders,
+} from '#packages/intl-durationformat/abstract/PartitionDurationFormatPattern.js'
 import {
   ToTemporalDurationRecord,
   registerTemporalDurationNamespace,
@@ -37,7 +43,7 @@ const numberingSystemsByConstructor = new WeakMap<
   string[]
 >()
 function supportedNumberingSystems(): string[] {
-  const NumberFormat = Intl.NumberFormat
+  const NumberFormat = getNumberFormatProvider()
   let systems = numberingSystemsByConstructor.get(NumberFormat)
   if (!systems) {
     systems = numberingSystemNames.filter(numberingSystem => {
@@ -289,6 +295,7 @@ export class DurationFormat implements DurationFormatType {
       9,
       undefined
     )
+    initializeDurationFormatProviders(this)
   }
   resolvedOptions(): ResolvedDurationFormatOptions {
     if (

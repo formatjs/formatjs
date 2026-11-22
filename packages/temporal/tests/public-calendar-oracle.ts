@@ -511,6 +511,77 @@ export function checkCalendarDifferencePolicy(
   }
 }
 
+// Proposal comparison §12.3.3 steps8–9: private List writes precede public field Gets.
+function checkPrivateCalendarFieldNames(
+  Temporal: typeof TemporalNamespace,
+  equal: (actual: unknown, expected: unknown, context: string) => void
+): void {
+  const value = new Temporal.PlainDate(2020, 2, 3, 'gregory')
+  let trace = '',
+    dayReceiverMatches = false
+  const fields = new Proxy(
+    {
+      get day() {
+        dayReceiverMatches = this === fields
+        return {
+          valueOf() {
+            trace += 'number;'
+            return 4
+          },
+        }
+      },
+    },
+    {
+      get(target, key, receiver) {
+        trace += `${String(key)};`
+        return Reflect.get(target, key, receiver)
+      },
+    }
+  )
+  const options = {
+    get overflow() {
+      trace += 'overflow;'
+      return 'constrain'
+    },
+  }
+  const original = Object.getOwnPropertyDescriptor(Array.prototype, '1')
+  let calls = 0,
+    actual: string | undefined,
+    error: unknown
+  try {
+    Object.defineProperty(Array.prototype, '1', {
+      configurable: true,
+      set() {
+        calls++
+        throw new Error('Private calendar field name write')
+      },
+    })
+    actual = value.with(fields, options).toString()
+  } catch (caught) {
+    error = caught
+  } finally {
+    if (original) Object.defineProperty(Array.prototype, '1', original)
+    else Reflect.deleteProperty(Array.prototype, '1')
+  }
+  equal(
+    error,
+    undefined,
+    'Private calendar field names do not call inherited setter'
+  )
+  equal(calls, 0, 'Private calendar field-name append hooks')
+  equal(actual, '2020-02-04[u-ca=gregory]', 'Gregorian public day update')
+  equal(
+    dayReceiverMatches,
+    true,
+    'Public day getter receives original field bag'
+  )
+  equal(
+    trace,
+    'calendar;timeZone;day;number;era;eraYear;month;monthCode;year;overflow;',
+    'Public field Gets and immediate day conversion precede overflow'
+  )
+}
+
 export function checkPublicCalendarOracle(
   Temporal: typeof TemporalNamespace,
   fixture: string,
@@ -538,6 +609,7 @@ export function checkPublicCalendarOracle(
   differences: number
   windows: number
 } {
+  checkPrivateCalendarFieldNames(Temporal, equal)
   checkLargeCalendarFields(Temporal, equal)
   const date = (epoch: number, calendar: string) =>
     new Temporal.PlainDate(1970, 1, 1).add({days: epoch}).withCalendar(calendar)

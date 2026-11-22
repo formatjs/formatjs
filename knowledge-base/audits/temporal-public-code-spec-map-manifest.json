@@ -5,7 +5,7 @@
   "comparison_html_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
   "source_files": {
     "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
-    "packages/temporal/date-core.ts": "2c9e7009b0b04bc973d9d9f2104cb67babcbb40e70e7fc2b1898c981939a773b",
+    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
     "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
     "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
     "packages/temporal/index.ts": "eff29c356b773d0906c77a7b2b9b1232ccf51ad4c3fd91a031551a72152f9eae",

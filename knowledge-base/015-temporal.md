@@ -68,6 +68,15 @@ pass, preserving strict increment errors, valid alias differences and exact fold
 epochs. [Row reconciliation](audits/temporal-zone-primary-reconciliation.json)
 reuses existing shared contracts without duplicating provider audits.
 
+Duration locale formatting retains supplied NumberFormat/ListFormat constructors
+and captured parts methods. New instances adopt late callable own data-valued
+providers; existing instances keep theirs. Accessor replacements are not invoked.
+Calendar field-name Lists create own elements with setDataProperty, preserving
+public field Gets, coercion and getter receivers. [Twelve targets](audits/temporal-duration-provider-validation-targets.txt)
+pass. [Batch evidence](audits/temporal-duration-provider-private-operations-audit.md)
+keeps shared memoizer execution/serialization as a separate source candidate;
+three Duration gates remain conditional.
+
 PlainDateTime differences use a literal private unit list; replaced array
 iteration cannot intercept even equal-result preparation. PlainYearMonth
 differences use null-prototype reference fields, keeping inherited era state out

@@ -607,3 +607,153 @@ it.each(['Number.isFinite', 'Math.abs', 'BigInt'] as const)(
     })
   }
 )
+
+it.each([
+  ['NumberFormat', 'en-u-nu-mathsans'],
+  ['ListFormat', 'en-u-nu-mathdbl'],
+] as const)(
+  'formats cold Duration profiles without late Intl.%s lookup',
+  (key, locale) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    // Extension-bearing locale keeps both shared memoizer keys cold.
+    const formatter = new DurationFormat(locale, {style: 'long'})
+    expect(formatter.resolvedOptions().locale).toBe(locale)
+    const reference = new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit: 'minute',
+      unitDisplay: 'long',
+    })
+    const expectedText = reference.format(1)
+    const expectedParts = reference
+      .formatToParts(1)
+      .map(part => ({...part, unit: 'minute'}))
+    const descriptor = Object.getOwnPropertyDescriptor(Intl, key)!
+    const define = Object.defineProperty
+    let text: string | undefined,
+      freshText: string | undefined,
+      parts: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(Intl, key, {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error(`Late private Intl.${key} lookup`)
+        },
+      })
+      text = formatter.format(duration)
+      parts = formatter.formatToParts(duration)
+      freshText = new DurationFormat(locale, {style: 'long'}).format(duration)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(Intl, key, descriptor)
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe(expectedText)
+    expect(freshText).toBe(expectedText)
+    expect(parts).toEqual(expectedParts)
+  }
+)
+
+it('preserves late supplied NumberFormat providers through first rendering', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const Original = Intl.NumberFormat
+  const descriptor = Object.getOwnPropertyDescriptor(Intl, 'NumberFormat')!
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  const expected = (numberingSystem: string) =>
+    new Original('en', {
+      style: 'unit',
+      unit: 'minute',
+      unitDisplay: 'long',
+      numberingSystem,
+    }).format(1)
+  class FirstProvider extends Original {
+    constructor(
+      locales?: Intl.LocalesArgument,
+      options?: Intl.NumberFormatOptions
+    ) {
+      super(locales, {...options, numberingSystem: 'arab'})
+    }
+  }
+  class SecondProvider extends Original {
+    constructor(
+      locales?: Intl.LocalesArgument,
+      options?: Intl.NumberFormatOptions
+    ) {
+      super(locales, {...options, numberingSystem: 'latn'})
+    }
+  }
+  try {
+    Intl.NumberFormat = FirstProvider
+    const first = new DurationFormat('en', {style: 'long'})
+    Intl.NumberFormat = SecondProvider
+    const second = new DurationFormat('en', {style: 'long'})
+    Object.defineProperty(Intl, 'NumberFormat', descriptor)
+    expect(first.format(duration)).toBe(expected('arab'))
+    expect(second.format(duration)).toBe(expected('latn'))
+  } finally {
+    Object.defineProperty(Intl, 'NumberFormat', descriptor)
+  }
+})
+
+it.each(['NumberFormat', 'ListFormat'] as const)(
+  'keeps selected %s parts method for branded Duration rendering',
+  key => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1, 2)
+    const formatter = new DurationFormat('en', {style: 'long'})
+    const expectedText = formatter.format(duration)
+    const expectedParts = formatter.formatToParts(duration)
+    const durationFormatDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )!
+    Object.defineProperty(Intl, 'DurationFormat', {
+      ...durationFormatDescriptor,
+      value: DurationFormat,
+    })
+    configureLocaleFormatting()
+    const prototype = Intl[key].prototype
+    const descriptor = Object.getOwnPropertyDescriptor(
+      prototype,
+      'formatToParts'
+    )!
+    const define = Object.defineProperty
+    let text: string | undefined,
+      freshText: string | undefined,
+      localeText: string | undefined,
+      parts: unknown,
+      error: unknown,
+      calls = 0
+    try {
+      define(prototype, 'formatToParts', {
+        configurable: true,
+        get() {
+          calls++
+          throw new Error('Late private formatToParts lookup')
+        },
+      })
+      text = formatter.format(duration)
+      parts = formatter.formatToParts(duration)
+      freshText = new DurationFormat('en', {style: 'long'}).format(duration)
+      localeText = duration.toLocaleString('en', {style: 'long'})
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(prototype, 'formatToParts', descriptor)
+      define(Intl, 'DurationFormat', durationFormatDescriptor)
+      configureLocaleFormatting()
+    }
+    if (error) throw error
+    expect(calls).toBe(0)
+    expect(text).toBe('1 minute, 2 seconds')
+    expect(text).toBe(expectedText)
+    expect(parts).toEqual(expectedParts)
+    expect(freshText).toBe(expectedText)
+    expect(localeText).toBe(expectedText)
+  }
+)

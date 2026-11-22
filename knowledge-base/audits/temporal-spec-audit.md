@@ -26,8 +26,8 @@ numbered steps, including 760 amendment steps with explicit applicability.
 grammar, tables and attributes too. Existing evidence is being reconciled, not
 reset. Initial migration preserved 1,747 evidence references and 45 reviewed
 algorithm rows. First pass now reconciles all 5,865 core/amendment rows.
-278 core and91 amendment rows remain conditional; the separate queue contains
-144 conditional numbered steps in22 shared-premise families. Aggregate counts are not independent defects.
+236 core and91 amendment rows remain conditional; the separate queue contains
+104 conditional numbered steps in14 shared-premise families. Aggregate counts are not independent defects.
 Local verified steps do not imply complete caller compliance.
 
 Inline numbered section/step comments are also required beside audited code.
@@ -41,6 +41,24 @@ Scope: Temporal APIs and dependencies they actually exercise. This is not an
 audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
+
+## Duration providers and private field names, 2026-11-22
+
+DurationFormat instances retain selected NumberFormat/ListFormat constructors and
+captured parts methods. Late callable own data assignments supply new instances;
+existing instances keep their providers. Accessor replacements are not invoked.
+Existing constructor-keyed memoizers and Intl engines still perform formatting.
+Cold constructor and method controls fail before correction and pass afterward.
+Late arab/latn provider selection controls also pass.
+
+Calendar field-name Lists create own data elements with setDataProperty. The
+public Gregorian PlainDate.with control preserves field Gets, getter receivers,
+coercion and overflow order under an inherited numeric setter.
+[Twelve targets](temporal-duration-provider-validation-targets.txt) pass.
+[Batch evidence](temporal-duration-provider-private-operations-audit.md) retains
+three conditional Duration gates: shared fast-memoize still has mutable execution
+and serialization hooks. That is a source candidate, not a public red or full
+formatter-closure claim.
 
 ## Reader, precision and calendar correction, 2026-11-22
 
@@ -64,7 +82,8 @@ Constructor realm fallback is a confirmed implementation gap: all eight public
 revoked-newTarget/primitive-prototype witnesses fail required TypeError. Object
 prototype controls succeed. All16 affected rows remain conditional, with explicit
 inline comments and a [preserved reproduction](temporal-constructor-realm-proof.md).
-Cold Duration NumberFormat/ListFormat constructor lookup remains separately open.
+Duration provider lookup and parts-method capture are corrected above. Three
+Duration gates retain a separate shared-memoizer source candidate.
 
 ## Calendar caller propagation, 2026-11-22
 

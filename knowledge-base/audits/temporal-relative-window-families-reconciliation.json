@@ -1,0 +1,431 @@
+{
+  "scope": "23 exact assigned rows. Local caller/date-prefix/mode transport distinguished from known reverse-fold reconstruction and actual source universal window invariants. Existing Casey/day-round issue remains separately owned6.3.39, not expanded here.",
+  "updates": [
+    {
+      "row_id": "5.5.13/algorithm-1/step-7",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:875-904",
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325"
+      ],
+      "evidence": "Exact original/destination epochs, original calendar, canonical largest/smallest, bounded increment, validated mode and since sign transport unchanged into shared roundRelativeDifference. Plain endpoint closure always adds constrained date fields to original date and combines original clock; no shifted-gap sequential anchor. Complete shared nudge/bubble contradictions and source bracket premises belong owning operations.",
+      "separately_owned_dependency_rows": ["7.5.38/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "5.5.14/algorithm-1/step-7",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:120-228",
+        "crates/temporal/plain_relative.rs:123-154"
+      ],
+      "evidence": "Plain total passes midnight origin, exact composed destination, calendar and selected unit into relativeTotal. Fixed-unit route is exact ratio with single final binary64 conversion; calendar routes retain original-anchor endpoint construction and required next endpoint, including exact results. Equality/endpoint-range preparation already proved separately; irregular-window invariants remain TotalRelativeDuration owner.",
+      "separately_owned_dependency_rows": ["7.5.39/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.33/algorithm-1/step-3.b",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/relative-duration.ts:230-320",
+        "packages/temporal/date-core.ts:875-904"
+      ],
+      "evidence": "Date endpoint preparation retains original anchor and constrain policy. Year/month prefix and rounded active component copied into fresh zero-clock fields; week branch folds residual days into weeks while retaining Y/M. Both endpoints use original clock, including exact targets; no sequential addition from a gap-shifted endpoint. Built-in CalendarDateAdd and count bounds supplied by owning chapter12 proofs. This verifies date-input/prefix transport; instant selection for zero-date zoned prefix remains explicitly at steps8.d.i/12.a and reverse-fold issue.",
+      "separately_owned_dependency_rows": ["12.3.9/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.33/algorithm-1/step-8.a",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/relative-duration.ts:230-320",
+        "packages/temporal/date-core.ts:875-904"
+      ],
+      "evidence": "Date endpoint preparation retains original anchor and constrain policy. Year/month prefix and rounded active component copied into fresh zero-clock fields; week branch folds residual days into weeks while retaining Y/M. Both endpoints use original clock, including exact targets; no sequential addition from a gap-shifted endpoint. Built-in CalendarDateAdd and count bounds supplied by owning chapter12 proofs. This verifies date-input/prefix transport; instant selection for zero-date zoned prefix remains explicitly at steps8.d.i/12.a and reverse-fold issue.",
+      "separately_owned_dependency_rows": ["12.3.9/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.33/algorithm-1/step-9",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/relative-duration.ts:230-320",
+        "packages/temporal/date-core.ts:875-904"
+      ],
+      "evidence": "Date endpoint preparation retains original anchor and constrain policy. Year/month prefix and rounded active component copied into fresh zero-clock fields; week branch folds residual days into weeks while retaining Y/M. Both endpoints use original clock, including exact targets; no sequential addition from a gap-shifted endpoint. Built-in CalendarDateAdd and count bounds supplied by owning chapter12 proofs. This verifies date-input/prefix transport; instant selection for zero-date zoned prefix remains explicitly at steps8.d.i/12.a and reverse-fold issue.",
+      "separately_owned_dependency_rows": ["12.3.9/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.33/algorithm-1/step-8.d.i",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Nonzero zoned date endpoints delegate original date/clock with compatible resolution. Zero complete date prefix invokes AddZonedDateTime pure-time origin preservation instead of unconditional compatible reconstruction. Later-fold receiver can therefore retain actual instant while rendered GetEpochNanosecondsFor chooses earlier occurrence. Calendar/provider transport is mapped, but literal full endpoint equivalence cannot be promoted.",
+      "separately_owned_dependency_rows": [
+        "11.1.11/clause",
+        "6.5.5/algorithm-1/step-1"
+      ],
+      "remaining_premises": [
+        "Known reverse-fold intermediate/zero-date reconstruction comparison tension remains; temporal-reverse-fold-spec-issue.md. Retained-zero-component prefix and day/week retry inconsistencies remain separately owned at their actual comparison rows."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.33/algorithm-1/step-12.a",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Nonzero zoned date endpoints delegate original date/clock with compatible resolution. Zero complete date prefix invokes AddZonedDateTime pure-time origin preservation instead of unconditional compatible reconstruction. Later-fold receiver can therefore retain actual instant while rendered GetEpochNanosecondsFor chooses earlier occurrence. Calendar/provider transport is mapped, but literal full endpoint equivalence cannot be promoted.",
+      "separately_owned_dependency_rows": [
+        "11.1.11/clause",
+        "6.5.5/algorithm-1/step-1"
+      ],
+      "remaining_premises": [
+        "Known reverse-fold intermediate/zero-date reconstruction comparison tension remains; temporal-reverse-fold-spec-issue.md. Retained-zero-component prefix and day/week retry inconsistencies remain separately owned at their actual comparison rows."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.34/algorithm-1/step-6.a.ii",
+      "status_before": "conditional",
+      "proposed_status": "spec_issue",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:520-573"
+      ],
+      "evidence": "Existing Apia negative day witness disproves rendered retry assertion: origin2012-01-01noon+14, destination2011-12-31at10+14. Counts\u22121/\u22122 resolve same instant; published day branch ignores additionalShift and repeats collapsed pair, so end<=destination<=start fails. Repository temporal-spec-issues.md explicitly records this exact step6.a.ii failure. Current source shifts all active date-unit counts, giving bracket\u22122/\u22123 for this witness; not a complete derivation from published branch.",
+      "separately_owned_dependency_rows": [
+        "7.5.33/algorithm-1/step-4.c",
+        "7.5.33/algorithm-1/step-4.d"
+      ],
+      "remaining_premises": [
+        "Universal negative source bracket after one retry across all shipped calendar/zone inputs is not proved by this witness. Preserve as actual source invariant requirement, distinct from demonstrated published comparison contradiction."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.34/algorithm-1/step-13",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325"
+      ],
+      "evidence": "Successful week endpoints are provably signed-positive: local separation7*k*D, effective compatible offsets inside(\u2212D,D), so sign*(B\u2212A)>(7*k\u22122)D>=5D; plain week exactly7*k*D. Other units cannot infer monotonicity from offset bound. Apia collapses adjacent day endpoints; source retry handles known witness, but all-unit successful final-window distinctness remains unproved.",
+      "separately_owned_dependency_rows": ["12.3.9/clause", "11.1.11/clause"],
+      "remaining_premises": [
+        "Finite universal nonzero final span across reachable day/year/month source windows, after retry. Existing week proof supplies week subdomain only; no new global IANA sweep."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.34/algorithm-1/step-17",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325"
+      ],
+      "evidence": "Exact distance/span arithmetic loses no precision. Under a signed bracketing window and nonzero signed span,0<=progress<=1 follows algebraically. Plain week initial bracket and literal shifted NY/Apia cases proved. Universal zoned/year/month/day progress is exactly dependent on owning final-bracket/noncollapsed conditions; tests do not discharge them.",
+      "separately_owned_dependency_rows": [
+        "7.5.34/algorithm-1/step-6.a.ii",
+        "7.5.34/algorithm-1/step-13"
+      ],
+      "remaining_premises": [
+        "Actual source all-unit/sign post-retry bracket and span conditions remain named above."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.35/algorithm-1/step-1",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Time branch makes complete private date copy, zeroes all six clock fields, constructs original-anchor date start and signed next date before rounded-time carry. Calendar fields retained through final balancing; no unchanged-rounded-time shortcut. Local date-prefix/constrain transport supplied by CalendarDateAdd proof; zero-date compatible instant reconstruction is retained separately at endpoint step6/reverse-fold issue.",
+      "separately_owned_dependency_rows": [
+        "12.3.9/clause",
+        "7.5.35/algorithm-1/step-6"
+      ],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.35/algorithm-1/step-6",
+      "status_before": "conditional",
+      "proposed_status": "conditional",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Signed next-date endpoint uses original receiver/clock and complete date fields. With nonzero complete date duration, compatible GetEpochNanosecondsFor provider contract is mapped. If complete date fields cancel to zero, shared AddZonedDateTime preserves receiver instant; unconditional rendered compatible reconstruction can choose earlier fold occurrence. Do not promote exact zero-date endpoint equivalence from argument transport.",
+      "separately_owned_dependency_rows": [
+        "11.1.11/clause",
+        "6.5.5/algorithm-1/step-1"
+      ],
+      "remaining_premises": [
+        "Known reverse-fold intermediate construction issue; no public addition change authorized or implied."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.35/algorithm-1/step-8",
+      "status_before": "conditional",
+      "proposed_status": "spec_issue",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/zoned-date-time.ts:520-573"
+      ],
+      "evidence": "Concrete reachable Apia same-date negative-time witness: origin2011-12-31T12+14 epoch1325282400000000000, destination10+14 epoch1325275200000000000. Unrounded date0/time\u22122h. Signed next dateDec30noon resolves compatibly to same origin, so daySpan0 but sign\u22121. This violates rendered assertion TimeDurationSign(daySpan)=sign independently of reverse-fold tension; origin is unambiguous. Detailed independent endpoint derivation in/tmp/temporal-apia-zero-day-span-note.md. No runtime defect/fix or disputed-value regression claimed.",
+      "separately_owned_dependency_rows": ["11.1.11/clause"],
+      "remaining_premises": [
+        "Published day-span assertion needs standards resolution; current source practical carry behavior is not proved equivalent to impossible assertion."
+      ],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.37/algorithm-1/step-6.b.iv",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/date-core.ts:875-904",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Existing full BubbleRelativeDuration map supplies exact reached/equality predicate, larger-unit visitation, week suppression and full record replacement. Candidate preserves higher prefix, increments active date component by physical sign and clears lower fields. Active component cannot be zero under common-sign normalized-duration contract, so complete bubble date candidate is nonzero: original-anchor constrained add resolves original clock compatibly, avoiding zero-date fold-origin shortcut. Candidate errors propagate before comparison, as required. Count+sign exact under built-in calendar bounds.",
+      "separately_owned_dependency_rows": ["12.3.9/clause", "11.1.11/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.5.37/algorithm-1/step-6.b.vii.1",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325",
+        "packages/temporal/date-core.ts:875-904",
+        "packages/temporal/zoned-date-time.ts:514-519"
+      ],
+      "evidence": "Existing full BubbleRelativeDuration map supplies exact reached/equality predicate, larger-unit visitation, week suppression and full record replacement. Candidate preserves higher prefix, increments active date component by physical sign and clears lower fields. Active component cannot be zero under common-sign normalized-duration contract, so complete bubble date candidate is nonzero: original-anchor constrained add resolves original clock compatibly, avoiding zero-date fold-origin shortcut. Candidate errors propagate before comparison, as required. Count+sign exact under built-in calendar bounds.",
+      "separately_owned_dependency_rows": ["12.3.9/clause", "11.1.11/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "9.5.7/algorithm-1/step-16.e",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/date-core.ts:875-904",
+        "crates/temporal/short_dates.rs:213-256"
+      ],
+      "evidence": "YearMonth canonical calendar day1 endpoints converted to exact BigInt midnight coordinates; calendar, year/month units, increment, mode and since passed to shared plain relative rounding. Month/increment1 direct path only negates exact year/month fields. Reference-day canonicalization/mismatch/options/source private records already reviewed. Shared calendar-window semantics owned by RoundRelativeDuration, not repeated as this caller transport requirement.",
+      "separately_owned_dependency_rows": ["7.5.38/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "13.43/algorithm-1/step-17",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/zoned-date-time.ts:574-648",
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325"
+      ],
+      "evidence": "Since mode transformation locally proved independent of window existence: ceil/floor and halfCeil/halfFloor swap; other five modes unchanged. Scalar identity R(\u2212x,m)=\u2212R(x,negate(m)) matches Instant/PlainTime reversed subtraction. Shared time paths round signed quantity then restore physical date direction and finally negate fields. Irregular paths multiply physical sign by since sign in directed/half tie selection; halfEven absolute quotient parity unchanged. Final since negation once; exact YearMonth shortcut only negates fields. This proves mode/sign transport, not shared bracket correctness.",
+      "separately_owned_dependency_rows": ["13.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "13.43/algorithm-1/step-17.a",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:164-221",
+        "packages/temporal/plain-time.ts:312-378",
+        "packages/temporal/plain-date.ts:231-287",
+        "packages/temporal/plain-date-time.ts:276-339",
+        "packages/temporal/plain-year-month.ts:181-271",
+        "packages/temporal/zoned-date-time.ts:574-648",
+        "packages/temporal/date-core.ts:922-1103",
+        "crates/temporal/calendar_difference.rs:168-325"
+      ],
+      "evidence": "Since mode transformation locally proved independent of window existence: ceil/floor and halfCeil/halfFloor swap; other five modes unchanged. Scalar identity R(\u2212x,m)=\u2212R(x,negate(m)) matches Instant/PlainTime reversed subtraction. Shared time paths round signed quantity then restore physical date direction and finally negate fields. Irregular paths multiply physical sign by since sign in directed/half tie selection; halfEven absolute quotient parity unchanged. Final since negation once; exact YearMonth shortcut only negates fields. This proves mode/sign transport, not shared bracket correctness.",
+      "separately_owned_dependency_rows": ["13.8/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.2.3/algorithm-1/step-4",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:160-230",
+        "packages/temporal/relative-duration.ts:67-119"
+      ],
+      "evidence": "One ordinary relativeTo option Get immediately feeds complete private toRelativeTo conversion at required position: compare after both operand conversions and options normalization before equality; round after largestUnit before increment/mode/smallest; total before required unit. Existing branded/string/bag, field/canonical grammar and preparation proofs supplied at owning13.19 rows. No later getter can interleave conversion. Caller-local requirement complete; source/native rounding/range policies remain their separate operations.",
+      "separately_owned_dependency_rows": ["13.19/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.3.20/algorithm-1/step-10",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:302-382",
+        "packages/temporal/relative-duration.ts:67-119"
+      ],
+      "evidence": "One ordinary relativeTo option Get immediately feeds complete private toRelativeTo conversion at required position: compare after both operand conversions and options normalization before equality; round after largestUnit before increment/mode/smallest; total before required unit. Existing branded/string/bag, field/canonical grammar and preparation proofs supplied at owning13.19 rows. No later getter can interleave conversion. Caller-local requirement complete; source/native rounding/range policies remain their separate operations.",
+      "separately_owned_dependency_rows": ["13.19/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.3.21/algorithm-1/step-7",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:383-420",
+        "packages/temporal/relative-duration.ts:67-119"
+      ],
+      "evidence": "One ordinary relativeTo option Get immediately feeds complete private toRelativeTo conversion at required position: compare after both operand conversions and options normalization before equality; round after largestUnit before increment/mode/smallest; total before required unit. Existing branded/string/bag, field/canonical grammar and preparation proofs supplied at owning13.19 rows. No later getter can interleave conversion. Caller-local requirement complete; source/native rounding/range policies remain their separate operations.",
+      "separately_owned_dependency_rows": ["13.19/clause"],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.3.20/algorithm-1/step-8",
+      "status_before": "conditional",
+      "proposed_status": "informative",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": ["packages/temporal/duration.ts:302-420"],
+      "evidence": "Frozen requirement text explicitly starts NOTE and describes alphabetical validation order; no independent normative action. Actual relativeTo/increment/mode/unit Gets remain individually mapped in adjacent executable rows. This corrects classification, not algorithm completion.",
+      "separately_owned_dependency_rows": [],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    },
+    {
+      "row_id": "7.3.21/algorithm-1/step-6",
+      "status_before": "conditional",
+      "proposed_status": "informative",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": ["packages/temporal/duration.ts:302-420"],
+      "evidence": "Frozen requirement text explicitly starts NOTE and describes alphabetical validation order; no independent normative action. Actual relativeTo/increment/mode/unit Gets remain individually mapped in adjacent executable rows. This corrects classification, not algorithm completion.",
+      "separately_owned_dependency_rows": [],
+      "remaining_premises": [],
+      "validation": "Read-only source/AST and existing named calendar/window/day-engine/relative-round/bubble proofs reused; no new tests/builds executed. Exact arithmetic proof is distinct from universal provider/bracket invariants."
+    }
+  ],
+  "status_counts": {
+    "verified_local_step": 14,
+    "conditional": 5,
+    "spec_issue": 2,
+    "informative": 2
+  },
+  "source_sha256": {
+    "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
+    "crates/temporal/plain_relative.rs": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
+    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f"
+  },
+  "ast_artifacts": [
+    "Owning TS/Rust functions reviewed with ast-grep scan; exact ranges/hashes retained here."
+  ],
+  "new_source_only_standards_note": "temporal-apia-zero-day-span-note.md",
+  "existing_proofs": [
+    "knowledge-base/audits/temporal-week-window-bounds-proof.md",
+    "knowledge-base/audits/temporal-day-window-engine-audit.md",
+    "knowledge-base/audits/temporal-calendar-count-window-audit.md",
+    "knowledge-base/audits/temporal-bubble-relative-duration-audit.md",
+    "knowledge-base/audits/temporal-relative-rounding-contract-audit.md",
+    "knowledge-base/audits/temporal-reverse-fold-spec-issue.md",
+    "knowledge-base/audits/temporal-get-difference-settings-audit.md"
+  ],
+  "reviewed_source_sha256": {
+    "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
+    "crates/temporal/plain_relative.rs": "1bae4213a46c02604fdac3194edef61002d0da1135b32490fc6dcaa684fa8bfa",
+    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+    "packages/temporal/date-core.ts": "2c9e7009b0b04bc973d9d9f2104cb67babcbb40e70e7fc2b1898c981939a773b",
+    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-date.ts": "5253e38d1cbec63f7cddb58ec7d366ac58a9b564ff9ce93adb6f5e8b148c18c2",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f"
+  },
+  "current_binding_note": "date-core.ts changed only private field-name own-entry creation/import/comment after original review; rounding/caller equations unchanged. Exact ranges remapped to current source."
+}

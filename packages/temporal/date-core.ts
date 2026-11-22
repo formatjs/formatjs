@@ -14,6 +14,7 @@ import {
   mathTrunc,
   numberFrom,
   numberIsInteger,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {IsObject} from '#packages/ecma262-abstract/IsObject.js'
 import {createObject} from '#packages/temporal/intrinsics.js'
@@ -406,7 +407,8 @@ export function dateFieldNames(
     else if (key === 'offset' || key === 'timeZone')
       include = arrayIncludes(extra, key)
     else include = withTime
-    if (include) result[result.length] = key
+    // Temporal comparison §12.3.3 step8: private List entries are own data.
+    if (include) setDataProperty(result, `${result.length}`, key)
   }
   return result
 }

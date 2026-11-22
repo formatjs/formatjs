@@ -3,19 +3,19 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24274,
+  "whole_selected_source_lines": 24276,
   "whole_selected_source_lines_by_language": {
     "rust": 10356,
-    "typescript": 13918
+    "typescript": 13920
   },
-  "nonoverlapping_callable_lines": 16799,
+  "nonoverlapping_callable_lines": 16800,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8135,
-    "typescript": 8664
+    "typescript": 8665
   },
   "disjoint_callable_line_assignment": {
     "candidate": 7415,
-    "unmapped": 4998,
+    "unmapped": 4999,
     "mapped": 4386
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
@@ -584,10 +584,10 @@
     },
     {
       "file": "packages/temporal/date-core.ts",
-      "source_lines": 1101,
+      "source_lines": 1103,
       "callable_rows": 38,
-      "nonoverlapping_callable_lines": 861,
-      "sha256": "2c9e7009b0b04bc973d9d9f2104cb67babcbb40e70e7fc2b1898c981939a773b",
+      "nonoverlapping_callable_lines": 862,
+      "sha256": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
       "unresolved_callable_rows": 12
     },
     {

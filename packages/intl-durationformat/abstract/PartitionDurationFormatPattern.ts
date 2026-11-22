@@ -5,8 +5,10 @@ import {
 import {BigDecimal} from '@formatjs/bigdecimal'
 import type {NumberFormatOptions} from '#packages/ecma402-abstract/types/number.js'
 import {
-  createMemoizedListFormat,
-  createMemoizedNumberFormat,
+  createMemoizedListFormatForConstructor,
+  createMemoizedNumberFormatForConstructor,
+  getListFormatProvider,
+  getNumberFormatProvider,
   invariant,
 } from '#packages/ecma402-abstract/utils.js'
 import {TABLE_2} from '#packages/intl-durationformat/constants.js'
@@ -17,11 +19,68 @@ import {
   type DurationRecord,
 } from '#packages/intl-durationformat/types.js'
 
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+const getPrototypeOf = Object.getPrototypeOf
 const apply = Reflect.apply
+
+// Temporal comparison §§15.10.1–2 step4: retain supplied internal formatter methods.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+const partsMethods = new WeakMap<object, unknown>()
+const getPartsMethod = partsMethods.get.bind(partsMethods)
+const setPartsMethod = partsMethods.set.bind(partsMethods)
+function formatterPartsMethod<T>(Constructor: object): T {
+  const cached = getPartsMethod(Constructor)
+  if (cached) return cached as T
+  let prototype = getOwnPropertyDescriptor(Constructor, 'prototype')!.value
+  while (prototype !== null) {
+    const descriptor = getOwnPropertyDescriptor(prototype, 'formatToParts')
+    const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+    if (value && typeof value.value === 'function') {
+      setPartsMethod(Constructor, value.value)
+      return value.value as T
+    }
+    prototype = getPrototypeOf(prototype)
+  }
+  throw new TypeError('Missing supplied formatter parts method')
+}
+const initialNumberFormat = getNumberFormatProvider()
+const initialListFormat = getListFormatProvider()
+if (typeof initialNumberFormat === 'function')
+  formatterPartsMethod(initialNumberFormat)
+if (typeof initialListFormat === 'function')
+  formatterPartsMethod(initialListFormat)
+
 const stringListIterator = Array.prototype[Symbol.iterator]
 const stringListIteratorNext = Object.getPrototypeOf(
   apply(stringListIterator, [], [])
 ).next
+
+const formatterProviders = new WeakMap<
+  DurationFormat,
+  {
+    numberFormat: ReturnType<typeof createMemoizedNumberFormatForConstructor>
+    listFormat: ReturnType<typeof createMemoizedListFormatForConstructor>
+    numberFormatToParts: ReturnType<
+      ReturnType<typeof createMemoizedNumberFormatForConstructor>
+    >['formatToParts']
+    listFormatToParts: Intl.ListFormat['formatToParts']
+  }
+>()
+const getFormatterProviders = formatterProviders.get.bind(formatterProviders)
+const setFormatterProviders = formatterProviders.set.bind(formatterProviders)
+
+// Temporal comparison §§15.10.1–15.10.2 step4: retain supplied formatter providers.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+export function initializeDurationFormatProviders(df: DurationFormat): void {
+  const NumberFormat = getNumberFormatProvider()
+  const ListFormat = getListFormatProvider()
+  setFormatterProviders(df, {
+    numberFormat: createMemoizedNumberFormatForConstructor(NumberFormat),
+    listFormat: createMemoizedListFormatForConstructor(ListFormat),
+    numberFormatToParts: formatterPartsMethod(NumberFormat),
+    listFormatToParts: formatterPartsMethod(ListFormat),
+  })
+}
 
 export function PartitionDurationFormatPattern(
   df: DurationFormat,
@@ -35,6 +94,7 @@ export function PartitionDurationFormatPattern(
   let signDisplayed = true
   const negative = arraySome(TABLE_2, row => duration[row.valueField] < 0)
   const internalSlots = getInternalSlots(df)
+  const providers = getFormatterProviders(df)!
   let dataLocale = internalSlots.dataLocale
   const dataLocaleData = DurationFormat.localeData[dataLocale]
   if (!dataLocaleData) {
@@ -149,7 +209,7 @@ export function PartitionDurationFormatPattern(
         nfOpts.unit = numberFormatUnit
         nfOpts.unitDisplay = style
       }
-      const nf = createMemoizedNumberFormat(
+      const nf = providers.numberFormat(
         internalSlots.locale,
         nfOpts as Intl.NumberFormatOptions
       )
@@ -168,9 +228,9 @@ export function PartitionDurationFormatPattern(
       // which sidesteps the IEEE 754 round-trip that breaks
       // `roundingMode: 'trunc'` on values like `1 + 473/1e3` (#6462).
       // BigDecimal.toString() normalizes -0, so preserve that sign at the boundary.
-      let parts = nf.formatToParts(
-        value.isZero() && value.isNegative() ? -0 : value
-      )
+      let parts = apply(providers.numberFormatToParts, nf, [
+        value.isZero() && value.isNegative() ? -0 : value,
+      ]) as Intl.NumberFormatPart[]
       for (let index = 0; index < parts.length; index++) {
         const {type, value} = parts[index]
         setDataProperty(list, `${list.length}`, {
@@ -196,7 +256,7 @@ export function PartitionDurationFormatPattern(
     listStyle = 'short'
   }
   lfOpts.style = listStyle
-  const lf = createMemoizedListFormat(internalSlots.locale, lfOpts)
+  const lf = providers.listFormat(internalSlots.locale, lfOpts)
   const strings: string[] = []
   // ECMA-402 §13.5.15: traverse private part Lists by index.
   // https://tc39.es/ecma402/#sec-partitiondurationformatpattern
@@ -219,7 +279,9 @@ export function PartitionDurationFormatPattern(
       },
     }
   })
-  let formatted = lf.formatToParts(strings)
+  let formatted = apply(providers.listFormatToParts, lf, [
+    strings,
+  ]) as ReturnType<Intl.ListFormat['formatToParts']>
   let resultIndex = 0
   let resultLength = result.length
   const flattened: DurationFormatPart[] = []

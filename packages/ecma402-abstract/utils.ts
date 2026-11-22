@@ -112,6 +112,7 @@ export function ensureIntl(): typeof Intl {
       value: {},
     })
   }
+  if (providerIntl === undefined) providerIntl = Intl
   return Intl
 }
 
@@ -185,3 +186,78 @@ export const createMemoizedListFormat: (
     strategy: strategies.variadic,
   }
 )
+
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+let providerIntl = globalThis.Intl
+function ownIntlProvider(name: 'NumberFormat' | 'ListFormat'): unknown {
+  const descriptor =
+    providerIntl && getOwnPropertyDescriptor(providerIntl, name)
+  const value = descriptor && getOwnPropertyDescriptor(descriptor, 'value')
+  return value?.value
+}
+let numberFormatProvider = ownIntlProvider(
+  'NumberFormat'
+) as typeof Intl.NumberFormat
+let listFormatProvider = ownIntlProvider('ListFormat') as typeof Intl.ListFormat
+
+// Temporal comparison §§15.10.1–2 step4: retain supplied providers without accessor Gets.
+// https://tc39.es/proposal-temporal/#sec-Intl.DurationFormat.prototype.format
+export function getNumberFormatProvider(): typeof Intl.NumberFormat {
+  const candidate = ownIntlProvider('NumberFormat')
+  if (typeof candidate === 'function')
+    numberFormatProvider = candidate as typeof Intl.NumberFormat
+  return numberFormatProvider
+}
+export function getListFormatProvider(): typeof Intl.ListFormat {
+  const candidate = ownIntlProvider('ListFormat')
+  if (typeof candidate === 'function')
+    listFormatProvider = candidate as typeof Intl.ListFormat
+  return listFormatProvider
+}
+
+const numberFormatMemoizers = new WeakMap<
+  typeof Intl.NumberFormat,
+  typeof createMemoizedNumberFormat
+>()
+const getNumberFormatMemoizer = numberFormatMemoizers.get.bind(
+  numberFormatMemoizers
+)
+const setNumberFormatMemoizer = numberFormatMemoizers.set.bind(
+  numberFormatMemoizers
+)
+const listFormatMemoizers = new WeakMap<
+  typeof Intl.ListFormat,
+  typeof createMemoizedListFormat
+>()
+const getListFormatMemoizer = listFormatMemoizers.get.bind(listFormatMemoizers)
+const setListFormatMemoizer = listFormatMemoizers.set.bind(listFormatMemoizers)
+
+export function createMemoizedNumberFormatForConstructor(
+  Constructor: typeof Intl.NumberFormat
+): typeof createMemoizedNumberFormat {
+  let factory = getNumberFormatMemoizer(Constructor)
+  if (!factory) {
+    factory = memoize(
+      (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
+        new Constructor(args[0], args[1]) as NumberFormatLike,
+      {strategy: strategies.variadic}
+    )
+    setNumberFormatMemoizer(Constructor, factory)
+  }
+  return factory
+}
+
+export function createMemoizedListFormatForConstructor(
+  Constructor: typeof Intl.ListFormat
+): typeof createMemoizedListFormat {
+  let factory = getListFormatMemoizer(Constructor)
+  if (!factory) {
+    factory = memoize(
+      (...args: ConstructorParameters<typeof Intl.ListFormat>) =>
+        new Constructor(args[0], args[1]),
+      {strategy: strategies.variadic}
+    )
+    setListFormatMemoizer(Constructor, factory)
+  }
+  return factory
+}

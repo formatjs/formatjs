@@ -1,0 +1,461 @@
+{
+  "scope": "Finite18 caller/dispatch steps only. No new runtime gap demonstrated; exact owning parser/conversion/bounds proofs reused. Provided JS/Intl runtime contract retained; no whole-caller or foreign-copy interoperability signoff.",
+  "updates": [
+    {
+      "row_id": "4.5.6/algorithm-1/step-3.b",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-time.ts:209-230",
+        "packages/temporal/plain-time.ts:250-271",
+        "packages/temporal/instant-string.ts:553-596",
+        "crates/temporal/parse.rs:136-213"
+      ],
+      "evidence": "String is required before parser; parse completes before overflow options. Full-date-clock or prefixed/unprefixed clock policy, valid short-YM/MD ambiguity exclusion, exact subsecond construction and annotations are owning parser contract. Native typed/direct parser selects same time goal.",
+      "separately_owned_dependency_rows": [
+        "13.35/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "5.5.6/algorithm-1/step-4",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:200-240",
+        "packages/temporal/date-core.ts:186-195",
+        "packages/temporal/instant-string.ts:478-502",
+        "crates/temporal/parse.rs:215-254"
+      ],
+      "evidence": "JS prepareDateTimeString parses ISO fields/calendar before overflow options, then constructs bounded datetime. Native undefined-options shortcut invokes same validated date-time goal; with options supplied, JS syntax/calendar/options effects occur before native construction. Numeric bounds belong later caller construction, not grammar recognition.",
+      "separately_owned_dependency_rows": [
+        "13.35/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "8.5.3/algorithm-1/step-3",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:153-163",
+        "packages/temporal/instant-string.ts:439-461",
+        "crates/temporal/parse.rs:99-135"
+      ],
+      "evidence": "After slot bypass and string-hint ToPrimitive, require primitive string then date+clock+mandatory offset goal. Offset subtraction occurs after exact BigInt/i128 local composition; leap second60 normalizes59. No Number epoch conversion; caller validates final Instant range.",
+      "separately_owned_dependency_rows": [
+        "13.35/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "9.5.2/algorithm-1/step-4",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/plain-year-month.ts:121-136",
+        "packages/temporal/short-date-core.ts:198-268",
+        "packages/temporal/instant-string.ts:505-527",
+        "crates/temporal/parse.rs:365-417",
+        "crates/temporal/short_dates.rs:68-97"
+      ],
+      "evidence": "Year-month kind selects short YYYY-MM/basic or full-date fallback goal. Short form requires ISO calendar; full form retains reference date/calendar before later first-calendar-day projection. Parser precedes options; native direct shortcut has no observable option reads to skip.",
+      "separately_owned_dependency_rows": [
+        "13.35/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.10/algorithm-1/step-3",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:143-178",
+        "packages/temporal/instant-string.ts:530-549"
+      ],
+      "evidence": "String-only reached branch parses bare supported identifier or rich calendar-capable ISO/time/short forms, then canonicalizes. Bare fast path cannot admit unsupported malformed values because canonical membership rejects them. This helper runs in JS even with native data; no separate native calendar-string parser equality premise. Foreign-copy brand interoperability affects preceding slot-recognition step1 and owning clause, not this string-only step3.",
+      "separately_owned_dependency_rows": ["13.36/clause"],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-6.b",
+      "family": "iso-parser-native-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:53-119",
+        "packages/temporal/zoned-date-time.ts:336-475",
+        "packages/temporal/plain-date-time.ts:200-240",
+        "packages/temporal/instant-string.ts:478-502"
+      ],
+      "evidence": "Indexed annotation classifier selects full plain/zoned converter; classifier is routing only. Plain branch accepts date/date-time and retains date; zoned branch requires zone annotation and retains exact date/time/offset classification. Neither accepts bare time as relativeTo. Full downstream parser still consumes malformed classified strings and enforces annotation grammar. Native raw-goal/consumer equivalence already accounted by13.35step4.a.i.",
+      "separately_owned_dependency_rows": [
+        "13.35/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "4.5.18/algorithm-1/step-1",
+      "family": "duration-input-bound-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:89-117",
+        "packages/temporal/duration-core.ts:82-115",
+        "crates/temporal/duration.rs:63-83",
+        "packages/temporal/plain-time.ts:379-394",
+        "crates/temporal/time.rs:146-153"
+      ],
+      "evidence": "Correct owning clauses are7.5.12 ToTemporalDuration and7.5.5 ToInternalDurationRecord, not7.5.1 (DateDuration Record). Brand/string/bag routing, alphabetical Gets with immediate integral ToNumber, common sign, calendar abs<2^32 and exact abs(day/time)<2^53*1e9 already reviewed. Accepted Number-valued integers convert exactly through BigInt; all intermediate weighted terms have common sign and magnitude<2^83, far inside i128. Public Number/f64 field normalization is intentional; no premature scalar rounding added. PlainTime no-options native path defers mixed-sign/range validation to Rust before arithmetic; all public field Gets/coercions already complete, so no public effect is skipped. Only clock fields contribute, then modulo day.",
+      "separately_owned_dependency_rows": [
+        "7.5.12/clause",
+        "7.5.5/clause",
+        "7.5.16/clause",
+        "7.5.21/clause",
+        "13.37/clause"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "4.5.18/algorithm-1/step-3",
+      "family": "duration-input-bound-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:89-117",
+        "packages/temporal/duration-core.ts:82-115",
+        "crates/temporal/duration.rs:63-83",
+        "packages/temporal/plain-time.ts:379-394",
+        "crates/temporal/time.rs:146-153"
+      ],
+      "evidence": "Correct owning clauses are7.5.12 ToTemporalDuration and7.5.5 ToInternalDurationRecord, not7.5.1 (DateDuration Record). Brand/string/bag routing, alphabetical Gets with immediate integral ToNumber, common sign, calendar abs<2^32 and exact abs(day/time)<2^53*1e9 already reviewed. Accepted Number-valued integers convert exactly through BigInt; all intermediate weighted terms have common sign and magnitude<2^83, far inside i128. Public Number/f64 field normalization is intentional; no premature scalar rounding added. PlainTime no-options native path defers mixed-sign/range validation to Rust before arithmetic; all public field Gets/coercions already complete, so no public effect is skipped. Only clock fields contribute, then modulo day.",
+      "separately_owned_dependency_rows": [
+        "7.5.12/clause",
+        "7.5.5/clause",
+        "7.5.16/clause",
+        "7.5.21/clause",
+        "13.37/clause"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "5.5.16/algorithm-1/step-1",
+      "family": "duration-input-bound-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:89-117",
+        "packages/temporal/duration-core.ts:82-115",
+        "crates/temporal/duration.rs:63-83",
+        "packages/temporal/plain-date-time.ts:241-275",
+        "crates/temporal/date.rs:375-390"
+      ],
+      "evidence": "Correct owning clauses are7.5.12 ToTemporalDuration and7.5.5 ToInternalDurationRecord, not7.5.1 (DateDuration Record). Brand/string/bag routing, alphabetical Gets with immediate integral ToNumber, common sign, calendar abs<2^32 and exact abs(day/time)<2^53*1e9 already reviewed. Accepted Number-valued integers convert exactly through BigInt; all intermediate weighted terms have common sign and magnitude<2^83, far inside i128. Public Number/f64 field normalization is intentional; no premature scalar rounding added. PlainDateTime validates complete duration before overflow options, then normalizes exact clock/day carry and calendar date addition. Existing10-step add proof retained.",
+      "separately_owned_dependency_rows": [
+        "7.5.12/clause",
+        "7.5.5/clause",
+        "7.5.16/clause",
+        "7.5.21/clause",
+        "13.37/clause"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "8.5.10/algorithm-1/step-1",
+      "family": "duration-input-bound-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/duration.ts:89-117",
+        "packages/temporal/duration-core.ts:82-115",
+        "crates/temporal/duration.rs:63-83",
+        "packages/temporal/instant.ts:296-331"
+      ],
+      "evidence": "Correct owning clauses are7.5.12 ToTemporalDuration and7.5.5 ToInternalDurationRecord, not7.5.1 (DateDuration Record). Brand/string/bag routing, alphabetical Gets with immediate integral ToNumber, common sign, calendar abs<2^32 and exact abs(day/time)<2^53*1e9 already reviewed. Accepted Number-valued integers convert exactly through BigInt; all intermediate weighted terms have common sign and magnitude<2^83, far inside i128. Public Number/f64 field normalization is intentional; no premature scalar rounding added. Instant reads all duration fields before rejecting nonzero date units; no-options native path validates remaining mixed-sign/time bounds inside Rust before exact addition. Alternate RangeError message does not create specified extra callback or acceptance difference.",
+      "separately_owned_dependency_rows": [
+        "7.5.12/clause",
+        "7.5.5/clause",
+        "7.5.16/clause",
+        "7.5.21/clause",
+        "13.37/clause"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.3/algorithm-1/step-9.c.vi",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:255-261",
+        "packages/temporal/zoned-date-time.ts:336-395",
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/instant-string.ts:32-40",
+        "packages/ecma262-abstract/UTCOffsetNanoseconds.ts:4-56"
+      ],
+      "evidence": "Timezone field dispatch calls timeZoneIdentifier immediately after its public Get; primitive string/slot requirement and named/minute-offset canonicalization reuse verified11.1.8. Missing required timezone rejects at that key, preserving later-field Get order.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.3/algorithm-1/step-9.c.vi.1",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:255-261",
+        "packages/temporal/zoned-date-time.ts:336-395",
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/instant-string.ts:32-40",
+        "packages/ecma262-abstract/UTCOffsetNanoseconds.ts:4-56"
+      ],
+      "evidence": "Timezone field dispatch calls timeZoneIdentifier immediately after its public Get; primitive string/slot requirement and named/minute-offset canonicalization reuse verified11.1.8. Missing required timezone rejects at that key, preserving later-field Get order.",
+      "separately_owned_dependency_rows": ["11.1.8/clause"],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.3/algorithm-1/step-9.c.viii",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:255-261",
+        "packages/temporal/zoned-date-time.ts:336-395",
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/instant-string.ts:32-40",
+        "packages/ecma262-abstract/UTCOffsetNanoseconds.ts:4-56"
+      ],
+      "evidence": "Offset branch is distinct from numeric/date and timezone conversions. Object input delegates ToPrimitive with string hint; primitive must already be String; complete generic offset grammar is parsed immediately before later field Gets, then original primitive spelling retained. Generic offset allows second/fraction components; minute-only timezone-identifier restriction is not incorrectly imposed here.",
+      "separately_owned_dependency_rows": [
+        "13.41/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.3/algorithm-1/step-9.c.viii.1",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:255-261",
+        "packages/temporal/zoned-date-time.ts:336-395",
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/instant-string.ts:32-40",
+        "packages/ecma262-abstract/UTCOffsetNanoseconds.ts:4-56"
+      ],
+      "evidence": "Offset branch is distinct from numeric/date and timezone conversions. Object input delegates ToPrimitive with string hint; primitive must already be String; complete generic offset grammar is parsed immediately before later field Gets, then original primitive spelling retained. Generic offset allows second/fraction components; minute-only timezone-identifier restriction is not incorrectly imposed here.",
+      "separately_owned_dependency_rows": [
+        "13.41/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "12.3.3/algorithm-1/step-9.c.viii.2",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/zoned-date-time.ts:255-261",
+        "packages/temporal/zoned-date-time.ts:336-395",
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/instant-string.ts:32-40",
+        "packages/ecma262-abstract/UTCOffsetNanoseconds.ts:4-56"
+      ],
+      "evidence": "Offset branch is distinct from numeric/date and timezone conversions. Object input delegates ToPrimitive with string hint; primitive must already be String; complete generic offset grammar is parsed immediately before later field Gets, then original primitive spelling retained. Generic offset allows second/fraction components; minute-only timezone-identifier restriction is not incorrectly imposed here.",
+      "separately_owned_dependency_rows": [
+        "13.41/clause",
+        "13.35/algorithm-1/step-4.a.i"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-5.e",
+      "family": "field-zone-offset-grammar",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/date-core.ts:391-446",
+        "packages/temporal/zoned-date-time.ts:336-395"
+      ],
+      "evidence": "relativeTo calendar first, fixed sorted names include offset/timeZone and six clock fields. Each public Get is immediately converted; undefined omitted; private null-root prepared record feeds already prepared owned zoned converter. Exact offset/timezone conversion calls are same verified local12.3.3 branches and13.41/11.1.8 helpers. Existing calendar-field availability/era/required-field proof retained; no new grammar premise here.",
+      "separately_owned_dependency_rows": [
+        "12.3.3/algorithm-1/step-9.c.vi.1",
+        "12.3.3/algorithm-1/step-9.c.viii.2",
+        "11.1.8/clause",
+        "13.41/clause"
+      ],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-5.d",
+      "family": "calendar-identifier-caller-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/date-core.ts:128-142",
+        "packages/temporal/date-core.ts:165-185"
+      ],
+      "evidence": "relativeTo reads/calendar-converts first through calendarFromObject; local calendar-bearing slots bypass public calendar Get; otherwise one ordinary calendar Get defaults undefined to ISO and passes supplied value to owning identifier conversion. Caller transports canonical primitive calendar into subsequent field preparation. Foreign-copy brand interoperability remains owned12.3.10 rather than repeated as a caller transport gap.",
+      "separately_owned_dependency_rows": ["12.3.11/clause", "12.3.10/clause"],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-6.i",
+      "family": "calendar-identifier-caller-contract",
+      "status_before": "conditional",
+      "proposed_status": "verified_local_step",
+      "verification_scope": "local_requirement_only",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:67-119",
+        "packages/temporal/date-core.ts:165-185",
+        "packages/temporal/instant-string.ts:478-549"
+      ],
+      "evidence": "String parse retains first calendar annotation or ISO default; constructorCalendar/canonicalization receives that primitive string at parse-before-options position. Captured lowercase, supported membership and two aliases implement existing selected-calendar policy. No public object/foreign-copy coercion occurs in this step; parser and supported-calendar availability stay explicitly owned.",
+      "separately_owned_dependency_rows": ["12.1.1/clause", "13.36/clause"],
+      "remaining_premises": [],
+      "validation": "Source/AST and existing indexed ISO/offset/duration parser, native-goal consumer, field-order and precision proofs reused. No new tests/builds executed; fixture parity is supporting evidence, not grammar proof."
+    }
+  ],
+  "source_sha256": {
+    "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
+    "crates/temporal/duration.rs": "e3ff55c7752266faa900d31d6a04d92293200084744971bac14aae81103de711",
+    "crates/temporal/parse.rs": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
+    "crates/temporal/short_dates.rs": "e36b58e9bce5b68507221ede493de84f7532c66c93a675f4d6c260ace2b45f57",
+    "crates/temporal/time.rs": "cd2eebc1449b9eb8a38de8bbafc4b379b0c81ccca9bb084b425036bb02a44c9e",
+    "packages/ecma262-abstract/UTCOffsetNanoseconds.ts": "bcad0a1f0ac13a7d4ea104ed6af31d51eae2dd279a7cb4f1e806b4707b4356af",
+    "packages/temporal/date-core.ts": "2c9e7009b0b04bc973d9d9f2104cb67babcbb40e70e7fc2b1898c981939a773b",
+    "packages/temporal/duration-core.ts": "77dd8131d9905b71d3f7ad277dff7e09c63408f89f516e82cbed55559bdee761",
+    "packages/temporal/duration.ts": "7c1f97a7673774621e9b9e2b4342789146c697452d7263a217498c892ffb78a4",
+    "packages/temporal/instant-string.ts": "0cae3328e66e773f5ef5177066105ce3eec01992c7b38ee32bb36fcf8abf305c",
+    "packages/temporal/instant.ts": "ea42682e6974d611b1f68ffa73a3ee4d867b4877437838a34c4661c6f7c5f830",
+    "packages/temporal/plain-date-time.ts": "1ce77766c733801ea3f58aa63a9f052fc073e5c9dbfa6d480252af7b70f670cc",
+    "packages/temporal/plain-time.ts": "43f35a6ae5274d95758af04453a1e3e054e9a63bbd0b1064471dc43c5455a7d0",
+    "packages/temporal/plain-year-month.ts": "0c8491c326ddd961a11fc1928886d3c437eff0cb7336fe1852e952b4ea104feb",
+    "packages/temporal/relative-duration.ts": "42a706b6db37ad5676e48ef8cef0dfe47d05e8d6262d2058d056da5a68ee1715",
+    "packages/temporal/short-date-core.ts": "551aaaeb39917f2518752c0454c3027751f0725df2853ae01c43b6d4d3e193cc",
+    "packages/temporal/zoned-date-time.ts": "d1ff529418651e4cdd6184eff275a0954af357591bce332271d593b8dceb201f"
+  },
+  "goal_to_entrypoint_matrix": [
+    {
+      "row_id": "4.5.6/algorithm-1/step-3.b",
+      "goal": "TemporalTimeString",
+      "implementation_locations": [
+        "packages/temporal/plain-time.ts:209-230",
+        "packages/temporal/plain-time.ts:250-271",
+        "packages/temporal/instant-string.ts:553-596",
+        "crates/temporal/parse.rs:136-213"
+      ]
+    },
+    {
+      "row_id": "5.5.6/algorithm-1/step-4",
+      "goal": "TemporalDateTimeString[~Zoned]",
+      "implementation_locations": [
+        "packages/temporal/plain-date-time.ts:200-240",
+        "packages/temporal/date-core.ts:186-195",
+        "packages/temporal/instant-string.ts:478-502",
+        "crates/temporal/parse.rs:215-254"
+      ]
+    },
+    {
+      "row_id": "8.5.3/algorithm-1/step-3",
+      "goal": "TemporalInstantString",
+      "implementation_locations": [
+        "packages/temporal/instant.ts:153-163",
+        "packages/temporal/instant-string.ts:439-461",
+        "crates/temporal/parse.rs:99-135"
+      ]
+    },
+    {
+      "row_id": "9.5.2/algorithm-1/step-4",
+      "goal": "TemporalYearMonthString",
+      "implementation_locations": [
+        "packages/temporal/plain-year-month.ts:121-136",
+        "packages/temporal/short-date-core.ts:198-268",
+        "packages/temporal/instant-string.ts:505-527",
+        "crates/temporal/parse.rs:365-417",
+        "crates/temporal/short_dates.rs:68-97"
+      ]
+    },
+    {
+      "row_id": "12.3.10/algorithm-1/step-3",
+      "goal": "ParseTemporalCalendarString",
+      "implementation_locations": [
+        "packages/temporal/date-core.ts:143-178",
+        "packages/temporal/instant-string.ts:530-549"
+      ]
+    },
+    {
+      "row_id": "13.19/algorithm-1/step-6.b",
+      "goal": "TemporalDateTimeString[+Zoned] or [~Zoned]",
+      "implementation_locations": [
+        "packages/temporal/relative-duration.ts:53-119",
+        "packages/temporal/zoned-date-time.ts:336-475",
+        "packages/temporal/plain-date-time.ts:200-240",
+        "packages/temporal/instant-string.ts:478-502"
+      ]
+    }
+  ],
+  "retained_owning_conditions": [
+    {
+      "row_id": "12.3.10/clause",
+      "premise": "Independently instantiated foreign copies use separate brand WeakMaps. This clause-level interoperability obligation is not cleared by string-only parser step or calendar caller transport."
+    }
+  ],
+  "ast_artifacts": [
+    "Owning TS/Rust functions reviewed through ast-grep scan; exact current ranges and source hashes retained here."
+  ],
+  "existing_proofs": [
+    "knowledge-base/audits/temporal-iso-parser-audit.md",
+    "knowledge-base/audits/temporal-iso-caller-audit.md",
+    "knowledge-base/audits/temporal-offset-grammar-audit.md",
+    "knowledge-base/audits/temporal-duration-parser-audit.md"
+  ]
+}

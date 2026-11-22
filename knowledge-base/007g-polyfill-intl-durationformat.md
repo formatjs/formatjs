@@ -35,6 +35,25 @@ needed. The adapter preserves native prototype identity and method descriptor fl
 the receiver through captured `resolvedOptions` before converting input. Native
 Hermes already has a registration hook and keeps its direct Rust formatter path.
 
+## Supplied formatter providers
+
+Each DurationFormat instance retains selected NumberFormat/ListFormat constructors
+and captured formatToParts methods. Callable own data-valued replacements on the
+supplied Intl object are adopted for new instances, including polyfills installed
+after module import. Accessor replacements are skipped, retaining the previously
+captured provider. Existing instances keep their choices through first rendering.
+Parts methods are captured per constructor through data descriptors, including
+inherited supplied methods. Initial providers are captured during module load;
+later constructors are captured when first selected.
+
+Constructor-keyed memoizers reuse existing memoize/cache behavior. Numbering-system
+support follows the same selected provider. [Twelve validation targets](audits/temporal-duration-provider-validation-targets.txt)
+cover cold profiles, late provider installation and parts-method replacement.
+[Audit evidence](audits/temporal-duration-provider-private-operations-audit.md)
+keeps three Duration gates conditional: shared fast-memoize has mutable execution
+and serialization hooks, still a source candidate awaiting public reproduction.
+This does not claim complete private formatter execution closure.
+
 ## CLDR Data Pipeline
 
 ### Sources
@@ -100,9 +119,10 @@ an empty record throws `TypeError`. Absolute years, months, and weeks must be
 less than `2 ** 32`; absolute normalized seconds must be less than `2 ** 53`.
 Subsecond contributions participate in the bound comparison exactly.
 
-Numbering-system resolution includes systems supported by the active
-`Intl.NumberFormat` dependency, keeping the locale default first. Support is
-checked lazily and refreshed when that constructor is replaced. Time-separator
+Numbering-system resolution includes systems supported by the selected
+`Intl.NumberFormat` provider, keeping the locale default first. Support is checked
+lazily per constructor. A supplied data-valued replacement updates new
+DurationFormat instances; existing instances retain their provider. Time-separator
 data includes every numbering-system symbol record supplied by CLDR.
 
 ### Temporal inputs

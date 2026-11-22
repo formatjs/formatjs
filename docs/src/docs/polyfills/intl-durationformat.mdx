@@ -183,6 +183,10 @@ pnpm add @formatjs/intl-durationformat
 - [`Intl.ListFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) or [polyfill](intl-listformat)
 - [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) or [polyfill](intl-numberformat).
 
+Load required NumberFormat/ListFormat polyfills before creating DurationFormat
+instances. Each instance keeps its selected providers and formatting methods;
+installing a replacement provider affects subsequently created instances.
+
 ## Usage
 
 ### Simple
@@ -242,9 +246,10 @@ units cannot request `always` display or be followed by a textual unit style.
 Zero minutes remain between displayed numeric hours and seconds, even with
 `minutesDisplay: "auto"`. For example, `{hours: 1, seconds: 1}` formats as `"1:00:01"`.
 
-Numbering-system resolution includes systems supported by the active
-`Intl.NumberFormat` dependency, keeping the locale default first. Support is
-checked lazily and refreshed when that constructor is replaced. Time-separator
+Numbering-system resolution includes systems supported by the selected
+`Intl.NumberFormat` dependency, keeping the locale default first. Support is checked
+lazily per constructor. Installing a replacement provider updates new
+DurationFormat instances; existing instances retain their provider. Time-separator
 data includes every numbering-system symbol record supplied by CLDR.
 
 ### Temporal integration

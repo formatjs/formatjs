@@ -1,0 +1,45 @@
+{
+  "scope": "Cold Duration provider selection, selected parts methods and private calendar field-name append; remaining memoizer candidate not closed.",
+  "source_sha256": {
+    "packages/ecma402-abstract/utils.ts": "c69a7956a05194b06ab02782de531ba1c6737ac1ec2f465f2851b93ccb1ebeaa",
+    "packages/intl-durationformat/abstract/PartitionDurationFormatPattern.ts": "236d9e515421545339666c1a650ae105fd87bc8f39ef6b368adf205d322d232d",
+    "packages/intl-durationformat/core.ts": "d74d5a99d59a686fefb2eac22511f7be19928a602bb948e335de337d36568e00",
+    "packages/temporal/date-core.ts": "8d75b052bad448abda6b498cb1760c5ac913f161bbd2f9543b53b084e7051f4d",
+    "packages/fast-memoize/index.ts": "572aba2fd2b5478825394c7e33592de914e11975303343cc4446429f94f7219a",
+    "packages/temporal/tests/durationformat.test.ts": "6efe999bbaa6b46e8349790ee550806300656dd601a887d5d728b2b48619d961",
+    "packages/temporal/tests/public-calendar-oracle.ts": "43fa3d0cb14aa46306fc87071ebca813e427d07b1cb32a4a948d70bdcdc3b5a3"
+  },
+  "ast_method": "ast-grep scan TypeScript function_declaration/method_definition; function ranges verified against current sources.",
+  "implementation_locations": [
+    "packages/ecma402-abstract/utils.ts:192-216",
+    "packages/ecma402-abstract/utils.ts:235-263",
+    "packages/intl-durationformat/abstract/PartitionDurationFormatPattern.ts:31-83",
+    "packages/intl-durationformat/abstract/PartitionDurationFormatPattern.ts:85-306",
+    "packages/intl-durationformat/core.ts:45-65",
+    "packages/intl-durationformat/core.ts:182-299",
+    "packages/intl-durationformat/core.ts:328-362",
+    "packages/fast-memoize/index.ts:88-114",
+    "packages/fast-memoize/index.ts:160-179",
+    "packages/temporal/date-core.ts:392-414"
+  ],
+  "validation": {
+    "manifest": "temporal-duration-provider-validation-targets.txt",
+    "result": "12 targets pass;6executed6cached",
+    "log_sha256": "90dfcf47e6a2f6085e71cdefbf696c2ebc0e7f02199279f16aa69f837b024696",
+    "pre_fix": {
+      "cold_constructors": "2fail17pass",
+      "selected_parts_methods": "2fail20pass",
+      "private_field_list": "public_calendar_test fails"
+    },
+    "receiver_assertion_followup": {
+      "result": "3 targets pass; all executed after lint-compatible direct getter-receiver comparison",
+      "targets": [
+        "//packages/temporal:public_calendar_test",
+        "//packages/temporal:public_calendar_hermes_oracle_test",
+        "//packages/temporal:native_iso_hermes_oracle_test"
+      ],
+      "log_sha256": "2b332151c1c11b5c84edb2f51fc9a06a0c7e551446bd7f1f260524586c353245"
+    }
+  },
+  "remaining": "Three Duration parent gates remain conditional on actual shared memoizer transparency; source candidate, no public red test yet. Constructor16 gaps and all separate DateTime producer gates unchanged."
+}
