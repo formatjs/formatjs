@@ -1,11 +1,17 @@
 # Temporal implementation
 
+Host calendar providers retain captured cache/iterator and Intl method calls.
+Compact and approximate lunisolar years construct own indexed lists without
+mutable array methods/species; private Intl options have null prototypes.
+[Host execution audit](audits/temporal-host-calendar-private-closure-audit.md)
+records cold/warm/eviction evidence and remaining provider/data obligations.
+
 Calendar addition validates private date components by index, shadows inherited
 `monthCode` on private destination records, and reads non-ISO month metadata
 without mutable regex/string hooks. Public inherited month-code fields remain
 observable. [ISO operation map](audits/temporal-calendar-date-add-iso-contract-audit.md)
 and [non-ISO provider map](audits/temporal-noniso-calendar-add-contract-audit.md)
-keep host-provider/data closure and complete caller proofs open.
+link host-provider execution evidence; data and complete caller proofs stay open.
 
 PlainDate, PlainDateTime and PlainYearMonth add/subtract process fixed private
 Duration fields without mutable enumeration or iteration. YearMonth arithmetic

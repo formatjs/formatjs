@@ -132,6 +132,13 @@ calendar semantics are narrower. No terminal-newline acceptance defect existed:
 original non-multiline JS regexes already reject LF/CR suffixes. Indexed checks
 retain that behavior; malformed controls establish parity, not a new lexical fix.
 
+## Host execution follow-up
+
+[Host-provider closure audit](temporal-host-calendar-private-closure-audit.md)
+repairs cold/warm cache hooks, private year lists, eviction iteration and captured
+Intl invocation. It preserves existing data selection and arithmetic policy;
+host data completeness and arbitrary provider contracts remain open.
+
 ## Public evidence and remaining obligations
 
 [Shared addition controls11](../../packages/temporal/tests/plain-arithmetic-oracle.ts#L11)
