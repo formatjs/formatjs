@@ -91,3 +91,41 @@ it.each([
     }
   }
 )
+
+it.each(['ZonedDateTime', 'PlainDateTime'] as const)(
+  'rounds calendar-relative %s differences without mutable String methods',
+  kind => {
+    const [start, end] =
+      kind === 'ZonedDateTime'
+        ? [
+            Temporal.ZonedDateTime.from('2000-01-01T00:00Z[UTC]'),
+            Temporal.ZonedDateTime.from('2000-01-20T00:00Z[UTC]'),
+          ]
+        : [
+            Temporal.PlainDateTime.from('2000-01-01T00:00'),
+            Temporal.PlainDateTime.from('2000-01-20T00:00'),
+          ]
+    const descriptor = Object.getOwnPropertyDescriptor(
+      String.prototype,
+      'startsWith'
+    )!
+    const options = {
+      largestUnit: 'month',
+      smallestUnit: 'month',
+      roundingMode: 'halfExpand',
+    }
+    let until: ReturnType<typeof start.until> | undefined
+    let since: ReturnType<typeof start.since> | undefined
+    String.prototype.startsWith = function () {
+      throw new Error('Observable rounding mode search')
+    }
+    try {
+      until = start.until(end, options)
+      since = start.since(end, options)
+    } finally {
+      Object.defineProperty(String.prototype, 'startsWith', descriptor)
+    }
+    expect(until!.months).toBe(1)
+    expect(since!.months).toBe(-1)
+  }
+)

@@ -86,7 +86,20 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
-- Conversion boundary controls: [Duration.from field bags](temporal-duration-from-caller-audit.md)
+- Relative difference rounding: [private mode audit](temporal-relative-rounding-contract-audit.md)
+  replaces mutable startsWith with exact half-mode comparisons. Two public tests
+  reproduced the hook before correction. Shared controls add native Duration
+  field-bag ordering and Apia's collapsed day window across all nine modes and
+  both operation directions. Seven focused gates pass (five executed, two cached);
+  all 27 expanded tests and two package assemblies pass. The separate
+  [Apia retry inconsistency](temporal-spec-issues.md#day-window-retry-ignores-shift-after-apias-skipped-date)
+  concerns the published proposal comparison; existing FormatJS fallback is
+  preserved. No baseline, exclusions or timeout changes.
+  [Count/window proof](temporal-calendar-count-window-audit.md) and
+  [precision bounds](temporal-date-largest-precision-audit.md) retain provider,
+  decomposition and complete window contracts as open; no chapter credit.
+
+- [Conversion boundary controls #8117](https://github.com/formatjs/formatjs/pull/8117): [Duration.from field bags](temporal-duration-from-caller-audit.md)
   and [zoned offset matching](temporal-zoned-offset-match-audit.md) add independent
   public/typed evidence for inherited Get/coercion ordering, abrupt completion,
   signed minute ties, earliest fold matching and exclusive day bounds. No runtime

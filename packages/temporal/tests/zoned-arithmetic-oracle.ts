@@ -98,6 +98,67 @@ export function checkZonedArithmeticOracle(
     rejectedSeconds = error instanceof RangeError
   }
   equal(rejectedSeconds, true, 'Monrovia mismatched seconds offset')
+  // IANA 2026f: Apia skipped 2011-12-30; two backward day counts share an endpoint.
+  // https://data.iana.org/time-zones/tzdb-2026f/australasia
+  const apiaOrigin = new Temporal.ZonedDateTime(
+    1_325_368_800_000_000_000n,
+    'Pacific/Apia'
+  )
+  const apiaDestination = new Temporal.ZonedDateTime(
+    1_325_275_200_000_000_000n,
+    'Pacific/Apia'
+  )
+  for (const days of [1, 2]) {
+    equal(
+      apiaOrigin.subtract({days}).epochNanoseconds,
+      1_325_282_400_000_000_000n,
+      `Apia backward ${days} day endpoint`
+    )
+  }
+  equal(
+    apiaOrigin.subtract({days: 3}).epochNanoseconds,
+    1_325_196_000_000_000_000n,
+    'Apia backward three day endpoint'
+  )
+  for (const [
+    roundingMode,
+    backwardUntil,
+    backwardSince,
+    forwardUntil,
+    forwardSince,
+  ] of [
+    ['ceil', '-P2D', 'P3D', 'P2D', '-P1D'],
+    ['floor', '-P3D', 'P2D', 'P1D', '-P2D'],
+    ['expand', '-P3D', 'P3D', 'P2D', '-P2D'],
+    ['trunc', '-P2D', 'P2D', 'P1D', '-P1D'],
+    ['halfCeil', '-P2D', 'P2D', 'P1D', '-P1D'],
+    ['halfFloor', '-P2D', 'P2D', 'P1D', '-P1D'],
+    ['halfExpand', '-P2D', 'P2D', 'P1D', '-P1D'],
+    ['halfTrunc', '-P2D', 'P2D', 'P1D', '-P1D'],
+    ['halfEven', '-P2D', 'P2D', 'P1D', '-P1D'],
+  ] as const) {
+    const options = {largestUnit: 'day', smallestUnit: 'day', roundingMode}
+    equal(
+      apiaOrigin.until(apiaDestination, options).toString(),
+      backwardUntil,
+      `Apia collapsed backward window until ${roundingMode}`
+    )
+    equal(
+      apiaOrigin.since(apiaDestination, options).toString(),
+      backwardSince,
+      `Apia collapsed backward window since ${roundingMode}`
+    )
+    equal(
+      apiaDestination.until(apiaOrigin, options).toString(),
+      forwardUntil,
+      `Apia ordinary forward window until ${roundingMode}`
+    )
+    equal(
+      apiaDestination.since(apiaOrigin, options).toString(),
+      forwardSince,
+      `Apia ordinary forward window since ${roundingMode}`
+    )
+  }
   equal(differences, 19440, 'Complete ICU zoned difference fixture')
   equal(days, 5292, 'Complete ICU zoned day fixture')
   return {differences, days}
