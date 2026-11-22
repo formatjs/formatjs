@@ -1,5 +1,10 @@
 # Temporal implementation
 
+ISO calendar differences retain direct bounded day/week residual arithmetic.
+A [separate rendered-comparison issue](audits/temporal-isodatesurpasses-zero-month-spec-issue.md)
+records a zero-month shortcut that would make literal candidate loops fail to
+terminate. Runtime does not adopt that defect; full caller audit remains open.
+
 [Gregorian proof](audits/temporal-calendar-gregorian-closure-audit.md) covers
 raw±110million-day conversion, including negative eras and exact Number/bitwise
 bounds. [Prepared ISO addition bounds](audits/temporal-iso-calendar-add-bounds-audit.md)

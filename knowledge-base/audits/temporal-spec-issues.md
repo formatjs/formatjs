@@ -294,3 +294,13 @@ component is zero, even when its retained year/month prefix is nonzero.
 P1M from 2020-01-01 then rounds to P1M1W in the literal comparison and native
 Node. Source uses the complete prefix endpoint and retains P1M. No runtime
 policy change or complete rounding signoff; intended coordinates remain open.
+
+## Zero-month shortcut prevents ISO day/week difference termination
+
+Open rendered comparison defect, checked 2026-11-22:
+[finite witness and source policy](temporal-isodatesurpasses-zero-month-spec-issue.md).
+ISODateSurpasses §3.5.6 step 5 discards nonzero weeks/days whenever months=0.
+CalendarDateUntil §12.3.9 steps 3.g/3.j consequently never terminate for ordinary
+unequal ISO dates with day/week largest units. Existing bounded residual arithmetic
+stays intact; no runtime change should reproduce an infinite loop. Requested
+ECMA-262 authority and complete CalendarDateUntil audit remain open.
