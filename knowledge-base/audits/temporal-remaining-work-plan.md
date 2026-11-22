@@ -328,7 +328,8 @@ UTC Chinese and Dangi intervals reuse Day or Month selection when the
 related year, month code and corrected day widths are verified. Verified
 year-boundary labels retain their layout. Regular and leap months stay
 distinct at Month or Day precision. Verified UTC day-only leap ranges reuse
-the Month pattern. Explicit-year and full-date leap fallback layouts remain open.
+the Month pattern. Verified explicit-year and full-date ranges keep native
+punctuation and tagged weekdays. Layouts without matching controls remain open.
 [Range proof](temporal-pattern-partition-audit.md#legacy-corrected-range-collapse).
 
 Source hashes and extraction limits:

@@ -937,12 +937,14 @@ export function legacyCalendarRangeParts(
       const rawStart = parts.call(first.formatter, first.milliseconds),
         startUnchanged = same(start, rawStart)
       let rawEnd: Intl.DateTimeFormatPart[] | undefined
+      let endUnchanged = false
       if (startUnchanged) {
         rawEnd = parts.call(last.formatter, last.milliseconds)
+        endUnchanged = same(end, rawEnd)
         // ECMA-402 §11.5.8 step 15.d.v: identical narrow labels do not
         // establish equality of the native and corrected month fields.
         if (
-          same(end, rawEnd) &&
+          endUnchanged &&
           (firstFields.narrowMonth === undefined ||
             hostBuddhistMonth(timeZone, first.milliseconds) ===
               firstFields.narrowMonth) &&
@@ -1002,12 +1004,8 @@ export function legacyCalendarRangeParts(
         lunarStart &&
         lunarEnd
       ) {
-        const onlyDay = (part: Intl.DateTimeFormatPart): boolean =>
-          part.type === 'day' || part.type === 'literal'
         const lunar = regularLeap
-          ? options.day !== undefined &&
-            arrayEvery(start, onlyDay) &&
-            arrayEvery(end, onlyDay) &&
+          ? endUnchanged &&
             lunisolarUtcLeapMonthRange(
               calendar,
               first,

@@ -28,6 +28,7 @@ const dayMilliseconds = 86400000
 const probes = new Map<string, Intl.DateTimeFormat>()
 const positiveEras = new WeakMap<Intl.DateTimeFormat, string>()
 const dateTypes = new Set(['year', 'relatedYear', 'yearName', 'month', 'day'])
+const stableRangeFields = ['day', 'year', 'relatedYear', 'yearName', 'literal']
 interface Catalog {
   months: Map<string, number>
   cursor: number
@@ -247,19 +248,19 @@ export function lunisolarUtcLeapMonthRange(
   if (before === undefined || after === undefined) return undefined
   const starts = rangeParts.call(first.formatter, first.milliseconds, after)
   const ends = rangeParts.call(first.formatter, before, last.milliseconds)
-  // ECMA-402 §11.5.8 steps 19.e–f: preserve contextual values, literals
-  // and sources when both controls select the same day-only range layout.
+  // ECMA-402 §11.5.8 steps 19.c–f: keep the weekday of each tagged endpoint.
+  // Both controls must agree on the other date fields and interval literals.
   if (
     starts.length !== ends.length ||
     !arrayEvery(starts, (part, index) => {
       const other = ends[index]
+      if (part.type !== other.type || part.source !== other.source) return false
+      if (part.type === 'month') return part.source !== 'shared'
+      if (part.type === 'weekday')
+        return part.source !== 'shared' || part.value === other.value
       return (
-        part.type === other.type &&
-        part.source === other.source &&
-        (part.type === 'month'
-          ? part.source !== 'shared'
-          : (part.type === 'day' || part.type === 'literal') &&
-            part.value === other.value)
+        arrayIncludes(stableRangeFields, part.type) &&
+        part.value === other.value
       )
     }) ||
     !arraySome(

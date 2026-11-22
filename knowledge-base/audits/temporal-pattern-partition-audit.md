@@ -111,7 +111,7 @@ nonpositive year for display.
 
 [Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L469)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L1074) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L1072) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -235,7 +235,7 @@ with one. June and July both abbreviate to English narrow `J`. The
 ordinal check keeps the existing fallback when native July and owned June
 produce the same text. Number and PlainDate controls exercise both paths.
 Seven focused Bazel targets and all 161 controls on pinned Node 26.8.1 pass.
-[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L67).
+[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L68).
 [Range label check](../../packages/temporal/legacy-calendar-date.ts#L664).
 [ECMA-402 §11.5.4 step 15.f.x](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
@@ -260,7 +260,7 @@ and corrects the shared year once both endpoints agree on its source and
 display values. Number and PlainDate tests check complete parts and
 strings. Seven focused Bazel targets and all 167 pinned Node 26.8.1
 controls pass.
-[Month identity check](../../packages/temporal/legacy-calendar-date.ts#L942).
+[Month identity check](../../packages/temporal/legacy-calendar-date.ts#L944).
 [Shared year check](../../packages/temporal/legacy-calendar-date.ts#L709).
 [ECMA-402 §11.5.8 steps 15.d.v–vi, 16 and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -306,7 +306,7 @@ Projecting and verifying full years keeps the Year pattern and its tagged
 endpoints in those cases. Number and PlainDate controls cover centuries,
 negative zero and mathematical digits. Seven focused Bazel targets and
 all 203 controls on pinned Node 26.8.1 pass.
-[Full-year selection](../../packages/temporal/legacy-calendar-date.ts#L985).
+[Full-year selection](../../packages/temporal/legacy-calendar-date.ts#L987).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.4 steps 15.f.iv and 15.f.ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
@@ -333,7 +333,7 @@ The public checks compare full strings and tagged parts for Number and
 PlainDate on both pinned Nodes. Seven focused Bazel targets pass. The
 Node 26.8.1 replay passed 17,886 formatting checks, with 8,708 independent
 fixture rows and 34 existing native data differences.
-[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L183).
+[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L184).
 [Range day restoration](../../packages/temporal/legacy-calendar-date.ts#L788).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -387,16 +387,39 @@ must be tagged to both endpoints. The bridge takes each endpoint from its
 original control, keeping locale-specific placement and widths. English uses
 `4/1 – 4bis/1`; German retains leading zeroes. If the adjacent months
 cannot supply exactly the requested days or their patterns disagree, the
-existing fallback applies. Explicit-year and full-date leap ranges can still
-duplicate punctuation in that fallback.
+existing fallback applies. Explicit-year and full-date layouts are verified below.
 
 Number and PlainDate regressions cover both calendars, equal and differing day
 fields, four locales and two pinned Node versions. Seven focused Bazel targets
 pass. Node 26.8.1 passes 17,932 formatting checks.
-[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L243).
-[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L250).
+[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L244).
+[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L251).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `380b322870e13b0504f30d727201b1d6547d6db29777fbe96488c62dc9397f5f`
 - After-fix log SHA-256 `2539cda1937ed4b6e13e639c900b53c786eeb83cada82a23066593e81f6e61fb`
 - Node 26 replay log SHA-256 `5950ba4e8d658981f13aceb2695c567a72b15448c4257f3302c3083cddfc9d7e`
+
+### Leap-month year and weekday parts
+
+English explicit long Month/year/day and full-date styles duplicated a closing
+parenthesis before the separator in both calendars. Full-date controls also
+distinguish the actual Thursday and Saturday from the representative weekdays.
+
+The bridge first verifies that both single-date outputs agree with the
+corrected endpoints. The two Month-pattern controls must agree on related year,
+year name, Day values, part types, sources and punctuation. The bridge takes
+each tagged weekday from its actual endpoint; a shared weekday must agree
+across both controls. This preserves the host's placement of parentheses
+without duplicating a closing parenthesis in the start endpoint.
+
+Number and PlainDate regressions cover both calendars and equal and differing
+day fields on pinned Node 24 and 26. Seven focused Bazel targets pass.
+Node 26.8.1 passes 17,948 formatting checks. Date-only layouts without two
+verified controls and styles with time fields retain their fallback.
+[Endpoint sources](../../packages/temporal/legacy-lunisolar-date.ts#L251).
+[ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Before-fix log SHA-256 `41f5ff591565108593b7f63c4c0af85312871acacaf89852723bd9fb8a92424a`
+- After-fix log SHA-256 `58f0bc938a1061e4f64384a62507b6e52977bba7b34bcc1db6aadcb91aba3fc7`
+- Node 26 replay log SHA-256 `677adb6c0cb5c5659f9e0331403f670157e306094fb15a5ac69c6ccc1698ec29`

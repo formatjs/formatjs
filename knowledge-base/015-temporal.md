@@ -899,9 +899,10 @@ after installation. Validated numeric Year ranges reuse the native layout,
 including verified numeric widths, weekday labels and Buddhist textual months.
 Verified UTC Chinese and Dangi Year, Month, and Day intervals retain native
 source tags while restoring corrected days. Regular and leap months retain
-both endpoint labels when shown. Verified day-only leap ranges reuse the
-native Month layout with both month labels. Other corrected ranges use complete
-endpoint patterns and a captured host separator.
+both endpoint labels when shown. Verified leap ranges reuse the native Month
+layout, including both month labels, related years and tagged weekdays.
+Other corrected ranges use complete endpoint patterns and a captured host
+separator.
 
 All 130 Temporal DateTimeFormat executions pass on Node TS/WASM and Hermes
 source/bytecode through the legacy adapter, with zero tracked failures. This

@@ -311,8 +311,15 @@ for (const calendar of ['chinese', 'dangi']) {
     const plain = dates
       .slice(1, 3)
       .map(date => Temporal.PlainDate.from(date).withCalendar(calendar))
-    for (const locale of ['en', 'de', 'zh-CN', 'en-u-nu-mathsans']) {
-      const options = {calendar, timeZone: 'UTC', day: 'numeric'}
+    for (const [locale, fields] of [
+      ['en', {day: 'numeric'}],
+      ['de', {day: 'numeric'}],
+      ['zh-CN', {day: 'numeric'}],
+      ['en-u-nu-mathsans', {day: 'numeric'}],
+      ['en', {year: 'numeric', month: 'long', day: 'numeric'}],
+      ['en', {dateStyle: 'full'}],
+    ]) {
+      const options = {calendar, timeZone: 'UTC', ...fields}
       const native = new Native(locale, options)
       const formatter = new Intl.DateTimeFormat(locale, options)
       const startParts = native.formatRangeToParts(start, after)
