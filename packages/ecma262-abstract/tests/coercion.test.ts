@@ -1,3 +1,4 @@
+import {runInNewContext} from 'node:vm'
 import {ToObject} from '#packages/ecma262-abstract/ToObject.js'
 import {expect, it} from 'vitest'
 import {ToPrimitive} from '#packages/ecma262-abstract/ToPrimitive.js'
@@ -216,4 +217,202 @@ it('boxes primitives with the original Object intrinsic', () => {
   expect(typeof actual![0]).toBe('object')
   expect(Number.prototype.valueOf.call(actual![0])).toBe(7)
   expect(actual![1]).toBe(record)
+})
+
+it('preserves every primitive type through conversion', () => {
+  const symbol = Symbol('primitive')
+  for (const value of [
+    undefined,
+    null,
+    true,
+    false,
+    '',
+    -0,
+    NaN,
+    Infinity,
+    23n,
+    symbol,
+  ]) {
+    expect(ToPrimitive(value, 'number')).toBe(value)
+    expect(ToPrimitive(value, 'string')).toBe(value)
+    expect(ToPrimitive({[Symbol.toPrimitive]: () => value}, 'number')).toBe(
+      value
+    )
+  }
+})
+
+it.each(['number', 'string', undefined] as const)(
+  'gets and calls conversion methods in order for hint %s',
+  hint => {
+    for (const absent of [null, undefined]) {
+      const events: unknown[] = []
+      const first = hint === 'string' ? 'toString' : 'valueOf'
+      const second = first === 'toString' ? 'valueOf' : 'toString'
+      const input = new Proxy(Object.create(null), {
+        get(_target, key, receiver) {
+          expect(receiver).toBe(input)
+          events.push(key)
+          if (key === Symbol.toPrimitive) return absent
+          if (key === first) return 42 // Non-callable ordinary methods are skipped.
+          if (key === second) {
+            return new Proxy(function () {}, {
+              get() {
+                throw new Error('Call must not inspect method properties')
+              },
+              apply(_method, thisArgument, argumentsList) {
+                expect(thisArgument).toBe(input)
+                events.push(argumentsList)
+                return 'converted'
+              },
+            })
+          }
+          throw new Error('Unexpected property access')
+        },
+      })
+      expect(ToPrimitive(input, hint as 'number' | 'string')).toBe('converted')
+      expect(events).toEqual([Symbol.toPrimitive, first, second, []])
+    }
+  }
+)
+
+it.each([
+  'get exotic',
+  'call exotic',
+  'get first',
+  'call first',
+  'get second',
+  'call second',
+])('stops at abrupt completion: %s', stop => {
+  const failure = Object.freeze({stop})
+  const events: string[] = []
+  const exotic = stop.endsWith('exotic')
+  const input = new Proxy(Object.create(null), {
+    get(_target, key) {
+      const name =
+        key === Symbol.toPrimitive
+          ? 'exotic'
+          : key === 'valueOf'
+            ? 'first'
+            : 'second'
+      events.push(`get ${name}`)
+      if (stop === `get ${name}`) throw failure
+      if (name === 'exotic' && !exotic) return undefined
+      return function () {
+        events.push(`call ${name}`)
+        if (stop === `call ${name}`) throw failure
+        return {}
+      }
+    },
+  })
+  let caught: unknown
+  try {
+    ToPrimitive(input, 'number')
+  } catch (error) {
+    caught = error
+  }
+  expect(caught).toBe(failure)
+  const sequence = exotic
+    ? ['get exotic', 'call exotic']
+    : ['get exotic', 'get first', 'call first', 'get second', 'call second']
+  expect(events).toEqual(sequence.slice(0, sequence.indexOf(stop) + 1))
+})
+
+it('rejects non-callable exotic methods without ordinary fallback', () => {
+  for (const method of [false, 0, '', 23n, Symbol(), {}]) {
+    const events: PropertyKey[] = []
+    const input = new Proxy(Object.create(null), {
+      get(_target, key) {
+        events.push(key)
+        return method
+      },
+    })
+    expect(() => ToPrimitive(input, 'string')).toThrow(TypeError)
+    expect(events).toEqual([Symbol.toPrimitive])
+  }
+})
+
+it('propagates callable Proxy and class constructor failures without fallback', () => {
+  const revoked = Proxy.revocable(function () {}, {})
+  revoked.revoke()
+  for (const method of [revoked.proxy, class Conversion {}]) {
+    for (const key of [Symbol.toPrimitive, 'valueOf']) {
+      let fallback = false
+      const input = {
+        [key]: method,
+        toString() {
+          fallback = true
+          return 'wrong'
+        },
+      }
+      expect(() => ToPrimitive(input, 'number')).toThrow(TypeError)
+      expect(fallback).toBe(false)
+    }
+  }
+})
+
+it('converts foreign-realm built-ins and preserves foreign thrown values', () => {
+  const foreign = runInNewContext(`({
+    date: new Date(0), number: new Number(-0), bigint: Object(23n),
+    symbol: Object(Symbol.for('foreign')), error: new TypeError('foreign'),
+    TypeError
+  })`)
+  expect(ToPrimitive(foreign.date, 'number')).toBe(0)
+  expect(ToPrimitive(foreign.date, undefined as never)).toBe(
+    foreign.date.toString()
+  )
+  expect(ToPrimitive(foreign.number, 'number')).toBe(-0)
+  expect(ToPrimitive(foreign.bigint, 'number')).toBe(23n)
+  expect(ToPrimitive(foreign.symbol, 'string')).toBe(Symbol.for('foreign'))
+  const throwForeign = runInNewContext(
+    '(error => ({[Symbol.toPrimitive]() {throw error}}))'
+  )
+  let caught: unknown
+  try {
+    ToPrimitive(throwForeign(foreign.error), 'number')
+  } catch (error) {
+    caught = error
+  }
+  expect(caught).toBe(foreign.error)
+  try {
+    ToPrimitive(runInNewContext('({[Symbol.toPrimitive]: 1})'), 'number')
+  } catch (error) {
+    expect(error).toBeInstanceOf(TypeError)
+    expect(error).not.toBeInstanceOf(foreign.TypeError)
+    return
+  }
+  throw new Error('Expected current-realm TypeError')
+})
+
+it('uses ToString rather than the String function Symbol exception', () => {
+  const symbol = Symbol('value')
+  const inputs: [unknown, string][] = [
+    [undefined, 'undefined'],
+    [null, 'null'],
+    [true, 'true'],
+    [false, 'false'],
+    ['', ''],
+    [-0, '0'],
+    [NaN, 'NaN'],
+    [Infinity, 'Infinity'],
+    [-Infinity, '-Infinity'],
+    [23n, '23'],
+    [runInNewContext('Object(23n)'), '23'],
+  ]
+  for (const [value, expected] of inputs) expect(ToString(value)).toBe(expected)
+  for (const value of [
+    symbol,
+    Object(symbol),
+    {[Symbol.toPrimitive]: () => symbol},
+  ]) {
+    expect(() => ToString(value)).toThrow(TypeError)
+  }
+  const events: unknown[] = []
+  const input = {
+    [Symbol.toPrimitive](hint: string) {
+      events.push(this, hint)
+      return 23n
+    },
+  }
+  expect(ToString(input)).toBe('23')
+  expect(events).toEqual([input, 'string'])
 })
