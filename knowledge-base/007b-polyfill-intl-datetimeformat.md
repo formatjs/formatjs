@@ -4,6 +4,12 @@
 
 ## Purpose
 
+FormatDateTimeToParts delegates result construction to shared CreatePartsArray.
+The builder traverses private records by index and defines own array properties;
+result projection cannot invoke mutable iterators, push or numeric setters.
+See the [parts-result audit](audits/temporal-parts-result-audit.md) for all source
+steps and remaining partition-producer work.
+
 Private formatToParts result allocation follows ECMA-262 ArrayCreate through a
 captured realm constructor, preserving sparse-array semantics and avoiding
 Array.from hooks. Date-range SameValue comparisons use pure equality, including

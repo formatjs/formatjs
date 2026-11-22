@@ -107,9 +107,9 @@ exercise these public paths; ordinary conformance profiles remain unchanged.
 
 Caller inventory: ArrayCreate is used by FormatDateTimeToParts and
 FormatNumericToParts; SameValue is used by date-range comparison, relative-time
-sign handling and Locale numeric collation. Their other private-list operations
-remain open, including [iteration/appending in FormatDateTimeToParts](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimeToParts.ts#L20)
-and [FormatNumericToParts](../../packages/ecma402-abstract/NumberFormat/FormatNumericToParts.ts#L20).
+sign handling and Locale numeric collation. Their facade iteration/appending is
+addressed by the [parts-result projection audit](temporal-parts-result-audit.md).
+Private-list operations in partition producers remain open.
 No complete public algorithm is signed off by this helper review.
 
 Validation: all 135 declared targets pass (85 executed, 50 cached), including
