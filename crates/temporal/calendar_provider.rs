@@ -178,12 +178,15 @@ macro_rules! dispatch {
     };
 }
 impl CalendarProvider for CalendarRef<'_> {
+    // Proposal comparison §3.3.3 step 3: read the selected provider's calendar ID.
     fn id(self) -> &'static str {
         dispatch!(self, id)
     }
+    // Proposal comparison §12.3.26 steps 1.b, 2: project a short-date reference day.
     fn date_extended(self, epoch: i64) -> Result<Date, crate::calendar::Error> {
         dispatch!(self, date_extended, epoch)
     }
+    // Proposal comparison §12.3.13 step 3: convert fields to a year-month reference day.
     fn epoch_day_extended(
         self,
         year: i32,
@@ -193,6 +196,7 @@ impl CalendarProvider for CalendarRef<'_> {
     ) -> Result<i64, crate::calendar::Error> {
         dispatch!(self, epoch_day_extended, year, month, day, overflow)
     }
+    // Proposal comparison §9.5.8 step 12: dispatch year-month addition to the provider.
     fn add_extended(
         self,
         epoch: i64,
@@ -201,12 +205,15 @@ impl CalendarProvider for CalendarRef<'_> {
     ) -> Result<i64, crate::calendar::Error> {
         dispatch!(self, add_extended, epoch, duration, overflow)
     }
+    // Proposal comparison §9.3.4 and §9.3.5 step 3: project era fields at the reference day.
     fn era_extended(self, epoch: i64) -> Result<Option<Era>, crate::calendar::Error> {
         dispatch!(self, era_extended, epoch)
     }
+    // Proposal comparison §12.3.26 steps 1.b, 2: convert an epoch day through its calendar.
     fn date(self, day: i64) -> Result<Date, crate::calendar::Error> {
         dispatch!(self, date, day)
     }
+    // Proposal comparison §12.3.22 steps 1.b, 2: convert resolved fields to an epoch day.
     fn epoch_day(
         self,
         year: i32,
@@ -216,6 +223,7 @@ impl CalendarProvider for CalendarRef<'_> {
     ) -> Result<i64, crate::calendar::Error> {
         dispatch!(self, epoch_day, year, month, day, overflow)
     }
+    // Proposal comparison §12.3.31 steps 1.h, 2.a: resolve a month code through its calendar.
     fn month_from_code(
         self,
         year: i32,
@@ -224,21 +232,27 @@ impl CalendarProvider for CalendarRef<'_> {
     ) -> Result<u8, crate::calendar::Error> {
         dispatch!(self, month_from_code, year, code, overflow)
     }
+    // Proposal comparison §3.3.17 step 3: read the provider's month count for this year.
     fn months_in_year(self, year: i32) -> Result<u8, crate::calendar::Error> {
         dispatch!(self, months_in_year, year)
     }
+    // Proposal comparison §3.3.15 step 3: read the provider's day count for this month.
     fn days_in_month(self, year: i32, month: u8) -> Result<u8, crate::calendar::Error> {
         dispatch!(self, days_in_month, year, month)
     }
+    // Proposal comparison §3.3.11 step 3: supply the year start for the day-of-year count.
     fn start_of_year(self, year: i32) -> Result<i64, crate::calendar::Error> {
         dispatch!(self, start_of_year, year)
     }
+    // Proposal comparison §3.3.4 and §3.3.5 step 3: read provider era fields.
     fn era(self, day: i64) -> Result<Option<Era>, crate::calendar::Error> {
         dispatch!(self, era, day)
     }
+    // Proposal comparison §12.3.31 step 2.a: resolve a non-ISO era and era year.
     fn year_from_era(self, era: &str, year: i32) -> Result<i32, crate::calendar::Error> {
         dispatch!(self, year_from_era, era, year)
     }
+    // Proposal comparison §12.3.7 steps 1, 2.a: dispatch checked calendar date addition.
     fn add(
         self,
         day: i64,
@@ -247,6 +261,7 @@ impl CalendarProvider for CalendarRef<'_> {
     ) -> Result<i64, crate::calendar::Error> {
         dispatch!(self, add, day, duration, overflow)
     }
+    // Proposal comparison §12.3.9 steps 3, 4: dispatch calendar date difference.
     fn until_raw(
         self,
         one: i64,
@@ -268,6 +283,7 @@ pub struct DateFields<'a> {
 }
 
 impl DateFields<'_> {
+    // Proposal comparison §12.3.5 step 1: check whether typed date updates contain fields.
     pub(crate) fn has_fields(self, calendar: &str) -> bool {
         self.year.is_some()
             || self.month.is_some()
@@ -285,6 +301,7 @@ pub(crate) enum DateFieldShape {
     MonthDay,
 }
 
+// Proposal comparison §12.3.5 steps 1–6: merge typed overrides with the projected date.
 pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     calendar: C,
     epoch: i64,
@@ -327,6 +344,7 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     })
 }
 
+// Proposal comparison §12.3.22 steps 1.b, 2: carry date conversion errors to callers.
 pub(crate) fn error(error: crate::calendar::Error) -> crate::Error {
     match error {
         crate::calendar::Error::OutOfRange => crate::Error::OutOfRange,
@@ -334,12 +352,14 @@ pub(crate) fn error(error: crate::calendar::Error) -> crate::Error {
         _ => crate::Error::InvalidDateTime,
     }
 }
+// Proposal comparison §12.3.12 step 2: pass the prepared overflow mode to date conversion.
 pub(crate) fn overflow(value: crate::Overflow) -> Overflow {
     match value {
         crate::Overflow::Constrain => Overflow::Constrain,
         crate::Overflow::Reject => Overflow::Reject,
     }
 }
+// Proposal comparison §12.3.12 steps 1–2: resolve typed fields and convert the date.
 pub(crate) fn resolve_fields<C: CalendarProvider>(
     calendar: C,
     fields: DateFields<'_>,
@@ -355,6 +375,7 @@ pub(crate) fn resolve_fields<C: CalendarProvider>(
         )
         .map_err(error)
 }
+// Proposal comparison §12.3.31 step 2.a: reconcile typed year and era fields.
 pub(crate) fn resolve_year<C: CalendarProvider>(
     calendar: C,
     fields: DateFields<'_>,
@@ -375,6 +396,7 @@ pub(crate) fn resolve_year<C: CalendarProvider>(
     }
     Ok(fields.year.or(era_year))
 }
+// Proposal comparison §12.3.31 steps 1.e, 1.g–h, 2.a: resolve typed year and month.
 pub(crate) fn resolve_year_month<C: CalendarProvider>(
     calendar: C,
     fields: DateFields<'_>,

@@ -8,6 +8,47 @@ import {Temporal} from '#packages/temporal/index.js'
 import {Temporal as Reference} from 'temporal-polyfill/implementation'
 import {installLegacyDurationFormat} from '#packages/temporal/legacy-durationformat.js'
 
+// Register first so the shared paradigm Set is still cold.
+it('allocates private best-fit paradigms without a global Set Get', () => {
+  DurationFormat.__addTemporalNamespace(Temporal)
+  const available = DurationFormat.availableLocales
+  const fresh = new Set(['en', 'de'])
+  const setDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'Set')!
+  const durationDescriptor = Object.getOwnPropertyDescriptor(
+    Intl,
+    'DurationFormat'
+  )
+  const define = Object.defineProperty
+  const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+  let actual: string | undefined
+  try {
+    DurationFormat.availableLocales = fresh
+    define(Intl, 'DurationFormat', {
+      configurable: true,
+      writable: true,
+      value: DurationFormat,
+    })
+    configureLocaleFormatting()
+    define(globalThis, 'Set', {
+      configurable: true,
+      get() {
+        throw new Error('Mutable private Duration paradigm Set')
+      },
+    })
+    actual = duration.toLocaleString('de-AT-u-nu-arab', {
+      localeMatcher: 'best fit',
+      style: 'long',
+    })
+  } finally {
+    define(globalThis, 'Set', setDescriptor)
+    DurationFormat.availableLocales = available
+    if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+    else Reflect.deleteProperty(Intl, 'DurationFormat')
+    configureLocaleFormatting()
+  }
+  expect(actual).toBe('١ Minute')
+})
+
 it('registers late namespaces and retains captured brands and parsers', () => {
   const formatter = new DurationFormat('en', {style: 'digital'})
   for (const namespace of [Temporal, Reference]) {
@@ -1666,6 +1707,12 @@ it.each([
   ['snapshot freeze', Object, 'freeze'],
   ['snapshot mark', WeakSet.prototype, 'add'],
   ['snapshot check', WeakSet.prototype, 'has'],
+  ['matcher Map allocation', globalThis, 'Map'],
+  ['ordered locale Lists', Array.prototype, 'map'],
+  ['maximal locale List', Array.prototype, 'forEach'],
+  ['paradigm membership', Set.prototype, 'has'],
+  ['equivalent distance limit', Math, 'min', false, 'en-US-u-nu-arab'],
+  ['private ordered profile', Object.prototype, 'maximal'],
   ['requested locale List', Array.prototype, 'map'],
   ['raw tag append', Object, 'defineProperty'],
   ['raw cache read', Map.prototype, 'get'],
@@ -1676,6 +1723,35 @@ it.each([
   ['distance candidate indexes', Array.prototype, Symbol.iterator, true],
   ['distance cache read', Map.prototype, 'get', true],
   ['distance cache write', Map.prototype, 'set', true],
+  ['matrix maximum', Math, 'max', false, 'es-MX-u-nu-arab'],
+  [
+    'incomplete locale fallback filter',
+    Array.prototype,
+    'filter',
+    false,
+    'qaa-x-filter',
+  ],
+  [
+    'incomplete locale fallback join',
+    Array.prototype,
+    'join',
+    false,
+    'qaa-x-join',
+  ],
+  [
+    'desired region partitions',
+    Array.prototype,
+    Symbol.iterator,
+    false,
+    'es-MX-u-nu-arab',
+  ],
+  [
+    'supported region partitions',
+    Array.prototype,
+    Symbol.iterator,
+    false,
+    'es-MX-u-nu-arab',
+  ],
   ['locale prefix search', String.prototype, 'indexOf'],
   ['locale prefix substring', String.prototype, 'slice'],
   ['region code units', String.prototype, 'charCodeAt'],
@@ -1725,12 +1801,15 @@ it.each([
   ],
 ] as const)(
   'fresh Duration best fit keeps %s private',
-  (_label, owner, key, distance, locale = 'de-AT-u-nu-arab') => {
+  (label, owner, key, distance, locale = 'de-AT-u-nu-arab') => {
     DurationFormat.__addTemporalNamespace(Temporal)
-    expect(DurationFormat.localeData.de).toBeDefined()
+    // CLDR49: es-MX x es-419 uses partition 1 x [1, 3], with cells [4, 4].
+    const matrix = locale === 'es-MX-u-nu-arab'
+    const supported = matrix ? 'es-419' : 'de'
+    expect(DurationFormat.localeData[supported]).toBeDefined()
     expect(DurationFormat.localeData.en).toBeDefined()
     const available = DurationFormat.availableLocales
-    const fresh = new Set(['en', 'de'])
+    const fresh = new Set(['en', supported])
     const Original = Intl.NumberFormat
     class BestFitNumberFormat extends Original {}
     const define = Object.defineProperty
@@ -1742,7 +1821,7 @@ it.each([
       Intl,
       'DurationFormat'
     )
-    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)
     const apply = Reflect.apply
     const mapSize = Object.getOwnPropertyDescriptor(Map.prototype, 'size')!.get!
     const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
@@ -1770,6 +1849,8 @@ it.each([
         key,
         key === 'freeze' ||
           key === 'getCanonicalLocales' ||
+          key === 'Map' ||
+          key === 'maximal' ||
           owner === WeakSet.prototype
           ? {configurable: true, get: poison}
           : {
@@ -1781,14 +1862,40 @@ it.each([
                 let ownedCall: boolean
                 switch (key) {
                   case 'map':
-                    ownedCall = items.length === 1 && items[0] === locale
+                    ownedCall =
+                      label === 'ordered locale Lists'
+                        ? items.length === 2 &&
+                          items[0] === 'en' &&
+                          items[1] === 'de'
+                        : items.length === 1 && items[0] === locale
+                    break
+                  case 'forEach':
+                    ownedCall =
+                      items.length === 2 &&
+                      (items[0] as {language?: string} | undefined)
+                        ?.language === 'en' &&
+                      (items[1] as {language?: string} | undefined)
+                        ?.language === 'de'
+                    break
+                  case 'min':
+                    ownedCall = args.length === 2 && args[0] === 1
                     break
                   case Symbol.iterator:
-                    ownedCall = distance
-                      ? items.length === 2 && items[0] === 0 && items[1] === 1
-                      : items.length === 2 &&
-                        items[0] === 'en' &&
-                        items[1] === 'de'
+                    if (label === 'desired region partitions')
+                      ownedCall = items.length === 1 && items[0] === 1
+                    else if (label === 'supported region partitions')
+                      ownedCall =
+                        items.length === 2 && items[0] === 1 && items[1] === 3
+                    else
+                      ownedCall = distance
+                        ? items.length === 2 && items[0] === 0 && items[1] === 1
+                        : items.length === 2 &&
+                          items[0] === 'en' &&
+                          items[1] === 'de'
+                    break
+                  case 'max':
+                    ownedCall =
+                      args.length === 2 && args[0] === 0 && args[1] === 4
                     break
                   case 'filter':
                     ownedCall =
@@ -1817,7 +1924,9 @@ it.each([
                     break
                   case 'has':
                     ownedCall =
-                      args[0] === 'de' && apply(mapSize, this, []) === 1
+                      owner === Set.prototype
+                        ? args[0] === 'de|Latn|DE'
+                        : args[0] === 'de' && apply(mapSize, this, []) === 1
                     break
                   case 'set':
                     ownedCall = distance
@@ -1850,19 +1959,22 @@ it.each([
                     break
                   case 'join':
                     ownedCall =
-                      items.length === 1 && items[0] === 'de' && args[0] === '-'
+                      items.length === 1 &&
+                      items[0] === (locale === 'qaa-x-join' ? 'und' : 'de') &&
+                      args[0] === '-'
                     break
                   default:
                     ownedCall = false
                 }
                 if (ownedCall) poison()
-                return apply(descriptor.value, this, args)
+                return apply(descriptor!.value, this, args)
               },
             }
       )
       actual = duration.toLocaleString(locale, options)
     } finally {
-      define(owner, key, descriptor)
+      if (descriptor) define(owner, key, descriptor)
+      else Reflect.deleteProperty(owner, key)
       DurationFormat.availableLocales = available
       define(Intl, 'NumberFormat', numberDescriptor)
       if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
@@ -1870,6 +1982,156 @@ it.each([
       configureLocaleFormatting()
     }
     expect(hooks).toBe(0)
+    expect(actual).toBe(
+      matrix
+        ? '١ minuto'
+        : locale.startsWith('qaa-')
+          ? '1 minute'
+          : locale === 'en-US-u-nu-arab'
+            ? '١ minute'
+            : '١ Minute'
+    )
+  }
+)
+
+it.each([
+  ['size', 1],
+  ['clear', 256],
+] as const)(
+  'fresh Duration best fit keeps distance cache %s private',
+  (key, entries) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const available = DurationFormat.availableLocales
+    const fresh = new Set(['en', 'de'])
+    const define = Object.defineProperty
+    const apply = Reflect.apply
+    const has = Map.prototype.has
+    const size = Object.getOwnPropertyDescriptor(Map.prototype, 'size')!.get!
+    const descriptor = Object.getOwnPropertyDescriptor(Map.prototype, key)!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const options = {localeMatcher: 'best fit', style: 'long'} as const
+    let actual: string | undefined
+    try {
+      DurationFormat.availableLocales = fresh
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      // Distinct canonical private-use tags share one available snapshot.
+      // No raw or equivalent hit can bypass a distance-cache entry.
+      for (let index = 0; index < entries; index++) {
+        duration.toLocaleString(`de-AT-u-nu-arab-x-cache-${index}`, options)
+      }
+      const oldest = 'de-AT-x-cache-0|en'
+      const poison = () => {
+        throw new Error('Mutable private Duration distance cache operation')
+      }
+      define(
+        Map.prototype,
+        key,
+        key === 'size'
+          ? {
+              ...descriptor,
+              get(this: Map<string, unknown>) {
+                if (apply(has, this, [oldest])) poison()
+                return apply(size, this, [])
+              },
+            }
+          : {
+              ...descriptor,
+              value(this: Map<string, unknown>) {
+                if (
+                  apply(size, this, []) === entries &&
+                  apply(has, this, [oldest])
+                )
+                  poison()
+                return apply(descriptor.value, this, [])
+              },
+            }
+      )
+      actual = duration.toLocaleString('de-AT-u-nu-arab-x-cache-next', options)
+    } finally {
+      define(Map.prototype, key, descriptor)
+      DurationFormat.availableLocales = available
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else Reflect.deleteProperty(Intl, 'DurationFormat')
+      configureLocaleFormatting()
+    }
     expect(actual).toBe('١ Minute')
+  }
+)
+
+it.each([
+  ['Locale', 'ctor'],
+  ['maximize', 'maximize'],
+  ['language', 'language'],
+  ['script', 'script'],
+  ['region', 'region'],
+  ['lateProvider', 'late'],
+] as const)(
+  'fresh Duration best fit keeps native Locale %s private',
+  (key, tagSuffix) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const define = Object.defineProperty
+    const initial = Intl.Locale
+    const owner =
+      key === 'Locale' || key === 'lateProvider' ? Intl : initial.prototype
+    const property = key === 'lateProvider' ? 'Locale' : key
+    const descriptor = Object.getOwnPropertyDescriptor(owner, property)!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const available = DurationFormat.availableLocales
+    const fresh = new Set(['en', 'de'])
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const requested = `de-AT-u-nu-arab-x-provider-${tagSuffix}`
+    const calls: string[] = []
+    class LateLocale extends initial {
+      constructor(tag: string) {
+        super(tag)
+        calls[calls.length] = tag
+      }
+    }
+    let actual: string | undefined
+    try {
+      DurationFormat.availableLocales = fresh
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(
+        owner,
+        property,
+        key === 'lateProvider'
+          ? {...descriptor, value: LateLocale}
+          : {
+              configurable: true,
+              get() {
+                throw new Error('Mutable private Duration Locale operation')
+              },
+            }
+      )
+      actual = duration.toLocaleString(requested, {
+        localeMatcher: 'best fit',
+        style: 'long',
+      })
+    } finally {
+      define(owner, property, descriptor)
+      DurationFormat.availableLocales = available
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else Reflect.deleteProperty(Intl, 'DurationFormat')
+      configureLocaleFormatting()
+    }
+    expect(actual).toBe('١ Minute')
+    if (key === 'lateProvider') expect(calls).toContain('de-AT-x-provider-late')
   }
 )

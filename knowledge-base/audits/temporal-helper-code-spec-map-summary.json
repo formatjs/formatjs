@@ -3,9 +3,9 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24484,
+  "whole_selected_source_lines": 24506,
   "whole_selected_source_lines_by_language": {
-    "rust": 10400,
+    "rust": 10422,
     "typescript": 14084
   },
   "nonoverlapping_callable_lines": 16824,
@@ -14,15 +14,15 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 6237,
-    "unmapped": 4838,
-    "mapped": 5749
+    "candidate": 6041,
+    "mapped": 5945,
+    "unmapped": 4838
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 411,
-    "unmapped": 384,
-    "mapped": 274
+    "candidate": 389,
+    "mapped": 296,
+    "unmapped": 384
   },
   "by_language": {
     "typescript": {
@@ -31,9 +31,9 @@
       "unmapped": 161
     },
     "rust": {
-      "candidate": 289,
-      "unmapped": 223,
-      "mapped": 37
+      "candidate": 267,
+      "mapped": 59,
+      "unmapped": 223
     }
   },
   "direct_target_assignments": [
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 364,
+    "implementation_dependency": 342,
     "typed_public_operation_candidate": 47
   },
   "proposal_core_section_ids": 170,
@@ -361,10 +361,10 @@
     },
     {
       "file": "crates/temporal/calendar_provider.rs",
-      "source_lines": 399,
+      "source_lines": 421,
       "callable_rows": 24,
       "nonoverlapping_callable_lines": 202,
-      "sha256": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+      "sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
       "unresolved_callable_rows": 0
     },
     {

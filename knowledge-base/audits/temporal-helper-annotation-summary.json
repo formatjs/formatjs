@@ -4,23 +4,23 @@
   "active_rebound_rows": 1066,
   "retired_replaced_callbacks": 3,
   "mapping_status": {
-    "candidate": 411,
-    "unmapped": 384,
-    "mapped": 274
+    "candidate": 389,
+    "mapped": 296,
+    "unmapped": 384
   },
   "annotation_coverage": {
-    "no_numbered_anchor": 880,
-    "direct_numbered": 173,
+    "no_numbered_anchor": 858,
+    "direct_numbered": 195,
     "enclosing_numbered": 13,
     "retired_callback": 3
   },
-  "direct_with_step_wording": 48,
+  "direct_with_step_wording": 70,
   "direct_numbered_vs_inventory_sections": {
-    "overlap": 148,
+    "overlap": 170,
     "no_overlap_or_no_prior_mapping": 25
   },
   "no_numbered_anchor_by_kind": {
-    "function": 508,
+    "function": 486,
     "named-function": 216,
     "callback": 148,
     "method": 8
@@ -39,8 +39,8 @@
       "rows": 247,
       "files": 19,
       "coverage": {
-        "no_numbered_anchor": 223,
-        "direct_numbered": 24
+        "no_numbered_anchor": 201,
+        "direct_numbered": 46
       }
     },
     "rust_value_parser_arithmetic_algorithm_review": {
@@ -88,7 +88,7 @@
     "crates/intl_datetimeformat_calendars/table_calendar.rs": "0a54e89a7c66600f7b5878a5cdbe1666b603001dc1d472b4ac957560d5286092",
     "crates/intl_datetimeformat_calendars/tables.rs": "dbe6e0825b2dcc3080eb75974d56f346ec81f45f799ede86f5e49def2f7fc4ee",
     "crates/temporal/calendar_difference.rs": "060914fe63f0c170d927f4d09a3ab842079d0d4f2bddc65b724b515f66f361f3",
-    "crates/temporal/calendar_provider.rs": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+    "crates/temporal/calendar_provider.rs": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
     "crates/temporal/calendar_registry.rs": "e996fcad1b3638299e89c3580048ada3a5bd6dfbe8b9bd63784dfcfa6d494660",
     "crates/temporal/context.rs": "d25822aa8fc6d007c255fdf7717001fdad8d561221c8a3cf85445f47c8af9380",
     "crates/temporal/date.rs": "dd740f32faec4bdd34dbdf90e0e3cfb9e7e31336f52cb4df17cd5549fbd173ce",
@@ -269,10 +269,12 @@
       "rows": 24,
       "work_bundle": "calendar_provider_and_algorithm_review",
       "mapping_status": {
-        "candidate": 24
+        "candidate": 2,
+        "mapped": 22
       },
       "coverage": {
-        "no_numbered_anchor": 24
+        "no_numbered_anchor": 2,
+        "direct_numbered": 22
       }
     },
     {
@@ -1023,8 +1025,8 @@
   ],
   "interpretation": "Historical reviewed_rows source/range evidence is preserved. Latest queue/current_source_sha256 alone describe current source coordinates/hashes. Anchor counts measure presence, not applicable-step coverage or equivalence. Native transport12 have reviewed narrow inline caller/dependency links; whole-body normative step coverage is not claimed. Retired identities retained without live locations.",
   "evidence": "temporal-helper-annotation-reconciliation.json",
-  "reviewed_mapping_rows_cumulative": 106,
-  "reviewed_mapping_rows_this_batch": 14,
+  "reviewed_mapping_rows_cumulative": 128,
+  "reviewed_mapping_rows_this_batch": 22,
   "reviewed_transport_inline_link_rows": 12,
   "native_transport_whole_body_step_coverage_claimed": false,
   "behavioral_status_changes": 0

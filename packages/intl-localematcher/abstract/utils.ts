@@ -14,6 +14,18 @@ const apply = Reflect.apply
 const some = Array.prototype.some
 const sortLocaleIndexes = Array.prototype.sort
 const freezeLocaleList = Object.freeze
+const LocaleMap = Map
+const LocaleSet = Set
+const addLocaleSet = Function.prototype.call.bind(LocaleSet.prototype.add) as (
+  set: Set<string>,
+  value: string
+) => void
+const hasLocaleSet = Function.prototype.call.bind(LocaleSet.prototype.has) as (
+  set: ReadonlySet<string>,
+  value: string
+) => boolean
+const minDistance = Math.min
+const maxDistance = Math.max
 
 // ECMA-402 §9.2.3, steps 1.b.i–ii: extract only the Unicode extension.
 // A private-use subtag named "u" does not start a Unicode extension.
@@ -69,9 +81,9 @@ export function invariant(
 const DEFAULT_MATCHING_THRESHOLD = matchingData.defaults[1]
 const DISTANCE_SCALE = 8
 const MIN_LSR_DISTANCE = matchingData.minLsrDistance
-const languageAliases = new Set(matchingData.canonicalAliases.language)
-const scriptAliases = new Set(matchingData.canonicalAliases.script)
-const regionAliases = new Set(matchingData.canonicalAliases.region)
+const languageAliases = new LocaleSet(matchingData.canonicalAliases.language)
+const scriptAliases = new LocaleSet(matchingData.canonicalAliases.script)
+const regionAliases = new LocaleSet(matchingData.canonicalAliases.region)
 
 interface LSR {
   language: string
@@ -201,9 +213,9 @@ const canonicalize = memoize(
     if (
       basic.end === tag.length &&
       languageSubtag(basic.language) &&
-      !languageAliases.has(basic.language) &&
-      !scriptAliases.has(basic.script) &&
-      !regionAliases.has(basic.region)
+      !hasLocaleSet(languageAliases, basic.language) &&
+      !hasLocaleSet(scriptAliases, basic.script) &&
+      !hasLocaleSet(regionAliases, basic.region)
     )
       return tag
     // ECMA-402 §9.2.4: reuse supplied locale canonicalization on the slow path.
@@ -211,6 +223,103 @@ const canonicalize = memoize(
   },
   {serializer: stringKey}
 )
+type LocaleField = 'language' | 'script' | 'region'
+type LocaleFieldReader<K extends LocaleField> = (
+  this: Intl.Locale
+) => Intl.Locale[K]
+type LocaleOperations = {
+  maximize: Intl.Locale['maximize'] | undefined
+} & {[K in LocaleField]: LocaleFieldReader<K> | undefined}
+
+const localeDescriptor = Object.getOwnPropertyDescriptor
+const localePrototype = Object.getPrototypeOf
+const LocaleTypeError = TypeError
+const localeOperations = new WeakMap<object, LocaleOperations>()
+const getLocaleOperations = localeOperations.get.bind(localeOperations)
+const setLocaleOperations = localeOperations.set.bind(localeOperations)
+let localeIntl: typeof Intl | undefined = globalThis.Intl
+let localeConstructor: typeof Intl.Locale | undefined
+
+function localeDescriptorMember(
+  object: object,
+  key: PropertyKey,
+  member: 'value' | 'get' = 'value'
+): unknown {
+  const descriptor = localeDescriptor(object, key)
+  return descriptor && localeDescriptor(descriptor, member)?.value
+}
+
+function localeFieldReader<K extends LocaleField>(
+  prototype: object,
+  key: K
+): LocaleFieldReader<K> | undefined {
+  const reader = localeDescriptorMember(prototype, key, 'get')
+  return typeof reader === 'function'
+    ? (reader as LocaleFieldReader<K>)
+    : undefined
+}
+
+function captureLocaleOperations(
+  prototype: object | null
+): LocaleOperations | undefined {
+  if (prototype === null) return undefined
+  const cached = getLocaleOperations(prototype)
+  if (cached) return cached
+  const inherited = captureLocaleOperations(localePrototype(prototype))
+  const ownMaximize = localeDescriptorMember(prototype, 'maximize')
+  const operations: LocaleOperations = {
+    maximize:
+      typeof ownMaximize === 'function'
+        ? (ownMaximize as Intl.Locale['maximize'])
+        : inherited?.maximize,
+    language: localeFieldReader(prototype, 'language') ?? inherited?.language,
+    script: localeFieldReader(prototype, 'script') ?? inherited?.script,
+    region: localeFieldReader(prototype, 'region') ?? inherited?.region,
+  }
+  setLocaleOperations(prototype, operations)
+  return operations
+}
+
+function getLocaleConstructor(): typeof Intl.Locale | undefined {
+  // A late data property can supply Intl.Locale after bootstrap.
+  if (localeIntl === undefined) localeIntl = globalThis.Intl
+  const installed = localeIntl && localeDescriptorMember(localeIntl, 'Locale')
+  if (typeof installed === 'function' && installed !== localeConstructor) {
+    const prototype = localeDescriptorMember(installed, 'prototype')
+    if (
+      (typeof prototype === 'object' && prototype !== null) ||
+      typeof prototype === 'function'
+    )
+      captureLocaleOperations(prototype)
+    localeConstructor = installed as typeof Intl.Locale
+  }
+  return localeConstructor
+}
+
+getLocaleConstructor()
+
+function maximizeLocale(tag: string): Intl.Locale {
+  // ECMA-402 §9.2.4 uses the existing maximize operation (§15.3.9 steps 2–4).
+  const Constructor = getLocaleConstructor()
+  if (!Constructor)
+    throw new LocaleTypeError('Intl.Locale provider is unavailable')
+  const locale = new Constructor(tag)
+  const maximize = captureLocaleOperations(localePrototype(locale))?.maximize
+  if (!maximize)
+    throw new LocaleTypeError('Intl.Locale maximize is unavailable')
+  return apply(maximize, locale, [])
+}
+
+function readLocaleField<K extends LocaleField>(
+  locale: Intl.Locale,
+  key: K
+): Intl.Locale[K] {
+  // §15.3.9 step 4 creates a base Locale, even for a derived receiver.
+  // §§15.3.8, 15.3.13–14 step 3: read fields through its captured slot readers.
+  const reader = captureLocaleOperations(localePrototype(locale))?.[key]
+  return (reader && apply(reader, locale, [])) as Intl.Locale[K]
+}
+
 const maximal = memoize(
   (tag: string): LSR => {
     const input = fields(tag)
@@ -248,29 +357,34 @@ const maximal = memoize(
         key: `${language}|${script}|${region}|${flags}`,
       }
     }
-    const locale = new Intl.Locale(tag).maximize()
+    const locale = maximizeLocale(tag)
     let flags = input.flags
     if (arrayIncludes(matchingData.macroRegions, input.region)) {
-      const regionLocale = new Intl.Locale(`und-${input.region}`).maximize()
+      const regionLocale = maximizeLocale(`und-${input.region}`)
       if (
         (input.language === 'und' &&
-          (!input.script || input.script === regionLocale.script)) ||
-        (!input.script && !new Intl.Locale(input.language).maximize().script)
+          (!input.script ||
+            input.script === readLocaleField(regionLocale, 'script'))) ||
+        (!input.script &&
+          !readLocaleField(maximizeLocale(input.language), 'script'))
       )
         flags &= ~1
     }
-    let language = locale.language
-    let script = locale.script || ''
-    let region = locale.region || ''
+    let language = readLocaleField(locale, 'language')
+    let script = readLocaleField(locale, 'script') || ''
+    let region = readLocaleField(locale, 'region') || ''
     // Locale maximization can leave unknown tags incomplete; ICU matching fills them through und.
     if (language === 'und' || !script || !region) {
-      const fallback = new Intl.Locale(
-        ['und', script, region].filter(Boolean).join('-')
-      ).maximize()
+      const fallback = maximizeLocale(
+        'und' + (script ? '-' + script : '') + (region ? '-' + region : '')
+      )
       if (language === 'und')
-        language = fallback.language === 'und' ? 'en' : fallback.language
-      script ||= fallback.script || 'Latn'
-      region ||= fallback.region || 'US'
+        language =
+          readLocaleField(fallback, 'language') === 'und'
+            ? 'en'
+            : readLocaleField(fallback, 'language')
+      script ||= readLocaleField(fallback, 'script') || 'Latn'
+      region ||= readLocaleField(fallback, 'region') || 'US'
     }
     return {
       language,
@@ -326,11 +440,12 @@ function distance(desired: LSR, supported: LSR): number {
     if (matrix && desiredPartitions && supportedPartitions) {
       regionDistance = 0
       // Macroregions cover several partitions: ICU takes the worst pair.
-      for (const d of desiredPartitions) {
-        for (const s of supportedPartitions) {
-          regionDistance = Math.max(
+      for (let i = 0; i < desiredPartitions.length; i++) {
+        const row = desiredPartitions[i] * matchingData.partitionCount
+        for (let j = 0; j < supportedPartitions.length; j++) {
+          regionDistance = maxDistance(
             regionDistance,
-            matrix[d * matchingData.partitionCount + s]
+            matrix[row + supportedPartitions[j]]
           )
         }
       }
@@ -406,31 +521,48 @@ function prepare(locales: readonly string[]): Supported {
   )
     result = undefined
   if (!result) {
+    // ECMA-402 §9.2.7 step 2.a: keep the prepared locale profile private.
     result = {
+      __proto__: null,
       original: immutable ? locales : Array.from(locales),
       tags: [],
-      raw: new Map(),
-      orders: new Map(),
-      best: new Map(),
-    }
+      raw: new LocaleMap(),
+      orders: new LocaleMap(),
+      best: new LocaleMap(),
+    } as Supported
     setSupported(locales, result)
   }
   return result
 }
 
-const getLocaleMap = Function.prototype.call.bind(Map.prototype.get) as <K, V>(
+const getLocaleMap = Function.prototype.call.bind(LocaleMap.prototype.get) as <
+  K,
+  V,
+>(
   map: Map<K, V>,
   key: K
 ) => V | undefined
-const hasLocaleMap = Function.prototype.call.bind(Map.prototype.has) as <K, V>(
+const hasLocaleMap = Function.prototype.call.bind(LocaleMap.prototype.has) as <
+  K,
+  V,
+>(
   map: Map<K, V>,
   key: K
 ) => boolean
-const setLocaleMap = Function.prototype.call.bind(Map.prototype.set) as <K, V>(
+const setLocaleMap = Function.prototype.call.bind(LocaleMap.prototype.set) as <
+  K,
+  V,
+>(
   map: Map<K, V>,
   key: K,
   value: V
 ) => void
+
+const localeMapSize = Object.getOwnPropertyDescriptor(
+  LocaleMap.prototype,
+  'size'
+)!.get!
+const clearLocaleMap = LocaleMap.prototype.clear
 
 function rawMatch(data: Supported, key: string): number | undefined {
   // ECMA-402 §9.2.7 step 2.a: retain the private best-fit exact-key cache.
@@ -453,25 +585,37 @@ function order(data: Supported, defaultLocale: string): number[] {
   let result = getLocaleMap(data.orders, defaultLocale)
   if (!result) {
     if (!data.maximal) {
-      data.maximal = data.tags.map(maximal)
-      data.exact = new Map()
-      data.maximal.forEach((lsr, index) => {
-        if (!data.exact!.has(lsr.key)) data.exact!.set(lsr.key, index)
-      })
+      const profiles: LSR[] = []
+      for (let index = 0; index < data.tags.length; index++) {
+        setDataProperty(profiles, `${index}`, maximal(data.tags[index]))
+      }
+      data.maximal = profiles
+      const exact = new LocaleMap<string, number>()
+      data.exact = exact
+      for (let index = 0; index < profiles.length; index++) {
+        const {key} = profiles[index]
+        if (!hasLocaleMap(exact, key)) setLocaleMap(exact, key, index)
+      }
     }
-    paradigms ??= new Set(
-      matchingData.paradigms.map(tag =>
-        equivalentKey(maximal(canonicalize(tag)))
-      )
-    )
+    if (!paradigms) {
+      const keys = new LocaleSet<string>()
+      const tags = matchingData.paradigms
+      for (let index = 0; index < tags.length; index++) {
+        addLocaleSet(keys, equivalentKey(maximal(canonicalize(tags[index]))))
+      }
+      paradigms = keys
+    }
     const defaultKey = defaultLocale
       ? equivalentKey(maximal(canonicalize(defaultLocale)))
       : ''
     const rank = (index: number) => {
       const key = equivalentKey(data.maximal![index])
-      return key === defaultKey ? 0 : paradigms!.has(key) ? 1 : 2
+      return key === defaultKey ? 0 : hasLocaleSet(paradigms!, key) ? 1 : 2
     }
-    result = data.tags.map((_, i) => i)
+    result = []
+    for (let index = 0; index < data.tags.length; index++) {
+      setDataProperty(result, `${index}`, index)
+    }
     apply(sortLocaleIndexes, result, [
       (a: number, b: number) => rank(a) - rank(b),
     ])
@@ -505,7 +649,7 @@ function equivalentMatch(
     if (equivalentKey(desired) !== equivalentKey(supported)) continue
     const d = distance(desired, supported)
     if (
-      d < Math.min(1, MIN_LSR_DISTANCE) &&
+      d < minDistance(1, MIN_LSR_DISTANCE) &&
       (!best ||
         d < best.distance ||
         (d === best.distance && index < best.index))
@@ -549,7 +693,10 @@ export function findBestMatch(
     if (!collectDistances) {
       const equivalent =
         getLocaleMap(data.best, cacheKey) || equivalentMatch(desired, data)
-      if (equivalent && equivalent.distance < Math.min(1, MIN_LSR_DISTANCE)) {
+      if (
+        equivalent &&
+        equivalent.distance < minDistance(1, MIN_LSR_DISTANCE)
+      ) {
         setLocaleMap(data.best, cacheKey, equivalent)
         if (equivalent.distance < bestDistance) {
           bestDistance = equivalent.distance
@@ -592,7 +739,8 @@ export function findBestMatch(
       }
       if (collectDistances) result.distances[desiredTag] = distances
       else {
-        if (data.best.size >= 256) data.best.clear()
+        if (apply(localeMapSize, data.best, []) >= 256)
+          apply(clearLocaleMap, data.best, [])
         setLocaleMap(data.best, cacheKey, best)
       }
     }

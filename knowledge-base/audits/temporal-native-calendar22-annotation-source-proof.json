@@ -1,0 +1,689 @@
+{
+  "scope": "22 local Rust calendar provider transport and typed field policy dependencies. Implementation and requirement statuses unchanged.",
+  "source_comparison": "Frozen Temporal proposal via durable checklist rows. ECMA-262 remains requested authority.",
+  "snapshot_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "sources": [
+    {
+      "file": "crates/temporal/calendar_provider.rs",
+      "before_sha256": "030a21f3f635a59cb0ea05efc261e246db473e5b24f7cf1295dcbb62cbb19344",
+      "after_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2",
+      "verified_callable_count": 27,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "reconciled_inventory_rows": [
+    123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
+    138, 139, 140, 141, 142, 143, 144
+  ],
+  "review_timing": {
+    "scope": "Full source review and integration time was not measured.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 123,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "182",
+        "end_line": "184",
+        "comparison_sections": "3.3.3",
+        "section_ids": "sec-get-temporal.plaindate.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["3.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 181,
+      "annotation": "// Proposal comparison \u00a73.3.3 step 3: read the selected provider's calendar ID.",
+      "evidence": "Matches on the already-selected enum variant and returns its provider ID. Calendar selection, canonicalization and string conversion are outside the trait method."
+    },
+    {
+      "inventory_row": 124,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::date_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "186",
+        "end_line": "188",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 185,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: project a short-date reference day.",
+      "evidence": "Dispatches an epoch day through the extended provider projection. Short-date reference days and merge-field preparation can use the wider conversion window. Short-date callers own object limits."
+    },
+    {
+      "inventory_row": 125,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::epoch_day_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "190",
+        "end_line": "198",
+        "comparison_sections": "12.3.13|12.3.14",
+        "section_ids": "sec-temporal-calendaryearmonthfromfields|sec-temporal-calendarmonthdayfromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendaryearmonthfromfields|https://tc39.es/proposal-temporal/#sec-temporal-calendarmonthdayfromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.13/algorithm-1/step-3",
+        "12.3.14/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 189,
+      "annotation": "// Proposal comparison \u00a712.3.13 step 3: convert fields to a year-month reference day.",
+      "evidence": "Dispatches selected year, ordinal month, day and overflow to the extended provider inverse. YearMonth/MonthDay reference-day generation and final bounds remain caller policies."
+    },
+    {
+      "inventory_row": 126,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::add_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "200",
+        "end_line": "207",
+        "comparison_sections": "9.5.8",
+        "section_ids": "sec-temporal-adddurationtoyearmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtoyearmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["9.5.8/algorithm-1/step-12"],
+      "annotation_placement": "leading",
+      "annotation_line": 199,
+      "annotation": "// Proposal comparison \u00a79.5.8 step 12: dispatch year-month addition to the provider.",
+      "evidence": "The typed short-date caller selects a first day and range policy before invoking this arithmetic delegate. The wrapper forwards epoch, duration and overflow unchanged."
+    },
+    {
+      "inventory_row": 127,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::era_extended",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "209",
+        "end_line": "211",
+        "comparison_sections": "9.3.4|9.3.5",
+        "section_ids": "sec-get-temporal.plainyearmonth.prototype.era|sec-get-temporal.plainyearmonth.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["9.3.4/algorithm-1/step-3", "9.3.5/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 208,
+      "annotation": "// Proposal comparison \u00a79.3.4 and \u00a79.3.5 step 3: project era fields at the reference day.",
+      "evidence": "Returns provider era data for extended YearMonth reference days. Underlying arithmetic/table provider decides era identity or absence."
+    },
+    {
+      "inventory_row": 128,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::date",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "213",
+        "end_line": "215",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 212,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2: convert an epoch day through its calendar.",
+      "evidence": "Dispatches the normal-range epoch day to the selected provider. The provider computes date fields, while callers assemble any additional Calendar Date Record fields."
+    },
+    {
+      "inventory_row": 129,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "217",
+        "end_line": "225",
+        "comparison_sections": "12.3.22",
+        "section_ids": "sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.22/algorithm-1/step-1.b",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 216,
+      "annotation": "// Proposal comparison \u00a712.3.22 steps 1.b, 2: convert resolved fields to an epoch day.",
+      "evidence": "Dispatches resolved year, ordinal month and day with overflow to the selected provider. The provider implements regulation/inverse conversion; the adapter applies no second policy."
+    },
+    {
+      "inventory_row": 130,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::month_from_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "227",
+        "end_line": "234",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-1.h",
+        "12.3.31/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 226,
+      "annotation": "// Proposal comparison \u00a712.3.31 steps 1.h, 2.a: resolve a month code through its calendar.",
+      "evidence": "Forwards an already parsed month code, year and overflow to the provider. Ordinal consistency with an explicit month belongs to resolve_year_month."
+    },
+    {
+      "inventory_row": 131,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::months_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "236",
+        "end_line": "238",
+        "comparison_sections": "3.3.17",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthsinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthsinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["3.3.17/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 235,
+      "annotation": "// Proposal comparison \u00a73.3.17 step 3: read the provider's month count for this year.",
+      "evidence": "Dispatch returns the selected provider\u2019s month count for the projected year. Public getter numeric representation and receiver validation remain separate."
+    },
+    {
+      "inventory_row": 132,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::days_in_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "240",
+        "end_line": "242",
+        "comparison_sections": "3.3.15|9.3.10",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinmonth|sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinmonth|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "3.3.15/algorithm-1/step-3",
+        "9.3.10/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 239,
+      "annotation": "// Proposal comparison \u00a73.3.15 step 3: read the provider's day count for this month.",
+      "evidence": "Dispatch returns the selected provider\u2019s month length after the caller extracts its year and month. The public ISO/calendar field getter owns projection and output."
+    },
+    {
+      "inventory_row": 133,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::start_of_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "244",
+        "end_line": "246",
+        "comparison_sections": "3.3.11|9.3.9",
+        "section_ids": "sec-get-temporal.plaindate.prototype.dayofyear|sec-get-temporal.plainyearmonth.prototype.daysinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofyear|https://tc39.es/proposal-temporal/#sec-get-temporal.plainyearmonth.prototype.daysinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["3.3.11/algorithm-1/step-3", "9.3.9/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 243,
+      "annotation": "// Proposal comparison \u00a73.3.11 step 3: supply the year start for the day-of-year count.",
+      "evidence": "Supplies start_of_year through the actual provider. PlainDate subtracts this boundary for dayOfYear; PlainYearMonth subtracts consecutive boundaries for daysInYear."
+    },
+    {
+      "inventory_row": 134,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "248",
+        "end_line": "250",
+        "comparison_sections": "3.3.4|3.3.5",
+        "section_ids": "sec-get-temporal.plaindate.prototype.era|sec-get-temporal.plaindate.prototype.erayear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era|https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.erayear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["3.3.4/algorithm-1/step-3", "3.3.5/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 247,
+      "annotation": "// Proposal comparison \u00a73.3.4 and \u00a73.3.5 step 3: read provider era fields.",
+      "evidence": "Dispatches normal-range era lookup, returning optional era name/year from the selected provider. Absence and conversion to public fields remain caller-owned."
+    },
+    {
+      "inventory_row": 135,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::year_from_era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "252",
+        "end_line": "254",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["12.3.31/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 251,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: resolve a non-ISO era and era year.",
+      "evidence": "The typed year-resolution path passes an existing era/year pair to the selected provider. Conversion rejects provider-invalid era input and the caller separately checks explicit year agreement."
+    },
+    {
+      "inventory_row": 136,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::add",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "256",
+        "end_line": "263",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md|knowledge-base/audits/temporal-noniso-calendar-add-contract-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.7/algorithm-1/step-1",
+        "12.3.7/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 255,
+      "annotation": "// Proposal comparison \u00a712.3.7 steps 1, 2.a: dispatch checked calendar date addition.",
+      "evidence": "Dispatches the normal-range day, date duration and overflow. Arithmetic and table variants own their add algorithms; caller/owner handles final range checks."
+    },
+    {
+      "inventory_row": 137,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl CalendarProvider for CalendarRef<'_>::until_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "265",
+        "end_line": "272",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.9/algorithm-1/step-3",
+        "12.3.9/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 264,
+      "annotation": "// Proposal comparison \u00a712.3.9 steps 3, 4: dispatch calendar date difference.",
+      "evidence": "Forwards the two epoch-day endpoints and largest date unit to the chosen provider. The adapter establishes neither ISO maximal-prefix equivalence nor any provider-wide difference claim."
+    },
+    {
+      "inventory_row": 138,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "impl DateFields<'_>::has_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "287",
+        "end_line": "294",
+        "comparison_sections": "12.3.5|12.3.3",
+        "section_ids": "sec-temporal-calendarmergefields|sec-temporal-preparecalendarfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarmergefields|https://tc39.es/proposal-temporal/#sec-temporal-preparecalendarfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.5/algorithm-1/step-1",
+        "12.3.3/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 286,
+      "annotation": "// Proposal comparison \u00a712.3.5 step 1: check whether typed date updates contain fields.",
+      "evidence": "Only measures presence of supported typed date fields. Era fields do not count in the ISO, Chinese or Dangi paths. It does not collect a spec List or read JS object properties."
+    },
+    {
+      "inventory_row": 139,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::merge_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "305",
+        "end_line": "345",
+        "comparison_sections": "12.3.5",
+        "section_ids": "sec-temporal-calendarmergefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarmergefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.5/algorithm-1/step-1",
+        "12.3.5/algorithm-1/step-2",
+        "12.3.5/algorithm-1/step-3",
+        "12.3.5/algorithm-1/step-4",
+        "12.3.5/algorithm-1/step-5.b",
+        "12.3.5/algorithm-1/step-5.c",
+        "12.3.5/algorithm-1/step-6"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 304,
+      "annotation": "// Proposal comparison \u00a712.3.5 steps 1\u20136: merge typed overrides with the projected date.",
+      "evidence": "Apply field shape, skip unsupported era updates and reject empty updates. Preserve non-overridden date fields, clearing the old month code for an explicit month and the base year for supported year/era updates. The typed helper supplies existing with-method callers; frontend owns public data reads."
+    },
+    {
+      "inventory_row": 140,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::error",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "348",
+        "end_line": "354",
+        "comparison_sections": "12.3.22",
+        "section_ids": "sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.22/algorithm-1/step-1.b",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 347,
+      "annotation": "// Proposal comparison \u00a712.3.22 steps 1.b, 2: carry date conversion errors to callers.",
+      "evidence": "Used by resolve_fields after provider date-to-epoch conversion. Retains out-of-range and invalid-duration categories and maps other calendar errors to the typed invalid-date variant. JS exception construction lies across the frontend boundary."
+    },
+    {
+      "inventory_row": 141,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::overflow",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "356",
+        "end_line": "361",
+        "comparison_sections": "12.3.12",
+        "section_ids": "sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["12.3.12/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 355,
+      "annotation": "// Proposal comparison \u00a712.3.12 step 2: pass the prepared overflow mode to date conversion.",
+      "evidence": "Preserves an already-selected overflow enum through a two-variant conversion. No options read, parsing or constraint arithmetic happens in this helper."
+    },
+    {
+      "inventory_row": 142,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::resolve_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "363",
+        "end_line": "377",
+        "comparison_sections": "12.3.12",
+        "section_ids": "sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.12/algorithm-1/step-1",
+        "12.3.12/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 362,
+      "annotation": "// Proposal comparison \u00a712.3.12 steps 1\u20132: resolve typed fields and convert the date.",
+      "evidence": "First resolves the typed calendar year/month, requires a day, then calls provider date conversion with the chosen overflow. Object construction and frontend error precedence remain separate."
+    },
+    {
+      "inventory_row": 143,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::resolve_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "379",
+        "end_line": "398",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-reader-calendar-private-operations-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": ["12.3.31/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 378,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a: reconcile typed year and era fields.",
+      "evidence": "Ignores era fields for ISO, Chinese and Dangi. Otherwise requires an era/eraYear pair if either is present, converts the pair through the provider, and checks matching explicit year. Calendar policy and initial property reads remain separate."
+    },
+    {
+      "inventory_row": 144,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/calendar_provider.rs",
+        "symbol": "module::resolve_year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "400",
+        "end_line": "421",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-date-operations-audit.md|knowledge-base/audits/temporal-table-provider-chronology-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "9f210080bd4b34f5bc62ede55dd23325305d8d22702cc07a8e0cc894c684ebe2"
+      },
+      "spec_row_ids": [
+        "12.3.31/algorithm-1/step-1.e",
+        "12.3.31/algorithm-1/step-1.g",
+        "12.3.31/algorithm-1/step-1.h",
+        "12.3.31/algorithm-1/step-1.h.v",
+        "12.3.31/algorithm-1/step-1.h.vi",
+        "12.3.31/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 399,
+      "annotation": "// Proposal comparison \u00a712.3.31 steps 1.e, 1.g\u2013h, 2.a: resolve typed year and month.",
+      "evidence": "Requires resolved year and month or monthCode for the typed callers, rejects nonpositive explicit month/day and checks numeric month agreement with the provider\u2019s selected code. Provider owns the lookup and public frontend owns field coercions."
+    }
+  ]
+}

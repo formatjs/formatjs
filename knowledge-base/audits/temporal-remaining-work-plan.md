@@ -44,7 +44,7 @@ scope update, not an automatic restart.
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
-Code maps cover 82 distinct selected source files and 24,768 physical lines.
+Code maps cover 82 distinct selected source files and 24,790 physical lines.
 Public entries and helper callables are different units; do not add their counts
 as functions. File/line counts include declarations and supporting material;
 they are scope measures, not remaining work or compliance percentages.
@@ -162,13 +162,13 @@ reconcile six more steps. The queue holds 78 conditional steps across ten
 families. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
 returned passing cached results for these sources. Fresh Duration prefix lookup and Unicode extension adapters pass public
 controls. Empty extension fields on prefix lookup and best-fit snapshot/request Lists
-pass public controls. Best-fit raw cache and fallback records now pass as well. Key parsing, stable sorting and cache calls reuse existing operations. Native
-Locale maximization, ordered Lists, cache allocation/eviction and partition
-operations remain open.
-[Focused evidence](temporal-duration-bestfit-cache-evidence.json). Generated timezone
-profiles supply the endpoint-window proof. Host data and its boundary property
-remain a separate premise. [Adapter evidence](temporal-selected-locale-adapter-audit.md)
-and [timezone evidence](temporal-timezone-boundary-proof/README.md) record the scope. Helper annotation
+pass public controls. Best-fit key parsing, private cache state, native Locale
+maximization and partition scoring now pass. Fresh memoizer options/storage,
+locale invariant Error capture and own-key distance tables remain open.
+[Adapter evidence](temporal-duration-bestfit-provider-evidence.json).
+Generated profiles and the hashed Node native Intl provider supply the
+endpoint-window proof. Other host profiles remain conditional.
+[Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-node-icu-endpoint-proof.md). Helper annotation
 work remains separately tracked. Full compliance ETA remains unresolved:
 constructor realm fallback needs a correct runtime bridge or installation design,
 and published-comparison conflicts need reconciliation. Measured review rates
@@ -187,13 +187,13 @@ contracts. Host and remaining calendar-unit comparisons stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[106 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[128 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-94 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:274 mapped,411 candidate,
+116 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:296 mapped,389 candidate,
 384 unmapped, including three retired identities. Annotation presence alone
-is173 direct,13 enclosing,880 without numbered anchors,3 retired; these are
+is195 direct,13 enclosing,858 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,

@@ -38,21 +38,17 @@ division need not be exact: maximum half-ULP is 0.48828125ms, below the minimum
 1ms distance to an adjacent whole-second transition. Rounding cannot cross that
 comparison. Existing Gregorian integer/floor proofs supply rule-day conversion.
 
-## Current host remains conditional
+## Current Node host endpoint guarantee
 
-[Host observations](host-observations.tsv) cover all 457 requested names on
-Node26.5.1, ICU78.3, tz2026b, separately from shipped tz2026f. Native transition
-queries and six Intl endpoint/mapped offset samples show no mismatch.
-[Host summary](host-summary.json) defines array fields and shared coordinates;
-the compact table round-trips every observed record without loss.
+The earlier [host observations](host-observations.tsv) check offsets and
+transitions for 457 requested zone names. The exact interval proof now binds
+Node 26.5.1 built-in Intl and ICU transition enumeration to the same loaded
+2026b resource. The 638 system identifiers contain no transitions in either
+complete endpoint interval, including outside Instant bounds.
+[Provider proof and reproduction](node-icu/temporal-node-icu-endpoint-proof.md).
 
-These observations do not prove continuous outside-endpoint neighborhoods or
-Intl/native-Temporal provider correspondence. ICU documents
-[annual rules](https://unicode-org.github.io/icu-docs/apidoc/released/icu4c/classicu_1_1AnnualTimeZoneRule.html)
-and [Gregorian SimpleTimeZone rules](https://unicode-org.github.io/icu-docs/apidoc/released/icu4c/classicu_1_1SimpleTimeZone.html).
-Those class contracts do not bind actual runtime zone construction, database
-final-rule decoding or out-of-history offset paths. That exact source binding
-remains required. Do not promote the current host, parent clause or chapter.
+Other host binaries, timezone resources and replacement Intl providers
+keep their own boundary premise. The full row stays conditional.
 
 ## Reproduce analysis
 

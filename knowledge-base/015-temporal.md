@@ -8,12 +8,12 @@ hashes and prior review references.
 
 [Helper annotation queue](audits/temporal-helper-annotation-queue.tsv) preserves
 1,069 fixed identities, with three retired callbacks explicit.
-Comment-only batches reconcile 106 mappings for ISO scanners, Rust formatting,
+Comment-only batches reconcile 128 mappings for ISO scanners, Rust formatting,
 plain-relative arithmetic,
 rounding, calendar and timezone providers, and native Duration transport. Transport12 now have narrow inline caller/dependency links; numbered
 anchor presence is not behavior signoff. [Evidence](audits/temporal-helper-annotation-reconciliation.json)
-binds source hashes and unchanged noncomment code. Current fixed inventory has173
-direct anchors,13 enclosing anchors,880 without numbered anchors and3 retired.
+binds source hashes and unchanged noncomment code. Current fixed inventory has195
+direct anchors,13 enclosing anchors,858 without numbered anchors and3 retired.
 
 Selected-kind matching and lazy interval parsing reuse existing CLDR algorithms
 with captured native operations and indexed private Lists. Fresh Duration lookup
@@ -25,6 +25,10 @@ Raw match caches and locale results also keep their operations private.
 [Adapter evidence](audits/temporal-duration-lookup-extension-bestfit-entry-evidence.json). Shared DateTimeFormat constants use captured BigInt
 conversion for ES2019 source compatibility, preserving exact bigint composition.
 [Batch evidence](audits/temporal-selected-locale-adapter-audit.md).
+
+Best-fit Duration construction retains private allocator, partition scores and
+cache eviction. Captured native Locale readers preserve late provider
+installation and maximization results. [Provider evidence](audits/temporal-duration-bestfit-provider-evidence.json).
 
 All eight constructors reject directly revoked newTarget proxies on the
 primitive-prototype branch. Bound chains use native validation on Node and

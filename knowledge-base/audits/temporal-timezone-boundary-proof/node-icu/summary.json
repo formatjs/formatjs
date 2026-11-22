@@ -1,0 +1,16 @@
+{
+  "runtime": {
+    "node": "v26.5.1",
+    "icu": "78.3",
+    "tz": "2026b"
+  },
+  "binarySha256": "fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6",
+  "zones": 638,
+  "openedIdentifierAndOlsonTimeZoneControls": 638,
+  "windowMilliseconds": 172800000,
+  "failures": [],
+  "raw_scan_sha256": "a75e976a71981cc0d7400ee275486de0719c9af4b5ea8f670a6f30bf8976bc45",
+  "record_sha256": "1da0fb781f1e22c62949862e9a63ee818b989429b26d024e3524382221bd6b86",
+  "script_sha256": "aabefe37e6e80119c1d9562677d7b04fce93da942fadfd0a10418540dcdec0c1",
+  "binding_sha256": "8deb0ac51ba7f8fc04edbd00e5a5c22853b5197f2f4861531811edded7560283"
+}
