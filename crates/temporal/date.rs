@@ -92,15 +92,8 @@ impl<C: CalendarProvider> PlainDate<C> {
     pub fn equals<D: CalendarProvider>(self, other: PlainDate<D>) -> bool {
         self.0 == other.0 && self.calendar_id() == other.calendar_id()
     }
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L909-L915
-    // L909: a greater year has a greater epoch day, regardless of month/day.
-    // L910: a lesser year has a lesser epoch day, regardless of month/day.
-    // L911: within one year, a greater month has a greater epoch day.
-    // L912: within one year, a lesser month has a lesser epoch day.
-    // L913: within one month, a greater day has a greater epoch day.
-    // L914: within one month, a lesser day has a lesser epoch day.
-    // L915: equal epoch days identify the same ISO date.
-    // Proposal comparison §3.5.13 steps 1, 2, 3, 4, 5, 6, 7. Compare dates by their ISO epoch days.
+    // ECMA-262 preview §22.3.9.2 steps 1–7: epoch days follow ISO date order.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareisodate
     pub fn compare<D: CalendarProvider>(self, other: PlainDate<D>) -> core::cmp::Ordering {
         self.0.cmp(&other.0)
     }
@@ -385,11 +378,8 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     pub fn equals<D: CalendarProvider>(self, other: PlainDateTime<D>) -> bool {
         self.0 == other.0 && self.calendar_id() == other.calendar_id()
     }
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L920-L922
-    // L920: epoch-day order equals ISO-date order; each clock lies within one day.
-    // L921: different dates dominate the entire clock remainder.
-    // L922: on equal dates, exact nanoseconds compare the six clock fields.
-    // Proposal comparison §5.5.10 steps 1, 2, 3. Compare encoded ISO date-times in chronological order.
+    // ECMA-262 preview §22.3.10.2 steps 1–3: epoch day order, then exact clock order.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareisodatetime
     pub fn compare<D: CalendarProvider>(self, other: PlainDateTime<D>) -> core::cmp::Ordering {
         self.0.cmp(&other.0)
     }

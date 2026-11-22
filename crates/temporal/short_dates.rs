@@ -190,13 +190,16 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     fn first_day(self) -> Result<i64, Error> {
         Ok(self.epoch_day - i64::from(self.calendar_fields()?.day) + 1)
     }
-    // Proposal comparison §9.5.8 steps 7, 11–14: add years and months from the first day.
+    // ECMA-262 preview §22.13.5.4 steps 7–15: add years and months from calendar day one.
+    // https://tc39.es/ecma262/pr/3966/#sec-adddurationtoyearmonth
     pub fn checked_add(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         let fields = duration.fields();
         if fields[2..].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
         }
         let first = self.first_day()?;
+        // §22.3.3.16 step 3 bounds the input to CalendarDateAdd.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardatefromfields
         PlainDate::from_epoch_day(first)?;
         let duration = DateDuration {
             years: fields[0].try_into().map_err(|_| Error::OutOfRange)?,
@@ -207,6 +210,8 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             .calendar
             .add_extended(first, duration, calendar_overflow(overflow))
             .map_err(error)?;
+        // §22.3.3.1 step 3 bounds the result before building a PlainYearMonth.
+        // https://tc39.es/ecma262/pr/3966/#sec-calendardateadd
         PlainDate::from_epoch_day(epoch)?;
         Self::from_epoch_day_in(epoch, self.calendar)
     }
@@ -236,7 +241,8 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
     ) -> Result<Duration, Error> {
         self.difference(other, largest, smallest, increment, mode, true)
     }
-    // Proposal comparison §9.5.7 steps 3, 6, 13–16 and 18: Take typed year-month difference.
+    // ECMA-262 preview §22.13.5.5: compare and round calendar months.
+    // https://tc39.es/ecma262/pr/3966/#sec-differencetemporalplainyearmonth
     fn difference(
         self,
         other: Self,
@@ -246,6 +252,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         mode: RoundingMode,
         since: bool,
     ) -> Result<Duration, Error> {
+        // Steps 2–3 compare calendar identifiers before validating settings in step 5.
         if self.calendar_id() != other.calendar_id() {
             return Err(Error::InvalidDateTime);
         }
@@ -255,11 +262,14 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
         {
             return Err(Error::InvalidRoundingOptions);
         }
+        // Step 6 tests exact reference dates before constructing day-one projections.
         if self.equals(other) {
             return Duration::new([0; 10]);
         }
+        // Steps 7–12: both calendar day-one projections must be valid dates.
         let start = PlainDate::from_epoch_day_in(self.first_day()?, self.calendar)?;
         let end = PlainDate::from_epoch_day_in(other.first_day()?, other.calendar)?;
+        // Steps 13–17: keep years and months. Unit month at increment one needs no rounding.
         if smallest == YearMonthUnit::Month && increment == 1 {
             let unit = match largest {
                 YearMonthUnit::Year => crate::calendar::DateUnit::Year,
@@ -273,6 +283,7 @@ impl<C: CalendarProvider> PlainYearMonth<C> {
             values[0] = i128::from(fields.years);
             values[1] = i128::from(fields.months);
             let result = Duration::new(values)?;
+            // Step 18: negate the result for since.
             return Ok(if since { result.negated() } else { result });
         }
         if since {
@@ -490,10 +501,12 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
         }
         Err(Error::InvalidDateTime)
     }
-    // Proposal comparison §10.5.1 steps 4, 10.a–10.c and 12–13: Parse the month-day and check its ISO reference.
+    // ECMA-262 preview §22.14.5.2 steps 4–7 and 10–16: parse and normalize the reference day.
+    // https://tc39.es/ecma262/pr/3966/#sec-totemporalmonthday
     pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
         let fields = crate::parse::short_date_fields(value, false)?;
         crate::parse::check_calendar(value, calendar.id())?;
+        // Step 10: ISO month-days store a 1972 reference year.
         if calendar.id() == "iso8601" {
             return Self::from_calendar_fields(
                 calendar,
@@ -510,7 +523,7 @@ impl<C: CalendarProvider> PlainMonthDay<C> {
             return Err(Error::OutOfRange);
         }
         let epoch = epoch_day_from_iso(fields.year, fields.month, fields.day);
-        // Temporal comparison §10.5.1 step12 checks the original date before projection.
+        // Steps 12–15: check the original date before canonical calendar normalization.
         PlainDate::from_epoch_day(epoch)?;
         let date = calendar.date_extended(epoch).map_err(error)?;
         Self::from_calendar_fields(calendar, date_fields(date), Overflow::Constrain)
