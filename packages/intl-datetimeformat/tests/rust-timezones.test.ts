@@ -221,6 +221,44 @@ it('adds fractional offsets before flooring negative submilliseconds', () => {
   }
 })
 
+it.each(['Number', 'isSafeInteger', 'iterator'] as const)(
+  'computes local records without mutable %s hooks',
+  hook => {
+    const owner =
+      hook === 'Number'
+        ? globalThis
+        : hook === 'isSafeInteger'
+          ? Number
+          : Array.prototype
+    const key = hook === 'iterator' ? Symbol.iterator : hook
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)!
+    const define = Object.defineProperty
+    const details = {
+      tzData: {UTC: [[-Infinity, '', 0, false]]} as ReturnType<typeof unpack>,
+    }
+    const expected = ToLocalTime(-1n, 'gregory', '+01:30', details)
+    const expectedNamed = ToLocalTime(-1n, 'gregory', 'UTC', details)
+    let actual: unknown, named: unknown, error: unknown
+    try {
+      define(owner, key, {
+        ...descriptor,
+        value: () => {
+          throw new Error(`Mutable ${hook}`)
+        },
+      })
+      actual = ToLocalTime(-1n, 'gregory', '+01:30', details)
+      named = ToLocalTime(-1n, 'gregory', 'UTC', details)
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, key, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(expected)
+    expect(named).toEqual(expectedNamed)
+  }
+)
+
 it('retains nanosecond carries for fractional offsets near Date limits', () => {
   const offsets = [
     ['+23:59:59.999999999', 86_399_999_999_999n],

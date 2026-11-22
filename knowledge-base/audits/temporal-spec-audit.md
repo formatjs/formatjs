@@ -17,7 +17,30 @@ A provisional mapping onto the separately published proposal has 64 sections
 with prior partial evidence and 588 without mapped evidence; none is fully signed
 off. These are proposal inventory counts, not ECMA-262 section completion.
 
+Scope: Temporal APIs and dependencies they actually exercise. This is not an
+audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
+demonstrated Temporal call path; unrelated formatter/language work stays outside
+this audit. Current priority returns to Duration and ZonedDateTime contracts.
+
 ## ECMA-262 dependency sections touched
+
+Execution estimate, 2026-11-21: **7–14 calendar days of sustained parallel work**,
+low confidence; allow 2–3 weeks if calendar/time-zone defects expand the scope.
+This assumes continuous agent work, not eight-hour workdays, and resolution of
+the Temporal chapter authority above. It is a planning range, not a compliance
+deadline. Of 4,221 historical numbered lines, 3,795 remain individually untraced.
+The 252 new traces over roughly 18.5 active hours imply about 279 serial hours
+at the observed rate; inherited traces are excluded from that throughput.
+Effective 2–2.5-fold parallelism plus additional prose/grammar, fixes and
+integration work motivates the range. Historical lines include editorial text;
+this calculation cannot measure compliance or bound undiscovered defects.
+
+Three parallel read-only lanes now cover transition lookup/data invariants,
+ToLocalTime conversion/intrinsic contracts, and remaining Duration/ZonedDateTime
+algorithm partitioning. Runtime edits, ledger reconciliation and Bazel runs
+remain coordinated in the shared checkout. Re-estimate after the first day of
+parallel results, using completed operation contracts and discovered defects
+alongside historical line counts.
 
 This is a partial dependency index, not a complete Temporal chapter inventory.
 Reviewed operation contracts below do not sign off their Temporal callers.
@@ -63,6 +86,16 @@ and Record contract. Producers and complete public methods remain open.
 ## Historical passes and current fixes
 
 Current pass:
+
+- Local-time conversion hooks: [bounded audit](temporal-local-time-intrinsics-audit.md)
+  traces Temporal Instant formatting to ECMA-402 §11.5.11 step 3. Captured
+  conversions and indexed tuple reads remove extra public hooks; three direct
+  regressions failed before correction. Ten focused gates and DateTimeFormat
+  package assembly pass, including public Instant mutation controls across all
+  four rendering methods. Fractional Decimal internals,
+  complete public iterator isolation and complete callers stay open.
+  [Explicit transition lookup](temporal-transition-lookup-audit.md) has a separate
+  conditional proof for valid generated-data contracts; no new chapter credit.
 
 - [Shared UTC-offset scanner #8111](https://github.com/formatjs/formatjs/pull/8111):
   [Grammar/integration audit](temporal-offset-grammar-audit.md#shared-scanner-and-datetimeformat-integration)

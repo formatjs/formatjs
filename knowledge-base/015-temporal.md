@@ -1,5 +1,11 @@
 # Temporal implementation
 
+Temporal Instant formatting uses captured local-time Number conversions and
+indexed private tuple reads. The [conversion-hook audit](audits/temporal-local-time-intrinsics-audit.md)
+keeps fractional Decimal internals and complete public iterator isolation open.
+The [transition lookup proof](audits/temporal-transition-lookup-audit.md) covers
+explicit named-zone selection under valid generated-data contracts.
+
 UTC-offset recognition/parsing now shares the leaf `UTCOffsetNanoseconds` scanner
 between Temporal and DateTimeFormat. The [grammar integration audit](audits/temporal-offset-grammar-audit.md#shared-scanner-and-datetimeformat-integration)
 covers comma fractions and exact bounded nanosecond accumulation; the epoch

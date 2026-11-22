@@ -15,17 +15,17 @@ is below 2**53. Conversion to BigInt is exact; multiplication by one million
 happens after conversion. Temporal records retain their BigInt nanoseconds.
 The [TimeClip audit](temporal-timeclip-audit.md) covers that numeric contract.
 
-[ToLocalTime:90](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L90)
+[ToLocalTime:95](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L95)
 divides nanoseconds as BigInt and adjusts negative remainders before converting
 the integer millisecond quotient to Number. Its integer-offset shortcut requires
 safe integer milliseconds, offset and sum at
-[105](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L105).
+[108](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L108).
 For valid Date/Temporal timestamp magnitudes these integers fit in the exact
 Number range. The helper does not independently validate arbitrary BigInt inputs;
 complete public range/brand validation remains separate work.
 
 Fractional offsets use
-[@formatjs/bigdecimal](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L111):
+[@formatjs/bigdecimal](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L114):
 the original nanosecond integer becomes a decimal string, then division and offset
 addition precede flooring. Constructing Decimal from a prematurely rounded Number
 would preserve that rounding error. The shared scanner returns exact integer Number nanoseconds, then the

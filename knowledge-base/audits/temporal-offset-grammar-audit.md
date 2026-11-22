@@ -101,7 +101,7 @@ Temporal implementation; only its export/name and default minuteOnly argument
 change. Temporal's Boolean/throwing wrappers retain explicit false/annotation
 arguments, captured BigInt conversion and existing error behavior.
 
-[ToLocalTime:39–41](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L39)
+[ToLocalTime:44–46](../../packages/ecma402-abstract/DateTimeFormat/ToLocalTime.ts#L44)
 now fuses ECMA-402 §11.5.11 step 1 and 1.a through that same scanner. A defined
 result includes zero and is the specified exact integer nanosecond offset; an
 undefined result selects the named-zone branch. The former independent scanner

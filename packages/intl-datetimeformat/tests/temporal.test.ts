@@ -254,6 +254,40 @@ test('nanosecond endpoints retain the preceding millisecond at Date limits', () 
   expect(dtf.format(new Temporal.Instant(-1n))).not.toBe(dtf.format(-0.9))
 })
 
+test.each(['Number', 'isSafeInteger'] as const)(
+  'formats Temporal instants without mutable %s hooks',
+  hook => {
+    const value = new Temporal.Instant(-1n)
+    const dtf = formatter({second: '2-digit', fractionalSecondDigits: 3})
+    const render = () => [
+      dtf.format(value),
+      dtf.formatToParts(value),
+      dtf.formatRange(value, value),
+      dtf.formatRangeToParts(value, value),
+    ]
+    const expected = render()
+    const owner = hook === 'Number' ? globalThis : Number
+    const descriptor = Object.getOwnPropertyDescriptor(owner, hook)!
+    const define = Object.defineProperty
+    let actual: unknown, error: unknown
+    try {
+      define(owner, hook, {
+        ...descriptor,
+        value: () => {
+          throw new Error(`Mutable ${hook}`)
+        },
+      })
+      actual = render()
+    } catch (caught) {
+      error = caught
+    } finally {
+      define(owner, hook, descriptor)
+    }
+    expect(error).toBeUndefined()
+    expect(actual).toEqual(expected)
+  }
+)
+
 test.each([1, 2, 3] as const)(
   'fractional seconds truncate at width %i across the epoch',
   digits => {
