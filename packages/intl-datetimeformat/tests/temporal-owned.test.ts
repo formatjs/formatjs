@@ -47,15 +47,61 @@ afterAll(() => {
 const epoch = 1_580_725_840_321
 
 test.each([
-  ['collapsed', 'source', 'formatRange'],
-  ['collapsed', 'source', 'formatRangeToParts'],
-  ['distinct', 'source', 'formatRange'],
-  ['distinct', 'source', 'formatRangeToParts'],
-  ['distinct', 'localTime', 'formatRange'],
-  ['distinct', 'localTime', 'formatRangeToParts'],
+  ['Array.find', Array.prototype, 'find'],
+  ['Array.map', Array.prototype, 'map'],
+  ['Array.join', Array.prototype, 'join'],
+  ['Array.push', Array.prototype, 'push'],
+  ['Array iterator', Array.prototype, Symbol.iterator],
+  ['String.includes', String.prototype, 'includes'],
+  ['Math.max', Math, 'max'],
+  ['Math.floor', Math, 'floor'],
 ] as const)(
-  'formats %s Temporal ranges without inherited %s setters (%s)',
-  (kind, property, method) => {
+  'formats private range parts without replacement %s',
+  (_, target, property) => {
+    const formatter = new DateTimeFormat('en', {
+      timeZone: 'UTC',
+      second: 'numeric',
+      fractionalSecondDigits: 3,
+    })
+    const start = Temporal.PlainDateTime.from('1970-01-01T00:00:00.123')
+    const end = Temporal.PlainDateTime.from('1970-01-01T00:00:00.456')
+    const expected = formatter.formatRangeToParts(start as any, end as any)
+    expect(expected.filter(part => part.type === 'fractionalSecond')).toEqual([
+      {type: 'fractionalSecond', value: '123', source: 'startRange'},
+      {type: 'fractionalSecond', value: '456', source: 'endRange'},
+    ])
+    const original = Object.getOwnPropertyDescriptor(target, property)!
+    let calls = 0
+    let actual
+    try {
+      Object.defineProperty(target, property, {
+        ...original,
+        value() {
+          calls++
+          throw new Error('Replacement invoked during range formatting')
+        },
+      })
+      actual = formatter.formatRangeToParts(start as any, end as any)
+    } finally {
+      Object.defineProperty(target, property, original)
+    }
+    expect(calls).toBe(0)
+    expect(actual).toEqual(expected)
+  }
+)
+
+test.each([
+  ['collapsed', 'source', 'formatRange', 'set'],
+  ['collapsed', 'source', 'formatRangeToParts', 'set'],
+  ['distinct', 'source', 'formatRange', 'set'],
+  ['distinct', 'source', 'formatRangeToParts', 'set'],
+  ['distinct', 'localTime', 'formatRange', 'set'],
+  ['distinct', 'localTime', 'formatRangeToParts', 'set'],
+  ['collapsed', 'numberFormatters', 'formatRange', 'set'],
+  ['distinct', 'numberFormatters', 'formatRangeToParts', 'get'],
+] as const)(
+  'formats %s Temporal ranges without inherited %s (%s, %s)',
+  (kind, property, method, accessor) => {
     const formatter = new DateTimeFormat('en', {
       timeZone: 'UTC',
       year: 'numeric',
@@ -73,9 +119,9 @@ test.each([
     try {
       Object.defineProperty(Object.prototype, property, {
         configurable: true,
-        set() {
+        [accessor]() {
           calls++
-          throw new Error(`Inherited range ${property} setter`)
+          throw new Error(`Inherited range ${property} accessor`)
         },
       })
       actual = formatter[method](start as any, end as any)
