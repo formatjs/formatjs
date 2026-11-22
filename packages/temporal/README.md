@@ -23,8 +23,8 @@ timezones use captured installed `Intl.DateTimeFormat`, including its timezone
 data version. UTC and numeric offsets work without Intl. Timezone aliases retain
 their spelling separately from primary identity. Update host or installed
 polyfill data when timezone laws change. When the installed FormatJS formatter supplies
-its private candidate check, named-zone resolution validates actual candidates
-at the Instant limits against the installed data.
+its private candidate lookup, named-zone resolution enumerates candidates
+from the installed transitions and validates them at the Instant limits.
 
 ## Installation
 

@@ -1,11 +1,13 @@
 import {HasOwnProperty} from '#packages/ecma262-abstract/HasOwnProperty.js'
 import {
   arrayEvery,
+  arrayIncludes,
   arrayIndexOf,
   bigIntFrom,
   numberFrom,
   numberIsInteger,
   RangeErrorConstructor,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import type {
   CalendarData,
@@ -50,7 +52,10 @@ import {
   getRangePatternInfo,
   expandIntervalFormatTemplates,
 } from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
-import {TimeZoneOffset} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
+import {
+  TimeZoneOffset,
+  VisitTimeZoneOffsets,
+} from '#packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.js'
 import {DATE_TIME_PROPS} from '#packages/ecma402-abstract/DateTimeFormat/utils.js'
 import links from '@formatjs_generated/tz/links.js'
 import getInternalSlots from '#packages/intl-datetimeformat/get_internal_slots.js'
@@ -385,41 +390,46 @@ defineProperty(DateTimeFormat.prototype, 'formatToParts', {
 
 const candidateMillisecond = bigIntFrom(1_000_000)
 const candidateSecond = candidateMillisecond * bigIntFrom(1_000)
+const dayMilliseconds = 86_400_000
+const localLimit =
+  bigIntFrom(8_640_000_000_000_000 + dayMilliseconds) * candidateMillisecond
 const instantLimit = bigIntFrom(8_640_000_000_000_000) * candidateMillisecond
-
-// Proposal comparison §11.1.13 step 4.a: reject actual out-of-range candidates.
-function checkTemporalCandidate(
-  local: bigint,
-  zone: UnpackedTimeZoneData,
-  offset: number
-): void {
-  if (!numberIsInteger(offset) || offset <= -86_400 || offset >= 86_400) return
-  const instant = local - bigIntFrom(offset) * candidateSecond
-  if (instant >= -instantLimit && instant <= instantLimit) return
-  let milliseconds = instant / candidateMillisecond
-  if (instant < 0 && instant % candidateMillisecond) milliseconds--
-  // Near the Instant limits, whole milliseconds fit exactly in Number.
-  // TimeZoneOffset reads the same rows as formatToParts, without TimeClip.
-  if (TimeZoneOffset(numberFrom(milliseconds), zone)[0] === offset)
-    throw new RangeErrorConstructor('Instant out of range')
-}
 
 Object.defineProperty(
   formatToParts,
   Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates'),
   {
-    value(this: Intl.DateTimeFormat, local: bigint): void {
+    // Proposal comparison §11.1.13 steps 3.a and 4.a: collect and range-check actual candidates.
+    value(this: Intl.DateTimeFormat, local: bigint): bigint[] | undefined {
       const {timeZone} = getInternalSlots(this)
       const zone = DateTimeFormat.tzData[timeZone]
-      if (!zone?.length) return
-      for (let index = 0; index < zone.length; index++)
-        checkTemporalCandidate(local, zone, zone[index][2])
-      const future = zone.future
-      if (future) {
-        checkTemporalCandidate(local, zone, future.standardOffset)
-        if (future.daylightOffset !== undefined)
-          checkTemporalCandidate(local, zone, future.daylightOffset)
-      }
+      if (!zone?.length || local <= -localLimit || local >= localLimit)
+        return undefined
+      let milliseconds = local / candidateMillisecond
+      if (local < 0 && local % candidateMillisecond) milliseconds--
+      // At these bounds, whole milliseconds and sub-day offsets fit in Number.
+      const localMilliseconds = numberFrom(milliseconds)
+      const candidates: bigint[] = []
+      VisitTimeZoneOffsets(
+        localMilliseconds - dayMilliseconds,
+        localMilliseconds + dayMilliseconds,
+        zone,
+        offset => {
+          if (!numberIsInteger(offset) || offset <= -86_400 || offset >= 86_400)
+            return
+          const instant = local - bigIntFrom(offset) * candidateSecond
+          if (
+            arrayIncludes(candidates, instant) ||
+            TimeZoneOffset(localMilliseconds - offset * 1_000, zone)[0] !==
+              offset
+          )
+            return
+          if (instant < -instantLimit || instant > instantLimit)
+            throw new RangeErrorConstructor('Instant out of range')
+          setDataProperty(candidates, candidates.length, instant)
+        }
+      )
+      return candidates
     },
   }
 )

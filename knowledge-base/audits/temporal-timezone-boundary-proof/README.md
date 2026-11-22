@@ -90,7 +90,7 @@ actual candidate is outside the Instant limits.
 
 The [offset provider](../../../packages/temporal/host-timezone.ts#L72) reuses
 the installed formatter's private candidate check within one day of either
-limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L391)
+limit. The [candidate validator](../../../packages/intl-datetimeformat/core.ts#L403)
 enumerates decoded historical and recurring offsets and round-trips each
 outside instant through the same `TimeZoneOffset` reader. It uses bigint
 for the candidate and rounds down to an exact integer millisecond for the
@@ -103,6 +103,31 @@ for all four modes. All five focused Intl and Temporal targets pass.
 
 - Before-fix log SHA-256 `9c01708fa9a9dce8011ffe9d699a1880f4258787c84119d02e5073bb2e32210f`
 - After-fix log SHA-256 `fb615856daa7aa1aec8e6e9d6e7ffac547e5d8e02df11c1af904fbd83e3b89a8`
+
+## Owned FormatJS candidate enumeration
+
+A six-hour +12:00 pulse produces two actual candidates for local 15:00.
+The former host samples all observed zero offset, so compatible selected
+15:00 UTC instead of 03:00 UTC. The package regression now covers compatible,
+earlier, later, reject, and a matching explicit offset. It also exercises
+both endpoint folds, nanosecond precision near the limits and a transition,
+and a forward gap.
+
+The [candidate interval search](../../../packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts#L92)
+visits the first active historical offset, every intersecting transition,
+and reachable recurring offsets. The [owned lookup](../../../packages/intl-datetimeformat/core.ts#L403)
+subtracts each candidate offset from exact local nanoseconds and confirms
+it through the same provider. Subtracting an integral offset commutes with
+flooring to milliseconds, and the lookup interval stays below 2^53 ms.
+It rejects actual invalid instants and returns the distinct valid ones for
+sorting. An empty List still reaches the existing gap disambiguation path.
+
+Native Intl without the hook still needs an exact sampling premise. The
+owned correction closes the demonstrated boundary and interior cases.
+All six focused Bazel targets pass.
+
+- Interior before-fix log SHA-256 `b4c0d818d2de119ffcd850e4cb68c868826e8389a239fd88e1628bb3834a1cbf`
+- Interior after-fix log SHA-256 `8b8cd9b46bf696acace232da4e47cb9942e752d062c885f0b2410411ed40c2d9`
 
 ## Reproduce analysis
 

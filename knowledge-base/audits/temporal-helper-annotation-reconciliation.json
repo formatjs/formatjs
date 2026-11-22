@@ -33801,7 +33801,7 @@
     "packages/temporal/format-digits.ts": "a7d6849c777b57b792f07e673b48bec64e773471f7adb8ceb7906f80362b8aac",
     "packages/temporal/host-calendar-data.ts": "a702228194d0075d2985773c4cedb5d0bd9ddecb2cbc1c75003b40f98e3ac26b",
     "packages/temporal/host-calendar.ts": "5fe53723d93f1b665adc7a6ea976d9382542c1e5f4cca74c227ac729a4fbc14c",
-    "packages/temporal/host-timezone.ts": "77f4d1209622b08bb80e445efdd94023aaae761c8211da61136b723e9216a426",
+    "packages/temporal/host-timezone.ts": "088daa60a5f80478e5b4cd3d6850586cbe4b6361401323807f03a2cb601990a3",
     "packages/temporal/install.ts": "93541364e6f7066bb5b1cddc1df30034801a9bf04eceef0a79226e776cba4381",
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
@@ -34428,22 +34428,36 @@
         "start_line": 72,
         "end_line": 167,
         "anchor_line": 71,
-        "source_sha256": "77f4d1209622b08bb80e445efdd94023aaae761c8211da61136b723e9216a426",
+        "source_sha256": "088daa60a5f80478e5b4cd3d6850586cbe4b6361401323807f03a2cb601990a3",
         "spec_row_ids": [
           "11.1.9/algorithm-1/step-3",
+          "11.1.13/algorithm-1/step-3.a",
           "11.1.13/algorithm-1/step-4.a"
         ],
-        "scope": "Pair offset and range validation from the same installed formatter."
+        "scope": "Pair the offset reader and exact candidates from one installed formatter."
       },
       {
         "file": "packages/intl-datetimeformat/core.ts",
-        "symbol": "checkTemporalCandidate",
-        "start_line": 391,
-        "end_line": 405,
-        "anchor_line": 390,
-        "source_sha256": "d706c64a4fe2e5eb2e03a74059b3a328a27e67190138a9bb76586190071493ad",
-        "spec_row_ids": ["11.1.13/algorithm-1/step-4.a"],
-        "scope": "Resolve a hypothesized outside Instant by exact installed-zone offset lookup before throwing."
+        "symbol": "ownedCandidateLookup",
+        "start_line": 403,
+        "end_line": 433,
+        "anchor_line": 402,
+        "source_sha256": "05245869e18f2aabe78358b972455b2fadbbb47ad08d84875943a44252fcdec4",
+        "spec_row_ids": [
+          "11.1.13/algorithm-1/step-3.a",
+          "11.1.13/algorithm-1/step-4.a"
+        ],
+        "scope": "Enumerate distinct applicable owned candidates and reject any actual invalid instant."
+      },
+      {
+        "file": "packages/ecma402-abstract/DateTimeFormat/TimeZoneOffset.ts",
+        "symbol": "VisitTimeZoneOffsets",
+        "start_line": 92,
+        "end_line": 110,
+        "anchor_line": 91,
+        "source_sha256": "40586b0cd6af3478e25a807a569e94eaac3fd15fd49ddd99dc35057252436d6d",
+        "spec_row_ids": ["11.1.13/algorithm-1/step-3.a"],
+        "scope": "Bound the offsets to historical intervals intersecting the search and reachable future rules."
       }
     ]
   }

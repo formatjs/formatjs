@@ -64,20 +64,47 @@ function futureOffset(t: number, rule: TimeZoneFutureRule): [number, boolean] {
   return [inDST ? daylightOffset : standardOffset, inDST]
 }
 
+function transitionIndex(seconds: number, data: UnpackedTimeZoneData): number {
+  let low = 0
+  let high = data.length
+  while (low + 1 < high) {
+    const middle = floor((low + high) / 2)
+    if (data[middle][0] <= seconds) low = middle
+    else high = middle
+  }
+  return low
+}
+
 /** Offsets in seconds. TZif future rules apply after the last explicit transition. */
 export function TimeZoneOffset(
   t: number,
   data: UnpackedTimeZoneData
 ): [number, boolean] {
-  if (data.future && t / 1000 > data[data.length - 1][0]) {
+  const seconds = t / 1000
+  if (data.future && seconds > data[data.length - 1][0]) {
     return futureOffset(t, data.future)
   }
-  let low = 0
-  let high = data.length
-  while (low + 1 < high) {
-    const middle = floor((low + high) / 2)
-    if (data[middle][0] <= t / 1000) low = middle
-    else high = middle
+  const row = data[transitionIndex(seconds, data)]
+  return [row[2], row[3]]
+}
+
+/** Visit offsets that can be active in a closed epoch-millisecond interval. */
+export function VisitTimeZoneOffsets(
+  firstMilliseconds: number,
+  lastMilliseconds: number,
+  data: UnpackedTimeZoneData,
+  visit: (offset: number) => void
+): void {
+  const lastSeconds = lastMilliseconds / 1000
+  const first = transitionIndex(firstMilliseconds / 1000, data)
+  visit(data[first][2])
+  for (let index = first + 1; index < data.length; index++) {
+    if (data[index][0] > lastSeconds) break
+    visit(data[index][2])
   }
-  return [data[low][2], data[low][3]]
+  const future = data.future
+  if (future && lastSeconds > data[data.length - 1][0]) {
+    visit(future.standardOffset)
+    if (future.daylightOffset !== undefined) visit(future.daylightOffset)
+  }
 }

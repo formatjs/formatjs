@@ -46,7 +46,7 @@ const checkHostTemporalCandidates = hostParts
       hostParts,
       Symbol.for('@formatjs/intl-datetimeformat/checkTemporalCandidates')
     )?.value as
-      | ((this: Intl.DateTimeFormat, local: bigint) => void)
+      | ((this: Intl.DateTimeFormat, local: bigint) => bigint[] | undefined)
       | undefined)
   : undefined
 const nowMilliseconds = Date.now
@@ -74,7 +74,7 @@ function createHostTimeZoneProvider(
   intrinsics: HostTimeZoneIntrinsics = {Constructor, parts: hostParts}
 ): {
   offsetNanoseconds: HostTimeZone['offsetNanoseconds']
-  checkCandidates?: (local: bigint) => void
+  ownedCandidates?: (local: bigint) => bigint[] | undefined
 } {
   const {Constructor, parts} = intrinsics
   if (!Constructor || !parts)
@@ -159,7 +159,7 @@ function createHostTimeZoneProvider(
   }
   return {
     offsetNanoseconds,
-    checkCandidates:
+    ownedCandidates:
       parts === hostParts && checkHostTemporalCandidates
         ? local => apply(checkHostTemporalCandidates, formatter, [local])
         : undefined,
@@ -175,31 +175,33 @@ export function createHostTimeZoneOffset(
 }
 
 export function createHostTimeZone(timeZone: string): TimeZoneKernel {
-  const {offsetNanoseconds, checkCandidates} =
+  const {offsetNanoseconds, ownedCandidates} =
     createHostTimeZoneProvider(timeZone)
 
   // Proposal comparison §11.1.13 step 3.a: Round-trip sampled named-zone candidates and sort by epoch.
   const candidatesFor = (local: bigint): bigint[] => {
-    // Proposal comparison §11.1.13 step 4.a: validate exact owned-provider candidates.
-    if (local <= -limit + day || local >= limit - day) checkCandidates?.(local)
-    const before = offsetNanoseconds(clamp(local - day)),
-      middle = offsetNanoseconds(clamp(local)),
-      after = offsetNanoseconds(clamp(local + day)),
-      candidates: bigint[] = []
-    for (let index = 0; index < 3; index++) {
-      const offset = index === 0 ? before : index === 1 ? middle : after
-      if (
-        (index === 1 && offset === before) ||
-        (index === 2 && (offset === before || offset === middle))
-      )
-        continue
-      const instant = local - offset
-      if (
-        instant >= -limit &&
-        instant <= limit &&
-        instant + offsetNanoseconds(instant) === local
-      )
-        candidates[candidates.length] = instant
+    // Proposal comparison §11.1.13 steps 3.a and 4.a: use exact owned candidates.
+    const owned = ownedCandidates?.(local)
+    const candidates = owned ?? []
+    if (!owned) {
+      const before = offsetNanoseconds(clamp(local - day)),
+        middle = offsetNanoseconds(clamp(local)),
+        after = offsetNanoseconds(clamp(local + day))
+      for (let index = 0; index < 3; index++) {
+        const offset = index === 0 ? before : index === 1 ? middle : after
+        if (
+          (index === 1 && offset === before) ||
+          (index === 2 && (offset === before || offset === middle))
+        )
+          continue
+        const instant = local - offset
+        if (
+          instant >= -limit &&
+          instant <= limit &&
+          instant + offsetNanoseconds(instant) === local
+        )
+          candidates[candidates.length] = instant
+      }
     }
     return apply(arraySort, candidates, [
       // Proposal comparison §11.1.13 step 3.a: sort collected candidates by epoch nanoseconds.
