@@ -79,7 +79,7 @@ converts bounded fields to provider DateDuration, calls calendar.add, maps error
 then validates resulting epoch day. Native FFI addPlainDate delegates these typed
 paths; typed Rust supplies no JS property/coercion semantics.
 
-TS [calendar.ts:481](../../packages/temporal/calendar.ts#L481) may dispatch
+TS [calendar.ts:481](../../packages/temporal/calendar.ts#L482) may dispatch
 calendarAdd for native calendar data or use shipped arithmetic/table provider.
 Thus native frontend, shared calendar backend and host/provider modes retain
 separate data/error contracts. Constrain handles invalid month-day before

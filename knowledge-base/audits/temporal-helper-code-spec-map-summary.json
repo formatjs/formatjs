@@ -3,32 +3,32 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 27234,
+  "whole_selected_source_lines": 27236,
   "whole_selected_source_lines_by_language": {
     "rust": 11136,
-    "typescript": 16098
+    "typescript": 16100
   },
-  "nonoverlapping_callable_lines": 17786,
+  "nonoverlapping_callable_lines": 17789,
   "nonoverlapping_callable_lines_by_language": {
     "rust": 8301,
-    "typescript": 9485
+    "typescript": 9488
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17427,
-    "candidate": 166,
-    "unmapped": 193
+    "mapped": 17442,
+    "candidate": 159,
+    "unmapped": 188
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "mapped": 1013,
-    "candidate": 34,
-    "unmapped": 22
+    "mapped": 1015,
+    "candidate": 33,
+    "unmapped": 21
   },
   "by_language": {
     "typescript": {
-      "candidate": 26,
-      "mapped": 481,
-      "unmapped": 13
+      "candidate": 25,
+      "mapped": 483,
+      "unmapped": 12
     },
     "rust": {
       "mapped": 532,
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 34
+    "implementation_dependency": 33
   },
   "proposal_core_section_ids": 170,
   "proposal_amendment_section_ids": 5,
@@ -560,11 +560,11 @@
     },
     {
       "file": "packages/temporal/calendar.ts",
-      "source_lines": 717,
+      "source_lines": 718,
       "callable_rows": 33,
-      "nonoverlapping_callable_lines": 582,
-      "sha256": "168b94ad6d7209e1ce0eabcfec3f3c1c28b9490189cf73024a8a711bde9dfd98",
-      "unresolved_callable_rows": 3
+      "nonoverlapping_callable_lines": 583,
+      "sha256": "683575e3b74028ba84d13e24406540ba1fbc6a00b8b74fd96eedea0f0358f002",
+      "unresolved_callable_rows": 2
     },
     {
       "file": "packages/temporal/compact-timezone.ts",
@@ -704,10 +704,10 @@
     },
     {
       "file": "packages/temporal/intrinsics.ts",
-      "source_lines": 121,
+      "source_lines": 122,
       "callable_rows": 2,
-      "nonoverlapping_callable_lines": 10,
-      "sha256": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
+      "nonoverlapping_callable_lines": 12,
+      "sha256": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
       "unresolved_callable_rows": 0
     },
     {

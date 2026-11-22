@@ -191,9 +191,9 @@ Ethioaa month 13 of five days. These providers have at least twelve
 ordinal months per year. Month-code comparison preserves ordinal order
 within each actual year. The checked constrain fallback for absent leap
 codes moves the mapped ordinal by at most one under the named formulas.
-[TS month-code decode](../../packages/temporal/calendar.ts#L223)
-[TS constrained addition](../../packages/temporal/calendar.ts#L450)
-[TS raw prefix decomposition](../../packages/temporal/calendar.ts#L532)
+[TS month-code decode](../../packages/temporal/calendar.ts#L224)
+[TS constrained addition](../../packages/temporal/calendar.ts#L451)
+[TS raw prefix decomposition](../../packages/temporal/calendar.ts#L533)
 [Rust prefix decomposition](../../crates/intl_datetimeformat_calendars/date_math.rs#L60),
 [Rust month-code fallback](../../crates/intl_datetimeformat_calendars/table_calendar.rs#L267).
 For Chinese and Dangi, an absent leap code is constrained to its ordinary

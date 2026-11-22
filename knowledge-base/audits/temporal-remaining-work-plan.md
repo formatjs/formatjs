@@ -56,7 +56,7 @@ scope update, not an automatic restart.
 | Register                                                            | Measured scope                                                                                                         |
 | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | [Public code map](temporal-public-code-spec-map.tsv)                | 268 API/property/range entries, all linked to existing source ranges                                                   |
-| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,013 mapped, 34 candidate/dependency assignments, 22 unmapped (including 4 retired callbacks) |
+| [Helper/backend code map](temporal-helper-code-spec-map.tsv)        | 1,069 fixed identities: 1,015 mapped, 33 candidate/dependency assignments, 21 unmapped (including 4 retired callbacks) |
 | [Core checklist](temporal-core-requirement-checklist.tsv)           | 553 clauses, 429 algorithms, 3,325 numbered steps; 4,808 rows including other text and clause gates                    |
 | [Amendment checklist](temporal-amendment-requirement-checklist.tsv) | 101 clauses, 55 algorithms, 760 active numbered steps; 1,057 rows, applicability classified                            |
 
@@ -124,7 +124,7 @@ explicitly. Mapping or passing tests alone does not establish completion.
 
 Report fixed scope, rows with reconciled evidence, remaining review rows,
 conditional obligations, confirmed implementation gaps and unlanded corrections
-separately. The 34 candidate assignments and 22 unmapped identities all have
+separately. The 33 candidate assignments and 21 unmapped identities all have
 reviewed dispositions, including four retired callbacks.
 
 First pass reconciles all5,865 fixed rows:4,808 core and1,057 amendments.
@@ -235,9 +235,9 @@ retains 1,069 identities, including 1,065 live bindings and four retired callbac
 cover ISO scanners, PlainTime, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
 996 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:1,013 mapped,34 candidate,
-22 unmapped, including four retired identities. Annotation presence alone
-is 982 direct, 26 enclosing, 57 reviewed structural rows, 4 retired; these are
+inline caller/dependency links. Current mapping states are 1,015 mapped,
+33 candidate and 21 unmapped, including four retired identities. Annotation
+presence is 988 direct, 26 enclosing, 51 without a direct anchor, and 4 retired. These are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -434,8 +434,13 @@ hides formatter source behind a bytecode placeholder.
 Three exact helper comments now cover the Object branch, cached ISO projection
 and canonical packed zone selection. A fourth now maps native zoned offset
 transport to §6.5.2 steps 5.f–5.g.i and 5.k–5.l.iii. The wire result preserves
-wall, UTC, minute and exact classifications for the caller. The fixed inventory
-records 53 reviewed helpers without a numbered anchor.
+wall, UTC, minute and exact classifications for the caller. Two more comments
+bind the prepared calendar Number predicate and captured Proxy construction to
+their ECMA-262 algorithms. The 51 remaining helpers without a direct anchor
+have recorded owners, including seven with narrower enclosing caller links.
+[Residual helper owners](temporal-helper-residual-owners.tsv).
+[Number predicate](https://tc39.es/ecma262/#sec-number.issafeinteger).
+[Proxy construction](https://tc39.es/ecma262/#sec-proxy-target-handler).
 
 From 16:35 to 17:47 UTC, 44 numbered conditions closed in 71 minutes. The
 final two batches in that interval each landed a validated local correction

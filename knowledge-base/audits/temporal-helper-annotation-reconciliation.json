@@ -53,6 +53,74 @@
   ],
   "reviewed_rows": [
     {
+      "inventory_row": 567,
+      "file": "packages/temporal/calendar.ts",
+      "symbol": "integer",
+      "original_mapping_status": "unmapped",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "numbered_caller_or_dependency_scope",
+      "comparison_sections": "21.1.2.5",
+      "section_ids": "sec-number.issafeinteger",
+      "spec_urls": "https://tc39.es/ecma262/#sec-number.issafeinteger",
+      "numbered_step_mappings": [
+        {
+          "authority": "ECMA-262",
+          "section": "21.1.2.5",
+          "steps": "1.a\u20132",
+          "section_id": "sec-number.issafeinteger"
+        }
+      ],
+      "evidence": "The captured predicate checks prepared numeric calendar values. The caller-side RangeError is private validation.",
+      "base_locations": ["packages/temporal/calendar.ts:119-123"],
+      "base_source_sha256": "168b94ad6d7209e1ce0eabcfec3f3c1c28b9490189cf73024a8a711bde9dfd98",
+      "proposed_source_sha256": "683575e3b74028ba84d13e24406540ba1fbc6a00b8b74fd96eedea0f0358f002",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/calendar.ts:119-124"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/calendar.ts",
+        "symbol": "integer",
+        "kind": "named-function"
+      },
+      "bundle": "captured_engine_dependencies"
+    },
+    {
+      "inventory_row": 738,
+      "file": "packages/temporal/intrinsics.ts",
+      "symbol": "createProxy",
+      "original_mapping_status": "candidate",
+      "mapping_status": "mapped",
+      "review_status": "annotation_mapping_reconciled_local_scope",
+      "disposition": "numbered_caller_or_dependency_scope",
+      "comparison_sections": "28.2.1.1",
+      "section_ids": "sec-proxy-target-handler",
+      "spec_urls": "https://tc39.es/ecma262/#sec-proxy-target-handler",
+      "numbered_step_mappings": [
+        {
+          "authority": "ECMA-262",
+          "section": "28.2.1.1",
+          "steps": "2",
+          "section_id": "sec-proxy-target-handler"
+        }
+      ],
+      "evidence": "The captured engine constructor runs ProxyCreate after the adapter prepares its private handler.",
+      "base_locations": ["packages/temporal/intrinsics.ts:17-23"],
+      "base_source_sha256": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
+      "proposed_source_sha256": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
+      "unresolved_annotation_mapping_subset": [],
+      "behavioral_audit_status_unchanged": true,
+      "proposed_locations": ["packages/temporal/intrinsics.ts:16-24"],
+      "key": {
+        "language": "typescript",
+        "file": "packages/temporal/intrinsics.ts",
+        "symbol": "createProxy",
+        "kind": "named-function"
+      },
+      "bundle": "captured_engine_dependencies"
+    },
+    {
       "inventory_row": 286,
       "file": "crates/temporal/ffi.rs",
       "symbol": "module::parsed_offset_text",
@@ -33814,23 +33882,23 @@
     "active_rebound_rows": 1065,
     "retired_replaced_callbacks": 4,
     "mapping_status": {
-      "mapped": 1013,
-      "candidate": 34,
-      "unmapped": 22
+      "mapped": 1015,
+      "candidate": 33,
+      "unmapped": 21
     },
     "annotation_coverage": {
-      "direct_numbered": 986,
-      "no_numbered_anchor": 53,
+      "direct_numbered": 988,
+      "no_numbered_anchor": 51,
       "enclosing_numbered": 26,
       "retired_callback": 4
     },
-    "direct_with_step_wording": 867,
+    "direct_with_step_wording": 869,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 986
+      "overlap": 988
     },
     "no_numbered_anchor_by_kind": {
       "function": 17,
-      "named-function": 16,
+      "named-function": 14,
       "callback": 20
     },
     "role_review_bundles": {
@@ -33847,8 +33915,8 @@
         "rows": 247,
         "files": 19,
         "coverage": {
-          "direct_numbered": 211,
-          "no_numbered_anchor": 27,
+          "direct_numbered": 212,
+          "no_numbered_anchor": 26,
           "enclosing_numbered": 8,
           "retired_callback": 1
         }
@@ -33873,8 +33941,8 @@
         "rows": 9,
         "files": 5,
         "coverage": {
-          "no_numbered_anchor": 6,
-          "direct_numbered": 2,
+          "no_numbered_anchor": 5,
+          "direct_numbered": 3,
           "enclosing_numbered": 1
         }
       },
@@ -33925,7 +33993,7 @@
     "crates/temporal/zoned_string.rs": "ee996d3aeef66c3d3f8aa597cfc8389085daf46673458a010fb48e883c98181e",
     "packages/temporal/accessors.ts": "4d6cc7204e5451cb19339c90e5aa9f9624817317dd44683140d0272091f19a7a",
     "packages/temporal/calendar-table.ts": "4c9d166f3ed904d8944921294a3611a3c1f55e07931589f0f4b478fc2cb9dfbe",
-    "packages/temporal/calendar.ts": "168b94ad6d7209e1ce0eabcfec3f3c1c28b9490189cf73024a8a711bde9dfd98",
+    "packages/temporal/calendar.ts": "683575e3b74028ba84d13e24406540ba1fbc6a00b8b74fd96eedea0f0358f002",
     "packages/temporal/compact-timezone.ts": "51f871b8ee6040879ec700b7ec3681b056af091e98ea06c244cb3178b273c63d",
     "packages/temporal/date-bridge.ts": "0c4e032747e8006f9794fef18d45fd5cb0520a40a535aa15bc5ef00f80989afc",
     "packages/temporal/date-core.ts": "b97c25e2002e2c9edc7dcb5f3107d3f88031a38f243dc9597d41a7dc5ad0b8b7",
@@ -33942,7 +34010,7 @@
     "packages/temporal/instant-format.ts": "c956b6b598b487e040fff0d31891aaf68d85a7c01a05b319bc7c316f0d02042b",
     "packages/temporal/instant-string.ts": "3c9ffb30be4d30bc36bc1824c360c067ba4393abf10b434d42a59312c830a46a",
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
-    "packages/temporal/intrinsics.ts": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
+    "packages/temporal/intrinsics.ts": "1104d9fcbcf4fdbe7dd3f63158ea040f59a80afacc283a9d5f8959598510447a",
     "packages/temporal/kernel.ts": "bf048962fb3f60fa6d2c542e6d46f467e0c40aaa9fc3d16de7b04aef31e8ba6e",
     "packages/temporal/legacy-calendar-date.ts": "1c63cb3b0e6f42323f467d937790fdf3268c30f5d271d2cc942e9b4939c77ab2",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
@@ -34168,6 +34236,7 @@
   ],
   "behavioral_status_changes": 0,
   "reviewed_rows_by_batch": {
+    "captured_engine_dependencies": [567, 738],
     "native_zoned_offset_transport": [286],
     "projection_and_candidate_dependencies3": [603, 620, 667],
     "earlier_checkpoint": "3e32",

@@ -1,7 +1,7 @@
 # ISO CalendarDateUntil: finite-prefix proof
 
 Reviewed 2026-11-22. Sources:
-[TS calendar.ts:531–600](../../packages/temporal/calendar.ts#L531),
+[TS calendar.ts:531–600](../../packages/temporal/calendar.ts#L532),
 [Rust date_math.rs:60–115](../../crates/intl_datetimeformat_calendars/date_math.rs#L60).
 AST review verifies month assignment and typed until_raw body. Gregorian
 conversion closure and validated
@@ -194,9 +194,9 @@ invariant across the residual week/day probes. Both backends use seven calendar
 days per week. These facts verify the independent operations in steps 9–11.
 The zero-month shortcut and the published week/day loop stay open.
 [Temporal comparison §3.5.6 steps 9–11](https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses).
-[TypeScript prefix](../../packages/temporal/calendar.ts#L610).
+[TypeScript prefix](../../packages/temporal/calendar.ts#L611).
 [Rust prefix](../../crates/intl_datetimeformat_calendars/date_math.rs#L91).
-[TypeScript constrain and week](../../packages/temporal/calendar.ts#L508).
+[TypeScript constrain and week](../../packages/temporal/calendar.ts#L509).
 [Rust constrain and week](../../crates/intl_datetimeformat_calendars/date_math.rs#L52).
 
 Nine focused Bazel gates pass across TypeScript, Rust and Hermes. Only comments
@@ -230,7 +230,7 @@ against independent signed prefix and residual-day loops. The replay covers
 26,556 forward and 26,628 backward
 nonzero-month cases with year or month largest units. Nine Bazel gates passed
 in the combined TypeScript, Rust, Hermes and Intl batch.
-[TypeScript residual](../../packages/temporal/calendar.ts#L643).
+[TypeScript residual](../../packages/temporal/calendar.ts#L644).
 [Rust residual](../../crates/intl_datetimeformat_calendars/date_math.rs#L115).
 [Temporal comparison §3.5.6 steps 12–13](https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses).
 [Temporal comparison §12.3.9 step 3.j](https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil).

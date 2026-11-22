@@ -14,13 +14,13 @@ valid homogeneous-sign DateDuration record and overflow constrain/reject.
 
 | Compared step             | Source correspondence and obligation                                                                                                                                                                                                                                                                       |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 ISO branch              | [date-core.ts:574](../../packages/temporal/date-core.ts#L577) retains base calendar; [calendar.ts:450](../../packages/temporal/calendar.ts#L450) uses common arithmetic path. For iso8601, monthsInYear=12 and Gregorian arithmetic conversion applies.                                                    |
-| 1.a balance year/month    | [calendar.ts:403](../../packages/temporal/calendar.ts#L403): add years first, serialize12*(year+years)+originalMonth−1+months, floor-divide12 and modulo12. Algebraically BalanceISOYearMonth(originalYear+years,originalMonth+months). See bounds below.                                                  |
-| 1.b regulate original day | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L473), [calendarToEpochDayRaw:313](../../packages/temporal/calendar.ts#L313): normalized year/month plus original day; constrain clamps, reject throws before week/day displacement.                                                             |
-| 1.c combine days/weeks    | [calendar.ts:478](../../packages/temporal/calendar.ts#L478): exact days+7*weeks, integer validation.                                                                                                                                                                                                       |
-| 1.d add days              | [calendar.ts:478](../../packages/temporal/calendar.ts#L478): epoch-day addition; [addNormalizedCalendarDate:493](../../packages/temporal/calendar.ts#L493) converts resulting coordinate back to date.                                                                                                     |
+| 1 ISO branch              | [date-core.ts:574](../../packages/temporal/date-core.ts#L577) retains base calendar; [calendar.ts:450](../../packages/temporal/calendar.ts#L451) uses common arithmetic path. For iso8601, monthsInYear=12 and Gregorian arithmetic conversion applies.                                                    |
+| 1.a balance year/month    | [calendar.ts:403](../../packages/temporal/calendar.ts#L404): add years first, serialize12*(year+years)+originalMonth−1+months, floor-divide12 and modulo12. Algebraically BalanceISOYearMonth(originalYear+years,originalMonth+months). See bounds below.                                                  |
+| 1.b regulate original day | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L474), [calendarToEpochDayRaw:313](../../packages/temporal/calendar.ts#L314): normalized year/month plus original day; constrain clamps, reject throws before week/day displacement.                                                             |
+| 1.c combine days/weeks    | [calendar.ts:478](../../packages/temporal/calendar.ts#L479): exact days+7*weeks, integer validation.                                                                                                                                                                                                       |
+| 1.d add days              | [calendar.ts:478](../../packages/temporal/calendar.ts#L479): epoch-day addition; [addNormalizedCalendarDate:493](../../packages/temporal/calendar.ts#L494) converts resulting coordinate back to date.                                                                                                     |
 | 2 non-ISO branch          | Same dispatcher selects calendar arithmetic/table/native provider. NonISODateAdd algorithm is not established by this ISO map.                                                                                                                                                                             |
-| 3 final ISO bounds        | [date-core.ts:575](../../packages/temporal/date-core.ts#L578) dayCheck around full result; [calendar.ts:130](../../packages/temporal/calendar.ts#L130) range[-100000001,100000000]. Other raw/normalized entry points require caller-specific guards; do not treat raw helper as complete CalendarDateAdd. |
+| 3 final ISO bounds        | [date-core.ts:575](../../packages/temporal/date-core.ts#L578) dayCheck around full result; [calendar.ts:130](../../packages/temporal/calendar.ts#L131) range[-100000001,100000000]. Other raw/normalized entry points require caller-specific guards; do not treat raw helper as complete CalendarDateAdd. |
 | 4 return ISO date         | Public date-core returns bounded epoch day; normalized helper additionally returns calendar date for its consumer. Exact Gregorian representation follows the bounded closure proof linked below.                                                                                                          |
 
 AST inventory finds two addNormalizedCalendarDate consumers:
@@ -37,9 +37,9 @@ stores a less precise year/month result.
 
 | Step                        | Correspondence                                                                                                                                                                    |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 year+=floor((month−1)/12) | [calendar.ts:418–419](../../packages/temporal/calendar.ts#L418): floor(serial/12), where serial=12*(originalYear+years)+(originalMonth+months−1).                                 |
-| 2 month=mod(month−1,12)+1   | [calendar.ts:420](../../packages/temporal/calendar.ts#L420), [mod:118](../../packages/temporal/calendar.ts#L118): value−floor(value/12)*12; correct for negative months/yearzero. |
-| 3 return record             | [calendar.ts:429](../../packages/temporal/calendar.ts#L429): normalized year/month.                                                                                               |
+| 1 year+=floor((month−1)/12) | [calendar.ts:418–419](../../packages/temporal/calendar.ts#L419): floor(serial/12), where serial=12*(originalYear+years)+(originalMonth+months−1).                                 |
+| 2 month=mod(month−1,12)+1   | [calendar.ts:420](../../packages/temporal/calendar.ts#L421), [mod:118](../../packages/temporal/calendar.ts#L118): value−floor(value/12)*12; correct for negative months/yearzero. |
+| 3 return record             | [calendar.ts:429](../../packages/temporal/calendar.ts#L430): normalized year/month.                                                                                               |
 
 Rust [date_math.rs:17–35](../../crates/intl_datetimeformat_calendars/date_math.rs#L17)
 adds years with checked arithmetic, obtains zero-based serial and converts back.
@@ -52,7 +52,7 @@ validated supported ISO origin and homogeneous-sign duration, it cannot reject
 a final supported date: months/week/day move in the same direction, so an
 already outlying intermediate year cannot return within supported range. This
 argument does not extend to arbitrary mixed-sign raw provider records; those
-are rejected by [calendar.ts:464](../../packages/temporal/calendar.ts#L464) and
+are rejected by [calendar.ts:464](../../packages/temporal/calendar.ts#L465) and
 [date_math.rs:44](../../crates/intl_datetimeformat_calendars/date_math.rs#L44).
 
 ## RegulateISODate
@@ -61,8 +61,8 @@ are rejected by [calendar.ts:464](../../packages/temporal/calendar.ts#L464) and
 
 | Step                     | Correspondence                                                                                                                                                        |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.a constrain month1..12 | [calendar.ts:338](../../packages/temporal/calendar.ts#L338), [regulate:143](../../packages/temporal/calendar.ts#L143). Month already normalized 1..12 in this caller. |
-| 1.b days in month        | [calendar.ts:345–350](../../packages/temporal/calendar.ts#L345): Gregorian month length with leap-year rule.                                                          |
+| 1.a constrain month1..12 | [calendar.ts:338](../../packages/temporal/calendar.ts#L339), [regulate:143](../../packages/temporal/calendar.ts#L144). Month already normalized 1..12 in this caller. |
+| 1.b days in month        | [calendar.ts:345–350](../../packages/temporal/calendar.ts#L346): Gregorian month length with leap-year rule.                                                          |
 | 1.c constrain day        | Same regulate clamps original valid day to destination month's range.                                                                                                 |
 | 2.a reject assertion     | overflowCheck139 allows only constrain/reject before arithmetic.                                                                                                      |
 | 2.b reject invalid date  | regulate149–153 rejects out-of-range month/day. Integer fields already required; invalid day fails before week/day addition.                                          |
@@ -80,9 +80,9 @@ that proof.
 
 | Step                             | Correspondence                                                                                                                                                                                                                   |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 ISO date->epoch days, add days | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L473). [Arithmetic.ts:112–125](../../packages/ecma402-abstract/Calendar/Arithmetic.ts#L112) uses DayFromYear+month start+leap adjustment+day−1.                        |
+| 1 ISO date->epoch days, add days | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L474). [Arithmetic.ts:112–125](../../packages/ecma402-abstract/Calendar/Arithmetic.ts#L112) uses DayFromYear+month start+leap adjustment+day−1.                        |
 | 2 epoch days->epoch milliseconds | No milliseconds materialized; exact integer day coordinate retained. Avoids unnecessary wide binary64 multiplication.                                                                                                            |
-| 3 inverse year/month/day         | [calendar.ts:494](../../packages/temporal/calendar.ts#L494), [calendarFromEpochDayRaw:372](../../packages/temporal/calendar.ts#L372), ArithmeticGregorianFromEpochDay. Bounded inverse proof supplies the same final civil date. |
+| 3 inverse year/month/day         | [calendar.ts:494](../../packages/temporal/calendar.ts#L495), [calendarFromEpochDayRaw:372](../../packages/temporal/calendar.ts#L373), ArithmeticGregorianFromEpochDay. Bounded inverse proof supplies the same final civil date. |
 
 Rust [date_math.rs:50–58](../../crates/intl_datetimeformat_calendars/date_math.rs#L50)
 uses checked week*7/day/epoch additions. [core.rs:422–424](../../crates/intl_datetimeformat_calendars/core.rs#L422)
@@ -107,13 +107,13 @@ Negative month normalization must floor, not truncate: 2020-01 plus−1month is
 
 ## Private-operation correction and evidence
 
-[calendar.ts:456–463](../../packages/temporal/calendar.ts#L456) now reads all
+[calendar.ts:456–463](../../packages/temporal/calendar.ts#L457) now reads all
 four duration fields into a dense private array before indexed integer
 normalization. This preserves the old evaluation order: years, months, weeks,
 days Gets all complete before the first integer validation. It removes private
 Array.prototype.map and Array species lookups without changing arithmetic.
 
-The [private destination record:475](../../packages/temporal/calendar.ts#L475)
+The [private destination record:475](../../packages/temporal/calendar.ts#L476)
 now has own monthCode:undefined. calendarToEpochDayRaw therefore ignores inherited
 Object.prototype.monthCode while public input bags retain their inherited-field
 semantics. Non-ISO metadata normalization also uses captured indexOf.

@@ -13,12 +13,13 @@ export function argumentAt(args: readonly unknown[], index: number): unknown {
   return index < args.length ? args[index] : undefined
 }
 
-// Callers supply fresh, private handler literals; absent traps have no prototype.
 export function createProxy<T extends object>(
   target: T,
   handler: ProxyHandler<T>
 ): T {
+  // Callers supply private handlers. Ignore inherited traps.
   setPrototypeOf(handler, null)
+  // ECMA-262 §28.2.1.1 step 2: Let the captured constructor create the proxy.
   return new ProxyConstructor(target, handler)
 }
 

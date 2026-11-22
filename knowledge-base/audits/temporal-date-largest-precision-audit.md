@@ -78,7 +78,7 @@ and window monotonicity remain separate algorithm obligations.
 
 ## Remaining boundaries
 
-- TS [calendarDateUntilRaw](../../packages/temporal/calendar.ts#L531) returns
+- TS [calendarDateUntilRaw](../../packages/temporal/calendar.ts#L532) returns
   Number calendar counts. Their correctness and bounds across all supported
   calendars still need a separate operation proof.
 - Rust [date_until](../../crates/temporal/calendar_difference.rs#L81) promotes

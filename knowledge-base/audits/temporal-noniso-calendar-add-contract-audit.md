@@ -27,14 +27,14 @@ substeps or import a historical mandatory non-ISO year/month/day policy.
 
 ## Actual chosen calendar policy
 
-[TS year/month arithmetic403](../../packages/temporal/calendar.ts#L403) first adds
+[TS year/month arithmetic403](../../packages/temporal/calendar.ts#L404) first adds
 years, preserving month identity for Hebrew/Chinese/Dangi, then adds a serial
 month count. Fixed-month arithmetic calendars use fixed12 or13 months per year.
 Hebrew uses elapsed-month counts and a corrected 19-year estimate. Chinese/Dangi
 use table/host leap-month and month-serial lookup. Weeks then count7 epoch days;
 days count1, independent of timezone or clock.
 
-[Original-day regulation473](../../packages/temporal/calendar.ts#L473) happens
+[Original-day regulation473](../../packages/temporal/calendar.ts#L474) happens
 after year/month movement and before week/day translation. Reject-overflow
 rejects a missing leap-month identity or invalid original day; constrain selects
 supported replacement month/day. Hebrew M05L maps to month6 in either target
@@ -104,23 +104,23 @@ can bypass this generic transport; both paths need owning public evidence.
 
 The public non-ISO path formerly interpreted private month codes through
 RegExp.test, String.slice and endsWith; regex execution also altered legacy
-RegExp state. [Calendar-specific recognition222](../../packages/temporal/calendar.ts#L222)
+RegExp state. [Calendar-specific recognition222](../../packages/temporal/calendar.ts#L223)
 now checks exact code-unit positions and lengths, retains Hebrew M05L handling,
 and reuses bounded isoMonthFromCode with explicit M13 support only for
 Coptic/Ethiopic/Ethioaa. Chinese/Dangi retain ordinary01–12 plus optional L and
 target-year leap resolution. Malformed month-code shapes reject before leap-table lookup.
 No calendar arithmetic rule changes.
 
-[Month generation205](../../packages/temporal/calendar.ts#L205) and shared
+[Month generation205](../../packages/temporal/calendar.ts#L206) and shared
 [arithmetic generation180](../../packages/ecma402-abstract/Calendar/Arithmetic.ts#L180)
 now concatenate bounded numeric digits; they do not consult mutable String or
 padStart. [Packed metadata decoding37](../../packages/temporal/calendar-table.ts#L37)
 uses captured original String.prototype.indexOf through captured Reflect.apply.
 This preserves dictionary decoding without a post-import mutable method lookup.
 
-[Date component normalization450](../../packages/temporal/calendar.ts#L450)
+[Date component normalization450](../../packages/temporal/calendar.ts#L451)
 now converts the four own components in an indexed loop, avoiding Array.map and
-Array species construction. [Private addition record475](../../packages/temporal/calendar.ts#L475)
+Array species construction. [Private addition record475](../../packages/temporal/calendar.ts#L476)
 has own monthCode:undefined, preventing inherited Object.prototype.monthCode
 from leaking into internal conversion. Intended public inherited fields remain
 observable.

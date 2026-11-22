@@ -75,11 +75,11 @@ Raw mixed-sign records are rejected and are outside this proof.
 
 ## RegulateISODate ordering and rejected final-date shortcut
 
-[calendar.ts403](../../packages/temporal/calendar.ts#L403) balances year/month.
-[calendarToEpochDayRaw313](../../packages/temporal/calendar.ts#L313) receives
+[calendar.ts403](../../packages/temporal/calendar.ts#L404) balances year/month.
+[calendarToEpochDayRaw313](../../packages/temporal/calendar.ts#L314) receives
 normalized month1..12 and original valid day; month clamping is a no-op in this
 caller. It evaluates destination month length, then clamps/rejects original day
-before [week/day displacement478](../../packages/temporal/calendar.ts#L478).
+before [week/day displacement478](../../packages/temporal/calendar.ts#L479).
 Integer/year validation and overflow enum checks precede arithmetic.
 
 For constrain, this is compared §3.5.7 steps1.a–1.c. For reject, normalized month

@@ -5,7 +5,7 @@ No new runtime defect or full calendar-provider signoff is claimed.
 
 ## Built-in count bounds
 
-[TS calendarDateUntilRaw:540](../../packages/temporal/calendar.ts#L540) gets two
+[TS calendarDateUntilRaw:540](../../packages/temporal/calendar.ts#L541) gets two
 raw calendar dates; years are their year difference with a one-unit adjustment,
 months are serial differences with a one-unit adjustment, and days are an
 integer epoch-day residual. Weeks divide that residual by seven. Rust's
@@ -14,16 +14,16 @@ uses the same structure in i64.
 
 Actual supported calendar engines have these finite coordinate domains:
 
-- [Raw TS day conversion:372](../../packages/temporal/calendar.ts#L372) and
+- [Raw TS day conversion:372](../../packages/temporal/calendar.ts#L373) and
   [Rust:326](../../crates/intl_datetimeformat_calendars/core.rs#L326) bound input
   days by ±110,000,000. The built-in arithmetic year estimates and Gregorian
   offsets cover this finite domain, rather than arbitrary i64 calendar labels.
-- [TS addYearMonth:410](../../packages/temporal/calendar.ts#L410) checks resulting
+- [TS addYearMonth:410](../../packages/temporal/calendar.ts#L411) checks resulting
   years against ±400,000; the same bound appears in
   [Rust check_year](../../crates/intl_datetimeformat_calendars/core.rs#L543).
   Successful ordinary year differences therefore stay around 800,000, not near
   binary64's integer precision limit.
-- [TS calendarMonthSerial:517](../../packages/temporal/calendar.ts#L517) uses
+- [TS calendarMonthSerial:517](../../packages/temporal/calendar.ts#L518) uses
   twelve/thirteen months per year or Hebrew elapsed months.
   [Rust months_before_year:389](../../crates/intl_datetimeformat_calendars/core.rs#L389)
   checks years and uses `235 * year / 19` for Hebrew. The coarse ±400,000-year

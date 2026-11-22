@@ -117,6 +117,7 @@ export interface DateDuration {
 const mod = (value: number, divisor: number): number =>
   value - floor(value / divisor) * divisor
 function integer(value: number): number {
+  // ECMA-262 §21.1.2.5 steps 1.a–2: Check prepared Numbers before calendar arithmetic.
   if (!numberIsSafeInteger(value))
     throw new RangeErrorConstructor('Expected safe integer')
   return value
