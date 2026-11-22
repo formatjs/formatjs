@@ -45,6 +45,15 @@ export function checkZonedArithmeticOracle(
     )
     days++
   }
+  equal(
+    new Temporal.ZonedDateTime(4_200_000_000_000n, 'UTC').round({
+      smallestUnit: 'minute',
+      roundingIncrement: 20,
+      roundingMode: 'halfEven',
+    }).epochNanoseconds,
+    3_600_000_000_000n,
+    'Zoned clock halfEven uses minute-of-hour parity'
+  )
   // Hardcoded precision controls supplement the unchanged ICU fixtures.
   for (const [unit, field, factor] of [
     ['nanosecond', 'nanoseconds', 1n],

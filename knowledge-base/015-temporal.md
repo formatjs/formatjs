@@ -1,5 +1,10 @@
 # Temporal implementation
 
+Zoned clock rounding retains the original bigint offset for exact matching,
+without private string formatting/reparsing. The [raw-offset audit](audits/temporal-zoned-round-raw-offset-audit.md)
+records five public regressions, provider-call timing and unchanged shared string
+resolver semantics. Native, identity and day branches retain their existing paths.
+
 Timezone name preparation captures original case conversion and key enumeration.
 Default compact transition expansion reads private tuples by index, defines own
 rows/future metadata, then uses captured native sort on dense private data. The

@@ -61,6 +61,8 @@ import {
   epochNanosecondsToISO,
   isoToEpochNanoseconds,
   type Disambiguation,
+  type ISODateTime,
+  type TimeZoneKernel,
 } from '#packages/temporal/kernel.js'
 import {
   calendarId,
@@ -290,7 +292,25 @@ function resolve(
     return validateInstant(localTime)
   if (offset === undefined || behavior === 'ignore')
     return kernel.resolve(fields, ambiguous)
-  const provided = parseOffsetNanoseconds(offset)
+  return resolveOffsetNanoseconds(
+    localTime,
+    parseOffsetNanoseconds(offset),
+    kernel,
+    fields,
+    behavior,
+    ambiguous,
+    matchMinute
+  )
+}
+function resolveOffsetNanoseconds(
+  localTime: bigint,
+  provided: bigint,
+  kernel: TimeZoneKernel,
+  fields: ISODateTime,
+  behavior: string,
+  ambiguous: Disambiguation,
+  matchMinute: boolean
+): bigint {
   if (behavior === 'use') return validateInstant(localTime - provided)
   if (localTime < -8_640_000_000_000_000_000_000n)
     throw new RangeErrorConstructor('Local date out of range')
@@ -935,10 +955,15 @@ class ZonedDateTimeValue {
         rounded =
           bigIntFrom(epochDayOf(current)) * nsPerDay +
           roundTime(timeOf(current), timeUnit(unit), increment, mode)
-      value = resolve(
+      // Keep the original offset for exact matching.
+      const offset = zonedKernel(slot.timeZone).offsetNanoseconds(
+        slot.epochNanoseconds
+      )
+      value = resolveOffsetNanoseconds(
         rounded,
-        slot.timeZone,
-        offsetText(slot),
+        offset,
+        zonedKernel(slot.timeZone),
+        epochNanosecondsToISO(rounded),
         'prefer',
         'compatible',
         false
