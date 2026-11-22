@@ -117,10 +117,10 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 and existing Intl contracts are reused, not reimplemented.
 
 Remaining core states:235 conditional and90 comparison-issue rows. No reviewed
-or partial rows remain. Amendments:65 conditional and11 comparison-issue rows. Counts include
+or partial rows remain. Amendments:61 conditional and11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
-78 conditional steps (46 core,32 amendment), each with exact source ranges
+77 conditional steps (46 core,31 amendment), each with exact source ranges
 and named premise. [Source candidates](temporal-open-candidates.md) remain
 separate from confirmed runtime gaps. Existing contract reuse is a supplied
 callee contract, not a fresh full Intl audit.
@@ -158,14 +158,15 @@ containing clauses. Net queue:84 conditional steps across11 families.
 and [Intl adapters](temporal-intl-producer-state-facade-audit.md) bind scope.
 
 Selected-kind matching, range widths and lazy interval initialization now
-reconcile six more steps. The queue holds 78 conditional steps across ten
-families. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
+reconcile six more steps. [21 focused Bazel targets](temporal-selected-locale-adapter-validation-targets.txt)
 returned passing cached results for these sources. Fresh Duration prefix lookup and Unicode extension adapters pass public
 controls. Empty extension fields on prefix lookup and best-fit snapshot/request Lists
 pass public controls. Best-fit key parsing, private cache state, native Locale
-maximization and partition scoring now pass. Fresh memoizer options/storage,
-locale invariant Error capture and own-key distance tables remain open.
-[Adapter evidence](temporal-duration-bestfit-provider-evidence.json).
+maximization and partition scoring pass. Fresh memoizer storage, captured
+locale invariants and generated-table fallbacks now pass as well. §15.11.1.1
+step 3 and its three containing clause gates are verified under the supplied
+provider contract. The queue now holds 77 conditional steps across nine
+families. [Fresh constructor evidence](temporal-duration-fresh-constructor-closure-evidence.json).
 Generated profiles and the hashed Node native Intl provider supply the
 endpoint-window proof. Other host profiles remain conditional.
 [Timezone evidence](temporal-timezone-boundary-proof/node-icu/temporal-node-icu-endpoint-proof.md). Helper annotation
@@ -187,13 +188,13 @@ contracts. Host and remaining calendar-unit comparisons stay conditional.
 
 Helper annotation checkpoint: [current queue](temporal-helper-annotation-queue.tsv)
 retains1,069 identities:1,066 live bindings and three retired callbacks.
-[128 mapping dispositions](temporal-helper-annotation-reconciliation.json)
+[145 mapping dispositions](temporal-helper-annotation-reconciliation.json)
 cover ISO scanners, Rust formatting, plain-relative arithmetic, TS/Rust
 rounding, calendar and timezone providers, and native Duration transport.
-116 receive reviewed local inline scope;12 transport rows have narrow
-inline caller/dependency links. Current mapping states:296 mapped,389 candidate,
+133 receive reviewed local inline scope;12 transport rows have narrow
+inline caller/dependency links. Current mapping states:313 mapped,372 candidate,
 384 unmapped, including three retired identities. Annotation presence alone
-is195 direct,13 enclosing,858 without numbered anchors,3 retired; these are
+is211 direct,13 enclosing,842 without numbered anchors,3 retired; these are
 ownership/annotation queues, not missing functionality or step-verification counts.
 
 Measured sample:438seconds parallel review,211seconds integration preparation,
@@ -204,7 +205,9 @@ Additional measured reviews:130seconds for18 calendar-provider mappings,131secon
 for12 existing transport caller links. Both reuse established semantic proofs;
 root integration overlaps runtime work and is not assigned an invented duration.
 Twelve timezone mappings took 35 seconds to apply and rebind after preliminary
-review. Keep the 3–5 hour annotation estimate provisional because review time
+review. Seventeen Rust parser mappings preserve all 31 callable bodies.
+[Parser evidence](temporal-native-parse17-annotation-source-proof.json).
+Keep the 3–5 hour annotation estimate provisional because review time
 varies by source and the timezone timing excludes its preliminary review.
 
 Source hashes and extraction limits:

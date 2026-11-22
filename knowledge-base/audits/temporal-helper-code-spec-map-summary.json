@@ -3,9 +3,9 @@
   "callable_rows": 1069,
   "files_with_callables": 74,
   "all_selected_source_files": 80,
-  "whole_selected_source_lines": 24506,
+  "whole_selected_source_lines": 24523,
   "whole_selected_source_lines_by_language": {
-    "rust": 10422,
+    "rust": 10439,
     "typescript": 14084
   },
   "nonoverlapping_callable_lines": 16824,
@@ -14,14 +14,14 @@
     "typescript": 8687
   },
   "disjoint_callable_line_assignment": {
-    "candidate": 6041,
-    "mapped": 5945,
+    "candidate": 5592,
+    "mapped": 6394,
     "unmapped": 4838
   },
   "line_assignment_rule": "smallest enclosing callable span; ties mapped then candidate then unmapped; counts physical lines not statements",
   "mapping_status_counts": {
-    "candidate": 389,
-    "mapped": 296,
+    "candidate": 372,
+    "mapped": 313,
     "unmapped": 384
   },
   "by_language": {
@@ -31,8 +31,8 @@
       "unmapped": 161
     },
     "rust": {
-      "candidate": 267,
-      "mapped": 59,
+      "candidate": 250,
+      "mapped": 76,
       "unmapped": 223
     }
   },
@@ -214,7 +214,7 @@
     "toPlainTimeNanoseconds"
   ],
   "candidate_relationship_counts": {
-    "implementation_dependency": 342,
+    "implementation_dependency": 325,
     "typed_public_operation_candidate": 47
   },
   "proposal_core_section_ids": 170,
@@ -449,10 +449,10 @@
     },
     {
       "file": "crates/temporal/parse.rs",
-      "source_lines": 476,
+      "source_lines": 493,
       "callable_rows": 17,
       "nonoverlapping_callable_lines": 449,
-      "sha256": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
+      "sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4",
       "unresolved_callable_rows": 0
     },
     {

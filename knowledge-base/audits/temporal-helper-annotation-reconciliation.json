@@ -1,5 +1,5 @@
 {
-  "scope": "128 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
+  "scope": "145 cumulative helper mapping dispositions with local comment evidence. No behavioral checklist promotion.",
   "fixed_inventory_rows": 1069,
   "live_rebound_rows": 1066,
   "retired_identities": [
@@ -4249,6 +4249,550 @@
       "annotation_line": 399,
       "annotation": "// Proposal comparison \u00a712.3.31 steps 1.e, 1.g\u2013h, 2.a: resolve typed year and month.",
       "evidence": "Requires resolved year and month or monthCode for the typed callers, rejects nonpositive explicit month/day and checks numeric month agreement with the provider\u2019s selected code. Provider owns the lookup and public frontend owns field coercions."
+    },
+    {
+      "inventory_row": 339,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "9",
+        "end_line": "14",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-4.a.i"],
+      "annotation_placement": "leading",
+      "annotation_line": 8,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.i: start an ASCII grammar scan over the input.",
+      "evidence": "Creates a byte cursor at zero. The ISO grammar tokens consumed by this cursor are ASCII. The byte representation is a private scanner dependency, with acceptance owned by the calling parse goal."
+    },
+    {
+      "inventory_row": 340,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::peek",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "16",
+        "end_line": "18",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-4.a.i"],
+      "annotation_placement": "leading",
+      "annotation_line": 15,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.i: inspect the next byte within the input.",
+      "evidence": "Bounds-checked fixed input read returns None at exhaustion. Digit and separator checks use this result without advancing the cursor."
+    },
+    {
+      "inventory_row": 341,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::take",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "20",
+        "end_line": "26",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": ["13.35/algorithm-1/step-4.a.i"],
+      "annotation_placement": "leading",
+      "annotation_line": 19,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.i: consume a matching grammar byte.",
+      "evidence": "Tests the next byte against the supplied ASCII literal and advances exactly once on success. Sign, punctuation and designator membership are supplied by callers."
+    },
+    {
+      "inventory_row": 342,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::number",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "28",
+        "end_line": "39",
+        "comparison_sections": "13.35|13.31",
+        "section_ids": "sec-temporal-parseisodatetime|sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime|https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-7",
+        "13.35/algorithm-1/step-8",
+        "13.31/grammar-1"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 27,
+      "annotation": "// Proposal comparison \u00a713.35 steps 7\u20138: read a bounded numeric field as an integer.",
+      "evidence": "Reads exactly the requested ASCII digit count. Checked parser call sites supply at most six digits, so base-ten accumulation stays exact in u32. Callers own semantic field bounds and signs."
+    },
+    {
+      "inventory_row": 343,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "41",
+        "end_line": "77",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-13.a",
+        "13.35/algorithm-1/step-14.a",
+        "13.35/algorithm-1/step-15.a",
+        "13.35/algorithm-1/step-16.a",
+        "13.35/algorithm-1/step-17.a",
+        "13.35/algorithm-1/step-18.a",
+        "13.35/algorithm-1/step-18.b.i",
+        "13.35/algorithm-1/step-19.b",
+        "13.35/algorithm-1/step-19.c",
+        "13.35/algorithm-1/step-19.d",
+        "13.35/algorithm-1/step-19.e",
+        "13.35/algorithm-1/step-20.a",
+        "13.35/algorithm-1/step-20.b",
+        "13.35/algorithm-1/step-20.c"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 40,
+      "annotation": "// Proposal comparison \u00a713.35 steps 13\u201320: read clock fields and scale fractional seconds.",
+      "evidence": "Reads the selected basic or extended form, defaults omitted fields to zero and scales one through nine decimal digits exactly. Time permits and clamps second 60; offset mode caps second at 59 and may prohibit subminute fields."
+    },
+    {
+      "inventory_row": 344,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "impl<'a> Cursor<'a>::offset",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "81",
+        "end_line": "90",
+        "comparison_sections": "8.5.3|6.5.2",
+        "section_ids": "sec-temporal-totemporalinstant|sec-temporal-totemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalinstant|https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "8.5.3/algorithm-1/step-5",
+        "6.5.2/algorithm-1/step-10.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 80,
+      "annotation": "// Proposal comparison \u00a78.5.3 step 5: convert the parsed numeric offset to signed nanoseconds.",
+      "evidence": "Consumes one ASCII sign before the bounded offset clock and applies it to the exact i128 total once. Its existing ECMA-262 reference owns the corresponding shared offset grammar and arithmetic. Full-consumption checks belong to callers."
+    },
+    {
+      "inventory_row": 345,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::offset_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "97",
+        "end_line": "104",
+        "comparison_sections": "6.5.2",
+        "section_ids": "sec-temporal-totemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": ["6.5.2/algorithm-1/step-10.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 96,
+      "annotation": "// Proposal comparison \u00a76.5.2 step 10.a: consume the full prepared numeric offset.",
+      "evidence": "FFI resolves a prepared offset string with the subminute-capable cursor, rejects unconsumed bytes and returns the exact integer. Existing ECMA-262 grammar reference stays adjacent. FFI chooses wall/UTC/minute/exact behavior separately."
+    },
+    {
+      "inventory_row": 346,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::instant",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "107",
+        "end_line": "143",
+        "comparison_sections": "8.5.3",
+        "section_ids": "sec-temporal-totemporalinstant",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalinstant",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "8.5.3/algorithm-1/step-3",
+        "8.5.3/algorithm-1/step-4",
+        "8.5.3/algorithm-1/step-5",
+        "8.5.3/algorithm-1/step-6",
+        "8.5.3/algorithm-1/step-7",
+        "8.5.3/algorithm-1/step-8",
+        "8.5.3/algorithm-1/step-9",
+        "8.5.3/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 106,
+      "annotation": "// Proposal comparison \u00a78.5.3 steps 3\u201310: parse ISO instant fields and their offset.",
+      "evidence": "Consumes date, mandatory time and either UTC designator or numeric offset, checks the annotation suffix and hands exact decoded fields to from_iso_offset. Constructor and its called helpers enforce final Instant validity."
+    },
+    {
+      "inventory_row": 347,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::plain_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "145",
+        "end_line": "222",
+        "comparison_sections": "4.5.6|13.31.3",
+        "section_ids": "sec-temporal-totemporaltime|sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime|https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-3.b",
+        "4.5.6/algorithm-1/step-3.d",
+        "4.5.6/algorithm-1/step-4",
+        "13.31.3/prose_list_item-1",
+        "13.31.3/prose_list_item-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 144,
+      "annotation": "// Proposal comparison \u00a74.5.6 steps 3.b, 4: parse clock text and build the typed time.",
+      "evidence": "Checks the date/time separator form or prefixless short-date ambiguity, validates the suffix and builds PlainTime from fully consumed clock fields. A numeric offset may be validated and discarded; UTC designator is outside this parse goal."
+    },
+    {
+      "inventory_row": 348,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::plain_date_time_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "225",
+        "end_line": "264",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.i",
+        "13.35/algorithm-1/step-7",
+        "13.35/algorithm-1/step-22.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 224,
+      "annotation": "// Proposal comparison \u00a713.35 steps 4.a.i, 7: extract the plain ISO date and clock.",
+      "evidence": "Consumes plain date or date-plus-clock and validates any numeric offset and annotations before returning typed fields. Missing clock is internally represented by midnight. Calendar choice and date validity checks remain with typed callers."
+    },
+    {
+      "inventory_row": 349,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::zoned_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "273",
+        "end_line": "334",
+        "comparison_sections": "6.5.2",
+        "section_ids": "sec-temporal-totemporalzoneddatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalzoneddatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "6.5.2/algorithm-1/step-5.b",
+        "6.5.2/algorithm-1/step-5.c",
+        "6.5.2/algorithm-1/step-5.f",
+        "6.5.2/algorithm-1/step-5.g.i",
+        "6.5.2/algorithm-1/step-5.k",
+        "6.5.2/algorithm-1/step-5.l.iii"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 272,
+      "annotation": "// Proposal comparison \u00a76.5.2 steps 5.b\u20135.f, 5.l: read zoned fields and offset precision.",
+      "evidence": "Requires a timezone annotation and distinguishes UTC designator, wall, minute or exact offset from consumed syntax. Returns date-only status alongside fields. Zone identity, calendar selection and instant resolution are delegated to outer code."
+    },
+    {
+      "inventory_row": 350,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::calendar_annotation",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "337",
+        "end_line": "343",
+        "comparison_sections": "13.35|13.36",
+        "section_ids": "sec-temporal-parseisodatetime|sec-temporal-parsetemporalcalendarstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime|https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.ii.2.c.i.1",
+        "13.36/algorithm-1/step-2.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 336,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.ii.2.c.i.1: read the first calendar annotation.",
+      "evidence": "Returns the first u-ca value without the optional critical marker on a prepared annotation string. Full grammar and critical duplicate checks remain in annotations or the calling parser."
+    },
+    {
+      "inventory_row": 351,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::arithmetic_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "345",
+        "end_line": "350",
+        "comparison_sections": "12.3.10|13.36",
+        "section_ids": "sec-temporal-totemporalcalendaridentifier|sec-temporal-parsetemporalcalendarstring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporalcalendaridentifier|https://tc39.es/proposal-temporal/#sec-temporal-parsetemporalcalendarstring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "12.3.10/algorithm-1/step-4",
+        "13.36/algorithm-1/step-2.b"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 344,
+      "annotation": "// Proposal comparison \u00a712.3.10 step 4: resolve the typed arithmetic calendar provider.",
+      "evidence": "Uses the arithmetic registry to resolve the input calendar annotation or its ISO default. Table-provider availability and broader JS calendar string acceptance are separate."
+    },
+    {
+      "inventory_row": 352,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::check_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "353",
+        "end_line": "360",
+        "comparison_sections": "12.3.16",
+        "section_ids": "sec-temporal-calendarequals",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarequals",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": ["12.3.16/algorithm-1/step-1"],
+      "annotation_placement": "leading",
+      "annotation_line": 352,
+      "annotation": "// Proposal comparison \u00a712.3.16 step 1: compare a typed calendar assertion to its provider.",
+      "evidence": "Native parse_in callers require a supplied annotation to agree with the chosen calendar. A direct ASCII identity comparison or registry-resolved arithmetic alias can pass. This is a typed compatibility check, with no claim that public string entry points impose the same assertion."
+    },
+    {
+      "inventory_row": 353,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::iso_annotations",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "363",
+        "end_line": "379",
+        "comparison_sections": "13.35",
+        "section_ids": "sec-temporal-parseisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.ii.3.a",
+        "13.35/algorithm-1/step-4.a.ii.4.a"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 362,
+      "annotation": "// Proposal comparison \u00a713.35 steps 4.a.ii.3.a, 4.a.ii.4.a: require ISO on short forms.",
+      "evidence": "Validates the complete annotation sequence through the existing checker, then requires the first calendar to be ISO if one is supplied. Case folding is ASCII for the fixed token."
+    },
+    {
+      "inventory_row": 354,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::short_date_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "381",
+        "end_line": "433",
+        "comparison_sections": "13.35|13.31.3",
+        "section_ids": "sec-temporal-parseisodatetime|sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime|https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar-static-semantics-early-errors",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.ii.3.a",
+        "13.35/algorithm-1/step-4.a.ii.4.a",
+        "13.35/algorithm-1/step-7",
+        "13.35/algorithm-1/step-11.a",
+        "13.31.3/prose_list_item-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 380,
+      "annotation": "// Proposal comparison \u00a713.35 steps 4.a.ii.3\u20134, 7: read short or full date fields.",
+      "evidence": "Recognizes date-only YearMonth or MonthDay, using day one or the leap reference year internally. Otherwise uses the full date scanner. Short forms enforce ISO annotation and validate date bounds before typed caller construction."
+    },
+    {
+      "inventory_row": 355,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/parse.rs",
+        "symbol": "module::annotations",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "436",
+        "end_line": "493",
+        "comparison_sections": "13.35|13.31",
+        "section_ids": "sec-temporal-parseisodatetime|sec-temporal-iso8601grammar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-parseisodatetime|https://tc39.es/proposal-temporal/#sec-temporal-iso8601grammar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-iso-parser-audit.md|knowledge-base/audits/temporal-iso-caller-audit.md|knowledge-base/audits/temporal-offset-grammar-audit.md",
+        "unresolved_mapping": "",
+        "source_sha256": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4"
+      },
+      "spec_row_ids": [
+        "13.35/algorithm-1/step-4.a.ii.2",
+        "13.35/algorithm-1/step-4.a.ii.2.c.ii.1",
+        "13.35/algorithm-1/step-4.a.ii.2.d.i",
+        "13.31/grammar-1"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 435,
+      "annotation": "// Proposal comparison \u00a713.35 step 4.a.ii.2: validate brackets and critical annotations.",
+      "evidence": "Consumes full suffixes, validates supported annotation key/value syntax and bracket zone position, rejects unknown critical values and critical duplicate calendars. It is a validation dependency; the caller separately reads the selected calendar and timezone."
     }
   ],
   "comment_only_source_evidence": [
@@ -4313,23 +4857,23 @@
     "active_rebound_rows": 1066,
     "retired_replaced_callbacks": 3,
     "mapping_status": {
-      "candidate": 389,
-      "mapped": 296,
+      "candidate": 372,
+      "mapped": 313,
       "unmapped": 384
     },
     "annotation_coverage": {
-      "no_numbered_anchor": 858,
-      "direct_numbered": 195,
+      "no_numbered_anchor": 842,
+      "direct_numbered": 211,
       "enclosing_numbered": 13,
       "retired_callback": 3
     },
-    "direct_with_step_wording": 70,
+    "direct_with_step_wording": 86,
     "direct_numbered_vs_inventory_sections": {
-      "overlap": 170,
-      "no_overlap_or_no_prior_mapping": 25
+      "overlap": 187,
+      "no_overlap_or_no_prior_mapping": 24
     },
     "no_numbered_anchor_by_kind": {
-      "function": 486,
+      "function": 470,
       "named-function": 216,
       "callback": 148,
       "method": 8
@@ -4356,8 +4900,8 @@
         "rows": 248,
         "files": 13,
         "coverage": {
-          "no_numbered_anchor": 212,
-          "direct_numbered": 36
+          "no_numbered_anchor": 196,
+          "direct_numbered": 52
         }
       },
       "native_transport_with_temporal_adapters_review": {
@@ -4408,7 +4952,7 @@
     "crates/temporal/iso.rs": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
     "crates/temporal/lib.rs": "3d5122e32eb0e8d926b84f0ddd6e133c8236390727b13b17885d7c1802ef2881",
     "crates/temporal/now.rs": "661f0a5cb156470bd31bea56d3b76ee9e18c24cf08f45fcef456585c517e5749",
-    "crates/temporal/parse.rs": "13dca67e36f0e1a5fce501cc4ec0e79169063c5d894774d1ff4df1a5d451a75a",
+    "crates/temporal/parse.rs": "1abb5b1da5f6ce7fc5960232eaf090794ee23de8632810fa170182d255130fd4",
     "crates/temporal/plain_relative.rs": "2180a18fb2672442343ef2e5da471fe98adb30029d31736a7269928f4eed2af2",
     "crates/temporal/relative_duration.rs": "ea47ab8079505a274c1f0478e549097a45ce3f987a2b2621e0edab31033176b7",
     "crates/temporal/rounding.rs": "1b3a682e9d2162393164cb15a0619e77afc77f409cb0878a84f4d258212ccc85",
@@ -4685,6 +5229,10 @@
     "native_calendar22": [
       123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137,
       138, 139, 140, 141, 142, 143, 144
+    ],
+    "native_parse17": [
+      339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353,
+      354, 355
     ]
   },
   "inline_caller_dependency_link_reviews": [

@@ -7,6 +7,7 @@ const bind = Function.prototype.bind
 const slice = Array.prototype.slice
 const stringify = JSON.stringify
 const create = Object.create
+const defineProperty = Object.defineProperty
 const setPrototypeOf = Object.setPrototypeOf
 
 type Func = (...args: any[]) => any
@@ -175,10 +176,17 @@ const serializerDefault: Serializer = function (): string {
 //
 
 class ObjectWithoutPrototypeCache {
-  private cache: Record<string, any>
+  private cache!: Record<string, any>
 
   constructor() {
-    this.cache = create(null) as Record<string, any>
+    // Temporal comparison §15.11.1.1 step 3: initialize private cache storage.
+    defineProperty(this, 'cache', {
+      __proto__: null,
+      value: create(null),
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    } as PropertyDescriptor)
   }
 
   get(key: string) {

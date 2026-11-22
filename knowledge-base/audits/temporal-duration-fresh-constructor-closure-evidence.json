@@ -1,0 +1,59 @@
+{
+  "scope": "Fresh construction through installed, initialized native or FormatJS providers with their normal data-valued locale metadata. Reuse engine algorithms and CLDR data.",
+  "comparison_step": "15.11.1.1/algorithm-1/step-3",
+  "clause_gates": ["15.11.1.1/clause", "15.11.1/clause", "15.11/clause"],
+  "implementation_locations": [
+    "packages/fast-memoize/index.ts:178-199",
+    "packages/ecma402-abstract/utils.ts:138-146",
+    "packages/ecma402-abstract/utils.ts:280-293",
+    "packages/ecma402-abstract/utils.ts:295-308",
+    "packages/intl-localematcher/abstract/ResolveLocale.ts:93-227",
+    "packages/temporal/locale.ts:80-94",
+    "packages/intl-localematcher/abstract/utils.ts:71-79",
+    "packages/intl-localematcher/abstract/utils.ts:425-430",
+    "packages/intl-localematcher/abstract/utils.ts:432-480"
+  ],
+  "source_sha256": {
+    "packages/ecma402-abstract/utils.ts": "9f8bb9ecf7f5ab086520c004df189158cfe19221fc5516ba36e8aae110c6c7ea",
+    "packages/fast-memoize/index.ts": "7dfb76c808a731a5a47892d1d32d756aa0c3411a2909929d3b861a7e04b0826a",
+    "packages/intl-durationformat/core.ts": "b53812bd65c79ea76bff6a5db9b0cbb93e6cad5c7643e0c8868dd32f10664fb0",
+    "packages/intl-localematcher/abstract/ResolveLocale.ts": "6b8d7d6b12e73c0d57c69cfa98fd35dbdad2c1ad74767db0bfe9123736e9d812",
+    "packages/intl-localematcher/abstract/utils.ts": "df5e80d18f927fb81be27af643b86d07537501cf6d102494491868abb57a35c7",
+    "packages/temporal/locale.ts": "522fc2968f79807fb1a890fa2fd307fabf146dd22acdb03a65e0f892ca1d6585",
+    "packages/temporal/tests/durationformat.test.ts": "a67f07f78a18b5123bc1f899fcea1fbcb72fa415b4421ad9f1aeeb94fa2466c9"
+  },
+  "public_red_failures": 6,
+  "public_passes": 119,
+  "validation_targets": [
+    "//packages/intl-localematcher:typecheck_typecheck_test",
+    "//packages/ecma402-abstract:ecma402-abstract_test",
+    "//packages/fast-memoize:fast-memoize_test",
+    "//packages/fast-memoize:typecheck_typecheck_test",
+    "//packages/intl-datetimeformat:intl-datetimeformat_test",
+    "//packages/intl-datetimeformat:temporal_owned_test",
+    "//packages/intl-durationformat:intl-durationformat_test",
+    "//packages/intl-localematcher:intl-localematcher_test",
+    "//packages/intl-numberformat:intl-numberformat_test",
+    "//packages/temporal:durationformat_hermes_bytecode_test262",
+    "//packages/temporal:durationformat_hermes_source_test262",
+    "//packages/temporal:durationformat_test",
+    "//packages/temporal:partial_intl_absent_test",
+    "//packages/temporal:partial_intl_empty_test",
+    "//packages/temporal:partial_intl_listformat_parts_test",
+    "//packages/temporal:partial_intl_numberformat_parts_test",
+    "//packages/temporal:partial_intl_test"
+  ],
+  "validation_result": "Executed 16 out of 17 tests: 17 tests pass.",
+  "log_sha256": {
+    "duration-fresh-closure-red.log": "2851031c14aaae5fd158c9f7683dbcfbdf3c17cc2575bb169075c8a490fbd0b8",
+    "duration-fresh-closure-green.log": "555a1f2ca6f70afe4b14bf1dcd0676ebe41472047b460e0041932cfdd91c84ca"
+  },
+  "evidence": "Private memoizer options and cache storage, owned matcher invariant and CLDR dictionary fallback operations now pass. Original locale and option Get/coercion order and provider replacement behavior retained.",
+  "prior_evidence": [
+    "temporal-duration-invocation-constructor-reconciliation.json",
+    "temporal-duration-lookup-source-evidence.json",
+    "temporal-duration-bestfit-parser-order-evidence.json",
+    "temporal-duration-bestfit-provider-evidence.json"
+  ],
+  "profile_boundary": "Custom mutation of nonstandard FormatJS static locale metadata and arbitrary replacement providers are separate from the supplied formatter profile. No general Intl or hostile pre-import runtime claim."
+}

@@ -2135,3 +2135,114 @@ it.each([
     if (key === 'lateProvider') expect(calls).toContain('de-AT-x-provider-late')
   }
 )
+
+it.each([
+  [
+    'memoizer cache option',
+    Object.prototype,
+    'cache',
+    'get',
+    'en-u-nu-arab',
+    'en',
+    '١ minute',
+  ],
+  [
+    'memoizer cache ownership',
+    Object.prototype,
+    'cache',
+    'set',
+    'en-u-nu-arab',
+    'en',
+    '١ minute',
+  ],
+  [
+    'memoizer serializer option',
+    Object.prototype,
+    'serializer',
+    'get',
+    'en-u-nu-arab',
+    'en',
+    '١ minute',
+  ],
+  [
+    'matcher invariant',
+    globalThis,
+    'Error',
+    'get',
+    'en-u-nu-arab',
+    'en',
+    '١ minute',
+  ],
+  [
+    'default language distance',
+    Object.prototype,
+    'de|en',
+    'get',
+    'de-AT-u-nu-arab',
+    'de',
+    '١ Minute',
+  ],
+  [
+    'wildcard region matrix',
+    Object.prototype,
+    'es|es|Latn|Latn',
+    'get',
+    'es-MX-u-nu-arab',
+    'es-419',
+    '١ minuto',
+  ],
+] as const)(
+  'fresh Duration keeps %s private',
+  (_label, owner, key, accessor, locale, supported, expected) => {
+    DurationFormat.__addTemporalNamespace(Temporal)
+    const available = DurationFormat.availableLocales
+    const fresh = new Set(['en', supported])
+    const Original = Intl.NumberFormat
+    class FreshNumberFormat extends Original {}
+    const numberDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'NumberFormat'
+    )!
+    const durationDescriptor = Object.getOwnPropertyDescriptor(
+      Intl,
+      'DurationFormat'
+    )
+    const descriptor = Object.getOwnPropertyDescriptor(owner, key)
+    const define = Object.defineProperty
+    const duration = new Temporal.Duration(0, 0, 0, 0, 0, 1)
+    const sentinel = new Error('Mutable fresh Duration constructor operation')
+    let actual: string | undefined
+    try {
+      DurationFormat.availableLocales = fresh
+      define(Intl, 'NumberFormat', {
+        ...numberDescriptor,
+        value: FreshNumberFormat,
+      })
+      define(Intl, 'DurationFormat', {
+        configurable: true,
+        writable: true,
+        value: DurationFormat,
+      })
+      configureLocaleFormatting()
+      define(owner, key, {
+        configurable: true,
+        [accessor]() {
+          throw sentinel
+        },
+      })
+      actual = duration.toLocaleString(locale, {
+        localeMatcher: supported === 'en' ? 'lookup' : 'best fit',
+        style: 'long',
+      })
+    } finally {
+      if (descriptor) define(owner, key, descriptor)
+      else Reflect.deleteProperty(owner, key)
+      DurationFormat.availableLocales = available
+      define(Intl, 'NumberFormat', numberDescriptor)
+      if (durationDescriptor) define(Intl, 'DurationFormat', durationDescriptor)
+      else Reflect.deleteProperty(Intl, 'DurationFormat')
+      configureLocaleFormatting()
+    }
+    expect(actual).toBe(expected)
+  }
+)

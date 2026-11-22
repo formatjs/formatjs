@@ -14,6 +14,7 @@ const apply = Reflect.apply
 const some = Array.prototype.some
 const sortLocaleIndexes = Array.prototype.sort
 const freezeLocaleList = Object.freeze
+const LocaleError = Error
 const LocaleMap = Map
 const LocaleSet = Set
 const addLocaleSet = Function.prototype.call.bind(LocaleSet.prototype.add) as (
@@ -70,7 +71,7 @@ export function splitUnicodeExtension(locale: string): {
 export function invariant(
   condition: boolean,
   message: string,
-  Err: any = Error
+  Err: any = LocaleError
 ): asserts condition {
   if (!condition) {
     throw new Err(message)
@@ -417,25 +418,46 @@ function rawKey(tag: string): string {
   )
 }
 
+const hasOwnMatchingKey = Function.prototype.call.bind(
+  Object.prototype.hasOwnProperty
+) as (table: object, key: string) => boolean
+
+function matchingValue<T>(
+  table: Record<string, T>,
+  key: string
+): T | undefined {
+  return hasOwnMatchingKey(table, key) ? table[key] : undefined
+}
+
 function distance(desired: LSR, supported: LSR): number {
+  // ECMA-402 §9.2.4: missing private CLDR entries use the generated defaults.
   const languages = `${desired.language}|${supported.language}`
   let result =
     desired.language === supported.language
       ? 0
-      : (matchingData.language[languages] ?? matchingData.defaults[0])
+      : (matchingValue(matchingData.language, languages) ??
+        matchingData.defaults[0])
   if (desired.script !== supported.script) {
     result +=
-      matchingData.script[
+      matchingValue(
+        matchingData.script,
         `${languages}|${desired.script}|${supported.script}`
-      ] ?? matchingData.defaults[1]
+      ) ?? matchingData.defaults[1]
   }
   if (desired.region !== supported.region) {
     const matrix =
-      matchingData.region[
+      matchingValue(
+        matchingData.region,
         `${languages}|${desired.script}|${supported.script}`
-      ] ?? matchingData.region[`${languages}|*|*`]
-    const desiredPartitions = matchingData.regions[desired.region]
-    const supportedPartitions = matchingData.regions[supported.region]
+      ) ?? matchingValue(matchingData.region, `${languages}|*|*`)
+    const desiredPartitions = matchingValue(
+      matchingData.regions,
+      desired.region
+    )
+    const supportedPartitions = matchingValue(
+      matchingData.regions,
+      supported.region
+    )
     let regionDistance = matchingData.defaults[2]
     if (matrix && desiredPartitions && supportedPartitions) {
       regionDistance = 0

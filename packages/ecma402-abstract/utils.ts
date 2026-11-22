@@ -188,7 +188,11 @@ export const createMemoizedListFormat: (
 )
 
 const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
-const formatterMemoizeStrategy = strategies.variadic
+// Temporal comparison §15.11.1.1 step 3: private memoizer options.
+const formatterMemoizeOptions = {
+  __proto__: null,
+  strategy: strategies.variadic,
+}
 let providerIntl = globalThis.Intl
 function ownIntlProvider(name: 'NumberFormat' | 'ListFormat'): unknown {
   const descriptor =
@@ -281,7 +285,7 @@ export function createMemoizedNumberFormatForConstructor(
     factory = memoize(
       (...args: ConstructorParameters<typeof Intl.NumberFormat>) =>
         new Constructor(args[0], args[1]) as NumberFormatLike,
-      {strategy: formatterMemoizeStrategy}
+      formatterMemoizeOptions
     )
     setNumberFormatMemoizer(Constructor, factory)
   }
@@ -296,7 +300,7 @@ export function createMemoizedListFormatForConstructor(
     factory = memoize(
       (...args: ConstructorParameters<typeof Intl.ListFormat>) =>
         new Constructor(args[0], args[1]),
-      {strategy: formatterMemoizeStrategy}
+      formatterMemoizeOptions
     )
     setListFormatMemoizer(Constructor, factory)
   }
