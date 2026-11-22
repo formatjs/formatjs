@@ -480,7 +480,11 @@ pub(crate) fn difference<A: RelativeAnchor>(
         } else {
             value
         };
+        // ECMA-262 preview §22.3.4.1 steps 1–3: replace days and retain years, months, and weeks.
+        // https://tc39.es/ecma262/pr/3966/#sec-adjustdatedurationrecord
         fields[3] = days;
+        // §22.3.7.1 steps 1–4: merge the clock span into the adjusted date duration.
+        // https://tc39.es/ecma262/pr/3966/#sec-combinedateandtimeduration
         fields[4..].copy_from_slice(
             &Duration::from_time_nanoseconds(remainder, largest.time().unwrap_or(TimeUnit::Hour))?
                 .fields()[4..],
@@ -488,6 +492,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
     }
     // ECMA-262 preview §22.15.5.17 step 9 checks larger calendar boundaries.
     // https://tc39.es/ecma262/pr/3966/#sec-roundrelativeduration
+    // §22.15.5.16 steps 1–6: keep a larger-unit increment only if its boundary fits.
+    // https://tc39.es/ecma262/pr/3966/#sec-bubblerelativeduration
     if expanded && smallest != DateTimeUnit::Week {
         let mut index = (smallest as usize).min(DateTimeUnit::Day as usize);
         while index > largest as usize {

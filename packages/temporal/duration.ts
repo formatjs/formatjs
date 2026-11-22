@@ -153,6 +153,8 @@ function addDurations(
   const two = toDurationFields(other)
   const native = nativeTemporal()
   if (native) return createDuration(native.addDuration(one, two, sign < 0))
+  // ECMA-262 preview §22.3.16.2 steps 1–10: lower field index means larger unit.
+  // https://tc39.es/ecma262/pr/3966/#sec-largeroftwotemporalunits
   const largest = mathMin(largestDurationField(one), largestDurationField(two))
   if (largest < 3)
     throw new RangeErrorConstructor(
@@ -278,6 +280,8 @@ class DurationValue {
       )
     const native = nativeTemporal()
     if (native) return createDuration(native.transformDuration(fields, false))
+    // ECMA-262 preview §22.15.5.2 step 1: negate all components and canonicalize zero.
+    // https://tc39.es/ecma262/pr/3966/#sec-createnegatedtemporalduration
     const result = zeroDuration()
     for (let i = 0; i < durationFieldNames.length; i++) {
       const key = durationFieldNames[i]

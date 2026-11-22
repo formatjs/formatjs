@@ -452,7 +452,8 @@ class PlainDateTimeValue {
   withPlainTime(time: unknown = undefined): PlainDateTimeObject {
     // Temporal comparison §5.3.26 steps 1–5.
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withplaintime
-    // Temporal comparison §5.3.26 step3: private ToTimeRecordOrMidnight conversion.
+    // ECMA-262 preview §22.3.15.14 steps 1–3: default to midnight or convert the input.
+    // https://tc39.es/ecma262/pr/3966/#sec-totimerecordormidnight
     const slot = read(this)
     const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(

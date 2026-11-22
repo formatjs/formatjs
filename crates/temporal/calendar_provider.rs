@@ -311,6 +311,8 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
     if matches!(shape, DateFieldShape::YearMonth) {
         updates.day = None;
     }
+    // ECMA-262 preview §22.3.3.11 steps 1–2: retain era fields only for calendars that accept them.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarextrafields
     if matches!(calendar.id(), "iso8601" | "chinese" | "dangi") {
         updates.era = None;
         updates.era_year = None;
@@ -328,9 +330,13 @@ pub(crate) fn merge_fields<'a, C: CalendarProvider>(
         day: (!matches!(shape, DateFieldShape::YearMonth)).then_some(date.day.into()),
         ..DateFields::default()
     };
+    // ECMA-262 preview §22.3.3.12 steps 1.e and 2: drop the inherited month code when month is supplied.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarfieldkeystoignore
     if updates.month.is_some() {
         base.month_code = None
     }
+    // §22.3.3.13: a supplied year or era field overrides the inherited year.
+    // https://tc39.es/ecma262/pr/3966/#sec-nonisofieldkeystoignore
     if calendar.id() != "iso8601"
         && (updates.year.is_some() || updates.era.is_some() || updates.era_year.is_some())
     {

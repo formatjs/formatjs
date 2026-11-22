@@ -24,6 +24,8 @@ pub struct PlainDate<C = Calendar>(i64, C);
 impl PlainDate {
     // Proposal comparison §3.1.1 steps 8, 9, 10. Check typed ISO date fields and encode the date at noon.
     pub fn new(year: i32, month: u8, day: u8) -> Result<Self, Error> {
+        // ECMA-262 preview §22.3.9.3 steps 1–2: validate ISO fields before storing the packed date.
+        // https://tc39.es/ecma262/pr/3966/#sec-createisodaterecord
         let value = IsoDateTime {
             year,
             month,
@@ -330,6 +332,8 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     ) -> Result<Self, Error> {
         let date = PlainDate::from_calendar_fields(calendar, fields.date, overflow)?;
         let time = if fields.time.is_empty() {
+            // ECMA-262 preview §22.3.15.7: packed zero represents every midnight field.
+            // https://tc39.es/ecma262/pr/3966/#sec-midnighttimerecord
             PlainTime::from_nanoseconds(0)?
         } else {
             PlainTime::from_fields(fields.time, overflow)?

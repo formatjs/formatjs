@@ -31,6 +31,8 @@ export type TimeUnit =
   | 'microsecond'
   | 'nanosecond'
 export type Precision = 'auto' | 'minute' | number
+// ECMA-262 preview §22.3.16.3 steps 2–8: lengths for the clock units in nanoseconds.
+// https://tc39.es/ecma262/pr/3966/#sec-temporalunitlength
 export const timeUnitNanoseconds: Record<TimeUnit, bigint> = {
   hour: 3_600_000_000_000n,
   minute: 60_000_000_000n,

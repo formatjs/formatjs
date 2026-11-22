@@ -488,6 +488,9 @@ function isValidDate(year: string, month: string, day: string): boolean {
     m = +month,
     d = +day
   const leap = y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0)
+  // ECMA-262 preview §§22.4.1.1–2: bound the month/day pair and allow February 29 only in leap years.
+  // https://tc39.es/ecma262/pr/3966/#sec-rfc9557grammar-static-semantics-isvalidmonthday
+  // https://tc39.es/ecma262/pr/3966/#sec-rfc9557grammar-static-semantics-isvaliddate
   const maximum =
     m === 2 ? 28 + numberFrom(leap) : arrayIncludes([4, 6, 9, 11], m) ? 30 : 31
   return year !== '-000000' && m >= 1 && m <= 12 && d >= 1 && d <= maximum

@@ -48,6 +48,39 @@ installTemporal(true)
 function check(value: boolean, context: string): void {
   if (!value) throw new Error(context)
 }
+{
+  const zoned = new Temporal.ZonedDateTime(0n, '-01:00')
+  const date = new Temporal.PlainDate(1969, 12, 31)
+  const originalGet = WeakMap.prototype.get
+  const originalSet = WeakMap.prototype.set
+  const originalOwner = Object.getOwnPropertyDescriptor(
+    Object.prototype,
+    'owner'
+  )
+  const unexpected = () => {
+    throw new Error('Calendar getter invoked a user hook')
+  }
+  try {
+    WeakMap.prototype.get = unexpected
+    WeakMap.prototype.set = unexpected
+    Object.defineProperty(Object.prototype, 'owner', {
+      configurable: true,
+      get: unexpected,
+      set: unexpected,
+    })
+    check(zoned.calendarId === 'iso8601', 'Zoned calendar identifier')
+    check(zoned.hour === 23 && zoned.year === 1969, 'Cold zoned projection')
+    check(zoned.minute === 0 && zoned.day === 31, 'Cached zoned projection')
+    check(date.year === 1969, 'Cold date projection')
+    check(date.day === 31, 'Cached date projection')
+  } finally {
+    WeakMap.prototype.get = originalGet
+    WeakMap.prototype.set = originalSet
+    if (originalOwner)
+      Object.defineProperty(Object.prototype, 'owner', originalOwner)
+    else Reflect.deleteProperty(Object.prototype, 'owner')
+  }
+}
 configureNativeTemporal(source => {
   const request = JSON.parse(source)
   delete request.clockSnapshot

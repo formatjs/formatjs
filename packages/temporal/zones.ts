@@ -202,6 +202,8 @@ export function timeZoneIdentifier(value: unknown): string {
     )
   }
   if (!spellings) {
+    // ECMA-262 preview §22.2.6: generated names and links supply the available identifier records.
+    // https://tc39.es/ecma262/pr/3966/#sec-availablenamedtimezoneidentifiers
     const {primary, links, names} = fallbackTimeZoneIdentifiers()
     spellings = new MapConstructor()
     for (let i = 0; i < names.length; i++) {
@@ -246,6 +248,8 @@ export function zonedKernel(identifier: string): TimeZoneKernel {
   }
   const result: TimeZoneKernel = {
     // Proposal comparison §6.3.46 steps 8 and 11: Return no transition for a constant-offset provider.
+    // ECMA-262 preview §22.2.4: UTC has no offset changes.
+    // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
     transition: instant => {
       check(instant)
       return null

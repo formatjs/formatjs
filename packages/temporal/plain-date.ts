@@ -458,6 +458,10 @@ class PlainDateValue {
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.toplaindatetime
     // Temporal comparison §3.3.28 step3 uses private ToTemporalTime conversion.
     const slot = read(this)
+    // ECMA-262 preview §22.3.15.14 steps 1–3: default to a zero clock or convert the input.
+    // https://tc39.es/ecma262/pr/3966/#sec-totimerecordormidnight
+    // §22.3.15.7 step 1: zero nanoseconds encode midnight.
+    // https://tc39.es/ecma262/pr/3966/#sec-midnighttimerecord
     const clock = time === undefined ? 0n : toPlainTimeNanoseconds(time)
     return createPlainDateTime(
       bigIntFrom(slot.epochDay) * nsPerDay + clock,

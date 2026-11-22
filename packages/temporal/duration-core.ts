@@ -48,6 +48,8 @@ const timeFactors = [
 
 // Temporal comparison §7.5.12 step 3.
 // Initialize all ten fields of the private duration record to zero.
+// ECMA-262 preview §22.3.4.5 step 1: the first four fields encode ZeroDateDuration.
+// https://tc39.es/ecma262/pr/3966/#sec-zerodateduration
 export function zeroDuration(): DurationFields {
   return {
     years: 0,
@@ -65,6 +67,10 @@ export function zeroDuration(): DurationFields {
 // Temporal comparison §7.5.13 steps1–2: return the first nonzero component sign
 // https://tc39.es/proposal-temporal/#sec-durationsign
 export function durationSign(fields: DurationFields): -1 | 0 | 1 {
+  // ECMA-262 preview §22.3.4.4 steps 1–9 check years through days first.
+  // https://tc39.es/ecma262/pr/3966/#sec-datedurationsign
+  // §22.3.7.2 steps 1–3 then fall back to the time sign.
+  // https://tc39.es/ecma262/pr/3966/#sec-internaldurationsign
   for (let index = 0; index < durationFieldNames.length; index++) {
     const key = durationFieldNames[index]
     if (fields[key] < 0) return -1
@@ -86,6 +92,8 @@ export function durationNanoseconds(
   includeDays = true
 ): bigint {
   let value = 0n
+  // ECMA-262 preview §22.3.7.4 steps 1–4: include days in the exact time span when requested.
+  // https://tc39.es/ecma262/pr/3966/#sec-tointernaldurationrecordwith24hourdays
   for (let i = includeDays ? 3 : 4; i < durationFieldNames.length; i++)
     value += bigIntFrom(fields[durationFieldNames[i]]) * timeFactors[i - 3]
   return value
@@ -123,8 +131,8 @@ export function integralDurationNumber(value: unknown): number {
     throw new RangeErrorConstructor('Duration fields must be integral')
   return number || 0
 }
-// Temporal comparison §7.5.18 steps1–25: alphabetic Gets with immediate independent conversion
-// https://tc39.es/proposal-temporal/#sec-temporal-totemporalpartialdurationrecord
+// ECMA-262 preview §22.15.5.10 steps 1–24: alphabetic property reads and immediate integer conversion.
+// https://tc39.es/ecma262/pr/3966/#sec-topartialdurationrecord
 export function partialDuration(value: unknown): Partial<DurationFields> {
   if (!IsObject(value))
     throw new TypeErrorConstructor('Duration fields must be an object')

@@ -18,6 +18,8 @@ export function formatInstant(
   offset?: bigint
 ): string {
   const fields = epochNanosecondsToISO(value + (offset ?? 0n))
+  // ECMA-262 preview §22.5.4 steps 1–7: format ISO date and clock at the requested precision.
+  // https://tc39.es/ecma262/pr/3966/#sec-formatisodatetime
   // Temporal comparison §3.5.10 steps 1 and 3, §5.5.9 steps 2 and 3,
   // §13.26 steps 2, 3 and 5. Pad the magnitude to the requested width.
   const pad = (value: number, length = 2): string =>
@@ -41,6 +43,8 @@ export function formatInstant(
   // https://tc39.es/proposal-temporal/#sec-temporal-formatdatetimeutcoffsetrounded
   const absolute = offset < 0n ? -offset : offset
   const minutes = numberFrom((absolute + 30_000_000_000n) / 60_000_000_000n)
+  // ECMA-262 preview §22.5.5 steps 1–6: join the sign and extended hour/minute text.
+  // https://tc39.es/ecma262/pr/3966/#sec-formatoffsettimezoneidentifier
   return (
     result +
     (offset < 0n && minutes !== 0 ? '-' : '+') +

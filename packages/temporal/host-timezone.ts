@@ -484,6 +484,8 @@ export function createHostTimeZone(timeZone: string): TimeZoneKernel {
     // exceptions in the search before skipping into the recurring tail.
     const knownEnd = now > lastExplicit ? now : lastExplicit
     const historyEnd = knownEnd + horizon
+    // ECMA-262 preview §22.2.4: a previous transition must precede the input, so probe from one nanosecond earlier.
+    // https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
     const original = floorSecond(next ? instant : instant - 1n)
     let cursor = next ? (original < earliest ? earliest : original) : original
     const end = next

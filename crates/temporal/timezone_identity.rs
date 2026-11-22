@@ -11,6 +11,8 @@ pub struct NamedTimeZoneIdentifier {
 
 // Proposal comparison §11.1.1 steps 1.a and 2: Look up spelling and primary ID by ASCII-insensitive name.
 pub fn named_time_zone_identifier(value: &str) -> Option<NamedTimeZoneIdentifier> {
+    // ECMA-262 preview §22.2.6: generated names pair each available identifier with its primary.
+    // https://tc39.es/ecma262/pr/3966/#sec-availablenamedtimezoneidentifiers
     let index = data::IDENTIFIERS
         .binary_search_by(|entry| {
             entry

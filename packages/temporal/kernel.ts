@@ -280,6 +280,8 @@ export function addISODays(
 
 // Temporal comparison §6.3.46 steps 9.a and 10.b.
 // Use the packed formatter's exact transition search, including the footer handoff.
+// ECMA-262 preview §22.2.4: previous means strictly before the instant and within bounds.
+// https://tc39.es/ecma262/pr/3966/#sec-getnamedtimezoneprevioustransition
 function zoneTransition(
   data: UnpackedTimeZoneData,
   instant: bigint,

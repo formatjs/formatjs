@@ -10,6 +10,7 @@ import {
   bigIntFrom,
   mathMin,
   numberFrom,
+  setDataProperty,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {
   argumentAt,
@@ -184,17 +185,19 @@ const zonedSnapshots = new WeakMap<
     date: {epochDay: number; calendar: string; properties: NativeDateSnapshot}
   }
 >()
+const getZonedSnapshot = zonedSnapshots.get.bind(zonedSnapshots)
+const setZonedSnapshot = zonedSnapshots.set.bind(zonedSnapshots)
 // Proposal comparison §11.1.10 steps 1–3 and §12.3.26 steps 1.b and 2: Reuse native zoned projection by slot.
 function zonedSnapshot(slot: ZonedSlot) {
   const owner = nativeTemporal()
   if (!owner) return undefined
-  let entry = zonedSnapshots.get(slot)
+  let entry = getZonedSnapshot(slot)
   if (entry?.owner === owner) return entry
   const value =
     slot.properties?.owner === owner
       ? slot.properties
       : owner.zonedProperties(slot)
-  value.owner = owner
+  setDataProperty(value, 'owner', owner)
   const local = bigIntFrom(value.values.localNanoseconds as string)
   entry = {
     owner,
@@ -206,7 +209,7 @@ function zonedSnapshot(slot: ZonedSlot) {
       properties: value,
     },
   }
-  zonedSnapshots.set(slot, entry)
+  setZonedSnapshot(slot, entry)
   return entry
 }
 // Proposal comparison §11.1.10 steps 1–3: Project an exact zoned epoch into local nanoseconds.
@@ -340,11 +343,14 @@ function resolveOffsetNanoseconds(
   ambiguous: Disambiguation,
   matchMinute: boolean
 ): bigint {
+  // ECMA-262 preview §22.9.5.10 step 4 balances the offset-adjusted clock.
+  // §22.3.10.1 steps 1–5 compose to the same packed epoch; the Instant check also bounds its day.
+  // https://tc39.es/ecma262/pr/3966/#sec-balanceisodatetime
   if (behavior === 'use') return validateInstant(localTime - provided)
   const instantLimit = 8_640_000_000_000_000_000_000n
-  // §6.5.1 step 7 checks the local date. Keep this guard while MakeDay is unresolved.
-  // https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset
-  // https://github.com/tc39/ecma262/issues/1087
+  // ECMA-262 preview §22.3.5.1 steps 1–2 bound the local day before matching an offset.
+  // The prepared date-time already bounds the upper day.
+  // https://tc39.es/ecma262/pr/3966/#sec-validateisodaysrange
   if (localTime < -instantLimit)
     throw new RangeErrorConstructor('Local date out of range')
   const candidates = kernel.possibleInstants(fields)
@@ -1305,35 +1311,41 @@ Object.defineProperties(ZonedDateTimeValue.prototype, {
   constructor: {value: ZonedDateTime, writable: true, configurable: true},
   [Symbol.toStringTag]: {value: 'Temporal.ZonedDateTime', configurable: true},
 })
-// Shared getter registrations; numbered rendered proposal comparisons.
-// §6.3.3 steps 1–3: calendarId.
-// §6.3.5 steps 1–4: era.
-// §6.3.6 steps 1–6: eraYear.
-// §6.3.7 steps 1–4: year.
-// §6.3.8 steps 1–4: month.
-// §6.3.9 steps 1–4: monthCode.
-// §6.3.10 steps 1–4: day.
-// §6.3.11 steps 1–4: hour.
-// §6.3.12 steps 1–4: minute.
-// §6.3.13 steps 1–4: second.
-// §6.3.14 steps 1–4: millisecond.
-// §6.3.15 steps 1–4: microsecond.
-// §6.3.16 steps 1–4: nanosecond.
-// §6.3.19 steps 1–4: dayOfWeek.
-// §6.3.20 steps 1–4: dayOfYear.
-// §6.3.21 steps 1–6: weekOfYear.
-// §6.3.22 steps 1–6: yearOfWeek.
-// §6.3.24 steps 1–4: daysInWeek.
-// §6.3.25 steps 1–4: daysInMonth.
-// §6.3.26 steps 1–4: daysInYear.
-// §6.3.27 steps 1–4: monthsInYear.
-// §6.3.28 steps 1–4: inLeapYear.
+// ECMA-262 preview §22.9.3.3 reads the stored calendar identifier.
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.calendarid
+// §§22.9.3.5–.10 project the local ISO date into the calendar's date fields.
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.era
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.erayear
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.year
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.month
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.monthcode
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.day
+// §§22.9.3.11–.16 read the local ISO clock fields.
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.hour
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.minute
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.second
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.millisecond
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.microsecond
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.nanosecond
+// §§22.9.3.19–.22 read the calendar's weekday, ordinal day and optional week fields.
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.dayofweek
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.dayofyear
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.weekofyear
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.yearofweek
+// §§22.9.3.24–.28 read the calendar's lengths and leap-year flag.
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.daysinweek
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.daysinmonth
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.daysinyear
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.monthsinyear
+// https://tc39.es/ecma262/pr/3966/#sec-get-temporal.zoneddatetime.prototype.inleapyear
 defineGetters(
   ZonedDateTimeValue.prototype,
   [...datePropertyNames, ...clockNames],
   (receiver, name) => {
-    const slot = read(receiver),
-      cached = zonedSnapshot(slot)
+    // Steps 1–2 check the receiver's slot before reading or projecting fields.
+    const slot = read(receiver)
+    if (name === 'calendarId') return slot.calendar
+    const cached = zonedSnapshot(slot)
     if (cached) {
       if (arrayIncludes(clockNames as readonly string[], name))
         return cached.value.values[name]

@@ -153,6 +153,10 @@ impl PlainTime {
     // ECMA-262 preview §22.12.5.3 steps 3–5: add the clock span modulo one day.
     // https://tc39.es/ecma262/pr/3966/#sec-adddurationtotime
     pub fn checked_add(self, duration: Duration) -> Result<Self, Error> {
+        // ECMA-262 preview §22.3.15.1 step 1: add the exact span to the clock.
+        // https://tc39.es/ecma262/pr/3966/#sec-addtime
+        // §22.3.15.2 steps 1–13 balance it. PlainTime stores only the within-day remainder.
+        // https://tc39.es/ecma262/pr/3966/#sec-balancetime
         Ok(Self(
             (self.0 + duration.time_nanoseconds(false)?).rem_euclid(NANOSECONDS_PER_DAY),
         ))

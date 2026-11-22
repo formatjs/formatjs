@@ -277,6 +277,8 @@ const dateSnapshots = new WeakMap<
   DateSlot,
   {owner: NativeTemporal; value: NativeDateSnapshot}
 >()
+const getDateSnapshot = dateSnapshots.get.bind(dateSnapshots)
+const setDateSnapshot = dateSnapshots.set.bind(dateSnapshots)
 // Proposal comparison §12.3.26 steps 1.b and 2: Reuse or request native calendar projection for a date slot.
 export function nativeDateSnapshot(
   slot: DateSlot,
@@ -295,7 +297,7 @@ export function nativeDateSnapshot(
     slot.properties?.owner === owner
   )
     return slot.properties
-  const existing = dateSnapshots.get(slot)
+  const existing = getDateSnapshot(slot)
   if (existing?.owner === owner) return existing.value
   const value =
     slot.properties?.owner === owner
@@ -306,7 +308,7 @@ export function nativeDateSnapshot(
           extended,
           nanoseconds
         )
-  dateSnapshots.set(slot, {owner, value})
+  setDateSnapshot(slot, {owner, value})
   return value
 }
 export function dateFields(slot: DateSlot, extended = false): CalendarDate {
@@ -413,6 +415,8 @@ export function dateFieldNames(
     const key = orderedDateFields[index]
     let include: boolean
     if (key === 'day') include = shape === 'date'
+    // ECMA-262 preview §22.3.3.11 steps 1–2: include era fields for calendars that use them.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarextrafields
     else if (key === 'era' || key === 'eraYear')
       include = !arrayIncludes(['iso8601', 'chinese', 'dangi'], calendar)
     else if (key === 'month' || key === 'monthCode') include = shape !== 'year'
@@ -552,6 +556,8 @@ export function mergeDateFields(
   updates: Record<string, unknown>
 ): Record<string, unknown> {
   if (calendar === 'iso8601') {
+    // ECMA-262 preview §22.3.3.12 step 1.e: a new month or month code discards both old fields.
+    // https://tc39.es/ecma262/pr/3966/#sec-calendarfieldkeystoignore
     const monthCode = fields.monthCode
     return {
       ...fields,
@@ -581,6 +587,8 @@ export function mergeDateFields(
     base.era = undefined
     base.eraYear = undefined
   }
+  // ECMA-262 preview §22.3.3.13 note: Japanese era boundaries can fall mid-month.
+  // https://tc39.es/ecma262/pr/3966/#sec-nonisofieldkeystoignore
   if (
     calendar === 'japanese' &&
     (updates.day !== undefined ||
@@ -818,6 +826,8 @@ export function dateProperty(
       // https://tc39.es/ecma262/pr/3966/#sec-isoweekofyear
       const weekday = ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
       const thursday = slot.epochDay + 4 - weekday
+      // ECMA-262 preview §22.3.5.2 step 1: convert the epoch day at midnight to milliseconds.
+      // https://tc39.es/ecma262/pr/3966/#sec-epochdaystoepochmilliseconds
       const year = YearFromTime(thursday * 86400000)
       return key === 'yearOfWeek'
         ? year

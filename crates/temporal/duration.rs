@@ -127,7 +127,8 @@ impl Duration {
             .unwrap_or(0)
             .signum() as i8
     }
-    // Proposal comparison §7.3.16 step 3: negate each typed duration field.
+    // ECMA-262 preview §22.15.5.2 step 1: negate every stored duration field.
+    // https://tc39.es/ecma262/pr/3966/#sec-createnegatedtemporalduration
     pub fn negated(self) -> Self {
         Self(self.0.map(|value| -value))
     }

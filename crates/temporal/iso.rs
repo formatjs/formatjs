@@ -67,6 +67,9 @@ impl IsoDateTime {
 // Line tags below refer to this pinned timezone.html.
 // Proposal comparison §11.1.2 steps 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16. Decode the Gregorian day and retain the complete clock remainder.
 pub(crate) fn iso_from_epoch_nanoseconds_raw(value: i128) -> IsoDateTime {
+    // ECMA-262 preview §22.3.10.1 steps 1–5: split the offset-adjusted scalar into its
+    // balanced date and within-day clock. The day carry is already in the quotient.
+    // https://tc39.es/ecma262/pr/3966/#sec-balanceisodatetime
     // L62: valid Instant inputs satisfy this raw converter's supported domain.
     // L64: exact day/clock division replaces the integral-millisecond intermediate.
     let days = value.div_euclid(NANOSECONDS_PER_DAY);

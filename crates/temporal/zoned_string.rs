@@ -117,9 +117,9 @@ impl<Z: TimeZone, C: CalendarProvider> ZonedDateTime<Z, C> {
             if options.offset == OffsetOption::Use {
                 Instant::from_epoch_nanoseconds(local - provided)?
             } else {
-                // §6.5.1 step 7 checks the local date before matching an offset.
-                // https://tc39.es/proposal-temporal/#sec-temporal-interpretisodatetimeoffset
-                // https://github.com/tc39/ecma262/issues/1087
+                // ECMA-262 preview §22.3.5.1 steps 1–2 bound the local day before matching an offset.
+                // The prepared date-time already bounds the upper day.
+                // https://tc39.es/ecma262/pr/3966/#sec-validateisodaysrange
                 if local < -crate::MAX_EPOCH_NANOSECONDS {
                     return Err(Error::OutOfRange);
                 }

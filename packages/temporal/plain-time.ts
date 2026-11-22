@@ -234,6 +234,8 @@ function toTime(value: unknown, options?: unknown): bigint {
   return result
 }
 export function toPlainTimeNanoseconds(value: unknown): bigint {
+  // ECMA-262 preview §22.3.15.14 steps 2–3: convert a supplied clock and read its time record.
+  // https://tc39.es/ecma262/pr/3966/#sec-totimerecordormidnight
   // Temporal comparison §4.5.6: reuse internal conversion in both backends.
   return import.meta.formatjsTemporalNativeData === true
     ? bigIntFrom(toNativeTime(value).nanoseconds)
@@ -286,6 +288,8 @@ function create(value: bigint | NativeTimeResult): PlainTimeObject {
     return result
   }
   const result = createObject(PlainTimeValue.prototype) as PlainTimeObject
+  // ECMA-262 preview §22.3.15.2 steps 1–13: keep the within-day remainder of the balanced clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-balancetime
   setSlot(result, (((value as bigint) % day) + day) % day)
   return result
 }
@@ -399,6 +403,8 @@ function add(
     return create(native!.addPlainTimeResult(value, duration, sign < 0n))
   if (native)
     return create(native.addPlainTime(value as bigint, duration, sign < 0n))
+  // ECMA-262 preview §22.3.15.1 step 1: add the span before balancing the clock.
+  // https://tc39.es/ecma262/pr/3966/#sec-addtime
   return create((value as bigint) + sign * durationNanoseconds(duration, false))
 }
 // Temporal comparison §4.3.16 steps 11–12. Round and format the selected precision.
