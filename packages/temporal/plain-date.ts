@@ -355,20 +355,12 @@ class PlainDateValue {
     return createPlainDate(slot, slot.calendar)
   }
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
-    // Temporal comparison §3.2.3 steps 1–3.
-    // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.compare
+    // ECMA-262 preview §22.11.2.3 steps 1–3: convert and compare the private ISO dates.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaindate.compare
     const a = toPlainDateSlot(one).epochDay,
       b = toPlainDateSlot(two).epochDay
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L909-L915
-    // L909: a greater year has a greater epoch day, regardless of month/day.
-    // L910: a lesser year has a lesser epoch day, regardless of month/day.
-    // L911: within one year, a greater month has a greater epoch day.
-    // L912: within one year, a lesser month has a lesser epoch day.
-    // L913: within one month, a greater day has a greater epoch day.
-    // L914: within one month, a lesser day has a lesser epoch day.
-    // L915: equal epoch days identify the same ISO date.
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindate.html#L76
-    // L76: compare the private ISO dates and return a Number sign, ignoring calendars.
+    // ECMA-262 preview §22.3.9.2 steps 1–7: epoch day preserves ISO year, month and day order.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareisodate
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateObject {
@@ -482,6 +474,8 @@ class PlainDateValue {
   ): string {
     // Temporal comparison §3.3.31 steps 1–3.
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.tolocalestring
+    // Temporal amendment §15.11.3.1: format the branded date with Intl.
+    // https://tc39.es/proposal-temporal/#sup-temporal.plaindate.prototype.tolocalestring
     const slot = read(this)
     return localeDateTime(
       {

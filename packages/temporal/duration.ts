@@ -327,9 +327,9 @@ class DurationValue {
     const fields = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L395-L398
-    // L395: select string shorthand; L396: retain the primitive unit string.
-    // L397: create a null-prototype record; L398: create its own smallestUnit data property.
+    // ECMA-262 preview §22.15.3.20 steps 4–4.c: make an own smallestUnit
+    // data property on a null-prototype options object for string shorthand.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.duration.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? unitOptions(roundTo)
@@ -364,13 +364,12 @@ class DurationValue {
       largeIndex = arrayIndexOf(units, largest)
     if (largeIndex > smallIndex)
       throw new RangeErrorConstructor('Largest unit smaller than smallest unit')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722
-    // Calendar rows have no fixed cap; time rows use 24, 60, 60, 1000, 1000, 1000.
-    // L432-L437: positive integer increments must be smaller divisors of that cap.
     if (smallIndex > 3) {
       // ECMA-262 preview §22.3.13.3 steps 1–4: only clock units have a maximum.
       // https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
       const maximum = [24, 60, 60, 1000, 1000, 1000][smallIndex - 4]
+      // ECMA-262 preview §22.3.13.7 steps 2–4: require a divisor below the maximum.
+      // https://tc39.es/ecma262/pr/3966/#sec-validatetemporalroundingincrement
       if (increment >= maximum || maximum % increment)
         throw new RangeErrorConstructor('Invalid rounding increment')
     }
@@ -410,9 +409,9 @@ class DurationValue {
     const fields = read(this)
     if (options === undefined)
       throw new TypeErrorConstructor('totalOf is required')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L468-L471
-    // L468: select string shorthand; L469: retain the primitive unit string.
-    // L470: create a null-prototype record; L471: create its own unit data property.
+    // ECMA-262 preview §22.15.3.21 steps 4–4.c: make an own unit data
+    // property on a null-prototype options object for string shorthand.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.duration.prototype.total
     const resolved =
       typeof options === 'string'
         ? unitOptions(options, 'unit')

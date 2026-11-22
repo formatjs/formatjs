@@ -55,6 +55,8 @@ export function initializeDurationFormatProviders(df: DurationFormat): void {
   })
 }
 
+// Temporal amendment §15.9.8: partition normalized Temporal.Duration fields.
+// https://tc39.es/proposal-temporal/#sec-partitiondurationformatpattern
 export function PartitionDurationFormatPattern(
   df: DurationFormat,
   duration: DurationRecord
@@ -110,6 +112,8 @@ export function PartitionDurationFormatPattern(
         nextStyle = internalSlots.nanoseconds
       }
       if (nextStyle === 'numeric' || nextStyle === 'fractional') {
+        // Temporal amendment §15.9.6: fold fractional duration fields exactly.
+        // https://tc39.es/proposal-temporal/#sec-computefractionaldigits
         if (unit === 'seconds') {
           value = value
             .plus(
@@ -160,7 +164,8 @@ export function PartitionDurationFormatPattern(
     // ECMA-402 §13.5.12, step 15.a: keep zero minutes between displayed
     // numeric hours and seconds, even when minutesDisplay is auto.
     // https://tc39.es/ecma402/#sec-formatnumericunits
-    // https://github.com/tc39/ecma402/blob/b1c961988b9a07894b1dc3dc2b5626ea48387d61/spec/durationformat.html#L863-L864
+    // Temporal amendment §15.9.7: format the numeric sequence from duration fields.
+    // https://tc39.es/proposal-temporal/#sec-formatnumericunits
     const minutesBetweenHoursAndSeconds =
       unit === 'minutes' &&
       separated &&

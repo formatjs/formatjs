@@ -408,12 +408,11 @@ class PlainDateTimeValue {
     // https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.compare
     const a = toPlainDateTimeSlot(one).epochNanoseconds,
       b = toPlainDateTimeSlot(two).epochNanoseconds
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L920-L922
-    // L920: epoch-day order equals ISO-date order; each clock lies within one day.
-    // L921: different dates dominate the entire clock remainder.
-    // L922: on equal dates, exact nanoseconds compare the six clock fields.
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L78
-    // L78: return the private date-time comparison as a Number sign.
+    // ECMA-262 preview §22.3.10.2 steps 1–3: epoch days order the dates,
+    // then the remainder orders the six clock fields on equal dates.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareisodatetime
+    // §22.10.2.3 step 3 returns the comparison as a Number.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaindatetime.compare
     return a < b ? -1 : a > b ? 1 : 0
   }
   with(item: unknown, options: unknown = undefined): PlainDateTimeObject {
@@ -530,9 +529,9 @@ class PlainDateTimeValue {
     const slot = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L495-L498
-    // L495: select string shorthand; L496: retain the primitive unit string.
-    // L497: create a null-prototype record; L498: create its own smallestUnit data property.
+    // ECMA-262 preview §22.10.3.32 steps 4–4.c: make an own smallestUnit
+    // data property on a null-prototype options object for string shorthand.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaindatetime.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? unitOptions(roundTo)

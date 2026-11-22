@@ -528,14 +528,16 @@ pub(crate) fn validate_options(
     if largest > smallest || increment == 0 || increment > 1_000_000_000 {
         return Err(Error::InvalidRoundingOptions);
     }
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L722
-    // Date units have no fixed cap; time rows use strict L432-L437 validation.
+    // ECMA-262 preview §22.3.13.3 steps 1–4: only clock units have a maximum.
+    // https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
     if let Some(time) = smallest.time() {
         let maximum = match time {
             TimeUnit::Hour => 24,
             TimeUnit::Minute | TimeUnit::Second => 60,
             _ => 1000,
         };
+        // ECMA-262 preview §22.3.13.7 steps 2–4: require a divisor below the maximum.
+        // https://tc39.es/ecma262/pr/3966/#sec-validatetemporalroundingincrement
         if increment >= maximum || maximum % increment != 0 {
             return Err(Error::InvalidRoundingOptions);
         }

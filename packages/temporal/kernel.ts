@@ -143,8 +143,8 @@ function floorDivide(value: bigint, divisor: bigint): bigint {
 // Temporal comparison §8.5.1 step 1.
 // Check inclusive Instant epoch bounds before the zone operation.
 function checkInstant(value: bigint): bigint {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
-  // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
+  // ECMA-262 preview §22.3.6.4 step 1: require inclusive epoch bounds.
+  // https://tc39.es/ecma262/pr/3966/#sec-iswithinepochnanosecondsinterval
   if (value < -limit || value > limit)
     throw new RangeErrorConstructor('Instant out of range')
   return value
@@ -196,73 +196,63 @@ export function isoToEpochNanoseconds(fields: ISODateTime): bigint {
     numberFrom(month > 2 && leap) +
     date -
     1
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/mainadditions.html#L356-L359
-  // L356: valid clock fields give exact hour/minute/second/millisecond sums.
-  // L357: day and clock terms equal MakeDate's millisecond composition.
-  // L358: candidates admitted by the day bound have integral |ms| < 2**53.
-  // L359: bigint composition retains all microsecond/nanosecond digits.
+  // ECMA-262 preview §22.1.1.17: compose day and clock nanoseconds exactly.
+  // https://tc39.es/ecma262/pr/3966/#sec-getutcepochnanoseconds
   const value =
     bigIntFrom(epochDay) * day +
     bigIntFrom(time[0] * 3600 + time[1] * 60 + time[2]) * second +
     bigIntFrom(time[3] * 1_000_000 + time[4] * 1000 + time[5])
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaindatetime.html#L762-L766
-  // L762: for valid clocks, this interval also implies |epochDay| <= 100000001.
-  // L764: equality at the lower local boundary is rejected.
-  // L765: equality at the upper local boundary is rejected.
+  // ECMA-262 preview §22.3.10.4 steps 3–4: keep both local endpoints exclusive.
+  // https://tc39.es/ecma262/pr/3966/#sec-isodatetimewithinlimits
+  // Preserve the intended minimum local date: https://github.com/tc39/ecma262/pull/3966#discussion_r4283470645
   if (value <= -limit - day || value >= limit + day)
     throw new RangeErrorConstructor('Local date out of range')
-  // L766: successful return represents the predicate's true result.
   return value
 }
 
-// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L62-L77
-// Line tags below refer to this pinned timezone.html.
-// Temporal comparison §11.1.2 steps 2–16.
-// Project the epoch into exact Gregorian date and clock fields.
+// ECMA-262 preview §22.2.12 steps 3–15: project ISO fields from an offset-adjusted epoch.
+// https://tc39.es/ecma262/pr/3966/#sec-getisodatetimefor
 // ECMA-262 preview §22.3.10: return the ISO date and time in a flat record.
 // https://tc39.es/ecma262/pr/3966/#sec-iso-date-time-records
 export function epochNanosecondsToISO(value: bigint): Required<ISODateTime> {
   const native = nativeTemporal()
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.epochNanosecondsToISO(value)
-  // L62: the valid-Instant domain is contained in this wider local-time domain.
+  // Local projection also accepts values outside the Instant interval.
   if (value <= -limit - day || value >= limit + day)
     throw new RangeErrorConstructor('Local date out of range')
-  // L64: exact day/clock division equals the spec's integral-millisecond split.
+  // Steps 3–4 use a whole-millisecond quotient and a submillisecond remainder.
   // Valid-Instant milliseconds fit exactly below 2**53; no rounding is needed here.
   const days = floorDivide(value, day)
   const epochDay = numberFrom(days)
-  // L63: day and clock units are multiples of 10**6, preserving its modulo remainder.
+  // Day and clock units are multiples of one millisecond.
   let time = value - days * day
-  // L68: the nonnegative day remainder determines the UTC hour.
+  // Step 8 reads the hour from the nonnegative remainder.
   const hour = numberFrom(time / (3600n * second))
   time %= 3600n * second
-  // L69: remove complete hours before selecting the UTC minute.
+  // Step 9 reads the minute after removing complete hours.
   const minute = numberFrom(time / (60n * second))
   time %= 60n * second
-  // L70: remove complete minutes before selecting the UTC second.
+  // Step 10 reads the second after removing complete minutes.
   const seconds = numberFrom(time / second)
   time %= second
-  // L65: the March-based Gregorian inverse yields the epoch year.
-  // L66: that inverse already returns a one-based month.
-  // L67: its day is the proleptic Gregorian day of month.
+  // Steps 5–7 invert the Gregorian epoch day.
   const date = ArithmeticGregorianFromEpochDay('iso8601', epochDay)
-  // L77: the flat private result combines the conceptual date and time records.
+  // Step 15 combines the date and clock into one result.
   return {
-    // L75: preserve the three ISO date-record fields.
+    // Preserve the three ISO date fields.
     year: date.year,
     month: date.month,
     day: date.day,
-    // L76: preserve the six time-record fields.
+    // Preserve the six clock fields.
     hour,
     minute,
     second: seconds,
-    // L71: complete milliseconds within the current second.
+    // Step 11 reads complete milliseconds within the current second.
     millisecond: numberFrom(time / 1_000_000n),
-    // L72: discarding complete milliseconds equals flooring remainderNs / 1000.
-    // L73: modulo 1000 guarantees a microsecond in 0..999.
+    // Steps 12–13 select the microsecond within the millisecond.
     microsecond: numberFrom((time / 1000n) % 1000n),
-    // L74: the final modulo gives the nanosecond within the microsecond.
+    // Step 14 reads the remaining nanoseconds.
     nanosecond: numberFrom(time % 1000n),
   }
 }

@@ -136,15 +136,9 @@ impl Duration {
     pub fn abs(self) -> Self {
         Self(self.0.map(i128::abs))
     }
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/duration.html#L1327-L1333
-    // Time-only terms expand the component fold; optional days are separate.
-    // L1327: an hour contributes 60 minutes.
-    // L1328: a minute contributes 60 seconds.
-    // L1329: a second contributes 1000 milliseconds.
-    // L1330: a millisecond contributes 1000 microseconds.
-    // L1331: a microsecond contributes 1000 nanoseconds.
-    // L1333: return the exact integer sum. Caller-bound assertion L1332 remains open.
-    // Proposal comparison §7.5.21 steps 1–7: combine clock units in exact nanoseconds.
+    // ECMA-262 preview §22.3.14.6 steps 1–5: fold hours through nanoseconds
+    // using exact integer factors for the successive unit conversions.
+    // https://tc39.es/ecma262/pr/3966/#sec-timedurationfromcomponents
     pub fn time_nanoseconds(self, include_days: bool) -> Result<i128, Error> {
         let mut sum = 0i128;
         // ECMA-262 preview §22.3.14.1 steps 1–3: fold optional 24-hour days into the checked span.
@@ -158,6 +152,7 @@ impl Duration {
                 )
                 .ok_or(Error::InvalidDuration)?;
         }
+        // §22.3.14.6 steps 6–7: check the range before returning the sum.
         if sum <= -MAX_DURATION_NANOSECONDS || sum >= MAX_DURATION_NANOSECONDS {
             return Err(Error::InvalidDuration);
         }
@@ -512,8 +507,9 @@ fn write_duration(
         }
         if second_ns != 0 || fields[..6].iter().all(|v| *v == 0) || precision != Precision::Auto {
             write!(f, "{}", second_ns / 1_000_000_000)?;
-            // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L762-L770
-            // Auto strips trailing zeroes, including the zero fraction; fixed precision truncates.
+            // ECMA-262 preview §22.5.3 steps 1–3: strip trailing zeroes in auto
+            // mode and truncate to the requested width in fixed mode.
+            // https://tc39.es/ecma262/pr/3966/#sec-formatfractionalseconds
             let (fraction, digits) = if let Precision::Digits(d) = precision {
                 (
                     second_ns % 1_000_000_000 / 10i128.pow(u32::from(9 - d)),

@@ -337,6 +337,8 @@ export function isoDayFromPreparedFields(
 // ECMA-262 preview §22.3.3.5 steps 1–2.
 // https://tc39.es/ecma262/pr/3966/#sec-calendardatetoiso
 // Convert prepared calendar fields to an epoch day.
+// ECMA-262 preview §22.3.3.6 applies the selected non-ISO calendar and overflow policy.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisocalendardatetoiso
 export function calendarToEpochDayRaw(
   calendar: CalendarId,
   fields: CalendarFields,
@@ -539,6 +541,8 @@ function addCalendarEpochDay(
 // Fields must come from this calendar's epoch-day conversion.
 // Temporal comparison §12.3.7 steps 1.a, 1.b, 1.d, 2.a.
 // Carry normalized calendar arithmetic back as an epoch day and fields.
+// ECMA-262 preview §22.3.3.2 delegates non-ISO date addition to the calendar.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisodateadd
 export function addNormalizedCalendarDate(
   calendar: CalendarId,
   original: Readonly<CalendarDate>,
@@ -595,6 +599,8 @@ export function calendarMonthSerial(
 }
 // Temporal comparison §12.3.9 steps 2, 3.k, 4.
 // Compute the date duration for the prepared endpoints and largest unit.
+// ECMA-262 preview §22.3.3.4 limits the resulting date fields to the requested unit.
+// https://tc39.es/ecma262/pr/3966/#sec-nonisodateuntil
 export function calendarDateUntilRaw(
   calendar: CalendarId,
   one: number,

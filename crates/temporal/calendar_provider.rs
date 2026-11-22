@@ -11,6 +11,8 @@ mod sealed {
 pub trait CalendarProvider: sealed::Sealed + Copy {
     fn id(self) -> &'static str;
     fn date_extended(self, epoch: i64) -> Result<Date, crate::calendar::Error>;
+    // ECMA-262 preview §22.3.3.6: convert resolved calendar fields to an ISO epoch day.
+    // https://tc39.es/ecma262/pr/3966/#sec-nonisocalendardatetoiso
     fn epoch_day_extended(
         self,
         year: i32,
@@ -18,6 +20,8 @@ pub trait CalendarProvider: sealed::Sealed + Copy {
         day: i32,
         overflow: Overflow,
     ) -> Result<i64, crate::calendar::Error>;
+    // ECMA-262 preview §22.3.3.2: add date units using the selected calendar.
+    // https://tc39.es/ecma262/pr/3966/#sec-nonisodateadd
     fn add_extended(
         self,
         epoch: i64,
@@ -50,6 +54,8 @@ pub trait CalendarProvider: sealed::Sealed + Copy {
         duration: DateDuration,
         overflow: Overflow,
     ) -> Result<i64, crate::calendar::Error>;
+    // ECMA-262 preview §22.3.3.4: limit calendar differences to the requested largest unit.
+    // https://tc39.es/ecma262/pr/3966/#sec-nonisodateuntil
     fn until_raw(
         self,
         one: i64,

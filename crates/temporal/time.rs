@@ -2,20 +2,9 @@ use crate::rounding::{round_duration, round_instant};
 use crate::{Duration, Error, NANOSECONDS_PER_DAY, Overflow, Precision, RoundingMode, TimeUnit};
 use core::{fmt, str::FromStr};
 
-// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L833-L845
-// L833: a greater hour dominates every lower clock field.
-// L834: a lesser hour dominates every lower clock field.
-// L835: with equal hours, a greater minute gives greater nanoseconds.
-// L836: with equal hours, a lesser minute gives lesser nanoseconds.
-// L837: with equal hours/minutes, a greater second gives greater nanoseconds.
-// L838: with equal hours/minutes, a lesser second gives lesser nanoseconds.
-// L839: with equal higher fields, greater milliseconds give greater nanoseconds.
-// L840: with equal higher fields, lesser milliseconds give lesser nanoseconds.
-// L841: with equal higher fields, greater microseconds give greater nanoseconds.
-// L842: with equal higher fields, lesser microseconds give lesser nanoseconds.
-// L843: with equal higher fields, greater nanoseconds compare greater.
-// L844: with equal higher fields, lesser nanoseconds compare lesser.
-// L845: equal clock totals identify all six normalized clock fields.
+// ECMA-262 preview §22.3.15.3 steps 1–13: ordering by packed nanoseconds
+// compares normalized clock fields from largest to smallest unit.
+// https://tc39.es/ecma262/pr/3966/#sec-comparetimerecord
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
 pub struct PlainTime(i128);
 
@@ -74,24 +63,11 @@ impl PlainTime {
             i128::from(fraction % 1000),
         ];
         let mut total = 0;
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632
-        // L622: the validated overflow choice selects independent field clamping.
-        // L623: index 0 clamps hour to 0..23.
-        // L624: index 1 clamps minute to 0..59.
-        // L625: index 2 clamps second to 0..59.
-        // L626: index 3 clamps millisecond to 0..999.
-        // L627: index 4 clamps microsecond to 0..999.
-        // L628: index 5 clamps nanosecond to 0..999.
-        // L629: the other mode leaves each integer field unchanged.
-        // L630: the other validated mode is reject.
-        // L631: any unchanged field outside its bounds returns the error mapped to RangeError.
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L655-L661
-        // L655: index 0 rejects an hour outside 0..23.
-        // L656: index 1 rejects a minute outside 0..59.
-        // L657: index 2 rejects a second outside 0..59.
-        // L658: index 3 rejects a millisecond outside 0..999.
-        // L659: index 4 rejects a microsecond outside 0..999.
-        // L660: index 5 rejects a nanosecond outside 0..999.
+        // ECMA-262 preview §22.3.15.9 steps 1–3: clamp each field in
+        // constrain mode. In reject mode, keep fields unchanged for validation.
+        // https://tc39.es/ecma262/pr/3966/#sec-regulatetime
+        // §22.3.15.6 steps 1–7 supply bounds in clock-field order.
+        // https://tc39.es/ecma262/pr/3966/#sec-isvalidtime
         for (index, (maximum, factor)) in [
             (23, 3_600_000_000_000),
             (59, 60_000_000_000),
@@ -112,9 +88,8 @@ impl PlainTime {
             }
             total += value * factor;
         }
-        // L661: all six fields satisfy IsValidTime.
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L632
-        // L632: exact within-day nanoseconds encode the fields with implicit Days 0.
+        // ECMA-262 preview §22.3.15.4 steps 1–3: pack the valid clock with implicit day zero.
+        // https://tc39.es/ecma262/pr/3966/#sec-createtimerecord
         Ok(Self(total))
     }
     // ECMA-262 preview §22.3.15.4 steps 1–3: validate and encode the clock with implicit day zero.
@@ -250,9 +225,10 @@ impl PlainTime {
         })
     }
 }
-// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
-// L432-L437: L722 maxima exceed one; reject non-divisors and the dividend itself.
-// Proposal comparison §13.14 steps 2.a, 2.b, 3, 4. Validate the exclusive within-parent rounding increment.
+// ECMA-262 preview §22.3.13.3 steps 1–3: find the clock unit maximum.
+// https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
+// §22.3.13.7 steps 2–4 require a divisor strictly below that maximum.
+// https://tc39.es/ecma262/pr/3966/#sec-validatetemporalroundingincrement
 pub(crate) fn validate_increment(unit: TimeUnit, increment: u32) -> Result<(), Error> {
     let maximum = match unit {
         TimeUnit::Hour => 24,

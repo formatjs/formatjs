@@ -69,24 +69,23 @@ export type RelativeTo = {date: DateSlot} | {zoned: ZonedSlot}
 // https://tc39.es/ecma262/pr/3966/#sec-gettemporalrelativetooption
 export function toRelativeTo(value: unknown): RelativeTo | undefined {
   if (value === undefined) return undefined
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L607-L613
-  // L607: recognize a zoned value by its internal slot.
+  // §22.3.12.9 step 5.a: recognize a zoned value by its slot.
   const zoned = getZonedSlot(value as object)
-  // L608: retain the zoned anchor without reading public fields.
+  // Step 5.a.i: retain the zoned anchor without reading public fields.
   if (zoned) return {zoned}
-  // L609: recognize an initialized date.
+  // Step 5.b: recognize an initialized date.
   const date = getDateSlot(value as object)
-  // L610: retain its internal date record.
+  // Step 5.b.i: retain its internal date record.
   if (date) return {date}
-  // L611: date-times also bypass property-bag conversion.
+  // Step 5.c: date-times also bypass property-bag conversion.
   const dateTime = getDateTimeSlot(value as object)
   if (dateTime) {
-    // L612: copy its ISO date and calendar, discarding the clock.
+    // Step 5.c.i: copy its ISO date and calendar, discarding the clock.
     const date = {
       epochDay: epochDayOf(dateTime.epochNanoseconds),
       calendar: dateTime.calendar,
     }
-    // L613: return only the plain anchor.
+    // Step 5.c.ii: return the plain anchor.
     return {date}
   }
   if (typeof value === 'string') {
@@ -164,8 +163,10 @@ export function relativeTotal(
     nanosecond: 1n,
   }
   const calendarUnit = unit === 'year' || unit === 'month' || unit === 'week'
-  // DifferencePlainDateTimeWithTotal L1023 permits the plain zero shortcut.
-  // TotalRelativeDuration L1907-L1909 still nudges zero zoned calendar totals.
+  // ECMA-262 preview §22.10.5.6 step 1: equal plain endpoints total zero.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceplaindatetimewithtotal
+  // §22.15.5.18 steps 1.a–c still nudge zero zoned calendar totals.
+  // https://tc39.es/ecma262/pr/3966/#sec-totalrelativeduration
   if (
     !durationSign(fields) &&
     ('date' in relative || (!calendarUnit && unit !== 'day'))

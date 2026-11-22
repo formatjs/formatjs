@@ -26,6 +26,9 @@ export function installTemporal(force = false): void {
       enumerable: false,
     })
   if (replace || target.Temporal === Temporal) {
+    // Temporal amendment §15.4.1: capture original options at formatter creation.
+    // https://tc39.es/proposal-temporal/#sec-createdatetimeformat
+    // Existing host formatters and captured bound functions keep host behavior.
     installLegacyDateTimeFormat(target.Temporal)
     installLegacyDurationFormat(target.Temporal)
   }

@@ -128,16 +128,14 @@ function fields(value: bigint): number[] {
     numberFrom((value / factors[index]) % bigIntFrom(maxima[index]))
   )
 }
-// Temporal comparison §13.40 steps 1–3. Coerce, truncate, and normalize zero.
+// ECMA-262 preview §7.1.6 steps 1–5 and 8: coerce, check finiteness and truncate.
+// https://tc39.es/ecma262/pr/3966/#sec-snaptointeger
 function integer(value: unknown): number {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L1796-L1798
-  // L1796: unary + performs ToNumber, preserving user coercion and throws.
-  // L1798: captured truncation is unobservable; finite inputs become integers.
   const result = mathTrunc(+(value as number))
-  // L1797: truncation leaves NaN/infinities nonintegral; reject with intrinsic RangeError.
+  // Step 2 rejects non-finite values, which remain non-integral after truncation.
   if (!numberIsInteger(result))
     throw new RangeErrorConstructor('Time field must be finite')
-  // L1798: mathematical zero has no negative sign.
+  // Step 3 maps both signed zeros to mathematical zero.
   return result || 0
 }
 // Temporal comparison §13.6 steps 1–3. Read and validate overflow once.
@@ -154,17 +152,8 @@ function regulate(values: number[], constrain: boolean): bigint {
   if (import.meta.formatjsTemporalNativeData === true || native)
     return native!.regulatePlainTime(values, constrain)
   let result = 0n
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L622-L632
-  // L622: the validated overflow choice selects independent field clamping.
-  // L623: index 0 clamps hour to 0..23.
-  // L624: index 1 clamps minute to 0..59.
-  // L625: index 2 clamps second to 0..59.
-  // L626: index 3 clamps millisecond to 0..999.
-  // L627: index 4 clamps microsecond to 0..999.
-  // L628: index 5 clamps nanosecond to 0..999.
-  // L629: the other mode leaves each integer field unchanged.
-  // L630: the other validated mode is reject.
-  // L631: any unchanged field outside its bounds throws RangeError.
+  // ECMA-262 preview §22.3.15.9 steps 1–3: clamp each field or reject out-of-range input.
+  // https://tc39.es/ecma262/pr/3966/#sec-regulatetime
   // ECMA-262 preview §22.3.15.6 steps 1–7: check the six clock field limits.
   // https://tc39.es/ecma262/pr/3966/#sec-isvalidtime
   for (let index = 0; index < 6; index++) {
@@ -300,9 +289,10 @@ export function createPlainTime(value: bigint): PlainTimeObject {
 }
 // Temporal comparison §13.14 steps 2–4. Check the exclusive rounding increment.
 export function validateTimeIncrement(unit: TimeUnit, increment: number): void {
-  // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
-  // L432-L434: all six L722 maxima exceed one; strict cap is dividend - 1.
-  // L435-L437: positive integer input must fit that cap and divide the dividend.
+  // ECMA-262 preview §22.3.13.3 steps 1–4: select the parent unit's maximum.
+  // https://tc39.es/ecma262/pr/3966/#sec-maximumtemporaldurationroundingincrement
+  // ECMA-262 preview §22.3.13.7 steps 2–4: check the exclusive bound and divisibility.
+  // https://tc39.es/ecma262/pr/3966/#sec-validatetemporalroundingincrement
   const maximum = maxima[arrayIndexOf(names, unit)]
   if (increment >= maximum || maximum % increment !== 0)
     throw new RangeErrorConstructor('Invalid time rounding increment')
@@ -578,9 +568,8 @@ class PlainTimeValue implements PlainTimeObject {
         : read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/plaintime.html#L265-L268
-    // L265: select string shorthand; L266: retain the primitive unit string.
-    // L267: create a null-prototype record; L268: create its own smallestUnit data property.
+    // ECMA-262 preview §22.12.3.14 steps 4–4.c: create an own smallestUnit on a null-prototype object.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.plaintime.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? unitOptions(roundTo)

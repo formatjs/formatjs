@@ -400,6 +400,8 @@ class InstantValue implements InstantObject {
   }
   // Proposal comparison §8.3.12 steps 1–3.
   // https://tc39.es/proposal-temporal/#sec-temporal.instant.prototype.tolocalestring
+  // Temporal amendment §15.11.2.1: format the branded instant with Intl.
+  // https://tc39.es/proposal-temporal/#sup-temporal.instant.prototype.tolocalestring
   toLocaleString(
     locales: unknown = undefined,
     options: unknown = undefined

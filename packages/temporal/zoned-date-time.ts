@@ -471,19 +471,19 @@ export function toZonedDateTimeSlot(
       offset !== undefined &&
       (offset.length === 3 || offset.length === 5 || offset.length === 6)
   }
-  // String branch: https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L992-L995
-  // L992: resolve options after parsing syntax and identifiers, before range checks.
+  // ECMA-262 preview §22.9.5.2 steps 5.m–p: read string options before range checks.
+  // https://tc39.es/ecma262/pr/3966/#sec-totemporalzoneddatetime
   const resolved = optionsObject(options),
-    // L993: disambiguation is read and validated first.
+    // Step 5.n reads and validates disambiguation first.
     ambiguous = disambiguation(resolved.disambiguation),
-    // L994: offset follows, with reject as the default.
+    // Step 5.o reads offset with reject as the default.
     behavior = option(resolved.offset, 'reject', [
       'prefer',
       'use',
       'ignore',
       'reject',
     ])
-  // L995: read and validate overflow even for string input.
+  // Step 5.p validates overflow for string input.
   overflowOption(resolved)
   if (existing) return existing
   if (parsedString)
@@ -900,12 +900,10 @@ class ZonedDateTimeValue {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const a = toZonedDateTimeSlot(one).epochNanoseconds,
       b = toZonedDateTimeSlot(two).epochNanoseconds
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L435-L437
-    // L435: a greater first epoch returns 1.
-    // L436: a lesser first epoch returns -1.
-    // L437: equal epochs return 0.
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L74
-    // L74: compare private epochs; timezone and calendar do not affect the sign.
+    // ECMA-262 preview §22.9.2.3 step 3 compares the private epochs.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.compare
+    // ECMA-262 preview §22.3.6.2 steps 1–3 return the comparison sign.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareepochnanoseconds
     return a < b ? -1 : a > b ? 1 : 0
   }
   // Proposal comparison §6.3.18 steps 1–3.
@@ -1036,9 +1034,8 @@ class ZonedDateTimeValue {
     const slot = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L626-L629
-    // L626: select string shorthand; L627: retain the primitive unit string.
-    // L628: create a null-prototype record; L629: create its own smallestUnit data property.
+    // ECMA-262 preview §22.9.3.39 steps 4–4.c: use an own smallestUnit on a null-prototype object.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.round
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
         ? unitOptions(roundTo)
@@ -1273,8 +1270,6 @@ Object.defineProperty(ZonedDateTimeValue, 'name', {
 })
 if (import.meta.formatjsTemporalNativeData === true)
   NativeZonedDateTime.prototype = ZonedDateTimeValue.prototype
-// https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L30-L33
-// L30: ordinary calls reach the class target, which rejects missing NewTarget.
 // Proposal comparison §6.2.1 descriptor.
 // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype
 // ECMA-262 preview §22.9.1: class target rejects calls and supports subclassing.
@@ -1284,10 +1279,10 @@ if (import.meta.formatjsTemporalNativeData === true)
 export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
   ZonedDateTimeValue,
   {
-    // Proposal comparison §6.1.1 steps 2–11. Constructor call target supplies step 1.
-    // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime
+    // ECMA-262 preview §22.9.1.1 steps 2–11. The class target supplies step 1.
+    // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime
     construct(target, args, newTarget) {
-      // L31: ToPrimitive uses the number hint; only Boolean/String/BigInt may follow.
+      // Step 2 uses the number hint, then accepts Boolean, String or BigInt.
       const primitive = ToPrimitive(argumentAt(args, 0), 'number')
       if (
         typeof primitive !== 'bigint' &&
@@ -1295,10 +1290,10 @@ export const ZonedDateTime: ZonedDateTimeConstructor = createProxy(
         typeof primitive !== 'boolean'
       )
         throw new TypeErrorConstructor('Invalid BigInt input')
-      // L32: epoch representability precedes timezone/calendar validation.
+      // Step 3 checks epoch bounds before validating the time zone and calendar.
       const value = validateInstant(bigIntFrom(primitive))
       const zoneArgument = argumentAt(args, 1)
-      // L33: omitted and non-String timezone arguments are rejected without coercion.
+      // Step 4 requires a String time zone without coercion.
       if (typeof zoneArgument !== 'string')
         throw new TypeErrorConstructor('Timezone must be a string')
       if (isTimeZoneOffsetString(zoneArgument))

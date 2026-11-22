@@ -146,16 +146,10 @@ fn fields(value: &Value) -> Result<IsoDateTime, Error> {
             + nano("nanosecond")?,
     })
 }
-// Proposal comparison §11.1.2 steps 10–16: Split subsecond fields for the ISO wire record.
+// ECMA-262 preview §22.2.12 steps 11–15: split the packed subseconds into the
+// three clock fields. Flatten the ISO date and clock into the wire record.
+// https://tc39.es/ecma262/pr/3966/#sec-getisodatetimefor
 fn record(fields: IsoDateTime) -> Value {
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L71-L77
-    // L71: split the combined subsecond field into complete milliseconds.
-    // L72: microseconds discard complete milliseconds before selecting three digits.
-    // L73: modulo 1000 bounds that field to 0..999.
-    // L74: the final remainder gives nanoseconds within the microsecond.
-    // L75: preserve the three ISO date-record fields.
-    // L76: preserve the six time-record fields.
-    // L77: the flat transport object combines those conceptual records.
     json!({"year":fields.year,"month":fields.month,"day":fields.day,"hour":fields.hour,"minute":fields.minute,"second":fields.second,"millisecond":fields.nanosecond/1_000_000,"microsecond":fields.nanosecond/1000%1000,"nanosecond":fields.nanosecond%1000})
 }
 const DURATION_FIELDS: [&str; 10] = [
@@ -1118,8 +1112,9 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let text = request["text"].as_str().ok_or(Error::InvalidSyntax)?;
     if op == "parseZonedFields" {
         let parsed = crate::parse::zoned_fields(text)?;
-        // ParseISODateTime validates fields; JS reads options before representability.
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L977-L995
+        // ECMA-262 preview §22.9.5.2 step 5.b validates the parsed fields.
+        // JS reads options in steps 5.m–p before checking epoch bounds.
+        // https://tc39.es/ecma262/pr/3966/#sec-totemporalzoneddatetime
         parsed.fields.validate()?;
         let mut fields = record(parsed.fields);
         fields["calendar"] = json!(crate::parse::calendar_annotation(text).unwrap_or("iso8601"));
