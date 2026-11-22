@@ -1,0 +1,24 @@
+{
+  "scope": "TS public API bindings; constructors, methods, getters and descriptors. Internal helpers/native routes are separate. Mapping does not establish compliance.",
+  "requested_authority": "https://tc39.es/ecma262/",
+  "comparison_snapshot": "https://tc39.es/proposal-temporal/",
+  "comparison_html_sha256": "fc35bf6d3ae565bd8984f44b1f5740ec8024743215f82af818f0f48ad57ef22e",
+  "source_files": {
+    "packages/temporal/accessors.ts": "56bb541711c6d75f487afb851fcdf5c2b61ac0c5bb7bd9b56246cb563f97ab47",
+    "packages/temporal/date-core.ts": "e35a8795b56b1e76c7cebe47dc5a40ce306e6a92f8fa06883c7f1ea1c6ca51d5",
+    "packages/temporal/duration-core.ts": "550cd8a9981338895d5c53059e4305a326464f0078708dcf0f2e7b084977f64c",
+    "packages/temporal/duration.ts": "286c3fc3292f33c515a1e3a028b2d652e1f4dde7c0f5293b0fe7e8ec087df231",
+    "packages/temporal/index.ts": "121e72dfcfe3c585c9091779ab13d5daa3636217ff6c3f81ff3fce95c02645cf",
+    "packages/temporal/instant.ts": "7f2870f32f7b0db4f7705bea5ffee97adbfe2fd4c83f3f0f5b7ec022c49b8b23",
+    "packages/temporal/now.ts": "114250310662e4b198a9c33cde3f914dac81831c2e53dc7161f5ffd792a7f076",
+    "packages/temporal/plain-date-time.ts": "08180ab0ba9f6d34e64f79400c1ae3135dee24e63e80ffa212f69431116f3e8d",
+    "packages/temporal/plain-date.ts": "b61a9cb8b7a41c1eea3f09b03f01e67d2106ee62d0dd856d0698a8ea3fc6a317",
+    "packages/temporal/plain-month-day.ts": "98d32275aa5973e41fe5a7c7f65b8700ea904efa56e33833c098a26f75f1ca31",
+    "packages/temporal/plain-time.ts": "8e17c08e4a3706f870857e6db40ff9beb66a742d4c89dfa5de3f94cf3b6fbc38",
+    "packages/temporal/plain-year-month.ts": "6d171d21210ef7a94d25e59104b234d917d574eac7693df3cdcfb53b9f568efc",
+    "packages/temporal/zoned-date-time.ts": "6c89a851084b1c68a89cd5da701a395c8a151e8b729b91b12cf85fa425b9792e"
+  },
+  "rows": 268,
+  "mapped": 268,
+  "unresolved": []
+}

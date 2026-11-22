@@ -13,14 +13,28 @@ sections and steps. The fetched 2026-11-21 document has no Temporal API chapters
 its Temporal-prefixed productions are shared date/time grammar. Temporal chapter
 selection and the broader citation migration remain pending clarification. The
 source-line inventory below is historical evidence, not section completion.
-A provisional mapping onto the separately published proposal has 64 sections
-with prior partial evidence and 588 without mapped evidence; none is fully signed
-off. These are proposal inventory counts, not ECMA-262 section completion.
+Current [goal and execution plan](temporal-remaining-work-plan.md) replaces the
+old provisional citation count with a fixed code/spec register. All 268 public
+API/property/range entries map to existing code. The helper/backend register
+contains 1,068 existing callables, with mapping status separate from review and
+implementation defects. Existing working behavior is the baseline.
 
+Pinned comparison scope: 654 numbered clauses; 484 active algorithms and 4,085
+numbered steps, including 760 amendment steps whose applicability is pending.
+[Core rows](temporal-core-requirement-checklist.tsv) and
+[amendment rows](temporal-amendment-requirement-checklist.tsv) retain prose,
+grammar, tables and attributes too. Existing evidence is being reconciled, not
+reset: 1,747 core rows retain prior evidence references; 45 exact algorithm rows
+already carry local reviewed/conditional judgments from current audits. These
+are register migration counts, not implementation completion percentages.
+
+Prefer JavaScript runtime and Intl contracts already exercised by this polyfill.
+Add code only for a demonstrated Temporal-specific gap; do not reimplement the
+underlying standards or replace working support without evidence.
 Scope: Temporal APIs and dependencies they actually exercise. This is not an
 audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
-this audit. Current priority returns to Duration and ZonedDateTime contracts.
+this audit. Review follows fixed numbered sections; parallel reviewers own disjoint ranges.
 
 ## Private difference preparation, 2026-11-22
 
@@ -151,28 +165,15 @@ Seven focused gates pass. Expanded validation: 73 tests pass (60 executed,
 
 ## ECMA-262 dependency sections touched
 
-Execution estimate, 2026-11-22: **7–14 calendar days of sustained parallel work**,
-low confidence. This assumes continuous agent work, not eight-hour workdays.
-[Remaining work and exit criteria](temporal-remaining-work-plan.md) replace the
-obsolete historical-line throughput extrapolation. Historical traces, PR counts
-and passing tests do not measure remaining compliance work.
-
-Planning allowance: about 200–385 agent-hours, including discovered-defect and
-integration reserve, with effective 2–2.5-fold concurrency. These are estimates,
-not measured completion counts. Large calendar/timezone defects can extend the
-range; revise the forecast when evidence changes. Final normative signoff also
-requires resolving the requested Temporal chapter authority above; that is a
-separate gate, not a reason to withhold an engineering estimate.
-
-Next 24-hour checkpoint: exhaustive public-operation inventory, reconciliation
-of completed helper/provider proofs, concrete remaining obligations per open
-operation, then an updated forecast. Parallel reviewers own bounded operation
-families; runtime edits, Bazel validation and stack integration remain coordinated
-in this checkout. Reuse closed helper proofs rather than restarting their audits.
+Scope and forecast now follow the [finite code/spec plan](temporal-remaining-work-plan.md).
+The earlier 7–14-day range was provisional, not based on reconciled remaining
+obligations. Preserve existing evidence, measure newly reviewed rows, then
+estimate review, confirmed fixes and integration separately. Historical source
+lines, PR counts and green tests are not compliance progress metrics.
 
 This is a partial dependency index, not a complete Temporal chapter inventory.
 Reviewed operation contracts below do not sign off their Temporal callers.
-The historical/provisional Temporal inventory above remains unchanged.
+The historical line inventory below remains evidence for reconciliation.
 
 | Section                                                                                                                                                                                                                                                                                                            | Status                              | Evidence or gap                                                                                                                                                                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
