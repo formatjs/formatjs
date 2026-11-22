@@ -176,7 +176,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
 ) -> Result<Duration, Error> {
     validate_options(largest, smallest, increment)?;
     let origin = start.origin();
-    if origin == end {
+    let exact_zoned_nanosecond = A::ZONED && smallest == DateTimeUnit::Nanosecond && increment == 1;
+    if origin == end && (!A::ZONED || largest.time().is_some() || exact_zoned_nanosecond) {
         return Duration::new([0; 10]);
     }
     if let Some(time) = largest.time() {
@@ -186,9 +187,17 @@ pub(crate) fn difference<A: RelativeAnchor>(
         let rounded = round_duration_nanoseconds(delta, quantum, mode)?;
         return Duration::from_time_nanoseconds(rounded, time);
     }
-    let sign = (end - origin).signum();
+    let sign = if end < origin { -1 } else { 1 };
     let since_sign = if since { -1 } else { 1 };
     let mut fields = unrounded(start, end, largest)?;
+    if exact_zoned_nanosecond {
+        if since {
+            for field in &mut fields {
+                *field = -*field;
+            }
+        }
+        return Duration::new(fields);
+    }
     let mut expanded = false;
     let rounded;
     if smallest < DateTimeUnit::Day || A::ZONED && smallest == DateTimeUnit::Day {
@@ -246,27 +255,25 @@ pub(crate) fn difference<A: RelativeAnchor>(
         let time = Duration::new(fields)?.time_nanoseconds(false)?;
         let quantum = i128::from(increment) * smallest.time().unwrap().nanoseconds();
         let mut value = since_sign * round_duration_nanoseconds(time * since_sign, quantum, mode)?;
-        if value == time {
-            rounded = end;
+        let mut date = fields;
+        date[4..].fill(0);
+        let base = endpoint(start, date)?;
+        let mut next = date;
+        next[3] += sign;
+        let span = endpoint(start, next)? - base;
+        fields = date;
+        expanded = (value - span) * sign >= 0;
+        if expanded {
+            fields[3] += sign;
+            value = since_sign
+                * round_duration_nanoseconds((value - span) * since_sign, quantum, mode)?;
+            rounded = base + span + value;
         } else {
-            fields[4..].fill(0);
-            let base = endpoint(start, fields)?;
-            let mut next = fields;
-            next[3] += sign;
-            let span = endpoint(start, next)? - base;
-            expanded = (value - span) * sign >= 0;
-            if expanded {
-                fields[3] += sign;
-                value = since_sign
-                    * round_duration_nanoseconds((value - span) * since_sign, quantum, mode)?;
-                rounded = base + span + value;
-            } else {
-                rounded = base + value;
-            }
-            fields[4..].copy_from_slice(
-                &Duration::from_time_nanoseconds(value, TimeUnit::Hour)?.fields()[4..],
-            );
+            rounded = base + value;
         }
+        fields[4..].copy_from_slice(
+            &Duration::from_time_nanoseconds(value, TimeUnit::Hour)?.fields()[4..],
+        );
     } else {
         let time = Duration::new(fields)?.time_nanoseconds(true)?;
         let quantum = i128::from(increment)

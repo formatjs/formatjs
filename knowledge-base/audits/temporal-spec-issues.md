@@ -212,7 +212,7 @@ This arithmetic does not depend on FormatJS rounding output.
 
 [Existing Casey controls](../../packages/temporal/tests/zoned.test.ts#L241)
 already cover this receiver. The
-[TS day branch](../../packages/temporal/zoned-date-time.ts#L956) and
+[TS day branch](../../packages/temporal/zoned-date-time.ts#L965) and
 [Rust day branch](../../crates/temporal/zoned.rs#L211) clamp the receiver to
 `endNs - 1 ns` before rounding. That is an existing fallback, not a consequence
 of the failed assertion. Keep its behavior separate from the ordinary-day proof;
@@ -238,3 +238,23 @@ window brackets this destination; new TS/native Hermes controls preserve that
 behavior. This practical fallback is not derived from the published day branch.
 General retry sufficiency remains open. No runtime change or upstream issue
 filing is included.
+
+An ordinary New York overlap also reaches the positive retry. Start at
+2020-10-31T01:30-04:00 (1604122200000000000 ns); end at
+2020-11-01T01:00-05:00 (1604210400000000000 ns). Comparison §6.5.6 gives
+zero date days plus 24h30m. The initial day window ends at the first
+2020-11-01T01:30-04:00 (1604208600000000000 ns), only 24 hours after start.
+Destination lies 30 minutes beyond it. §7.5.34 step 5.a.i retries, but the day
+branch ignores additionalShift and repeats the same endpoints; step 5.a.ii's
+bracketing assertion fails. This strengthens the retry inconsistency without
+assuming a skipped date. The separate [minute-carry correction](temporal-day-window-engine-audit.md)
+uses NudgeToZonedTime; it does not resolve this calendar/day-total specification
+issue. No day-total expectation is inferred from another implementation.
+
+## Reverse-fold intermediate changes a zero-date time difference
+
+[Separate derivation](temporal-reverse-fold-spec-issue.md): published comparison
+§6.5.6 steps 11.b–11.d selects the earlier fold occurrence while zero-date
+addition preserves the later instant. Result misses its target by one hour when
+added back. Literal source/comparison divergence remains unresolved; no disputed
+expected result or runtime change adopted.

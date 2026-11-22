@@ -5,11 +5,8 @@ use crate::{
 
 impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     pub fn total_duration(&self, duration: Duration, unit: ZonedUnit) -> Result<f64, Error> {
-        if unit == ZonedUnit::Day {
-            self.validate_duration_day(duration)?;
-        }
         // Zero zoned calendar totals still require the next nudge endpoint.
-        if duration.sign() == 0 && unit >= ZonedUnit::Day {
+        if duration.sign() == 0 && unit > ZonedUnit::Day {
             return Ok(0.0);
         }
         let end = self.checked_add(duration, Overflow::Constrain)?;
@@ -26,9 +23,6 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
     ) -> Result<Duration, Error> {
         if smallest <= ZonedUnit::Day && largest < smallest && increment != 1 {
             return Err(Error::InvalidRoundingOptions);
-        }
-        if largest == ZonedUnit::Day {
-            self.validate_duration_day(duration)?;
         }
         let end = self.checked_add(duration, Overflow::Constrain)?;
         round(
@@ -57,19 +51,6 @@ impl<Z: TimeZone + Clone + PartialEq, C: CalendarProvider> ZonedDateTime<Z, C> {
             .checked_add(one, Overflow::Constrain)?
             .instant()
             .cmp(&self.checked_add(two, Overflow::Constrain)?.instant()))
-    }
-    fn validate_duration_day(&self, duration: Duration) -> Result<(), Error> {
-        let mut fields = duration.fields();
-        fields[4..].fill(0);
-        let anchor = self.checked_add(Duration::new(fields)?, Overflow::Constrain)?;
-        let mut day = [0; 10];
-        day[3] = if duration.sign() == 0 {
-            1
-        } else {
-            i128::from(duration.sign())
-        };
-        anchor.checked_add(Duration::new(day)?, Overflow::Constrain)?;
-        Ok(())
     }
 }
 

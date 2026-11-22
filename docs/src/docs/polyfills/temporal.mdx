@@ -83,6 +83,14 @@ transition preparation avoids replaced array methods and inherited row/metadata 
 Relative `Duration` options route strings without an extra RegExp test; full
 string validation still follows the existing parsers.
 
+Zoned date-largest differences validate the following local-day window when
+rounding requires it, including zero Duration rounding and exact subday results.
+Public until/since with equal epochs still return zero after option validation.
+Clock rounding carries across a shorter local-day window even when its time
+quantity stays unchanged. Nanosecond rounding
+with increment 1 retains its identity path. Duration totals and rounds use the
+original local clock when a timezone gap shifts an intermediate date.
+
 String shorthand such as `time.round('minute')` or `duration.total('hour')`
 creates private options directly, without reading a replaced `Object.assign`
 or inherited option getters/setters. Object-form options retain inherited

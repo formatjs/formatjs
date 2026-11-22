@@ -168,6 +168,127 @@ export function checkZonedArithmeticOracle(
       `Apia ordinary forward window since ${roundingMode}`
     )
   }
+  const overlapStart = new Temporal.ZonedDateTime(
+    1_604_122_200_000_000_000n,
+    'America/New_York'
+  )
+  const overlapEnd = new Temporal.ZonedDateTime(
+    1_604_210_400_000_000_000n,
+    'America/New_York'
+  )
+  for (const [smallestUnit, until, since] of [
+    ['nanosecond', 'PT24H30M', '-PT24H30M'],
+    ['minute', 'P1DT30M', '-P1DT30M'],
+  ] as const) {
+    const options = {largestUnit: 'day', smallestUnit}
+    equal(
+      overlapStart.until(overlapEnd, options).toString(),
+      until,
+      `New York overlap unchanged clock until ${smallestUnit}`
+    )
+    equal(
+      overlapStart.since(overlapEnd, options).toString(),
+      since,
+      `New York overlap unchanged clock since ${smallestUnit}`
+    )
+  }
+  // UTC's maximum Instant cannot supply a following local-day window.
+  const maximum = new Temporal.ZonedDateTime(
+    8_640_000_000_000_000_000_000n,
+    'UTC'
+  )
+  const beforeMaximum = new Temporal.ZonedDateTime(
+    8_639_999_999_940_000_000_000n,
+    'UTC'
+  )
+  const zeroDuration = new Temporal.Duration()
+  const exactMinute = {largestUnit: 'day', smallestUnit: 'minute'}
+  for (const [context, operation] of [
+    [
+      'zero zoned day duration round requires next day',
+      () =>
+        zeroDuration.round({
+          relativeTo: maximum,
+          largestUnit: 'day',
+          smallestUnit: 'day',
+        }),
+    ],
+    [
+      'zero zoned minute duration round requires next day',
+      () => zeroDuration.round({relativeTo: maximum, ...exactMinute}),
+    ],
+    [
+      'equal zoned difference rejects indivisible increment',
+      () => maximum.until(maximum, {...exactMinute, roundingIncrement: 7}),
+    ],
+    [
+      'equal zoned difference rejects maximum increment',
+      () =>
+        maximum.since(maximum, {
+          largestUnit: 'day',
+          smallestUnit: 'hour',
+          roundingIncrement: 24,
+        }),
+    ],
+    [
+      'exact zoned minute until requires next day',
+      () => beforeMaximum.until(maximum, exactMinute),
+    ],
+    [
+      'exact zoned minute since requires next day',
+      () => beforeMaximum.since(maximum, exactMinute),
+    ],
+    [
+      'zero zoned day total still requires next day',
+      () =>
+        zeroDuration.total({
+          relativeTo: maximum,
+          unit: 'day',
+        }),
+    ],
+  ] as const) {
+    let rangeError = false
+    try {
+      operation()
+    } catch (error) {
+      rangeError = error instanceof RangeError
+    }
+    equal(rangeError, true, context)
+  }
+  for (const smallestUnit of ['day', 'minute'] as const) {
+    const options = {largestUnit: 'day', smallestUnit}
+    equal(
+      maximum.until(maximum, options).toString(),
+      'PT0S',
+      `equal zoned until skips next day ${smallestUnit}`
+    )
+    equal(
+      maximum.since(maximum, options).toString(),
+      'PT0S',
+      `equal zoned since skips next day ${smallestUnit}`
+    )
+  }
+  const exactNanosecond = {largestUnit: 'day', smallestUnit: 'nanosecond'}
+  equal(
+    maximum.until(maximum, exactNanosecond).toString(),
+    'PT0S',
+    'zero zoned nanosecond difference needs no next day'
+  )
+  equal(
+    beforeMaximum.until(maximum, exactNanosecond).toString(),
+    'PT1M',
+    'exact zoned nanosecond until needs no next day'
+  )
+  equal(
+    beforeMaximum.since(maximum, exactNanosecond).toString(),
+    '-PT1M',
+    'exact zoned nanosecond since needs no next day'
+  )
+  equal(
+    zeroDuration.round({relativeTo: maximum, ...exactNanosecond}).toString(),
+    'PT0S',
+    'zero zoned nanosecond duration round needs no next day'
+  )
   equal(differences, 19440, 'Complete ICU zoned difference fixture')
   equal(days, 5292, 'Complete ICU zoned day fixture')
   return {differences, days}

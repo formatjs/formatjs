@@ -88,6 +88,15 @@ and Record contract. Producers and complete public methods remain open.
 
 Current pass:
 
+- [Shared day-window correction](temporal-day-window-engine-audit.md) removes
+  Duration preflight overvalidation across gaps, repairs required rounding
+  windows and fold carry, and preserves public equality after validation. Six
+  Rust failure profiles plus a TS fold failure reproduced. All seven focused gates,
+  all 67 expanded tests and both package assemblies pass.
+  [Duration.total](temporal-duration-total-contract-audit.md) now has a complete
+  public-step/relative-branch map with unresolved provider/dependency obligations.
+  Requested API authority and whole-operation signoff remain open.
+
 - [ISO caller preparation](temporal-iso-caller-audit.md) removes demonstrated
   calendar/zoned classifier hooks after shared parser isolation. Seven public
   regressions reproduced; four focused gates, all 60 expanded tests and both
@@ -115,7 +124,7 @@ Current pass:
   gates, all 53 expanded tests and six owning timezone oracle/typecheck gates pass;
   Temporal/DurationFormat assemblies pass. Full providers/calendar/parsers remain open.
 
-- Landing: first 17 audit PRs merged through [#8077](https://github.com/formatjs/formatjs/pull/8077).
+- Landing: first 19 audit PRs merged through [#8081](https://github.com/formatjs/formatjs/pull/8081).
   Remaining stack rebased onto main. Timestamp compiler/package fixes now belong
   to earliest affected #8096; calendar oracle normalization belongs to #8109.
   All five owning gates pass there. Final stack tree is unchanged; fresh CI
