@@ -1,0 +1,1589 @@
+{
+  "scope": "51 typed Rust PlainDate and PlainDateTime dependencies. Preserves behavior review status.",
+  "source_comparison": "Frozen Temporal proposal via fixed ledger. ECMA-262 remains requested authority.",
+  "sources": [
+    {
+      "file": "crates/temporal/date.rs",
+      "before_sha256": "1b5259eefb666b21a62515ac8b5fea97271c1e38e2bb9589d4fbc35202876c8d",
+      "after_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7",
+      "verified_callable_count": 67,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 161,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl PlainDate::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "26",
+        "end_line": "38",
+        "comparison_sections": "3.1.1",
+        "section_ids": "sec-temporal.plaindate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.1.1/algorithm-1/step-8",
+        "3.1.1/algorithm-1/step-9",
+        "3.1.1/algorithm-1/step-10"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 25,
+      "annotation": "// Proposal comparison \u00a73.1.1 steps 8, 9, 10. Check typed ISO date fields and encode the date at noon.",
+      "evidence": "The typed constructor delegates field validity and the noon range check to the ISO encoder before creating the epoch-day value."
+    },
+    {
+      "inventory_row": 162,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl PlainDate::from_epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "40",
+        "end_line": "45",
+        "comparison_sections": "3.5.3",
+        "section_ids": "sec-temporal-createtemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.3/algorithm-1/step-1",
+        "3.5.3/algorithm-1/step-4",
+        "3.5.3/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 39,
+      "annotation": "// Proposal comparison \u00a73.5.3 steps 1, 4, 5. Check the prepared date day and store ISO calendar data.",
+      "evidence": "The inclusive native day limits represent the dates whose noon is within the local date-time envelope."
+    },
+    {
+      "inventory_row": 164,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::from_epoch_day_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "57",
+        "end_line": "61",
+        "comparison_sections": "3.5.3",
+        "section_ids": "sec-temporal-createtemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.3/algorithm-1/step-1",
+        "3.5.3/algorithm-1/step-4",
+        "3.5.3/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 56,
+      "annotation": "// Proposal comparison \u00a73.5.3 steps 1, 4, 5. Check the day and initialize the typed calendar provider.",
+      "evidence": "The numeric day gate precedes the provider projection. This Rust typed constructor can reject an unavailable provider date."
+    },
+    {
+      "inventory_row": 165,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::from_calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "63",
+        "end_line": "69",
+        "comparison_sections": "12.3.12",
+        "section_ids": "sec-temporal-calendardatefromfields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatefromfields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "12.3.12/algorithm-1/step-1",
+        "12.3.12/algorithm-1/step-2",
+        "12.3.12/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 62,
+      "annotation": "// Proposal comparison \u00a712.3.12 steps 1, 2, 3. Resolve typed calendar date fields and check the resulting day.",
+      "evidence": "The field resolver and provider own regulation and projection. The final typed factory validates the date day."
+    },
+    {
+      "inventory_row": 166,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::parse_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "71",
+        "end_line": "75",
+        "comparison_sections": "3.5.4",
+        "section_ids": "sec-temporal-totemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.4/algorithm-1/step-4",
+        "3.5.4/algorithm-1/step-10",
+        "3.5.4/algorithm-1/step-11"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 70,
+      "annotation": "// Proposal comparison \u00a73.5.4 steps 4, 10, 11. Parse the ISO fields and create a date in the selected provider.",
+      "evidence": "Uses a preselected provider and checks its optional string annotation. JavaScript options and coercion are separate."
+    },
+    {
+      "inventory_row": 167,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "77",
+        "end_line": "79",
+        "comparison_sections": "3.5.3",
+        "section_ids": "sec-temporal-createtemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.5.3/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 76,
+      "annotation": "// Proposal comparison \u00a73.5.3 step 5. Read the stored typed calendar provider.",
+      "evidence": "Returns the provider stored with the epoch day and performs no parsing."
+    },
+    {
+      "inventory_row": 168,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "81",
+        "end_line": "86",
+        "comparison_sections": "3.3.30",
+        "section_ids": "sec-temporal.plaindate.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.30/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 80,
+      "annotation": "// Proposal comparison \u00a73.3.30 step 5. Carry the prepared calendar annotation option into formatting.",
+      "evidence": "Stores the typed option and receiver for deferred Display without adding public option access."
+    },
+    {
+      "inventory_row": 169,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::calendar_id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "88",
+        "end_line": "90",
+        "comparison_sections": "3.3.3",
+        "section_ids": "sec-get-temporal.plaindate.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 87,
+      "annotation": "// Proposal comparison \u00a73.3.3 step 3. Return the stored calendar identifier.",
+      "evidence": "The provider supplies its name."
+    },
+    {
+      "inventory_row": 171,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::compare",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "104",
+        "end_line": "106",
+        "comparison_sections": "3.5.13",
+        "section_ids": "sec-temporal-compareisodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-compareisodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.13/algorithm-1/step-1",
+        "3.5.13/algorithm-1/step-2",
+        "3.5.13/algorithm-1/step-3",
+        "3.5.13/algorithm-1/step-4",
+        "3.5.13/algorithm-1/step-5",
+        "3.5.13/algorithm-1/step-6",
+        "3.5.13/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 103,
+      "annotation": "// Proposal comparison \u00a73.5.13 steps 1, 2, 3, 4, 5, 6, 7. Compare dates by their ISO epoch days.",
+      "evidence": "Integer ISO epoch-day order equals lexicographic ISO year, month and day order."
+    },
+    {
+      "inventory_row": 172,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::with_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "108",
+        "end_line": "110",
+        "comparison_sections": "3.3.24",
+        "section_ids": "sec-temporal.plaindate.prototype.withcalendar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.withcalendar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.24/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 107,
+      "annotation": "// Proposal comparison \u00a73.3.24 step 4. Reuse the ISO day with the selected calendar.",
+      "evidence": "Typed calendar replacement passes the unchanged day through provider validation; identifier coercion is outside this helper."
+    },
+    {
+      "inventory_row": 173,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "112",
+        "end_line": "114",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 111,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1, 2. Project the stored ISO day through its calendar.",
+      "evidence": "The CalendarProvider supplies fields from the encoded ISO day."
+    },
+    {
+      "inventory_row": 174,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::era",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "116",
+        "end_line": "118",
+        "comparison_sections": "3.3.4",
+        "section_ids": "sec-get-temporal.plaindate.prototype.era",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.era",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.4/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 115,
+      "annotation": "// Proposal comparison \u00a73.3.4 step 3. Project the era for this day and calendar.",
+      "evidence": "The provider owns optional era and era-year values."
+    },
+    {
+      "inventory_row": 175,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::day_of_week",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "120",
+        "end_line": "122",
+        "comparison_sections": "3.3.10",
+        "section_ids": "sec-get-temporal.plaindate.prototype.dayofweek",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofweek",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.10/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 119,
+      "annotation": "// Proposal comparison \u00a73.3.10 step 3. Return the ISO weekday from the epoch day.",
+      "evidence": "The Thursday epoch origin maps through Euclidean modulo for both date signs."
+    },
+    {
+      "inventory_row": 176,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::days_in_week",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "124",
+        "end_line": "126",
+        "comparison_sections": "3.3.14",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinweek",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinweek",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.14/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 123,
+      "annotation": "// Proposal comparison \u00a73.3.14 step 3. Return the seven-day week length.",
+      "evidence": "The typed calendars use a seven-day week."
+    },
+    {
+      "inventory_row": 177,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::day_of_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "128",
+        "end_line": "135",
+        "comparison_sections": "3.3.11",
+        "section_ids": "sec-get-temporal.plaindate.prototype.dayofyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.dayofyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.11/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 127,
+      "annotation": "// Proposal comparison \u00a73.3.11 step 3. Count days since the start of the selected calendar year.",
+      "evidence": "Subtracts the provider's year boundary from the ISO day and adds one."
+    },
+    {
+      "inventory_row": 178,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::days_in_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "137",
+        "end_line": "142",
+        "comparison_sections": "3.3.15",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.15/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 136,
+      "annotation": "// Proposal comparison \u00a73.3.15 step 3. Read the month length for the projected calendar fields.",
+      "evidence": "The projected year and ordinal month select the provider's month length."
+    },
+    {
+      "inventory_row": 179,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::months_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "148",
+        "comparison_sections": "3.3.17",
+        "section_ids": "sec-get-temporal.plaindate.prototype.monthsinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.monthsinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.17/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 143,
+      "annotation": "// Proposal comparison \u00a73.3.17 step 3. Read the month count of the projected calendar year.",
+      "evidence": "The date projection determines the year for the provider lookup."
+    },
+    {
+      "inventory_row": 180,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::days_in_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "150",
+        "end_line": "154",
+        "comparison_sections": "3.3.16",
+        "section_ids": "sec-get-temporal.plaindate.prototype.daysinyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.daysinyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.16/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 149,
+      "annotation": "// Proposal comparison \u00a73.3.16 step 3. Measure the distance between successive calendar year starts.",
+      "evidence": "CalendarProvider supplies both boundaries."
+    },
+    {
+      "inventory_row": 181,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::in_leap_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "156",
+        "end_line": "162",
+        "comparison_sections": "3.3.18",
+        "section_ids": "sec-get-temporal.plaindate.prototype.inleapyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.inleapyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.18/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 155,
+      "annotation": "// Proposal comparison \u00a73.3.18 step 3. Use the calendar's month or year length to detect a leap year.",
+      "evidence": "The compiled calendar profiles use their defined leap month or day counts."
+    },
+    {
+      "inventory_row": 182,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::week_of_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "164",
+        "end_line": "176",
+        "comparison_sections": "3.3.12",
+        "section_ids": "sec-get-temporal.plaindate.prototype.weekofyear",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindate.prototype.weekofyear",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.12/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 163,
+      "annotation": "// Proposal comparison \u00a73.3.12 step 3. Project the ISO week number and week-year together.",
+      "evidence": "Only ISO reports a result. Thursday selects the week-year and then the counted week."
+    },
+    {
+      "inventory_row": 183,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::epoch_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "178",
+        "end_line": "180",
+        "comparison_sections": "13.1",
+        "section_ids": "sec-isodatetoepochdays",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isodatetoepochdays",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["13.1/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 177,
+      "annotation": "// Proposal comparison \u00a713.1 step 4. Read the already encoded ISO epoch day.",
+      "evidence": "This is stored representation access for callers of epoch-day arithmetic."
+    },
+    {
+      "inventory_row": 184,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "182",
+        "end_line": "188",
+        "comparison_sections": "3.5.11",
+        "section_ids": "sec-temporal-temporaldatetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporaldatetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.11/algorithm-1/step-1",
+        "3.5.11/algorithm-1/step-2",
+        "3.5.11/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 181,
+      "annotation": "// Proposal comparison \u00a73.5.11 steps 1, 2, 3. Decode the ISO fields used by date formatting.",
+      "evidence": "Within-day noon decodes the stored day even at the supported boundary dates."
+    },
+    {
+      "inventory_row": 187,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::add_date",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "205",
+        "end_line": "224",
+        "comparison_sections": "3.5.15",
+        "section_ids": "sec-temporal-adddurationtodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-adddurationtodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.15/algorithm-1/step-7",
+        "3.5.15/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 204,
+      "annotation": "// Proposal comparison \u00a73.5.15 steps 7, 8. Add a prepared typed date duration and return the resulting day.",
+      "evidence": "Converts duration fields to provider widths, delegates addition and validates the result date."
+    },
+    {
+      "inventory_row": 188,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDate<C>::to_date_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "227",
+        "end_line": "232",
+        "comparison_sections": "3.3.28",
+        "section_ids": "sec-temporal.plaindate.prototype.toplaindatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.toplaindatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.3.28/algorithm-1/step-4",
+        "3.3.28/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 226,
+      "annotation": "// Proposal comparison \u00a73.3.28 steps 4, 5. Combine the selected clock with the ISO day and calendar.",
+      "evidence": "Combines exact day and time nanoseconds and validates local date-time bounds."
+    },
+    {
+      "inventory_row": 190,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "module::month_length",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "253",
+        "end_line": "260",
+        "comparison_sections": "12.3.17",
+        "section_ids": "sec-temporal-isodaysinmonth",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodaysinmonth",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "12.3.17/algorithm-1/step-1",
+        "12.3.17/algorithm-1/step-2",
+        "12.3.17/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 252,
+      "annotation": "// Proposal comparison \u00a712.3.17 steps 1, 2, 4. Return the Gregorian month length for a valid ISO month.",
+      "evidence": "The zero return for an invalid input is a native sentinel outside the valid-month dependency."
+    },
+    {
+      "inventory_row": 191,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl FromStr for PlainDate::from_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "264",
+        "end_line": "268",
+        "comparison_sections": "3.5.4",
+        "section_ids": "sec-temporal-totemporaldate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.4/algorithm-1/step-4",
+        "3.5.4/algorithm-1/step-5",
+        "3.5.4/algorithm-1/step-6",
+        "3.5.4/algorithm-1/step-7",
+        "3.5.4/algorithm-1/step-10",
+        "3.5.4/algorithm-1/step-11"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 263,
+      "annotation": "// Proposal comparison \u00a73.5.4 steps 4, 5, 6, 7, 10, 11. Parse a date string and use its supported arithmetic calendar.",
+      "evidence": "The native parser owns typed date projection and calendar resolution. The JS option sequence is separate."
+    },
+    {
+      "inventory_row": 192,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for PlainDate<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "272",
+        "end_line": "274",
+        "comparison_sections": "3.3.32",
+        "section_ids": "sec-temporal.plaindate.prototype.tojson",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindate.prototype.tojson",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["3.3.32/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 271,
+      "annotation": "// Proposal comparison \u00a73.3.32 step 3. Render the default automatic calendar annotation.",
+      "evidence": "Delegates native Display to the same formatter with automatic annotation."
+    },
+    {
+      "inventory_row": 193,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for FormattedDate<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "282",
+        "end_line": "285",
+        "comparison_sections": "3.5.11",
+        "section_ids": "sec-temporal-temporaldatetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporaldatetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.11/algorithm-1/step-1",
+        "3.5.11/algorithm-1/step-2",
+        "3.5.11/algorithm-1/step-3",
+        "3.5.11/algorithm-1/step-4",
+        "3.5.11/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 281,
+      "annotation": "// Proposal comparison \u00a73.5.11 steps 1, 2, 3, 4, 5. Render the ISO date and selected calendar annotation.",
+      "evidence": "The Display wrapper delegates date digits and annotation construction."
+    },
+    {
+      "inventory_row": 194,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "module::write_date",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "288",
+        "end_line": "291",
+        "comparison_sections": "3.5.11",
+        "section_ids": "sec-temporal-temporaldatetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-temporaldatetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "3.5.11/algorithm-1/step-1",
+        "3.5.11/algorithm-1/step-2",
+        "3.5.11/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 287,
+      "annotation": "// Proposal comparison \u00a73.5.11 steps 1, 2, 3. Write the prepared year, month and day with ISO padding.",
+      "evidence": "IsoString owns digit padding and writes the resulting date to the formatter."
+    },
+    {
+      "inventory_row": 195,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "module::write_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "293",
+        "end_line": "310",
+        "comparison_sections": "12.3.15",
+        "section_ids": "sec-temporal-formatcalendarannotation",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-formatcalendarannotation",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "12.3.15/algorithm-1/step-1",
+        "12.3.15/algorithm-1/step-2",
+        "12.3.15/algorithm-1/step-3",
+        "12.3.15/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 292,
+      "annotation": "// Proposal comparison \u00a712.3.15 steps 1, 2, 3, 4. Write the optional calendar annotation and critical flag.",
+      "evidence": "The selected annotation mode suppresses or writes the suffix on the prepared calendar identifier."
+    },
+    {
+      "inventory_row": 196,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl PlainDateTime::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "316",
+        "end_line": "318",
+        "comparison_sections": "5.1.1",
+        "section_ids": "sec-temporal.plaindatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.1.1/algorithm-1/step-14",
+        "5.1.1/algorithm-1/step-16",
+        "5.1.1/algorithm-1/step-18",
+        "5.1.1/algorithm-1/step-19"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 315,
+      "annotation": "// Proposal comparison \u00a75.1.1 steps 14, 16, 18, 19. Encode typed ISO date-time fields and create the local value.",
+      "evidence": "The shared ISO encoder handles typed date and clock validation first."
+    },
+    {
+      "inventory_row": 197,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl PlainDateTime::from_epoch_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "320",
+        "end_line": "323",
+        "comparison_sections": "5.5.8",
+        "section_ids": "sec-temporal-createtemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.8/algorithm-1/step-1",
+        "5.5.8/algorithm-1/step-4",
+        "5.5.8/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 319,
+      "annotation": "// Proposal comparison \u00a75.5.8 steps 1, 4, 5. Check a prepared local epoch and initialize the ISO datetime.",
+      "evidence": "The inclusive/exclusive contract comes from check_local. No JS allocation hooks are involved."
+    },
+    {
+      "inventory_row": 198,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::from_calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "327",
+        "end_line": "339",
+        "comparison_sections": "5.5.5",
+        "section_ids": "sec-temporal-interprettemporaldatetimefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-interprettemporaldatetimefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.5/algorithm-1/step-1",
+        "5.5.5/algorithm-1/step-2",
+        "5.5.5/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 326,
+      "annotation": "// Proposal comparison \u00a75.5.5 steps 1, 2, 3. Resolve typed date and clock fields before combining them.",
+      "evidence": "Delegates date and time overflow rules and uses midnight for an empty clock."
+    },
+    {
+      "inventory_row": 200,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::from_epoch_nanoseconds_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "363",
+        "end_line": "369",
+        "comparison_sections": "5.5.8",
+        "section_ids": "sec-temporal-createtemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.8/algorithm-1/step-1",
+        "5.5.8/algorithm-1/step-4",
+        "5.5.8/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 362,
+      "annotation": "// Proposal comparison \u00a75.5.8 steps 1, 4, 5. Check the local epoch and initialize its typed calendar provider.",
+      "evidence": "Checks the local bound before validating the corresponding calendar date."
+    },
+    {
+      "inventory_row": 201,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::parse_in",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "371",
+        "end_line": "375",
+        "comparison_sections": "5.5.6",
+        "section_ids": "sec-temporal-totemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.6/algorithm-1/step-4",
+        "5.5.6/algorithm-1/step-11",
+        "5.5.6/algorithm-1/step-12",
+        "5.5.6/algorithm-1/step-13"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 370,
+      "annotation": "// Proposal comparison \u00a75.5.6 steps 4, 11, 12, 13. Parse ISO date-time fields in the selected provider.",
+      "evidence": "The typed caller checks the calendar annotation and prepared local epoch without public option access."
+    },
+    {
+      "inventory_row": 202,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "377",
+        "end_line": "379",
+        "comparison_sections": "5.5.8",
+        "section_ids": "sec-temporal-createtemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.5.8/algorithm-1/step-5"],
+      "annotation_placement": "leading",
+      "annotation_line": 376,
+      "annotation": "// Proposal comparison \u00a75.5.8 step 5. Read the stored typed calendar provider.",
+      "evidence": "Returns the provider already paired with the local ISO epoch."
+    },
+    {
+      "inventory_row": 203,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::calendar_id",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "381",
+        "end_line": "383",
+        "comparison_sections": "5.3.3",
+        "section_ids": "sec-get-temporal.plaindatetime.prototype.calendarid",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-get-temporal.plaindatetime.prototype.calendarid",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.3.3/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 380,
+      "annotation": "// Proposal comparison \u00a75.3.3 step 3. Return the date-time's stored calendar identifier.",
+      "evidence": "The selected provider supplies the identifier."
+    },
+    {
+      "inventory_row": 205,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::compare",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "393",
+        "end_line": "395",
+        "comparison_sections": "5.5.10",
+        "section_ids": "sec-temporal-compareisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-compareisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.10/algorithm-1/step-1",
+        "5.5.10/algorithm-1/step-2",
+        "5.5.10/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 392,
+      "annotation": "// Proposal comparison \u00a75.5.10 steps 1, 2, 3. Compare encoded ISO date-times in chronological order.",
+      "evidence": "Each local clock lies within one day, so comparing the combined integer equals the field comparison."
+    },
+    {
+      "inventory_row": 206,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::with_calendar",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "397",
+        "end_line": "402",
+        "comparison_sections": "5.3.27",
+        "section_ids": "sec-temporal.plaindatetime.prototype.withcalendar",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withcalendar",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.3.27/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 396,
+      "annotation": "// Proposal comparison \u00a75.3.27 step 4. Reuse the same local epoch with the selected calendar.",
+      "evidence": "Delegates provider validation while preserving the local ISO epoch."
+    },
+    {
+      "inventory_row": 207,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::calendar_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "404",
+        "end_line": "406",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 403,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1, 2. Project the ISO day through the stored calendar.",
+      "evidence": "The date-time projects its day before obtaining the calendar's fields."
+    },
+    {
+      "inventory_row": 208,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::epoch_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "408",
+        "end_line": "410",
+        "comparison_sections": "5.5.4",
+        "section_ids": "sec-temporal-isodatetimewithinlimits",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.5.4/algorithm-1/step-2"],
+      "annotation_placement": "leading",
+      "annotation_line": 407,
+      "annotation": "// Proposal comparison \u00a75.5.4 step 2. Read the exact prepared local epoch.",
+      "evidence": "The local encoder already obtained this scalar from the ISO date and clock record."
+    },
+    {
+      "inventory_row": 209,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "412",
+        "end_line": "414",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.9/algorithm-1/step-1",
+        "5.5.9/algorithm-1/step-2",
+        "5.5.9/algorithm-1/step-3",
+        "5.5.9/algorithm-1/step-4",
+        "5.5.9/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 411,
+      "annotation": "// Proposal comparison \u00a75.5.9 steps 1, 2, 3, 4, 5. Decode local ISO fields for formatting.",
+      "evidence": "Reconstructs the record from the validated local epoch."
+    },
+    {
+      "inventory_row": 210,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::date",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "416",
+        "end_line": "418",
+        "comparison_sections": "5.3.39",
+        "section_ids": "sec-temporal.plaindatetime.prototype.toplaindate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaindate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.3.39/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 415,
+      "annotation": "// Proposal comparison \u00a75.3.39 step 3. Keep the ISO day and stored calendar.",
+      "evidence": "Euclidean quotient selects the day at negative as well as positive local epochs."
+    },
+    {
+      "inventory_row": 211,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "420",
+        "end_line": "422",
+        "comparison_sections": "5.3.40",
+        "section_ids": "sec-temporal.plaindatetime.prototype.toplaintime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.toplaintime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.3.40/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 419,
+      "annotation": "// Proposal comparison \u00a75.3.40 step 3. Keep the within-day clock.",
+      "evidence": "Euclidean remainder selects the valid clock independent of the signed day."
+    },
+    {
+      "inventory_row": 212,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::with_time",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "424",
+        "end_line": "426",
+        "comparison_sections": "5.3.26",
+        "section_ids": "sec-temporal.plaindatetime.prototype.withplaintime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.withplaintime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.3.26/algorithm-1/step-4",
+        "5.3.26/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 423,
+      "annotation": "// Proposal comparison \u00a75.3.26 steps 4, 5. Replace the local clock and keep the ISO day.",
+      "evidence": "The prepared clock is combined by the typed date conversion."
+    },
+    {
+      "inventory_row": 216,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::round_day",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "454",
+        "end_line": "461",
+        "comparison_sections": "5.5.11",
+        "section_ids": "sec-temporal-roundisodatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-roundisodatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.11/algorithm-1/step-2",
+        "5.5.11/algorithm-1/step-3",
+        "5.5.11/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 453,
+      "annotation": "// Proposal comparison \u00a75.5.11 steps 2, 3, 4. Round the local clock to a day and rebuild the date-time.",
+      "evidence": "The optional day carry comes from exact nanosecond rounding before the local bounds check."
+    },
+    {
+      "inventory_row": 219,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> PlainDateTime<C>::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "501",
+        "end_line": "519",
+        "comparison_sections": "5.3.34",
+        "section_ids": "sec-temporal.plaindatetime.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.3.34/algorithm-1/step-11",
+        "5.3.34/algorithm-1/step-12",
+        "5.3.34/algorithm-1/step-13",
+        "5.3.34/algorithm-1/step-14"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 500,
+      "annotation": "// Proposal comparison \u00a75.3.34 steps 11, 12, 13, 14. Round to the prepared precision and carry the formatting state.",
+      "evidence": "The precision determines the quantum. The native formatter stores the validated rounded result for Display."
+    },
+    {
+      "inventory_row": 220,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl FromStr for PlainDateTime::from_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "524",
+        "end_line": "527",
+        "comparison_sections": "5.5.6",
+        "section_ids": "sec-temporal-totemporaldatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaldatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.6/algorithm-1/step-4",
+        "5.5.6/algorithm-1/step-5",
+        "5.5.6/algorithm-1/step-6",
+        "5.5.6/algorithm-1/step-7",
+        "5.5.6/algorithm-1/step-8",
+        "5.5.6/algorithm-1/step-11",
+        "5.5.6/algorithm-1/step-12",
+        "5.5.6/algorithm-1/step-13"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 523,
+      "annotation": "// Proposal comparison \u00a75.5.6 steps 4, 5, 6, 7, 8, 11, 12, 13. Parse a datetime string with its supported arithmetic calendar.",
+      "evidence": "The native parser prepares typed clock/date data and resolves the calendar before the final typed projection."
+    },
+    {
+      "inventory_row": 221,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for PlainDateTime<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "531",
+        "end_line": "535",
+        "comparison_sections": "5.3.36",
+        "section_ids": "sec-temporal.plaindatetime.prototype.tojson",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime.prototype.tojson",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.3.36/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 530,
+      "annotation": "// Proposal comparison \u00a75.3.36 step 3. Render date-time with automatic precision and calendar annotation.",
+      "evidence": "The default Display delegates automatic precision and truncation to the shared formatter."
+    },
+    {
+      "inventory_row": 222,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> FormattedDateTime<C>::with_calendar_name",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "544",
+        "end_line": "547",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": ["5.5.9/algorithm-1/step-6"],
+      "annotation_placement": "leading",
+      "annotation_line": 543,
+      "annotation": "// Proposal comparison \u00a75.5.9 step 6. Carry the selected annotation mode into rendering.",
+      "evidence": "The native formatter changes its internal mode before formatting the suffix."
+    },
+    {
+      "inventory_row": 223,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/date.rs",
+        "symbol": "impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C>::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "551",
+        "end_line": "555",
+        "comparison_sections": "5.5.9",
+        "section_ids": "sec-temporal-isodatetimetostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimetostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "be1776ae42fb35e97d38f0692c02a68f588b2cb30ac9e434b18afa13c8e905e7"
+      },
+      "spec_row_ids": [
+        "5.5.9/algorithm-1/step-1",
+        "5.5.9/algorithm-1/step-2",
+        "5.5.9/algorithm-1/step-3",
+        "5.5.9/algorithm-1/step-4",
+        "5.5.9/algorithm-1/step-5",
+        "5.5.9/algorithm-1/step-6",
+        "5.5.9/algorithm-1/step-7"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 550,
+      "annotation": "// Proposal comparison \u00a75.5.9 steps 1, 2, 3, 4, 5, 6, 7. Render the prepared ISO clock and date with calendar annotation.",
+      "evidence": "IsoString writes date and clock together. The calendar suffix is composed by the shared writer."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:ffi_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test"
+    ],
+    "log_sha256": "74a76e98a4d63240277e6b0b33600d1f15313171e5ab096117a1e3c2cf2eacaa",
+    "result": "7 Bazel targets passed in the same validation batch."
+  }
+}

@@ -1,0 +1,841 @@
+{
+  "scope": "26 ISO datetime, clock and numeric calendar dependencies.",
+  "sources": [
+    {
+      "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+      "before_sha256": "67a13ce8a86b11fa671dd68eba5f540d98f6cea98bcbbadacd568911ad79c1c1",
+      "after_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6",
+      "verified_callable_count": 19,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    },
+    {
+      "file": "crates/temporal/iso.rs",
+      "before_sha256": "fbf7adcea2393345d629c5525b8e320446b33dd8a8d0ca0ab136ad0c0105e27b",
+      "after_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736",
+      "verified_callable_count": 6,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    },
+    {
+      "file": "crates/temporal/time.rs",
+      "before_sha256": "1241c679243e47a9484b1400b4d5457c9b481ecf1a0c9549cb127df35d47b054",
+      "after_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c",
+      "verified_callable_count": 19,
+      "noncomment_source_identical": true,
+      "original_source_with_comments_identical": true
+    }
+  ],
+  "source_comparison": "Frozen Temporal proposal; ECMA-262 remains requested authority.",
+  "review_timing": {
+    "scope": "Timing unavailable.",
+    "elapsed_seconds": null
+  },
+  "reviewed_rows": [
+    {
+      "inventory_row": 60,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "module::add_year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "18",
+        "end_line": "37",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 17,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a. Advance the provider year and retain its month code before applying the month delta.",
+      "evidence": "Uses the provider's constrain/reject and serial inverse for the prepared arithmetic fields."
+    },
+    {
+      "inventory_row": 61,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "module::add_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "39",
+        "end_line": "61",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 38,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a. Apply the signed year, month, week and day fields in the provider.",
+      "evidence": "Regulates the original day after year/month projection, then adds week/day carry exactly within checked integer widths."
+    },
+    {
+      "inventory_row": 62,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "module::until_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "63",
+        "end_line": "118",
+        "comparison_sections": "12.3.9",
+        "section_ids": "sec-temporal-calendardateuntil",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.9/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 62,
+      "annotation": "// Proposal comparison \u00a712.3.9 step 4. Decompose the signed provider date difference into the requested units.",
+      "evidence": "Uses provider projection and add-back for the typed part. No equivalence to open ISO surpass comparisons is claimed."
+    },
+    {
+      "inventory_row": 63,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "impl NumericCalendar for Calendar::from_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "122",
+        "end_line": "124",
+        "comparison_sections": "12.3.26",
+        "section_ids": "sec-temporal-calendarisotodate",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarisotodate",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": [
+        "12.3.26/algorithm-1/step-1.b",
+        "12.3.26/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 121,
+      "annotation": "// Proposal comparison \u00a712.3.26 steps 1.b, 2. Delegate ISO day projection to the arithmetic calendar.",
+      "evidence": "The trait adapter forwards the prepared typed epoch day and preserves provider errors."
+    },
+    {
+      "inventory_row": 64,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "impl NumericCalendar for Calendar::to_epoch_day_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "126",
+        "end_line": "134",
+        "comparison_sections": "12.3.22",
+        "section_ids": "sec-temporal-calendardatetoiso",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardatetoiso",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": [
+        "12.3.22/algorithm-1/step-1.b",
+        "12.3.22/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 125,
+      "annotation": "// Proposal comparison \u00a712.3.22 steps 1.b, 2. Delegate typed date regulation and epoch-day composition.",
+      "evidence": "The trait adapter forwards the prepared fields and overflow to the provider."
+    },
+    {
+      "inventory_row": 65,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "impl NumericCalendar for Calendar::month_from_code",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "136",
+        "end_line": "138",
+        "comparison_sections": "12.3.31",
+        "section_ids": "sec-temporal-calendarresolvefields",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendarresolvefields",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.31/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 135,
+      "annotation": "// Proposal comparison \u00a712.3.31 step 2.a. Delegate calendar month-code resolution.",
+      "evidence": "The arithmetic provider interprets the prepared code and overflow."
+    },
+    {
+      "inventory_row": 66,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "impl NumericCalendar for Calendar::months_before_year",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "140",
+        "end_line": "142",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 139,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a. Read the provider's serial month prefix for addition.",
+      "evidence": "The trait adapter supplies the start serial used by year/month addition."
+    },
+    {
+      "inventory_row": 67,
+      "key": {
+        "language": "rust",
+        "file": "crates/intl_datetimeformat_calendars/date_math.rs",
+        "symbol": "impl NumericCalendar for Calendar::year_month",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "144",
+        "end_line": "146",
+        "comparison_sections": "12.3.7",
+        "section_ids": "sec-temporal-calendardateadd",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-calendardateadd",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "e12694f000ec7262f26b9178eca3d8eed3dff27f41f35da634b42b07a9b4a0f6"
+      },
+      "spec_row_ids": ["12.3.7/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 143,
+      "annotation": "// Proposal comparison \u00a712.3.7 step 2.a. Convert the prepared serial month back to the provider year and ordinal.",
+      "evidence": "The provider owns inversion and its extended integer bounds."
+    },
+    {
+      "inventory_row": 319,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "impl IsoDateTime::validate",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "15",
+        "end_line": "39",
+        "comparison_sections": "5.1.1",
+        "section_ids": "sec-temporal.plaindatetime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaindatetime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": [
+        "5.1.1/algorithm-1/step-14",
+        "5.1.1/algorithm-1/step-16"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 14,
+      "annotation": "// Proposal comparison \u00a75.1.1 steps 14, 16. Check typed ISO date fields and clock bounds.",
+      "evidence": "Uses the Gregorian month length and packed subsecond limit before encoding."
+    },
+    {
+      "inventory_row": 320,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "impl IsoDateTime::to_epoch_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "41",
+        "end_line": "57",
+        "comparison_sections": "5.5.4",
+        "section_ids": "sec-temporal-isodatetimewithinlimits",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": [
+        "5.5.4/algorithm-1/step-2",
+        "5.5.4/algorithm-1/step-3",
+        "5.5.4/algorithm-1/step-4",
+        "5.5.4/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 40,
+      "annotation": "// Proposal comparison \u00a75.5.4 steps 2, 3, 4, 5. Encode a local datetime with exact day, clock and nanosecond arithmetic.",
+      "evidence": "The encoded value is validated against the exclusive local bounds; no floating point intermediate is needed."
+    },
+    {
+      "inventory_row": 321,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "impl IsoDateTime::from_epoch_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "59",
+        "end_line": "62",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-temporal-getisopartsfromepoch",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisopartsfromepoch",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": [
+        "11.1.2/algorithm-1/step-14",
+        "11.1.2/algorithm-1/step-15",
+        "11.1.2/algorithm-1/step-16"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 58,
+      "annotation": "// Proposal comparison \u00a711.1.2 steps 14, 15, 16. Validate a local scalar before decoding its ISO date and clock record.",
+      "evidence": "The typed wrapper checks the local envelope while delegating exact inverse arithmetic."
+    },
+    {
+      "inventory_row": 322,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "module::iso_from_epoch_nanoseconds_raw",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "69",
+        "end_line": "91",
+        "comparison_sections": "11.1.2",
+        "section_ids": "sec-temporal-getisopartsfromepoch",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-getisopartsfromepoch",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": [
+        "11.1.2/algorithm-1/step-2",
+        "11.1.2/algorithm-1/step-3",
+        "11.1.2/algorithm-1/step-4",
+        "11.1.2/algorithm-1/step-5",
+        "11.1.2/algorithm-1/step-6",
+        "11.1.2/algorithm-1/step-7",
+        "11.1.2/algorithm-1/step-8",
+        "11.1.2/algorithm-1/step-9",
+        "11.1.2/algorithm-1/step-10",
+        "11.1.2/algorithm-1/step-11",
+        "11.1.2/algorithm-1/step-13",
+        "11.1.2/algorithm-1/step-14",
+        "11.1.2/algorithm-1/step-15",
+        "11.1.2/algorithm-1/step-16"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 68,
+      "annotation": "// Proposal comparison \u00a711.1.2 steps 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16. Decode the Gregorian day and retain the complete clock remainder.",
+      "evidence": "Euclidean quotient and remainder preserve sign-correct day selection and exact fractional digits. The raw typed converter also supports internal extended endpoints."
+    },
+    {
+      "inventory_row": 323,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "module::epoch_day_from_iso",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "94",
+        "end_line": "96",
+        "comparison_sections": "13.1",
+        "section_ids": "sec-isodatetoepochdays",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-isodatetoepochdays",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": ["13.1/algorithm-1/step-3", "13.1/algorithm-1/step-4"],
+      "annotation_placement": "leading",
+      "annotation_line": 93,
+      "annotation": "// Proposal comparison \u00a713.1 steps 3, 4. Encode the prepared one-based ISO fields as an epoch day.",
+      "evidence": "The Gregorian calendar helper calculates the scalar directly for valid months."
+    },
+    {
+      "inventory_row": 324,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/iso.rs",
+        "symbol": "module::check_local",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "99",
+        "end_line": "110",
+        "comparison_sections": "5.5.4",
+        "section_ids": "sec-temporal-isodatetimewithinlimits",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-isodatetimewithinlimits",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "b97ab7eeb768443f6e7a9fbccc875b5c63e8d2ca6fad63a46958c87458651736"
+      },
+      "spec_row_ids": [
+        "5.5.4/algorithm-1/step-3",
+        "5.5.4/algorithm-1/step-4",
+        "5.5.4/algorithm-1/step-5"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 98,
+      "annotation": "// Proposal comparison \u00a75.5.4 steps 3, 4, 5. Reject equality with either exclusive local datetime bound.",
+      "evidence": "The scalar is already prepared, so the absolute day guard is covered by the narrower exact epoch interval."
+    },
+    {
+      "inventory_row": 436,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl TimeFields::is_empty",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "35",
+        "end_line": "46",
+        "comparison_sections": "4.5.12",
+        "section_ids": "sec-temporal-totemporaltimerecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimerecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": ["4.5.12/algorithm-1/step-17"],
+      "annotation_placement": "leading",
+      "annotation_line": 34,
+      "annotation": "// Proposal comparison \u00a74.5.12 step 17. Test whether the prepared record omits all clock fields.",
+      "evidence": "The typed helper checks presence only. Public property order and defaulting belong to callers."
+    },
+    {
+      "inventory_row": 437,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::from_fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "51",
+        "end_line": "53",
+        "comparison_sections": "4.5.12",
+        "section_ids": "sec-temporal-totemporaltimerecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltimerecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": ["4.5.12/algorithm-1/step-2.a"],
+      "annotation_placement": "leading",
+      "annotation_line": 50,
+      "annotation": "// Proposal comparison \u00a74.5.12 step 2.a. Apply the prepared fields to a zeroed clock.",
+      "evidence": "Uses midnight as the seed and delegates overflow regulation."
+    },
+    {
+      "inventory_row": 439,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::new",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "121",
+        "end_line": "130",
+        "comparison_sections": "4.5.2",
+        "section_ids": "sec-temporal-createtimerecord",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtimerecord",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.5.2/algorithm-1/step-1",
+        "4.5.2/algorithm-1/step-2",
+        "4.5.2/algorithm-1/step-3"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 120,
+      "annotation": "// Proposal comparison \u00a74.5.2 steps 1, 2, 3. Validate and encode the typed clock fields.",
+      "evidence": "Stores exact within-day nanoseconds with an implicit zero day carry."
+    },
+    {
+      "inventory_row": 440,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::from_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "132",
+        "end_line": "137",
+        "comparison_sections": "4.5.11",
+        "section_ids": "sec-temporal-createtemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": ["4.5.11/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 131,
+      "annotation": "// Proposal comparison \u00a74.5.11 step 3. Initialize the private clock from prepared within-day nanoseconds.",
+      "evidence": "Checks the packed clock range and stores it without public allocation hooks."
+    },
+    {
+      "inventory_row": 441,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "139",
+        "end_line": "141",
+        "comparison_sections": "4.5.11",
+        "section_ids": "sec-temporal-createtemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-createtemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": ["4.5.11/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 138,
+      "annotation": "// Proposal comparison \u00a74.5.11 step 3. Read the stored exact clock nanoseconds.",
+      "evidence": "This native representation is used by clock composition and rounding."
+    },
+    {
+      "inventory_row": 442,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::fields",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "143",
+        "end_line": "152",
+        "comparison_sections": "4.5.13",
+        "section_ids": "sec-temporal-timerecordtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timerecordtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.5.13/algorithm-1/step-1",
+        "4.5.13/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 142,
+      "annotation": "// Proposal comparison \u00a74.5.13 steps 1, 2. Project the within-day coordinate into clock digits.",
+      "evidence": "Exact quotient and remainder supply hour, minute, second and complete fraction for formatting."
+    },
+    {
+      "inventory_row": 446,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::rounded_nanoseconds",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "171",
+        "end_line": "193",
+        "comparison_sections": "4.5.16",
+        "section_ids": "sec-temporal-roundtime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-roundtime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.5.16/algorithm-1/step-1.a",
+        "4.5.16/algorithm-1/step-2.a",
+        "4.5.16/algorithm-1/step-3.a",
+        "4.5.16/algorithm-1/step-4.a",
+        "4.5.16/algorithm-1/step-5.a",
+        "4.5.16/algorithm-1/step-6.b",
+        "4.5.16/algorithm-1/step-7",
+        "4.5.16/algorithm-1/step-8"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 170,
+      "annotation": "// Proposal comparison \u00a74.5.16 steps 1.a, 2.a, 3.a, 4.a, 5.a, 6.b, 7, 8. Select the parent-unit remainder and round at the requested increment.",
+      "evidence": "Retains larger fields in the base term and returns an exact packed clock with any carry still present."
+    },
+    {
+      "inventory_row": 449,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl PlainTime::format",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "238",
+        "end_line": "249",
+        "comparison_sections": "4.3.16",
+        "section_ids": "sec-temporal.plaintime.prototype.tostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.3.16/algorithm-1/step-11",
+        "4.3.16/algorithm-1/step-12"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 237,
+      "annotation": "// Proposal comparison \u00a74.3.16 steps 11, 12. Round the prepared precision and retain the clock for formatting.",
+      "evidence": "The quantum uses prepared precision, then drops the day carry for display."
+    },
+    {
+      "inventory_row": 450,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "module::validate_increment",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "254",
+        "end_line": "264",
+        "comparison_sections": "13.14",
+        "section_ids": "sec-validatetemporalroundingincrement",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-validatetemporalroundingincrement",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "13.14/algorithm-1/step-2.a",
+        "13.14/algorithm-1/step-2.b",
+        "13.14/algorithm-1/step-3",
+        "13.14/algorithm-1/step-4"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 253,
+      "annotation": "// Proposal comparison \u00a713.14 steps 2.a, 2.b, 3, 4. Validate the exclusive within-parent rounding increment.",
+      "evidence": "The typed guard rejects zero, the dividend or above, and non-divisors."
+    },
+    {
+      "inventory_row": 451,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl FromStr for PlainTime::from_str",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "268",
+        "end_line": "270",
+        "comparison_sections": "4.5.6",
+        "section_ids": "sec-temporal-totemporaltime",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-totemporaltime",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.5.6/algorithm-1/step-3.b",
+        "4.5.6/algorithm-1/step-3.d"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 267,
+      "annotation": "// Proposal comparison \u00a74.5.6 steps 3.b, 3.d. Parse clock syntax through the shared native reader.",
+      "evidence": "The typed parser forwards directly. JavaScript options are outside the Rust Display and FromStr contracts."
+    },
+    {
+      "inventory_row": 452,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl fmt::Display for PlainTime::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "278",
+        "end_line": "282",
+        "comparison_sections": "4.3.18",
+        "section_ids": "sec-temporal.plaintime.prototype.tojson",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal.plaintime.prototype.tojson",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": ["4.3.18/algorithm-1/step-3"],
+      "annotation_placement": "leading",
+      "annotation_line": 277,
+      "annotation": "// Proposal comparison \u00a74.3.18 step 3. Use automatic precision and truncation for default display.",
+      "evidence": "The typed wrapper delegates rendering to the shared clock formatter."
+    },
+    {
+      "inventory_row": 453,
+      "key": {
+        "language": "rust",
+        "file": "crates/temporal/time.rs",
+        "symbol": "impl fmt::Display for FormattedTime::fmt",
+        "kind": "function"
+      },
+      "mapping_updates": {
+        "start_line": "286",
+        "end_line": "289",
+        "comparison_sections": "4.5.13",
+        "section_ids": "sec-temporal-timerecordtostring",
+        "spec_urls": "https://tc39.es/proposal-temporal/#sec-temporal-timerecordtostring",
+        "mapping_status": "mapped",
+        "relationship": "implementation_dependency",
+        "mapping_basis": "reviewed_exact_provider_or_caller_contract_dependency",
+        "review_status": "annotation_mapping_reconciled_local_scope",
+        "related_existing_audits": "knowledge-base/audits/temporal-native-date38-annotation-source-proof.json",
+        "unresolved_mapping": "",
+        "source_sha256": "1e092122b2742dc9b68ab4f5e9f902dfb2371a0c7e4e02d76e1d09df83a49e1c"
+      },
+      "spec_row_ids": [
+        "4.5.13/algorithm-1/step-1",
+        "4.5.13/algorithm-1/step-2"
+      ],
+      "annotation_placement": "leading",
+      "annotation_line": 285,
+      "annotation": "// Proposal comparison \u00a74.5.13 steps 1, 2. Render the prepared time record with its selected precision.",
+      "evidence": "IsoString formats the clock and packs its exact fractional digits for Display."
+    }
+  ],
+  "validation": {
+    "targets": [
+      "//crates/temporal:temporal_test",
+      "//crates/temporal:public_calendar_test",
+      "//crates/temporal:ffi_test",
+      "//crates/intl_datetimeformat_calendars:calendar_core_test"
+    ],
+    "log_sha256": "74a76e98a4d63240277e6b0b33600d1f15313171e5ab096117a1e3c2cf2eacaa",
+    "result": "7 Bazel targets passed in the same validation batch."
+  }
+}

@@ -422,6 +422,8 @@ export function configureNativeTemporal(
   const text = (value: bigint) => apply(bigintText, value, [])
   const clockText = (value: bigint | number) =>
     typeof value === 'number' ? apply(numberText, value, []) : text(value)
+  // Temporal comparison §3.5.4 step 4.
+  // Guard legacy JSON parse input against escaped code units.
   function call(op: string, properties: Record<string, unknown>): any {
     if (invoke) return invoke(op, properties)
     const input = create(null)
@@ -441,6 +443,8 @@ export function configureNativeTemporal(
       throw new BadRange('Invalid Temporal value or range')
     return parse(result)
   }
+  // Temporal comparison §12.3.31 step 2.a, §12.3.30 field requirements.
+  // Check prepared non-ISO era pairs and month-day year information.
   function withFields(
     calendar: string,
     fields: Record<string, unknown>,
@@ -464,6 +468,8 @@ export function configureNativeTemporal(
       throw new BadType('monthCode or year required')
     return fields
   }
+  // Temporal comparison §11.1.11 step 1.
+  // Marshal prepared ISO fields for possible epoch lookup.
   function isoFields(fields: ISODateTime): Record<string, number> {
     const copy = create(null)
     copy.year = fields.year
@@ -483,6 +489,8 @@ export function configureNativeTemporal(
       : 0
     return copy
   }
+  // Temporal comparison §11.1.10 step 2.
+  // Transport the exact epoch to the ISO field projection.
   function request(
     op: string,
     fields?: ISODateTime,
@@ -497,6 +505,8 @@ export function configureNativeTemporal(
     if (days !== undefined) record.days = days
     return call(op, record)
   }
+  // Temporal comparison §8.5.5 step 1, §4.5.18 step 4.
+  // Transport prepared epoch or clock addition operands.
   function addition(
     op: string,
     value: bigint,
@@ -511,6 +521,8 @@ export function configureNativeTemporal(
       })
     )
   }
+  // Temporal comparison §4.5.2 step 3.
+  // Decode native clock fields into a prepared time result.
   function clockResult(value: any): NativeTimeResult {
     if (typeof value === 'string') {
       const nanoseconds =
@@ -536,6 +548,8 @@ export function configureNativeTemporal(
       bigintNanoseconds: undefined,
     }
   }
+  // Temporal comparison §8.5.10 step 6.
+  // Marshal prepared duration fields for native instant addition.
   function durationFields(
     fields: DurationFields
   ): DurationFields | Record<string, string> {
@@ -548,6 +562,8 @@ export function configureNativeTemporal(
       )
     return duration
   }
+  // Temporal comparison §12.3.12 step 2.
+  // Marshal prepared calendar-date conversion fields.
   function dateFields(value: CalendarFields): Record<string, unknown> {
     const fields = create(null)
     fields.year = value.year
@@ -556,12 +572,16 @@ export function configureNativeTemporal(
     fields.day = value.day
     return fields
   }
+  // Temporal comparison §3.5.11 steps 1, 4, §9.5.6 steps 1, 5, §10.5.3 steps 1, 5.
+  // Marshal the private date and calendar for short formatting.
   function shortFields(slot: DateSlot): Record<string, unknown> {
     const result = create(null)
     result.epochDay = slot.epochDay
     result.calendar = slot.calendar
     return result
   }
+  // Temporal comparison §6.5.4 steps 4, 6, 14.
+  // Marshal the private zoned epoch, identifier and calendar.
   function zonedFields(slot: ZonedSlot): Record<string, unknown> {
     const result = create(null)
     result.nanoseconds = text(slot.epochNanoseconds)
@@ -569,6 +589,8 @@ export function configureNativeTemporal(
     result.identifier = slot.timeZone
     return result
   }
+  // Temporal comparison §7.3.20 steps 27.b, 27.c, 27.d, 28.c, 28.e.
+  // Marshal the prepared zoned or plain duration anchor.
   function relativeFields(
     relative?: RelativeTo
   ): Record<string, unknown> | undefined {
@@ -584,11 +606,15 @@ export function configureNativeTemporal(
     result.calendar = relative.date.calendar
     return result
   }
+  // Temporal comparison §3.5.3 steps 4, 5.
+  // Decode prepared date and calendar values for slot creation.
   function dateResult(value: any, calendar?: string): DateSlot {
     if (typeof value === 'number') return {epochDay: value, calendar: calendar!}
     if (value.properties) value.properties.owner = native
     return value
   }
+  // Temporal comparison §5.5.8 steps 4, 5, §6.5.3 steps 4, 5, 6.
+  // Decode the exact epoch and metadata for slot creation.
   function timeResult(value: any, calendar?: string, timeZone?: string): any {
     if (typeof value === 'string')
       return {epochNanoseconds: ToBigInt(value), calendar, timeZone}
@@ -597,6 +623,8 @@ export function configureNativeTemporal(
     return value
   }
   native = {
+    // Temporal comparison §3.3.23 steps 7, 10, §9.3.13 steps 7, 10, §10.3.6 steps 7, 10.
+    // Forward date or short-date field merge and conversion.
     withDate: (slot, fields, overflow, shape = 'date') =>
       dateResult(
         slot.calendar === 'iso8601' && invoke?.withISODate
@@ -624,6 +652,8 @@ export function configureNativeTemporal(
             ),
         slot.calendar
       ),
+    // Temporal comparison §5.3.25 steps 13, 16.
+    // Forward date-time field merge and conversion.
     withDateTime: (slot, fields, overflow) =>
       timeResult(
         call('withPlainDateTime', {
@@ -634,6 +664,8 @@ export function configureNativeTemporal(
         }),
         slot.calendar
       ),
+    // Temporal comparison §6.3.31 steps 18, 23, 25.
+    // Forward zoned field merge and offset interpretation.
     withZoned: (slot, fields, overflow, disambiguation, behavior) =>
       timeResult(
         call('withZonedDateTime', {
@@ -646,6 +678,8 @@ export function configureNativeTemporal(
         slot.calendar,
         slot.timeZone
       ),
+    // Temporal comparison §12.3.26 steps 1.b, 2.
+    // Forward the date slot for calendar field projection.
     calendarProperties: (calendar, epoch, extended, nanoseconds) =>
       call('calendarProperties', {
         calendar,
@@ -653,8 +687,12 @@ export function configureNativeTemporal(
         extended,
         nanoseconds: nanoseconds === undefined ? undefined : text(nanoseconds),
       }),
+    // Temporal comparison §6.3.8 steps 3, 4.
+    // Forward the zoned slot for local and calendar projection.
     zonedProperties: slot =>
       call('zonedProperties', {value: zonedFields(slot)}),
+    // Temporal comparison §9.5.8 steps 11, 12, 14.
+    // Forward year-month calendar addition and projection.
     addPlainYearMonth: (slot, fields, subtract, overflow) =>
       dateResult(
         invoke?.addPlainYearMonth
@@ -667,6 +705,8 @@ export function configureNativeTemporal(
             }),
         slot.calendar
       ),
+    // Temporal comparison §9.5.7 steps 13, 16.e, 18.
+    // Forward year-month difference, rounding and direction.
     differencePlainYearMonth: (
       start,
       end,
@@ -695,6 +735,8 @@ export function configureNativeTemporal(
             mode,
             since,
           }),
+    // Temporal comparison §9.3.23 steps 7, 8.
+    // Forward the reference month and prepared day.
     yearMonthToDate: (slot, day) =>
       dateResult(
         invoke?.yearMonthToDate
@@ -702,6 +744,8 @@ export function configureNativeTemporal(
           : call('yearMonthToDate', {value: shortFields(slot), day}),
         slot.calendar
       ),
+    // Temporal comparison §10.3.12 steps 7, 8.
+    // Forward the reference month-day and prepared year.
     monthDayToDate: (slot, year) =>
       dateResult(
         invoke?.monthDayToDate
@@ -709,10 +753,14 @@ export function configureNativeTemporal(
           : call('monthDayToDate', {value: shortFields(slot), year}),
         slot.calendar
       ),
+    // Temporal comparison §3.5.11 steps 1, 2, 3, 4, 5.
+    // Forward date and calendar display to native formatting.
     formatPlainDate: (slot, calendarName) =>
       formatDate
         ? formatDate('formatPlainDate', slot, calendarName)
         : call('formatPlainDate', {value: shortFields(slot), calendarName}),
+    // Temporal comparison §5.5.9 steps 4, 5, 6, 7.
+    // Forward date-time precision and calendar display.
     formatPlainDateTime: (value, calendar, precision, mode, calendarName) =>
       formatDateTime
         ? formatDateTime(value, calendar, precision, mode, calendarName)
@@ -723,6 +771,8 @@ export function configureNativeTemporal(
             mode,
             calendarName,
           }),
+    // Temporal comparison §9.5.6 steps 4.a, 5, 7.
+    // Forward the reference day and calendar display.
     formatPlainYearMonth: (slot, calendarName) =>
       formatDate
         ? formatDate('formatPlainYearMonth', slot, calendarName)
@@ -730,10 +780,14 @@ export function configureNativeTemporal(
             value: shortFields(slot),
             calendarName,
           }),
+    // Temporal comparison §10.5.3 steps 4.a, 5, 7.
+    // Forward the reference year and calendar display.
     formatPlainMonthDay: (slot, calendarName) =>
       formatDate
         ? formatDate('formatPlainMonthDay', slot, calendarName)
         : call('formatPlainMonthDay', {value: shortFields(slot), calendarName}),
+    // Temporal comparison §6.5.4 steps 5, 9, 11.a, 13.b, 14, 15.
+    // Forward zoned precision and annotation display.
     formatZonedDateTime: (
       slot,
       precision,
@@ -759,6 +813,8 @@ export function configureNativeTemporal(
             offset,
             timeZoneName,
           }),
+    // Temporal comparison §12.3.31 steps 1.e, 1.f, 1.g, §12.3.12 step 2.
+    // Check required ISO fields before native date conversion.
     createISODate: (fields, overflow) => {
       if (fields.year === undefined) throw new BadType('Year required')
       if (fields.day === undefined) throw new BadType('Day required')
@@ -777,30 +833,40 @@ export function configureNativeTemporal(
             }
       )
     },
+    // Temporal comparison §3.5.4 steps 4, 5.
+    // Forward the plain date string to native parsing.
     parsePlainDate: value =>
       dateResult(
         parseDate
           ? parseDate(value, 'parsePlainDate')
           : call('parsePlainDate', {text: value})
       ),
+    // Temporal comparison §5.5.6 steps 4, 5.
+    // Forward the plain date-time string to native parsing.
     parsePlainDateTime: value =>
       timeResult(
         parseDateTime
           ? parseDateTime(value)
           : call('parsePlainDateTime', {text: value})
       ),
+    // Temporal comparison §9.5.2 steps 4, 14.
+    // Forward the year-month string to native parsing and projection.
     parsePlainYearMonth: value =>
       dateResult(
         parseDate
           ? parseDate(value, 'parsePlainYearMonth')
           : call('parsePlainYearMonth', {text: value})
       ),
+    // Temporal comparison §10.5.1 steps 4, 10.b, 15.
+    // Forward the month-day string to native parsing and projection.
     parsePlainMonthDay: value =>
       dateResult(
         parseDate
           ? parseDate(value, 'parsePlainMonthDay')
           : call('parsePlainMonthDay', {text: value})
       ),
+    // Temporal comparison §6.5.2 steps 5.b, 5.c, 5.f.
+    // Forward zoned string parsing and unpack its fields.
     parseZonedFields: value => {
       if (invoke?.parseZonedFields) return invoke.parseZonedFields(value)
       const result = call('parseZonedFields', {text: value})
@@ -812,6 +878,8 @@ export function configureNativeTemporal(
         validatedTimeZone: undefined,
       }
     },
+    // Temporal comparison §6.5.2 step 11.
+    // Forward prepared offset matching and disambiguation.
     resolveZonedDateTime: (
       value,
       identifier,
@@ -847,6 +915,8 @@ export function configureNativeTemporal(
         calendar,
         identifier
       ),
+    // Temporal comparison §6.5.10 step 8.
+    // Forward zoned duration addition with overflow and sign.
     addZonedDateTime: (slot, fields, subtract, overflow) =>
       timeResult(
         invoke?.addZonedDateTime
@@ -860,6 +930,8 @@ export function configureNativeTemporal(
         slot.calendar,
         slot.timeZone
       ),
+    // Temporal comparison §6.5.9 steps 5.a, 9.
+    // Forward both zoned endpoints and difference settings.
     differenceZonedDateTime: (
       start,
       end,
@@ -878,6 +950,8 @@ export function configureNativeTemporal(
         mode,
         since,
       }),
+    // Temporal comparison §6.3.39 steps 19.i, 20.a, 20.c.
+    // Forward zoned day or clock rounding.
     roundZonedDateTime: (slot, unit, increment, mode) =>
       timeResult(
         invoke?.roundZonedDateTime
@@ -891,6 +965,8 @@ export function configureNativeTemporal(
         slot.calendar,
         slot.timeZone
       ),
+    // Temporal comparison §6.3.45 step 6, §6.5.1 step 1.c.
+    // Forward the zoned start-of-day calculation.
     startOfZonedDay: (slot, day) =>
       timeResult(
         invoke?.startOfZonedDay
@@ -899,8 +975,12 @@ export function configureNativeTemporal(
         slot.calendar,
         slot.timeZone
       ),
+    // Temporal comparison §6.3.23 steps 7, 8, 9, 10.
+    // Forward the zoned day-length calculation.
     hoursInZonedDay: slot =>
       call('hoursInZonedDay', {value: zonedFields(slot)}),
+    // Temporal comparison §3.5.15 step 7.
+    // Forward prepared calendar-date addition.
     addPlainDate: (epochDay, calendar, fields, subtract, overflow) =>
       dateResult(
         addPlainDate
@@ -914,6 +994,8 @@ export function configureNativeTemporal(
             }),
         calendar
       ),
+    // Temporal comparison §5.5.16 steps 6, 8, 9.
+    // Forward date-time addition and calendar balancing.
     addPlainDateTime: (value, calendar, fields, subtract, overflow) =>
       timeResult(
         addDateTime
@@ -927,6 +1009,8 @@ export function configureNativeTemporal(
             }),
         calendar
       ),
+    // Temporal comparison §3.5.14 steps 6, 8.e, 10.
+    // Forward date difference, optional rounding and direction.
     differencePlainDate: (
       start,
       end,
@@ -958,6 +1042,8 @@ export function configureNativeTemporal(
             mode,
             since,
           }),
+    // Temporal comparison §5.5.15 steps 6, 8.
+    // Forward date-time difference, rounding and direction.
     differencePlainDateTime: (
       start,
       end,
@@ -989,6 +1075,8 @@ export function configureNativeTemporal(
             mode,
             since,
           }),
+    // Temporal comparison §5.5.11 steps 2, 3, 4.
+    // Forward local clock rounding and day carry.
     roundPlainDateTime: (value, calendar, unit, increment, mode) =>
       timeResult(
         roundDateTime

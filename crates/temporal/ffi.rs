@@ -115,6 +115,7 @@ fn integer(value: Option<&Value>, default: Option<i64>) -> Result<i64, Error> {
     }
     Ok(number as i64)
 }
+// Proposal comparison §11.1.2 steps 14–16: Decode wire ISO and clock fields for typed operations.
 fn fields(value: &Value) -> Result<IsoDateTime, Error> {
     let number = |key, default| integer(value.get(key), default);
     let small = |key, maximum| -> Result<u8, Error> {
@@ -145,6 +146,7 @@ fn fields(value: &Value) -> Result<IsoDateTime, Error> {
             + nano("nanosecond")?,
     })
 }
+// Proposal comparison §11.1.2 steps 10–16: Split subsecond fields for the ISO wire record.
 fn record(fields: IsoDateTime) -> Value {
     // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/timezone.html#L71-L77
     // L71: split the combined subsecond field into complete milliseconds.
@@ -168,6 +170,7 @@ const DURATION_FIELDS: [&str; 10] = [
     "microseconds",
     "nanoseconds",
 ];
+// Proposal comparison §8.5.1 step 1: Carry exact decimal-string nanoseconds to the range check.
 fn decimal(request: &Value, key: &str) -> Result<i128, Error> {
     let value = &request[key];
     if let Some(text) = value.as_str() {
@@ -183,15 +186,18 @@ fn decimal(request: &Value, key: &str) -> Result<i128, Error> {
     }
     Ok(number as i128)
 }
+// Proposal comparison §8.5.1 step 1: Delegate Instant range validation after wire decode.
 fn instant(request: &Value, key: &str) -> Result<Instant, Error> {
     Instant::from_epoch_nanoseconds(decimal(request, key)?)
 }
+// Proposal comparison §8.3.11 step 6: Decode an already resolved rounding mode.
 fn mode(request: &Value) -> Result<RoundingMode, Error> {
     request["mode"]
         .as_str()
         .ok_or(Error::InvalidRoundingOptions)?
         .parse()
 }
+// Proposal comparison §13.16 steps 1–5, 7–10 and 12: Decode normalized string precision.
 fn precision(request: &Value) -> Result<Precision, Error> {
     Ok(match request["precision"].as_str() {
         Some("auto") => Precision::Auto,
@@ -227,6 +233,7 @@ fn duration_record(duration: Duration) -> Value {
     )
 }
 static CALENDARS: OnceLock<Result<CalendarRegistry<'static>, Error>> = OnceLock::new();
+// Proposal comparison §12.3.26 step 2: Select the compiled or arithmetic calendar registry.
 fn compiled_calendars() -> Result<CalendarRegistry<'static>, Error> {
     #[cfg(feature = "compiled_calendars")]
     {
@@ -237,6 +244,7 @@ fn compiled_calendars() -> Result<CalendarRegistry<'static>, Error> {
         Ok(CalendarRegistry::arithmetic())
     }
 }
+// Proposal comparison §12.3.26 step 2: Cache the native calendar provider registry.
 pub(crate) fn calendars() -> Result<CalendarRegistry<'static>, Error> {
     CALENDARS
         .get_or_init(compiled_calendars)
@@ -244,15 +252,18 @@ pub(crate) fn calendars() -> Result<CalendarRegistry<'static>, Error> {
         .copied()
         .map_err(|error| *error)
 }
+// Proposal comparison §12.3.10 step 4: Resolve normalized calendar IDs for native requests.
 pub(crate) fn resolve_calendar(identifier: &str) -> Result<CalendarRef<'static>, Error> {
     if identifier.eq_ignore_ascii_case("iso8601") {
         return Ok(CalendarRef::Arithmetic(crate::calendar::Calendar::Iso8601));
     }
     calendars()?.resolve(identifier)
 }
+// Proposal comparison §13.36 steps 2.a–2.c: Route the calendar annotation or ISO default.
 pub(crate) fn calendar_for_string(text: &str) -> Result<CalendarRef<'static>, Error> {
     resolve_calendar(crate::parse::calendar_annotation(text).unwrap_or("iso8601"))
 }
+// Proposal comparison §11.1.9 step 3: Select the configured named-zone provider.
 pub(crate) fn time_zones() -> TimeZoneRegistry<'static> {
     #[cfg(feature = "compiled_time_zones")]
     {
@@ -263,10 +274,12 @@ pub(crate) fn time_zones() -> TimeZoneRegistry<'static> {
         TimeZoneRegistry::empty()
     }
 }
+// Proposal comparison §13.42 steps 2–3: Serialize date fields and month code for the wire.
 fn calendar_record(value: Date) -> Value {
     json!({"year":value.year,"month":value.month,"day":value.day,
         "monthCode":std::format!("M{:02}{}",value.month_code.number,if value.month_code.leap {"L"} else {""})})
 }
+// Proposal comparison §13.6 steps 2–3: Decode resolved overflow policy.
 fn calendar_overflow(request: &Value) -> Result<Overflow, Error> {
     match request["overflow"].as_str() {
         Some("constrain") => Ok(Overflow::Constrain),
@@ -274,6 +287,7 @@ fn calendar_overflow(request: &Value) -> Result<Overflow, Error> {
         _ => Err(Error::InvalidDateTime),
     }
 }
+// Proposal comparison §12.3.12 steps 1–2: Resolve month fields and delegate epoch-day conversion.
 fn calendar_epoch(
     calendar: CalendarRef<'_>,
     fields: &Value,
@@ -319,6 +333,7 @@ fn calendar_epoch(
         .map_err(crate::calendar_provider::error)
 }
 // Clamp finite Number fields before narrowing to Rust integers.
+// Proposal comparison §12.3.22 step 1.b: Narrow normalized date fields for provider regulation.
 pub(crate) fn calendar_field_number(value: f64, constrain: bool) -> Result<i32, Error> {
     if !value.is_finite() || value.fract() != 0.0 {
         return Err(Error::InvalidDateTime);
@@ -333,6 +348,7 @@ pub(crate) fn calendar_field_number(value: f64, constrain: bool) -> Result<i32, 
     }
     Ok(value as i32)
 }
+// Proposal comparison §12.3.22 step 1.b: Decode a wire Number before date field regulation.
 fn calendar_field(value: Option<&Value>, overflow: Overflow) -> Result<i32, Error> {
     calendar_field_number(
         value
@@ -371,6 +387,7 @@ pub(crate) struct CalendarSnapshot {
     pub errors: u32,
 }
 impl CalendarSnapshot {
+    // Proposal comparison §12.3.26 steps 1.b and 2: Serialize projected properties and field errors.
     fn into_json(self) -> Value {
         let mut values = serde_json::Map::new();
         let mut errors = std::vec::Vec::new();
@@ -388,6 +405,7 @@ impl CalendarSnapshot {
         json!({"date":self.date.map(calendar_record),"values":values,"errors":errors})
     }
 }
+// Proposal comparison §12.3.26 steps 1.b and 2: Assemble a calendar property snapshot.
 pub(crate) fn calendar_snapshot(
     calendar: CalendarRef<'_>,
     epoch: i64,
@@ -457,6 +475,7 @@ pub(crate) fn calendar_snapshot(
     })
 }
 
+// Proposal comparison §12.3.12 steps 1–2: Decode prepared date fields for typed resolution.
 fn prepared_date_fields<'a>(
     fields: &'a Value,
     constrain: bool,
@@ -500,6 +519,7 @@ fn prepared_date_fields<'a>(
         era_year: number("eraYear", false)?,
     })
 }
+// Proposal comparison §5.5.5 step 2 and §4.5.8 steps 1.a–1.f and 2.b: Decode and regulate present clock fields.
 fn prepared_time_fields(fields: &Value, constrain: bool) -> Result<TimeFields, Error> {
     let number = |key: &str, maximum: f64| -> Result<Option<i128>, Error> {
         let Some(value) = fields.get(key) else {
@@ -526,6 +546,7 @@ fn prepared_time_fields(fields: &Value, constrain: bool) -> Result<TimeFields, E
         nanosecond: number("nanosecond", 999.0)?,
     })
 }
+// Proposal comparison §6.3.31 steps 23 and 25–26: Dispatch prepared with requests to typed owners.
 fn with_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let constrain = calendar_overflow(request)? == Overflow::Constrain;
     let overflow = if constrain {
@@ -604,6 +625,7 @@ fn with_operation(op: &str, request: &Value) -> Result<Value, Error> {
     }))
 }
 
+// Proposal comparison §11.1.2 steps 7–13: Copy exact clock parts into a wire snapshot.
 fn add_clock(snapshot: &mut CalendarSnapshot, nanoseconds: i128) {
     let fields = crate::iso::iso_from_epoch_nanoseconds_raw(nanoseconds);
     for (target, value) in snapshot.values[11..17].iter_mut().zip([
@@ -617,6 +639,7 @@ fn add_clock(snapshot: &mut CalendarSnapshot, nanoseconds: i128) {
         *target = Value::from(value);
     }
 }
+// Proposal comparison §12.3.26 step 2: Preserve a calendar projection failure in the snapshot.
 pub(crate) fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -> CalendarSnapshot {
     calendar_snapshot(calendar, epoch).unwrap_or_else(|_| CalendarSnapshot {
         date: None,
@@ -624,6 +647,7 @@ pub(crate) fn partial_calendar_snapshot(calendar: CalendarRef<'_>, epoch: i64) -
         errors: (1 << 11) - 1,
     })
 }
+// Proposal comparison §6.5.3 steps 4–6: Decode a typed zoned value before snapshot projection.
 fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
     let value = if record.get("epochNanoseconds").is_some() {
         ZonedDateTime::new_in_calendar(
@@ -638,6 +662,7 @@ fn zoned_snapshot(record: &Value) -> Result<CalendarSnapshot, Error> {
 }
 struct Offset(i128);
 impl core::fmt::Display for Offset {
+    // Proposal comparison §11.1.6 steps 1–9: Format an exact offset with optional seconds and fraction.
     fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let absolute = self.0.abs();
         let seconds = absolute / 1_000_000_000;
@@ -663,6 +688,7 @@ impl core::fmt::Display for Offset {
         Ok(())
     }
 }
+// Proposal comparison §11.1.10 steps 1–3 and §6.3.29 step 3: Project exact zoned snapshot fields.
 pub(crate) fn zoned_value_snapshot(
     value: ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>,
 ) -> Result<CalendarSnapshot, Error> {
@@ -686,6 +712,7 @@ pub(crate) fn zoned_value_snapshot(
     }
     Ok(properties)
 }
+// Proposal comparison §12.3.26 steps 1.b and 2: Route a bounded calendar snapshot request.
 pub(crate) fn calendar_properties(
     calendar: CalendarRef<'_>,
     request: &Value,
@@ -702,6 +729,7 @@ pub(crate) fn calendar_properties(
     Ok(result)
 }
 
+// Proposal comparison §12.3.12 step 2, §12.3.26 step 2 and §12.3.9 step 4: Route calendar conversions and difference.
 fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let calendar = resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     if op == "calendarProperties" {
@@ -801,6 +829,7 @@ fn calendar_operation(op: &str, request: &Value) -> Result<Value, Error> {
     };
     Ok(result)
 }
+// Proposal comparison §11.1.9 step 3 and §11.1.13 step 3.a: Dispatch native offset and candidate requests.
 fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let registry = time_zones();
     let zone = registry.resolve(
@@ -866,6 +895,7 @@ fn time_zone_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §13.10 steps 2–5: Decode normalized calendar name display mode.
 fn calendar_name(request: &Value) -> Result<crate::CalendarName, Error> {
     match request["calendarName"].as_str() {
         Some("auto") => Ok(crate::CalendarName::Auto),
@@ -875,6 +905,7 @@ fn calendar_name(request: &Value) -> Result<crate::CalendarName, Error> {
         _ => Err(Error::InvalidDateTime),
     }
 }
+// Proposal comparison §6.3.41 step 14 and §9.3.19 step 5: Dispatch normalized zoned and year-month formatting.
 fn date_output_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "formatZonedDateTime" {
         let value = zoned_value(&request["value"])?;
@@ -1020,6 +1051,7 @@ pub(crate) fn parsed_offset_text(offset: crate::OffsetInput) -> Option<std::stri
         }
     }
 }
+// Proposal comparison §13.35 step 29 and §6.5.1 steps 1.c and 3.a: Bridge parsed zoned fields and resolve local requests.
 fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "resolveZonedDateTime" {
         let local = decimal(request, "nanoseconds")?;
@@ -1116,6 +1148,7 @@ fn string_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §6.5.3 steps 4–6: Decode exact instant, zone and calendar into a typed value.
 fn zoned_value(
     value: &Value,
 ) -> Result<ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>, Error> {
@@ -1125,6 +1158,7 @@ fn zoned_value(
         resolve_calendar(value["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?,
     ))
 }
+// Proposal comparison §6.5.10 step 8, §6.5.9 step 9 and §6.3.45 step 6: Dispatch typed zoned operations.
 fn zoned_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let value = zoned_value(&request["value"])?;
     let unit = |key: &str| -> Result<DateTimeUnit, Error> {
@@ -1190,6 +1224,7 @@ enum DurationAnchor {
     Zoned(ZonedDateTime<ResolvedTimeZone<'static>, CalendarRef<'static>>),
 }
 impl DurationAnchor {
+    // Proposal comparison §7.3.20 steps 11–12: Decode a prepared date or zoned anchor.
     fn new(value: &Value) -> Result<Self, Error> {
         match value["kind"].as_str() {
             Some("date") => Ok(Self::Date(PlainDate::from_epoch_day_in(
@@ -1200,12 +1235,14 @@ impl DurationAnchor {
             _ => Err(Error::InvalidDateTime),
         }
     }
+    // Proposal comparison §7.3.21 steps 12.f and 13.h: Delegate total to its typed relative anchor.
     fn total(&self, duration: Duration, unit: DateTimeUnit) -> Result<f64, Error> {
         match self {
             Self::Date(value) => value.total_duration(duration, unit),
             Self::Zoned(value) => value.total_duration(duration, unit),
         }
     }
+    // Proposal comparison §7.3.20 steps 27–28: Delegate rounding to its typed relative anchor.
     fn round(
         &self,
         duration: Duration,
@@ -1221,6 +1258,7 @@ impl DurationAnchor {
             }
         }
     }
+    // Proposal comparison §7.2.3 steps 12–13: Delegate duration comparison to its typed relative anchor.
     fn compare(&self, one: Duration, two: Duration) -> Result<core::cmp::Ordering, Error> {
         match self {
             Self::Date(value) => value.compare_durations(one, two),
@@ -1306,6 +1344,7 @@ fn duration_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §4.5.8 steps 1.a–1.f and 2.b: Preserve clock bounds through numeric transport.
 pub(crate) fn regulate_time_fields(
     values: [f64; 6],
     overflow: crate::Overflow,
@@ -1331,6 +1370,7 @@ pub(crate) fn regulate_time_fields(
         overflow,
     )
 }
+// Proposal comparison §11.1.2 steps 7–13: Transport exact clock nanoseconds and optional field parts.
 fn time_result(value: PlainTime, request: &Value) -> Value {
     if request["clockSnapshot"].as_bool() == Some(true) {
         let (hour, minute, second, fraction) = value.fields();
@@ -1339,6 +1379,7 @@ fn time_result(value: PlainTime, request: &Value) -> Value {
         json!(value.nanoseconds().to_string())
     }
 }
+// Proposal comparison §4.5.8 step 3 and §4.3.16 steps 11–12: Dispatch normalized plain-time requests.
 fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parsePlainTime" {
         return Ok(time_result(
@@ -1440,6 +1481,7 @@ fn time_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §3.5.14 step 6 and §5.5.15 step 6: Route typed plain date and date-time difference.
 fn plain_operation(op: &str, request: &Value) -> Result<Value, Error> {
     let calendar = resolve_calendar(request["calendar"].as_str().ok_or(Error::InvalidCalendar)?)?;
     let subtract = || request["subtract"].as_bool().ok_or(Error::InvalidDuration);
@@ -1544,6 +1586,7 @@ fn plain_operation(op: &str, request: &Value) -> Result<Value, Error> {
         _ => Err(Error::InvalidSyntax),
     }
 }
+// Proposal comparison §8.3.11 steps 13 and 15 and §8.5.8 step 7.a: Round before looking up the format offset.
 pub(crate) fn format_instant(
     value: Instant,
     precision: Precision,
@@ -1577,6 +1620,7 @@ pub(crate) fn format_instant(
     };
     value.format(precision, RoundingMode::Trunc, offset)
 }
+// Proposal comparison §8.5.9 step 4 and §8.3.11 step 15: Dispatch typed Instant difference and formatting.
 fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
     if op == "parseInstant" {
         return Ok(json!(
@@ -1685,6 +1729,7 @@ fn instant_operation(op: &str, request: &Value) -> Result<Value, Error> {
 pub(crate) fn record_call() {
     CALLS.fetch_add(1, Ordering::Relaxed);
 }
+// Proposal comparison §11.1.2 steps 14–16 and §3.5.9 steps 1–3: Route normalized requests and ISO record operations.
 pub(crate) fn execute(request: &Value) -> Result<Value, i32> {
     let op = request.get("op").and_then(Value::as_str).ok_or(2)?;
     if op == "info" {

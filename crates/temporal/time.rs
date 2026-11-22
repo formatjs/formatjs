@@ -31,6 +31,7 @@ pub struct TimeFields {
 }
 
 impl TimeFields {
+    // Proposal comparison §4.5.12 step 17. Test whether the prepared record omits all clock fields.
     pub(crate) fn is_empty(self) -> bool {
         [
             self.hour,
@@ -46,6 +47,7 @@ impl TimeFields {
 }
 
 impl PlainTime {
+    // Proposal comparison §4.5.12 step 2.a. Apply the prepared fields to a zeroed clock.
     pub fn from_fields(fields: TimeFields, overflow: Overflow) -> Result<Self, Error> {
         Self(0).with_fields(fields, overflow)
     }
@@ -115,6 +117,7 @@ impl PlainTime {
         // L632: exact within-day nanoseconds encode the fields with implicit Days 0.
         Ok(Self(total))
     }
+    // Proposal comparison §4.5.2 steps 1, 2, 3. Validate and encode the typed clock fields.
     pub fn new(hour: u8, minute: u8, second: u8, nanosecond: u32) -> Result<Self, Error> {
         if hour > 23 || minute > 59 || second > 59 || nanosecond >= 1_000_000_000 {
             return Err(Error::InvalidDateTime);
@@ -125,15 +128,18 @@ impl PlainTime {
                 + i128::from(nanosecond),
         ))
     }
+    // Proposal comparison §4.5.11 step 3. Initialize the private clock from prepared within-day nanoseconds.
     pub fn from_nanoseconds(value: i128) -> Result<Self, Error> {
         if !(0..NANOSECONDS_PER_DAY).contains(&value) {
             return Err(Error::InvalidDateTime);
         }
         Ok(Self(value))
     }
+    // Proposal comparison §4.5.11 step 3. Read the stored exact clock nanoseconds.
     pub const fn nanoseconds(self) -> i128 {
         self.0
     }
+    // Proposal comparison §4.5.13 steps 1, 2. Project the within-day coordinate into clock digits.
     pub fn fields(self) -> (u8, u8, u8, u32) {
         // PlainTime is always within one day.
         let value = self.0 as u64;
@@ -161,6 +167,7 @@ impl PlainTime {
                 .rem_euclid(NANOSECONDS_PER_DAY),
         ))
     }
+    // Proposal comparison §4.5.16 steps 1.a, 2.a, 3.a, 4.a, 5.a, 6.b, 7, 8. Select the parent-unit remainder and round at the requested increment.
     pub(crate) fn rounded_nanoseconds(
         self,
         unit: TimeUnit,
@@ -227,6 +234,7 @@ impl PlainTime {
     ) -> Result<Duration, Error> {
         other.until(self, largest, smallest, increment, mode)
     }
+    // Proposal comparison §4.3.16 steps 11, 12. Round the prepared precision and retain the clock for formatting.
     pub fn format(self, precision: Precision, mode: RoundingMode) -> Result<FormattedTime, Error> {
         let quantum = match precision {
             Precision::Auto => 1,
@@ -242,6 +250,7 @@ impl PlainTime {
 }
 // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/abstractops.html#L430-L437
 // L432-L437: L722 maxima exceed one; reject non-divisors and the dividend itself.
+// Proposal comparison §13.14 steps 2.a, 2.b, 3, 4. Validate the exclusive within-parent rounding increment.
 pub(crate) fn validate_increment(unit: TimeUnit, increment: u32) -> Result<(), Error> {
     let maximum = match unit {
         TimeUnit::Hour => 24,
@@ -255,6 +264,7 @@ pub(crate) fn validate_increment(unit: TimeUnit, increment: u32) -> Result<(), E
 }
 impl FromStr for PlainTime {
     type Err = Error;
+    // Proposal comparison §4.5.6 steps 3.b, 3.d. Parse clock syntax through the shared native reader.
     fn from_str(value: &str) -> Result<Self, Error> {
         crate::parse::plain_time(value)
     }
@@ -264,6 +274,7 @@ pub struct FormattedTime {
     precision: Precision,
 }
 impl fmt::Display for PlainTime {
+    // Proposal comparison §4.3.18 step 3. Use automatic precision and truncation for default display.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(Precision::Auto, RoundingMode::Trunc)
             .map_err(|_| fmt::Error)?
@@ -271,6 +282,7 @@ impl fmt::Display for PlainTime {
     }
 }
 impl fmt::Display for FormattedTime {
+    // Proposal comparison §4.5.13 steps 1, 2. Render the prepared time record with its selected precision.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let output = crate::format::IsoString::time(self.time.fields(), self.precision);
         f.write_str(output.as_str()?)

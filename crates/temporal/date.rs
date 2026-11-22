@@ -22,6 +22,7 @@ pub struct DateTimeFields<'a> {
 #[derive(Clone, Copy, Debug)]
 pub struct PlainDate<C = Calendar>(i64, C);
 impl PlainDate {
+    // Proposal comparison §3.1.1 steps 8, 9, 10. Check typed ISO date fields and encode the date at noon.
     pub fn new(year: i32, month: u8, day: u8) -> Result<Self, Error> {
         let value = IsoDateTime {
             year,
@@ -35,6 +36,7 @@ impl PlainDate {
         .to_epoch_nanoseconds()?;
         Self::from_epoch_day(value.div_euclid(NANOSECONDS_PER_DAY) as i64)
     }
+    // Proposal comparison §3.5.3 steps 1, 4, 5. Check the prepared date day and store ISO calendar data.
     pub fn from_epoch_day(value: i64) -> Result<Self, Error> {
         if !(-100_000_001..=100_000_000).contains(&value) {
             return Err(Error::OutOfRange);
@@ -51,11 +53,13 @@ impl<C: CalendarProvider> PlainDate<C> {
             overflow,
         )
     }
+    // Proposal comparison §3.5.3 steps 1, 4, 5. Check the day and initialize the typed calendar provider.
     pub fn from_epoch_day_in(value: i64, calendar: C) -> Result<Self, Error> {
         PlainDate::from_epoch_day(value)?;
         calendar.date(value).map_err(error)?;
         Ok(Self(value, calendar))
     }
+    // Proposal comparison §12.3.12 steps 1, 2, 3. Resolve typed calendar date fields and check the resulting day.
     pub fn from_calendar_fields(
         calendar: C,
         fields: DateFields<'_>,
@@ -63,20 +67,24 @@ impl<C: CalendarProvider> PlainDate<C> {
     ) -> Result<Self, Error> {
         Self::from_epoch_day_in(resolve_fields(calendar, fields, overflow)?, calendar)
     }
+    // Proposal comparison §3.5.4 steps 4, 10, 11. Parse the ISO fields and create a date in the selected provider.
     pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
         let fields = crate::parse::plain_date_time_fields(value)?;
         crate::parse::check_calendar(value, calendar.id())?;
         PlainDate::new(fields.year, fields.month, fields.day)?.with_calendar(calendar)
     }
+    // Proposal comparison §3.5.3 step 5. Read the stored typed calendar provider.
     pub const fn calendar(self) -> C {
         self.1
     }
+    // Proposal comparison §3.3.30 step 5. Carry the prepared calendar annotation option into formatting.
     pub fn format(self, calendar_name: CalendarName) -> FormattedDate<C> {
         FormattedDate {
             value: self,
             calendar_name,
         }
     }
+    // Proposal comparison §3.3.3 step 3. Return the stored calendar identifier.
     pub fn calendar_id(self) -> &'static str {
         self.1.id()
     }
@@ -92,24 +100,31 @@ impl<C: CalendarProvider> PlainDate<C> {
     // L913: within one month, a greater day has a greater epoch day.
     // L914: within one month, a lesser day has a lesser epoch day.
     // L915: equal epoch days identify the same ISO date.
+    // Proposal comparison §3.5.13 steps 1, 2, 3, 4, 5, 6, 7. Compare dates by their ISO epoch days.
     pub fn compare<D: CalendarProvider>(self, other: PlainDate<D>) -> core::cmp::Ordering {
         self.0.cmp(&other.0)
     }
+    // Proposal comparison §3.3.24 step 4. Reuse the ISO day with the selected calendar.
     pub fn with_calendar<D: CalendarProvider>(self, calendar: D) -> Result<PlainDate<D>, Error> {
         PlainDate::from_epoch_day_in(self.0, calendar)
     }
+    // Proposal comparison §12.3.26 steps 1, 2. Project the stored ISO day through its calendar.
     pub fn calendar_fields(self) -> Result<crate::calendar::Date, Error> {
         self.1.date(self.0).map_err(error)
     }
+    // Proposal comparison §3.3.4 step 3. Project the era for this day and calendar.
     pub fn era(self) -> Result<Option<crate::calendar::Era>, Error> {
         self.1.era(self.0).map_err(error)
     }
+    // Proposal comparison §3.3.10 step 3. Return the ISO weekday from the epoch day.
     pub fn day_of_week(self) -> u8 {
         ((self.0 + 3).rem_euclid(7) + 1) as u8
     }
+    // Proposal comparison §3.3.14 step 3. Return the seven-day week length.
     pub const fn days_in_week(self) -> u8 {
         7
     }
+    // Proposal comparison §3.3.11 step 3. Count days since the start of the selected calendar year.
     pub fn day_of_year(self) -> Result<u16, Error> {
         Ok((self.0
             - self
@@ -118,22 +133,26 @@ impl<C: CalendarProvider> PlainDate<C> {
                 .map_err(error)?
             + 1) as u16)
     }
+    // Proposal comparison §3.3.15 step 3. Read the month length for the projected calendar fields.
     pub fn days_in_month(self) -> Result<u8, Error> {
         let fields = self.calendar_fields()?;
         self.1
             .days_in_month(fields.year, fields.month)
             .map_err(error)
     }
+    // Proposal comparison §3.3.17 step 3. Read the month count of the projected calendar year.
     pub fn months_in_year(self) -> Result<u8, Error> {
         self.1
             .months_in_year(self.calendar_fields()?.year)
             .map_err(error)
     }
+    // Proposal comparison §3.3.16 step 3. Measure the distance between successive calendar year starts.
     pub fn days_in_year(self) -> Result<u16, Error> {
         let year = self.calendar_fields()?.year;
         Ok((self.1.start_of_year(year + 1).map_err(error)?
             - self.1.start_of_year(year).map_err(error)?) as u16)
     }
+    // Proposal comparison §3.3.18 step 3. Use the calendar's month or year length to detect a leap year.
     pub fn in_leap_year(self) -> Result<bool, Error> {
         Ok(match self.calendar_id() {
             "hebrew" | "chinese" | "dangi" => self.months_in_year()? == 13,
@@ -141,6 +160,7 @@ impl<C: CalendarProvider> PlainDate<C> {
             _ => self.days_in_year()? == 366,
         })
     }
+    // Proposal comparison §3.3.12 step 3. Project the ISO week number and week-year together.
     pub fn week_of_year(self) -> Option<(i32, u8)> {
         if self.calendar_id() != "iso8601" {
             return None;
@@ -154,9 +174,11 @@ impl<C: CalendarProvider> PlainDate<C> {
             ((thursday - crate::iso::epoch_day_from_iso(year, 1, 1)) / 7 + 1) as u8,
         ))
     }
+    // Proposal comparison §13.1 step 4. Read the already encoded ISO epoch day.
     pub const fn epoch_day(self) -> i64 {
         self.0
     }
+    // Proposal comparison §3.5.11 steps 1, 2, 3. Decode the ISO fields used by date formatting.
     pub fn fields(self) -> (i32, u8, u8) {
         let fields = IsoDateTime::from_epoch_nanoseconds(
             i128::from(self.0) * NANOSECONDS_PER_DAY + NANOSECONDS_PER_DAY / 2,
@@ -179,6 +201,7 @@ impl<C: CalendarProvider> PlainDate<C> {
     pub fn checked_subtract(self, duration: Duration, overflow: Overflow) -> Result<Self, Error> {
         self.checked_add(duration.negated(), overflow)
     }
+    // Proposal comparison §3.5.15 steps 7, 8. Add a prepared typed date duration and return the resulting day.
     fn add_date(
         self,
         years: i128,
@@ -200,6 +223,7 @@ impl<C: CalendarProvider> PlainDate<C> {
         Self::from_epoch_day_in(day, self.1)
     }
 
+    // Proposal comparison §3.3.28 steps 4, 5. Combine the selected clock with the ISO day and calendar.
     pub fn to_date_time(self, time: PlainTime) -> Result<PlainDateTime<C>, Error> {
         PlainDateTime::from_epoch_nanoseconds_in(
             i128::from(self.0) * NANOSECONDS_PER_DAY + time.nanoseconds(),
@@ -225,6 +249,7 @@ impl<C: CalendarProvider> PlainDate<C> {
         ))
     }
 }
+// Proposal comparison §12.3.17 steps 1, 2, 4. Return the Gregorian month length for a valid ISO month.
 pub fn month_length(year: i32, month: u8) -> u8 {
     match month {
         2 => 28 + u8::from(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)),
@@ -235,6 +260,7 @@ pub fn month_length(year: i32, month: u8) -> u8 {
 }
 impl FromStr for PlainDate {
     type Err = Error;
+    // Proposal comparison §3.5.4 steps 4, 5, 6, 7, 10, 11. Parse a date string and use its supported arithmetic calendar.
     fn from_str(value: &str) -> Result<Self, Error> {
         let fields = crate::parse::plain_date_time_fields(value)?;
         Self::new(fields.year, fields.month, fields.day)?
@@ -242,6 +268,7 @@ impl FromStr for PlainDate {
     }
 }
 impl<C: CalendarProvider> fmt::Display for PlainDate<C> {
+    // Proposal comparison §3.3.32 step 3. Render the default automatic calendar annotation.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(CalendarName::Auto).fmt(f)
     }
@@ -251,15 +278,18 @@ pub struct FormattedDate<C = Calendar> {
     calendar_name: CalendarName,
 }
 impl<C: CalendarProvider> fmt::Display for FormattedDate<C> {
+    // Proposal comparison §3.5.11 steps 1, 2, 3, 4, 5. Render the ISO date and selected calendar annotation.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write_date(f, self.value.fields())?;
         write_calendar(f, self.value.calendar_id(), self.calendar_name)
     }
 }
+// Proposal comparison §3.5.11 steps 1, 2, 3. Write the prepared year, month and day with ISO padding.
 pub(crate) fn write_date(f: &mut fmt::Formatter<'_>, fields: (i32, u8, u8)) -> fmt::Result {
     let output = crate::format::IsoString::date(fields);
     f.write_str(output.as_str()?)
 }
+// Proposal comparison §12.3.15 steps 1, 2, 3, 4. Write the optional calendar annotation and critical flag.
 pub(crate) fn write_calendar(
     f: &mut fmt::Formatter<'_>,
     calendar: &str,
@@ -282,15 +312,18 @@ pub(crate) fn write_calendar(
 #[derive(Clone, Copy, Debug)]
 pub struct PlainDateTime<C = Calendar>(i128, C);
 impl PlainDateTime {
+    // Proposal comparison §5.1.1 steps 14, 16, 18, 19. Encode typed ISO date-time fields and create the local value.
     pub fn new(fields: IsoDateTime) -> Result<Self, Error> {
         Self::from_epoch_nanoseconds(fields.to_epoch_nanoseconds()?)
     }
+    // Proposal comparison §5.5.8 steps 1, 4, 5. Check a prepared local epoch and initialize the ISO datetime.
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
         crate::iso::check_local(value)?;
         Ok(Self(value, Calendar::Iso8601))
     }
 }
 impl<C: CalendarProvider> PlainDateTime<C> {
+    // Proposal comparison §5.5.5 steps 1, 2, 3. Resolve typed date and clock fields before combining them.
     pub fn from_calendar_fields(
         calendar: C,
         fields: DateTimeFields<'_>,
@@ -326,6 +359,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
         };
         date.to_date_time(time)
     }
+    // Proposal comparison §5.5.8 steps 1, 4, 5. Check the local epoch and initialize its typed calendar provider.
     pub fn from_epoch_nanoseconds_in(value: i128, calendar: C) -> Result<Self, Error> {
         crate::iso::check_local(value)?;
         calendar
@@ -333,14 +367,17 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             .map_err(error)?;
         Ok(Self(value, calendar))
     }
+    // Proposal comparison §5.5.6 steps 4, 11, 12, 13. Parse ISO date-time fields in the selected provider.
     pub fn parse_in(value: &str, calendar: C) -> Result<Self, Error> {
         let fields = crate::parse::plain_date_time_fields(value)?;
         crate::parse::check_calendar(value, calendar.id())?;
         Self::from_epoch_nanoseconds_in(fields.to_epoch_nanoseconds()?, calendar)
     }
+    // Proposal comparison §5.5.8 step 5. Read the stored typed calendar provider.
     pub const fn calendar(self) -> C {
         self.1
     }
+    // Proposal comparison §5.3.3 step 3. Return the date-time's stored calendar identifier.
     pub fn calendar_id(self) -> &'static str {
         self.1.id()
     }
@@ -352,30 +389,38 @@ impl<C: CalendarProvider> PlainDateTime<C> {
     // L920: epoch-day order equals ISO-date order; each clock lies within one day.
     // L921: different dates dominate the entire clock remainder.
     // L922: on equal dates, exact nanoseconds compare the six clock fields.
+    // Proposal comparison §5.5.10 steps 1, 2, 3. Compare encoded ISO date-times in chronological order.
     pub fn compare<D: CalendarProvider>(self, other: PlainDateTime<D>) -> core::cmp::Ordering {
         self.0.cmp(&other.0)
     }
+    // Proposal comparison §5.3.27 step 4. Reuse the same local epoch with the selected calendar.
     pub fn with_calendar<D: CalendarProvider>(
         self,
         calendar: D,
     ) -> Result<PlainDateTime<D>, Error> {
         PlainDateTime::from_epoch_nanoseconds_in(self.0, calendar)
     }
+    // Proposal comparison §12.3.26 steps 1, 2. Project the ISO day through the stored calendar.
     pub fn calendar_fields(self) -> Result<crate::calendar::Date, Error> {
         self.date().calendar_fields()
     }
+    // Proposal comparison §5.5.4 step 2. Read the exact prepared local epoch.
     pub const fn epoch_nanoseconds(self) -> i128 {
         self.0
     }
+    // Proposal comparison §5.5.9 steps 1, 2, 3, 4, 5. Decode local ISO fields for formatting.
     pub fn fields(self) -> IsoDateTime {
         IsoDateTime::from_epoch_nanoseconds(self.0).unwrap()
     }
+    // Proposal comparison §5.3.39 step 3. Keep the ISO day and stored calendar.
     pub fn date(self) -> PlainDate<C> {
         PlainDate(self.0.div_euclid(NANOSECONDS_PER_DAY) as i64, self.1)
     }
+    // Proposal comparison §5.3.40 step 3. Keep the within-day clock.
     pub fn time(self) -> PlainTime {
         PlainTime::from_nanoseconds(self.0.rem_euclid(NANOSECONDS_PER_DAY)).unwrap()
     }
+    // Proposal comparison §5.3.26 steps 4, 5. Replace the local clock and keep the ISO day.
     pub fn with_time(self, time: PlainTime) -> Result<Self, Error> {
         self.date().to_date_time(time)
     }
@@ -405,6 +450,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             self.1,
         )
     }
+    // Proposal comparison §5.5.11 steps 2, 3, 4. Round the local clock to a day and rebuild the date-time.
     pub fn round_day(self, mode: RoundingMode) -> Result<Self, Error> {
         let rounded =
             crate::rounding::round_instant(self.time().nanoseconds(), NANOSECONDS_PER_DAY, mode);
@@ -451,6 +497,7 @@ impl<C: CalendarProvider> PlainDateTime<C> {
             true,
         )
     }
+    // Proposal comparison §5.3.34 steps 11, 12, 13, 14. Round to the prepared precision and carry the formatting state.
     pub fn format(
         self,
         precision: Precision,
@@ -473,12 +520,14 @@ impl<C: CalendarProvider> PlainDateTime<C> {
 }
 impl FromStr for PlainDateTime {
     type Err = Error;
+    // Proposal comparison §5.5.6 steps 4, 5, 6, 7, 8, 11, 12, 13. Parse a datetime string with its supported arithmetic calendar.
     fn from_str(value: &str) -> Result<Self, Error> {
         Self::new(crate::parse::plain_date_time_fields(value)?)?
             .with_calendar(crate::parse::arithmetic_calendar(value)?)
     }
 }
 impl<C: CalendarProvider> fmt::Display for PlainDateTime<C> {
+    // Proposal comparison §5.3.36 step 3. Render date-time with automatic precision and calendar annotation.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.format(Precision::Auto, RoundingMode::Trunc)
             .map_err(|_| fmt::Error)?
@@ -491,12 +540,14 @@ pub struct FormattedDateTime<C = Calendar> {
     calendar_name: CalendarName,
 }
 impl<C: CalendarProvider> FormattedDateTime<C> {
+    // Proposal comparison §5.5.9 step 6. Carry the selected annotation mode into rendering.
     pub fn with_calendar_name(mut self, calendar_name: CalendarName) -> Self {
         self.calendar_name = calendar_name;
         self
     }
 }
 impl<C: CalendarProvider> fmt::Display for FormattedDateTime<C> {
+    // Proposal comparison §5.5.9 steps 1, 2, 3, 4, 5, 6, 7. Render the prepared ISO clock and date with calendar annotation.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let output = crate::format::IsoString::date_time(self.value.fields(), self.precision);
         f.write_str(output.as_str()?)?;
