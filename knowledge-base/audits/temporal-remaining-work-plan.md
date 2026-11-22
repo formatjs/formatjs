@@ -132,7 +132,7 @@ Amendment applicability:433 owned Temporal bridges,467 shared dependencies,
 86 runtime-delegated rows and71 editorial/nonbehavioral rows. Normal engine
 and existing Intl contracts are reused, not reimplemented.
 
-Remaining core states include 215 conditional and 95 comparison-issue rows. No reviewed
+Remaining core states include 215 conditional and 96 comparison-issue rows. No reviewed
 or partial rows remain. Amendments have 35 conditional and 11 comparison-issue rows. Counts include
 propagated clauses/prose; they are not independent bugs or compliance percentages.
 The [remaining numbered-step queue](temporal-remaining-condition-steps.tsv) has
@@ -452,6 +452,10 @@ the nearest result bounds every competing instant inside the range.
 The nearest earlier boundary of a separate exact synthetic gap has two
 candidates. This gives a published comparison issue at §11.1.12 step 9.
 [Folded boundary](temporal-timezone-boundary-proof/README.md#folded-nearest-gap-boundary).
+A second witness puts the nearest later candidate beyond the maximum
+Instant. The comparison's infallible lookup fails, and owned and compact
+providers differ on fallback.
+[Auxiliary candidate](temporal-timezone-boundary-proof/README.md#gap-auxiliary-candidate-outside-the-instant-range).
 The finite retained-week count now has an explicit provider-bound proof.
 A separate public replay isolates the month bubbling policy after a valid
 directed rounding window. The numbered conditions keep their current scope.

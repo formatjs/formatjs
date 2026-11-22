@@ -39,6 +39,11 @@ falsifies the singleton assertion in §11.1.12 step 9 on an exact synthetic
 provider. The two before-candidates give different shifts. Current fallback
 behavior remains recorded separately.
 
+[Out-of-range gap neighbor](temporal-timezone-boundary-proof/README.md#gap-auxiliary-candidate-outside-the-instant-range)
+falsifies the infallible candidate lookup in §11.1.12 step 10. The nearest
+later wall time has a sole raw candidate beyond the maximum Instant.
+Owned Intl and compact fallback behavior differs.
+
 [Amendment issues](temporal-amendment-spec-issues.md) record inconsistent Plain
 range comparison timezones (§15.6.8) and duplicate digital Duration group appends
 (§15.9.8). These remain separate from runtime defects and pending candidate tests.

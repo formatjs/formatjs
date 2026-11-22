@@ -588,6 +588,44 @@ uses the containing transition and returns epoch hour +3 for later.
 Pinned Node 26.8.1 replay SHA-256
 `643e9172bda35b8064159eec5be6f83f9835f283633ed201b36ca31a8c65efa9`.
 
+### Gap auxiliary candidate outside the Instant range
+
+Let M be the maximum Instant. Start at +02:00 and change to −04:00 at
+M−26h, +16:00 at M, then −03:00 at M+4h. Local M−3h has no candidate.
+Its closest later local clock is M+1h, with sole raw candidate M+4h.
+GetPossibleEpochNanoseconds rejects that candidate, so the infallible call
+in step 10 cannot complete. Adding +18:00 at M+5h preserves this witness.
+The public replay checks both profiles and the raw rejection.
+[§11.1.12 steps 6–11](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds).
+[§11.1.13 step 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds).
+
+Owned Intl rejects the auxiliary lookup as a shift source and falls back
+to the clipped day samples (+02:00, +16:00). It returns M−19h for earlier,
+M−5h for compatible and later, and RangeError for reject. The compact
+kernel enumerates only in-range events, so it tries M+16h as its later
+boundary. With no final +18:00 row, the complete candidate set there
+contains M and M+19h. The compact auxiliary lookup throws for earlier,
+compatible and later. With the final row the only candidate there is M.
+The +20h shift then returns M−19h for earlier and rejects M+1h for
+compatible and later. Both compact profiles reject the original gap in
+reject mode.
+[Owned Intl gap lookup](../../../packages/intl-datetimeformat/core.ts#L489).
+[Host day samples](../../../packages/temporal/host-timezone.ts#L334).
+[Compact gap lookup](../../../packages/temporal/kernel.ts#L370).
+
+A clipped retry can reproduce the compact result in the second profile
+when both clipped boundaries have complete, valid singleton candidate
+sets and a nonzero shift within one day. The first profile lacks that
+proof. The existing fallback remains scoped policy, and these witnesses
+leave the rendered comparison conditional. The explicit post-limit rows
+are valid packed Intl inputs. Borrowed Rust TransitionZone rejects such
+explicit rows, so this replay establishes no Rust parity result.
+[Rust transition table validation](../../../crates/temporal/timezone.rs#L258).
+[Package replay](owned-wide-rounding-replay.mjs).
+
+Node 26.8.1 public replay output SHA-256
+`99e322258cdc06e4f0d642d1a7369d3ae1162e77c86b5ff70bfd0766fbce6343`.
+
 ### Start of day after intersecting transitions
 
 With initial offset +5h, an offset change to −5h at epoch hour −5 is

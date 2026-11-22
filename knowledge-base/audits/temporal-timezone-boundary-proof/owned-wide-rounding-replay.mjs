@@ -418,3 +418,54 @@ console.log(
     currentLater: foldedGap('1970-01-01T00:00', 'later').toString(),
   })
 )
+
+const auxiliaryGapZone = 'America/Moncton'
+const maximumHour = max / hour
+for (const hasOutsideReset of [false, true]) {
+  const rows = [
+    row(null, 0),
+    row(maximumHour - 26n, 1),
+    row(maximumHour, 2),
+    row(maximumHour + 4n, 3),
+  ]
+  if (hasOutsideReset) rows.push(row(maximumHour + 5n, 4))
+  Intl.DateTimeFormat.__addTZData({
+    abbrvs: 'TEST',
+    offsets: [2n, -4n, 16n, -3n, 18n]
+      .map(offset => (offset * 3600n).toString(36))
+      .join('|'),
+    zones: [auxiliaryGapZone + '|' + rows.join('|')],
+  })
+  const disambiguate = (local, disambiguation) =>
+    Temporal.ZonedDateTime.from(`${local}[${auxiliaryGapZone}]`, {
+      disambiguation,
+    }).epochNanoseconds
+  // The actual nearest later boundary maps only to MAX + 4h.
+  assert.throws(
+    () => disambiguate('+275760-09-13T01:00:00', 'reject'),
+    /Instant out of range/
+  )
+  const clippedBoundary = () => disambiguate('+275760-09-13T16:00:00', 'reject')
+  if (hasOutsideReset) {
+    assert.equal(clippedBoundary(), max)
+    assert.throws(
+      () => disambiguate('+275760-09-13T17:00:00', 'reject'),
+      /Instant out of range/
+    )
+  } else {
+    assert.throws(clippedBoundary, /Instant out of range/)
+  }
+  const gap = '+275760-09-12T21:00:00'
+  assert.equal(disambiguate(gap, 'earlier'), max - 19n * hour)
+  for (const mode of ['compatible', 'later'])
+    assert.equal(disambiguate(gap, mode), max - 5n * hour)
+  assert.throws(() => disambiguate(gap, 'reject'), RangeError)
+  console.log(
+    JSON.stringify({
+      auxiliaryGapBoundary: auxiliaryGapZone,
+      hasOutsideReset,
+      earlierHoursFromMaximum: -19,
+      laterHoursFromMaximum: -5,
+    })
+  )
+}
