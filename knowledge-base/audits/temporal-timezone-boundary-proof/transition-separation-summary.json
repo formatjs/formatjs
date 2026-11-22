@@ -1,0 +1,348 @@
+{
+  "generated": {
+    "packedSha256": "c62e83781c612170917463fac92be16e174510edfc6a84c66bcec67dc10beb0d",
+    "zones": 457,
+    "seams": 431,
+    "seamFailures": [],
+    "counts": {
+      "effectiveHistorical": 19738,
+      "effectiveRecurring": 107861
+    },
+    "minimumGapSeconds": 601200,
+    "minimumGapNames": [
+      "America/Boa_Vista",
+      "America/Noronha",
+      "America/Recife",
+      "Asia/Gaza",
+      "Asia/Hebron"
+    ],
+    "short": [],
+    "positiveWholeDayJumps": [
+      {
+        "zone": "Asia/Manila",
+        "at": -3944621032,
+        "before": -57368,
+        "after": 29032
+      },
+      {
+        "zone": "Pacific/Apia",
+        "at": 1325239200,
+        "before": -36000,
+        "after": 50400
+      },
+      {
+        "zone": "Pacific/Fakaofo",
+        "at": 1325242800,
+        "before": -39600,
+        "after": 46800
+      },
+      {
+        "zone": "Pacific/Guam",
+        "at": -3944626740,
+        "before": -51660,
+        "after": 34740
+      },
+      {
+        "zone": "Pacific/Kanton",
+        "at": 788871600,
+        "before": -39600,
+        "after": 46800
+      },
+      {
+        "zone": "Pacific/Kiritimati",
+        "at": 788868000,
+        "before": -36000,
+        "after": 50400
+      },
+      {
+        "zone": "Pacific/Kosrae",
+        "at": -3944631116,
+        "before": -47284,
+        "after": 39116
+      },
+      {
+        "zone": "Pacific/Kwajalein",
+        "at": 745934400,
+        "before": -43200,
+        "after": 43200
+      },
+      {
+        "zone": "Pacific/Palau",
+        "at": -3944624276,
+        "before": -54124,
+        "after": 32276
+      },
+      {
+        "zone": "Pacific/Saipan",
+        "at": -3944626740,
+        "before": -51660,
+        "after": 34740
+      }
+    ],
+    "zoneCount": 457,
+    "fullResultSha256": "bc4d34c371e4f9dedf43500984c27229e775c7ba84498aba194226b3ca959941"
+  },
+  "nodeOffsetSpacing": [
+    {
+      "runtime": {
+        "node": "v26.5.1",
+        "icu": "78.3",
+        "tz": "2026b"
+      },
+      "binarySha256": "fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6",
+      "checkedSpacingMilliseconds": 172800000,
+      "firstCoveredMilliseconds": -8640000345600000,
+      "evaluatedEvents": 201949,
+      "minGap": 601200000,
+      "minGapNames": [
+        "America/Boa_Vista",
+        "America/Noronha",
+        "America/Recife",
+        "Asia/Gaza",
+        "Asia/Hebron",
+        "Brazil/DeNoronha"
+      ],
+      "short": [],
+      "annualEnds": [2147483647],
+      "positiveWholeDayJumps": [
+        {
+          "zone": "Asia/Manila",
+          "t": -3944621032000,
+          "before": -57368000,
+          "after": 29032000
+        },
+        {
+          "zone": "Kwajalein",
+          "t": 745934400000,
+          "before": -43200000,
+          "after": 43200000
+        },
+        {
+          "zone": "MIT",
+          "t": 1325239200000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Apia",
+          "t": 1325239200000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Enderbury",
+          "t": 788871600000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Fakaofo",
+          "t": 1325242800000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Guam",
+          "t": -3944626740000,
+          "before": -51660000,
+          "after": 34740000
+        },
+        {
+          "zone": "Pacific/Kanton",
+          "t": 788871600000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Kiritimati",
+          "t": 788868000000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Kosrae",
+          "t": -3944631116000,
+          "before": -47284000,
+          "after": 39116000
+        },
+        {
+          "zone": "Pacific/Kwajalein",
+          "t": 745934400000,
+          "before": -43200000,
+          "after": 43200000
+        },
+        {
+          "zone": "Pacific/Palau",
+          "t": -3944624276000,
+          "before": -54124000,
+          "after": 32276000
+        },
+        {
+          "zone": "Pacific/Saipan",
+          "t": -3944626740000,
+          "before": -51660000,
+          "after": 34740000
+        }
+      ],
+      "zoneCount": 638,
+      "fullResultSha256": "f915432b55d7bd24d77ec7adfcd88968fba8565a34c648a11528c33f6d9fa0b6"
+    },
+    {
+      "runtime": {
+        "node": "v26.8.1",
+        "icu": "78.3",
+        "tz": "2026c"
+      },
+      "binarySha256": "19235a9b678f84729464c52623f92de130a165452747c6826d3fdc13df3abcc3",
+      "checkedSpacingMilliseconds": 172800000,
+      "firstCoveredMilliseconds": -8640000345600000,
+      "evaluatedEvents": 199398,
+      "minGap": 601200000,
+      "minGapNames": [
+        "America/Boa_Vista",
+        "America/Noronha",
+        "America/Recife",
+        "Asia/Gaza",
+        "Asia/Hebron",
+        "Brazil/DeNoronha"
+      ],
+      "short": [],
+      "annualEnds": [2147483647],
+      "positiveWholeDayJumps": [
+        {
+          "zone": "Asia/Manila",
+          "t": -3944621032000,
+          "before": -57368000,
+          "after": 29032000
+        },
+        {
+          "zone": "Kwajalein",
+          "t": 745934400000,
+          "before": -43200000,
+          "after": 43200000
+        },
+        {
+          "zone": "MIT",
+          "t": 1325239200000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Apia",
+          "t": 1325239200000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Enderbury",
+          "t": 788871600000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Fakaofo",
+          "t": 1325242800000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Guam",
+          "t": -3944626740000,
+          "before": -51660000,
+          "after": 34740000
+        },
+        {
+          "zone": "Pacific/Kanton",
+          "t": 788871600000,
+          "before": -39600000,
+          "after": 46800000
+        },
+        {
+          "zone": "Pacific/Kiritimati",
+          "t": 788868000000,
+          "before": -36000000,
+          "after": 50400000
+        },
+        {
+          "zone": "Pacific/Kosrae",
+          "t": -3944631116000,
+          "before": -47284000,
+          "after": 39116000
+        },
+        {
+          "zone": "Pacific/Kwajalein",
+          "t": 745934400000,
+          "before": -43200000,
+          "after": 43200000
+        },
+        {
+          "zone": "Pacific/Palau",
+          "t": -3944624276000,
+          "before": -54124000,
+          "after": 32276000
+        },
+        {
+          "zone": "Pacific/Saipan",
+          "t": -3944626740000,
+          "before": -51660000,
+          "after": 34740000
+        }
+      ],
+      "zoneCount": 638,
+      "fullResultSha256": "3fe71dd59941f53da3f0f0bc4b8d5ec2fd11e08d3c44e9407817fce2f8bf12cb"
+    }
+  ],
+  "nodeUmmAlQuraChronology": [
+    {
+      "runtime": {
+        "node": "v26.5.1",
+        "icu": "78.3",
+        "tz": "2026b"
+      },
+      "runtimeSha256": "fb48e77df2f8e92fedfec39afa60a5f41563441f6b61316ada5fb295a431c2c6",
+      "calendar": "islamic-umalqura",
+      "scanned": 107748,
+      "minLength": 29,
+      "maxLength": 30,
+      "civilJoinEpochs": [-31826, 74839],
+      "maximumProbeSteps": 14,
+      "minimumProbeDifference": 399,
+      "maximumProbeDifference": 401,
+      "observationsSha256": "ce9d5edac27aed9b65c9db9c03a23ee420d3e13f468c5dedc2e79a854b67c54a"
+    },
+    {
+      "runtime": {
+        "node": "v24.14.0",
+        "icu": "78.2",
+        "tz": "2025c"
+      },
+      "runtimeSha256": "e237a2839d0cbdc9a9a2adda1a184afc0f5b20306ffbe923af5686550472d8a8",
+      "calendar": "islamic-umalqura",
+      "scanned": 107748,
+      "minLength": 29,
+      "maxLength": 30,
+      "civilJoinEpochs": [-31826, 74839],
+      "maximumProbeSteps": 14,
+      "minimumProbeDifference": 399,
+      "maximumProbeDifference": 401,
+      "observationsSha256": "ce9d5edac27aed9b65c9db9c03a23ee420d3e13f468c5dedc2e79a854b67c54a"
+    },
+    {
+      "runtime": {
+        "node": "v26.8.1",
+        "icu": "78.3",
+        "tz": "2026c"
+      },
+      "runtimeSha256": "19235a9b678f84729464c52623f92de130a165452747c6826d3fdc13df3abcc3",
+      "calendar": "islamic-umalqura",
+      "scanned": 107748,
+      "minLength": 29,
+      "maxLength": 30,
+      "civilJoinEpochs": [-31826, 74839],
+      "maximumProbeSteps": 14,
+      "minimumProbeDifference": 399,
+      "maximumProbeDifference": 401,
+      "observationsSha256": "ce9d5edac27aed9b65c9db9c03a23ee420d3e13f468c5dedc2e79a854b67c54a"
+    }
+  ]
+}
