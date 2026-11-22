@@ -21,7 +21,7 @@ valid homogeneous-sign DateDuration record and overflow constrain/reject.
 | 1.d add days              | [calendar.ts:478](../../packages/temporal/calendar.ts#L478): epoch-day addition; [addNormalizedCalendarDate:493](../../packages/temporal/calendar.ts#L493) converts resulting coordinate back to date.                                                                                                     |
 | 2 non-ISO branch          | Same dispatcher selects calendar arithmetic/table/native provider. NonISODateAdd algorithm is not established by this ISO map.                                                                                                                                                                             |
 | 3 final ISO bounds        | [date-core.ts:575](../../packages/temporal/date-core.ts#L575) dayCheck around full result; [calendar.ts:130](../../packages/temporal/calendar.ts#L130) range[-100000001,100000000]. Other raw/normalized entry points require caller-specific guards; do not treat raw helper as complete CalendarDateAdd. |
-| 4 return ISO date         | Public date-core returns bounded epoch day; normalized helper additionally returns calendar date for its consumer. Equivalence depends on exact Gregorian epoch-day conversion/inverse.                                                                                                                    |
+| 4 return ISO date         | Public date-core returns bounded epoch day; normalized helper additionally returns calendar date for its consumer. Exact Gregorian representation follows the bounded closure proof linked below.                                                                                                          |
 
 AST inventory finds two addNormalizedCalendarDate consumers:
 [date-core.ts:576](../../packages/temporal/date-core.ts#L576) and
@@ -70,18 +70,19 @@ are rejected by [calendar.ts:464](../../packages/temporal/calendar.ts#L464) and
 
 Rust [core.rs:303–321](../../crates/intl_datetimeformat_calendars/core.rs#L303)
 regulates month/day before constructing epoch; [regulate:536](../../crates/intl_datetimeformat_calendars/core.rs#L536)
-implements reject-or-clamp. Full Gregorian leap-year helper contract remains a
-named dependency rather than silently signed off here.
+implements reject-or-clamp. The [bounded Gregorian proof](temporal-calendar-gregorian-closure-audit.md)
+establishes the needed leap/year conversion domain; arbitrary years stay outside
+that proof.
 
 ## AddDaysToISODate
 
 [Comparison §3.5.9](https://tc39.es/proposal-temporal/#sec-temporal-adddaystoisodate):
 
-| Step                             | Correspondence                                                                                                                                                                                                                            |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1 ISO date->epoch days, add days | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L473). [Arithmetic.ts:112–125](../../packages/ecma402-abstract/Calendar/Arithmetic.ts#L112) uses DayFromYear+month start+leap adjustment+day−1.                                 |
-| 2 epoch days->epoch milliseconds | No milliseconds materialized; exact integer day coordinate retained. Avoids unnecessary wide binary64 multiplication.                                                                                                                     |
-| 3 inverse year/month/day         | [calendar.ts:494](../../packages/temporal/calendar.ts#L494), [calendarFromEpochDayRaw:372](../../packages/temporal/calendar.ts#L372), ArithmeticGregorianFromEpochDay. Conditional on inverse conversion contract; same final civil date. |
+| Step                             | Correspondence                                                                                                                                                                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 ISO date->epoch days, add days | [calendar.ts:473–478](../../packages/temporal/calendar.ts#L473). [Arithmetic.ts:112–125](../../packages/ecma402-abstract/Calendar/Arithmetic.ts#L112) uses DayFromYear+month start+leap adjustment+day−1.                        |
+| 2 epoch days->epoch milliseconds | No milliseconds materialized; exact integer day coordinate retained. Avoids unnecessary wide binary64 multiplication.                                                                                                            |
+| 3 inverse year/month/day         | [calendar.ts:494](../../packages/temporal/calendar.ts#L494), [calendarFromEpochDayRaw:372](../../packages/temporal/calendar.ts#L372), ArithmeticGregorianFromEpochDay. Bounded inverse proof supplies the same final civil date. |
 
 Rust [date_math.rs:50–58](../../crates/intl_datetimeformat_calendars/date_math.rs#L50)
 uses checked week*7/day/epoch additions. [core.rs:422–424](../../crates/intl_datetimeformat_calendars/core.rs#L422)
@@ -137,8 +138,11 @@ validation gates pass. Expanded validation passes all 73 tests (60 executed,
 arithmetic changed; no additional ordinary arithmetic/order defect established
 by this operation map.
 
-Remaining: exact Gregorian date-to-day/inverse contracts across entire supported
-range; all NonISODateAdd calendars and era/leap-month policies; full caller-bound
-proof for every raw/extended helper; native/provider errors and realm contracts;
+[Gregorian closure](temporal-calendar-gregorian-closure-audit.md) now proves
+exact conversion over raw±110million days, supported by direct TS/Rust endpoint
+controls. [ISO bounds](temporal-iso-calendar-add-bounds-audit.md) establishes
+prepared-input numeric precision, regulation order and complete normalized caller
+guards. Remaining: NonISODateAdd calendars and era/leap-month policies; arbitrary
+raw/extended helper contracts; full public coercion, native/provider errors and realms;
 known existing day/window specification issues. No historical trace credit or
 full CalendarDateAdd signoff claimed.

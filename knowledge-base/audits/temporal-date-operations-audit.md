@@ -75,6 +75,14 @@ or sign off MakeDay. Mathematical integer zero may be represented by either JS
 zero sign inside these private computations; public Number-returning contracts
 retain their own sign requirements.
 
+## Extended calendar domain
+
+The [Gregorian conversion proof](temporal-calendar-gregorian-closure-audit.md)
+extends DayFromYear/IsLeapYear's exact integer-year argument through ±400000
+and supplies direct calendar inverse evidence over ±110million epoch days.
+This extension applies to bounded calendar helpers; it does not turn unclippable
+extended day coordinates into public Date/Instant values or settle MakeDay.
+
 ## Evidence and limits
 
 [date-intrinsics.test.ts](../../packages/ecma262-abstract/tests/date-intrinsics.test.ts)

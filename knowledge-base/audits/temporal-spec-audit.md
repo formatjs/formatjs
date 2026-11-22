@@ -22,6 +22,21 @@ audit or reimplementation of all ECMA-262 or ECMA-402. Shared fixes require a
 demonstrated Temporal call path; unrelated formatter/language work stays outside
 this audit. Current priority returns to Duration and ZonedDateTime contracts.
 
+## Bounded ISO calendar arithmetic, 2026-11-22
+
+[Gregorian conversion proof](temporal-calendar-gregorian-closure-audit.md)
+extends needed ECMA-262 date leaves to year±400000 and proves TS March/Rust
+packed inverse correspondence over raw±110million days. Two independently
+derived endpoint field/day controls pass in both languages. Existing complete-era
+coverage is reused; no additional fixture corpus or runtime arithmetic change.
+
+[ISO addition bounds](temporal-iso-calendar-add-bounds-audit.md) closes prepared
+ISO numeric/regulation/final-caller-bound obligations. BigInt clock folding,
+including receiver clock carry, remains exact; combined week/day magnitude stays
+below2^37. Four focused test/typecheck/kernel/core gates pass (three executed,
+one cached). Public coercion/realm/native contracts, non-ISO policy and requested
+Temporal API authority stay open. Historical trace counts remain unchanged.
+
 ## Host-calendar private operations, 2026-11-22
 
 [Host-provider execution map](temporal-host-calendar-private-closure-audit.md)

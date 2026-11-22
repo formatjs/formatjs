@@ -306,3 +306,15 @@ fn iso_fields_round_trip_across_complete_eras() {
         assert_eq!(iso_day(year, month, date), day, "{year}-{month}-{date}");
     }
 }
+
+#[test]
+fn extended_gregorian_endpoints_have_exact_fields() {
+    use formatjs_intl_datetimeformat_calendars::calendar::{iso_day, iso_fields};
+    for (epoch, year, month, day) in [
+        (-110_000_000, -299200, 3, 25),
+        (110_000_000, 303139, 10, 10),
+    ] {
+        assert_eq!(iso_fields(epoch), (year, month, day));
+        assert_eq!(iso_day(year, month, day), epoch);
+    }
+}
