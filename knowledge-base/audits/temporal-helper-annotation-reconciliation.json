@@ -33808,11 +33808,11 @@
     "packages/temporal/instant.ts": "49be43c060db028469f1819932a1d1959657e46ae2427923fa8d272859e8e8d8",
     "packages/temporal/intrinsics.ts": "f1333428dbdb64d9e749953bc9df1a70c9a8c31226267673b7d49b409294bc15",
     "packages/temporal/kernel.ts": "29f20eacbabaa6267eeaa4c00a7893c1a7801090856d8a5dbc421d30b4b6734d",
-    "packages/temporal/legacy-calendar-date.ts": "407d669219a202c0513f6d511083c61b99ef72692178018665bb317baf1fa138",
+    "packages/temporal/legacy-calendar-date.ts": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
     "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
-    "packages/temporal/legacy-lunisolar-date.ts": "f57d64bd47c0d40095eabe4c0048a1f78eb558babaf6d1676cada0084377c5bf",
+    "packages/temporal/legacy-lunisolar-date.ts": "5b2946bee647dfe46b8f66aa0de177513c1b0e2dd1e70a615ba8988431715b48",
     "packages/temporal/legacy-zoned-date.ts": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493",
     "packages/temporal/locale.ts": "d8fb1861ecc5b6818e539320ba7a7221e50236dc317289af1e6c2a6248395f5e",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
@@ -34399,10 +34399,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "matchesNumericRangeYear",
-        "source_sha256": "407d669219a202c0513f6d511083c61b99ef72692178018665bb317baf1fa138",
-        "start_line": 563,
-        "end_line": 601,
-        "anchor_line": 562,
+        "source_sha256": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
+        "start_line": 565,
+        "end_line": 603,
+        "anchor_line": 564,
         "section": "11.5.8",
         "steps": ["15.d"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -34411,10 +34411,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "restoreNumericRangeYears",
-        "source_sha256": "407d669219a202c0513f6d511083c61b99ef72692178018665bb317baf1fa138",
-        "start_line": 620,
-        "end_line": 705,
-        "anchor_line": 691,
+        "source_sha256": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
+        "start_line": 622,
+        "end_line": 707,
+        "anchor_line": 693,
         "section": "11.5.8",
         "steps": ["19.b", "19.c", "19.d", "19.e", "19.f"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -34423,10 +34423,10 @@
       {
         "file": "packages/temporal/legacy-calendar-date.ts",
         "symbol": "correctedRangeDay",
-        "source_sha256": "407d669219a202c0513f6d511083c61b99ef72692178018665bb317baf1fa138",
-        "start_line": 604,
-        "end_line": 618,
-        "anchor_line": 603,
+        "source_sha256": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
+        "start_line": 606,
+        "end_line": 620,
+        "anchor_line": 605,
         "section": "11.5.8",
         "steps": ["19.e"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
@@ -34543,6 +34543,32 @@
         "steps": ["12", "15.f.iii", "15.f.v", "15.f.viii"],
         "spec_url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
         "scope": "Read the original Buddhist month ordinal through captured Intl parts before preserving text from the selected range."
+      }
+    ],
+    "legacy_buddhist_day_layout": [
+      {
+        "file": "packages/temporal/legacy-calendar-date.ts",
+        "symbol": "buddhistDayRange",
+        "start_line": 709,
+        "end_line": 772,
+        "source_sha256": "32640de5dc3fc2fce0b4e9beb19133d23cae2eaf0f2e371a47925e058e1c2050",
+        "anchor_line": 750,
+        "section": "11.5.8",
+        "steps": ["7", "8", "15.d", "19.e"],
+        "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
+        "scope": "Use a common verified date shift to preserve interval selection and restore the original year at the selected width."
+      },
+      {
+        "file": "packages/temporal/legacy-lunisolar-date.ts",
+        "symbol": "hostBuddhistDateMatches",
+        "start_line": 84,
+        "end_line": 102,
+        "source_sha256": "5b2946bee647dfe46b8f66aa0de177513c1b0e2dd1e70a615ba8988431715b48",
+        "anchor_line": 90,
+        "section": "11.5.11",
+        "steps": ["3", "5.a"],
+        "spec_url": "https://tc39.es/ecma402/#sec-tolocaltime",
+        "scope": "Check the native year, month and day through the existing cached Buddhist formatter."
       }
     ]
   }

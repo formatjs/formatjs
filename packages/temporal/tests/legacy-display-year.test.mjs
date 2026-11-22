@@ -330,7 +330,60 @@ for (const [style, start, end, referenceStart, referenceEnd] of [
   }
 }
 
-assert.equal(checked, 167)
+for (const locale of ['en', 'de', 'en-u-nu-mathsans']) {
+  const options = {calendar: 'buddhist', timeZone: 'UTC', day: 'numeric'}
+  const raw = new NativeDateTimeFormat(locale, options)
+  const formatter = new Intl.DateTimeFormat(locale, options)
+  const digits = new Intl.NumberFormat(locale, {useGrouping: false})
+  for (const [start, end] of [
+    [
+      [-543, 6, 1],
+      [-543, 7, 1],
+    ],
+    [
+      [-543, 6, 1],
+      [-542, 6, 1],
+    ],
+    [
+      [-543, 6, 1],
+      [-543, 6, 1],
+    ],
+    [
+      [-401, 12, 31],
+      [-400, 1, 1],
+    ],
+  ]) {
+    const projected = ([year, month, day]) =>
+      Date.UTC(year + 2800, month - 1, day)
+    const expected = raw
+      .formatRangeToParts(projected(start), projected(end))
+      .map(part => {
+        if (part.type !== 'year') return part
+        const [year] = part.source === 'endRange' ? end : start
+        const buddhist = year + 543
+        return {
+          ...part,
+          value: digits.format(buddhist <= 0 ? 1 - buddhist : buddhist),
+        }
+      })
+    const toMilliseconds = ([year, month, day]) =>
+      Date.UTC(year, month - 1, day)
+    const toPlain = ([year, month, day]) =>
+      new Temporal.PlainDate(year, month, day, 'buddhist')
+    for (const convert of [toMilliseconds, toPlain]) {
+      const first = convert(start)
+      const last = convert(end)
+      assert.deepEqual(formatter.formatRangeToParts(first, last), expected)
+      assert.equal(
+        formatter.formatRange(first, last),
+        expected.map(part => part.value).join('')
+      )
+      checked++
+    }
+  }
+}
+
+assert.equal(checked, 191)
 console.log(
-  '167 native bridge display-year controls, including cold/warm and range paths'
+  '191 native bridge display-year controls, including cold/warm and range paths'
 )

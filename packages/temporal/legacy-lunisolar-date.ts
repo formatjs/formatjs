@@ -81,6 +81,26 @@ export function hostBuddhistMonth(
   return undefined
 }
 
+export function hostBuddhistDateMatches(
+  milliseconds: number,
+  year: number,
+  month: number,
+  day: number
+): boolean {
+  // ECMA-402 §11.5.11 steps 3 and 5.a: verify the host's projected date.
+  const parts = nativeParts!.call(probe('buddhist', 'UTC'), milliseconds)
+  let readYear: number | undefined
+  let readMonth: number | undefined
+  let readDay: number | undefined
+  for (let index = 0; index < parts.length; index++) {
+    const {type, value} = parts[index]
+    if (type === 'year') readYear = numberFrom(value)
+    else if (type === 'month') readMonth = numberFrom(value)
+    else if (type === 'day') readDay = numberFrom(value)
+  }
+  return readYear === year && readMonth === month && readDay === day
+}
+
 function fields(
   calendar: Calendar | 'iso8601',
   timeZone: string,

@@ -6,6 +6,7 @@ import {
   arraySome,
   floor,
   mathAbs,
+  mathTrunc,
   numberIsFinite,
 } from '#packages/ecma262-abstract/intrinsics.js'
 import {beforeHijrah} from '@formatjs_generated/datetimeformat.calendars/fallback-eras.js'
@@ -22,6 +23,7 @@ import {
   correctLunisolarParts,
   joinCalendarRangeParts,
   calendarLabelFormatter,
+  hostBuddhistDateMatches,
   hostBuddhistMonth,
   legacyISOEpochDay,
 } from '#packages/temporal/legacy-lunisolar-date.js'
@@ -704,6 +706,71 @@ function restoreNumericRangeYears(
   return parts
 }
 
+function buddhistDayRange(
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection,
+  options: Intl.ResolvedDateTimeFormatOptions,
+  rangeParts: RangeParts
+): Intl.DateTimeRangeFormatPart[] | undefined {
+  // ECMA-262 §21.4.1.31 step 3: use integer milliseconds for the projection.
+  const start = mathTrunc(first.milliseconds)
+  const end = mathTrunc(last.milliseconds)
+  const cycles = floor((start - reference) / cycle)
+  if (!cycles) return undefined
+  const projectedStart = start - cycles * cycle
+  const projectedEnd = end - cycles * cycle
+  if (projectedEnd < reference || projectedEnd > limit) return undefined
+  const firstDate = calendarFromEpochDayRaw(
+    'buddhist',
+    floor(start / dayMilliseconds)
+  )
+  const lastDate = calendarFromEpochDayRaw(
+    'buddhist',
+    floor(end / dayMilliseconds)
+  )
+  const shift = cycles * 400
+  const firstYear = firstDate.year - shift
+  const lastYear = lastDate.year - shift
+  if (
+    !hostBuddhistDateMatches(
+      projectedStart,
+      firstYear,
+      firstDate.month,
+      firstDate.day
+    ) ||
+    !hostBuddhistDateMatches(
+      projectedEnd,
+      lastYear,
+      lastDate.month,
+      lastDate.day
+    )
+  )
+    return undefined
+
+  // ECMA-402 §11.5.8 steps 7–8, 15.d and 19.e: a common cycle preserves
+  // the compared date fields. Keep the host pattern, including added fields.
+  const result = rangeParts.call(first.formatter, projectedStart, projectedEnd)
+  const numeric = number(first.formatter, options, 1)
+  const padded = number(first.formatter, options, 2)
+  for (let index = 0; index < result.length; index++) {
+    const part = result[index]
+    if (part.type !== 'year') continue
+    const isEnd = part.source === 'endRange'
+    const projected = isEnd ? lastYear : firstYear
+    const year = isEnd ? lastDate.year : firstDate.year
+    if (part.source === 'shared' && firstDate.year !== lastDate.year)
+      return undefined
+    // ECMA-402 §11.5.4 steps 15.f.iv and 15.f.viii–ix: normalize the
+    // original year at the selected pattern's width.
+    const display = year <= 0 ? 1 - year : year
+    if (part.value === numeric(projected)) part.value = numeric(display)
+    else if (part.value === padded(projected % 100))
+      part.value = padded(display % 100)
+    else return undefined
+  }
+  return result
+}
+
 export function legacyCalendarRangeParts(
   first: LegacyDateTimeProjection,
   last: LegacyDateTimeProjection,
@@ -711,7 +778,8 @@ export function legacyCalendarRangeParts(
   rangeParts: RangeParts,
   resolved: Resolved
 ): Intl.DateTimeRangeFormatPart[] | undefined {
-  const {calendar, timeZone} = resolved.call(first.formatter)
+  const options = resolved.call(first.formatter)
+  const {calendar, timeZone} = options
   if (
     calendar === 'iso8601' ||
     calendar === 'gregory' ||
@@ -774,6 +842,19 @@ export function legacyCalendarRangeParts(
               lastFields.narrowMonth)
         )
           return undefined
+      }
+      if (
+        calendar === 'buddhist' &&
+        timeZone === 'UTC' &&
+        options.day !== undefined &&
+        arrayEvery(
+          start,
+          part => part.type === 'day' || part.type === 'literal'
+        ) &&
+        arrayEvery(end, part => part.type === 'day' || part.type === 'literal')
+      ) {
+        const dayRange = buddhistDayRange(first, last, options, rangeParts)
+        if (dayRange) return dayRange
       }
       const firstYear = firstFields.numericYear,
         lastYear = lastFields.numericYear
