@@ -251,6 +251,27 @@ equal(
 )
 const native = new Native('en', {timeZone: 'UTC'}),
   reference = new Reference('en', {timeZone: 'UTC'})
+for (const Constructor of [Native, Reference]) {
+  const expected = new Constructor('en', {timeZone: 'UTC'}).format(0)
+  const original = Object.prototype.isPrototypeOf
+  let actual: unknown, error: unknown
+  try {
+    Object.prototype.isPrototypeOf = () => {
+      throw new Error('Mutable prototype helper reached')
+    }
+    actual = new Constructor('en', {timeZone: 'UTC'}).format(0)
+  } catch (caught) {
+    error = caught
+  } finally {
+    Object.prototype.isPrototypeOf = original
+  }
+  check(error === undefined, 'constructor ignores mutable isPrototypeOf')
+  equal(
+    actual,
+    expected,
+    'constructor preserves output under prototype mutation'
+  )
+}
 for (const input of [
   NaN,
   Infinity,
