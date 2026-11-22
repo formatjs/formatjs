@@ -4,6 +4,11 @@
 
 ## Purpose
 
+Nonpositive calendar display years follow ECMA-402 §11.5.4 step 15.f.iv in TS/Rust:
+`1 - year` applies before numeric or two-digit rendering, for every calendar.
+The [year audit](audits/temporal-calendar-year-audit.md) records source steps,
+real Buddhist-provider controls and the disagreement with native ICU output.
+
 The [local-offset precision audit](audits/temporal-local-offset-precision-audit.md)
 checks fractional offsets near both Date limits against builtin UTC fields.
 Its fault control catches nanoseconds rounded through Number before Decimal
