@@ -471,6 +471,8 @@ pub(crate) fn difference<A: RelativeAnchor>(
         };
         // ECMA-262 preview §22.15.5.15 steps 4–8 compare against the time sign, including zero.
         // https://tc39.es/ecma262/pr/3966/#sec-nudgetodayortime
+        // §22.3.14.8 steps 1–3: signum keeps a zero time span at zero.
+        // https://tc39.es/ecma262/pr/3966/#sec-timedurationsign
         expanded = (rounded_days - time / NANOSECONDS_PER_DAY).signum() == time.signum();
         rounded = end + value - time;
         let remainder = if largest <= DateTimeUnit::Day {

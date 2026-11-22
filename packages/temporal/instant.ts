@@ -211,6 +211,10 @@ function difference(
         mode
       )
     )
+  // ECMA-262 preview §22.3.6.3 steps 1–3: subtract exact epochs, then round the span.
+  // https://tc39.es/ecma262/pr/3966/#sec-differenceepochnanoseconds
+  // §22.3.14.7 steps 1–3: valid Instant endpoints fit the exact time-duration interval.
+  // https://tc39.es/ecma262/pr/3966/#sec-timedurationfromepochnanosecondsdifference
   const valueToRound = (end - value) * (since ? -1n : 1n)
   const rounded = roundDuration(
     valueToRound,
@@ -229,12 +233,8 @@ class InstantValue implements InstantObject {
   static compare(one: unknown, two: unknown): -1 | 0 | 1 {
     const left = toInstant(one),
       right = toInstant(two)
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L435-L437
-    // L435: a greater first epoch returns 1.
-    // L436: a lesser first epoch returns -1.
-    // L437: equal epochs return 0.
-    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L85
-    // L85: compare the private epochs and return a Number sign.
+    // ECMA-262 preview §22.3.6.2 steps 1–3: compare exact epochs.
+    // https://tc39.es/ecma262/pr/3966/#sec-compareepochnanoseconds
     return left < right ? -1 : left > right ? 1 : 0
   }
   // Proposal comparison §8.2.2 step 1.
@@ -304,6 +304,8 @@ class InstantValue implements InstantObject {
     const native = nativeTemporal()
     if (import.meta.formatjsTemporalNativeData === true)
       return createNativeInstant(native!.addInstant(value, fields, false))
+    // ECMA-262 preview §22.3.6.1 steps 1–3: add nanoseconds and check Instant bounds.
+    // https://tc39.es/ecma262/pr/3966/#sec-addepochnanoseconds
     return createInstant(
       native
         ? native.addInstant(value, fields, false)

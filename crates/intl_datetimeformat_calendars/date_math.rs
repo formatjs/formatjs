@@ -71,6 +71,8 @@ pub(crate) trait NumericCalendar: Copy {
             return Ok(result);
         }
         let surpasses = |duration: DateDuration| -> Result<bool, Error> {
+            // ECMA-262 preview §22.3.8.1 steps 1–5: compare the first differing field in the travel direction.
+            // https://tc39.es/ecma262/pr/3966/#sec-comparesurpasses
             let first_order = (i64::from(first.year) + duration.years)
                 .cmp(&i64::from(last.year))
                 .then_with(|| first.month_code.number.cmp(&last.month_code.number))
@@ -88,7 +90,7 @@ pub(crate) trait NumericCalendar: Copy {
             }
             let (year, month) =
                 self.add_year_month(first, duration.years, duration.months, Overflow::Constrain)?;
-            // Proposal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
+            // §22.3.8.1 step 3 compares the balanced month's ordinal.
             Ok(exceeds(
                 year.cmp(&last.year)
                     .then_with(|| month.cmp(&last.month))

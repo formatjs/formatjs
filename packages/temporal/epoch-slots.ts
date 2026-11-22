@@ -35,8 +35,8 @@ let plainDates: WeakMap<object, PlainEpoch> | undefined
 
 const limit = 8_640_000_000_000_000_000_000n
 
-// Temporal comparison §8.4.1 and §8.5.1 step 1. Check inclusive Instant bounds.
-// https://tc39.es/proposal-temporal/#sec-temporal-instant-range
+// ECMA-262 preview §22.3.6.4 step 1: check the inclusive epoch interval.
+// https://tc39.es/ecma262/pr/3966/#sec-iswithinepochnanosecondsinterval
 export function validateInstant(value: bigint): bigint {
   if (value < -limit || value > limit)
     throw new RangeErrorConstructor('Instant out of range')

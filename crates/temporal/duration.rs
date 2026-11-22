@@ -146,6 +146,8 @@ impl Duration {
     // Proposal comparison §7.5.21 steps 1–7: combine clock units in exact nanoseconds.
     pub fn time_nanoseconds(self, include_days: bool) -> Result<i128, Error> {
         let mut sum = 0i128;
+        // ECMA-262 preview §22.3.14.1 steps 1–3: fold optional 24-hour days into the checked span.
+        // https://tc39.es/ecma262/pr/3966/#sec-add24hourdaystonormalizedtimeduration
         for index in (if include_days { 3 } else { 4 })..10 {
             sum = sum
                 .checked_add(
@@ -243,6 +245,8 @@ impl Duration {
             .zip(other.0)
             .position(|(a, b)| *a != 0 || b != 0)
             .unwrap_or(9);
+        // ECMA-262 preview §22.3.14.2 steps 1–3: add spans and check the time-duration bounds.
+        // https://tc39.es/ecma262/pr/3966/#sec-addtimeduration
         let mut sum = self.time_nanoseconds(true)? + other.time_nanoseconds(true)?;
         if sum <= -MAX_DURATION_NANOSECONDS || sum >= MAX_DURATION_NANOSECONDS {
             return Err(Error::InvalidDuration);
@@ -314,6 +318,10 @@ impl Instant {
         if duration.0[..4].iter().any(|value| *value != 0) {
             return Err(Error::InvalidDuration);
         }
+        // ECMA-262 preview §22.3.6.1 steps 1–3: add nanoseconds and check bounds.
+        // https://tc39.es/ecma262/pr/3966/#sec-addepochnanoseconds
+        // §22.3.14.3 step 1 adds the time span to the epoch.
+        // https://tc39.es/ecma262/pr/3966/#sec-addtimedurationtoepochnanoseconds
         Self::from_epoch_nanoseconds(self.epoch_nanoseconds() + duration.time_nanoseconds(false)?)
     }
     // Proposal comparison §8.5.10 step 2: negate the typed duration for Instant subtraction.
@@ -341,6 +349,8 @@ impl Instant {
         {
             return Err(Error::InvalidRoundingOptions);
         }
+        // ECMA-262 preview §22.3.6.3 steps 1–3: subtract exact epochs and round the span.
+        // https://tc39.es/ecma262/pr/3966/#sec-differenceepochnanoseconds
         let rounded = round_duration(
             other.epoch_nanoseconds() - self.epoch_nanoseconds(),
             i128::from(increment) * smallest.nanoseconds(),

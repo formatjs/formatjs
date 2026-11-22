@@ -107,8 +107,8 @@ pub struct Instant(i128);
 impl Instant {
     // Proposal comparison §8.5.1 step 1 and §8.5.2 step 4: Validate and store exact Instant nanoseconds.
     pub fn from_epoch_nanoseconds(value: i128) -> Result<Self, Error> {
-        // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/instant.html#L369
-        // L369: inclusive exact epoch bounds; rejection implements the predicate false result.
+        // ECMA-262 preview §22.3.6.4 step 1: check the inclusive epoch interval.
+        // https://tc39.es/ecma262/pr/3966/#sec-iswithinepochnanosecondsinterval
         if !(-MAX_EPOCH_NANOSECONDS..=MAX_EPOCH_NANOSECONDS).contains(&value) {
             return Err(Error::OutOfRange);
         }

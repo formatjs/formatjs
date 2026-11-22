@@ -609,6 +609,8 @@ export function calendarDateUntilRaw(
         : first.monthCode > last.monthCode
           ? 1
           : -1
+    // ECMA-262 preview §22.3.8.1 steps 1–5: compare the first unequal field in the travel direction.
+    // https://tc39.es/ecma262/pr/3966/#sec-comparesurpasses
     if (sign * (year - last.year || codeOrder || first.day - last.day) > 0)
       return true
     const candidate = addYearMonth(
@@ -618,8 +620,7 @@ export function calendarDateUntilRaw(
       result.months,
       'constrain'
     )
-    // Temporal comparison §3.5.6 step 9. A false ISO prefix comparison ends the zero week/day case.
-    // https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses
+    // §22.3.8.1 step 3 compares the balanced month's ordinal.
     return (
       sign *
         (candidate.year - last.year ||

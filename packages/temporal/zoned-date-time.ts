@@ -622,6 +622,8 @@ export function differenceZonedDuration(
   const end = toZonedDateTimeSlot(other)
   if (start.calendar !== end.calendar)
     throw new RangeErrorConstructor('Calendars differ')
+  // ECMA-262 preview §22.3.12.1 steps 1–4: read the rounding options in order.
+  // https://tc39.es/ecma262/pr/3966/#sec-getdifferencesettings
   const resolved = optionsObject(options),
     largestRaw = resolved.largestUnit,
     largestText = largestRaw === undefined ? 'auto' : ToString(largestRaw),
@@ -642,6 +644,7 @@ export function differenceZonedDuration(
       'nanosecond',
     ],
     smallIndex = arrayIndexOf(names, smallest)
+  // Steps 11–13: default to hour or the smaller unit, then check unit order.
   const largest =
     largestText === 'auto' ? names[mathMin(4, smallIndex)] : largestOption!
   const largeIndex = arrayIndexOf(names, largest)
@@ -797,9 +800,13 @@ function format(slot: ZonedSlot, options?: unknown): string {
     show = calendarNameOption(resolved.calendarName),
     suffix = calendarAnnotation(slot.calendar, show)
   const digits = fractionalSecondDigits(resolved.fractionalSecondDigits)
+  // ECMA-262 preview §22.3.12.11 steps 1–5: read, default and validate the offset display.
+  // https://tc39.es/ecma262/pr/3966/#sec-gettemporalshowoffsetoption
   const offset = option(resolved.offset, 'auto', ['auto', 'never'])
   const mode = roundingMode(resolved.roundingMode, 'trunc'),
     unit = unitOption(resolved.smallestUnit, true)
+  // ECMA-262 preview §22.3.12.12 steps 1–5: read, default and validate the zone display.
+  // https://tc39.es/ecma262/pr/3966/#sec-gettemporalshowtimezonenameoption
   const zoneName = option(resolved.timeZoneName, 'auto', [
     'auto',
     'never',
@@ -1134,12 +1141,14 @@ class ZonedDateTimeValue {
   ): ZonedDateTimeObject {
     return add(read(this), duration, options, -1)
   }
-  // Proposal comparison §6.3.46 steps 1–12.
-  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.gettimezonetransition
+  // ECMA-262 preview §22.9.3.46: read the direction before looking up a transition.
+  // https://tc39.es/ecma262/pr/3966/#sec-temporal.zoneddatetime.prototype.gettimezonetransition
   getTimeZoneTransition(direction: unknown): ZonedDateTimeObject | null {
     const slot = read(this)
     if (direction === undefined)
       throw new TypeErrorConstructor('Direction required')
+    // ECMA-262 preview §22.3.12.2 steps 1–5: read, coerce and validate direction.
+    // https://tc39.es/ecma262/pr/3966/#sec-getdirectionoption
     const raw =
       typeof direction === 'string'
         ? direction

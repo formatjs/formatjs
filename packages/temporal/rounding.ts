@@ -151,6 +151,8 @@ export function fractionalSecondDigits(value: unknown): 'auto' | number {
 // https://tc39.es/proposal-temporal/#sec-applyunsignedroundingmode
 // Temporal comparison §13.30 steps1–6: exact-time rounding as if positive.
 // https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrementasifpositive
+// ECMA-262 preview §22.3.6.5 steps 1–2: callers supply the precomputed quantum.
+// https://tc39.es/ecma262/pr/3966/#sec-roundepochnanoseconds
 // Numbered steps below describe the equivalent exact quotient/remainder form.
 export function roundInstant(
   value: bigint,
@@ -229,6 +231,8 @@ export function roundInstantOptions(value: bigint, options: unknown): bigint {
 // https://tc39.es/proposal-temporal/#sec-temporal-roundnumbertoincrement
 // Temporal comparison §13.8 steps1–5: reverse directional modes.
 // https://tc39.es/proposal-temporal/#sec-temporal-negateroundingmode
+// ECMA-262 preview §22.3.14.4 step 1: round a time span with the caller's unit quantum.
+// https://tc39.es/ecma262/pr/3966/#sec-roundtimeduration
 export function roundDuration(
   value: bigint,
   quantum: bigint,

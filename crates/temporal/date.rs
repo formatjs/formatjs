@@ -111,6 +111,8 @@ impl<C: CalendarProvider> PlainDate<C> {
     }
     // Proposal comparison §3.3.10 step 3. Return the ISO weekday from the epoch day.
     pub fn day_of_week(self) -> u8 {
+        // ECMA-262 preview §22.3.8.7 steps 1–4: offset epoch Thursday and wrap Sunday to 7.
+        // https://tc39.es/ecma262/pr/3966/#sec-isodayofweek
         ((self.0 + 3).rem_euclid(7) + 1) as u8
     }
     // Proposal comparison §3.3.14 step 3. Return the seven-day week length.
@@ -119,6 +121,8 @@ impl<C: CalendarProvider> PlainDate<C> {
     }
     // Proposal comparison §3.3.11 step 3. Count days since the start of the selected calendar year.
     pub fn day_of_year(self) -> Result<u16, Error> {
+        // ECMA-262 preview §22.3.8.6 steps 1–2: ISO uses January 1 to count days.
+        // https://tc39.es/ecma262/pr/3966/#sec-isodayofyear
         Ok((self.0
             - self
                 .1
@@ -158,6 +162,8 @@ impl<C: CalendarProvider> PlainDate<C> {
         if self.calendar_id() != "iso8601" {
             return None;
         }
+        // ECMA-262 preview §22.3.8.5 steps 8–13: use Thursday to assign the ISO week-year.
+        // https://tc39.es/ecma262/pr/3966/#sec-isoweekofyear
         let thursday = self.0 + 4 - i64::from(self.day_of_week());
         let year =
             crate::iso::iso_from_epoch_nanoseconds_raw(i128::from(thursday) * NANOSECONDS_PER_DAY)

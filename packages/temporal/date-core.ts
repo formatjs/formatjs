@@ -766,8 +766,12 @@ export function dateProperty(
     case 'day':
       return fields.day
     case 'dayOfWeek':
+      // ECMA-262 preview §22.3.8.7 steps 1–4: offset epoch Thursday and wrap Sunday to 7.
+      // https://tc39.es/ecma262/pr/3966/#sec-isodayofweek
       return ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
     case 'dayOfYear':
+      // ECMA-262 preview §22.3.8.6 steps 1–2: the ISO branch counts from January 1.
+      // https://tc39.es/ecma262/pr/3966/#sec-isodayofyear
       return (
         slot.epochDay -
         (cal === 'iso8601'
@@ -810,6 +814,8 @@ export function dateProperty(
     case 'weekOfYear':
     case 'yearOfWeek': {
       if (slot.calendar !== 'iso8601') return undefined
+      // ECMA-262 preview §22.3.8.5 steps 8–13: use the week's Thursday to select its year and number.
+      // https://tc39.es/ecma262/pr/3966/#sec-isoweekofyear
       const weekday = ((((slot.epochDay + 3) % 7) + 7) % 7) + 1
       const thursday = slot.epochDay + 4 - weekday
       const year = YearFromTime(thursday * 86400000)
