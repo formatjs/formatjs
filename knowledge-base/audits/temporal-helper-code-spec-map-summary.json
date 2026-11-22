@@ -3,18 +3,18 @@
   "callable_rows": 1069,
   "files_with_callables": 81,
   "all_selected_source_files": 82,
-  "whole_selected_source_lines": 26761,
+  "whole_selected_source_lines": 26765,
   "whole_selected_source_lines_by_language": {
-    "rust": 10905,
-    "typescript": 15856
+    "rust": 10907,
+    "typescript": 15858
   },
-  "nonoverlapping_callable_lines": 17489,
+  "nonoverlapping_callable_lines": 17493,
   "nonoverlapping_callable_lines_by_language": {
-    "rust": 8148,
-    "typescript": 9341
+    "rust": 8150,
+    "typescript": 9343
   },
   "disjoint_callable_line_assignment": {
-    "mapped": 17118,
+    "mapped": 17122,
     "candidate": 154,
     "unmapped": 217
   },
@@ -304,10 +304,10 @@
     },
     {
       "file": "crates/intl_datetimeformat_calendars/date_math.rs",
-      "source_lines": 150,
+      "source_lines": 152,
       "callable_rows": 8,
-      "nonoverlapping_callable_lines": 123,
-      "sha256": "d49b293d1680b4e7fd6f9a1eaff78417a71e54126f8c16c7cf59b96c3d9cd2e1",
+      "nonoverlapping_callable_lines": 125,
+      "sha256": "ec4c092d39f261cde6c6c9acd8d1a525d892c6bb32cffd65428ae6dc115a7936",
       "unresolved_callable_rows": 0
     },
     {
@@ -560,10 +560,10 @@
     },
     {
       "file": "packages/temporal/calendar.ts",
-      "source_lines": 715,
+      "source_lines": 717,
       "callable_rows": 33,
-      "nonoverlapping_callable_lines": 580,
-      "sha256": "7ef8e75a36b5ee85802736aec1d974d376dffacbaefe28b71b457483c984c7bc",
+      "nonoverlapping_callable_lines": 582,
+      "sha256": "168b94ad6d7209e1ce0eabcfec3f3c1c28b9490189cf73024a8a711bde9dfd98",
       "unresolved_callable_rows": 3
     },
     {

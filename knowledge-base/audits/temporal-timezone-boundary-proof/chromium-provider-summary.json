@@ -62,5 +62,72 @@
         "recurringZoneYearsChecked": 5717
       }
     }
+  },
+  "resourceUse": {
+    "evidenceSha256": "6688b8e2527e202643f0c05415094b63dd9602cd95c0b14e238ab9c496f103cd",
+    "binding": {
+      "historical": {
+        "changedDataSha256": "f09d0b9fb351383210ae75a5a256f3434b90c901da18b37681dfa68bc4b1a52d",
+        "littleEndianInt32Changes": [
+          {
+            "byteOffset": 10738964,
+            "before": -17762,
+            "after": -17162
+          },
+          {
+            "byteOffset": 10738972,
+            "before": -18000,
+            "after": -17400
+          },
+          {
+            "byteOffset": 10738980,
+            "before": -18000,
+            "after": -17400
+          }
+        ],
+        "newYorkChanges": [
+          {
+            "instant": "1880-01-01T00:00Z",
+            "before": "GMT-04:56:02",
+            "after": "GMT-04:46:02"
+          },
+          {
+            "instant": "1950-01-01T00:00Z",
+            "before": "GMT-05:00",
+            "after": "GMT-04:50"
+          },
+          {
+            "instant": "1950-07-01T00:00Z",
+            "before": "GMT-04:00",
+            "after": "GMT-03:50"
+          }
+        ],
+        "controlsUnchanged": 9
+      },
+      "footer": {
+        "changedDataSha256": "13ffcfd73ab97fabf537bf2be39bbfeb6ccfa429606318572c88337b4c25abf5",
+        "littleEndianInt32Changes": [
+          {
+            "byteOffset": 10698716,
+            "before": 3600,
+            "after": 4200
+          }
+        ],
+        "newYorkChanges": [
+          {
+            "instant": "2026-07-01T00:00Z",
+            "before": "GMT-04:00",
+            "after": "GMT-03:50"
+          },
+          {
+            "instant": "+275760-09-13T00:00Z",
+            "before": "GMT-04:00",
+            "after": "GMT-03:50"
+          }
+        ],
+        "controlsUnchanged": 16
+      }
+    },
+    "remainingPremise": "Full equivalence of Chromium and the pinned Node ICU rule traversal and coverage of other host profiles."
   }
 }

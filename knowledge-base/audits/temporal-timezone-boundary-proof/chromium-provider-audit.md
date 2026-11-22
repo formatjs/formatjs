@@ -23,14 +23,43 @@ ICU identifiers including aliases.
 The package and resource hashes and the scan results are in the
 [Chromium summary](chromium-provider-summary.json). The browser comparison
 covers public results at the sampled instants. The resource scans establish
-the bounds under the bound Node ICU reader. Exhaustive Chromium provider
-coverage still needs a binding from Chromium's formatter to its compiled
-offset and recurrence implementation. Other browsers and system ICU builds
-have separate data and implementation premises.
+the bounds under the pinned Node ICU reader. The controlled runs below bind
+Chromium's formatter to the historical and recurring resources. Exhaustive
+reader equivalence, other browsers and system ICU builds remain separate
+premises.
 
 These checks address [proposal comparison §11.1.12 steps 6–7](https://tc39.es/proposal-temporal/#sec-temporal-disambiguatepossibleepochnanoseconds),
 [§11.1.13 steps 3.a and 4.a](https://tc39.es/proposal-temporal/#sec-temporal-getpossibleepochnanoseconds),
 and the timezone premises of [§7.5.34 steps 13 and 17](https://tc39.es/proposal-temporal/#sec-temporal-nudgetocalendarunit).
+
+## Controlled resource binding
+
+Two A/B runs use the exact same pinned executable with timezone
+resource overrides unset. Each run changes only the ICU data in a scratch
+copy of the installation. The historical copy adds 600 seconds to the
+three New York type offsets at zero-based byte positions 10738964,
+10738972 and 10738980. The recurring-rule copy changes the US rule's save
+field at position 10698716 from 3600 to 4200. Values are little-endian
+signed 32-bit integers. Byte comparison confirms all other data is identical.
+
+| Copy       | UTC instant          | Before       | After        |
+| ---------- | -------------------- | ------------ | ------------ |
+| Historical | 1880-01-01T00:00Z    | GMT−04:56:02 | GMT−04:46:02 |
+| Historical | 1950-01-01T00:00Z    | GMT−05:00    | GMT−04:50    |
+| Historical | 1950-07-01T00:00Z    | GMT−04:00    | GMT−03:50    |
+| Recurring  | 2026-07-01T00:00Z    | GMT−04:00    | GMT−03:50    |
+| Recurring  | +275760-09-13T00:00Z | GMT−04:00    | GMT−03:50    |
+
+The native formatter uses hour, minute, second and longOffset in
+America/New_York. The local clock moves ten minutes in each changed case.
+America/Toronto and UTC stay unchanged. The New York 2026 winter sample
+stays unchanged in both runs, and its historical samples stay unchanged
+in the recurring-rule run. The final row reaches the inclusive maximum Instant.
+
+This establishes resource use by the pinned formatter for explicit history
+and recurring rules. Applying the Node scan's exhaustive bounds to Chromium
+still requires equivalence of the rule readers across all intervals.
+[Hashes, edited words and controls](chromium-provider-summary.json).
 
 ## Reproduce
 

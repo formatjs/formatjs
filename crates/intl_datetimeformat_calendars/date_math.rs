@@ -112,6 +112,8 @@ pub(crate) trait NumericCalendar: Copy {
             }
             anchor = self.add_raw(one, result, Overflow::Constrain)?;
         }
+        // Proposal comparison §3.5.6 steps 12–13: With nonzero ISO months, the
+        // first signed day past the target is one step beyond this residual.
         result.days = two - anchor;
         if largest == DateUnit::Week {
             result.weeks = result.days / 7;

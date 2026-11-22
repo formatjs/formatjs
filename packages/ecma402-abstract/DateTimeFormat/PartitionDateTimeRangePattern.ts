@@ -31,6 +31,8 @@ import {
 } from '#packages/ecma402-abstract/DateTimeFormat/ToLocalTime.js'
 import {splitRangePattern} from '#packages/ecma402-abstract/DateTimeFormat/skeleton.js'
 
+// Temporal comparison §15.6.8 step 23.a reads the ECMA-402 Table 6 order.
+// The default row supplies fallback data and has no field to compare.
 const TABLE_2_FIELDS: Array<TABLE_2> = [
   'era',
   'year',
@@ -172,6 +174,7 @@ export function PartitionDateTimeRangePattern(
     let equal
     if (field === 'ampm') {
       // Step 15.d.ii: noon starts at hour 12, including an 11 AM endpoint.
+      // Temporal comparison §15.6.8 steps 23.d.ii.1–2 encode am/pm as Booleans.
       equal = tm1.hour < 12 === tm2.hour < 12
     } else if (field === 'dayPeriod') {
       const first = getDayPeriodName(
@@ -189,12 +192,13 @@ export function PartitionDateTimeRangePattern(
       equal = first === second
     } else if (field === 'fractionalSecondDigits') {
       // ECMA-402 §11.5.8 steps 15.d.iv.3–5: floor at the selected precision.
-      // Temporal comparison §15.6.8 steps 23.d.iv.2.a and 23.d.iv.3.
+      // Temporal comparison §15.6.8 steps 23.d.iv.2.a and 23.d.iv.3–5.
       const digits = internalSlots.fractionalSecondDigits ?? 3
       equal =
         floor(tm1.millisecond * 10 ** (digits - 3)) ===
         floor(tm2.millisecond * 10 ** (digits - 3))
     } else {
+      // Temporal comparison §15.6.8 steps 23.d.v.1–2 read the two own fields.
       equal = SameValue(tm1[field], tm2[field])
     }
     if (!equal) {
@@ -205,6 +209,8 @@ export function PartitionDateTimeRangePattern(
   if (rangePattern === undefined) {
     // ECMA-402 §11.5.8 step 16.b: pass the selected local time privately.
     const rangeFormatOptions = {__proto__: null, localTime: tm1}
+    // Temporal comparison §15.6.8 step 24.a reuses the formatter's fresh List.
+    // The records stay private until the public wrapper creates its own parts.
     const result = FormatDateTimePattern(
       dtf,
       parts,

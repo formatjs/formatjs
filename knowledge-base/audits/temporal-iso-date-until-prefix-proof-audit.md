@@ -204,3 +204,36 @@ and audit records changed. The fixture oracles validate existing behavior.
 [Exact test scope](temporal-relative-rounding-contract-audit.md#independent-step-evidence).
 
 - Bazel log SHA-256 `0eb542982068c77ccaf47c7fe3714de93d24d242541616e949e6756931d2fa93`
+
+## Reachable day probes
+
+Only a residual-day probe with accepted nonzero months reaches
+ISODateSurpasses steps 12–13. Year and month probes carry zero weeks and days
+and end at step 9 or earlier. In the published loop, week and day probes with
+zero months still exit in step 5. That defect remains open.
+
+For a day probe that reaches step 12, let (c) be the constrained anchor,
+(b) the target epoch day, and (s) the difference sign. The previous
+year/month checks already passed and remain fixed. The probe at signed count
+(s n) uses epoch day (c+s n). Step 13 first reports a date past the target
+at (n=s(b-c)+1). The loop therefore retains the signed day count (b-c),
+which is exactly the subtraction used by both implementations.
+
+From 2020-01-31 to 2020-03-01, the accepted one-month prefix constrains to
+February 29. The first day proposal reaches March 1 and the second passes it.
+From 2020-03-31 to 2020-02-28, the accepted negative month also constrains to
+February 29. The first negative day reaches February 28 and the second
+passes it in the negative direction.
+
+Pinned Node 26.8.1 matched 53,184 public PlainDate differences
+against independent signed prefix and residual-day loops. The replay covers
+26,556 forward and 26,628 backward
+nonzero-month cases with year or month largest units. Nine Bazel gates passed
+in the combined TypeScript, Rust, Hermes and Intl batch.
+[TypeScript residual](../../packages/temporal/calendar.ts#L643).
+[Rust residual](../../crates/intl_datetimeformat_calendars/date_math.rs#L115).
+[Temporal comparison §3.5.6 steps 12–13](https://tc39.es/proposal-temporal/#sec-temporal-isodatesurpasses).
+[Temporal comparison §12.3.9 step 3.j](https://tc39.es/proposal-temporal/#sec-temporal-calendardateuntil).
+
+- Public replay SHA-256 `5e47d0e4e18ebc15f8e36ffce6cef722e79521bfa19a03b1ee09e9e332230780`
+- Bazel log SHA-256 `e9d13dfa2269b503cd71d24d8949520f6ddcdf15e32fbec74ae4bb5a4d73daa2`

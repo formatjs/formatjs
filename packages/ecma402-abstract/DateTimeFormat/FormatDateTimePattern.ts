@@ -365,6 +365,7 @@ export function FormatDateTimePattern(
         : (internalSlots.dataTimeZone ?? internalSlots.timeZone),
       {tzData, calendarData}
     )
+  // Temporal comparison §15.6.8 step 24.a uses this fresh List for collapse.
   const result: Intl.DateTimeFormatPart[] = []
 
   // Check if month is stand-alone (no other date fields like day, year, weekday)

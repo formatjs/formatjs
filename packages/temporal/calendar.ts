@@ -640,6 +640,8 @@ export function calendarDateUntilRaw(
       'reject'
     )
   }
+  // Temporal comparison §3.5.6 steps 12–13: With nonzero ISO months, the
+  // first signed day past the target is one step beyond this residual.
   result.days = two - anchor
   if (largest === 'week') {
     result.weeks = mathTrunc(result.days / 7) || 0
