@@ -464,6 +464,63 @@ describe('Intl.DateTimeFormat', function () {
     }
   )
 
+  it.each([
+    ['Object.create', Object, 'create'],
+    ['Object.keys', Object, 'keys'],
+    ['Array.find', Array.prototype, 'find'],
+    ['Array.map', Array.prototype, 'map'],
+    ['Array.join', Array.prototype, 'join'],
+    ['Array iterator', Array.prototype, Symbol.iterator],
+    ['String.replace', String.prototype, 'replace'],
+    ['String @@replace', String.prototype, Symbol.replace],
+  ] as const)(
+    'keeps combined style construction private from %s',
+    (_name, target, key) => {
+      const fields = {
+        timeZone: 'UTC',
+        dateStyle: 'short',
+        timeStyle: 'short',
+      } as const
+      const baseline = new DateTimeFormat('en', fields)
+      const expectedDate = baseline.formatRangeToParts(0, 86400000)
+      const expectedTime = baseline.formatRangeToParts(0, 3600000)
+      const original = Object.getOwnPropertyDescriptor(target, key)
+      const sentinel = new Error('Private combined style operation')
+      let calls = 0,
+        reads = 0,
+        actual: Intl.DateTimeFormat | undefined,
+        error: unknown
+      try {
+        actual = new DateTimeFormat('en', {
+          timeZone: 'UTC',
+          dateStyle: 'short',
+          get timeStyle() {
+            reads++
+            Object.defineProperty(target, key, {
+              configurable: true,
+              ...original,
+              value() {
+                calls++
+                throw sentinel
+              },
+            })
+            return 'short' as const
+          },
+        })
+      } catch (caught) {
+        error = caught
+      } finally {
+        if (original) Object.defineProperty(target, key, original)
+        else Reflect.deleteProperty(target, key)
+      }
+      expect(reads).toBe(1)
+      expect(calls).toBe(0)
+      expect(error).toBeUndefined()
+      expect(actual!.formatRangeToParts(0, 86400000)).toEqual(expectedDate)
+      expect(actual!.formatRangeToParts(0, 3600000)).toEqual(expectedTime)
+    }
+  )
+
   it('reads inherited public precision once before private matching', () => {
     let reads = 0
     const options = Object.assign(

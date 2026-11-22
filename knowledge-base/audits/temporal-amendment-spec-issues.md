@@ -43,7 +43,7 @@ effect. The implementation reads it on an unequal field before applying
 fallback. The published loop also needs the value on equal fields to control
 the cutoff. Scheduling and selection stay open.
 [Skeleton map](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L450).
-[Style map](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L14).
+[Style map](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L39).
 [Width adaptation](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L67).
 [Lookup](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L216).
 

@@ -34498,6 +34498,32 @@
   "native_transport_inline_caller_dependency_links_complete_for_reviewed_scope": true,
   "native_transport_whole_body_step_coverage_claimed": false,
   "supplemental_helpers": {
+    "datetime_combined_style": [
+      {
+        "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
+        "symbol": "replaceStyleToken",
+        "source_sha256": "0360bf00206d723e40607cda9e8558cc338c75cc62bba52e00b27c5678d6e3ba",
+        "start_line": 25,
+        "end_line": 37,
+        "anchor_line": 30,
+        "section": "11.5.1",
+        "steps": ["4.e", "4.g.i"],
+        "spec_url": "https://tc39.es/ecma402/#sec-datetimestyleformat",
+        "scope": "First literal connector substitution with captured primitive search and slicing."
+      },
+      {
+        "file": "packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts",
+        "symbol": "combineStyleRanges",
+        "source_sha256": "0360bf00206d723e40607cda9e8558cc338c75cc62bba52e00b27c5678d6e3ba",
+        "start_line": 39,
+        "end_line": 117,
+        "anchor_line": 46,
+        "section": "11.5.1",
+        "steps": ["4.h", "4.i", "4.j"],
+        "spec_url": "https://tc39.es/ecma402/#sec-datetimestyleformat",
+        "scope": "Private supplier of combined-style range records."
+      }
+    ],
     "raw_named_zone_candidates": [
       {
         "file": "crates/temporal/timezone.rs",

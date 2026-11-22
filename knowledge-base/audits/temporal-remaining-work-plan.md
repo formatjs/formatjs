@@ -416,12 +416,17 @@ in about eight minutes, with 16 in-scope conditions still open. The earlier
 closure rate cannot estimate publication or unbound-provider dependencies.
 
 Full pinned Node Test262 passed all 9,090 executions across the eight Temporal
-class targets at `5654ccf78`. The full Temporal Intl target passed 4,078 of 4,080.
+class targets at `5654ccf78` with Node 26.8.1 and Test262
+`2a1ade303f72d3de80565c921d685222405c32ce`. The full Temporal Intl target
+passed 4,078 of 4,080.
 Both failures exercise the same published timezone policy issue. The range
 interval lookup now has independent evidence under §15.6.8 step 23.b.
 The surrounding comparison loop remains conditional.
 [Fixture policy](temporal-spec-issues.md#published-zone-primary-rule-versus-pending-legacy-posix-policy).
 [Interval lookup evidence](temporal-amendment-spec-issues.md#sparse-range-interval-records).
+Combined-style construction now keeps private component and interval work
+independent of the eight observed Object, Array and String hooks.
+[Combined style evidence](temporal-selected-locale-adapter-audit.md#combined-date-and-time-styles).
 
 Source hashes and extraction limits:
 [public map manifest](temporal-public-code-spec-map-manifest.json),

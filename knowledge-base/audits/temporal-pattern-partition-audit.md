@@ -659,8 +659,8 @@ source of that field. Numeric endpoints keep the original slot. Instant,
 PlainTime and PlainDateTime retain the explicit width through kind
 selection, and date-only kinds lack the field. Constructor and matcher
 records keep optional metadata private across basic and combined style paths.
-[Set original slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L616).
-[Set selected slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L774).
+[Set original slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L618).
+[Set selected slot](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L776).
 [Read selected representation](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L197).
 [Temporal comparison §15.6.8 step 23.d.iv.1](https://tc39.es/proposal-temporal/#sec-partitiondatetimerangepattern).
 
@@ -670,7 +670,7 @@ own undefined option. Their private records now keep a null prototype.
 The public option still allows one inherited getter read when the caller
 provides it. Three constructor regressions failed before the correction.
 [Basic matcher record](../../packages/ecma402-abstract/DateTimeFormat/BasicFormatMatcher.ts#L119).
-[Combined style record](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L129).
+[Combined style record](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L179).
 [Constructor controls](../../packages/intl-datetimeformat/tests/index.test.ts#L425).
 [ECMA-402 CreateDateTimeFormat §11.1.2](https://tc39.es/ecma402/#sec-createdatetimeformat).
 
@@ -694,7 +694,7 @@ width-adjusted and expanded intervals now keep a null prototype. Primary
 grammar fallback reads own flags. Four regressions failed before the
 fix. Eight focused Bazel targets pass after it.
 [Parsed interval records](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L487).
-[Combined style intervals](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L59).
+[Combined style intervals](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L109).
 [Adjusted interval records](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L99).
 [Expanded interval record](../../packages/ecma402-abstract/DateTimeFormat/PartitionDateTimeRangePattern.ts#L291).
 [Own grammar lookup](../../packages/ecma402-abstract/DateTimeFormat/FormatDateTimePattern.ts#L396).

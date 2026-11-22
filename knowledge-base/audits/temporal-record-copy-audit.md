@@ -15,10 +15,10 @@ not a signoff of every object operation or complete formatter algorithm.
 | Best-fit pattern fields             | [BestFitFormatMatcher.ts:117](../../packages/ecma402-abstract/DateTimeFormat/BestFitFormatMatcher.ts#L117)         | Null-prototype literal/spread; partial record completed before return.                |
 | Skeleton record                     | [skeleton.ts:389](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L389)                                 | Null-prototype literal; required pattern/range fields stay own.                       |
 | Lazy interval record                | [skeleton.ts:433](../../packages/ecma402-abstract/DateTimeFormat/skeleton.ts#L433)                                 | Null-prototype literal; private patternParts list stays own.                          |
-| Style-selected Temporal options     | [InitializeDateTimeFormat.ts:631](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L632) | Captured data-property definition.                                                    |
-| Component-selected Temporal options | [InitializeDateTimeFormat.ts:646](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L647) | Captured data-property definition.                                                    |
-| Default Temporal components         | [InitializeDateTimeFormat.ts:657](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L658) | Captured data-property definition.                                                    |
-| Temporal format slots               | [InitializeDateTimeFormat.ts:674](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L675) | Captured data-property definition; bypasses inherited setters on copied slot objects. |
+| Style-selected Temporal options     | [InitializeDateTimeFormat.ts:631](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L634) | Captured data-property definition.                                                    |
+| Component-selected Temporal options | [InitializeDateTimeFormat.ts:646](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L649) | Captured data-property definition.                                                    |
+| Default Temporal components         | [InitializeDateTimeFormat.ts:657](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L660) | Captured data-property definition.                                                    |
+| Temporal format slots               | [InitializeDateTimeFormat.ts:674](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L677) | Captured data-property definition; bypasses inherited setters on copied slot objects. |
 
 Fresh record literals set their prototype to null through language semantics,
 without consulting Object.assign or Object.create. Literal and spread fields

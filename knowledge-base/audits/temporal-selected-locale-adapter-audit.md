@@ -44,6 +44,27 @@ under its ES2019 target. They now use captured bigIntFrom with exact integer
 constants below2^53. Composition remains bigint throughout; no fractional or
 nanosecond value passes through Number.
 
+## Combined date and time styles
+
+The public `timeStyle` getter can replace prototype methods just before
+combined-style construction. Eight controls reproduce calls to mutable
+Object, Array or String operations during that private work. The getter
+still runs once. Indexed traversal and null-prototype records keep the
+component check and interval assembly private. Connector substitution uses
+captured search and slicing operations, preserving the literal pattern text
+without dispatching to `Symbol.replace`.
+
+The tests restore the original methods before rendering the result. They
+compare all parts for a date difference and for a time difference under
+the same style pair. Existing CLDR format selection and source tagging still
+supply the assembled intervals.
+[ECMA-402 §11.5.1 steps 4.e, 4.g.i and 4.h–j](https://tc39.es/ecma402/#sec-datetimestyleformat).
+[Temporal comparison §15.4.1 steps 45.a and 45.e](https://tc39.es/proposal-temporal/#sec-createdatetimeformat).
+[Literal substitution](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L30).
+[Private interval assembly](../../packages/ecma402-abstract/DateTimeFormat/DateTimeStyleFormat.ts#L46).
+[Component guard](../../packages/ecma402-abstract/DateTimeFormat/InitializeDateTimeFormat.ts#L568).
+[Public constructor tests](../../packages/intl-datetimeformat/tests/index.test.ts#L477).
+
 ## Scope and evidence
 
 Current source/test hashes, exact validation and regression-log hashes belong in

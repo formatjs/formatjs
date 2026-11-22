@@ -565,7 +565,9 @@ export function InitializeDateTimeFormat(
       bestFormat = BestFitFormatMatcher(opt, formats)
     }
   } else {
-    for (const prop of DATE_TIME_PROPS) {
+    // ECMA-402 §11.1.2 step 31.a: check the private component fields in order.
+    for (let index = 0; index < DATE_TIME_PROPS.length; index++) {
+      const prop = DATE_TIME_PROPS[index]
       const p = opt[prop]
       if (p !== undefined) {
         throw new TypeErrorConstructor(
