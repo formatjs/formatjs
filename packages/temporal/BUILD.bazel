@@ -1603,6 +1603,18 @@ js_test(
     env = {"TZ": "UTC"},
 )
 
+js_test(
+    name = "legacy_intl_storage_test",
+    size = "small",
+    args = ["$(rlocationpath :pkg)"],
+    data = [
+        ":pkg",
+        "//:node_modules/@bazel/runfiles",
+    ],
+    entry_point = "tests/legacy-intl-storage.test.mjs",
+    env = {"TZ": "UTC"},
+)
+
 [
     sh_test(
         name = name,

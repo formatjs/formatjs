@@ -74,6 +74,11 @@ Temporal and shared formatter private-list predicates retain captured
 `Array.prototype.every` and `Array.prototype.some` operations and their invocation
 helper.
 
+When installation adapts native `Intl.DateTimeFormat` for Temporal inputs,
+private formatter state and projection caches retain captured WeakMap/Map
+operations. Replacing those methods, global `Map`, or `Reflect.apply` and
+`Reflect.construct` after import does not intercept these bridge operations.
+
 Shared primitive coercion retains intrinsic helper bindings while preserving user
 conversion hooks and their standard hints. Browser host objects such as
 `document.all` retain object semantics for field bags, options, constructor

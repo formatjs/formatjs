@@ -1,5 +1,11 @@
 # Temporal implementation
 
+The [native Intl bridge audit](audits/temporal-legacy-bridge-state-audit.md)
+covers private WeakMap/Map state and captured Reflect delegation. Packaged
+controls exercise six Temporal types, cold/warm caches and fresh constructors;
+±1 ns inputs preserve floor-to-millisecond behavior. Complete bridge algorithms
+and remaining dynamic operations stay open.
+
 The [private formatter-cache audit](audits/temporal-private-format-cache-audit.md)
 maps all eight numeric PartitionDateTimePattern steps. Captured WeakMap operations
 protect formatter slots, patterns and directly used locale/number dependencies.

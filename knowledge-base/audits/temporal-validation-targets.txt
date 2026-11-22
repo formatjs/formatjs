@@ -136,6 +136,8 @@
 //packages/temporal:legacy_durationformat_host_test
 //packages/temporal:legacy_durationformat_test262
 //packages/temporal:legacy_extended_date_test
+//packages/temporal:legacy_intl_host_test
+//packages/temporal:legacy_intl_storage_test
 //packages/temporal:legacy_timezone_hermes_test
 //packages/temporal:legacy_timezone_stale_test
 //packages/temporal:legacy_timezone_test

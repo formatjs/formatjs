@@ -24,6 +24,14 @@ import {
 } from '#packages/temporal/legacy-extended-date.js'
 
 const now = Date.now
+const apply = Reflect.apply
+const construct = Reflect.construct
+const WeakMapConstructor = WeakMap
+const MapConstructor = Map
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+const mapGet = Map.prototype.get
+const mapSet = Map.prototype.set
 
 export function installLegacyDateTimeFormat(
   namespace: TemporalNamespace
@@ -53,11 +61,11 @@ export function installLegacyDateTimeFormat(
     bound?: (value?: unknown) => string
     projections: Map<string, Intl.DateTimeFormat>
   }
-  const states = new WeakMap<object, State>()
+  const states = new WeakMapConstructor<object, State>()
   // Native bound functions identify the formatter without rereading its legacy symbol.
-  const boundStates = new WeakMap<Function, State>()
+  const boundStates = new WeakMapConstructor<Function, State>()
   const probe = createObject(Native.prototype)
-  const chained = Reflect.apply(Native, probe, [])
+  const chained = apply(Native, probe, [])
   const legacySymbol =
     chained === probe ? Object.getOwnPropertySymbols(probe)[0] : undefined
   const hasInstance = Function.prototype[Symbol.hasInstance]
@@ -76,7 +84,11 @@ export function installLegacyDateTimeFormat(
       throw new RangeErrorConstructor(
         'Temporal calendar does not match DateTimeFormat'
       )
-    const cached = state.projections.get(value.kind)
+    const cached: Intl.DateTimeFormat | undefined = apply(
+      mapGet,
+      state.projections,
+      [value.kind]
+    )
     if (cached) {
       const ns = value.epochNanoseconds
       return {
@@ -95,7 +107,7 @@ export function installLegacyDateTimeFormat(
       false,
       intrinsics
     )
-    state.projections.set(value.kind, result.formatter)
+    apply(mapSet, state.projections, [value.kind, result.formatter])
     return result
   }
   function single(state: State, input: unknown): Projection | undefined {
@@ -151,7 +163,7 @@ export function installLegacyDateTimeFormat(
         return value
       },
     })
-    const formatter = Reflect.construct(
+    const formatter = construct(
       Native!,
       [locales, tracked],
       newTarget
@@ -162,16 +174,16 @@ export function installLegacyDateTimeFormat(
       locale: resolved.locale,
       calendar: resolved.calendar,
       options: snapshot,
-      projections: new Map(),
+      projections: new MapConstructor(),
     }
-    states.set(formatter, state)
-    boundStates.set(nativeFormat.call(formatter), state)
+    apply(weakMapSet, states, [formatter, state])
+    apply(weakMapSet, boundStates, [nativeFormat.call(formatter), state])
     return formatter
   }
   class LegacyDateTimeFormat {
     get format(): (value?: unknown) => string {
       const bound = nativeFormat.call(this)
-      const state = boundStates.get(bound)
+      const state: State | undefined = apply(weakMapGet, boundStates, [bound])
       if (!state) return bound
       if (!state.bound) {
         state.bound = (input?: unknown): string => {
@@ -190,16 +202,16 @@ export function installLegacyDateTimeFormat(
       return state.bound
     }
     formatToParts(input?: unknown): Intl.DateTimeFormatPart[] {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeParts, this, [input])
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeParts, this, [input])
       const value = single(state, input)
       return value
         ? legacyDateTimeParts(value, nativeParts, nativeResolved)
         : nativeParts.call(state.formatter)
     }
     formatRange(start: unknown, end: unknown): string {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeRange, this, [start, end])
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeRange, this, [start, end])
       const [first, last] = range(state, start, end)
       return legacyDateTimeRangeFormat(
         first,
@@ -213,8 +225,8 @@ export function installLegacyDateTimeFormat(
       start: unknown,
       end: unknown
     ): Intl.DateTimeRangeFormatPart[] {
-      const state = states.get(this)
-      if (!state) return Reflect.apply(nativeRangeParts, this, [start, end])
+      const state: State | undefined = apply(weakMapGet, states, [this])
+      if (!state) return apply(nativeRangeParts, this, [start, end])
       const [first, last] = range(state, start, end)
       return legacyDateTimeRangeParts(
         first,
@@ -224,7 +236,7 @@ export function installLegacyDateTimeFormat(
       )
     }
     resolvedOptions(): Intl.ResolvedDateTimeFormatOptions {
-      return Reflect.apply(nativeResolved, this, [])
+      return apply(nativeResolved, this, [])
     }
   }
   function DateTimeFormat(
