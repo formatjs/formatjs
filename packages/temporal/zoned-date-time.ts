@@ -100,6 +100,7 @@ import {
 } from '#packages/temporal/duration-core.js'
 import {
   optionsObject,
+  unitOptions,
   roundingIncrement,
   fractionalSecondDigits,
   roundingMode,
@@ -888,9 +889,12 @@ class ZonedDateTimeValue {
     const slot = read(this)
     if (roundTo === undefined)
       throw new TypeErrorConstructor('roundTo required')
+    // https://github.com/tc39/proposal-temporal/blob/b038883fe9c6aa871ccab3238c90daf9eb5e9b17/spec/zoneddatetime.html#L626-L629
+    // L626: select string shorthand; L627: retain the primitive unit string.
+    // L628: create a null-prototype record; L629: create its own smallestUnit data property.
     const resolved: Record<string, unknown> =
       typeof roundTo === 'string'
-        ? Object.assign(createObject(null), {smallestUnit: roundTo})
+        ? unitOptions(roundTo)
         : optionsObject(roundTo)
     const increment = roundingIncrement(resolved.roundingIncrement),
       mode = roundingMode(resolved.roundingMode, 'halfExpand'),

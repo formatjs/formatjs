@@ -420,6 +420,40 @@ int main(int argc, char **argv) {
         check(Temporal.PlainTime.from(inherited).toJSON() === complete);
         check(new Temporal.PlainTime(12, 34, 56, 123, 456, 789).with(inherited).toJSON() === partial);
       }
+      const unitInstant = new Temporal.Instant(90000000000n);
+      const unitTime = new Temporal.PlainTime(12, 34, 45);
+      const unitDateTime = new Temporal.PlainDateTime(2000, 1, 2, 12, 34, 45);
+      const unitZoned = Temporal.ZonedDateTime.from('2000-01-02T12:34:45Z[UTC]');
+      const unitDuration = new Temporal.Duration(0, 0, 0, 0, 1, 30);
+      const unitAssign = Object.getOwnPropertyDescriptor(Object, 'assign');
+      const unitNames = ['smallestUnit', 'unit', 'largestUnit', 'relativeTo', 'roundingMode', 'roundingIncrement'];
+      const unitDescriptors = unitNames.map(name => Object.getOwnPropertyDescriptor(Object.prototype, name));
+      let unitResults;
+      try {
+        Object.defineProperty(Object, 'assign', {configurable: true, get() {
+          throw new Error('Mutable string-unit Object.assign reached');
+        }});
+        for (const name of unitNames) Object.defineProperty(Object.prototype, name, {
+          configurable: true,
+          get() { throw new Error('Inherited string-unit option Get ' + name); },
+          set() { throw new Error('Inherited string-unit option Set ' + name); },
+        });
+        unitResults = [
+          unitInstant.round('minute').epochNanoseconds,
+          unitTime.round('minute').toJSON(),
+          unitDateTime.round('minute').toJSON(),
+          unitZoned.round('minute').epochNanoseconds,
+          unitDuration.round('hour').toJSON(),
+          unitDuration.total('minute'),
+        ];
+      } finally {
+        Object.defineProperty(Object, 'assign', unitAssign);
+        for (let index = 0; index < unitNames.length; index++) {
+          if (unitDescriptors[index]) Object.defineProperty(Object.prototype, unitNames[index], unitDescriptors[index]);
+          else Reflect.deleteProperty(Object.prototype, unitNames[index]);
+        }
+      }
+      check(unitResults.join('|') === '120000000000|12:35:00|2000-01-02T12:35:00|946816500000000000|PT2H|90');
       const coercionKey = Symbol.toPrimitive;
       const coercionInput = {[coercionKey](hint) {
         if (hint !== 'number') throw new Error('Wrong Instant hint');

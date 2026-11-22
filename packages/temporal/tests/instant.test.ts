@@ -827,3 +827,115 @@ it.each(['includes', 'indexOf'] as const)(
     expect(actual).toEqual(['hebrew', '12:35:00', 0n, '2000-05-06'])
   }
 )
+
+const unitShorthandCases: readonly [string, () => () => unknown, unknown][] = [
+  [
+    'Instant.round',
+    () => {
+      const value = new Temporal.Instant(90_000_000_000n)
+      return () => value.round('minute').epochNanoseconds
+    },
+    120_000_000_000n,
+  ],
+  [
+    'PlainTime.round',
+    () => {
+      const value = new Temporal.PlainTime(12, 34, 45)
+      return () => value.round('minute').toJSON()
+    },
+    '12:35:00',
+  ],
+  [
+    'PlainDateTime.round',
+    () => {
+      const value = new Temporal.PlainDateTime(2000, 1, 2, 12, 34, 45)
+      return () => value.round('minute').toJSON()
+    },
+    '2000-01-02T12:35:00',
+  ],
+  [
+    'ZonedDateTime.round',
+    () => {
+      const value = Temporal.ZonedDateTime.from('2000-01-02T12:34:45Z[UTC]')
+      return () => value.round('minute').epochNanoseconds
+    },
+    946_816_500_000_000_000n,
+  ],
+  [
+    'Duration.round',
+    () => {
+      const value = new Temporal.Duration(0, 0, 0, 0, 1, 30)
+      return () => value.round('hour').toJSON()
+    },
+    'PT2H',
+  ],
+  [
+    'Duration.total',
+    () => {
+      const value = new Temporal.Duration(0, 0, 0, 0, 1, 30)
+      return () => value.total('minute')
+    },
+    90,
+  ],
+]
+
+it.each(unitShorthandCases)(
+  '%s string shorthand never reads mutable Object.assign',
+  (_name, prepare, expected) => {
+    const run = prepare()
+    const original = Object.getOwnPropertyDescriptor(Object, 'assign')!
+    let actual: unknown
+    try {
+      Object.defineProperty(Object, 'assign', {
+        configurable: true,
+        get() {
+          throw new Error('Mutable Object.assign reached')
+        },
+      })
+      actual = run()
+    } finally {
+      Object.defineProperty(Object, 'assign', original)
+    }
+    expect(actual).toEqual(expected)
+  }
+)
+
+it.each(unitShorthandCases)(
+  '%s string shorthand ignores inherited option getters and setters',
+  (_name, prepare, expected) => {
+    const run = prepare()
+    const names = [
+      'smallestUnit',
+      'unit',
+      'largestUnit',
+      'relativeTo',
+      'roundingMode',
+      'roundingIncrement',
+    ]
+    const original = names.map(name =>
+      Object.getOwnPropertyDescriptor(Object.prototype, name)
+    )
+    let actual: unknown
+    try {
+      for (const name of names)
+        Object.defineProperty(Object.prototype, name, {
+          configurable: true,
+          get() {
+            throw new Error(`Inherited option Get ${name}`)
+          },
+          set() {
+            throw new Error(`Inherited option Set ${name}`)
+          },
+        })
+      actual = run()
+    } finally {
+      for (let index = 0; index < names.length; index++) {
+        const descriptor = original[index]
+        if (descriptor)
+          Object.defineProperty(Object.prototype, names[index], descriptor)
+        else Reflect.deleteProperty(Object.prototype, names[index])
+      }
+    }
+    expect(actual).toEqual(expected)
+  }
+)
