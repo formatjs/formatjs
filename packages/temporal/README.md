@@ -93,8 +93,9 @@ Plain values ignore the formatter's timezone; YearMonth/MonthDay styles omit
 reference fields. Ranges require matching Temporal types. Native style components
 are inferred through captured `formatToParts` operations before host matching.
 Chinese/Dangi date fields use the same calendar arithmetic as Temporal, including
-numeric Date inputs when host ICU data differs. Captured host formatters supply
-localized labels. Validated numeric Year ranges keep their numeric month and
+numeric Date inputs when host ICU data differs. Verified UTC Day and Month
+intervals keep the host layout while restoring corrected days. Captured host
+formatters supply localized labels. Validated numeric Year ranges keep their numeric month and
 day widths, verified weekday labels and Buddhist month text with matching
 ordinals. Other corrected ranges use complete endpoint patterns.
 All supported non-Gregorian plain values also format beyond Date TimeClip.

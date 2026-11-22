@@ -26,6 +26,7 @@ import {
   hostBuddhistDateMatches,
   hostBuddhistMonth,
   legacyISOEpochDay,
+  lunisolarUtcRangeDays,
 } from '#packages/temporal/legacy-lunisolar-date.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
 
@@ -604,7 +605,7 @@ function matchesNumericRangeYear(
 
 // ECMA-402 §11.5.8 step 19.e: the selected range pattern sets its own width.
 function correctedRangeDay(
-  day: NumericRangeDay | undefined,
+  day: Pick<NumericRangeDay, 'raw' | 'corrected'> | undefined,
   value: string
 ): string | undefined {
   if (!day?.raw) return undefined
@@ -703,6 +704,51 @@ function restoreNumericRangeYears(
         )!
     }
   }
+  return parts
+}
+
+function restoreLunisolarRangeDays(
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection,
+  calendar: 'chinese' | 'dangi',
+  options: Intl.ResolvedDateTimeFormatOptions,
+  rangeParts: RangeParts
+): Intl.DateTimeRangeFormatPart[] | undefined {
+  if (
+    options.timeZone !== 'UTC' ||
+    (options.day !== 'numeric' && options.day !== '2-digit')
+  )
+    return undefined
+  const days = lunisolarUtcRangeDays(calendar, first, last)
+  if (!days) return undefined
+  const format = number(first.formatter, options, 1)
+  const formatTwo = number(first.formatter, options, 2)
+  const widths = (day: number): NumericWidths => [format(day), formatTwo(day)]
+  const firstDay = {raw: widths(days[0][0]), corrected: widths(days[0][1])}
+  const lastDay = {raw: widths(days[1][0]), corrected: widths(days[1][1])}
+  const parts = rangeParts.call(
+    first.formatter,
+    first.milliseconds,
+    last.milliseconds
+  )
+  let start: {part: Intl.DateTimeRangeFormatPart; value: string} | undefined
+  let end: {part: Intl.DateTimeRangeFormatPart; value: string} | undefined
+  for (let index = 0; index < parts.length; index++) {
+    const part = parts[index]
+    if (part.type === 'month' || part.type === 'literal') continue
+    if (part.type !== 'day' || part.source === 'shared') return undefined
+    const isStart = part.source === 'startRange'
+    if (isStart ? start : end) return undefined
+    const value = correctedRangeDay(isStart ? firstDay : lastDay, part.value)
+    if (value === undefined) return undefined
+    if (isStart) start = {part, value}
+    else end = {part, value}
+  }
+  if (!start || !end) return undefined
+  // ECMA-402 §11.5.8 steps 19.e–f: retain the selected pattern and
+  // format the corrected Day at the verified width.
+  start.part.value = start.value
+  end.part.value = end.value
   return parts
 }
 
@@ -866,6 +912,16 @@ export function legacyCalendarRangeParts(
           )
           if (projected) return projected
         }
+      }
+      if (calendar === 'chinese' || calendar === 'dangi') {
+        const lunar = restoreLunisolarRangeDays(
+          first,
+          last,
+          calendar,
+          options,
+          rangeParts
+        )
+        if (lunar) return lunar
       }
       const firstYear = firstFields.numericYear,
         lastYear = lastFields.numericYear

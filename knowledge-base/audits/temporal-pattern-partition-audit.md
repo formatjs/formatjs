@@ -109,9 +109,9 @@ compared display text alone. ECMA-402 §11.5.8 steps 15.d.v–vi compare local f
 before step 16 can collapse the range. §11.5.4 step 15.f.iv converts a
 nonpositive year for display.
 
-[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L449)
+[Endpoint restoration](../../packages/temporal/legacy-calendar-date.ts#L450)
 retains the raw year when the endpoint renders a year part. The
-[range caller](../../packages/temporal/legacy-calendar-date.ts#L914) prevents
+[range caller](../../packages/temporal/legacy-calendar-date.ts#L970) prevents
 collapse for distinct raw years. The generic fallback still supplies the layout when the host layout cannot be verified.
 [Published range algorithm](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [Published display conversion](https://tc39.es/ecma402/#sec-formatdatetimepattern).
@@ -195,7 +195,7 @@ German padded intervals and English mathematical digits exercise both
 widths. Raw day 11 with corrected day 5 keeps the full endpoint fallback
 because the native label has the same text at either width. Seven focused
 Bazel targets pass.
-[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L606).
+[Width restoration](../../packages/temporal/legacy-calendar-date.ts#L607).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.4 steps 15.f.v and 15.f.viii–ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
@@ -212,7 +212,7 @@ must match both endpoints. Weekday is a renderable field in the selected
 pattern, while Year still determines the range pattern.
 [ECMA-402 §11.2.3.2 Table 6](https://tc39.es/ecma402/#table-datetime-range-pattern-record).
 [ECMA-402 §11.5.8 steps 15.d and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
-[Weekday source check](../../packages/temporal/legacy-calendar-date.ts#L634).
+[Weekday source check](../../packages/temporal/legacy-calendar-date.ts#L635).
 
 Number and PlainDate tests check full strings and tagged range parts.
 The original path fails the regression. Seven focused Bazel targets and
@@ -236,7 +236,7 @@ ordinal check keeps the existing fallback when native July and owned June
 produce the same text. Number and PlainDate controls exercise both paths.
 Seven focused Bazel targets and all 161 controls on pinned Node 26.8.1 pass.
 [Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L65).
-[Range label check](../../packages/temporal/legacy-calendar-date.ts#L644).
+[Range label check](../../packages/temporal/legacy-calendar-date.ts#L645).
 [ECMA-402 §11.5.4 step 15.f.x](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -260,8 +260,8 @@ and corrects the shared year once both endpoints agree on its source and
 display values. Number and PlainDate tests check complete parts and
 strings. Seven focused Bazel targets and all 167 pinned Node 26.8.1
 controls pass.
-[Month identity check](../../packages/temporal/legacy-calendar-date.ts#L833).
-[Shared year check](../../packages/temporal/legacy-calendar-date.ts#L689).
+[Month identity check](../../packages/temporal/legacy-calendar-date.ts#L879).
+[Shared year check](../../packages/temporal/legacy-calendar-date.ts#L690).
 [ECMA-402 §11.5.8 steps 15.d.v–vi, 16 and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Narrow collapse before-fix log SHA-256 `bdae1e6d2186361116a9ab6ec85e70b378e8dc054422ca04ee5e7078e37be3fc`
@@ -286,7 +286,7 @@ Number and PlainDate controls check full strings and tagged parts in
 English, German and mathematical digits. The cases cover Month and Year
 intervals, same-day collapse and a cycle seam. Seven focused Bazel targets
 and all 191 pinned Node 26.8.1 controls pass.
-[Projected range](../../packages/temporal/legacy-calendar-date.ts#L750).
+[Projected range](../../packages/temporal/legacy-calendar-date.ts#L796).
 [ECMA-402 §11.5.8 steps 7–8, 15.d and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Day-only before-fix log SHA-256 `1cf05bfb34873415ba27d901033b8ed005168d8da558d8f947d2f547e6830e68`
@@ -306,10 +306,38 @@ Projecting and verifying full years keeps the Year pattern and its tagged
 endpoints in those cases. Number and PlainDate controls cover centuries,
 negative zero and mathematical digits. Seven focused Bazel targets and
 all 203 controls on pinned Node 26.8.1 pass.
-[Full-year selection](../../packages/temporal/legacy-calendar-date.ts#L855).
+[Full-year selection](../../packages/temporal/legacy-calendar-date.ts#L901).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 [ECMA-402 §11.5.4 steps 15.f.iv and 15.f.ix](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 
 - Two-digit before-fix log SHA-256 `f98f9709c3c314552e13d6450bd2c3bee0bd96e71f9c8b0d3b04c8795d22edf3`
 - Two-digit after-fix log SHA-256 `af067546dd2ea1153f92236b349075a97aacf98bb5e59c03ef52b3ba21b73395`
 - Node 26 replay log SHA-256 `844d575c8c2dca1a23c7f7ef6fed7b69b5b5d82daa89b081b6478731d06ac6b6`
+
+### Verified Chinese and Dangi Day and Month intervals
+
+UTC Chinese February 4–5, 1954 and Dangi February 27–28, 2017 have the same
+month at both endpoints. The host reports days 1 and 2, while the owned
+calendar reports days 2 and 3. The legacy bridge used complete endpoint
+patterns and repeated the shared month. The corrected interval keeps the
+shared month and replaces both tagged days.
+
+The day-only controls cross into a distinct verified month with two
+corrected day labels of `2`. The host Month interval contributes the
+month parts even though the single-date pattern has none. The bridge
+keeps them, preventing false collapse. The raw and owned related year and
+month code must agree for each actual endpoint. The selected interval
+must expose one verifiable day width per endpoint. Same numbered regular
+and leap months and cross-year layouts remain separate cases.
+
+The public checks compare full strings and tagged parts for Number and
+PlainDate on both pinned Nodes. Seven focused Bazel targets pass. The
+Node 26.8.1 replay passed 17,886 formatting checks, with 8,708 independent
+fixture rows and 34 existing native data differences.
+[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L176).
+[Range day restoration](../../packages/temporal/legacy-calendar-date.ts#L748).
+[ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Lunisolar interval before-fix log SHA-256 `283964d3fe82fab3249897d315b09dc67917be1aa5f2fb4421b02260072ad9f8`
+- Lunisolar interval after-fix log SHA-256 `b7589393498eaddd48694f3e512e5241e082a81496735e6b4016f2fcec9ca5b5`
+- Node 26 replay log SHA-256 `d121f935bdf85a1bbd0809e74c7b904f3406af7dfec4ffa332f22e80de54006c`

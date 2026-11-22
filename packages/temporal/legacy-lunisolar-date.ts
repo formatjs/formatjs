@@ -150,6 +150,43 @@ function fields(
     monthCode: `M${month[1].padStart(2, '0')}${month[2] ? 'L' : ''}`,
   }
 }
+type RangeDayPair = [raw: number, corrected: number]
+
+export function lunisolarUtcRangeDays(
+  calendar: Calendar,
+  first: LegacyDateTimeProjection,
+  last: LegacyDateTimeProjection
+): [RangeDayPair, RangeDayPair] | undefined {
+  const rawStart = fields(calendar, 'UTC', first.milliseconds)
+  const rawEnd = fields(calendar, 'UTC', last.milliseconds)
+  const localDay = (value: LegacyDateTimeProjection): number =>
+    value.plain === true
+      ? floor(value.milliseconds / dayMilliseconds)
+      : legacyISOEpochDay('UTC', value.milliseconds)
+  const start = calendarFromEpochDayRaw(calendar, localDay(first))
+  const end = calendarFromEpochDayRaw(calendar, localDay(last))
+  if (
+    start.year !== end.year ||
+    rawStart.year !== start.year ||
+    rawEnd.year !== end.year ||
+    rawStart.monthCode !== start.monthCode ||
+    rawEnd.monthCode !== end.monthCode
+  )
+    return undefined
+  // ECMA-402 §11.5.8 steps 15.d.v–vi: match the first difference at Day
+  // or Month. Leave equal numbered regular and leap months to fallback.
+  if (
+    start.monthCode === end.monthCode
+      ? start.day === end.day || rawStart.day === rawEnd.day
+      : rawStart.month === rawEnd.month
+  )
+    return undefined
+  return [
+    [rawStart.day, start.day],
+    [rawEnd.day, end.day],
+  ]
+}
+
 function catalog(calendar: Calendar, code: string): Catalog {
   let result = catalogs.get(calendar)
   if (!result) {

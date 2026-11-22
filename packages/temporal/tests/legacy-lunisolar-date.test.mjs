@@ -194,6 +194,46 @@ for (const calendar of ['chinese', 'dangi']) {
   const after = Temporal.Now.plainDateISO('UTC').withCalendar(calendar)
   assert([formatter.format(before), formatter.format(after)].includes(current))
 }
+for (const [calendar, dates, month, monthCodes, days] of [
+  ['chinese', ['1954-02-04', '1954-02-05'], 'long', ['M01', 'M01'], [2, 3]],
+  ['chinese', ['1954-02-04', '1954-03-06'], undefined, ['M01', 'M02'], [2, 2]],
+  ['dangi', ['2017-02-27', '2017-02-28'], 'long', ['M02', 'M02'], [2, 3]],
+  ['dangi', ['2017-02-27', '2017-03-29'], undefined, ['M02', 'M03'], [2, 2]],
+]) {
+  const options = {calendar, timeZone: 'UTC', month, day: 'numeric'}
+  const numbers = dates.map(date => Date.parse(`${date}T00:00Z`))
+  const plain = dates.map(date =>
+    Temporal.PlainDate.from(date).withCalendar(calendar)
+  )
+  assert.deepEqual(
+    plain.map(date => date.monthCode),
+    monthCodes
+  )
+  assert.deepEqual(
+    plain.map(date => date.day),
+    days
+  )
+  const raw = new Native('en', options).formatRangeToParts(...numbers)
+  assert.deepEqual(
+    raw.filter(part => part.type === 'month').map(part => part.source),
+    month ? ['shared'] : ['startRange', 'endRange']
+  )
+  const expected = raw.map(part => {
+    if (part.type !== 'day') return part
+    const end = part.source === 'endRange'
+    assert.equal(part.value, end ? '2' : '1')
+    return {...part, value: String(days[end ? 1 : 0])}
+  })
+  const formatter = new Intl.DateTimeFormat('en', options)
+  for (const input of [numbers, plain]) {
+    assert.deepEqual(formatter.formatRangeToParts(...input), expected)
+    assert.equal(
+      formatter.formatRange(...input),
+      expected.map(part => part.value).join('')
+    )
+    checked++
+  }
+}
 console.log(
   `${rows.length} independent lunar field rows; ${differences.length} native data differences; ${checked} formatting checks`
 )
