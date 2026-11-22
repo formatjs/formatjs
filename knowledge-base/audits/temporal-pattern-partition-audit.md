@@ -235,7 +235,7 @@ with one. June and July both abbreviate to English narrow `J`. The
 ordinal check keeps the existing fallback when native July and owned June
 produce the same text. Number and PlainDate controls exercise both paths.
 Seven focused Bazel targets and all 161 controls on pinned Node 26.8.1 pass.
-[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L68).
+[Numeric month probe](../../packages/temporal/legacy-lunisolar-date.ts#L69).
 [Range label check](../../packages/temporal/legacy-calendar-date.ts#L664).
 [ECMA-402 §11.5.4 step 15.f.x](https://tc39.es/ecma402/#sec-formatdatetimepattern).
 [ECMA-402 §11.5.8 step 19.e](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
@@ -333,7 +333,7 @@ The public checks compare full strings and tagged parts for Number and
 PlainDate on both pinned Nodes. Seven focused Bazel targets pass. The
 Node 26.8.1 replay passed 17,886 formatting checks, with 8,708 independent
 fixture rows and 34 existing native data differences.
-[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L184).
+[Calendar comparison](../../packages/temporal/legacy-lunisolar-date.ts#L185).
 [Range day restoration](../../packages/temporal/legacy-calendar-date.ts#L788).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
@@ -381,19 +381,18 @@ showed only the two days in the corrected fallback. Month is the first
 differing ordinal field. Its interval pattern can introduce both month labels
 even when the formatter itself displays only day.
 
-Two same-year adjacent controls each retain one actual endpoint. They must
+Two same-year controls each retain one actual endpoint. They must
 agree on the Day values, part types, sources and literals. Their Month values
 must be tagged to both endpoints. The bridge takes each endpoint from its
 original control, keeping locale-specific placement and widths. English uses
-`4/1 – 4bis/1`; German retains leading zeroes. If the adjacent months
-cannot supply exactly the requested days or their patterns disagree, the
+`4/1 – 4bis/1`; German retains leading zeroes. If the controls cannot supply exactly the requested days or their patterns disagree, the
 existing fallback applies. Explicit-year and full-date layouts are verified below.
 
 Number and PlainDate regressions cover both calendars, equal and differing day
 fields, four locales and two pinned Node versions. Seven focused Bazel targets
 pass. Node 26.8.1 passes 17,932 formatting checks.
-[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L244).
-[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L251).
+[Month selection](../../packages/temporal/legacy-lunisolar-date.ts#L252).
+[Range part sources](../../packages/temporal/legacy-lunisolar-date.ts#L260).
 [ECMA-402 §11.5.8 steps 15.d.v–vi and 19.e–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
 
 - Before-fix log SHA-256 `380b322870e13b0504f30d727201b1d6547d6db29777fbe96488c62dc9397f5f`
@@ -423,3 +422,35 @@ verified controls and styles with time fields retain their fallback.
 - Before-fix log SHA-256 `41f5ff591565108593b7f63c4c0af85312871acacaf89852723bd9fb8a92424a`
 - After-fix log SHA-256 `58f0bc938a1061e4f64384a62507b6e52977bba7b34bcc1db6aadcb91aba3fc7`
 - Node 26 replay log SHA-256 `677adb6c0cb5c5659f9e0331403f670157e306094fb15a5ac69c6ccc1698ec29`
+
+### Same-year Month controls beyond neighboring months
+
+For both calendars, 1933 regular Month 5 day 30 to leap Month 5 day 30
+has no day 30 in either adjacent month. The bridge finds matching days in
+Months 3 and 7 and preserves both Month labels. In 1909, regular Month 2
+day 30 has no earlier matching day in that year. The bridge uses a later
+month for the first argument of the second control. Native sources follow
+argument position, so the actual leap endpoint keeps its end tag.
+
+An independent month-length fixture sweep on both pinned Node hosts covers
+61,570 Chinese pairs from 1900–2100 and 48,520 Dangi pairs from 1900–2050
+whose host fields match the fixture. The sweep excludes 2,552 Chinese pairs
+with differing host fields.
+It finds same-year controls for 2,964 pairs lacking at least one adjacent
+control and opposite-direction controls for the remaining 290 pairs.
+No leap Month 1 or 12 appears in that fixture. Public package replay verifies
+9,280 Number and PlainDate range-parts results per host for the 290 pairs,
+covering eight locales and two styles. The packaged regression also checks
+the 1933 and 1909 fixtures, with 17,996 formatting checks on Node 26.8.1.
+Eight focused Bazel targets pass. If the host cannot supply both controls or
+the outputs disagree about shared parts, the existing fallback applies.
+
+[Same-year search](../../packages/temporal/legacy-lunisolar-date.ts#L252).
+[Argument order](../../packages/temporal/legacy-lunisolar-date.ts#L254).
+[ECMA-402 §11.5.8 steps 15.d.v–vi and 19.c–f](https://tc39.es/ecma402/#sec-partitiondatetimerangepattern).
+
+- Day-30 before-fix log SHA-256 `4b93a68c85a682364e6667b58856d402c43019eadfd0a324aeb7a57f3c814be0`
+- Reverse before-fix log SHA-256 `f91e371293b50096df18dc158ce6e43269ee9b15579e02147307e0f4f19689ac`
+- After-fix log SHA-256 `fba386617202f791151b9578bf5c43e4ba26d922208c9c565d6ae2b2e77a8c3e`
+- Node 26 packaged test SHA-256 `a30ee3119fd8d0dfdec6e6ca5fc8fed1ecc681501bff23e7dcce6c2fe5f5e4f6`
+- Public replay hashes `fa7225c1cac7c6bd591207f2f32861b8dfed1a3c68ea366e754f5e32cbf1221e` and `92f48054bc8317cc787fc67bf9ed2ea7e4a0ffa60bbc821a2184a7be5c592e3a`

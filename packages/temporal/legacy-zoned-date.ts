@@ -14,10 +14,15 @@ import {
 } from '#packages/temporal/legacy-extended-date.js'
 
 type Parts = typeof Intl.DateTimeFormat.prototype.formatToParts
-const zones = new WeakMap<
-  Intl.DateTimeFormatConstructor,
-  Map<string, HostTimeZone['offsetNanoseconds'] | undefined>
->()
+type ZoneCache = Map<string, HostTimeZone['offsetNanoseconds'] | undefined>
+const apply = Reflect.apply
+const MapConstructor = Map
+const mapGet = MapConstructor.prototype.get
+const mapHas = MapConstructor.prototype.has
+const mapSet = MapConstructor.prototype.set
+const weakMapGet = WeakMap.prototype.get
+const weakMapSet = WeakMap.prototype.set
+const zones = new WeakMap<Intl.DateTimeFormatConstructor, ZoneCache>()
 const NumberConstructor = globalThis.Intl?.NumberFormat
 const numberFormat =
   NumberConstructor &&
@@ -28,12 +33,14 @@ export function legacyHostTimeZone(
   timeZone: string,
   parts: Parts
 ): HostTimeZone['offsetNanoseconds'] | undefined {
-  let cache = zones.get(Constructor)
+  // ECMA-402 §11.5.11 step 2.b: private caching adds no public method calls.
+  // https://tc39.es/ecma402/#sec-tolocaltime
+  let cache: ZoneCache | undefined = apply(weakMapGet, zones, [Constructor])
   if (!cache) {
-    cache = new Map()
-    zones.set(Constructor, cache)
+    cache = new MapConstructor()
+    apply(weakMapSet, zones, [Constructor, cache])
   }
-  if (cache.has(timeZone)) return cache.get(timeZone)
+  if (apply(mapHas, cache, [timeZone])) return apply(mapGet, cache, [timeZone])
   let zone: HostTimeZone['offsetNanoseconds'] | undefined
   try {
     // ECMA-402 §11.5.11 step 2.b: Reuse the host offset reader for the named
@@ -42,7 +49,7 @@ export function legacyHostTimeZone(
   } catch (error) {
     if (!(error instanceof RangeErrorConstructor)) throw error
   }
-  cache.set(timeZone, zone)
+  apply(mapSet, cache, [timeZone, zone])
   return zone
 }
 

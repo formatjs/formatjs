@@ -11,6 +11,7 @@ import {
 import {
   calendarFromEpochDayRaw,
   calendarToEpochDayRaw,
+  monthsInYear,
   type CalendarDate,
 } from '#packages/temporal/calendar.js'
 import type {LegacyDateTimeProjection} from '#packages/temporal/legacy-extended-date.js'
@@ -207,7 +208,7 @@ export function lunisolarUtcLeapMonthRange(
   const sample = (
     projection: LegacyDateTimeProjection,
     {expected, original}: LunisolarRangeEndpoint,
-    adjacentMonth: number
+    direction: -1 | 1
   ): number | undefined => {
     const {year, monthCode, day} = expected
     const actual = original ?? fields(calendar, 'UTC', projection.milliseconds)
@@ -217,37 +218,45 @@ export function lunisolarUtcLeapMonthRange(
       actual.day !== day
     )
       return undefined
-    const epochDay = calendarToEpochDayRaw(
-      calendar,
-      {year, month: adjacentMonth, day},
-      'constrain'
-    )
-    const candidate = calendarFromEpochDayRaw(calendar, epochDay)
-    const milliseconds = epochDay * dayMilliseconds
-    if (
-      candidate.month !== adjacentMonth ||
-      candidate.year !== year ||
-      candidate.day !== day
-    )
-      return undefined
-    const host = fields(calendar, 'UTC', milliseconds)
-    if (
-      host.year === year &&
-      host.monthCode === candidate.monthCode &&
-      host.month !== actual.month &&
-      host.day === day
-    )
-      return milliseconds
+    const monthCount = monthsInYear(calendar, year)
+    for (
+      let month = expected.month + direction;
+      month >= 1 && month <= monthCount;
+      month += direction
+    ) {
+      const epochDay = calendarToEpochDayRaw(
+        calendar,
+        {year, month, day},
+        'constrain'
+      )
+      const candidate = calendarFromEpochDayRaw(calendar, epochDay)
+      if (
+        candidate.month !== month ||
+        candidate.year !== year ||
+        candidate.day !== day
+      )
+        continue
+      const milliseconds = epochDay * dayMilliseconds
+      const host = fields(calendar, 'UTC', milliseconds)
+      if (
+        host.year === year &&
+        host.monthCode === candidate.monthCode &&
+        host.month !== actual.month &&
+        host.day === day
+      )
+        return milliseconds
+    }
     return undefined
   }
 
-  // ECMA-402 §11.5.8 steps 15.d.v–vi: use adjacent ordinal months to
-  // select the native Month pattern while retaining each actual endpoint.
-  const before = sample(first, left, left.expected.month - 1)
-  const after = sample(last, right, right.expected.month + 1)
-  if (before === undefined || after === undefined) return undefined
-  const starts = rangeParts.call(first.formatter, first.milliseconds, after)
-  const ends = rangeParts.call(first.formatter, before, last.milliseconds)
+  // ECMA-402 §11.5.8 steps 15.d.v–vi: use same-year ordinal months with
+  // matching day fields to select the Month pattern for each actual endpoint.
+  // Steps 19.c–d assign sources by argument position, even for reverse controls.
+  const startSample = sample(first, left, -1) ?? sample(first, left, 1)
+  const endSample = sample(last, right, 1) ?? sample(last, right, -1)
+  if (startSample === undefined || endSample === undefined) return undefined
+  const starts = rangeParts.call(first.formatter, first.milliseconds, endSample)
+  const ends = rangeParts.call(first.formatter, startSample, last.milliseconds)
   // ECMA-402 §11.5.8 steps 19.c–f: keep the weekday of each tagged endpoint.
   // Both controls must agree on the other date fields and interval literals.
   if (

@@ -87,3 +87,22 @@ uses the same BigInt floor-to-millisecond expression as a miss. No per-value
 projection metadata is lost on these branches. The 98 packaged controls above
 exercise misses/hits; this inspection establishes reuse equivalence for those
 branches, not the complete projection/option-selection contract.
+
+## Zoned locale offset cache
+
+The public TypeScript package called replaceable collection methods on a warm
+`ZonedDateTime.toLocaleString` cache. Replacing each of `Map.prototype.has`,
+`Map.prototype.get` and `WeakMap.prototype.get` intercepted one private lookup.
+The test now requires the same formatted output and zero hook calls.
+
+Captured collection operations preserve lookup order and distinguish a cached
+undefined offset reader from a miss. Provider selection and validation stay in
+the original order. The cache is an implementation dependency of
+[ECMA-402 §11.5.11 step 2.b](https://tc39.es/ecma402/#sec-tolocaltime).
+[Temporal comparison §6.3.42](https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tolocalestring)
+delegates the Intl-supported method to ECMA-402.
+
+[Captured cache operations](../../packages/temporal/legacy-zoned-date.ts#L36).
+[Warm package regressions](../../packages/temporal/tests/legacy-intl-storage.test.mjs#L93).
+`legacy_intl_storage_test` reproduced all three callbacks before the fix and
+passes afterward. The combined eight-target run also passes.

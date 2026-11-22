@@ -33812,8 +33812,8 @@
     "packages/temporal/legacy-durationformat.ts": "0edae0e01631811a180000c343813a759de94142494f66d3ec513a1dfdcfe2cb",
     "packages/temporal/legacy-extended-date.ts": "9999c0ed34335c8b510083035fc84129c8ce9706b5dbd850b9e9b32e685c92d6",
     "packages/temporal/legacy-intl.ts": "99a5bd57798c87b81fb07374f4d926830e7d833583a4ef7ce9bf9e6fa132cfe3",
-    "packages/temporal/legacy-lunisolar-date.ts": "33220c0f813ffc0cec612d73b4918531964c6b2b190985df95afe61b26caf62d",
-    "packages/temporal/legacy-zoned-date.ts": "fe8b32b7067b84ff2067c63430a60991641e36940b09ecc65c62239a00957493",
+    "packages/temporal/legacy-lunisolar-date.ts": "bce9f4d48b43929ba1ef8eb3cdff24a5cd0c910180b291ff1587e7d911d54fff",
+    "packages/temporal/legacy-zoned-date.ts": "9f49bdcba14c32c76c04ace7b49e9580d9fb4b0988bb1cbb361d390a27b3d15a",
     "packages/temporal/locale.ts": "d8fb1861ecc5b6818e539320ba7a7221e50236dc317289af1e6c2a6248395f5e",
     "packages/temporal/lunisolar.ts": "f5ec7f920ca3e2abf2da931ea77d6157116a94f0c6126bdb1d84d99f580d74f3",
     "packages/temporal/native.ts": "8abb1de8d110e7b961dc6fca19b0fb45bfb8c3528e9c6240ee114c910b4f1971",
@@ -34535,10 +34535,10 @@
       {
         "file": "packages/temporal/legacy-lunisolar-date.ts",
         "symbol": "hostBuddhistMonth",
-        "source_sha256": "33220c0f813ffc0cec612d73b4918531964c6b2b190985df95afe61b26caf62d",
-        "start_line": 68,
-        "end_line": 85,
-        "anchor_line": 72,
+        "source_sha256": "bce9f4d48b43929ba1ef8eb3cdff24a5cd0c910180b291ff1587e7d911d54fff",
+        "start_line": 69,
+        "end_line": 86,
+        "anchor_line": 73,
         "section": "11.5.4",
         "steps": ["12", "15.f.iii", "15.f.v", "15.f.viii"],
         "spec_url": "https://tc39.es/ecma402/#sec-formatdatetimepattern",
@@ -34561,10 +34561,10 @@
       {
         "file": "packages/temporal/legacy-lunisolar-date.ts",
         "symbol": "hostBuddhistDateMatches",
-        "start_line": 87,
-        "end_line": 105,
-        "source_sha256": "33220c0f813ffc0cec612d73b4918531964c6b2b190985df95afe61b26caf62d",
-        "anchor_line": 93,
+        "start_line": 88,
+        "end_line": 106,
+        "source_sha256": "bce9f4d48b43929ba1ef8eb3cdff24a5cd0c910180b291ff1587e7d911d54fff",
+        "anchor_line": 94,
         "section": "11.5.11",
         "steps": ["3", "5.a"],
         "spec_url": "https://tc39.es/ecma402/#sec-tolocaltime",
@@ -34591,21 +34591,21 @@
         "steps": ["7", "8", "15.d.v", "15.d.vi"],
         "spec_url": "https://tc39.es/ecma402/#sec-partitiondatetimerangepattern",
         "scope": "Verify native and owned date fields before reusing Year, Month or Day selection.",
-        "start_line": 166,
-        "end_line": 197,
-        "anchor_line": 184,
-        "source_sha256": "33220c0f813ffc0cec612d73b4918531964c6b2b190985df95afe61b26caf62d"
+        "start_line": 167,
+        "end_line": 198,
+        "anchor_line": 185,
+        "source_sha256": "bce9f4d48b43929ba1ef8eb3cdff24a5cd0c910180b291ff1587e7d911d54fff"
       }
     ],
     "legacy_lunisolar_leap_layout": [
       {
         "symbol": "lunisolarUtcLeapMonthRange",
         "file": "packages/temporal/legacy-lunisolar-date.ts",
-        "scope": "Verify same-year controls for the native Month pattern, including source-tagged weekdays and verified related year and year names.",
-        "start_line": 199,
-        "end_line": 280,
-        "anchor_line": 244,
-        "source_sha256": "33220c0f813ffc0cec612d73b4918531964c6b2b190985df95afe61b26caf62d"
+        "scope": "Search same-year months with identical day fields and verify native Month patterns, preserving each endpoint\u2019s weekday and related year.",
+        "start_line": 200,
+        "end_line": 289,
+        "anchor_line": 252,
+        "source_sha256": "bce9f4d48b43929ba1ef8eb3cdff24a5cd0c910180b291ff1587e7d911d54fff"
       }
     ]
   }

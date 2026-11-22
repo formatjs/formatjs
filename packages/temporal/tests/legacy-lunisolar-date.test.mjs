@@ -300,12 +300,13 @@ for (const [calendar, dates, years, monthCodes, oldDays, days] of [
 }
 
 for (const calendar of ['chinese', 'dangi']) {
-  for (const [last, reference] of [
-    ['2020-05-23', '2020-06-21'],
-    ['2020-05-24', '2020-06-22'],
+  for (const dates of [
+    ['2020-03-24', '2020-04-23', '2020-05-23', '2020-06-21'],
+    ['2020-03-24', '2020-04-23', '2020-05-24', '2020-06-22'],
+    ['1933-04-24', '1933-06-22', '1933-07-22', '1933-09-19'],
+    ['1909-06-17', '1909-03-21', '1909-03-22', '1909-04-20'],
   ]) {
-    const dates = ['2020-03-24', '2020-04-23', last, reference]
-    const [before, start, end, after] = dates.map(date =>
+    const [startControl, start, end, endControl] = dates.map(date =>
       Date.parse(`${date}T00:00Z`)
     )
     const plain = dates
@@ -322,8 +323,8 @@ for (const calendar of ['chinese', 'dangi']) {
       const options = {calendar, timeZone: 'UTC', ...fields}
       const native = new Native(locale, options)
       const formatter = new Intl.DateTimeFormat(locale, options)
-      const startParts = native.formatRangeToParts(start, after)
-      const endParts = native.formatRangeToParts(before, end)
+      const startParts = native.formatRangeToParts(start, endControl)
+      const endParts = native.formatRangeToParts(startControl, end)
       assert.equal(startParts.length, endParts.length)
       const expected = startParts.map((part, index) => {
         const other = endParts[index]

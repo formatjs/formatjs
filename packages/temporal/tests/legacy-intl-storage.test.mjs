@@ -90,6 +90,53 @@ const cases = [
 })
 
 const {Temporal} = await load('index.js')
+// ECMA-402 §11.5.11 step 2.b: provider caching adds no public method calls.
+{
+  const value = new Temporal.ZonedDateTime(0n, 'UTC')
+  const options = {year: 'numeric', month: 'numeric', day: 'numeric'}
+  const expected = new Native('en', {...options, timeZone: 'UTC'}).format(0)
+  assert.equal(value.toLocaleString('en', options), expected)
+  const outcomes = []
+  for (const [prototype, method, label] of [
+    [Map.prototype, 'has', 'Map.has'],
+    [Map.prototype, 'get', 'Map.get'],
+    [WeakMap.prototype, 'get', 'WeakMap.get'],
+  ]) {
+    const descriptor = Object.getOwnPropertyDescriptor(prototype, method)
+    const sentinel = new Error(`Mutable zoned locale ${label}`)
+    let calls = 0,
+      actual,
+      error
+    try {
+      Object.defineProperty(prototype, method, {
+        ...descriptor,
+        value() {
+          calls++
+          throw sentinel
+        },
+      })
+      actual = value.toLocaleString('en', options)
+    } catch (caught) {
+      error = caught
+    } finally {
+      Object.defineProperty(prototype, method, descriptor)
+    }
+    outcomes.push({label, calls, actual, error})
+  }
+  assert.deepEqual(
+    outcomes.map(({label, calls}) => [label, calls]),
+    [
+      ['Map.has', 0],
+      ['Map.get', 0],
+      ['WeakMap.get', 0],
+    ],
+    'Zoned locale cache ignores replaced collection methods'
+  )
+  for (const {label, actual, error} of outcomes) {
+    assert.equal(error, undefined, label)
+    assert.equal(actual, expected, label)
+  }
+}
 await load('polyfill-force.js')
 assert.notEqual(
   Intl.DateTimeFormat,
