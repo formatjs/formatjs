@@ -101,9 +101,13 @@ export function localeDateTime(
   locales: unknown,
   options: unknown,
   fallback: () => string,
+  receiver: object,
   localNanoseconds?: () => bigint
 ): string {
-  if (!dateTimeConstructor || !formatDate || !resolvedDate) return fallback()
+  // ECMA-262 §28.1.1 step 4 directly calls the captured no-Intl formatter.
+  // https://tc39.es/ecma262/#sec-reflect.apply
+  if (!dateTimeConstructor || !formatDate || !resolvedDate)
+    return apply(fallback, receiver, [])
   if (temporalFormat)
     return temporalFormat(value, locales, options, localNanoseconds)
   const projection = legacyDateTimeProjection(

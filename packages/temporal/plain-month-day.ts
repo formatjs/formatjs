@@ -211,7 +211,8 @@ class PlainMonthDayValue {
       },
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {

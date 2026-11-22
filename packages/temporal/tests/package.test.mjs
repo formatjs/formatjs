@@ -18,6 +18,29 @@ const standalone = spawnSync(
   assert.equal(Temporal.PlainDate.from('2023-03-22').withCalendar('chinese').monthCode, 'M02L')
   assert.equal(Temporal.PlainDate.from('2024-03-11').withCalendar('islamic-umalqura').day, 1)
   assert.equal(Temporal.ZonedDateTime.from('2020-03-07T12:00-05:00[America/New_York]').add({days: 1}).toString(), '2020-03-08T12:00:00-04:00[America/New_York]')
+  for (const value of [
+    new Temporal.Instant(0n),
+    new Temporal.ZonedDateTime(0n, 'UTC'),
+    new Temporal.PlainDate(2024, 2, 29),
+    new Temporal.PlainDateTime(2024, 2, 29),
+    new Temporal.PlainTime(12),
+    new Temporal.PlainYearMonth(2024, 2),
+    new Temporal.PlainMonthDay(2, 29),
+  ]) {
+    const expected = value.toJSON()
+    const format = Object.getPrototypeOf(value).toString
+    Object.defineProperty(format, 'call', {
+      configurable: true,
+      value() {
+        throw new Error('Unexpected formatter call hook')
+      },
+    })
+    try {
+      assert.equal(value.toLocaleString(), expected)
+    } finally {
+      delete format.call
+    }
+  }
 `,
   ],
   {encoding: 'utf8'}

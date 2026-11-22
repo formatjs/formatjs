@@ -405,7 +405,8 @@ class PlainYearMonthValue {
       },
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {

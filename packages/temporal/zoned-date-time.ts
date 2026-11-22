@@ -791,6 +791,8 @@ function offsetText(slot: ZonedSlot): string {
   return text
 }
 function format(slot: ZonedSlot, options?: unknown): string {
+  // §6.3.41 steps 3–12: read options in order before validating the unit category.
+  // https://tc39.es/proposal-temporal/#sec-temporal.zoneddatetime.prototype.tostring
   const resolved = optionsObject(options),
     show = calendarNameOption(resolved.calendarName),
     suffix = calendarAnnotation(slot.calendar, show)
@@ -1216,7 +1218,8 @@ class ZonedDateTimeValue {
       {kind: 'ZonedDateTime', ...slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this),
+      localeStringIntrinsic,
+      this,
       () => local(slot)
     )
   }

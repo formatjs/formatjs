@@ -610,7 +610,8 @@ class PlainDateTimeValue {
       {kind: 'PlainDateTime', ...slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {

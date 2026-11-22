@@ -626,7 +626,8 @@ class PlainTimeValue implements PlainTimeObject {
       {kind: 'PlainTime', epochNanoseconds: slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   toJSON(): string {

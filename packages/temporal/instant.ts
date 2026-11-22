@@ -401,7 +401,8 @@ class InstantValue implements InstantObject {
       {kind: 'Instant', epochNanoseconds: slot},
       locales,
       options,
-      () => localeStringIntrinsic.call(this)
+      localeStringIntrinsic,
+      this
     )
   }
   // Proposal comparison §8.3.13 steps 1–3.
